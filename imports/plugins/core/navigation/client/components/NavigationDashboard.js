@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import AppBar from "@material-ui/core/AppBar";
-import Modal from "@material-ui/core/Modal";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -24,16 +25,6 @@ const styles = (theme) => ({
   },
   leftSidebarOpen: {
     paddingLeft: 280 + (theme.spacing.unit * 2)
-  },
-  paper: {
-    position: "absolute",
-    width: theme.spacing.unit * 80,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
   },
   title: {
     flex: 1
@@ -74,7 +65,7 @@ class NavigationDashboard extends Component {
     this.setState({ isModalOpen: false });
   }
 
-  updateNavigationItem = (navigationItemDoc) => {
+  updateNavigationItem = (navigationItemDoc, sortableTreeNode) => {
     const { _id, draftData } = navigationItemDoc;
     const { content, url, isUrlRelative, shouldOpenInNewWindow, classNames } = draftData;
     const { value } = content.find((ct) => ct.language === "en");
@@ -86,7 +77,22 @@ class NavigationDashboard extends Component {
       shouldOpenInNewWindow,
       classNames
     };
-    this.setState({ isModalOpen: true, navigationItem, modalMode: "edit" });
+
+    // Add visibility flags from the navigation tree node
+    if (sortableTreeNode) {
+      const { node: navigationTreeItem } = sortableTreeNode;
+      navigationItem.isInNavigationTree = typeof navigationTreeItem === "object";
+      navigationItem.isVisible = navigationTreeItem.isVisible;
+      navigationItem.isPrivate = navigationTreeItem.isPrivate;
+      navigationItem.isSecondary = navigationTreeItem.isSecondary;
+    }
+
+    this.setState({
+      isModalOpen: true,
+      navigationItem,
+      sortableTreeNode,
+      modalMode: "edit"
+    });
   }
 
   render() {
@@ -106,7 +112,8 @@ class NavigationDashboard extends Component {
     const {
       isModalOpen,
       modalMode,
-      navigationItem
+      navigationItem,
+      sortableTreeNode
     } = this.state;
 
     const toolbarClassName = classnames({
@@ -132,23 +139,27 @@ class NavigationDashboard extends Component {
           onSetSortableNavigationTree={onSetSortableNavigationTree}
           onClickUpdateNavigationItem={this.updateNavigationItem}
         />
-        <Modal
+        <Dialog
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
+          fullWidth={true}
+          maxWidth="sm"
           open={isModalOpen}
           onClose={this.handleCloseModal}
         >
-          <div className={classes.paper}>
+          <DialogContent>
             <NavigationItemForm
               createNavigationItem={createNavigationItem}
               deleteNavigationItem={deleteNavigationItem}
               mode={modalMode}
               navigationItem={navigationItem}
+              sortableTreeNode={sortableTreeNode}
               onCloseForm={this.handleCloseModal}
               updateNavigationItem={updateNavigationItem}
+              onSetSortableNavigationTree={onSetSortableNavigationTree}
             />
-          </div>
-        </Modal>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
