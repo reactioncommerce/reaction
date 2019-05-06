@@ -16,17 +16,15 @@ test("calls queries.roles and returns a partial connection", async () => {
 
   const result = await rolesResolver({ _id: base64ID }, {}, {
     queries: { roles }
-  });
+  }, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockRoles,
     pageInfo: {
       endCursor: "c3",
-      hasNextPage: false,
-      hasPreviousPage: false,
       startCursor: "a1"
     },
-    totalCount: 3
+    totalCount: null
   });
 
   expect(roles).toHaveBeenCalled();

@@ -1,39 +1,4 @@
-import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
 import _ from "lodash";
-
-/**
- * @name findCatalogProductsAndVariants
- * @summary Returns products in the Catalog collection that correspond to the cart items provided.
- * @param {Object} collections - The mongo collections
- * @param {Array} orderLineItems - An array of items that have been added to the shopping cart.
- * @returns {Array} products - An array of products, parent variant and variants in the catalog
- */
-export async function findCatalogProductsAndVariants(collections, orderLineItems) {
-  const { Catalog } = collections;
-  const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId);
-
-  const catalogProductItems = await Catalog.find({
-    "product.productId": { $in: productIds },
-    "product.isVisible": true,
-    "product.isDeleted": { $ne: true },
-    "isDeleted": { $ne: true }
-  }).toArray();
-
-  const catalogProductsAndVariants = catalogProductItems.map((catalogProduct) => {
-    const { product } = catalogProduct;
-    const orderedVariant = orderLineItems.find((item) => product.productId === item.productId);
-
-    const { parentVariant, variant } = findVariantInCatalogProduct(product, orderedVariant.variantId);
-
-    return {
-      product,
-      parentVariant,
-      variant
-    };
-  });
-
-  return catalogProductsAndVariants;
-}
 
 /**
  * @name mergeProductAndVariants
@@ -46,11 +11,11 @@ export function mergeProductAndVariants(productAndVariants) {
 
   // Filter out unnecessary product props
   const productProps = _.omit(product, [
-    "variants", "media", "metafields", "parcel", "pricing", " primaryImage", "socialMetadata", "customAttributes"
+    "variants", "media", "metafields", "parcel", " primaryImage", "socialMetadata", "customAttributes"
   ]);
 
   // Filter out unnecessary variant props
-  const variantExcludeProps = ["media", "parcel", "pricing", "primaryImage", "customAttributes"];
+  const variantExcludeProps = ["media", "parcel", "primaryImage", "customAttributes"];
   const variantProps = _.omit(variant, variantExcludeProps);
 
   // If an option has been added to the cart

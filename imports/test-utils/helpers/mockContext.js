@@ -5,10 +5,13 @@ const mockContext = {
     on() {}
   },
   collections: {},
+  getAbsoluteUrl: jest.fn().mockName("getAbsoluteUrl").mockImplementation((path) => {
+    const adjustedPath = path[0] === "/" ? path : `/${path}`;
+    return `https://app.mock${adjustedPath}`;
+  }),
   getFunctionsOfType: jest.fn().mockName("getFunctionsOfType").mockReturnValue([]),
   mutations: {},
   queries: {},
-  shopId: "FAKE_SHOP_ID",
   userHasPermission: jest.fn().mockName("userHasPermission"),
   userId: "FAKE_USER_ID"
 };

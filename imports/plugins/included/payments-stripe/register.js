@@ -16,6 +16,7 @@ Reaction.registerPackage({
   },
   paymentMethods: [{
     name: "stripe_card",
+    canRefund: true,
     displayName: "Stripe Card",
     functions: {
       capturePayment: stripeCapturePayment,

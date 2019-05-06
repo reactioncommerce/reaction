@@ -9,7 +9,6 @@ import { check, Match } from "meteor/check";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { SSR } from "meteor/meteorhacks:ssr";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -212,7 +211,6 @@ describe("Account Meteor method ", function () {
 
   describe("accounts/inviteShopMember", function () {
     let createUserSpy;
-    let sendEmailSpy;
     let groupId;
     let group;
 
@@ -238,7 +236,6 @@ describe("Account Meteor method ", function () {
 
     beforeEach(function () {
       createUserSpy = sandbox.spy(MeteorAccounts, "createUser");
-      sendEmailSpy = sandbox.stub(Reaction.Email, "send"); // stub instead of spy so we don't actually try to send
 
       groupId = Random.id();
       group = Factory.create("group");
@@ -268,41 +265,10 @@ describe("Account Meteor method ", function () {
       expect(callDescribed).to.throw(ReactionError, /invite owner/);
       expect(createUserSpy).to.not.have.been.called;
     });
-
-    it("invites existing users", function () {
-      const subjectSpy = sandbox.spy(SSR, "render");
-
-      stubPermissioning({ hasPermission: true, canInviteToGroup: true });
-      sandbox
-        .stub(Meteor.users, "findOne", () => fakeUser)
-        .withArgs({ "emails.address": fakeUser.emails[0].address });
-
-      callDescribed();
-
-      expect(sendEmailSpy).to.have.been.called;
-      expect(createUserSpy).to.not.have.been.called;
-      expect(subjectSpy)
-        .to.have.been.calledWith(sinon.match(/inviteShopMember/));
-    });
-
-    it("creates and invites new users", function () {
-      const email = `${Random.id()}@example.com`;
-      const subjectSpy = sandbox.spy(SSR, "render");
-
-      stubPermissioning({ hasPermission: true, canInviteToGroup: true });
-
-      callDescribed({ email });
-
-      expect(sendEmailSpy).to.have.been.called;
-      expect(createUserSpy).to.have.been.called;
-      expect(subjectSpy)
-        .to.have.been.calledWith(sinon.match(/inviteNewShopMember/));
-    });
   });
 
   describe("accounts/inviteShopOwner", function () {
     let createUserSpy;
-    let sendEmailSpy;
     let groupId;
     let group;
 
@@ -330,7 +296,6 @@ describe("Account Meteor method ", function () {
     beforeEach(function () {
       // fakeAccount = Factory.create("account");
       createUserSpy = sandbox.spy(MeteorAccounts, "createUser");
-      sendEmailSpy = sandbox.stub(Reaction.Email, "send");
 
       // resolves issues with the onCreateUser event handler
       groupId = Random.id();
@@ -348,36 +313,6 @@ describe("Account Meteor method ", function () {
 
       expect(callDescribed).to.throw(ReactionError, /Access denied/);
       expect(createUserSpy).to.not.have.been.called;
-    });
-
-    it("invites existing users", function () {
-      const subjectSpy = sandbox.spy(SSR, "render");
-
-      stubPermissioning({ hasPermission: true });
-      sandbox
-        .stub(Meteor.users, "findOne", () => fakeUser)
-        .withArgs({ "emails.address": fakeUser.emails[0].address });
-
-      callDescribed();
-
-      expect(sendEmailSpy).to.have.been.called;
-      expect(createUserSpy).to.not.have.been.called;
-      expect(subjectSpy)
-        .to.have.been.calledWith(sinon.match(/inviteShopOwner/));
-    });
-
-    it("creates and invites new users", function () {
-      const email = `${Random.id()}@example.com`;
-      const subjectSpy = sandbox.spy(SSR, "render");
-
-      stubPermissioning({ hasPermission: true });
-
-      callDescribed({ email });
-
-      expect(sendEmailSpy).to.have.been.called;
-      expect(createUserSpy).to.have.been.called;
-      expect(subjectSpy)
-        .to.have.been.calledWith(sinon.match(/inviteShopOwner/));
     });
 
     it("creates a shop with the data provided", function () {

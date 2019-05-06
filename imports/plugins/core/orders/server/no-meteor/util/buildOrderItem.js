@@ -1,3 +1,4 @@
+import { toFixed } from "accounting-js";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -9,18 +10,29 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>} An order item, matching the schema needed for insertion in the Orders collection
  */
 export default async function buildOrderItem(context, { currencyCode, inputItem }) {
+  const { queries } = context;
   const {
     addedAt,
     price,
-    productConfiguration,
+    productConfiguration: {
+      productId,
+      productVariantId
+    },
     quantity
   } = inputItem;
 
   const {
     catalogProduct: chosenProduct,
-    catalogProductVariant: chosenVariant,
-    price: finalPrice
-  } = await context.queries.getCurrentCatalogPriceForProductConfiguration(productConfiguration, currencyCode, context.collections);
+    variant: chosenVariant
+  } = await queries.findProductAndVariant(context, productId, productVariantId);
+
+  const variantPriceInfo = await queries.getVariantPrice(context, chosenVariant, currencyCode);
+  const finalPrice = (variantPriceInfo || {}).price;
+
+  // Handle null or undefined price returned. Don't allow sale.
+  if (!finalPrice && finalPrice !== 0) {
+    throw new ReactionError("invalid", `Unable to get current price for "${chosenVariant.title || chosenVariant._id}"`);
+  }
 
   if (finalPrice !== price) {
     throw new ReactionError("invalid", `Provided price for the "${chosenVariant.title}" item does not match current published price`);
@@ -48,7 +60,7 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
     productVendor: chosenProduct.vendor,
     quantity,
     shopId: chosenProduct.shopId,
-    subtotal: quantity * finalPrice,
+    subtotal: +toFixed(quantity * finalPrice, 3),
     title: chosenProduct.title,
     updatedAt: now,
     variantId: chosenVariant.variantId,

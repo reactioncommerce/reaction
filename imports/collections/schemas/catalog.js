@@ -74,29 +74,6 @@ export const ImageInfo = new SimpleSchema({
 });
 
 /**
- * @name CatalogPriceRange
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Number} max required
- * @property {Number} min required
- * @property {String} range required
- */
-export const CatalogPriceRange = new SimpleSchema({
-  max: {
-    type: Number,
-    label: "Max price"
-  },
-  min: {
-    type: Number,
-    label: "Min price"
-  },
-  range: {
-    type: String,
-    label: "Price range"
-  }
-});
-
-/**
  * @name SocialMetadata
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -140,8 +117,6 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Number} minOrderQuantity optional, default value: `1`
  * @property {String} optionTitle optional
  * @property {String} originCountry optional
- * @property {CatalogPriceRange} price required
- * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} shopId required
  * @property {String} sku optional
@@ -255,14 +230,6 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "Origin country",
     optional: true
   },
-  "price": {
-    type: Number
-  },
-  "pricing": {
-    type: Object,
-    blackbox: true,
-    label: "Pricing"
-  },
   "primaryImage": {
     type: ImageInfo,
     label: "Primary Image",
@@ -270,8 +237,7 @@ export const VariantBaseSchema = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   "sku": {
     type: String,
@@ -350,8 +316,6 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {String} originCountry optional
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
- * @property {CatalogPriceRange} price optional
- * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
@@ -381,8 +345,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "createdAt": {
     type: Date,
-    label: "Date/time this product was created at",
-    index: 1
+    label: "Date/time this product was created at"
   },
   "description": {
     type: String,
@@ -411,7 +374,6 @@ export const CatalogProduct = new SimpleSchema({
   "isDeleted": {
     type: Boolean,
     label: "Is deleted",
-    index: 1,
     defaultValue: false
   },
   "isLowQuantity": {
@@ -425,7 +387,6 @@ export const CatalogProduct = new SimpleSchema({
   "isVisible": {
     type: Boolean,
     label: "Indicates if a product is visible to non-admin users",
-    index: 1,
     defaultValue: false
   },
   "length": {
@@ -484,15 +445,6 @@ export const CatalogProduct = new SimpleSchema({
     label: "Shipping parcel",
     optional: true
   },
-  "price": {
-    type: CatalogPriceRange,
-    optional: true
-  },
-  "pricing": {
-    type: Object,
-    blackbox: true,
-    label: "Pricing"
-  },
   "primaryImage": {
     type: ImageInfo,
     label: "Primary Image",
@@ -509,8 +461,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   "sku": {
     type: String,
@@ -519,8 +470,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "slug": {
     type: String,
-    optional: true,
-    index: 1
+    optional: true
   },
   "socialMetadata": {
     type: Array,
@@ -609,13 +559,11 @@ export const Catalog = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    label: "Date/time this catalog item was created at",
-    index: 1
+    label: "Date/time this catalog item was created at"
   },
   shopId: {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   updatedAt: {
     type: Date,

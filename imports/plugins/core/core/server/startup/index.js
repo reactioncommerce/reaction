@@ -10,7 +10,6 @@ import LoadFixtureData from "./load-data";
 import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
 import RegisterCore from "./register-core";
-import RegisterRouter from "./register-router";
 import setupCdn from "./cdn";
 
 const { REACTION_METEOR_APP_COMMAND_START_TIME } = process.env;
@@ -31,7 +30,6 @@ export default function startup() {
   setupCdn();
   Accounts();
   RegisterCore();
-  RegisterRouter();
 
   // initialize shop registry when a new shop is added
   Shops.find().observe({
@@ -53,7 +51,11 @@ export default function startup() {
   CollectionSecurity();
   RateLimiters();
 
-  startNodeApp()
+  startNodeApp({
+    async onAppInstanceCreated(app) {
+      await Reaction.onAppInstanceCreated(app);
+    }
+  })
     .then(() => {
       const endTime = Date.now();
       Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);

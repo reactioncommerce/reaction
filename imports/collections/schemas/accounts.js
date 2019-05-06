@@ -134,21 +134,17 @@ export const Accounts = new SimpleSchema({
   "userId": {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-    index: 1,
     label: "Accounts userId"
   },
   "sessions": {
     type: Array,
-    optional: true,
-    index: 1
+    optional: true
   },
   "sessions.$": {
     type: String
   },
   "shopId": {
-    type: String,
-    regEx: SimpleSchema.RegEx.Id,
-    index: 1
+    type: String
   },
   "name": {
     type: String,
@@ -190,8 +186,7 @@ export const Accounts = new SimpleSchema({
   "groups": {
     type: Array, // groupIds that user belongs to
     optional: true,
-    defaultValue: [],
-    index: 1
+    defaultValue: []
   },
   "groups.$": {
     type: String

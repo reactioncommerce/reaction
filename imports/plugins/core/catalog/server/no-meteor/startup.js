@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import collectionIndex from "/imports/utils/collectionIndex";
 import hashProduct from "./mutations/hashProduct";
 
 /**
@@ -29,8 +30,21 @@ async function hashRelatedProduct(media, collections) {
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
+export default async function startup(context) {
   const { appEvents, collections } = context;
+  const { Catalog } = collections;
+
+  // Create indexes
+
+  // Without _id: 1 on these, they cannot be used for sorting by createdAt
+  // because all sorts include _id: 1 as secondary sort to be fully stable.
+  collectionIndex(Catalog, { createdAt: 1, _id: 1 });
+  collectionIndex(Catalog, { updatedAt: 1, _id: 1 });
+  collectionIndex(Catalog, { shopId: 1 });
+  collectionIndex(Catalog, { "product._id": 1 });
+  collectionIndex(Catalog, { "product.productId": 1 });
+  collectionIndex(Catalog, { "product.slug": 1 });
+  collectionIndex(Catalog, { "product.tagIds": 1 });
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
     hashRelatedProduct(mediaRecord, collections).catch((error) => {

@@ -1,7 +1,7 @@
-import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
+import config from "../config";
 import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
-import updateParentVariantsInventoryAvailableToSellQuantity from "./utils/updateParentVariantsInventoryAvailableToSellQuantity";
-import updateParentVariantsInventoryInStockQuantity from "./utils/updateParentVariantsInventoryInStockQuantity";
+import updateCatalogProductInventoryStatus from "./utils/updateCatalogProductInventoryStatus";
+import updateParentInventoryFields from "./utils/updateParentInventoryFields";
 
 /**
  * @summary Called on startup
@@ -10,11 +10,9 @@ import updateParentVariantsInventoryInStockQuantity from "./utils/updateParentVa
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { appEvents } = context;
+  const { appEvents, collections } = context;
 
   appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
-    const { collections } = context;
-
     // Inventory is removed from stock only once an order has been approved
     // This is indicated by payment.status being anything other than `created`
     // We need to check to make sure the inventory has been removed before we return it to stock
@@ -107,7 +105,6 @@ export default function startup(context) {
   });
 
   appEvents.on("afterOrderCreate", async ({ order }) => {
-    const { collections } = context;
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 
     // Create a new set of unique productIds
@@ -152,8 +149,6 @@ export default function startup(context) {
   });
 
   appEvents.on("afterOrderApprovePayment", async ({ order }) => {
-    const { collections } = context;
-
     // We only decrease the inventory quantity after the final payment is approved
     const nonApprovedPayment = (order.payments || []).find((payment) => payment.status === "created");
     if (nonApprovedPayment) return;
@@ -202,10 +197,8 @@ export default function startup(context) {
   });
 
   appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
-    const { collections } = context;
-
     // If the updated field was `inventoryInStock`, adjust `inventoryAvailableToSell` quantities
-    if (field === "inventoryInStock") {
+    if (field === "inventoryInStock" || field === "lowInventoryWarningThreshold") {
       const doc = await collections.Products.findOne({ _id });
 
       // Get reserved inventory - the inventory currently in an unprocessed order
@@ -225,13 +218,13 @@ export default function startup(context) {
         }
       );
 
-      // Update `inventoryAvailableToSell` on all parents of this variant / option
-      await updateParentVariantsInventoryAvailableToSellQuantity(doc, collections);
-      // Update `inventoryInStock` on all parents of this variant / option
-      await updateParentVariantsInventoryInStockQuantity(doc, collections);
+      // Update `inventoryInStock` and `inventoryAvailableToSell` on all parents of this variant / option
+      await updateParentInventoryFields(doc, collections);
 
       // Publish inventory to catalog
-      await updateCatalogProductInventoryStatus(doc.ancestors[0], collections);
+      if (config.AUTO_PUBLISH_INVENTORY_FIELDS) {
+        await updateCatalogProductInventoryStatus(doc.ancestors[0], collections);
+      }
     }
   });
 }

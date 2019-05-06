@@ -4,23 +4,17 @@ import { Session } from "meteor/session";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Tags, Shops } from "/lib/collections";
+import { Shops } from "/lib/collections";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 
 const handleAddProduct = () => {
   Meteor.call("products/createProduct", (error, productId) => {
     if (Meteor.isClient) {
-      let currentTag;
-      let currentTagId;
-
       if (error) {
         throw new ReactionError("create-product-error", error);
-      } else if (productId) {
-        currentTagId = Session.get("currentTag");
-        currentTag = Tags.findOne(currentTagId);
-        if (currentTag) {
-          Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-        }
+      }
+
+      if (productId) {
         Session.set("productGrid/selectedProducts", [productId]);
         // go to new product
         Reaction.Router.go("product", {

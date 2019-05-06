@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import getPriceRange from "/imports/plugins/core/catalog/server/no-meteor/utils/getPriceRange";
+import getPriceRange from "./getPriceRange";
 
 /**
  * @method

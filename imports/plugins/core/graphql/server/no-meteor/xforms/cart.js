@@ -1,6 +1,5 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import ReactionError from "@reactioncommerce/reaction-error";
-import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
 import { xformCatalogProductMedia } from "./catalogProduct";
 import { xformRateToRateObject } from "./core";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
@@ -51,19 +50,25 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
   }
 
   const catalogProduct = catalogItem.product;
-  const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
+
+  const { variant } = context.queries.findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
 
+  // Find one image from the catalog to use for the item.
+  // Prefer the first variant image. Fallback to the first product image.
   let media;
-  if (catalogProduct.media || catalogProduct.primaryImage) {
+  if (variant.media && variant.media.length) {
+    [media] = variant.media;
+  } else if (catalogProduct.media && catalogProduct.media.length) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
-    if (!media) media = catalogProduct.primaryImage;
     if (!media) [media] = catalogProduct.media;
-    if (media) {
-      media = await xformCatalogProductMedia(media, context);
-    }
+  }
+
+  // Allow plugins to transform the media object
+  if (media) {
+    media = await xformCatalogProductMedia(media, context);
   }
 
   const variantSourceProduct = products.find((product) => product._id === variantId);

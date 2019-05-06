@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { registerSchema } from "@reactioncommerce/schemas";
@@ -52,7 +53,6 @@ registerSchema("VariantMedia", VariantMedia);
  * @property {String} _id required, Variant ID
  * @property {String[]} ancestors, default value: `[]`
  * @property {String} barcode optional
- * @property {Number} compareAtPrice optional, Compare at price
  * @property {Date} createdAt optional
  * @property {Event[]} eventLog optional, Variant Event Log
  * @property {Number} height optional, default value: `0`
@@ -73,7 +73,6 @@ registerSchema("VariantMedia", VariantMedia);
  * @property {Number} minOrderQuantity optional
  * @property {String} optionTitle, Option internal name, default value: `"Untitled option"`
  * @property {String} originCountry optional
- * @property {Number} price, default value: `0.00`
  * @property {String} shopId required, Variant ShopId
  * @property {String} sku optional
  * @property {String} title, Label for customers, default value: `""`
@@ -106,13 +105,6 @@ export const ProductVariant = new SimpleSchema({
         }
       }
     }
-  },
-  "compareAtPrice": {
-    label: "Compare At Price",
-    type: Number,
-    optional: true,
-    min: 0,
-    defaultValue: 0.00
   },
   "createdAt": {
     label: "Created at",
@@ -197,7 +189,6 @@ export const ProductVariant = new SimpleSchema({
   },
   "isDeleted": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "isLowQuantity": {
@@ -212,7 +203,6 @@ export const ProductVariant = new SimpleSchema({
   },
   "isVisible": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "length": {
@@ -251,16 +241,8 @@ export const ProductVariant = new SimpleSchema({
     type: String,
     optional: true
   },
-  "price": {
-    label: "Price",
-    type: Number,
-    defaultValue: 0.00,
-    min: 0,
-    optional: true
-  },
   "shopId": {
     type: String,
-    index: 1,
     label: "Variant ShopId"
   },
   "sku": {
@@ -315,33 +297,6 @@ export const ProductVariant = new SimpleSchema({
 registerSchema("ProductVariant", ProductVariant);
 
 /**
- * @name PriceRange
- * @type {SimpleSchema}
- * @memberof Schemas
- * @property {String} range, default value: `"0.00"`
- * @property {Number} min optional, default value: `0`
- * @property {Number} max optional, default value: `0`
- */
-export const PriceRange = new SimpleSchema({
-  range: {
-    type: String,
-    defaultValue: "0.00"
-  },
-  min: {
-    type: Number,
-    defaultValue: 0,
-    optional: true
-  },
-  max: {
-    type: Number,
-    defaultValue: 0,
-    optional: true
-  }
-});
-
-registerSchema("PriceRange", PriceRange);
-
-/**
  * @name Product
  * @type {SimpleSchema}
  * @memberof Schemas
@@ -367,7 +322,6 @@ registerSchema("PriceRange", PriceRange);
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
  * @property {String} pinterestMsg optional
- * @property {PriceRange} price denormalized, object with range string, min and max
  * @property {String} productType optional
  * @property {Date} publishedAt optional
  * @property {String} publishedProductHash optional
@@ -389,16 +343,14 @@ export const Product = new SimpleSchema({
   },
   "ancestors": {
     type: Array,
-    defaultValue: [],
-    index: 1
+    defaultValue: []
   },
   "ancestors.$": {
     type: String
   },
   "createdAt": {
     type: Date,
-    autoValue: createdAtAutoValue,
-    index: 1
+    autoValue: createdAtAutoValue
   },
   "currentProductHash": {
     type: String,
@@ -420,13 +372,11 @@ export const Product = new SimpleSchema({
   },
   "handle": {
     type: String,
-    optional: true,
-    index: 1
+    optional: true
   },
   "hashtags": {
     type: Array,
-    optional: true,
-    index: 1
+    optional: true
   },
   "hashtags.$": {
     type: String
@@ -458,7 +408,6 @@ export const Product = new SimpleSchema({
   },
   "isDeleted": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "isLowQuantity": {
@@ -473,7 +422,6 @@ export const Product = new SimpleSchema({
   },
   "isVisible": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "metaDescription": {
@@ -504,10 +452,6 @@ export const Product = new SimpleSchema({
     optional: true,
     max: 255
   },
-  "price": {
-    label: "Price",
-    type: PriceRange
-  },
   "productType": {
     type: String,
     optional: true
@@ -522,7 +466,6 @@ export const Product = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Product ShopId"
   },
   "shouldAppearInSitemap": {

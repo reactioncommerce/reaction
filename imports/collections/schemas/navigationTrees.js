@@ -16,6 +16,33 @@ const expanded = {
   optional: true
 };
 
+const isPrivate = {
+  label: "Admin access only",
+  type: Boolean,
+  defaultValue: false
+};
+
+const isSecondary = {
+  label: "Secondary nav only",
+  type: Boolean,
+  defaultValue: false
+};
+
+const isVisible = {
+  label: "Show in storefront",
+  type: Boolean,
+  defaultValue: true
+};
+
+const NavigationItem = {
+  navigationItemId,
+  expanded,
+  isVisible,
+  isPrivate,
+  isSecondary,
+  items
+};
+
 /**
  * @name NavigationTreeItem
  * @memberof Schemas
@@ -25,21 +52,54 @@ const expanded = {
  * @property {Array} items Child navigation items
  */
 export const NavigationTreeItem = new SimpleSchema({
-  navigationItemId,
-  expanded,
-  items,
+  ...NavigationItem,
   "items.$": {
     type: new SimpleSchema({
-      navigationItemId,
-      expanded,
-      items,
+      ...NavigationItem,
       "items.$": {
         type: new SimpleSchema({
-          navigationItemId,
-          items,
+          ...NavigationItem,
           "items.$": {
             type: new SimpleSchema({
-              navigationItemId
+              ...NavigationItem,
+              "items.$": {
+                type: new SimpleSchema({
+                  ...NavigationItem,
+                  "items.$": {
+                    type: new SimpleSchema({
+                      ...NavigationItem,
+                      "items.$": {
+                        type: new SimpleSchema({
+                          ...NavigationItem,
+                          "items.$": {
+                            type: new SimpleSchema({
+                              ...NavigationItem,
+                              "items.$": {
+                                type: new SimpleSchema({
+                                  ...NavigationItem,
+                                  "items.$": {
+                                    type: new SimpleSchema({
+                                      ...NavigationItem,
+                                      "items.$": {
+                                        type: new SimpleSchema({
+                                          navigationItemId,
+                                          isVisible,
+                                          isPrivate,
+                                          isSecondary
+                                        })
+                                      }
+                                    })
+                                  }
+                                })
+                              }
+                            })
+                          }
+                        })
+                      }
+                    })
+                  }
+                })
+              }
             })
           }
         })

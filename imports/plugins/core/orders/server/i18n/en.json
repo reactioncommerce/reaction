@@ -5,12 +5,20 @@
     "reaction-orders": {
       "notFound": "Order Not Found",
       "order": {
-        "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
+        "applyRefund": "Apply refund",
         "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
+        "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
         "cancelOrder": "Do you want to cancel this order?",
         "cancelOrderLabel": "Cancel Order",
+        "cancelOrderNoRestock": "Yes, but no restocking",
         "cancelOrderThenRestock": "Yes, and restock",
-        "cancelOrderNoRestock": "Yes, but no restocking"
+        "refunding": "Refunding",
+        "refundItemsAlert": "Do you want to refund {{refundItemsQuantity}} item(s) totaling {{refundItemsTotal}}?",
+        "refundItemsApproveAlert": "Do you want to approve this payment and then refund {{totalAmount}}?",
+        "refundItemsCaptureAlert": "Do you want to capture this payment and then refund {{totalAmount}}?",
+        "refundItemsSuccess": "Refund was successfully applied",
+        "refundItemsTitle": "Refund Items",
+        "refundItemsWait": "Payment is not yet captured"
       },
       "admin": {
         "shortcut": {
