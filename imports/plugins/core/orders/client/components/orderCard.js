@@ -1,35 +1,30 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
+import OrderCardAppBar from "./orderCardAppBar";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
 import OrderCardHeader from "./orderCardHeader";
 import OrderCardSummary from "./orderCardSummary";
 
 
-const styles = (theme) => ({
-  orderCard: {
-    marginTop: theme.spacing.unit * 2.5
-  }
-});
-
 class OrderCard extends Component {
   static propTypes = {
-    classes: PropTypes.object,
-    onCancelOrder: PropTypes.func,
     order: PropTypes.object
   };
 
-  renderHeader() {
-    const { onCancelOrder, order } = this.props;
+  state = {}
 
-    return (
-      <OrderCardHeader
-        onCancelOrder={onCancelOrder}
-        order={order}
-      />
-    );
+  renderAppBar() {
+    const { order } = this.props;
+
+    return <OrderCardAppBar order={order} />;
+  }
+
+  renderHeader() {
+    const { order } = this.props;
+
+    return <OrderCardHeader order={order} />;
   }
 
   renderFulfillmentGroups() {
@@ -45,22 +40,25 @@ class OrderCard extends Component {
   }
 
   render() {
-    const { classes, order } = this.props;
+    const { order } = this.props;
 
     return (
       <Fragment>
         <Helmet title={`Order Details for order reference #${order.referenceId}`} />
-        <Grid container>
-          <Grid item xs={12} md={12}>
-            <section className={classes.orderCard}>
-              {this.renderHeader()}
-            </section>
-            <section className={classes.orderCard}>
-              {this.renderFulfillmentGroups()}
-            </section>
-            <section className={classes.orderCard}>
-              {this.renderSummary()}
-            </section>
+        {this.renderAppBar()}
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            {this.renderHeader()}
+          </Grid>
+          <Grid item xs={12}>
+            {this.renderFulfillmentGroups()}
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={24}>
+              <Grid item xs={12} md={6}>
+                {this.renderSummary()}
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Fragment>
@@ -68,4 +66,4 @@ class OrderCard extends Component {
   }
 }
 
-export default withStyles(styles, { name: "OrderCard" })(OrderCard);
+export default OrderCard;

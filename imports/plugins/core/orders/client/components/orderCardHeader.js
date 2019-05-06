@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Cancel from "mdi-material-ui/Cancel";
 import Email from "mdi-material-ui/Email";
 import Account from "mdi-material-ui/Account";
 import Phone from "mdi-material-ui/Phone";
+import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -15,10 +16,18 @@ import Typography from "@material-ui/core/Typography";
 import Address from "@reactioncommerce/components/Address/v1";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { ClickToCopy } from "@reactioncommerce/reaction-ui";
+import { i18next, Reaction } from "/client/api";
+import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 import OrderCardStatusChip from "./orderCardStatusChip";
 
-
 const styles = (theme) => ({
+  orderCardTitleInfo: {
+    borderTop: `solid 1px ${theme.palette.colors.black10}`,
+    marginTop: theme.spacing.unit * 2.5,
+    paddingTop: theme.spacing.unit * 2.5
+  },
+
+
   displayFlexForIcon: {
     display: "flex"
   },
@@ -62,6 +71,40 @@ class OrderCardHeader extends Component {
     })
   };
 
+  handleCancelOrder(mutation) {
+    Alerts.alert({
+      title: i18next.t("order.cancelOrder"),
+      type: "warning",
+      showCancelButton: true
+    }, async (isConfirm) => {
+      if (isConfirm) {
+        const { order } = this.props;
+        const { fulfillmentGroups } = order;
+
+        // We need to loop over every fulfillmentGroup
+        // and then loop over every item inside group
+        fulfillmentGroups.forEach(async (fulfillmentGroup) => {
+          // for (const item of fulfillmentGroup.items.nodes) {
+          fulfillmentGroup.items.nodes.forEach(async (item) => {
+            console.log(" --- item to cancel", item);
+
+            await mutation({
+              variables: {
+                input: {
+                  cancelQuantity: item.quantity,
+                  itemId: item._id,
+                  orderId: order._id,
+                  reason: "Order cancelled inside Catalyst operator UI"
+                }
+              }
+            });
+          });
+        });
+      }
+    });
+  }
+
+
   orderLink() {
     const { order: { referenceId } } = this.props;
     return `${window.location.origin}/operator/orders/${referenceId}`;
@@ -95,82 +138,73 @@ class OrderCardHeader extends Component {
     const { shippingAddress } = fulfillmentGroups[0].data;
     const orderDate = (moment && moment(createdAt).format("MM/DD/YYYY")) || createdAt.toLocaleString();
 
+    const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {
+      hash: {
+        id: order.referenceId
+      }
+    });
+
     return (
-      <Card>
-        <CardHeader
-          title="Order Details"
-        />
-        <CardContent>
-          <Grid container alignItems="center" justify="space-evenly">
-            <Grid item xs={12} md={4}>
-              <Typography variant="body2" className={classes.displayFlexForIcon}>
-                <Account className={classes.paddingForIcon} /> {shippingAddress.fullName}
-              </Typography>
+      <Fragment>
+        <Grid item xs={12}>
+          <Grid item xs={12} md={8}>
+            <Typography variant="body2" className={classes.orderCardInfoTextBold} inline={true}>Order - {referenceId} | </Typography>
+            <Typography variant="body2" inline={true}>{orderDate}</Typography>
+            <OrderCardStatusChip displayStatus={displayStatus} status={status} />
+            <OrderCardStatusChip displayStatus={displayStatus} status={status} />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <a href={printOrder} target="_blank">
+              <Button variant="outlined">Print invoice</Button>
+            </a>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container spacing={24}>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Grid container spacing={24}>
+                    <Grid item xs={12} md={12}>
+                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
+                        Shipping address
+                      </Typography>
+                      <Address address={shippingAddress} />
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
+                        Contact information
+                      </Typography>
+                      <Typography variant="body2">{email}</Typography>
+                      <Typography variant="body2">{shippingAddress.phone}</Typography>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
             </Grid>
-            <Grid item xs={12} md={4}>
-              <Typography variant="body2" className={classes.displayFlexForIcon}>
-                <Email className={classes.paddingForIcon} /> {email}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Typography variant="body2" className={classes.displayFlexForIcon}>
-                <Phone className={classes.paddingForIcon} /> {shippingAddress.phone}
-              </Typography>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Grid container spacing={24}>
+                    <Grid item xs={12} md={12}>
+                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
+                      Shipping method{fulfillmentGroups.length !== 1 ? "s" : null}
+                      </Typography>
+                      {this.renderOrderShipments()}
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
+                      Payment method{payments.length !== 1 ? "s" : null}
+                      </Typography>
+                      {this.renderOrderPayments()}
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
             </Grid>
           </Grid>
-          <Grid container alignItems="center" className={classes.orderCardDivider}>
-            <Grid item xs={12} md={4}>
-              <Typography variant="body2" className={classes.orderCardInfoTextBold}>Order Status:</Typography>
-              <OrderCardStatusChip displayStatus={displayStatus} status={status} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Typography variant="body2" className={classes.orderCardInfoTextBold}>Date:</Typography>
-              <Typography variant="body2">{orderDate}</Typography>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Typography variant="body2" className={classes.orderCardInfoTextBold}>Order Reference #:</Typography>
-              <ClickToCopy
-                copyToClipboard={this.orderLink()}
-                displayText={referenceId}
-                i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
-                tooltip="Copy Order Link"
-              />
-            </Grid>
-          </Grid>
-          <section className={classes.orderCardDivider}>
-            <Grid container>
-              <Grid item xs={12} md={6}>
-                <Grid item className={classes.orderCardSection} xs={12} md={12}>
-                  <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                    Payment Method{payments.length !== 1 ? "s" : null}:
-                  </Typography>
-                  {this.renderOrderPayments()}
-                </Grid>
-                <Grid item className={classes.orderCardSection} xs={12} md={12}>
-                  <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                    Shipping Method{fulfillmentGroups.length !== 1 ? "s" : null}:
-                  </Typography>
-                  {this.renderOrderShipments()}
-                </Grid>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Grid item xs={12} md={12}>
-                  <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                    Shipping Address:
-                  </Typography>
-                  <Address address={shippingAddress} />
-                </Grid>
-              </Grid>
-            </Grid>
-          </section>
-        </CardContent>
-        <CardActions>
-          <Button variant="contained" color="secondary" onClick={this.props.onCancelOrder}>
-            <Cancel className={classes.leftIcon} />
-            Cancel Order
-          </Button>
-        </CardActions>
-      </Card>
+        </Grid>
+      </Fragment>
     );
   }
 }
