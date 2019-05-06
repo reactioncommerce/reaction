@@ -32,6 +32,7 @@
             <span class="help-block">{{afFieldMessage name="region"}}</span>
           {{/if}}
           {{> afQuickField name='postal' class='form-control' placeholder="Postal Code"}}
+          {{> afQuickField name='taxLocale' options=localeOptions class='form-control'}}
           {{> afQuickField name='taxCode' class='form-control' placeholder="Tax only products with this tax code (optional)"}}
           {{> afQuickField name='rate' class='form-control' placeholder="Rate as a percentage"}}
         </div>
@@ -63,6 +64,7 @@
           {{/if}}
 
           {{> afQuickField name='postal' class='form-control' placeholder="Postal Code"}}
+          {{> afQuickField name='taxLocale' options=localeOptions class='form-control'}}
           {{> afQuickField name='rate' class='form-control' placeholder="Rate as a percentage"}}
         </div>
         {{> taxSettingsSubmitButton instance=instance}}
