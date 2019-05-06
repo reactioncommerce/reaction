@@ -123,6 +123,15 @@ export const rawMuiTheme = {
         padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`,
         textTransform: "initial"
       },
+      text: {
+        padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`
+      },
+      outlined: {
+        // Removed 1px of padding from the top/bottom to account for the border
+        // which adds 1px to the top/bottom. This makes the button height even
+        // with the contained variant.
+        padding: `${defaultSpacingUnit - 1}px ${defaultSpacingUnit * 2}px`
+      },
       outlinedPrimary: {
         border: `1px solid ${colorPrimaryMain}`
       },

@@ -12,6 +12,7 @@ import taxes from "/imports/plugins/core/taxes/server/no-meteor/queries";
 import tags from "/imports/plugins/core/tags/server/no-meteor/queries";
 // INCLUDED
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/queries";
+import simplePricing from "/imports/plugins/included/simple-pricing/server/no-meteor/queries";
 
 export default merge(
   {},
@@ -25,5 +26,6 @@ export default merge(
   orders,
   taxes,
   tags,
-  shippingRates
+  shippingRates,
+  simplePricing
 );

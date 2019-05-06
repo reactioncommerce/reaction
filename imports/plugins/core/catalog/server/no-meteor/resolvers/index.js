@@ -6,7 +6,6 @@ import CatalogProductVariant from "./CatalogProductVariant";
 import ImageInfo from "./ImageInfo";
 import Mutation from "./Mutation";
 import Query from "./Query";
-import ProductPricingInfo from "./ProductPricingInfo";
 
 /**
  * Catalog-related GraphQL resolvers
@@ -29,6 +28,5 @@ export default {
   ImageInfo,
   Mutation,
   Query,
-  ProductPricingInfo,
   ...getConnectionTypeResolvers("CatalogItem")
 };
