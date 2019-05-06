@@ -205,6 +205,10 @@ export const OrderItem = new SimpleSchema({
   "history.$": {
     type: History
   },
+  "language": {
+    type: String,
+    optional: true
+  },
   "optionTitle": {
     type: String,
     optional: true
