@@ -43,6 +43,7 @@
     "@reactioncommerce/nodemailer": "5.0.5",
     "@reactioncommerce/random": "1.0.1",
     "@reactioncommerce/schemas": "1.1.0",
+    "@storybook/addon-knobs": "^5.0.11",
     "accounting-js": "^1.1.1",
     "apollo-cache-inmemory": "1.2.5",
     "apollo-client": "2.3.5",
@@ -165,8 +166,8 @@
     "@babel/core": "7.0.0",
     "@babel/node": "7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0",
-    "@babel/preset-env": "7.0.0",
-    "@babel/preset-react": "7.0.0",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
     "@reactioncommerce/eslint-config": "1.9.0",
     "apollo-server-testing": "2.3.1",
     "babel-core": "7.0.0-bridge.0",
@@ -198,7 +199,12 @@
     "mongodb-memory-server": "2.7.3",
     "nodemon": "1.18.9",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.126.0"
+    "snyk": "^1.126.0",
+    "@storybook/react": "^5.0.11",
+    "@storybook/addon-actions": "^5.0.11",
+    "@storybook/addon-links": "^5.0.11",
+    "@storybook/addons": "^5.0.11",
+    "babel-loader": "^8.0.5"
   },
   "postcss": {
     "plugins": {
@@ -227,7 +233,9 @@
     "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --maxWorkers=4 --no-cache /tests/",
     "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --maxWorkers=4 --no-cache --watch /tests/",
     "test:file": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch",
-    "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
+    "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "babel": {
     "plugins": [
