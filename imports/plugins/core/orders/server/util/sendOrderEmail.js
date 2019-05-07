@@ -269,8 +269,12 @@ export default function sendOrderEmail(order, action) {
     subject = `orders/${order.workflow.status}/subject`;
   }
 
-  const account = Accounts.findOne({ "emails.address": order.email }, { _id: 0, profile: 1 });
-  const language = account && account.profile && account.profile.language;
+  const account = Accounts.findOne({ _id: order.accountId }, { _id: 0, profile: 1 });
+
+  // check if account has language in profile
+  // if it doesn't use order language
+  // order language is not required and default will be used
+  const language = (account && account.profile && account.profile.language) || order.email;
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl, language));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl, language));
