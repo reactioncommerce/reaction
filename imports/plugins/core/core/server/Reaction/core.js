@@ -9,15 +9,6 @@ import * as Collections from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Jobs } from "/imports/utils/jobs";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import {
-  customPublishedProductFields,
-  customPublishedProductVariantFields,
-  functionsByType,
-  mutations,
-  queries,
-  resolvers,
-  schemas
-} from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
@@ -57,18 +48,6 @@ export default {
     createGroups();
     this.setAppVersion();
 
-    // Call `functionsByType.registerPluginHandler` functions for every plugin that
-    // has supplied one, passing in all other plugins. Allows one plugin for check
-    // for the presence of another plugin and read its config.
-    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
-    const packageInfoArray = Object.values(this.Packages);
-    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
-      if (typeof registerPluginHandlerFunc !== "function") {
-        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
-      }
-      packageInfoArray.forEach(registerPluginHandlerFunc);
-    });
-
     // DEPRECATED. Avoid consuming this hook in new code
     appEvents.emit("afterCoreInit");
 
@@ -79,49 +58,50 @@ export default {
 
   Packages: {},
 
+  /**
+   * @summary This is used only for the old `registerPackage` in this file. After that is removed,
+   *   this likely can be removed, too.
+   * @param {ReactionNodeApp} app App instance
+   * @return {undefined}
+   */
+  async onAppInstanceCreated(app) {
+    this.reactionNodeApp = app;
+    if (this.whenAppInstanceReadyCallbacks) {
+      for (const callback of this.whenAppInstanceReadyCallbacks) {
+        await callback(this.reactionNodeApp); // eslint-disable-line no-await-in-loop
+      }
+      this.whenAppInstanceReadyCallbacks = [];
+    }
+  },
+
+  /**
+   * @summary This is used only for the old `registerPackage` in this file. After that is removed,
+   *   this likely can be removed, too.
+   * @param {Function} callback Function to call after `this.reactionNodeApp` is set, which might be immediately
+   * @return {undefined}
+   */
+  whenAppInstanceReady(callback) {
+    if (this.reactionNodeApp) {
+      callback(this.reactionNodeApp);
+    } else {
+      if (!this.whenAppInstanceReadyCallbacks) this.whenAppInstanceReadyCallbacks = [];
+      this.whenAppInstanceReadyCallbacks.push(callback);
+    }
+  },
+
+  /**
+   * @deprecated Use `app.registerPlugin` pattern instead. See the simple-pricing plugin.
+   * @param {Object} packageInfo Plugin options
+   * @return {Object} Plugin options
+   */
   registerPackage(packageInfo) {
-    // Mutate globals with package info
-    if (packageInfo.graphQL) {
-      if (packageInfo.graphQL.resolvers) {
-        merge(resolvers, packageInfo.graphQL.resolvers);
-      }
-      if (packageInfo.graphQL.schemas) {
-        schemas.push(...packageInfo.graphQL.schemas);
-      }
-    }
-
-    if (packageInfo.mutations) {
-      merge(mutations, packageInfo.mutations);
-    }
-
-    if (packageInfo.queries) {
-      merge(queries, packageInfo.queries);
-    }
-
-    if (packageInfo.functionsByType) {
-      Object.keys(packageInfo.functionsByType).forEach((type) => {
-        if (!Array.isArray(functionsByType[type])) {
-          functionsByType[type] = [];
-        }
-        functionsByType[type].push(...packageInfo.functionsByType[type]);
-      });
-    }
-
-    if (packageInfo.catalog) {
-      const { publishedProductFields, publishedProductVariantFields } = packageInfo.catalog;
-      if (Array.isArray(publishedProductFields)) {
-        customPublishedProductFields.push(...publishedProductFields);
-      }
-      if (Array.isArray(publishedProductVariantFields)) {
-        customPublishedProductVariantFields.push(...publishedProductVariantFields);
-      }
-    }
+    this.whenAppInstanceReady((app) => app.registerPlugin(packageInfo));
 
     // Save the package info
     this.Packages[packageInfo.name] = packageInfo;
-    const registeredPackage = this.Packages[packageInfo.name];
-    return registeredPackage;
+    return this.Packages[packageInfo.name];
   },
+
   defaultCustomerRoles: ["guest", "account/profile", "product", "tag", "index", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/completed"],
   createGroups,
@@ -244,7 +224,7 @@ export default {
    * @return {array} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = getUserId()) {
-    // Owner permission for a shop superceeds grantable permissions, so we always check for owner permissions as well
+    // Owner permission for a shop supercedes grantable permissions, so we always check for owner permissions as well
     roles.push("owner");
 
     // Reducer that returns a unique list of shopIds that results from calling getGroupsForUser for each role
@@ -748,10 +728,10 @@ export default {
    * @method
    * @memberof Core
    * @summary save user preferences in the Accounts collection
-   * @param {String} packageName
-   * @param {String} preference
-   * @param {String} value
-   * @param {String} userId
+   * @param {String} packageName Package name
+   * @param {String} preference Preference key
+   * @param {String} value Preference value
+   * @param {String} userId User ID
    * @return {Number} setPreferenceResult
    */
   setUserPreferences(packageName, preference, value, userId) {
@@ -775,9 +755,7 @@ export default {
    */
   insertPackagesForShop(shopId) {
     const layouts = [];
-    if (!shopId) {
-      return [];
-    }
+    if (!shopId) return;
 
     // Check to see what packages should be enabled
     const shop = Shops.findOne({ _id: shopId });
@@ -894,7 +872,7 @@ export default {
     _.each(this.Packages, (config, pkgName) =>
       Shops.find().forEach((shop) => {
         const shopId = shop._id;
-        if (!shopId) return [];
+        if (!shopId) return;
 
         // existing registry will be upserted with changes, perhaps we should add:
         this.assignOwnerRoles(shopId, pkgName, config.registry);
@@ -1005,14 +983,14 @@ export default {
     const col = Collections[collection];
     if (!col) {
       Logger.warn(errMsg);
-      // Return false so we don't pass a check that uses a non-existant schema
+      // Return false so we don't pass a check that uses a non-existent schema
       return false;
     }
 
     const schema = col.simpleSchema(selector);
     if (!schema) {
       Logger.warn(errMsg);
-      // Return false so we don't pass a check that uses a non-existant schema
+      // Return false so we don't pass a check that uses a non-existent schema
       return false;
     }
 

@@ -149,7 +149,7 @@ class UpdatePassword extends Component {
     return (
       <div>
         {this.props.isOpen === true &&
-          <div className="idp-form col-sm-4 col-sm-offset-4">
+          <div className="idp-form col-xs-12">
             {showSpinner ? this.renderSpinnerOnLoad() :
               <form onSubmit={this.handleSubmit}>
                 <div className="loginForm-title">

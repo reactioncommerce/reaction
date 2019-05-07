@@ -11,6 +11,17 @@ import DragIcon from "mdi-material-ui/Drag";
 import FileOutlineIcon from "mdi-material-ui/FileOutline";
 
 const styles = (theme) => ({
+  badge: {
+    backgroundColor: theme.palette.colors.black05,
+    color: theme.palette.colors.black65,
+    padding: "0 8px",
+    height: 20,
+    borderRadius: 10,
+    border: `1px solid ${theme.palette.colors.black10}`,
+    fontSize: "0.73rem",
+    display: "inline-block",
+    marginLeft: theme.spacing.unit
+  },
   cardContent: {
     display: "flex",
     alignItems: "center",
@@ -263,6 +274,9 @@ class SortableNodeContentRenderer extends Component {
                 <div className={classes.rowContent}>
                   <Typography className={classes.title} variant="subtitle1">
                     {typeof nodeTitle === "function" ? nodeTitle({ node, path, treeIndex }) : nodeTitle}
+                    {node.isVisible === false && <Typography className={classes.badge} key="isVisible" variant="caption">{"Hide from storefront"}</Typography>}
+                    {node.isPrivate && <Typography className={classes.badge} variant="caption">{"Admin only"}</Typography>}
+                    {node.isSecondary && <Typography className={classes.badge} variant="caption">{"Secondary nav only"}</Typography>}
                   </Typography>
                   <Typography className={classes.subtitle} variant="caption">
                     <FileOutlineIcon className={classes.subtitleIcon} fontSize="inherit" />

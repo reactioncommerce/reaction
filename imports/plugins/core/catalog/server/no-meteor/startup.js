@@ -32,7 +32,7 @@ async function hashRelatedProduct(media, collections) {
  */
 export default async function startup(context) {
   const { appEvents, collections } = context;
-  const { Catalog, Shops } = collections;
+  const { Catalog } = collections;
 
   // Create indexes
 
@@ -40,17 +40,6 @@ export default async function startup(context) {
   // because all sorts include _id: 1 as secondary sort to be fully stable.
   collectionIndex(Catalog, { createdAt: 1, _id: 1 });
   collectionIndex(Catalog, { updatedAt: 1, _id: 1 });
-
-  // Add an index to support built-in minPrice sorting for the primary shop's
-  // default currency code only.
-  const shop = await Shops.findOne({ shopType: "primary" });
-  if (shop.currency) {
-    collectionIndex(Catalog, {
-      [`product.pricing.${shop.currency}.minPrice`]: 1,
-      _id: 1
-    });
-  }
-
   collectionIndex(Catalog, { shopId: 1 });
   collectionIndex(Catalog, { "product._id": 1 });
   collectionIndex(Catalog, { "product.productId": 1 });

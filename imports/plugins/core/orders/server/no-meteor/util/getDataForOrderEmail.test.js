@@ -54,6 +54,12 @@ test("returns expected data structure", async () => {
   mockContext.collections.Shops.findOne.mockReturnValueOnce(mockShop);
   mockContext.collections.Catalog.toArray.mockReturnValueOnce([mockCatalogItem]);
 
+  mockContext.queries.findVariantInCatalogProduct = jest.fn().mockName("findVariantInCatalogProduct");
+  mockContext.queries.findVariantInCatalogProduct.mockReturnValueOnce({
+    catalogProduct: mockCatalogItem.product,
+    variant: mockCatalogItem.product.variants[0]
+  });
+
   const data = await getDataForOrderEmail(mockContext, { order: mockOrder });
 
   expect(data).toEqual({
