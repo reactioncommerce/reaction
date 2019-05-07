@@ -65,7 +65,7 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
 }
 
 /**
- * @summary Gets an object of with languages array  
+ * @summary Gets an object of with languages array
  * @param {Object} collections Map of MongoDB collections
  * @param {String} shopId The ID of the shop that owns the order
  * @returns {Object} Object with `languages` property
@@ -75,7 +75,7 @@ function getShopLanguages(collections, shopId) {
 }
 
 /**
- * @summary Gets an object of with languages array  
+ * @summary Gets an object of with languages array
  * @param {String} language i18n language code
  * @param {Object[]} shopLanguages Array of languages
  * @returns {Object} Object with `languages` property
@@ -188,16 +188,16 @@ export default async function placeOrder(context, input) {
     customFields: customFieldsFromClient,
     email,
     fulfillmentGroups,
-    language,
     shopId
   } = orderInput;
+  let { language } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders } = collections;
 
   const shop = getShopLanguages(collections, shopId);
 
   // set to undefined value so order language will not be set
-  if(language && !isShopLanguage(language, shop.languages)) {
+  if (!shop || (language && !isShopLanguage(language, shop.languages))) {
     language = undefined;
   }
 
