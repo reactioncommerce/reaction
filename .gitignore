@@ -22,6 +22,7 @@ npm-debug.log
 pids
 results
 allure-results
+docker-compose.yml
 
 client/plugins.js
 client/plugins.css
