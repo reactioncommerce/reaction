@@ -366,6 +366,21 @@ export default {
   },
 
   /**
+   * @name getPrimaryShopLanguages
+   * @method
+   * @memberof Core
+   * @summary Get primary shop array of languages
+   * @return {Object[]} array of languages
+   */
+  getPrimaryShopLanguages() {
+    const shop = Shops.findOne({
+      _id: this.getPrimaryShopId()
+    }, { languages: 1 });
+
+    return (shop && shop.languages) || [];
+  },
+
+  /**
    * @summary **DEPRECATED** This method has been deprecated in favor of using getShopId
    * and getPrimaryShopId. To be removed.
    * @deprecated
