@@ -271,10 +271,8 @@ export default function sendOrderEmail(order, action) {
 
   const account = Accounts.findOne({ _id: order.accountId }, { _id: 0, profile: 1 });
 
-  // check if account has language in profile
-  // if it doesn't use order language
-  // order language is not required and default will be used
-  const language = (account && account.profile && account.profile.language) || order.email;
+  // first try using account language, then try using order language
+  const language = (account && account.profile && account.profile.language) || order.language;
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl, language));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl, language));
