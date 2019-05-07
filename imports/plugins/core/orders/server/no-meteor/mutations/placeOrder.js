@@ -1,7 +1,9 @@
 import SimpleSchema from "simpl-schema";
+import R from "ramda";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
@@ -62,26 +64,6 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
     exchangeRate,
     userCurrency
   };
-}
-
-/**
- * @summary Gets an object of with languages array
- * @param {Object} collections Map of MongoDB collections
- * @param {String} shopId The ID of the shop that owns the order
- * @returns {Object} Object with `languages` property
- */
-function getShopLanguages(collections, shopId) {
-  return collections.Shops.findOne({ _id: shopId }, { languages: 1 });
-}
-
-/**
- * @summary Gets an object of with languages array
- * @param {String} language i18n language code
- * @param {Object[]} shopLanguages Array of languages
- * @returns {Object} Object with `languages` property
- */
-function isShopLanguage(language, shopLanguages) {
-  return shopLanguages.find((shopLanguage) => shopLanguage.i18n === language && shopLanguage.enabled);
 }
 
 /**
@@ -194,10 +176,12 @@ export default async function placeOrder(context, input) {
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders } = collections;
 
-  const shop = getShopLanguages(collections, shopId);
+  const primaryShopLanguages = Reaction.getPrimaryShopLanguages();
 
+  
+  const primaryShopLanguage = R.find(R.whereEq({ enabled: true, i18n: language}))(primaryShopLanguages);
   // set to undefined value so order language will not be set
-  if (!shop || (language && !isShopLanguage(language, shop.languages))) {
+  if (!primaryShopLanguage) {
     language = undefined;
   }
 
