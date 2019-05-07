@@ -458,7 +458,7 @@ export const Order = new SimpleSchema({
   "history.$": History,
   "language": {
     type: String,
-    defaultValue: "test"
+    optional: true
   },
   "notes": {
     type: Array,
