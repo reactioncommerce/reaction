@@ -29,14 +29,10 @@ export default function setProfileLanguage(languageCode, accountId) {
   }
 
   // Make sure this language code is in the related shop languages list
-  const shop = Shops.findOne({ _id: account.shopId }, { fields: { languages: 1 } });
-
-  if (!shop || !shop.languages) {
-    throw new ReactionError("invalid-argument", `The shop for this account does not define any language with code "${languageCode}"`);
-  }
+  const primaryShopLanguages = Reaction.getPrimaryShopLanguages();
 
   // try to find language in shop
-  const language = shop.languages.find((shopLanguage) => shopLanguage.i18n === languageCode && shopLanguage.enabled);
+  const language = primaryShopLanguages.find((shopLanguage) => shopLanguage.i18n === languageCode && shopLanguage.enabled);
 
   if (!language) {
     throw new ReactionError("invalid-argument", `The shop for this account does not define any language with code "${languageCode}"`);
