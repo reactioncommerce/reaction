@@ -65,6 +65,26 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
 }
 
 /**
+ * @summary Gets an object of with languages array  
+ * @param {Object} collections Map of MongoDB collections
+ * @param {String} shopId The ID of the shop that owns the order
+ * @returns {Object} Object with `languages` property
+ */
+function getShopLanguages(collections, shopId) {
+  return collections.Shops.findOne({ _id: shopId }, { languages: 1 });
+}
+
+/**
+ * @summary Gets an object of with languages array  
+ * @param {String} language i18n language code
+ * @param {Object[]} shopLanguages Array of languages
+ * @returns {Object} Object with `languages` property
+ */
+function isShopLanguage(language, shopLanguages) {
+  return shopLanguages.find((shopLanguage) => shopLanguage.i18n === language && shopLanguage.enabled);
+}
+
+/**
  * @summary Create all authorized payments for a potential order
  * @param {String} [accountId] The ID of the account placing the order
  * @param {Object} [billingAddress] Billing address for the order as a whole
@@ -173,6 +193,13 @@ export default async function placeOrder(context, input) {
   } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders } = collections;
+
+  const shop = getShopLanguages(collections, shopId);
+
+  // set to undefined value so order language will not be set
+  if(language && !isShopLanguage(language, shop.languages)) {
+    language = undefined;
+  }
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
