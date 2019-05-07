@@ -29,6 +29,7 @@ export default function getTemplate(template, language) {
   if (language !== undefined) {
     // check database for a matching template using language param
     const tmpl = Templates.findOne({
+      enabled: true,
       name: template,
       language
     });
