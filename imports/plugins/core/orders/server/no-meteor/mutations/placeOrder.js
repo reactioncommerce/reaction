@@ -168,6 +168,7 @@ export default async function placeOrder(context, input) {
     customFields: customFieldsFromClient,
     email,
     fulfillmentGroups,
+    language,
     shopId
   } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
@@ -248,6 +249,7 @@ export default async function placeOrder(context, input) {
     currencyCode,
     discounts,
     email,
+    language,
     payments,
     referenceId: Random.id(),
     shipping: finalFulfillmentGroups,
