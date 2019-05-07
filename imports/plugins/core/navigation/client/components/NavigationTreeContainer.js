@@ -41,7 +41,16 @@ class NavigationTreeContainer extends Component {
 
     return {
       buttons: [
-        <IconButton onClick={() => { onClickUpdateNavigationItem(node.navigationItem); }}>
+        <IconButton
+          onClick={() => {
+            onClickUpdateNavigationItem(node.navigationItem, {
+              getNodeKey: this.getNodeKey,
+              node,
+              path,
+              treeData: sortableNavigationTree
+            });
+          }}
+        >
           <PencilIcon />
         </IconButton>,
         <ConfirmDialog

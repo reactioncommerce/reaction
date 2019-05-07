@@ -195,24 +195,27 @@ export function getBlocks(regionName) {
  * @method
  * @summary Replace a Reaction component with a new component and optionally add one or more higher order components.
  * This function keeps track of the previous HOCs and wraps the new HOCs around previous ones
- * @param {String} name The name of the component to register.
- * @param {React.Component} newComponent Interchangeable/extendable component.
- * @param {Function|Array} hocs The HOCs to compose with the raw component.
+ * @param {Object} options Object containing block information
+ * @param {String} options.region The region of the block that will be replaced
+ * @param {String} options.block The name of the block that will be replaced
+ * @param {React.Component} options.component Interchangeable/extendable component.
+ * @param {Function|Array} options.hocs The HOCs to compose with the raw component.
  * @returns {Function|React.Component} A component callable with Components[name]
  * @memberof Components/Helpers
  */
-export function replaceBlock({ regionName, blockName, newBlock, hocs = [] }) {
-  const previousBlock = BlocksTable[regionName][blockName];
+export function replaceBlock({ region, block, component, hocs = [] }) {
+  const previousBlock = BlocksTable[region][block];
 
   if (!previousBlock) {
-    throw new Error(`Block '${name}' of region ${regionName} not found. Use registerComponent to create it.`);
+    throw new Error(`Block '${block}' of region ${region} not found. Use registerComponent to create it.`);
   }
 
   const newHocs = Array.isArray(hocs) ? hocs : [hocs];
 
   return registerBlock({
-    name,
-    component: newBlock,
+    name: block,
+    region,
+    component,
     hocs: [...newHocs, ...previousBlock.hocs]
   });
 }

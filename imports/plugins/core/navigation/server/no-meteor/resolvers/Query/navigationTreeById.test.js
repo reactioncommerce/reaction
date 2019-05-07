@@ -42,13 +42,17 @@ test("calls queries.navigationTreeById and returns a navigation tree", async () 
     .mockName("queries.navigationTreeById")
     .mockReturnValueOnce(Promise.resolve(mockNavigationTree));
 
-  const result = await navigationTreeByIdResolver({}, { id: opaqueNavigationTreeId, language: "en" }, {
+  const args = { id: opaqueNavigationTreeId, language: "en" };
+  const result = await navigationTreeByIdResolver({}, args, {
     queries: { navigationTreeById }
   });
 
   expect(result).toEqual(mockNavigationTree);
 
   expect(navigationTreeById).toHaveBeenCalled();
-  expect(navigationTreeById.mock.calls[0][1]).toEqual("en");
-  expect(navigationTreeById.mock.calls[0][2]).toEqual(decodedNavigationTreeId);
+  expect(navigationTreeById.mock.calls[0][1]).toEqual({
+    language: "en",
+    navigationTreeId: decodedNavigationTreeId,
+    shouldIncludeSecondary: undefined
+  });
 });

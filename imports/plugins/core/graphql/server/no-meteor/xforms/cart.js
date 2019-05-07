@@ -1,6 +1,5 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import ReactionError from "@reactioncommerce/reaction-error";
-import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
 import { xformCatalogProductMedia } from "./catalogProduct";
 import { xformRateToRateObject } from "./core";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
@@ -52,7 +51,7 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
 
   const catalogProduct = catalogItem.product;
 
-  const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
+  const { variant } = context.queries.findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }

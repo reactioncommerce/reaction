@@ -61,7 +61,6 @@ export const mockInternalCatalogOptions = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 5.99,
     pricing: {
       USD: {
         compareAtPrice: null,
@@ -107,7 +106,6 @@ export const mockInternalCatalogOptions = [
     minOrderQuantity: 0,
     optionTitle: "Another Awesome Soft Bike",
     originCountry: "US",
-    price: 2.99,
     pricing: {
       USD: {
         compareAtPrice: null,
@@ -268,7 +266,6 @@ export const mockInternalCatalogVariants = [
     options: mockInternalCatalogOptions,
     optionTitle: "Untitled Option",
     originCountry: "US",
-    price: 0,
     pricing: {
       USD: {
         compareAtPrice: 10,
@@ -384,11 +381,6 @@ export const mockInternalCatalogProducts = [
       height: 6.66,
       weight: 7.77
     },
-    price: {
-      max: 5.99,
-      min: 2.99,
-      range: "2.99 - 5.99"
-    },
     pricing: {
       USD: {
         compareAtPrice: 10,
@@ -479,11 +471,6 @@ export const mockInternalCatalogProducts = [
       width: 5.55,
       height: 6.66,
       weight: 7.77
-    },
-    price: {
-      max: 25.99,
-      min: 16.99,
-      range: "16.99 - 25.99"
     },
     pricing: {
       USD: {
