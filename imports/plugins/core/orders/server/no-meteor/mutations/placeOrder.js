@@ -175,7 +175,7 @@ export default async function placeOrder(context, input) {
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders, Shops } = collections;
 
-  const primaryShop = await Shops.findOne({ shopType: "primary"}, { languages: 1 });
+  const primaryShop = await Shops.findOne({ shopType: "primary" }, { languages: 1 });
   const primaryShopLanguages = (primaryShop && primaryShop.languages) || [];
   const primaryShopLanguage = R.find(R.whereEq({ enabled: true, i18n: language }))(primaryShopLanguages);
 
