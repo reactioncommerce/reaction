@@ -3,7 +3,6 @@ import R from "ramda";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
@@ -174,11 +173,12 @@ export default async function placeOrder(context, input) {
   } = orderInput;
   let { language } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
-  const { Orders } = collections;
+  const { Orders, Shops } = collections;
 
-  const primaryShopLanguages = Reaction.getPrimaryShopLanguages();
-
+  const primaryShop = await Shops.findOne({ shopType: "primary"}, { languages: 1 });
+  const primaryShopLanguages = (primaryShop && primaryShop.languages) || [];
   const primaryShopLanguage = R.find(R.whereEq({ enabled: true, i18n: language }))(primaryShopLanguages);
+
   // set to undefined value so order language will not be set
   if (!primaryShopLanguage) {
     language = undefined;
