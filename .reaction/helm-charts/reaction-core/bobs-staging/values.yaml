@@ -20,6 +20,8 @@ app:
     envVars:
     -   key: CART_REFERENCE_ID_PREFIX
         value: "44"
+    -   key: CATALOG_SYNC_IMPORT_TOPIC
+        value: "product-import-data-test"
     -   key: DEFAULT_SHIPPING_METHOD_ID
         value: SPbMh5gdz24Wr4J94
     -   key: DEFAULT_SHIPPING_METHOD_RATE
@@ -48,6 +50,8 @@ app:
         value: 1
     -   key: KAFKA_PARTITIONS_LOYALTY
         value: 3
+    -   key: KAFKA_PRODUCT_STREAM_TOPIC
+        value: "product-stream-topic"
     -   key: KAFKA_TOPIC_CATALOG_IMPORT_ERRORS
         value: etl.product-import.errors.json-gen1
     -   key: KAFKA_TOPIC_CATALOG_SYNC_PRODUCTS
