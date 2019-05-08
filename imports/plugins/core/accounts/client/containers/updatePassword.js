@@ -76,7 +76,7 @@ const wrapComponent = (Comp) => (
           // Now that Meteor.users is verified, we should do the same with the Accounts collection
           Meteor.call("accounts/verifyAccount");
           const { storefrontUrls } = Reaction.getCurrentShop();
-          if (Reaction.hasAdminAccess()) {
+          if (Reaction.hasDashboardAccessForAnyShop()) {
             Router.go("/operator");
           } else {
             window.location.href = `${storefrontUrls.storefrontHomeUrl}/signin`;
