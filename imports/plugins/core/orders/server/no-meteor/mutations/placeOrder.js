@@ -178,8 +178,7 @@ export default async function placeOrder(context, input) {
 
   const primaryShopLanguages = Reaction.getPrimaryShopLanguages();
 
-  
-  const primaryShopLanguage = R.find(R.whereEq({ enabled: true, i18n: language}))(primaryShopLanguages);
+  const primaryShopLanguage = R.find(R.whereEq({ enabled: true, i18n: language }))(primaryShopLanguages);
   // set to undefined value so order language will not be set
   if (!primaryShopLanguage) {
     language = undefined;

@@ -1,6 +1,6 @@
 import { check, Match } from "meteor/check";
 import R from "ramda";
-import { Accounts, Shops } from "/lib/collections";
+import { Accounts } from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -31,7 +31,7 @@ export default function setProfileLanguage(languageCode, accountId) {
 
   const primaryShopLanguages = Reaction.getPrimaryShopLanguages();
 
-  const primaryShopLanguage = R.find((shopLanguage) => shopLanguage.i18n === languageCode && shopLanguage.enabled)(primaryShopLanguages)
+  const primaryShopLanguage = R.find((shopLanguage) => shopLanguage.i18n === languageCode && shopLanguage.enabled)(primaryShopLanguages);
 
   if (!primaryShopLanguage) {
     throw new ReactionError("invalid-argument", `Primary shop does not define any enabled language with code "${languageCode}"`);

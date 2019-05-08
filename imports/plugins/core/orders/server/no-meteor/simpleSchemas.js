@@ -230,7 +230,7 @@ export const orderInputSchema = new SimpleSchema({
     minCount: 1
   },
   "fulfillmentGroups.$": orderFulfillmentGroupInputSchema,
-  language: {
+  "language": {
     type: String,
     optional: true
   },
