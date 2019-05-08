@@ -17,8 +17,12 @@ import Switch from "@material-ui/core/Switch";
  */
 function VariantInventoryForm(props) {
   const {
+    components: {
+      Button
+    },
     inventoryInfo,
     isLoadingInventoryInfo,
+    recalculateReservedSimpleInventory,
     updateSimpleInventory,
     variables,
     variant
@@ -95,6 +99,22 @@ function VariantInventoryForm(props) {
               type="number"
               value={isEnabled ? inventoryInStock : 0}
             />
+            <Button
+              isDisabled={!isEnabled}
+              isShortHeight
+              isTextOnly
+              onClick={() => {
+                recalculateReservedSimpleInventory({
+                  variables: {
+                    input: {
+                      productConfiguration: variables.productConfiguration,
+                      shopId: variables.shopId
+                    }
+                  }
+                });
+              }}
+              title="Recalculate"
+            >{i18next.t("productVariant.recalculateReservedInventory")}</Button>
           </Grid>
           <Grid item sm={6}>
             <Components.TextField
@@ -164,6 +184,7 @@ VariantInventoryForm.propTypes = {
     lowInventoryWarningThreshold: PropTypes.number
   }),
   isLoadingInventoryInfo: PropTypes.bool,
+  recalculateReservedSimpleInventory: PropTypes.func,
   updateSimpleInventory: PropTypes.func,
   variables: PropTypes.object,
   variant: PropTypes.object

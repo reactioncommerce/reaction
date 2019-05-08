@@ -31,6 +31,24 @@ type SimpleInventoryInfo {
   productConfiguration: ProductConfiguration!
 }
 
+"Input for the `recalculateReservedSimpleInventory` mutation"
+input RecalculateReservedSimpleInventoryInput {
+  "The product and chosen options this info applies to"
+  productConfiguration: ProductConfigurationInput!
+
+  "Shop that owns the product"
+  shopId: ID!
+}
+
+"Response payload for the `updateSimpleInventory` mutation"
+type RecalculateReservedSimpleInventoryPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated inventory info"
+  inventoryInfo: SimpleInventoryInfo!
+}
+
 "Input for the `updateSimpleInventory` mutation. In addition to `shopId`, at least one field to update is required."
 input UpdateSimpleInventoryInput {
   """
@@ -84,6 +102,9 @@ extend type Query {
 }
 
 extend type Mutation {
+  "Force recalculation of the system-managed `inventoryReserved` field based on current order statuses"
+  recalculateReservedSimpleInventory(input: RecalculateReservedSimpleInventoryInput!): RecalculateReservedSimpleInventoryPayload!
+
   "Update the SimpleInventory info for a product configuration"
   updateSimpleInventory(input: UpdateSimpleInventoryInput!): UpdateSimpleInventoryPayload!
 }

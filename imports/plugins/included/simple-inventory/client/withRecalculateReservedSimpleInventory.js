@@ -4,9 +4,9 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import getInventoryInfo from "./getInventoryInfo";
 
-const updateSimpleInventoryMutation = gql`
-  mutation updateSimpleInventoryMutation($input: UpdateSimpleInventoryInput!) {
-    updateSimpleInventory(input: $input) {
+const recalculateReservedSimpleInventoryMutation = gql`
+  mutation recalculateReservedSimpleInventoryMutation($input: RecalculateReservedSimpleInventoryInput!) {
+    recalculateReservedSimpleInventory(input: $input) {
       inventoryInfo {
         canBackorder
         inventoryInStock
@@ -29,23 +29,23 @@ export default (Component) => (
 
       return (
         <Mutation
-          mutation={updateSimpleInventoryMutation}
-          update={(cache, { data: { updateSimpleInventory } }) => {
-            if (updateSimpleInventory && updateSimpleInventory.inventoryInfo) {
+          mutation={recalculateReservedSimpleInventoryMutation}
+          update={(cache, { data: { recalculateReservedSimpleInventory } }) => {
+            if (recalculateReservedSimpleInventory && recalculateReservedSimpleInventory.inventoryInfo) {
               cache.writeQuery({
                 query: getInventoryInfo,
                 variables,
                 data: {
-                  simpleInventory: { ...updateSimpleInventory.inventoryInfo }
+                  simpleInventory: { ...recalculateReservedSimpleInventory.inventoryInfo }
                 }
               });
             }
           }}
         >
-          {(updateSimpleInventory) => (
+          {(recalculateReservedSimpleInventory) => (
             <Component
               {...this.props}
-              updateSimpleInventory={updateSimpleInventory}
+              recalculateReservedSimpleInventory={recalculateReservedSimpleInventory}
             />
           )}
         </Mutation>

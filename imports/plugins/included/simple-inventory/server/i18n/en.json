@@ -13,7 +13,8 @@
         "isInventoryManagementEnabled": "Manage inventory",
         "lowInventoryWarningThreshold": "Warn at",
         "lowInventoryWarningThresholdLabel": "Warn customers that the product will be close to sold out when the available quantity reaches this threshold",
-        "noInventoryTracking": "Inventory is tracked only for sellable variants. Select an option to manage inventory for it."
+        "noInventoryTracking": "Inventory is tracked only for sellable variants. Select an option to manage inventory for it.",
+        "recalculateReservedInventory": "Recalculate reserved quantity"
       }
     }
   }
