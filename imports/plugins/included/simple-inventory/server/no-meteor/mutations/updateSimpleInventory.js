@@ -60,21 +60,25 @@ export default async function updateSimpleInventory(context, input) {
   const { Products, SimpleInventory } = collections;
   const { productConfiguration, shopId } = input;
 
-  // Verify that the product exists
-  const foundProduct = await Products.findOne({
-    _id: productConfiguration.productId,
-    shopId
-  }, {
-    projection: {
-      shopId: 1
-    }
-  });
-  if (!foundProduct) throw new ReactionError("not-found", "Product not found");
+  if (!isInternalCall) {
+    // Verify that the product exists. For internal calls, we assume we can skip this
+    // verification because it saves a database command and maybe we are storing inventories
+    // before product is created due to some syncing process.
+    const foundProduct = await Products.findOne({
+      _id: productConfiguration.productId,
+      shopId
+    }, {
+      projection: {
+        shopId: 1
+      }
+    });
+    if (!foundProduct) throw new ReactionError("not-found", "Product not found");
 
-  // Allow update if the account has "admin" permission. When called internally by another
-  // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall && !userHasPermission(["admin"], shopId)) {
-    throw new ReactionError("access-denied", "Access denied");
+    // Allow update if the account has "admin" permission. When called internally by another
+    // plugin, context.isInternalCall can be set to `true` to disable this check.
+    if (!userHasPermission(["admin"], shopId)) {
+      throw new ReactionError("access-denied", "Access denied");
+    }
   }
 
   const $set = { updatedAt: new Date() };
