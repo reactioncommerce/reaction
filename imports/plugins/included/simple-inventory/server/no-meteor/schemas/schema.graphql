@@ -11,6 +11,12 @@ type SimpleInventoryInfo {
   inventoryInStock: Int
 
   """
+  Current quantity of this product configuration unavailable for ordering. This value is calculated
+  by the system based on this product variant being in not-yet-approved orders.
+  """
+  inventoryReserved: Int
+
+  """
   Whether the SimpleInventory plugin should manage inventory for this product configuration
   """
   isEnabled: Boolean

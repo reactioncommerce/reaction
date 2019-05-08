@@ -5,6 +5,7 @@ export default gql`
     simpleInventory(shopId: $shopId, productConfiguration: $productConfiguration) {
       canBackorder
       inventoryInStock
+      inventoryReserved
       isEnabled
       lowInventoryWarningThreshold
     }

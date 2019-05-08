@@ -31,6 +31,7 @@ function VariantInventoryForm(props) {
   const {
     canBackorder,
     inventoryInStock,
+    inventoryReserved,
     isEnabled,
     lowInventoryWarningThreshold
   } = inventoryInfo || {};
@@ -70,8 +71,11 @@ function VariantInventoryForm(props) {
           <Grid item sm={6}>
             <Components.TextField
               disabled={!isEnabled}
-              helpText="Inventory in stock"
-              i18nKeyHelpText="admin.helpText.optionInventoryInStock"
+              helpText={isEnabled ? i18next.t("productVariant.inventoryInStockHelpText", {
+                inventoryAvailableToSell: Math.max((inventoryInStock || 0) - (inventoryReserved || 0), 0),
+                inventoryInStock: (inventoryInStock || 0),
+                inventoryReserved: (inventoryReserved || 0)
+              }) : i18next.t("productVariant.inventoryDisabled")}
               i18nKeyLabel="productVariant.inventoryInStock"
               i18nKeyPlaceholder="0"
               label="In Stock"
