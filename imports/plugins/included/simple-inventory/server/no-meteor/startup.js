@@ -31,11 +31,13 @@ export default function startup(context) {
     const orderIsApproved = !Array.isArray(order.payments) || order.payments.length === 0 ||
       !!order.payments.find((payment) => payment.status !== "created");
 
+    const allOrderItems = getAllOrderItems(order);
+
     const bulkWriteOperations = [];
 
     // If order is approved, the inventory has been taken away from `inventoryInStock`
     if (returnToStock && orderIsApproved) {
-      getAllOrderItems(order).forEach((item) => {
+      allOrderItems.forEach((item) => {
         bulkWriteOperations.push({
           updateOne: {
             filter: {
@@ -54,7 +56,7 @@ export default function startup(context) {
       });
     } else if (!orderIsApproved) {
       // If order is not approved, the inventory hasn't been taken away from `inventoryInStock` yet but is in `inventoryReserved`
-      getAllOrderItems(order).forEach((item) => {
+      allOrderItems.forEach((item) => {
         bulkWriteOperations.push({
           updateOne: {
             filter: {
@@ -73,13 +75,29 @@ export default function startup(context) {
       });
     }
 
-    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false }).catch((error) => {
-      Logger.error(error, "Bulk write error in simple-inventory afterOrderCancel listener");
-    });
+    if (bulkWriteOperations.length === 0) return;
+
+    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
+      .then(() => (
+        Promise.all(allOrderItems.map((item) => (
+          appEvents.emit("afterInventoryUpdate", {
+            productConfiguration: {
+              productId: item.productId,
+              productVariantId: item.variantId
+            },
+            updatedBy: null
+          })
+        )))
+      ))
+      .catch((error) => {
+        Logger.error(error, "Bulk write error in simple-inventory afterOrderCancel listener");
+      });
   });
 
   appEvents.on("afterOrderCreate", async ({ order }) => {
-    const bulkWriteOperations = getAllOrderItems(order).map((item) => ({
+    const allOrderItems = getAllOrderItems(order);
+
+    const bulkWriteOperations = allOrderItems.map((item) => ({
       updateOne: {
         filter: {
           productConfiguration: {
@@ -95,9 +113,23 @@ export default function startup(context) {
       }
     }));
 
-    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false }).catch((error) => {
-      Logger.error(error, "Bulk write error in simple-inventory afterOrderCreate listener");
-    });
+    if (bulkWriteOperations.length === 0) return;
+
+    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
+      .then(() => (
+        Promise.all(allOrderItems.map((item) => (
+          appEvents.emit("afterInventoryUpdate", {
+            productConfiguration: {
+              productId: item.productId,
+              productVariantId: item.variantId
+            },
+            updatedBy: null
+          })
+        )))
+      ))
+      .catch((error) => {
+        Logger.error(error, "Bulk write error in simple-inventory afterOrderCreate listener");
+      });
   });
 
   appEvents.on("afterOrderApprovePayment", async ({ order }) => {
@@ -105,7 +137,9 @@ export default function startup(context) {
     const nonApprovedPayment = (order.payments || []).find((payment) => payment.status === "created");
     if (nonApprovedPayment) return;
 
-    const bulkWriteOperations = getAllOrderItems(order).map((item) => ({
+    const allOrderItems = getAllOrderItems(order);
+
+    const bulkWriteOperations = allOrderItems.map((item) => ({
       updateOne: {
         filter: {
           productConfiguration: {
@@ -122,8 +156,22 @@ export default function startup(context) {
       }
     }));
 
-    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false }).catch((error) => {
-      Logger.error(error, "Bulk write error in simple-inventory afterOrderApprovePayment listener");
-    });
+    if (bulkWriteOperations.length === 0) return;
+
+    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
+      .then(() => (
+        Promise.all(allOrderItems.map((item) => (
+          appEvents.emit("afterInventoryUpdate", {
+            productConfiguration: {
+              productId: item.productId,
+              productVariantId: item.variantId
+            },
+            updatedBy: null
+          })
+        )))
+      ))
+      .catch((error) => {
+        Logger.error(error, "Bulk write error in simple-inventory afterOrderApprovePayment listener");
+      });
   });
 }

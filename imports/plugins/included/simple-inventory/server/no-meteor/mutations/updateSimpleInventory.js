@@ -56,7 +56,7 @@ const defaultValues = {
 export default async function updateSimpleInventory(context, input) {
   inputSchema.validate(input);
 
-  const { collections, isInternalCall, userHasPermission } = context;
+  const { appEvents, collections, isInternalCall, userHasPermission, userId } = context;
   const { Products, SimpleInventory } = collections;
   const { productConfiguration, shopId } = input;
 
@@ -123,6 +123,8 @@ export default async function updateSimpleInventory(context, input) {
       upsert: true
     }
   );
+
+  appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
 
   return updatedDoc;
 }

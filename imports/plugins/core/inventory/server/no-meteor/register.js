@@ -1,6 +1,7 @@
 import queries from "./queries";
 import schemas from "./schemas";
 import publishProductToCatalog from "./utils/publishProductToCatalog";
+import startup from "./utils/startup";
 import xformCartItems from "./utils/xformCartItems";
 import xformCatalogBooleanFilters from "./utils/xformCatalogBooleanFilters";
 import xformCatalogProductVariants from "./utils/xformCatalogProductVariants";
@@ -16,6 +17,7 @@ export default async function register(app) {
     name: "reaction-inventory",
     functionsByType: {
       publishProductToCatalog: [publishProductToCatalog],
+      startup: [startup],
       xformCartItems: [xformCartItems],
       xformCatalogBooleanFilters: [xformCatalogBooleanFilters],
       xformCatalogProductVariants: [xformCatalogProductVariants]
