@@ -50,6 +50,7 @@
             "cardTitle": "Invoice",
             "adjustedTotal": "Adjusted Total",
             "capturedTotal": "Captured Total",
+            "printInvoice": "Print invoice",
             "refund": "Refund",
             "refundLabel": "For Refund",
             "refundItem": "Items",
