@@ -1,40 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
-import Modal from "@material-ui/core/Modal";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { i18next, Logger, Reaction } from "/client/api";
+import { i18next } from "/client/api";
+import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 
 
 const styles = (theme) => ({
-  root: {
-    display: "flex",
-    height: `calc(100vh - ${theme.mixins.toolbar.minHeight}px)`,
-    overflow: "hidden"
-  },
-  orderCard: {
-    marginTop: theme.spacing.unit * 2.5
-  },
   toolbarButton: {
     marginLeft: theme.spacing.unit
   },
   leftSidebarOpen: {
     paddingLeft: 280 + (theme.spacing.unit * 2)
-  },
-  paper: {
-    position: "absolute",
-    width: theme.spacing.unit * 80,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
   },
   title: {
     flex: 1
@@ -43,6 +26,7 @@ const styles = (theme) => ({
 
 class OrderCardAppBar extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     order: PropTypes.shape({
       summary: PropTypes.shape({
         fulfillmentTotal: PropTypes.shape({
@@ -66,47 +50,43 @@ class OrderCardAppBar extends Component {
 
   state = {}
 
-  handleCancelOrder(mutation) {
-    Alerts.alert({
-      title: i18next.t("order.cancelOrder"),
-      type: "warning",
-      showCancelButton: true
-    }, async (isConfirm) => {
-      if (isConfirm) {
-        const { order } = this.props;
-        const { fulfillmentGroups } = order;
+  handleCancelOrder(mutation, shouldRestock) {
+    const { order } = this.props;
+    const { fulfillmentGroups } = order;
 
-        // We need to loop over every fulfillmentGroup
-        // and then loop over every item inside group
-        fulfillmentGroups.forEach(async (fulfillmentGroup) => {
-          // for (const item of fulfillmentGroup.items.nodes) {
-          fulfillmentGroup.items.nodes.forEach(async (item) => {
-            console.log(" --- item to cancel", item);
+    if (shouldRestock) {
+      return console.log("Order should be restocked");
+    }
 
-            await mutation({
-              variables: {
-                input: {
-                  cancelQuantity: item.quantity,
-                  itemId: item._id,
-                  orderId: order._id,
-                  reason: "Order cancelled inside Catalyst operator UI"
-                }
-              }
-            });
-          });
+    return console.log("Order should NOT be restocked");
+
+    // We need to loop over every fulfillmentGroup
+    // and then loop over every item inside group
+    fulfillmentGroups.forEach(async (fulfillmentGroup) => {
+      // for (const item of fulfillmentGroup.items.nodes) {
+      fulfillmentGroup.items.nodes.forEach(async (item) => {
+        console.log(" --- item to cancel", item);
+
+        await mutation({
+          variables: {
+            input: {
+              cancelQuantity: item.quantity,
+              itemId: item._id,
+              orderId: order._id,
+              reason: "Order cancelled inside Catalyst operator UI"
+            }
+          }
         });
-      }
+      });
     });
+  }
+
+  handleCapturePayment = () => {
+    console.log("payment captured");
   }
 
   render() {
     const { classes, order } = this.props;
-
-    const {
-      isModalOpen,
-      modalMode,
-      navigationItem
-    } = this.state;
 
     const uiState = {
       isLeftDrawerOpen: false
@@ -124,21 +104,32 @@ class OrderCardAppBar extends Component {
       <AppBar color="default">
         <Toolbar className={toolbarClassName}>
 
-          <Typography className={classes.title} variant="h6">Main Navigation</Typography>
+          <Typography className={classes.title} variant="h6">Order details</Typography>
 
           {canCancelOrder &&
             <Mutation mutation={cancelOrderItemMutation}>
               {(mutationFunc) => (
-                <Button className={classes.toolbarButton} color="secondary" variant="outlined" onClick={() => { this.handleCancelOrder(mutationFunc); }}>Cancel order</Button>
+                <ConfirmButton
+                  buttonColor="danger"
+                  buttonText={i18next.t("order.cancelOrderLabel")}
+                  buttonVariant="outlined"
+                  cancelActionText="No"
+                  confirmActionText={i18next.t("order.cancelOrderThenRestock")}
+                  title={i18next.t("order.cancelOrderLabel")}
+                  message={i18next.t("order.cancelOrder")}
+                  onConfirm={() => this.handleCancelOrder(mutationFunc, true)}
+                  onSecondaryConfirm={() => this.handleCancelOrder(mutationFunc, false)}
+                  secondaryConfirmActionText={i18next.t("order.cancelOrderNoRestock")}
+                />
               )}
 
             </Mutation>
           }
-          <Button className={classes.toolbarButton} color="primary" variant="contained">Capture payment</Button>
+          <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={this.handleCapturePayment}>Capture payment</Button>
         </Toolbar>
       </AppBar>
     );
   }
 }
 
-export default withStyles(styles, { name: "OrderCard" })(OrderCardAppBar);
+export default withStyles(styles, { name: "MuiOrderCard" })(OrderCardAppBar);
