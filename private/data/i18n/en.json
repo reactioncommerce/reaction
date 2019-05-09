@@ -131,9 +131,19 @@
         "shopLocalizationSettingsFailed": "Shop localization settings update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
         "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed.",
-        "storefrontUrlsDescription": "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails.",
-        "storefrontUrlsTitle": "StorefrontUrls",
-        "updateStorefrontUrls": "Update storefront Urls"
+        "storefrontUrls": {
+          "description": "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails.",
+          "storefrontHomeUrlTitle": "Homepage URL",
+          "storefrontHomeUrlDescription": "URL of your shops homepage",
+          "storefrontOrderUrlTitle": "Single Order page URL",
+          "storefrontOrderUrlDescription": "URL of your shops single order page",
+          "storefrontOrdersUrlTitle": "Orders page URL",
+          "storefrontOrdersUrlDescription": "URL of your shops orders page",
+          "storefrontAccountProfileUrlTitle": "Account Profile page URL",
+          "storefrontAccountProfileUrlDescription": "URL of your shops account profile homepage",
+          "title": "Storefront Urls",
+          "update": "Update storefront Urls"
+        }
       },
       "notifications": {
         "body": {
