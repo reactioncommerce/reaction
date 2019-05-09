@@ -1,14 +1,25 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
+import styled from "styled-components";
+import { Form } from "reacto-form";
 import { Mutation } from "react-apollo";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import { Components } from "@reactioncommerce/reaction-components";
+import { getRequiredValidator } from "@reactioncommerce/components/utils";
+import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
+import Field from "@reactioncommerce/components/Field/v1";
+import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
 import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
+
+
+const PaddedField = styled(Field)`
+  margin-bottom: 30px;
+`;
 
 
 const updatShopUrlsMutation = gql`
@@ -40,28 +51,23 @@ class StorefrontUrls extends Component {
     })
   };
 
-  static defaultProps = {}
-
-  state = {
-    storefrontHomeUrl: this.props.shop.storefrontUrls.storefrontHomeUrl,
-    storefrontOrderUrl: this.props.shop.storefrontUrls.storefrontOrderUrl,
-    storefrontOrdersUrl: this.props.shop.storefrontUrls.storefrontOrdersUrl,
-    storefrontAccountProfileUrl: this.props.shop.storefrontUrls.storefrontAccountProfileUrl
+  handleFormChange = (value) => {
+    this.formValue = value;
   }
 
-  handleFieldChange = (event, value, field) => {
-    this.setState({
-      [field]: value
-    });
+  handleSubmitForm = () => {
+    this.form.submit();
   }
 
-  handleUpdateUrls(mutation) {
-    const { storefrontHomeUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = this.state;
+  handleUpdateUrls(data, mutation) {
+    const { shop: { _id: shopId } } = this.props;
+    const { storefrontHomeUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = data;
 
+    // return null;
     mutation({
       variables: {
         input: {
-          shopId: "cmVhY3Rpb24vc2hvcDpKOEJocTN1VHRkZ3daeDNyeg==",
+          shopId,
           storefrontUrls: {
             storefrontHomeUrl,
             storefrontOrderUrl,
@@ -74,74 +80,90 @@ class StorefrontUrls extends Component {
   }
 
   render() {
+    const { shop } = this.props;
     return (
       <Card>
         <CardHeader
           subheader={i18next.t("shopSettings.storefrontUrls.description", "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails.")}
           title={i18next.t("shopSettings.storefrontUrls.title", "Storefront Urls")}
         />
-        <CardContent>
-          <Components.TextField
-            i18nKeyLabel="shopSettings.storefrontUrls.storefrontHomeUrlTitle"
-            i18nKeyPlaceholder="shopSettings.storefrontUrls.storefrontHomeUrlTitle"
-            label="Homepage URL"
-            name="storefrontHomeUrl"
-            onBlur={this.handleFieldBlur}
-            onChange={this.handleFieldChange}
-            onReturnKeyDown={this.handleFieldBlur}
-            placeholder="Homepage URL"
-            ref="storefrontHomeUrlInput"
-            value={this.state.storefrontHomeUrl}
-          />
-          <Components.TextField
-            i18nKeyLabel="shopSettings.storefrontUrls.storefrontOrderUrlTitle"
-            i18nKeyPlaceholder="shopSettings.storefrontUrls.storefrontOrderUrlTitle"
-            label="Single Order page URL"
-            name="storefrontOrderUrl"
-            onBlur={this.handleFieldBlur}
-            onChange={this.handleFieldChange}
-            onReturnKeyDown={this.handleFieldBlur}
-            placeholder="Single Order page URL"
-            ref="storefrontOrderUrlInput"
-            value={this.state.storefrontOrderUrl}
-          />
-          <Components.TextField
-            i18nKeyLabel="shopSettings.storefrontUrls.storefrontOrdersUrlTitle"
-            i18nKeyPlaceholder="shopSettings.storefrontUrls.storefrontOrdersUrlTitle"
-            label="Orders page URL"
-            name="storefrontOrdersUrl"
-            onBlur={this.handleFieldBlur}
-            onChange={this.handleFieldChange}
-            onReturnKeyDown={this.handleFieldBlur}
-            placeholder="Orders page URL"
-            ref="storefrontOrdersUrlInput"
-            value={this.state.storefrontOrdersUrl}
-          />
-          <Components.TextField
-            i18nKeyLabel="shopSettings.storefrontUrls.storefrontAccountProfileUrlTitle"
-            i18nKeyPlaceholder="shopSettings.storefrontUrls.storefrontAccountProfileUrlTitle"
-            label="Account Profile page URL"
-            name="storefrontAccountProfileUrl"
-            onBlur={this.handleFieldBlur}
-            onChange={this.handleFieldChange}
-            onReturnKeyDown={this.handleFieldBlur}
-            placeholder="Account Profile page URL"
-            ref="storefrontAccountProfileUrlInput"
-            value={this.state.storefrontAccountProfileUrl}
-          />
-          <Mutation mutation={updatShopUrlsMutation}>
-            {(mutationFunc) => (
-              <Button
-                color="primary"
-                onClick={() => this.handleUpdateUrls(mutationFunc)}
-                variant="contained"
+        <Mutation mutation={updatShopUrlsMutation}>
+          {(mutationFunc) => (
+            <Fragment>
+              <Form
+                ref={(formRef) => { this.form = formRef; }}
+                onChange={this.handleFormChange}
+                onSubmit={(data) => this.handleUpdateUrls(data, mutationFunc)}
+                // validator={getRequiredValidator("name", "displayTitle")}
+                value={shop}
               >
-                {i18next.t("shopSettings.storefrontUrls.update", "Update storefront Urls")}
-              </Button>
-            )}
-
-          </Mutation>
-        </CardContent>
+                <CardContent>
+                  <PaddedField
+                    name="storefrontHomeUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlTitle", "Homepage URL")}
+                    labelFor="storefrontHomeUrlInput"
+                    isRequired
+                  >
+                    <TextInput
+                      id="storefrontHomeUrlInput"
+                      name="storefrontHomeUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlDescription","URL of your shops homepage")}
+                      value={shop.storefrontUrls.storefrontHomeUrl}
+                    />
+                    <ErrorsBlock names={["storefrontHomeUrl"]} />
+                  </PaddedField>
+                  <PaddedField
+                    name="storefrontOrderUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlTitle", "Single Order page URL")}
+                    labelFor="storefrontOrderUrlInput"
+                    isRequired
+                  >
+                    <TextInput
+                      id="storefrontOrderUrlInput"
+                      name="storefrontOrderUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlDescription", "URL of your shops single order page")}
+                      value={shop.storefrontUrls.storefrontOrderUrl}
+                    />
+                    <ErrorsBlock names={["storefrontOrderUrl"]} />
+                  </PaddedField>
+                  <PaddedField
+                    name="storefrontOrdersUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlTitle", "Orders page URL")}
+                    labelFor="storefrontOrdersUrlInput"
+                    isRequired
+                  >
+                    <TextInput
+                      id="storefrontOrdersUrlInput"
+                      name="storefrontOrdersUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlDescription", "URL of your shops orders page")}
+                      value={shop.storefrontUrls.storefrontOrdersUrl}
+                    />
+                    <ErrorsBlock names={["storefrontOrdersUrl"]} />
+                  </PaddedField>
+                  <PaddedField
+                    name="storefrontAccountProfileUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlTitle", "Account Profile page URL")}
+                    labelFor="storefrontAccountProfileUrlInput"
+                    isRequired
+                  >
+                    <TextInput
+                      id="storefrontAccountProfileUrlInput"
+                      name="storefrontAccountProfileUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlDescription", "URL of your shops account profile homepage")}
+                      value={shop.storefrontUrls.storefrontAccountProfileUrl}
+                    />
+                    <ErrorsBlock names={["storefrontAccountProfileUrl"]} />
+                  </PaddedField>
+                </CardContent>
+                <CardActions disableActionSpacing>
+                  <Button color="primary" variant="contained" onClick={this.handleSubmitForm}>
+                    {i18next.t("app.save")}
+                  </Button>
+                </CardActions>
+              </Form>
+            </Fragment>
+          )}
+        </Mutation>
       </Card>
     );
   }
