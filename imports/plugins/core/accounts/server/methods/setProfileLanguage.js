@@ -1,6 +1,6 @@
 import { check, Match } from "meteor/check";
 import R from "ramda";
-import { Accounts } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -29,12 +29,19 @@ export default function setProfileLanguage(languageCode, accountId) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
-  const primaryShopLanguages = Reaction.getPrimaryShopLanguages();
+  // first search for shop based on account id
+  let shop = Shops.findOne({ _id: account.shopId }, { languages: 1 });
 
-  const primaryShopLanguage = R.find((shopLanguage) => shopLanguage.i18n === languageCode && shopLanguage.enabled)(primaryShopLanguages);
+  if (!shop || !shop.languages || shop.languages.length === 0) {
+    // if non-primary shop does not have any languages use primary shop
+    shop = Shops.findOne({ shopType: "primary" }, { languages: 1 });
+  }
 
-  if (!primaryShopLanguage) {
-    throw new ReactionError("invalid-argument", `Primary shop does not define any enabled language with code "${languageCode}"`);
+  const shopLanguages = (shop && shop.languages) || [];
+  const shopLanguage = R.find(R.whereEq({ enabled: true, i18n: languageCode }))(shopLanguages);
+
+  if (!shopLanguage) {
+    throw new ReactionError("invalid-argument", `Shop does not define any enabled language with code "${languageCode}"`);
   }
 
   Accounts.update({ userId }, { $set: { "profile.language": languageCode } });

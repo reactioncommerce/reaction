@@ -175,12 +175,19 @@ export default async function placeOrder(context, input) {
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders, Shops } = collections;
 
-  const primaryShop = await Shops.findOne({ shopType: "primary" }, { languages: 1 });
-  const primaryShopLanguages = (primaryShop && primaryShop.languages) || [];
-  const primaryShopLanguage = R.find(R.whereEq({ enabled: true, i18n: language }))(primaryShopLanguages);
+  // first search for shop based on account id
+  let shop = await Shops.findOne({ _id: shopId }, { languages: 1 });
+
+  if (!shop || !shop.languages || shop.languages.length === 0) {
+    // if non-primary shop does not have any languages use primary shop
+    shop = await Shops.findOne({ shopType: "primary" }, { languages: 1 });
+  }
+
+  const shopLanguages = (shop && shop.languages) || [];
+  const shopLanguage = R.find(R.whereEq({ enabled: true, i18n: language }))(shopLanguages);
 
   // set to undefined value so order language will not be set
-  if (!primaryShopLanguage) {
+  if (!shopLanguage) {
     language = undefined;
   }
 
