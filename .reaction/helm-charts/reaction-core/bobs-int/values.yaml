@@ -27,8 +27,10 @@ app:
         value: "2.99"
     -   key: ETCD_URL
         value: http://etcd-skipper.internal.int.k8s.sdlabs.io:2379
-    -   key: GRAPHQL_INTROSPECTION
-        value: true
+    -   key: GRAPHQL_INTROSPECTION_ENABLED
+        value: "true"
+    -   key: GRAPHQL_PLAYGROUND_ENABLED
+        value: "true"
     -   key: HYDRA_ADMIN_URL
         value: http://hydra-hydra-admin-service:4445
     -   key: HYDRA_OAUTH2_INTROSPECT_URL
@@ -75,18 +77,28 @@ app:
         value: "3"
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS
         value: event.product-import.products.stream.json-gen1
+    -   key: LOYALTY_CONSUMER_ENABLED
+        value: "false"
+    -   key: MASTER_PUBLISH_CONSUMER_ENABLED
+        value: true
+    -   key: METRICS_ENABLED
+        value: true
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED
-        value: true
+        value: "false"
     -   key: PRICING_GRAPHQL_URL
         value: http://reaction-pricing-engine.bobs:8888/graphql
+    -   key: PRODUCT_CONSUMER_ENABLED
+        value: "false"
     -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
         value: true
     -   key: RADIAL_MODE
         value: sandbox
     -   key: RADIAL_STORE_ID
         value: BOBSUS
+    -   key: RADIAL_TAXES_API_URL
+        value: https://tst02-epapi-na.gsipartners.com/v1.0/stores
     -   key: REACTION_LOG_FORMAT
         value: "json"
     -   key: REACTION_LOG_LEVEL
@@ -97,16 +109,28 @@ app:
         value: https://api-int.bobs-test.io
     -   key: SCHEMA_REGISTRY_URL
         value: http://kafka-cluster-int-cp-schema-registry.kafka:8081
-    -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
+    -   key: SEO_METADATA_CONSUMER_ENABLED
         value: "true"
+    -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
+        value: "false"
     -   key: SITE_CODE
         value: BOBS
     -   key: SKIP_FIXTURES
         value: "1"
     -   key: STARTING_NEW_CUSTOMER_NUMBER
         value: "1100151420184"
+    -   key: TAXES_CONSUMER_ENABLED
+        value: "false"
     -   key: KAFKA_TOPIC_IMPORT_ORDER_STATUS_ORDERS
         value: etl.import-order-status.status.json-gen1
+    -   key: CONSTANT_PUBLISHER_MODE
+        value: "true"
+    -   key: CONSTANT_PUBLISHER_PAUSE_SECONDS
+        value: 300
+    -   key: KAFKA_TOPIC_RADIAL_ITEM_EXPORT_STATUS
+        value: etl.radial-item-export.status.json-gen1
+    -   key: RADIAL_ITEM_EXPORT_CONSUMER_ENABLED
+        value: "false"
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:

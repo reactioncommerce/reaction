@@ -1,7 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import canBackorder from "./canBackorder";
 import getCatalogProductMedia from "./getCatalogProductMedia";
-import getPriceRange from "./getPriceRange";
 import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
 import isLowQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
 import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
@@ -10,14 +9,12 @@ import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/is
  * @method
  * @summary Converts a variant Product document into the catalog schema for variants
  * @param {Object} variant The variant from Products collection
- * @param {Object} variantPriceInfo The result of calling getPriceRange for this price or all child prices
- * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
  * @param {Object} variantMedia Media for this specific variant
  * @param {Object} variantInventory Inventory flags for this variant
  * @private
  * @returns {Object} The transformed variant
  */
-export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, variantMedia, variantInventory) {
+export function xformVariant(variant, variantMedia, variantInventory) {
   const primaryImage = variantMedia.find(({ toGrid }) => toGrid === 1) || null;
 
   return {
@@ -41,16 +38,6 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     minOrderQuantity: variant.minOrderQuantity,
     optionTitle: variant.optionTitle,
     originCountry: variant.originCountry,
-    price: variant.price,
-    pricing: {
-      [shopCurrencyCode]: {
-        compareAtPrice: variant.compareAtPrice || null,
-        displayPrice: variantPriceInfo.range,
-        maxPrice: variantPriceInfo.max,
-        minPrice: variantPriceInfo.min,
-        price: typeof variant.price === "number" ? variant.price : null
-      }
-    },
     primaryImage,
     shopId: variant.shopId,
     sku: variant.sku,
@@ -68,14 +55,10 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
  * @param {Object} data Data obj
  * @param {Object} data.collections Map of MongoDB collections by name
  * @param {Object} data.product The source product
- * @param {Object} data.shop The Shop document for the shop that owns the product
  * @param {Object[]} data.variants The Product documents for all variants of this product
  * @returns {Object} The CatalogProduct document
  */
-export async function xformProduct({ collections, product, shop, variants }) {
-  const shopCurrencyCode = shop.currency;
-  const shopCurrencyInfo = shop.currencies[shopCurrencyCode];
-
+export async function xformProduct({ collections, product, variants }) {
   const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
   const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
 
@@ -95,16 +78,12 @@ export async function xformProduct({ collections, product, shop, variants }) {
     }
   });
 
-  const prices = [];
   const catalogProductVariants = topVariants
     // We want to explicitly map everything so that new properties added to variant are not published to a catalog unless we want them
     .map((variant) => {
       const variantOptions = options.get(variant._id);
-      let priceInfo;
       let variantInventory;
       if (variantOptions) {
-        const optionPrices = variantOptions.map((option) => option.price);
-        priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
         variantInventory = {
           canBackorder: canBackorder(variantOptions),
           inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
@@ -114,7 +93,6 @@ export async function xformProduct({ collections, product, shop, variants }) {
           isSoldOut: isSoldOut(variantOptions)
         };
       } else {
-        priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
         variantInventory = {
           canBackorder: canBackorder([variant]),
           inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
@@ -124,11 +102,10 @@ export async function xformProduct({ collections, product, shop, variants }) {
           isSoldOut: isSoldOut([variant])
         };
       }
-      prices.push(priceInfo.min, priceInfo.max);
 
       const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
 
-      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia, variantInventory);
+      const newVariant = xformVariant(variant, variantMedia, variantInventory);
 
       if (variantOptions) {
         newVariant.options = variantOptions.map((option) => {
@@ -141,13 +118,11 @@ export async function xformProduct({ collections, product, shop, variants }) {
             isLowQuantity: isLowQuantity([option]),
             isSoldOut: isSoldOut([option])
           };
-          return xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, optionMedia, optionInventory);
+          return xformVariant(option, optionMedia, optionInventory);
         });
       }
       return newVariant;
     });
-
-  const productPriceInfo = getPriceRange(prices, shopCurrencyInfo);
 
   return {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
@@ -171,16 +146,6 @@ export async function xformProduct({ collections, product, shop, variants }) {
     originCountry: product.originCountry,
     pageTitle: product.pageTitle,
     parcel: product.parcel,
-    price: product.price,
-    pricing: {
-      [shop.currency]: {
-        compareAtPrice: product.compareAtPrice || null,
-        displayPrice: productPriceInfo.range,
-        maxPrice: productPriceInfo.max,
-        minPrice: productPriceInfo.min,
-        price: null
-      }
-    },
     primaryImage,
     // The _id prop could change whereas this should always point back to the source product in Products collection
     productId: product._id,
@@ -252,10 +217,11 @@ export default async function createCatalogProduct(product, context) {
   const catalogProduct = await xformProduct({ collections, product, shop, variants });
 
   // Apply custom transformations from plugins.
-  getFunctionsOfType("publishProductToCatalog").forEach((customPublishFunc) => {
+  for (const customPublishFn of getFunctionsOfType("publishProductToCatalog")) {
     // Functions of type "publishProductToCatalog" are expected to mutate the provided catalogProduct.
-    customPublishFunc(catalogProduct, { context, product, shop, variants });
-  });
+    // eslint-disable-next-line no-await-in-loop
+    await customPublishFn(catalogProduct, { context, product, shop, variants });
+  }
 
   return catalogProduct;
 }

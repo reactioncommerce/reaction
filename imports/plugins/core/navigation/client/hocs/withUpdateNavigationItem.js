@@ -2,56 +2,39 @@ import React from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Mutation, withApollo } from "react-apollo";
-import { navigationItemFragment } from "./fragments";
+import { navigationItemFragment, navigationTreeWith10LevelsFragment } from "./fragments";
 
 const updateNavigationItemMutation = gql`
   mutation updateNavigationItemMutation($input: UpdateNavigationItemInput!) {
     updateNavigationItem(input: $input) {
       navigationItem {
-        ...NavigationItemCommon
+        ...NavigationItem
       }
     }
   }
-  ${navigationItemFragment.navigationItem}
+  ${navigationItemFragment}
 `;
 
 const deleteNavigationItemMutation = gql`
   mutation deleteNavigationItemMutation($input: DeleteNavigationItemInput!) {
     deleteNavigationItem(input: $input) {
       navigationItem {
-        ...NavigationItemCommon
+        ...NavigationItem
       }
     }
   }
-  ${navigationItemFragment.navigationItem}
+  ${navigationItemFragment}
 `;
 
 const publishNavigationChangesMutation = gql`
   mutation publishNavigationChangesMutation($input: PublishNavigationChangesInput!) {
     publishNavigationChanges(input: $input) {
       navigationTree {
-        name
-        draftItems {
-          expanded
-          navigationItem {
-            ...NavigationItemCommon
-          }
-          items {
-            expanded
-            navigationItem {
-              ...NavigationItemCommon
-            }
-            items {
-              navigationItem {
-                ...NavigationItemCommon
-              }
-            }
-          }
-        }
+        ...NavigationTreeWith10Levels
       }
     }
   }
-  ${navigationItemFragment.navigationItem}
+  ${navigationTreeWith10LevelsFragment}
 `;
 
 export default (Component) => {

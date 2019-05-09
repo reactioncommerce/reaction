@@ -103,15 +103,26 @@ async function xformOrderItem(context, item, catalogItems) {
 
   const catalogProduct = catalogItem.product;
 
-  let media;
-  if (catalogProduct.media || catalogProduct.primaryImage) {
-    media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
-    if (!media) media = catalogProduct.primaryImage;
-    if (!media) [media] = catalogProduct.media;
-    if (media) {
-      media = await xformCatalogProductMedia(media, context);
-    }
+  const { variant } = context.queries.findVariantInCatalogProduct(catalogProduct, variantId);
+  if (!variant) {
+    throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
+
+  // Find one image from the catalog to use for the item.
+  // Prefer the first variant image. Fallback to the first product image.
+  let media;
+  if (variant.media && variant.media.length) {
+    [media] = variant.media;
+  } else if (catalogProduct.media && catalogProduct.media.length) {
+    media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
+    if (!media) [media] = catalogProduct.media;
+  }
+
+  // Allow plugins to transform the media object
+  if (media) {
+    media = await xformCatalogProductMedia(media, context);
+  }
+
 
   return {
     ...item,
@@ -147,5 +158,5 @@ export async function xformOrderItems(context, items) {
     "isDeleted": { $ne: true }
   }).toArray();
 
-  return items.map((item) => xformOrderItem(context, item, catalogItems));
+  return Promise.all(items.map((item) => xformOrderItem(context, item, catalogItems)));
 }

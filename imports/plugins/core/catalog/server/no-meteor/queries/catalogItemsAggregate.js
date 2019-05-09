@@ -1,4 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
+import arrayJoinPlusRemainingQuery from "/imports/utils/arrayJoinPlusRemainingQuery";
 
 /**
  * @name catalogItemsAggregate
@@ -7,101 +8,44 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Query the Catalog by shop IDs and/or a tag ID in featured product order
  * @param {Object} context - An object containing the per-request state
  * @param {Object} params - Request parameters
+ * @param {Object} [params.catalogBooleanFilters] - Additional filters object to add to the selector
  * @param {String[]} [params.shopIds] - Shop IDs to include
- * @param {String} tagId - Tag ID
+ * @param {String} params.tagId - Tag ID
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function catalogItemsAggregate(context, { isSoldOut, shopIds, tagId } = {}) {
+export default async function catalogItemsAggregate(context, {
+  connectionArgs,
+  catalogBooleanFilters,
+  shopIds,
+  tagId
+} = {}) {
   const { collections } = context;
   const { Catalog, Tags } = collections;
 
-  if ((!shopIds || shopIds.length === 0) && (!tagId)) {
-    throw new ReactionError("invalid-param", "You must provide a tagId or shopIds or both");
-  }
+  if (!tagId) throw new ReactionError("invalid-param", "You must provide a tagId");
 
-  // If isSoldOut filter is provided, add it to the query
-  let isSoldOutFilter = {};
-  if (typeof isSoldOut === "boolean") {
-    isSoldOutFilter = { "product.isSoldOut": { $eq: isSoldOut } };
-  }
-
-  // Match all products that belong to a single tag
-  const match = {
-    $match: {
-      "shopId": { $in: shopIds },
-      "product.tagIds": tagId,
-      "product.isDeleted": { $ne: true },
-      ...isSoldOutFilter,
-      "product.isVisible": true
-    }
+  const selector = {
+    "product.tagIds": tagId,
+    "product.isDeleted": { $ne: true },
+    "product.isVisible": true,
+    ...catalogBooleanFilters
   };
 
-  // defaultSort by id
-  const defaultSort = {
-    $sort: {
-      "product._id": 1
-    }
-  };
+  if (shopIds && shopIds.length > 0) {
+    selector.shopId = { $in: shopIds };
+  }
 
-  const tag = await Tags.findOne({
-    _id: tagId
+  return arrayJoinPlusRemainingQuery({
+    arrayFieldPath: "featuredProductIds",
+    collection: Tags,
+    connectionArgs,
+    joinCollection: Catalog,
+    joinFieldPath: "product.productId",
+    joinSelector: selector,
+    joinSortOrder: "asc",
+    positionFieldName: "position",
+    selector: { _id: tagId },
+    sortByForRemainingDocs: "createdAt",
+    sortOrderForRemainingDocs: "asc"
   });
-
-  if (!tag) {
-    throw new ReactionError("not-found", "Tag not found");
-  }
-
-  // If there are no featuredProductIds, return match
-  if (!tag.featuredProductIds) {
-    // Sort by createdAt instead
-    const sort = {
-      $sort: {
-        createdAt: 1
-      }
-    };
-
-    return {
-      collection: Catalog,
-      pipeline: [match, sort]
-    };
-  }
-
-  // Array of tag's featured product Ids in order
-  const order = tag.featuredProductIds;
-
-  // Add a new field "position" to each product with each product's order in the featured list array
-  const addFields = {
-    $addFields: {
-      __position: {
-        $indexOfArray: [order, "$product._id"]
-      }
-    }
-  };
-
-  // Projection: Add a featuredPosition by order
-  const projection = {
-    $project: {
-      _id: 1,
-      __position: 1,
-      product: 1,
-      featuredPosition: {
-        $cond: {
-          if: { $lt: ["$__position", 0] },
-          then: { $add: [{ $abs: "$__position" }, order.length] },
-          else: "$__position"
-        }
-      }
-    }
-  };
-
-  const sort = {
-    $sort: {
-      featuredPosition: 1
-    }
-  };
-
-  return {
-    collection: Catalog,
-    pipeline: [match, defaultSort, addFields, projection, sort]
-  };
 }

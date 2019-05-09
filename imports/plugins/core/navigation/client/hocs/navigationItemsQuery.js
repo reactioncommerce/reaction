@@ -6,9 +6,9 @@ export default gql`
     navigationItemsByShopId(shopId: $shopId, first: $first, after: $after) {
       totalCount
       nodes {
-        ...NavigationItemCommon
+        ...NavigationItem
       }
     }
   }
-  ${navigationItemFragment.navigationItem}
+  ${navigationItemFragment}
 `;

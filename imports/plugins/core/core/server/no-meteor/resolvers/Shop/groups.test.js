@@ -16,17 +16,15 @@ test("calls queries.groups and returns a partial connection", async () => {
 
   const result = await groupsResolver({ _id: base64ID }, {}, {
     queries: { groups }
-  });
+  }, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockGroups,
     pageInfo: {
       endCursor: "c3",
-      hasNextPage: false,
-      hasPreviousPage: false,
       startCursor: "a1"
     },
-    totalCount: 3
+    totalCount: null
   });
 
   expect(groups).toHaveBeenCalled();

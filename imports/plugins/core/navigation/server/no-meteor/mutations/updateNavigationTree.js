@@ -1,6 +1,7 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { NavigationTree as NavigationTreeSchema } from "/imports/collections/schemas";
 import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds";
+import setDefaultsForNavigationTreeItems from "../util/setDefaultsForNavigationTreeItems";
 
 /**
  * @method updateNavigationTree
@@ -11,11 +12,23 @@ import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds";
  * @return {Promise<Object>} Updated navigation tree
  */
 export default async function updateNavigationTree(context, _id, navigationTree) {
-  const { collections, userHasPermission, shopId } = context;
+  const { collections, userHasPermission } = context;
   const { NavigationTrees } = collections;
 
-  NavigationTreeSchema.validate(navigationTree);
-  const { draftItems, name } = navigationTree;
+  // Set default values for navigation tree draft items before validation.
+  // isVisible, isPrivate, and isSecondary are optional in the GraphQL schema,
+  // but are required by SimpleSchema. This reduces the input payload size by not
+  // needing to include values that aren't explicitly set.
+  const navigationTreeData = {
+    ...navigationTree,
+    draftItems: setDefaultsForNavigationTreeItems(navigationTree.draftItems)
+  };
+
+  // Validate the navigation tree with the defaults set
+  NavigationTreeSchema.validate(navigationTreeData);
+  const { draftItems, name } = navigationTreeData;
+
+  const shopId = await context.queries.primaryShopId(collections);
 
   if (userHasPermission(["core"], shopId) === false) {
     throw new ReactionError("access-denied", "You do not have permission to update a navigation tree");
