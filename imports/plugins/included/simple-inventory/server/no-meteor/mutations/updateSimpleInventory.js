@@ -1,7 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { ProductConfigurationSchema, SimpleInventoryCollectionSchema } from "../simpleSchemas";
-import getReservedQuantity from "../utils/getReservedQuantity";
 
 const inputSchema = new SimpleSchema({
   productConfiguration: ProductConfigurationSchema,
@@ -86,8 +85,9 @@ export default async function updateSimpleInventory(context, input) {
   const $setOnInsert = {
     "createdAt": new Date(),
     // inventoryReserved is calculated by this plugin rather than being set by
-    // users, but we need to init it to the correct value on inserts.
-    "inventoryReserved": await getReservedQuantity(context, productConfiguration),
+    // users, but we need to init it to some number since this is required.
+    // Below we update this to the correct number if we inserted.
+    "inventoryReserved": 0,
     // The upsert query below has only `productVariantId` so we need to ensure both are inserted
     "productConfiguration.productId": productConfiguration.productId
   };
@@ -117,19 +117,32 @@ export default async function updateSimpleInventory(context, input) {
     }
   }, { modifier: true, upsert: true });
 
-  const { value: updatedDoc } = await SimpleInventory.findOneAndUpdate(
+  const { upsertedCount } = await SimpleInventory.updateOne(
     {
       "productConfiguration.productVariantId": productConfiguration.productVariantId,
       shopId
     },
     modifier,
     {
-      returnOriginal: false,
       upsert: true
     }
   );
 
-  appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
+  // If we inserted, set the "reserved" quantity to what it should be. We could have
+  // put this in the $setOnInsert but then we'd have to do the Orders lookup for
+  // calculating reserved every time, even when only an update happens. It's better
+  // to wait until here when we know whether we inserted.
+  if (upsertedCount === 1) {
+    await context.mutations.recalculateReservedSimpleInventory(context, {
+      productConfiguration,
+      shopId
+    });
+  }
 
-  return updatedDoc;
+  await appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
+
+  return SimpleInventory.findOne({
+    "productConfiguration.productVariantId": productConfiguration.productVariantId,
+    shopId
+  });
 }
