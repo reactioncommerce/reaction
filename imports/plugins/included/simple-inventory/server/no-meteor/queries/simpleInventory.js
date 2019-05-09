@@ -20,10 +20,10 @@ export default async function simpleInventory(context, input) {
   inputSchema.validate(input);
 
   const { productConfiguration, shopId } = input;
-  const { collections, userHasPermission } = context;
+  const { collections, isInternalCall, userHasPermission } = context;
   const { SimpleInventory } = collections;
 
-  if (!userHasPermission(["admin"], shopId)) {
+  if (!isInternalCall && !userHasPermission(["admin"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
