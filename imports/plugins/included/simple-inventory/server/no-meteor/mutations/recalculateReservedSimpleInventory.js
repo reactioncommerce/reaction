@@ -1,6 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { ProductConfigurationSchema, SimpleInventoryCollectionSchema } from "../simpleSchemas";
+import orderIsApproved from "../utils/orderIsApproved";
 
 const inputSchema = new SimpleSchema({
   productConfiguration: ProductConfigurationSchema,
@@ -26,6 +27,8 @@ async function getReservedQuantity(context, productConfiguration) {
   }).toArray();
 
   const reservedQuantity = orders.reduce((sum, order) => {
+    if (orderIsApproved(order)) return sum;
+
     // Reduce through each fulfillment (shipping) object
     const shippingGroupsItems = order.shipping.reduce((acc, shippingGroup) => {
       // Get all items in order that match the item being adjusted

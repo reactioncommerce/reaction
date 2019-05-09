@@ -1,5 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import collectionIndex from "/imports/utils/collectionIndex";
+import orderIsApproved from "./utils/orderIsApproved";
 
 /**
  * @summary Get all order items
@@ -28,15 +29,13 @@ export default function startup(context) {
     // Inventory is removed from stock only once an order has been approved
     // This is indicated by payment.status being anything other than `created`
     // We need to check to make sure the inventory has been removed before we return it to stock
-    const orderIsApproved = !Array.isArray(order.payments) || order.payments.length === 0 ||
-      !!order.payments.find((payment) => payment.status !== "created");
-
+    const isOrderApproved = orderIsApproved(order);
     const allOrderItems = getAllOrderItems(order);
 
     const bulkWriteOperations = [];
 
     // If order is approved, the inventory has been taken away from `inventoryInStock`
-    if (returnToStock && orderIsApproved) {
+    if (returnToStock && isOrderApproved) {
       allOrderItems.forEach((item) => {
         bulkWriteOperations.push({
           updateOne: {
@@ -54,7 +53,7 @@ export default function startup(context) {
           }
         });
       });
-    } else if (!orderIsApproved) {
+    } else if (!isOrderApproved) {
       // If order is not approved, the inventory hasn't been taken away from `inventoryInStock` yet but is in `inventoryReserved`
       allOrderItems.forEach((item) => {
         bulkWriteOperations.push({
@@ -134,8 +133,7 @@ export default function startup(context) {
 
   appEvents.on("afterOrderApprovePayment", async ({ order }) => {
     // We only decrease the inventory quantity after the final payment is approved
-    const nonApprovedPayment = (order.payments || []).find((payment) => payment.status === "created");
-    if (nonApprovedPayment) return;
+    if (!orderIsApproved(order)) return;
 
     const allOrderItems = getAllOrderItems(order);
 
