@@ -1,6 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { ProductConfigurationSchema, SimpleInventoryCollectionSchema } from "../simpleSchemas";
+import getReservedQuantity from "../utils/getReservedQuantity";
 
 const inputSchema = new SimpleSchema({
   productConfiguration: ProductConfigurationSchema,
@@ -85,8 +86,8 @@ export default async function updateSimpleInventory(context, input) {
   const $setOnInsert = {
     "createdAt": new Date(),
     // inventoryReserved is calculated by this plugin rather than being set by
-    // users, but we need to init it to 0 on inserts since it's required.
-    "inventoryReserved": 0,
+    // users, but we need to init it to the correct value on inserts.
+    "inventoryReserved": await getReservedQuantity(context, productConfiguration),
     // The upsert query below has only `productVariantId` so we need to ensure both are inserted
     "productConfiguration.productId": productConfiguration.productId
   };
