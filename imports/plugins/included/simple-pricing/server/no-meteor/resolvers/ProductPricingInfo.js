@@ -1,4 +1,5 @@
-import { getXformedCurrencyByCode, xformCurrencyExchangePricing } from "@reactioncommerce/reaction-graphql-xforms/currency";
+import { getXformedCurrencyByCode } from "@reactioncommerce/reaction-graphql-xforms/currency";
+import xformCurrencyExchangePricing from "../util/xformCurrencyExchangePricing";
 
 export default {
   currency: (node) => getXformedCurrencyByCode(node.currencyCode),

@@ -77,7 +77,7 @@ app:
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS
         value: event.product-import.products.stream.json-gen1
     -   key: LOYALTY_CONSUMER_ENABLED
-        value: "false"
+        value: true
     -   key: LOYALTY_PLUGIN_BATCH_CONSUME_SIZE
         value: "10000"
     -   key: MASTER_PUBLISH_CONSUMER_ENABLED
@@ -85,17 +85,19 @@ app:
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED
-        value: "false"
+        value: true
     -   key: PRICING_GRAPHQL_URL
         value: http://reaction-pricing-engine.bobs:8888/graphql
     -   key: PRODUCT_CONSUMER_ENABLED
-        value: "false"
+        value: true
     -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
         value: false
     -   key: RADIAL_MODE
         value: sandbox
     -   key: RADIAL_STORE_ID
         value: BOBSUS
+    -   key: RADIAL_TAXES_API_URL
+        value: https://tst02-epapi-na.gsipartners.com/v1.0/stores
     -   key: REACTION_LOG_FORMAT
         value: "json"
     -   key: REACTION_LOG_LEVEL

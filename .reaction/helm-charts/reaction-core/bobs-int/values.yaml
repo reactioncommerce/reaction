@@ -97,6 +97,8 @@ app:
         value: sandbox
     -   key: RADIAL_STORE_ID
         value: BOBSUS
+    -   key: RADIAL_TAXES_API_URL
+        value: https://tst02-epapi-na.gsipartners.com/v1.0/stores
     -   key: REACTION_LOG_FORMAT
         value: "json"
     -   key: REACTION_LOG_LEVEL

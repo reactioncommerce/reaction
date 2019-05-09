@@ -16,6 +16,7 @@ import marketplace from "/imports/plugins/included/marketplace/server/no-meteor/
 import paymentsExample from "/imports/plugins/included/payments-example/server/no-meteor/schemas";
 import paymentsStripe from "/imports/plugins/included/payments-stripe/server/no-meteor/schemas";
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/schemas";
+import simplePricing from "/imports/plugins/included/simple-pricing/server/no-meteor/schemas";
 
 export default [
   ...accounts,
@@ -33,5 +34,6 @@ export default [
   ...marketplace,
   ...paymentsExample,
   ...paymentsStripe,
-  ...shippingRates
+  ...shippingRates,
+  ...simplePricing
 ];
