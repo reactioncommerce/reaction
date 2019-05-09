@@ -130,7 +130,10 @@
         "shopLocalizationSettingsSaved": "Shop localization settings saved.",
         "shopLocalizationSettingsFailed": "Shop localization settings update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
-        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed.",
+        "storefrontUrlsDescription": "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails.",
+        "storefrontUrlsTitle": "StorefrontUrls",
+        "updateStorefrontUrls": "Update storefront Urls"
       },
       "notifications": {
         "body": {
