@@ -1,6 +1,15 @@
 extend type Query {
   "Returns a navigation tree by its ID in the specified language"
-  navigationTreeById(id: ID!, language: String!): NavigationTree
+  navigationTreeById(
+    "The ID of the navigation tee"
+    id: ID!,
+
+    "Navigation language"
+    language: String!,
+
+    "Set to true if you want to include secondary navigation items along with the primary items"
+    shouldIncludeSecondary: Boolean = false
+  ): NavigationTree
 
   "Returns the navigation items for a shop"
   navigationItemsByShopId(
@@ -141,6 +150,15 @@ type NavigationTreeItem {
   "Whether the navigation item should display its children"
   expanded: Boolean
 
+  "Whether the navigation item should be hidden from customers"
+  isPrivate: Boolean
+
+  "Whether the navigaton item is a secondary navigation item"
+  isSecondary: Boolean
+
+  "Whether the navigation ttem should shown in query results for customers and admins"
+  isVisible: Boolean
+
   "The child navigation items"
   items: [NavigationTreeItem]
 
@@ -265,6 +283,15 @@ input NavigationTreeInput {
 input NavigationTreeItemInput {
   "Whether the navigation item should display its children"
   expanded: Boolean
+
+  "Whether the navigation item should be hidden from customers"
+  isPrivate: Boolean
+
+  "Whether the navigaton item is a secondary navigation item"
+  isSecondary: Boolean
+
+  "Whether the navigation ttem should shown in query results for customers and admins"
+  isVisible: Boolean
 
   "The child navigation items"
   items: [NavigationTreeItemInput]

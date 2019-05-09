@@ -17,7 +17,7 @@ import { WebApp } from "meteor/webapp";
 const Endpoints = {};
 
 WebApp.connectHandlers.use(bodyParser.json({
-  limit: "200kb", // Override default request size
+  limit: "500kb", // Override default request size
   // Attach the raw body which is necessary for doing verifications for some webhooks
   verify(req, res, buf) {
     req.rawBody = buf;
