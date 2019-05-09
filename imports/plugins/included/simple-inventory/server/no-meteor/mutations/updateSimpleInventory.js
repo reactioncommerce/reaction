@@ -51,14 +51,18 @@ const defaultValues = {
  * @param {Boolean} input.isEnabled Whether the SimpleInventory plugin should manage inventory for this product configuration
  * @param {Number} input.lowInventoryWarningThreshold The "low quantity" flag will be applied to this product configuration
  *   when the available quantity is at or below this threshold.
- * @return {Object} Updated inventory values
+ * @param {Object} [options] Other options
+ * @param {Boolean} [options.returnUpdatedDoc=true] Set to `false` as a performance optimization
+ *   if you don't need the updated document returned.
+ * @return {Object|null} Updated inventory values, or `null` if `returnUpdatedDoc` is `false`
  */
-export default async function updateSimpleInventory(context, input) {
+export default async function updateSimpleInventory(context, input, options) {
   inputSchema.validate(input);
 
   const { appEvents, collections, isInternalCall, userHasPermission, userId } = context;
   const { Products, SimpleInventory } = collections;
   const { productConfiguration, shopId } = input;
+  const { returnUpdatedDoc = true } = options;
 
   if (!isInternalCall) {
     // Verify that the product exists. For internal calls, we assume we can skip this
@@ -141,8 +145,13 @@ export default async function updateSimpleInventory(context, input) {
 
   await appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
 
-  return SimpleInventory.findOne({
-    "productConfiguration.productVariantId": productConfiguration.productVariantId,
-    shopId
-  });
+  let updatedDoc = null;
+  if (returnUpdatedDoc) {
+    updatedDoc = await SimpleInventory.findOne({
+      "productConfiguration.productVariantId": productConfiguration.productVariantId,
+      shopId
+    });
+  }
+
+  return updatedDoc;
 }
