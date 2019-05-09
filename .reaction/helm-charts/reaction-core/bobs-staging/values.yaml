@@ -120,6 +120,10 @@ app:
         value: "false"
     -   key: KAFKA_TOPIC_IMPORT_ORDER_STATUS_ORDERS
         value: etl.import-order-status.status.json-gen1
+    -   key: KAFKA_TOPIC_RADIAL_ITEM_EXPORT_STATUS
+        value: etl.radial-item-export.status.json-gen1
+    -   key: RADIAL_ITEM_EXPORT_CONSUMER_ENABLED
+        value: "false"
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:

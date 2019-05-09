@@ -127,6 +127,10 @@ app:
         value: "true"
     -   key: CONSTANT_PUBLISHER_PAUSE_SECONDS
         value: 300
+    -   key: KAFKA_TOPIC_RADIAL_ITEM_EXPORT_STATUS
+        value: etl.radial-item-export.status.json-gen1
+    -   key: RADIAL_ITEM_EXPORT_CONSUMER_ENABLED
+        value: "false"
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
