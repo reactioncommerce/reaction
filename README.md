@@ -11,15 +11,15 @@
 
 Reaction’s out-of-the-box core features include:
 
--	One-step cart and checkout
--   Order processing
--   Payments with Stripe
--   Shipping
--   Taxes
--   Multi-currency support
--   Discounts
--   Integration with dozens of third-party apps
--   See full list of features on our [roadmap](https://reactioncommerce.com/roadmap)
+- One-step cart and checkout
+- Order processing
+- Payments with Stripe
+- Shipping
+- Taxes
+- Multi-currency support
+- Discounts
+- Integration with dozens of third-party apps
+- See full list of features on our [roadmap](https://reactioncommerce.com/roadmap)
 
 Since anything in our codebase can be extended, overwritten, or installed as a package, you may also develop, scale, and customize anything on our platform.
 
@@ -33,17 +33,17 @@ Follow the documentation to install Reaction with [Reaction Platform](https://do
 
 ## Read documentation & tutorials
 
--   [Reaction Commerce: Developer documentation](https://docs.reactioncommerce.com)
--   [Reaction Design System](http://designsystem.reactioncommerce.com/)
--   [Reaction Commerce: API documentation](http://api.docs.reactioncommerce.com)
--   [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
--   [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
+- [Reaction Commerce: Developer documentation](https://docs.reactioncommerce.com)
+- [Reaction Design System](http://designsystem.reactioncommerce.com/)
+- [Reaction Commerce: API documentation](http://api.docs.reactioncommerce.com)
+- [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
+- [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
 
 ## Get help & contact the team
 
--   [Reaction Commerce Gitter chat](https://gitter.im/reactioncommerce/reaction)
--   [Reaction Commerce forum](https://forums.reactioncommerce.com/)
--   [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities): Report security vulnerabilities to <mailto:security@reactioncommerce.com>.
+- [Reaction Commerce Gitter chat](https://gitter.im/reactioncommerce/reaction)
+- [Reaction Commerce forum](https://forums.reactioncommerce.com/)
+- [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities): Report security vulnerabilities to <mailto:security@reactioncommerce.com>.
 
 ## Contribute
 
@@ -56,9 +56,9 @@ We love your pull requests! Check our our [`Good First Issue`](https://github.co
 Pull requests should:
 
 - Pass all Circle CI checks:
-    - Run `docker-compose run --rm reaction npm run lint` to make sure your code follows [Reaction's ESLint rules](https://github.com/reactioncommerce/reaction-eslint-config).
-    - Run `docker-compose run --rm reaction reaction test` to run [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
-    - Make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and
+  - Run `docker-compose run --rm reaction npm run lint` to make sure your code follows [Reaction's ESLint rules](https://github.com/reactioncommerce/reaction-eslint-config).
+  - Run `docker-compose run --rm reaction reaction test` to run [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
+  - Make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and
 - Follow the pull request template.
 
 Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/reaction-docs/master/contributing-to-reaction).
