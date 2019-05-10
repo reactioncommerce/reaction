@@ -11,7 +11,6 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalProductId = "product1";
 const opaqueProductId = "cmVhY3Rpb24vcHJvZHVjdDpwcm9kdWN0MQ==";
 const internalVariantId = "variant1";
-const opaqueVariantId = "cmVhY3Rpb24vcHJvZHVjdDp2YXJpYW50MQ==";
 const internalOptionId1 = "option1";
 const opaqueOptionId1 = "cmVhY3Rpb24vcHJvZHVjdDpvcHRpb24x";
 const internalOptionId2 = "option2";
