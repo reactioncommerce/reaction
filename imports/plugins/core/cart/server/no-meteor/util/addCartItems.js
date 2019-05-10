@@ -2,7 +2,6 @@ import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
 import { toFixed } from "accounting-js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 
 const inputItemSchema = new SimpleSchema({
   "metafields": {
@@ -37,7 +36,7 @@ const inputItemSchema = new SimpleSchema({
  * @return {Object} Object with `incorrectPriceFailures` and `minOrderQuantityFailures` and `updatedItemList` props
  */
 export default async function addCartItems(context, currentItems, inputItems, options = {}) {
-  const { collections, queries } = context;
+  const { queries } = context;
 
   inputItemSchema.validate(inputItems);
 
@@ -58,7 +57,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       catalogProduct,
       parentVariant,
       variant: chosenVariant
-    } = await findProductAndVariant(collections, productId, productVariantId);
+    } = await queries.findProductAndVariant(context, productId, productVariantId);
 
     const variantPriceInfo = await queries.getVariantPrice(context, chosenVariant, price.currencyCode);
     if (!variantPriceInfo) {

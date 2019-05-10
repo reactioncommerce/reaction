@@ -1,11 +1,10 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$getVariants, restore as restore$getVariants } from "./getVariants";
-import { rewire as rewire$getVariantPriceRange, restore as restore$getVariantPriceRange } from "./getVariantPriceRange";
-import getProductPriceRange from "./getProductPriceRange";
+import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
+import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
+import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+import updateCatalogProductInventoryStatus from "./updateCatalogProductInventoryStatus";
 
 const mockCollections = { ...mockContext.collections };
-const mockGetVariants = jest.fn().mockName("getVariants");
-const mockGetVariantPriceRange = jest.fn().mockName("getVariantPriceRange");
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
@@ -28,6 +27,8 @@ const mockVariants = [
     createdAt,
     height: 0,
     index: 0,
+    inventoryAvailableToSell: 10,
+    inventoryInStock: 10,
     inventoryManagement: true,
     inventoryPolicy: false,
     isDeleted: false,
@@ -49,7 +50,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Untitled Option",
     originCountry: "US",
-    price: 0,
     shopId: internalShopId,
     sku: "sku",
     taxCode: "0000",
@@ -62,10 +62,12 @@ const mockVariants = [
   },
   {
     _id: internalVariantIds[1],
-    ancestors: [internalCatalogProductId, internalVariantIds[0]],
+    ancestors: [internalCatalogProductId],
     barcode: "barcode",
     height: 2,
     index: 0,
+    inventoryAvailableToSell: 10,
+    inventoryInStock: 10,
     inventoryManagement: true,
     inventoryPolicy: true,
     isDeleted: false,
@@ -87,7 +89,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 2.99,
     shopId: internalShopId,
     sku: "sku",
     taxCode: "0000",
@@ -109,6 +110,8 @@ const mockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
+  inventoryAvailableToSell: 20,
+  inventoryInStock: 20,
   isBackorder: false,
   isLowQuantity: false,
   isSoldOut: false,
@@ -136,11 +139,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
   media: [
     {
       metadata: {
@@ -169,45 +167,53 @@ const mockProduct = {
   twitterMsg: "twitterMessage",
   type: "product-simple",
   updatedAt,
-  mockVariants,
+  variants: mockVariants,
   vendor: "vendor",
   weight: 15.6,
   width: 8.4
 };
 
-const mockPriceRange = {
-  range: "2.99 - 5.99",
-  max: 5.99,
-  min: 2.99
+const mockCatalogItem = {
+  _id: internalCatalogItemId,
+  shopId: internalShopId,
+  product: mockProduct
 };
 
+const mockIsBackorder = jest
+  .fn()
+  .mockName("isBackorder")
+  .mockReturnValue(false);
+const mockIsLowQuantity = jest
+  .fn()
+  .mockName("isLowQuantity")
+  .mockReturnValue(false);
+const mockIsSoldOut = jest.fn().mockName("isSoldOut");
+
 beforeAll(() => {
-  rewire$getVariants(mockGetVariants);
-  rewire$getVariantPriceRange(mockGetVariantPriceRange);
+  rewire$isBackorder(mockIsBackorder);
+  rewire$isLowQuantity(mockIsLowQuantity);
+  rewire$isSoldOut(mockIsSoldOut);
 });
 
 afterAll(() => {
-  restore$getVariants();
-  restore$getVariantPriceRange();
+  restore$isBackorder();
+  restore$isLowQuantity();
+  restore$isSoldOut();
 });
 
-// expect a legit price range
-test("expect to return a promise that resolves to a product price object", async () => {
+test("expect true if a product's inventory has changed and is updated in the catalog collection", async () => {
+  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockCatalogItem));
   mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
-  mockGetVariants.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockGetVariantPriceRange
-    .mockReturnValueOnce(Promise.resolve(mockPriceRange))
-    .mockReturnValueOnce(Promise.resolve(mockPriceRange));
-  const spec = await getProductPriceRange("999", mockCollections);
-  expect(spec).toEqual(mockPriceRange);
+  mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockIsSoldOut.mockReturnValueOnce(true);
+  mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
+  const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
+  expect(spec).toBe(true);
 });
 
-// expect an empty price range
-test("expect to throw an error if no product is found", async () => {
-  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(undefined));
-  try {
-    getProductPriceRange("badID", mockCollections);
-  } catch (error) {
-    expect(error).toEqual("Product not found");
-  }
+test("expect false if a product's catalog item does not exist", async () => {
+  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(undefined));
+  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
+  const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
+  expect(spec).toBe(false);
 });

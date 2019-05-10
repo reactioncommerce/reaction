@@ -20,8 +20,11 @@ class Login extends Component {
   constructor(props) {
     super(props);
 
+    const currentRoute = Router.current().route;
+    const isPasswordReset = currentRoute.name === "reset-password";
+
     this.state = {
-      currentView: props.loginFormCurrentView
+      currentView: isPasswordReset ? "loginFormUpdatePasswordView" : props.loginFormCurrentView
     };
 
     this.showForgotPasswordView = this.showForgotPasswordView.bind(this);
@@ -57,7 +60,7 @@ class Login extends Component {
     const currentRoute = Router.current().route;
     const isOauthFlow = currentRoute.options && currentRoute.options.meta && currentRoute.options.meta.oauthLoginFlow;
     const idpFormClass = isOauthFlow ? "idp-form" : "";
-    if (this.state.currentView === "loginFormSignInView" || this.state.currentView === "loginFormSignUpView") {
+    if (this.state.currentView === "loginFormSignInView" || this.state.currentView === "loginFormSignUpView" || this.state.currentView === "loginFormUpdatePasswordView") {
       if (isOauthFlow) {
         return (
           <Components.OAuthFormContainer

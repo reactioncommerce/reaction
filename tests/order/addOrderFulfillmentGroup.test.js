@@ -16,6 +16,8 @@ let catalogItem2;
 let mockOrdersAccount;
 let shopId;
 
+const variant1Price = 10;
+const variant2Price = 5;
 const fulfillmentMethodId = "METHOD_ID";
 const mockShipmentMethod = {
   _id: fulfillmentMethodId,
@@ -71,7 +73,11 @@ beforeAll(async () => {
       variants: Factory.CatalogVariantSchema.makeMany(1, {
         _id: Random.id(),
         options: null,
-        price: 10,
+        pricing: {
+          USD: {
+            price: variant1Price
+          }
+        },
         variantId: Random.id()
       })
     })
@@ -89,7 +95,11 @@ beforeAll(async () => {
       variants: Factory.CatalogVariantSchema.makeMany(1, {
         _id: Random.id(),
         options: null,
-        price: 5,
+        pricing: {
+          USD: {
+            price: variant2Price
+          }
+        },
         variantId: Random.id()
       })
     })
@@ -100,8 +110,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await testApp.collections.Catalog.remove({});
-  await testApp.collections.Shops.remove({});
+  await testApp.collections.Catalog.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
   testApp.stop();
 });
 
@@ -110,7 +120,7 @@ test("user with orders role can add an order fulfillment group with new items", 
 
   const orderItem = Factory.OrderItem.makeOne({
     price: {
-      amount: catalogItem.product.variants[0].price,
+      amount: variant1Price,
       currencyCode: "USD"
     },
     productId: catalogItem.product.productId,
@@ -130,6 +140,7 @@ test("user with orders role can add an order fulfillment group with new items", 
 
   const order = Factory.Order.makeOne({
     accountId: "123",
+    currencyCode: "USD",
     shipping: [group],
     shopId,
     workflow: {
@@ -144,7 +155,7 @@ test("user with orders role can add an order fulfillment group with new items", 
     result = await addOrderFulfillmentGroup({
       fulfillmentGroup: {
         items: [{
-          price: catalogItem2.product.variants[0].price,
+          price: variant2Price,
           productConfiguration: {
             productId: encodeProductOpaqueId(catalogItem2.product.productId),
             productVariantId: encodeProductOpaqueId(catalogItem2.product.variants[0].variantId)
@@ -192,7 +203,7 @@ test("user with orders role can add an order fulfillment group with new items", 
           nodes: [
             {
               price: {
-                amount: catalogItem2.product.variants[0].price
+                amount: variant2Price
               },
               productConfiguration: {
                 productId: encodeProductOpaqueId(catalogItem2.product.productId),
@@ -219,7 +230,7 @@ test("user with orders role can add an order fulfillment group with moved items"
 
   const orderItemToStay = Factory.OrderItem.makeOne({
     price: {
-      amount: catalogItem.product.variants[0].price,
+      amount: variant1Price,
       currencyCode: "USD"
     },
     productId: catalogItem.product.productId,
@@ -233,7 +244,7 @@ test("user with orders role can add an order fulfillment group with moved items"
 
   const orderItemToMove = Factory.OrderItem.makeOne({
     price: {
-      amount: catalogItem2.product.variants[0].price,
+      amount: variant2Price,
       currencyCode: "USD"
     },
     quantity: 10,
@@ -259,6 +270,7 @@ test("user with orders role can add an order fulfillment group with moved items"
 
   const order = Factory.Order.makeOne({
     accountId: "123",
+    currencyCode: "USD",
     shipping: [group],
     shopId,
     workflow: {
@@ -314,7 +326,7 @@ test("user with orders role can add an order fulfillment group with moved items"
           nodes: [
             {
               price: {
-                amount: catalogItem2.product.variants[0].price
+                amount: variant2Price
               },
               productConfiguration: {
                 productId: encodeProductOpaqueId(catalogItem2.product.productId),

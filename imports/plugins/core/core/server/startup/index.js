@@ -51,7 +51,11 @@ export default function startup() {
   CollectionSecurity();
   RateLimiters();
 
-  startNodeApp()
+  startNodeApp({
+    async onAppInstanceCreated(app) {
+      await Reaction.onAppInstanceCreated(app);
+    }
+  })
     .then(() => {
       const endTime = Date.now();
       Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
