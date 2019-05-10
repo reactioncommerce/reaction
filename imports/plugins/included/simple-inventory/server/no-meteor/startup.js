@@ -40,10 +40,7 @@ export default function startup(context) {
         bulkWriteOperations.push({
           updateOne: {
             filter: {
-              productConfiguration: {
-                productId: item.productId,
-                productVariantId: item.variantId
-              }
+              "productConfiguration.productVariantId": item.variantId
             },
             update: {
               $inc: {
@@ -59,10 +56,7 @@ export default function startup(context) {
         bulkWriteOperations.push({
           updateOne: {
             filter: {
-              productConfiguration: {
-                productId: item.productId,
-                productVariantId: item.variantId
-              }
+              "productConfiguration.productVariantId": item.variantId
             },
             update: {
               $inc: {
@@ -76,7 +70,7 @@ export default function startup(context) {
 
     if (bulkWriteOperations.length === 0) return;
 
-    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
+    await SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
       .then(() => (
         Promise.all(allOrderItems.map((item) => (
           appEvents.emit("afterInventoryUpdate", {
@@ -99,10 +93,7 @@ export default function startup(context) {
     const bulkWriteOperations = allOrderItems.map((item) => ({
       updateOne: {
         filter: {
-          productConfiguration: {
-            productId: item.productId,
-            productVariantId: item.variantId
-          }
+          "productConfiguration.productVariantId": item.variantId
         },
         update: {
           $inc: {
@@ -114,7 +105,7 @@ export default function startup(context) {
 
     if (bulkWriteOperations.length === 0) return;
 
-    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
+    await SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
       .then(() => (
         Promise.all(allOrderItems.map((item) => (
           appEvents.emit("afterInventoryUpdate", {
@@ -140,10 +131,7 @@ export default function startup(context) {
     const bulkWriteOperations = allOrderItems.map((item) => ({
       updateOne: {
         filter: {
-          productConfiguration: {
-            productId: item.productId,
-            productVariantId: item.variantId
-          }
+          "productConfiguration.productVariantId": item.variantId
         },
         update: {
           $inc: {
@@ -156,7 +144,7 @@ export default function startup(context) {
 
     if (bulkWriteOperations.length === 0) return;
 
-    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
+    await SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false })
       .then(() => (
         Promise.all(allOrderItems.map((item) => (
           appEvents.emit("afterInventoryUpdate", {
