@@ -6,6 +6,7 @@ export const ProductConfigurationSchema = new SimpleSchema({
 });
 
 export const SimpleInventoryCollectionSchema = new SimpleSchema({
+  _id: String,
   canBackorder: Boolean,
   createdAt: Date,
   inventoryInStock: {
