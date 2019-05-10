@@ -889,13 +889,13 @@ export default {
             layout: config.layout
           };
 
-          // Setting from a fixture file, most likely reaction.json
+          // Settings from a fixture file, most likely reaction.json
           let settingsFromFixture;
           if (registryFixtureData) {
             settingsFromFixture = registryFixtureData[0].find((packageSetting) => config.name === packageSetting.name);
           }
 
-          // Setting already imported into the packages collection
+          // Settings already imported into the packages collection
           const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
 
           const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});

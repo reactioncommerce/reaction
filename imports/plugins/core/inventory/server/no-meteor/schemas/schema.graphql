@@ -31,8 +31,8 @@ extend type CatalogProduct {
 
 extend type CatalogProductVariant {
   """
-  True for a purchasable variant if an order containing this variant will be accepted even where there is insufficient
-  available inventory to fulfill it immediately. For non-purchasable variants, this is true if at least one purchasable
+  True for a purchasable variant if an order containing this variant will be accepted even when there is insufficient
+  available inventory (`inventoryAvailableToSell`) to fulfill it immediately. For non-purchasable variants, this is true if at least one purchasable
   child variant can be backordered. A storefront UI may use this in combination with `inventoryAvailableToSell` to
   decide whether to show or enable an "Add to Cart" button.
   """
@@ -64,15 +64,15 @@ extend type CatalogProductVariant {
   isBackorder: Boolean!
 
   """
-  True for a purchasable variant if it has a low quantity in stock. For non-purchasable variants, this is
-  true if at least one purchasable child variant has a low quantity in stock. A storefront UI may use this
-  to decide to show a "Low Quantity" indicator.
+  True for a purchasable variant if it has a low available quantity (`inventoryAvailableToSell`) in stock.
+  For non-purchasable variants, this is true if at least one purchasable child variant has a low available
+  quantity in stock. A storefront UI may use this to decide to show a "Low Quantity" indicator.
   """
   isLowQuantity: Boolean!
 
   """
-  True for a purchasable variant if it is sold out. For non-purchasable variants, this is
-  true if every purchasable child variant is sold out. A storefront UI may use this
+  True for a purchasable variant if it is sold out (`inventoryAvailableToSell` is 0). For non-purchasable
+  variants, this is true if every purchasable child variant is sold out. A storefront UI may use this
   to decide to show a "Sold Out" indicator when `isBackorder` is not also true.
   """
   isSoldOut: Boolean!
@@ -99,14 +99,14 @@ extend type CartItem {
   isBackorder: Boolean!
 
   """
-  True it this item has a low quantity in stock. A storefront UI may use this
-  to decide to show a "Low Quantity" indicator.
+  True if this item has a low available quantity (`inventoryAvailableToSell`) in stock.
+  A storefront UI may use this to decide to show a "Low Quantity" indicator.
   """
   isLowQuantity: Boolean!
 
   """
-  True if this item is currently sold out. A storefront UI may use this
-  to decide to show a "Sold Out" indicator when `isBackorder` is not also true.
+  True if this item is currently sold out (`inventoryAvailableToSell` is 0). A storefront
+  UI may use this to decide to show a "Sold Out" indicator when `isBackorder` is not also true.
   """
   isSoldOut: Boolean!
 }
