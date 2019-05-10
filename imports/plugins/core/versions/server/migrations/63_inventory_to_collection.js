@@ -1,5 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { MongoInternals } from "meteor/mongo";
+import Random from "@reactioncommerce/random";
 import rawCollections from "/imports/collections/rawCollections";
 import findAndConvertInBatches from "../util/findAndConvertInBatchesNoMeteor";
 
@@ -71,6 +72,7 @@ Migrations.add({
                 updatedAt: new Date()
               },
               $setOnInsert: {
+                _id: Random.id(),
                 createdAt: new Date()
               }
             },

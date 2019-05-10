@@ -1,4 +1,5 @@
 import SimpleSchema from "simpl-schema";
+import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { ProductConfigurationSchema, SimpleInventoryCollectionSchema } from "../simpleSchemas";
 
@@ -87,6 +88,7 @@ export default async function updateSimpleInventory(context, input, options = {}
 
   const $set = { updatedAt: new Date() };
   const $setOnInsert = {
+    "_id": Random.id(),
     "createdAt": new Date(),
     // inventoryReserved is calculated by this plugin rather than being set by
     // users, but we need to init it to some number since this is required.
