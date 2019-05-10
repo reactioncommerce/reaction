@@ -2,7 +2,7 @@ import { Migrations } from "meteor/percolate:migrations";
 import { MongoInternals } from "meteor/mongo";
 import Random from "@reactioncommerce/random";
 import rawCollections from "/imports/collections/rawCollections";
-import findAndConvertInBatches from "../util/findAndConvertInBatchesNoMeteor";
+import findAndConvertInBatches from "../no-meteor/util/findAndConvertInBatches";
 
 const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
 

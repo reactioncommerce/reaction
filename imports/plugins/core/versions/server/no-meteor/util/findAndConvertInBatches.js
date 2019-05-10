@@ -12,7 +12,7 @@ const LIMIT = 200;
  * @param {Object} [options.query] Optional MongoDB query that will only find not-yet-converted docs
  * @returns {undefined}
  */
-export default async function findAndConvertInBatchesNoMeteor({ collection, converter, query = {} }) {
+export default async function findAndConvertInBatches({ collection, converter, query = {} }) {
   let docs;
   let skip = 0;
 

@@ -1,7 +1,7 @@
 import { Migrations } from "meteor/percolate:migrations";
 import rawCollections from "/imports/collections/rawCollections";
 import hashProduct from "../util/hashProduct";
-import findAndConvertInBatches from "../util/findAndConvertInBatchesNoMeteor";
+import findAndConvertInBatches from "../no-meteor/util/findAndConvertInBatches";
 
 const { Catalog } = rawCollections;
 
