@@ -65,10 +65,8 @@ Migrations.add({
           // Create SimpleInventory record
           await SimpleInventory.updateOne(
             {
-              productConfiguration: {
-                productId: variant.ancestors[0],
-                productVariantId: variant._id
-              }
+              "productConfiguration.productVariantId": variant._id,
+              "shopId": variant.shopId
             },
             {
               $set: {
@@ -81,8 +79,10 @@ Migrations.add({
                 updatedAt: new Date()
               },
               $setOnInsert: {
-                _id: Random.id(),
-                createdAt: new Date()
+                "_id": Random.id(),
+                "createdAt": new Date(),
+                // The upsert query has only `productVariantId` so we need to ensure both are inserted
+                "productConfiguration.productId": variant.ancestors[0]
               }
             },
             {
