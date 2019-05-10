@@ -40,7 +40,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       isTaxable: item.isTaxable,
       parcel: item.parcel,
       price: {
-        amount: itemPrice,
+        amount: itemPrice.amount,
         currencyCode
       },
       productId: item.productId,
@@ -48,7 +48,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       quantity: item.quantity,
       shopId: item.shopId,
       subtotal: {
-        amount: +toFixed(itemPrice * item.quantity, 3),
+        amount: +toFixed(itemPrice.amount * item.quantity, 3),
         currencyCode
       },
       taxCode: item.taxCode,
