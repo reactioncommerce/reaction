@@ -175,7 +175,7 @@ export default async function inventoryForProductConfigurations(context, input) 
   // and calculate aggregated values from them.
   let childOptionResults = [];
   if (parentVariantProductConfigurations.length) {
-    const variantIds = parentVariantProductConfigurations.map(({ variantId }) => variantId);
+    const variantIds = parentVariantProductConfigurations.map(({ productVariantId }) => productVariantId);
     const allOptions = await Products.find({
       ancestors: { $in: variantIds }
     }, {
@@ -187,7 +187,7 @@ export default async function inventoryForProductConfigurations(context, input) 
     childOptionResults = await getInventoryResults(context, {
       fields,
       productConfigurations: allOptions.map((option) => ({
-        productId: option.productId,
+        productId: option.ancestors[0],
         productVariantId: option._id
       }))
     });

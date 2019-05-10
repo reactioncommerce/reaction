@@ -147,7 +147,7 @@ export default async function createCatalogProduct(product, context) {
   const shop = await Shops.findOne(
     { _id: product.shopId },
     {
-      fields: {
+      projection: {
         currencies: 1,
         currency: 1
       }
