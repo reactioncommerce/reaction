@@ -43,8 +43,6 @@ export default {
     }
 
     this.loadPackages();
-    // process imports from packages and any hooked imports
-    this.Importer.flush();
     createGroups();
     this.setAppVersion();
 
@@ -836,8 +834,6 @@ export default {
    *  @return {String} returns insert result
    */
   loadPackages() {
-    const packages = Packages.find().fetch();
-
     let registryFixtureData;
 
     if (process.env.REACTION_REGISTRY) {
@@ -867,6 +863,7 @@ export default {
 
     this.whenAppInstanceReady((app) => {
       const layouts = [];
+      const packages = Packages.find().fetch();
       const { registeredPlugins } = app;
       const totalPackages = Object.keys(registeredPlugins).length;
       let loadedIndex = 1;
@@ -938,6 +935,8 @@ export default {
       Shops.find().forEach((shop) => {
         this.Importer.layout(uniqLayouts, shop._id);
       });
+
+      this.Importer.flush();
 
       //
       // package cleanup
