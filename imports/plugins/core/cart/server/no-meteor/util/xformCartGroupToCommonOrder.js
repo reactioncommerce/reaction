@@ -1,4 +1,6 @@
 import { toFixed } from "accounting-js";
+import ReactionError from "@reactioncommerce/reaction-error";
+
 
 /**
  * @param {Object} cart A cart
@@ -29,7 +31,13 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       const catalogProduct = catalogItemsInGroup.find((catalogItem) => catalogItem.product.productId === item.productId);
       if (catalogProduct) {
         const catalogVariant = context.queries.findVariantInCatalogProduct(catalogProduct.product, item.variantId);
+        if (catalogVariant === null) {
+          throw new ReactionError("not-found", "Catalog variant not found");
+        }
         const variantPrice = await context.queries.getVariantPrice(context, catalogVariant, currencyCode);
+        if (variantPrice === null) {
+          throw new ReactionError("not-found", "Variant price not found");
+        }
         itemPrice = variantPrice.price;
       }
     }
