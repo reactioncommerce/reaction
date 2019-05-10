@@ -56,7 +56,7 @@ const defaultValues = {
  *   if you don't need the updated document returned.
  * @return {Object|null} Updated inventory values, or `null` if `returnUpdatedDoc` is `false`
  */
-export default async function updateSimpleInventory(context, input, options) {
+export default async function updateSimpleInventory(context, input, options = {}) {
   inputSchema.validate(input);
 
   const { appEvents, collections, isInternalCall, userHasPermission, userId } = context;
