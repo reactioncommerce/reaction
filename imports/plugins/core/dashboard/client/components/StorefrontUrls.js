@@ -10,7 +10,6 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
-import { getRequiredValidator } from "@reactioncommerce/components/utils";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
@@ -99,7 +98,6 @@ class StorefrontUrls extends Component {
                 ref={(formRef) => { this.form = formRef; }}
                 onChange={this.handleFormChange}
                 onSubmit={(data) => this.handleUpdateUrls(data, mutationFunc)}
-                // validator={getRequiredValidator("name", "displayTitle")}
                 value={shop}
               >
                 <CardContent>
@@ -107,12 +105,11 @@ class StorefrontUrls extends Component {
                     name="storefrontHomeUrl"
                     label={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlTitle", "Homepage URL")}
                     labelFor="storefrontHomeUrlInput"
-                    isRequired
                   >
                     <TextInput
                       id="storefrontHomeUrlInput"
                       name="storefrontHomeUrl"
-                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlDescription","URL of your shops homepage")}
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlDescription", "URL of your shops homepage")}
                       value={shop.storefrontUrls.storefrontHomeUrl}
                     />
                     <ErrorsBlock names={["storefrontHomeUrl"]} />
@@ -121,7 +118,6 @@ class StorefrontUrls extends Component {
                     name="storefrontOrderUrl"
                     label={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlTitle", "Single Order page URL")}
                     labelFor="storefrontOrderUrlInput"
-                    isRequired
                   >
                     <TextInput
                       id="storefrontOrderUrlInput"
@@ -135,7 +131,6 @@ class StorefrontUrls extends Component {
                     name="storefrontOrdersUrl"
                     label={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlTitle", "Orders page URL")}
                     labelFor="storefrontOrdersUrlInput"
-                    isRequired
                   >
                     <TextInput
                       id="storefrontOrdersUrlInput"
@@ -149,7 +144,6 @@ class StorefrontUrls extends Component {
                     name="storefrontAccountProfileUrl"
                     label={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlTitle", "Account Profile page URL")}
                     labelFor="storefrontAccountProfileUrlInput"
-                    isRequired
                   >
                     <TextInput
                       id="storefrontAccountProfileUrlInput"
