@@ -1,5 +1,4 @@
 import { toFixed } from "accounting-js";
-import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
 
 /**
  * @param {Object} cart A cart
@@ -29,7 +28,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     if (catalogItemsInGroup) {
       const catalogProduct = catalogItemsInGroup.find((catalogItem) => catalogItem.product.productId === item.productId);
       if (catalogProduct) {
-        const catalogVariant = findVariantInCatalogProduct(catalogProduct.product, item.variantId);
+        const catalogVariant = context.queries.findVariantInCatalogProduct(catalogProduct.product, item.variantId);
         const variantPrice = await context.queries.getVariantPrice(context, catalogVariant, currencyCode);
         itemPrice = variantPrice.price;
       }
