@@ -5,6 +5,7 @@ import { gql, PubSub } from "apollo-server";
 import { createTestClient } from "apollo-server-testing";
 import Random from "@reactioncommerce/random";
 import appEvents from "../imports/node-app/core/util/appEvents";
+import buildContext from "../imports/node-app/core/util/buildContext";
 import createApolloServer from "../imports/node-app/core/createApolloServer";
 import defineCollections from "../imports/node-app/core/util/defineCollections";
 import Factory from "../imports/test-utils/helpers/factory";
@@ -121,6 +122,13 @@ class TestApp {
   async clearLoggedInUser() {
     this.userId = null;
     this.context.user = null;
+  }
+
+  async publishProducts(productIds) {
+    const requestContext = { ...this.context };
+    await buildContext(requestContext);
+    requestContext.userHasPermission = () => true;
+    return this.context.mutations.publishProducts(requestContext, productIds);
   }
 
   async insertPrimaryShop(shopData) {
