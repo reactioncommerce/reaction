@@ -16,7 +16,7 @@ Migrations.add({
   version: 63,
   up() {
     // Clear most inventory fields from Catalog. We'll use values from Products to populate the SimpleInventory collection
-    Promise.await(Catalog.updateMany({}, {
+    Promise.await(Catalog.updateMany({ "product.variants": { $exists: true } }, {
       $unset: {
         "product.inventoryInStock": "",
         "product.inventoryAvailableToSell": "",
@@ -28,24 +28,19 @@ Migrations.add({
         "product.variants.$[].lowInventoryWarningThreshold": "",
         "product.variants.$[].isBackorder": "",
         "product.variants.$[].isLowQuantity": "",
-        "product.variants.$[].isSoldOut": ""
+        "product.variants.$[].isSoldOut": "",
+        "product.variants.$[variantWithOptions].options.$[].canBackorder": "",
+        "product.variants.$[variantWithOptions].options.$[].inventoryInStock": "",
+        "product.variants.$[variantWithOptions].options.$[].inventoryAvailableToSell": "",
+        "product.variants.$[variantWithOptions].options.$[].inventoryManagement": "",
+        "product.variants.$[variantWithOptions].options.$[].inventoryPolicy": "",
+        "product.variants.$[variantWithOptions].options.$[].lowInventoryWarningThreshold": "",
+        "product.variants.$[variantWithOptions].options.$[].isBackorder": "",
+        "product.variants.$[variantWithOptions].options.$[].isLowQuantity": "",
+        "product.variants.$[variantWithOptions].options.$[].isSoldOut": ""
       }
-    }));
-
-    Promise.await(Catalog.updateMany({
-      "product.variants.options": { $exists: true }
     }, {
-      $unset: {
-        "product.variants.$[].options.$[].canBackorder": "",
-        "product.variants.$[].options.$[].inventoryInStock": "",
-        "product.variants.$[].options.$[].inventoryAvailableToSell": "",
-        "product.variants.$[].options.$[].inventoryManagement": "",
-        "product.variants.$[].options.$[].inventoryPolicy": "",
-        "product.variants.$[].options.$[].lowInventoryWarningThreshold": "",
-        "product.variants.$[].options.$[].isBackorder": "",
-        "product.variants.$[].options.$[].isLowQuantity": "",
-        "product.variants.$[].options.$[].isSoldOut": ""
-      }
+      arrayFilters: [{ "variantWithOptions.options": { $exists: true } }]
     }));
 
     Promise.await(findAndConvertInBatches({

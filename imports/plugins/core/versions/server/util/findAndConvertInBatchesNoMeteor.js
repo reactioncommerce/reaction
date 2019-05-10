@@ -48,7 +48,9 @@ export default async function findAndConvertInBatchesNoMeteor({ collection, conv
       // Remove nulls
       operations = operations.filter((op) => !!op);
 
-      await collection.bulkWrite(operations, { ordered: false });
+      if (operations.length) {
+        await collection.bulkWrite(operations, { ordered: false });
+      }
     }
   } while (docs.length);
 }
