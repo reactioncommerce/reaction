@@ -72,6 +72,7 @@ export default {
       }
       this.whenAppInstanceReadyCallbacks = [];
     }
+    appEvents.emit("readyForMigrations");
   },
 
   /**
