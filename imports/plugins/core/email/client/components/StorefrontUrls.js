@@ -9,6 +9,7 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import Grid from "@material-ui/core/Grid";
 import { getRequiredValidator } from "@reactioncommerce/components/utils";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
@@ -19,6 +20,10 @@ import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryS
 
 const PaddedField = styled(Field)`
   margin-bottom: 30px;
+`;
+
+const RightAlignedGrid = styled(Grid)`
+  text-align: right;
 `;
 
 
@@ -155,10 +160,14 @@ class StorefrontUrls extends Component {
                     <ErrorsBlock names={["storefrontAccountProfileUrl"]} />
                   </PaddedField>
                 </CardContent>
-                <CardActions disableActionSpacing>
-                  <Button color="primary" variant="contained" onClick={this.handleSubmitForm}>
-                    {i18next.t("app.save")}
-                  </Button>
+                <CardActions>
+                  <Grid container alignItems="center" justify="flex-end">
+                    <RightAlignedGrid item xs={12}>
+                      <Button color="primary" variant="contained" onClick={this.handleSubmitForm}>
+                        {i18next.t("app.save")}
+                      </Button>
+                    </RightAlignedGrid>
+                  </Grid>
                 </CardActions>
               </Form>
             </Fragment>
