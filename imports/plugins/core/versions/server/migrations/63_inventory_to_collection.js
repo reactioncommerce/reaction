@@ -51,7 +51,16 @@ Migrations.add({
         // If `inventoryManagement` prop is undefined, assume we already converted it and skip.
         if (variant.inventoryManagement === undefined) return null;
 
-        const childOption = await Products.findOne({ ancestors: variant._id }, { projection: { _id: 1 } });
+        // Figure out if this variant has at least one child option (which means it isn't a sellable variant)
+        let childOption;
+
+        if (variant.ancestors.length === 2) {
+          childOption = null;
+        } else {
+          // For first-level variants, we need another query to know whether there are any options
+          childOption = await Products.findOne({ ancestors: variant._id }, { projection: { _id: 1 } });
+        }
+
         if (!childOption) {
           // Create SimpleInventory record
           await SimpleInventory.updateOne(
@@ -82,33 +91,24 @@ Migrations.add({
           );
         }
 
-        delete variant.inventoryAvailableToSell;
-        delete variant.inventoryInStock;
-        delete variant.inventoryPolicy;
-        delete variant.inventoryManagement;
-        delete variant.lowInventoryWarningThreshold;
-        delete variant.isBackorder;
-        delete variant.isLowQuantity;
-        delete variant.isSoldOut;
-
-        return variant;
+        // We won't update yet. We'll do it below with `Products.updateMany` because it should
+        // be much faster.
+        return null;
       }
     }));
 
-    Promise.await(findAndConvertInBatches({
-      collection: Products,
-      query: { type: "simple" },
-      converter: (product) => {
-        delete product.inventoryAvailableToSell;
-        delete product.inventoryInStock;
-        delete product.inventoryPolicy;
-        delete product.inventoryManagement;
-        delete product.lowInventoryWarningThreshold;
-        delete product.isBackorder;
-        delete product.isLowQuantity;
-        delete product.isSoldOut;
-
-        return product;
+    // Now that we've moved all to SimpleInventory collection, we can delete
+    // inventory related fields from Products.
+    Promise.await(Products.updateMany({}, {
+      $unset: {
+        inventoryAvailableToSell: "",
+        inventoryInStock: "",
+        inventoryPolicy: "",
+        inventoryManagement: "",
+        lowInventoryWarningThreshold: "",
+        isBackorder: "",
+        isLowQuantity: "",
+        isSoldOut: ""
       }
     }));
   }
