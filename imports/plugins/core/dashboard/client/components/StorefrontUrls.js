@@ -25,7 +25,6 @@ const RightAlignedGrid = styled(Grid)`
   text-align: right;
 `;
 
-
 const updatShopUrlsMutation = gql`
   mutation updatShopUrlsMutation($input: UpdateShopUrlsInput!) {
     updateShopUrls(input: $input) {

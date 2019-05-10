@@ -27,7 +27,7 @@ export default (Component) => (
 
             const props = {
               ...this.props,
-              isLoadingPrimaryShopId: loading
+              isLoadingPrimaryShop: loading
             };
 
             if (loading === false) {
