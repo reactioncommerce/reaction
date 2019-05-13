@@ -106,6 +106,8 @@ beforeAll(async () => {
   });
   await testApp.collections.Catalog.insertOne(catalogItem2);
 
+  await testApp.runServiceStartup();
+
   addOrderFulfillmentGroup = testApp.mutate(AddOrderFulfillmentGroupMutation);
 });
 

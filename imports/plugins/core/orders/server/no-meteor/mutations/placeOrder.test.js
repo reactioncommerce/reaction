@@ -35,6 +35,12 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     price: 0
   });
 
+  mockContext.queries.inventoryForProductConfiguration = jest.fn().mockName("inventoryForProductConfiguration");
+  mockContext.queries.inventoryForProductConfiguration.mockReturnValueOnce({
+    canBackOrder: true,
+    inventoryAvailableToSell: 10
+  });
+
   mockContext.queries.getFulfillmentMethodsWithQuotes = jest.fn().mockName("getFulfillmentMethodsWithQuotes");
   mockContext.queries.getFulfillmentMethodsWithQuotes.mockReturnValueOnce([{
     method: selectedFulfillmentMethod,
