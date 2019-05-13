@@ -3,9 +3,6 @@ import {
   rewire as rewire$getCatalogProductMedia,
   restore as restore$getCatalogProductMedia
 } from "./getCatalogProductMedia";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 import { rewire as rewire$createCatalogProduct, restore as restore$createCatalogProduct } from "./createCatalogProduct";
 import publishProductToCatalog from "./publishProductToCatalog";
 
@@ -25,19 +22,10 @@ const mockVariants = [
   {
     _id: internalVariantIds[0],
     barcode: "barcode",
-    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
-    inventoryAvailableToSell: 0,
-    inventoryInStock: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isBackorder: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -62,19 +50,10 @@ const mockVariants = [
   {
     _id: internalVariantIds[0],
     barcode: "barcode",
-    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
-    inventoryAvailableToSell: 0,
-    inventoryInStock: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isBackorder: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     length: 5,
-    lowInventoryWarningThreshold: 8,
     metafields: [
       {
         value: "value",
@@ -104,15 +83,9 @@ const mockProduct = {
   createdAt,
   description: "Mock product description",
   height: 11.23,
-  inventoryAvailableToSell: 0,
-  inventoryInStock: 0,
-  isBackorder: false,
   isDeleted: false,
-  isLowQuantity: false,
-  isSoldOut: false,
   isVisible: true,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",
@@ -160,13 +133,7 @@ const updatedMockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
-  inventoryAvailableToSell: 0,
-  inventoryInStock: 0,
-  isBackorder: false,
-  isLowQuantity: false,
-  isSoldOut: false,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",
@@ -256,18 +223,6 @@ const mockGeCatalogProductMedia = jest
     }
   ]));
 
-const mockIsBackorder = jest
-  .fn()
-  .mockName("isBackorder")
-  .mockReturnValue(false);
-const mockIsLowQuantity = jest
-  .fn()
-  .mockName("isLowQuantity")
-  .mockReturnValue(false);
-const mockIsSoldOut = jest
-  .fn()
-  .mockName("isSoldOut")
-  .mockReturnValue(false);
 const mockCreateCatalogProduct = jest
   .fn()
   .mockName("createCatalogProduct")
@@ -275,16 +230,10 @@ const mockCreateCatalogProduct = jest
 
 beforeAll(() => {
   rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
-  rewire$isBackorder(mockIsBackorder);
-  rewire$isLowQuantity(mockIsLowQuantity);
-  rewire$isSoldOut(mockIsSoldOut);
   rewire$createCatalogProduct(mockCreateCatalogProduct);
 });
 
 afterAll(() => {
-  restore$isBackorder();
-  restore$isLowQuantity();
-  restore$isSoldOut();
   restore$getCatalogProductMedia();
   restore$createCatalogProduct();
 });

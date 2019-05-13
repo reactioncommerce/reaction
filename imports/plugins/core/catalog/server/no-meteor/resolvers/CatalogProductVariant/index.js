@@ -5,8 +5,8 @@ import { xformCatalogProductMedia } from "@reactioncommerce/reaction-graphql-xfo
 
 export default {
   _id: (node) => encodeCatalogProductVariantOpaqueId(node._id),
-  variantId: (node) => encodeProductOpaqueId(node.variantId),
-  shop: resolveShopFromShopId,
   media: (node, args, context) => node.media && node.media.map((mediaItem) => xformCatalogProductMedia(mediaItem, context)),
-  primaryImage: (node, args, context) => xformCatalogProductMedia(node.primaryImage, context)
+  primaryImage: (node, args, context) => xformCatalogProductMedia(node.primaryImage, context),
+  shop: resolveShopFromShopId,
+  variantId: (node) => encodeProductOpaqueId(node.variantId)
 };

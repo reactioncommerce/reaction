@@ -91,6 +91,9 @@ beforeAll(async () => {
   await testApp.collections.Products.insert(mockVariant);
   await testApp.collections.Products.insert(mockOptionOne);
   await testApp.collections.Products.insert(mockOptionTwo);
+
+  await testApp.runServiceStartup();
+
   await testApp.setLoggedInUser({
     _id: "123",
     roles: { [internalShopId]: ["createProduct"] }

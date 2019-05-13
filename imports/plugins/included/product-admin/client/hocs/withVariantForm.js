@@ -297,7 +297,6 @@ const wrapComponent = (Comp) => (
             onVariantFieldChange={this.handleFieldChange}
             onVariantFieldBlur={this.handleFieldBlur}
             onVariantCheckboxChange={this.handleCheckboxChange}
-            onVariantInventoryPolicyChange={this.handleInventoryPolicyChange}
             onVariantSelectChange={this.handleSelectChange}
             variant={this.variant}
           />

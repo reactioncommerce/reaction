@@ -10,6 +10,7 @@ import shipping from "/imports/plugins/core/shipping/server/no-meteor/mutations"
 import taxes from "/imports/plugins/core/taxes/server/no-meteor/mutations";
 // INCLUDED
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/mutations";
+import simpleInventory from "/imports/plugins/included/simple-inventory/server/no-meteor/mutations";
 
 export default merge(
   {},
@@ -21,5 +22,6 @@ export default merge(
   payments,
   shipping,
   taxes,
-  shippingRates
+  shippingRates,
+  simpleInventory
 );

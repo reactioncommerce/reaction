@@ -13,11 +13,6 @@ import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import hashProduct from "../no-meteor/mutations/hashProduct";
-import getVariants from "../no-meteor/utils/getVariants";
-import hasChildVariant from "../no-meteor/utils/hasChildVariant";
-import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
-import isLowQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
-import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -29,19 +24,6 @@ import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/
  *
  * @namespace Methods/Products
  */
-
-/**
- * @array toDenormalize
- * @private
- * @summary contains a list of fields, which should be denormalized
- * @type {string[]}
- */
-const toDenormalize = [
-  "inventoryInStock",
-  "lowInventoryWarningThreshold",
-  "inventoryPolicy",
-  "inventoryManagement"
-];
 
 /**
  * @function createTitle
@@ -190,104 +172,6 @@ function copyMedia(newId, variantOldId, variantNewId) {
     .catch((error) => {
       Logger.error(`Error in copyMedia for product ${newId}`, error);
     });
-}
-
-/**
- * @function denormalize
- * @private
- * @description With flattened model we do not want to get variant docs in
- * `products` publication, but we need some data from variants to display
- * quantity, etc. That's why we are denormalizing these properties into product
- * doc. Also, this way should have a speed benefit comparing the way where we
- * could dynamically build denormalization inside `products` publication.
- * @summary update product denormalized properties if variant was updated or
- * removed
- * @param {String} id - product _id
- * @param {String} field - type of field. Could be:
- * "inventoryInStock",
- * "inventoryManagement",
- * "inventoryPolicy",
- * "lowInventoryWarningThreshold"
- * @since 0.11.0
- * @return {Number} - number of successful update operations. Should be "1".
- */
-function denormalize(id, field) {
-  const doc = Products.findOne(id);
-  let variants;
-  if (doc.type === "simple") {
-    variants = Promise.await(getVariants(id, rawCollections, true));
-  } else if (doc.type === "variant" && doc.ancestors.length === 1) {
-    variants = Promise.await(getVariants(id, rawCollections));
-  }
-  const update = {};
-
-  switch (field) {
-    case "inventoryPolicy":
-    case "inventoryInStock":
-    case "inventoryManagement":
-      Object.assign(update, {
-        isSoldOut: Promise.await(isSoldOut(variants, rawCollections)),
-        isLowQuantity: Promise.await(isLowQuantity(variants, rawCollections)),
-        isBackorder: Promise.await(isBackorder(variants, rawCollections))
-      });
-      break;
-    case "lowInventoryWarningThreshold":
-      Object.assign(update, {
-        isLowQuantity: Promise.await(isLowQuantity(variants, rawCollections))
-      });
-      break;
-    default:
-      return;
-  }
-
-  Products.update(
-    id,
-    {
-      $set: update
-    },
-    {
-      selector: {
-        type: "simple"
-      }
-    }
-  );
-}
-
-/**
- * flushQuantity
- * @private
- * @summary if variant `inventoryInStock` not zero, function update it to
- * zero. This needed in case then option with it's own `inventoryInStock`
- * creates to top-level variant. In that case top-level variant should display
- * sum of his options `inventoryInStock` fields.
- * @param {String} id - variant _id
- * @return {Number} - collection update results
- */
-function flushQuantity(id) {
-  const variant = Products.findOne(id);
-  // if variant already have descendants, quantity should be 0, and we don't
-  // need to do all next actions
-  if (variant.inventoryInStock === 0) {
-    return 1; // let them think that we have one successful operation here
-  }
-
-  const productUpdate = Products.update(
-    {
-      _id: id
-    },
-    {
-      $set: {
-        inventoryInStock: 0
-      }
-    },
-    {
-      selector: {
-        type: "variant"
-      }
-    }
-  );
-
-  return productUpdate;
 }
 
 /**
@@ -452,8 +336,6 @@ Meteor.methods({
       }
       delete clone.updatedAt;
       delete clone.createdAt;
-      delete clone.inventoryInStock;
-      delete clone.lowInventoryWarningThreshold;
 
       // Apply custom transformations from plugins.
       for (const customFunc of context.getFunctionsOfType("mutateNewVariantBeforeCreate")) {
@@ -530,15 +412,9 @@ Meteor.methods({
     const isOption = ancestors.length > 1;
     if (isOption) {
       Object.assign(newVariant, {
-        title: `${parent.title} - Untitled option`
+        optionTitle: "Untitled",
+        title: `${parent.title} - Untitled`
       });
-    }
-
-    // if we are inserting child variant to top-level variant, we need to remove
-    // all top-level's variant inventory records and flush it's quantity,
-    // because it will be hold sum of all it descendants quantities.
-    if (ancestors.length === 2) {
-      flushQuantity(parentId);
     }
 
     createProduct(newVariant, { product, parentVariant, isOption });
@@ -616,11 +492,6 @@ Meteor.methods({
         deletedBy: authUserId
       });
     });
-
-    // After variant was removed from product, we need to recalculate all
-    // denormalized fields
-    const productId = variantsToDelete[0].ancestors[0];
-    toDenormalize.forEach((field) => denormalize(productId, field));
 
     Logger.debug(`Flagged variant and all its children as deleted.`);
 
@@ -941,12 +812,6 @@ Meteor.methods({
       throw new ReactionError("access-denied", "Access Denied");
     }
 
-    if (field === "inventoryInStock" && value === "") {
-      if (!Promise.await(hasChildVariant(_id, rawCollections))) {
-        throw new ReactionError("invalid", "Inventory Quantity is required when no child variants");
-      }
-    }
-
     const { type } = doc;
     let update;
     // handle booleans with correct typing
@@ -990,13 +855,9 @@ Meteor.methods({
       throw new ReactionError("server-error", err.message);
     }
 
-    // If we get a result from the product update,
-    // denormalize and attach results to top-level product
+    // If we get a result from the product update, emit update events
     if (result === 1) {
       if (type === "variant") {
-        if (toDenormalize.indexOf(field) >= 0) {
-          denormalize(doc.ancestors[0], field);
-        }
         appEvents.emit("afterVariantUpdate", { _id, field, value });
       } else {
         appEvents.emit("afterProductUpdate", { _id, field, value });

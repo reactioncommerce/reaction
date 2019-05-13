@@ -25,14 +25,11 @@ const mockVariants = [
     createdAt,
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
     isDeleted: false,
     isLowQuantity: true,
     isSoldOut: false,
     isVisible: true,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -63,14 +60,11 @@ const mockVariants = [
     createdAt,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
     isDeleted: false,
     isLowQuantity: true,
     isSoldOut: false,
     isVisible: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -106,11 +100,7 @@ const mockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
-  isBackorder: false,
-  isLowQuantity: false,
-  isSoldOut: false,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",
