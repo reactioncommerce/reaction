@@ -864,12 +864,13 @@ export default {
     this.whenAppInstanceReady((app) => {
       const layouts = [];
       const packages = Packages.find().fetch();
+      const shops = Shops.find().fetch();
       const { registeredPlugins } = app;
       const totalPackages = Object.keys(registeredPlugins).length;
       let loadedIndex = 1;
       // for each shop, we're loading packages in a unique registry
-      _.each(registeredPlugins, (config, pkgName) =>
-        Shops.find().forEach((shop) => {
+      _.each(registeredPlugins, (config, pkgName) => {
+        shops.forEach((shop) => {
           const shopId = shop._id;
           if (!shopId) return;
 
@@ -927,7 +928,8 @@ export default {
           this.Importer.package(combinedSettings, shopId);
           Logger.info(`Successfully initialized  package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
           loadedIndex += 1;
-        }));
+        });
+      });
 
       // helper for removing layout duplicates
       const uniqLayouts = uniqWith(layouts, _.isEqual);
