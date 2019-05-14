@@ -1,0 +1,25 @@
+query catalogItemQuery($slugOrId: String!) {
+  catalogItemProduct(slugOrId: $slugOrId) {
+    product {
+      isBackorder
+      isLowQuantity
+      isSoldOut
+      variants {
+        canBackorder
+        inventoryAvailableToSell
+        inventoryInStock
+        isBackorder
+        isLowQuantity
+        isSoldOut
+        options {
+          canBackorder
+          inventoryAvailableToSell
+          inventoryInStock
+          isBackorder
+          isLowQuantity
+          isSoldOut
+        }
+      }
+    }
+  }
+}

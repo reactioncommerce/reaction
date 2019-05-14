@@ -57,18 +57,9 @@ registerSchema("VariantMedia", VariantMedia);
  * @property {Event[]} eventLog optional, Variant Event Log
  * @property {Number} height optional, default value: `0`
  * @property {Number} index optional, Variant position number in list. Keep array index for moving variants in a list.
- * @property {Boolean} inventoryAvailableToSell required
- * @property {Boolean} inventoryInStock required
- * @property {Boolean} inventoryManagement, default value: `true`
- * @property {Boolean} inventoryPolicy, default value: `false`, If disabled, item can be sold even if it not in stock.
- * @property {Number} inventoryInStock, default value: `0`
- * @property {Boolean} isBackorder denormalized, `true` if product not in stock, but customers anyway could order it
  * @property {Boolean} isDeleted, default value: `false`
- * @property {Boolean} isLowQuantity optional, true when at least 1 variant is below `lowInventoryWarningThreshold`
- * @property {Boolean} isSoldOut optional, denormalized field, indicates when all variants `inventoryInStock` is 0
  * @property {Boolean} isVisible, default value: `false`
  * @property {Number} length optional, default value: `0`
- * @property {Number} lowInventoryWarningThreshold, default value: `0`, Warn of low inventory at this number
  * @property {Metafield[]} metafields optional
  * @property {Number} minOrderQuantity optional
  * @property {String} optionTitle, Option internal name, default value: `"Untitled option"`
@@ -134,72 +125,9 @@ export const ProductVariant = new SimpleSchema({
     type: SimpleSchema.Integer,
     optional: true
   },
-  "inventoryManagement": {
-    type: Boolean,
-    label: "Inventory Tracking",
-    optional: true,
-    defaultValue: true,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === false)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
-  },
-  "inventoryPolicy": {
-    type: Boolean,
-    label: "Deny when out of stock",
-    optional: true,
-    defaultValue: false,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === false)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
-  },
-  "inventoryAvailableToSell": {
-    type: SimpleSchema.Integer,
-    label: "The quantity of this item currently available to sell." +
-    "This number is updated when an order is placed by the customer." +
-    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely the quantity to display in the storefront UI.",
-    optional: true,
-    defaultValue: 0
-  },
-  "inventoryInStock": {
-    type: SimpleSchema.Integer,
-    label: "The quantity of this item currently in stock." +
-    "This number is updated when an order is processed by the operator." +
-    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.",
-    optional: true,
-    defaultValue: 0
-  },
-  "isBackorder": {
-    label: "Indicates when a product is currently backordered",
-    type: Boolean,
-    optional: true
-  },
   "isDeleted": {
     type: Boolean,
     defaultValue: false
-  },
-  "isLowQuantity": {
-    label: "Indicates that the product quantity is too low",
-    type: Boolean,
-    optional: true
-  },
-  "isSoldOut": {
-    label: "Indicates when the product quantity is zero",
-    type: Boolean,
-    optional: true
   },
   "isVisible": {
     type: Boolean,
@@ -208,13 +136,6 @@ export const ProductVariant = new SimpleSchema({
   "length": {
     label: "Length",
     type: Number,
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
     min: 0,
     optional: true,
     defaultValue: 0
@@ -309,12 +230,7 @@ registerSchema("ProductVariant", ProductVariant);
  * @property {String} googleplusMsg optional
  * @property {String} handle optional, slug
  * @property {String[]} hashtags optional
- * @property {Boolean} inventoryAvailableToSell required
- * @property {Boolean} inventoryInStock required
- * @property {Boolean} isBackorder denormalized, `true` if product not in stock, but customers anyway could order it
  * @property {Boolean} isDeleted, default value: `false`
- * @property {Boolean} isLowQuantity denormalized, true when at least 1 variant is below `lowInventoryWarningThreshold`
- * @property {Boolean} isSoldOut denormalized, Indicates when all variants `inventoryInStock` is zero
  * @property {Boolean} isVisible, default value: `false`
  * @property {String} metaDescription optional
  * @property {Metafield[]} metafields optional
@@ -381,44 +297,9 @@ export const Product = new SimpleSchema({
   "hashtags.$": {
     type: String
   },
-  "inventoryAvailableToSell": {
-    type: SimpleSchema.Integer,
-    label: "The quantity of this item currently available to sell." +
-    "This number is updated when an order is placed by the customer." +
-    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely the quantity to display in the storefront UI.",
-    optional: true,
-    defaultValue: 0
-  },
-  "inventoryInStock": {
-    type: SimpleSchema.Integer,
-    label: "The quantity of this item currently in stock." +
-    "This number is updated when an order is processed by the operator." +
-    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.",
-    optional: true,
-    defaultValue: 0
-  },
-  "isBackorder": {
-    label: "Indicates when a product is currently backordered",
-    type: Boolean,
-    optional: true
-  },
   "isDeleted": {
     type: Boolean,
     defaultValue: false
-  },
-  "isLowQuantity": {
-    label: "Indicates that the product quantity is too low",
-    type: Boolean,
-    optional: true
-  },
-  "isSoldOut": {
-    label: "Indicates when the product quantity is zero",
-    type: Boolean,
-    optional: true
   },
   "isVisible": {
     type: Boolean,
