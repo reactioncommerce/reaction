@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { ReactionProduct } from "/lib/api";
 import GridItemNotice from "../components/gridItemNotice";
 
 const wrapComponent = (Comp) => (
@@ -10,36 +9,9 @@ const wrapComponent = (Comp) => (
       product: PropTypes.object
     }
 
-    constructor() {
-      super();
+    isLowQuantity = () => this.props.product.isLowQuantity
 
-      this.isLowQuantity = this.isLowQuantity.bind(this);
-      this.isSoldOut = this.isSoldOut.bind(this);
-      this.isBackorder = this.isBackorder.bind(this);
-    }
-
-    isLowQuantity = () => {
-      const topVariants = ReactionProduct.getTopVariants(this.props.product._id);
-
-      for (const topVariant of topVariants) {
-        const inventoryThreshold = topVariant.lowInventoryWarningThreshold;
-        if (topVariant.inventoryAvailableToSell > 0 && inventoryThreshold > topVariant.inventoryAvailableToSell) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    isSoldOut = () => {
-      const topVariants = ReactionProduct.getTopVariants(this.props.product._id);
-
-      for (const topVariant of topVariants) {
-        if (topVariant.inventoryAvailableToSell > 0) {
-          return false;
-        }
-      }
-      return true;
-    }
+    isSoldOut = () => this.props.product.isSoldOut
 
     isBackorder = () => this.props.product.isBackorder
 

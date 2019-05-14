@@ -81,7 +81,6 @@ function VariantTable(props) {
             <TableCell />
             <TableCell>{i18next.t("admin.productTable.header.title")}</TableCell>
             <TableCell>{i18next.t("admin.productTable.header.price")}</TableCell>
-            <TableCell>{i18next.t("admin.productTable.header.qty")}</TableCell>
             <TableCell>{i18next.t("admin.productTable.header.visible")}</TableCell>
             <TableCell />
           </TableRow>
@@ -121,7 +120,6 @@ function VariantTable(props) {
                 </Link>
               </TableCell>
               <TableCell>{item.displayPrice}</TableCell>
-              <TableCell>{item.inventoryInStock}</TableCell>
               <TableCell>{item.isVisible ? "Visible" : "Hidden"}</TableCell>
               <TableCell>
                 <Link to={getURL(item)}>

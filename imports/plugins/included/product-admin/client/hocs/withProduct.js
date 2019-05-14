@@ -225,7 +225,6 @@ function composer(props, onData) {
 
   let tags;
   let media;
-  let revisonDocumentIds;
 
   if (product) {
     if (_.isArray(product.hashtags)) {
@@ -240,8 +239,6 @@ function composer(props, onData) {
         variantId: selectedVariant._id
       });
     }
-
-    revisonDocumentIds = [product._id];
 
     const templates = Templates.find({
       parser: "react",
@@ -285,7 +282,6 @@ function composer(props, onData) {
       product,
       media,
       tags,
-      revisonDocumentIds,
       templates,
       countries,
       editable,
