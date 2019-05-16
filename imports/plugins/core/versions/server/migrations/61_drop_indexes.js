@@ -7,6 +7,24 @@ const {
 } = rawCollections;
 
 /**
+ * @private
+ * @param {Error} error Error or null
+ * @return {undefined}
+ */
+function handleError(error) {
+  // This may fail if the index or the collection doesn't exist, which is what we want anyway
+  if (
+    error &&
+    (
+      typeof error.message !== "string" ||
+      (!error.message.includes("index not found") && !error.message.includes("ns not found"))
+    )
+  ) {
+    Logger.warn(error, "Caught error from dropIndex calls in migration 59");
+  }
+}
+
+/**
  * Drop all indexes that support queries that are no longer expected
  * to be made by any plugins, or that are already supported by other
  * indexes.
@@ -14,12 +32,7 @@ const {
 Migrations.add({
   version: 61,
   up() {
-    try {
-      Orders.dropIndex("c2_items.$.productId");
-      Orders.dropIndex("c2_items.$.variantId");
-    } catch (error) {
-      // This may fail if the index doesn't exist, which is what we want anyway
-      Logger.warn(error, "Caught error from dropIndex calls in migration 61");
-    }
+    Orders.dropIndex("c2_items.$.productId", handleError);
+    Orders.dropIndex("c2_items.$.variantId", handleError);
   }
 });
