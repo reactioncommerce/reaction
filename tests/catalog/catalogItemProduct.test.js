@@ -20,6 +20,7 @@ beforeAll(async () => {
   await testApp.start();
   query = testApp.query(CatalogItemProductFullQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.runServiceStartup();
   await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId })));
   await testApp.collections.Catalog.insert(mockCatalogItem);
 });
