@@ -5,7 +5,7 @@ import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import ReactionAlerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction, i18next } from "/client/api";
-import { getDefaultUserInviteGroup } from "../helpers/accountsHelper";
+import { getDefaultUserInviteGroup, getUserByEmail } from "../helpers/accountsHelper";
 
 /**
  * @summary React component to display admin invite form
@@ -53,6 +53,30 @@ class AdminInviteForm extends Component {
     alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
   });
 
+  sendInvitation = (options) => Meteor.call("accounts/inviteShopMember", options, (error, result) => {
+    if (error) {
+      let messageKey;
+      // switching to use of package i18n keys (groupsInvite. namespace)
+      if (error.reason === "Unable to send invitation email.") {
+        messageKey = "admin.groupsInvite.unableToSendInvitationEmail";
+      } else if (error.reason === "cannot directly invite owner") {
+        messageKey = "admin.groupsInvite.inviteOwnerError";
+      } else if (error.reason === "cannot invite to group") {
+        messageKey = "admin.groupsInvite.cannotInvite";
+      } else if (error.reason === "Need to set a username or email") {
+        messageKey = "admin.groupsInvite.NeedToSetUsernameOrEmail";
+      } else {
+        messageKey = "admin.groupsInvite.errorSendingInvite";
+      }
+      ReactionAlerts.add(error.reason, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
+    }
+
+    if (result) {
+      this.setState({ name: "", email: "" });
+      Alerts.toast(i18next.t("accountsUI.info.invitationSent"), "success");
+    }
+  });
+
   handleSubmit(event) {
     event.preventDefault();
     const { name, email, group, alertId } = this.state;
@@ -67,30 +91,33 @@ class AdminInviteForm extends Component {
       );
     }
 
-    const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id };
-    return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
-      if (error) {
-        let messageKey;
-        // switching to use of package i18n keys (groupsInvite. namespace)
-        if (error.reason === "Unable to send invitation email.") {
-          messageKey = "admin.groupsInvite.unableToSendInvitationEmail";
-        } else if (error.reason === "cannot directly invite owner") {
-          messageKey = "admin.groupsInvite.inviteOwnerError";
-        } else if (error.reason === "cannot invite to group") {
-          messageKey = "admin.groupsInvite.cannotInvite";
-        } else if (error.reason === "Need to set a username or email") {
-          messageKey = "admin.groupsInvite.NeedToSetUsernameOrEmail";
-        } else {
-          messageKey = "admin.groupsInvite.errorSendingInvite";
-        }
-        ReactionAlerts.add(error.reason, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
-      }
+    const matchingAccount = getUserByEmail(email);
+    const isEmailVerified = matchingAccount &&
+      matchingAccount.emails &&
+      matchingAccount.emails[0] &&
+      matchingAccount.emails[0].verified;
 
-      if (result) {
-        this.setState({ name: "", email: "" });
-        Alerts.toast(i18next.t("accountsUI.info.invitationSent"), "success");
-      }
-    });
+    const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id };
+
+    if (matchingAccount) {
+      return Alerts.alert({
+        title: i18next.t(`accountsUI.error.${isEmailVerified ? "userWithEmailAlreadyExists" : "inviteAlreadyPending"}`),
+        text: i18next.t(`accountsUI.${isEmailVerified ? "promoteExistingAccountConfirm" : "sendNewInviteConfirm"}`),
+        type: "warning",
+        showCancelButton: true,
+        showCloseButton: true,
+        confirmButtonColor: "#98afbc",
+        cancelButtonColor: "#98afbc",
+        confirmButtonText: i18next.t("accountsUI.yes"),
+        cancelButtonText: i18next.t("app.cancel")
+      }, (isConfirm) => {
+        if (isConfirm) {
+          this.sendInvitation(options);
+        }
+      });
+    }
+
+    return this.sendInvitation(options);
   }
 
   renderDropDownButton() {
@@ -103,7 +130,7 @@ class AdminInviteForm extends Component {
       <Components.Button bezelStyle="solid" label={group.name && _.startCase(group.name)} >
         &nbsp;
         {opt && opt.length && // add icon only if there's a list of options
-          <i className="fa fa-chevron-down" />
+        <i className="fa fa-chevron-down" />
         }
       </Components.Button>
     );
