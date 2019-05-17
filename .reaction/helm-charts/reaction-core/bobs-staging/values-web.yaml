@@ -120,6 +120,8 @@ app:
         value: "1100151420184"
     -   key: TAXES_CONSUMER_ENABLED
         value: "false"
+    -   key: RADIAL_ITEM_EXPORT_CONSUMER_ENABLED
+        value: "false"
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
