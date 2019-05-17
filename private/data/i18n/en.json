@@ -603,6 +603,8 @@
         }
       },
       "accountsUI": {
+        "resendInvitationConfirm": "Do you want to send a new invitation?",
+        "yes": "Yes",
         "usersOrders": "User's orders",
         "oops": "Oops!",
         "nonExistentAccount": "The user you're looking for does not exist.",
