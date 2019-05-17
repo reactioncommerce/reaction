@@ -1,5 +1,6 @@
 import hash from "object-hash";
 import Logger from "@reactioncommerce/logger";
+import { customPublishedProductFields, customPublishedProductVariantFields } from "/imports/plugins/core/catalog/server/no-meteor/registration";
 
 const productFieldsThatNeedPublishing = [
   "_id",
@@ -32,6 +33,73 @@ const productFieldsThatNeedPublishing = [
   "vendor"
 ];
 
+const variantFieldsThatNeedPublishing = [
+  "_id",
+  "barcode",
+  "compareAtPrice",
+  "height",
+  "index",
+  "isDeleted",
+  "isVisible",
+  "length",
+  "metafields",
+  "minOrderQuantity",
+  "optionTitle",
+  "originCountry",
+  "shopId",
+  "sku",
+  "title",
+  "type",
+  "weight",
+  "width"
+];
+
+/**
+ *
+ * @method getCatalogProductMedia
+ * @summary Get an array of ImageInfo objects by Product ID
+ * @param {String} productId -  A product ID. Must be a top-level product.
+ * @param {Object} collections - Raw mongo collections
+ * @return {Promise<Object[]>} Array of ImageInfo objects sorted by priority
+ */
+async function getCatalogProductMedia(productId, collections) {
+  const { Media } = collections;
+  const mediaArray = await Media.find(
+    {
+      "metadata.productId": productId,
+      "metadata.toGrid": 1,
+      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    },
+    {
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+    }
+  );
+
+  // Denormalize media
+  const catalogProductMedia = mediaArray
+    .map((media) => {
+      const { metadata } = media;
+      const { toGrid, priority, productId: prodId, variantId } = metadata || {};
+
+      return {
+        priority,
+        toGrid,
+        productId: prodId,
+        variantId,
+        URLs: {
+          large: `${media.url({ store: "large" })}`,
+          medium: `${media.url({ store: "medium" })}`,
+          original: `${media.url({ store: "image" })}`,
+          small: `${media.url({ store: "small" })}`,
+          thumbnail: `${media.url({ store: "thumbnail" })}`
+        }
+      };
+    })
+    .sort((itemA, itemB) => itemA.priority - itemB.priority);
+
+  return catalogProductMedia;
+}
+
 /**
  *
  * @method getTopLevelProduct
@@ -63,13 +131,38 @@ async function getTopLevelProduct(productOrVariantId, collections) {
  * @method createProductHash
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
- * @param {String} product - The Product document to hash
+ * @param {String} product - The Product document to hash. Expected to be a top-level product, not a variant
+ * @param {Object} collections - Raw mongo collections
  * @return {String} product hash
  */
-function createProductHash(product) {
+async function createProductHash(product, collections) {
+  const variants = await collections.Products.find({ ancestors: product._id, type: "variant" }).toArray();
+
   const productForHashing = {};
   productFieldsThatNeedPublishing.forEach((field) => {
     productForHashing[field] = product[field];
+  });
+  if (Array.isArray(customPublishedProductFields)) {
+    customPublishedProductFields.forEach((field) => {
+      productForHashing[field] = product[field];
+    });
+  }
+
+  // Track changes to all related media, too
+  productForHashing.media = await getCatalogProductMedia(product._id, collections);
+
+  // Track changes to all variants, too
+  productForHashing.variants = variants.map((variant) => {
+    const variantForHashing = {};
+    variantFieldsThatNeedPublishing.forEach((field) => {
+      variantForHashing[field] = variant[field];
+    });
+    if (Array.isArray(customPublishedProductVariantFields)) {
+      customPublishedProductVariantFields.forEach((field) => {
+        variantForHashing[field] = variant[field];
+      });
+    }
+    return variantForHashing;
   });
 
   return hash(productForHashing);
@@ -87,9 +180,12 @@ function createProductHash(product) {
 export default async function hashProduct(productId, collections, isPublished = true) {
   const { Products } = collections;
 
-  const product = await getTopLevelProduct(productId, collections);
+  const topLevelProduct = await getTopLevelProduct(productId, collections);
+  if (!topLevelProduct) {
+    throw new Error(`No top level product found for product with ID ${productId}`);
+  }
 
-  const productHash = createProductHash(product);
+  const productHash = await createProductHash(topLevelProduct, collections);
 
   // Insert/update product document with hash field
   const hashFields = {
@@ -100,21 +196,15 @@ export default async function hashProduct(productId, collections, isPublished = 
     hashFields.publishedProductHash = productHash;
   }
 
-  const result = await Products.updateOne(
-    {
-      _id: product._id
-    },
-    {
-      $set: {
-        ...hashFields,
-        updatedAt: new Date()
-      }
-    }
-  );
+  const productUpdates = {
+    ...hashFields,
+    updatedAt: new Date()
+  };
+  const result = await Products.updateOne({ _id: topLevelProduct._id }, { $set: productUpdates });
 
   if (!result || !result.result || result.result.ok !== 1) {
     Logger.error(result && result.result);
-    throw new Error(`Failed to update product hashes for product with ID ${product._id}`);
+    throw new Error(`Failed to update product hashes for product with ID ${topLevelProduct._id}`);
   }
 
   return null;

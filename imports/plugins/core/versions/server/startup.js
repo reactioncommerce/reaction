@@ -18,7 +18,7 @@ Migrations.config({
   collectionName: "Migrations"
 });
 
-appEvents.on("afterCoreInit", () => {
+appEvents.on("readyForMigrations", () => {
   const currentMigrationVersion = Migrations._getControl().version;
   const highestAvailableVersion = Migrations._list[Migrations._list.length - 1].version;
 

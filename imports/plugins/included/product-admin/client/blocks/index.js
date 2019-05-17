@@ -14,7 +14,6 @@ import VariantList from "./VariantList";
 import VariantDetailForm from "./VariantDetailForm";
 import VariantTaxForm from "./VariantTaxForm";
 import VariantMediaForm from "./VariantMediaForm";
-import VariantInventoryForm from "./VariantInventoryForm";
 import OptionTable from "./OptionTable";
 
 // Register blocks
@@ -118,14 +117,6 @@ registerBlock({
   region: "VariantDetailMain",
   name: "VariantTaxForm",
   component: VariantTaxForm,
-  hocs: [withVariantForm],
-  priority: 30
-});
-
-registerBlock({
-  region: "VariantDetailMain",
-  name: "VariantInventoryForm",
-  component: VariantInventoryForm,
   hocs: [withVariantForm],
   priority: 30
 });
