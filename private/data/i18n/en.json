@@ -603,7 +603,7 @@
         }
       },
       "accountsUI": {
-        "resendInvitationConfirm": "Do you want to send a new invitation?",
+        "resendInvitationConfirm": "Do you want to promote their existing account? This user will not have to reset their password.",
         "yes": "Yes",
         "usersOrders": "User's orders",
         "oops": "Oops!",
