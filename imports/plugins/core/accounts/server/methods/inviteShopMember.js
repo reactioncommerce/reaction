@@ -69,15 +69,19 @@ export default function inviteShopMember(options) {
   const currentUser = Meteor.user();
   const currentUserName = getCurrentUserName(currentUser);
   const user = Meteor.users.findOne({ "emails.address": email });
+  const isEmailVerified = user && user.emails && user.emails[0] && user.emails[0].verified;
   const token = Random.id();
   let dataForEmail;
   let userId;
   let templateName;
 
-  // If the user already has an account, send informative email, not "invite" email
   if (user) {
-    // The user already exists, we promote the account, rather than creating a new one
     userId = user._id;
+  }
+
+  // If the user already has an account, send informative email, not "invite" email
+  if (user && isEmailVerified) {
+    // The user already exists, we promote the account, rather than creating a new one
     Meteor.call("group/addUser", userId, groupId);
 
     // do not send token, as no password reset is needed
@@ -89,14 +93,19 @@ export default function inviteShopMember(options) {
     // Get email template and subject
     templateName = "accounts/inviteShopMember";
   } else {
-    // The user does not already exist, we need to create a new account
-    userId = MeteorAccounts.createUser({
-      profile: { invited: true },
-      email,
-      name,
-      groupId
-    });
-    // set token to be used for first login for the new account
+    // There could be an existing user with an invite still pending (not activated).
+    // We create a new account only if there's no pending invite.
+    if (!user) {
+      // The user does not already exist, we need to create a new account
+      userId = MeteorAccounts.createUser({
+        profile: {invited: true},
+        email,
+        name,
+        groupId
+      });
+    }
+
+    // set token to be used for first login for the new accoun
     const tokenUpdate = {
       "services.password.reset": { token, email, when: new Date() },
       name
