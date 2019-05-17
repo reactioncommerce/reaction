@@ -11,6 +11,7 @@ import ProductTable from "./components/ProductTable";
 import ProductDetailLayout from "./layouts/ProductDetail";
 import VariantDetail from "./layouts/VariantDetail";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
+import "./components"; // To register the components that need to be
 
 // HOCs
 import withCreateProduct from "./hocs/withCreateProduct";
