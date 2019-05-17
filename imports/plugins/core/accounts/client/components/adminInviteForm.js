@@ -92,12 +92,17 @@ class AdminInviteForm extends Component {
     }
 
     const matchingAccount = getUserByEmail(email);
+    const isEmailVerified = matchingAccount &&
+      matchingAccount.emails &&
+      matchingAccount.emails[0] &&
+      matchingAccount.emails[0].verified;
+
     const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id };
 
     if (matchingAccount) {
       return Alerts.alert({
-        title: i18next.t("accountsUI.error.userWithEmailAlreadyExists"),
-        text: i18next.t("accountsUI.resendInvitationConfirm"),
+        title: i18next.t(`accountsUI.error.${isEmailVerified ? "userWithEmailAlreadyExists" : "inviteAlreadyPending"}`),
+        text: i18next.t(`accountsUI.${isEmailVerified ? "promoteExistingAccountConfirm" : "sendNewInviteConfirm"}`),
         type: "warning",
         showCancelButton: true,
         showCloseButton: true,
