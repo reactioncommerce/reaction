@@ -136,6 +136,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
         amount: +toFixed(variantPriceInfo.price * quantity, 3),
         currencyCode: price.currencyCode
       },
+      supportedFulfillmentTypes: catalogProduct.supportedFulfillmentTypes,
       taxCode: chosenVariant.taxCode,
       title: catalogProduct.title,
       updatedAt: currentDateTime,

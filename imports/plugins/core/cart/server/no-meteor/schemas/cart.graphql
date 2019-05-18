@@ -175,6 +175,9 @@ type CartItem implements Node {
   "The current price of the item multiplied by the quantity"
   subtotal: Money!
 
+  "When a shopper purchases this product, what types of fulfillment can they choose from?"
+  supportedFulfillmentTypes: [FulfillmentType]
+
   "A title for use in cart/orders that conveys the selected product's title + chosen options"
   title: String!
 
