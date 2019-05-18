@@ -135,7 +135,7 @@ export const CommonOrder = new SimpleSchema({
   fulfillmentPrices: CommonOrderFulfillmentPrices,
   fulfillmentType: {
     type: String,
-    allowedValues: ["shipping"]
+    allowedValues: ["shipping", "pickup", "digital"]
   },
   items: [CommonOrderItem],
   orderId: {
@@ -195,7 +195,7 @@ export const orderFulfillmentGroupInputSchema = new SimpleSchema({
   },
   "type": {
     type: String,
-    allowedValues: ["shipping"]
+    allowedValues: ["shipping", "pickup", "digital"]
   }
 });
 
