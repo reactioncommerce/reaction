@@ -72,8 +72,7 @@ export function xformOrderFulfillmentGroupSelectedOption(fulfillmentOption) {
       displayName: fulfillmentOption.label || fulfillmentOption.name,
       group: fulfillmentOption.group || null,
       name: fulfillmentOption.name,
-      // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-      fulfillmentTypes: ["shipping"]
+      fulfillmentTypes: fulfillmentOption.fulfillmentTypes
     },
     handlingPrice: {
       amount: fulfillmentOption.handling || 0,

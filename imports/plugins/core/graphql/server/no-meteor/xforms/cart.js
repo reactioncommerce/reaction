@@ -71,9 +71,17 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
     media = await xformCatalogProductMedia(media, context);
   }
 
+  const variantSourceProduct = products.find((product) => product._id === variantId);
+
   return {
     ...cartItem,
+    currentQuantity: variantSourceProduct && variantSourceProduct.inventoryInStock,
     imageURLs: media && media.URLs,
+    inventoryAvailableToSell: variantSourceProduct && variantSourceProduct.inventoryInStock,
+    inventoryInStock: variantSourceProduct && variantSourceProduct.inventoryInStock,
+    isBackorder: variant.isBackorder || false,
+    isLowQuantity: variant.isLowQuantity || false,
+    isSoldOut: variant.isSoldOut || false,
     productConfiguration: {
       productId: cartItem.productId,
       productVariantId: cartItem.variantId
@@ -87,7 +95,7 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
  * @return {Object[]} Same array with GraphQL-only props added
  */
 export async function xformCartItems(context, items) {
-  const { collections, getFunctionsOfType } = context;
+  const { collections } = context;
   const { Catalog, Products } = collections;
 
   const productIds = items.map((item) => item.productId);
@@ -107,13 +115,7 @@ export async function xformCartItems(context, items) {
     }
   }).toArray();
 
-  const xformedItems = await Promise.all(items.map((item) => xformCartItem(context, catalogItems, products, item)));
-
-  for (const mutateItems of getFunctionsOfType("xformCartItems")) {
-    await mutateItems(context, xformedItems); // eslint-disable-line no-await-in-loop
-  }
-
-  return xformedItems;
+  return items.map((item) => xformCartItem(context, catalogItems, products, item));
 }
 
 /**
@@ -130,8 +132,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
       displayName: option.method.label || option.method.name,
       group: option.method.group || null,
       name: option.method.name,
-      // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-      fulfillmentTypes: ["shipping"]
+      fulfillmentTypes: option.method.fulfillmentTypes
     },
     handlingPrice: {
       amount: option.handling || 0,
@@ -152,8 +153,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
         displayName: fulfillmentGroup.shipmentMethod.label || fulfillmentGroup.shipmentMethod.name,
         group: fulfillmentGroup.shipmentMethod.group || null,
         name: fulfillmentGroup.shipmentMethod.name,
-        // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-        fulfillmentTypes: ["shipping"]
+        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes
       },
       handlingPrice: {
         amount: fulfillmentGroup.shipmentMethod.handling || 0,
@@ -178,8 +178,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
     selectedFulfillmentOption,
     shippingAddress: fulfillmentGroup.address,
     shopId: fulfillmentGroup.shopId,
-    // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-    type: "shipping"
+    type: fulfillmentGroup.type
   };
 }
 
