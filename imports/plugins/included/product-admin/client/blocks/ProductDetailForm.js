@@ -19,6 +19,12 @@ const styles = (theme) => ({
   }
 });
 
+const fulfillmentTypes = [
+  { value: "shipping", label: "Shipping" },
+  { value: "pickup", label: "In-store Pickup" },
+  { value: "digital", label: "Download" }
+];
+
 const fieldNames = [
   "title",
   "handle",
@@ -143,6 +149,8 @@ class DetailForm extends Component {
       }
     });
   }
+
+  handleMultiSelectChange = (value, field) => this.handleSelectChange(value.split(","), field)
 
   handleSelectChange = (value, field) => {
     if (this.props.onProductFieldSave) {
@@ -274,6 +282,18 @@ class DetailForm extends Component {
             value={this.product.originCountry}
             options={this.props.countries}
           />
+          <Components.MultiSelect
+            clearable={false}
+            i18nKeyLabel="productDetailEdit.supportedFulfillmentTypes"
+            i18nKeyPlaceholder="productDetailEdit.supportedFulfillmentTypesPlaceholder"
+            label="Supported Fulfillment Types"
+            name="supportedFulfillmentTypes"
+            onChange={this.handleMultiSelectChange}
+            placeholder="Select supported fulfillment types"
+            ref="supportedFulfillmentTypesInput"
+            value={this.product.supportedFulfillmentTypes}
+            options={fulfillmentTypes}
+          />
           <Components.TextField
             i18nKeyLabel="productDetailEdit.template"
             i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
@@ -320,6 +340,7 @@ DetailForm.propTypes = {
   onProductFieldSave: PropTypes.func,
   onRestoreProduct: PropTypes.func,
   product: PropTypes.object,
+  revisonDocumentIds: PropTypes.arrayOf(PropTypes.string),
   templates: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     value: PropTypes.any
