@@ -146,7 +146,8 @@ test("returns expected data structure", async () => {
               variantImage: "large.jpg",
               subtotal: {
                 amount: jasmine.any(Number),
-                currencyCode: "mockCurrencyCode"
+                currencyCode: "mockCurrencyCode",
+                displayAmount: jasmine.any(String)
               }
             }
           ]
