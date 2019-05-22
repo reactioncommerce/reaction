@@ -238,6 +238,11 @@ export const StorefrontUrls = new SimpleSchema({
     label: "Storefront Home URL",
     optional: true
   },
+  storefrontLoginUrl: {
+    type: String,
+    label: "Storefront Login URL",
+    optional: true
+  },
   storefrontOrderUrl: {
     type: String,
     label: "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)",
