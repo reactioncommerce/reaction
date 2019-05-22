@@ -11,7 +11,15 @@ type GlobalSettings {
 App settings for a specific shop. Plugins extend the ShopSettings type to support
 whatever settings they need.
 """
-type ShopSettings
+type ShopSettings {
+  # Although the spec allows and Apollo supports defining an empty type
+  # that is extended later in other files, the graphql-schema-linter
+  # package currently has a problem with this, so we must add a fake field.
+  #
+  # https://github.com/cjoudrey/graphql-schema-linter/issues/151
+  "A fake setting necessary until some plugin extends this with a real setting"
+  doNotUse: String
+}
 
 extend type Query {
   """
@@ -54,7 +62,7 @@ this input type to support whatever settings they need. All fields
 must be optional.
 """
 input GlobalSettingsUpdates {
-  "A fake setting necessary until some plugin extends this with a real setting"
+  "Do not use this field"
   doNotUse: String
 }
 
@@ -96,7 +104,15 @@ Updates for app settings that are not shop specific. Plugins extend
 this input type to support whatever settings they need. All fields
 must be optional.
 """
-input ShopSettingsUpdates
+input ShopSettingsUpdates {
+  # Although the spec allows and Apollo supports defining an empty type
+  # that is extended later in other files, the graphql-schema-linter
+  # package currently has a problem with this, so we must add a fake field.
+  #
+  # https://github.com/cjoudrey/graphql-schema-linter/issues/151
+  "Do not use this field"
+  doNotUse: String
+}
 
 "Response payload for the `updateShopSettings` mutation"
 type UpdateShopSettingsPayload {
