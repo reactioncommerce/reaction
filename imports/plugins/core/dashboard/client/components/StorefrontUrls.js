@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
-import styled from "styled-components"; // TODO: remove ThemeProvder when Blaze wrapper is removed
+import styled from "styled-components";
 import { Form } from "reacto-form";
 import { Mutation } from "react-apollo";
 import Button from "@material-ui/core/Button";
