@@ -10,7 +10,7 @@ const ALL_FIELDS = [
   "isSoldOut"
 ];
 
-const DEFAULT_INFO = {
+const DEFAULT_SELLABLE_INFO = {
   canBackorder: true,
   inventoryAvailableToSell: 0,
   inventoryInStock: 0,
@@ -18,6 +18,16 @@ const DEFAULT_INFO = {
   isBackorder: false,
   isLowQuantity: false,
   isSoldOut: false
+};
+
+const DEFAULT_SOLD_OUT_INFO = {
+  canBackorder: false,
+  inventoryAvailableToSell: 0,
+  inventoryInStock: 0,
+  inventoryReserved: 0,
+  isBackorder: true,
+  isLowQuantity: true,
+  isSoldOut: true
 };
 
 const productConfigurationSchema = new SimpleSchema({
@@ -37,6 +47,7 @@ const inputSchema = new SimpleSchema({
   },
   "productConfigurations": Array,
   "productConfigurations.$": productConfigurationSchema,
+  "shopId": String,
   "variants": {
     type: Array,
     optional: true
@@ -85,10 +96,12 @@ const pluginResultSchema = new SimpleSchema({
  * @return {Object[]} Array of result objects
  */
 async function getInventoryResults(context, input) {
+  const { productConfigurations, shopId } = input;
+
   // If there are multiple plugins providing inventory, we use the first one that has a response
   // for each product configuration.
   const results = [];
-  let remainingProductConfigurations = input.productConfigurations;
+  let remainingProductConfigurations = productConfigurations;
   for (const inventoryFn of context.getFunctionsOfType("inventoryForProductConfigurations")) {
     // eslint-disable-next-line no-await-in-loop
     const pluginResults = await inventoryFn(context, input);
@@ -119,11 +132,12 @@ async function getInventoryResults(context, input) {
   // If no inventory info was found for some of the product configs, such as
   // if there are no plugins providing inventory info, then use default info
   // that allows the product to be purchased always.
-  for (const productConfiguration of remainingProductConfigurations) {
-    results.push({
-      productConfiguration,
-      inventoryInfo: DEFAULT_INFO
-    });
+  if (remainingProductConfigurations.length > 0) {
+    const { canSellVariantWithoutInventory } = await context.queries.appSettings(context, shopId);
+    const inventoryInfo = canSellVariantWithoutInventory ? DEFAULT_SELLABLE_INFO : DEFAULT_SOLD_OUT_INFO;
+    for (const productConfiguration of remainingProductConfigurations) {
+      results.push({ inventoryInfo, productConfiguration });
+    }
   }
 
   return results;
@@ -148,7 +162,7 @@ export default async function inventoryForProductConfigurations(context, input) 
 
   inputSchema.validate(input);
 
-  const { fields = ALL_FIELDS, productConfigurations } = input;
+  const { fields = ALL_FIELDS, productConfigurations, shopId } = input;
 
   // Inventory plugins are expected to provide inventory info only for sellable variants.
   // If there are any non-sellable parent variants in the list, we remove them now.
@@ -167,7 +181,8 @@ export default async function inventoryForProductConfigurations(context, input) 
   // Get results for sellable product configs
   const results = await getInventoryResults(context, {
     fields,
-    productConfigurations: sellableProductConfigurations
+    productConfigurations: sellableProductConfigurations,
+    shopId
   });
 
   // Now it's time to calculate top-level variant aggregated inventory and add those to the results.
@@ -189,7 +204,8 @@ export default async function inventoryForProductConfigurations(context, input) 
       productConfigurations: allOptions.map((option) => ({
         productId: option.ancestors[0],
         productVariantId: option._id
-      }))
+      })),
+      shopId
     });
 
     for (const productConfiguration of parentVariantProductConfigurations) {

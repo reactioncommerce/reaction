@@ -41,7 +41,8 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
     productConfiguration: {
       ...productConfiguration,
       isSellable: true
-    }
+    },
+    shopId: chosenProduct.shopId
   });
 
   if (!inventoryInfo.canBackorder && (quantity > inventoryInfo.inventoryAvailableToSell)) {
