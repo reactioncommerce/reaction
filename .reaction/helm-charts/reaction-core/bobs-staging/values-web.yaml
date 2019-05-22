@@ -120,6 +120,10 @@ app:
         value: "1100151420184"
     -   key: TAXES_CONSUMER_ENABLED
         value: "false"
+    -   key: RADIAL_ITEM_EXPORT_CONSUMER_ENABLED
+        value: "false"
+    -   key: KAFKA_TOPIC_RADIAL_ITEM_EXPORT_STATUS
+        value: etl.radial-item-export.status.json-gen1
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
