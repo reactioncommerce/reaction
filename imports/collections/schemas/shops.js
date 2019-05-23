@@ -227,7 +227,8 @@ registerSchema("ShopTheme", ShopTheme);
  * @name StorefrontUrls
  * @memberof Schemas
  * @type {SimpleSchema}
- * @property {String[]} storefrontHomeUrlShop optional
+ * @property {String[]} storefrontHomeUrl optional
+ * @property {String[]} storefrontLoginUrl optional
  * @property {String[]} storefrontOrderUrl optional
  * @property {String[]} storefrontOrdersUrl optional
  * @property {String[]} storefrontAccountProfileUrl optional

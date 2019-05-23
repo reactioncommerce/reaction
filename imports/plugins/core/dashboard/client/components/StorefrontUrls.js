@@ -36,6 +36,7 @@ const updatShopUrlsMutation = gql`
         _id
         storefrontUrls {
           storefrontHomeUrl
+          storefrontLoginUrl
           storefrontOrderUrl
           storefrontOrdersUrl
           storefrontAccountProfileUrl
@@ -50,6 +51,7 @@ class StorefrontUrls extends Component {
     shop: PropTypes.shape({
       storefrontUrls: PropTypes.shape({
         storefrontHomeUrl: PropTypes.string,
+        storefrontLoginUrl: PropTypes.string,
         storefrontOrderUrl: PropTypes.string,
         storefrontOrdersUrl: PropTypes.string,
         storefrontAccountProfileUrl: PropTypes.string
@@ -67,7 +69,7 @@ class StorefrontUrls extends Component {
 
   handleUpdateUrls(data, mutation) {
     const { shop: { _id: shopId } } = this.props;
-    const { storefrontHomeUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = data;
+    const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = data;
 
     // return null;
     mutation({
@@ -76,6 +78,7 @@ class StorefrontUrls extends Component {
           shopId,
           storefrontUrls: {
             storefrontHomeUrl,
+            storefrontLoginUrl,
             storefrontOrderUrl,
             storefrontOrdersUrl,
             storefrontAccountProfileUrl
@@ -115,6 +118,19 @@ class StorefrontUrls extends Component {
                           name="storefrontHomeUrl"
                           placeholder={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlDescription", "URL of your shops homepage")}
                           value={shop.storefrontUrls.storefrontHomeUrl}
+                        />
+                        <ErrorsBlock names={["storefrontHomeUrl"]} />
+                      </PaddedField>
+                      <PaddedField
+                        name="storefrontLoginUrl"
+                        label={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlTitle", "Login URL")}
+                        labelFor="storefrontLoginUrlInput"
+                      >
+                        <TextInput
+                          id="storefrontLoginUrlInput"
+                          name="storefrontLoginUrl"
+                          placeholder={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlDescription", "URL of your shops login form")}
+                          value={shop.storefrontUrls.storefrontLoginUrl}
                         />
                         <ErrorsBlock names={["storefrontHomeUrl"]} />
                       </PaddedField>
