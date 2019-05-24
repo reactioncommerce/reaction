@@ -8,8 +8,10 @@ import withDefaultNavigationTree from "../hocs/withDefaultNavigationTree";
 import withNavigationItems from "../hocs/withNavigationItems";
 import withDefaultNavigationTreeId from "../hocs/withDefaultNavigationTreeId";
 import withNavigationUIStore from "../hocs/withNavigationUIStore";
+import withNavigationShopSettings from "../hocs/withNavigationShopSettings";
 
 registerComponent("NavigationDashboard", NavigationDashboard, [
+  withNavigationShopSettings,
   withNavigationUIStore,
   withCreateNavigationItem,
   withDefaultNavigationTreeId,
@@ -20,6 +22,7 @@ registerComponent("NavigationDashboard", NavigationDashboard, [
 ]);
 
 export default compose(
+  withNavigationShopSettings,
   withNavigationUIStore,
   withCreateNavigationItem,
   withDefaultNavigationTreeId,
