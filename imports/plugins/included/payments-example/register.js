@@ -20,6 +20,7 @@ Reaction.registerPackage({
   },
   paymentMethods: [{
     name: "iou_example",
+    canRefund: true,
     displayName: "IOU Example",
     functions: {
       capturePayment: exampleCapturePayment,

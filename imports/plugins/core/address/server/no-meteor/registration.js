@@ -42,8 +42,12 @@ export async function getEnabledAddressValidationServicesForShop(context, shopId
  */
 export async function getAddressValidationService(context, shopId, countryCode) {
   const services = await getEnabledAddressValidationServicesForShop(context, shopId);
-  const supportedServices = services.filter((ser) => {
-    const registeredService = addressValidationServices[ser.serviceName];
+  const supportedServices = services.filter(({ serviceName }) => {
+    const registeredService = addressValidationServices[serviceName];
+    if (!registeredService) {
+      throw new Error(`The shop has address validation service "${serviceName}" enabled but no such service exists. ` +
+        "Did you forget to install the plugin that provides this service?");
+    }
     return (
       !Array.isArray(registeredService.supportedCountryCodes) ||
       registeredService.supportedCountryCodes.includes(countryCode)

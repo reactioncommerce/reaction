@@ -1,8 +1,6 @@
 import { Reaction } from "/client/api";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 
 Template.createContentMenu.helpers({
@@ -16,17 +14,11 @@ Template.createContentMenu.helpers({
         if (item.route === "/products/createProduct") {
           Meteor.call("products/createProduct", (error, productId) => {
             if (Meteor.isClient) {
-              let currentTag;
-              let currentTagId;
-
               if (error) {
                 throw new ReactionError("create-product-error", error);
-              } else if (productId) {
-                currentTagId = Session.get("currentTag");
-                currentTag = Tags.findOne(currentTagId);
-                if (currentTag) {
-                  Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-                }
+              }
+
+              if (productId) {
                 // go to new product
                 Reaction.Router.go("product", {
                   handle: productId

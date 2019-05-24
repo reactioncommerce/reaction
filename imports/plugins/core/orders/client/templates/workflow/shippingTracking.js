@@ -23,7 +23,10 @@ Template.coreOrderShippingTracking.onCreated(() => {
   function getOrder(orderId, shipmentId) {
     template.orderDep.depend();
     return Orders.findOne({
-      "_id": orderId,
+      "$or": [
+        { _id: orderId },
+        { referenceId: orderId }
+      ],
       "shipping._id": shipmentId
     });
   }

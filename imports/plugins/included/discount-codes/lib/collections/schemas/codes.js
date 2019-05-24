@@ -15,7 +15,6 @@ export const DiscountCodes = Discounts.clone().extend({
   },
   "calculation.method": {
     type: String,
-    index: 1,
     defaultValue: "discount"
   },
   "code": {

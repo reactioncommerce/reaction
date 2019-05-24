@@ -1,14 +1,19 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import startup from "../no-meteor/startup";
 
-/*
- * register reaction core components as reaction packages
+/**
+ * @summary register reaction core components as reaction packages
+ * @return {undefined}
  */
-export default function () {
+export default function registerCore() {
   Reaction.registerPackage({
     label: "Core",
     name: "core",
     icon: "fa fa-th",
     autoEnable: true,
+    functionsByType: {
+      startup: [startup]
+    },
     settings: {
       public: {
         allowGuestCheckout: true

@@ -30,7 +30,6 @@ const mockProduct = {
 const mockVariant = {
   _id: internalVariantIds[0],
   ancestors: [internalProductId],
-  price: 2.99,
   title: "Fake Product Variant",
   shopId: internalShopId,
   isDeleted: false,
@@ -40,7 +39,6 @@ const mockVariant = {
 const mockOptionOne = {
   _id: internalVariantIds[1],
   ancestors: [internalProductId, internalVariantIds[0]],
-  price: 2.99,
   title: "Fake Product Option One",
   shopId: internalShopId,
   isDeleted: false,
@@ -50,7 +48,6 @@ const mockOptionOne = {
 const mockOptionTwo = {
   _id: internalVariantIds[2],
   ancestors: [internalProductId, internalVariantIds[0]],
-  price: 2.99,
   title: "Fake Product Option Two",
   shopId: internalShopId,
   isDeleted: false,
@@ -67,16 +64,13 @@ const mockCatalogItem = {
       {
         _id: opaqueCatalogVariantIds[0],
         title: "Fake Product Variant",
-        price: 2.99,
         options: [
           {
             _id: opaqueCatalogVariantIds[1],
-            price: 2.99,
             title: "Fake Product Option One"
           },
           {
             _id: opaqueCatalogVariantIds[2],
-            price: 2.99,
             title: "Fake Product Option Two"
           }
         ]
@@ -97,6 +91,9 @@ beforeAll(async () => {
   await testApp.collections.Products.insert(mockVariant);
   await testApp.collections.Products.insert(mockOptionOne);
   await testApp.collections.Products.insert(mockOptionTwo);
+
+  await testApp.runServiceStartup();
+
   await testApp.setLoggedInUser({
     _id: "123",
     roles: { [internalShopId]: ["createProduct"] }

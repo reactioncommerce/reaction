@@ -7,18 +7,9 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
+import { Jobs } from "/imports/utils/jobs";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import {
-  customPublishedProductFields,
-  customPublishedProductVariantFields,
-  functionsByType,
-  mutations,
-  queries,
-  resolvers,
-  schemas
-} from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
-import processJobs from "./processJobs";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 import { getUserId } from "./accountUtils";
@@ -30,7 +21,7 @@ import { getUserId } from "./accountUtils";
  */
 
 // Unpack the named Collections we use.
-const { Jobs, Packages, Shops, Accounts: AccountsCollection } = Collections;
+const { Packages, Shops, Accounts: AccountsCollection } = Collections;
 
 export default {
   ...AbsoluteUrlMixin,
@@ -45,7 +36,6 @@ export default {
     // start job server
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
-      processJobs();
       appEvents.emit("jobServerStart");
     });
     if (process.env.VERBOSE_JOBS) {
@@ -53,22 +43,8 @@ export default {
     }
 
     this.loadPackages();
-    // process imports from packages and any hooked imports
-    this.Importer.flush();
     createGroups();
     this.setAppVersion();
-
-    // Call `functionsByType.registerPluginHandler` functions for every plugin that
-    // has supplied one, passing in all other plugins. Allows one plugin for check
-    // for the presence of another plugin and read its config.
-    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
-    const packageInfoArray = Object.values(this.Packages);
-    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
-      if (typeof registerPluginHandlerFunc !== "function") {
-        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
-      }
-      packageInfoArray.forEach(registerPluginHandlerFunc);
-    });
 
     // DEPRECATED. Avoid consuming this hook in new code
     appEvents.emit("afterCoreInit");
@@ -80,49 +56,47 @@ export default {
 
   Packages: {},
 
-  registerPackage(packageInfo) {
-    // Mutate globals with package info
-    if (packageInfo.graphQL) {
-      if (packageInfo.graphQL.resolvers) {
-        merge(resolvers, packageInfo.graphQL.resolvers);
+  /**
+   * @summary This is used only for the old `registerPackage` in this file. After that is removed,
+   *   this likely can be removed, too.
+   * @param {ReactionNodeApp} app App instance
+   * @return {undefined}
+   */
+  async onAppInstanceCreated(app) {
+    this.reactionNodeApp = app;
+    if (this.whenAppInstanceReadyCallbacks) {
+      for (const callback of this.whenAppInstanceReadyCallbacks) {
+        await callback(this.reactionNodeApp); // eslint-disable-line no-await-in-loop
       }
-      if (packageInfo.graphQL.schemas) {
-        schemas.push(...packageInfo.graphQL.schemas);
-      }
+      this.whenAppInstanceReadyCallbacks = [];
     }
-
-    if (packageInfo.mutations) {
-      merge(mutations, packageInfo.mutations);
-    }
-
-    if (packageInfo.queries) {
-      merge(queries, packageInfo.queries);
-    }
-
-    if (packageInfo.functionsByType) {
-      Object.keys(packageInfo.functionsByType).forEach((type) => {
-        if (!Array.isArray(functionsByType[type])) {
-          functionsByType[type] = [];
-        }
-        functionsByType[type].push(...packageInfo.functionsByType[type]);
-      });
-    }
-
-    if (packageInfo.catalog) {
-      const { publishedProductFields, publishedProductVariantFields } = packageInfo.catalog;
-      if (Array.isArray(publishedProductFields)) {
-        customPublishedProductFields.push(...publishedProductFields);
-      }
-      if (Array.isArray(publishedProductVariantFields)) {
-        customPublishedProductVariantFields.push(...publishedProductVariantFields);
-      }
-    }
-
-    // Save the package info
-    this.Packages[packageInfo.name] = packageInfo;
-    const registeredPackage = this.Packages[packageInfo.name];
-    return registeredPackage;
+    appEvents.emit("readyForMigrations");
   },
+
+  /**
+   * @summary This is used only for the old `registerPackage` in this file. After that is removed,
+   *   this likely can be removed, too.
+   * @param {Function} callback Function to call after `this.reactionNodeApp` is set, which might be immediately
+   * @return {undefined}
+   */
+  whenAppInstanceReady(callback) {
+    if (this.reactionNodeApp) {
+      callback(this.reactionNodeApp);
+    } else {
+      if (!this.whenAppInstanceReadyCallbacks) this.whenAppInstanceReadyCallbacks = [];
+      this.whenAppInstanceReadyCallbacks.push(callback);
+    }
+  },
+
+  /**
+   * @deprecated Use `app.registerPlugin` pattern instead. See the simple-pricing plugin.
+   * @param {Object} packageInfo Plugin options
+   * @return {Object} Plugin options
+   */
+  registerPackage(packageInfo) {
+    this.whenAppInstanceReady((app) => app.registerPlugin(packageInfo));
+  },
+
   defaultCustomerRoles: ["guest", "account/profile", "product", "tag", "index", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/completed"],
   createGroups,
@@ -245,7 +219,7 @@ export default {
    * @return {array} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = getUserId()) {
-    // Owner permission for a shop superceeds grantable permissions, so we always check for owner permissions as well
+    // Owner permission for a shop supercedes grantable permissions, so we always check for owner permissions as well
     roles.push("owner");
 
     // Reducer that returns a unique list of shopIds that results from calling getGroupsForUser for each role
@@ -749,10 +723,10 @@ export default {
    * @method
    * @memberof Core
    * @summary save user preferences in the Accounts collection
-   * @param {String} packageName
-   * @param {String} preference
-   * @param {String} value
-   * @param {String} userId
+   * @param {String} packageName Package name
+   * @param {String} preference Preference key
+   * @param {String} value Preference value
+   * @param {String} userId User ID
    * @return {Number} setPreferenceResult
    */
   setUserPreferences(packageName, preference, value, userId) {
@@ -776,9 +750,7 @@ export default {
    */
   insertPackagesForShop(shopId) {
     const layouts = [];
-    if (!shopId) {
-      return [];
-    }
+    if (!shopId) return;
 
     // Check to see what packages should be enabled
     const shop = Shops.findOne({ _id: shopId });
@@ -797,44 +769,47 @@ export default {
       }
     }
 
-    const packages = this.Packages;
-    // for each shop, we're loading packages in a unique registry
-    // Object.keys(pkgConfigs).forEach((pkgName) => {
-    for (const packageName in packages) {
-      // Guard to prevent unexpected `for in` behavior
-      if ({}.hasOwnProperty.call(packages, packageName)) {
-        const config = packages[packageName];
-        this.assignOwnerRoles(shopId, packageName, config.registry);
+    this.whenAppInstanceReady((app) => {
+      const { registeredPlugins } = app;
 
-        const pkg = Object.assign({}, config, {
-          shopId
-        });
+      // for each shop, we're loading packages in a unique registry
+      // Object.keys(pkgConfigs).forEach((pkgName) => {
+      for (const packageName in registeredPlugins) {
+        // Guard to prevent unexpected `for in` behavior
+        if ({}.hasOwnProperty.call(registeredPlugins, packageName)) {
+          const config = registeredPlugins[packageName];
+          this.assignOwnerRoles(shopId, packageName, config.registry);
 
-        // populate array of layouts that don't already exist (?!)
-        if (pkg.layout) {
-          // filter out layout templates
-          for (const template of pkg.layout) {
-            if (template && template.layout) {
-              layouts.push(template);
+          const pkg = Object.assign({}, config, {
+            shopId
+          });
+
+          // populate array of layouts that don't already exist (?!)
+          if (pkg.layout) {
+            // filter out layout templates
+            for (const template of pkg.layout) {
+              if (template && template.layout) {
+                layouts.push(template);
+              }
             }
           }
-        }
 
-        if (enabledPackages && Array.isArray(enabledPackages)) {
-          if (!enabledPackages.includes(pkg.name)) {
-            pkg.enabled = false;
-          } else if (pkg.settings && pkg.settings[packageName]) { // Enable "soft switch" for package.
-            pkg.settings[packageName].enabled = true;
+          if (enabledPackages && Array.isArray(enabledPackages)) {
+            if (!enabledPackages.includes(pkg.name)) {
+              pkg.enabled = false;
+            } else if (pkg.settings && pkg.settings[packageName]) { // Enable "soft switch" for package.
+              pkg.settings[packageName].enabled = true;
+            }
           }
+          Packages.insert(pkg);
+          Logger.debug(`Initializing ${shopId} ${packageName}`);
         }
-        Packages.insert(pkg);
-        Logger.debug(`Initializing ${shopId} ${packageName}`);
       }
-    }
 
-    // helper for removing layout duplicates
-    const uniqLayouts = uniqWith(layouts, _.isEqual);
-    Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
+      // helper for removing layout duplicates
+      const uniqLayouts = uniqWith(layouts, _.isEqual);
+      Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
+    });
   },
 
   /**
@@ -859,8 +834,6 @@ export default {
    *  @return {String} returns insert result
    */
   loadPackages() {
-    const packages = Packages.find().fetch();
-
     let registryFixtureData;
 
     if (process.env.REACTION_REGISTRY) {
@@ -888,89 +861,97 @@ export default {
       }
     }
 
-    const layouts = [];
-    const totalPackages = Object.keys(this.Packages).length;
-    let loadedIndex = 1;
-    // for each shop, we're loading packages in a unique registry
-    _.each(this.Packages, (config, pkgName) =>
-      Shops.find().forEach((shop) => {
-        const shopId = shop._id;
-        if (!shopId) return [];
+    this.whenAppInstanceReady((app) => {
+      const layouts = [];
+      const packages = Packages.find().fetch();
+      const shops = Shops.find().fetch();
+      const { registeredPlugins } = app;
+      const totalPackages = Object.keys(registeredPlugins).length;
+      let loadedIndex = 1;
+      // for each shop, we're loading packages in a unique registry
+      _.each(registeredPlugins, (config, pkgName) => {
+        shops.forEach((shop) => {
+          const shopId = shop._id;
+          if (!shopId) return;
 
-        // existing registry will be upserted with changes, perhaps we should add:
-        this.assignOwnerRoles(shopId, pkgName, config.registry);
+          // existing registry will be upserted with changes, perhaps we should add:
+          this.assignOwnerRoles(shopId, pkgName, config.registry);
 
-        // Settings from the package registry.js
-        const settingsFromPackage = {
-          name: pkgName,
-          version: config.version,
-          icon: config.icon,
-          enabled: !!config.autoEnable,
-          settings: config.settings,
-          registry: config.registry,
-          layout: config.layout
-        };
+          // Settings from the package registry.js
+          const settingsFromPackage = {
+            name: pkgName,
+            version: config.version,
+            icon: config.icon,
+            enabled: !!config.autoEnable,
+            settings: config.settings,
+            registry: config.registry,
+            layout: config.layout
+          };
 
-        // Setting from a fixture file, most likely reaction.json
-        let settingsFromFixture;
-        if (registryFixtureData) {
-          settingsFromFixture = registryFixtureData[0].find((packageSetting) => config.name === packageSetting.name);
-        }
+          // Settings from a fixture file, most likely reaction.json
+          let settingsFromFixture;
+          if (registryFixtureData) {
+            settingsFromFixture = registryFixtureData[0].find((packageSetting) => config.name === packageSetting.name);
+          }
 
-        // Setting already imported into the packages collection
-        const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
+          // Settings already imported into the packages collection
+          const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
 
-        const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
+          const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
 
-        // always use version from package
-        if (combinedSettings.version) {
-          combinedSettings.version = settingsFromPackage.version || settingsFromDB.version;
-        }
-        if (combinedSettings.registry) {
-          combinedSettings.registry = combinedSettings.registry.map((entry) => {
-            if (entry.provides && !Array.isArray(entry.provides)) {
-              entry.provides = [entry.provides];
-              Logger.warn(`Plugin ${combinedSettings.name} is using a deprecated version of the provides property for` +
-                          ` the ${entry.name || entry.route} registry entry. Since v1.5.0 registry provides accepts` +
-                          " an array of strings.");
-            }
-            return entry;
-          });
-        }
+          // always use version from package
+          if (combinedSettings.version) {
+            combinedSettings.version = settingsFromPackage.version || settingsFromDB.version;
+          }
+          if (combinedSettings.registry) {
+            combinedSettings.registry = combinedSettings.registry.map((entry) => {
+              if (entry.provides && !Array.isArray(entry.provides)) {
+                entry.provides = [entry.provides];
+                Logger.warn(`Plugin ${combinedSettings.name} is using a deprecated version of the provides property for` +
+                            ` the ${entry.name || entry.route} registry entry. Since v1.5.0 registry provides accepts` +
+                            " an array of strings.");
+              }
+              return entry;
+            });
+          }
 
-        // populate array of layouts that don't already exist in Shops
-        if (combinedSettings.layout) {
-          // filter out layout Templates
-          for (const pkg of combinedSettings.layout) {
-            if (pkg.layout) {
-              layouts.push(pkg);
+          // populate array of layouts that don't already exist in Shops
+          if (combinedSettings.layout) {
+            // filter out layout Templates
+            for (const pkg of combinedSettings.layout) {
+              if (pkg.layout) {
+                layouts.push(pkg);
+              }
             }
           }
+          // Import package data
+          this.Importer.package(combinedSettings, shopId);
+          Logger.info(`Successfully initialized  package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
+          loadedIndex += 1;
+        });
+      });
+
+      // helper for removing layout duplicates
+      const uniqLayouts = uniqWith(layouts, _.isEqual);
+      // import layouts into Shops
+      Shops.find().forEach((shop) => {
+        this.Importer.layout(uniqLayouts, shop._id);
+      });
+
+      this.Importer.flush();
+
+      //
+      // package cleanup
+      //
+      Shops.find().forEach((shop) => Packages.find().forEach((pkg) => {
+        // delete registry entries for packages that have been removed
+        if (!_.has(registeredPlugins, pkg.name)) {
+          Logger.debug(`Removing ${pkg.name}`);
+          return Packages.remove({ shopId: shop._id, name: pkg.name });
         }
-        // Import package data
-        this.Importer.package(combinedSettings, shopId);
-        Logger.info(`Successfully initialized  package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
-        loadedIndex += 1;
+        return false;
       }));
-
-    // helper for removing layout duplicates
-    const uniqLayouts = uniqWith(layouts, _.isEqual);
-    // import layouts into Shops
-    Shops.find().forEach((shop) => {
-      this.Importer.layout(uniqLayouts, shop._id);
     });
-
-    //
-    // package cleanup
-    //
-    Shops.find().forEach((shop) => Packages.find().forEach((pkg) => {
-      // delete registry entries for packages that have been removed
-      if (!_.has(this.Packages, pkg.name)) {
-        Logger.debug(`Removing ${pkg.name}`);
-        return Packages.remove({ shopId: shop._id, name: pkg.name });
-      }
-      return false;
-    }));
   },
 
   /**
@@ -1006,14 +987,14 @@ export default {
     const col = Collections[collection];
     if (!col) {
       Logger.warn(errMsg);
-      // Return false so we don't pass a check that uses a non-existant schema
+      // Return false so we don't pass a check that uses a non-existent schema
       return false;
     }
 
     const schema = col.simpleSchema(selector);
     if (!schema) {
       Logger.warn(errMsg);
-      // Return false so we don't pass a check that uses a non-existant schema
+      // Return false so we don't pass a check that uses a non-existent schema
       return false;
     }
 

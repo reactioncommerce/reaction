@@ -13,8 +13,7 @@ import { registerSchema } from "@reactioncommerce/schemas";
 export const Workflow = new SimpleSchema({
   "status": {
     type: String,
-    defaultValue: "new",
-    index: 1
+    defaultValue: "new"
   },
   "workflow": {
     type: Array,

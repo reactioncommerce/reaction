@@ -3,8 +3,8 @@ import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
-import { SSR } from "meteor/meteorhacks:ssr";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -16,13 +16,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
  *                 This address must be in the user's emails list.
  *                 Defaults to the first unverified email in the list.
  * @param {String} [input.bodyTemplate] Template name for rendering the email body
- * @param {String} [input.subjectTemplate] Template name for rendering the email subject
  * @return {Job} - returns a sendEmail Job instance
  */
 export default async function sendVerificationEmail({
   bodyTemplate = "accounts/verifyEmail",
   email,
-  subjectTemplate = "accounts/verifyEmail/subject",
   userId
 }) {
   // Make sure the user exists, and email is one of their addresses.
@@ -101,29 +99,11 @@ export default async function sendVerificationEmail({
     userEmailAddress: address
   };
 
-  if (!Reaction.Email.getMailUrl()) {
-    Logger.warn(`
-
-  ***************************************************
-          IMPORTANT! EMAIL VERIFICATION LINK
-
-           Email sending is not configured.
-
-  Go to the following URL to verify email: ${address}
-
-  ${url}
-  ***************************************************
-
-    `);
-  }
-
-  SSR.compileTemplate(bodyTemplate, Reaction.Email.getTemplate(bodyTemplate));
-  SSR.compileTemplate(subjectTemplate, Reaction.Email.getSubject(bodyTemplate));
-
-  return Reaction.Email.send({
-    to: address,
-    from: Reaction.getShopEmail(),
-    subject: SSR.render(subjectTemplate, dataForEmail),
-    html: SSR.render(bodyTemplate, dataForEmail)
-  });
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  return Promise.await(context.mutations.sendEmail(context, {
+    data: dataForEmail,
+    fromShopId: Reaction.getShopId(),
+    templateName: bodyTemplate,
+    to: address
+  }));
 }

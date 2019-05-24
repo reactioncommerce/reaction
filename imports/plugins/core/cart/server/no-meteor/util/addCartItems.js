@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
+import { toFixed } from "accounting-js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 
 const inputItemSchema = new SimpleSchema({
   "metafields": {
@@ -36,7 +36,7 @@ const inputItemSchema = new SimpleSchema({
  * @return {Object} Object with `incorrectPriceFailures` and `minOrderQuantityFailures` and `updatedItemList` props
  */
 export default async function addCartItems(context, currentItems, inputItems, options = {}) {
-  const { collections, queries } = context;
+  const { queries } = context;
 
   inputItemSchema.validate(inputItems);
 
@@ -57,7 +57,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       catalogProduct,
       parentVariant,
       variant: chosenVariant
-    } = await findProductAndVariant(collections, productId, productVariantId);
+    } = await queries.findProductAndVariant(context, productId, productVariantId);
 
     const variantPriceInfo = await queries.getVariantPrice(context, chosenVariant, price.currencyCode);
     if (!variantPriceInfo) {
@@ -133,7 +133,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       shopId: catalogProduct.shopId,
       // Subtotal will be kept updated by event handler watching for catalog changes.
       subtotal: {
-        amount: variantPriceInfo.price * quantity,
+        amount: +toFixed(variantPriceInfo.price * quantity, 3),
         currencyCode: price.currencyCode
       },
       taxCode: chosenVariant.taxCode,
@@ -166,7 +166,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       // testable code.
       const updatedQuantity = currentCartItem.quantity + cartItem.quantity;
       // Recalculate subtotal with new quantity number
-      const updatedSubtotalAmount = updatedQuantity * cartItem.price.amount;
+      const updatedSubtotalAmount = +toFixed(updatedQuantity * cartItem.price.amount, 3);
       updatedItemList[currentMatchingItemIndex] = {
         ...currentCartItem,
         ...cartItem,

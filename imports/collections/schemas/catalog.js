@@ -74,29 +74,6 @@ export const ImageInfo = new SimpleSchema({
 });
 
 /**
- * @name CatalogPriceRange
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Number} max required
- * @property {Number} min required
- * @property {String} range required
- */
-export const CatalogPriceRange = new SimpleSchema({
-  max: {
-    type: Number,
-    label: "Max price"
-  },
-  min: {
-    type: Number,
-    label: "Min price"
-  },
-  range: {
-    type: String,
-    label: "Price range"
-  }
-});
-
-/**
  * @name SocialMetadata
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -122,26 +99,15 @@ export const SocialMetadata = new SimpleSchema({
  * @type {SimpleSchema}
  * @property {String} _id required
  * @property {String} barcode optional
- * @property {Boolean} canBackorder required, Indicates when the seller has allowed the sale of product which is not in stock
  * @property {Date} createdAt required
  * @property {Number} height optional, default value: `0`
  * @property {Number} index required
- * @property {Boolean} inventoryAvailableToSell required, The quantity of this item currently available to sell. This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator). If this is a variant, this number is created by summing all child option inventory numbers. This is most likely the quantity to display in the storefront UI.
- * @property {Boolean} inventoryInStock required, The quantity of this item currently in stock. This number is updated when an order is processed by the operator. This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator). If this is a variant, this number is created by summing all child option inventory numbers. This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.
- * @property {Boolean} inventoryManagement required, True if inventory management is enabled for this variant
- * @property {Boolean} inventoryPolicy required, True if inventory policy is enabled for this variant
- * @property {Boolean} isBackorder required, Indicates when a product is currently backordered
- * @property {Boolean} isLowQuantity required, Indicates that the product quantity is too low
- * @property {Boolean} isSoldOut required, Indicates when the product quantity is zero
  * @property {Number} length optional, default value: `0`
- * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
  * @property {ImageInfo[]} media optional
  * @property {Metafield[]} metafields optional
  * @property {Number} minOrderQuantity optional, default value: `1`
  * @property {String} optionTitle optional
  * @property {String} originCountry optional
- * @property {CatalogPriceRange} price required
- * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} shopId required
  * @property {String} sku optional
@@ -161,10 +127,6 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "Barcode",
     optional: true
   },
-  "canBackorder": {
-    type: Boolean,
-    label: "Can backorder"
-  },
   "createdAt": {
     type: Date,
     label: "Date/time this variant was created at"
@@ -180,45 +142,9 @@ export const VariantBaseSchema = new SimpleSchema({
     type: SimpleSchema.Integer,
     label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
   },
-  "inventoryAvailableToSell": {
-    type: SimpleSchema.Integer,
-    label: "Inventory available to sell"
-  },
-  "inventoryInStock": {
-    type: SimpleSchema.Integer,
-    label: "Inventory in stock"
-  },
-  "inventoryManagement": {
-    type: Boolean,
-    label: "Inventory management"
-  },
-  "inventoryPolicy": {
-    type: Boolean,
-    label: "Inventory policy"
-  },
-  "isBackorder": {
-    type: Boolean,
-    label: "Is backordered",
-    defaultValue: false
-  },
-  "isLowQuantity": {
-    type: Boolean,
-    label: "Is low quantity"
-  },
-  "isSoldOut": {
-    type: Boolean,
-    label: "Is sold out"
-  },
   "length": {
     type: Number,
     label: "Length",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
     min: 0,
     optional: true,
     defaultValue: 0
@@ -255,14 +181,6 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "Origin country",
     optional: true
   },
-  "price": {
-    type: Number
-  },
-  "pricing": {
-    type: Object,
-    blackbox: true,
-    label: "Pricing"
-  },
   "primaryImage": {
     type: ImageInfo,
     label: "Primary Image",
@@ -270,8 +188,7 @@ export const VariantBaseSchema = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   "sku": {
     type: String,
@@ -335,14 +252,8 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {Date} createdAt required
  * @property {String} description optional
  * @property {Number} height optional, default value: `0`
- * @property {Boolean} inventoryAvailableToSell required, The quantity of this item currently available to sell. This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator). If this is a variant, this number is created by summing all child option inventory numbers. This is most likely the quantity to display in the storefront UI.
- * @property {Boolean} inventoryInStock required, The quantity of this item currently in stock. This number is updated when an order is processed by the operator. This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator). If this is a variant, this number is created by summing all child option inventory numbers. This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.
- * @property {Boolean} isBackorder required, Indicates when a product is currently backordered
- * @property {Boolean} isLowQuantity required, Indicates that the product quantity is too low
- * @property {Boolean} isSoldOut required, Indicates when the product quantity is zero
  * @property {Boolean} isVisible required, default value: `false`
  * @property {Number} length optional, default value: `0`
- * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
  * @property {ImageInfo[]} media optional
  * @property {Metafield[]} metafields optional
  * @property {String} metaDescription optional
@@ -350,8 +261,6 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {String} originCountry optional
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
- * @property {CatalogPriceRange} price optional
- * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
@@ -381,8 +290,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "createdAt": {
     type: Date,
-    label: "Date/time this product was created at",
-    index: 1
+    label: "Date/time this product was created at"
   },
   "description": {
     type: String,
@@ -396,48 +304,19 @@ export const CatalogProduct = new SimpleSchema({
     optional: true,
     defaultValue: 0
   },
-  "inventoryAvailableToSell": {
-    type: SimpleSchema.Integer,
-    label: "Inventory available to sell"
-  },
-  "inventoryInStock": {
-    type: SimpleSchema.Integer,
-    label: "Inventory in stock"
-  },
-  "isBackorder": {
-    type: Boolean,
-    label: "Is backorder"
-  },
   "isDeleted": {
     type: Boolean,
     label: "Is deleted",
-    index: 1,
     defaultValue: false
-  },
-  "isLowQuantity": {
-    type: Boolean,
-    label: "Is low quantity"
-  },
-  "isSoldOut": {
-    type: Boolean,
-    label: "Is sold out"
   },
   "isVisible": {
     type: Boolean,
     label: "Indicates if a product is visible to non-admin users",
-    index: 1,
     defaultValue: false
   },
   "length": {
     type: Number,
     label: "Length",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
     min: 0,
     optional: true,
     defaultValue: 0
@@ -484,15 +363,6 @@ export const CatalogProduct = new SimpleSchema({
     label: "Shipping parcel",
     optional: true
   },
-  "price": {
-    type: CatalogPriceRange,
-    optional: true
-  },
-  "pricing": {
-    type: Object,
-    blackbox: true,
-    label: "Pricing"
-  },
   "primaryImage": {
     type: ImageInfo,
     label: "Primary Image",
@@ -509,8 +379,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   "sku": {
     type: String,
@@ -519,8 +388,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "slug": {
     type: String,
-    optional: true,
-    index: 1
+    optional: true
   },
   "socialMetadata": {
     type: Array,
@@ -609,13 +477,11 @@ export const Catalog = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    label: "Date/time this catalog item was created at",
-    index: 1
+    label: "Date/time this catalog item was created at"
   },
   shopId: {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   updatedAt: {
     type: Date,

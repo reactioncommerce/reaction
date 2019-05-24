@@ -24,11 +24,21 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
   const catalogProduct = Factory.CatalogProduct.makeOne();
   const catalogProductVariant = Factory.CatalogVariantSchema.makeOne();
 
-  mockContext.queries.getCurrentCatalogPriceForProductConfiguration = jest.fn().mockName("getCurrentCatalogPriceForProductConfiguration");
-  mockContext.queries.getCurrentCatalogPriceForProductConfiguration.mockReturnValueOnce({
+  mockContext.queries.findProductAndVariant = jest.fn().mockName("findProductAndVariant");
+  mockContext.queries.findProductAndVariant.mockReturnValueOnce({
     catalogProduct,
-    catalogProductVariant,
+    variant: catalogProductVariant
+  });
+
+  mockContext.queries.getVariantPrice = jest.fn().mockName("getVariantPrice");
+  mockContext.queries.getVariantPrice.mockReturnValueOnce({
     price: 0
+  });
+
+  mockContext.queries.inventoryForProductConfiguration = jest.fn().mockName("inventoryForProductConfiguration");
+  mockContext.queries.inventoryForProductConfiguration.mockReturnValueOnce({
+    canBackOrder: true,
+    inventoryAvailableToSell: 10
   });
 
   mockContext.queries.getFulfillmentMethodsWithQuotes = jest.fn().mockName("getFulfillmentMethodsWithQuotes");

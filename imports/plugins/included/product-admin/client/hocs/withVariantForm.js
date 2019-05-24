@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import { compose } from "recompose";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
@@ -26,7 +27,8 @@ const wrapComponent = (Comp) => (
 
       this.state = {
         isDeleted: props.variant && props.variant.isDeleted,
-        validationStatus: this.validation.validationStatus
+        validationStatus: this.validation.validationStatus,
+        variant: props.variant
       };
     }
 
@@ -35,9 +37,25 @@ const wrapComponent = (Comp) => (
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+      const nextVariant = nextProps.variant || {};
+      const currentVariant = this.props.variant || {};
+
+      if (_.isEqual(nextVariant, currentVariant) === false) {
+        this.setState({
+          inventoryManagement: nextProps.variant.inventoryManagement,
+          inventoryPolicy: nextProps.variant.inventoryPolicy,
+          isTaxable: nextProps.variant.isTaxable,
+          variant: nextProps.variant
+        });
+      }
+
       this.setState({
         isDeleted: nextProps.variant && nextProps.variant.isDeleted
       });
+    }
+
+    get variant() {
+      return this.state.variant || this.props.variant || {};
     }
 
     runVariantValidation(variant) {
@@ -153,6 +171,64 @@ const wrapComponent = (Comp) => (
       Meteor.call("products/updateProductField", variant._id, "isVisible", !variant.isVisible);
     }
 
+    handleFieldChange = (event, value, field) => {
+      this.setState(({ variant }) => ({
+        variant: {
+          ...variant,
+          [field]: value
+        }
+      }));
+    }
+
+    handleFieldBlur = (event, value, field) => {
+      this.handleVariantFieldSave(this.variant._id, field, value, this.state.variant);
+    }
+
+    handleSelectChange = (value, field) => {
+      this.setState(({ variant }) => ({
+        variant: {
+          ...variant,
+          [field]: value
+        }
+      }), () => {
+        this.handleVariantFieldSave(this.variant._id, field, value, this.state.variant);
+      });
+    }
+
+    handleCheckboxChange = (event, value, field) => {
+      this.setState(({ variant }) => ({
+        variant: {
+          ...variant,
+          [field]: value
+        }
+      }), () => {
+        this.handleVariantFieldSave(this.variant._id, field, value, this.state.variant);
+      });
+    }
+
+    handleInventoryPolicyChange = (event, value, field) => {
+      /*
+      Due to some confusing verbiage on how inventoryPolicy works / is displayed, we need to handle this field
+      differently than we handle the other checkboxes in this component. Specifically, we display the opposite value of
+      what the actual field value is. Because this is a checkbox, that means that the opposite value is actually the
+      field value as well, not just a display value, so we need to reverse the boolean value when it gets passed into
+      this function before we send it to the server to update the data. Other than reversing the value, this function
+      is the same as `handleCheckboxChange`.
+      */
+
+      const inverseValue = !value;
+
+      this.setState(({ variant }) => ({
+        inventoryPolicy: inverseValue,
+        variant: {
+          ...variant,
+          [field]: inverseValue
+        }
+      }));
+
+      this.handleFieldBlur(event, inverseValue, field);
+    }
+
     /**
      * @summary update parent inventory policy if variant has children
      * @param {Object} variant product or variant document
@@ -202,9 +278,12 @@ const wrapComponent = (Comp) => (
     }
 
     render() {
-      if (this.props.variant) {
+      if (this.variant) {
         return (
           <Comp
+            {...this.props}
+            inventoryManagement={this.state.inventoryManagement}
+            inventoryPolicy={this.state.inventoryPolicy}
             hasChildVariants={this.hasChildVariants}
             greyDisabledFields={this.greyDisabledFields}
             restoreVariant={this.restoreVariant}
@@ -215,8 +294,11 @@ const wrapComponent = (Comp) => (
             onCardExpand={this.handleCardExpand}
             validation={this.state.validationStatus}
             isDeleted={this.state.isDeleted}
-            {...this.props}
-            variant={this.props.variant}
+            onVariantFieldChange={this.handleFieldChange}
+            onVariantFieldBlur={this.handleFieldBlur}
+            onVariantCheckboxChange={this.handleCheckboxChange}
+            onVariantSelectChange={this.handleSelectChange}
+            variant={this.variant}
           />
         );
       }

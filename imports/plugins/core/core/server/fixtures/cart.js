@@ -38,7 +38,8 @@ export function getCartItem(options = {}) {
     ]
   }).fetch();
   const selectedOption = Random.choice(childVariants);
-  const quantity = _.random(1, selectedOption.inventoryInStock);
+  const quantity = 1;
+  const price = _.random(1, 100);
   const defaults = {
     _id: Random.id(),
     addedAt: new Date(),
@@ -46,11 +47,11 @@ export function getCartItem(options = {}) {
     isTaxable: false,
     optionTitle: selectedOption.optionTitle,
     price: {
-      amount: selectedOption.price,
+      amount: price,
       currencyCode: "USD"
     },
     priceWhenAdded: {
-      amount: selectedOption.price,
+      amount: price,
       currencyCode: "USD"
     },
     productId: product._id,
@@ -59,7 +60,7 @@ export function getCartItem(options = {}) {
     quantity,
     shopId: options.shopId || getShop()._id,
     subtotal: {
-      amount: selectedOption.price * quantity,
+      amount: price * quantity,
       currencyCode: "USD"
     },
     title: product.title,
@@ -98,7 +99,7 @@ export function createCart(productId, variantId) {
   const variant = Products.findOne(variantId);
   const user = Factory.create("user");
   const account = Factory.create("account", { userId: user._id });
-  const quantity = _.random(1, variant.inventoryInStock);
+  const quantity = 1;
   const cartItem = {
     _id: Random.id(),
     addedAt: new Date(),

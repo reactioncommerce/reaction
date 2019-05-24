@@ -12,7 +12,8 @@ import _ from "lodash";
 function getVariantInventoryNotAvailableToSellQuantity(variant, collections) {
   // Find orders that are new or processing
   const orders = collections.Orders.find({
-    "workflow.status": { $in: ["new", "coreOrderWorkflow/processing"] }
+    "workflow.status": { $in: ["new", "coreOrderWorkflow/processing"] },
+    "shipping.items.variantId": variant._id
   }).fetch();
 
   const reservedQuantity = orders.reduce((sum, order) => {
@@ -105,7 +106,7 @@ function getVariantInventoryAvailableToSellQuantity(variant, collections, varian
   }
 
   if (options && options.length) {
-    return options.reduce((sum, option) => sum + option.inventoryAvailableToSell || 0, 0);
+    return options.reduce((sum, option) => sum + (option.inventoryAvailableToSell || 0), 0);
   }
 
   return variant.inventoryAvailableToSell || 0;
@@ -126,7 +127,7 @@ function getProductInventoryAvailableToSellQuantity(productId, collections) {
   const variants = getVariants(productId, collections, true);
 
   if (variants && variants.length) {
-    return variants.reduce((sum, variant) => sum + variant.inventoryAvailableToSell || 0, 0);
+    return variants.reduce((sum, variant) => sum + (variant.inventoryAvailableToSell || 0), 0);
   }
   return 0;
 }

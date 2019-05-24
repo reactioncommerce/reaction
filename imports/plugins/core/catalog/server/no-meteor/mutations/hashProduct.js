@@ -1,5 +1,5 @@
 import hash from "object-hash";
-import { customPublishedProductFields, customPublishedProductVariantFields } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { customPublishedProductFields, customPublishedProductVariantFields } from "../registration";
 import getCatalogProductMedia from "../utils/getCatalogProductMedia";
 import getTopLevelProduct from "../utils/getTopLevelProduct";
 
@@ -19,7 +19,6 @@ const productFieldsThatNeedPublishing = [
   "pageTitle",
   "parcel",
   "pinterestMsg",
-  "price",
   "productType",
   "shopId",
   "supportedFulfillmentTypes",
@@ -36,20 +35,13 @@ const variantFieldsThatNeedPublishing = [
   "compareAtPrice",
   "height",
   "index",
-  "inventoryManagement",
-  "inventoryPolicy",
-  "inventoryInStock",
   "isDeleted",
-  "isLowQuantity",
-  "isSoldOut",
   "isVisible",
   "length",
-  "lowInventoryWarningThreshold",
   "metafields",
   "minOrderQuantity",
   "optionTitle",
   "originCountry",
-  "price",
   "shopId",
   "sku",
   "title",

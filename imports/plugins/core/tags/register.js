@@ -3,6 +3,7 @@ import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
   label: "Tags",
@@ -10,6 +11,9 @@ Reaction.registerPackage({
   icon: "fa fa-tag",
   autoEnable: true,
   version: "1.0.0",
+  functionsByType: {
+    startup: [startup]
+  },
   graphQL: {
     resolvers,
     schemas
