@@ -11,11 +11,12 @@
  * @return {Promise<Object>} InventoryInfo
  */
 export default async function inventoryForProductConfiguration(context, input) {
-  const { fields, productConfiguration } = input;
+  const { fields, productConfiguration, shopId } = input;
 
   const result = await context.queries.inventoryForProductConfigurations(context, {
     fields,
-    productConfigurations: [productConfiguration]
+    productConfigurations: [productConfiguration],
+    shopId
   });
 
   return result[0].inventoryInfo;
