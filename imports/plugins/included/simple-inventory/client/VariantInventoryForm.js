@@ -177,6 +177,9 @@ function VariantInventoryForm(props) {
 }
 
 VariantInventoryForm.propTypes = {
+  components: PropTypes.shape({
+    Button: PropTypes.any
+  }),
   inventoryInfo: PropTypes.shape({
     canBackorder: PropTypes.bool,
     inventoryInStock: PropTypes.number,

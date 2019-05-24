@@ -12,12 +12,13 @@ export default async function publishProductToCatalog(catalogProduct, { context,
   const topVariants = variants.filter((variant) => variant.ancestors.length === 1);
 
   const topVariantsInventoryInfo = await context.queries.inventoryForProductConfigurations(context, {
+    fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
     productConfigurations: topVariants.map((option) => ({
       isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
       productId: option.ancestors[0],
       productVariantId: option._id
     })),
-    fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
+    shopId: catalogProduct.shopId,
     variants
   });
 
