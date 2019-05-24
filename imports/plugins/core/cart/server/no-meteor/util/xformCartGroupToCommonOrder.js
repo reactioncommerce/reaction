@@ -24,13 +24,13 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
   // the catalog. `getFulfillmentGroupTaxes` uses subtotal prop to calculate the tax.
   // ** If you add any data here, be sure to add the same data to the matching xformOrderGroupToCommonOrder xform
   items = await Promise.all(items.map(async (item) => {
-    let itemPrice = item.price;
+    let itemPrice = item.price && item.price.amount;
 
     // Get the catalog version of the item to get pricing data from it
     if (catalogItemsInGroup) {
       const catalogProduct = catalogItemsInGroup.find((catalogItem) => catalogItem.product.productId === item.productId);
       if (catalogProduct) {
-        const catalogVariant = context.queries.findVariantInCatalogProduct(catalogProduct.product, item.variantId);
+        const { variant: catalogVariant } = context.queries.findVariantInCatalogProduct(catalogProduct.product, item.variantId);
         if (catalogVariant === null) {
           throw new ReactionError("not-found", "Catalog variant not found");
         }
@@ -48,7 +48,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       isTaxable: item.isTaxable,
       parcel: item.parcel,
       price: {
-        amount: itemPrice.amount,
+        amount: itemPrice,
         currencyCode
       },
       productId: item.productId,
@@ -56,7 +56,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       quantity: item.quantity,
       shopId: item.shopId,
       subtotal: {
-        amount: +toFixed(itemPrice.amount * item.quantity, 3),
+        amount: +toFixed(itemPrice * item.quantity, 3),
         currencyCode
       },
       taxCode: item.taxCode,
