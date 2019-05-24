@@ -19,6 +19,11 @@ export default (Component) => (
   class WithUpdateNavigationTree extends React.Component {
     static propTypes = {
       defaultNavigationTreeId: PropTypes.string,
+      navigationShopSettings: PropTypes.shape({
+        shouldNavigationTreeItemsBeAdminOnly: PropTypes.bool,
+        shouldNavigationTreeItemsBePublicallyVisible: PropTypes.bool,
+        shouldNavigationTreeItemsBeSecondaryNavOnly: PropTypes.bool
+      }),
       onUpdateNavigationTree: PropTypes.func,
       publishNavigationChanges: PropTypes.func,
       sortableNavigationTree: PropTypes.arrayOf(PropTypes.object)
@@ -31,13 +36,19 @@ export default (Component) => (
     }
 
     sortableNavigationTreeToDraftItems(sortableNavigationTree) {
+      const {
+        shouldNavigationTreeItemsBeAdminOnly,
+        shouldNavigationTreeItemsBePublicallyVisible,
+        shouldNavigationTreeItemsBeSecondaryNavOnly
+      } = this.props.navigationShopSettings;
+
       return sortableNavigationTree.map((node) => {
         const newNode = {};
         newNode.navigationItemId = node.id;
         newNode.expanded = node.expanded;
-        newNode.isVisible = typeof node.isVisible === "boolean" ? node.isVisible : true;
-        newNode.isPrivate = typeof node.isPrivate === "boolean" ? node.isPrivate : false;
-        newNode.isSecondary = typeof node.isSecondary === "boolean" ? node.isSecondary : false;
+        newNode.isVisible = typeof node.isVisible === "boolean" ? node.isVisible : shouldNavigationTreeItemsBePublicallyVisible;
+        newNode.isPrivate = typeof node.isPrivate === "boolean" ? node.isPrivate : shouldNavigationTreeItemsBeAdminOnly;
+        newNode.isSecondary = typeof node.isSecondary === "boolean" ? node.isSecondary : shouldNavigationTreeItemsBeSecondaryNavOnly;
 
         if (Array.isArray(node.children) && node.children.length) {
           newNode.items = this.sortableNavigationTreeToDraftItems(node.children);
