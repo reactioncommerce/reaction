@@ -20,21 +20,21 @@ export default async function register(app) {
     mutations,
     queries,
     shopSettingsConfig: {
-      shouldNewNavigationTreeItemsBePublicallyVisible: {
+      shouldNavigationTreeItemsBePublicallyVisible: {
         defaultValue: false,
         rolesThatCanEdit: ["admin"],
         simpleSchema: {
           type: Boolean
         }
       },
-      shouldNewNavigationTreeItemsBeAdminOnly: {
+      shouldNavigationTreeItemsBeAdminOnly: {
         defaultValue: false,
         rolesThatCanEdit: ["admin"],
         simpleSchema: {
           type: Boolean
         }
       },
-      shouldNewNavigationTreeItemsBeSecondaryNavOnly: {
+      shouldNavigationTreeItemsBeSecondaryNavOnly: {
         defaultValue: false,
         rolesThatCanEdit: ["admin"],
         simpleSchema: {

@@ -1,40 +1,40 @@
 extend type ShopSettings {
   """
-  Whether a new navation item added to the navigation tree be
-  public API/Storefront visible by default
-  """
-  shouldNewNavigationTreeItemsBePublicallyVisible: Boolean!
-
-  """
-  Whether a new navation item added to the navigation tree be visible only to
+  Whether a navigation item added to the navigation tree be visible only to
   admins by default
   """
-  shouldNewNavigationTreeItemsBeAdminOnly: Boolean!
+  shouldNavigationTreeItemsBeAdminOnly: Boolean!
 
   """
-  Whether a new navation item added to the navigation tree should show be a secondary
+  Whether a navigation item added to the navigation tree be
+  public API/Storefront visible by default
+  """
+  shouldNavigationTreeItemsBePublicallyVisible: Boolean!
+
+  """
+  Whether a navigation item added to the navigation tree should show be a secondary
   navigation by default
   """
-  shouldNewNavigationTreeItemsBeSecondaryNavOnly: Boolean!
+  shouldNavigationTreeItemsBeSecondaryNavOnly: Boolean!
 
 }
 
 extend input ShopSettingsUpdates {
   """
-  Whether a new navation item added to the navigation tree be
-  public API/Storefront visible by default
-  """
-  shouldNewNavigationTreeItemsBePublicallyVisible: Boolean
-
-  """
-  Whether a new navation item added to the navigation tree be visible only to
+  Whether a navigation item added to the navigation tree be visible only to
   admins by default
   """
-  shouldNewNavigationTreeItemsBeAdminOnly: Boolean
+  shouldNavigationTreeItemsBeAdminOnly: Boolean
 
   """
-  Whether a new navation item added to the navigation tree should show be a secondary
+  Whether a navigation item added to the navigation tree be
+  public API/Storefront visible by default
+  """
+  shouldNavigationTreeItemsBePublicallyVisible: Boolean
+
+  """
+  Whether a navigation item added to the navigation tree should show be a secondary
   navigation by default
   """
-  shouldNewNavigationTreeItemsBeSecondaryNavOnly: Boolean
+  shouldNavigationTreeItemsBeSecondaryNavOnly: Boolean
 }
