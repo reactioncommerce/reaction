@@ -25,7 +25,7 @@ const DEFAULT_SOLD_OUT_INFO = {
   inventoryAvailableToSell: 0,
   inventoryInStock: 0,
   inventoryReserved: 0,
-  isBackorder: true,
+  isBackorder: false,
   isLowQuantity: true,
   isSoldOut: true
 };
