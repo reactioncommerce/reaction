@@ -71,18 +71,17 @@ class OrderCardAppBar extends Component {
             reason: "Order cancelled inside Catalyst operator UI"
           }
         });
+
+        if (shouldRestock) {
+          this.handleInventoryRestock(item);
+        }
       });
     });
-
-    if (shouldRestock) {
-      return console.log("^^^^^ ^^^^^ ^^^^^ Items should be restocked");
-    }
-
-    return console.log("^^^^^ ^^^^^ ^^^^^ Items should not be restocked");
   }
 
   handleCapturePayment = () => {
-    console.log("payment captured");
+    // TODO: EK - handle capturing payment
+    console.log(" ----- ----- ----- Handle capturing payment");
   }
 
   handleInventoryRestockCheckbox = (name) => (event) => {
@@ -91,6 +90,11 @@ class OrderCardAppBar extends Component {
       [name]: event.target.checked
     });
   };
+
+  handleInventoryRestock = (item) => {
+    // TODO: EK - handle inventory restock
+    console.log(" ----- ----- ----- Handle restocking item", item._id);
+  }
 
   render() {
     const { classes, order } = this.props;
@@ -104,15 +108,13 @@ class OrderCardAppBar extends Component {
       [classes.leftSidebarOpen]: uiState.isLeftDrawerOpen
     });
 
-
     const canCancelOrder = (order.status !== "coreOrderWorkflow/canceled");
-
 
     return (
       <AppBar color="default">
         <Toolbar className={toolbarClassName}>
 
-          <Typography className={classes.title} variant="h6">Order details</Typography>
+          <Typography className={classes.title} variant="h6">{i18next.t("order.cancelOrderLabel", "Order details")}</Typography>
 
           {canCancelOrder &&
             <Mutation mutation={cancelOrderItemMutation}>
@@ -121,10 +123,10 @@ class OrderCardAppBar extends Component {
                   buttonColor="danger"
                   buttonText={i18next.t("order.cancelOrderLabel", "Cancel order")}
                   buttonVariant="outlined"
-                  cancelActionText={i18next.t("app.close")}
+                  cancelActionText={i18next.t("app.close", "Close")}
                   confirmActionText={i18next.t("order.cancelOrderLabel", "Cancel order")}
-                  title={i18next.t("order.cancelOrderLabel")}
-                  message={i18next.t("order.cancelOrder")}
+                  title={i18next.t("order.cancelOrderLabel", "Cancel order")}
+                  message={i18next.t("order.cancelOrder", "Do you want to cancel this order?")}
                   onConfirm={() => this.handleCancelOrder(mutationFunc)}
                 >
                   <FormControlLabel
@@ -135,14 +137,21 @@ class OrderCardAppBar extends Component {
                         value="shouldRestock"
                       />
                     }
-                    label={i18next.t("order.restockInventory")}
+                    label={i18next.t("order.restockInventory", "Restock inventory?")}
                   />
                 </ConfirmButton>
               )}
 
             </Mutation>
           }
-          <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={this.handleCapturePayment}>Capture payment</Button>
+          <Button
+            className={classes.toolbarButton}
+            color="primary"
+            variant="contained"
+            onClick={this.handleCapturePayment}
+          >
+            {i18next.t("order.capturePayment", "Capture payment")}
+          </Button>
         </Toolbar>
       </AppBar>
     );
