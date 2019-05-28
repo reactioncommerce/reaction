@@ -113,7 +113,7 @@ app:
     -   key: SEO_METADATA_CONSUMER_ENABLED
         value: "true"
     -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
-        value: "false"
+        value: true
     -   key: SITE_CODE
         value: BOBS
     -   key: SKIP_FIXTURES
