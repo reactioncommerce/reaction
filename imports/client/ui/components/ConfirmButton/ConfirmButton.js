@@ -56,11 +56,6 @@ class ConfirmButton extends Component {
     });
   }
 
-  handleSecondaryConfirm = () => {
-    this.props.onSecondaryConfirm();
-    this.handleClose();
-  }
-
   renderButton = () => {
     const { buttonColor, buttonText, buttonVariant } = this.props;
 
@@ -74,7 +69,7 @@ class ConfirmButton extends Component {
   }
 
   render() {
-    const { cancelActionText, confirmActionText, message, onSecondaryConfirm, secondaryConfirmActionText, title } = this.props;
+    const { cancelActionText, children, confirmActionText, message, title } = this.props;
     const { isOpen } = this.state;
 
     return (
@@ -90,20 +85,14 @@ class ConfirmButton extends Component {
           {message && (
             <DialogContent>
               <DialogContentText>{message}</DialogContentText>
+              {children}
             </DialogContent>
           )}
 
           <DialogActions>
-            {!onSecondaryConfirm &&
-              <Button onClick={this.handleClose} color="primary" variant="outlined">
-                {cancelActionText}
-              </Button>
-            }
-            {onSecondaryConfirm &&
-              <Button onClick={this.handleSecondaryConfirm} color="primary" variant="outlined">
-                {secondaryConfirmActionText}
-              </Button>
-            }
+            <Button onClick={this.handleClose} color="primary" variant="outlined">
+              {cancelActionText}
+            </Button>
             <Button onClick={this.handleConfirm} color="primary" variant="contained">
               {confirmActionText}
             </Button>

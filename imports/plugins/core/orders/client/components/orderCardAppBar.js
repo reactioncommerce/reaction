@@ -5,6 +5,8 @@ import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
@@ -48,45 +50,51 @@ class OrderCardAppBar extends Component {
     })
   }
 
-  state = {}
+  state = {
+    shouldRestock: true
+  }
 
-  handleCancelOrder(mutation, shouldRestock) {
+  handleCancelOrder(mutation) {
     const { order } = this.props;
+    const { shouldRestock } = this.state;
     const { fulfillmentGroups } = order;
-
-    if (shouldRestock) {
-      return console.log("Order should be restocked");
-    }
-
-    return console.log("Order should NOT be restocked");
 
     // We need to loop over every fulfillmentGroup
     // and then loop over every item inside group
     fulfillmentGroups.forEach(async (fulfillmentGroup) => {
-      // for (const item of fulfillmentGroup.items.nodes) {
       fulfillmentGroup.items.nodes.forEach(async (item) => {
-        console.log(" --- item to cancel", item);
-
         await mutation({
           variables: {
-            input: {
-              cancelQuantity: item.quantity,
-              itemId: item._id,
-              orderId: order._id,
-              reason: "Order cancelled inside Catalyst operator UI"
-            }
+            cancelQuantity: item.quantity,
+            itemId: item._id,
+            orderId: order._id,
+            reason: "Order cancelled inside Catalyst operator UI"
           }
         });
       });
     });
+
+    if (shouldRestock) {
+      return console.log("^^^^^ ^^^^^ ^^^^^ Items should be restocked");
+    }
+
+    return console.log("^^^^^ ^^^^^ ^^^^^ Items should not be restocked");
   }
 
   handleCapturePayment = () => {
     console.log("payment captured");
   }
 
+  handleInventoryRestockCheckbox = (name) => (event) => {
+    this.setState({
+      ...this.state,
+      [name]: event.target.checked
+    });
+  };
+
   render() {
     const { classes, order } = this.props;
+    const { shouldRestock } = this.state;
 
     const uiState = {
       isLeftDrawerOpen: false
@@ -111,16 +119,25 @@ class OrderCardAppBar extends Component {
               {(mutationFunc) => (
                 <ConfirmButton
                   buttonColor="danger"
-                  buttonText={i18next.t("order.cancelOrderLabel")}
+                  buttonText={i18next.t("order.cancelOrderLabel", "Cancel order")}
                   buttonVariant="outlined"
-                  cancelActionText="No"
-                  confirmActionText={i18next.t("order.cancelOrderThenRestock")}
+                  cancelActionText={i18next.t("app.close")}
+                  confirmActionText={i18next.t("order.cancelOrderLabel", "Cancel order")}
                   title={i18next.t("order.cancelOrderLabel")}
                   message={i18next.t("order.cancelOrder")}
-                  onConfirm={() => this.handleCancelOrder(mutationFunc, true)}
-                  onSecondaryConfirm={() => this.handleCancelOrder(mutationFunc, false)}
-                  secondaryConfirmActionText={i18next.t("order.cancelOrderNoRestock")}
-                />
+                  onConfirm={() => this.handleCancelOrder(mutationFunc)}
+                >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={shouldRestock}
+                        onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
+                        value="shouldRestock"
+                      />
+                    }
+                    label={i18next.t("order.restockInventory")}
+                  />
+                </ConfirmButton>
               )}
 
             </Mutation>
