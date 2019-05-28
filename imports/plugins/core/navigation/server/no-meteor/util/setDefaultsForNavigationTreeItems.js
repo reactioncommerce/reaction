@@ -1,10 +1,28 @@
+// Fallback options setting every value to false.
+// This effectively means the item will not be published to the public API.
+const standardDefaults = {
+  shouldNavigationTreeItemsBeAdminOnly: false,
+  shouldNavigationTreeItemsBeSecondaryNavOnly: false,
+  shouldNavigationTreeItemsBePublicallyVisible: false
+};
+
 /**
  * @name setDefaultsForNavigationTreeItems
  * @summary Recursively sets any optional values in the navigation tree with sane defaults
  * @param {Array} items Navigation tree items
+ * @param {Object} defaultValues Navigation tree items
  * @return {Array} Navigation tree items
  */
-export default function setDefaultsForNavigationTreeItems(items = []) {
+export default function setDefaultsForNavigationTreeItems(items = [], defaultValues = {}) {
+  const {
+    shouldNavigationTreeItemsBeAdminOnly,
+    shouldNavigationTreeItemsBeSecondaryNavOnly,
+    shouldNavigationTreeItemsBePublicallyVisible
+  } = {
+    ...standardDefaults,
+    ...defaultValues
+  };
+
   return items.map((node) => {
     const { isVisible, isPrivate, isSecondary } = node;
 
@@ -14,9 +32,9 @@ export default function setDefaultsForNavigationTreeItems(items = []) {
     // defaults for various visibility options.
     const newNode = {
       ...node,
-      isPrivate: typeof isPrivate === "boolean" ? isPrivate : false,
-      isSecondary: typeof isSecondary === "boolean" ? isSecondary : false,
-      isVisible: typeof isVisible === "boolean" ? isVisible : true
+      isPrivate: typeof isPrivate === "boolean" ? isPrivate : shouldNavigationTreeItemsBeAdminOnly,
+      isSecondary: typeof isSecondary === "boolean" ? isSecondary : shouldNavigationTreeItemsBeSecondaryNavOnly,
+      isVisible: typeof isVisible === "boolean" ? isVisible : shouldNavigationTreeItemsBePublicallyVisible
     };
 
     // Check children recursively

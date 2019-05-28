@@ -15,20 +15,28 @@ export default async function updateNavigationTree(context, _id, navigationTree)
   const { collections, userHasPermission } = context;
   const { NavigationTrees } = collections;
 
+  const shopId = await context.queries.primaryShopId(collections);
+  const settings = await context.queries.appSettings(context, shopId);
+
+  // Navigation item visibility defaults from settings
+  const visibilityDefaults = {
+    isPrivate: settings.shouldNavigationTreeItemsBeAdminOnly,
+    isSecondary: settings.shouldNavigationTreeItemsBeSecondaryNavOnly,
+    isVisible: settings.shouldNavigationTreeItemsBePublicallyVisible
+  };
+
   // Set default values for navigation tree draft items before validation.
   // isVisible, isPrivate, and isSecondary are optional in the GraphQL schema,
   // but are required by SimpleSchema. This reduces the input payload size by not
   // needing to include values that aren't explicitly set.
   const navigationTreeData = {
     ...navigationTree,
-    draftItems: setDefaultsForNavigationTreeItems(navigationTree.draftItems)
+    draftItems: setDefaultsForNavigationTreeItems(navigationTree.draftItems, visibilityDefaults)
   };
 
   // Validate the navigation tree with the defaults set
   NavigationTreeSchema.validate(navigationTreeData);
   const { draftItems, name } = navigationTreeData;
-
-  const shopId = await context.queries.primaryShopId(collections);
 
   if (userHasPermission(["core"], shopId) === false) {
     throw new ReactionError("access-denied", "You do not have permission to update a navigation tree");
