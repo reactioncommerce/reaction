@@ -80,12 +80,10 @@ const wrapComponent = (Comp) => (
 
           if (Reaction.hasAdminAccess()) {
             Router.go("/operator");
+          } else if (!storefrontUrls || !storefrontUrls.storefrontLoginUrl) {
+            throw new ReactionError("error-occurred", "Missing storefront URLs. Please set these properties from the shop settings panel.");
           } else {
-             if (!storefrontUrls || !storefrontUrls.storefrontLoginUrl) {
-               throw new ReactionError("error-occurred", "Missing storefront URLs. Please set these properties from the shop settings panel.");
-             } else {
-               window.location.href = storefrontUrls.storefrontLoginUrl;
-             }
+            window.location.href = storefrontUrls.storefrontLoginUrl;
           }
         }
       });

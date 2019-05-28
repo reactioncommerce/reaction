@@ -56,11 +56,9 @@ function CoreLayout({ classes, location }) {
 
         if (!storefrontUrls || !storefrontUrls.storefrontHomeUrl) {
           throw new ReactionError("error-occurred", "Missing storefront URLs. Please set these properties from the shop settings panel.");
-        } else {
-          if (location.pathname.startsWith("/reset") === false) {
-            window.location.href = storefrontUrls.storefrontHomeUrl;
-            return null;
-          }
+        } else if (location.pathname.startsWith("/reset") === false) {
+          window.location.href = storefrontUrls.storefrontHomeUrl;
+          return null;
         }
       }
 
