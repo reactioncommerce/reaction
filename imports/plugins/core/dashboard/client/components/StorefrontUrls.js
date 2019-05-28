@@ -19,7 +19,6 @@ import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryS
 import theme from "imports/plugins/core/router/client/theme"; // TODO: remove when Blaze wrapper is removed
 import muiTheme from "imports/plugins/core/router/client/theme/muiTheme"; // TODO: remove when Blaze wrapper is removed
 
-
 const PaddedField = styled(Field)`
   margin-bottom: 30px;
 `;
@@ -61,14 +60,16 @@ class StorefrontUrls extends Component {
 
   handleFormChange = (value) => {
     this.formValue = value;
-  }
+  };
 
   handleSubmitForm = () => {
     this.form.submit();
-  }
+  };
 
   handleUpdateUrls(data, mutation) {
-    const { shop: { _id: shopId } } = this.props;
+    const {
+      shop: { _id: shopId }
+    } = this.props;
     const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = data;
 
     // return null;
@@ -90,19 +91,27 @@ class StorefrontUrls extends Component {
 
   render() {
     const { shop } = this.props;
+    const { storefrontUrls } = shop;
+    const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = storefrontUrls || {};
+
     return (
       <ThemeProvider theme={theme}>
         <MuiThemeProvider theme={muiTheme}>
           <Card>
             <CardHeader
-              subheader={i18next.t("shopSettings.storefrontUrls.description", "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails.")}
+              subheader={i18next.t(
+                "shopSettings.storefrontUrls.description",
+                "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails."
+              )}
               title={i18next.t("shopSettings.storefrontUrls.title", "Storefront Urls")}
             />
             <Mutation mutation={updatShopUrlsMutation}>
               {(mutationFunc) => (
                 <Fragment>
                   <Form
-                    ref={(formRef) => { this.form = formRef; }}
+                    ref={(formRef) => {
+                      this.form = formRef;
+                    }}
                     onChange={this.handleFormChange}
                     onSubmit={(data) => this.handleUpdateUrls(data, mutationFunc)}
                     value={shop}
@@ -117,7 +126,7 @@ class StorefrontUrls extends Component {
                           id="storefrontHomeUrlInput"
                           name="storefrontHomeUrl"
                           placeholder={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlDescription", "URL of your shops homepage")}
-                          value={shop.storefrontUrls.storefrontHomeUrl}
+                          value={storefrontHomeUrl || ""}
                         />
                         <ErrorsBlock names={["storefrontHomeUrl"]} />
                       </PaddedField>
@@ -130,7 +139,7 @@ class StorefrontUrls extends Component {
                           id="storefrontLoginUrlInput"
                           name="storefrontLoginUrl"
                           placeholder={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlDescription", "URL of your shops login form")}
-                          value={shop.storefrontUrls.storefrontLoginUrl}
+                          value={storefrontLoginUrl || ""}
                         />
                         <ErrorsBlock names={["storefrontHomeUrl"]} />
                       </PaddedField>
@@ -143,7 +152,7 @@ class StorefrontUrls extends Component {
                           id="storefrontOrderUrlInput"
                           name="storefrontOrderUrl"
                           placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlDescription", "URL of your shops single order page")}
-                          value={shop.storefrontUrls.storefrontOrderUrl}
+                          value={storefrontOrderUrl || ""}
                         />
                         <ErrorsBlock names={["storefrontOrderUrl"]} />
                       </PaddedField>
@@ -156,7 +165,7 @@ class StorefrontUrls extends Component {
                           id="storefrontOrdersUrlInput"
                           name="storefrontOrdersUrl"
                           placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlDescription", "URL of your shops orders page")}
-                          value={shop.storefrontUrls.storefrontOrdersUrl}
+                          value={storefrontOrdersUrl || ""}
                         />
                         <ErrorsBlock names={["storefrontOrdersUrl"]} />
                       </PaddedField>
@@ -169,7 +178,7 @@ class StorefrontUrls extends Component {
                           id="storefrontAccountProfileUrlInput"
                           name="storefrontAccountProfileUrl"
                           placeholder={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlDescription", "URL of your shops account profile homepage")}
-                          value={shop.storefrontUrls.storefrontAccountProfileUrl}
+                          value={storefrontAccountProfileUrl || ""}
                         />
                         <ErrorsBlock names={["storefrontAccountProfileUrl"]} />
                       </PaddedField>
