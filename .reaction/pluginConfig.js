@@ -1,5 +1,8 @@
 // Place directory names here that want to not be included in the build
-const disabledPlugins = [];
+const disabledPlugins = [
+  "search-mongo",
+  "email-smtp"
+];
 
 module.exports = {
   disabledPlugins

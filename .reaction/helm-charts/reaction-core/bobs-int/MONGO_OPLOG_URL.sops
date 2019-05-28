@@ -1,0 +1,18 @@
+{
+	"data": "ENC[AES256_GCM,data:SFU97i79xQVtMeTGaxODs5vHBptr+Tu6oP/Z5c2guXc8UnBXcUR0CkteaJ5X9ri/9IJ06hXaWqhORskpn8vCGIk6nG6q6hLBxMz8qBxgwZuOFw7GUnrFMM+DeZgUWRkk6UKd7I4PhSnOSOhJ9igsWJ1qzySsdwdXsrjbKxsG5l6ixRyufkOqchyomH1annqgYLznU9dTi28vjm2weNC/qPBBOKvvqJ47fCk4OMRNooAhrT2DQw5WT9HBFrwirySCt9oLSZcpvEN+wyIc0FWjPdbQeesb84to+7tXEMV3BnTUjXkehpCnbNtHSNe3Bt7K0/piig==,iv:vBWTT09SCH/Jbr3buDy/YHKa7PjTV16a2gKj4tqR4SI=,tag:iXaT4/m2qH+MscWXYMCpbw==,type:str]",
+	"sops": {
+		"kms": [
+			{
+				"arn": "arn:aws:kms:us-east-1:893565362659:key/b48344fb-f57d-4570-aecb-85fe270846f4",
+				"created_at": "2019-03-12T22:15:48Z",
+				"enc": "AQICAHgLiZPrl2l26TmpnIIWWJZT+ckI2QiVPV5kbjMsAZDITAFCmq84yzbowTKnbvRkRlmiAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMG4iLN8awamSM0wIyAgEQgDukNkh4zu5RVIkGLb2oIhvZBojzIvXqUIGSO4f4XtErX9Z1E4L6blHjhmECAdHzeE5+afMYySe1lha/Hw=="
+			}
+		],
+		"gcp_kms": null,
+		"lastmodified": "2019-03-12T22:15:48Z",
+		"mac": "ENC[AES256_GCM,data:SkC4tAig5xpCPHLkGoHB5ofzczSKPFIofkNdESYroJxaouu/5IJFDhWazWy6pLlnjQ1lvp2n0B+xwg/cvN7e1wkMbhQwj0HGvKIrMn6Z6A6lMMI6r/mAUGNoilW5KSSEIMlGsD7CRwRhX5me4Lq4BeEOpugbFogW4uyZNfb933A=,iv:n86F4KKCIQA0sNL6+c48x59UTeKnD4xORvh1qrecC0Q=,tag:vf3EwfImWBVLJQ4VpIfh7g==,type:str]",
+		"pgp": null,
+		"unencrypted_suffix": "_unencrypted",
+		"version": "3.0.3"
+	}
+}

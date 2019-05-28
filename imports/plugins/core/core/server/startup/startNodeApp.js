@@ -26,7 +26,7 @@ export const isAppStartupComplete = () => appStartupIsComplete;
  * @returns {undefined}
  */
 export default async function startNodeApp({ onAppInstanceCreated }) {
-  const { ROOT_URL } = process.env;
+  const { ROOT_URL, GRAPHQL_INTROSPECTION } = process.env;
   const mongodb = MongoInternals.NpmModules.mongodb.module;
 
   const app = new ReactionNodeApp({
@@ -45,7 +45,7 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
       rootUrl: ROOT_URL
     },
     graphQL: {
-      graphiql: Meteor.isDevelopment,
+      graphiql: Meteor.isDevelopment || GRAPHQL_INTROSPECTION === "true",
       resolvers: coreResolvers,
       schemas: coreSchemas
     },
