@@ -7,7 +7,7 @@ import shopSettingsQuery from "./shopSettingsQuery";
 export default (Component) => (
   class NavigationShopSettingsQuery extends React.Component {
     static propTypes = {
-      shopId: PropTypes.string.isRequired
+      shopId: PropTypes.string
     }
 
     state = {
