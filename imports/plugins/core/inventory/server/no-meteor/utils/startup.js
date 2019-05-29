@@ -21,14 +21,16 @@ export default function startup(context) {
     }).toArray();
 
     const topVariants = variants.filter((variant) => variant.ancestors.length === 1);
+    if (topVariants.length === 0) return;
 
     const topVariantsInventoryInfo = await context.queries.inventoryForProductConfigurations(context, {
+      fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
       productConfigurations: topVariants.map((option) => ({
         isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
         productId: option.ancestors[0],
         productVariantId: option._id
       })),
-      fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
+      shopId: topVariants[0].shopId,
       variants
     });
 

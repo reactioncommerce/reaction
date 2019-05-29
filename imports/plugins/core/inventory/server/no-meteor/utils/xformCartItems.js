@@ -6,13 +6,16 @@
  * @return {undefined} Returns nothing. Potentially mutates `items`
  */
 export default async function xformCartItems(context, items) {
+  if (items.length === 0) return;
+
   const productConfigurations = [];
   for (const item of items) {
     productConfigurations.push({ ...item.productConfiguration, isSellable: true });
   }
 
   const variantsInventoryInfo = await context.queries.inventoryForProductConfigurations(context, {
-    productConfigurations
+    productConfigurations,
+    shopId: items[0].shopId
   });
 
   for (const item of items) {

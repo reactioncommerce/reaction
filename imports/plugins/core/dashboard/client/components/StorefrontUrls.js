@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
-import styled, { ThemeProvider } from "styled-components"; // TODO: remove ThemeProvder when Blaze wrapper is removed
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; // TODO: remove when Blaze wrapper is removed
+import styled from "styled-components";
 import { Form } from "reacto-form";
 import { Mutation } from "react-apollo";
 import Button from "@material-ui/core/Button";
@@ -16,8 +15,6 @@ import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
 import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
-import theme from "imports/plugins/core/router/client/theme"; // TODO: remove when Blaze wrapper is removed
-import muiTheme from "imports/plugins/core/router/client/theme/muiTheme"; // TODO: remove when Blaze wrapper is removed
 
 const PaddedField = styled(Field)`
   margin-bottom: 30px;
@@ -27,8 +24,8 @@ const RightAlignedGrid = styled(Grid)`
   text-align: right;
 `;
 
-const updatShopUrlsMutation = gql`
-  mutation updatShopUrlsMutation($input: UpdateShopUrlsInput!) {
+const updateShopUrlsMutation = gql`
+  mutation updateShopUrlsMutation($input: UpdateShopUrlsInput!) {
     updateShopUrls(input: $input) {
       clientMutationId
       shop {
@@ -95,8 +92,6 @@ class StorefrontUrls extends Component {
     const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = storefrontUrls || {};
 
     return (
-      <ThemeProvider theme={theme}>
-        <MuiThemeProvider theme={muiTheme}>
           <Card>
             <CardHeader
               subheader={i18next.t(
@@ -105,7 +100,7 @@ class StorefrontUrls extends Component {
               )}
               title={i18next.t("shopSettings.storefrontUrls.title", "Storefront Urls")}
             />
-            <Mutation mutation={updatShopUrlsMutation}>
+            <Mutation mutation={updateShopUrlsMutation}>
               {(mutationFunc) => (
                 <Fragment>
                   <Form
@@ -197,8 +192,6 @@ class StorefrontUrls extends Component {
               )}
             </Mutation>
           </Card>
-        </MuiThemeProvider>
-      </ThemeProvider>
     );
   }
 }
