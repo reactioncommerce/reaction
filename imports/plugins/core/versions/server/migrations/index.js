@@ -62,3 +62,4 @@ import "./60_remove_template_assets";
 import "./61_drop_indexes";
 import "./62_drop_indexes";
 import "./63_inventory_to_collection";
+import "./64_rename_navigation_package";
