@@ -11,7 +11,7 @@ import schemas from "./schemas";
 export default async function register(app) {
   await app.registerPlugin({
     label: "Navigation",
-    name: "navigation",
+    name: "reaction-navigation",
     autoEnable: true,
     graphQL: {
       schemas,
