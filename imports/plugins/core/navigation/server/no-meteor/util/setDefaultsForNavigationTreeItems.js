@@ -39,7 +39,7 @@ export default function setDefaultsForNavigationTreeItems(items = [], defaultVal
 
     // Check children recursively
     if (Array.isArray(node.items) && node.items.length) {
-      newNode.items = setDefaultsForNavigationTreeItems(node.items);
+      newNode.items = setDefaultsForNavigationTreeItems(node.items, defaultValues);
     }
 
     return newNode;
