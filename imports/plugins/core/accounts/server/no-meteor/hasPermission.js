@@ -23,20 +23,20 @@ export default function hasPermission(user, permissions, roleGroup) {
   const checkRoles = permissions.slice(0);
 
   // This should always return true for owners
-  if (checkRoles.indexOf("owner") === -1) checkRoles.push("owner");
+  if (!checkRoles.includes("owner")) checkRoles.push("owner");
 
   const { roles } = user;
 
   // always check GLOBAL_GROUP
   const globalRoles = roles[GLOBAL_GROUP];
-  if (Array.isArray(globalRoles) && checkRoles.some((role) => globalRoles.indexOf(role) !== -1)) return true;
+  if (Array.isArray(globalRoles) && checkRoles.some((role) => globalRoles.includes(role))) return true;
 
   if (roleGroup) {
     // convert any periods to underscores for MongoDB compatibility
     const group = roleGroup.replace(/\./g, "_");
 
     const groupRoles = roles[group];
-    if (Array.isArray(groupRoles) && checkRoles.some((role) => groupRoles.indexOf(role) !== -1)) return true;
+    if (Array.isArray(groupRoles) && checkRoles.some((role) => groupRoles.includes(role))) return true;
   }
 
   return false;

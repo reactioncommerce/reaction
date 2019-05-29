@@ -15,7 +15,7 @@ export default async function viewer(_, __, context, info) {
 
   // Classic Meteor UI creates dummy accounts for "anonymous" user. We should ignore those.
   const user = await context.collections.users.findOne({ _id: context.userId });
-  if (!user || !user.roles || !Array.isArray(user.roles[Object.keys(user.roles)[0]]) || user.roles[Object.keys(user.roles)[0]].indexOf("anonymous") !== -1) {
+  if (!user || !user.roles || !Array.isArray(user.roles[Object.keys(user.roles)[0]]) || user.roles[Object.keys(user.roles)[0]].includes("anonymous")) {
     return null;
   }
 
