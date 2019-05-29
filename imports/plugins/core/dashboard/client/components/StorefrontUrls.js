@@ -92,106 +92,106 @@ class StorefrontUrls extends Component {
     const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = storefrontUrls || {};
 
     return (
-          <Card>
-            <CardHeader
-              subheader={i18next.t(
-                "shopSettings.storefrontUrls.description",
-                "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails."
-              )}
-              title={i18next.t("shopSettings.storefrontUrls.title", "Storefront Urls")}
-            />
-            <Mutation mutation={updateShopUrlsMutation}>
-              {(mutationFunc) => (
-                <Fragment>
-                  <Form
-                    ref={(formRef) => {
-                      this.form = formRef;
-                    }}
-                    onChange={this.handleFormChange}
-                    onSubmit={(data) => this.handleUpdateUrls(data, mutationFunc)}
-                    value={shop}
+      <Card>
+        <CardHeader
+          subheader={i18next.t(
+            "shopSettings.storefrontUrls.description",
+            "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails."
+          )}
+          title={i18next.t("shopSettings.storefrontUrls.title", "Storefront Urls")}
+        />
+        <Mutation mutation={updateShopUrlsMutation}>
+          {(mutationFunc) => (
+            <Fragment>
+              <Form
+                ref={(formRef) => {
+                  this.form = formRef;
+                }}
+                onChange={this.handleFormChange}
+                onSubmit={(data) => this.handleUpdateUrls(data, mutationFunc)}
+                value={shop}
+              >
+                <CardContent>
+                  <PaddedField
+                    name="storefrontHomeUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlTitle", "Homepage URL")}
+                    labelFor="storefrontHomeUrlInput"
                   >
-                    <CardContent>
-                      <PaddedField
-                        name="storefrontHomeUrl"
-                        label={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlTitle", "Homepage URL")}
-                        labelFor="storefrontHomeUrlInput"
-                      >
-                        <TextInput
-                          id="storefrontHomeUrlInput"
-                          name="storefrontHomeUrl"
-                          placeholder={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlDescription", "URL of your shops homepage")}
-                          value={storefrontHomeUrl || ""}
-                        />
-                        <ErrorsBlock names={["storefrontHomeUrl"]} />
-                      </PaddedField>
-                      <PaddedField
-                        name="storefrontLoginUrl"
-                        label={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlTitle", "Login URL")}
-                        labelFor="storefrontLoginUrlInput"
-                      >
-                        <TextInput
-                          id="storefrontLoginUrlInput"
-                          name="storefrontLoginUrl"
-                          placeholder={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlDescription", "URL of your shops login form")}
-                          value={storefrontLoginUrl || ""}
-                        />
-                        <ErrorsBlock names={["storefrontHomeUrl"]} />
-                      </PaddedField>
-                      <PaddedField
-                        name="storefrontOrderUrl"
-                        label={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlTitle", "Single Order page URL")}
-                        labelFor="storefrontOrderUrlInput"
-                      >
-                        <TextInput
-                          id="storefrontOrderUrlInput"
-                          name="storefrontOrderUrl"
-                          placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlDescription", "URL of your shops single order page")}
-                          value={storefrontOrderUrl || ""}
-                        />
-                        <ErrorsBlock names={["storefrontOrderUrl"]} />
-                      </PaddedField>
-                      <PaddedField
-                        name="storefrontOrdersUrl"
-                        label={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlTitle", "Orders page URL")}
-                        labelFor="storefrontOrdersUrlInput"
-                      >
-                        <TextInput
-                          id="storefrontOrdersUrlInput"
-                          name="storefrontOrdersUrl"
-                          placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlDescription", "URL of your shops orders page")}
-                          value={storefrontOrdersUrl || ""}
-                        />
-                        <ErrorsBlock names={["storefrontOrdersUrl"]} />
-                      </PaddedField>
-                      <PaddedField
-                        name="storefrontAccountProfileUrl"
-                        label={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlTitle", "Account Profile page URL")}
-                        labelFor="storefrontAccountProfileUrlInput"
-                      >
-                        <TextInput
-                          id="storefrontAccountProfileUrlInput"
-                          name="storefrontAccountProfileUrl"
-                          placeholder={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlDescription", "URL of your shops account profile homepage")}
-                          value={storefrontAccountProfileUrl || ""}
-                        />
-                        <ErrorsBlock names={["storefrontAccountProfileUrl"]} />
-                      </PaddedField>
-                    </CardContent>
-                    <CardActions>
-                      <Grid container alignItems="center" justify="flex-end">
-                        <RightAlignedGrid item xs={12}>
-                          <Button color="primary" variant="contained" onClick={this.handleSubmitForm}>
-                            {i18next.t("app.save")}
-                          </Button>
-                        </RightAlignedGrid>
-                      </Grid>
-                    </CardActions>
-                  </Form>
-                </Fragment>
-              )}
-            </Mutation>
-          </Card>
+                    <TextInput
+                      id="storefrontHomeUrlInput"
+                      name="storefrontHomeUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlDescription", "URL of your shops homepage")}
+                      value={storefrontHomeUrl || ""}
+                    />
+                    <ErrorsBlock names={["storefrontHomeUrl"]} />
+                  </PaddedField>
+                  <PaddedField
+                    name="storefrontLoginUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlTitle", "Login URL")}
+                    labelFor="storefrontLoginUrlInput"
+                  >
+                    <TextInput
+                      id="storefrontLoginUrlInput"
+                      name="storefrontLoginUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlDescription", "URL of your shops login form")}
+                      value={storefrontLoginUrl || ""}
+                    />
+                    <ErrorsBlock names={["storefrontHomeUrl"]} />
+                  </PaddedField>
+                  <PaddedField
+                    name="storefrontOrderUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlTitle", "Single Order page URL")}
+                    labelFor="storefrontOrderUrlInput"
+                  >
+                    <TextInput
+                      id="storefrontOrderUrlInput"
+                      name="storefrontOrderUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlDescription", "URL of your shops single order page")}
+                      value={storefrontOrderUrl || ""}
+                    />
+                    <ErrorsBlock names={["storefrontOrderUrl"]} />
+                  </PaddedField>
+                  <PaddedField
+                    name="storefrontOrdersUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlTitle", "Orders page URL")}
+                    labelFor="storefrontOrdersUrlInput"
+                  >
+                    <TextInput
+                      id="storefrontOrdersUrlInput"
+                      name="storefrontOrdersUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlDescription", "URL of your shops orders page")}
+                      value={storefrontOrdersUrl || ""}
+                    />
+                    <ErrorsBlock names={["storefrontOrdersUrl"]} />
+                  </PaddedField>
+                  <PaddedField
+                    name="storefrontAccountProfileUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlTitle", "Account Profile page URL")}
+                    labelFor="storefrontAccountProfileUrlInput"
+                  >
+                    <TextInput
+                      id="storefrontAccountProfileUrlInput"
+                      name="storefrontAccountProfileUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlDescription", "URL of your shops account profile homepage")}
+                      value={storefrontAccountProfileUrl || ""}
+                    />
+                    <ErrorsBlock names={["storefrontAccountProfileUrl"]} />
+                  </PaddedField>
+                </CardContent>
+                <CardActions>
+                  <Grid container alignItems="center" justify="flex-end">
+                    <RightAlignedGrid item xs={12}>
+                      <Button color="primary" variant="contained" onClick={this.handleSubmitForm}>
+                        {i18next.t("app.save")}
+                      </Button>
+                    </RightAlignedGrid>
+                  </Grid>
+                </CardActions>
+              </Form>
+            </Fragment>
+          )}
+        </Mutation>
+      </Card>
     );
   }
 }
