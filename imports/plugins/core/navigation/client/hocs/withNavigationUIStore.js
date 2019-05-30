@@ -6,7 +6,7 @@ export default (Component) => (
     static propTypes = {
       navigationShopSettings: PropTypes.shape({
         shouldNavigationTreeItemsBeAdminOnly: PropTypes.bool,
-        shouldNavigationTreeItemsBePublicallyVisible: PropTypes.bool,
+        shouldNavigationTreeItemsBePubliclyVisible: PropTypes.bool,
         shouldNavigationTreeItemsBeSecondaryNavOnly: PropTypes.bool
       })
     }
@@ -51,14 +51,14 @@ export default (Component) => (
     navigationTreeToSortable(navigationTree) {
       const {
         shouldNavigationTreeItemsBeAdminOnly,
-        shouldNavigationTreeItemsBePublicallyVisible,
+        shouldNavigationTreeItemsBePubliclyVisible,
         shouldNavigationTreeItemsBeSecondaryNavOnly
       } = this.props.navigationShopSettings;
 
       return navigationTree.map((node) => {
         const newNode = {};
         newNode.id = node.navigationItem._id;
-        newNode.isVisible = typeof node.isVisible === "boolean" ? node.isVisible : shouldNavigationTreeItemsBePublicallyVisible;
+        newNode.isVisible = typeof node.isVisible === "boolean" ? node.isVisible : shouldNavigationTreeItemsBePubliclyVisible;
         newNode.isPrivate = typeof node.isPrivate === "boolean" ? node.isPrivate : shouldNavigationTreeItemsBeAdminOnly;
         newNode.isSecondary = typeof node.isSecondary === "boolean" ? node.isSecondary : shouldNavigationTreeItemsBeSecondaryNavOnly;
         newNode.title = this.getNavigationItemTitle(node.navigationItem).value;

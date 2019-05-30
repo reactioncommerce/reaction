@@ -47,7 +47,7 @@ test("calls NavigationTrees.findOne and updateOne, and returns the updated tree"
   mockContext.queries.appSettings = jest.fn().mockName("queries.appSettings").mockReturnValueOnce(Promise.resolve({
     shouldNavigationTreeItemsBeAdminOnly: false,
     shouldNavigationTreeItemsBeSecondaryNavOnly: false,
-    shouldNavigationTreeItemsBePublicallyVisible: false
+    shouldNavigationTreeItemsBePubliclyVisible: false
   }));
 
   const updatedNavigationTree = await updateNavigationTreeMutation(mockContext, mockNavigationTreeId, mockNavigationTreeInput);

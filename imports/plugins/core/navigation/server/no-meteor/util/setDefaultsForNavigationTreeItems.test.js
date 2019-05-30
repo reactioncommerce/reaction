@@ -66,7 +66,7 @@ const mockNavigationTreeItemsResult2 = [
 test("filters navigation tree excluding secondary items, with supplied defaults values", async () => {
   const defaultValues = {
     shouldNavigationTreeItemsBeAdminOnly: false,
-    shouldNavigationTreeItemsBePublicallyVisible: true,
+    shouldNavigationTreeItemsBePubliclyVisible: true,
     shouldNavigationTreeItemsBeSecondaryNavOnly: false
   };
 

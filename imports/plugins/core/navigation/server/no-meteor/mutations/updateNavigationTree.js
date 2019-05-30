@@ -22,7 +22,7 @@ export default async function updateNavigationTree(context, _id, navigationTree)
   const visibilityDefaults = {
     isPrivate: settings.shouldNavigationTreeItemsBeAdminOnly,
     isSecondary: settings.shouldNavigationTreeItemsBeSecondaryNavOnly,
-    isVisible: settings.shouldNavigationTreeItemsBePublicallyVisible
+    isVisible: settings.shouldNavigationTreeItemsBePubliclyVisible
   };
 
   // Set default values for navigation tree draft items before validation.

@@ -9,7 +9,7 @@ extend type ShopSettings {
   Whether a navigation item added to the navigation tree be
   public API/Storefront visible by default
   """
-  shouldNavigationTreeItemsBePublicallyVisible: Boolean!
+  shouldNavigationTreeItemsBePubliclyVisible: Boolean!
 
   """
   Whether a navigation item added to the navigation tree should show be a secondary
@@ -30,7 +30,7 @@ extend input ShopSettingsUpdates {
   Whether a navigation item added to the navigation tree be
   public API/Storefront visible by default
   """
-  shouldNavigationTreeItemsBePublicallyVisible: Boolean
+  shouldNavigationTreeItemsBePubliclyVisible: Boolean
 
   """
   Whether a navigation item added to the navigation tree should show be a secondary

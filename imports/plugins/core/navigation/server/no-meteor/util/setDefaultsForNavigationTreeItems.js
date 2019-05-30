@@ -3,7 +3,7 @@
 const standardDefaults = {
   shouldNavigationTreeItemsBeAdminOnly: false,
   shouldNavigationTreeItemsBeSecondaryNavOnly: false,
-  shouldNavigationTreeItemsBePublicallyVisible: false
+  shouldNavigationTreeItemsBePubliclyVisible: false
 };
 
 /**
@@ -17,7 +17,7 @@ export default function setDefaultsForNavigationTreeItems(items = [], defaultVal
   const {
     shouldNavigationTreeItemsBeAdminOnly,
     shouldNavigationTreeItemsBeSecondaryNavOnly,
-    shouldNavigationTreeItemsBePublicallyVisible
+    shouldNavigationTreeItemsBePubliclyVisible
   } = {
     ...standardDefaults,
     ...defaultValues
@@ -34,7 +34,7 @@ export default function setDefaultsForNavigationTreeItems(items = [], defaultVal
       ...node,
       isPrivate: typeof isPrivate === "boolean" ? isPrivate : shouldNavigationTreeItemsBeAdminOnly,
       isSecondary: typeof isSecondary === "boolean" ? isSecondary : shouldNavigationTreeItemsBeSecondaryNavOnly,
-      isVisible: typeof isVisible === "boolean" ? isVisible : shouldNavigationTreeItemsBePublicallyVisible
+      isVisible: typeof isVisible === "boolean" ? isVisible : shouldNavigationTreeItemsBePubliclyVisible
     };
 
     // Check children recursively

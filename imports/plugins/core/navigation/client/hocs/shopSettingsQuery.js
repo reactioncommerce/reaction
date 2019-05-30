@@ -4,7 +4,7 @@ export default gql`
   query shopSettingsQuery($shopId: ID!) {
     shopSettings(shopId: $shopId) {
       shouldNavigationTreeItemsBeAdminOnly
-      shouldNavigationTreeItemsBePublicallyVisible
+      shouldNavigationTreeItemsBePubliclyVisible
       shouldNavigationTreeItemsBeSecondaryNavOnly
     }
   }

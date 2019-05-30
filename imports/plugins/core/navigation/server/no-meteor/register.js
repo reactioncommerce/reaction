@@ -20,7 +20,7 @@ export default async function register(app) {
     mutations,
     queries,
     shopSettingsConfig: {
-      shouldNavigationTreeItemsBePublicallyVisible: {
+      shouldNavigationTreeItemsBePubliclyVisible: {
         defaultValue: false,
         rolesThatCanEdit: ["admin"],
         simpleSchema: {
