@@ -40,30 +40,7 @@ const mockNavigationTreeItemsResult = [
   }
 ];
 
-const mockNavigationTreeItemsResult2 = [
-  {
-    isPrivate: false,
-    isSecondary: false,
-    isVisible: false,
-    navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
-    items: [
-      {
-        isPrivate: true,
-        isSecondary: false,
-        isVisible: false,
-        navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dEFLQVRRZXFvRDRBaDVnZzI="
-      }
-    ]
-  },
-  {
-    isPrivate: false,
-    isSecondary: true,
-    isVisible: false,
-    navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06S0VjbjZOdnJSdXp0bVBNcTg="
-  }
-];
-
-test("filters navigation tree excluding secondary items, with supplied defaults values", async () => {
+test("filters navigation tree excluding secondary items, with supplied defaults values", () => {
   const defaultValues = {
     shouldNavigationTreeItemsBeAdminOnly: false,
     shouldNavigationTreeItemsBePubliclyVisible: true,
@@ -74,7 +51,6 @@ test("filters navigation tree excluding secondary items, with supplied defaults 
   expect(results).toEqual(mockNavigationTreeItemsResult);
 });
 
-test("filters navigation tree excluding secondary items, without supplied default values", async () => {
-  const results = setDefaultsForNavigationTreeItems(mockNavigationTreeItemsInput);
-  expect(results).toEqual(mockNavigationTreeItemsResult2);
+test("throws an error if the `defaultValues` object is not defined", () => {
+  expect(() => setDefaultsForNavigationTreeItems(mockNavigationTreeItemsInput)).toThrow();
 });
