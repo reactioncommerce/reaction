@@ -1,27 +1,44 @@
-// Fallback options setting every value to false.
-// This effectively means the item will not be published to the public API.
-const standardDefaults = {
-  shouldNavigationTreeItemsBeAdminOnly: false,
-  shouldNavigationTreeItemsBeSecondaryNavOnly: false,
-  shouldNavigationTreeItemsBePubliclyVisible: false
-};
+import ReactionError from "@reactioncommerce/reaction-error";
+import SimpleSchema from "simpl-schema";
+
+const DefaultValuesSchema = new SimpleSchema({
+  shouldNavigationTreeItemsBeAdminOnly: {
+    label: "shouldNavigationTreeItemsBeAdminOnly",
+    type: Boolean
+  },
+  shouldNavigationTreeItemsBePubliclyVisible: {
+    label: "shouldNavigationTreeItemsBePubliclyVisible",
+    type: Boolean
+  },
+  shouldNavigationTreeItemsBeSecondaryNavOnly: {
+    label: "shouldNavigationTreeItemsBeSecondaryNavOnly",
+    type: Boolean
+  }
+});
 
 /**
  * @name setDefaultsForNavigationTreeItems
  * @summary Recursively sets any optional values in the navigation tree with sane defaults
  * @param {Array} items Navigation tree items
- * @param {Object} defaultValues Navigation tree items
+ * @param {Object} defaultValues Navigation tree items default values. May be supplied from shop settings.
+ * @param {Boolean} defaultValues.shouldNavigationTreeItemsBeAdminOnly Default value for `isPrivate`
+ * @param {Boolean} defaultValues.shouldNavigationTreeItemsBePubliclyVisible Default value for `isVisible`
+ * @param {Boolean} defaultValues.shouldNavigationTreeItemsBeSecondaryNavOnly Default value for `isSecondary`
  * @return {Array} Navigation tree items
  */
 export default function setDefaultsForNavigationTreeItems(items = [], defaultValues = {}) {
+  if (typeof defaultValues !== "object") {
+    throw new ReactionError("invalid-default-values", "Default values object is not defined.");
+  }
+
+  // Validate defaultValues. Throws if there's an issue
+  DefaultValuesSchema.validate(defaultValues);
+
   const {
     shouldNavigationTreeItemsBeAdminOnly,
-    shouldNavigationTreeItemsBeSecondaryNavOnly,
-    shouldNavigationTreeItemsBePubliclyVisible
-  } = {
-    ...standardDefaults,
-    ...defaultValues
-  };
+    shouldNavigationTreeItemsBePubliclyVisible,
+    shouldNavigationTreeItemsBeSecondaryNavOnly
+  } = defaultValues;
 
   return items.map((node) => {
     const { isVisible, isPrivate, isSecondary } = node;
