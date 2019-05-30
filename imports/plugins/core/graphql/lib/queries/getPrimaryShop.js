@@ -7,6 +7,7 @@ export default gql`
       name
       storefrontUrls {
         storefrontHomeUrl
+        storefrontLoginUrl
         storefrontOrderUrl
         storefrontOrdersUrl
         storefrontAccountProfileUrl
