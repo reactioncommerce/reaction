@@ -1,19 +1,19 @@
 extend type ShopSettings {
   """
-  Whether a navigation item added to the navigation tree be visible only to
-  admins by default
+  Whether a navigation item added to the navigation tree should be visible only to
+  admins by default.
   """
   shouldNavigationTreeItemsBeAdminOnly: Boolean!
 
   """
-  Whether a navigation item added to the navigation tree be
-  public API/Storefront visible by default
+  Whether a navigation item added to the navigation tree should be
+  public API/Storefront visible by default.
   """
   shouldNavigationTreeItemsBePubliclyVisible: Boolean!
 
   """
-  Whether a navigation item added to the navigation tree should show be a secondary
-  navigation by default
+  Whether a navigation item added to the navigation tree should be a secondary
+  navigation item by default.
   """
   shouldNavigationTreeItemsBeSecondaryNavOnly: Boolean!
 
@@ -21,20 +21,20 @@ extend type ShopSettings {
 
 extend input ShopSettingsUpdates {
   """
-  Whether a navigation item added to the navigation tree be visible only to
-  admins by default
+  Whether a navigation item added to the navigation tree should be visible only to
+  admins by default.
   """
   shouldNavigationTreeItemsBeAdminOnly: Boolean
 
   """
-  Whether a navigation item added to the navigation tree be
-  public API/Storefront visible by default
+  Whether a navigation item added to the navigation tree should be
+  public API/Storefront visible by default.
   """
   shouldNavigationTreeItemsBePubliclyVisible: Boolean
 
   """
-  Whether a navigation item added to the navigation tree should show be a secondary
-  navigation by default
+  Whether a navigation item added to the navigation tree should be a secondary
+  navigation item by default.
   """
   shouldNavigationTreeItemsBeSecondaryNavOnly: Boolean
 }
