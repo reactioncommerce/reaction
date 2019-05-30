@@ -16,13 +16,17 @@ export default async function updateNavigationTree(context, _id, navigationTree)
   const { NavigationTrees } = collections;
 
   const shopId = await context.queries.primaryShopId(collections);
-  const settings = await context.queries.appSettings(context, shopId);
+  const {
+    shouldNavigationTreeItemsBeAdminOnly,
+    shouldNavigationTreeItemsBePubliclyVisible,
+    shouldNavigationTreeItemsBeSecondaryNavOnly
+  } = await context.queries.appSettings(context, shopId);
 
   // Navigation item visibility defaults from settings
   const visibilityDefaults = {
-    isPrivate: settings.shouldNavigationTreeItemsBeAdminOnly,
-    isSecondary: settings.shouldNavigationTreeItemsBeSecondaryNavOnly,
-    isVisible: settings.shouldNavigationTreeItemsBePubliclyVisible
+    shouldNavigationTreeItemsBeAdminOnly,
+    shouldNavigationTreeItemsBePubliclyVisible,
+    shouldNavigationTreeItemsBeSecondaryNavOnly
   };
 
   // Set default values for navigation tree draft items before validation.
