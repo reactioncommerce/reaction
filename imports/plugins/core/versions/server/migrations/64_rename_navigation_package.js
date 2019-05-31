@@ -8,13 +8,13 @@ Migrations.add({
     // on app startup
     Packages.remove({
       name: "navigation"
-    }, { multi: true });
+    });
   },
   down() {
     // Remove the old package. The old package was named "navigation" and will be added
     // on app startup
     Packages.remove({
       name: "reaction-navigation"
-    }, { multi: true });
+    });
   }
 });
