@@ -44,6 +44,8 @@
     "@reactioncommerce/random": "1.0.1",
     "@reactioncommerce/schemas": "1.1.0",
     "@storybook/addon-knobs": "^5.0.11",
+    "@storybook/addon-notes": "^5.0.11",
+    "@storybook/addon-storysource": "^5.0.11",
     "accounting-js": "^1.1.1",
     "apollo-cache-inmemory": "1.2.5",
     "apollo-client": "2.3.5",
@@ -234,7 +236,8 @@
     "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --maxWorkers=4 --no-cache --watch /tests/",
     "test:file": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 3100",
+    "storybook:ci": "start-storybook -p 3100 --ci",
     "build-storybook": "build-storybook"
   },
   "babel": {
