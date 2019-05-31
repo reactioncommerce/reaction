@@ -114,14 +114,14 @@ export function Apps(optionHash) {
       // Check that shopType matches showForShopType if option is present
       if (item.showForShopTypes &&
           Array.isArray(item.showForShopTypes) &&
-          item.showForShopTypes.indexOf(shopType) === -1) {
+          !item.showForShopTypes.includes(shopType)) {
         return false;
       }
 
       // Check that shopType does not match hideForShopType if option is present
       if (item.hideForShopTypes &&
           Array.isArray(item.hideForShopTypes) &&
-          item.hideForShopTypes.indexOf(shopType) !== -1) {
+          item.hideForShopTypes.includes(shopType)) {
         return false;
       }
 
