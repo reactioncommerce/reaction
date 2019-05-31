@@ -15,7 +15,7 @@ import _ from "lodash";
 export default function getProductQuantity(variant, variants = []) {
   const options = variants.filter((option) => option.ancestors[1] === variant._id);
   if (options && options.length) {
-    return options.reduce((sum, option) => sum + option.inventoryQuantity || 0, 0);
+    return options.reduce((sum, option) => sum + (option.inventoryQuantity || 0), 0);
   }
   return variant.inventoryQuantity || 0;
 }

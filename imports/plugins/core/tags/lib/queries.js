@@ -34,6 +34,7 @@ export const tagProductsQueryString = `
         hasNextPage
         hasPreviousPage
       }
+      totalCount
       nodes {
         _id
         title

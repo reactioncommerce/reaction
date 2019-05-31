@@ -4,7 +4,7 @@ imageTag: e1e7127b34e9853130371a43e475b2ece505445f
 #imageTag: develop
 imagePullPolicy: IfNotPresent
 ## How many replicas?
-replicas: 2
+replicas: 1
 ## Should the service be LoadBalancer, NodePort or ClusterIP
 ## If you're using ingress, ClusterIP should be a solid choice
 ##
@@ -27,9 +27,9 @@ app:
     -   key: ETCD_URL
         value: http://etcd-staging.bobs-test.io:2379
     -   key: GRAPHQL_INTROSPECTION_ENABLED
-        value: true
+        value: "true"
     -   key: GRAPHQL_PLAYGROUND_ENABLED
-        value: true
+        value: "true"
     -   key: HYDRA_ADMIN_URL
         value: http://hydra-hydra-admin-service:4445
     -   key: HYDRA_OAUTH2_INTROSPECT_URL
@@ -68,6 +68,8 @@ app:
         value: reaction.pricing.pricebook-aggregates.avro-gen1
     -   key: KAFKA_TOPIC_PRICES_BY_ID
         value: reaction.pricing.prices-by-id-aggregates.avro-gen1
+    -   key: KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS_PARTITIONS
+        value: "3"
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS
         value: etl.product-import.errors.json-gen1
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS_PARTITIONS
@@ -75,23 +77,27 @@ app:
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS
         value: event.product-import.products.stream.json-gen1
     -   key: LOYALTY_CONSUMER_ENABLED
-        value: "false"
+        value: true
     -   key: LOYALTY_PLUGIN_BATCH_CONSUME_SIZE
         value: "10000"
+    -   key: MASTER_PUBLISH_CONSUMER_ENABLED
+        value: true
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED
-        value: "false"
+        value: true
     -   key: PRICING_GRAPHQL_URL
         value: http://reaction-pricing-engine.bobs:8888/graphql
     -   key: PRODUCT_CONSUMER_ENABLED
-        value: "false"
+        value: true
     -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
         value: false
     -   key: RADIAL_MODE
         value: sandbox
     -   key: RADIAL_STORE_ID
         value: BOBSUS
+    -   key: RADIAL_TAXES_API_URL
+        value: https://tst02-epapi-na.gsipartners.com/v1.0/stores
     -   key: REACTION_LOG_FORMAT
         value: "json"
     -   key: REACTION_LOG_LEVEL
@@ -104,8 +110,10 @@ app:
         value: http://kafka-cluster-cp-schema-registry.kafka:8081
     -   key: SERVER_TYPE
         value: WORKER
+    -   key: SEO_METADATA_CONSUMER_ENABLED
+        value: "true"
     -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
-        value: "false"
+        value: true
     -   key: SITE_CODE
         value: BOBS
     -   key: SKIP_FIXTURES
@@ -114,6 +122,14 @@ app:
         value: "1100151420184"
     -   key: TAXES_CONSUMER_ENABLED
         value: "false"
+    -   key: CONSTANT_PUBLISHER_MODE
+        value: "true"
+    -   key: CONSTANT_PUBLISHER_PAUSE_SECONDS
+        value: 300
+    -   key: RADIAL_ITEM_EXPORT_CONSUMER_ENABLED
+        value: "true"
+    -   key: KAFKA_TOPIC_RADIAL_ITEM_EXPORT_STATUS
+        value: etl.radial-item-export.status.json-gen1
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:

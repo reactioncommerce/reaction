@@ -43,6 +43,8 @@ test("calls NavigationTrees.findOne and updateOne, and returns the updated tree"
     .mockReturnValueOnce(Promise.resolve(mockNavigationTree))
     .mockReturnValueOnce(Promise.resolve(mockNavigationTree));
 
+  mockContext.queries.primaryShopId = jest.fn().mockName("queries.primaryShopId").mockReturnValueOnce(Promise.resolve("FAKE_SHOP_ID"));
+
   const updatedNavigationTree = await updateNavigationTreeMutation(mockContext, mockNavigationTreeId, mockNavigationTreeInput);
 
   expect(mockContext.collections.NavigationTrees.findOne).toHaveBeenCalledTimes(2);

@@ -4,14 +4,14 @@
  * @param {Object} input Input data
  * @returns {undefined}
  */
-export default async function mutateNewVariantBeforeCreate(newVariant, { context, product, isOption }) {
+export default async function mutateNewVariantBeforeCreate(newVariant, { context, isOption }) {
   // Tax fields are managed by and inherited from top-level variant
   if (!isOption) {
     // All new variants are taxable by default
     newVariant.isTaxable = true;
 
     // Give new variants the default tax code, if one is set
-    const plugin = await context.collections.Packages.findOne({ name: "reaction-taxes", shopId: product.shopId });
+    const plugin = await context.collections.Packages.findOne({ name: "reaction-taxes", shopId: newVariant.shopId });
     if (!plugin) return;
 
     const { defaultTaxCode } = plugin.settings || {};

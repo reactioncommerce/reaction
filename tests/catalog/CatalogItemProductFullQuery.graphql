@@ -16,7 +16,6 @@ query ($slugOrId: String!) {
       isLowQuantity
       isSoldOut
       length
-      lowInventoryWarningThreshold
       metafields {
         value
         namespace
@@ -101,13 +100,10 @@ query ($slugOrId: String!) {
         createdAt
         height
         index
-        inventoryManagement
-        inventoryPolicy
         isLowQuantity
         isSoldOut
         isTaxable
         length
-        lowInventoryWarningThreshold
         metafields {
           value
           namespace
@@ -123,13 +119,10 @@ query ($slugOrId: String!) {
           createdAt
           height
           index
-          inventoryManagement
-          inventoryPolicy
           isLowQuantity
           isSoldOut
           isTaxable
           length
-          lowInventoryWarningThreshold
           metafields {
             value
             namespace

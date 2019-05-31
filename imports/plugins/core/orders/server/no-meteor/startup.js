@@ -1,4 +1,5 @@
 import collectionIndex from "/imports/utils/collectionIndex";
+import sendOrderEmail from "./util/sendOrderEmail";
 
 /**
  * @summary Called on startup
@@ -7,7 +8,7 @@ import collectionIndex from "/imports/utils/collectionIndex";
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { collections } = context;
+  const { appEvents, collections } = context;
   const { Orders } = collections;
 
   // Create indexes. We set specific names for backwards compatibility
@@ -17,7 +18,9 @@ export default function startup(context) {
   collectionIndex(Orders, { email: 1 }, { name: "c2_email" });
   collectionIndex(Orders, { referenceId: 1 }, { unique: true });
   collectionIndex(Orders, { shopId: 1 }, { name: "c2_shopId" });
-  collectionIndex(Orders, { "items.productId": 1 }, { name: "c2_items.$.productId" });
-  collectionIndex(Orders, { "items.variantId": 1 }, { name: "c2_items.$.variantId" });
+  collectionIndex(Orders, { "shipping.items.productId": 1 });
+  collectionIndex(Orders, { "shipping.items.variantId": 1 });
   collectionIndex(Orders, { "workflow.status": 1 }, { name: "c2_workflow.status" });
+
+  appEvents.on("afterOrderCreate", ({ order }) => sendOrderEmail(context, order));
 }

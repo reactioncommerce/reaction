@@ -17,7 +17,6 @@ export default function defineCollections(db, collections) {
     Discounts: db.collection("Discounts"),
     Emails: db.collection("Emails"),
     Groups: db.collection("Groups"),
-    Inventory: db.collection("Inventory"),
     MediaRecords: db.collection("cfs.Media.filerecord"),
     NavigationItems: db.collection("NavigationItems"),
     NavigationTrees: db.collection("NavigationTrees"),

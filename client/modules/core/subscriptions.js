@@ -35,8 +35,6 @@ Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
 // TODO: Consider how to handle routes for several shops which are all active at once
 Subscriptions.PrimaryShopPackages = Subscriptions.Manager.subscribe("Packages");
 
-Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
-
 Subscriptions.Groups = Subscriptions.Manager.subscribe("Groups");
 
 Subscriptions.BrandAssets = Subscriptions.Manager.subscribe("BrandAssets");

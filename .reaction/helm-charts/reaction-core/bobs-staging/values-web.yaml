@@ -27,9 +27,9 @@ app:
     -   key: ETCD_URL
         value: http://etcd-staging.bobs-test.io:2379
     -   key: GRAPHQL_INTROSPECTION_ENABLED
-        value: true
+        value: "true"
     -   key: GRAPHQL_PLAYGROUND_ENABLED
-        value: true
+        value: "true"
     -   key: HYDRA_ADMIN_URL
         value: http://hydra-hydra-admin-service:4445
     -   key: HYDRA_OAUTH2_INTROSPECT_URL
@@ -68,6 +68,8 @@ app:
         value: reaction.pricing.pricebook-aggregates.avro-gen1
     -   key: KAFKA_TOPIC_PRICES_BY_ID
         value: reaction.pricing.prices-by-id-aggregates.avro-gen1
+    -   key: KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS_PARTITIONS
+        value: "3"
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS
         value: etl.product-import.errors.json-gen1
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS_PARTITIONS
@@ -78,6 +80,8 @@ app:
         value: "false"
     -   key: LOYALTY_PLUGIN_BATCH_CONSUME_SIZE
         value: "10000"
+    -   key: MASTER_PUBLISH_CONSUMER_ENABLED
+        value: false
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED
@@ -92,6 +96,8 @@ app:
         value: sandbox
     -   key: RADIAL_STORE_ID
         value: BOBSUS
+    -   key: RADIAL_TAXES_API_URL
+        value: https://tst02-epapi-na.gsipartners.com/v1.0/stores
     -   key: REACTION_LOG_FORMAT
         value: "json"
     -   key: REACTION_LOG_LEVEL
@@ -114,6 +120,10 @@ app:
         value: "1100151420184"
     -   key: TAXES_CONSUMER_ENABLED
         value: "false"
+    -   key: RADIAL_ITEM_EXPORT_CONSUMER_ENABLED
+        value: "false"
+    -   key: KAFKA_TOPIC_RADIAL_ITEM_EXPORT_STATUS
+        value: etl.radial-item-export.status.json-gen1
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:

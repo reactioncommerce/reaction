@@ -84,10 +84,7 @@ describe("Publication", function () {
         shopId,
         type: "simple",
         price: priceRangeA,
-        isVisible: false,
-        isLowQuantity: false,
-        isSoldOut: false,
-        isBackorder: false
+        isVisible: false
       });
       // a product with price range B, and visible
       const productId2 = Collections.Products.insert({
@@ -97,10 +94,7 @@ describe("Publication", function () {
         shopId,
         price: priceRangeB,
         type: "simple",
-        isVisible: true,
-        isLowQuantity: false,
-        isSoldOut: false,
-        isBackorder: false
+        isVisible: true
       });
       // a product with price range A, and visible
       const productId3 = Collections.Products.insert({
@@ -110,10 +104,7 @@ describe("Publication", function () {
         shopId,
         price: priceRangeA,
         type: "simple",
-        isVisible: true,
-        isLowQuantity: false,
-        isSoldOut: false,
-        isBackorder: false
+        isVisible: true
       });
       // a product for an unrelated marketplace shop
       const productId4 = Collections.Products.insert({
@@ -123,10 +114,7 @@ describe("Publication", function () {
         shopId: merchantShopId,
         type: "simple",
         price: priceRangeA,
-        isVisible: true,
-        isLowQuantity: false,
-        isSoldOut: false,
-        isBackorder: false
+        isVisible: true
       });
       // a product for the Primary Shop
       const productId5 = Collections.Products.insert({
@@ -136,10 +124,7 @@ describe("Publication", function () {
         shopId: primaryShopId,
         type: "simple",
         price: priceRangeA,
-        isVisible: true,
-        isLowQuantity: false,
-        isSoldOut: false,
-        isBackorder: false
+        isVisible: true
       });
       // a product for an inactive Merchant Shop
       // this product is here to guard against false-positive test results
@@ -150,10 +135,7 @@ describe("Publication", function () {
         shopId: inactiveMerchantShopId,
         type: "simple",
         price: priceRangeA,
-        isVisible: true,
-        isLowQuantity: false,
-        isSoldOut: false,
-        isBackorder: false
+        isVisible: true
       });
 
       // helper arrays for writing expectations in tests
