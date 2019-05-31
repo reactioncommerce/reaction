@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Logger } from "/client/api";
+import Logger from "@reactioncommerce/logger";
 import { compose, setDisplayName } from "recompose";
 
 export const BlocksTable = {}; // storage for separate elements of each block
