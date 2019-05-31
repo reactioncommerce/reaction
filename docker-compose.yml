@@ -38,6 +38,16 @@ services:
       - ./.meteor/local:/opt/reaction/src/.meteor/local:delegated
       - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
 
+  storybook:
+    build:
+      context: .
+    command: bash -c "time meteor npm install --no-audit && npm run storybook:ci"
+    ports:
+      - "3100:3100"
+    volumes:
+      - .:/opt/reaction/src:cached
+      - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
+
   mongo:
     image: mongo:3.6.3
     command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
