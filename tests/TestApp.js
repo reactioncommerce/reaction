@@ -10,8 +10,6 @@ import collectionIndex from "../imports/utils/collectionIndex";
 import createApolloServer from "../imports/node-app/core/createApolloServer";
 import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
-import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
-import coreMediaXform from "../imports/plugins/core/files/server/no-meteor/xforms/xformFileCollectionsProductMedia";
 import mutations from "../imports/node-app/devserver/mutations";
 import queries from "../imports/node-app/devserver/queries";
 import importedSchemas from "../imports/node-app/devserver/schemas";
@@ -21,26 +19,17 @@ import "../imports/node-app/devserver/extendSchemas";
 
 class TestApp {
   constructor(options = {}) {
-    const { additionalCollections = [], extraSchemas = [] } = options;
+    const { extraSchemas = [] } = options;
 
+    this.mongodb = mongodb;
     this.options = { ...options };
-    this.collections = { ...additionalCollections };
+    this.collections = {};
     this.context = {
       ...(options.context || {}),
       app: this,
       appEvents,
       collections: this.collections,
-      getFunctionsOfType: (type) => {
-        let funcs;
-        switch (type) {
-          case "xformCatalogProductMedia":
-            funcs = [coreMediaXform];
-            break;
-          default:
-            funcs = this.functionsByType[type] || [];
-        }
-        return funcs;
-      },
+      getFunctionsOfType: (type) => this.functionsByType[type] || [],
       pubSub: new PubSub(),
       mutations: { ...mutations },
       queries: { ...queries }
@@ -274,16 +263,6 @@ class TestApp {
         }
       }
     }
-
-    const { Media } = setUpFileCollections({
-      absoluteUrlPrefix: "http://fake.com",
-      db: this.db,
-      Logger: { info: console.info.bind(console) }, // eslint-disable-line no-console
-      MediaRecords: this.collections.MediaRecords,
-      mongodb
-    });
-
-    this.collections.Media = Media;
   }
 
   stopMongo() {

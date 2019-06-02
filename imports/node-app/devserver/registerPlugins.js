@@ -1,3 +1,4 @@
+import registerFilesPlugin from "/imports/plugins/core/files/server/no-meteor/register";
 import registerInventoryPlugin from "/imports/plugins/core/inventory/server/no-meteor/register";
 import registerSettingsPlugin from "/imports/plugins/core/settings/server/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
@@ -10,6 +11,7 @@ import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricin
  * @return {Promise<null>} Null
  */
 export default async function registerPlugins(app) {
+  await registerFilesPlugin(app);
   await registerInventoryPlugin(app);
   await registerSettingsPlugin(app);
   await registerSimpleInventoryPlugin(app);

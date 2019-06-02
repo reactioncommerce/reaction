@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import setUpFileCollections from "/imports/plugins/core/files/server/no-meteor/setUpFileCollections";
+import setUpFileCollections from "./setUpFileCollections";
 
 /**
  * @summary Called on startup
