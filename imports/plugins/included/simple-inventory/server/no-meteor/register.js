@@ -18,6 +18,14 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Simple Inventory",
     name: "reaction-simple-inventory",
+    collections: {
+      SimpleInventory: {
+        name: "SimpleInventory",
+        indexes: [
+          [{ "productConfiguration.productVariantId": 1, "shopId": 1 }, { unique: true }]
+        ]
+      }
+    },
     functionsByType: {
       inventoryForProductConfigurations: [inventoryForProductConfigurations],
       startup: [startup]

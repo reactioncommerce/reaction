@@ -11,6 +11,14 @@ Reaction.registerPackage({
   name: "reaction-surcharges",
   icon: "fa fa-icon-money",
   autoEnable: true,
+  collections: {
+    Surcharges: {
+      name: "Surcharges",
+      indexes: [
+        [{ shopId: 1 }]
+      ]
+    }
+  },
   graphQL: {
     resolvers,
     schemas

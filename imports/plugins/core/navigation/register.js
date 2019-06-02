@@ -8,6 +8,14 @@ Reaction.registerPackage({
   label: "Navigation",
   name: "navigation",
   autoEnable: true,
+  collections: {
+    NavigationItems: {
+      name: "NavigationItems"
+    },
+    NavigationTrees: {
+      name: "NavigationTrees"
+    }
+  },
   graphQL: {
     schemas,
     resolvers

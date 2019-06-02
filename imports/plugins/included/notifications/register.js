@@ -6,6 +6,11 @@ Reaction.registerPackage({
   name: "reaction-notification",
   icon: "fa fa-bell",
   autoEnable: true,
+  collections: {
+    Notifications: {
+      name: "Notifications"
+    }
+  },
   functionsByType: {
     startup: [startup]
   },

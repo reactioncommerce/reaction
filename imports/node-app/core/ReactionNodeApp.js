@@ -3,8 +3,8 @@ import { PubSub } from "apollo-server";
 import { merge } from "lodash";
 import mongodb, { MongoClient } from "mongodb";
 import appEvents from "./util/appEvents";
+import collectionIndex from "/imports/utils/collectionIndex";
 import createApolloServer from "./createApolloServer";
-import defineCollections from "./util/defineCollections";
 import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
 import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
 
@@ -74,7 +74,32 @@ export default class ReactionNodeApp {
 
   setMongoDatabase(db) {
     this.db = db;
-    defineCollections(this.db, this.collections);
+
+    for (const pluginName in this.registeredPlugins) {
+      if ({}.hasOwnProperty.call(this.registeredPlugins, pluginName)) {
+        const pluginConfig = this.registeredPlugins[pluginName];
+        if (pluginConfig.collections) {
+          for (const collectionKey in pluginConfig.collections) {
+            if ({}.hasOwnProperty.call(pluginConfig.collections, collectionKey)) {
+              const collectionConfig = pluginConfig.collections[collectionKey];
+              if (!collectionConfig || typeof collectionConfig.name !== "string" || collectionConfig.name.length === 0) {
+                throw new Error(`In registerPlugin, collection "${collectionKey}" needs a name property`);
+              }
+              if (this.collections[collectionKey]) {
+                throw new Error(`Plugin ${pluginName} defines a collection with key "${collectionKey}" in registerPlugin,` +
+                  " but another plugin has already defined a collection with that key");
+              }
+              this.collections[collectionKey] = this.db.collection(collectionConfig.name);
+              if (Array.isArray(collectionConfig.indexes)) {
+                for (const indexArgs of collectionConfig.indexes) {
+                  collectionIndex(this.collections[collectionKey], ...indexArgs);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   async connectToMongo({ mongoUrl }) {

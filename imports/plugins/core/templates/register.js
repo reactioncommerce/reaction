@@ -5,6 +5,16 @@ Reaction.registerPackage({
   name: "reaction-templates",
   icon: "fa fa-columns",
   autoEnable: true,
+  collections: {
+    Templates: {
+      name: "Templates",
+      indexes: [
+        // Create indexes. We set specific names for backwards compatibility
+        // with indexes created by the aldeed:schema-index Meteor package.
+        [{ shopId: 1 }, { name: "c2_shopId" }]
+      ]
+    }
+  },
   settings: {
     name: "Templates",
     custom: {

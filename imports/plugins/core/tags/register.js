@@ -3,17 +3,26 @@ import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
-import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
   label: "Tags",
   name: "reaction-tags",
   icon: "fa fa-tag",
   autoEnable: true,
-  version: "1.0.0",
-  functionsByType: {
-    startup: [startup]
+  collections: {
+    Tags: {
+      name: "Tags",
+      indexes: [
+        // Create indexes. We set specific names for backwards compatibility
+        // with indexes created by the aldeed:schema-index Meteor package.
+        [{ name: 1 }, { name: "c2_name" }],
+        [{ relatedTagIds: 1 }, { name: "c2_relatedTagIds" }],
+        [{ shopId: 1 }, { name: "c2_shopId" }],
+        [{ slug: 1 }, { unique: true }]
+      ]
+    }
   },
+  version: "1.0.0",
   graphQL: {
     resolvers,
     schemas

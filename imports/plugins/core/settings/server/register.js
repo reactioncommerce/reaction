@@ -2,7 +2,6 @@ import mutations from "./mutations";
 import queries from "./queries";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
-import startup from "./startup";
 import { registerPluginHandler } from "./util/settingsConfig";
 
 /**
@@ -14,9 +13,16 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "App Settings",
     name: "reaction-settings",
+    collections: {
+      AppSettings: {
+        name: "AppSettings",
+        indexes: [
+          [{ shopId: 1 }, { unique: true }]
+        ]
+      }
+    },
     functionsByType: {
-      registerPluginHandler: [registerPluginHandler],
-      startup: [startup]
+      registerPluginHandler: [registerPluginHandler]
     },
     mutations,
     queries,

@@ -6,8 +6,8 @@ import { createTestClient } from "apollo-server-testing";
 import Random from "@reactioncommerce/random";
 import appEvents from "../imports/node-app/core/util/appEvents";
 import buildContext from "../imports/node-app/core/util/buildContext";
+import collectionIndex from "../imports/utils/collectionIndex";
 import createApolloServer from "../imports/node-app/core/createApolloServer";
-import defineCollections from "../imports/node-app/core/util/defineCollections";
 import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
@@ -249,7 +249,31 @@ class TestApp {
     this.connection = await MongoClient.connect(mongoUri, { useNewUrlParser: true });
     this.db = this.connection.db(await this.mongoServer.getDbName());
 
-    defineCollections(this.db, this.collections);
+    for (const pluginName in this.registeredPlugins) {
+      if ({}.hasOwnProperty.call(this.registeredPlugins, pluginName)) {
+        const pluginConfig = this.registeredPlugins[pluginName];
+        if (pluginConfig.collections) {
+          for (const collectionKey in pluginConfig.collections) {
+            if ({}.hasOwnProperty.call(pluginConfig.collections, collectionKey)) {
+              const collectionConfig = pluginConfig.collections[collectionKey];
+              if (!collectionConfig || typeof collectionConfig.name !== "string" || collectionConfig.name.length === 0) {
+                throw new Error(`In registerPlugin, collection "${collectionKey}" needs a name property`);
+              }
+              if (this.collections[collectionKey]) {
+                throw new Error(`Plugin ${pluginName} defines a collection with key "${collectionKey}" in registerPlugin,` +
+                  " but another plugin has already defined a collection with that key");
+              }
+              this.collections[collectionKey] = this.db.collection(collectionConfig.name);
+              if (Array.isArray(collectionConfig.indexes)) {
+                for (const indexArgs of collectionConfig.indexes) {
+                  collectionIndex(this.collections[collectionKey], ...indexArgs);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
 
     const { Media } = setUpFileCollections({
       absoluteUrlPrefix: "http://fake.com",

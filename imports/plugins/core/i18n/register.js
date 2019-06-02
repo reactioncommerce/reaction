@@ -1,13 +1,19 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
   label: "i18n",
   name: "reaction-i18n",
   icon: "fa fa-language",
   autoEnable: true,
-  functionsByType: {
-    startup: [startup]
+  collections: {
+    Translations: {
+      name: "Translations",
+      indexes: [
+        // Create indexes. We set specific names for backwards compatibility
+        // with indexes created by the aldeed:schema-index Meteor package.
+        [{ shopId: 1, i18n: 1 }]
+      ]
+    }
   },
   settings: {
     name: "i18n"

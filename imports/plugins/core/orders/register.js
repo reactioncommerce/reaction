@@ -11,6 +11,23 @@ Reaction.registerPackage({
   name: "reaction-orders",
   icon: "fa fa-sun-o",
   autoEnable: true,
+  collections: {
+    Orders: {
+      name: "Orders",
+      indexes: [
+        // Create indexes. We set specific names for backwards compatibility
+        // with indexes created by the aldeed:schema-index Meteor package.
+        [{ accountId: 1, shopId: 1 }],
+        [{ createdAt: -1 }, { name: "c2_createdAt" }],
+        [{ email: 1 }, { name: "c2_email" }],
+        [{ referenceId: 1 }, { unique: true }],
+        [{ shopId: 1 }, { name: "c2_shopId" }],
+        [{ "shipping.items.productId": 1 }],
+        [{ "shipping.items.variantId": 1 }],
+        [{ "workflow.status": 1 }, { name: "c2_workflow.status" }]
+      ]
+    }
+  },
   functionsByType: {
     getDataForOrderEmail: [getDataForOrderEmail],
     startup: [startup]

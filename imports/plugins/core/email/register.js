@@ -7,6 +7,16 @@ Reaction.registerPackage({
   name: "reaction-email",
   icon: "fa fa-envelope-o",
   autoEnable: true,
+  collections: {
+    Emails: {
+      name: "Emails",
+      indexes: [
+        // Create indexes. We set specific names for backwards compatibility
+        // with indexes created by the aldeed:schema-index Meteor package.
+        [{ jobId: 1 }, { name: "c2_jobId" }]
+      ]
+    }
+  },
   mutations,
   functionsByType: {
     startup: [startup]

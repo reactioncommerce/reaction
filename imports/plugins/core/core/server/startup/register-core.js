@@ -1,5 +1,4 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import startup from "../no-meteor/startup";
 
 /**
  * @summary register reaction core components as reaction packages
@@ -11,8 +10,29 @@ export default function registerCore() {
     name: "core",
     icon: "fa fa-th",
     autoEnable: true,
-    functionsByType: {
-      startup: [startup]
+    collections: {
+      Packages: {
+        name: "Packages",
+        indexes: [
+          // Create indexes. We set specific names for backwards compatibility
+          // with indexes created by the aldeed:schema-index Meteor package.
+          [{ name: 1, shopId: 1 }],
+          [{ "registry.provides": 1 }, { name: "c2_registry.$.provides" }]
+        ]
+      },
+      Shops: {
+        name: "Shops",
+        indexes: [
+          // Create indexes. We set specific names for backwards compatibility
+          // with indexes created by the aldeed:schema-index Meteor package.
+          [{ domains: 1 }, { name: "c2_domains" }],
+          [{ name: 1 }, { name: "c2_name" }],
+          [{ slug: 1 }, { name: "c2_slug", sparse: true, unique: true }]
+        ]
+      },
+      Themes: {
+        name: "Themes"
+      }
     },
     settings: {
       public: {

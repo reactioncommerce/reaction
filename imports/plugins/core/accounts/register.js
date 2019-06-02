@@ -23,6 +23,27 @@ Reaction.registerPackage({
     groups: ["guest", "customer"],
     roles: ["account/verify", "reset-password", ENROLL_URI_BASE]
   }],
+  collections: {
+    Accounts: {
+      name: "Accounts",
+      indexes: [
+        // Create indexes. We set specific names for backwards compatibility
+        // with indexes created by the aldeed:schema-index Meteor package.
+        [{ groups: 1 }, { name: "c2_groups" }],
+        [{ shopId: 1 }, { name: "c2_shopId" }],
+        [{ userId: 1 }, { name: "c2_userId" }]
+      ]
+    },
+    Groups: {
+      name: "Groups"
+    },
+    roles: {
+      name: "roles"
+    },
+    users: {
+      name: "users"
+    }
+  },
   functionsByType: {
     registerPluginHandler: [registerPluginHandler],
     startup: [startup]
