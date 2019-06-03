@@ -1,7 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
-import { Accounts, Groups } from "/lib/collections";
 
 /**
  * @name addRolesToGroups
@@ -14,14 +11,13 @@ import { Accounts, Groups } from "/lib/collections";
  * roles: Array of roles to add to default roles set
  * shops: Array of shopIds that should be added to set
  * groups: Groups to add roles to, Options: ["guest", "customer", "owner"]
+ * @param {Object} context App context
  * @param {Object} options - See above for details
- * @returns {Number} result of Groups.update method (number of documents updated)
+ * @returns {undefined}
  */
-export default function addRolesToGroups(options = { allShops: false, roles: [], shops: [], groups: ["guest"] }) {
-  check(options.roles, [String]);
-  check(options.allShops, Match.Maybe(Boolean));
-  check(options.shops, Match.Maybe([String]));
-  check(options.groups, Match.Maybe([String]));
+export default async function addRolesToGroups(context, options = { allShops: false, roles: [], shops: [], groups: ["guest"] }) {
+  const { collections } = context;
+  const { Groups } = collections;
 
   const { allShops, roles, shops, groups } = options;
   const query = {
@@ -38,8 +34,10 @@ export default function addRolesToGroups(options = { allShops: false, roles: [],
     Logger.debug(`Adding Roles: ${roles} to Groups: ${groups} for all shops`);
   }
 
+  const foundGroups = await Groups.find(query).toArray();
+
   // Check if each group already has the roles. If so, skip updates for group & its users
-  Groups.find(query).forEach((group) => {
+  const promises = foundGroups.map((group) => {
     let areRolesInGroup = true;
     roles.forEach((role) => {
       if (group.permissions.includes(role) === false) {
@@ -50,20 +48,21 @@ export default function addRolesToGroups(options = { allShops: false, roles: [],
 
     if (areRolesInGroup === false) {
       Logger.debug(`Adding roles (${roles}) to ${group.name} group (${group._id})`);
-      // Run heaviest queries asynchronously in the background
-      Meteor.defer(() => {
-        addRolesToGroupAndUsers(group, roles);
-      });
-    } else {
-      Logger.debug(`Skipping roles already assigned to ${group.name} group and its users`);
+      return addRolesToGroupAndUsers(group, roles);
     }
+
+    Logger.debug(`Skipping roles already assigned to ${group.name} group and its users`);
+    return Promise.resolve();
   });
+
+  await Promise.all(promises);
 }
 
 /**
  * @name addRolesToGroupAndUsers
  * @private
  * @summary Adds the given roles to the given group and updates users, if necessary
+ * @param {Object} context App context
  * @param {Object} group - Group to add roles to, and update users for
  * @param {String} group._id - Group's _id
  * @param {String} group.shopId - _id of shop group belongs to
@@ -71,12 +70,15 @@ export default function addRolesToGroups(options = { allShops: false, roles: [],
  * @param {Array} roles - Array of roles/permissions (strings)
  * @returns {undefined} Nothing
  */
-function addRolesToGroupAndUsers({ _id, shopId, name }, roles) {
-  Groups.update({ _id }, { $addToSet: { permissions: { $each: roles } } });
+async function addRolesToGroupAndUsers(context, { _id, shopId, name }, roles) {
+  const { collections } = context;
+  const { Accounts, Groups, users } = collections;
+
+  await Groups.updateOne({ _id }, { $addToSet: { permissions: { $each: roles } } });
 
   const maxAccountsPerUpdate = 100000;
   const accountSelector = { groups: _id };
-  const numAccounts = Accounts.find(accountSelector).count();
+  const numAccounts = await Accounts.find(accountSelector).count();
   if (numAccounts === 0) {
     Logger.debug("No users need roles updated");
     return;
@@ -102,7 +104,8 @@ function addRolesToGroupAndUsers({ _id, shopId, name }, roles) {
       };
     }
 
-    const userIds = Accounts.find(accountSelector, accountOptions).map((account) => account._id);
+    const accounts = await Accounts.find(accountSelector, accountOptions).toArray(); // eslint-disable-line no-await-in-loop
+    const userIds = accounts.map((account) => account._id);
     const firstUserIdInBatch = userIds[0];
     const lastUserIdInBatch = userIds[userIds.length - 1];
     const userSelector = { _id: { $gte: firstUserIdInBatch, $lte: lastUserIdInBatch } };
@@ -114,7 +117,7 @@ function addRolesToGroupAndUsers({ _id, shopId, name }, roles) {
       }
     };
 
-    Meteor.users.update(userSelector, userModifier, { multi: true });
+    await users.updateMany(userSelector, userModifier); // eslint-disable-line no-await-in-loop
 
     lastUserIdUpdated = lastUserIdInBatch;
   }
