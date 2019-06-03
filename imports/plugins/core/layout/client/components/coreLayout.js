@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { registerComponent, Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
@@ -52,21 +53,24 @@ function CoreLayout({ classes, location }) {
       // If the user is logged in but not a admin redirect to the storefront.
       if (!Reaction.hasAdminAccess()) {
         const { storefrontUrls } = Reaction.getCurrentShop();
-        window.location.href = `${storefrontUrls.storefrontHomeUrl}`;
-        return null;
+
+        if (!storefrontUrls || !storefrontUrls.storefrontHomeUrl) {
+          throw new ReactionError("error-occurred", "Missing storefront URLs. Please set these properties from the shop settings panel.");
+        } else if (location.pathname.startsWith("/reset") === false) {
+          window.location.href = storefrontUrls.storefrontHomeUrl;
+          return null;
+        }
       }
 
-      content = (
-        <div className={classes.logoutButton}>
-          <Button
-            color="primary"
-            onClick={() => Meteor.logout()}
-            variant="contained"
-          >
-            {"Logout"}
-          </Button>
-        </div>
-      );
+      if (location.pathname.startsWith("/reset") === false) {
+        content = (
+          <div className={classes.logoutButton}>
+            <Button color="primary" onClick={() => Meteor.logout()} variant="contained">
+              {"Logout"}
+            </Button>
+          </div>
+        );
+      }
     }
   }
 
@@ -75,10 +79,7 @@ function CoreLayout({ classes, location }) {
       <div className={classes.root}>
         <div className={classes.content}>
           <div className={classes.logo}>
-            <ShopLogo
-              linkTo="/"
-              size={200}
-            />
+            <ShopLogo linkTo="/" size={200} />
           </div>
           {content}
         </div>

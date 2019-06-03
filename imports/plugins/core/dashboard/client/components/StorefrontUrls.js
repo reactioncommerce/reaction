@@ -32,6 +32,7 @@ const updateShopUrlsMutation = gql`
         _id
         storefrontUrls {
           storefrontHomeUrl
+          storefrontLoginUrl
           storefrontOrderUrl
           storefrontOrdersUrl
           storefrontAccountProfileUrl
@@ -46,6 +47,7 @@ class StorefrontUrls extends Component {
     shop: PropTypes.shape({
       storefrontUrls: PropTypes.shape({
         storefrontHomeUrl: PropTypes.string,
+        storefrontLoginUrl: PropTypes.string,
         storefrontOrderUrl: PropTypes.string,
         storefrontOrdersUrl: PropTypes.string,
         storefrontAccountProfileUrl: PropTypes.string
@@ -55,15 +57,17 @@ class StorefrontUrls extends Component {
 
   handleFormChange = (value) => {
     this.formValue = value;
-  }
+  };
 
   handleSubmitForm = () => {
     this.form.submit();
-  }
+  };
 
   handleUpdateUrls(data, mutation) {
-    const { shop: { _id: shopId } } = this.props;
-    const { storefrontHomeUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = data;
+    const {
+      shop: { _id: shopId }
+    } = this.props;
+    const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = data;
 
     // return null;
     mutation({
@@ -72,6 +76,7 @@ class StorefrontUrls extends Component {
           shopId,
           storefrontUrls: {
             storefrontHomeUrl,
+            storefrontLoginUrl,
             storefrontOrderUrl,
             storefrontOrdersUrl,
             storefrontAccountProfileUrl
@@ -83,17 +88,25 @@ class StorefrontUrls extends Component {
 
   render() {
     const { shop } = this.props;
+    const { storefrontUrls } = shop;
+    const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = storefrontUrls || {};
+
     return (
       <Card>
         <CardHeader
-          subheader={i18next.t("shopSettings.storefrontUrls.description", "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails.")}
+          subheader={i18next.t(
+            "shopSettings.storefrontUrls.description",
+            "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails."
+          )}
           title={i18next.t("shopSettings.storefrontUrls.title", "Storefront Urls")}
         />
         <Mutation mutation={updateShopUrlsMutation}>
           {(mutationFunc) => (
             <Fragment>
               <Form
-                ref={(formRef) => { this.form = formRef; }}
+                ref={(formRef) => {
+                  this.form = formRef;
+                }}
                 onChange={this.handleFormChange}
                 onSubmit={(data) => this.handleUpdateUrls(data, mutationFunc)}
                 value={shop}
@@ -108,7 +121,20 @@ class StorefrontUrls extends Component {
                       id="storefrontHomeUrlInput"
                       name="storefrontHomeUrl"
                       placeholder={i18next.t("shopSettings.storefrontUrls.storefrontHomeUrlDescription", "URL of your shops homepage")}
-                      value={shop.storefrontUrls.storefrontHomeUrl}
+                      value={storefrontHomeUrl || ""}
+                    />
+                    <ErrorsBlock names={["storefrontHomeUrl"]} />
+                  </PaddedField>
+                  <PaddedField
+                    name="storefrontLoginUrl"
+                    label={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlTitle", "Login URL")}
+                    labelFor="storefrontLoginUrlInput"
+                  >
+                    <TextInput
+                      id="storefrontLoginUrlInput"
+                      name="storefrontLoginUrl"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontLoginUrlDescription", "URL of your shops login form")}
+                      value={storefrontLoginUrl || ""}
                     />
                     <ErrorsBlock names={["storefrontHomeUrl"]} />
                   </PaddedField>
@@ -121,7 +147,7 @@ class StorefrontUrls extends Component {
                       id="storefrontOrderUrlInput"
                       name="storefrontOrderUrl"
                       placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlDescription", "URL of your shops single order page")}
-                      value={shop.storefrontUrls.storefrontOrderUrl}
+                      value={storefrontOrderUrl || ""}
                     />
                     <ErrorsBlock names={["storefrontOrderUrl"]} />
                   </PaddedField>
@@ -134,7 +160,7 @@ class StorefrontUrls extends Component {
                       id="storefrontOrdersUrlInput"
                       name="storefrontOrdersUrl"
                       placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrdersUrlDescription", "URL of your shops orders page")}
-                      value={shop.storefrontUrls.storefrontOrdersUrl}
+                      value={storefrontOrdersUrl || ""}
                     />
                     <ErrorsBlock names={["storefrontOrdersUrl"]} />
                   </PaddedField>
@@ -146,11 +172,8 @@ class StorefrontUrls extends Component {
                     <TextInput
                       id="storefrontAccountProfileUrlInput"
                       name="storefrontAccountProfileUrl"
-                      placeholder={i18next.t(
-                        "shopSettings.storefrontUrls.storefrontAccountProfileUrlDescription",
-                        "URL of your shops account profile homepage"
-                      )}
-                      value={shop.storefrontUrls.storefrontAccountProfileUrl}
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlDescription", "URL of your shops account profile homepage")}
+                      value={storefrontAccountProfileUrl || ""}
                     />
                     <ErrorsBlock names={["storefrontAccountProfileUrl"]} />
                   </PaddedField>
