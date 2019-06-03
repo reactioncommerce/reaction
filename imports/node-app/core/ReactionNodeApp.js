@@ -184,6 +184,11 @@ export default class ReactionNodeApp {
     if (!this.httpServer) this.initServer();
 
     return new Promise((resolve, reject) => {
+      if (!port) {
+        resolve();
+        return;
+      }
+
       try {
         // To also listen for WebSocket connections for GraphQL
         // subs, this needs to be `this.httpServer.listen`
