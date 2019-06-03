@@ -86,7 +86,7 @@ beforeAll(async () => {
   await testApp.start();
   mutate = testApp.mutate(PublishProductToCatalogMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId })));
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId, slug: `slug${_id}` })));
   await testApp.collections.Products.insert(mockProduct);
   await testApp.collections.Products.insert(mockVariant);
   await testApp.collections.Products.insert(mockOptionOne);
@@ -101,11 +101,11 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await testApp.collections.Shops.remove({ _id: internalShopId });
-  await testApp.collections.Products.remove({ _id: internalProductId });
-  await testApp.collections.Products.remove({ _id: internalVariantIds[0] });
-  await testApp.collections.Products.remove({ _id: internalVariantIds[1] });
-  await testApp.collections.Products.remove({ _id: internalVariantIds[2] });
+  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
+  await testApp.collections.Products.deleteOne({ _id: internalProductId });
+  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
+  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
+  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[2] });
   await testApp.clearLoggedInUser();
   testApp.stop();
 });
