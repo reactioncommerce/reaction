@@ -53,6 +53,7 @@ beforeAll(async () => {
   });
 
   await testApp.start();
+
   shopId = await testApp.insertPrimaryShop();
 
   mockOrdersAccount = Factory.Accounts.makeOne({
@@ -106,8 +107,6 @@ beforeAll(async () => {
   });
   await testApp.collections.Catalog.insertOne(catalogItem2);
 
-  await testApp.runServiceStartup();
-
   addOrderFulfillmentGroup = testApp.mutate(AddOrderFulfillmentGroupMutation);
 });
 
@@ -143,6 +142,7 @@ test("user with orders role can add an order fulfillment group with new items", 
   const order = Factory.Order.makeOne({
     accountId: "123",
     currencyCode: "USD",
+    referenceId: "1",
     shipping: [group],
     shopId,
     workflow: {
@@ -273,6 +273,7 @@ test("user with orders role can add an order fulfillment group with moved items"
   const order = Factory.Order.makeOne({
     accountId: "123",
     currencyCode: "USD",
+    referenceId: "2",
     shipping: [group],
     shopId,
     workflow: {

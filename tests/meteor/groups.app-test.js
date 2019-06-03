@@ -180,41 +180,4 @@ describe("Group test", function () {
     updatedUser = Meteor.users.findOne({ _id: user._id });
     expect(updatedUser.roles[shop._id]).to.include.members(newGroupData.permissions);
   });
-
-
-  it("should add permissions for users in a group when roles are added", function () {
-    this.timeout(10000);
-    sandbox.stub(Reaction, "hasPermission", () => true);
-    sandbox.stub(Reaction, "canInviteToGroup", () => true);
-    spyOnMethod("createGroup", shop._id);
-    spyOnMethod("addUser", shop._id);
-
-    Meteor.call("group/createGroup", sampleCustomerGroup, shop._id);
-    const group = Groups.findOne({ shopId: shop._id });
-    Meteor.call("group/addUser", user._id, group._id);
-    let updatedUser = Meteor.users.findOne({ _id: user._id });
-    expect(updatedUser.roles[shop._id]).to.include.members(sampleCustomerGroup.permissions);
-
-    Reaction.addRolesToGroups({ shops: [shop._id], roles: ["test-updated-role"], groups: ["customer"] });
-    updatedUser = Meteor.users.findOne({ _id: user._id });
-    expect(updatedUser.roles[shop._id]).to.contain("test-updated-role");
-  });
-
-  it("should add permissions for users in a group when roles are added to all shops", function () {
-    this.timeout(10000);
-    sandbox.stub(Reaction, "hasPermission", () => true);
-    sandbox.stub(Reaction, "canInviteToGroup", () => true);
-    spyOnMethod("createGroup", shop._id);
-    spyOnMethod("addUser", shop._id);
-
-    Meteor.call("group/createGroup", sampleCustomerGroup, shop._id);
-    const group = Groups.findOne({ shopId: shop._id });
-    Meteor.call("group/addUser", user._id, group._id);
-    let updatedUser = Meteor.users.findOne({ _id: user._id });
-    expect(updatedUser.roles[shop._id]).to.include.members(sampleCustomerGroup.permissions);
-
-    Reaction.addRolesToGroups({ allShops: true, shops: [], roles: ["test-updated-role"], groups: ["customer"] });
-    updatedUser = Meteor.users.findOne({ _id: user._id });
-    expect(updatedUser.roles[shop._id]).to.contain("test-updated-role");
-  });
 });
