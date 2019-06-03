@@ -164,6 +164,7 @@ class TestApp {
       await registerPlugins(this.reactionNodeApp);
     } catch (error) {
       Logger.error(error, "Error registering plugins in TestApp");
+      throw error;
     }
 
     const mongoUrl = await this.startMongo();
@@ -175,6 +176,7 @@ class TestApp {
       await this.reactionNodeApp.start({ mongoUrl });
     } catch (error) {
       Logger.error(error, "Error starting app in TestApp");
+      throw error;
     }
 
     this.graphClient = createTestClient(this.reactionNodeApp.apolloServer);

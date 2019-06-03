@@ -61,6 +61,9 @@ export default function startup() {
       const endTime = Date.now();
       Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
 
+      // Main purpose of this right now is to wait to start Meteor app tests
+      Reaction.emitAppStartupComplete();
+
       return null;
     })
     .catch((error) => {

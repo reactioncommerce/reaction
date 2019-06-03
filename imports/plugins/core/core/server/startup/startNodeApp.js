@@ -64,7 +64,12 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
   // to the one in GraphQL
   setBaseContext(app.context);
 
-  await app.runServiceStartup();
+  try {
+    await app.runServiceStartup();
+  } catch (error) {
+    Logger.error(error, "Error running plugin startup");
+    throw error;
+  }
 
   setCollections(app.context.collections);
 

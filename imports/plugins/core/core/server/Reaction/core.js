@@ -89,6 +89,37 @@ export default {
   },
 
   /**
+   * @summary Called to indicate that startup is done, causing all
+   *   `onAppStartupComplete` callbacks to run in series.
+   * @return {undefined}
+   */
+  async emitAppStartupComplete() {
+    if (this.appStartupIsComplete) return;
+    this.appStartupIsComplete = true;
+    if (this.onAppStartupCompleteCallbacks) {
+      for (const callback of this.onAppStartupCompleteCallbacks) {
+        await callback(this.reactionNodeApp); // eslint-disable-line no-await-in-loop
+      }
+      this.onAppStartupCompleteCallbacks = [];
+    }
+  },
+
+  /**
+   * @summary Register a function to be called once after the app startup is
+   *   fully done running.
+   * @param {Function} callback Function to call after app startup, which might be immediately
+   * @return {undefined}
+   */
+  onAppStartupComplete(callback) {
+    if (this.appStartupIsComplete) {
+      callback(this.reactionNodeApp);
+    } else {
+      if (!this.onAppStartupCompleteCallbacks) this.onAppStartupCompleteCallbacks = [];
+      this.onAppStartupCompleteCallbacks.push(callback);
+    }
+  },
+
+  /**
    * @deprecated Use `app.registerPlugin` pattern instead. See the simple-pricing plugin.
    * @param {Object} packageInfo Plugin options
    * @return {Object} Plugin options
@@ -926,7 +957,7 @@ export default {
           }
           // Import package data
           this.Importer.package(combinedSettings, shopId);
-          Logger.info(`Successfully initialized  package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
+          Logger.info(`Successfully initialized package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
           loadedIndex += 1;
         });
       });
