@@ -33,7 +33,12 @@ export default class ReactionNodeApp {
       app: this,
       appEvents,
       collections: this.collections,
-      getFunctionsOfType: (type) => this.functionsByType[type] || [],
+      getFunctionsOfType: (type) => {
+        if (this.options.functionsByType && Array.isArray(this.options.functionsByType[type])) {
+          return this.options.functionsByType[type];
+        }
+        return this.functionsByType[type] || [];
+      },
       // In a large production app, you may want to use an external pub-sub system.
       // See https://www.apollographql.com/docs/apollo-server/features/subscriptions.html#PubSub-Implementations
       // We may eventually bind this directly to Kafka.
