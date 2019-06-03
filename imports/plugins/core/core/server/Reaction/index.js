@@ -1,7 +1,6 @@
 import Log from "@reactioncommerce/logger";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import Core from "./core";
-import addRolesToGroups from "./addRolesToGroups";
 import assignOwnerRoles from "./assignOwnerRoles";
 import Endpoints from "./Endpoints";
 import { Fixture, Importer } from "./importer";
@@ -17,7 +16,6 @@ import * as accountUtils from "./accountUtils";
 export default {
   ...Core,
   ...accountUtils,
-  addRolesToGroups,
   assignOwnerRoles,
   Collections,
 
