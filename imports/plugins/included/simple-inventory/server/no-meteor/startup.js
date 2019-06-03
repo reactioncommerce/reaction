@@ -17,7 +17,8 @@ function getAllOrderItems(order) {
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { appEvents } = context;
+  const { appEvents, collections } = context;
+  const { SimpleInventory } = collections;
 
   appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
     // Inventory is removed from stock only once an order has been approved
