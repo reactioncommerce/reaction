@@ -17,7 +17,7 @@ export default async function startup(context) {
   // Add an index to support built-in minPrice sorting for the primary shop's
   // default currency code only.
   const shop = await Shops.findOne({ shopType: "primary" });
-  if (shop.currency) {
+  if (shop && shop.currency) {
     collectionIndex(Catalog, {
       [`product.pricing.${shop.currency}.minPrice`]: 1,
       _id: 1
