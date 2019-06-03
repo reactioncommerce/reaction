@@ -1,4 +1,5 @@
 import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia";
+import startup from "./startup";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -28,6 +29,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
+      startup: [startup],
       xformCatalogProductMedia: [xformFileCollectionsProductMedia]
     }
   });

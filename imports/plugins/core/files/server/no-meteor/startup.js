@@ -21,5 +21,7 @@ export default function startup({ app, collections, rootUrl }) {
   collections.Media = Media;
 
   // Wire up a file download route
-  app.expressApp.use("/assets/files", downloadManager.connectHandler);
+  if (app.expressApp) {
+    app.expressApp.use("/assets/files", downloadManager.connectHandler);
+  }
 }
