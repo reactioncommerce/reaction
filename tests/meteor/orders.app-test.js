@@ -9,8 +9,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
-import { Orders, Notifications, Shops } from "/lib/collections";
-import { Media } from "/imports/plugins/core/files/server";
+import { Orders, Notifications } from "/lib/collections";
 
 Fixtures();
 
@@ -355,17 +354,6 @@ describe("orders test", function () {
         return Meteor.call("orders/sendNotification", order._id);
       }
       expect(sendNotification).to.throw(ReactionError, /Access Denied/);
-    });
-
-    it("should send email notification", function () {
-      spyOnMethod("sendNotification", order.userId);
-      // stub url method for media file
-      sandbox.stub(Media, "findOne", () => Promise.resolve({
-        url: () => "/stub/url"
-      }));
-      sandbox.stub(Shops, "findOne", () => shop);
-      const result = Meteor.call("orders/sendNotification", order._id);
-      expect(result).to.be.true;
     });
   });
 

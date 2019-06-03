@@ -14,7 +14,7 @@ export default async function register(app) {
     autoEnable: true,
     collections: {
       MediaRecords: {
-        name: "MediaRecords",
+        name: "cfs.Media.filerecord",
         indexes: [
           // Create indexes. We set specific names for backwards compatibility
           // with indexes created by the aldeed:schema-index Meteor package.
