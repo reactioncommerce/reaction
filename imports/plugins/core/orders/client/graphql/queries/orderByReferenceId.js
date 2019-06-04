@@ -114,7 +114,6 @@ export default gql`
             displayAmount
           }
         }
-        status
         shop {
           _id
         }
@@ -165,6 +164,8 @@ export default gql`
         method {
           name
         }
+        riskLevel
+        status
       }
       referenceId
       shop {

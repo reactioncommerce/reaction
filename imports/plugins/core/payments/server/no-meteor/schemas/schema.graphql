@@ -68,6 +68,9 @@ type Payment implements Node {
   "The payment method"
   method: PaymentMethod!
 
+  "Risk level of payment"
+  riskLevel: String
+
   "The current status of this payment"
   status: PaymentStatus!
 }
