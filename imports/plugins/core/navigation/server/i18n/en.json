@@ -1,9 +1,9 @@
 [{
   "language": "English",
   "i18n": "en",
-  "ns": "navigation",
+  "ns": "reaction-navigation",
   "translation": {
-    "navigation": {
+    "reaction-navigation": {
       "admin": {
         "navigation": {
           "cancel": "Cancel",

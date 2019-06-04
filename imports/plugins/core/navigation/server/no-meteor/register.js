@@ -11,7 +11,7 @@ import schemas from "./schemas";
 export default async function register(app) {
   await app.registerPlugin({
     label: "Navigation",
-    name: "navigation",
+    name: "reaction-navigation",
     autoEnable: true,
     collections: {
       NavigationItems: {
@@ -27,39 +27,28 @@ export default async function register(app) {
     },
     mutations,
     queries,
-    registry: [
-      {
-        provides: ["settings"],
-        label: "Navigation",
-        description: "Manage navigation",
-        route: "/dashboard/navigation",
-        icon: "fa fa-bars",
-        container: "core",
-        template: "navigationDashboard",
-        name: "navigation-dashboard",
-        workflow: "navigationWorkflow",
-        priority: 2,
-        meta: {
-          actionView: {
-            dashboardSize: "lg"
-          }
+    shopSettingsConfig: {
+      shouldNavigationTreeItemsBePubliclyVisible: {
+        defaultValue: false,
+        rolesThatCanEdit: ["admin"],
+        simpleSchema: {
+          type: Boolean
+        }
+      },
+      shouldNavigationTreeItemsBeAdminOnly: {
+        defaultValue: false,
+        rolesThatCanEdit: ["admin"],
+        simpleSchema: {
+          type: Boolean
+        }
+      },
+      shouldNavigationTreeItemsBeSecondaryNavOnly: {
+        defaultValue: false,
+        rolesThatCanEdit: ["admin"],
+        simpleSchema: {
+          type: Boolean
         }
       }
-    ],
-    layout: [{
-      workflow: "navigationWorkflow",
-      layout: "coreLayout",
-      theme: "default",
-      enabled: true,
-      structure: {
-        template: "navigationDashboard",
-        layoutHeader: "NavBar",
-        layoutFooter: "",
-        notFound: "notFound",
-        dashboardControls: "",
-        dashboardHeaderControls: "",
-        adminControlsFooter: "adminControlsFooter"
-      }
-    }]
+    }
   });
 }
