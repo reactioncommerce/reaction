@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
@@ -30,43 +30,46 @@ const styles = (theme) => ({
   }
 });
 
-class DangerButton extends Component {
-  static propTypes = {
-    buttonVariant: PropTypes.string,
-    children: PropTypes.any,
-    classes: PropTypes.object,
-    color: PropTypes.string,
-    onClick: PropTypes.func,
-    variant: PropTypes.string
-  }
+/**
+ * @name DangerButton
+ * @params {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function DangerButton({ children, classes, color, onClick, variant }) {
+  const handleClick = () => {
+    onClick();
+  };
 
-  static defaultProps = {
-    color: "primary",
-    variant: "outlined"
-  }
-
-  handleClick = () => {
-    this.props.onClick();
-  }
-
-
-  render() {
-    const { children, classes, color, variant } = this.props;
-
-    return (
-      <Button
-        classes={{
-          containedPrimary: classes.containedPrimary,
-          outlinedPrimary: classes.outlinedPrimary
-        }}
-        color={color}
-        onClick={this.handleClick}
-        variant={variant}
-      >
-        {children}
-      </Button>
-    );
-  }
+  return (
+    <Button
+      classes={{
+        containedPrimary: classes.containedPrimary,
+        outlinedPrimary: classes.outlinedPrimary
+      }}
+      color={color}
+      onClick={handleClick}
+      variant={variant}
+    >
+      {children}
+    </Button>
+  );
 }
 
+DangerButton.propTypes = {
+  buttonVariant: PropTypes.string,
+  children: PropTypes.any,
+  classes: PropTypes.object,
+  color: PropTypes.string,
+  onClick: PropTypes.func,
+  variant: PropTypes.string
+};
+
+
+DangerButton.defaultProps = {
+  color: "primary",
+  variant: "outlined"
+};
+
+
 export default withStyles(styles, { name: "RuiDangerButton" })(DangerButton);
+
