@@ -77,24 +77,43 @@ export default class ReactionNodeApp {
     this.mongodb = options.mongodb || mongodb;
   }
 
+  /**
+   * @summary Use this method to provide the MongoDB database instance.
+   *   A side effect is that `this.collections`/`this.context.collections`
+   *   will have all collections available on it after this is called.
+   * @param {Database} db MongoDB library database instance
+   * @return {undefined}
+   */
   setMongoDatabase(db) {
     this.db = db;
 
+    // Loop through all registered plugins
     for (const pluginName in this.registeredPlugins) {
       if ({}.hasOwnProperty.call(this.registeredPlugins, pluginName)) {
         const pluginConfig = this.registeredPlugins[pluginName];
+
+        // If a plugin config has `collections` key
         if (pluginConfig.collections) {
+          // Loop through `collections` object keys
           for (const collectionKey in pluginConfig.collections) {
             if ({}.hasOwnProperty.call(pluginConfig.collections, collectionKey)) {
               const collectionConfig = pluginConfig.collections[collectionKey];
+
+              // Validate that the `collections` key value is an object and has `name`
               if (!collectionConfig || typeof collectionConfig.name !== "string" || collectionConfig.name.length === 0) {
                 throw new Error(`In registerPlugin, collection "${collectionKey}" needs a name property`);
               }
+
+              // Validate that the `collections` key hasn't already been taken by another plugin
               if (this.collections[collectionKey]) {
                 throw new Error(`Plugin ${pluginName} defines a collection with key "${collectionKey}" in registerPlugin,` +
                   " but another plugin has already defined a collection with that key");
               }
+
+              // Add the collection instance to `context.collections`
               this.collections[collectionKey] = this.db.collection(collectionConfig.name);
+
+              // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {
                 for (const indexArgs of collectionConfig.indexes) {
                   collectionIndex(this.collections[collectionKey], ...indexArgs);
@@ -107,7 +126,15 @@ export default class ReactionNodeApp {
     }
   }
 
-  async connectToMongo({ mongoUrl }) {
+  /**
+   * @summary Given a MongoDB URL, creates a connection to it, sets `this.mongoClient`,
+   *   calls `this.setMongoDatabase` with the database instance, and then
+   *   resolves the Promise.
+   * @param {Object} options Options object
+   * @param {String} options.mongoUrl MongoDB connection URL
+   * @return {Promise<undefined>} Nothing
+   */
+  async connectToMongo({ mongoUrl } = {}) {
     const lastSlash = mongoUrl.lastIndexOf("/");
     const dbUrl = mongoUrl.slice(0, lastSlash);
     const dbName = mongoUrl.slice(lastSlash + 1);
@@ -131,6 +158,12 @@ export default class ReactionNodeApp {
     return this.mongoClient.close();
   }
 
+  /**
+   * @summary Calls all `registerPluginHandler` type functions from all registered
+   *   plugins, and then calls all `startup` type functions in series, in the order
+   *   in which they were registered.
+   * @return {Promise<undefined>} Nothing
+   */
   async runServiceStartup() {
     // Call `functionsByType.registerPluginHandler` functions for every plugin that
     // has supplied one, passing in all other plugins. Allows one plugin to check
@@ -156,6 +189,10 @@ export default class ReactionNodeApp {
     }
   }
 
+  /**
+   * @summary Creates the Apollo server and the Express app
+   * @return {undefined}
+   */
   initServer() {
     const { addCallMeteorMethod, debug, httpServer } = this.options;
     const { resolvers, schemas } = this.graphQL;
@@ -180,7 +217,15 @@ export default class ReactionNodeApp {
     this.httpServer = httpServer || createServer(this.expressApp);
   }
 
-  async startServer({ port }) {
+  /**
+   * @summary Creates the Apollo server and the Express app, if necessary,
+   *   and then starts it listening on `port`.
+   * @param {Object} options Options object
+   * @param {Number} [options.port] Port to listen on. If not provided,
+   *   the server will be created but will not listen.
+   * @return {Promise<undefined>} Nothing
+   */
+  async startServer({ port } = {}) {
     if (!this.httpServer) this.initServer();
 
     return new Promise((resolve, reject) => {
@@ -215,7 +260,18 @@ export default class ReactionNodeApp {
     });
   }
 
-  async start({ mongoUrl, port }) {
+  /**
+   * @summary Starts the entire app. Connects to `mongoUrl`, builds the
+   *   `context.collections`, runs plugin startup code, creates the
+   *   Apollo server and the Express app as necessary, and then starts
+   *   the server listening on `port` if `port` is provided.
+   * @param {Object} options Options object
+   * @param {String} options.mongoUrl MongoDB connection URL
+   * @param {Number} [options.port] Port to listen on. If not provided,
+   *   the server will be created but will not listen.
+   * @return {Promise<undefined>} Nothing
+   */
+  async start({ mongoUrl, port } = {}) {
     // (1) Connect to MongoDB database
     await this.connectToMongo({ mongoUrl });
 
@@ -226,6 +282,11 @@ export default class ReactionNodeApp {
     await this.startServer({ port });
   }
 
+  /**
+   * @summary Stops the entire app. Closes the MongoDB connection and
+   *   stops the Express server listening.
+   * @return {Promise<undefined>} Nothing
+   */
   async stop() {
     // (1) Disconnect from MongoDB database
     await this.disconnectFromMongo();
@@ -234,9 +295,13 @@ export default class ReactionNodeApp {
     await this.stopServer();
   }
 
-  // Plugins should call this to register everything they provide.
-  // This is a non-Meteor replacement for the old `Reaction.registerPackage`.
-  async registerPlugin(plugin) {
+  /**
+   * @summary Plugins should call this to register everything they provide.
+   *   This is a non-Meteor replacement for the old `Reaction.registerPackage`.
+   * @param {Object} plugin Plugin configuration object
+   * @return {Promise<undefined>} Nothing
+   */
+  async registerPlugin(plugin = {}) {
     if (typeof plugin.name !== "string" || plugin.name.length === 0) {
       throw new Error("Plugin configuration passed to registerPlugin must have 'name' field");
     }
