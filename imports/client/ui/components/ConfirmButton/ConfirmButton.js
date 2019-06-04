@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -10,17 +9,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DangerButton from "../DangerButton";
 
 
-const styles = (theme) => ({
-
-});
-
 class ConfirmButton extends Component {
   static propTypes = {
     buttonColor: PropTypes.string,
     buttonText: PropTypes.string,
     buttonVariant: PropTypes.string,
     cancelActionText: PropTypes.string,
-    children: PropTypes.func,
+    children: PropTypes.object,
     confirmActionText: PropTypes.string,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     onConfirm: PropTypes.func,
@@ -103,4 +98,4 @@ class ConfirmButton extends Component {
   }
 }
 
-export default withStyles(styles, { name: "RuiConfirmButton" })(ConfirmButton);
+export default ConfirmButton;
