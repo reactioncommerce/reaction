@@ -36,10 +36,6 @@ const styles = (theme) => ({
  * @returns {React.Component} returns a React component
  */
 function DangerButton({ children, classes, color, onClick, variant }) {
-  const handleClick = () => {
-    onClick();
-  };
-
   return (
     <Button
       classes={{
@@ -47,7 +43,7 @@ function DangerButton({ children, classes, color, onClick, variant }) {
         outlinedPrimary: classes.outlinedPrimary
       }}
       color={color}
-      onClick={handleClick}
+      onClick={onClick}
       variant={variant}
     >
       {children}
