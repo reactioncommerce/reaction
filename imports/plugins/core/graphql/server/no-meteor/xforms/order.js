@@ -35,6 +35,7 @@ export function xformOrderPayment(payment) {
     displayName,
     mode,
     name: methodName,
+    riskLevel,
     status
   } = payment;
 
@@ -55,6 +56,7 @@ export function xformOrderPayment(payment) {
     method: {
       name: methodName
     },
+    riskLevel,
     status
   };
 }
