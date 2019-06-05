@@ -13,7 +13,6 @@ import { importAllTranslations } from "./i18n";
 import LoadFixtureData from "./load-data";
 import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
-import setupCdn from "./cdn";
 
 const { REACTION_METEOR_APP_COMMAND_START_TIME } = process.env;
 
@@ -30,7 +29,6 @@ export default function startup() {
     Logger.info(`Meteor startup finished: ${elapsedMs}ms (This is incorrect if this is a restart.)`);
   }
 
-  setupCdn();
   Accounts();
 
   Reaction.whenAppInstanceReady(register);
