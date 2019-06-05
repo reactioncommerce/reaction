@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
-import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
+import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
 import OrderCard from "../components/orderCard";
 import orderByReferenceId from "../graphql/queries/orderByReferenceId";
 
@@ -15,15 +15,19 @@ class OrderCardContainer extends Component {
         _id: PropTypes.string
       })
     }),
-    shopId: PropTypes.string
+    shop: PropTypes.shape({
+      _id: PropTypes.string,
+      language: PropTypes.string
+    })
   }
 
   render() {
-    const { match: { params: { _id } }, shopId } = this.props;
+    const { match: { params }, shop } = this.props;
+
     const variables = {
-      id: _id,
-      language: "en", // TODO: EK - get language from Shop
-      shopId,
+      id: params._id,
+      language: shop.language,
+      shopId: shop._id,
       token: null
     };
 
@@ -32,8 +36,6 @@ class OrderCardContainer extends Component {
         {({ loading: isLoading, data: orderData }) => {
           if (isLoading) return null;
           const { order } = orderData || {};
-
-          console.log(" ----- ----- ----- order ----- ----- -----", order);
 
           return (
             <OrderCard
@@ -47,6 +49,6 @@ class OrderCardContainer extends Component {
 }
 
 export default compose(
-  withOpaqueShopId,
+  withPrimaryShop,
   withRouter
 )(OrderCardContainer);
