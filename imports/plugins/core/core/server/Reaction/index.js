@@ -2,7 +2,6 @@ import Log from "@reactioncommerce/logger";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import Core from "./core";
 import assignOwnerRoles from "./assignOwnerRoles";
-import Endpoints from "./Endpoints";
 import { Fixture, Importer } from "./importer";
 import getSlug from "./getSlug";
 import loadSettings from "./loadSettings";
@@ -35,7 +34,6 @@ export default {
     }
   },
 
-  Endpoints,
   Fixture,
   getSlug,
   Importer,
