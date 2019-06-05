@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import OrderCardAppBar from "./orderCardAppBar";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
 import OrderCardHeader from "./orderCardHeader";
+import OrderCardPayments from "./orderCardPayments";
 import OrderCardSummary from "./orderCardSummary";
 
 
@@ -33,6 +34,12 @@ class OrderCard extends Component {
     return <OrderCardFulfillmentGroup order={order} />;
   }
 
+  renderPayments() {
+    const { order } = this.props;
+
+    return <OrderCardPayments order={order} />;
+  }
+
   renderSummary() {
     const { order } = this.props;
 
@@ -57,6 +64,9 @@ class OrderCard extends Component {
             <Grid container spacing={24}>
               <Grid item xs={12} md={6}>
                 {this.renderSummary()}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                {this.renderPayments()}
               </Grid>
             </Grid>
           </Grid>
