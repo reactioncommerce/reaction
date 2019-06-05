@@ -7,7 +7,6 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
-import { Jobs } from "/imports/utils/jobs";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 import createGroups from "./createGroups";
 import { registerTemplate } from "./templates";
@@ -25,34 +24,6 @@ const { Packages, Shops, Accounts: AccountsCollection } = Collections;
 
 export default {
   ...AbsoluteUrlMixin,
-
-  init() {
-    // make sure the default shop has been created before going further
-    while (!this.getShopId()) {
-      Logger.warn("No shopId, waiting one second...");
-      Meteor._sleepForMs(1000);
-    }
-
-    // start job server
-    Jobs.startJobServer(() => {
-      Logger.info("JobServer started");
-      appEvents.emit("jobServerStart");
-    });
-    if (process.env.VERBOSE_JOBS) {
-      Jobs.setLogStream(process.stdout);
-    }
-
-    this.loadPackages();
-    createGroups();
-    this.setAppVersion();
-
-    // DEPRECATED. Avoid consuming this hook in new code
-    appEvents.emit("afterCoreInit");
-
-    Logger.debug("Reaction.init() has run");
-
-    return true;
-  },
 
   Packages: {},
 

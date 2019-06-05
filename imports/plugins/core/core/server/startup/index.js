@@ -1,4 +1,7 @@
+import { Meteor } from "meteor/meteor";
 import Logger from "@reactioncommerce/logger";
+import appEvents from "/imports/node-app/core/util/appEvents";
+import { Jobs } from "/imports/utils/jobs";
 import { Shops } from "/lib/collections";
 import Reaction from "../Reaction";
 import register from "../no-meteor/register";
@@ -44,7 +47,28 @@ export default function startup() {
   });
 
   LoadFixtureData();
-  Reaction.init();
+
+  // make sure the default shop has been created before going further
+  while (!Reaction.getShopId()) {
+    Logger.warn("No shopId, waiting one second...");
+    Meteor._sleepForMs(1000);
+  }
+
+  // start job server
+  Jobs.startJobServer(() => {
+    Logger.info("JobServer started");
+    appEvents.emit("jobServerStart");
+  });
+  if (process.env.VERBOSE_JOBS) {
+    Jobs.setLogStream(process.stdout);
+  }
+
+  Reaction.loadPackages();
+  Reaction.createGroups();
+  Reaction.setAppVersion();
+
+  // DEPRECATED. Avoid consuming this hook in new code
+  appEvents.emit("afterCoreInit");
 
   importAllTranslations();
 
