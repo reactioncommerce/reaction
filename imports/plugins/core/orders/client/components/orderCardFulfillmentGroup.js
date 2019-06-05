@@ -1,21 +1,16 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
 import { Mutation } from "react-apollo";
-import CallSplit from "mdi-material-ui/CallSplit";
-import Cancel from "mdi-material-ui/Cancel";
-import ChevronDown from "mdi-material-ui/ChevronDown";
-import Truck from "mdi-material-ui/Truck";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Address from "@reactioncommerce/components/Address/v1";
 import { i18next } from "/client/api";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
@@ -103,7 +98,7 @@ class OrderCardFulfillmentGroups extends Component {
 
     return fulfillmentGroups.map((fulfillmentGroup, index) => {
       const currentGroupCount = index + 1;
-      const { status } = fulfillmentGroup;
+      const { data: { shippingAddress }, status } = fulfillmentGroup;
 
       const canCancelOrder = (status !== "coreOrderWorkflow/canceled");
 
@@ -172,9 +167,20 @@ class OrderCardFulfillmentGroups extends Component {
                   <Grid container spacing={24}>
                     <Grid item xs={12} md={12}>
                       <Typography variant="body2" className={classes.orderCardInfoTextBold}>
+                        Shipping address
+                      </Typography>
+                      <Address address={shippingAddress} />
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
                       Shipping method
                       </Typography>
-                      <Typography key={fulfillmentGroup._id} variant="body2">{fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName}</Typography>
+                      <Typography
+                        key={fulfillmentGroup._id}
+                        variant="body2"
+                      >
+                        {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName} {/* eslint-disable-line */}
+                      </Typography>
                     </Grid>
                     <Grid item xs={12} md={12}>
                       <Typography variant="body2" className={classes.orderCardInfoTextBold}>
