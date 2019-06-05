@@ -15,6 +15,7 @@ import { i18next } from "/client/api";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 import OrderCardFulfillmentGroupItem from "./orderCardFulfillmentGroupItem";
+import OrderCardFulfillmentGroupTrackingNumber from "./orderCardFulfillmentGroupTrackingNumber";
 import OrderCardStatusChip from "./orderCardStatusChip";
 
 
@@ -187,7 +188,7 @@ class OrderCardFulfillmentGroups extends Component {
                       <Typography variant="body2" className={classes.orderCardInfoTextBold}>
                       Tracking number
                       </Typography>
-                      <Typography key={fulfillmentGroup._id} variant="body2">abcdefghijklmnop</Typography>
+                      <OrderCardFulfillmentGroupTrackingNumber orderId={order._id} fulfillmentGroup={fulfillmentGroup} />
                     </Grid>
                   </Grid>
                 </Grid>

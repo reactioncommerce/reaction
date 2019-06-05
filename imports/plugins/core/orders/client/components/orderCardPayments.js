@@ -9,7 +9,7 @@ import OrderPayment from "./OrderPayment";
 class OrderCardPayments extends Component {
   static propTypes = {
     order: PropTypes.shape({
-      payments: PropTypes.shape({
+      payments: PropTypes.arrayOf({
         fulfillmentTotal: PropTypes.shape({
           displayAmount: PropTypes.string
         }),
