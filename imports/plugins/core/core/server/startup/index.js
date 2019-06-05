@@ -33,17 +33,6 @@ export default function startup() {
 
   Reaction.whenAppInstanceReady(register);
 
-  // initialize shop registry when a new shop is added
-  Shops.find().observe({
-    added(doc) {
-      Reaction.setShopName(doc);
-      Reaction.setDomain();
-    },
-    removed() {
-      // TODO SHOP REMOVAL CLEANUP FOR #357
-    }
-  });
-
   LoadFixtureData();
 
   // make sure the default shop has been created before going further
