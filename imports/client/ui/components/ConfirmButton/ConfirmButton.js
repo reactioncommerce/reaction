@@ -19,8 +19,6 @@ class ConfirmButton extends Component {
     confirmActionText: PropTypes.string,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     onConfirm: PropTypes.func,
-    onSecondaryConfirm: PropTypes.func,
-    secondaryConfirmActionText: PropTypes.string,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
   }
 
