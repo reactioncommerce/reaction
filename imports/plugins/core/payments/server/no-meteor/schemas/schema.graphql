@@ -11,6 +11,9 @@ extend type Query {
 }
 
 extend type Mutation {
+  "Approve one or more payments for an order"
+  approveOrderPayments(input: ApproveOrderPaymentsInput!): ApproveOrderPaymentsPayload!
+
   "Capture one or more payments for an order"
   captureOrderPayments(input: CaptureOrderPaymentsInput!): CaptureOrderPaymentsPayload!
 
@@ -67,6 +70,9 @@ type Payment implements Node {
 
   "The payment method"
   method: PaymentMethod!
+
+  "Risk level of payment"
+  riskLevel: String
 
   "The current status of this payment"
   status: PaymentStatus!
@@ -158,6 +164,30 @@ type EnablePaymentMethodForShopPayload {
 
   "The full list of payment methods for the shop"
   paymentMethods: [PaymentMethod]!
+}
+
+"Input for the `approveOrderPayments` mutation"
+input ApproveOrderPaymentsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order ID"
+  orderId: ID!
+
+  "The IDs of one or more payments to approve for this order"
+  paymentIds: [ID]!
+
+  "The ID of the shop that owns this order"
+  shopId: ID!
+}
+
+"Response from the `approveOrderPayments` mutation"
+type ApproveOrderPaymentsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
 }
 
 "Input for the `captureOrderPayments` mutation"
