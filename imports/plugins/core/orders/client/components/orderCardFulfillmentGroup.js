@@ -92,7 +92,7 @@ class OrderCardFulfillmentGroups extends Component {
     return fulfillmentGroup.items.nodes.map((item) => <OrderCardFulfillmentGroupItem key={item._id} item={item} />);
   }
 
-  renderFulfillmentGroups() {
+  render() {
     const { classes, order } = this.props;
     const { shouldRestock } = this.state;
     const { fulfillmentGroups } = order;
@@ -105,113 +105,98 @@ class OrderCardFulfillmentGroups extends Component {
       const canCancelOrder = (status !== "coreOrderWorkflow/canceled");
 
       return (
-        <Fragment>
-          <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
-            <Grid item xs={12} md={6}>
-              <Grid container alignItems="center" spacing={8}>
-                <Grid item>
-                  <Typography variant="body2" inline={true}>
-                    Fulfillment group {currentGroupCount} of {totalGroupsCount}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <OrderCardStatusChip displayStatus={status} status={status} type="shipment" />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Grid container alignItems="center" justify="flex-end" spacing={8}>
-                <Grid item>
-                  <Button size="small" variant="text">{i18next.t("admin.fulfillmentGroups.printShippingLabel", "Print shipping label")}</Button>
-                </Grid>
-                <Grid item>
-                  {canCancelOrder &&
-                    <Mutation mutation={cancelOrderItemMutation}>
-                      {(mutationFunc) => (
-                        <ConfirmButton
-                          buttonColor="danger"
-                          buttonText={i18next.t("order.cancelGroupLabel", "Cancel group")}
-                          buttonVariant="outlined"
-                          cancelActionText={i18next.t("app.close")}
-                          confirmActionText={i18next.t("order.cancelGroupLabel", "Cancel group")}
-                          title={i18next.t("order.cancelGroupLabel")}
-                          message={i18next.t("order.cancelGroup")}
-                          onConfirm={() => this.handleCancelOrder(mutationFunc, fulfillmentGroup)}
-                        >
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={shouldRestock}
-                                onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
-                                value="shouldRestock"
-                              />
-                            }
-                            label={i18next.t("order.restockInventory")}
-                          />
-                        </ConfirmButton>
-                      )}
-                    </Mutation>
-                  }
-                </Grid>
-                <Grid item>
-                  <Button color="primary" variant="contained">{i18next.t("admin.fulfillmentGroups.markAsPacked", "Mark as packed")}</Button>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Card key={fulfillmentGroup._id} className={classes.fulfillmentGroupSpacing} elevation={0}>
-            <CardContent>
-              <Grid container spacing={24} className={classes.fulfillmentGroupHeader}>
-                <Grid item xs={12} md={6}>
-                  {this.renderFulfillmentGroupItems(fulfillmentGroup)}
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                        Shipping address
-                      </Typography>
-                      <Address address={shippingAddress} />
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                      Shipping method
-                      </Typography>
-                      <Typography
-                        key={fulfillmentGroup._id}
-                        variant="body2"
-                      >
-                        {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName} {/* eslint-disable-line */}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                      Tracking number
-                      </Typography>
-                      <OrderCardFulfillmentGroupTrackingNumber orderId={order._id} fulfillmentGroup={fulfillmentGroup} />
-                    </Grid>
+        <Card key={fulfillmentGroup._id} className={classes.fulfillmentGroupSpacing} elevation={0}>
+          <CardContent>
+            <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
+              <Grid item xs={12} md={6}>
+                <Grid container alignItems="center" spacing={8}>
+                  <Grid item>
+                    <Typography variant="body2" inline={true}>
+                      Fulfillment group {currentGroupCount} of {totalGroupsCount}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <OrderCardStatusChip displayStatus={status} status={status} type="shipment" />
                   </Grid>
                 </Grid>
               </Grid>
-            </CardContent>
-          </Card>
-        </Fragment>
+              <Grid item xs={12} md={6}>
+                <Grid container alignItems="center" justify="flex-end" spacing={8}>
+                  <Grid item>
+                    <Button size="small" variant="text">{i18next.t("admin.fulfillmentGroups.printShippingLabel", "Print shipping label")}</Button>
+                  </Grid>
+                  <Grid item>
+                    {canCancelOrder &&
+                      <Mutation mutation={cancelOrderItemMutation}>
+                        {(mutationFunc) => (
+                          <ConfirmButton
+                            buttonColor="danger"
+                            buttonText={i18next.t("order.cancelGroupLabel", "Cancel group")}
+                            buttonVariant="outlined"
+                            cancelActionText={i18next.t("app.close")}
+                            confirmActionText={i18next.t("order.cancelGroupLabel", "Cancel group")}
+                            title={i18next.t("order.cancelGroupLabel")}
+                            message={i18next.t("order.cancelGroup")}
+                            onConfirm={() => this.handleCancelOrder(mutationFunc, fulfillmentGroup)}
+                          >
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={shouldRestock}
+                                  onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
+                                  value="shouldRestock"
+                                />
+                              }
+                              label={i18next.t("order.restockInventory")}
+                            />
+                          </ConfirmButton>
+                        )}
+                      </Mutation>
+                    }
+                  </Grid>
+                  <Grid item>
+                    <Button color="primary" variant="contained">{i18next.t("admin.fulfillmentGroups.markAsPacked", "Mark as packed")}</Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid container spacing={24} className={classes.fulfillmentGroupHeader}>
+              <Grid item xs={12} md={6}>
+                {this.renderFulfillmentGroupItems(fulfillmentGroup)}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Grid container spacing={24}>
+                  <Grid item xs={12} md={12}>
+                    <Typography variant="body2" className={classes.orderCardInfoTextBold}>
+                      Shipping address
+                    </Typography>
+                    <Address address={shippingAddress} />
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <Typography variant="body2" className={classes.orderCardInfoTextBold}>
+                    Shipping method
+                    </Typography>
+                    <Typography
+                      key={fulfillmentGroup._id}
+                      variant="body2"
+                    >
+                      {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName} {/* eslint-disable-line */}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <Typography variant="body2" className={classes.orderCardInfoTextBold}>
+                    Tracking number
+                    </Typography>
+                    <OrderCardFulfillmentGroupTrackingNumber orderId={order._id} fulfillmentGroup={fulfillmentGroup} />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
       );
     });
   }
-
-  render() {
-    return (
-      <Card>
-        <CardHeader
-          title="Fulfillment Groups"
-        />
-        <CardContent>
-          {this.renderFulfillmentGroups()}
-        </CardContent>
-      </Card>
-    );
-  }
 }
 
-export default withStyles(styles, { name: "OrderCardHFulfillmentGroups" })(OrderCardFulfillmentGroups);
+export default withStyles(styles, { name: "OrderCardFulfillmentGroups" })(OrderCardFulfillmentGroups);
