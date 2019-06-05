@@ -2,11 +2,9 @@ import { Meteor } from "meteor/meteor";
 import Logger from "@reactioncommerce/logger";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Jobs } from "/imports/utils/jobs";
-import { Shops } from "/lib/collections";
 import Reaction from "../Reaction";
 import register from "../no-meteor/register";
 import startNodeApp from "./startNodeApp";
-import Accounts from "./accounts";
 import "./browser-policy";
 import CollectionSecurity from "./collection-security";
 import { importAllTranslations } from "./i18n";
@@ -28,8 +26,6 @@ export default function startup() {
     const elapsedMs = startTime - Number(REACTION_METEOR_APP_COMMAND_START_TIME);
     Logger.info(`Meteor startup finished: ${elapsedMs}ms (This is incorrect if this is a restart.)`);
   }
-
-  Accounts();
 
   Reaction.whenAppInstanceReady(register);
 
