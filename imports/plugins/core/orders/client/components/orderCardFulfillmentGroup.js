@@ -45,10 +45,6 @@ class OrderCardFulfillmentGroups extends Component {
     shouldRestock: true
   };
 
-  handleConfirmationChange = (name) => (event) => {
-    this.setState({ [name]: event.target.checked });
-  };
-
   handleCancelOrder(mutation, fulfillmentGroup) {
     const { order } = this.props;
     const { shouldRestock } = this.state;
@@ -56,23 +52,23 @@ class OrderCardFulfillmentGroups extends Component {
     // We need to loop over every fulfillmentGroup
     // and then loop over every item inside group
     fulfillmentGroup.items.nodes.forEach(async (item) => {
-      await mutation({
-        variables: {
-          input: {
-            cancelQuantity: item.quantity,
-            itemId: item._id,
-            orderId: order._id,
-            reason: "Fulfillment group cancelled inside Catalyst operator UI"
-          }
-        }
-      });
+      // TODO: EK - uncomment to allow cancelling
+      console.log("----- ----- ----- Item ", item._id, " is being cancelled.");
+      // await mutation({
+      //   variables: {
+      //     input: {
+      //       cancelQuantity: item.quantity,
+      //       itemId: item._id,
+      //       orderId: order._id,
+      //       reason: "Fulfillment group cancelled inside Catalyst operator UI"
+      //     }
+      //   }
+      // });
+
+      if (shouldRestock) {
+        this.handleInventoryRestock(item);
+      }
     });
-
-    if (shouldRestock) {
-      return console.log("^^^^^ ^^^^^ ^^^^^ Items should be restocked");
-    }
-
-    return console.log("^^^^^ ^^^^^ ^^^^^ Items should not be restocked");
   }
 
   handleExpandClick = () => {
@@ -85,6 +81,11 @@ class OrderCardFulfillmentGroups extends Component {
       [name]: event.target.checked
     });
   };
+
+  handleInventoryRestock = (item) => {
+    // TODO: EK - handle inventory restock
+    console.log(" ----- ----- ----- Handle restocking item", item._id);
+  }
 
   renderFulfillmentGroupItems(fulfillmentGroup) {
     return fulfillmentGroup.items.nodes.map((item) => <OrderCardFulfillmentGroupItem key={item._id} item={item} />);
