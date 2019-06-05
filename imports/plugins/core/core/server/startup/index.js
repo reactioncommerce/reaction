@@ -8,7 +8,6 @@ import "./browser-policy";
 import CollectionSecurity from "./collection-security";
 import { importAllTranslations } from "./i18n";
 import LoadFixtureData from "./load-data";
-import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
 
 const { REACTION_METEOR_APP_COMMAND_START_TIME } = process.env;
@@ -45,7 +44,6 @@ export default function startup() {
 
   importAllTranslations();
 
-  Prerender();
   CollectionSecurity();
   RateLimiters();
 
