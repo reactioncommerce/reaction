@@ -33,17 +33,23 @@ export default async function approveOrderPayments(context, input = {}) {
 
   if (paymentIds.length === 0) return { order };
 
-  const { value: updatedOrder } = await Orders.findOneAndUpdate({
-    _id: orderId,
-    payments: {
-      $elemMatch: {
-        _id: { $in: paymentIds },
-        status: { $in: ["adjustments", "created"] }
-      }
+  const updatedPayments = order.payments;
+  const paymentStatusesAllowedToBeApproved = ["adjustments", "created"];
+
+  // Set payment.status to approved for all paymentIds provided
+  paymentIds.forEach((paymentId) => {
+    const payment = updatedPayments.find((pmt) => pmt._id === paymentId);
+    if (paymentStatusesAllowedToBeApproved.includes(payment.status)) {
+      payment.status = "approved";
     }
+  });
+
+  // Update Order with new payment status
+  const { value: updatedOrder } = await Orders.findOneAndUpdate({
+    _id: orderId
   }, {
     $set: {
-      "payments.$.status": "approved"
+      payments: updatedPayments
     }
   }, { returnOriginal: false });
 
