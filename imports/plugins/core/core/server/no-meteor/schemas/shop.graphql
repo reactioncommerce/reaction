@@ -30,9 +30,6 @@ type Shop implements Node {
   "Returns a list of groups for this shop, as a Relay-compatible connection."
   groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
 
-  "Returns shop language"
-  language: String
-
   "Returns shop name"
   name: String
 
