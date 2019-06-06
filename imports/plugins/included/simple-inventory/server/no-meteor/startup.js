@@ -122,6 +122,7 @@ export default function startup(context) {
       });
   });
 
+  // TODO: EK - change this to afterFulfillmentGroupPacked
   appEvents.on("afterOrderApprovePayment", async ({ order }) => {
     // We only decrease the inventory quantity after the final payment is approved
     if (!orderIsApproved(order)) return;

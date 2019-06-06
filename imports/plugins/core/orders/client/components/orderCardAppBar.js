@@ -12,6 +12,9 @@ import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
+import { approveOrderPayments, captureOrderPayments } from "../graphql";
+import { approvePayment, getOrderRiskBadge } from "../helpers";
+import { getOrderRiskStatus } from "../helpers/graphql";
 
 
 const styles = (theme) => ({
@@ -54,7 +57,16 @@ class OrderCardAppBar extends Component {
     shouldRestock: true
   }
 
-  handleCancelOrder(mutation) {
+  handleApprovePayment = async (order, paymentIds) => {
+    if (!order.payments) return Promise.resolve(null);
+
+    // If paymentIds are not provided, capture all payments
+    const paymentIdList = paymentIds || order.payments.map((payment) => payment._id);
+
+    return approveOrderPayments({ orderId: order._id, paymentIds: paymentIdList, shopId: order.shop._id });
+  }
+
+  handleCancelOrder = (mutation) => {
     const { order } = this.props;
     const { shouldRestock } = this.state;
     const { fulfillmentGroups } = order;
@@ -79,9 +91,54 @@ class OrderCardAppBar extends Component {
     });
   }
 
-  handleCapturePayment = () => {
+  handleCapturePayment = async (order, paymentIds) => {
     // TODO: EK - handle capturing payment
-    console.log(" ----- ----- ----- Handle capturing payment");
+
+    if (!order.payments) return Promise.resolve(null);
+
+    // If paymentIds are not provided, capture all payments
+    const paymentIdList = paymentIds || order.payments.map((payment) => payment._id);
+
+    const approve = (paymentIdsNew) => {
+      // foeach paymentId, approve payment
+      return paymentIdsNew.map((paymentId) => {
+        console.log("paymentId", paymentId);
+
+        // get non opaque ID for each payment
+        return approvePayment(order._id, paymentId);
+      });
+    };
+
+    const capture = () => captureOrderPayments({ orderId: order._id, paymentIds: paymentIdList, shopId: order.shop._id });
+
+    /**
+     * @summary Show alert
+     * @returns {Promise<Boolean>} Resolves if they click Continue
+     */
+    function alertDialog() {
+      let alertType = "warning";
+      const riskBadge = getOrderRiskBadge(getOrderRiskStatus(order));
+      // use red alert color for high risk level
+      if (riskBadge === "danger") {
+        alertType = "error";
+      }
+
+      return Alerts.alert({
+        title: i18next.t("admin.orderRisk.riskCapture"),
+        text: i18next.t("admin.orderRisk.riskCaptureWarn"),
+        type: alertType,
+        showCancelButton: true,
+        cancelButtonText: i18next.t("admin.settings.cancel"),
+        confirmButtonText: i18next.t("admin.settings.continue")
+      });
+    }
+
+    // before capturing, check if there's a payment risk on order; alert admin before capture
+    if (getOrderRiskStatus(order)) {
+      return alertDialog().then(approve(paymentIdList)).then(capture);
+    }
+
+    return approve(paymentIdList).then(capture);
   }
 
   handleInventoryRestockCheckbox = (name) => (event) => {
@@ -93,7 +150,6 @@ class OrderCardAppBar extends Component {
 
   handleInventoryRestock = (item) => {
     // TODO: EK - handle inventory restock
-    console.log(" ----- ----- ----- Handle restocking item", item._id);
   }
 
   render() {
@@ -109,6 +165,7 @@ class OrderCardAppBar extends Component {
     });
 
     const canCancelOrder = (order.status !== "coreOrderWorkflow/canceled");
+    const canCapturePayment = order.payments.every((payment) => payment.mode === "captured");
 
     return (
       <AppBar color="default">
@@ -148,9 +205,17 @@ class OrderCardAppBar extends Component {
             className={classes.toolbarButton}
             color="primary"
             variant="contained"
-            onClick={this.handleCapturePayment}
+            onClick={() => this.handleCapturePayment(order)}
           >
             {i18next.t("order.capturePayment", "Capture payment")}
+          </Button>
+          <Button
+            className={classes.toolbarButton}
+            color="primary"
+            variant="contained"
+            onClick={() => this.handleApprovePayment(order)}
+          >
+            Approve them all
           </Button>
         </Toolbar>
       </AppBar>
@@ -158,4 +223,4 @@ class OrderCardAppBar extends Component {
   }
 }
 
-export default withStyles(styles, { name: "MuiOrderCard" })(OrderCardAppBar);
+export default withStyles(styles, { name: "MuiOrderCardAppBar" })(OrderCardAppBar);
