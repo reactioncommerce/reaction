@@ -173,7 +173,6 @@ const wrapComponent = (Comp) => {
     onProductFieldSave: PropTypes.func,
     onRestoreProduct: PropTypes.func,
     product: PropTypes.object,
-    revisonDocumentIds: PropTypes.arrayOf(PropTypes.string),
     templates: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
       value: PropTypes.any

@@ -34,9 +34,9 @@ export default async function xformNavigationTreeItem(context, language, item) {
   return {
     navigationItem,
     expanded,
-    isVisible: typeof isVisible === "boolean" ? isVisible : true,
-    isPrivate: typeof isVisible === "boolean" ? isPrivate : false,
-    isSecondary: typeof isVisible === "boolean" ? isSecondary : false,
+    isVisible,
+    isPrivate,
+    isSecondary,
     items
   };
 }
