@@ -1,0 +1,13 @@
+approveOrderPayments($input: ApproveOrderPaymentsInput!) {
+  approveOrderPayments(input: $input) {
+    order {
+      _id
+      payments {
+        _id
+        captureErrorCode
+        captureErrorMessage
+        status
+      }
+    }
+  }
+}
