@@ -19,31 +19,31 @@ class OrderCard extends Component {
   renderAppBar() {
     const { order } = this.props;
 
-    return <OrderCardAppBar order={order} />;
+    return <OrderCardAppBar order={order} {...this.props} />;
   }
 
   renderHeader() {
     const { order } = this.props;
 
-    return <OrderCardHeader order={order} />;
+    return <OrderCardHeader order={order} {...this.props} />;
   }
 
   renderFulfillmentGroups() {
     const { order } = this.props;
 
-    return <OrderCardFulfillmentGroup order={order} />;
+    return <OrderCardFulfillmentGroup order={order} {...this.props} />;
   }
 
   renderPayments() {
     const { order } = this.props;
 
-    return <OrderCardPayments order={order} />;
+    return <OrderCardPayments order={order} {...this.props} />;
   }
 
   renderSummary() {
     const { order } = this.props;
 
-    return <Blocks region="OrderCardSummary" blockProps={{ order }} />;
+    return <Blocks region="OrderCardSummary" blockProps={{ order, ...this.props }} />;
   }
 
   render() {

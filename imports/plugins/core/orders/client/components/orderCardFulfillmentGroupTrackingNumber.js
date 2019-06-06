@@ -34,87 +34,95 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
   };
 
   handleSubmitForm = () => {
-    this.form.submit();
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      this.form.submit();
+    }
   };
 
   handleToggleEdit = () => {
-    this.setState({
-      isEditing: !this.state.isEditing
-    });
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      this.setState({
+        isEditing: !this.state.isEditing
+      });
+    }
   };
 
   handleUpdateFulfillmentGroupTrackingNumber = (data, mutation) => {
-    const { fulfillmentGroup, orderId } = this.props;
-    const { tracking } = data;
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      const { fulfillmentGroup, orderId } = this.props;
+      const { tracking } = data;
 
-    mutation({
-      variables: {
-        orderFulfillmentGroupId: fulfillmentGroup._id,
-        orderId,
-        tracking
-      }
-    });
+      mutation({
+        variables: {
+          orderFulfillmentGroupId: fulfillmentGroup._id,
+          orderId,
+          tracking
+        }
+      });
 
-    this.setState({
-      isEditing: false,
-      trackingNumber: tracking
-    });
+      this.setState({
+        isEditing: false,
+        trackingNumber: tracking
+      });
+    }
   }
 
   render() {
     const { fulfillmentGroup } = this.props;
     const { isEditing, trackingNumber } = this.state;
 
-    if (isEditing) {
-      return (
-        <Mutation mutation={updateOrderFulfillmentGroupMutation}>
-          {(mutationFunc) => (
-            <Fragment>
-              <Form
-                ref={(formRef) => {
-                  this.form = formRef;
-                }}
-                onChange={this.handleFormChange}
-                onSubmit={(data) => this.handleUpdateFulfillmentGroupTrackingNumber(data, mutationFunc)}
-                value={fulfillmentGroup}
-              >
-                <PaddedField
-                  name="tracking"
-
-                  labelFor="trackingInput"
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      if (isEditing) {
+        return (
+          <Mutation mutation={updateOrderFulfillmentGroupMutation}>
+            {(mutationFunc) => (
+              <Fragment>
+                <Form
+                  ref={(formRef) => {
+                    this.form = formRef;
+                  }}
+                  onChange={this.handleFormChange}
+                  onSubmit={(data) => this.handleUpdateFulfillmentGroupTrackingNumber(data, mutationFunc)}
+                  value={fulfillmentGroup}
                 >
-                  <TextInput
-                    id="trackingInput"
+                  <PaddedField
                     name="tracking"
-                    placeholder={i18next.t("shopSettings.storefrontUrls.tracking", "Tracking")}
-                    value={trackingNumber || ""}
-                  />
-                  <ErrorsBlock names={["tracking"]} />
-                </PaddedField>
 
-                {trackingNumber ?
-                  <Grid container alignItems="center" justify="flex-end" spacing={8}>
-                    <Grid item>
-                      <Button color="secondary" size="small" variant="outlined" onClick={this.handleToggleEdit}>
-                        {i18next.t("app.cancel", "Cancel")}
-                      </Button>
+                    labelFor="trackingInput"
+                  >
+                    <TextInput
+                      id="trackingInput"
+                      name="tracking"
+                      placeholder={i18next.t("shopSettings.storefrontUrls.tracking", "Tracking")}
+                      value={trackingNumber || ""}
+                    />
+                    <ErrorsBlock names={["tracking"]} />
+                  </PaddedField>
+
+                  {trackingNumber ?
+                    <Grid container alignItems="center" justify="flex-end" spacing={8}>
+                      <Grid item>
+                        <Button color="secondary" size="small" variant="outlined" onClick={this.handleToggleEdit}>
+                          {i18next.t("app.cancel", "Cancel")}
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button color="primary" size="small" variant="contained" onClick={this.handleSubmitForm}>
+                          {i18next.t("app.save", "Save")}
+                        </Button>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Button color="primary" size="small" variant="contained" onClick={this.handleSubmitForm}>
-                        {i18next.t("app.save", "Save")}
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  :
-                  <Button color="primary" size="small" variant="outlined" onClick={this.handleSubmitForm}>
-                    {i18next.t("app.savessssss", "Add")}
-                  </Button>
-                }
-              </Form>
-            </Fragment>
-          )}
-        </Mutation>
-      );
+                    :
+                    <Button color="primary" size="small" variant="outlined" onClick={this.handleSubmitForm}>
+                      {i18next.t("app.savessssss", "Add")}
+                    </Button>
+                  }
+                </Form>
+              </Fragment>
+            )}
+          </Mutation>
+        );
+      }
     }
 
     return (
@@ -123,7 +131,7 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
         variant="body2"
         onClick={() => { this.handleToggleEdit(); }}
       >
-        {trackingNumber}
+        {trackingNumber || "Not available"}
       </Link>
     );
   }

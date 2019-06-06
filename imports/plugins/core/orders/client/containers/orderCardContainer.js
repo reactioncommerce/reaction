@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
+import { Reaction } from "/client/api";
 import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
 import OrderCard from "../components/orderCard";
 import orderByReferenceId from "../graphql/queries/orderByReferenceId";
@@ -31,6 +32,8 @@ class OrderCardContainer extends Component {
       token: null
     };
 
+    const hasPermission = Reaction.hasPermission("owner", Reaction.getUserId(), Reaction.getShopId());
+
     return (
       <Query errorPolicy="all" query={orderByReferenceId} variables={variables}>
         {({ loading: isLoading, data: orderData }) => {
@@ -39,6 +42,7 @@ class OrderCardContainer extends Component {
 
           return (
             <OrderCard
+              hasEditPermission={hasPermission}
               order={order}
             />
           );

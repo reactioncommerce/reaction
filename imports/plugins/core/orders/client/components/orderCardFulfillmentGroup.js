@@ -49,57 +49,105 @@ class OrderCardFulfillmentGroups extends Component {
     const { order } = this.props;
     const { shouldRestock } = this.state;
 
-    // We need to loop over every fulfillmentGroup
-    // and then loop over every item inside group
-    fulfillmentGroup.items.nodes.forEach(async (item) => {
-      await mutation({
-        variables: {
-          input: {
-            cancelQuantity: item.quantity,
-            itemId: item._id,
-            orderId: order._id,
-            reason: "Fulfillment group cancelled inside Catalyst operator UI"
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      // We need to loop over every fulfillmentGroup
+      // and then loop over every item inside group
+      fulfillmentGroup.items.nodes.forEach(async (item) => {
+        await mutation({
+          variables: {
+            input: {
+              cancelQuantity: item.quantity,
+              itemId: item._id,
+              orderId: order._id,
+              reason: "Fulfillment group cancelled inside Catalyst operator UI"
+            }
           }
+        });
+
+        if (shouldRestock) {
+          this.handleInventoryRestock(item);
         }
       });
-
-      if (shouldRestock) {
-        this.handleInventoryRestock(item);
-      }
-    });
+    }
   }
 
-  handleExpandClick = () => {
-    this.setState((state) => ({ expanded: !state.expanded }));
-  };
-
   handleInventoryRestockCheckbox = (name) => (event) => {
-    this.setState({
-      ...this.state,
-      [name]: event.target.checked
-    });
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      this.setState({
+        ...this.state,
+        [name]: event.target.checked
+      });
+    }
   };
 
   handleInventoryRestock = (item) => {
-    // TODO: EK - handle inventory restock
-    console.log(" ----- ----- ----- Handle restocking item", item._id);
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      // TODO: EK - handle inventory restock
+      console.log(" ----- ----- ----- Handle restocking item", item._id);
+    }
   }
 
   renderFulfillmentGroupItems(fulfillmentGroup) {
     return fulfillmentGroup.items.nodes.map((item) => <OrderCardFulfillmentGroupItem key={item._id} item={item} />);
   }
 
+  renderCancelFulfillmentGroupButton = (fulfillmentGroup) => {
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      const canCancelOrder = (status !== "coreOrderWorkflow/canceled");
+      const { shouldRestock } = this.state;
+
+      if (canCancelOrder) {
+        return (
+          <Mutation mutation={cancelOrderItemMutation}>
+            {(mutationFunc) => (
+              <ConfirmButton
+                buttonColor="danger"
+                buttonText={i18next.t("order.cancelGroupLabel", "Cancel group")}
+                buttonVariant="outlined"
+                cancelActionText={i18next.t("app.close")}
+                confirmActionText={i18next.t("order.cancelGroupLabel", "Cancel group")}
+                title={i18next.t("order.cancelGroupLabel")}
+                message={i18next.t("order.cancelGroup")}
+                onConfirm={() => this.handleCancelOrder(mutationFunc, fulfillmentGroup)}
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={shouldRestock}
+                      onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
+                      value="shouldRestock"
+                    />
+                  }
+                  label={i18next.t("order.restockInventory")}
+                />
+              </ConfirmButton>
+            )}
+          </Mutation>
+        );
+      }
+    }
+
+    return null;
+  }
+
+  renderUpdateFulfillmentGroupStatusButton = () => {
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      return (
+        <Button color="primary" variant="contained">{i18next.t("admin.fulfillmentGroups.markAsPacked", "Mark as packed")}</Button>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const { classes, order } = this.props;
-    const { shouldRestock } = this.state;
     const { fulfillmentGroups } = order;
     const totalGroupsCount = fulfillmentGroups.length;
 
     return fulfillmentGroups.map((fulfillmentGroup, index) => {
       const currentGroupCount = index + 1;
       const { data: { shippingAddress }, status } = fulfillmentGroup;
-
-      const canCancelOrder = (status !== "coreOrderWorkflow/canceled");
 
       return (
         <Card key={fulfillmentGroup._id} className={classes.fulfillmentGroupSpacing} elevation={0}>
@@ -123,36 +171,10 @@ class OrderCardFulfillmentGroups extends Component {
                     <Button size="small" variant="text">{i18next.t("admin.fulfillmentGroups.printShippingLabel", "Print shipping label")}</Button>
                   </Grid>
                   <Grid item>
-                    {canCancelOrder &&
-                      <Mutation mutation={cancelOrderItemMutation}>
-                        {(mutationFunc) => (
-                          <ConfirmButton
-                            buttonColor="danger"
-                            buttonText={i18next.t("order.cancelGroupLabel", "Cancel group")}
-                            buttonVariant="outlined"
-                            cancelActionText={i18next.t("app.close")}
-                            confirmActionText={i18next.t("order.cancelGroupLabel", "Cancel group")}
-                            title={i18next.t("order.cancelGroupLabel")}
-                            message={i18next.t("order.cancelGroup")}
-                            onConfirm={() => this.handleCancelOrder(mutationFunc, fulfillmentGroup)}
-                          >
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={shouldRestock}
-                                  onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
-                                  value="shouldRestock"
-                                />
-                              }
-                              label={i18next.t("order.restockInventory")}
-                            />
-                          </ConfirmButton>
-                        )}
-                      </Mutation>
-                    }
+                    {this.renderCancelFulfillmentGroupButton(fulfillmentGroup)}
                   </Grid>
                   <Grid item>
-                    <Button color="primary" variant="contained">{i18next.t("admin.fulfillmentGroups.markAsPacked", "Mark as packed")}</Button>
+                    {this.renderUpdateFulfillmentGroupStatusButton(fulfillmentGroup)}
                   </Grid>
                 </Grid>
               </Grid>

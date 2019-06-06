@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
+import Typography from "@material-ui/core/Typography";
 import OrderPayment from "./OrderPayment";
 
 
@@ -31,8 +32,17 @@ class OrderCardPayments extends Component {
 
   renderPayments() {
     const { order: { payments } } = this.props;
+    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+      return payments.map((payment) => <OrderPayment payment={payment} />);
+    }
 
-    return payments.map((payment) => <OrderPayment payment={payment} />);
+    // If more than one payment method, display amount for each
+    if (Array.isArray(payments) && payments.length > 1) {
+      return payments.map((payment) => <Typography key={payment._id} variant="body2">{payment.displayName} {payment.amount.displayAmount}</Typography>);
+    }
+
+    // If only one payment method, do not display amount
+    return payments.map((payment) => <Typography key={payment._id} variant="body2">{payment.displayName}</Typography>);
   }
 
   render() {
