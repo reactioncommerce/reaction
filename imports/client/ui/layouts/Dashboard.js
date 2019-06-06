@@ -114,7 +114,7 @@ class Dashboard extends Component {
                         if (route.layoutComponent === null) {
                           return (
                             <ContentViewFullLayout isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
-                              <route.mainComponent uiState={uiState} {...props} />;
+                              <route.mainComponent uiState={uiState} {...props} />
                             </ContentViewFullLayout>
                           );
                         }
