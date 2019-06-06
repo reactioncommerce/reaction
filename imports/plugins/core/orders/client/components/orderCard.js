@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import Grid from "@material-ui/core/Grid";
+import { Blocks } from "@reactioncommerce/reaction-components";
 import OrderCardAppBar from "./orderCardAppBar";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
 import OrderCardHeader from "./orderCardHeader";
@@ -43,7 +44,7 @@ class OrderCard extends Component {
   renderSummary() {
     const { order } = this.props;
 
-    return <OrderCardSummary order={order} />;
+    return <Blocks region="OrderCardSummary" blockProps={{ order }} />;
   }
 
   render() {
