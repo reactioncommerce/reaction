@@ -21,7 +21,6 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
       <Link
         component="button"
         variant="body2"
-        onClick={() => { console.log("Edit tracking number"); }}
       >
         {trackingNumber}
       </Link>
