@@ -39,7 +39,7 @@ export default async function approveOrderPayments(context, input = {}) {
   // Set payment.status to approved for all paymentIds provided
   paymentIds.forEach((paymentId) => {
     const payment = updatedPayments.find((pmt) => pmt._id === paymentId);
-    if (paymentStatusesAllowedToBeApproved.includes(payment.status)) {
+    if (payment && paymentStatusesAllowedToBeApproved.includes(payment.status)) {
       payment.status = "approved";
     }
   });

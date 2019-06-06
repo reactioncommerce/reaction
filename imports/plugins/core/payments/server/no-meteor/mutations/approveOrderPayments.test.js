@@ -27,6 +27,8 @@ test("throws if shopId isn't supplied", async () => {
 });
 
 test("throws if the order doesn't exist", async () => {
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(approveOrderPayments(mockContext, {
@@ -57,25 +59,6 @@ test("throws if permission check fails", async () => {
   })).rejects.toThrowErrorMatchingSnapshot();
 
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders"], "SHOP_ID");
-});
-
-test("throws if the order payment doesn't exist", async () => {
-  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
-    payments: [
-      {
-        _id: "2"
-      }
-    ],
-    shopId: "SHOP_ID"
-  }));
-
-  mockContext.userHasPermission.mockReturnValueOnce(true);
-
-  await expect(approveOrderPayments(mockContext, {
-    orderId: "abc",
-    paymentIds: ["1"],
-    shopId: "SHOP_ID"
-  })).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("updates an order status", async () => {

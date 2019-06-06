@@ -8,6 +8,4 @@ exports[`throws if permission check fails 1`] = `"Access denied"`;
 
 exports[`throws if shopId isn't supplied 1`] = `"Shop ID is required"`;
 
-exports[`throws if the order doesn't exist 1`] = `"Access denied"`;
-
-exports[`throws if the order payment doesn't exist 1`] = `"Cannot read property 'status' of undefined"`;
+exports[`throws if the order doesn't exist 1`] = `"Order not found"`;
