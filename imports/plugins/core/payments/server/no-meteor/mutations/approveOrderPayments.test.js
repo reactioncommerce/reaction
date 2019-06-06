@@ -92,16 +92,16 @@ test("updates an order status", async () => {
     shopId: "SHOP_ID"
   }));
 
+  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    modifiedCount: 1,
+    value: {}
+  }));
+
   await approveOrderPayments(mockContext, {
     orderId: "abc",
     paymentIds: ["1"],
     shopId: "SHOP_ID"
   });
-
-  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1,
-    value: {}
-  }));
 
   await expect(mockContext.collections.Orders.findOneAndUpdate).toHaveBeenCalledWith(
     { _id: "abc" },
