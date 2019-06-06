@@ -26,7 +26,7 @@ const DefaultValuesSchema = new SimpleSchema({
  * @param {Boolean} defaultValues.shouldNavigationTreeItemsBeSecondaryNavOnly Default value for `isSecondary`
  * @return {Array} Navigation tree items
  */
-export default function setDefaultsForNavigationTreeItems(items = [], defaultValues = {}) {
+export function setDefaultsForNavigationTreeItems(items = [], defaultValues = {}) {
   if (typeof defaultValues !== "object") {
     throw new ReactionError("invalid-default-values", "Default values object is not defined.");
   }
