@@ -39,9 +39,6 @@ export default function startup() {
   Reaction.createGroups();
   Reaction.setAppVersion();
 
-  // DEPRECATED. Avoid consuming this hook in new code
-  appEvents.emit("afterCoreInit");
-
   importAllTranslations();
 
   CollectionSecurity();
@@ -55,6 +52,9 @@ export default function startup() {
     .then(() => {
       const endTime = Date.now();
       Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
+
+      // DEPRECATED. Avoid consuming this hook in new code
+      appEvents.emit("afterCoreInit");
 
       // Main purpose of this right now is to wait to start Meteor app tests
       Reaction.emitAppStartupComplete();
