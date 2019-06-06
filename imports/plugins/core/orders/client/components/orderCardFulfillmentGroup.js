@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -53,18 +52,16 @@ class OrderCardFulfillmentGroups extends Component {
     // We need to loop over every fulfillmentGroup
     // and then loop over every item inside group
     fulfillmentGroup.items.nodes.forEach(async (item) => {
-      // TODO: EK - uncomment to allow cancelling
-      console.log("----- ----- ----- Item ", item._id, " is being cancelled.");
-      // await mutation({
-      //   variables: {
-      //     input: {
-      //       cancelQuantity: item.quantity,
-      //       itemId: item._id,
-      //       orderId: order._id,
-      //       reason: "Fulfillment group cancelled inside Catalyst operator UI"
-      //     }
-      //   }
-      // });
+      await mutation({
+        variables: {
+          input: {
+            cancelQuantity: item.quantity,
+            itemId: item._id,
+            orderId: order._id,
+            reason: "Fulfillment group cancelled inside Catalyst operator UI"
+          }
+        }
+      });
 
       if (shouldRestock) {
         this.handleInventoryRestock(item);
