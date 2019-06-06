@@ -72,7 +72,7 @@ type Payment implements Node {
   method: PaymentMethod!
 
   "Risk level of payment"
-  riskLevel: RiskLevels
+  riskLevel: RiskLevel
 
   "The current status of this payment"
   status: PaymentStatus!
@@ -106,15 +106,15 @@ enum PaymentStatus {
 }
 
 "Valid payment risk levels"
-enum RiskLevels {
-  "A normal risk level for a payment"
-  normal
-
+enum RiskLevel {
   "An elevated risk level for a payment"
   elevated
 
-  "The highest rist level for a payment"
+  "The highest risk level for a payment"
   highest
+
+  "A normal risk level for a payment"
+  normal
 }
 
 # Use `extend union` to define a payment plugin's PaymentData type
