@@ -7,6 +7,7 @@ import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewEx
 import Orders from "./containers/orderDashboardContainer";
 import OrderCard from "/imports/plugins/core/orders/client/containers/orderCardContainer";
 import OrderCardSummary from "/imports/plugins/core/orders/client/components/orderCardSummary";
+import OrderDetail from "./containers/orderDetailContainer";
 
 // Print page layout
 import "./templates/list/pdf.html";
@@ -24,6 +25,17 @@ registerOperatorRoute({
   mainComponent: OrderCard,
   isNavigationLink: false
 });
+
+/*
+ * Single order page route
+ * ** Meteor style - remove once GraphQL style is completed
+ */
+registerOperatorRoute({
+  isNavigationLink: false,
+  mainComponent: OrderDetail,
+  path: "/orders/:_id"
+});
+
 
 /*
  * Register route for /orders,
@@ -54,8 +66,6 @@ registerBlock({
 // To remove with orders-2.0
 // To remove with orders-2.0
 // To remove with orders-2.0
-
-import OrderDetail from "./containers/orderDetailContainer";
 import "./helpers";
 
 
@@ -74,16 +84,6 @@ import "./containers/invoiceContainer";
 import "./containers/orderSummaryContainer";
 
 import "../lib/extendShopSchema";
-
-/*
- * Single order page route
- * ** Meteor style - remove once GraphQL style is completed
- */
-registerOperatorRoute({
-  isNavigationLink: false,
-  mainComponent: OrderDetail,
-  path: "/orders/:_id"
-});
 
 export { ProductImage } from "./components/productImage";
 
