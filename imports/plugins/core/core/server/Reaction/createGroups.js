@@ -18,38 +18,33 @@ import { Shops, Groups } from "/lib/collections";
  */
 export default function createGroups(options = {}) {
   const { shopId } = options;
-  let { roles } = options;
   const allGroups = Groups.find({}).fetch();
+  const roles = getDefaultGroupRoles();
+
   const query = {};
-
-  if (!roles) {
-    roles = getDefaultGroupRoles();
-  }
-
   if (shopId) {
     query._id = shopId;
   }
 
   const shops = Shops.find(query).fetch();
+  const primaryShop = shops.find((shop) => shop.shopType === "primary");
 
-  if (shops && shops.length) {
-    shops.forEach((shop) => {
-      Object.keys(roles).forEach((groupKey) => {
-        const groupExists = allGroups.find((grp) => grp.slug === groupKey && grp.shopId === shop._id);
-        if (!groupExists) { // create group only if it doesn't exist before
-          // get roles from the default groups of the primary shop; we try to use this first before using default roles
-          const primaryShopGroup = allGroups.find((grp) => grp.slug === groupKey && grp.shopId === Reaction.getPrimaryShopId());
-          Logger.debug(`creating group ${groupKey} for shop ${shop.name}`);
-          Groups.insert({
-            name: groupKey,
-            slug: groupKey,
-            permissions: (primaryShopGroup && primaryShopGroup.permissions) || roles[groupKey],
-            shopId: shop._id
-          });
-        }
-      });
+  shops.forEach((shop) => {
+    Object.keys(roles).forEach((groupKey) => {
+      const groupExists = allGroups.find((grp) => grp.slug === groupKey && grp.shopId === shop._id);
+      if (!groupExists) { // create group only if it doesn't exist before
+        Logger.debug(`creating group ${groupKey} for shop ${shop.name}`);
+        // get roles from the default groups of the primary shop; we try to use this first before using default roles
+        const primaryShopGroup = primaryShop ? allGroups.find((grp) => grp.slug === groupKey && grp.shopId === primaryShop._id) : null;
+        Groups.insert({
+          name: groupKey,
+          slug: groupKey,
+          permissions: (primaryShopGroup && primaryShopGroup.permissions) || roles[groupKey],
+          shopId: shop._id
+        });
+      }
     });
-  }
+  });
 }
 
 /**
