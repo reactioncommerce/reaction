@@ -7,7 +7,6 @@ import OrderCardAppBar from "./orderCardAppBar";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
 import OrderCardHeader from "./orderCardHeader";
 import OrderCardPayments from "./orderCardPayments";
-import OrderCardSummary from "./orderCardSummary";
 
 
 class OrderCard extends Component {
