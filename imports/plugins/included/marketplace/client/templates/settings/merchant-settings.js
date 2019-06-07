@@ -6,7 +6,7 @@ Template.stripeConnectMerchantSignup.helpers({
   stripeConnectIsConnected() {
     const stripe = Reaction.getPackageSettingsWithOptions({
       shopId: Reaction.getShopId(),
-      name: "reaction-marketplace"
+      name: "reaction-stripe"
     });
     return stripe && stripe.settings && stripe.settings.connectAuth && stripe.settings.connectAuth.access_token;
   }
