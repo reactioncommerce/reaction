@@ -22,7 +22,7 @@ import processJobs from "./processJobs";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 import { getUserId } from "./accountUtils";
-
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 /**
  * @file Server core methods
  *
@@ -893,7 +893,7 @@ export default {
     let loadedIndex = 1;
     // for each shop, we're loading packages in a unique registry
     _.each(this.Packages, (config, pkgName) =>
-      Shops.find().forEach((shop) => {
+     Shops.find({_id: Reaction.getPrimaryShopId()}).forEach((shop) => {
         const shopId = shop._id;
         if (!shopId) return [];
 
