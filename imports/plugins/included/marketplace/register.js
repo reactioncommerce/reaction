@@ -137,7 +137,8 @@ Reaction.registerPackage({
     // Redirect for Stripe Connect Sign-In
     {
       route: "/stripe/connect/authorize",
-      template: "stripeConnectAuthorize"
+      template: "stripeConnectAuthorize",
+      provides: ["marketplaceMerchantSettings"]
     },
 
     // Payment Signup for Merchants
