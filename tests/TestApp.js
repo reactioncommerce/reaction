@@ -1,10 +1,11 @@
 import { merge } from "lodash";
 import mongodb, { MongoClient } from "mongodb";
 import MongoDBMemoryServer from "mongodb-memory-server";
-import { gql } from "apollo-server";
+import { gql, PubSub } from "apollo-server";
 import { createTestClient } from "apollo-server-testing";
 import Random from "@reactioncommerce/random";
 import appEvents from "../imports/node-app/core/util/appEvents";
+import buildContext from "../imports/node-app/core/util/buildContext";
 import createApolloServer from "../imports/node-app/core/createApolloServer";
 import defineCollections from "../imports/node-app/core/util/defineCollections";
 import Factory from "../imports/test-utils/helpers/factory";
@@ -20,10 +21,13 @@ import "../imports/node-app/devserver/extendSchemas";
 
 class TestApp {
   constructor(options = {}) {
-    const { extraSchemas = [] } = options;
+    const { additionalCollections = [], extraSchemas = [] } = options;
 
-    this.collections = {};
+    this.options = { ...options };
+    this.collections = { ...additionalCollections };
     this.context = {
+      ...(options.context || {}),
+      app: this,
       appEvents,
       collections: this.collections,
       getFunctionsOfType: (type) => {
@@ -37,6 +41,7 @@ class TestApp {
         }
         return funcs;
       },
+      pubSub: new PubSub(),
       mutations: { ...mutations },
       queries: { ...queries }
     };
@@ -119,6 +124,13 @@ class TestApp {
     this.context.user = null;
   }
 
+  async publishProducts(productIds) {
+    const requestContext = { ...this.context };
+    await buildContext(requestContext);
+    requestContext.userHasPermission = () => true;
+    return this.context.mutations.publishProducts(requestContext, productIds);
+  }
+
   async insertPrimaryShop(shopData) {
     // Need shop domains and ROOT_URL set in order for `shopId` to be correctly set on GraphQL context
     const domain = "shop.fake.site";
@@ -135,6 +147,7 @@ class TestApp {
       currency: "USD",
       name: "Primary Shop",
       ...shopData,
+      shopType: "primary",
       domains: [domain]
     });
 
@@ -179,6 +192,31 @@ class TestApp {
         }
         this.functionsByType[type].push(...plugin.functionsByType[type]);
       });
+    }
+  }
+
+  async runServiceStartup() {
+    // Call `functionsByType.registerPluginHandler` functions for every plugin that
+    // has supplied one, passing in all other plugins. Allows one plugin to check
+    // for the presence of another plugin and read its config.
+    //
+    // These are not async but they run before plugin `startup` functions, so a plugin
+    // can save off relevant config and handle it later in `startup`.
+    const registerPluginHandlerFuncs = this.functionsByType.registerPluginHandler || [];
+    const packageInfoArray = Object.values(this.registeredPlugins);
+    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
+      if (typeof registerPluginHandlerFunc !== "function") {
+        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
+      }
+      packageInfoArray.forEach(registerPluginHandlerFunc);
+    });
+
+    const startupFunctionsRegisteredByPlugins = this.functionsByType.startup;
+    if (Array.isArray(startupFunctionsRegisteredByPlugins)) {
+      // We are intentionally running these in series, in the order in which they were registered
+      for (const startupFunction of startupFunctionsRegisteredByPlugins) {
+        await startupFunction(this.context); // eslint-disable-line no-await-in-loop
+      }
     }
   }
 

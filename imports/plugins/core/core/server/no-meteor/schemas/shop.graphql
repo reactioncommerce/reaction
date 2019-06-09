@@ -30,6 +30,9 @@ type Shop implements Node {
   "Returns a list of groups for this shop, as a Relay-compatible connection."
   groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
 
+  "Returns shop language"
+  language: String
+
   "Returns shop name"
   name: String
 
@@ -84,6 +87,9 @@ input StorefrontUrlsInput {
   "Storefront Home URL"
   storefrontHomeUrl: String
 
+  "Storefront login URL"
+  storefrontLoginUrl: String
+
   "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
   storefrontOrderUrl: String
 
@@ -125,6 +131,9 @@ type StorefrontUrls {
 
   "Storefront Home URL"
   storefrontHomeUrl: String
+
+  "Storefront login URL"
+  storefrontLoginUrl: String
 
   "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
   storefrontOrderUrl: String

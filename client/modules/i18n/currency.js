@@ -69,7 +69,11 @@ export function formatPriceString(formatPrice) {
   const prices = currentPrice.indexOf(" - ") >= 0 ?
     currentPrice.split(" - ") : [currentPrice, currentPrice];
 
-  return getDisplayPrice(Number(prices[0]), Number(prices[1]), userCurrency);
+  // Remove commas
+  const price1 = prices[0].replace(/,/g, "");
+  const price2 = prices[1].replace(/,/g, "");
+
+  return getDisplayPrice(Number(price1), Number(price2), userCurrency);
 }
 
 /**

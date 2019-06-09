@@ -4,6 +4,7 @@ import address from "/imports/plugins/core/address/server/no-meteor/schemas";
 import cart from "/imports/plugins/core/cart/server/no-meteor/schemas";
 import catalog from "/imports/plugins/core/catalog/server/no-meteor/schemas";
 import core from "/imports/plugins/core/core/server/no-meteor/schemas";
+import inventory from "/imports/plugins/core/inventory/server/no-meteor/schemas";
 import navigation from "/imports/plugins/core/navigation/server/no-meteor/schemas";
 import orders from "/imports/plugins/core/orders/server/no-meteor/schemas";
 import payments from "/imports/plugins/core/payments/server/no-meteor/schemas";
@@ -16,6 +17,7 @@ import marketplace from "/imports/plugins/included/marketplace/server/no-meteor/
 import paymentsExample from "/imports/plugins/included/payments-example/server/no-meteor/schemas";
 import paymentsStripe from "/imports/plugins/included/payments-stripe/server/no-meteor/schemas";
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/schemas";
+import simpleInventory from "/imports/plugins/included/simple-inventory/server/no-meteor/schemas";
 import simplePricing from "/imports/plugins/included/simple-pricing/server/no-meteor/schemas";
 
 export default [
@@ -24,6 +26,7 @@ export default [
   ...cart,
   ...catalog,
   ...core,
+  ...inventory,
   ...navigation,
   ...orders,
   ...payments,
@@ -35,5 +38,6 @@ export default [
   ...paymentsExample,
   ...paymentsStripe,
   ...shippingRates,
+  ...simpleInventory,
   ...simplePricing
 ];

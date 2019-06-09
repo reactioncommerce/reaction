@@ -131,30 +131,8 @@ type CartItem implements Node {
   """
   createdAt: DateTime!
 
-  """
-  The quantity of this item currently available to order.
-  """
-  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell`.")
-
   "The URLs for a picture of the item in various sizes"
   imageURLs: ImageSizes
-
-  """
-  The quantity of this item currently available to sell.
-  This number is updated when an order is placed by the customer.
-  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
-  This is most likely the quantity to display in the storefront UI.
-  """
-  inventoryAvailableToSell: Int
-
-  "Is this item currently backordered?"
-  isBackorder: Boolean!
-
-  "Is this item quantity available currently below it's low quantity threshold?"
-  isLowQuantity: Boolean!
-
-  "Is this item currently sold out?"
-  isSoldOut: Boolean!
 
   "Arbitrary additional metadata about this cart item."
   metafields: [Metafield]
