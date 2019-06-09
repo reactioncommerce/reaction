@@ -170,8 +170,11 @@ core.onAppStartupComplete(() => {
       });
     });
 
+    /**
+     * @return {String} A random string
+     */
     function randomString() {
       return Math.random().toString(36);
     }
-});
+  });
 });
