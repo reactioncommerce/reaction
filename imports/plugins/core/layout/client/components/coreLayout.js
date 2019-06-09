@@ -38,11 +38,13 @@ const styles = (theme) => ({
 function CoreLayout({ classes, location }) {
   let content = <Components.Login />;
 
+  const isAdmin = Reaction.hasDashboardAccessForAnyShop();
+
   // If we're not on /account or /account/login for hydra, and the user is signed in,
   // then we will redirect or show a logout button
   if (location.pathname.startsWith("/account") === false) {
     // If the current user is an admin then redirect to /operator
-    if (Reaction.hasDashboardAccessForAnyShop()) {
+    if (isAdmin) {
       window.location.replace("/operator");
       return null;
     }
@@ -51,7 +53,7 @@ function CoreLayout({ classes, location }) {
     // But they aren't an admin, then give them a logout button.
     if (!Reaction.hasPermission(["anonymous"])) {
       // If the user is logged in but not a admin redirect to the storefront.
-      if (!Reaction.hasAdminAccess()) {
+      if (!isAdmin) {
         const { storefrontUrls } = Reaction.getCurrentShop();
 
         if (!storefrontUrls || !storefrontUrls.storefrontHomeUrl) {
