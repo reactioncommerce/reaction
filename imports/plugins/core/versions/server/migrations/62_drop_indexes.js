@@ -2,10 +2,6 @@ import { Migrations } from "meteor/percolate:migrations";
 import Logger from "@reactioncommerce/logger";
 import rawCollections from "/imports/collections/rawCollections";
 
-const {
-  Catalog
-} = rawCollections;
-
 /**
  * @private
  * @param {Error} error Error or null
@@ -32,6 +28,8 @@ function handleError(error) {
 Migrations.add({
   version: 62,
   up() {
+    const { Catalog } = rawCollections;
+
     Catalog.dropIndex("createdAt_1", handleError);
     Catalog.dropIndex("updatedAt_1", handleError);
   }

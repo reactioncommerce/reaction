@@ -2,10 +2,6 @@ import { Migrations } from "meteor/percolate:migrations";
 import Logger from "@reactioncommerce/logger";
 import rawCollections from "/imports/collections/rawCollections";
 
-const {
-  Orders
-} = rawCollections;
-
 /**
  * @private
  * @param {Error} error Error or null
@@ -32,6 +28,8 @@ function handleError(error) {
 Migrations.add({
   version: 61,
   up() {
+    const { Orders } = rawCollections;
+
     Orders.dropIndex("c2_items.$.productId", handleError);
     Orders.dropIndex("c2_items.$.variantId", handleError);
   }
