@@ -21,26 +21,22 @@ export default async function orderByReferenceId(context, { orderReferenceId, sh
     throw new ReactionError("invalid-param", "You must provide orderReferenceId and shopId arguments");
   }
 
-  let accountId;
-  let anonymousAccessToken;
-  if (token) {
-    accountId = null;
-    anonymousAccessToken = hashLoginToken(token);
-  } else {
-    // Unless you are an admin with orders permission, you are limited to seeing it if you placed it
-    if (!userHasPermission(["orders"], shopId)) {
-      if (!contextAccountId) {
-        throw new ReactionError("access-denied", "Access Denied");
-      }
-      accountId = contextAccountId;
-    }
-    anonymousAccessToken = null;
-  }
-
-  return Orders.findOne({
-    accountId,
-    anonymousAccessToken,
+  const selector = {
     referenceId: orderReferenceId,
     shopId
-  });
+  };
+
+  if (token) {
+    selector.accountId = null;
+    selector.anonymousAccessToken = hashLoginToken(token);
+  } else if (!userHasPermission(["orders"], shopId)) {
+    // Unless you are an admin with orders permission, you are limited to seeing it if you placed it
+    if (!contextAccountId) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+    selector.accountId = contextAccountId;
+    selector.anonymousAccessToken = null;
+  }
+
+  return Orders.findOne(selector);
 }
