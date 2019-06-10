@@ -45,7 +45,7 @@ appEvents.on("readyForMigrations", () => {
       } catch (error) {
         Logger.error("Error while migrating", error);
         // Make sure the migration control record is unlocked so they can attempt to run again next time
-        Migrations.unlock();
+        Migrations._collection.update({ _id: "control" }, { $set: { locked: false } });
       }
     }
   }
