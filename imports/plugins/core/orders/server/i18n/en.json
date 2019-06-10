@@ -10,7 +10,7 @@
         "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
         "cancelGroup": "Do you want to cancel this group?",
         "cancelGroupLabel": "Cancel group",
-        "cancelOrder": "Do you want to cancel this fu?",
+        "cancelOrder": "Do you want to cancel this entire order?",
         "cancelOrderLabel": "Cancel Order",
         "cancelOrderNoRestock": "Do not restock",
         "cancelOrderThenRestock": "Restock",
