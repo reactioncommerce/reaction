@@ -18,25 +18,29 @@ class OrderCardFulfillmentGroupItem extends Component {
   static propTypes = {
     classes: PropTypes.object,
     item: PropTypes.shape({
-      price: PropTypes.object,
+      price: PropTypes.shape({
+        displayAmount: PropTypes.string.isRequired
+      }).isRequired,
       productVendor: PropTypes.string,
-      quantity: PropTypes.number,
-      subtotal: PropTypes.object,
-      title: PropTypes.string
-    })
+      quantity: PropTypes.number.isRequired,
+      subtotal: PropTypes.shape({
+        displayAmount: PropTypes.string.isRequired
+      }).isRequired,
+      variantTitle: PropTypes.string.isRequired
+    }).isRequired
   };
 
 
   render() {
     const { classes, item } = this.props;
-    const { price, productVendor, quantity, subtotal, title } = item;
+    const { price, productVendor, quantity, subtotal, variantTitle } = item;
 
     return (
       <Grid container className={classes.fulfillmentGroupSpacing}>
         <Grid item xs={12} md={6}>
           <Grid item className={classes.orderCardSection} xs={12} md={12}>
             <Typography variant="body2" className={classes.itemTextBold}>
-              {title}
+              {variantTitle}
             </Typography>
             <Typography variant="body2">
               {productVendor}
@@ -49,13 +53,13 @@ class OrderCardFulfillmentGroupItem extends Component {
         <Grid item xs={12} md={6}>
           <Grid item xs={12} md={12}>
             <Typography variant="body2" align="right">
-              {price.amount}
+              {price.displayAmount}
             </Typography>
             <Typography variant="body2" align="right">
               &nbsp;
             </Typography>
             <Typography variant="body2" align="right">
-              {subtotal.amount}
+              {subtotal.displayAmount}
             </Typography>
           </Grid>
         </Grid>
