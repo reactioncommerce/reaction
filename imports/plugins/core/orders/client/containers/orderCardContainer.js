@@ -33,9 +33,14 @@ class OrderCardContainer extends Component {
 
     return (
       <Query errorPolicy="all" query={orderByReferenceId} variables={variables}>
-        {({ loading: isLoading, data: orderData }) => {
+        {({ data: orderData, loading: isLoading }) => {
           if (isLoading) return null;
+
           const { order } = orderData || {};
+
+          if (!order) {
+            return <div>Order not found</div>;
+          }
 
           return (
             <OrderCard
