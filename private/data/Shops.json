@@ -173,7 +173,7 @@
       "scale": 0
     },
     "CNY": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "¥"
     },
@@ -236,12 +236,12 @@
       "thousand": "."
     },
     "DZD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "دج"
     },
     "EGP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "£",
       "decimal": ",",
@@ -258,7 +258,7 @@
       "symbol": "kr"
     },
     "USD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
@@ -292,7 +292,7 @@
       "symbol": "£"
     },
     "GBP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "£"
     },
@@ -351,7 +351,7 @@
       "thousand": "."
     },
     "ILS": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₪"
     },
@@ -416,7 +416,7 @@
       "symbol": "$"
     },
     "NGN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₦"
     },
@@ -438,7 +438,7 @@
       "symbol": "﷼"
     },
     "RUB": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "руб.",
       "decimal": ",",
@@ -510,12 +510,12 @@
       "scale": 0
     }
   },
-  "currency": "USD",
+  "currency": "EUR",
   "languages": [
     {
       "label": "العربية",
       "i18n": "ar",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "Български",
       "i18n": "bg",
@@ -523,7 +523,7 @@
     }, {
       "label": "中文(简体)",
       "i18n": "zh",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "České",
       "i18n": "cs",
@@ -539,19 +539,19 @@
     }, {
       "label": "Ελληνικά",
       "i18n": "el",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "Español",
       "i18n": "es",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "Français",
       "i18n": "fr",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "עברית",
       "i18n": "he",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "Hrvatski",
       "i18n": "hr",
@@ -579,15 +579,15 @@
     }, {
       "label": "Português",
       "i18n": "pt",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "Русский",
       "i18n": "ru",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "Română",
       "i18n": "ro",
-      "enabled": true
+      "enabled": false
     }, {
       "label": "Slovenščina",
       "i18n": "sl",
@@ -3170,11 +3170,11 @@
   "baseUOL": "in",
   "unitsOfLength": [{
     "uol": "in",
-    "label": "Inches",
-    "default": true
+    "label": "Inches"
   }, {
     "uol": "cm",
-    "label": "Centimeters"
+    "label": "Centimeters",
+    "default": true
   }, {
     "uol": "ft",
     "label": "Feet"
@@ -3182,8 +3182,7 @@
   "baseUOM": "oz",
   "unitsOfMeasure": [{
     "uom": "oz",
-    "label": "Ounces",
-    "default": true
+    "label": "Ounces"
   }, {
     "uom": "lb",
     "label": "Pounds"
@@ -3192,7 +3191,8 @@
     "label": "Grams"
   }, {
     "uom": "kg",
-    "label": "Kilograms"
+    "label": "Kilograms",
+    "default": true
   }],
   "addressBook": [{
     "company": "Reaction Commerce",
