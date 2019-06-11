@@ -1,8 +1,6 @@
 import appEvents from "/imports/node-app/core/util/appEvents";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Media } from "/imports/plugins/core/files/server";
 import { FileRecord } from "@reactioncommerce/file-collections";
-import { MediaRecords } from "/lib/collections";
 
 /**
  * @name tag/setTagHeroMedia
@@ -15,7 +13,7 @@ import { MediaRecords } from "/lib/collections";
  */
 export default async function setTagHeroMedia(context, input) {
   const { collections, userHasPermission } = context;
-  const { Tags } = collections;
+  const { Media, MediaRecords, Tags } = collections;
   const { shopId, tagId, fileRecord } = input;
 
   // Check for owner or admin permissions from the user before allowing the mutation

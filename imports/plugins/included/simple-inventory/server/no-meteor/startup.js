@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import collectionIndex from "/imports/utils/collectionIndex";
 import orderIsApproved from "./utils/orderIsApproved";
 
 /**
@@ -18,12 +17,8 @@ function getAllOrderItems(order) {
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { app, appEvents, collections } = context;
-
-  const SimpleInventory = app.db.collection("SimpleInventory");
-  collections.SimpleInventory = SimpleInventory;
-
-  collectionIndex(SimpleInventory, { "productConfiguration.productVariantId": 1, "shopId": 1 }, { unique: true });
+  const { appEvents, collections } = context;
+  const { SimpleInventory } = collections;
 
   appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
     // Inventory is removed from stock only once an order has been approved
