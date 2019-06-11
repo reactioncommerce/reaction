@@ -1,4 +1,3 @@
-import packageJson from "/package.json";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -11,15 +10,15 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Object>} System Information
  **/
 export default async function systemInformation(context, shopId) {
-  const { userHasPermission, collections: { Packages }, app: { db } } = context;
+  const { userHasPermission, app: { db } } = context;
   // sensitive information should be accesible to admins only
   if (!userHasPermission(["admin"], shopId)) throw new ReactionError("access-denied", "User does not have permission");
 
   const mongoAdmin = await db.admin();
   const mongoInfo = await mongoAdmin.serverStatus();
-  const plugins = await Packages.find({ shopId: { shopId }, version: { $ne: null } }, { projection: { name: 1, version: 1 } }).toArray();
+  const plugins = await Object.values(context.app.registeredPlugins).filter((plugin) => plugin.version);
   return {
-    apiVersion: packageJson.version,
+    apiVersion: context.appVersion,
     mongoVersion: { version: mongoInfo.version },
     plugins: plugins.map(({ name, version }) => ({ name, version }))
   };

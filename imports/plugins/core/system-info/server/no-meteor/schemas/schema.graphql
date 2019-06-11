@@ -4,24 +4,24 @@ extend type Query {
 }
 "Represents Reaction Plugin"
 type Plugin {
-  "name of plugin"
+  "Name of plugin"
   name: String!
-  "version of plugin"
+  "Version of plugin"
   version: String
 }
 "Represents Mongo Database information"
 type DatabaseInformation {
-  "version of database"
+  "Version of database"
   version: String!
 }
 
 "Represents Reaction System Infomation"
 type SystemInformation {
-  "core api version"
+  "Core api version"
   apiVersion: String!
   # TODO: data version
-  "mongo version"
+  "Mongo version"
    mongoVersion: DatabaseInformation!
-  "plugins installed with name, version information"
+  "Plugins installed with name, version information"
   plugins:[Plugin]
 }
