@@ -3166,8 +3166,8 @@
     }
   },
   "name": "Reaction",
-  "timezone": "US/Pacific",
-  "baseUOL": "in",
+  "timezone": "CET",
+  "baseUOL": "cm",
   "unitsOfLength": [{
     "uol": "in",
     "label": "Inches"
@@ -3179,7 +3179,7 @@
     "uol": "ft",
     "label": "Feet"
   }],
-  "baseUOM": "oz",
+  "baseUOM": "kg",
   "unitsOfMeasure": [{
     "uom": "oz",
     "label": "Ounces"
