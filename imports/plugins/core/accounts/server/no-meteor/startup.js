@@ -1,8 +1,8 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import appEvents from "/imports/node-app/core/util/appEvents";
-import collectionIndex from "/imports/utils/collectionIndex";
 import { Meteor } from "meteor/meteor";
+import addRolesToGroups from "./util/addRolesToGroups";
+import { packageRolesAndGroups } from "./registration";
 
 const defaultAdminRoles = [
   "account/profile",
@@ -20,15 +20,15 @@ const defaultAdminRoles = [
 /**
  * @summary Creates the default admin user on startup
  * @param {Object} context App context
- * @returns {String} The new or existing "owner" user ID
+ * @returns {String|null} The new or existing "owner" user ID, or null if
+ *   there is no primary shop.
  */
 async function createDefaultAdminUser(context) {
-  const { collections, createUser } = context;
+  const { appEvents, collections, createUser } = context;
   const { Accounts, Groups, Shops, users } = collections;
+
   const primaryShop = await Shops.findOne({ shopType: "primary" });
-  if (!primaryShop) {
-    throw new Error("createDefaultAdminUser: No primary shop found");
-  }
+  if (!primaryShop) return null;
 
   // Check whether a non-shop-specific "owner" user already exists
   const ownerUser = await users.findOne({ "roles.__global_roles__": "owner" });
@@ -161,17 +161,13 @@ async function createDefaultAdminUser(context) {
  * @returns {undefined}
  */
 export default async function startup(context) {
-  const { collections } = context;
-  const { Accounts } = collections;
-
   // timing is important, packages are rqd for initial permissions configuration.
   if (!Meteor.isAppTest) {
     await createDefaultAdminUser(context);
-  }
 
-  // Create indexes. We set specific names for backwards compatibility
-  // with indexes created by the aldeed:schema-index Meteor package.
-  collectionIndex(Accounts, { groups: 1 }, { name: "c2_groups" });
-  collectionIndex(Accounts, { shopId: 1 }, { name: "c2_shopId" });
-  collectionIndex(Accounts, { userId: 1 }, { name: "c2_userId" });
+    const promises = packageRolesAndGroups.map(({ groups, roles }) =>
+      addRolesToGroups(context, { allShops: true, groups, roles }));
+
+    await Promise.all(promises);
+  }
 }

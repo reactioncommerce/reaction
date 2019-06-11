@@ -1,5 +1,3 @@
-import { Media } from "/imports/plugins/core/files/server";
-
 /**
  * @method getShopLogo
  * @summary Get absolute URL for shop logo, if available. If not, use default logo URL.
@@ -8,6 +6,9 @@ import { Media } from "/imports/plugins/core/files/server";
  * @return {String} Absolute image URL
  */
 export default async function getShopLogo(context, shop) {
+  const { collections } = context;
+  const { Media } = collections;
+
   let emailLogo;
   if (Array.isArray(shop.brandAssets)) {
     const brandAsset = shop.brandAssets.find((asset) => asset.type === "navbarBrandImage");

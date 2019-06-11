@@ -8,14 +8,14 @@ const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
 
 const SimpleInventory = db.collection("SimpleInventory");
 
-const {
-  Catalog,
-  Products
-} = rawCollections;
-
 Migrations.add({
   version: 63,
   up() {
+    const {
+      Catalog,
+      Products
+    } = rawCollections;
+
     // Clear most inventory fields from Catalog. We'll use values from Products to populate the SimpleInventory collection
     Promise.await(Catalog.updateMany({ "product.variants": { $exists: true } }, {
       $unset: {
