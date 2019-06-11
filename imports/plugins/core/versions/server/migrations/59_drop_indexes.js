@@ -7,17 +7,6 @@ const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
 
 const Inventory = db.collection("Inventory");
 
-const {
-  Accounts,
-  Cart,
-  Discounts,
-  Orders,
-  Packages,
-  Products,
-  Shops,
-  Translations
-} = rawCollections;
-
 /**
  * @private
  * @param {Error} error Error or null
@@ -44,6 +33,17 @@ function handleError(error) {
 Migrations.add({
   version: 59,
   up() {
+    const {
+      Accounts,
+      Cart,
+      Discounts,
+      Orders,
+      Packages,
+      Products,
+      Shops,
+      Translations
+    } = rawCollections;
+
     Accounts.dropIndex("c2_sessions", handleError);
 
     Cart.dropIndex("c2_billing.$.paymentMethod.items.$.productId", handleError);

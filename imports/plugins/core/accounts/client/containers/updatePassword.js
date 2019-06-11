@@ -78,7 +78,7 @@ const wrapComponent = (Comp) => (
           Meteor.call("accounts/verifyAccount");
           const { storefrontUrls } = Reaction.getCurrentShop();
 
-          if (Reaction.hasAdminAccess()) {
+          if (Reaction.hasDashboardAccessForAnyShop()) {
             Router.go("/operator");
           } else if (!storefrontUrls || !storefrontUrls.storefrontLoginUrl) {
             throw new ReactionError("error-occurred", "Missing storefront URLs. Please set these properties from the shop settings panel.");

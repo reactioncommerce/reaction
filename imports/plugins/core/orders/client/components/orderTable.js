@@ -51,7 +51,7 @@ function OrderTable(props) {
       const { address, invoice, workflow: shippingWorkFlow } = getShippingInfo(order);
       const createdDate = (moment && moment(order.createdAt).format("MM/D/YYYY")) || order.createdAt.toLocaleString();
       const billingTotal = formatPriceString(invoice ? invoice.total : 0);
-      const orderLink = `/operator/orders/${order._id}`;
+      const orderLink = `/operator/orders/${order.referenceId}`;
 
       return (
         <TableRow key={order._id}>

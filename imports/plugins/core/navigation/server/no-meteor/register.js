@@ -13,6 +13,14 @@ export default async function register(app) {
     label: "Navigation",
     name: "reaction-navigation",
     autoEnable: true,
+    collections: {
+      NavigationItems: {
+        name: "NavigationItems"
+      },
+      NavigationTrees: {
+        name: "NavigationTrees"
+      }
+    },
     graphQL: {
       schemas,
       resolvers
