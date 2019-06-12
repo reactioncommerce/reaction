@@ -67,6 +67,7 @@ class Dashboard extends Component {
     const { isPrimarySidebarOpen } = this.state;
 
     const isMobile = isWidthDown("sm", width);
+    const isSidebarOpen = isPrimarySidebarOpen && !isMobile;
 
     return (
       <UIContext.Provider value={this.state}>
@@ -93,7 +94,7 @@ class Dashboard extends Component {
                     // If the layout component is explicitly null
                     if (route.layoutComponent === null) {
                       return (
-                        <ContentViewFullLayout isMobile={isMobile} isSidebarOpen={isPrimarySidebarOpen}>
+                        <ContentViewFullLayout isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
                           <route.mainComponent uiState={this.state} {...props} />
                         </ContentViewFullLayout>
                       );
@@ -102,7 +103,7 @@ class Dashboard extends Component {
                     const LayoutComponent = route.layoutComponent || ContentViewStandardayout;
 
                     return (
-                      <LayoutComponent isMobile={isMobile} isSidebarOpen={isPrimarySidebarOpen}>
+                      <LayoutComponent isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
                         <route.mainComponent uiState={this.state} {...props} />
                       </LayoutComponent>
                     );
