@@ -1,37 +1,40 @@
 export default {
   products: [{
-    "_id": "BCTMZ6HTxFSppJESk",
-    "shopId": "J8Bhq3uTtdgwZx3rz",
-    "ancestors": [],
-    "createdAt": new Date("2014-04-03T13:46:52.411-0700"),
-    "description": "Sign in as administrator to edit.\nYou can clone this product" +
+    _id: "BCTMZ6HTxFSppJESk",
+    shopId: "J8Bhq3uTtdgwZx3rz",
+    ancestors: [],
+    createdAt: new Date("2014-04-03T13:46:52.411-0700"),
+    description: "Sign in as administrator to edit.\nYou can clone this product" +
       " from the product grid.\nYou can upload images click or drag in image box on the left" +
       " here.\nTag this product below, and then add tag in navigation.\nClick the bookmark in" +
       " the tag to set product url.\nOption variants, price, quantity, and child variants are" +
       " created by clicking on the variant below, clone the variant to add more options.\nDetails" +
       " can be added below the image for more specific product information.\n Login next to the" +
       " cart, and then click the dashboard icon for more tools.",
-    "handle": "example-product",
-    "hashtags": [
+    handle: "example-product",
+    hashtags: [
       "rpjCvTBGjhBi2xdro",
       "cseCBSSrJ3t8HQSNP"
     ],
-    "price.range": "12.99 - 19.99",
-    "price.min": 12.99,
-    "price.max": 19.99,
-    "isVisible": true,
-    "metafields": [{
+    price: {
+      range: "12.99 - 19.99",
+      min: 12.99,
+      max: 19.99
+    },
+    isVisible: true,
+    metafields: [{
       key: "Material",
       value: "Cotton"
     }, {
       key: "Quality",
       value: "Excellent"
     }],
-    "pageTitle": "This is a basic product. You can do a lot with it.",
-    "type": "simple",
-    "title": "Basic Reaction Product",
-    "updatedAt": new Date("2014-06-01T12:17:13.949-0700"),
-    "vendor": "Example Manufacturer"
+    pageTitle: "This is a basic product. You can do a lot with it.",
+    supportedFulfillmentTypes: ["shipping"],
+    type: "simple",
+    title: "Basic Reaction Product",
+    updatedAt: new Date("2014-06-01T12:17:13.949-0700"),
+    vendor: "Example Manufacturer"
   }, {
     _id: "6qiqPwBkeJdtdQc4G",
     ancestors: [
