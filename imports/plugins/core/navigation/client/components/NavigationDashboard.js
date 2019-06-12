@@ -1,27 +1,22 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import AppBar from "@material-ui/core/AppBar";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import HTML5Backend from "react-dnd-html5-backend";
 import { DragDropContext } from "react-dnd";
 import NavigationItemForm from "./NavigationItemForm";
 import NavigationTreeContainer from "./NavigationTreeContainer";
 import NavigationItemList from "./NavigationItemList";
+import PrimaryAppBar from "/imports/client/ui/components/PrimaryAppBar";
+
 
 const styles = (theme) => ({
   root: {
     display: "flex",
     height: `calc(100vh - ${theme.mixins.toolbar.minHeight}px)`,
     overflow: "hidden"
-  },
-  toolbarButton: {
-    marginLeft: theme.spacing.unit
   },
   leftSidebarOpen: {
     paddingLeft: 280 + (theme.spacing.unit * 2)
@@ -103,7 +98,6 @@ class NavigationDashboard extends Component {
       navigationItems,
       onSetSortableNavigationTree,
       sortableNavigationTree,
-      uiState,
       onDiscardNavigationTreeChanges,
       updateNavigationItem,
       updateNavigationTree
@@ -116,19 +110,12 @@ class NavigationDashboard extends Component {
       sortableTreeNode
     } = this.state;
 
-    const toolbarClassName = classnames({
-      [classes.leftSidebarOpen]: uiState.isLeftDrawerOpen
-    });
-
     return (
       <div className={classes.root}>
-        <AppBar color="default">
-          <Toolbar className={toolbarClassName}>
-            <Typography className={classes.title} variant="h6">Main Navigation</Typography>
-            <Button className={classes.toolbarButton} color="primary" onClick={onDiscardNavigationTreeChanges}>Discard</Button>
-            <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={updateNavigationTree}>Save Changes</Button>
-          </Toolbar>
-        </AppBar>
+        <PrimaryAppBar title="Main Navigation">
+          <Button color="primary" onClick={onDiscardNavigationTreeChanges}>Discard</Button>
+          <Button color="primary" variant="contained" onClick={updateNavigationTree}>Save Changes</Button>
+        </PrimaryAppBar>
         <NavigationItemList
           onClickAddNavigationItem={this.addNavigationItem}
           navigationItems={navigationItems}
