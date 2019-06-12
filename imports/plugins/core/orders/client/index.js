@@ -1,6 +1,5 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInbox } from "@fortawesome/free-solid-svg-icons";
+import InboxIcon from "mdi-material-ui/Inbox";
 import { registerBlock } from "@reactioncommerce/reaction-components";
 import { registerOperatorRoute } from "/imports/client/ui";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
@@ -44,11 +43,12 @@ registerOperatorRoute({
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
+  priority: 20,
   layoutComponent: ContentViewExtraWideLayout,
   mainComponent: Orders,
   path: "/orders",
   // eslint-disable-next-line react/display-name
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faInbox} {...props} />,
+  SidebarIconComponent: (props) => <InboxIcon {...props} />,
   sidebarI18nLabel: "admin.dashboard.ordersLabel"
 });
 
