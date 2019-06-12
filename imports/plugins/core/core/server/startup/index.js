@@ -43,8 +43,10 @@ export default function startup() {
       const endTime = Date.now();
       Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
 
+      Promise.await(appEvents.emit("readyForMigrations"));
+
       // DEPRECATED. Avoid consuming this hook in new code
-      appEvents.emit("afterCoreInit");
+      Promise.await(appEvents.emit("afterCoreInit"));
 
       // Main purpose of this right now is to wait to start Meteor app tests
       Reaction.emitAppStartupComplete();
