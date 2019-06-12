@@ -146,28 +146,7 @@ export default function createShop(shopAdminUserId, partialShopData) {
   // we should have created new shop, or errored
   Logger.info("Created shop: ", newShopId);
 
-  // update user
   Reaction.insertPackagesForShop(newShopId);
-  Reaction.createGroups({ shopId: newShopId });
-  const ownerGroup = Groups.findOne({ slug: "owner", shopId: newShopId });
-  Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, newShopId);
-  // Set the active shopId for this user
-  Reaction.setUserPreferences("reaction", "activeShopId", newShopId, shopUser._id);
-  Accounts.update({ _id: shopUser._id }, {
-    $set: {
-      shopId: newShopId
-    },
-    $addToSet: {
-      groups: ownerGroup._id
-    }
-  });
-
-  const updatedAccount = Accounts.findOne({ _id: shopUser._id });
-  Promise.await(appEvents.emit("afterAccountUpdate", {
-    account: updatedAccount,
-    updatedBy: userId,
-    updatedFields: ["groups", "shopId"]
-  }));
 
   // Add this shop to the merchant
   Shops.update({ _id: primaryShopId }, {

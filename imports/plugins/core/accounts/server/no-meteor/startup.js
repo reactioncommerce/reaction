@@ -2,6 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import addRolesToGroups from "./util/addRolesToGroups";
+import createGroups from "./util/createGroups";
 import { packageRolesAndGroups } from "./registration";
 
 const defaultAdminRoles = [
@@ -161,6 +162,15 @@ async function createDefaultAdminUser(context) {
  * @returns {undefined}
  */
 export default async function startup(context) {
+  const {
+    appEvents,
+    collections: {
+      Accounts,
+      Groups,
+      users
+    }
+  } = context;
+
   // timing is important, packages are rqd for initial permissions configuration.
   if (!Meteor.isAppTest) {
     await createDefaultAdminUser(context);
@@ -170,4 +180,49 @@ export default async function startup(context) {
 
     await Promise.all(promises);
   }
+
+  appEvents.on("afterShopCreate", async ({ createdBy: userId, shop }) => {
+    const { _id: newShopId } = shop;
+
+    // Create account groups for the new shop
+    await createGroups(context, newShopId);
+
+    // Find the "owner" group that was just created
+    const ownerGroup = await Groups.findOne({ slug: "owner", shopId: newShopId });
+    if (!ownerGroup) {
+      throw new Error(`Can't find owner group for shop ID ${newShopId}`);
+    }
+
+    // If a user created the shop, give the user owner access to it
+    if (userId) {
+      // Add users to roles
+      await users.updateOne({
+        _id: userId
+      }, {
+        $addToSet: {
+          [`roles.${newShopId}`]: {
+            $each: ownerGroup.permissions
+          }
+        }
+      });
+
+      // Set the active shopId for this user
+      await Accounts.updateOne({ userId }, {
+        $set: {
+          "profile.preferences.reaction.activeShopId": newShopId,
+          "shopId": newShopId
+        },
+        $addToSet: {
+          groups: ownerGroup._id
+        }
+      });
+
+      const updatedAccount = await Accounts.findOne({ userId });
+      Promise.await(appEvents.emit("afterAccountUpdate", {
+        account: updatedAccount,
+        updatedBy: userId,
+        updatedFields: ["groups", "shopId"]
+      }));
+    }
+  });
 }

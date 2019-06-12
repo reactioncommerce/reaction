@@ -7,7 +7,6 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import createGroups from "./createGroups";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 import { getUserId } from "./accountUtils";
@@ -99,7 +98,6 @@ export default {
 
   defaultCustomerRoles: ["guest", "account/profile", "product", "tag", "index", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/completed"],
-  createGroups,
 
   /**
    * @name canInviteToGroup

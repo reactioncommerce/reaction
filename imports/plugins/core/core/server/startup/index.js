@@ -26,7 +26,6 @@ export default function startup() {
   Reaction.whenAppInstanceReady(register);
 
   Reaction.loadPackages();
-  Reaction.createGroups();
   Reaction.setAppVersion();
 
   importAllTranslations();
