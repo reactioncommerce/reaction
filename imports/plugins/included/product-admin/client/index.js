@@ -3,8 +3,7 @@ import "./templates/productAdmin.js";
 import "./blocks";
 
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBox } from "@fortawesome/free-solid-svg-icons";
+import CubeIcon from "mdi-material-ui/Cube";
 import { registerOperatorRoute } from "/imports/client/ui";
 
 import ProductTable from "./components/ProductTable";
@@ -51,11 +50,12 @@ registerOperatorRoute({
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
+  priority: 30,
   layoutComponent: ContentViewExtraWideLayout,
   path: "/products",
   mainComponent: ProductTable,
   hocs: [withCreateProduct],
   // eslint-disable-next-line react/display-name, react/no-multi-comp
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faBox} {...props} />,
+  SidebarIconComponent: (props) => <CubeIcon {...props} />,
   sidebarI18nLabel: "admin.products"
 });
