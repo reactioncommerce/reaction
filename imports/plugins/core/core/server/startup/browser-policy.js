@@ -1,6 +1,7 @@
 import { BrowserPolicy } from "meteor/browser-policy-common";
 import { WebApp } from "meteor/webapp";
 import { Reaction } from "/lib/api";
+import config from "/imports/node-app/core/config";
 
 /**
  * Set headers for Reaction CDN
@@ -21,9 +22,11 @@ if (process.env.NODE_ENV === "development") {
   BrowserPolicy.content.allowConnectOrigin("http://localhost:*");
   BrowserPolicy.content.allowConnectOrigin("https://localhost:*");
   BrowserPolicy.framing.allowAll();
+}
 
-  // GraphiQL
-  BrowserPolicy.content.allowOriginForAll("unpkg.com");
+// GraphQL Playground
+if (config.GRAPHQL_PLAYGROUND_ENABLED) {
+  BrowserPolicy.content.allowOriginForAll("graphcool-playground.netlify.com");
   BrowserPolicy.content.allowOriginForAll("cdn.jsdelivr.net");
 }
 

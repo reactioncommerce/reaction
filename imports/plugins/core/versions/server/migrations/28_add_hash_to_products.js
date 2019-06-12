@@ -3,11 +3,11 @@ import rawCollections from "/imports/collections/rawCollections";
 import hashProduct from "../util/hashProduct";
 import findAndConvertInBatches from "../no-meteor/util/findAndConvertInBatches";
 
-const { Catalog } = rawCollections;
-
 Migrations.add({
   version: 28,
   up() {
+    const { Catalog } = rawCollections;
+
     Promise.await(findAndConvertInBatches({
       collection: Catalog,
       query: {
