@@ -1,13 +1,14 @@
 import { defaultComponentTheme } from "@reactioncommerce/components";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
+import { fade } from "@material-ui/core/styles/colorManipulator";
 import colors from "./colors";
 
 const { rui_typography: typography } = defaultComponentTheme;
 const breakpoints = createBreakpoints({});
 const toolbarHeight = 80;
 
-export const defaultSpacingUnit = 10;
+export const defaultSpacingUnit = 8;
 
 // Colors
 export const colorPrimaryMain = colors.coolGrey;
@@ -26,7 +27,11 @@ export const rawMuiTheme = {
       main: colorSecondaryMain,
       dark: colors.coolGrey400
     },
-    divider: colors.black10
+    divider: colors.black10,
+    text: {
+      secondary: colors.black15,
+      active: colors.reactionBlue
+    }
   },
   typography: {
     fontSize: 16,
@@ -40,6 +45,9 @@ export const rawMuiTheme = {
       fontSize: 18
     },
     subtitle1: {
+      fontSize: 16
+    },
+    body1: {
       fontSize: 16
     },
     button: {
@@ -114,6 +122,9 @@ export const rawMuiTheme = {
       colorPrimary: {
         backgroundColor: colors.white
       },
+      colorSecondary: {
+        backgroundColor: fade(colors.coolGrey, 0.2)
+      },
       colorDefault: {
         backgroundColor: colors.white
       }
@@ -158,8 +169,13 @@ export const rawMuiTheme = {
       }
     },
     MuiDrawer: {
+      paper: {
+        width: 280
+      },
       paperAnchorLeft: {
-        borderRight: "none"
+        borderRight: "none",
+        backgroundColor: colors.darkBlue500,
+        color: colors.black15
       },
       paperAnchorDockedLeft: {
         borderRight: "none"
