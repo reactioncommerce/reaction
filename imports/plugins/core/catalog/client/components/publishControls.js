@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
-import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { i18next } from "/client/api";
+import PrimaryAppBar from "../../../../../client/ui/components/PrimaryAppBar/PrimaryAppBar";
 
 const styles = (theme) => ({
   label: {
@@ -42,22 +40,18 @@ class PublishControls extends Component {
     const { documentIds, onPublishClick } = this.props;
 
     return (
-      <AppBar color="default">
-        <Toolbar>
-          <Components.ToolbarGroup lastChild={true}>
-            {this.renderChangesNotification()}
-            <Button
-              color="primary"
-              variant="contained"
-              disabled={Array.isArray(documentIds) && documentIds.length === 0}
-              label="Publish"
-              onClick={onPublishClick}
-            >
-              {i18next.t("productDetailEdit.publish")}
-            </Button>
-          </Components.ToolbarGroup>
-        </Toolbar>
-      </AppBar>
+      <PrimaryAppBar>
+        {this.renderChangesNotification()}
+        <Button
+          color="primary"
+          variant="contained"
+          disabled={Array.isArray(documentIds) && documentIds.length === 0}
+          label="Publish"
+          onClick={onPublishClick}
+        >
+          {i18next.t("productDetailEdit.publish")}
+        </Button>
+      </PrimaryAppBar>
     );
   }
 }
