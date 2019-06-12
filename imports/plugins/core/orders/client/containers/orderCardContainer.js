@@ -46,7 +46,7 @@ class OrderCardContainer extends Component {
 
           return (
             <OrderCard
-              hasEditPermission={false}
+              hasEditPermission={hasPermission}
               order={order}
             />
           );
