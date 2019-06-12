@@ -1,6 +1,5 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
+import AccountIcon from "mdi-material-ui/AccountMultiple";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 import Accounts from "./containers/accountsDashboardContainer";
@@ -55,19 +54,21 @@ registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
   path: "/accounts",
+  priority: 10,
   mainComponent: Accounts,
   // eslint-disable-next-line react/display-name, react/no-multi-comp
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faUsers} {...props} />,
+  SidebarIconComponent: (props) => <AccountIcon {...props} />,
   sidebarI18nLabel: "admin.dashboard.accountsLabel"
 });
 
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
+  priority: 10,
   path: "/login-services",
   mainComponent: "accountsSettings",
   // eslint-disable-next-line react/display-name, react/no-multi-comp
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faSignInAlt} {...props} />,
+  // SidebarIconComponent: (props) => <FontAwesomeIcon icon={faSignInAlt} {...props} />,
   sidebarI18nLabel: "admin.settings.accountSettingsLabel"
 });
 
