@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import Logger from "@reactioncommerce/logger";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "../Reaction";
@@ -7,7 +6,6 @@ import startNodeApp from "./startNodeApp";
 import "./browser-policy";
 import CollectionSecurity from "./collection-security";
 import { importAllTranslations } from "./i18n";
-import LoadFixtureData from "./load-data";
 import RateLimiters from "./rate-limits";
 
 const { REACTION_METEOR_APP_COMMAND_START_TIME } = process.env;
@@ -26,14 +24,6 @@ export default function startup() {
   }
 
   Reaction.whenAppInstanceReady(register);
-
-  LoadFixtureData();
-
-  // make sure the default shop has been created before going further
-  while (!Reaction.getShopId()) {
-    Logger.warn("No shopId, waiting one second...");
-    Meteor._sleepForMs(1000);
-  }
 
   Reaction.loadPackages();
   Reaction.createGroups();
