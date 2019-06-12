@@ -1,7 +1,6 @@
 import Log from "@reactioncommerce/logger";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import Core from "./core";
-import assignOwnerRoles from "./assignOwnerRoles";
 import { Fixture, Importer } from "./importer";
 import getSlug from "./getSlug";
 import loadSettings from "./loadSettings";
@@ -12,7 +11,6 @@ import * as accountUtils from "./accountUtils";
 export default {
   ...Core,
   ...accountUtils,
-  assignOwnerRoles,
   Collections,
 
   /**

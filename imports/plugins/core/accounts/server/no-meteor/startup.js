@@ -156,6 +156,20 @@ async function createDefaultAdminUser(context) {
 }
 
 /**
+ * @summary Add roles to groups as specified in the `addRolesToGroups` key
+ *   of various plugin `registerPlugin` config. Either for one shop or all.
+ * @param {Object} context App context
+ * @param {String} shopId Shop ID
+ * @return {undefined}
+ */
+async function addPluginRolesToGroups(context, shopId) {
+  const promises = packageRolesAndGroups.map(({ groups, roles }) =>
+    addRolesToGroups(context, { allShops: !shopId, groups, roles, shops: [shopId] }));
+
+  await Promise.all(promises);
+}
+
+/**
  * @summary Called on startup
  * @param {Object} context Startup context
  * @param {Object} context.collections Map of MongoDB collections
@@ -175,10 +189,7 @@ export default async function startup(context) {
   if (!Meteor.isAppTest) {
     await createDefaultAdminUser(context);
 
-    const promises = packageRolesAndGroups.map(({ groups, roles }) =>
-      addRolesToGroups(context, { allShops: true, groups, roles }));
-
-    await Promise.all(promises);
+    await addPluginRolesToGroups(context);
   }
 
   appEvents.on("afterShopCreate", async ({ createdBy: userId, shop }) => {
@@ -192,6 +203,8 @@ export default async function startup(context) {
     if (!ownerGroup) {
       throw new Error(`Can't find owner group for shop ID ${newShopId}`);
     }
+
+    await addPluginRolesToGroups(context, newShopId);
 
     // If a user created the shop, give the user owner access to it
     if (userId) {

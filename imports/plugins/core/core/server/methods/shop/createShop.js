@@ -1,8 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
-import { Accounts, Groups, Shops } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Reaction } from "/lib/api";
 import appEvents from "/imports/node-app/core/util/appEvents";
@@ -146,7 +145,7 @@ export default function createShop(shopAdminUserId, partialShopData) {
   // we should have created new shop, or errored
   Logger.info("Created shop: ", newShopId);
 
-  Reaction.insertPackagesForShop(newShopId);
+  Promise.await(appEvents.emit("afterShopCreate", { createdBy: userId, shop: newShop }));
 
   // Add this shop to the merchant
   Shops.update({ _id: primaryShopId }, {
