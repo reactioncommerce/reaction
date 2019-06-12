@@ -1,162 +1,196 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
+import { compose, withState } from "recompose";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import styledMUI from "styled-components-mui";
-import MUIList from "@material-ui/core/List";
-import MUIListItem from "@material-ui/core/ListItem";
-import MUIListItemIcon from "@material-ui/core/ListItemIcon";
-import MUIDivider from "@material-ui/core/Divider";
-import MUIListItemText from "@material-ui/core/ListItemText";
-import MUIDrawer from "@material-ui/core/Drawer";
+import AppBar from "@material-ui/core/AppBar";
+import Collapse from "@material-ui/core/Collapse";
+import Hidden from "@material-ui/core/Hidden";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Drawer from "@material-ui/core/Drawer";
+import withStyles from "@material-ui/core/styles/withStyles";
+import SettingsIcon from "mdi-material-ui/Settings";
+import CloseIcon from "mdi-material-ui/Close";
 import ShopLogoWithData from "../ShopLogoWithData";
-import {
-  applyTheme,
-  addTypographyStyles
-} from "@reactioncommerce/components/utils";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
-const Drawer = styledMUI(MUIDrawer, { paper: "Paper" })`
-  .Paper {
-    width: ${applyTheme("Sidebar.drawerWidth")};
-  }
-`;
-
-const Divider = styledMUI(MUIDivider)`
-  padding-top: ${applyTheme("Sidebar.dividerHeight")};;
-  background-color: transparent;
-`;
-
-const List = styledMUI(MUIList)`
-  padding-top: 0;
-  overflow: auto;
-`;
-
-const ListItem = styledMUI(MUIListItem)`
-  padding: 0;
-`;
-
-const ListItemIcon = styledMUI(MUIListItemIcon)`
-  color: ${applyTheme("Sidebar.iconColor")};
-  justify-content: ${applyTheme("Sidebar.listItemIconHorizontalAlign")};
-  padding-top: ${applyTheme("Sidebar.listItemIconPaddingTop")};
-  padding-right: ${applyTheme("Sidebar.listItemIconPaddingRight")};
-  padding-bottom: ${applyTheme("Sidebar.listItemIconPaddingBottom")};
-  padding-left: ${applyTheme("Sidebar.listItemIconPaddingLeft")};
-  width: ${applyTheme("Sidebar.iconBarWidth")};
-
-  /*
-   * FontAwesome icons respect this font-size to determine icon height while other
-   * SVGs should be designed to be 100% height. Generally you'll want listItemIconMaxHeight
-   * to be listItemIconFontSize + listItemIconPaddingTop + listItemIconPaddingBottom
-   */
-  font-size: ${applyTheme("Sidebar.listItemIconFontSize")};
-  max-height: ${applyTheme("Sidebar.listItemIconMaxHeight")};
-
-  /* remove margin from default MUI theme */
-  margin-right: 0;
-`;
-
-const ListItemText = styledMUI(MUIListItemText)`
-  ${addTypographyStyles("SidebarMenu", "bodyText")};
-`;
-
-const LogoArea = styled.div`
-  display: flex;
-  justify-content: ${applyTheme("Sidebar.logoHorizontalAlign")};
-  padding-top: ${applyTheme("Sidebar.logoPaddingTop")};
-  padding-bottom: ${applyTheme("Sidebar.logoPaddingBottom")};
-  padding-left: ${applyTheme("Sidebar.logoPaddingLeft")};
-  padding-right: ${applyTheme("Sidebar.logoPaddingRight")};
-  margin-left: ${applyTheme("Sidebar.iconBarWidth")};
-`;
-
-const StyledNav = styled.nav`
-  background: ${applyTheme("Sidebar.menuBarBackground")};
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`;
-
 const activeClassName = "nav-item-active";
-const Link = styled(NavLink).attrs({
-  activeClassName
-})`
-  &.${activeClassName} span {
-    color: ${applyTheme("Sidebar.activeMenuItemColor")};
+
+const styles = (theme) => ({
+  icon: {
+    width: 32,
+    display: "flex",
+    justifyContent: "center",
+    color: theme.palette.colors.coolGrey300
+  },
+  shopLogo: {
+    flex: 1,
+    marginRight: theme.spacing.unit * 2
+  },
+  toolbar: {
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2
+  },
+  listItem: {
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2
+  },
+  listItemText: {
+    paddingLeft: 0
+  },
+  listItemNested: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingLeft: theme.spacing.unit * 8
+  },
+  link: {
+    [`&.${activeClassName} span`]: {
+      color: theme.palette.text.active
+    }
   }
-`;
+});
 
-export default class Sidebar extends Component {
-  static propTypes = {
-    isMobile: PropTypes.bool,
-    isSidebarOpen: PropTypes.bool.isRequired,
-    onDrawerClose: PropTypes.func.isRequired,
-    routes: PropTypes.array
+/**
+ * Main sidebar navigation
+ * @param {Object} props Component props
+ * @returns {React.Component} Sidebar component
+ */
+function Sidebar(props) {
+  const {
+    classes,
+    isMobile,
+    isSidebarOpen,
+    onDrawerClose,
+    isSettingsOpen,
+    setIsSettingsOpen,
+    routes
+  } = props;
+
+  const primaryRoutes = routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && !isSetting);
+  const settingRoutes = routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && isSetting);
+
+  let drawerProps = {
+    open: true,
+    variant: "persistent"
+  };
+
+  if (isMobile) {
+    drawerProps = {
+      variant: "temporary",
+      anchor: "left",
+      open: isSidebarOpen,
+      onClose: onDrawerClose,
+      ModalProps: {
+        keepMounted: true // Better open performance on mobile.
+      }
+    };
   }
 
-  renderNavigationMenuItems(settings = false) {
-    const { routes } = this.props;
-    const filteredRoutes = settings ?
-      routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && isSetting) :
-      routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && !isSetting);
+  return (
+    <Drawer {...drawerProps}>
+      <AppBar
+        color="secondary"
+        elevation={0}
+        position="static"
+      >
+        <Toolbar className={classes.toolbar}>
+          <ShopLogoWithData className={classes.shopLogo} shouldShowShopName size={32} />
 
-    return (
-      <Fragment>
-        {
-          filteredRoutes.map((route) => (
-            <Link to={`/operator${route.path}`} activeClassName={activeClassName} key={route.path}>
-              <ListItem button>
-                <ListItemIcon>
-                  <route.SidebarIconComponent />
-                </ListItemIcon>
-                <ListItemText disableTypography>
+          <Hidden mdUp>
+            <IconButton onClick={onDrawerClose}>
+              <CloseIcon />
+            </IconButton>
+          </Hidden>
+
+        </Toolbar>
+      </AppBar>
+      <List disablePadding>
+        {primaryRoutes.map((route) => (
+          <NavLink
+            className={classes.link}
+            to={`/operator${route.path}`}
+            key={route.path}
+            onClick={onDrawerClose}
+          >
+            <ListItem button className={classes.listItem}>
+              <ListItemIcon className={classes.icon}>
+                {route.SidebarIconComponent && <route.SidebarIconComponent />}
+              </ListItemIcon>
+              <ListItemText
+                className={classes.listItemText}
+                primaryTypographyProps={{
+                  color: "textSecondary",
+                  variant: "body1"
+                }}
+              >
+                <Translation defaultValue="" i18nKey={route.sidebarI18nLabel} />
+              </ListItemText>
+            </ListItem>
+          </NavLink>
+        ))}
+
+        <ListItem
+          button
+          className={classes.listItem}
+          onClick={() => {
+            setIsSettingsOpen(!isSettingsOpen);
+          }}
+        >
+          <ListItemIcon className={classes.icon}>
+            <SettingsIcon />
+          </ListItemIcon>
+          <ListItemText
+            className={classes.listItemText}
+            primaryTypographyProps={{
+              color: "textSecondary",
+              variant: "body1"
+            }}
+          >
+            <Translation defaultValue="Settings" i18nKey={"app.settings"} />
+          </ListItemText>
+        </ListItem>
+
+        <Collapse in={isSettingsOpen}>
+          {settingRoutes.map((route) => (
+            <NavLink className={classes.link} to={`/operator${route.path}`} key={route.path}>
+              <ListItem button className={classes.listItemNested}>
+                <ListItemText
+                  className={classes.listItemText}
+                  primaryTypographyProps={{
+                    color: "textSecondary",
+                    variant: "body1"
+                  }}
+                >
                   <Translation defaultValue="" i18nKey={route.sidebarI18nLabel} />
                 </ListItemText>
               </ListItem>
-            </Link>
-          ))
-        }
-      </Fragment>
-    );
-  }
-
-  render() {
-    const { isMobile, isSidebarOpen, onDrawerClose } = this.props;
-
-    const menu = (
-      <StyledNav>
-        <LogoArea>
-          <ShopLogoWithData />
-        </LogoArea>
-        <List>
-          {this.renderNavigationMenuItems()}
-          <Divider component="li" />
-          {this.renderNavigationMenuItems(true)}
-        </List>
-      </StyledNav>
-    );
-
-    if (isMobile) {
-      return (
-        <Drawer
-          variant="temporary"
-          anchor="left"
-          open={isSidebarOpen}
-          onClose={onDrawerClose}
-          ModalProps={
-            { keepMounted: true } // Better open performance on mobile.
-          }
-        >
-          {menu}
-        </Drawer>
-      );
-    }
-
-    return (
-      <Drawer variant="persistent" open={isSidebarOpen}>
-        {menu}
-      </Drawer>
-    );
-  }
+            </NavLink>
+          ))}
+        </Collapse>
+      </List>
+    </Drawer>
+  );
 }
+
+Sidebar.propTypes = {
+  classes: PropTypes.object,
+  isMobile: PropTypes.bool,
+  isSettingsOpen: PropTypes.bool,
+  isSidebarOpen: PropTypes.bool.isRequired,
+  onDrawerClose: PropTypes.func.isRequired,
+  routes: PropTypes.array,
+  setIsSettingsOpen: PropTypes.func.isRequired
+};
+
+Sidebar.defaultProps = {
+  setIsSidebarOpen() {}
+};
+
+export default compose(
+  withStyles(styles, { name: "RuiSidebar" }),
+  withState("isSettingsOpen", "setIsSettingsOpen", true)
+)(Sidebar);
