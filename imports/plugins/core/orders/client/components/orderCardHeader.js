@@ -54,18 +54,6 @@ class OrderCardHeader extends Component {
     });
   }
 
-  renderOrderPayments() {
-    const { order: { payments } } = this.props;
-
-    // If more than one payment method, display amount for each
-    if (Array.isArray(payments) && payments.length > 1) {
-      return payments.map((payment) => <Typography key={payment._id} variant="body2">{payment.displayName} {payment.amount.displayAmount}</Typography>);
-    }
-
-    // If only one payment method, do not display amount
-    return payments.map((payment) => <Typography key={payment._id} variant="body2">{payment.displayName}</Typography>);
-  }
-
   renderOrderShipments() {
     const { order: { fulfillmentGroups } } = this.props;
 
@@ -82,7 +70,7 @@ class OrderCardHeader extends Component {
     const paymentStatuses = payments.map((payment) => payment.status);
     const uniqueStatuses = [...new Set(paymentStatuses)];
 
-    // If all payment statuses are equal, and also not "new", then show a single badge
+    // If all payment statuses are equal, and also not "created", then show a single badge
     if (Array.isArray(uniqueStatuses) && uniqueStatuses.length === 1) {
       const [paymentStatus] = uniqueStatuses;
 
@@ -105,7 +93,7 @@ class OrderCardHeader extends Component {
     // and show badges next to payments to represent their status
     return (
       <Grid item>
-        <OrderCardStatusChip displayStatus="multiple" status="multiple" type="payment" />
+        <OrderCardStatusChip displayStatus="Multiple statuses" status="multiple" type="payment" />
       </Grid>
     );
   }
@@ -177,10 +165,6 @@ class OrderCardHeader extends Component {
                       {this.renderOrderShipments()}
                     </Grid>
                     <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                      Payment method{payments.length !== 1 ? "s" : null}
-                      </Typography>
-                      {this.renderOrderPayments()}
                     </Grid>
                   </Grid>
                 </CardContent>
