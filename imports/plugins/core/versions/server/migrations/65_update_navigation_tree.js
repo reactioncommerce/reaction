@@ -3,11 +3,11 @@ import Logger from "@reactioncommerce/logger";
 import rawCollections from "/imports/collections/rawCollections";
 import { setDefaultsForNavigationTreeItems } from "../util/convert65";
 
-const { NavigationTrees } = rawCollections;
-
 Migrations.add({
   version: 65,
   async up() {
+    const { NavigationTrees } = rawCollections;
+
     // Find all navigation trees
     const navigationTrees = await NavigationTrees.find({}).toArray();
 

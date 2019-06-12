@@ -1,27 +1,4 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import startup from "./server/no-meteor/startup";
+import register from "./server/no-meteor/register";
 
-Reaction.registerPackage({
-  label: "Notifications",
-  name: "reaction-notification",
-  icon: "fa fa-bell",
-  autoEnable: true,
-  functionsByType: {
-    startup: [startup]
-  },
-  addRolesToGroups: [{
-    groups: ["guest", "customer"],
-    roles: ["notifications"]
-  }],
-  registry: [{
-    label: "Notifications",
-    name: "notifications",
-    route: "/notifications",
-    workflow: "coreWorkflow",
-    permissions: [{
-      label: "Notifications",
-      permission: "notifications"
-    }],
-    template: "notificationRoute"
-  }]
-});
+Reaction.whenAppInstanceReady(register);

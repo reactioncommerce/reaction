@@ -11,6 +11,11 @@ Reaction.registerPackage({
   name: "reaction-marketplace",
   icon: "fa fa-globe",
   autoEnable: false,
+  collections: {
+    SellerShops: {
+      name: "SellerShops"
+    }
+  },
   graphQL: {
     schemas
   },

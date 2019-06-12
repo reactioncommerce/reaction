@@ -110,7 +110,7 @@ class OrderCardHeader extends Component {
           <Grid container alignItems="center" spacing={8}>
             <Grid item>
               <Typography variant="body2" className={classes.orderCardInfoTextBold} inline={true}>
-                Order -
+                Order&nbsp;
                 <ClickToCopy
                   copyToClipboard={this.orderLink()}
                   displayText={referenceId}

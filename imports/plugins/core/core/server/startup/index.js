@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Shops } from "/lib/collections";
 import Reaction from "../Reaction";
+import register from "../no-meteor/register";
 import startNodeApp from "./startNodeApp";
 import Accounts from "./accounts";
 import "./browser-policy";
@@ -9,7 +10,6 @@ import { importAllTranslations } from "./i18n";
 import LoadFixtureData from "./load-data";
 import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
-import RegisterCore from "./register-core";
 import setupCdn from "./cdn";
 
 const { REACTION_METEOR_APP_COMMAND_START_TIME } = process.env;
@@ -29,7 +29,8 @@ export default function startup() {
 
   setupCdn();
   Accounts();
-  RegisterCore();
+
+  Reaction.whenAppInstanceReady(register);
 
   // initialize shop registry when a new shop is added
   Shops.find().observe({
@@ -59,6 +60,9 @@ export default function startup() {
     .then(() => {
       const endTime = Date.now();
       Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
+
+      // Main purpose of this right now is to wait to start Meteor app tests
+      Reaction.emitAppStartupComplete();
 
       return null;
     })
