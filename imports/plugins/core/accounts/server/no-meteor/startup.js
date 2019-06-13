@@ -193,7 +193,7 @@ export default async function startup(context) {
   }
 
   appEvents.on("afterShopCreate", async ({ createdBy: userId, shop }) => {
-    const { _id: newShopId } = shop;
+    const { _id: newShopId, shopType } = shop;
 
     // Create account groups for the new shop
     await createGroups(context, newShopId);
@@ -205,6 +205,13 @@ export default async function startup(context) {
     }
 
     await addPluginRolesToGroups(context, newShopId);
+
+    // If we just created the primary shop, the `createDefaultAdminUser` call above may have
+    // failed to do anything. We run it again now. It won't create the user a second time
+    // if it's already done.
+    if (shopType === "primary") {
+      await createDefaultAdminUser(context);
+    }
 
     // If a user created the shop, give the user owner access to it
     if (userId) {
