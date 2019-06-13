@@ -31,15 +31,19 @@ const styles = (theme) => ({
 function PrimaryAppBar({ children, classes, title }) {
   return (
     <UIContext.Consumer>
-      {({ isPrimarySidebarOpen, onTogglePrimarySidebar }) => {
+      {({ isMobile, isPrimarySidebarOpen, onTogglePrimarySidebar }) => {
         const toolbarClassName = classNames({
-          [classes.primarySidebarOpen]: isPrimarySidebarOpen
+          // Add padding to the right when the primary sidebar is open,
+          // only if we're on desktop. On Mobile the sidebar floats over
+          // the content like a modal that's docked to either the left
+          // or right side of the screen.
+          [classes.primarySidebarOpen]: isPrimarySidebarOpen && !isMobile
         });
 
         return (
           <AppBar>
             <Toolbar className={toolbarClassName}>
-              <Hidden smUp>
+              <Hidden mdUp>
                 <IconButton onClick={onTogglePrimarySidebar}>
                   <MenuIcon />
                 </IconButton>
