@@ -192,5 +192,5 @@ Sidebar.defaultProps = {
 
 export default compose(
   withStyles(styles, { name: "RuiSidebar" }),
-  withState("isSettingsOpen", "setIsSettingsOpen", true)
+  withState("isSettingsOpen", "setIsSettingsOpen", false)
 )(Sidebar);
