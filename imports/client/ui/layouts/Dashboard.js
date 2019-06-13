@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { injectGlobal } from "styled-components";
 import withStyles from "@material-ui/core/styles/withStyles";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { CustomPropTypes } from "@reactioncommerce/components/utils";
@@ -13,20 +12,19 @@ import Sidebar from "../components/Sidebar";
 import { operatorRoutes } from "../index";
 import { UIContext } from "../context/UIContext";
 import ContentViewFullLayout from "./ContentViewFullLayout";
-import ContentViewStandardayout from "./ContentViewStandardLayout";
-
-// Remove the 10px fontSize from the html element as it affects fonts that rely on rem
-injectGlobal`
-  html {
-    font-size: inherit;
-  }
-`;
+import ContentViewStandardLayout from "./ContentViewStandardLayout";
 
 const styles = (theme) => ({
-  container: {
+  "@global": {
+    html: {
+      // Remove the 10px fontSize from the html element as it affects fonts that rely on rem
+      fontSize: "inherit"
+    }
+  },
+  "container": {
     display: "flex"
   },
-  leftSidebarOpen: {
+  "leftSidebarOpen": {
     paddingLeft: 280 + (theme.spacing.unit * 2)
   }
 });
@@ -46,10 +44,30 @@ class Dashboard extends Component {
     // State also contains the updater function so it will
     // be passed down into the context provider
     this.state = {
+      isMobile: false,
       isPrimarySidebarOpen: true,
       onClosePrimarySidebar: this.onClosePrimarySidebar,
       onTogglePrimarySidebar: this.onTogglePrimarySidebar
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { width } = this.props;
+    const isMobile = isWidthDown("sm", width);
+
+    if (prevState.isMobile !== isMobile) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        isMobile
+      });
+    }
+
+    if (!isMobile && prevState.isPrimarySidebarOpen === false) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        isPrimarySidebarOpen: true
+      });
+    }
   }
 
   onTogglePrimarySidebar = () => {
@@ -64,10 +82,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes, width } = this.props;
-    const { isPrimarySidebarOpen } = this.state;
-
     const isMobile = isWidthDown("sm", width);
-    const isSidebarOpen = isPrimarySidebarOpen && !isMobile;
 
     return (
       <UIContext.Provider value={this.state}>
@@ -94,16 +109,16 @@ class Dashboard extends Component {
                     // If the layout component is explicitly null
                     if (route.layoutComponent === null) {
                       return (
-                        <ContentViewFullLayout isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
+                        <ContentViewFullLayout isSidebarOpen={!isMobile}>
                           <route.mainComponent uiState={this.state} {...props} />
                         </ContentViewFullLayout>
                       );
                     }
 
-                    const LayoutComponent = route.layoutComponent || ContentViewStandardayout;
+                    const LayoutComponent = route.layoutComponent || ContentViewStandardLayout;
 
                     return (
-                      <LayoutComponent isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
+                      <LayoutComponent isSidebarOpen={!isMobile}>
                         <route.mainComponent uiState={this.state} {...props} />
                       </LayoutComponent>
                     );
