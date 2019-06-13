@@ -95,7 +95,7 @@ function Sidebar(props) {
       <AppBar
         color="secondary"
         elevation={0}
-        position="static"
+        position="sticky"
       >
         <Toolbar className={classes.toolbar}>
           <ShopLogoWithData className={classes.shopLogo} shouldShowShopName size={32} />
