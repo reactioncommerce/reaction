@@ -23,11 +23,11 @@ const styles = (theme) => ({
   }
 });
 
-const ContentViewExtraWideLayout = ({ children, classes, isMobile, isSidebarOpen }) => (
+const ContentViewExtraWideLayout = ({ children, classes, isSidebarOpen }) => (
   <div
     className={
       classNames(classes.root, {
-        [classes.leftSidebarOpen]: isSidebarOpen && isMobile === false
+        [classes.leftSidebarOpen]: isSidebarOpen
       })
     }
   >
