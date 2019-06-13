@@ -1,6 +1,7 @@
 import React from "react";
 import { compose, withState } from "recompose";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Collapse from "@material-ui/core/Collapse";
@@ -27,6 +28,9 @@ const styles = (theme) => ({
     justifyContent: "center",
     color: theme.palette.colors.coolGrey300
   },
+  iconActive: {
+    color: theme.palette.text.active
+  },
   shopLogo: {
     flex: 1,
     marginRight: theme.spacing.unit * 2
@@ -49,6 +53,9 @@ const styles = (theme) => ({
   },
   link: {
     [`&.${activeClassName} span`]: {
+      color: theme.palette.text.secondaryActive
+    },
+    [`&.${activeClassName} $icon`]: {
       color: theme.palette.text.active
     }
   }
@@ -62,6 +69,7 @@ const styles = (theme) => ({
 function Sidebar(props) {
   const {
     classes,
+    history,
     isMobile,
     isSidebarOpen,
     onDrawerClose,
@@ -74,6 +82,9 @@ function Sidebar(props) {
   const settingRoutes = routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && isSetting);
 
   let drawerProps = {
+    classes: {
+      paper: classes.drawerPaper
+    },
     open: true,
     variant: "persistent"
   };
@@ -111,10 +122,14 @@ function Sidebar(props) {
       <List disablePadding>
         {primaryRoutes.map((route) => (
           <NavLink
+            activeClassName={activeClassName}
             className={classes.link}
             to={`/operator${route.path}`}
             key={route.path}
-            onClick={onDrawerClose}
+            onClick={() => {
+              setIsSettingsOpen(false);
+              onDrawerClose();
+            }}
           >
             <ListItem button className={classes.listItem}>
               <ListItemIcon className={classes.icon}>
@@ -137,10 +152,18 @@ function Sidebar(props) {
           button
           className={classes.listItem}
           onClick={() => {
+            // Push the first setting route when opened, but not on mobile
+            if (!isSettingsOpen) {
+              const [firstRoute] = settingRoutes;
+
+              if (firstRoute) {
+                history.push(`/operator${firstRoute.path}`);
+              }
+            }
             setIsSettingsOpen(!isSettingsOpen);
           }}
         >
-          <ListItemIcon className={classes.icon}>
+          <ListItemIcon className={classNames(classes.icon, { [classes.iconActive]: isSettingsOpen })}>
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText
@@ -156,7 +179,13 @@ function Sidebar(props) {
 
         <Collapse in={isSettingsOpen}>
           {settingRoutes.map((route) => (
-            <NavLink className={classes.link} to={`/operator${route.path}`} key={route.path}>
+            <NavLink
+              activeClassName={activeClassName}
+              className={classes.link}
+              to={`/operator${route.path}`}
+              key={route.path}
+              onClick={onDrawerClose}
+            >
               <ListItem button className={classes.listItemNested}>
                 <ListItemText
                   className={classes.listItemText}
@@ -178,6 +207,9 @@ function Sidebar(props) {
 
 Sidebar.propTypes = {
   classes: PropTypes.object,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }),
   isMobile: PropTypes.bool,
   isSettingsOpen: PropTypes.bool,
   isSidebarOpen: PropTypes.bool.isRequired,
@@ -191,6 +223,7 @@ Sidebar.defaultProps = {
 };
 
 export default compose(
+  withRouter,
   withStyles(styles, { name: "RuiSidebar" }),
   withState("isSettingsOpen", "setIsSettingsOpen", false)
 )(Sidebar);
