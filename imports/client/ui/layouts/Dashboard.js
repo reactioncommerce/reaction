@@ -35,7 +35,7 @@ class Dashboard extends Component {
     components: PropTypes.shape({
       IconHamburger: CustomPropTypes.component.isRequired
     }),
-    width: PropTypes.number
+    width: PropTypes.string
   };
 
   constructor(props) {
