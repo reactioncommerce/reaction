@@ -125,7 +125,7 @@ function Sidebar(props) {
       <List disablePadding>
         {primaryRoutes.map((route) => (
           <NavLink
-            activeClassName={activeClassName}
+            activeClassName={!isSettingsOpen ? activeClassName : null}
             className={classes.link}
             to={`/operator${route.path}`}
             key={route.path}
