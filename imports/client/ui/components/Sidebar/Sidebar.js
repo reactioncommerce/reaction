@@ -21,6 +21,9 @@ import { Translation } from "/imports/plugins/core/ui/client/components";
 
 const activeClassName = "nav-item-active";
 
+// Route sorting by priority. Items without a priority get pushed the bottom.
+const routeSort = (routeA, routeB) => (routeA.priority || Number.MAX_SAFE_INTEGER) - (routeB.priority || Number.MAX_SAFE_INTEGER);
+
 const styles = (theme) => ({
   icon: {
     width: 32,
@@ -78,8 +81,8 @@ function Sidebar(props) {
     routes
   } = props;
 
-  const primaryRoutes = routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && !isSetting);
-  const settingRoutes = routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && isSetting);
+  const primaryRoutes = routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && !isSetting).sort(routeSort);
+  const settingRoutes = routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && isSetting).sort(routeSort);
 
   let drawerProps = {
     classes: {
