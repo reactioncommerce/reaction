@@ -613,6 +613,7 @@ export default {
       }
     },
     currency: "USD",
+    language: "en",
     languages: [
       {
         label: "العربية",
@@ -3315,7 +3316,26 @@ export default {
       length: 11.25,
       width: 8.75,
       height: 6
-    }
+    },
+    defaultSellerRoles: [
+      "owner",
+      "admin",
+      "seller",
+      "guest",
+      "manage-users",
+      "orders",
+      "account/profile",
+      "product",
+      "createProduct",
+      "tag",
+      "index",
+      "cart/completed"
+    ],
+    status: "active",
+    domains: ["localhost"],
+    defaultPaymentMethod: "none",
+    paymentMethods: [],
+    availablePaymentMethods: []
   }],
   tags: [{
     slug: "example-product",
