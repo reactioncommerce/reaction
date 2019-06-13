@@ -12,6 +12,9 @@ export default async function register(app) {
     icon: "fa fa-th",
     autoEnable: true,
     collections: {
+      Assets: {
+        name: "Assets"
+      },
       Packages: {
         name: "Packages",
         indexes: [
