@@ -152,8 +152,8 @@ class LocalizationSettings extends Component {
         {name === "language" && "|"}
         {name === "language" &&
           <Components.FlatButton
-            i18nKeyTooltip={"admin.i18nSettings.reloadTranslations"}
-            tooltip={"Reload translations asdasdasdasdasd"}
+            i18nKeyTooltip="admin.i18nSettings.reloadTranslations"
+            tooltip="Reload translations"
             tooltipAttachment="middle left"
             icon="fa fa-refresh"
             onClick={this.handleReloadTranslations}
