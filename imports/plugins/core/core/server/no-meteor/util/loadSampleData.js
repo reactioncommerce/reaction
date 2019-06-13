@@ -1,5 +1,6 @@
 import url from "url";
 import Logger from "@reactioncommerce/logger";
+import { Shop as ShopSchema } from "/imports/collections/schemas";
 import sampleData from "./sampleData";
 
 /**
@@ -45,12 +46,23 @@ export default async function loadSampleData(context) {
 
   const shopInsertPromises = sampleData.shops.map(async (shop) => {
     // add the current domain to the shop if it doesn't already exist
-    if (currentDomain && (!Array.isArray(shop.domains) || !shop.domains.includes(currentDomain))) {
-      if (!Array.isArray(shop.domains)) shop.domains = [];
-      shop.domains.push(currentDomain);
+    let { domains } = shop;
+    if (currentDomain && (!Array.isArray(domains) || !domains.includes(currentDomain))) {
+      if (!Array.isArray(domains)) domains = [];
+      domains.push(currentDomain);
     }
 
-    await Shops.insertOne(shop);
+    const now = new Date();
+    const finalShop = {
+      ...shop,
+      createdAt: now,
+      domains,
+      updatedAt: now
+    };
+
+    ShopSchema.validate(finalShop);
+
+    await Shops.insertOne(finalShop);
 
     await appEvents.emit("afterShopCreate", { createdBy: null, shop });
   });
