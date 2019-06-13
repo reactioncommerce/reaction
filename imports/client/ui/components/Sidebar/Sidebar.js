@@ -4,9 +4,9 @@ import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Collapse from "@material-ui/core/Collapse";
+import Fab from "@material-ui/core/Fab";
 import Hidden from "@material-ui/core/Hidden";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -101,9 +101,9 @@ function Sidebar(props) {
           <ShopLogoWithData className={classes.shopLogo} shouldShowShopName size={32} />
 
           <Hidden mdUp>
-            <IconButton onClick={onDrawerClose}>
+            <Fab color="secondary" onClick={onDrawerClose} size="small">
               <CloseIcon />
-            </IconButton>
+            </Fab>
           </Hidden>
 
         </Toolbar>
