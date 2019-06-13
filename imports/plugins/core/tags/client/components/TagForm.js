@@ -319,7 +319,7 @@ class TagForm extends Component {
     const { tag } = this.props;
 
     if (tag) {
-      let metafields = {};
+      const metafields = {};
 
       if (Array.isArray(tag.metafields)) {
         tag.metafields.forEach((field) => {
