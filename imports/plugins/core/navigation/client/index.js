@@ -10,7 +10,7 @@ import "./templates";
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
-  priority: 40,
+  priority: 50,
   layoutComponent: null,
   mainComponent: NavigationDashboard,
   path: "/navigation",

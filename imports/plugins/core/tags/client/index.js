@@ -26,7 +26,7 @@ registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
   path: "/tags",
-  priority: 50,
+  priority: 30,
   mainComponent: TagSettingsPage,
   // eslint-disable-next-line react/display-name, react/no-multi-comp
   SidebarIconComponent: (props) => <TagIcon {...props} />,

@@ -43,7 +43,7 @@ registerOperatorRoute({
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
-  priority: 20,
+  priority: 10,
   layoutComponent: ContentViewExtraWideLayout,
   mainComponent: Orders,
   path: "/orders",

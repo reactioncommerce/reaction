@@ -50,7 +50,7 @@ registerOperatorRoute({
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
-  priority: 30,
+  priority: 20,
   layoutComponent: ContentViewExtraWideLayout,
   path: "/products",
   mainComponent: ProductTable,

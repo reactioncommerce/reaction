@@ -54,7 +54,7 @@ registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
   path: "/accounts",
-  priority: 10,
+  priority: 40,
   mainComponent: Accounts,
   // eslint-disable-next-line react/display-name, react/no-multi-comp
   SidebarIconComponent: (props) => <AccountIcon {...props} />,
@@ -64,7 +64,6 @@ registerOperatorRoute({
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
-  priority: 10,
   path: "/login-services",
   mainComponent: "accountsSettings",
   // eslint-disable-next-line react/display-name, react/no-multi-comp
