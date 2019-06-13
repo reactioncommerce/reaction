@@ -53,7 +53,7 @@ export default async function catalogItems(_, args, context, info) {
 
     // Allow external pricing plugins to handle this if registered. We'll use the
     // first value returned that is a string.
-    for (const func of context.getFunctionsOfType("getMinPriceSortByFieldPath")) {
+    for (const func of context.getFunctionsOfType("getMinPriceSortByFieldPath").reverse()) {
       realSortByField = await func(context, { connectionArgs }); // eslint-disable-line no-await-in-loop
       if (typeof realSortByField === "string") break;
     }
