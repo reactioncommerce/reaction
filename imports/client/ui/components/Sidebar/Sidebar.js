@@ -156,7 +156,7 @@ function Sidebar(props) {
           className={classes.listItem}
           onClick={() => {
             // Push the first setting route when opened, but not on mobile
-            if (!isSettingsOpen) {
+            if (!isSettingsOpen && !isMobile) {
               const [firstRoute] = settingRoutes;
 
               if (firstRoute) {
