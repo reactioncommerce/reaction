@@ -1,15 +1,15 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import { Accounts } from "meteor/accounts-base";
+import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Shops } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
-Accounts.urls.resetPassword = function reset(token) {
+MeteorAccounts.urls.resetPassword = function reset(token) {
   return Meteor.absoluteUrl(`reset-password/${token}`);
 };
 
@@ -97,15 +97,19 @@ async function sendResetEmail(userId, optionalEmail) {
       }
     },
     // Account Data
-    passwordResetUrl: Accounts.urls.resetPassword(token),
+    passwordResetUrl: MeteorAccounts.urls.resetPassword(token),
     user
   };
 
   // Compile Email with SSR
   const tpl = "accounts/resetPassword";
   const subject = "accounts/resetPassword/subject";
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
+  const account = Accounts.findOne({ userId }, { _id: 0, profile: 1 });
+  const language = account && account.profile && account.profile.language;
+
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl, language));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl, language));
 
   return Reaction.Email.send({
     to: email,
@@ -130,7 +134,7 @@ export default function sendResetPasswordEmail(options) {
     email: String
   });
 
-  const user = Accounts.findUserByEmail(options.email);
+  const user = MeteorAccounts.findUserByEmail(options.email);
 
   if (!user) {
     Logger.error("accounts/sendResetPasswordEmail - User not found");

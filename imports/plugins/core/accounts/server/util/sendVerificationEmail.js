@@ -2,7 +2,8 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Accounts } from "meteor/accounts-base";
+import { Accounts as MeteorAccounts } from "meteor/accounts-base";
+import { Accounts } from "/lib/collections";
 import { SSR } from "meteor/meteorhacks:ssr";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -66,7 +67,7 @@ export default async function sendVerificationEmail({
   });
 
   const shopName = Reaction.getShopName();
-  const url = Accounts.urls.verifyEmail(token);
+  const url = MeteorAccounts.urls.verifyEmail(token);
   const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
@@ -117,8 +118,11 @@ export default async function sendVerificationEmail({
     `);
   }
 
-  SSR.compileTemplate(bodyTemplate, Reaction.Email.getTemplate(bodyTemplate));
-  SSR.compileTemplate(subjectTemplate, Reaction.Email.getSubject(bodyTemplate));
+  const account = Accounts.findOne({ userId }, { _id: 0, profile: 1 });
+  const language = account && account.profile && account.profile.language;
+
+  SSR.compileTemplate(bodyTemplate, Reaction.Email.getTemplate(bodyTemplate, language));
+  SSR.compileTemplate(subjectTemplate, Reaction.Email.getSubject(bodyTemplate, language));
 
   return Reaction.Email.send({
     to: address,

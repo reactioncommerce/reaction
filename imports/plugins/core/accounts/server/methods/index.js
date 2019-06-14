@@ -13,6 +13,7 @@ import removeEmailAddress from "./removeEmailAddress";
 import removeUserPermissions from "./removeUserPermissions";
 import sendResetPasswordEmail from "./sendResetPasswordEmail";
 import setProfileCurrency from "./setProfileCurrency";
+import setProfileLanguage from "./setProfileLanguage";
 import setUserPermissions from "./setUserPermissions";
 import updateEmailAddress from "./updateEmailAddress";
 import updateServiceConfiguration from "./updateServiceConfiguration";
@@ -47,6 +48,7 @@ export default {
   "accounts/removeUserPermissions": removeUserPermissions,
   "accounts/sendResetPasswordEmail": sendResetPasswordEmail,
   "accounts/setProfileCurrency": setProfileCurrency,
+  "accounts/setProfileLanguage": setProfileLanguage,
   "accounts/setUserPermissions": setUserPermissions,
   "accounts/updateEmailAddress": updateEmailAddress,
   "accounts/updateServiceConfiguration": updateServiceConfiguration,
