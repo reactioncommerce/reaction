@@ -18,7 +18,7 @@ const styles = (theme) => ({
     overflow: "hidden"
   },
   leftSidebarOpen: {
-    paddingLeft: 280
+    paddingLeft: theme.spacing.drawerWidth
   }
 });
 

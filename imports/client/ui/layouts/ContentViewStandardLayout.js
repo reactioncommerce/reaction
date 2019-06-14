@@ -18,7 +18,7 @@ const styles = (theme) => ({
     margin: "0 auto"
   },
   leftSidebarOpen: {
-    paddingLeft: 280
+    paddingLeft: theme.spacing.drawerWidth
   }
 });
 

@@ -19,7 +19,7 @@ const styles = (theme) => ({
     overflow: "hidden"
   },
   leftSidebarOpen: {
-    paddingLeft: 280 + (theme.spacing.unit * 2)
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
   },
   title: {
     flex: 1

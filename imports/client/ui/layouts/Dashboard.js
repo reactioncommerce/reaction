@@ -25,7 +25,7 @@ const styles = (theme) => ({
     display: "flex"
   },
   "leftSidebarOpen": {
-    paddingLeft: 280 + (theme.spacing.unit * 2)
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
   }
 });
 

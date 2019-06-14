@@ -8,7 +8,9 @@ const breakpoints = createBreakpoints({});
 const toolbarHeight = 80;
 const toolbarMobileHeight = 54;
 
+// Spacing
 export const defaultSpacingUnit = 8;
+export const drawerWidth = 280;
 
 // Colors
 export const colorPrimaryMain = colors.coolGrey;
@@ -90,9 +92,13 @@ export const rawMuiTheme = {
     borderRadius: 2
   },
   spacing: {
+    drawerWidth,
     unit: defaultSpacingUnit
   },
   mixins: {
+    leadingPaddingWhenPrimaryDrawerIsOpen: {
+      paddingLeft: drawerWidth + (defaultSpacingUnit * 2)
+    },
     toolbar: {
       minHeight: toolbarHeight,
       [`${breakpoints.up("xs")} and (orientation: landscape)`]: {
@@ -189,7 +195,7 @@ export const rawMuiTheme = {
     },
     MuiDrawer: {
       paper: {
-        width: 280
+        width: drawerWidth
       },
       paperAnchorLeft: {
         borderRight: "none",

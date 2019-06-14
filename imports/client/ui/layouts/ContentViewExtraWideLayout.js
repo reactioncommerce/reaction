@@ -19,7 +19,7 @@ const styles = (theme) => ({
     transition: "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
   },
   leftSidebarOpen: {
-    paddingLeft: 280 + (theme.spacing.unit * 3)
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
   }
 });
 
