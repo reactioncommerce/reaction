@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { i18next } from "/client/api";
-import PrimaryAppBar from "../../../../../client/ui/components/PrimaryAppBar/PrimaryAppBar";
+import PrimaryAppBar from "/imports/client/ui/components/PrimaryAppBar/PrimaryAppBar";
 
 const styles = (theme) => ({
   label: {
