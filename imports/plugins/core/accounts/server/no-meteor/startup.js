@@ -79,7 +79,7 @@ async function createDefaultAdminUser(context) {
     throw new Error(`Can't create an admin user with email "${userInput.email}" because there is already a user with that address`);
   }
 
-  const userId = createUser(userInput);
+  const userId = await createUser(userInput);
 
   // Update the new user document with roles and other fields that Meteor's createUser
   // doesn't support.
