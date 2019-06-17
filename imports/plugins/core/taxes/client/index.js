@@ -11,6 +11,7 @@ registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
   mainComponent: "taxSettings",
+  priority: 30,
   path: "/tax-settings",
   // eslint-disable-next-line react/display-name
   SidebarIconComponent: (props) => <FontAwesomeIcon icon={faUniversity} {...props} />,
