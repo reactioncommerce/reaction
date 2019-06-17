@@ -26,6 +26,7 @@ import "./templates/dashboard.js";
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
+  priority: 10,
   path: "/shop-settings",
   mainComponent: "shopSettings",
   // eslint-disable-next-line react/display-name

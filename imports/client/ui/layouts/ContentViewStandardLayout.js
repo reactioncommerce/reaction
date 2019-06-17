@@ -18,15 +18,15 @@ const styles = (theme) => ({
     margin: "0 auto"
   },
   leftSidebarOpen: {
-    paddingLeft: 280
+    paddingLeft: theme.spacing.drawerWidth
   }
 });
 
-const ContentViewStandardLayout = ({ children, classes, isMobile, isSidebarOpen }) => (
+const ContentViewStandardLayout = ({ children, classes, isSidebarOpen }) => (
   <div
     className={
       classNames(classes.root, {
-        [classes.leftSidebarOpen]: isSidebarOpen && isMobile === false
+        [classes.leftSidebarOpen]: isSidebarOpen
       })
     }
   >

@@ -25,10 +25,6 @@ import { addTagMutation, updateTagMutation, removeTagMutation, setTagHeroMediaMu
 import TagToolbar from "./TagToolbar";
 import TagProductTable from "./TagProductTable";
 
-const Title = styled.h3`
-  margin-bottom: 16px;
-`;
-
 const CardActions = styled(MUICardActions)`
   justify-content: flex-end;
   padding-right: 0 !important;
@@ -319,7 +315,7 @@ class TagForm extends Component {
     const { tag } = this.props;
 
     if (tag) {
-      let metafields = {};
+      const metafields = {};
 
       if (Array.isArray(tag.metafields)) {
         tag.metafields.forEach((field) => {
@@ -369,13 +365,13 @@ class TagForm extends Component {
             <Mutation mutation={removeTagMutation}>
               {(removeMutationFunc) => (
                 <TagToolbar
+                  title={title}
                   onDelete={() => { this.handleRemove(tag._id, removeMutationFunc); }}
                   onCancel={this.handleCancel}
                   onSave={this.handleSave}
                 />
               )}
             </Mutation>
-            <Title>{title}</Title>
             <Form
               ref={(formRef) => { this.form = formRef; }}
               onChange={this.handleFormChange}

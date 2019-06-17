@@ -22,10 +22,7 @@ const styles = (theme) => ({
     marginLeft: theme.spacing.unit
   },
   leftSidebarOpen: {
-    paddingLeft: 280 + (theme.spacing.unit * 2)
-  },
-  title: {
-    flex: 1
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
   }
 });
 
