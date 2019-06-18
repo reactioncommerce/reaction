@@ -48,7 +48,7 @@ export default async function addRolesToGroups(context, options = { allShops: fa
 
     if (areRolesInGroup === false) {
       Logger.debug(`Adding roles (${roles}) to ${group.name} group (${group._id})`);
-      return addRolesToGroupAndUsers(group, roles);
+      return addRolesToGroupAndUsers(context, group, roles);
     }
 
     Logger.debug(`Skipping roles already assigned to ${group.name} group and its users`);
