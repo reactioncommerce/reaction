@@ -1,8 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
+import classNames from "classnames";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { Link } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
 import { withComponents } from "@reactioncommerce/components-context";
 import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
 import GenericErrorBoundary from "../GenericErrorBoundary";
@@ -20,12 +24,22 @@ const getShop = gql`
   }
 `;
 
+const styles = (theme) => ({
+  root: {
+    display: "flex",
+    alignItems: "center"
+  },
+  logo: {
+    marginRight: theme.spacing.unit * 2
+  }
+});
+
 /**
  * ShopLogoWithData
  * @params {Object} props Component props
  * @returns {Node} React component
  */
-function ShopLogoWithData({ shopId, linkTo, size }) {
+function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, linkTo, size }) {
   if (!shopId) return null;
 
   return (
@@ -39,15 +53,30 @@ function ShopLogoWithData({ shopId, linkTo, size }) {
             const defaultLogo = "/resources/reaction-logo-circular.svg";
 
             return (
-              <Link to={linkTo}>
+              <Link
+                className={classNames(classes.root, className)}
+                to={linkTo}
+              >
                 <img
                   alt={shop.name}
+                  className={classes.logo}
                   src={customLogo || defaultLogo}
                   width={size}
                 />
+                {shouldShowShopName &&
+                  <Typography
+                    color="textSecondary"
+                    display="display"
+                    variant="h6"
+                    component="span"
+                  >
+                    {shop.name}
+                  </Typography>
+                }
               </Link>
             );
           }
+
           // Return null if the shop data couldn't be found.
           return null;
         }}
@@ -57,16 +86,22 @@ function ShopLogoWithData({ shopId, linkTo, size }) {
 }
 
 ShopLogoWithData.propTypes = {
+  className: PropTypes.string,
+  classes: PropTypes.object,
   linkTo: PropTypes.string,
   shopId: PropTypes.string,
+  shouldShowShopName: PropTypes.bool,
   size: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
-
 ShopLogoWithData.defaultProps = {
   linkTo: "/operator",
+  shouldShowShopName: false,
   size: 60
 };
 
-
-export default withPrimaryShopId(withComponents(ShopLogoWithData));
+export default compose(
+  withPrimaryShopId,
+  withComponents,
+  withStyles(styles, { name: "RuiShopLogoWithData" })
+)(ShopLogoWithData);

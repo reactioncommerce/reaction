@@ -19,15 +19,15 @@ const styles = (theme) => ({
     transition: "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
   },
   leftSidebarOpen: {
-    paddingLeft: 280 + (theme.spacing.unit * 3)
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
   }
 });
 
-const ContentViewExtraWideLayout = ({ children, classes, isMobile, isSidebarOpen }) => (
+const ContentViewExtraWideLayout = ({ children, classes, isSidebarOpen }) => (
   <div
     className={
       classNames(classes.root, {
-        [classes.leftSidebarOpen]: isSidebarOpen && isMobile === false
+        [classes.leftSidebarOpen]: isSidebarOpen
       })
     }
   >

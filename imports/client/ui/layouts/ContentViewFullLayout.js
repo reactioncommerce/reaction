@@ -18,15 +18,15 @@ const styles = (theme) => ({
     overflow: "hidden"
   },
   leftSidebarOpen: {
-    paddingLeft: 280
+    paddingLeft: theme.spacing.drawerWidth
   }
 });
 
-const ContentViewFullLayout = ({ children, classes, isMobile, isSidebarOpen }) => (
+const ContentViewFullLayout = ({ children, classes, isSidebarOpen }) => (
   <div
     className={
       classNames(classes.root, {
-        [classes.leftSidebarOpen]: isSidebarOpen && isMobile === false
+        [classes.leftSidebarOpen]: isSidebarOpen
       })
     }
   >

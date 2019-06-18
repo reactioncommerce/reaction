@@ -8,7 +8,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 
 const styles = (theme) => ({
   leftSidebarOpen: {
-    paddingLeft: 280 + (theme.spacing.unit * 2)
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
   }
 });
 
