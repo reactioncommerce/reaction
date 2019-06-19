@@ -612,6 +612,7 @@ export default {
       }
     },
     currency: "USD",
+    defaultNavigationTreeId: "XyS5wksrr9gTQLN9i",
     language: "en",
     languages: [
       {
@@ -3339,7 +3340,7 @@ export default {
   tags: [{
     _id: "cseCBSSrJ3t8HQSNP",
     createdAt: new Date("2014-04-12T08:17:20.576-0700"),
-    displayTitle: "Example Tag",
+    displayTitle: "Example Tag Page",
     groups: [],
     isDeleted: false,
     isTopLevel: false,
@@ -3348,5 +3349,111 @@ export default {
     shopId: "J8Bhq3uTtdgwZx3rz",
     slug: "example-tag",
     updatedAt: new Date("2014-04-12T08:17:20.576-0700")
-  }]
+  }],
+  navigationItems: [
+    {
+      _id: "ZBnbCdLmxnX4h89iK",
+      draftData: {
+        classNames: null,
+        content: [
+          {
+            language: "en",
+            value: "Example Navigation"
+          }
+        ],
+        isUrlRelative: true,
+        shouldOpenInNewWindow: false,
+        url: "/"
+      },
+      shopId: "J8Bhq3uTtdgwZx3rz",
+      data: {
+        classNames: null,
+        content: [
+          {
+            language: "en",
+            value: "Example Navigation"
+          }
+        ],
+        isUrlRelative: true,
+        shouldOpenInNewWindow: false,
+        url: "/"
+      },
+      metadata: {},
+      createdAt: new Date("2019-06-19T15:59:17.146+0000"),
+      hasUnpublishedChanges: false
+    },
+    {
+      _id: "S4wwymL4GogRY835E",
+      draftData: {
+        classNames: null,
+        content: [
+          {
+            language: "en",
+            value: "Example Tag Page"
+          }
+        ],
+        isUrlRelative: true,
+        shouldOpenInNewWindow: false,
+        url: "/tag/example-tag"
+      },
+      shopId: "J8Bhq3uTtdgwZx3rz",
+      data: {
+        classNames: null,
+        content: [
+          {
+            language: "en",
+            value: "Example Tag Page"
+          }
+        ],
+        isUrlRelative: true,
+        shouldOpenInNewWindow: false,
+        url: "/tag/example-tag"
+      },
+      metadata: {},
+      createdAt: new Date("2019-06-19T16:00:19.603+0000"),
+      hasUnpublishedChanges: false
+    }
+  ],
+  navigationTrees: [
+    {
+      _id: "XyS5wksrr9gTQLN9i",
+      draftItems: [
+        {
+          expanded: true,
+          isPrivate: false,
+          isSecondary: false,
+          isVisible: true,
+          items: [
+            {
+              isPrivate: false,
+              isSecondary: false,
+              isVisible: true,
+              navigationItemId: "S4wwymL4GogRY835E"
+            }
+          ],
+          navigationItemId: "ZBnbCdLmxnX4h89iK"
+        }
+      ],
+      hasUnpublishedChanges: false,
+      items: [
+        {
+          expanded: true,
+          isPrivate: false,
+          isSecondary: false,
+          isVisible: true,
+          items: [
+            {
+              isPrivate: false,
+              isSecondary: false,
+              isVisible: true,
+              navigationItemId: "S4wwymL4GogRY835E"
+            }
+          ],
+          navigationItemId: "ZBnbCdLmxnX4h89iK"
+        }
+      ],
+      name: "Main Navigation",
+      shopId: "J8Bhq3uTtdgwZx3rz"
+    }
+  ]
 };

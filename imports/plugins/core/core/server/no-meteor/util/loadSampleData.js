@@ -14,6 +14,8 @@ export default async function loadSampleData(context) {
   const {
     appEvents,
     collections: {
+      NavigationItems,
+      NavigationTrees,
       Products,
       Shipping,
       Shops,
@@ -80,5 +82,25 @@ export default async function loadSampleData(context) {
   if (Array.isArray(sampleData.products)) {
     Logger.info("Loading sample products...");
     await Products.insertMany(sampleData.products);
+
+    // Immediately publish them to the catalog, too
+    const topProductIds = sampleData.products.reduce((list, product) => {
+      if (product.ancestors.length === 0) {
+        list.push(product._id);
+      }
+      return list;
+    }, []);
+    await context.mutations.publishProducts({ ...context, isInternalCall: true }, topProductIds);
+  }
+
+  // Navigation
+  if (Array.isArray(sampleData.navigationItems)) {
+    Logger.info("Loading navigation items...");
+    await NavigationItems.insertMany(sampleData.navigationItems);
+  }
+
+  if (Array.isArray(sampleData.navigationTrees)) {
+    Logger.info("Loading navigation trees...");
+    await NavigationTrees.insertMany(sampleData.navigationTrees);
   }
 }
