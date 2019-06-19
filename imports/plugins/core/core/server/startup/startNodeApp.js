@@ -16,6 +16,7 @@ import coreSchemas from "../no-meteor/schemas";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 import { setCollections } from "/imports/collections/rawCollections";
 import meteorFileCollectionStartup from "/imports/plugins/core/files/server/fileCollections";
+import packageJson from "/package.json";
 
 // For Meteor app tests
 let appStartupIsComplete = false;
@@ -42,7 +43,8 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
       },
       queries: coreQueries,
       mutations: coreMutations,
-      rootUrl: ROOT_URL
+      rootUrl: ROOT_URL,
+      appVersion: packageJson.version
     },
     graphQL: {
       graphiql: Meteor.isDevelopment,

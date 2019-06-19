@@ -438,7 +438,8 @@
       "relay-page-info-spec",
       "type-fields-sorted-alphabetically",
       "types-are-capitalized",
-      "types-have-descriptions"
+      "types-have-descriptions",
+      "descriptions-are-capitalized"
     ]
   }
 }

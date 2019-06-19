@@ -1,7 +1,6 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { registerOperatorRoute } from "/imports/client/ui";
-import { faTag } from "@fortawesome/free-solid-svg-icons";
+import TagIcon from "mdi-material-ui/Tag";
 
 export { default as DataTable } from "./components/TagDataTable";
 export { default as TagDataTableColumn } from "./components/TagDataTableColumn";
@@ -11,24 +10,25 @@ import TagSettingsPage from "./pages/TagSettingsPageWithData";
 
 registerOperatorRoute({
   isNavigationLink: false,
-  isSetting: true,
+  isSetting: false,
   path: "/tags/create",
   mainComponent: TagFormPage
 });
 
 registerOperatorRoute({
   isNavigationLink: false,
-  isSetting: true,
+  isSetting: false,
   path: "/tags/edit/:tagId",
   mainComponent: TagFormPage
 });
 
 registerOperatorRoute({
   isNavigationLink: true,
-  isSetting: true,
+  isSetting: false,
   path: "/tags",
+  priority: 30,
   mainComponent: TagSettingsPage,
   // eslint-disable-next-line react/display-name, react/no-multi-comp
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faTag} {...props} />,
+  SidebarIconComponent: (props) => <TagIcon {...props} />,
   sidebarI18nLabel: "admin.tags.tags"
 });
