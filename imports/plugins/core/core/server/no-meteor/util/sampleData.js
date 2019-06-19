@@ -20,6 +20,7 @@ export default {
       min: 12.99,
       max: 19.99
     },
+    isDeleted: false,
     isVisible: true,
     metafields: [{
       key: "Material",
@@ -31,7 +32,7 @@ export default {
     pageTitle: "This is a basic product. You can do a lot with it.",
     supportedFulfillmentTypes: ["shipping"],
     type: "simple",
-    title: "Basic Reaction Product",
+    title: "Example Product",
     updatedAt: new Date("2014-06-01T12:17:13.949-0700"),
     vendor: "Example Manufacturer"
   }, {
@@ -39,8 +40,10 @@ export default {
     ancestors: [
       "BCTMZ6HTxFSppJESk"
     ],
-    title: "Basic Example Variant",
+    title: "Example Product - Small",
+    optionTitle: "Small",
     price: 19.99,
+    isDeleted: false,
     isVisible: true,
     updatedAt: new Date("2014-04-03T13:46:52.411-0700"),
     createdAt: new Date("2014-04-03T13:46:52.411-0700"),
@@ -58,9 +61,10 @@ export default {
       "BCTMZ6HTxFSppJESk",
       "6qiqPwBkeJdtdQc4G"
     ],
-    title: "Option 1 - Red Dwarf",
+    title: "Example Product - Small - Red",
     optionTitle: "Red",
     price: 19.99,
+    isDeleted: false,
     isVisible: true,
     updatedAt: new Date("2014-04-03T13:46:52.411-0700"),
     createdAt: new Date("2014-04-03T13:46:52.411-0700"),
@@ -81,9 +85,10 @@ export default {
       "BCTMZ6HTxFSppJESk",
       "6qiqPwBkeJdtdQc4G"
     ],
-    title: "Option 2 - Green Tomato",
+    title: "Example Product - Small - Green",
     optionTitle: "Green",
     price: 12.99,
+    isDeleted: false,
     isVisible: true,
     updatedAt: new Date("2014-04-03T13:46:52.411-0700"),
     createdAt: new Date("2014-04-03T13:46:52.411-0700"),

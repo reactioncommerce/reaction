@@ -1,6 +1,12 @@
 import url from "url";
 import Logger from "@reactioncommerce/logger";
-import { Shop as ShopSchema } from "/imports/collections/schemas";
+import {
+  Product as ProductSchema,
+  ProductVariant as ProductVariantSchema,
+  Shop as ShopSchema,
+  Tag as TagSchema
+} from "/imports/collections/schemas";
+import config from "/imports/node-app/core/config";
 import sampleData from "./sampleData";
 
 /**
@@ -9,7 +15,7 @@ import sampleData from "./sampleData";
  * @returns {undefined}
  */
 export default async function loadSampleData(context) {
-  if (process.env.SKIP_FIXTURES) return;
+  if (config.SKIP_FIXTURES) return;
 
   const {
     appEvents,
@@ -17,7 +23,6 @@ export default async function loadSampleData(context) {
       NavigationItems,
       NavigationTrees,
       Products,
-      Shipping,
       Shops,
       Tags
     },
@@ -26,11 +31,10 @@ export default async function loadSampleData(context) {
 
   // Only import sample data if all of the relevant collections are empty
   const anyProducts = await Products.findOne({});
-  const anyShipping = await Shipping.findOne({});
   const anyShop = await Shops.findOne({});
   const anyTag = await Tags.findOne({});
 
-  if (anyProducts || anyShipping || anyShop || anyTag) {
+  if (anyProducts || anyShop || anyTag) {
     Logger.debug("Not loading sample data because there are already documents");
     return;
   }
@@ -75,12 +79,22 @@ export default async function loadSampleData(context) {
   // Tags
   if (Array.isArray(sampleData.tags)) {
     Logger.info("Loading sample tags...");
+    TagSchema.validate(sampleData.tags);
     await Tags.insertMany(sampleData.tags);
   }
 
   // Products
   if (Array.isArray(sampleData.products)) {
     Logger.info("Loading sample products...");
+
+    sampleData.products.forEach((product) => {
+      if (product.ancestors.length === 0) {
+        ProductSchema.validate(product);
+      } else {
+        ProductVariantSchema.validate(product);
+      }
+    });
+
     await Products.insertMany(sampleData.products);
 
     // Immediately publish them to the catalog, too
