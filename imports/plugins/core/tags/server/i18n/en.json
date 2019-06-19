@@ -4,6 +4,7 @@
     "ns": "reaction-tags",
     "translation": {
       "reaction-tags": {
+        "tagSaved": "Tag saved",
         "admin": {
           "tags": {
             "tags": "Tags",

@@ -88,6 +88,8 @@ const wrapComponent = (Comp) => (
             return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
           }
 
+          Alerts.toast(i18next.t("tagSaved", "Tag saved"), "success");
+
           this.setState({
             newTag: {
               name: ""
