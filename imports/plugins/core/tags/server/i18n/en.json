@@ -4,7 +4,8 @@
     "ns": "reaction-tags",
     "translation": {
       "reaction-tags": {
-        "tagSaved": "Tag saved",
+        "tagAddedToProduct": "Tag \"{{tagName}}\" added to product",
+        "tagRemovedFromProduct": "Tag \"{{tagName}}\" removed from product",
         "admin": {
           "tags": {
             "tags": "Tags",

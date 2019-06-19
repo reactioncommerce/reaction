@@ -88,7 +88,7 @@ const wrapComponent = (Comp) => (
             return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
           }
 
-          Alerts.toast(i18next.t("tagSaved", "Tag saved"), "success");
+          Alerts.toast(i18next.t("tagAddedToProduct", { defaultValue: `Tag "${tag.name}" added to product`, tagName: tag.name }), "success");
 
           this.setState({
             newTag: {
@@ -115,6 +115,8 @@ const wrapComponent = (Comp) => (
             return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
           }
 
+          Alerts.toast(i18next.t("tagAddedToProduct", { defaultValue: `Tag "${tag.name}" added to product`, tagName: tag.name }), "success");
+
           this.setState({
             suggestions: []
           });
@@ -130,6 +132,8 @@ const wrapComponent = (Comp) => (
           if (error) {
             Alerts.toast(i18next.t("productDetail.tagInUse"), "error");
           }
+
+          Alerts.toast(i18next.t("tagRemovedFromProduct", { defaultValue: `Tag "${tag.name}" removed from product`, tagName: tag.name }), "success");
         });
       }
     }
