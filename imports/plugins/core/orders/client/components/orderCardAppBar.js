@@ -3,14 +3,13 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
-import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
+import PrimaryAppBar from "/imports/client/ui/components/PrimaryAppBar/PrimaryAppBar";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 import { approveOrderPayments, captureOrderPayments } from "../graphql";
 import { approvePayment, getOrderRiskBadge } from "../helpers";
@@ -253,25 +252,12 @@ class OrderCardAppBar extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-
-    const uiState = {
-      isLeftDrawerOpen: false
-    };
-
-    const toolbarClassName = classnames({
-      [classes.leftSidebarOpen]: uiState.isLeftDrawerOpen
-    });
-
     return (
-      <AppBar color="default">
-        <Toolbar className={toolbarClassName}>
-          <Typography className={classes.title} variant="h6">{i18next.t("order.cancelOrderLabel", "Order details")}</Typography>
-          {this.renderCancelOrderButton()}
-          {this.renderCapturePaymentButton()}
-          {this.renderApprovePaymentButton()}
-        </Toolbar>
-      </AppBar>
+      <PrimaryAppBar title={i18next.t("orderDetails", "Order details")}>
+        {this.renderCancelOrderButton()}
+        {this.renderCapturePaymentButton()}
+        {this.renderApprovePaymentButton()}
+      </PrimaryAppBar>
     );
   }
 }

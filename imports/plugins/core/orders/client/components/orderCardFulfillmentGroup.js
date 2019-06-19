@@ -25,9 +25,6 @@ const styles = (theme) => ({
   fulfillmentGroupHeader: {
     marginBottom: theme.spacing.unit * 2
   },
-  leftIcon: {
-    marginRight: theme.spacing.unit
-  },
   orderCardInfoTextBold: {
     fontWeight: theme.typography.fontWeightBold
   }
@@ -71,6 +68,7 @@ class OrderCardFulfillmentGroups extends Component {
     }
   }
 
+  // TODO: EK - move inventory out of this file?
   handleInventoryRestockCheckbox = (name) => (event) => {
     if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
       this.setState({
@@ -80,6 +78,7 @@ class OrderCardFulfillmentGroups extends Component {
     }
   };
 
+  // TODO: EK - move inventory out of this file?
   handleInventoryRestock = (item) => {
     if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
       // TODO: EK - handle inventory restock
@@ -179,7 +178,7 @@ class OrderCardFulfillmentGroups extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container spacing={24} className={classes.fulfillmentGroupHeader}>
+            <Grid container spacing={40} className={classes.fulfillmentGroupHeader}>
               <Grid item xs={12} md={6}>
                 {this.renderFulfillmentGroupItems(fulfillmentGroup)}
               </Grid>

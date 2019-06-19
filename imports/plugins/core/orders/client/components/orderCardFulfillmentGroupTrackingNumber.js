@@ -114,7 +114,7 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
                     </Grid>
                     :
                     <Button color="primary" size="small" variant="outlined" onClick={this.handleSubmitForm}>
-                      {i18next.t("app.savessssss", "Add")}
+                      {i18next.t("app.add", "Add")}
                     </Button>
                   }
                 </Form>

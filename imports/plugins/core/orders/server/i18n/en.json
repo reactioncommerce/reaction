@@ -4,6 +4,12 @@
   "translation": {
     "reaction-orders": {
       "notFound": "Order Not Found",
+      "orderActions": {
+        "markAsPackedDescription": "Mark all items in this fulfillment group as \"Packed\"",
+        "markAsPackedLabel": "Mark as packed",
+        "updateGroupStatus": "Update group status"
+      },
+      "orderDetails": "Order Details",
       "order": {
         "applyRefund": "Apply refund",
         "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
@@ -11,7 +17,7 @@
         "cancelGroup": "Do you want to cancel this group?",
         "cancelGroupLabel": "Cancel group",
         "cancelOrder": "Do you want to cancel this entire order?",
-        "cancelOrderLabel": "Cancel Order",
+        "cancelOrderLabel": "Cancel order",
         "cancelOrderNoRestock": "Do not restock",
         "cancelOrderThenRestock": "Restock",
         "refunding": "Refunding",
@@ -21,7 +27,8 @@
         "refundItemsSuccess": "Refund was successfully applied",
         "refundItemsTitle": "Refund Items",
         "refundItemsWait": "Payment is not yet captured",
-        "restockInventory": "Restock inventory?"
+        "restockInventory": "Restock inventory?",
+        "updateFulfillmentGroupStatus": "Update group status"
       },
       "admin": {
         "shortcut": {
