@@ -13,7 +13,6 @@ export default {
       " cart, and then click the dashboard icon for more tools.",
     handle: "example-product",
     hashtags: [
-      "rpjCvTBGjhBi2xdro",
       "cseCBSSrJ3t8HQSNP"
     ],
     price: {
@@ -3338,20 +3337,16 @@ export default {
     availablePaymentMethods: []
   }],
   tags: [{
-    slug: "example-product",
-    name: "example-product",
-    isTopLevel: false,
-    updatedAt: new Date("2014-04-12T08:17:20.576-0700"),
-    createdAt: new Date("2014-04-12T08:17:20.576-0700"),
     _id: "cseCBSSrJ3t8HQSNP",
-    shopId: "J8Bhq3uTtdgwZx3rz"
-  }, {
-    slug: "shop",
-    name: "Shop",
-    isTopLevel: true,
-    updatedAt: new Date("2014-04-09T13:23:57.412-0700"),
-    createdAt: new Date("2014-04-09T13:23:57.412-0700"),
-    _id: "rpjCvTBGjhBi2xdro",
-    shopId: "J8Bhq3uTtdgwZx3rz"
+    createdAt: new Date("2014-04-12T08:17:20.576-0700"),
+    displayTitle: "Example Tag",
+    groups: [],
+    isDeleted: false,
+    isTopLevel: false,
+    isVisible: true,
+    name: "Example",
+    shopId: "J8Bhq3uTtdgwZx3rz",
+    slug: "example-tag",
+    updatedAt: new Date("2014-04-12T08:17:20.576-0700")
   }]
 };
