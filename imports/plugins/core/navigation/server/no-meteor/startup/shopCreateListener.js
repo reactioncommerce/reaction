@@ -6,6 +6,8 @@ import createDefaultNavigationTreeForShop from "../util/createDefaultNavigationT
  * @returns {undefined}
  */
 export default async function shopCreateListener(context) {
-  context.appEvents.on("afterShopCreate", async ({ shop }) =>
-    createDefaultNavigationTreeForShop(context, shop));
+  context.appEvents.on("afterShopCreate", async ({ shop }) => {
+    if (shop.defaultNavigationTreeId) return;
+    await createDefaultNavigationTreeForShop(context, shop);
+  });
 }
