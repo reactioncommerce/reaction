@@ -86,6 +86,8 @@ app:
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED
         value: true
+    -   key: PRICING_PUBLISH_ENABLED
+        value: true
     -   key: PRICING_GRAPHQL_URL
         value: http://reaction-pricing-engine.bobs:8888/graphql
     -   key: PRODUCT_CONSUMER_ENABLED
