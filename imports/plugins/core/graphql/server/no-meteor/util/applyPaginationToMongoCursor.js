@@ -16,7 +16,7 @@ const DEFAULT_LIMIT = 20;
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
  * @return {Promise<Object>} `{ hasNextPage, hasPreviousPage }`
  */
-export default async function applyPaginationToMongoCursor(cursor, { first, last } = {}, {
+export default async function applyPaginationToMongoCursor(cursor, { first, last, offset } = {}, {
   includeHasNextPage = true,
   includeHasPreviousPage = true
 } = {}) {
@@ -26,6 +26,9 @@ export default async function applyPaginationToMongoCursor(cursor, { first, last
   const limit = first || last || DEFAULT_LIMIT;
 
   let skip = 0;
+
+  if (offset) skip = offset;
+
   let hasNextPage = null;
   let hasPreviousPage = null;
   if (last) {
