@@ -380,6 +380,7 @@ extend type Query {
     before: ConnectionCursor,
     first: ConnectionLimitInt,
     last: ConnectionLimitInt,
+    offset: ConnectionLimitInt,
     sortOrder: SortOrder = desc,
 
     "Provide a Currency code if sortBy is minPrice"

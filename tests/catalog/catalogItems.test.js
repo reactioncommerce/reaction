@@ -5,6 +5,7 @@ import { internalTagIds } from "../mocks/mockTags";
 import { internalCatalogItemIds } from "../mocks/mockCatalogProducts";
 import {
   mockCatalogItems,
+  mockOffsetCatalogItemsResponse,
   mockUnsortedCatalogItemsResponse,
   mockSortedByPriceHigh2LowCatalogItemsResponse,
   mockSortedByPriceLow2HighCatalogItemsResponse
@@ -56,6 +57,19 @@ test("expect CatalogItemProducts sorted by minPrice from highest to lowest when 
   }
 
   expect(result).toEqual(mockSortedByPriceHigh2LowCatalogItemsResponse);
+});
+
+// expect CatalogItems with offset to skip items
+test("expect CatalogitemProducts with offset to skip items", async () => {
+  let result;
+  try {
+    result = await query({ shopIds: [opaqueShopId], offset: 1 });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result).toEqual(mockOffsetCatalogItemsResponse);
 });
 
 // expect CatalogItems sorted by minPrice form high to low when sortOrder is desc
