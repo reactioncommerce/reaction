@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
-import Link from "@material-ui/core/Link";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
 import { Button } from "/imports/plugins/core/ui/client/components";
