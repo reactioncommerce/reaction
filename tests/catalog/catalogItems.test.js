@@ -72,6 +72,23 @@ test("expect CatalogitemProducts with offset to skip items", async () => {
   expect(result).toEqual(mockOffsetCatalogItemsResponse);
 });
 
+// expect CatalogItems with feature sortBy and offset to skip items correctly
+test("expect CatalogitemProducts with offset to skip items", async () => {
+  let result;
+  try {
+    result = await query({
+      shopIds: [opaqueShopId],
+      offset: 1,
+      sortBy: "featured"
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result).toEqual(mockOffsetCatalogItemsResponse);
+});
+
 // expect CatalogItems sorted by minPrice form high to low when sortOrder is desc
 test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided and sortOrder is desc", async () => {
   let result;
