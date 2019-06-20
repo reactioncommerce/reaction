@@ -11,7 +11,7 @@ import sendWelcomeEmail from "/imports/plugins/core/accounts/server/util/sendWel
 import sendVerificationEmail from "./util/sendVerificationEmail";
 
 appEvents.on("afterAddUnverifiedEmailToUser", ({ email, userId }) => {
-  sendVerificationEmail(userId, email);
+  sendVerificationEmail({ email, userId });
 });
 
 Meteor.startup(() => {
@@ -87,7 +87,6 @@ Meteor.startup(() => {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
-    const shopId = Reaction.getShopId(); // current shop; not primary shop
     const groupToAddUser = options.groupId;
     const roles = {};
     const additionals = {
@@ -95,16 +94,19 @@ Meteor.startup(() => {
       profile: Object.assign({}, options && options.profile)
     };
     if (!user.emails) user.emails = [];
+
     // init default user roles
     // we won't create users unless we have a shop.
+    const shopId = Reaction.getShopId(); // current shop; not primary shop
     if (shopId) {
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
         const group = Collections.Groups.findOne({ slug: "guest", shopId });
-        const defaultGuestRoles = group.permissions;
-        // if no defaultGuestRoles retrieved from DB, use the default Reaction set
-        roles[shopId] = defaultGuestRoles || Reaction.defaultVisitorRoles;
-        additionals.groups = [group._id];
+        // if no group permissions retrieved from DB, use the default Reaction set
+        roles[shopId] = (group && group.permissions) || Reaction.defaultVisitorRoles;
+        if (group) {
+          additionals.groups = [group._id];
+        }
       } else {
         let group;
         if (groupToAddUser) {
@@ -113,81 +115,89 @@ Meteor.startup(() => {
           group = Collections.Groups.findOne({ slug: "customer", shopId });
         }
         // if no group or customer permissions retrieved from DB, use the default Reaction customer set
-        roles[shopId] = group.permissions || Reaction.defaultCustomerRoles;
-        additionals.groups = [group._id];
-        // also add services with email defined to user.emails[]
-        const userServices = user.services;
-        for (const service in userServices) {
-          if ({}.hasOwnProperty.call(userServices, service)) {
-            const serviceObj = userServices[service];
-            if (serviceObj.email) {
-              const email = {
-                provides: "default",
-                address: serviceObj.email,
-                verified: true
-              };
-              user.emails.push(email);
-            }
-            if (serviceObj.name) {
-              user.username = serviceObj.name;
-              additionals.profile.name = serviceObj.name;
-            }
-            // TODO: For now we have here instagram, twitter and google avatar cases
-            // need to make complete list
-            if (serviceObj.picture) {
-              additionals.profile.picture = user.services[service].picture;
-            } else if (serviceObj.profile_image_url_https) {
-              additionals.profile.picture = user.services[service].dprofile_image_url_https;
-            } else if (serviceObj.profile_picture) {
-              additionals.profile.picture = user.services[service].profile_picture;
-            }
-            // Correctly map Instagram profile data to Meteor user / Accounts
-            if (userServices.instagram) {
-              user.username = serviceObj.username;
-              user.name = serviceObj.full_name;
-              additionals.name = serviceObj.full_name;
-              additionals.profile.picture = serviceObj.profile_picture;
-              additionals.profile.bio = serviceObj.bio;
-              additionals.profile.name = serviceObj.full_name;
-              additionals.profile.username = serviceObj.username;
-            }
-          }
+        roles[shopId] = (group && group.permissions) || Reaction.defaultCustomerRoles;
+        if (group) {
+          additionals.groups = [group._id];
         }
       }
-
-      // clone before adding roles
-      const account = Object.assign({ shopId }, user, additionals);
-      account.userId = user._id;
-      Collections.Accounts.insert(account);
-
-      const insertedAccount = Collections.Accounts.findOne({ userId: user._id });
-      Promise.await(appEvents.emit("afterAccountCreate", {
-        account: insertedAccount,
-        createdBy: user._id
-      }));
-
-      // send a welcome email to new users,
-      // but skip the first default admin user and anonymous users
-      // (default admins already get a verification email)
-      if (insertedAccount.emails && insertedAccount.emails.length > 0
-        && (!(Meteor.users.find().count() === 0) && !insertedAccount.profile.invited)) {
-        const token = Random.secret();
-        sendWelcomeEmail(shopId, user._id, token);
-        const defaultEmail = insertedAccount.emails.find((email) => email.provides === "default");
-        const when = new Date();
-        const tokenObj = {
-          address: defaultEmail.address,
-          token,
-          when
-        };
-        _.set(user, "services.email.verificationTokens", [tokenObj]);
-      }
-
-      // assign default user roles
-      user.roles = roles;
-
-      return user;
     }
+
+    // also add services with email defined to user.emails[]
+    const userServices = user.services;
+    for (const service in userServices) {
+      if ({}.hasOwnProperty.call(userServices, service)) {
+        const serviceObj = userServices[service];
+        if (serviceObj.email) {
+          const email = {
+            provides: "default",
+            address: serviceObj.email,
+            verified: true
+          };
+          user.emails.push(email);
+        }
+        if (serviceObj.name) {
+          user.username = serviceObj.name;
+          additionals.profile.name = serviceObj.name;
+        }
+        // TODO: For now we have here instagram, twitter and google avatar cases
+        // need to make complete list
+        if (serviceObj.picture) {
+          additionals.profile.picture = user.services[service].picture;
+        } else if (serviceObj.profile_image_url_https) {
+          additionals.profile.picture = user.services[service].dprofile_image_url_https;
+        } else if (serviceObj.profile_picture) {
+          additionals.profile.picture = user.services[service].profile_picture;
+        }
+        // Correctly map Instagram profile data to Meteor user / Accounts
+        if (userServices.instagram) {
+          user.username = serviceObj.username;
+          user.name = serviceObj.full_name;
+          additionals.name = serviceObj.full_name;
+          additionals.profile.picture = serviceObj.profile_picture;
+          additionals.profile.bio = serviceObj.bio;
+          additionals.profile.name = serviceObj.full_name;
+          additionals.profile.username = serviceObj.username;
+        }
+      }
+    }
+
+    // Automatically verify "localhost" email addresses
+    let emailIsVerified = false;
+    if (user.emails[0] && user.emails[0].address.indexOf("localhost") > -1) {
+      user.emails[0].verified = true;
+      emailIsVerified = true;
+    }
+
+    // clone before adding roles
+    const account = Object.assign({ shopId }, user, additionals);
+    account.userId = user._id;
+    Collections.Accounts.insert(account);
+
+    const insertedAccount = Collections.Accounts.findOne({ userId: user._id });
+    Promise.await(appEvents.emit("afterAccountCreate", {
+      account: insertedAccount,
+      createdBy: user._id
+    }));
+
+    // send a welcome email to new users,
+    // but skip the first default admin user and anonymous users
+    // (default admins already get a verification email)
+    if (shopId && !emailIsVerified && user.emails[0]) {
+      const token = Random.secret();
+      sendWelcomeEmail(shopId, user._id, token);
+      const when = new Date();
+      const tokenObj = {
+        address: user.emails[0].address,
+        token,
+        when
+      };
+      _.set(user, "services.email.verificationTokens", [tokenObj]);
+    }
+
+    // assign default user roles
+    user.roles = roles;
+
+    return user;
   });
 
   /**

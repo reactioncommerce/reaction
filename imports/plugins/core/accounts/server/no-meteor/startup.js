@@ -25,11 +25,8 @@ const defaultAdminRoles = [
  *   there is no primary shop.
  */
 async function createDefaultAdminUser(context) {
-  const { appEvents, collections, createUser } = context;
-  const { Accounts, Groups, Shops, users } = collections;
-
-  const primaryShop = await Shops.findOne({ shopType: "primary" });
-  if (!primaryShop) return null;
+  const { collections, createUser } = context;
+  const { users } = collections;
 
   // Check whether a non-shop-specific "owner" user already exists
   const ownerUser = await users.findOne({ "roles.__global_roles__": "owner" });
@@ -87,7 +84,6 @@ async function createDefaultAdminUser(context) {
     $set: {
       name: userInput.name,
       roles: {
-        [primaryShop._id]: defaultAdminRoles,
         __global_roles__: defaultAdminRoles // eslint-disable-line camelcase
       }
     }
@@ -100,57 +96,6 @@ async function createDefaultAdminUser(context) {
       \n  EMAIL/LOGIN: ${userInput.email}
       \n  PASSWORD: ${userInput.password}
       \n ********************************* \n\n`);
-
-  // set the default shop email to the default admin email
-  await Shops.updateOne({ _id: primaryShop._id }, {
-    $addToSet: {
-      emails: {
-        address: userInput.email,
-        verified: true
-      }
-    }
-  });
-
-  const group = await Groups.findOne({ slug: "owner", shopId: primaryShop._id });
-  if (group) {
-    await Accounts.updateOne({ userId }, { $set: { groups: [group._id] } });
-  }
-
-  // Automatically verify "localhost" email addresses
-  let isVerified = false;
-  if (userInput.email.indexOf("localhost") > -1) {
-    await users.updateOne({
-      "_id": userId,
-      "emails.address": userInput.email
-    }, {
-      $set: {
-        "emails.$.verified": true
-      }
-    });
-    await Accounts.updateOne({
-      userId,
-      "emails.address": userInput.email
-    }, {
-      $set: {
-        "emails.$.verified": true
-      }
-    });
-    isVerified = true;
-  }
-
-  const account = await Accounts.findOne({ userId });
-  await appEvents.emit("afterAccountCreate", {
-    account,
-    createdBy: null,
-    isFirstOwnerAccount: true
-  });
-
-  if (!isVerified) {
-    await appEvents.emit("afterAddUnverifiedEmailToUser", {
-      email: userInput.email,
-      userId
-    });
-  }
 
   return userId;
 }
@@ -185,14 +130,9 @@ export default async function startup(context) {
     }
   } = context;
 
-  // timing is important, packages are rqd for initial permissions configuration.
-  if (!Meteor.isAppTest) {
-    await createDefaultAdminUser(context);
-
-    await addPluginRolesToGroups(context);
-  }
-
-  appEvents.on("afterShopCreate", async ({ createdBy: userId, shop }) => {
+  appEvents.on("afterShopCreate", async (payload) => {
+    const { shop } = payload;
+    let { createdBy: userId } = payload;
     const { _id: newShopId, shopType } = shop;
 
     // Create account groups for the new shop
@@ -206,11 +146,15 @@ export default async function startup(context) {
 
     await addPluginRolesToGroups(context, newShopId);
 
-    // If we just created the primary shop, the `createDefaultAdminUser` call above may have
-    // failed to do anything. We run it again now. It won't create the user a second time
-    // if it's already done.
-    if (shopType === "primary") {
-      await createDefaultAdminUser(context);
+    // If we just created the primary shop and there is no userId, this is the
+    // sample data import that happens on startup. Give the global owner user
+    // access to the primary shop.
+    if (!userId && shopType === "primary") {
+      const ownerUser = await users.findOne({ "roles.__global_roles__": "owner" });
+      if (!ownerUser) {
+        throw new Error("Primary shop created, but no global owner user exists. This may be a timing issue. Try restarting the app.");
+      }
+      userId = ownerUser._id;
     }
 
     // If a user created the shop, give the user owner access to it
@@ -245,4 +189,11 @@ export default async function startup(context) {
       }));
     }
   });
+
+  // timing is important, packages are rqd for initial permissions configuration.
+  if (!Meteor.isAppTest) {
+    await createDefaultAdminUser(context);
+
+    await addPluginRolesToGroups(context);
+  }
 }

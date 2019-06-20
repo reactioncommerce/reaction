@@ -30,91 +30,97 @@ export default async function loadSampleData(context) {
   } = context;
 
   // Only import sample data if all of the relevant collections are empty
-  const anyProducts = await Products.findOne({});
   const anyShop = await Shops.findOne({});
-  const anyTag = await Tags.findOne({});
 
-  if (anyProducts || anyShop || anyTag) {
-    Logger.debug("Not loading sample data because there are already documents");
-    return;
-  }
+  if (!anyShop) {
+    // Shops
+    Logger.info("Loading sample shops...");
 
-  // Shops
-  Logger.info("Loading sample shops...");
-
-  // Ensure there's only one primary shop in the sample data
-  const primaryShopCount = sampleData.shops.filter((shop) => shop.shopType === "primary").length;
-  if (primaryShopCount > 1) {
-    throw new Error("More than one primary shop in the sample dataset");
-  }
-
-  const currentDomain = rootUrl && url.parse(rootUrl).hostname;
-
-  const shopInsertPromises = sampleData.shops.map(async (shop) => {
-    // add the current domain to the shop if it doesn't already exist
-    let { domains } = shop;
-    if (currentDomain && (!Array.isArray(domains) || !domains.includes(currentDomain))) {
-      if (!Array.isArray(domains)) domains = [];
-      domains.push(currentDomain);
+    // Ensure there's only one primary shop in the sample data
+    const primaryShopCount = sampleData.shops.filter((shop) => shop.shopType === "primary").length;
+    if (primaryShopCount > 1) {
+      throw new Error("More than one primary shop in the sample dataset");
     }
 
-    const now = new Date();
-    const finalShop = {
-      ...shop,
-      createdAt: now,
-      domains,
-      updatedAt: now
-    };
+    const currentDomain = rootUrl && url.parse(rootUrl).host;
 
-    ShopSchema.validate(finalShop);
+    const shopInsertPromises = sampleData.shops.map(async (shop) => {
+      // add the current domain to the shop if it doesn't already exist
+      let { domains } = shop;
+      if (currentDomain && (!Array.isArray(domains) || !domains.includes(currentDomain))) {
+        if (!Array.isArray(domains)) domains = [];
+        domains.push(currentDomain);
+      }
 
-    await Shops.insertOne(finalShop);
+      const now = new Date();
+      const finalShop = {
+        ...shop,
+        createdAt: now,
+        domains,
+        updatedAt: now
+      };
 
-    await appEvents.emit("afterShopCreate", { createdBy: null, shop });
-  });
+      ShopSchema.validate(finalShop);
 
-  // Ensure all shops have been inserted before continuing
-  await Promise.all(shopInsertPromises);
+      await Shops.insertOne(finalShop);
+
+      await appEvents.emit("afterShopCreate", { createdBy: null, shop });
+    });
+
+    // Ensure all shops have been inserted before continuing
+    await Promise.all(shopInsertPromises);
+  }
 
   // Tags
   if (Array.isArray(sampleData.tags)) {
-    Logger.info("Loading sample tags...");
-    TagSchema.validate(sampleData.tags);
-    await Tags.insertMany(sampleData.tags);
+    const anyTag = await Tags.findOne({});
+    if (!anyTag) {
+      Logger.info("Loading sample tags...");
+      TagSchema.validate(sampleData.tags);
+      await Tags.insertMany(sampleData.tags);
+    }
   }
 
   // Products
   if (Array.isArray(sampleData.products)) {
-    Logger.info("Loading sample products...");
+    const anyProducts = await Products.findOne({});
+    if (!anyProducts) {
+      Logger.info("Loading sample products...");
 
-    sampleData.products.forEach((product) => {
-      if (product.ancestors.length === 0) {
-        ProductSchema.validate(product);
-      } else {
-        ProductVariantSchema.validate(product);
-      }
-    });
+      sampleData.products.forEach((product) => {
+        if (product.ancestors.length === 0) {
+          ProductSchema.validate(product);
+        } else {
+          ProductVariantSchema.validate(product);
+        }
+      });
 
-    await Products.insertMany(sampleData.products);
+      await Products.insertMany(sampleData.products);
 
-    // Immediately publish them to the catalog, too
-    const topProductIds = sampleData.products.reduce((list, product) => {
-      if (product.ancestors.length === 0) {
-        list.push(product._id);
-      }
-      return list;
-    }, []);
-    await context.mutations.publishProducts({ ...context, isInternalCall: true }, topProductIds);
+      // Immediately publish them to the catalog, too
+      const topProductIds = sampleData.products.reduce((list, product) => {
+        if (product.ancestors.length === 0) {
+          list.push(product._id);
+        }
+        return list;
+      }, []);
+      await context.mutations.publishProducts({ ...context, isInternalCall: true }, topProductIds);
+    }
   }
 
   // Navigation
-  if (Array.isArray(sampleData.navigationItems)) {
-    Logger.info("Loading navigation items...");
-    await NavigationItems.insertMany(sampleData.navigationItems);
-  }
+  const anyNavigationItems = await NavigationItems.findOne({});
+  const anyNavigationTrees = await NavigationTrees.findOne({});
 
-  if (Array.isArray(sampleData.navigationTrees)) {
-    Logger.info("Loading navigation trees...");
-    await NavigationTrees.insertMany(sampleData.navigationTrees);
+  if (!anyNavigationItems && !anyNavigationTrees) {
+    if (Array.isArray(sampleData.navigationItems)) {
+      Logger.info("Loading navigation items...");
+      await NavigationItems.insertMany(sampleData.navigationItems);
+    }
+
+    if (Array.isArray(sampleData.navigationTrees)) {
+      Logger.info("Loading navigation trees...");
+      await NavigationTrees.insertMany(sampleData.navigationTrees);
+    }
   }
 }

@@ -24,18 +24,15 @@ export default async function sendVerificationEmail({
   userId
 }) {
   // Make sure the user exists, and email is one of their addresses.
-  const user = Meteor.users.findOne(userId);
+  const user = Meteor.users.findOne({ _id: userId });
 
-  if (!user) {
-    Logger.error("sendVerificationEmail - User not found");
-    throw new ReactionError("not-found", "User not found");
-  }
+  if (!user) throw new ReactionError("not-found", `User ${userId} not found`);
 
   let address = email;
 
   // pick the first unverified address if no address provided.
   if (!email) {
-    const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
+    const unverifiedEmail = _.find(user.emails || [], (item) => !item.verified) || {};
 
     ({ address } = unverifiedEmail);
 

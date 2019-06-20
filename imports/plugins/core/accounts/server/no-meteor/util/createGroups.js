@@ -1,9 +1,32 @@
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 
 const defaultCustomerRoles = ["guest", "account/profile", "product", "tag", "index", "cart/completed"];
 const defaultVisitorRoles = ["anonymous", "guest", "product", "tag", "index", "cart/completed"];
+const defaultOwnerRoles = [
+  "owner",
+  "admin",
+  "createProduct",
+  "dashboard",
+  "shopSettings",
+  "guest",
+  "account/profile",
+  "product",
+  "tag",
+  "index",
+  "cart/completed"
+];
+const defaultShopManagerRoles = [
+  "createProduct",
+  "dashboard",
+  "shopSettings",
+  "guest",
+  "account/profile",
+  "product",
+  "tag",
+  "index",
+  "cart/completed"
+];
 
 /**
  * @name createGroups
@@ -22,7 +45,12 @@ export default async function createGroups(context, shopId) {
     }
   } = context;
 
-  const roles = await getDefaultGroupRoles(context);
+  const roles = {
+    "shop manager": defaultShopManagerRoles,
+    "customer": defaultCustomerRoles,
+    "guest": defaultVisitorRoles,
+    "owner": defaultOwnerRoles
+  };
 
   const primaryShop = await Shops.findOne({ shopType: "primary" });
 
@@ -43,40 +71,4 @@ export default async function createGroups(context, shopId) {
   });
 
   await Promise.all(promises);
-}
-
-/**
- * @method getDefaultGroupRoles
- * @private
- * @method
- * @memberof Core
- * @summary Generates default groups: Get all defined roles from the DB except "anonymous"
- * because that gets removed from a user on register if it's not removed,
- * it causes mismatch between roles in user (i.e Meteor.user().roles[shopId]) vs that in
- * the user's group
- * @param {Object} context App context
- * @return {Object} object key-value pair containing the default groups and roles for the groups
- */
-async function getDefaultGroupRoles(context) {
-  const allRoles = await context.collections.roles.find({}).toArray();
-  let ownerRoles = allRoles.map((role) => role.name)
-    .filter((role) => role !== "anonymous"); // see comment above
-
-  // Join all other roles with package roles for owner. Owner should have all roles
-  // this is needed because of default roles defined in the app that are not in Roles.getAllRoles
-  ownerRoles = ownerRoles.concat(defaultCustomerRoles);
-  ownerRoles = _.uniq(ownerRoles);
-
-  // we're making a Shop Manager default group that have all roles except the owner role
-  const shopManagerRoles = ownerRoles.filter((role) => role !== "owner" && role !== "admin");
-  shopManagerRoles.push("shopSettings");
-
-  const roles = {
-    "shop manager": shopManagerRoles,
-    "customer": defaultCustomerRoles,
-    "guest": defaultVisitorRoles,
-    "owner": ownerRoles
-  };
-
-  return roles;
 }

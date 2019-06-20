@@ -618,6 +618,9 @@ export default {
     },
     currency: "USD",
     defaultNavigationTreeId: "XyS5wksrr9gTQLN9i",
+    emails: [
+      { address: "admin@localhost", verified: true }
+    ],
     language: "en",
     languages: [
       {
