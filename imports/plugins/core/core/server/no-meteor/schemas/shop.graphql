@@ -39,6 +39,9 @@ type Shop implements Node {
   "Returns a list of roles for this shop, as a Relay-compatible connection."
   roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
 
+  "Returns URLs for shop logos"
+  shopLogoUrls: ShopLogoUrls
+
   "Returns URLs for various storefront routes"
   storefrontUrls: StorefrontUrls
 
@@ -79,6 +82,12 @@ input InviteShopMemberInput {
   shopId: ID!
 }
 
+"Shop Logo URLs to provide for the updateShopLogoUrls mutation"
+input ShopLogoUrlsInput {
+  "Primary Shop logo"
+  primaryShopLogoUrl: String
+}
+
 "Shop URLs to provide for the updateShopUrls mutation"
 input StorefrontUrlsInput {
   "Storefront Account Profile URL (can include `:accountId` in string)"
@@ -95,6 +104,18 @@ input StorefrontUrlsInput {
 
   "Storefront orders URL (can include `:accountId` in string)"
   storefrontOrdersUrl: String
+}
+
+"Input parameters for the updateShopLogoUrls mutation"
+input UpdateShopLogoUrlsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The ID of the shop for the logos to update"
+  shopId: ID!
+
+  "URL object of all URL's for updateShopLogoUrls mutation"
+  shopLogoUrls: ShopLogoUrlsInput!
 }
 
 "Input parameters for the updateShopUrls mutation"
@@ -124,6 +145,12 @@ type ShopBrandAssets {
   navbarBrandImage: ImageSizes
 }
 
+"URLs for shop logos"
+type ShopLogoUrls {
+  "Primary shop logo"
+  primaryShopLogoUrl: String
+}
+
 "URLs for various routes"
 type StorefrontUrls {
   "Storefront Account Profile URL (can include `:accountId` in string)"
@@ -142,6 +169,15 @@ type StorefrontUrls {
   storefrontOrdersUrl: String
 }
 
+"The response from the `updateShopLogoUrls` mutation"
+type UpdateShopLogoUrlsPayload {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The shop which was updated with URLs"
+  shop: Shop!
+}
+
 "The response from the `updateShopUrls` mutation"
 type UpdateShopUrlsPayload {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -157,6 +193,9 @@ extend type Mutation {
   and put them in the provided permission group
   """
   inviteShopMember(input: InviteShopMemberInput!): InviteShopMemberPayload
+
+  "Given URLs for shop logos, update the Shops collection object with URLs"
+  updateShopLogoUrls(input: UpdateShopLogoUrlsInput!): UpdateShopLogoUrlsPayload
 
   "Given URLs for various shop pages, update the Shops collection object with URLs"
   updateShopUrls(input: UpdateShopUrlsInput!): UpdateShopUrlsPayload

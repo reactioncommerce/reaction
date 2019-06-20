@@ -205,6 +205,22 @@ export const ParcelSize = new SimpleSchema({
 registerSchema("ParcelSize", ParcelSize);
 
 /**
+ * @name ShopLogoUrls
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} primaryShopLogoUrl optional
+ * @property {String} styles optional
+ */
+export const ShopLogoUrls = new SimpleSchema({
+  primaryShopLogoUrl: {
+    type: String,
+    optional: true
+  }
+});
+
+registerSchema("ShopLogoUrls", ShopLogoUrls);
+
+/**
  * @name ShopTheme
  * @memberof Schemas
  * @type {SimpleSchema}
