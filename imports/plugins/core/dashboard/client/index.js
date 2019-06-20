@@ -23,8 +23,6 @@ import "./templates/shop/settings/settings.js";
 import "./templates/dashboard.html";
 import "./templates/dashboard.js";
 
-import OperatorLanding from "./components/OperatorLanding";
-
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
@@ -34,12 +32,4 @@ registerOperatorRoute({
   // eslint-disable-next-line react/display-name
   SidebarIconComponent: (props) => <FontAwesomeIcon icon={faStore} {...props} />,
   sidebarI18nLabel: "admin.settings.shopSettingsLabel"
-});
-
-
-registerOperatorRoute({
-  isNavigationLink: false,
-  isSetting: false,
-  path: "/",
-  mainComponent: OperatorLanding
 });
