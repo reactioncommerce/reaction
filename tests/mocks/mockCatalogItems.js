@@ -34,6 +34,8 @@ export const mockCatalogItems = [
   }
 ];
 
+export const mockOffsetCatalogItems = mockCatalogItems.shift();
+
 /**
  * Mock absolute URLs in catalog products when returned from GraphQL
  */
