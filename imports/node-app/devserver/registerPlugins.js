@@ -27,12 +27,12 @@ import registerTaxesRatesPlugin from "/imports/plugins/included/taxes-rates/serv
  */
 export default async function registerPlugins(app) {
   // Core
+  await registerFilesPlugin(app); // Core plugin needs Media collection, so files plugin must be first
   await registerCorePlugin(app);
   await registerAccountsPlugin(app);
   await registerCartPlugin(app);
   await registerCatalogPlugin(app);
   await registerDiscountsPlugin(app);
-  await registerFilesPlugin(app);
   await registerI18nPlugin(app);
   await registerInventoryPlugin(app);
   await registerNavigationPlugin(app);
@@ -42,7 +42,7 @@ export default async function registerPlugins(app) {
   await registerTagsPlugin(app);
   await registerTemplatesPlugin(app);
 
-  // // Included
+  // Included
   await registerNotificationsPlugin(app);
   await registerShippingRatesPlugin(app);
   await registerSimpleInventoryPlugin(app);

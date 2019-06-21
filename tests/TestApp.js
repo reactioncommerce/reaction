@@ -30,6 +30,35 @@ class TestApp {
       // error logging in the test output.
       // debug: true,
       context: {
+        createUser: async (userInfo) => {
+          const { email, name, username } = userInfo;
+
+          const user = {
+            _id: Random.id(),
+            createdAt: new Date(),
+            emails: [
+              {
+                address: email,
+                verified: true,
+                provides: "default"
+              }
+            ],
+            name,
+            services: {
+              password: {
+                bcrypt: Random.id(29)
+              },
+              resume: {
+                loginTokens: []
+              }
+            },
+            username
+          };
+
+          await this.reactionNodeApp.collections.users.insertOne(user);
+
+          await this.reactionNodeApp.collections.Accounts.insertOne({ ...user, userId: user._id });
+        },
         mutations,
         queries,
         rootUrl: "https://shop.fake.site/"
