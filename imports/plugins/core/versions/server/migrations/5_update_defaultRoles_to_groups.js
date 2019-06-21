@@ -59,7 +59,7 @@ Migrations.add({
         // On startup Reaction.init() creates the default groups, this finds existing groups
         // and updates accounts that belong to them
         const { _id, permissions } = Groups.findOne({ slug: groupKeys }) || {};
-        Logger.debug(`new group "${groupKeys}" created with id "${_id}"`);
+        Logger.debug(`new group "${groupKeys}" created with ID "${_id}"`);
         const updatedAccounts = updateAccountsInGroup({
           shopId: shop._id,
           permissions,
