@@ -1,32 +1,11 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-
-const defaultCustomerRoles = ["guest", "account/profile", "product", "tag", "index", "cart/completed"];
-const defaultVisitorRoles = ["anonymous", "guest", "product", "tag", "index", "cart/completed"];
-const defaultOwnerRoles = [
-  "owner",
-  "admin",
-  "createProduct",
-  "dashboard",
-  "shopSettings",
-  "guest",
-  "account/profile",
-  "product",
-  "tag",
-  "index",
-  "cart/completed"
-];
-const defaultShopManagerRoles = [
-  "createProduct",
-  "dashboard",
-  "shopSettings",
-  "guest",
-  "account/profile",
-  "product",
-  "tag",
-  "index",
-  "cart/completed"
-];
+import {
+  defaultCustomerRoles,
+  defaultOwnerRoles,
+  defaultShopManagerRoles,
+  defaultVisitorRoles
+} from "./defaultRoles";
 
 /**
  * @name createGroups
