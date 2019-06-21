@@ -7,7 +7,8 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @summary resolver for the updateShop GraphQL mutation
  * @param {Object} _ - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client
- * @param {String} args.input.shopLogoUrls -  shop logo urls
+ * @param {Object} arts.input.shopLogoUrls - An object containing the shop logo urls to update
+ * @param {Object} args.input.storefrontUrls - An object containing storefront url locations
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>} ShopsPayload
  */

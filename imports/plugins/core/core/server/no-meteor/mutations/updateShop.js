@@ -9,6 +9,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} input - an object of all mutation arguments that were sent
  * @param {String} input.shopId - The shop ID
  * @param {Object} input.shopLogoUrls - An object containing the shop logo urls to update
+ * @param {Object} input.storefrontUrls - An object containing storefront url locations
  * @return {Promise<Object>} with updated shop
  */
 export default async function updateShop(context, input) {

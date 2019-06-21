@@ -82,13 +82,13 @@ input InviteShopMemberInput {
   shopId: ID!
 }
 
-"Shop Logo URLs to provide for the updateShopLogoUrls mutation"
+"Shop Logo URLs to provide for the updateShop mutation"
 input ShopLogoUrlsInput {
   "Primary Shop logo"
   primaryShopLogoUrl: String
 }
 
-"Shop URLs to provide for the updateShopUrls mutation"
+"Storefront route URLs to provide for the updateShop mutation"
 input StorefrontUrlsInput {
   "Storefront Account Profile URL (can include `:accountId` in string)"
   storefrontAccountProfileUrl: String
@@ -114,24 +114,12 @@ input UpdateShopInput {
   "The ID of the shop for the logos to update"
   shopId: ID!
 
-  "Object of all shop logo urls "
+  "Object of shop logo urls "
   shopLogoUrls: ShopLogoUrlsInput
 
-  "Object of storefront urls"
+  "Object of storefront routes urls"
   storefrontUrls: StorefrontUrlsInput
 }
-
-# "Input parameters for the updateShopUrls mutation"
-# input UpdateShopUrlsInput {
-#   "An optional string identifying the mutation call, which will be returned in the response payload"
-#   clientMutationId: String
-
-#   "The ID of the shop to which you want to invite this person"
-#   shopId: ID!
-
-#   "URL object of all URL's for updateShopUrls mutation"
-#   storefrontUrls: StorefrontUrlsInput!
-# }
 
 "The response from the `inviteShopMember` mutation"
 type InviteShopMemberPayload {
@@ -148,13 +136,13 @@ type ShopBrandAssets {
   navbarBrandImage: ImageSizes
 }
 
-"URLs for shop logos"
+"Shop logo urls"
 type ShopLogoUrls {
   "Primary shop logo"
   primaryShopLogoUrl: String
 }
 
-"URLs for various routes"
+"Storefront route urls"
 type StorefrontUrls {
   "Storefront Account Profile URL (can include `:accountId` in string)"
   storefrontAccountProfileUrl: String
@@ -177,18 +165,9 @@ type UpdateShopPayload {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "The shop which was updated with URLs"
+  "The shop which was updated"
   shop: Shop!
 }
-
-# "The response from the `updateShopUrls` mutation"
-# type UpdateShopUrlsPayload {
-#   "An optional string identifying the mutation call, which will be returned in the response payload"
-#   clientMutationId: String
-
-#   "The shop which was updated with URLs"
-#   shop: Shop!
-# }
 
 extend type Mutation {
   """
@@ -199,9 +178,6 @@ extend type Mutation {
 
   "Given shop data, update the Shops collection with this data"
   updateShop(input: UpdateShopInput!): UpdateShopPayload
-
-  # "Given URLs for various shop pages, update the Shops collection object with URLs"
-  # updateShopUrls(input: UpdateShopUrlsInput!): UpdateShopUrlsPayload
 }
 
 extend type Query {
