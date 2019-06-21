@@ -114,21 +114,24 @@ input UpdateShopInput {
   "The ID of the shop for the logos to update"
   shopId: ID!
 
-  "URL object of all URL's for updateShopLogoUrls mutation"
-  shopLogoUrls: ShopLogoUrlsInput!
+  "Object of all shop logo urls "
+  shopLogoUrls: ShopLogoUrlsInput
+
+  "Object of storefront urls"
+  storefrontUrls: StorefrontUrlsInput
 }
 
-"Input parameters for the updateShopUrls mutation"
-input UpdateShopUrlsInput {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
+# "Input parameters for the updateShopUrls mutation"
+# input UpdateShopUrlsInput {
+#   "An optional string identifying the mutation call, which will be returned in the response payload"
+#   clientMutationId: String
 
-  "The ID of the shop to which you want to invite this person"
-  shopId: ID!
+#   "The ID of the shop to which you want to invite this person"
+#   shopId: ID!
 
-  "URL object of all URL's for updateShopUrls mutation"
-  storefrontUrls: StorefrontUrlsInput!
-}
+#   "URL object of all URL's for updateShopUrls mutation"
+#   storefrontUrls: StorefrontUrlsInput!
+# }
 
 "The response from the `inviteShopMember` mutation"
 type InviteShopMemberPayload {
@@ -178,14 +181,14 @@ type UpdateShopPayload {
   shop: Shop!
 }
 
-"The response from the `updateShopUrls` mutation"
-type UpdateShopUrlsPayload {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
+# "The response from the `updateShopUrls` mutation"
+# type UpdateShopUrlsPayload {
+#   "An optional string identifying the mutation call, which will be returned in the response payload"
+#   clientMutationId: String
 
-  "The shop which was updated with URLs"
-  shop: Shop!
-}
+#   "The shop which was updated with URLs"
+#   shop: Shop!
+# }
 
 extend type Mutation {
   """
@@ -194,11 +197,11 @@ extend type Mutation {
   """
   inviteShopMember(input: InviteShopMemberInput!): InviteShopMemberPayload
 
-  "Given URLs for shop logos, update the Shops collection object with URLs"
+  "Given shop data, update the Shops collection with this data"
   updateShop(input: UpdateShopInput!): UpdateShopPayload
 
-  "Given URLs for various shop pages, update the Shops collection object with URLs"
-  updateShopUrls(input: UpdateShopUrlsInput!): UpdateShopUrlsPayload
+  # "Given URLs for various shop pages, update the Shops collection object with URLs"
+  # updateShopUrls(input: UpdateShopUrlsInput!): UpdateShopUrlsPayload
 }
 
 extend type Query {

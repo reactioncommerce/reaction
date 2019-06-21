@@ -17,16 +17,25 @@ export default async function updateShop(context, input) {
 
   const {
     shopId,
-    shopLogoUrls
+    shopLogoUrls,
+    storefrontUrls
   } = input;
 
-
-  // Only update provided fields inside `shopLogoUrls`,
-  // don't update the whole object
+  // set data to update
   const sets = {};
-  Object.keys(shopLogoUrls).forEach((key) => {
-    sets[`shopLogoUrls.${key}`] = shopLogoUrls[key];
-  });
+
+  // Only update provided fields inside `objects`,
+  if (shopLogoUrls) {
+    Object.keys(shopLogoUrls).forEach((key) => {
+      sets[`shopLogoUrls.${key}`] = shopLogoUrls[key];
+    });
+  }
+
+  if (storefrontUrls) {
+    Object.keys(storefrontUrls).forEach((key) => {
+      sets[`storefrontUrls.${key}`] = storefrontUrls[key];
+    });
+  }
 
   // Check permission to make sure user is allowed to do this
   // Security check for admin access

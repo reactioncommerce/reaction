@@ -15,13 +15,15 @@ export default async function updateShop(_, { input }, context) {
   const {
     shopId: opaqueShopId,
     shopLogoUrls,
+    storefrontUrls,
     clientMutationId = null
   } = input;
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
   const updatedShop = await context.mutations.updateShop(context, {
     shopId,
-    shopLogoUrls
+    shopLogoUrls,
+    storefrontUrls
   });
 
   return {

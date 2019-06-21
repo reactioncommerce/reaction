@@ -24,7 +24,7 @@ const RightAlignedGrid = styled(Grid)`
   text-align: right;
 `;
 
-const updateShopUrlsMutation = gql`
+const updateShopMutation = gql`
   mutation updateShopMutation($input: UpdateShopInput!) {
     updateShop(input: $input) {
       clientMutationId
@@ -88,7 +88,7 @@ class ShopLogoUrls extends Component {
           )}
           title={i18next.t("shopSettings.shopLogoUrls.title", "Shop Logo Urls")}
         />
-        <Mutation mutation={updateShopUrlsMutation}>
+        <Mutation mutation={updateShopMutation}>
           {(mutationFunc) => (
             <Fragment>
               <Form
