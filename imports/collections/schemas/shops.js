@@ -323,6 +323,7 @@ registerSchema("StorefrontUrls", StorefrontUrls);
  * @property {Date} updatedAt optional
  * @property {Object[]} paymentMethods blackbox, default value: `[]`
  * @property {String[]} availablePaymentMethods default value: `[]`
+ * @property {Object[]} shopLogoUrls optional
  * @property {Object[]} storefrontUrls optional
  * @property {Workflow} workflow optional
  */
@@ -562,6 +563,11 @@ export const Shop = new SimpleSchema({
   "defaultNavigationTreeId": {
     type: String,
     optional: true
+  },
+  "shopLogoUrls": {
+    type: ShopLogoUrls,
+    optional: true,
+    defaultValue: {}
   },
   "storefrontUrls": {
     type: StorefrontUrls,
