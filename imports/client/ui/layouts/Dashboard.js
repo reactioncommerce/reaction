@@ -6,7 +6,6 @@ import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { CustomPropTypes } from "@reactioncommerce/components/utils";
 import { withComponents } from "@reactioncommerce/components-context";
 import { Route, Switch } from "react-router";
-import OperatorLanding from "/imports/plugins/core/dashboard/client/components/OperatorLanding";
 import PrimaryAppBar from "../components/PrimaryAppBar/PrimaryAppBar";
 import ProfileImageWithData from "../components/ProfileImageWithData";
 import Sidebar from "../components/Sidebar";
@@ -104,6 +103,7 @@ class Dashboard extends Component {
             {
               operatorRoutes.map((route) => (
                 <Route
+                  exact
                   key={route.path}
                   path={`/operator${route.path}`}
                   render={(props) => {
@@ -127,21 +127,6 @@ class Dashboard extends Component {
                 />
               ))
             }
-            {/*
-            Add a special route for the landing page.
-            This must go last, as it will override other
-            routes if it is placed before them.
-            This is essentially a 404 in addition to a landing page.
-            */}
-            <Route
-              key="operatorLandingPage"
-              path="/operator"
-              render={(props) => (
-                <ContentViewFullLayout isSidebarOpen={!isMobile}>
-                  <OperatorLanding uiState={this.state} {...props} />
-                </ContentViewFullLayout>
-              )}
-            />
           </Switch>
         </div>
       </UIContext.Provider>
