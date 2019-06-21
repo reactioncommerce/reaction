@@ -72,7 +72,7 @@ class LocalizationSettings extends Component {
   }
 
   renderCurrencies() {
-    return this.props.currencies.map((currency, key) => (
+    return this.props.currencies.sort((currencyA, currencyB) => currencyA.name.localeCompare(currencyB.name)).map((currency, key) => (
       <Components.ListItem
         actionType={"switch"}
         key={key}
