@@ -5,7 +5,6 @@ import { internalTagIds, opaqueTagIds } from "../mocks/mockTags";
 import { internalCatalogItemIds, opaqueCatalogProductIds } from "../mocks/mockCatalogProducts";
 import {
   mockCatalogItems,
-  mockOffsetCatalogItemsResponse,
   mockUnsortedCatalogItemsResponse,
   mockSortedByPriceHigh2LowCatalogItemsResponse,
   mockSortedByPriceLow2HighCatalogItemsResponse
