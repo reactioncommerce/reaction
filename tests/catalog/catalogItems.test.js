@@ -2,7 +2,7 @@ import TestApp from "../TestApp";
 // temp mocks
 import { internalShopId, opaqueShopId, shopName } from "../mocks/mockShop";
 import { internalTagIds, opaqueTagIds } from "../mocks/mockTags";
-import { internalCatalogItemIds, opaqueCatalogProductIds } from "../mocks/mockCatalogProducts";
+import { internalCatalogItemIds } from "../mocks/mockCatalogProducts";
 import {
   mockCatalogItems,
   mockUnsortedCatalogItemsResponse,
@@ -11,15 +11,18 @@ import {
 } from "../mocks/mockCatalogItems";
 // temp mocks
 import CatalogProductItemsFullQuery from "./CatalogProductItemsFullQuery.graphql";
+import CatalogProductItemsFullQueryPaginated from "./CatalogProductItemsFullQueryPaginated.graphql";
 
 jest.setTimeout(300000);
 
 let testApp;
 let query;
+let paginatedQuery;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   query = testApp.query(CatalogProductItemsFullQuery);
+  paginatedQuery = testApp.query(CatalogProductItemsFullQueryPaginated);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId, slug: `slug${_id}` })));
   await Promise.all(mockCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.insert(mockCatalogItem)));
@@ -62,25 +65,26 @@ test("expect CatalogItemProducts sorted by minPrice from highest to lowest when 
 test("expect CatalogitemProducts with offset to skip items", async () => {
   let result;
   try {
-    result = await query({
+    result = await paginatedQuery({
       shopIds: [opaqueShopId],
-      offset: 1,
-      sortBy: "minPrice",
-      sortByPriceCurrencyCode: "USD"
+      offset: 1
     });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
   }
 
-  expect(result.catalogItems.nodes[0].product._id).toEqual(opaqueCatalogProductIds[1]);
+  expect(result.catalogItems.pageInfo.hasNextPage).toBe(false);
+  expect(result.catalogItems.pageInfo.hasPreviousPage).toBe(true);
+  expect(result.catalogItems.nodes.length).toBe(1);
+  expect(result.catalogItems.nodes[0].product._id).toEqual(mockUnsortedCatalogItemsResponse.catalogItems.nodes[1].product._id);
 });
 
 // expect CatalogItems with feature sortBy and offset to skip items correctly
 test("expect CatalogitemProducts with offset and featured sort to skip items", async () => {
   let result;
   try {
-    result = await query({
+    result = await paginatedQuery({
       shopIds: [opaqueShopId],
       offset: 1,
       sortBy: "featured",
@@ -91,7 +95,10 @@ test("expect CatalogitemProducts with offset and featured sort to skip items", a
     return;
   }
 
-  expect(result.catalogItems.nodes[0].product._id).toEqual(opaqueCatalogProductIds[1]);
+  expect(result.catalogItems.pageInfo.hasNextPage).toBe(false);
+  expect(result.catalogItems.pageInfo.hasPreviousPage).toBe(true);
+  expect(result.catalogItems.nodes.length).toBe(1);
+  expect(result.catalogItems.nodes[0].product._id).toEqual(mockUnsortedCatalogItemsResponse.catalogItems.nodes[0].product._id);
 });
 
 // expect CatalogItems sorted by minPrice form high to low when sortOrder is desc

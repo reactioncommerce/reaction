@@ -27,10 +27,14 @@ export default async function applyPaginationToMongoCursor(cursor, { first, last
 
   let skip = 0;
 
-  if (offset) skip = offset;
-
   let hasNextPage = null;
   let hasPreviousPage = null;
+
+  if (offset) {
+    skip = offset;
+    hasPreviousPage = true;
+  }
+
   if (last) {
     // Get the new count after applying before/after
     const totalCount = await cursor.clone().count();
