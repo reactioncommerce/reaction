@@ -1,17 +1,17 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
- * @name shop/updateShopLogoUrls
+ * @name shop/updateShop
  * @memberof Mutations/Shop
  * @method
- * @summary Add shop logo Urls to a shop
+ * @summary Updates data on the Shop object
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - an object of all mutation arguments that were sent
  * @param {String} input.shopId - The shop ID
- * @param {Object} input.shopLogoUrls - An object containing the Urls to update
+ * @param {Object} input.shopLogoUrls - An object containing the shop logo urls to update
  * @return {Promise<Object>} with updated shop
  */
-export default async function updateShopLogoUrls(context, input) {
+export default async function updateShop(context, input) {
   const { collections, userHasPermission } = context;
   const { Shops } = collections;
 

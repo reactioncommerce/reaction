@@ -1,7 +1,7 @@
-import updateShopLogoUrls from "./updateShopLogoUrls";
+import updateShop from "./updateShop";
 import updateShopUrls from "./updateShopUrls";
 
 export default {
-  updateShopLogoUrls,
+  updateShop,
   updateShopUrls
 };

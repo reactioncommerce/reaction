@@ -107,7 +107,7 @@ input StorefrontUrlsInput {
 }
 
 "Input parameters for the updateShopLogoUrls mutation"
-input UpdateShopLogoUrlsInput {
+input UpdateShopInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -170,7 +170,7 @@ type StorefrontUrls {
 }
 
 "The response from the `updateShopLogoUrls` mutation"
-type UpdateShopLogoUrlsPayload {
+type UpdateShopPayload {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -195,7 +195,7 @@ extend type Mutation {
   inviteShopMember(input: InviteShopMemberInput!): InviteShopMemberPayload
 
   "Given URLs for shop logos, update the Shops collection object with URLs"
-  updateShopLogoUrls(input: UpdateShopLogoUrlsInput!): UpdateShopLogoUrlsPayload
+  updateShop(input: UpdateShopInput!): UpdateShopPayload
 
   "Given URLs for various shop pages, update the Shops collection object with URLs"
   updateShopUrls(input: UpdateShopUrlsInput!): UpdateShopUrlsPayload

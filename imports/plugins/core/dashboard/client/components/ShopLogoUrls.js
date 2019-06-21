@@ -25,8 +25,8 @@ const RightAlignedGrid = styled(Grid)`
 `;
 
 const updateShopUrlsMutation = gql`
-  mutation updateShopLogoUrlsMutation($input: UpdateShopLogoUrlsInput!) {
-    updateShopLogoUrls(input: $input) {
+  mutation updateShopMutation($input: UpdateShopInput!) {
+    updateShop(input: $input) {
       clientMutationId
       shop {
         _id
@@ -78,11 +78,6 @@ class ShopLogoUrls extends Component {
     const { shop } = this.props;
     const { shopLogoUrls } = shop;
     const { primaryShopLogoUrl } = shopLogoUrls || {};
-
-    console.log("shop", shop);
-    console.log("shopLogoUrls", shopLogoUrls);
-    console.log("primaryShopLogoUrl", primaryShopLogoUrl);
-
 
     return (
       <Card>
