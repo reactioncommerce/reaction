@@ -77,7 +77,7 @@ test("expect CatalogitemProducts with offset to skip items", async () => {
 });
 
 // expect CatalogItems with feature sortBy and offset to skip items correctly
-test.only("expect CatalogitemProducts with offset and featured sort to skip items", async () => {
+test("expect CatalogitemProducts with offset and featured sort to skip items", async () => {
   let result;
   try {
     result = await query({

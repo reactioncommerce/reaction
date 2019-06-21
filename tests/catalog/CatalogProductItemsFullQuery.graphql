@@ -1,6 +1,6 @@
 query (
   $shopIds: [ID]!,
-  $tagIds: [ID]!,
+  $tagIds: [ID],
   $first: ConnectionLimitInt,
   $sortBy: CatalogItemSortByField,
   $sortOrder: SortOrder,
