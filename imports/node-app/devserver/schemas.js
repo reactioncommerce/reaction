@@ -1,5 +1,4 @@
 // CORE
-import payments from "/imports/plugins/core/payments/server/no-meteor/schemas";
 import shipping from "/imports/plugins/core/shipping/server/no-meteor/schemas";
 import taxes from "/imports/plugins/core/taxes/server/no-meteor/schemas";
 // INCLUDED
@@ -8,7 +7,6 @@ import paymentsExample from "/imports/plugins/included/payments-example/server/n
 import paymentsStripe from "/imports/plugins/included/payments-stripe/server/no-meteor/schemas";
 
 export default [
-  ...payments,
   ...shipping,
   ...taxes,
   ...marketplace,
