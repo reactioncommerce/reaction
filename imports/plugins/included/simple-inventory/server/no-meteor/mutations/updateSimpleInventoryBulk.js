@@ -89,6 +89,7 @@ export default async function updateSimpleInventoryBulk(context, input) {
       productId: operationData.updateOne.update.$setOnInsert["productConfiguration.productId"],
       productVariantId: operationData.updateOne.filter["productConfiguration.productVariantId"]
     }));
+    Logger.debug({ ...logCtx }, "Calling afterBulkInventoryUpdate for batch");
     appEvents.emit("afterBulkInventoryUpdate", { productConfigurations, updatedBy: userId });
   }
 
