@@ -1,17 +1,4 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import startup from "./server/startup";
+import register from "./server/no-meteor/register";
 
-Reaction.registerPackage({
-  label: "Email",
-  name: "reaction-email-smtp",
-  icon: "fa fa-envelope-o",
-  functionsByType: {
-    startup: [startup]
-  },
-  registry: [
-    {
-      provides: ["emailProviderConfig"],
-      template: "SMTPEmailConfig"
-    }
-  ]
-});
+Reaction.whenAppInstanceReady(register);
