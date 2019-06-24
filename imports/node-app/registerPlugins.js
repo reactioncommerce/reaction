@@ -26,6 +26,7 @@ import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inve
 import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 import registerSurchargesPlugin from "/imports/plugins/included/surcharges/server/no-meteor/register";
 import registerTaxesRatesPlugin from "/imports/plugins/included/taxes-rates/server/no-meteor/register";
+import registerTestAddressValidationPlugin from "/imports/plugins/included/address-validation-test/server/register";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
@@ -65,4 +66,8 @@ export default async function registerPlugins(app) {
   await registerSimplePricingPlugin(app);
   await registerSurchargesPlugin(app);
   await registerTaxesRatesPlugin(app);
+
+  if (process.env.NODE_ENV === "development") {
+    await registerTestAddressValidationPlugin(app);
+  }
 }
