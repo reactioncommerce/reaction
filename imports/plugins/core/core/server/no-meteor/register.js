@@ -1,3 +1,7 @@
+import mutations from "./mutations";
+import queries from "./queries";
+import resolvers from "./resolvers";
+import schemas from "./schemas";
 import startup from "./startup";
 
 /**
@@ -41,6 +45,12 @@ export default async function register(app) {
     functionsByType: {
       startup: [startup]
     },
+    graphQL: {
+      resolvers,
+      schemas
+    },
+    queries,
+    mutations,
     settings: {
       public: {
         allowGuestCheckout: true
