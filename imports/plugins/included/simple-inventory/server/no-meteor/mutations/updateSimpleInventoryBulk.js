@@ -55,9 +55,9 @@ export default async function updateSimpleInventoryBulk(context, input) {
 
   const upsertedIds = res.result.upserted.map((each) => each._id);
   const failedOps = bulkOperations.filter((op) => {
-    const match = res.result.writeErrors.find((erroredOp) => {
-      const isFilterEqual = _.isEqual(op.updateOne.filter, erroredOp.op.q);
-      const isUpdateEqual = _.isEqual(op.updateOne.update, erroredOp.op.u);
+    const match = res.result.writeErrors.find((writeError) => {
+      const isFilterEqual = _.isEqual(op.updateOne.filter, writeError.op.q);
+      const isUpdateEqual = _.isEqual(op.updateOne.update, writeError.op.u);
       return isFilterEqual && isUpdateEqual;
     });
     if (match) return true;
