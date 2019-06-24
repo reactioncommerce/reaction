@@ -17,6 +17,7 @@ import registerSystemInfoPlugin from "/imports/plugins/core/system-info/server/n
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
 import registerTaxesPlugin from "/imports/plugins/core/taxes/server/no-meteor/register";
 import registerTemplatesPlugin from "/imports/plugins/core/templates/server/no-meteor/register";
+import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerMarketplacePlugin from "/imports/plugins/included/marketplace/server/no-meteor/register";
 import registerNotificationsPlugin from "/imports/plugins/included/notifications/server/no-meteor/register";
 import registerExamplePaymentsPlugin from "/imports/plugins/included/payments-example/server/no-meteor/register";
@@ -57,6 +58,7 @@ export default async function registerPlugins(app) {
   await registerTemplatesPlugin(app);
 
   // Included
+  await registerDiscountCodesPlugin(app);
   await registerMarketplacePlugin(app);
   await registerNotificationsPlugin(app);
   await registerExamplePaymentsPlugin(app);
