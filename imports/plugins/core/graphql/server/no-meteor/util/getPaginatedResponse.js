@@ -1,4 +1,5 @@
 import applyBeforeAfterToFilter from "./applyBeforeAfterToFilter";
+import applyOffsetPaginationToMongoCursor from "./applyOffsetPaginationToMongoCursor";
 import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor";
 import getCollectionFromCursor from "./getCollectionFromCursor";
 import getMongoSort from "./getMongoSort";
@@ -28,7 +29,7 @@ async function getPaginatedResponse(mongoCursor, args, {
   includeHasPreviousPage = true,
   includeTotalCount = true
 } = {}) {
-  const { sortBy, sortOrder } = args;
+  const { offset, sortBy, sortOrder } = args;
   const baseFilter = mongoCursor.cmd.query;
 
   // Get the total count, prior to adding before/after filtering
@@ -70,11 +71,21 @@ async function getPaginatedResponse(mongoCursor, args, {
   // Apply these to the cursor
   mongoCursor.filter(updatedFilter).sort(sort);
 
-  // Skip calculating pageInfo if it wasn't requested. Saves a db count command.
-  const { hasPreviousPage, hasNextPage } = await applyPaginationToMongoCursor(mongoCursor, args, {
-    includeHasNextPage,
-    includeHasPreviousPage
-  });
+  let hasPreviousPage;
+  let hasNextPage;
+
+  if (offset) {
+    ({ hasPreviousPage, hasNextPage } = await applyOffsetPaginationToMongoCursor(mongoCursor, args, {
+      includeHasNextPage,
+      includeHasPreviousPage
+    }));
+  } else {
+    // Skip calculating pageInfo if it wasn't requested. Saves a db count command.
+    ({ hasPreviousPage, hasNextPage } = await applyPaginationToMongoCursor(mongoCursor, args, {
+      includeHasNextPage,
+      includeHasPreviousPage
+    }));
+  }
 
   // Figure out proper hasNext/hasPrevious
   const pageInfo = {};
