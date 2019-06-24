@@ -1,4 +1,5 @@
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
+import registerAddressPlugin from "/imports/plugins/core/address/server/no-meteor/register";
 import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/register";
 import registerCatalogPlugin from "/imports/plugins/core/catalog/server/no-meteor/register";
 import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/register";
@@ -30,6 +31,7 @@ export default async function registerPlugins(app) {
   await registerFilesPlugin(app); // Core plugin needs Media collection, so files plugin must be first
   await registerCorePlugin(app);
   await registerAccountsPlugin(app);
+  await registerAddressPlugin(app);
   await registerCartPlugin(app);
   await registerCatalogPlugin(app);
   await registerDiscountsPlugin(app);
