@@ -445,8 +445,10 @@ class TagDataTable extends Component {
 
   render() {
     const { query, variables: variablesProp, defaultPageSize, ...otherProps } = this.props;
+    const { filterInput } = this.state;
     const defaultClassName = "-striped -highlight";
     const variables = {
+      filter: filterInput || null,
       first: defaultPageSize,
       ...variablesProp
     };
