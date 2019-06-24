@@ -1,9 +1,6 @@
 import express from "express";
 import Logger from "@reactioncommerce/logger";
 import ReactionNodeApp from "../core/ReactionNodeApp";
-import mutations from "./mutations";
-import queries from "./queries";
-import resolvers from "./resolvers";
 import schemas from "./schemas";
 import registerPlugins from "./registerPlugins";
 import "./extendSchemas";
@@ -15,13 +12,10 @@ if (!ROOT_URL) throw new Error("You must set ROOT_URL");
 const app = new ReactionNodeApp({
   debug: true,
   context: {
-    mutations,
-    queries,
     rootUrl: ROOT_URL
   },
   graphQL: {
     graphiql: true,
-    resolvers,
     schemas
   }
 });
