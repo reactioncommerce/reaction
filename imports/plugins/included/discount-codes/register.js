@@ -9,7 +9,6 @@ Reaction.registerPackage({
   label: "Codes",
   name: "discount-codes",
   icon: "fa fa-gift",
-  autoEnable: true,
   functionsByType: {
     "discounts/codes/credit": [getCreditOffDiscount],
     "discounts/codes/discount": [getPercentageOffDiscount],

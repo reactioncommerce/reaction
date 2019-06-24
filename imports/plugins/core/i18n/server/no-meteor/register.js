@@ -10,7 +10,6 @@ export default async function register(app) {
     label: "i18n",
     name: "reaction-i18n",
     icon: "fa fa-language",
-    autoEnable: true,
     collections: {
       Translations: {
         name: "Translations",

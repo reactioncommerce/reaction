@@ -14,7 +14,6 @@ export default async function register(app) {
     label: "Core",
     name: "core",
     icon: "fa fa-th",
-    autoEnable: true,
     collections: {
       Assets: {
         name: "Assets"

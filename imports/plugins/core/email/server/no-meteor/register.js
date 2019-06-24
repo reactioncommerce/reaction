@@ -11,7 +11,6 @@ export default async function register(app) {
     label: "Email",
     name: "reaction-email",
     icon: "fa fa-envelope-o",
-    autoEnable: true,
     collections: {
       Emails: {
         name: "Emails",

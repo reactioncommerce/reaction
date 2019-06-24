@@ -8,7 +8,6 @@ Reaction.registerPackage({
   label: "Sitemap Generator",
   name: "reaction-sitemap-generator",
   icon: "fa fa-vine",
-  autoEnable: true,
   graphQL: {
     resolvers,
     schemas

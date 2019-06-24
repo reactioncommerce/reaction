@@ -14,7 +14,6 @@ export default async function register(app) {
     label: "Payments",
     name: "reaction-payments",
     icon: "fa fa-credit-card",
-    autoEnable: true,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler]
     },

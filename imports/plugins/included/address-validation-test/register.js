@@ -13,7 +13,6 @@ import addressValidation from "./server/addressValidation.js";
 Reaction.registerPackage({
   label: "Address Validation Test",
   name: "address-validation-test",
-  autoEnable: !!(process.env.NODE_ENV === "development"),
   addressValidationServices: [
     {
       displayName: "Test Validation",

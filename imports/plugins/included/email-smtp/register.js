@@ -5,7 +5,6 @@ Reaction.registerPackage({
   label: "Email",
   name: "reaction-email-smtp",
   icon: "fa fa-envelope-o",
-  autoEnable: true,
   functionsByType: {
     startup: [startup]
   },

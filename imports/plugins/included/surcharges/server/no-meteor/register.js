@@ -15,7 +15,6 @@ export default async function register(app) {
     label: "Surcharges",
     name: "reaction-surcharges",
     icon: "fa fa-icon-money",
-    autoEnable: true,
     collections: {
       Surcharges: {
         name: "Surcharges",
