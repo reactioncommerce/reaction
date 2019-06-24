@@ -19,7 +19,6 @@ export default async function register(app) {
     icon: "fa fa-users",
     autoEnable: true,
     addRolesToGroups: [{
-      allShops: true,
       groups: ["guest", "customer"],
       roles: ["account/verify", "reset-password", ENROLL_URI_BASE]
     }],

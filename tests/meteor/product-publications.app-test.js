@@ -44,10 +44,6 @@ Reaction.onAppStartupComplete(() => {
 
       Collections.Shops.remove({});
 
-      // muting some shop creation hook behavior (to keep output clean)
-      sandbox.stub(Reaction, "setShopName");
-      sandbox.stub(Reaction, "setDomain");
-
       createActiveShop({ _id: shopId, shopType: "merchant" });
       createActiveShop({ _id: merchantShopId, shopType: "merchant" });
       createActiveShop({ _id: primaryShopId, shopType: "primary" });
