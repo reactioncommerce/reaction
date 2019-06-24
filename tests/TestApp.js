@@ -7,7 +7,6 @@ import ReactionNodeApp from "../imports/node-app/core/ReactionNodeApp";
 import buildContext from "../imports/node-app/core/util/buildContext";
 import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
-import importedSchemas from "../imports/node-app/devserver/schemas";
 import registerPlugins from "../imports/node-app/devserver/registerPlugins";
 import "../imports/node-app/devserver/extendSchemas";
 
@@ -60,7 +59,7 @@ class TestApp {
       },
       functionsByType,
       graphQL: {
-        schemas: [...importedSchemas, ...extraSchemas]
+        schemas: extraSchemas
       }
     });
 

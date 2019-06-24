@@ -1,7 +1,6 @@
 import express from "express";
 import Logger from "@reactioncommerce/logger";
 import ReactionNodeApp from "../core/ReactionNodeApp";
-import schemas from "./schemas";
 import registerPlugins from "./registerPlugins";
 import "./extendSchemas";
 
@@ -15,8 +14,7 @@ const app = new ReactionNodeApp({
     rootUrl: ROOT_URL
   },
   graphQL: {
-    graphiql: true,
-    schemas
+    graphiql: true
   }
 });
 

@@ -20,6 +20,7 @@ import registerTemplatesPlugin from "/imports/plugins/core/templates/server/no-m
 import registerMarketplacePlugin from "/imports/plugins/included/marketplace/server/no-meteor/register";
 import registerNotificationsPlugin from "/imports/plugins/included/notifications/server/no-meteor/register";
 import registerExamplePaymentsPlugin from "/imports/plugins/included/payments-example/server/no-meteor/register";
+import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
 import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
 import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
@@ -58,6 +59,7 @@ export default async function registerPlugins(app) {
   await registerMarketplacePlugin(app);
   await registerNotificationsPlugin(app);
   await registerExamplePaymentsPlugin(app);
+  await registerStripePaymentsPlugin(app);
   await registerShippingRatesPlugin(app);
   await registerSimpleInventoryPlugin(app);
   await registerSimplePricingPlugin(app);
