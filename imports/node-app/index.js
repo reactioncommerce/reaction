@@ -1,6 +1,6 @@
 import express from "express";
 import Logger from "@reactioncommerce/logger";
-import ReactionNodeApp from "../core/ReactionNodeApp";
+import ReactionNodeApp from "./core/ReactionNodeApp";
 import registerPlugins from "./registerPlugins";
 import "./extendSchemas";
 

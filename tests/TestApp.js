@@ -7,8 +7,8 @@ import ReactionNodeApp from "../imports/node-app/core/ReactionNodeApp";
 import buildContext from "../imports/node-app/core/util/buildContext";
 import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
-import registerPlugins from "../imports/node-app/devserver/registerPlugins";
-import "../imports/node-app/devserver/extendSchemas";
+import registerPlugins from "../imports/node-app/registerPlugins";
+import "../imports/node-app/extendSchemas";
 
 class TestApp {
   constructor(options = {}) {
