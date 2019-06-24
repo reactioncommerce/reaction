@@ -27,16 +27,15 @@ const app = new ReactionNodeApp({
 });
 
 registerPlugins(app)
+  .then(() => app.start({ mongoUrl: MONGO_URL, port: PORT }))
   .then(() => {
+    Logger.info(`GraphQL listening at ${ROOT_URL}${app.apolloServer.graphqlPath}`);
+
     // Serve files in the /public folder statically
     app.expressApp.use(express.static("public"));
 
     app.apolloServer.installSubscriptionHandlers(app.httpServer);
 
-    return app.start({ mongoUrl: MONGO_URL, port: PORT });
-  })
-  .then(() => {
-    Logger.info(`GraphQL listening at ${ROOT_URL}${app.apolloServer.graphqlPath}`);
     Logger.info(`GraphQL subscriptions ready at ${ROOT_URL.replace("http", "ws")}${app.apolloServer.subscriptionsPath}`);
     return null;
   })
