@@ -25,6 +25,7 @@ import registerNotificationsPlugin from "/imports/plugins/included/notifications
 import registerExamplePaymentsPlugin from "/imports/plugins/included/payments-example/server/no-meteor/register";
 import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
 import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
+import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
 import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 import registerSurchargesPlugin from "/imports/plugins/included/surcharges/server/no-meteor/register";
@@ -70,6 +71,7 @@ export default async function registerPlugins(app) {
   await registerShippingRatesPlugin(app);
   await registerSimpleInventoryPlugin(app);
   await registerSimplePricingPlugin(app);
+  await registerSitemapGeneratorPlugin(app);
   await registerSurchargesPlugin(app);
   await registerTaxesRatesPlugin(app);
 
