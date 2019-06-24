@@ -3,7 +3,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { SimpleInventoryCollectionSchema } from "../simpleSchemas";
 import { updateFields, defaultValues } from "./defaults";
 
-// eslint-disable-next-line require-jsdoc
+/**
+ * @summary returns object with $set & $setOnInsert to be used in mongo update call. The values are validated with the collection schema before returning
+ * @param {Object} input Input
+ * @param {Object} input.productConfiguration Product configuration object
+ * @param {String} input.shopId ID of shop that owns the product
+ * @return {Object} Object
+ */
 export default function getModifier(input) {
   const { productConfiguration, shopId } = input;
 

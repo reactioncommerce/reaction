@@ -5,7 +5,15 @@ import getModifier from "../utils/getModifier";
 
 const logCtx = { name: "simple-inventory", file: "updateSimpleInventoryBulk" };
 
-// eslint-disable-next-line require-jsdoc
+/**
+ * @summary Updates SimpleInventory data for multiple products
+ * Note/Warning: This function is only available on `context` for internal calls only - it is NOT exposed through GraphQL.
+ * As such there is no permission checks added. If this function is exposed later, it should be updated to check permissions.
+ * @param {Object} context App context
+ * @param {Object} input Input
+ * @param {Object} input.updates Array of objects, each containing fields for productConfiguration, shopId, canBackorder, inventoryInStock, isEnabled, lowInventoryWarningThreshold. See definition of these values on single updateSimpleInventory mutation.
+ * @return {Object} Empty object, or an object with a `failedOps` field containing any failed update operations
+ */
 export default async function updateSimpleInventoryBulk(context, input) {
   const { appEvents, collections, userId } = context;
   const { SimpleInventory } = collections;
