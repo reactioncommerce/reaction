@@ -32,7 +32,7 @@ class OrderCardContainer extends Component {
       token: null
     };
 
-    const hasPermission = Reaction.hasPermission("owner", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
 
     return (
       <Query errorPolicy="all" query={orderByReferenceId} variables={variables}>

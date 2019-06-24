@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import Address from "@reactioncommerce/components/Address/v1";
 import { withMoment } from "@reactioncommerce/reaction-components";
@@ -105,12 +106,12 @@ class OrderCardHeader extends Component {
     const orderDate = (moment && moment(createdAt).format("MM/DD/YYYY")) || createdAt.toLocaleString();
 
     return (
-      <Grid container spacing={32}>
+      <Grid container spacing={16}>
         <Grid item xs={12}>
-          <Grid container alignItems="center" spacing={8}>
+          <Grid container alignItems="center" spacing={16}>
             <Grid item>
               <Typography variant="body2" className={classes.orderCardInfoTextBold} inline={true}>
-                Order&nbsp;
+                Order -
                 <ClickToCopy
                   copyToClipboard={this.orderLink()}
                   displayText={referenceId}
@@ -118,16 +119,20 @@ class OrderCardHeader extends Component {
                   tooltip="Copy Order Link"
                 />
               </Typography>
-              <Typography variant="body2" inline={true}> | {orderDate}</Typography>
             </Grid>
             <Grid item>
-              <OrderCardStatusChip displayStatus={displayStatus} status={status} type="order" />
+              <OrderCardStatusChip displayStatus={displayStatus} status={status} type="shipment" variant="contained" />
             </Grid>
             {this.renderPaymentStatusChip()}
-            <Grid item className={classes.printButton}>
-              <a href={this.printLink()} target="_blank">
-                <Button size="small" variant="outlined">{i18next.t("admin.invoice.printInvoice", "Print invoice")}</Button>
-              </a>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container alignItems="center" spacing={32}>
+            <Grid item>
+              <Typography variant="body2" inline={true}>{orderDate}</Typography>
+            </Grid>
+            <Grid item>
+              <Link href={this.printLink()}>Print invoice</Link>
             </Grid>
           </Grid>
         </Grid>
@@ -149,22 +154,6 @@ class OrderCardHeader extends Component {
                       </Typography>
                       <Typography variant="body2">{email}</Typography>
                       <Typography variant="body2">{shippingAddress.phone}</Typography>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Card>
-                <CardContent>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                      Shipping method{fulfillmentGroups.length !== 1 ? "s" : null}
-                      </Typography>
-                      {this.renderOrderShipments()}
-                    </Grid>
-                    <Grid item xs={12} md={12}>
                     </Grid>
                   </Grid>
                 </CardContent>

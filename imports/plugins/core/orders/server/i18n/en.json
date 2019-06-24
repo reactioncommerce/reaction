@@ -3,10 +3,14 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "fulfillment": "Fulfillment",
       "notFound": "Order Not Found",
+      "refunds": "Refunds",
       "orderActions": {
         "markAsPackedDescription": "Mark all items in this fulfillment group as \"Packed\"",
         "markAsPackedLabel": "Mark as packed",
+        "markAsShippedDescription": "Mark all items in this fulfillment group as \"Shipped\"",
+        "markAsShippedLabel": "Mark as shipped",
         "updateGroupStatus": "Update group status"
       },
       "orderDetails": "Order Details",
