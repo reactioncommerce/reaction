@@ -103,6 +103,7 @@ class Dashboard extends Component {
             {
               operatorRoutes.map((route) => (
                 <Route
+                  exact
                   key={route.path}
                   path={`/operator${route.path}`}
                   render={(props) => {
