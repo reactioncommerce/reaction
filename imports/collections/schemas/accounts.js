@@ -116,7 +116,7 @@ registerSchema("Email", Email);
  * @type {SimpleSchema}
  * @property {String} userId required
  * @property {String[]} sessions optional, Array of strings
- * @property {String} shopId required
+ * @property {String} shopId optional
  * @property {String} name optional
  * @property {String} username optional
  * @property {Email[]} emails optional, Array of strings
@@ -144,7 +144,8 @@ export const Accounts = new SimpleSchema({
     type: String
   },
   "shopId": {
-    type: String
+    type: String,
+    optional: true
   },
   "name": {
     type: String,

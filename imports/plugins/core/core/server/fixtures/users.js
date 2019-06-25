@@ -101,19 +101,10 @@ const user = {
   createdAt: new Date()
 };
 
-const anonymous = {
-  roles: {
-    [getShop()._id]: [
-      "guest",
-      "anonymous",
-      "product",
-      "tag",
-      "index",
-      "cart/completed"
-    ]
-  }
-};
-
+/**
+ * @summary Users factory setup
+ * @return {undefined}
+ */
 export default function () {
   const numDaysToAdd = Math.floor(Math.random() * 32); // random number of days between 0 and 31
   const numHoursToAdd = Math.floor(Math.random() * 25); // random number of hours between 0 and 24
@@ -122,9 +113,11 @@ export default function () {
 
   const timeOffset = Date.now() + (numDaysToAdd * secondsInDay) + (numHoursToAdd + secondsInHour);
 
+  const shop = getShop();
+
   const registered = {
     roles: {
-      [getShop()._id]: [
+      [shop._id]: [
         "account/profile",
         "guest",
         "product",
@@ -153,6 +146,19 @@ export default function () {
     "registeredUser", Meteor.users,
     Object.assign({}, user, registered)
   );
+
+  const anonymous = {
+    roles: {
+      [shop._id]: [
+        "guest",
+        "anonymous",
+        "product",
+        "tag",
+        "index",
+        "cart/completed"
+      ]
+    }
+  };
 
   Factory.define("anonymous", Meteor.users, Object.assign({}, user, anonymous));
 }

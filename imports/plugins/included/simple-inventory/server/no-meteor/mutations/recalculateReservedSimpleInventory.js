@@ -73,7 +73,7 @@ export default async function recalculateReservedSimpleInventory(context, input)
 
   if (!updatedDoc) throw new ReactionError("not-tracked", "Inventory not tracked for this product");
 
-  appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
+  await appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
 
   return updatedDoc;
 }

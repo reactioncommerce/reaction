@@ -30,7 +30,7 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           name: Restoring Meteor cache
-          key: ${GLOBAL_CACHE_VERSION}-meteor
+          key: reaction-v2-meteor
       - run:
           name: Install Meteor
           command: |
@@ -43,7 +43,7 @@ jobs:
             fi
       - save_cache:
           name: Saving Meteor to cache
-          key: ${GLOBAL_CACHE_VERSION}-meteor-{{ epoch }}
+          key: reaction-v2-meteor-{{ epoch }}
           paths:
             - ~/.meteor
       - run:
@@ -77,11 +77,11 @@ jobs:
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
-          key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}
+          key: reaction-v2-node-modules-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
 
@@ -249,9 +249,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Run Lint
           command: |
@@ -263,9 +263,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Lint GraphQL schemas
           command: |
@@ -277,16 +277,16 @@ jobs:
       - checkout
       - restore_cache:
           name: Restoring Meteor cache
-          key: ${GLOBAL_CACHE_VERSION}-meteor
+          key: reaction-v2-meteor
       - run:
           name: Link Restored Meteor
           command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
       - restore_cache:
           # Fall back to less specific caches
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Load App Plugins
           command: node --experimental-modules ./.reaction/scripts/build.mjs
@@ -300,9 +300,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Run Unit Tests
           command: npm run test:unit
@@ -313,9 +313,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Run Integration Tests
           command: npm run test:integration
@@ -374,9 +374,9 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Snyk Test
           command: |

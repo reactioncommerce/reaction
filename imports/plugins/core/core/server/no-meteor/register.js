@@ -1,3 +1,5 @@
+import startup from "./startup";
+
 /**
  * @summary Import and call this function to add this plugin to your API.
  * @param {ReactionNodeApp} app The ReactionNodeApp instance
@@ -10,6 +12,9 @@ export default async function register(app) {
     icon: "fa fa-th",
     autoEnable: true,
     collections: {
+      Assets: {
+        name: "Assets"
+      },
       Packages: {
         name: "Packages",
         indexes: [
@@ -32,6 +37,9 @@ export default async function register(app) {
       Themes: {
         name: "Themes"
       }
+    },
+    functionsByType: {
+      startup: [startup]
     },
     settings: {
       public: {

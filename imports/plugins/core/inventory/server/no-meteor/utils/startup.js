@@ -18,6 +18,10 @@ export default function startup(context) {
       ancestors: productId,
       isDeleted: { $ne: true },
       isVisible: true
+    }, {
+      _id: 1,
+      ancestors: 1,
+      shopId: 1
     }).toArray();
 
     const topVariants = variants.filter((variant) => variant.ancestors.length === 1);
