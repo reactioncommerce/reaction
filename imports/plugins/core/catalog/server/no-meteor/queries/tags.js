@@ -1,3 +1,5 @@
+import escapeRegExp from "lodash/escapeRegExp";
+
 /**
  * @name tags
  * @method
@@ -34,7 +36,7 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
 
     // Use `filter` to filter out resutls on the server
     if (filter) {
-      query.name = { $regex: filter, $options: "i" };
+      query.name = { $regex: escapeRegExp(filter), $options: "i" };
     }
   } else {
     query.isDeleted = false;
