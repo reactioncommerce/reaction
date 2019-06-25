@@ -232,26 +232,22 @@ class TagDataTable extends Component {
    * @param {Number} numRows Number of rows in current set of data
    * @returns {node} returns JSX node or null
    */
-  renderTableFilter(numRows) {
+  renderTableFilter() {
     const { filterType } = this.props;
 
-    if (numRows !== 0) {
-      if (filterType === "both" || filterType === "table") {
-        return (
-          <FilterTextInput>
-            <TextInput
-              placeholder={i18next.t("reactionUI.components.sortableTable.filterPlaceholder", { defaultValue: "Filter Data" })}
-              onChanging={this.handleFilterInput}
-              value={this.state.filterInput}
-              name="filterInput"
-            />
-          </FilterTextInput>
+    if (filterType === "both" || filterType === "table") {
+      return (
+        <FilterTextInput>
+          <TextInput
+            placeholder={i18next.t("reactionUI.components.sortableTable.filterPlaceholder", { defaultValue: "Filter Data" })}
+            onChanging={this.handleFilterInput}
+            value={this.state.filterInput}
+            name="filterInput"
+          />
+        </FilterTextInput>
 
-        );
-      }
+      );
     }
-
-    return null;
   }
 
   /**
@@ -505,7 +501,7 @@ class TagDataTable extends Component {
           return (
             <TableContainer>
               <TableHeader>
-                {resultCount > 0 && this.renderBulkActionsSelect()}
+                {this.renderBulkActionsSelect()}
                 {this.renderTableFilter(resultCount)}
               </TableHeader>
               <CheckboxTable
