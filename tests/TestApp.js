@@ -55,6 +55,8 @@ class TestApp {
 
           await this.reactionNodeApp.collections.Accounts.insertOne({ ...user, userId: user._id });
         },
+        mutations: {},
+        queries: {},
         rootUrl: "https://shop.fake.site/"
       },
       functionsByType,

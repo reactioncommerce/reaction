@@ -38,6 +38,8 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
         return Accounts.createUser(options);
       },
       rootUrl: ROOT_URL,
+      mutations: {},
+      queries: {},
       appVersion: packageJson.version
     },
     graphQL: {

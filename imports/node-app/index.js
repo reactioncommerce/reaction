@@ -11,7 +11,9 @@ if (!ROOT_URL) throw new Error("You must set ROOT_URL");
 const app = new ReactionNodeApp({
   debug: true,
   context: {
-    rootUrl: ROOT_URL
+    rootUrl: ROOT_URL,
+    mutations: {},
+    queries: {}
   },
   graphQL: {
     graphiql: true
