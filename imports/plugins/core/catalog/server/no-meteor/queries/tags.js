@@ -31,14 +31,14 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
     } else {
       query.isVisible = true;
     }
+
+    // Use `filter` to filter out resutls on the server
+    if (filter) {
+      query.name = { $regex: filter, $options: "i" };
+    }
   } else {
     query.isDeleted = false;
     query.isVisible = true;
-  }
-
-  // Use `filter` to filter out resutls on the server
-  if (filter) {
-    query.name = { $regex: filter, $options: "i" };
   }
 
   return Tags.find(query);
