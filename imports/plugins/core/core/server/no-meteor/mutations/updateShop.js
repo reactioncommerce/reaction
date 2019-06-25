@@ -1,4 +1,19 @@
+import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import { ShopLogoUrls, StorefrontUrls } from "/imports/collections/schemas";
+
+
+const inputSchema = new SimpleSchema({
+  shopId: String,
+  shopLogoUrls: {
+    type: ShopLogoUrls,
+    optional: true
+  },
+  storefrontUrls: {
+    type: StorefrontUrls,
+    optional: true
+  }
+});
 
 /**
  * @name shop/updateShop
@@ -15,6 +30,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function updateShop(context, input) {
   const { collections, userHasPermission } = context;
   const { Shops } = collections;
+
+  inputSchema.validate(input || {});
 
   const {
     shopId,
