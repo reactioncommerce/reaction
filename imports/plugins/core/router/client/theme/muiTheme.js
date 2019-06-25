@@ -8,13 +8,16 @@ const breakpoints = createBreakpoints({});
 const toolbarHeight = 80;
 const toolbarMobileHeight = 54;
 
+// Colors
+export const colorPrimaryMain = colors.coolGrey;
+export const colorSecondaryMain = colors.darkBlue500;
+
 // Spacing
 export const defaultSpacingUnit = 8;
 export const drawerWidth = 280;
 
-// Colors
-export const colorPrimaryMain = colors.coolGrey;
-export const colorSecondaryMain = colors.darkBlue500;
+// Typography
+export const defaultFontSize = 16;
 
 export const rawMuiTheme = {
   palette: {
@@ -37,21 +40,19 @@ export const rawMuiTheme = {
     }
   },
   typography: {
-    fontSize: 16,
+    fontSize: defaultFontSize,
     fontFamily: typography.bodyText.fontFamily,
     fontWeightLight: 400,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
+    fontWeightSemiBold: 600,
     fontWeightBold: 700,
     useNextVariants: true,
-    h6: {
-      fontSize: 18
-    },
     subtitle1: {
-      fontSize: 16
+      fontSize: defaultFontSize
     },
     body1: {
-      fontSize: 16
+      fontSize: defaultFontSize
     },
     button: {
       fontSize: 14,
@@ -59,7 +60,26 @@ export const rawMuiTheme = {
     },
     caption: {
       color: colors.black30
+    },
+    h1: {
+      fontSize: defaultFontSize * 1.5
+    },
+    h2: {
+      fontSize: defaultFontSize * 1.25
+    },
+    h3: {
+      fontSize: defaultFontSize * 1.125
+    },
+    h4: {
+      fontSize: defaultFontSize
+    },
+    h5: {
+      fontSize: defaultFontSize * 0.875
+    },
+    h6: {
+      fontSize: defaultFontSize * 0.75
     }
+
   },
   shadows: [
     "none",
