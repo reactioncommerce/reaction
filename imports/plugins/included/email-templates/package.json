@@ -5,6 +5,6 @@
   "author": "Reaction Commerce",
   "license": "GPL-3.0",
   "dependencies": {
-    "handlebars": "4.1.0"
+    "handlebars": "~4.1.2"
   }
 }
