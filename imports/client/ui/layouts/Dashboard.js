@@ -44,10 +44,13 @@ class Dashboard extends Component {
     // State also contains the updater function so it will
     // be passed down into the context provider
     this.state = {
+      isDetailDrawerOpen: false,
       isMobile: false,
       isPrimarySidebarOpen: true,
       onClosePrimarySidebar: this.onClosePrimarySidebar,
-      onTogglePrimarySidebar: this.onTogglePrimarySidebar
+      onTogglePrimarySidebar: this.onTogglePrimarySidebar,
+      onCloseDetailDrawer: this.onCloseDetailDrawer,
+      onToggleDetailDrawer: this.onToggleDetailDrawer
     };
   }
 
@@ -76,12 +79,23 @@ class Dashboard extends Component {
     }));
   };
 
+  onToggleDetailDrawer = () => {
+    this.setState((state) => ({
+      isDetailDrawerOpen: !state.isDetailDrawerOpen
+    }));
+  };
+
+  onCloseDetailDrawer = () => {
+    this.setState({ isDetailDrawerOpen: false });
+  };
+
   onClosePrimarySidebar = () => {
     this.setState({ isPrimarySidebarOpen: false });
   };
 
   render() {
     const { classes, width } = this.props;
+    const { isDetailDrawerOpen, isPrimarySidebarOpen } = this.state;
     const isMobile = isWidthDown("sm", width);
 
     return (
