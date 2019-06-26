@@ -99,7 +99,7 @@ class OrderCardHeader extends Component {
               </Typography>
             </Grid>
             <Grid item>
-              <OrderCardStatusChip displayStatus={displayStatus} status={status} type="order" variant="contained" />
+              <OrderCardStatusChip displayStatus={displayStatus} status={status} type="order" />
             </Grid>
             {this.renderPaymentStatusChip()}
           </Grid>
