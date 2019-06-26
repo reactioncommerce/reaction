@@ -61,7 +61,7 @@ class OrderCardStatusChip extends Component {
       chipClasses = classes.orderStatusShipped;
     }
 
-    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="contained" />;
+    return <Chip label={displayStatus} className={chipClasses} color="primary" />;
   }
 
   paymentStatus() {
@@ -92,7 +92,7 @@ class OrderCardStatusChip extends Component {
       chipClasses = classes.orderStatusShipped;
     }
 
-    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="contained" />;
+    return <Chip label={displayStatus} className={chipClasses} color="primary" />;
   }
 
   render() {

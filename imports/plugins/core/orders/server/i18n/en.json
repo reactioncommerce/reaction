@@ -24,6 +24,7 @@
         "cancelOrderLabel": "Cancel order",
         "cancelOrderNoRestock": "Do not restock",
         "cancelOrderThenRestock": "Restock",
+        "order": "Order",
         "refunding": "Refunding",
         "refundItemsAlert": "Do you want to refund {{refundItemsQuantity}} item(s) totaling {{refundItemsTotal}}?",
         "refundItemsApproveAlert": "Do you want to approve this payment and then refund {{totalAmount}}?",
@@ -33,6 +34,11 @@
         "refundItemsWait": "Payment is not yet captured",
         "restockInventory": "Restock inventory?",
         "updateFulfillmentGroupStatus": "Update group status"
+      },
+      "orderCard": {
+        "orderSummary": {
+          "title": "Order Summary"
+        }
       },
       "admin": {
         "shortcut": {
@@ -116,7 +122,8 @@
               "coreOrderWorkflow/picked": "Picked ",
               "coreOrderWorkflow/packed": "Packed ",
               "coreOrderWorkflow/labeled": "Labeled ",
-              "coreOrderWorkflow/shipped": "Shipped "
+              "coreOrderWorkflow/shipped": "Shipped ",
+              "multipleStatuses": "Multiple statuses"
             }
           }
         }
