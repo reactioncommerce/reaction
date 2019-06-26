@@ -69,8 +69,13 @@ export default function inviteShopMember(options) {
   const currentUser = Meteor.user();
   const currentUserName = getCurrentUserName(currentUser);
   const user = Meteor.users.findOne({ "emails.address": email });
-  const isEmailVerified = user && user.emails && user.emails[0] && user.emails[0].verified;
+  const matchingEmail = user &&
+    user.emails &&
+    user.emails.find((emailObject) => emailObject.address === email);
+
+  const isEmailVerified = matchingEmail && matchingEmail.verified;
   const token = Random.id();
+
   let dataForEmail;
   let userId;
   let templateName;

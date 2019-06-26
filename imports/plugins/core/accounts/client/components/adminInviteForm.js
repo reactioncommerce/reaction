@@ -92,10 +92,11 @@ class AdminInviteForm extends Component {
     }
 
     const matchingAccount = getUserByEmail(email);
-    const isEmailVerified = matchingAccount &&
+    const matchingEmail = matchingAccount &&
       matchingAccount.emails &&
-      matchingAccount.emails[0] &&
-      matchingAccount.emails[0].verified;
+      matchingAccount.emails.find((emailObject) => emailObject.address === email);
+
+    const isEmailVerified = matchingEmail && matchingEmail.verified;
 
     const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id };
 
