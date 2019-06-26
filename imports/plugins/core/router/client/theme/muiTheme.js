@@ -11,6 +11,7 @@ const toolbarMobileHeight = 54;
 // Spacing
 export const defaultSpacingUnit = 8;
 export const drawerWidth = 280;
+export const detailDrawerWidth = 400;
 
 // Colors
 export const colorPrimaryMain = colors.coolGrey;
@@ -93,11 +94,15 @@ export const rawMuiTheme = {
   },
   spacing: {
     drawerWidth,
+    detailDrawerWidth,
     unit: defaultSpacingUnit
   },
   mixins: {
     leadingPaddingWhenPrimaryDrawerIsOpen: {
       paddingLeft: drawerWidth + (defaultSpacingUnit * 2)
+    },
+    trailingPaddingWhenDetailDrawerIsOpen: {
+      paddingRight: detailDrawerWidth + (defaultSpacingUnit * 2)
     },
     toolbar: {
       minHeight: toolbarHeight,
@@ -203,6 +208,14 @@ export const rawMuiTheme = {
         color: colors.black15
       },
       paperAnchorDockedLeft: {
+        borderRight: "none"
+      },
+      paperAnchorRight: {
+        borderLeft: "none",
+        backgroundColor: colors.black02,
+        width: detailDrawerWidth
+      },
+      paperAnchorDockedRight: {
         borderRight: "none"
       }
     },
