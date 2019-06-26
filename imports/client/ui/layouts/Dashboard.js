@@ -106,7 +106,7 @@ class Dashboard extends Component {
           </PrimaryAppBar>
           <Sidebar
             isMobile={isMobile}
-            isSidebarOpen={this.state.isPrimarySidebarOpen}
+            isSidebarOpen={isPrimarySidebarOpen && !isDetailDrawerOpen}
             setIsSidebarOpen={(value) => {
               this.setState({ isPrimarySidebarOpen: value });
             }}
