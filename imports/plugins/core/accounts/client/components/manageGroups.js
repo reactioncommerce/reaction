@@ -24,7 +24,8 @@ class ManageGroups extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { group, groups, adminGroups, accounts } = nextProps;
     this.setState({ group, groups, accounts, adminGroups });
   }
