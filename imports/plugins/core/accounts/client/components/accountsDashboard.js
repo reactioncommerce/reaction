@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import sortUsersIntoGroups, { sortGroups } from "../helpers/accountsHelper";
+import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
+import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
 
 class AccountsDashboard extends Component {
   static propTypes = {
@@ -87,13 +89,14 @@ class AccountsDashboard extends Component {
 
   render() {
     return (
-      <div className="row list-group accounts-table">
-        <div className="col-md-9">
-          {this.renderGroupsTable(this.state.adminGroups)}
+      <div className="accounts-table">
+        <div className="group-container" style={{ textAlign: "right" }}>
+          <DetailDrawerButton color="primary" variant="outlined">{"Manage Groups"}</DetailDrawerButton>
         </div>
-        <div className="col-md-3">
+        {this.renderGroupsTable(this.state.adminGroups)}
+        <DetailDrawer title={"Manage Groups"}>
           {this.renderGroupDetail()}
-        </div>
+        </DetailDrawer>
       </div>
     );
   }
