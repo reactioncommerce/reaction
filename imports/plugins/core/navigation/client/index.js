@@ -1,7 +1,6 @@
 
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
+import LinkIcon from "mdi-material-ui/LinkVariant";
 import { registerOperatorRoute } from "/imports/client/ui";
 import NavigationDashboard from "./containers/navigationDashboardContainer";
 
@@ -10,11 +9,12 @@ import "./templates";
 
 registerOperatorRoute({
   isNavigationLink: true,
-  isSetting: true,
+  isSetting: false,
+  priority: 50,
   layoutComponent: null,
   mainComponent: NavigationDashboard,
   path: "/navigation",
   // eslint-disable-next-line react/display-name
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faLink} {...props} />,
+  SidebarIconComponent: (props) => <LinkIcon {...props} />,
   sidebarI18nLabel: "admin.navigation.navigation"
 });

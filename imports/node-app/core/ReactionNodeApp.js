@@ -2,6 +2,7 @@ import { createServer } from "http";
 import { PubSub } from "apollo-server";
 import { merge } from "lodash";
 import mongodb, { MongoClient } from "mongodb";
+import Logger from "@reactioncommerce/logger";
 import appEvents from "./util/appEvents";
 import collectionIndex from "/imports/utils/collectionIndex";
 import createApolloServer from "./createApolloServer";
@@ -33,12 +34,7 @@ export default class ReactionNodeApp {
       app: this,
       appEvents,
       collections: this.collections,
-      getFunctionsOfType: (type) => {
-        if (this.options.functionsByType && Array.isArray(this.options.functionsByType[type])) {
-          return this.options.functionsByType[type];
-        }
-        return this.functionsByType[type] || [];
-      },
+      getFunctionsOfType: (type) => (this.functionsByType[type] || []).map(({ func }) => func),
       // In a large production app, you may want to use an external pub-sub system.
       // See https://www.apollographql.com/docs/apollo-server/features/subscriptions.html#PubSub-Implementations
       // We may eventually bind this directly to Kafka.
@@ -51,14 +47,7 @@ export default class ReactionNodeApp {
       schemas: []
     };
 
-    if (options.functionsByType) {
-      Object.keys(options.functionsByType).forEach((type) => {
-        if (!Array.isArray(this.functionsByType[type])) {
-          this.functionsByType[type] = [];
-        }
-        this.functionsByType[type].push(...options.functionsByType[type]);
-      });
-    }
+    this._registerFunctionsByType(options.functionsByType, "__APP__");
 
     if (options.graphQL) {
       if (options.graphQL.resolvers) {
@@ -75,6 +64,19 @@ export default class ReactionNodeApp {
     this.registeredPlugins = {};
 
     this.mongodb = options.mongodb || mongodb;
+  }
+
+  _registerFunctionsByType(functionsByType, pluginName) {
+    if (functionsByType) {
+      Object.keys(functionsByType).forEach((type) => {
+        if (!Array.isArray(this.functionsByType[type])) {
+          this.functionsByType[type] = [];
+        }
+        functionsByType[type].forEach((func) => {
+          this.functionsByType[type].push({ func, pluginName });
+        });
+      });
+    }
   }
 
   /**
@@ -171,7 +173,7 @@ export default class ReactionNodeApp {
     //
     // These are not async but they run before plugin `startup` functions, so a plugin
     // can save off relevant config and handle it later in `startup`.
-    const registerPluginHandlerFuncs = this.functionsByType.registerPluginHandler || [];
+    const registerPluginHandlerFuncs = this.context.getFunctionsOfType("registerPluginHandler");
     const packageInfoArray = Object.values(this.registeredPlugins);
     registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
       if (typeof registerPluginHandlerFunc !== "function") {
@@ -183,8 +185,12 @@ export default class ReactionNodeApp {
     const startupFunctionsRegisteredByPlugins = this.functionsByType.startup;
     if (Array.isArray(startupFunctionsRegisteredByPlugins)) {
       // We are intentionally running these in series, in the order in which they were registered
-      for (const startupFunction of startupFunctionsRegisteredByPlugins) {
-        await startupFunction(this.context); // eslint-disable-line no-await-in-loop
+      for (const startupFunctionInfo of startupFunctionsRegisteredByPlugins) {
+        Logger.info(`Running startup function "${startupFunctionInfo.func.name}" for plugin "${startupFunctionInfo.pluginName}"...`);
+        const startTime = Date.now();
+        await startupFunctionInfo.func(this.context); // eslint-disable-line no-await-in-loop
+        const elapsedMs = Date.now() - startTime;
+        Logger.info(`Startup function "${startupFunctionInfo.func.name}" for plugin "${startupFunctionInfo.pluginName}" finished in ${elapsedMs}ms`);
       }
     }
   }
@@ -329,13 +335,6 @@ export default class ReactionNodeApp {
       merge(this.context.queries, plugin.queries);
     }
 
-    if (plugin.functionsByType) {
-      Object.keys(plugin.functionsByType).forEach((type) => {
-        if (!Array.isArray(this.functionsByType[type])) {
-          this.functionsByType[type] = [];
-        }
-        this.functionsByType[type].push(...plugin.functionsByType[type]);
-      });
-    }
+    this._registerFunctionsByType(plugin.functionsByType, plugin.name);
   }
 }

@@ -288,10 +288,6 @@ Reaction.onAppStartupComplete(() => {
         sandbox
           .stub(Reaction, "hasPermission", () => hasPermission)
           .withArgs("admin", fakeAccount.userId, sinon.match.string);
-
-        // the following stub is just to speed things up. the tests were timing
-        // out in the shop creation step. this seems to resolve that.
-        sandbox.stub(Reaction, "insertPackagesForShop");
       }
 
       beforeEach(function () {

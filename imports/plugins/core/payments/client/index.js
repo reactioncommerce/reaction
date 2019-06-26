@@ -10,6 +10,7 @@ registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
   mainComponent: "paymentSettings",
+  priority: 20,
   path: "/payment",
   // eslint-disable-next-line react/display-name
   SidebarIconComponent: (props) => <FontAwesomeIcon icon={faCreditCard} {...props} />,

@@ -6,12 +6,18 @@ import colors from "./colors";
 const { rui_typography: typography } = defaultComponentTheme;
 const breakpoints = createBreakpoints({});
 const toolbarHeight = 80;
-
-export const defaultSpacingUnit = 10;
+const toolbarMobileHeight = 54;
 
 // Colors
 export const colorPrimaryMain = colors.coolGrey;
-export const colorSecondaryMain = colors.coolGrey;
+export const colorSecondaryMain = colors.darkBlue500;
+
+// Spacing
+export const defaultSpacingUnit = 8;
+export const drawerWidth = 280;
+
+// Typography
+export const defaultFontSize = 16;
 
 export const rawMuiTheme = {
   palette: {
@@ -26,21 +32,27 @@ export const rawMuiTheme = {
       main: colorSecondaryMain,
       dark: colors.coolGrey400
     },
-    divider: colors.black10
+    divider: colors.black10,
+    text: {
+      secondary: colors.black15,
+      secondaryActive: colors.white,
+      active: "#8acef2"
+    }
   },
   typography: {
-    fontSize: 16,
+    fontSize: defaultFontSize,
     fontFamily: typography.bodyText.fontFamily,
     fontWeightLight: 400,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
+    fontWeightSemiBold: 600,
     fontWeightBold: 700,
     useNextVariants: true,
-    h6: {
-      fontSize: 18
-    },
     subtitle1: {
-      fontSize: 16
+      fontSize: defaultFontSize
+    },
+    body1: {
+      fontSize: defaultFontSize
     },
     button: {
       fontSize: 14,
@@ -48,7 +60,26 @@ export const rawMuiTheme = {
     },
     caption: {
       color: colors.black30
+    },
+    h1: {
+      fontSize: defaultFontSize * 1.5
+    },
+    h2: {
+      fontSize: defaultFontSize * 1.25
+    },
+    h3: {
+      fontSize: defaultFontSize * 1.125
+    },
+    h4: {
+      fontSize: defaultFontSize
+    },
+    h5: {
+      fontSize: defaultFontSize * 0.875
+    },
+    h6: {
+      fontSize: defaultFontSize * 0.75
     }
+
   },
   shadows: [
     "none",
@@ -81,13 +112,24 @@ export const rawMuiTheme = {
     borderRadius: 2
   },
   spacing: {
+    drawerWidth,
     unit: defaultSpacingUnit
   },
   mixins: {
+    leadingPaddingWhenPrimaryDrawerIsOpen: {
+      paddingLeft: drawerWidth + (defaultSpacingUnit * 2)
+    },
     toolbar: {
       minHeight: toolbarHeight,
       [`${breakpoints.up("xs")} and (orientation: landscape)`]: {
-        minHeight: toolbarHeight
+        minHeight: toolbarMobileHeight,
+        paddingLeft: defaultSpacingUnit,
+        paddingRight: defaultSpacingUnit
+      },
+      [`${breakpoints.up("xs")} and (orientation: portrait)`]: {
+        minHeight: toolbarMobileHeight,
+        paddingLeft: defaultSpacingUnit,
+        paddingRight: defaultSpacingUnit
       },
       [breakpoints.up("sm")]: {
         minHeight: toolbarHeight
@@ -97,7 +139,7 @@ export const rawMuiTheme = {
   // Override default props
   props: {
     MuiAppBar: {
-      elevation: 3
+      elevation: 0
     },
     MuiCardHeader: {
       titleTypographyProps: {
@@ -109,13 +151,27 @@ export const rawMuiTheme = {
   overrides: {
     MuiAppBar: {
       root: {
-        height: toolbarHeight
+        height: toolbarHeight,
+        [`${breakpoints.up("xs")} and (orientation: landscape)`]: {
+          height: toolbarMobileHeight
+        },
+        [`${breakpoints.up("xs")} and (orientation: portrait)`]: {
+          height: toolbarMobileHeight
+        },
+        [breakpoints.up("sm")]: {
+          height: toolbarHeight
+        }
       },
       colorPrimary: {
-        backgroundColor: colors.white
+        backgroundColor: colors.white,
+        borderBottom: `1px solid ${colors.black05}`
+      },
+      colorSecondary: {
+        backgroundColor: "#3C4950" // colors.coolGrey with 20% opacity, opaque
       },
       colorDefault: {
-        backgroundColor: colors.white
+        backgroundColor: colors.white,
+        borderBottom: `1px solid ${colors.black05}`
       }
     },
     MuiButton: {
@@ -158,11 +214,22 @@ export const rawMuiTheme = {
       }
     },
     MuiDrawer: {
+      paper: {
+        width: drawerWidth
+      },
       paperAnchorLeft: {
-        borderRight: "none"
+        borderRight: "none",
+        backgroundColor: colors.darkBlue500,
+        color: colors.black15
       },
       paperAnchorDockedLeft: {
         borderRight: "none"
+      }
+    },
+    MuiFab: {
+      sizeSmall: {
+        width: 36,
+        height: 36
       }
     },
     MuiOutlinedInput: {
