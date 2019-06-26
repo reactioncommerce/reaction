@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
@@ -12,14 +12,6 @@ import OrderCardStatusChip from "./orderCardStatusChip";
 const styles = (theme) => ({
   fontWeightSemiBold: {
     fontWeight: theme.typography.fontWeightSemiBold
-  },
-  fontWeightBold: {
-    fontWeight: theme.typography.fontWeightBold
-  },
-  printButton: {
-    flex: 1,
-    justifyContent: "flex-end",
-    display: "flex"
   }
 });
 
@@ -35,12 +27,7 @@ class OrderCardHeader extends Component {
     })
   };
 
-  orderLink() {
-    const { order: { referenceId } } = this.props;
-    return `${window.location.origin}/operator/orders/${referenceId}`;
-  }
-
-  printLink() {
+  handleClickPrintLink() {
     const { order } = this.props;
 
     return Reaction.Router.pathFor("dashboard/pdf/orders", {
@@ -102,21 +89,22 @@ class OrderCardHeader extends Component {
               <OrderCardStatusChip displayStatus={displayStatus} status={status} type="order" />
             </Grid>
             {this.renderPaymentStatusChip()}
+            <Grid item>
+              <Button
+                href={this.handleClickPrintLink()}
+                variant="text"
+              >
+                {i18next.t("admin.orderWorkflow.invoice.printInvoice", "Print invoice")}
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Grid container alignItems="center" spacing={32}>
-            <Grid item>
-              <Typography variant="body1" inline={true}>{orderDate}</Typography>
-            </Grid>
-            <Grid item>
-              <Link href={this.printLink()}>{i18next.t("admin.orderWorkflow.invoice.printInvoice", "Print invoice")}</Link>
-            </Grid>
-          </Grid>
+          <Typography variant="body1" inline={true}>{i18next.t("order.placed", "Placed")} {orderDate}</Typography>
         </Grid>
       </Grid>
     );
   }
 }
 
-export default withMoment(withStyles(styles, { name: "OrderCardHeader" })(OrderCardHeader));
+export default withMoment(withStyles(styles, { name: "RuiOrderCardHeader" })(OrderCardHeader));
