@@ -102,6 +102,7 @@ export const rawMuiTheme = {
       fontSize: defaultFontSize * 0.75,
       lineHeight: 1.5
     }
+
   },
   shadows: [
     "none",
