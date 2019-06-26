@@ -124,7 +124,10 @@ class Dashboard extends Component {
                     // If the layout component is explicitly null
                     if (route.layoutComponent === null) {
                       return (
-                        <ContentViewFullLayout isSidebarOpen={!isMobile}>
+                        <ContentViewFullLayout
+                          isLeadingDrawerOpen={!isMobile}
+                          isTrailingDrawerOpen={isDetailDrawerOpen && !isMobile}
+                        >
                           <route.mainComponent uiState={this.state} {...props} />
                         </ContentViewFullLayout>
                       );
@@ -133,7 +136,10 @@ class Dashboard extends Component {
                     const LayoutComponent = route.layoutComponent || ContentViewStandardLayout;
 
                     return (
-                      <LayoutComponent isSidebarOpen={!isMobile}>
+                      <LayoutComponent
+                        isLeadingDrawerOpen={!isMobile}
+                        isTrailingDrawerOpen={isDetailDrawerOpen && !isMobile}
+                      >
                         <route.mainComponent uiState={this.state} {...props} />
                       </LayoutComponent>
                     );
