@@ -10,7 +10,7 @@ const toolbarMobileHeight = 54;
 
 // Colors
 export const colorPrimaryMain = colors.coolGrey;
-export const colorSecondaryMain = colors.darkBlue500;
+export const colorSecondaryMain = colors.reactionBlue;
 
 // Spacing
 export const defaultSpacingUnit = 8;
@@ -19,6 +19,11 @@ export const detailDrawerWidth = 400;
 
 // Typography
 export const defaultFontSize = 16;
+export const fontWeightLight = 400;
+export const fontWeightRegular = 400;
+export const fontWeightMedium = 500;
+export const fontWeightSemiBold = 600;
+export const fontWeightBold = 700;
 
 export const rawMuiTheme = {
   palette: {
@@ -43,11 +48,11 @@ export const rawMuiTheme = {
   typography: {
     fontSize: defaultFontSize,
     fontFamily: typography.bodyText.fontFamily,
-    fontWeightLight: 400,
-    fontWeightRegular: 400,
-    fontWeightMedium: 500,
-    fontWeightSemiBold: 600,
-    fontWeightBold: 700,
+    fontWeightLight,
+    fontWeightRegular,
+    fontWeightMedium,
+    fontWeightSemiBold,
+    fontWeightBold,
     useNextVariants: true,
     subtitle1: {
       fontSize: defaultFontSize
@@ -72,15 +77,17 @@ export const rawMuiTheme = {
       fontSize: defaultFontSize * 1.125
     },
     h4: {
-      fontSize: defaultFontSize
+      fontSize: defaultFontSize,
+      fontWeight: fontWeightSemiBold
     },
     h5: {
-      fontSize: defaultFontSize * 0.875
+      fontSize: defaultFontSize * 0.875,
+      fontWeight: fontWeightSemiBold
     },
     h6: {
-      fontSize: defaultFontSize * 0.75
+      fontSize: defaultFontSize * 0.75,
+      fontWeight: fontWeightSemiBold
     }
-
   },
   shadows: [
     "none",
@@ -148,7 +155,7 @@ export const rawMuiTheme = {
     },
     MuiCardHeader: {
       titleTypographyProps: {
-        variant: "h6"
+        variant: "h4"
       }
     }
   },
