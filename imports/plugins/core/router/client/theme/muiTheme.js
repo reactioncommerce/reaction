@@ -8,13 +8,16 @@ const breakpoints = createBreakpoints({});
 const toolbarHeight = 80;
 const toolbarMobileHeight = 54;
 
+// Colors
+export const colorPrimaryMain = colors.coolGrey;
+export const colorSecondaryMain = colors.darkBlue500;
+
 // Spacing
 export const defaultSpacingUnit = 8;
 export const drawerWidth = 280;
 
-// Colors
-export const colorPrimaryMain = colors.coolGrey;
-export const colorSecondaryMain = colors.darkBlue500;
+// Typography
+export const defaultFontSize = 16;
 
 export const rawMuiTheme = {
   palette: {
@@ -37,28 +40,67 @@ export const rawMuiTheme = {
     }
   },
   typography: {
-    fontSize: 16,
+    fontSize: defaultFontSize,
     fontFamily: typography.bodyText.fontFamily,
     fontWeightLight: 400,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
+    fontWeightSemiBold: 600,
     fontWeightBold: 700,
     useNextVariants: true,
-    h6: {
-      fontSize: 18
-    },
-    subtitle1: {
-      fontSize: 16
-    },
-    body1: {
-      fontSize: 16
-    },
     button: {
       fontSize: 14,
       letterSpacing: 0.8
     },
+    h1: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.5,
+      lineHeight: 1.25
+    },
+    h2: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.25,
+      lineHeight: 1.25
+    },
+    h3: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.125,
+      lineHeight: 1.25
+    },
+    h4: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize,
+      lineHeight: 1.25
+    },
+    h5: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.875,
+      lineHeight: 1.25
+    },
+    h6: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.75,
+      lineHeight: 1.25
+    },
+    body1: {
+      color: colors.black70,
+      fontSize: defaultFontSize,
+      lineHeight: 1.5
+    },
+    body2: {
+      fontSize: defaultFontSize,
+      lineHeight: 1.5
+    },
     caption: {
       color: colors.black30
+    },
+    subtitle1: {
+      fontSize: defaultFontSize * 0.875,
+      lineHeight: 1.5
+    },
+    subtitle2: {
+      fontSize: defaultFontSize * 0.75,
+      lineHeight: 1.5
     }
   },
   shadows: [
