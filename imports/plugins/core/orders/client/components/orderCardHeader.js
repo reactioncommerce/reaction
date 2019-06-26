@@ -1,21 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
-import Address from "@reactioncommerce/components/Address/v1";
 import { withMoment } from "@reactioncommerce/reaction-components";
-import { ClickToCopy } from "@reactioncommerce/reaction-ui";
 import { i18next, Reaction } from "/client/api";
 import OrderCardStatusChip from "./orderCardStatusChip";
 
 
 const styles = (theme) => ({
-  orderCardInfoTextBold: {
+  fontWeightSemiBold: {
+    fontWeight: theme.typography.fontWeightSemiBold
+  },
+  fontWeightBold: {
     fontWeight: theme.typography.fontWeightBold
   },
   printButton: {
@@ -32,9 +30,6 @@ class OrderCardHeader extends Component {
     order: PropTypes.shape({
       createdAt: PropTypes.string,
       displayStatus: PropTypes.string,
-      email: PropTypes.string,
-      fulfillmentGroups: PropTypes.array,
-      payments: PropTypes.array,
       referenceId: PropTypes.string,
       status: PropTypes.string
     })
@@ -53,16 +48,6 @@ class OrderCardHeader extends Component {
         id: order.referenceId
       }
     });
-  }
-
-  renderOrderShipments() {
-    const { order: { fulfillmentGroups } } = this.props;
-
-    if (Array.isArray(fulfillmentGroups) && fulfillmentGroups.length) {
-      return fulfillmentGroups.map((fulfillmentGroup) => <Typography key={fulfillmentGroup._id} variant="body2">{fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName}</Typography>); // eslint-disable-line
-    }
-
-    return null;
   }
 
   renderPaymentStatusChip() {
@@ -94,34 +79,27 @@ class OrderCardHeader extends Component {
     // and show badges next to payments to represent their status
     return (
       <Grid item>
-        <OrderCardStatusChip displayStatus="Multiple statuses" status="multiple" type="payment" />
+        <OrderCardStatusChip displayStatus={i18next.t("data.status.multipleStatuses", "Multiple statuses")} status="multiple" type="payment" />
       </Grid>
     );
   }
 
   render() {
     const { classes, moment, order } = this.props;
-    const { createdAt, displayStatus, email, fulfillmentGroups, payments, referenceId, status } = order;
-    const { shippingAddress } = fulfillmentGroups[0].data;
+    const { createdAt, displayStatus, referenceId, status } = order;
     const orderDate = (moment && moment(createdAt).format("MM/DD/YYYY")) || createdAt.toLocaleString();
 
     return (
-      <Grid container spacing={16}>
+      <Grid container spacing={8}>
         <Grid item xs={12}>
           <Grid container alignItems="center" spacing={16}>
             <Grid item>
-              <Typography variant="body2" className={classes.orderCardInfoTextBold} inline={true}>
-                Order -
-                <ClickToCopy
-                  copyToClipboard={this.orderLink()}
-                  displayText={referenceId}
-                  i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
-                  tooltip="Copy Order Link"
-                />
+              <Typography variant="h3" className={classes.fontWeightSemiBold} inline={true}>
+                {i18next.t("order.order", "Order")} - {referenceId}
               </Typography>
             </Grid>
             <Grid item>
-              <OrderCardStatusChip displayStatus={displayStatus} status={status} type="shipment" variant="contained" />
+              <OrderCardStatusChip displayStatus={displayStatus} status={status} type="order" variant="contained" />
             </Grid>
             {this.renderPaymentStatusChip()}
           </Grid>
@@ -129,35 +107,10 @@ class OrderCardHeader extends Component {
         <Grid item xs={12}>
           <Grid container alignItems="center" spacing={32}>
             <Grid item>
-              <Typography variant="body2" inline={true}>{orderDate}</Typography>
+              <Typography variant="body1" inline={true}>{orderDate}</Typography>
             </Grid>
             <Grid item>
-              <Link href={this.printLink()}>Print invoice</Link>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container spacing={24}>
-            <Grid item xs={12} md={6}>
-              <Card>
-                <CardContent>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                        Shipping address
-                      </Typography>
-                      <Address address={shippingAddress} />
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                        Contact information
-                      </Typography>
-                      <Typography variant="body2">{email}</Typography>
-                      <Typography variant="body2">{shippingAddress.phone}</Typography>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
+              <Link href={this.printLink()}>{i18next.t("admin.orderWorkflow.invoice.printInvoice", "Print invoice")}</Link>
             </Grid>
           </Grid>
         </Grid>

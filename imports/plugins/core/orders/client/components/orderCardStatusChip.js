@@ -61,7 +61,7 @@ class OrderCardStatusChip extends Component {
       chipClasses = classes.orderStatusShipped;
     }
 
-    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="default" />;
+    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="contained" />;
   }
 
   paymentStatus() {
@@ -69,47 +69,30 @@ class OrderCardStatusChip extends Component {
     const { displayStatus } = this.props;
     let chipClasses;
 
-    // if (status === "coreOrderWorkflow/canceled") {
-    //   chipClasses = classes.orderStatusCanceled;
-    // }
-
-    // if (status === "new") {
-    //   chipClasses = classes.orderStatusNew;
-    // }
-
-    // if (status === "coreOrderWorkflow/processing") {
-    //   chipClasses = classes.orderStatusProcessing;
-    // }
-
-    // if (status === "coreOrderWorkflow/completed") {
-    //   chipClasses = classes.orderStatusShipped;
-    // }
-
     return <Chip label={displayStatus} className={chipClasses} color="primary" variant="outlined" />;
   }
 
   shipmentStatus() {
-    // const { classes, displayStatus, status } = this.props;
-    const { displayStatus } = this.props;
+    const { classes, displayStatus, status } = this.props;
     let chipClasses;
 
-    // if (status === "coreOrderWorkflow/canceled") {
-    //   chipClasses = classes.orderStatusCanceled;
-    // }
+    if (status === "coreOrderWorkflow/canceled") {
+      chipClasses = classes.orderStatusCanceled;
+    }
 
-    // if (status === "new") {
-    //   chipClasses = classes.orderStatusNew;
-    // }
+    if (status === "new") {
+      chipClasses = classes.orderStatusNew;
+    }
 
-    // if (status === "coreOrderWorkflow/processing") {
-    //   chipClasses = classes.orderStatusProcessing;
-    // }
+    if (status === "coreOrderWorkflow/processing") {
+      chipClasses = classes.orderStatusProcessing;
+    }
 
-    // if (status === "coreOrderWorkflow/completed") {
-    //   chipClasses = classes.orderStatusShipped;
-    // }
+    if (status === "coreOrderWorkflow/completed") {
+      chipClasses = classes.orderStatusShipped;
+    }
 
-    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="outlined" />;
+    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="contained" />;
   }
 
   render() {
