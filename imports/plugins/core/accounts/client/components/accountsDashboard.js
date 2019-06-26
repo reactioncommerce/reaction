@@ -24,7 +24,8 @@ class AccountsDashboard extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { adminGroups, accounts, groups } = nextProps;
     const sortedGroups = sortUsersIntoGroups({ groups: sortGroups(adminGroups), accounts });
     const selectedGroup = adminGroups.find((grp) => grp._id === (this.state.selectedGroup || {})._id);
