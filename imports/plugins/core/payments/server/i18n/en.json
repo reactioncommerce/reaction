@@ -4,6 +4,8 @@
   "ns": "reaction-payments",
   "translation": {
     "reaction-payments": {
+      "captureAllPayments": "Capture all payments",
+      "capturePayment": "Capture payment",
       "admin": {
         "shortcut": {
           "paymentsLabel": "Payments",
