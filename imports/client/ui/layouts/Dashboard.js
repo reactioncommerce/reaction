@@ -6,6 +6,7 @@ import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { CustomPropTypes } from "@reactioncommerce/components/utils";
 import { withComponents } from "@reactioncommerce/components-context";
 import { Route, Switch } from "react-router";
+import { withRouter } from "react-router-dom";
 import PrimaryAppBar from "../components/PrimaryAppBar/PrimaryAppBar";
 import ProfileImageWithData from "../components/ProfileImageWithData";
 import Sidebar from "../components/Sidebar";
@@ -35,6 +36,7 @@ class Dashboard extends Component {
     components: PropTypes.shape({
       IconHamburger: CustomPropTypes.component.isRequired
     }),
+    location: PropTypes.object,
     width: PropTypes.string
   };
 
@@ -55,7 +57,7 @@ class Dashboard extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { width } = this.props;
+    const { width, location } = this.props;
     const isMobile = isWidthDown("sm", width);
 
     if (prevState.isMobile !== isMobile) {
@@ -69,6 +71,14 @@ class Dashboard extends Component {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         isPrimarySidebarOpen: true
+      });
+    }
+
+    // Close the detail drawer on route change
+    if (location.pathname !== prevProps.location.pathname) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        isDetailDrawerOpen: false
       });
     }
   }
@@ -156,6 +166,7 @@ class Dashboard extends Component {
 
 export default compose(
   withComponents,
+  withRouter,
   withWidth({ initialWidth: "md" }),
   withStyles(styles, { name: "RuiDashboard" })
 )(Dashboard);
