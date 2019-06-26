@@ -36,7 +36,8 @@ class AdminInviteForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { groups } = nextProps;
     this.setState({ groups, group: getDefaultUserInviteGroup(groups) });
   }
