@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import { i18next } from "/client/api";
 import sortUsersIntoGroups, { sortGroups } from "../helpers/accountsHelper";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
@@ -91,10 +92,10 @@ class AccountsDashboard extends Component {
     return (
       <div className="accounts-table">
         <div className="group-container" style={{ textAlign: "right" }}>
-          <DetailDrawerButton color="primary" variant="outlined">{"Manage Groups"}</DetailDrawerButton>
+          <DetailDrawerButton color="primary" variant="outlined">{i18next.t("admin.dashboard.manageGroups")}</DetailDrawerButton>
         </div>
         {this.renderGroupsTable(this.state.adminGroups)}
-        <DetailDrawer title={"Manage Groups"}>
+        <DetailDrawer title={i18next.t("admin.dashboard.manageGroups")}>
           {this.renderGroupDetail()}
         </DetailDrawer>
       </div>
