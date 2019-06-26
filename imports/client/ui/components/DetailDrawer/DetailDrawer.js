@@ -19,7 +19,8 @@ const styles = (theme) => ({
     marginRight: "-1px"
   },
   title: {
-    flex: 1
+    flex: 1,
+    paddingLeft: theme.spacing.unit
   }
 });
 
@@ -55,8 +56,8 @@ function DetailDrawer(props) {
             position="sticky"
           >
             <Toolbar>
-              <Typography className={classes.title} variant="h6">{title}</Typography>
-              <IconButton color="secondary" onClick={onCloseDetailDrawer} size="small">
+              <Typography className={classes.title} variant="h3">{title}</Typography>
+              <IconButton onClick={onCloseDetailDrawer} size="small">
                 <CloseIcon />
               </IconButton>
             </Toolbar>
