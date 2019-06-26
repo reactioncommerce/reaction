@@ -58,7 +58,7 @@ function PrimaryAppBar({ children, classes, title }) {
               <Typography
                 className={classes.title}
                 component="h1"
-                variant="h6"
+                variant="h3"
               >
                 {title}
               </Typography>
