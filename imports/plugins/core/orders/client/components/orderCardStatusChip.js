@@ -15,6 +15,10 @@ const styles = (theme) => ({
     color: "white",
     fontWeight: "800"
   },
+  orderStatusCanceledOutlined: {
+    borderColor: theme.palette.colors.red300,
+    color: theme.palette.colors.red300
+  },
   orderStatusProcessing: {
     backgroundColor: theme.palette.colors.reactionBlue300,
     color: "white",
@@ -77,22 +81,10 @@ class OrderCardStatusChip extends Component {
     let chipClasses;
 
     if (status === "coreOrderWorkflow/canceled") {
-      chipClasses = classes.orderStatusCanceled;
+      chipClasses = classes.orderStatusCanceledOutlined;
     }
 
-    if (status === "new") {
-      chipClasses = classes.orderStatusNew;
-    }
-
-    if (status === "coreOrderWorkflow/processing") {
-      chipClasses = classes.orderStatusProcessing;
-    }
-
-    if (status === "coreOrderWorkflow/completed") {
-      chipClasses = classes.orderStatusShipped;
-    }
-
-    return <Chip label={displayStatus} className={chipClasses} color="primary" />;
+    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="outlined" />;
   }
 
   render() {
