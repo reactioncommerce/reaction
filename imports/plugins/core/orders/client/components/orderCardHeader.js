@@ -13,6 +13,9 @@ import OrderCardStatusChip from "./orderCardStatusChip";
 const styles = (theme) => ({
   fontWeightSemiBold: {
     fontWeight: theme.typography.fontWeightSemiBold
+  },
+  openSidebarButton: {
+    marginLeft: "auto"
   }
 });
 
@@ -98,7 +101,7 @@ class OrderCardHeader extends Component {
                 {i18next.t("admin.orderWorkflow.invoice.printInvoice", "Print invoice")}
               </Button>
             </Grid>
-            <Grid item>
+            <Grid className={classes.openSidebarButton} item>
               <DetailDrawerButton color="primary" size="small" variant="outlined">{i18next.t("orderCard.orderSummary.showOrderSummary", "Show order summary")}</DetailDrawerButton>
             </Grid>
           </Grid>
