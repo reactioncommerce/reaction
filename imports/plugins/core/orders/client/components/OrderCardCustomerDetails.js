@@ -1,78 +1,53 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Address from "@reactioncommerce/components/Address/v1";
-import { withMoment } from "@reactioncommerce/reaction-components";
 
 
-const styles = (theme) => ({
-  orderCardInfoTextSemiBold: {
-    fontWeight: theme.typography.fontWeightSemiBold
-  },
-  orderCardInfoTextBold: {
-    fontWeight: theme.typography.fontWeightBold
-  },
-  printButton: {
-    flex: 1,
-    justifyContent: "flex-end",
-    display: "flex"
-  }
-});
+/**
+ * @name OrderCardCustomerDetails
+ * @params {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function OrderCardCustomerDetails({ order }) {
+  const { email, fulfillmentGroups } = order;
+  const { shippingAddress: { fullName, phone } } = fulfillmentGroups[0].data;
 
-class OrderCardCustomerDetails extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    moment: PropTypes.func,
-    order: PropTypes.shape({
-      createdAt: PropTypes.string,
-      displayStatus: PropTypes.string,
-      email: PropTypes.string,
-      fulfillmentGroups: PropTypes.array,
-      payments: PropTypes.array,
-      referenceId: PropTypes.string,
-      status: PropTypes.string
-    })
-  };
-
-  render() {
-    const { classes, order } = this.props;
-    const { email, fulfillmentGroups } = order;
-    const { shippingAddress } = fulfillmentGroups[0].data;
-
-    return (
-      <Grid container spacing={16}>
-        <Grid item xs={12}>
-          <Grid container spacing={24}>
-            <Grid item xs={12} md={12}>
-              <Card>
-                <CardContent>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextSemiBold}>
-                        Shipping address
-                      </Typography>
-                      <Address address={shippingAddress} />
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                      <Typography variant="body2" className={classes.orderCardInfoTextBold}>
-                        Contact information
-                      </Typography>
-                      <Typography variant="body2">{email}</Typography>
-                      <Typography variant="body2">{shippingAddress.phone}</Typography>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
+  return (
+    <Card>
+      <CardHeader
+        title="Customer information"
+      />
+      <CardContent>
+        <Grid container spacing={24}>
+          <Grid item xs={12} md={12}>
+            <Typography variant="h4">
+              {fullName}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <Typography variant="body1">{email}</Typography>
+            <Typography variant="body1">{phone}</Typography>
           </Grid>
         </Grid>
-      </Grid>
-    );
-  }
+      </CardContent>
+    </Card>
+  );
 }
 
-export default withMoment(withStyles(styles, { name: "RuiOrderCardCustomerDetails" })(OrderCardCustomerDetails));
+OrderCardCustomerDetails.propTypes = {
+  order: PropTypes.shape({
+    email: PropTypes.string,
+    fulfillmentGroups: PropTypes.arrayOf(PropTypes.shape({
+      shippingAddress: PropTypes.shape({
+        fullName: PropTypes.string,
+        phone: PropTypes.string
+      })
+    }))
+  })
+};
+
+export default OrderCardCustomerDetails;
