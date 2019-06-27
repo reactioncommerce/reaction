@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import { i18next } from "/client/api";
 import sortUsersIntoGroups, { sortGroups } from "../helpers/accountsHelper";
+import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
+import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
 
 class AccountsDashboard extends Component {
   static propTypes = {
@@ -24,7 +27,8 @@ class AccountsDashboard extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { adminGroups, accounts, groups } = nextProps;
     const sortedGroups = sortUsersIntoGroups({ groups: sortGroups(adminGroups), accounts });
     const selectedGroup = adminGroups.find((grp) => grp._id === (this.state.selectedGroup || {})._id);
@@ -86,13 +90,14 @@ class AccountsDashboard extends Component {
 
   render() {
     return (
-      <div className="row list-group accounts-table">
-        <div className="col-md-9">
-          {this.renderGroupsTable(this.state.adminGroups)}
+      <div className="accounts-table">
+        <div className="group-container" style={{ textAlign: "right" }}>
+          <DetailDrawerButton color="primary" variant="outlined">{i18next.t("admin.dashboard.manageGroups")}</DetailDrawerButton>
         </div>
-        <div className="col-md-3">
+        {this.renderGroupsTable(this.state.adminGroups)}
+        <DetailDrawer title={i18next.t("admin.dashboard.manageGroups")}>
           {this.renderGroupDetail()}
-        </div>
+        </DetailDrawer>
       </div>
     );
   }
