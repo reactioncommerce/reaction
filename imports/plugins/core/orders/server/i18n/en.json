@@ -25,6 +25,7 @@
         "cancelOrderNoRestock": "Do not restock",
         "cancelOrderThenRestock": "Restock",
         "order": "Order",
+        "placed": "Placed",
         "refunding": "Refunding",
         "refundItemsAlert": "Do you want to refund {{refundItemsQuantity}} item(s) totaling {{refundItemsTotal}}?",
         "refundItemsApproveAlert": "Do you want to approve this payment and then refund {{totalAmount}}?",
@@ -37,6 +38,7 @@
       },
       "orderCard": {
         "orderSummary": {
+          "showOrderSummary": "Show order summary",
           "title": "Order Summary"
         }
       },
