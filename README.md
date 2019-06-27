@@ -434,4 +434,16 @@ npm test
 
 ### Publish
 
-CircleCI should publish all package changes to NPM automatically. If you need to publish manually and you have write access to the NPM packages, do so by running `npx lerna publish --conventional-commits`. It will determine appropriate version bumps automatically.
+Lerna is used to publish these packages and will determine appropriate version bumps automatically. To do these steps, you must have permission to push to this GitHub repo AND permission to publish all the NPM packages.
+
+In the repo root directory, with `master` branch checked out:
+
+```
+npx lerna publish --conventional-commits
+```
+
+Confirm the proposed package publications. Enter Y.
+
+If you have 2FA set up for your NPM account (you should), enter the OTP (one-time password) when prompted.
+
+Verify on https://www.npmjs.com/package/@reactioncommerce that new versions of changed packages were published. You should also see a release/tag pushed to GitHub [here](https://github.com/reactioncommerce/reaction-file-collections/releases).
