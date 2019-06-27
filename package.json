@@ -33,7 +33,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^3.9.2",
-    "@reactioncommerce/components": "^0.62.1",
+    "@reactioncommerce/components": "^0.65.4",
     "@reactioncommerce/components-context": "1.2.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.0",
@@ -170,7 +170,7 @@
     "apollo-server-testing": "2.3.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
-    "babel-jest": "23.6.0",
+    "babel-jest": "^24.8.0",
     "babel-plugin-inline-import": "3.0.0",
     "babel-plugin-lodash": "3.3.2",
     "babel-plugin-module-resolver": "3.1.1",
@@ -190,14 +190,14 @@
     "eslint-plugin-react": "7.8.2",
     "fs-extra": "^7.0.1",
     "graphql-schema-linter": "^0.2.0",
-    "jest": "23.6.0",
-    "jest-junit": "5.2.0",
-    "js-yaml": "^3.12.1",
-    "jsdoc": "^3.5.5",
+    "jest": "^24.8.0",
+    "jest-junit": "^6.4.0",
+    "js-yaml": "^3.13.1",
+    "jsdoc": "^3.6.2",
     "mongodb-memory-server": "2.7.3",
     "nodemon": "1.18.9",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.126.0"
+    "snyk": "^1.181.0"
   },
   "postcss": {
     "plugins": {
@@ -378,7 +378,9 @@
     }
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/imports/test-utils/setupJestTests.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>/imports/test-utils/setupJestTests.js"
+    ],
     "modulePathIgnorePatterns": [
       "node_modules"
     ]

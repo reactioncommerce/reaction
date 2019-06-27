@@ -405,7 +405,7 @@ class TagForm extends Component {
                   {currentTab === 0 &&
                     <Grid container spacing={24}>
                       <Grid item md={6}>
-                        <Typography variant="h6">{i18next.t("admin.tags.form.displayTitleAndSlug")}</Typography>
+                        <Typography variant="h3">{i18next.t("admin.tags.form.displayTitleAndSlug")}</Typography>
                         <PaddedField
                           helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
                           name="displayTitle"
@@ -439,8 +439,8 @@ class TagForm extends Component {
                         </PaddedField>
                       </Grid>
                       <Grid item md={6}>
-                        <Typography variant="h6">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
-                        <Typography>{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
+                        <Typography variant="h3">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
+                        <Typography variant="body2">{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
                         {this.renderMediaGalleryUploader()}
 
                         <PaddedField
@@ -458,7 +458,7 @@ class TagForm extends Component {
                   {currentTab === 1 &&
                     <Grid container spacing={24}>
                       <Grid item md={6}>
-                        <Typography variant="h6">{i18next.t("admin.tags.form.keywords")}</Typography>
+                        <Typography variant="h3">{i18next.t("admin.tags.form.keywords")}</Typography>
                         <PaddedField
                           name="keywords"
                           label={i18next.t("admin.tags.form.keywords")}
@@ -479,7 +479,7 @@ class TagForm extends Component {
                         </PaddedField>
                       </Grid>
                       <Grid item md={6}>
-                        <Typography variant="h6">{i18next.t("admin.tags.form.openGraph")}</Typography>
+                        <Typography variant="h3">{i18next.t("admin.tags.form.openGraph")}</Typography>
                         <PaddedField
                           name="og:title"
                           label={i18next.t("admin.tags.form.ogTitle")}

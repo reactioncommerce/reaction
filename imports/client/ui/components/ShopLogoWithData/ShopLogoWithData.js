@@ -67,7 +67,7 @@ function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, link
                   <Typography
                     color="textSecondary"
                     display="display"
-                    variant="h6"
+                    variant="h3"
                     component="span"
                   >
                     {shop.name}
