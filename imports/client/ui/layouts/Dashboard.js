@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
+import { i18next } from "/client/api";
 import { compose } from "recompose";
 import withStyles from "@material-ui/core/styles/withStyles";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
@@ -131,6 +133,7 @@ class Dashboard extends Component {
                   key={route.path}
                   path={`/operator${route.path}`}
                   render={(props) => {
+                    const title = i18next.t(route.sidebarI18nLabel, { defaultValue: "Reaction" })
                     // If the layout component is explicitly null
                     if (route.layoutComponent === null) {
                       return (
@@ -138,6 +141,7 @@ class Dashboard extends Component {
                           isLeadingDrawerOpen={!isMobile}
                           isTrailingDrawerOpen={isDetailDrawerOpen && !isMobile}
                         >
+                          <Helmet title={title} />
                           <route.mainComponent uiState={this.state} {...props} />
                         </ContentViewFullLayout>
                       );
@@ -150,6 +154,7 @@ class Dashboard extends Component {
                         isLeadingDrawerOpen={!isMobile}
                         isTrailingDrawerOpen={isDetailDrawerOpen && !isMobile}
                       >
+                        <Helmet title={title} />
                         <route.mainComponent uiState={this.state} {...props} />
                       </LayoutComponent>
                     );

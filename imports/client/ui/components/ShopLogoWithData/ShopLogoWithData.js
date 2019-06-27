@@ -1,4 +1,5 @@
-import React from "react";
+import React, {Fragment} from "react";
+import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import classNames from "classnames";
@@ -53,27 +54,29 @@ function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, link
             const defaultLogo = "/resources/reaction-logo-circular.svg";
 
             return (
-              <Link
-                className={classNames(classes.root, className)}
-                to={linkTo}
-              >
-                <img
-                  alt={shop.name}
-                  className={classes.logo}
-                  src={customLogo || defaultLogo}
-                  width={size}
-                />
-                {shouldShowShopName &&
-                  <Typography
-                    color="textSecondary"
-                    display="display"
-                    variant="h3"
-                    component="span"
-                  >
-                    {shop.name}
-                  </Typography>
-                }
-              </Link>
+              <Fragment>
+                <Link
+                  className={classNames(classes.root, className)}
+                  to={linkTo}
+                >
+                  <img
+                    alt={shop.name}
+                    className={classes.logo}
+                    src={customLogo || defaultLogo}
+                    width={size}
+                  />
+                  {shouldShowShopName &&
+                    <Typography
+                      color="textSecondary"
+                      display="display"
+                      variant="h3"
+                      component="span"
+                    >
+                      {shop.name}
+                    </Typography>
+                  }
+                </Link>
+              </Fragment>
             );
           }
 
