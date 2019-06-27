@@ -6,12 +6,16 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
+import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
 import OrderCardStatusChip from "./orderCardStatusChip";
 
 
 const styles = (theme) => ({
   fontWeightSemiBold: {
     fontWeight: theme.typography.fontWeightSemiBold
+  },
+  openSidebarButton: {
+    marginLeft: "auto"
   }
 });
 
@@ -96,6 +100,9 @@ class OrderCardHeader extends Component {
               >
                 {i18next.t("admin.orderWorkflow.invoice.printInvoice", "Print invoice")}
               </Button>
+            </Grid>
+            <Grid className={classes.openSidebarButton} item>
+              <DetailDrawerButton color="primary" size="small" variant="outlined">{i18next.t("orderCard.orderSummary.showOrderSummary", "Show order summary")}</DetailDrawerButton>
             </Grid>
           </Grid>
         </Grid>

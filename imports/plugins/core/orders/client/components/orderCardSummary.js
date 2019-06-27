@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
 import CartSummary from "@reactioncommerce/components/CartSummary/v1";
-import { i18next } from "/client/api";
 
 
 /**
@@ -26,9 +24,6 @@ function OrderCardSummary({ order }) {
 
     return (
       <Card>
-        <CardHeader
-          title={i18next.t("orderCard.orderSummary.title", "Order Summary")}
-        />
         <CardContent>
           <CartSummary
             isDense

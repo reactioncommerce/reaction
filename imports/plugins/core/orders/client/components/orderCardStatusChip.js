@@ -69,7 +69,6 @@ class OrderCardStatusChip extends Component {
   }
 
   paymentStatus() {
-    // const { classes, displayStatus, status } = this.props;
     const { displayStatus } = this.props;
     let chipClasses;
 
@@ -106,4 +105,4 @@ class OrderCardStatusChip extends Component {
   }
 }
 
-export default withStyles(styles, { name: "OrderCardStatusChip" })(OrderCardStatusChip);
+export default withStyles(styles, { name: "RuiOrderCardStatusChip" })(OrderCardStatusChip);

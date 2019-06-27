@@ -7,7 +7,9 @@ import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
+import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import OrderCardAppBar from "./orderCardAppBar";
+import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
 import OrderCardHeader from "./orderCardHeader";
 import OrderCardPayments from "./orderCardPayments";
@@ -29,13 +31,13 @@ class OrderCard extends Component {
   renderAppBar() {
     const { order } = this.props;
 
-    return <OrderCardAppBar order={order} {...this.props} />;
+    return <OrderCardAppBar order={order} />;
   }
 
   renderHeader() {
     const { order } = this.props;
 
-    return <OrderCardHeader order={order} {...this.props} />;
+    return <OrderCardHeader order={order} />;
   }
 
   renderFulfillmentGroups() {
@@ -48,6 +50,21 @@ class OrderCard extends Component {
     const { order } = this.props;
 
     return <OrderCardPayments order={order} {...this.props} />;
+  }
+
+  renderSidebar() {
+    const { order } = this.props;
+
+    return (
+      <Grid container spacing={8}>
+        <Grid item xs={12}>
+          {this.renderSummary()}
+        </Grid>
+        <Grid item xs={12}>
+          <OrderCardCustomerDetails order={order} />
+        </Grid>
+      </Grid>
+    );
   }
 
   renderSummary() {
@@ -81,10 +98,7 @@ class OrderCard extends Component {
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={24}>
-              <Grid item xs={12} md={6}>
-                {this.renderSummary()}
-              </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 {this.renderPayments()}
               </Grid>
             </Grid>
@@ -134,6 +148,9 @@ class OrderCard extends Component {
             this.renderRefunds()
           }
         </Grid>
+        <DetailDrawer title={i18next.t("orderCard.orderSummary.title", "Order summary")}>
+          {this.renderSidebar()}
+        </DetailDrawer>
       </Fragment>
     );
   }
