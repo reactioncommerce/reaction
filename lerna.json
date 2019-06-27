@@ -1,5 +1,5 @@
 {
-  "commands": {
+  "command": {
     "publish": {
       "allowBranch": ["master"],
       "message": "chore(release): publish updated packages"
