@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.6.0...@reactioncommerce/file-collections@0.6.1) (2019-06-27)
+
+
+### Bug Fixes
+
+* update packages to resolve security issues ([9d572c0](https://github.com/reactioncommerce/reaction-file-collections/commit/9d572c0))
+
+
+
+
+
 <a name="0.6.0"></a>
 ## [0.6.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.5.0...@reactioncommerce/file-collections@0.6.0) (2018-08-30)
 
