@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import Grid from "@material-ui/core/Grid";
-import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import OrderCardAppBar from "./orderCardAppBar";
@@ -51,7 +50,6 @@ class OrderCard extends Component {
       <Grid container spacing={8}>
         <Grid item xs={12}>
           {this.renderSummary()}
-          <Blocks region="OrderCardSummary" blockProps={{ order, ...this.props }} />
         </Grid>
         <Grid item xs={12}>
           <OrderCardCustomerDetails order={order} />
