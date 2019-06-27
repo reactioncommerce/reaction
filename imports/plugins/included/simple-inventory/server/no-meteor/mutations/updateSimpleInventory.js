@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { inputSchema } from "../utils/defaults";
-import getModifier from "../utils/getModifier";
+import getModifier from "../utils/getMongoUpdateModifier";
 
 /**
  * @summary Updates SimpleInventory data for a product configuration. Pass only

@@ -10,7 +10,7 @@ import { updateFields, defaultValues } from "./defaults";
  * @param {String} input.shopId ID of shop that owns the product
  * @return {Object} Object
  */
-export default function getModifier(input) {
+export default function getMongoUpdateModifier(input) {
   const { productConfiguration, shopId } = input;
 
   const $set = { updatedAt: new Date() };

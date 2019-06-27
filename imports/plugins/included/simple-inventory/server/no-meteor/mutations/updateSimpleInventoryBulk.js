@@ -1,7 +1,6 @@
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { inputSchema } from "../utils/defaults";
-import getModifier from "../utils/getModifier";
+import getMongoUpdateModifier from "../utils/getMongoUpdateModifier";
 
 const logCtx = { name: "simple-inventory", file: "updateSimpleInventoryBulk" };
 
@@ -17,22 +16,31 @@ const logCtx = { name: "simple-inventory", file: "updateSimpleInventoryBulk" };
 export default async function updateSimpleInventoryBulk(context, input) {
   const { appEvents, collections, userId } = context;
   const { SimpleInventory } = collections;
+  const invalidUpdates = [];
+  const validUpdates = [];
+  const bulkOperations = [];
 
-  // generate mongo operation object for each product input. Return null on any invalid input
-  let bulkOperations = input.updates.map((update) => {
-    let modifier = {};
+  // Validate each product data in the input array
+  input.updates.forEach((update) => {
     try {
       inputSchema.validate(update);
-      modifier = getModifier(update);
+      validUpdates.push(update);
     } catch (error) {
-      Logger.error({ ...logCtx, error });
-      return null;
+      invalidUpdates.push({ update, validationError: error });
     }
+  });
 
-    if (!modifier.$set || !modifier.$setOnInsert) return null;
+  // Create mongo operation object for each product input. Capture those inputs that failed the modifier function
+  validUpdates.forEach((update) => {
+    let modifier;
+    try {
+      modifier = getMongoUpdateModifier(update);
+    } catch (error) {
+      invalidUpdates.push({ update, validationError: error });
+      return;
+    }
     const { productConfiguration, shopId } = update;
-
-    return {
+    bulkOperations.push({
       updateOne: {
         filter: {
           "productConfiguration.productVariantId": productConfiguration.productVariantId,
@@ -41,12 +49,12 @@ export default async function updateSimpleInventoryBulk(context, input) {
         update: modifier,
         upsert: true
       }
-    };
+    });
   });
 
-  bulkOperations = bulkOperations.filter((op) => op !== null);
   let res;
   try {
+    Logger.trace({ ...logCtx, bulkOperations }, "Running bulk op");
     res = await SimpleInventory.bulkWrite(bulkOperations, { ordered: false });
   } catch (error) {
     Logger.error({ ...logCtx, error }, "One or more of the bulk update failed");
@@ -54,11 +62,11 @@ export default async function updateSimpleInventoryBulk(context, input) {
   }
 
   const upsertedIds = res.result.upserted.map((each) => each._id);
-  const failedOps = bulkOperations.filter((op) => {
+  const failedUpdates = validUpdates.filter((update) => {
     const match = res.result.writeErrors.find((writeError) => {
-      const isFilterEqual = _.isEqual(op.updateOne.filter, writeError.op.q);
-      const isUpdateEqual = _.isEqual(op.updateOne.update, writeError.op.u);
-      return isFilterEqual && isUpdateEqual;
+      const errVariantId = writeError.op.q["productConfiguration.productVariantId"];
+      const updateVariantId = update.productConfiguration.productVariantId;
+      return updateVariantId === errVariantId;
     });
     if (match) return true;
     return false;
@@ -78,7 +86,7 @@ export default async function updateSimpleInventoryBulk(context, input) {
         },
         shopId: operationData.updateOne.filter.shopId
       };
-      Logger.debug({ ...logCtx, arg }, "Calling recalculateReservedSimpleInventory");
+      Logger.trace({ ...logCtx, arg }, "Calling recalculateReservedSimpleInventory");
       context.mutations.recalculateReservedSimpleInventory(context, arg);
     });
   }
@@ -93,5 +101,8 @@ export default async function updateSimpleInventoryBulk(context, input) {
     appEvents.emit("afterBulkInventoryUpdate", { productConfigurations, updatedBy: userId });
   }
 
-  return { failedOps };
+  return {
+    failedUpdates,
+    invalidUpdates
+  };
 }
