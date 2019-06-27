@@ -36,7 +36,7 @@
     "@reactioncommerce/components": "^0.65.4",
     "@reactioncommerce/components-context": "1.2.0",
     "@reactioncommerce/data-factory": "^1.0.0",
-    "@reactioncommerce/file-collections": "0.6.0",
+    "@reactioncommerce/file-collections": "0.6.1",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
     "@reactioncommerce/job-queue": "1.0.4",
     "@reactioncommerce/logger": "1.1.1",
