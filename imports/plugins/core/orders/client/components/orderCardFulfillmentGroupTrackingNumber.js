@@ -102,7 +102,7 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
                   {trackingNumber ?
                     <Grid container alignItems="center" justify="flex-end" spacing={8}>
                       <Grid item>
-                        <Button color="secondary" size="small" variant="outlined" onClick={this.handleToggleEdit}>
+                        <Button color="primary" size="small" variant="outlined" onClick={this.handleToggleEdit}>
                           {i18next.t("app.cancel", "Cancel")}
                         </Button>
                       </Grid>
