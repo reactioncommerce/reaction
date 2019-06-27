@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Tab from "@material-ui/core/Tab";
@@ -15,8 +16,15 @@ import OrderCardHeader from "./orderCardHeader";
 import OrderCardPayments from "./orderCardPayments";
 
 
+const styles = (theme) => ({
+  tabs: {
+    marginBottom: theme.spacing.unit * 2
+  }
+});
+
 class OrderCard extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     order: PropTypes.object
   };
 
@@ -40,6 +48,25 @@ class OrderCard extends Component {
     return <OrderCardHeader order={order} />;
   }
 
+  renderFulfillment() {
+    const { currentTab } = this.state;
+
+    if (currentTab === 0) {
+      return (
+        <Fragment>
+          <Grid item xs={12}>
+            {this.renderFulfillmentGroups()}
+          </Grid>
+          <Grid item xs={12}>
+            {this.renderPayments()}
+          </Grid>
+        </Fragment>
+      );
+    }
+
+    return null;
+  }
+
   renderFulfillmentGroups() {
     const { order } = this.props;
 
@@ -52,25 +79,33 @@ class OrderCard extends Component {
     return <OrderCardPayments order={order} {...this.props} />;
   }
 
+  renderRefunds() {
+    const { currentTab } = this.state;
+
+    if (currentTab === 1) {
+      return (
+        <Grid item xs={12}>
+          [Placeholder] Refunds will go here
+        </Grid>
+      );
+    }
+
+    return null;
+  }
+
   renderSidebar() {
     const { order } = this.props;
 
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
-          {this.renderSummary()}
+          <Blocks region="OrderCardSummary" blockProps={{ order, ...this.props }} />
         </Grid>
         <Grid item xs={12}>
           <OrderCardCustomerDetails order={order} />
         </Grid>
       </Grid>
     );
-  }
-
-  renderSummary() {
-    const { order } = this.props;
-
-    return <Blocks region="OrderCardSummary" blockProps={{ order, ...this.props }} />;
   }
 
   renderTabs() {
@@ -87,47 +122,8 @@ class OrderCard extends Component {
     );
   }
 
-  renderFulfillment() {
-    const { currentTab } = this.state;
-
-    if (currentTab === 0) {
-      return (
-        <Fragment>
-          <Grid item xs={12}>
-            {this.renderFulfillmentGroups()}
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container spacing={24}>
-              <Grid item xs={12} md={12}>
-                {this.renderPayments()}
-              </Grid>
-            </Grid>
-          </Grid>
-        </Fragment>
-      );
-    }
-
-    return null;
-  }
-
-  renderRefunds() {
-    const { currentTab } = this.state;
-
-    if (currentTab === 1) {
-      return (
-        <Fragment>
-          <Grid item xs={12}>
-            [Placeholder] Refunds will go here
-          </Grid>
-        </Fragment>
-      );
-    }
-
-    return null;
-  }
-
   render() {
-    const { order } = this.props;
+    const { classes, order } = this.props;
     const { currentTab } = this.state;
 
     return (
@@ -138,7 +134,7 @@ class OrderCard extends Component {
           <Grid item xs={12}>
             {this.renderHeader()}
           </Grid>
-          <Grid item xs={12}>
+          <Grid className={classes.tabs} item xs={12}>
             {this.renderTabs()}
           </Grid>
           {currentTab === 0 &&
@@ -156,4 +152,4 @@ class OrderCard extends Component {
   }
 }
 
-export default OrderCard;
+export default withStyles(styles, { name: "RuiOrderCard" })(OrderCard);
