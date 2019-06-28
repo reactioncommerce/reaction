@@ -1,5 +1,4 @@
-import React, {Fragment} from "react";
-import Helmet from "react-helmet";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import classNames from "classnames";
