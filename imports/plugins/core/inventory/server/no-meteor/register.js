@@ -25,6 +25,15 @@ export default async function register(app) {
     queries,
     graphQL: {
       schemas
+    },
+    shopSettingsConfig: {
+      canSellVariantWithoutInventory: {
+        defaultValue: true,
+        rolesThatCanEdit: ["admin"],
+        simpleSchema: {
+          type: Boolean
+        }
+      }
     }
   });
 }

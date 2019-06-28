@@ -9,6 +9,7 @@ import { Shop } from "/imports/collections/schemas";
 Shop.extend({
   orderStatusLabels: {
     type: Object,
-    blackbox: true
+    blackbox: true,
+    optional: true
   }
 });

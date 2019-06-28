@@ -1,11 +1,13 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
+import { Blocks } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
 import SitemapSettingsContainer from "/imports/plugins/included/sitemap-generator/client/containers/sitemap-settings-container";
 import PluginVersions from "../../../components/PluginVersions";
+import ShopLogoUrls from "../../../components/ShopLogoUrls";
 import StorefrontUrls from "../../../components/StorefrontUrls";
 import ShopBrandMediaManager from "./ShopBrandMediaManager";
 
@@ -171,6 +173,14 @@ Template.optionsShopSettings.helpers({
 });
 
 Template.shopSettings.helpers({
+  Blocks() {
+    return Blocks;
+  },
+
+  shopSettingsBlockProps() {
+    return { shopId: Reaction.getShopId() };
+  },
+
   versionedPackages() {
     const versionedPackages = Packages.find({ version: { $exists: true }, shopId: Reaction.getShopId() });
     return versionedPackages;
@@ -178,6 +188,10 @@ Template.shopSettings.helpers({
 
   PluginVersions() {
     return PluginVersions;
+  },
+
+  ShopLogoUrls() {
+    return ShopLogoUrls;
   },
 
   StorefrontUrls() {

@@ -1,7 +1,7 @@
 import { xformRateToRateObject } from "@reactioncommerce/reaction-graphql-xforms/core";
 
 /**
- * @name "Order.orderSummary"
+ * @name Order/orderSummary
  * @method
  * @memberof Order/GraphQL
  * @summary Returns an aggregate of all fulfillmentGroup summaries to provide a single orderSummary

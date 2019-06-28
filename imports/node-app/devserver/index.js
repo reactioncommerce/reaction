@@ -5,7 +5,6 @@ import mutations from "./mutations";
 import queries from "./queries";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
-import filesStartup from "./filesStartup";
 import registerPlugins from "./registerPlugins";
 import "./extendSchemas";
 
@@ -19,9 +18,6 @@ const app = new ReactionNodeApp({
     mutations,
     queries,
     rootUrl: ROOT_URL
-  },
-  functionsByType: {
-    startup: [filesStartup]
   },
   graphQL: {
     graphiql: true,

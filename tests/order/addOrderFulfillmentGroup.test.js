@@ -53,6 +53,7 @@ beforeAll(async () => {
   });
 
   await testApp.start();
+
   shopId = await testApp.insertPrimaryShop();
 
   mockOrdersAccount = Factory.Accounts.makeOne({
@@ -106,8 +107,6 @@ beforeAll(async () => {
   });
   await testApp.collections.Catalog.insertOne(catalogItem2);
 
-  await testApp.runServiceStartup();
-
   addOrderFulfillmentGroup = testApp.mutate(AddOrderFulfillmentGroupMutation);
 });
 
@@ -143,6 +142,7 @@ test("user with orders role can add an order fulfillment group with new items", 
   const order = Factory.Order.makeOne({
     accountId: "123",
     currencyCode: "USD",
+    referenceId: "1",
     shipping: [group],
     shopId,
     workflow: {
@@ -152,10 +152,17 @@ test("user with orders role can add an order fulfillment group with new items", 
   });
   await testApp.collections.Orders.insertOne(order);
 
+  const shippingAddress = { ...group.address };
+  delete shippingAddress._id;
+  delete shippingAddress.failedValidation;
+
   let result;
   try {
     result = await addOrderFulfillmentGroup({
       fulfillmentGroup: {
+        data: {
+          shippingAddress
+        },
         items: [{
           price: variant2Price,
           productConfiguration: {
@@ -273,6 +280,7 @@ test("user with orders role can add an order fulfillment group with moved items"
   const order = Factory.Order.makeOne({
     accountId: "123",
     currencyCode: "USD",
+    referenceId: "2",
     shipping: [group],
     shopId,
     workflow: {
@@ -282,10 +290,17 @@ test("user with orders role can add an order fulfillment group with moved items"
   });
   await testApp.collections.Orders.insertOne(order);
 
+  const shippingAddress = { ...group.address };
+  delete shippingAddress._id;
+  delete shippingAddress.failedValidation;
+
   let result;
   try {
     result = await addOrderFulfillmentGroup({
       fulfillmentGroup: {
+        data: {
+          shippingAddress
+        },
         selectedFulfillmentMethodId: encodeFulfillmentMethodOpaqueId(fulfillmentMethodId),
         shopId: encodeShopOpaqueId(shopId),
         type: "shipping"

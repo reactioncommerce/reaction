@@ -3,10 +3,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { ComponentsProvider } from "@reactioncommerce/components-context";
+import { ThemeProvider } from "styled-components";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import _ from "lodash";
 import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
 import appComponents from "/imports/plugins/core/router/client/appComponents";
+import theme from "/imports/plugins/core/router/client/theme";
+import muiTheme from "/imports/plugins/core/router/client/theme/muiTheme";
 import initApollo from "/imports/plugins/core/graphql/lib/helpers/initApollo";
 
 // Ideally this will be done only in browserRouter.js, but we lose context within Blaze templates,
@@ -36,7 +40,11 @@ Template.React.onRendered(function () {
       (
         <ApolloProvider client={apolloClient}>
           <ComponentsProvider value={appComponents}>
-            {elem}
+            <ThemeProvider theme={theme}>
+              <MuiThemeProvider theme={muiTheme}>
+                {elem}
+              </MuiThemeProvider>
+            </ThemeProvider>
           </ComponentsProvider>
         </ApolloProvider>
       ),

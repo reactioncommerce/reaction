@@ -5,6 +5,9 @@ import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import ReactionAlerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction, i18next } from "/client/api";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import { getDefaultUserInviteGroup, getUserByEmail } from "../helpers/accountsHelper";
 
 /**
@@ -36,7 +39,8 @@ class AdminInviteForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { groups } = nextProps;
     this.setState({ groups, group: getDefaultUserInviteGroup(groups) });
   }
@@ -211,17 +215,15 @@ class AdminInviteForm extends Component {
 
   render() {
     return (
-      <Components.Card>
-        <Components.CardHeader
-          actAsExpander={true}
+      <Card elevation={0}>
+        <CardHeader
           data-i18n="accountsUI.info.addAdminUser"
-          title="Add Admin User"
-          id="accounts"
+          title={i18next.t("accountsUI.info.addAdminUser", { defaultValue: "Add Admin User" })}
         />
-        <Components.CardBody expandable={true}>
+        <CardContent>
           {this.renderForm()}
-        </Components.CardBody>
-      </Components.Card>
+        </CardContent>
+      </Card>
     );
   }
 }

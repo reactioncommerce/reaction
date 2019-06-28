@@ -11,13 +11,14 @@ Reaction.registerPackage({
   name: "reaction-marketplace",
   icon: "fa fa-globe",
   autoEnable: false,
+  collections: {
+    SellerShops: {
+      name: "SellerShops"
+    }
+  },
   graphQL: {
     schemas
   },
-  addRolesToGroups: [{
-    groups: ["owner", "shop manager", "customer", "guest"],
-    roles: ["stripe/connect/authorize"]
-  }],
   paymentMethods: [{
     name: "marketplace_stripe_card",
     displayName: "Marketplace Stripe Card",

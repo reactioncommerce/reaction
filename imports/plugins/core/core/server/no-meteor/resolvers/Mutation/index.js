@@ -1,5 +1,5 @@
-import updateShopUrls from "./updateShopUrls";
+import updateShop from "./updateShop";
 
 export default {
-  updateShopUrls
+  updateShop
 };

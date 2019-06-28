@@ -1,21 +1,59 @@
-import collectionIndex from "/imports/utils/collectionIndex";
+import Random from "@reactioncommerce/random";
+import layouts from "./util/layouts";
+import loadSampleData from "./util/loadSampleData";
+import upsertPackages from "./util/upsertPackages";
 
 /**
  * @summary Called on startup
  * @param {Object} context Startup context
- * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
-  const { collections } = context;
-  const { Packages, Shops } = collections;
+export default async function startup(context) {
+  const { appEvents } = context;
 
-  // Create indexes. We set specific names for backwards compatibility
-  // with indexes created by the aldeed:schema-index Meteor package.
-  collectionIndex(Packages, { name: 1, shopId: 1 });
-  collectionIndex(Packages, { "registry.provides": 1 }, { name: "c2_registry.$.provides" });
+  await loadSampleData(context);
+  await upsertPackages(context);
 
-  collectionIndex(Shops, { domains: 1 }, { name: "c2_domains" });
-  collectionIndex(Shops, { name: 1 }, { name: "c2_name" });
-  collectionIndex(Shops, { slug: 1 }, { name: "c2_slug", sparse: true, unique: true });
+  appEvents.on("afterShopCreate", async ({ shop }) => {
+    const {
+      app,
+      collections: {
+        Packages,
+        Shops
+      }
+    } = context;
+
+    const { _id: shopId } = shop;
+
+    // Save layouts array on all shops
+    await Shops.updateOne({ _id: shopId }, { $set: { layout: layouts } });
+
+    // Create Packages docs for each plugin for this shop
+    /* eslint-disable no-await-in-loop */
+    for (const config of Object.values(app.registeredPlugins)) {
+      const packageDoc = {
+        // autoEnable no longer does anything. All are enabled by default.
+        enabled: true,
+        icon: config.icon,
+        layout: config.layout,
+        name: config.name,
+        registry: config.registry,
+        version: config.version,
+        shopId
+      };
+
+      await Packages.updateOne({
+        name: config.name,
+        shopId
+      }, {
+        $set: packageDoc,
+        $setOnInsert: {
+          _id: Random.id()
+        }
+      }, {
+        upsert: true
+      });
+    }
+    /* eslint-enable no-await-in-loop */
+  });
 }

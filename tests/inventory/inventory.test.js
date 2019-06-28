@@ -78,8 +78,6 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
-  await testApp.runServiceStartup();
-
   await testApp.collections.Products.insertOne(product);
   await testApp.collections.Products.insertOne(variant);
   await testApp.collections.Products.insertOne(option1);

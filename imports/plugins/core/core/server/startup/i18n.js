@@ -189,14 +189,18 @@ export function importAllTranslations() {
     const shopId = Reaction.getShopId();
 
     // Then loop through those I18N assets and import them
-    Assets.find({ type: "i18n" }).forEach((t) => {
-      Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
-      if (t.content) {
-        Reaction.Importer.process(t.content, ["i18n"], Reaction.Importer.translation, [shopId]);
-      } else {
-        Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
-      }
-    });
+    if (shopId) {
+      // If there isn't a shop yet, and for future shops, this will be done in the "afterShopCreate" listener
+      Assets.find({ type: "i18n" }).forEach((t) => {
+        Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
+        if (t.content) {
+          Reaction.Importer.process(t.content, ["i18n"], Reaction.Importer.translation, [shopId]);
+        } else {
+          Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
+        }
+      });
+    }
+
     Reaction.Importer.flush();
 
     Logger.debug("All translation imported into translations collection from Assets.");
