@@ -15,6 +15,10 @@ const styles = (theme) => ({
     color: "white",
     fontWeight: "800"
   },
+  orderStatusCanceledOutlined: {
+    borderColor: theme.palette.colors.red300,
+    color: theme.palette.colors.red300
+  },
   orderStatusProcessing: {
     backgroundColor: theme.palette.colors.reactionBlue300,
     color: "white",
@@ -24,6 +28,12 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.colors.reactionBlue,
     color: "white",
     fontWeight: "800"
+  },
+  paymentStatusMultiple: {
+    borderColor: theme.palette.colors.red
+  },
+  shipmentStatus: {
+    borderColor: theme.palette.colors.red
   }
 });
 
@@ -31,13 +41,14 @@ class OrderCardStatusChip extends Component {
   static propTypes = {
     classes: PropTypes.object,
     displayStatus: PropTypes.string,
-    status: PropTypes.string
+    status: PropTypes.string,
+    type: PropTypes.string
   };
 
-  render() {
+  orderStatus() {
     const { classes, displayStatus, status } = this.props;
-
     let chipClasses;
+
     if (status === "coreOrderWorkflow/canceled") {
       chipClasses = classes.orderStatusCanceled;
     }
@@ -54,11 +65,44 @@ class OrderCardStatusChip extends Component {
       chipClasses = classes.orderStatusShipped;
     }
 
-    return (
-      // TODO: EK - add translations here for status
-      <Chip label={displayStatus} className={chipClasses} />
-    );
+    return <Chip label={displayStatus} className={chipClasses} color="primary" />;
+  }
+
+  paymentStatus() {
+    const { displayStatus } = this.props;
+    let chipClasses;
+
+    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="outlined" />;
+  }
+
+  shipmentStatus() {
+    const { classes, displayStatus, status } = this.props;
+    let chipClasses;
+
+    if (status === "coreOrderWorkflow/canceled") {
+      chipClasses = classes.orderStatusCanceledOutlined;
+    }
+
+    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="outlined" />;
+  }
+
+  render() {
+    const { type } = this.props;
+
+    if (type === "order") {
+      return this.orderStatus();
+    }
+
+    if (type === "payment") {
+      return this.paymentStatus();
+    }
+
+    if (type === "shipment") {
+      return this.shipmentStatus();
+    }
+
+    return null;
   }
 }
 
-export default withStyles(styles, { name: "OrderCardStatusChip" })(OrderCardStatusChip);
+export default withStyles(styles, { name: "RuiOrderCardStatusChip" })(OrderCardStatusChip);

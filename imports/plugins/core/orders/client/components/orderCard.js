@@ -2,10 +2,13 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import Grid from "@material-ui/core/Grid";
+import { i18next } from "/client/api";
+import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import OrderCardAppBar from "./orderCardAppBar";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
 import OrderCardHeader from "./orderCardHeader";
 import OrderCardPayments from "./orderCardPayments";
+import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardSummary from "./orderCardSummary";
 
 
@@ -40,6 +43,21 @@ class OrderCard extends Component {
     return <OrderCardPayments order={order} />;
   }
 
+  renderSidebar() {
+    const { order } = this.props;
+
+    return (
+      <Grid container spacing={8}>
+        <Grid item xs={12}>
+          {this.renderSummary()}
+        </Grid>
+        <Grid item xs={12}>
+          <OrderCardCustomerDetails order={order} />
+        </Grid>
+      </Grid>
+    );
+  }
+
   renderSummary() {
     const { order } = this.props;
 
@@ -62,15 +80,15 @@ class OrderCard extends Component {
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={24}>
-              <Grid item xs={12} md={6}>
-                {this.renderSummary()}
-              </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 {this.renderPayments()}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
+        <DetailDrawer title={i18next.t("orderCard.orderSummary.title", "Order summary")}>
+          {this.renderSidebar()}
+        </DetailDrawer>
       </Fragment>
     );
   }

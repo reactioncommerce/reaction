@@ -7,7 +7,8 @@
         "dashboard": {
           "accountsLabel": "Accounts",
           "accountsTitle": "Accounts",
-          "accountsDescription": "Account Settings"
+          "accountsDescription": "Account Settings",
+          "manageGroups": "Manage Groups"
         },
         "settings": {
           "continue": "Continue",
