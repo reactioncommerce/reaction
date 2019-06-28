@@ -54,7 +54,9 @@ export default function verifySettings(settings) {
     config = Promise.await(getMailConfig(context, shopId));
   }
 
-  Logger.debug(config, "Verifying email config settings");
+  const logConfig = { ...config };
+  delete logConfig.auth;
+  Logger.debug(logConfig, "Verifying email config settings");
 
   const transporter = nodemailer.createTransport(config);
 

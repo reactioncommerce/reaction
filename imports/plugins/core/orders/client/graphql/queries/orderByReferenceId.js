@@ -31,6 +31,7 @@ export default gql`
             }
           }
         }
+        displayStatus(language: $language)
         items {
           nodes {
             _id

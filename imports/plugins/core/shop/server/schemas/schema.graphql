@@ -4,6 +4,30 @@ type ShopBrandAssets {
   navbarBrandImage: ImageSizes
 }
 
+"Shop logo urls"
+type ShopLogoUrls {
+  "Primary shop logo"
+  primaryShopLogoUrl: String
+}
+
+"Storefront route URLs"
+type StorefrontUrls {
+  "Storefront Account Profile URL (can include `:accountId` in string)"
+  storefrontAccountProfileUrl: String
+
+  "Storefront Home URL"
+  storefrontHomeUrl: String
+
+  "Storefront login URL"
+  storefrontLoginUrl: String
+
+  "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
+  storefrontOrderUrl: String
+
+  "Storefront orders URL (can include `:accountId` in string)"
+  storefrontOrdersUrl: String
+}
+
 "Represents a Reaction shop"
 type Shop implements Node {
   "The shop ID"
@@ -32,6 +56,12 @@ type Shop implements Node {
 
   "Returns shop name"
   name: String
+
+  "Returns URLs for shop logos"
+  shopLogoUrls: ShopLogoUrls
+
+  "Returns URLs for various storefront routes"
+  storefrontUrls: StorefrontUrls
 
   "Returns a paged list of tags for this shop"
   tags(

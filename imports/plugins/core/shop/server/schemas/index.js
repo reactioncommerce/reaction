@@ -1,4 +1,4 @@
 import schema from "./schema.graphql";
-import storefrontUrls from "./storefrontUrls.graphql";
+import updateShop from "./updateShop.graphql";
 
-export default [schema, storefrontUrls];
+export default [schema, updateShop];
