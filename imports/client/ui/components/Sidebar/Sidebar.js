@@ -25,6 +25,17 @@ const activeClassName = "nav-item-active";
 const routeSort = (routeA, routeB) => (routeA.priority || Number.MAX_SAFE_INTEGER) - (routeB.priority || Number.MAX_SAFE_INTEGER);
 
 const styles = (theme) => ({
+  closeButton: {
+    "color": theme.palette.colors.white,
+    "backgroundColor": theme.palette.colors.darkBlue500,
+    "&:hover": {
+      "backgroundColor": theme.palette.colors.darkBlue600,
+      // Reset on touch devices, it doesn't add specificity
+      "@media (hover: none)": {
+        backgroundColor: theme.palette.colors.darkBlue500
+      }
+    }
+  },
   icon: {
     width: 32,
     display: "flex",
@@ -115,7 +126,7 @@ function Sidebar(props) {
           <ShopLogoWithData className={classes.shopLogo} shouldShowShopName size={32} />
 
           <Hidden mdUp>
-            <Fab color="secondary" onClick={onDrawerClose} size="small">
+            <Fab classes={{ root: classes.closeButton }} onClick={onDrawerClose} size="small">
               <CloseIcon />
             </Fab>
           </Hidden>
