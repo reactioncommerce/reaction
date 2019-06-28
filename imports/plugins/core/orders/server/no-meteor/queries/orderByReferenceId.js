@@ -28,7 +28,7 @@ export default async function orderByReferenceId(context, { orderReferenceId, sh
 
   if (token) {
     selector.accountId = null;
-    selector.anonymousAccessToken = hashLoginToken(token);
+    selector["anonymousAccessTokens.hashedToken"] = hashLoginToken(token);
   } else if (!userHasPermission(["orders"], shopId)) {
     // Unless you are an admin with orders permission, you are limited to seeing it if you placed it
     if (!contextAccountId) {

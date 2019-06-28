@@ -2,6 +2,7 @@ import _ from "lodash";
 import { xformOrderItems } from "@reactioncommerce/reaction-graphql-xforms/order";
 import formatMoney from "/imports/utils/formatMoney";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+import { addAnonymousOrderToken } from "./anonymousToken";
 
 /**
  * @name formatDateForEmail
@@ -136,13 +137,16 @@ export default async function getDataForOrderEmail(context, { order }) {
   }
 
   const copyrightDate = new Date().getFullYear();
-
+  const token = await addAnonymousOrderToken(context, order._id);
+  const orderUrl = shop.storefrontUrls.storefrontOrderUrl
+    .replace(":orderId", encodeURIComponent(order.referenceId))
+    .replace(":token", encodeURIComponent(token));
   // Merge data into single object to pass to email template
   return {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
-    homepage: getAbsoluteUrl("/"),
+    homepage: shop.storefrontUrls.storefrontHomeUrl,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -197,7 +201,7 @@ export default async function getDataForOrderEmail(context, { order }) {
     },
     combinedItems,
     orderDate: formatDateForEmail(order.createdAt),
-    orderUrl: `cart/completed?_id=${order.cartId}`,
+    orderUrl,
     shipping: {
       address: shippingAddressForEmail,
       carrier,

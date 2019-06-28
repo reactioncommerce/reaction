@@ -9,6 +9,19 @@ import { Workflow } from "./workflow";
 
 
 /**
+ * @name AnonymousAccessToken
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Date} createdAt when token was created
+ * @property {String} hashedToken token hash = base64(sha256(token-random-string))
+ */
+export const AnonymousAccessToken = new SimpleSchema({
+  createdAt: Date,
+  hashedToken: String
+});
+registerSchema("AnonymousAccessToken", AnonymousAccessToken);
+
+/**
  * @name Document
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -371,7 +384,9 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @summary Order has an array of History, Documents, Notes, Items and OrderTransactions.
  * @property {String} _id required
  * @property {String} accountId Account ID for account orders, or null for anonymous
- * @property {String} anonymousAccessToken Token for accessing anonymous carts, null for account carts
+ * @property {Object[]} anonymousAccessTokens Tokens for accessing anonymous orders, null for account orders
+ * @property {String} anonymousAccessTokens.hashedToken The hashed value for DB queries
+ * @property {Date} anonymousAccessTokens.createdAt When the token was created. Expiry is not currently implemented, but this Date is here to support that.
  * @property {Address} [billingAddress] Optional billing address
  * @property {String} cartId optional For tracking which cart created this order
  * @property {Date} createdAt required
@@ -399,10 +414,11 @@ export const Order = new SimpleSchema({
     type: String,
     optional: true
   },
-  "anonymousAccessToken": {
-    type: String,
+  "anonymousAccessTokens": {
+    type: Array,
     optional: true
   },
+  "anonymousAccessTokens.$": AnonymousAccessToken,
   // Although billing address is typically needed only by the payment plugin,
   // some tax services require it to calculate taxes for digital items. Thus
   // it should be provided here in order to be added to the CommonOrder if possible.

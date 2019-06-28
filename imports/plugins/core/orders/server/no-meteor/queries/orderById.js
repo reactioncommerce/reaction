@@ -22,10 +22,10 @@ export default async function orderById(context, { orderId, shopId, token } = {}
   }
 
   let accountId;
-  let anonymousAccessToken;
+  let hashedToken;
   if (token) {
     accountId = null;
-    anonymousAccessToken = hashLoginToken(token);
+    hashedToken = hashLoginToken(token);
   } else {
     // Unless you are an admin with orders permission, you are limited to seeing it if you placed it
     if (!userHasPermission(["orders"], shopId)) {
@@ -34,13 +34,13 @@ export default async function orderById(context, { orderId, shopId, token } = {}
       }
       accountId = contextAccountId;
     }
-    anonymousAccessToken = null;
+    hashedToken = null;
   }
 
   return Orders.findOne({
-    _id: orderId,
+    "_id": orderId,
     accountId,
-    anonymousAccessToken,
+    "anonymousAccessTokens.hashedToken": hashedToken,
     shopId
   });
 }

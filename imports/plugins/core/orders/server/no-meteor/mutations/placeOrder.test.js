@@ -77,7 +77,9 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
   expect(order).toEqual({
     _id: jasmine.any(String),
     accountId: null,
-    anonymousAccessToken: jasmine.any(String),
+    anonymousAccessTokens: [
+      { hashedToken: jasmine.any(String), createdAt: jasmine.any(Date) }
+    ],
     billingAddress: null,
     cartId: null,
     createdAt: jasmine.any(Date),

@@ -49,8 +49,12 @@ test("returns expected data structure", async () => {
     })
   });
 
-  const mockShop = Factory.Shop.makeOne();
-
+  const mockShop = Factory.Shop.makeOne({
+    storefrontUrls: {
+      storefrontHomeUrl: "http://example.com/storefrontHomeUrl",
+      storefrontOrderUrl: "http://example.com/storefrontOrderUrl/:orderId?token=:token"
+    }
+  });
   mockContext.collections.Shops.findOne.mockReturnValueOnce(mockShop);
   mockContext.collections.Catalog.toArray.mockReturnValueOnce([mockCatalogItem]);
 
@@ -115,7 +119,7 @@ test("returns expected data structure", async () => {
     ],
     contactEmail: jasmine.any(String),
     copyrightDate: jasmine.any(Number),
-    homepage: "https://app.mock/",
+    homepage: "http://example.com/storefrontHomeUrl",
     legalName: "mockCompany",
     order: {
       ...mockOrder,
@@ -155,7 +159,7 @@ test("returns expected data structure", async () => {
       ]
     },
     orderDate: jasmine.any(String),
-    orderUrl: "cart/completed?_id=mockCartId",
+    orderUrl: jasmine.stringMatching(/^http:\/\/example\.com\/storefrontOrderUrl\/mockReferenceId\?token=/),
     physicalAddress: {
       address: "mockAddress1 mockAddress2",
       city: "mockCity",
