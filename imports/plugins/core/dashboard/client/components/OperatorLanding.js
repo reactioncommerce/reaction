@@ -14,7 +14,7 @@ import ShopLogoWithData from "/imports/client/ui/components/ShopLogoWithData/Sho
 function OperatorLanding() {
   return (
     <Fragment>
-      <Helmet title="Reaction" />
+      <Helmet title="Operator UI" />
       <Grid
         container
         direction="column"
