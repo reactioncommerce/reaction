@@ -21,6 +21,7 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
 
   const {
     catalogProduct: chosenProduct,
+    parentVariant,
     variant: chosenVariant
   } = await queries.findProductAndVariant(context, productId, productVariantId);
 
@@ -49,10 +50,24 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
     throw new ReactionError("invalid-order-quantity", `Quantity ordered is more than available inventory for  "${chosenVariant.title}"`);
   }
 
+  // Until we do a more complete attributes revamp, we'll do our best to fudge attributes here.
+  const attributes = [];
+  if (parentVariant) {
+    attributes.push({
+      label: parentVariant.attributeLabel,
+      value: parentVariant.optionTitle
+    });
+  }
+  attributes.push({
+    label: chosenVariant.attributeLabel,
+    value: chosenVariant.optionTitle
+  });
+
   const now = new Date();
   const newItem = {
     _id: Random.id(),
     addedAt: addedAt || now,
+    attributes,
     createdAt: now,
     optionTitle: chosenVariant && chosenVariant.optionTitle,
     parcel: chosenVariant.parcel,

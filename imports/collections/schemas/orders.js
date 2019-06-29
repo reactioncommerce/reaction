@@ -156,12 +156,28 @@ export const OrderDiscount = new SimpleSchema({
 });
 
 /**
+ * @name OrderItemAttribute
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label required
+ * @property {String} value optional
+ */
+export const OrderItemAttribute = new SimpleSchema({
+  label: String,
+  value: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * @name OrderItem
  * @memberof Schemas
  * @summary Defines one item in an order
  * @type {SimpleSchema}
  * @property {String} _id Unique ID for the item
  * @property {String} addedAt Date/time when this was first added to the cart/order
+ * @property {OrderItemAttribute[]} attributes Attributes of this item
  * @property {String} cancelReason Free text reason for cancel, if this item is canceled
  * @property {String} createdAt Date/time when this order item was created
  * @property {Document[]} documents optional
@@ -186,6 +202,11 @@ export const OrderDiscount = new SimpleSchema({
 export const OrderItem = new SimpleSchema({
   "_id": String,
   "addedAt": Date,
+  "attributes": {
+    type: Array,
+    optional: true
+  },
+  "attributes.$": OrderItemAttribute,
   "cancelReason": {
     type: String,
     optional: true
