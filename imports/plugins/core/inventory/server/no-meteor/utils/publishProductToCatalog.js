@@ -18,8 +18,7 @@ export default async function publishProductToCatalog(catalogProduct, { context,
       productId: option.ancestors[0],
       productVariantId: option._id
     })),
-    shopId: catalogProduct.shopId,
-    variants
+    shopId: catalogProduct.shopId
   });
 
   // Mutate the catalog product to be saved

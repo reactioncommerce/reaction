@@ -198,7 +198,7 @@
     }
   },
   "scripts": {
-    "devserver": "ROOT_URL=http://localhost:3030 MONGO_URL=mongodb://localhost:27017/reaction NODE_ENV=reaction-node BABEL_DISABLE_CACHE=1 nodemon ./imports/node-app/devserver/index.js",
+    "devserver": "ROOT_URL=http://localhost:3030 MONGO_URL=mongodb://localhost:27017/reaction NODE_ENV=reaction-node BABEL_DISABLE_CACHE=1 nodemon ./imports/node-app/index.js",
     "dev": "node --experimental-modules ./.reaction/scripts/run.mjs",
     "inspect": "node --experimental-modules ./.reaction/scripts/run.mjs --inspect",
     "inspect-brk": "node --experimental-modules  ./.reaction/scripts/run.mjs --inspect-brk",

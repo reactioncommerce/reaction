@@ -9,8 +9,6 @@ import { formatApolloErrors } from "apollo-server-errors";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import coreResolvers from "../no-meteor/resolvers";
-import coreSchemas from "../no-meteor/schemas";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 import { setCollections } from "/imports/collections/rawCollections";
 import meteorFileCollectionStartup from "/imports/plugins/core/files/server/fileCollections";
@@ -36,18 +34,16 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
+      appVersion: packageJson.version,
       async createUser(options) {
         return Accounts.createUser(options);
       },
-      queries: {},
       mutations: {},
-      rootUrl: ROOT_URL,
-      appVersion: packageJson.version
+      queries: {},
+      rootUrl: ROOT_URL
     },
     graphQL: {
-      graphiql: Meteor.isDevelopment,
-      resolvers: coreResolvers,
-      schemas: coreSchemas
+      graphiql: Meteor.isDevelopment
     },
     httpServer: WebApp.httpServer,
     mongodb

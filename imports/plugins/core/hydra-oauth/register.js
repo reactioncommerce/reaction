@@ -9,11 +9,6 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 Reaction.registerPackage({
   label: "HydraOauth",
   name: "reaction-hydra-oauth",
-  autoEnable: true,
-  addRolesToGroups: [{
-    groups: ["guest", "customer"],
-    roles: ["account/login", "not-found"]
-  }],
   registry: [{
     route: "/account/login",
     name: "account/login",
