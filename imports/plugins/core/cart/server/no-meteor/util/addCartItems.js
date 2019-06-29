@@ -98,12 +98,12 @@ export default async function addCartItems(context, currentItems, inputItems, op
     if (parentVariant) {
       attributes.push({
         label: null, // Set label to null for now. We expect to use it in the future.
-        value: parentVariant.title
+        value: parentVariant.optionTitle
       });
     }
     attributes.push({
       label: null, // Set label to null for now. We expect to use it in the future.
-      value: chosenVariant.title
+      value: chosenVariant.optionTitle
     });
 
     const cartItem = {
