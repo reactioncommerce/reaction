@@ -13,6 +13,7 @@ export function xformVariant(variant, variantMedia) {
 
   return {
     _id: variant._id,
+    attributeLabel: variant.attributeLabel,
     barcode: variant.barcode,
     createdAt: variant.createdAt || new Date(),
     height: variant.height,

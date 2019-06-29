@@ -85,17 +85,14 @@ export const ProductVariant = new SimpleSchema({
   "ancestors.$": {
     type: String
   },
+  "attributeLabel": {
+    type: String,
+    optional: true
+  },
   "barcode": {
     label: "Barcode",
     type: String,
-    optional: true,
-    custom() {
-      if (Meteor.isClient) {
-        if (this.siblingField("type").value === "inventory" && !this.value) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
+    optional: true
   },
   "createdAt": {
     label: "Created at",
@@ -155,8 +152,7 @@ export const ProductVariant = new SimpleSchema({
   "optionTitle": {
     label: "Option",
     type: String,
-    optional: true,
-    defaultValue: "Untitled Option"
+    optional: true
   },
   "originCountry": {
     type: String,
@@ -174,7 +170,7 @@ export const ProductVariant = new SimpleSchema({
   "title": {
     label: "Label",
     type: String,
-    defaultValue: ""
+    optional: true
   },
   "type": {
     label: "Type",

@@ -98,6 +98,7 @@ export const SocialMetadata = new SimpleSchema({
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id required
+ * @property {String} attributeLabel required
  * @property {String} barcode optional
  * @property {Date} createdAt required
  * @property {Number} height optional, default value: `0`
@@ -122,6 +123,7 @@ export const VariantBaseSchema = new SimpleSchema({
     type: String,
     label: "Catalog product variant Id"
   },
+  "attributeLabel": String,
   "barcode": {
     type: String,
     label: "Barcode",
@@ -226,7 +228,7 @@ export const VariantBaseSchema = new SimpleSchema({
 });
 
 /**
- * @name VariantBaseSchema
+ * @name CatalogVariantSchema
  * @memberof Schemas
  * @type {SimpleSchema}
  * @extends VariantBaseSchema
