@@ -34,13 +34,13 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
+      appVersion: packageJson.version,
       async createUser(options) {
         return Accounts.createUser(options);
       },
-      rootUrl: ROOT_URL,
       mutations: {},
       queries: {},
-      appVersion: packageJson.version
+      rootUrl: ROOT_URL
     },
     graphQL: {
       graphiql: Meteor.isDevelopment

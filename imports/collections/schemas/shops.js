@@ -205,6 +205,22 @@ export const ParcelSize = new SimpleSchema({
 registerSchema("ParcelSize", ParcelSize);
 
 /**
+ * @name ShopLogoUrls
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} primaryShopLogoUrl optional
+ * @property {String} styles optional
+ */
+export const ShopLogoUrls = new SimpleSchema({
+  primaryShopLogoUrl: {
+    type: String,
+    optional: true
+  }
+});
+
+registerSchema("ShopLogoUrls", ShopLogoUrls);
+
+/**
  * @name ShopTheme
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -307,6 +323,7 @@ registerSchema("StorefrontUrls", StorefrontUrls);
  * @property {Date} updatedAt optional
  * @property {Object[]} paymentMethods blackbox, default value: `[]`
  * @property {String[]} availablePaymentMethods default value: `[]`
+ * @property {Object[]} shopLogoUrls optional
  * @property {Object[]} storefrontUrls optional
  * @property {Workflow} workflow optional
  */
@@ -546,6 +563,11 @@ export const Shop = new SimpleSchema({
   "defaultNavigationTreeId": {
     type: String,
     optional: true
+  },
+  "shopLogoUrls": {
+    type: ShopLogoUrls,
+    optional: true,
+    defaultValue: {}
   },
   "storefrontUrls": {
     type: StorefrontUrls,

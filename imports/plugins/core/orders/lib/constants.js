@@ -9,26 +9,6 @@
 export const PACKAGE_NAME = "reaction-orders";
 
 /**
- * @name ORDER_LIST_FILTERS_PREFERENCE_NAME
- * @summary Preference name for orderList filters when using using Reaction.[get|set]UserPreferences()
- * @type {String}
- * @memberof Constants
- * @default
- * @constant
- */
-export const ORDER_LIST_FILTERS_PREFERENCE_NAME = "orderListFilters";
-
-/**
- * @name ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME
- * @summary Preference name for selected order _id when using Reaction.[get|set]UserPreferences()
- * @type {String}
- * @memberof Constants
- * @default
- * @constant
- */
-export const ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME = "orderListSelectedOrder";
-
-/**
  * @summary Default filter name
  * @name DEFAULT_FILTER_NAME
  * @type {String}

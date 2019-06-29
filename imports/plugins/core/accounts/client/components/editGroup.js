@@ -5,7 +5,10 @@ import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import ReactionAlerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import { groupPermissions } from "../helpers/accountsHelper";
 
 /**
@@ -41,7 +44,8 @@ class EditGroup extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { groups, selectedGroup } = nextProps;
     this.setState({ groups, selectedGroup: selectedGroup || {} });
   }
@@ -179,17 +183,17 @@ class EditGroup extends Component {
     const alertId = this.state.alertOptions.id;
     return (
       <div className="edit-group-container">
-        <Components.Card>
-          <Components.CardHeader actAsExpander={true} i18nKeyTitle="admin.groups.editGroups" title="Edit Groups" />
-          <Components.CardBody expandable={true}>
+        <Card elevation={0}>
+          <CardHeader title={i18next.t("admin.groups.editGroups", { defaultValue: "Edit Groups" })} />
+          <CardContent>
             <div className="settings">
               <Components.Alerts placement={alertId} id={alertId} onAlertRemove={this.removeAlert} />
               {this.renderGroups()}
               {this.renderGroupForm()}
               {this.renderPermissionsList()}
             </div>
-          </Components.CardBody>
-        </Components.Card>
+          </CardContent>
+        </Card>
       </div>
     );
   }
