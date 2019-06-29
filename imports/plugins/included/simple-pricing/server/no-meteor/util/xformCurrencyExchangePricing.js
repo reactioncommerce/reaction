@@ -20,13 +20,19 @@ export default async function xformCurrencyExchangePricing(pricing, currencyCode
   }
 
   const currencyInfo = shop.currencies[currencyCode];
-  const { rate } = currencyInfo;
+  let { rate } = currencyInfo;
 
   // Stop processing if we don't have a valid currency exchange rate.
   // rate may be undefined if Open Exchange Rates or an equivalent service is not configured properly.
   if (typeof rate !== "number") {
-    Logger.debug("Currency exchange rates are not available. Exchange rate fetching may not be configured.");
-    return null;
+    if (currencyCode !== shop.currency) {
+      Logger.debug("Currency exchange rates are not available. Exchange rate fetching may not be configured.");
+      return null;
+    }
+
+    // If requested currency is also the default shop currency, no conversion is necessary
+    // so we'll return the unconverted values as a courtesy.
+    rate = 1;
   }
 
   const { compareAtPrice, price, minPrice, maxPrice } = pricing;

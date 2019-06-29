@@ -21,7 +21,7 @@ export const methods = {
 
     let result;
     const primaryShopId = Reaction.getPrimaryShopId();
-    const stripePkg = Reaction.getPackageSettingsWithOptions({
+    const stripePkg = Packages.findOne({
       shopId: primaryShopId,
       name: "reaction-stripe"
     });
@@ -30,7 +30,7 @@ export const methods = {
       throw new ReactionError("invalid-parameters", "Cannot authorize stripe connect merchant. Primary shop stripe must be configured.");
     }
 
-    const merchantStripePkg = Reaction.getPackageSettingsWithOptions({
+    const merchantStripePkg = Packages.findOne({
       shopId,
       name: "reaction-stripe"
     });

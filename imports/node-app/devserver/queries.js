@@ -4,7 +4,6 @@ import accounts from "/imports/plugins/core/accounts/server/no-meteor/queries";
 import address from "/imports/plugins/core/address/server/no-meteor/queries";
 import cart from "/imports/plugins/core/cart/server/no-meteor/queries";
 import catalog from "/imports/plugins/core/catalog/server/no-meteor/queries";
-import core from "/imports/plugins/core/core/server/no-meteor/queries";
 import inventory from "/imports/plugins/core/inventory/server/no-meteor/queries";
 import navigation from "/imports/plugins/core/navigation/server/no-meteor/queries";
 import shipping from "/imports/plugins/core/shipping/server/no-meteor/queries";
@@ -22,7 +21,6 @@ export default merge(
   address,
   cart,
   catalog,
-  core,
   inventory,
   navigation,
   shipping,

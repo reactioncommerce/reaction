@@ -1,69 +1,3 @@
-"Represents a Reaction shop"
-type Shop implements Node {
-  "The shop ID"
-  _id: ID!
-
-  """
-  Returns a list of administrators for this shop, as a Relay-compatible connection.
-  "Administrators" means all linked accounts that have the "admin" role for this shop.
-  """
-  administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
-
-  "URLs for various shop assets in various sizes"
-  brandAssets: ShopBrandAssets
-
-  "List of all currency definitions for the shop"
-  currencies: [Currency]
-
-  "The default shop currency"
-  currency: Currency
-
-  "The default navigation tree for this shop"
-  defaultNavigationTree(language: String!, shouldIncludeSecondary: Boolean = false): NavigationTree
-
-  "The ID of the shop's default navigation tree"
-  defaultNavigationTreeId: String
-
-  "Returns shop description"
-  description: String
-
-  "Returns a list of groups for this shop, as a Relay-compatible connection."
-  groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
-
-  "Returns shop language"
-  language: String
-
-  "Returns shop name"
-  name: String
-
-  "Returns a list of roles for this shop, as a Relay-compatible connection."
-  roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
-
-  "Returns URLs for shop logos"
-  shopLogoUrls: ShopLogoUrls
-
-  "Returns URLs for various storefront routes"
-  storefrontUrls: StorefrontUrls
-
-  "Returns a paged list of tags for this shop"
-  tags(
-    "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
-    isTopLevel: Boolean,
-
-    "Set to true if you want soft deleted tags to be included in the response"
-    shouldIncludeDeleted: Boolean = false,
-
-    after: ConnectionCursor,
-    before: ConnectionCursor,
-    first: ConnectionLimitInt,
-    last: ConnectionLimitInt,
-    sortOrder: SortOrder = asc,
-
-    "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
-    sortBy: TagSortByField = position
-  ): TagConnection
-}
-
 "Input parameters for the inviteShopMember mutation"
 input InviteShopMemberInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -82,45 +16,6 @@ input InviteShopMemberInput {
   shopId: ID!
 }
 
-"Shop Logo URLs to provide for the updateShop mutation"
-input ShopLogoUrlsInput {
-  "Primary Shop logo"
-  primaryShopLogoUrl: String
-}
-
-"Storefront route URLs to provide for the updateShop mutation"
-input StorefrontUrlsInput {
-  "Storefront Account Profile URL (can include `:accountId` in string)"
-  storefrontAccountProfileUrl: String
-
-  "Storefront Home URL"
-  storefrontHomeUrl: String
-
-  "Storefront login URL"
-  storefrontLoginUrl: String
-
-  "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
-  storefrontOrderUrl: String
-
-  "Storefront orders URL (can include `:accountId` in string)"
-  storefrontOrdersUrl: String
-}
-
-"Input parameters for the updateShopLogoUrls mutation"
-input UpdateShopInput {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  "The ID of the shop for the logos to update"
-  shopId: ID!
-
-  "Object of shop logo urls "
-  shopLogoUrls: ShopLogoUrlsInput
-
-  "Object of storefront routes urls"
-  storefrontUrls: StorefrontUrlsInput
-}
-
 "The response from the `inviteShopMember` mutation"
 type InviteShopMemberPayload {
   "The account that was successfully created or found and updated by inviting this shop member"
@@ -130,66 +25,10 @@ type InviteShopMemberPayload {
   clientMutationId: String
 }
 
-"URLs for various shop assets in various sizes"
-type ShopBrandAssets {
-  "URLs for the navigation bar brand logo image"
-  navbarBrandImage: ImageSizes
-}
-
-"Shop logo urls"
-type ShopLogoUrls {
-  "Primary shop logo"
-  primaryShopLogoUrl: String
-}
-
-"Storefront route urls"
-type StorefrontUrls {
-  "Storefront Account Profile URL (can include `:accountId` in string)"
-  storefrontAccountProfileUrl: String
-
-  "Storefront Home URL"
-  storefrontHomeUrl: String
-
-  "Storefront login URL"
-  storefrontLoginUrl: String
-
-  "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
-  storefrontOrderUrl: String
-
-  "Storefront orders URL (can include `:accountId` in string)"
-  storefrontOrdersUrl: String
-}
-
-"The response from the `updateShopLogoUrls` mutation"
-type UpdateShopPayload {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  "The shop which was updated"
-  shop: Shop!
-}
-
 extend type Mutation {
   """
   Given a person's email address and name, invite them to create an account for a certain shop,
   and put them in the provided permission group
   """
   inviteShopMember(input: InviteShopMemberInput!): InviteShopMemberPayload
-
-  "Given shop data, update the Shops collection with this data"
-  updateShop(input: UpdateShopInput!): UpdateShopPayload
-}
-
-extend type Query {
-  "Returns the primary shop for the domain"
-  primaryShop: Shop
-
-  "Returns the ID of the primary shop for the domain"
-  primaryShopId: ID
-
-  "Returns a shop by ID"
-  shop(id: ID!): Shop
-
-  "Returns a shop by slug"
-  shopBySlug(slug: String!): Shop
 }
