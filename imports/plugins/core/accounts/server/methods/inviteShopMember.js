@@ -103,7 +103,7 @@ export default function inviteShopMember(options) {
     if (!user) {
       // The user does not already exist, we need to create a new account
       userId = MeteorAccounts.createUser({
-        profile: {invited: true},
+        profile: { invited: true },
         email,
         name,
         groupId
