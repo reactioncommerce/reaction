@@ -68,6 +68,10 @@ class AdminInviteForm extends Component {
       } else {
         messageKey = "admin.groupsInvite.errorSendingInvite";
       }
+
+      const { alertId } = this.state;
+      const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
+
       ReactionAlerts.add(error.reason, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
     }
 
