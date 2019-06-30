@@ -143,9 +143,10 @@ export default async function updateSimpleInventory(context, input, options = {}
       productConfiguration,
       shopId
     });
+  } else {
+    // Only emit event if not upserting, as `recalculateReservedSimpleInventory` already emits it.
+    await appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
   }
-
-  await appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
 
   let updatedDoc = null;
   if (returnUpdatedDoc) {

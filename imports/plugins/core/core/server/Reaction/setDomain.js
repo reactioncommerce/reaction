@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import { Shops } from "/lib/collections";
-import getRegistryDomain from "./getRegistryDomain";
 
 /**
  * @method setDomain
@@ -17,7 +16,7 @@ export default function setDomain() {
     Logger.error(_error, "Failed to determine default shop.");
   }
   // if the server domain changes, update shop
-  const domain = getRegistryDomain();
+  const domain = process.env.ROOT_URL.match(/^https?:\/\/([^/:?#]+)(?:[/:?#]|$)/i)[1];
   if (currentDomain && currentDomain !== domain) {
     Logger.debug(`Updating domain to ${domain}`);
     Shops.update({

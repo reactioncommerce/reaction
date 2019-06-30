@@ -31,7 +31,7 @@ const isSecondary = {
 const isVisible = {
   label: "Show in storefront",
   type: Boolean,
-  defaultValue: true
+  defaultValue: false
 };
 
 const NavigationItem = {

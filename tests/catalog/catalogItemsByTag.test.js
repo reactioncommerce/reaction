@@ -10,14 +10,18 @@ const shopName = "Test Shop";
 
 const mockTagWithFeatured = Factory.Tag.makeOne({
   featuredProductIds: ["110", "111", "112", "113", "114"],
-  shopId: internalShopId
+  shopId: internalShopId,
+  slug: "1"
 });
 
 const mockTagWithoutFeatured = Factory.Tag.makeOne({
-  shopId: internalShopId
+  shopId: internalShopId,
+  slug: "2"
 });
 
-const mockTagWithNoProducts = Factory.Tag.makeOne();
+const mockTagWithNoProducts = Factory.Tag.makeOne({
+  slug: "3"
+});
 
 const mockCatalogItemsWithFeatured = Factory.Catalog.makeMany(30, {
   _id: (iterator) => (iterator + 100).toString(),

@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStore } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
+import OperatorLanding from "/imports/plugins/core/dashboard/client/components/OperatorLanding";
+
 import "./templates/import/import.html";
 import "./templates/import/import.js";
 
@@ -23,9 +25,18 @@ import "./templates/shop/settings/settings.js";
 import "./templates/dashboard.html";
 import "./templates/dashboard.js";
 
+// Default landing page
+registerOperatorRoute({
+  isNavigationLink: false,
+  isSetting: false,
+  path: "/",
+  mainComponent: OperatorLanding
+});
+
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
+  priority: 10,
   path: "/shop-settings",
   mainComponent: "shopSettings",
   // eslint-disable-next-line react/display-name

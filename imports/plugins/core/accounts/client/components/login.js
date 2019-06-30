@@ -21,7 +21,7 @@ class Login extends Component {
     super(props);
 
     const currentRoute = Router.current().route;
-    const isPasswordReset = currentRoute.name === "reset-password";
+    const isPasswordReset = ["reset-password", "account/enroll"].includes(currentRoute.name);
 
     this.state = {
       currentView: isPasswordReset ? "loginFormUpdatePasswordView" : props.loginFormCurrentView
