@@ -10,7 +10,6 @@ export default async function register(app) {
     label: "Discounts",
     name: "reaction-discounts",
     icon: "fa fa-gift",
-    autoEnable: true,
     collections: {
       Discounts: {
         name: "Discounts",

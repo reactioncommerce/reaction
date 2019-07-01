@@ -10,7 +10,6 @@ Reaction.registerPackage({
   label: "Social",
   name: "reaction-social",
   icon: "fa fa-share-alt",
-  autoEnable: true,
   settings: {
     public: {
       autoInit: true,

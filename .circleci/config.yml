@@ -141,26 +141,6 @@ jobs:
               echo "No deploy for forks"
             fi
 
-  deploy-to-ecs-release-branch:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          name: Deploy new task definition and update service in ECS
-          command: |
-            .circleci/bin/ecs-deploy-release-branch.sh
-          no_output_timeout: 30m
-
-  deploy-to-ecs-feature-branch:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          name: Deploy new task definition and update service in ECS
-          command: |
-            .circleci/bin/ecs-deploy-feature-branch.sh
-          no_output_timeout: 30m
-
   deploy-docs:
     <<: *defaults
     steps:
@@ -367,12 +347,6 @@ workflows:
       - test-integration:
           requires:
             - build
-      - test-e2e:
-          requires:
-            - deploy-to-ecs-release-branch
-      - test-metrics:
-          requires:
-            - deploy-to-ecs-release-branch
       - eslint:
           requires:
             - build
@@ -387,18 +361,6 @@ workflows:
           context: reaction-publish-docker
           requires:
             - docker-build
-      - deploy-to-ecs-release-branch:
-          requires:
-            - docker-push
-          filters:
-            branches:
-              only: /^release-2.*/
-      # - deploy-to-ecs-feature-branch:
-      #     requires:
-      #       - docker-push
-      #     filters:
-      #       branches:
-      #         only: /^feat.*/
       - deploy-docs:
           requires:
             - test-unit

@@ -34,8 +34,7 @@ export default function startup(context) {
         productId: option.ancestors[0],
         productVariantId: option._id
       })),
-      shopId: topVariants[0].shopId,
-      variants
+      shopId: topVariants[0].shopId
     });
 
     await Catalog.updateOne({ "product.productId": productId }, {

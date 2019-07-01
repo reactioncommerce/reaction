@@ -197,6 +197,11 @@ type RemoveGroupPayload {
   wasRemoved: Boolean!
 }
 
+extend type Shop {
+  "Returns a list of groups for this shop, as a Relay-compatible connection."
+  groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
+}
+
 extend type Mutation {
   "Add an account to a group"
   addAccountToGroup(input: AddAccountToGroupInput!): AddAccountToGroupPayload
