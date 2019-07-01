@@ -144,7 +144,7 @@ export default async function getDataForOrderEmail(context, { order }) {
   let orderUrl = _.get(shop, "storefrontUrls.storefrontOrderUrl", null);
   if (orderUrl) {
     orderUrl = orderUrl.replace(":orderId", encodeURIComponent(order.referenceId));
-    if (orderUrl.contains(":token")) {
+    if (orderUrl.includes(":token")) {
       const token = await addAnonymousOrderToken(context, order._id);
       orderUrl = orderUrl.replace(":token", encodeURIComponent(token));
     }

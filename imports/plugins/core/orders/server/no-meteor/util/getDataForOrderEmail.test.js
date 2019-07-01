@@ -15,6 +15,17 @@ afterAll(() => {
   restore();
 });
 
+function setupMocks(mockShop, mockCatalogItem) {
+  mockContext.collections.Shops.findOne.mockReturnValueOnce(mockShop);
+  mockContext.collections.Catalog.toArray.mockReturnValueOnce([mockCatalogItem]);
+
+  mockContext.queries.findVariantInCatalogProduct = jest.fn().mockName("findVariantInCatalogProduct");
+  mockContext.queries.findVariantInCatalogProduct.mockReturnValueOnce({
+    catalogProduct: mockCatalogItem.product,
+    variant: mockCatalogItem.product.variants[0]
+  });
+}
+
 test("returns expected data structure", async () => {
   const mockCatalogItem = Factory.Catalog.makeOne({
     isDeleted: false,
@@ -55,14 +66,8 @@ test("returns expected data structure", async () => {
       storefrontOrderUrl: "http://example.com/storefrontOrderUrl/:orderId?token=:token"
     }
   });
-  mockContext.collections.Shops.findOne.mockReturnValueOnce(mockShop);
-  mockContext.collections.Catalog.toArray.mockReturnValueOnce([mockCatalogItem]);
 
-  mockContext.queries.findVariantInCatalogProduct = jest.fn().mockName("findVariantInCatalogProduct");
-  mockContext.queries.findVariantInCatalogProduct.mockReturnValueOnce({
-    catalogProduct: mockCatalogItem.product,
-    variant: mockCatalogItem.product.variants[0]
-  });
+  setupMocks(mockShop, mockCatalogItem);
 
   const data = await getDataForOrderEmail(mockContext, { order: mockOrder });
 
@@ -197,4 +202,47 @@ test("returns expected data structure", async () => {
       }
     }
   });
+});
+
+test("storefrontUrls is optional", async () => {
+  const mockCatalogItem = Factory.Catalog.makeOne({
+    isDeleted: false,
+    product: Factory.CatalogProduct.makeOne({
+      isDeleted: false,
+      isVisible: true,
+      variants: Factory.CatalogVariantSchema.makeMany(1, {
+        media: [
+          {
+            priority: 1,
+            toGrid: 1,
+            productId: "mockProductId",
+            variantId: "mockVariantId",
+            URLs: {
+              large: "large.jpg",
+              medium: "medium.jpg",
+              original: "original.jpg",
+              small: "small.jpg",
+              thumbnail: "thumbnail.jpg"
+            }
+          }
+        ],
+        options: null,
+        price: 10
+      })
+    })
+  });
+
+  const mockOrder = Factory.Order.makeOne({
+    payments: Factory.Payment.makeMany(1, {
+      name: "iou_example"
+    })
+  });
+
+  const mockShop = Factory.Shop.makeOne();
+
+  setupMocks(mockShop, mockCatalogItem);
+
+  const data = await getDataForOrderEmail(mockContext, { order: mockOrder });
+  expect(data.homepage).toBeNull();
+  expect(data.orderUrl).toBeNull();
 });
