@@ -5,7 +5,7 @@
 
 [Reaction](http://reactioncommerce.com) is an event-driven, real-time reactive commerce platform built with JavaScript (ES6). It plays nicely with npm, Docker, and React.
 
-![Reaction v.1.x](https://raw.githubusercontent.com/reactioncommerce/reaction-docs/v1.7.0/assets/Reaction-Commerce-Illustration-BG-800px.png)
+![Reaction v.2.x](/public/resources/Reaction2_UI.png?raw=true "Reaction 2.0 Catalyst")
 
 ## Features
 
