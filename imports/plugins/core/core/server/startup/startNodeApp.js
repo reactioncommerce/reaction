@@ -130,7 +130,7 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
     } else if (pathname.startsWith("/sockjs")) {
       // Don't do anything, this is meteor socket.
     } else {
-      socket.close();
+      socket.end();
     }
   });
 
