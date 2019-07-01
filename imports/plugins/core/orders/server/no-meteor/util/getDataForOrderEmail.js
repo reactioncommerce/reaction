@@ -137,16 +137,25 @@ export default async function getDataForOrderEmail(context, { order }) {
   }
 
   const copyrightDate = new Date().getFullYear();
-  const token = await addAnonymousOrderToken(context, order._id);
-  const orderUrl = shop.storefrontUrls.storefrontOrderUrl
-    .replace(":orderId", encodeURIComponent(order.referenceId))
-    .replace(":token", encodeURIComponent(token));
+
+  // storefront URLs are technically optional, and headless is OK.
+  // In that case we'll assume the email template does not use nor need
+  // the orderUrl property, so it will be null in the order email data object.
+  let orderUrl = _.get(shop, "storefrontUrls.storefrontOrderUrl", null);
+  if (orderUrl) {
+    orderUrl = orderUrl.replace(":orderId", encodeURIComponent(order.referenceId));
+    if (orderUrl.contains(":token")) {
+      const token = await addAnonymousOrderToken(context, order._id);
+      orderUrl = orderUrl.replace(":token", encodeURIComponent(token));
+    }
+  }
+
   // Merge data into single object to pass to email template
   return {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
-    homepage: shop.storefrontUrls.storefrontHomeUrl,
+    homepage: _.get(shop, "storefrontUrls.storefrontHomeUrl", null),
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -174,7 +183,6 @@ export default async function getDataForOrderEmail(context, { order }) {
         link: "https://www.twitter.com"
       }
     },
-    // Order Data
     order: {
       ...order,
       shipping: adjustedOrderGroups

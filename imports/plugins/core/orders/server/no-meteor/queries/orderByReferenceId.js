@@ -35,7 +35,6 @@ export default async function orderByReferenceId(context, { orderReferenceId, sh
       throw new ReactionError("access-denied", "Access Denied");
     }
     selector.accountId = contextAccountId;
-    selector.anonymousAccessToken = null;
   }
 
   return Orders.findOne(selector);

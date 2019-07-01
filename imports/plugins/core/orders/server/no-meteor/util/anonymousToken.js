@@ -23,7 +23,7 @@ export function getAnonymousAccessToken() {
  * Create a new anonymous access token and add it to an order
  *
  * @param {Object} context app context
- * @param {Object} orderId order id
+ * @param {String} orderId order id
  *
  * @return {String} raw token secret
  */
