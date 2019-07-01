@@ -603,6 +603,9 @@
         }
       },
       "accountsUI": {
+        "promoteExistingAccountConfirm": "Do you want to promote their existing account?",
+        "sendNewInviteConfirm": "Do you want to send a new invitation?",
+        "yes": "Yes",
         "usersOrders": "User's orders",
         "oops": "Oops!",
         "nonExistentAccount": "The user you're looking for does not exist.",
@@ -691,6 +694,7 @@
           "errorSendingEmail": "Error sending email, possible configuration issue.",
           "unableToSendInvitationEmail": "Unable to send invitation email.",
           "userWithEmailAlreadyExists": "A user with this email address already exists",
+          "inviteAlreadyPending": "An invite is already pending for this user",
           "failedToLogout": "Failed to logout.",
           "invalidLoginToken": "Invalid login token",
           "loginForbidden": "Login forbidden",
