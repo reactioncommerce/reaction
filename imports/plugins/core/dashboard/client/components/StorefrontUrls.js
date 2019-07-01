@@ -10,6 +10,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
@@ -146,9 +147,12 @@ class StorefrontUrls extends Component {
                     <TextInput
                       id="storefrontOrderUrlInput"
                       name="storefrontOrderUrl"
-                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlDescription", "URL of your shops single order page")}
+                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlDescription", "URL of your shops single order page, with `:orderId` and `:token` variables provided")}
                       value={storefrontOrderUrl || ""}
                     />
+                    <Typography variant="caption">
+                      {i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlHelpText", "In order for links inside of order emails to work, you must provide both an `:orderId` and `:token` in this field. These act as placeholders that are replaced with the correct data in your email template when an order email is generated. For example: http://shop.example.com/my-orders/:orderId?token=:token")}
+                    </Typography>
                     <ErrorsBlock names={["storefrontOrderUrl"]} />
                   </PaddedField>
                   <PaddedField
