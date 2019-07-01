@@ -4,7 +4,6 @@ Reaction.registerPackage({
   label: "Router",
   name: "reaction-router",
   icon: "fa fa-share-square-o",
-  autoEnable: true,
   settings: {
     name: "Layout"
   },

@@ -14,7 +14,6 @@ export default async function register(app) {
     label: "Catalog",
     name: "reaction-catalog",
     icon: "fa fa-book",
-    autoEnable: true,
     collections: {
       Catalog: {
         name: "Catalog",

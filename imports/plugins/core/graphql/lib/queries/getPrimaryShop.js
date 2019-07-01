@@ -6,6 +6,9 @@ export default gql`
       _id
       language
       name
+      shopLogoUrls {
+        primaryShopLogoUrl
+      }
       storefrontUrls {
         storefrontHomeUrl
         storefrontLoginUrl

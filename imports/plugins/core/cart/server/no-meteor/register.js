@@ -13,7 +13,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Cart",
     name: "reaction-cart",
-    autoEnable: true,
     collections: {
       Cart: {
         name: "Cart",
