@@ -30,30 +30,37 @@ function VariantDetailForm(props) {
       <CardHeader title={i18next.t("productDetailEdit.variantDetails")} />
       <CardContent>
         <Components.TextField
-          i18nKeyLabel="productVariant.title"
-          i18nKeyPlaceholder="productVariant.title"
-          placeholder="Label"
-          label="Label"
-          name="title"
-          value={variant.title}
+          i18nKeyHelpText="admin.helpText.attributeLabel"
+          i18nKeyLabel="admin.productVariant.attributeLabelLabel"
+          i18nKeyPlaceholder="admin.productVariant.attributeLabelPlaceholder"
+          name="attributeLabel"
           onBlur={onVariantFieldBlur}
           onChange={onVariantFieldChange}
           onReturnKeyDown={onVariantFieldBlur}
           validation={validation}
+          value={variant.attributeLabel}
         />
         <Components.TextField
+          i18nKeyHelpText="admin.helpText.optionTitle"
           i18nKeyLabel="productVariant.optionTitle"
-          i18nKeyPlaceholder="productVariant.optionTitle"
-          placeholder="optionTitle"
-          label="Short Label"
+          i18nKeyPlaceholder="admin.productVariant.optionTitlePlaceholder"
           name="optionTitle"
-          value={variant.optionTitle}
           onBlur={onVariantFieldBlur}
           onChange={onVariantFieldChange}
           onReturnKeyDown={onVariantFieldBlur}
           validation={validation}
-          helpText={"Displayed on Product Detail Page"}
-          i18nKeyHelpText={"admin.helpText.optionTitle"}
+          value={variant.optionTitle}
+        />
+        <Components.TextField
+          i18nKeyHelpText="admin.helpText.title"
+          i18nKeyLabel="productVariant.title"
+          i18nKeyPlaceholder="admin.productVariant.titlePlaceholder"
+          name="title"
+          onBlur={onVariantFieldBlur}
+          onChange={onVariantFieldChange}
+          onReturnKeyDown={onVariantFieldBlur}
+          validation={validation}
+          value={variant.title}
         />
         <Components.Select
           clearable={false}

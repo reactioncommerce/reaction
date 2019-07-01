@@ -273,7 +273,7 @@
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
         "title": "Title",
         "price": "Price",
-        "optionTitle": "Option title",
+        "optionTitle": "Short title",
         "barcode": "Barcode",
         "compareAtPrice": "Compare at price",
         "fulfillmentService": "Fulfillment service",

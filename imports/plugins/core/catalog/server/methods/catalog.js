@@ -409,12 +409,6 @@ Meteor.methods({
     };
 
     const isOption = ancestors.length > 1;
-    if (isOption) {
-      Object.assign(newVariant, {
-        optionTitle: "Untitled",
-        title: `${parent.title} - Untitled`
-      });
-    }
 
     createProduct(newVariant, { product, parentVariant, isOption });
 
@@ -650,7 +644,6 @@ Meteor.methods({
     // Create a product variant
     createProduct({
       ancestors: [newSimpleProduct._id],
-      title: "",
       type: "variant" // needed for multi-schema
     }, { product: newSimpleProduct, parentVariant: null, isOption: false });
 
