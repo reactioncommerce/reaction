@@ -6,7 +6,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { getOperationAST } from "graphql";
 import { Reaction } from "/client/api";
 
-const httpUrl = Reaction.absoluteUrl("graphql-alpha");
+const httpUrl = Reaction.absoluteUrl("graphql-beta");
 const wsUrl = httpUrl.replace("http", "ws");
 
 export const meteorAccountsLink = new ApolloLink((operation, forward) => {
