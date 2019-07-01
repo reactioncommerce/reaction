@@ -30,6 +30,7 @@ const mockProduct = {
 const mockVariant = {
   _id: internalVariantIds[0],
   ancestors: [internalProductId],
+  attributeLabel: "Variant",
   title: "Fake Product Variant",
   shopId: internalShopId,
   isDeleted: false,
@@ -39,6 +40,7 @@ const mockVariant = {
 const mockOptionOne = {
   _id: internalVariantIds[1],
   ancestors: [internalProductId, internalVariantIds[0]],
+  attributeLabel: "Option",
   title: "Fake Product Option One",
   shopId: internalShopId,
   isDeleted: false,
@@ -48,6 +50,7 @@ const mockOptionOne = {
 const mockOptionTwo = {
   _id: internalVariantIds[2],
   ancestors: [internalProductId, internalVariantIds[0]],
+  attributeLabel: "Option",
   title: "Fake Product Option Two",
   shopId: internalShopId,
   isDeleted: false,

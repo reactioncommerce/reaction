@@ -40,6 +40,7 @@ export default {
     ancestors: [
       "BCTMZ6HTxFSppJESk"
     ],
+    attributeLabel: "Size",
     title: "Example Product - Small",
     optionTitle: "Small",
     price: 19.99,
@@ -61,6 +62,7 @@ export default {
       "BCTMZ6HTxFSppJESk",
       "6qiqPwBkeJdtdQc4G"
     ],
+    attributeLabel: "Color",
     title: "Example Product - Small - Red",
     optionTitle: "Red",
     price: 19.99,
@@ -85,6 +87,7 @@ export default {
       "BCTMZ6HTxFSppJESk",
       "6qiqPwBkeJdtdQc4G"
     ],
+    attributeLabel: "Color",
     title: "Example Product - Small - Green",
     optionTitle: "Green",
     price: 12.99,

@@ -107,6 +107,12 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
           {
             _id: jasmine.any(String),
             addedAt: jasmine.any(Date),
+            attributes: [
+              {
+                label: "mockAttributeLabel",
+                value: "mockOptionTitle"
+              }
+            ],
             createdAt: jasmine.any(Date),
             optionTitle: catalogProductVariant.optionTitle,
             parcel: undefined,

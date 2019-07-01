@@ -64,3 +64,4 @@ import "./62_drop_indexes";
 import "./63_inventory_to_collection";
 import "./64_rename_navigation_package";
 import "./65_update_navigation_tree";
+import "./66_attribute_labels";
