@@ -143,11 +143,15 @@ export default async function getDataForOrderEmail(context, { order }) {
   // the orderUrl property, so it will be null in the order email data object.
   let orderUrl = _.get(shop, "storefrontUrls.storefrontOrderUrl", null);
   if (orderUrl) {
+    let token = "";
     orderUrl = orderUrl.replace(":orderId", encodeURIComponent(order.referenceId));
-    if (orderUrl.includes(":token")) {
-      const token = await addAnonymousOrderToken(context, order._id);
-      orderUrl = orderUrl.replace(":token", encodeURIComponent(token));
+    const isAnonymous = !order.accountId;
+    const wantsToken = orderUrl.includes(":token");
+    if (isAnonymous && wantsToken) {
+      token = await addAnonymousOrderToken(context, order._id);
     }
+    // Replace :token either with empty string or a toke
+    orderUrl = orderUrl.replace(":token", encodeURIComponent(token));
   }
 
   // Merge data into single object to pass to email template
