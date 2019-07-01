@@ -6,6 +6,7 @@ export const Meteor = {
   isClient: false,
   isServer: true,
   isTest: false,
+  isFakeMeteor: true,
   settings: {
     public: {}
   }

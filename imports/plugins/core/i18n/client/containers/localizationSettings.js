@@ -102,7 +102,6 @@ function composer(props, onData) {
   const languages = [];
   const shop = Shops.findOne();
   const countries = Countries.find().fetch();
-  const preferences = Reaction.getUserPreferences("reaction-i18n", "settingsCards", {});
 
   if (typeof shop === "object" && shop.languages) {
     for (const language of shop.languages) {
@@ -183,7 +182,7 @@ function composer(props, onData) {
   }
 
   onData(null, {
-    preferences,
+    preferences: {},
     shop,
     languages,
     currencies: currencyList,

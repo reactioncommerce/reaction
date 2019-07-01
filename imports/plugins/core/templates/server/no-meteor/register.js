@@ -8,7 +8,6 @@ export default async function register(app) {
     label: "Templates",
     name: "reaction-templates",
     icon: "fa fa-columns",
-    autoEnable: true,
     collections: {
       Templates: {
         name: "Templates",

@@ -22,6 +22,8 @@ if (process.env.NODE_ENV === "development") {
   BrowserPolicy.content.allowConnectOrigin("http://localhost:*");
   BrowserPolicy.content.allowConnectOrigin("https://localhost:*");
   BrowserPolicy.framing.allowAll();
+  // Allow images from anywhere http
+  BrowserPolicy.content.allowImageOrigin("http://*");
 }
 
 // GraphQL Playground
@@ -56,3 +58,6 @@ BrowserPolicy.content.allowOriginForAll("fonts.gstatic.com");
 
 BrowserPolicy.content.allowOriginForAll("enginex.kadira.io");
 BrowserPolicy.content.allowOriginForAll("*.stripe.com");
+
+// Allow images from anywhere https
+BrowserPolicy.content.allowImageOrigin("https://*");

@@ -4,6 +4,7 @@ import AddAccountAddressBookEntryPayload from "./AddAccountAddressBookEntryPaylo
 import Group from "./Group";
 import Mutation from "./Mutation";
 import Query from "./Query";
+import Shop from "./Shop";
 
 /**
  * Account-related GraphQL resolvers
@@ -16,6 +17,7 @@ export default {
   Group,
   Mutation,
   Query,
+  Shop,
   ...getConnectionTypeResolvers("Account"),
   ...getConnectionTypeResolvers("Group"),
   ...getConnectionTypeResolvers("Role")

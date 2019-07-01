@@ -7,7 +7,7 @@ import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
 
-const DEFAULT_GRAPHQL_PATH = "/graphql-alpha";
+const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
 
 const resolverValidationOptions = {
   // After we fix all errors that this prints, we should probably go

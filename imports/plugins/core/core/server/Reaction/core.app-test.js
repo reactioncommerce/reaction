@@ -8,6 +8,13 @@ import Logger from "@reactioncommerce/logger";
 import core from "./core";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 
+/**
+ * @return {String} A random string
+ */
+function randomString() {
+  return Math.random().toString(36);
+}
+
 core.onAppStartupComplete(() => {
   describe("Server/API/Core", () => {
     let sandbox;
@@ -122,30 +129,6 @@ core.onAppStartupComplete(() => {
       });
     });
 
-    describe("#getUserShopId", () => {
-      let userId;
-
-      beforeEach(() => {
-        userId = randomString();
-      });
-
-      it("ensures you pass a userId", () => {
-        expect(() => core.getUserShopId()).to.throw();
-      });
-
-      it("gets the shopId from a user's preferences store", () => {
-        const fnUserSettings = sandbox.stub(core, "getUserPreferences")
-          .withArgs(sinon.match({
-            userId,
-            preference: "activeShopId"
-          }));
-
-        core.getUserShopId(userId);
-
-        expect(fnUserSettings.called).to.be.true;
-      });
-    });
-
     describe("#isShopPrimary", () => {
       let primaryShopId;
 
@@ -169,12 +152,5 @@ core.onAppStartupComplete(() => {
         expect(core.isShopPrimary()).to.be.false;
       });
     });
-
-    /**
-     * @return {String} A random string
-     */
-    function randomString() {
-      return Math.random().toString(36);
-    }
   });
 });
