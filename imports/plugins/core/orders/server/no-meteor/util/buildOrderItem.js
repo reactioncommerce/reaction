@@ -86,8 +86,7 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
     title: chosenProduct.title,
     updatedAt: now,
     variantId: chosenVariant.variantId,
-    variantTitle: chosenVariant.title,
-    workflow: { status: "new", workflow: ["coreOrderWorkflow/created", "coreItemWorkflow/removedFromInventoryAvailableToSell"] }
+    variantTitle: chosenVariant.title
   };
 
   for (const func of context.getFunctionsOfType("mutateNewOrderItemBeforeCreate")) {
