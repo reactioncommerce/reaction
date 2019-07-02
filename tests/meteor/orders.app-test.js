@@ -106,15 +106,6 @@ Reaction.onAppStartupComplete(() => {
         const orderObject = Orders.findOne({ _id: order._id });
         expect(shippingObjectMethod(orderObject).payment.mode).to.equal("cancel");
       });
-
-      it("should change the workflow status of the item to coreOrderItemWorkflow/canceled", function () {
-        sandbox.stub(Reaction, "hasPermission", () => true);
-        const returnToStock = false;
-        spyOnMethod("cancelOrder", order.userId);
-        Meteor.call("orders/cancelOrder", order, returnToStock);
-        const orderItem = Orders.findOne({ _id: order._id }).items[0];
-        expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/canceled");
-      });
     });
 
     describe("orders/shipmentPicked", function () {
@@ -127,15 +118,6 @@ Reaction.onAppStartupComplete(() => {
           return Meteor.call("orders/shipmentPicked", order, shipment);
         }
         expect(shipmentPicked).to.throw(ReactionError, /Access Denied/);
-      });
-
-      it("should update the order item workflow status to coreOrderItemWorkflow/picked", function () {
-        sandbox.stub(Reaction, "hasPermission", () => true);
-        const shipment = shippingObjectMethod(order);
-        spyOnMethod("shipmentPicked", order.userId);
-        Meteor.call("orders/shipmentPicked", order, shipment);
-        const orderItem = Orders.findOne({ _id: order._id }).items[0];
-        expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/picked");
       });
 
       it("should update the shipment workflow status to coreOrderWorkflow/picked", function () {
@@ -160,15 +142,6 @@ Reaction.onAppStartupComplete(() => {
         expect(shipmentPacked).to.throw(ReactionError, /Access Denied/);
       });
 
-      it("should update the order item workflow status to coreOrderItemWorkflow/packed", function () {
-        sandbox.stub(Reaction, "hasPermission", () => true);
-        const shipment = shippingObjectMethod(order);
-        spyOnMethod("shipmentPacked", order.userId);
-        Meteor.call("orders/shipmentPacked", order, shipment);
-        const orderItem = Orders.findOne({ _id: order._id }).items[0];
-        expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/packed");
-      });
-
       it("should update the shipment workflow status to coreOrderWorkflow/packed", function () {
         sandbox.stub(Reaction, "hasPermission", () => true);
         const shipment = shippingObjectMethod(order);
@@ -189,15 +162,6 @@ Reaction.onAppStartupComplete(() => {
           return Meteor.call("orders/shipmentLabeled", order, shipment);
         }
         expect(shipmentLabeled).to.throw(ReactionError, /Access Denied/);
-      });
-
-      it("should update the order item workflow status to coreOrderItemWorkflow/labeled", function () {
-        sandbox.stub(Reaction, "hasPermission", () => true);
-        const shipment = shippingObjectMethod(order);
-        spyOnMethod("shipmentLabeled", order.userId);
-        Meteor.call("orders/shipmentLabeled", order, shipment);
-        const orderItem = Orders.findOne({ _id: order._id }).items[0];
-        expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/labeled");
       });
 
       it("should update the shipment workflow status to coreOrderWorkflow/labeled", function () {
@@ -268,18 +232,6 @@ Reaction.onAppStartupComplete(() => {
           return Meteor.call("orders/shipmentShipped", order, shipment);
         }
         expect(shipmentShipped).to.throw(ReactionError, /Access Denied/);
-      });
-
-      it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
-        sandbox.stub(Reaction, "hasPermission", () => true);
-        const shipment = shippingObjectMethod(order);
-        sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
-          check(args, [Match.Any]);
-        });
-        spyOnMethod("shipmentShipped", order.userId);
-        Meteor.call("orders/shipmentShipped", order, shipment);
-        const orderItem = Orders.findOne({ _id: order._id }).items[0];
-        expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/completed");
       });
 
       it("should update the order workflow status to completed", function () {

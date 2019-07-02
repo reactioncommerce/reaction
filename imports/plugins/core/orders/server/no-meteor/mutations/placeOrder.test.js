@@ -133,14 +133,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
             title: catalogProduct.title,
             updatedAt: jasmine.any(Date),
             variantId: catalogProductVariant.variantId,
-            variantTitle: catalogProductVariant.title,
-            workflow: {
-              status: "new",
-              workflow: [
-                "coreOrderWorkflow/created",
-                "coreItemWorkflow/removedFromInventoryAvailableToSell"
-              ]
-            }
+            variantTitle: catalogProductVariant.title
           }
         ],
         shipmentMethod: {
