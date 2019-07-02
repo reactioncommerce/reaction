@@ -61,3 +61,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-radial-item-export"]
 	path = imports/plugins/custom/reaction-plugin-radial-item-export
 	url = git@github.com:sportsdirect/reaction-plugin-radial-item-export.git
+[submodule "imports/plugins/custom/reaction-plugin-custom-settings"]
+	path = imports/plugins/custom/reaction-plugin-custom-settings
+	url = git@github.com:sportsdirect/reaction-plugin-custom-settings.git
