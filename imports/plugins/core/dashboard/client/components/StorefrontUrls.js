@@ -4,12 +4,14 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import { Form } from "reacto-form";
 import { Mutation } from "react-apollo";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
@@ -23,6 +25,12 @@ const PaddedField = styled(Field)`
 const RightAlignedGrid = styled(Grid)`
   text-align: right;
 `;
+
+const styles = () => ({
+  helpText: {
+    marginTop: "10px"
+  }
+});
 
 const updateShopMutation = gql`
   mutation updateShopMutation($input: UpdateShopInput!) {
@@ -44,6 +52,7 @@ const updateShopMutation = gql`
 
 class StorefrontUrls extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     shop: PropTypes.shape({
       storefrontUrls: PropTypes.shape({
         storefrontHomeUrl: PropTypes.string,
@@ -87,7 +96,7 @@ class StorefrontUrls extends Component {
   }
 
   render() {
-    const { shop } = this.props;
+    const { classes, shop } = this.props;
     const { storefrontUrls } = shop;
     const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = storefrontUrls || {};
 
@@ -146,9 +155,20 @@ class StorefrontUrls extends Component {
                     <TextInput
                       id="storefrontOrderUrlInput"
                       name="storefrontOrderUrl"
-                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontOrderUrlDescription", "URL of your shops single order page")}
+                      placeholder={
+                        i18next.t(
+                          "shopSettings.storefrontUrls.storefrontOrderUrlDescription",
+                          "URL of your shops single order page, with `:orderId` and `:token` variables provided"
+                        )
+                      }
                       value={storefrontOrderUrl || ""}
                     />
+                    <Typography className={classes.helpText} variant="caption">
+                      {i18next.t(
+                        "shopSettings.storefrontUrls.storefrontOrderUrlHelpText",
+                        "In order for links inside of order emails to work, you must provide both an `:orderId` and `:token` in this field. These act as placeholders that are replaced with the correct data in your email template when an order email is generated. For example: http://shop.example.com/my-orders/:orderId?token=:token"
+                      )}
+                    </Typography>
                     <ErrorsBlock names={["storefrontOrderUrl"]} />
                   </PaddedField>
                   <PaddedField
@@ -172,7 +192,12 @@ class StorefrontUrls extends Component {
                     <TextInput
                       id="storefrontAccountProfileUrlInput"
                       name="storefrontAccountProfileUrl"
-                      placeholder={i18next.t("shopSettings.storefrontUrls.storefrontAccountProfileUrlDescription", "URL of your shops account profile homepage")}
+                      placeholder={
+                        i18next.t(
+                          "shopSettings.storefrontUrls.storefrontAccountProfileUrlDescription",
+                          "URL of your shops account profile homepage"
+                        )
+                      }
                       value={storefrontAccountProfileUrl || ""}
                     />
                     <ErrorsBlock names={["storefrontAccountProfileUrl"]} />
@@ -196,4 +221,4 @@ class StorefrontUrls extends Component {
   }
 }
 
-export default withPrimaryShop(StorefrontUrls);
+export default withPrimaryShop(withStyles(styles, { name: "RuiStorefrontUrls" })(StorefrontUrls));

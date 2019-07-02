@@ -2,6 +2,7 @@ import _ from "lodash";
 import { xformOrderItems } from "@reactioncommerce/reaction-graphql-xforms/order";
 import formatMoney from "/imports/utils/formatMoney";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+import { addAnonymousOrderToken } from "./anonymousToken";
 
 /**
  * @name formatDateForEmail
@@ -137,12 +138,28 @@ export default async function getDataForOrderEmail(context, { order }) {
 
   const copyrightDate = new Date().getFullYear();
 
+  // storefront URLs are technically optional, and headless is OK.
+  // In that case we'll assume the email template does not use nor need
+  // the orderUrl property, so it will be null in the order email data object.
+  let orderUrl = _.get(shop, "storefrontUrls.storefrontOrderUrl", null);
+  if (orderUrl) {
+    let token = "";
+    orderUrl = orderUrl.replace(":orderId", encodeURIComponent(order.referenceId));
+    const isAnonymous = !order.accountId;
+    const wantsToken = orderUrl.includes(":token");
+    if (isAnonymous && wantsToken) {
+      token = await addAnonymousOrderToken(context, order._id);
+    }
+    // Replace :token either with empty string or a toke
+    orderUrl = orderUrl.replace(":token", encodeURIComponent(token));
+  }
+
   // Merge data into single object to pass to email template
   return {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
-    homepage: getAbsoluteUrl("/"),
+    homepage: _.get(shop, "storefrontUrls.storefrontHomeUrl", null),
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -170,7 +187,6 @@ export default async function getDataForOrderEmail(context, { order }) {
         link: "https://www.twitter.com"
       }
     },
-    // Order Data
     order: {
       ...order,
       shipping: adjustedOrderGroups
@@ -197,7 +213,7 @@ export default async function getDataForOrderEmail(context, { order }) {
     },
     combinedItems,
     orderDate: formatDateForEmail(order.createdAt),
-    orderUrl: `cart/completed?_id=${order.cartId}`,
+    orderUrl,
     shipping: {
       address: shippingAddressForEmail,
       carrier,
