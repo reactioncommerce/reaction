@@ -209,7 +209,7 @@ export const OrderItemAttribute = new SimpleSchema({
  * @property {String} updatedAt required
  * @property {String} variantId required
  * @property {String} variantTitle Title from the selected variant
- * @property {Workflow} workflow optional
+ * @property {Workflow} workflow optional and deprecated
  *
  */
 export const OrderItem = new SimpleSchema({
