@@ -130,16 +130,7 @@ Template.coreOrderShippingTracking.helpers({
 
     if (!fulfillment) return false;
 
-    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-    return orderItems.every((item) => {
-      if (!fulfillment.itemIds.includes(item._id)) {
-        // The item is not in this shipment so we don't care
-        return true;
-      }
-
-      return item.workflow && Array.isArray(item.workflow.workflow) &&
-        item.workflow.workflow.indexOf("coreOrderItemWorkflow/shipped") > -1;
-    });
+    return order.shipping.every((shippingGroup) => shippingGroup.workflow.workflow.indexOf("coreOrderWorkflow/shipped") > -1);
   },
 
   isNotCanceled() {
@@ -148,15 +139,7 @@ Template.coreOrderShippingTracking.helpers({
 
     if (!fulfillment) return false;
 
-    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-    return orderItems.every((item) => {
-      if (!fulfillment.itemIds.includes(item._id)) {
-        // The item is not in this shipment so we don't care
-        return true;
-      }
-
-      return !item.workflow || item.workflow.status !== "coreOrderItemWorkflow/canceled";
-    });
+    return order.shipping.every((shippingGroup) => shippingGroup.workflow.status !== "coreOrderWorkflow/canceled");
   },
 
   isCompleted() {
@@ -165,16 +148,7 @@ Template.coreOrderShippingTracking.helpers({
 
     if (!fulfillment) return false;
 
-    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-    return orderItems.every((item) => {
-      if (!fulfillment.itemIds.includes(item._id)) {
-        // The item is not in this shipment so we don't care
-        return true;
-      }
-
-      return item.workflow && Array.isArray(item.workflow.workflow) &&
-        item.workflow.workflow.indexOf("coreOrderItemWorkflow/completed") > -1;
-    });
+    return order.shipping.every((shippingGroup) => shippingGroup.workflow.workflow.indexOf("coreOrderWorkflow/completed") > -1);
   },
 
   editTracking() {
