@@ -74,4 +74,4 @@ Meteor.methods({
 
     return result;
   }
-}
+});
