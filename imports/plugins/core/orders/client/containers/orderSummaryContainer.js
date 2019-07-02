@@ -34,16 +34,7 @@ class OrderSummaryContainer extends Component {
       };
     }
 
-    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-    const shipped = orderItems.every((item) => {
-      if (shipment.itemIds.indexOf(item._id) === -1) {
-        // The item is not in this shipment so we don't care
-        return true;
-      }
-
-      return item.workflow && Array.isArray(item.workflow.workflow) &&
-        item.workflow.workflow.indexOf("coreOrderItemWorkflow/shipped") > -1;
-    });
+    const shipped = order.shipping.every((shippingGroup) => shippingGroup.workflow.workflow.indexOf("coreOrderWorkflow/shipped") > -1);
 
     if (shipped) {
       return {
@@ -54,14 +45,8 @@ class OrderSummaryContainer extends Component {
       };
     }
 
-    const canceled = orderItems.every((item) => {
-      if (shipment.itemIds.indexOf(item._id) === -1) {
-        // The item is not in this shipment so we don't care
-        return true;
-      }
+    const canceled = order.shipping.every((shippingGroup) => shippingGroup.workflow.workflow.indexOf("coreOrderWorkflow/canceled") > -1);
 
-      return item.workflow && item.workflow.status === "coreOrderItemWorkflow/canceled";
-    });
 
     if (canceled) {
       return {
