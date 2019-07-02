@@ -75,11 +75,6 @@ export default async function moveOrderItems(context, input) {
   const foundItemIds = [];
   const movedItems = fromGroup.items.reduce((list, item) => {
     if (itemIds.includes(item._id)) {
-      // The orderer may only move while the order item status is still "new"
-      if (accountIsOrderer && !itemStatusesThatOrdererCanMove.includes(item.workflow.status)) {
-        throw new ReactionError("invalid", `Item status (${item.workflow.status}) is not one of: ${itemStatusesThatOrdererCanMove.join(", ")}`);
-      }
-
       list.push(item);
       foundItemIds.push(item._id);
     }
