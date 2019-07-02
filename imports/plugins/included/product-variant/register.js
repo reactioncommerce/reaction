@@ -4,7 +4,6 @@ Reaction.registerPackage({
   label: "Products",
   name: "reaction-product-variant",
   icon: "fa fa-cubes",
-  autoEnable: true,
   registry: [{
     route: "/tag/:slug?",
     name: "tag",

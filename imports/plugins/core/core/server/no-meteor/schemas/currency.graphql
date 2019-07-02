@@ -1,25 +1,26 @@
 "Represents one type of currency"
 type Currency implements Node {
+  "ID"
   _id: ID!
+
+  "Currency code"
   code: String!
-  symbol: String!
-  format: String!
-  scale: Int
+
+  "Decimal symbol"
   decimal: String
-  thousand: String
+
+  "Format string"
+  format: String!
+
+  "Exchange rate from shop default currency, if known"
   rate: Float
-}
 
-"Wraps a list of `Currencies`, providing pagination cursors and information."
-type CurrencyConnection implements NodeConnection {
-  edges: [CurrencyEdge]
-  nodes: [Currency]
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
+  "The decimal scale used by this currency"
+  scale: Int
 
-"A connection edge in which each node is an `Currency` object"
-type CurrencyEdge implements NodeEdge {
-  cursor: ConnectionCursor!
-  node: Currency
+  "Currency symbol"
+  symbol: String!
+
+  "Thousands separator symbol"
+  thousand: String
 }

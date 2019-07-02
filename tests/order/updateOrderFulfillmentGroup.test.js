@@ -36,8 +36,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await testApp.collections.Catalog.remove({});
-  await testApp.collections.Shops.remove({});
+  await testApp.collections.Catalog.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
   testApp.stop();
 });
 

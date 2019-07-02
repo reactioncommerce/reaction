@@ -1,13 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import appEvents from "/imports/node-app/core/util/appEvents";
-import { Job } from "/imports/plugins/core/job-collection/lib";
-import { Jobs } from "/lib/collections";
-
-let moment;
-async function lazyLoadMoment() {
-  if (moment) return;
-  moment = await import("moment").default;
-}
+import { Job, Jobs } from "/imports/utils/jobs";
 
 /**
  * @summary Adds a "jobServerStart" event consumer, which registers
@@ -33,6 +26,10 @@ export function addCleanupJobControlHook() {
   });
 }
 
+/**
+ * @summary Cleanup job worker
+ * @return {undefined}
+ */
 export function cleanupJob() {
   const removeStaleJobs = Jobs.processJobs("jobControl/removeStaleJobs", {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
@@ -41,8 +38,8 @@ export function cleanupJob() {
     Logger.debug("Processing jobControl/removeStaleJobs...");
 
     // TODO: set this interval in the admin UI
-    Promise.await(lazyLoadMoment());
-    const olderThan = moment().subtract(3, "days")._d;
+    const threeDays = 3 * 24 * 60 * 60 * 1000;
+    const olderThan = new Date(Date.now() - threeDays);
 
     const ids = Jobs.find({
       type: {
@@ -58,7 +55,7 @@ export function cleanupJob() {
       fields: {
         _id: 1
       }
-    }).map((d) => d._id);
+    }).map((jobDoc) => jobDoc._id);
 
     let success;
     if (ids.length > 0) {

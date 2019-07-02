@@ -6,6 +6,15 @@ type Tag implements Node & Deletable {
   "The date and time at which this tag was created"
   createdAt: DateTime!
 
+  "A string of the title to be displayed on a Tag Listing Page"
+  displayTitle: String
+
+  "A list of the IDs of top products in this tag"
+  featuredProductIds: [ID]
+
+  "A string containing the hero image url for a Tag Listing Page"
+  heroMediaUrl: String
+
   """
   If `true`, this object should be considered deleted. Soft deleted objects are not
   returned in query results unless you explicitly ask for them.
@@ -27,51 +36,71 @@ type Tag implements Node & Deletable {
   "The tag's position relative to other tags at the same level of the tag hierarchy"
   position: Int
 
-  "A list of the IDs of tags that have this tag as their parent in the tag hierarchy, in the user-defined order"
-  subTagIds: [ID]!
-
-  "A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported."
-  subTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
-
   "The shop to which this tag belongs"
   shop: Shop!
 
   "A unique URL-safe string representing this tag for links"
   slug: String
 
+  "A list of the IDs of tags that have this tag as their parent in the tag hierarchy, in the user-defined order"
+  subTagIds: [ID]!
+
+  "A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported."
+  subTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
+
   "The date and time at which this tag was last updated"
   updatedAt: DateTime!
-
-  "A string containing the hero image url for a Tag Listing Page"
-  heroMediaUrl: String
-
-  "A string of the title to be displayed on a Tag Listing Page"
-  displayTitle: String
-
-  "A list of the IDs of top products in this tag"
-  featuredProductIds: [ID]
 }
 
 "The fields by which you are allowed to sort any query that returns a `TagConnection`"
 enum TagSortByField {
+  "Tag ID"
   _id
+
+  "Date and time the tag was created"
   createdAt
+
+  "Tag name"
   name
+
+  "Tag position"
   position
+
+  "Date and time the tag was last updated"
   updatedAt
 }
 
 "A connection edge in which each node is a `Tag` object"
 type TagEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The tag"
   node: Tag
 }
 
-"Wraps a list of `Tags`, providing pagination cursors and information."
-type TagConnection implements NodeConnection {
+"""
+Wraps a list of `Tags`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type TagConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [TagEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Tag]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
@@ -89,6 +118,9 @@ extend type Query {
   tags(
     "Only tags associated with this shop will be returned"
     shopId: ID!,
+
+    "If provided, this query will do a regex search using the provided filter data, and return only tags that match"
+    filter: String
 
     "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
     isTopLevel: Boolean,

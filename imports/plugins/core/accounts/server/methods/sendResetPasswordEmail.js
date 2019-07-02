@@ -4,9 +4,9 @@ import Random from "@reactioncommerce/random";
 import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { SSR } from "meteor/meteorhacks:ssr";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 Accounts.urls.resetPassword = function reset(token) {
@@ -60,7 +60,6 @@ async function sendResetEmail(userId, optionalEmail) {
 
   // Get shop data for email display
   const shop = Shops.findOne(Reaction.getShopId());
-  const emailLogo = Reaction.Email.getShopLogo(shop);
   const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
@@ -68,7 +67,6 @@ async function sendResetEmail(userId, optionalEmail) {
     shop,
     contactEmail: shop.emails[0].address,
     homepage: Reaction.absoluteUrl(),
-    emailLogo,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -101,18 +99,13 @@ async function sendResetEmail(userId, optionalEmail) {
     user
   };
 
-  // Compile Email with SSR
-  const tpl = "accounts/resetPassword";
-  const subject = "accounts/resetPassword/subject";
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
-  return Reaction.Email.send({
-    to: email,
-    from: Reaction.getShopEmail(),
-    subject: SSR.render(subject, dataForEmail),
-    html: SSR.render(tpl, dataForEmail)
-  });
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  return Promise.await(context.mutations.sendEmail(context, {
+    data: dataForEmail,
+    fromShop: shop,
+    templateName: "accounts/resetPassword",
+    to: email
+  }));
 }
 
 /**

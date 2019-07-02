@@ -9,6 +9,19 @@ import { Workflow } from "./workflow";
 
 
 /**
+ * @name AnonymousAccessToken
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Date} createdAt when token was created
+ * @property {String} hashedToken token hash = base64(sha256(token-random-string))
+ */
+export const AnonymousAccessToken = new SimpleSchema({
+  createdAt: Date,
+  hashedToken: String
+});
+registerSchema("AnonymousAccessToken", AnonymousAccessToken);
+
+/**
  * @name Document
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -156,12 +169,28 @@ export const OrderDiscount = new SimpleSchema({
 });
 
 /**
+ * @name OrderItemAttribute
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label required
+ * @property {String} value optional
+ */
+export const OrderItemAttribute = new SimpleSchema({
+  label: String,
+  value: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * @name OrderItem
  * @memberof Schemas
  * @summary Defines one item in an order
  * @type {SimpleSchema}
  * @property {String} _id Unique ID for the item
  * @property {String} addedAt Date/time when this was first added to the cart/order
+ * @property {OrderItemAttribute[]} attributes Attributes of this item
  * @property {String} cancelReason Free text reason for cancel, if this item is canceled
  * @property {String} createdAt Date/time when this order item was created
  * @property {Document[]} documents optional
@@ -186,6 +215,11 @@ export const OrderDiscount = new SimpleSchema({
 export const OrderItem = new SimpleSchema({
   "_id": String,
   "addedAt": Date,
+  "attributes": {
+    type: Array,
+    optional: true
+  },
+  "attributes.$": OrderItemAttribute,
   "cancelReason": {
     type: String,
     optional: true
@@ -214,10 +248,7 @@ export const OrderItem = new SimpleSchema({
     optional: true
   },
   "price": Money,
-  "productId": {
-    type: String,
-    index: 1
-  },
+  "productId": String,
   "productSlug": {
     type: String,
     optional: true
@@ -243,16 +274,12 @@ export const OrderItem = new SimpleSchema({
     type: SimpleSchema.Integer,
     min: 0
   },
-  "shopId": {
-    type: String,
-    index: 1
-  },
+  "shopId": String,
   "subtotal": Number,
   "title": String,
   "updatedAt": Date,
   "variantId": {
     type: String,
-    index: 1,
     optional: true
   },
   "variantTitle": {
@@ -378,7 +405,9 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @summary Order has an array of History, Documents, Notes, Items and OrderTransactions.
  * @property {String} _id required
  * @property {String} accountId Account ID for account orders, or null for anonymous
- * @property {String} anonymousAccessToken Token for accessing anonymous carts, null for account carts
+ * @property {Object[]} anonymousAccessTokens Tokens for accessing anonymous orders, null for account orders
+ * @property {String} anonymousAccessTokens.hashedToken The hashed value for DB queries
+ * @property {Date} anonymousAccessTokens.createdAt When the token was created. Expiry is not currently implemented, but this Date is here to support that.
  * @property {Address} [billingAddress] Optional billing address
  * @property {String} cartId optional For tracking which cart created this order
  * @property {Date} createdAt required
@@ -404,14 +433,13 @@ export const Order = new SimpleSchema({
   },
   "accountId": {
     type: String,
-    index: 1,
     optional: true
   },
-  "anonymousAccessToken": {
-    type: String,
-    index: 1,
+  "anonymousAccessTokens": {
+    type: Array,
     optional: true
   },
+  "anonymousAccessTokens.$": AnonymousAccessToken,
   // Although billing address is typically needed only by the payment plugin,
   // some tax services require it to calculate taxes for digital items. Thus
   // it should be provided here in order to be added to the CommonOrder if possible.
@@ -443,7 +471,6 @@ export const Order = new SimpleSchema({
   "email": {
     type: String,
     optional: true,
-    index: 1,
     regEx: SimpleSchema.RegEx.Email
   },
   "exportHistory": {
@@ -466,12 +493,11 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "payments.$": Payment,
-  "referenceId": String,
-  "shipping": [OrderFulfillmentGroup],
-  "shopId": {
-    type: String,
-    index: 1
+  "referenceId": {
+    type: String
   },
+  "shipping": [OrderFulfillmentGroup],
+  "shopId": String,
   "surcharges": {
     type: Array,
     optional: true

@@ -1,0 +1,11 @@
+mutation updateSimpleInventoryMutation($input: UpdateSimpleInventoryInput!) {
+  updateSimpleInventory(input: $input) {
+    inventoryInfo {
+      canBackorder
+      inventoryInStock
+      inventoryReserved
+      isEnabled
+      lowInventoryWarningThreshold
+    }
+  }
+}

@@ -1,3 +1,148 @@
+# v2.0.0-rc.12
+
+This is our twelfth **release candidate** for v2.0.0 of Reaction.
+Please check it out and let us know what works and what doesn't for you.
+
+This release is being coordinated with `reaction-platform` and is designed to work with the same versions of `example-storefront` and `reaction-hydra`.
+
+# Improvements
+
+## Feature
+
+- feat: better cart and order item attributes, with labels (#5253)
+- feat: add shopLogoUrls to shop settings to allow logo to be rendered from url (#5227)
+- feat: add resolver to get displayStatus from database (#5236)
+- feat: Add DetailDrawer component for supplementary views (#5239)
+- feat: add regex filter to tags GQL query (#5232)
+- feat: add landing page for catalyst (#5226)
+- feat: update sidebar, fix mobile responsiveness (#5209)
+- feat: hard code cache keys prefix (#5222)
+- feat: add read-only version of orders 2.0 to break up PR’s (#5202)
+- feat: add approveOrderPayments graphql mutation (#5201)
+- feat: dangerButton and ConfirmButton components (#5200)
+- feat: define collections using registerPlugin (#5196)
+- feat: update default navigation item visibility options when added to the navigation tree (#5190)
+- feat: storefront login url (#5187)
+- feat: add a setting for whether options without inventory enabled are sellable (#5186)
+- feat: UI for adding Storefront Urls inside Catalyst (#5174)
+- feat: additional navigation visibility options (#5153)
+- feat: add ENV to disable inventory auto-publish (#5149)
+- feat: migrations & related checks can be disabled (#5140)
+- feat: allow 10 levels of navigation tree (#5129)
+- feat: add Catalog query filters (#5126)
+- feat: ShopId can be any string (#5119)
+- feat: use shop logo for login pages (#5109)
+- feat: drop unnecessary MongoDB indexes (#5106)
+- feat: adds optional flag to filter out sold-out products (#5105)
+- feat: allow viewing of orders by reference id (#5092)
+- feat: plugin: Prometheus Metrics (#5088)
+- feat: feature/system info (#5087)
+- feat: add name related data to viewer Account query (#5079)
+- feat: replace `reaction plugins` usage (#5070)
+- feat: Add cart referenceId in graphql schema (#5065)
+- feat: registerBlock API for registering blocks and rendering components for regions (#5064)
+- feat: allow extend generate orderId and cartId (#5054)
+- feat: de-Meteorize emailing code in the API (#4998)
+
+## Fix
+
+- fix: socket issues (#5255)
+- fix: Make new order email links correct for storefront (#5251)
+- fix: ensure translations from all packages load (#5252)
+- fix: Fix page title from not found (#5245)
+- fix: alphabetical currencies (#5230)
+- fix: app will not start (#5216)
+- fix: shop with data error (#5207)
+- fix: change calibre ci step to use npx (#5197)
+- fix: NaN for prices with commas (#5193)
+- fix: add subtotal display amount to dataForOrderEmail (#5183)
+- fix: remove product-admin dead import (#5180)
+- fix: Can't re-send shop manager invite to existing non-activated user (#5178)
+- fix: set shop manager password on invitation (#5173)
+- fix: replaceBlock function (#5161)
+- fix: detect and add a newline in .env file if its missing (#5156)
+- fix: race condition by awaiting each publish catalog function by type… (#5151)
+- fix: inventory quantity resets to 0 when any variant or option quantity is undefined (#5134)
+- fix: remove transform for billingAddress in gql resolver for Payment (#5125)
+- fix: add correct item images to order email data (#5121)
+- fix: password reset form (#5120)
+- fix: include submodule bare repos in docker build context (#5118)
+- fix: extendCommonOrder items data was over-written by itself (#5104)
+- fix: orders performance (#5096)
+- fix: revert metrics prometheus (#5099)
+- fix: catalog items performance (#5095)
+- fix: rounding Issue in Cart/Orders (#5091)
+- fix: remove aldeed:schema-index Meteor package, use collectionIndex (#5090)
+- fix: make tax code field available for new rate (#5076)
+- fix: duped cart referenceId (#5074)
+- fix: shipping restrictions not correctly denying methods (#5071)
+- fix: navigation editor WSOD when navigation tree is empty (#5067)
+- fix: set variant media correctly when added to cart (#5063)
+- fix: marketplace invitation validation (#5057)
+
+## Chore
+
+- chore: Remove unused npm deps and update to latest Babel (#5250)
+- chore: update @reactioncommerce/file-collections version (#5244)
+- chore: Omit email credentials from log data (#5241)
+- chore: update styles for MUI Typography to match designs (#5235)
+- chore: Move some core files to new shop plugin (#5233)
+- chore: Update NPM packages (#5231)
+- chore: Update React 16.8.6 (#5204)
+- chore: add language to shop query (#5203)
+- chore: remove Profile (#5198)
+- chore: finish simple-pricing plugin (#5143)
+- chore: add a GraphQL schema linter, fix found issues (#5112)
+- chore: ignore js-yaml vuln for 30 days (#5108)
+- chore: security update for js-yaml (#5093)
+- chore: ensure an error message is logged for apollo errors (#5061)
+- chore: more consistent Usage of ES6+ Code (#5056)
+
+## Refactor
+
+- refactor: Demeteorize registration for remaining API server plugins (#5234)
+- refactor: Rename graphql endpoint (#5249)
+- refactor: update styling of orderCard header section, move details to sidebar (#5240)
+- refactor: enhancements to tag ui in Catalyst (#5223)
+- refactor: inventory Rewrite - new simple-inventory plugin (#5164)
+- refactor: add home, order, orders, and account profile urls to shop object (#5145)
+- refactor: use `getVariantPrice` to determine price in `xformCartGroupToCommonOrder` (#5142)
+- refactor: add env. vars. for graphql playground and introspection (#5055)
+
+## Performance
+
+- perf: minor inventory performance improvments (#5220)
+- perf: demeteorize and reorg some core startup code (#5212)
+- perf: avoid unnecessary database queries for common GraphQL requests (#5154)
+- perf: faster inventory updates (#5138)
+- perf: create index for Jobs queries (#5137)
+- perf: improved performance for products and catalog items queries with featured sort (#5136)
+- perf: tag subscription (#5130)
+- perf: speed up the products table publication (#5128)
+- perf: remove unused Meteor methods and client cart code (#5059)
+
+# Breaking Changes
+
+- uiState.isLeftSidebarOpen renamed to uiState.isPrimarySidebarOpen (#5209)
+- Breaking workflow, every item added to the nav tree will need to be explicitly made visible on the storefront (#5190)
+- There is a new shop-specific app setting, canSellVariantWithoutInventory, which is true by default. If this is changed to false, then variants/options without inventory tracking enabled will appear sold out and with back-ordering disabled. (#5186)
+- `navigationTreeById` now accepts an object containing params { language, navigationTreeId, shouldInlcudeSecondary } instead of individual params. (#5153)
+- `draftItems` is admin only now so to not expose work-in-progress changes to the public
+- Potential for http routing conflicts on /metrics. (#5088)
+- Product components have been broken into smaller peices and the old files removed. This should be an internal breaking change as prior to this PR, those components couldn't be modified without touching core. (#5064)
+- The new order confirmation email template has been updated (#5251) 
+- Multi-shop orders will no longer work (#5096) 
+- If you have custom plugins that use index or unique options in their schemas, add back the aldeed:schema-index dependency or update the plugins to use collectionIndex function. (#5090)
+- Custom plugins importing any of the removed packages or using the removed component will need to be updated. (#5250)
+- The deprecated `price` field has been removed from `CatalogProduct` and `CatalogProductVariant`. (#5143) 
+- Custom plugins that manage or use inventory are likely to need a rewrite. (#5164)
+- Older shops must confirm they are using our simple-pricing plugin, and that pricing is available on Catalog items. (#5142)
+- Removed support for undocumented feature Meteor.settings.cdnPrefix
+- Removed support for undocumented feature Reaction.Endpoints
+- Removed support for prerender by prerender-node NPM package (#5212)
+- Tags are no longer subscribed to at a global level. Subscribe to tags when you need them using Meteor.subscribe("Tags", [tagIds]); (#5130)
+- Any custom plugins relying on the removed Meteor methods will need to be updated. (#5059)
+
 # v2.0.0-rc.11
 
 This is our eleventh **release candidate** for v2.0.0 of Reaction.

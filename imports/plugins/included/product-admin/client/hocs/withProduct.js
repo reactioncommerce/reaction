@@ -120,15 +120,11 @@ const wrapComponent = (Comp) => {
    * @returns {Node} React component
    */
   function withProduct(props) {
-    const {
-      history,
-      newMetafield,
-      setNewMetaField
-    } = props;
+    const { history } = props;
 
     return (
       <Comp
-        newMetafield={newMetafield}
+        // newMetafield={newMetafield}
         onArchiveProduct={async (product, redirectUrl) => {
           await handleArchiveProduct(product);
           history.push(redirectUrl);
@@ -137,21 +133,6 @@ const wrapComponent = (Comp) => {
         onCreateVariant={async (product) => {
           const { newVariantId } = await handleCreateVariant(product);
           history.push(`/operator/products/${product._id}/${newVariantId}`);
-        }}
-        onMetaChange={setNewMetaField}
-        onMetaRemove={handleMetaRemove}
-        onMetaSave={(productId, metafield, index) => {
-          // update existing metafield
-          if (index >= 0) {
-            Meteor.call("products/updateMetaFields", productId, metafield, index);
-          } else if (metafield.key && metafield.value) {
-            Meteor.call("products/updateMetaFields", productId, metafield);
-          }
-
-          setNewMetaField({
-            key: "",
-            value: ""
-          });
         }}
         onProductFieldSave={handleProductFieldSave}
         onProductVariantFieldSave={handleProductVariantFieldSave}
@@ -235,6 +216,7 @@ function composer(props, onData) {
 
   if (productSub && productSub.ready()) {
     product = ReactionProduct.setProduct(productId, variantId);
+    product && Meteor.subscribe("Tags", product.hashtags);
 
     if (variantId) {
       ReactionProduct.setCurrentVariant(variantId);
@@ -243,7 +225,6 @@ function composer(props, onData) {
 
   let tags;
   let media;
-  let revisonDocumentIds;
 
   if (product) {
     if (_.isArray(product.hashtags)) {
@@ -258,8 +239,6 @@ function composer(props, onData) {
         variantId: selectedVariant._id
       });
     }
-
-    revisonDocumentIds = [product._id];
 
     const templates = Templates.find({
       parser: "react",
@@ -303,7 +282,6 @@ function composer(props, onData) {
       product,
       media,
       tags,
-      revisonDocumentIds,
       templates,
       countries,
       editable,

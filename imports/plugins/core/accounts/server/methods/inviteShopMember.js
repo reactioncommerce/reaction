@@ -4,8 +4,8 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
-import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Groups, Shops } from "/lib/collections";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
@@ -68,38 +68,49 @@ export default function inviteShopMember(options) {
 
   const currentUser = Meteor.user();
   const currentUserName = getCurrentUserName(currentUser);
-  const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const user = Meteor.users.findOne({ "emails.address": email });
+  const matchingEmail = user &&
+    user.emails &&
+    user.emails.find((emailObject) => emailObject.address === email);
+
+  const isEmailVerified = matchingEmail && matchingEmail.verified;
   const token = Random.id();
+
   let dataForEmail;
   let userId;
-  let tpl;
-  let subject;
+  let templateName;
+
+  if (user) {
+    userId = user._id;
+  }
 
   // If the user already has an account, send informative email, not "invite" email
-  if (user) {
+  if (user && isEmailVerified) {
     // The user already exists, we promote the account, rather than creating a new one
-    userId = user._id;
     Meteor.call("group/addUser", userId, groupId);
 
     // do not send token, as no password reset is needed
     const url = Reaction.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, emailLogo, url });
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, url });
 
     // Get email template and subject
-    tpl = "accounts/inviteShopMember";
-    subject = "accounts/inviteShopMember/subject";
+    templateName = "accounts/inviteShopMember";
   } else {
-    // The user does not already exist, we need to create a new account
-    userId = MeteorAccounts.createUser({
-      profile: { invited: true },
-      email,
-      name,
-      groupId
-    });
-    // set token to be used for first login for the new account
+    // There could be an existing user with an invite still pending (not activated).
+    // We create a new account only if there's no pending invite.
+    if (!user) {
+      // The user does not already exist, we need to create a new account
+      userId = MeteorAccounts.createUser({
+        profile: { invited: true },
+        email,
+        name,
+        groupId
+      });
+    }
+
+    // set token to be used for first login for the new accoun
     const tokenUpdate = {
       "services.password.reset": { token, email, when: new Date() },
       name
@@ -107,26 +118,22 @@ export default function inviteShopMember(options) {
     Meteor.users.update(userId, { $set: tokenUpdate });
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token });
 
     // Get email template and subject
-    tpl = "accounts/inviteNewShopMember";
-    subject = "accounts/inviteNewShopMember/subject";
+    templateName = "accounts/inviteNewShopMember";
   }
 
   dataForEmail.groupName = _.startCase(group.name);
 
-  // Compile Email with SSR
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
   // send invitation email from primary shop email
-  Reaction.Email.send({
-    to: email,
-    from: `${dataForEmail.primaryShop.name} <${dataForEmail.primaryShop.emails[0].address}>`,
-    subject: SSR.render(subject, dataForEmail),
-    html: SSR.render(tpl, dataForEmail)
-  });
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  Promise.await(context.mutations.sendEmail(context, {
+    data: dataForEmail,
+    fromShop: primaryShop,
+    templateName,
+    to: email
+  }));
 
   return Accounts.findOne({ userId });
 }

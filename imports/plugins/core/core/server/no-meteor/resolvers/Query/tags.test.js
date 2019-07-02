@@ -17,18 +17,17 @@ test("calls queries.tags and returns a partial connection", async () => {
     { shopId: base64ID },
     {
       queries: { tags }
-    }
+    },
+    { fieldNodes: [] }
   );
 
   expect(result).toEqual({
     nodes: mockTags,
     pageInfo: {
       endCursor: "102",
-      hasNextPage: false,
-      hasPreviousPage: false,
       startCursor: "100"
     },
-    totalCount: 3
+    totalCount: null
   });
 
   expect(tags).toHaveBeenCalled();

@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { findCatalogProductsAndVariants, tagsByIds, mergeProductAndVariants } from "./helpers";
+import { tagsByIds, mergeProductAndVariants } from "./helpers";
 
 /**
  * @name extendCommonOrder
@@ -11,13 +11,13 @@ import { findCatalogProductsAndVariants, tagsByIds, mergeProductAndVariants } fr
  * @returns {Object|null} shipping restriction attributes for the provided fulfillment group
  */
 export default async function extendCommonOrder(context, commonOrder) {
-  const { collections, getFunctionsOfType } = context;
+  const { collections, getFunctionsOfType, queries } = context;
   const { items: orderItems } = commonOrder;
   const products = [];
 
   // Products in the Catalog collection are the source of truth, therefore use them
   // as the source of data instead of what is coming from the client.
-  const catalogProductsAndVariants = await findCatalogProductsAndVariants(collections, orderItems);
+  const catalogProductsAndVariants = await queries.findCatalogProductsAndVariants(context, orderItems);
   const allProductsTags = await tagsByIds(collections, catalogProductsAndVariants);
 
   for (const orderLineItem of orderItems) {
@@ -50,7 +50,7 @@ export default async function extendCommonOrder(context, commonOrder) {
   }
 
   return {
-    items: products,
-    ...commonOrder
+    ...commonOrder,
+    items: products
   };
 }

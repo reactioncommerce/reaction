@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { i18next } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import { Button } from "/imports/plugins/core/ui/client/components";
 import { Router } from "@reactioncommerce/reaction-router";
 import { highlightInput } from "../../helpers/animations";
@@ -44,6 +44,16 @@ class TagItem extends Component {
     if (this.props.onTagSave) {
       this.props.onTagSave(event, this.props.tag);
     }
+  }
+
+  /**
+   * Handle tag edit links to tag editing UI for this specific tag
+   * @return {void} no return value
+   */
+  handleTagEdit = () => {
+    const { tag } = this.props;
+
+    Reaction.Router.go(`/operator/tags/edit/${tag._id}`);
   }
 
   /**
@@ -214,6 +224,7 @@ class TagItem extends Component {
         >
           <form onSubmit={this.handleTagFormSubmit}>
             {this.renderAutosuggestInput()}
+            <Button icon="edit" onClick={this.handleTagEdit} status="default" />
             <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
             {this.props.isTagNav &&
               <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
@@ -318,7 +329,11 @@ TagItem.propTypes = {
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,
   suggestions: PropTypes.arrayOf(PropTypes.object),
-  tag: PropTypes.object
+  tag: PropTypes.shape({
+    _id: PropTypes.string, // newTag will not have an _id
+    name: PropTypes.string.isRequired,
+    slug: PropTypes.string
+  })
 };
 
 registerComponent("TagItem", TagItem);

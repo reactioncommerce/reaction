@@ -116,7 +116,7 @@ registerSchema("Email", Email);
  * @type {SimpleSchema}
  * @property {String} userId required
  * @property {String[]} sessions optional, Array of strings
- * @property {String} shopId required
+ * @property {String} shopId optional
  * @property {String} name optional
  * @property {String} username optional
  * @property {Email[]} emails optional, Array of strings
@@ -134,21 +134,18 @@ export const Accounts = new SimpleSchema({
   "userId": {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-    index: 1,
     label: "Accounts userId"
   },
   "sessions": {
     type: Array,
-    optional: true,
-    index: 1
+    optional: true
   },
   "sessions.$": {
     type: String
   },
   "shopId": {
     type: String,
-    regEx: SimpleSchema.RegEx.Id,
-    index: 1
+    optional: true
   },
   "name": {
     type: String,
@@ -190,8 +187,7 @@ export const Accounts = new SimpleSchema({
   "groups": {
     type: Array, // groupIds that user belongs to
     optional: true,
-    defaultValue: [],
-    index: 1
+    defaultValue: []
   },
   "groups.$": {
     type: String

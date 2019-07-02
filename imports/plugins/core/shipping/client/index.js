@@ -12,6 +12,7 @@ registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
   mainComponent: Shipping,
+  priority: 40,
   path: "/shipping",
   // eslint-disable-next-line react/display-name
   SidebarIconComponent: (props) => <FontAwesomeIcon icon={faShippingFast} {...props} />,

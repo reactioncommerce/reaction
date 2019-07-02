@@ -26,7 +26,12 @@ function orderDetailComposer(props, onData) {
   const { ready } = Meteor.subscribe("OrderById", orderId);
 
   if (ready()) {
-    const order = Orders.findOne({ _id: orderId });
+    const order = Orders.findOne({
+      $or: [
+        { _id: orderId },
+        { referenceId: orderId }
+      ]
+    });
     onData(null, {
       order
     });

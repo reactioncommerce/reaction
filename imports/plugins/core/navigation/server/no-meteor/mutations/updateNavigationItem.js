@@ -10,9 +10,11 @@ import { NavigationItemData } from "/imports/collections/schemas";
  * @return {Promise<Object>} Updated navigation item
  */
 export default async function updateNavigationItem(context, _id, navigationItem) {
-  const { collections, userHasPermission, shopId } = context;
+  const { collections, userHasPermission } = context;
   const { NavigationItems } = collections;
   const { draftData, metadata } = navigationItem;
+
+  const shopId = await context.queries.primaryShopId(collections);
 
   if (userHasPermission(["core"], shopId) === false) {
     throw new ReactionError("access-denied", "You do not have permission to update a navigation item");

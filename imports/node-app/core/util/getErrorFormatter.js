@@ -26,8 +26,6 @@ function getErrorFormatter() {
         ...(originalError.eventData || {})
       };
 
-      Logger.error(eventObj);
-
       if (typeof originalError.error === "string") type = originalError.error;
 
       if (type === "validation-error" && originalError.details && originalError.details.length) {
@@ -37,6 +35,7 @@ function getErrorFormatter() {
       } else {
         err.message = originalError.message;
       }
+      Logger.error(eventObj, err.message || "ApolloServer error with no message");
     }
 
     // Add a `type` prop to our `errors` response object for client parsing
