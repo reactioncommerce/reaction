@@ -57,10 +57,6 @@ export default function cancelOrder(order, returnToStock) {
     }
   });
 
-  // update item workflow
-  const orderItemIds = order.shipping.reduce((list, group) => [...list, ...group.items], []).map((item) => item._id);
-  Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, orderItemIds);
-
   const result = Orders.update({
     _id: order._id,
     shopId: order.shopId
