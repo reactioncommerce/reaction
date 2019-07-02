@@ -5,7 +5,6 @@ import { Order as OrderSchema } from "/imports/collections/schemas";
 import updateGroupStatusFromItemStatus from "../util/updateGroupStatusFromItemStatus";
 
 const canceledStatus = "coreOrderWorkflow/canceled";
-const itemCanceledStatus = "coreOrderItemWorkflow/canceled";
 
 // These should eventually be configurable in settings
 const itemStatusesThatOrdererCanCancel = ["new"];
@@ -83,11 +82,6 @@ export default async function cancelOrderItem(context, input) {
       if (item._id !== itemId) return item;
       foundItem = true;
 
-      // The orderer may only cancel while the order item status is still "new"
-      if (accountIsOrderer && !itemStatusesThatOrdererCanCancel.includes(item.workflow.status)) {
-        throw new ReactionError("invalid", `Item status (${item.workflow.status}) is not one of: ${itemStatusesThatOrdererCanCancel.join(", ")}`);
-      }
-
       // If they are requesting to cancel fewer than the total quantity of items
       // that were ordered, we'll create a new item here with the remaining quantity.
       // It will have the same status as this item has before we cancel it.
@@ -114,13 +108,6 @@ export default async function cancelOrderItem(context, input) {
 
       // Update the subtotal since it is related to the quantity
       updatedItem.subtotal = item.price.amount * cancelQuantity;
-
-      if (item.workflow.status !== itemCanceledStatus) {
-        updatedItem.workflow = {
-          status: itemCanceledStatus,
-          workflow: [...item.workflow.workflow, itemCanceledStatus]
-        };
-      }
 
       // If we make it this far, then we've found the item that they want to cancel.
       // We set the status and the cancel reason if one was provided.
