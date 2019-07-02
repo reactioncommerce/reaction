@@ -21,10 +21,8 @@ export default function shipmentShipped(order, fulfillmentGroup) {
   check(order, Object);
   check(fulfillmentGroup, Object);
 
-  const fulfillmentGroupItemIds = fulfillmentGroup.itemIds;
   updateShipmentStatus({
     fulfillmentGroupId: fulfillmentGroup._id,
-    fulfillmentGroupItemIds,
     order,
     status: "shipped"
   });
@@ -43,11 +41,6 @@ export default function shipmentShipped(order, fulfillmentGroup) {
     });
   }
 
-  // Now move item statuses to completed
-  const completedItemsResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, fulfillmentGroupItemIds);
-
   // Then try to mark order as completed.
-  if (completedItemsResult === 1) {
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
-  }
+  return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
 }

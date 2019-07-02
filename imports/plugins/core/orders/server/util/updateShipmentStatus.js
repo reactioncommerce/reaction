@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { Orders } from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -16,7 +15,6 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default function updateShipmentStatus(input) {
   const {
     fulfillmentGroupId,
-    fulfillmentGroupItemIds,
     order,
     status
   } = input;
@@ -24,11 +22,6 @@ export default function updateShipmentStatus(input) {
   const authUserId = Reaction.getUserId();
   if (!Reaction.hasPermission("orders", authUserId, order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
-  }
-
-  const result = Meteor.call("workflow/pushItemWorkflow", `coreOrderItemWorkflow/${status}`, order, fulfillmentGroupItemIds);
-  if (result !== 1) {
-    throw new ReactionError("server-error", "Unable to update order");
   }
 
   const newStatus = `coreOrderWorkflow/${status}`;

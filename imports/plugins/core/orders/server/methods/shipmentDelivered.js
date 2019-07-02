@@ -20,7 +20,6 @@ export default function shipmentDelivered(order) {
 
   updateShipmentStatus({
     fulfillmentGroupId: fulfillmentGroup._id,
-    fulfillmentGroupItemIds: fulfillmentGroup.itemIds,
     order,
     status: "delivered"
   });

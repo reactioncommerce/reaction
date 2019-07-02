@@ -16,7 +16,6 @@ export default function shipmentPacked(order, fulfillmentGroup) {
 
   return updateShipmentStatus({
     fulfillmentGroupId: fulfillmentGroup._id,
-    fulfillmentGroupItemIds: fulfillmentGroup.itemIds,
     order,
     status: "packed"
   });

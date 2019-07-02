@@ -16,7 +16,6 @@ export default function shipmentLabeled(order, fulfillmentGroup) {
 
   return updateShipmentStatus({
     fulfillmentGroupId: fulfillmentGroup._id,
-    fulfillmentGroupItemIds: fulfillmentGroup.itemIds,
     order,
     status: "labeled"
   });

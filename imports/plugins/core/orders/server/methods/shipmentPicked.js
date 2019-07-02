@@ -16,7 +16,6 @@ export default function shipmentPicked(order, fulfillmentGroup) {
 
   return updateShipmentStatus({
     fulfillmentGroupId: fulfillmentGroup._id,
-    fulfillmentGroupItemIds: fulfillmentGroup.itemIds,
     order,
     status: "picked"
   });
