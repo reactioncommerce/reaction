@@ -1,3 +1,90 @@
+# v2.0.0-rc.11
+
+This is our eleventh **release candidate** for v2.0.0 of Reaction.
+Please check it out and let us know what works and what doesn't for you.
+
+This release is being coordinated with `reaction-platform` and is designed to work with the same versions of `reaction-next-starterkit` and `reaction-hydra`.
+
+# Improvements
+
+### App
+
+Reaction is **no-longer** a customer-facing app, it's an administration tool and offers a GraphQL API.
+
+All customer-facing views are the responsibility of a separate storefront app that makes use of the GaphQL API. See our [example storefront](https://github.com/reactioncommerce/reaction-next-starterkit) as an example of how to achieve this.
+
+- All routes require admin authentication
+- All non-admin authentication requests will be met with a logout screen if attempting to sign into the operator experience.
+- All customer related authentication requests should be done with the IDP workflow. See our [example storefront](https://github.com/reactioncommerce/reaction-next-starterkit) as an example of how to achieve this.
+
+Product grid and Product detail pages moved into the new operator experience and updated for that experience.
+
+### Product grid
+
+Product grid is now represented as a table in the new experience with the same bulk actions it had previously
+
+- Product grid is now a table
+- Product table supports multi-selection
+- Product table supported bulk actions are "Make Hidden", "Make Visible", Archive, Duplicate and Publish
+- Product table adds simple pagination controls with and items per page selector
+
+### Product Detail Page
+
+Is no longer a WYSIWYG editor.
+
+All product forms have been moved on from the sidebar and into the main view and have been expanded.
+
+- Product WYSIWYG editor has been replaced with standard forms
+  - Product detail, Variant and Option forms have been moved out of the sidebar and into the primary view
+- Template field has been converted to text field from a dropdown. Templates no longer apply to the PDP page in Reaction
+- Tags can no longer be drag n' dropped to reorder. Drag handle has been removed to represent this.
+- Media can be added to the Product, Variants, and Options
+- Drag n' Drop of media and variants has been removed
+  - Variants and Options can now be manually sorted by priority
+  - Media can be sorted by priority manually
+- Variant and Options forms now share the same fields
+
+### User Profile
+
+- The profile page has been moved to the new operator experience for admins
+- Address form has been removed
+- Order history has been removed
+- Admins will be able to change their email and password
+
+# Breaking Changes
+
+Reaction is no-longer a customer-facing app, it's an administration tool and offers a GraphQL API.
+
+We have removed the `search-mongo` and `ui-search` plugins from the `imports/plugins/included directory` of `reaction`. Which in turn removes `order search bar` from operator order UI. (#5053)
+
+## Feature
+
+- feat: remove search plugins (#5053)
+- feat: allow users to disable plugins via config (#5031)
+- feat: add addOrderFulfillmentGroup mutation (#5027)
+- feat: add splitOrderItem mutation (#5024)
+- feat: add updateOrderFulfillmentGroup mutation (#5020)
+- feat: add updateOrder mutation (#5019)
+- feat: add moveOrderItems mutation (#5018)
+- feat: add cancelOrderItem mutation (#5010)
+- feat: Operator 2.0 products admin (#5005)
+- feat: performance metrics integration with calibre (#5012)
+- feat: simple-pricing plugin (#5014)
+- feat: use .env.example files from custom plugins (#5003)
+
+## Fix
+
+- fix: bin/setup handling bad env.example (#5048)
+- fix: naming issue caused taxes to not be calculated (#5043)
+- fix: startup asset provisioning (#5033)
+- fix: make bin/setup more robust to missing directories (#5026)
+- fix: item subtotal is incorrect when additional quantities of the same item are added to cart (#5021)
+
+## Chore
+
+- chore: add better logging of package loading (#5051)
+- chore: add optional first and last name fields to schemas (#5050)
+
 # v2.0.0-rc.10
 This is our tenth **release candidate** for v2.0.0 of Reaction. 
 Please check it out and let us know what works and what doesn't for you.
