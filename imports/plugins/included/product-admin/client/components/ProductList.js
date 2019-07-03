@@ -72,7 +72,7 @@ function ProductList({ items, title, onCreate, selectedVariantId }) {
                 />
               ) || ""}
               <ListItemText
-                primary={item.title || "Untitled"}
+                primary={item.optionTitle || item.title || "Untitled"}
                 secondary={getItemSecondaryLabel(item)}
               />
             </ListItem>

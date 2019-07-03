@@ -1,57 +1,111 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
+import classNames from "classnames";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { Link } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
 import { withComponents } from "@reactioncommerce/components-context";
 import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
+import GenericErrorBoundary from "../GenericErrorBoundary";
 
 const getShop = gql`
   query getShop($id: ID!) {
     shop(id: $id) {
       brandAssets {
         navbarBrandImage {
-          thumbnail
+          large
         }
       }
       name
+      shopLogoUrls {
+        primaryShopLogoUrl
+      }
     }
   }
 `;
+
+const styles = (theme) => ({
+  root: {
+    display: "flex",
+    alignItems: "center"
+  },
+  logo: {
+    marginRight: theme.spacing.unit * 2
+  }
+});
 
 /**
  * ShopLogoWithData
  * @params {Object} props Component props
  * @returns {Node} React component
  */
-function ShopLogoWithData({ shopId }) {
+function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, linkTo, size }) {
   if (!shopId) return null;
 
   return (
-    <Query query={getShop} variables={{ id: shopId }}>
-      {({ loading, data }) => {
-        if (loading) return null;
+    <GenericErrorBoundary>
+      <Query query={getShop} variables={{ id: shopId }}>
+        {({ loading, data }) => {
+          if (loading) return null;
+          if (data && data.shop) {
+            const { shop } = data;
+            const customLogoFromUpload = shop.brandAssets && shop.brandAssets.navbarBrandImage && shop.brandAssets.navbarBrandImage.large;
+            const customLogoFromUrlInput = shop.shopLogoUrls && shop.shopLogoUrls.primaryShopLogoUrl;
+            const defaultLogo = "/resources/reaction-logo-circular.svg";
 
-        const { shop } = data;
-        const customLogo = shop.brandAssets && shop.brandAssets.navbarBrandImage && shop.brandAssets.navbarBrandImage.thumbnail;
-        const defaultLogo = "/resources/reaction-logo-circular.svg";
+            return (
+              <Link
+                className={classNames(classes.root, className)}
+                to={linkTo}
+              >
+                <img
+                  alt={shop.name}
+                  className={classes.logo}
+                  src={customLogoFromUrlInput || customLogoFromUpload || defaultLogo}
+                  width={size}
+                />
+                {shouldShowShopName &&
+                  <Typography
+                    color="textSecondary"
+                    display="display"
+                    variant="h3"
+                    component="span"
+                  >
+                    {shop.name}
+                  </Typography>
+                }
+              </Link>
+            );
+          }
 
-        return (
-          <Link to="/operator">
-            <img
-              alt={shop.name}
-              src={customLogo || defaultLogo}
-              width={60}
-            />
-          </Link>
-        );
-      }}
-    </Query>
+          // Return null if the shop data couldn't be found.
+          return null;
+        }}
+      </Query>
+    </GenericErrorBoundary>
   );
 }
 
 ShopLogoWithData.propTypes = {
-  shopId: PropTypes.string
+  className: PropTypes.string,
+  classes: PropTypes.object,
+  linkTo: PropTypes.string,
+  shopId: PropTypes.string,
+  shouldShowShopName: PropTypes.bool,
+  size: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
-export default withPrimaryShopId(withComponents(ShopLogoWithData));
+ShopLogoWithData.defaultProps = {
+  linkTo: "/operator",
+  shouldShowShopName: false,
+  size: 60
+};
+
+export default compose(
+  withPrimaryShopId,
+  withComponents,
+  withStyles(styles, { name: "RuiShopLogoWithData" })
+)(ShopLogoWithData);

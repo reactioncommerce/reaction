@@ -1,7 +1,16 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export default (Component) => (
   class WithNavigationUIStore extends React.Component {
+    static propTypes = {
+      navigationShopSettings: PropTypes.shape({
+        shouldNavigationTreeItemsBeAdminOnly: PropTypes.bool,
+        shouldNavigationTreeItemsBePubliclyVisible: PropTypes.bool,
+        shouldNavigationTreeItemsBeSecondaryNavOnly: PropTypes.bool
+      })
+    }
+
     state = {
       navigationItems: [],
       sortableNavigationTree: [],
@@ -40,9 +49,18 @@ export default (Component) => (
     }
 
     navigationTreeToSortable(navigationTree) {
+      const {
+        shouldNavigationTreeItemsBeAdminOnly,
+        shouldNavigationTreeItemsBePubliclyVisible,
+        shouldNavigationTreeItemsBeSecondaryNavOnly
+      } = this.props.navigationShopSettings;
+
       return navigationTree.map((node) => {
         const newNode = {};
         newNode.id = node.navigationItem._id;
+        newNode.isVisible = typeof node.isVisible === "boolean" ? node.isVisible : shouldNavigationTreeItemsBePubliclyVisible;
+        newNode.isPrivate = typeof node.isPrivate === "boolean" ? node.isPrivate : shouldNavigationTreeItemsBeAdminOnly;
+        newNode.isSecondary = typeof node.isSecondary === "boolean" ? node.isSecondary : shouldNavigationTreeItemsBeSecondaryNavOnly;
         newNode.title = this.getNavigationItemTitle(node.navigationItem).value;
         newNode.expanded = node.navigationItem.expanded;
         newNode.subtitle = node.navigationItem.draftData.url;

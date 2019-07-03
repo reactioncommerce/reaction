@@ -14,6 +14,14 @@ export function setBaseContext(context) {
 }
 
 /**
+ * @summary Gets the baseContext used by getGraphQLContextInMeteorMethod
+ * @returns {Object} The context object
+ */
+export function getBaseContext() {
+  return baseContext;
+}
+
+/**
  * Calls buildContext to build a GraphQL context object, after first looking up
  * the user by userId in collections.users.
  *

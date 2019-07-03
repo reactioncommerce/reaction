@@ -3,8 +3,9 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
-import sendOrderEmail from "../util/sendOrderEmail";
+import sendOrderEmail from "../no-meteor/util/sendOrderEmail";
 import updateShipmentStatus from "../util/updateShipmentStatus";
 
 /**
@@ -29,16 +30,18 @@ export default function shipmentShipped(order, fulfillmentGroup) {
   });
 
   // Notify by email
-  sendOrderEmail(order, "shipped");
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  sendOrderEmail(context, order, "shipped");
 
   // Notify by in-app notification
   const { accountId } = order;
-  const type = "orderShipped";
-  const prefix = Reaction.getShopPrefix();
-  const url = `${prefix}/notifications`;
-  createNotification(rawCollections, { accountId, type, url }).catch((error) => {
-    Logger.error("Error in createNotification within shipmentShipped", error);
-  });
+  if (accountId) {
+    const prefix = Reaction.getShopPrefix();
+    const url = `${prefix}/notifications`;
+    createNotification(rawCollections, { accountId, type: "orderShipped", url }).catch((error) => {
+      Logger.error("Error in createNotification within shipmentShipped", error);
+    });
+  }
 
   // Now move item statuses to completed
   const completedItemsResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, fulfillmentGroupItemIds);

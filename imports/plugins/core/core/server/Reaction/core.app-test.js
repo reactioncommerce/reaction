@@ -8,168 +8,149 @@ import Logger from "@reactioncommerce/logger";
 import core from "./core";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 
-describe("Server/API/Core", () => {
-  let sandbox;
-  let shop;
+/**
+ * @return {String} A random string
+ */
+function randomString() {
+  return Math.random().toString(36);
+}
 
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create();
-    shop = { _id: randomString() };
-  });
+core.onAppStartupComplete(() => {
+  describe("Server/API/Core", () => {
+    let sandbox;
+    let shop;
 
-  afterEach(() => {
-    sandbox.restore();
-    shop = undefined;
-  });
-
-  describe("#getPrimaryShop", () => {
-    it("returns the shop tagged as primary", () => {
-      sandbox.stub(Shops, "findOne")
-        .withArgs({ shopType: "primary" })
-        .returns(shop);
-
-      expect(core.getPrimaryShop()).to.be.equal(shop);
+    beforeEach(() => {
+      sandbox = sinon.sandbox.create();
+      shop = { _id: randomString() };
     });
-  });
 
-  describe("#getShopId", () => {
     afterEach(() => {
-      core.resetShopId();
+      sandbox.restore();
+      shop = undefined;
     });
 
-    it("returns the cached value if applicable", () => {
-      sandbox.stub(ConnectionDataStore, "get")
-        .withArgs("shopId")
-        .returns(shop._id);
+    describe("#getPrimaryShop", () => {
+      it("returns the shop tagged as primary", () => {
+        sandbox.stub(Shops, "findOne")
+          .withArgs({ shopType: "primary" })
+          .returns(shop);
 
-      expect(core.getShopId()).to.equal(shop._id);
+        expect(core.getPrimaryShop()).to.be.equal(shop);
+      });
     });
 
-    it("fetches a user's preferred shop", () => {
-      const userId = randomString();
+    describe("#getShopId", () => {
+      afterEach(() => {
+        core.resetShopId();
+      });
 
-      sandbox.stub(Meteor, "userId").returns(userId);
+      it("returns the cached value if applicable", () => {
+        sandbox.stub(ConnectionDataStore, "get")
+          .withArgs("shopId")
+          .returns(shop._id);
 
-      const fnGetUserShopId =
-        sandbox.stub(core, "getUserShopId").withArgs(userId).returns(shop._id);
+        expect(core.getShopId()).to.equal(shop._id);
+      });
 
-      expect(core.getShopId()).to.equal(shop._id);
-      expect(fnGetUserShopId.called).to.be.true;
-    });
+      it("fetches a user's preferred shop", () => {
+        const userId = randomString();
 
-    it("gets the shop by domain", () => {
-      const fnGetShopIdByDomain =
+        sandbox.stub(Meteor, "userId").returns(userId);
+
+        const fnGetUserShopId =
+          sandbox.stub(core, "getUserShopId").withArgs(userId).returns(shop._id);
+
+        expect(core.getShopId()).to.equal(shop._id);
+        expect(fnGetUserShopId.called).to.be.true;
+      });
+
+      it("gets the shop by domain", () => {
+        const fnGetShopIdByDomain =
+          sandbox.stub(core, "getShopIdByDomain").returns(shop._id);
+
+        sandbox.stub(Meteor, "userId").returns(null);
+
+        expect(core.getShopId()).to.equal(shop._id);
+        expect(fnGetShopIdByDomain.called).to.be.true;
+      });
+
+      it("defaults to the Primary Shop", () => {
+        const primaryShopId = randomString();
+        const fnGetPrimaryShopId =
+          sandbox.stub(core, "getPrimaryShopId").returns(primaryShopId);
+        const fnLogger =
+          sandbox.stub(Logger, "warn").withArgs(sinon.match(/No shop matching/));
+        sandbox.stub(Meteor, "userId").returns(null);
+        sandbox.stub(core, "getShopIdByDomain").returns(null);
+
+        expect(core.getShopId()).to.equal(primaryShopId);
+        expect(fnGetPrimaryShopId.called).to.be.true;
+        expect(fnLogger.called).to.be.true;
+      });
+
+      it("caches the shopId for subsequent calls", () => {
+        const fnSetCachedData = sandbox.stub(ConnectionDataStore, "set").withArgs("shopId", shop._id);
+
+        sandbox.stub(Meteor, "userId").returns(null);
         sandbox.stub(core, "getShopIdByDomain").returns(shop._id);
 
-      sandbox.stub(Meteor, "userId").returns(null);
+        core.getShopId();
 
-      expect(core.getShopId()).to.equal(shop._id);
-      expect(fnGetShopIdByDomain.called).to.be.true;
+        expect(fnSetCachedData.called).to.be.true;
+      });
     });
 
-    it("defaults to the Primary Shop", () => {
-      const primaryShopId = randomString();
-      const fnGetPrimaryShopId =
-        sandbox.stub(core, "getPrimaryShopId").returns(primaryShopId);
-      const fnLogger =
-        sandbox.stub(Logger, "warn").withArgs(sinon.match(/No shop matching/));
-      sandbox.stub(Meteor, "userId").returns(null);
-      sandbox.stub(core, "getShopIdByDomain").returns(null);
+    describe("#resetShopId", () => {
+      it("clears shopId from cache", () => {
+        const fnCacheClear =
+          sandbox.spy(ConnectionDataStore, "clear").withArgs("shopId");
 
-      expect(core.getShopId()).to.equal(primaryShopId);
-      expect(fnGetPrimaryShopId.called).to.be.true;
-      expect(fnLogger.called).to.be.true;
+        core.resetShopId();
+
+        expect(fnCacheClear.called).to.be.true;
+      });
     });
 
-    it("caches the shopId for subsequent calls", () => {
-      const fnSetCachedData = sandbox.stub(ConnectionDataStore, "set").withArgs("shopId", shop._id);
+    describe("#getShopIdByDomain", () => {
+      it("gets the shop with the domain attribute which includes the current domain", () => {
+        const domain = `${randomString()}.reactioncommerce.com`;
+        const shopsCursor = {
+          fetch: () => [shop]
+        };
 
-      sandbox.stub(Meteor, "userId").returns(null);
-      sandbox.stub(core, "getShopIdByDomain").returns(shop._id);
+        sandbox.stub(core, "getDomain").returns(domain);
 
-      core.getShopId();
+        sandbox.stub(Shops, "find")
+          .withArgs({ domains: domain }, sinon.match.any)
+          .returns(shopsCursor);
 
-      expect(fnSetCachedData.called).to.be.true;
-    });
-  });
-
-  describe("#resetShopId", () => {
-    it("clears shopId from cache", () => {
-      const fnCacheClear =
-        sandbox.spy(ConnectionDataStore, "clear").withArgs("shopId");
-
-      core.resetShopId();
-
-      expect(fnCacheClear.called).to.be.true;
-    });
-  });
-
-  describe("#getShopIdByDomain", () => {
-    it("gets the shop with the domain attribute which includes the current domain", () => {
-      const domain = `${randomString()}.reactioncommerce.com`;
-      const shopsCursor = {
-        fetch: () => [shop]
-      };
-
-      sandbox.stub(core, "getDomain").returns(domain);
-
-      sandbox.stub(Shops, "find")
-        .withArgs({ domains: domain }, sinon.match.any)
-        .returns(shopsCursor);
-
-      expect(core.getShopIdByDomain()).to.equal(shop._id);
-    });
-  });
-
-  describe("#getUserShopId", () => {
-    let userId;
-
-    beforeEach(() => {
-      userId = randomString();
+        expect(core.getShopIdByDomain()).to.equal(shop._id);
+      });
     });
 
-    it("ensures you pass a userId", () => {
-      expect(() => core.getUserShopId()).to.throw();
-    });
+    describe("#isShopPrimary", () => {
+      let primaryShopId;
 
-    it("gets the shopId from a user's preferences store", () => {
-      const fnUserSettings = sandbox.stub(core, "getUserPreferences")
-        .withArgs(sinon.match({
-          userId,
-          preference: "activeShopId"
-        }));
+      beforeEach(() => {
+        primaryShopId = randomString();
+      });
 
-      core.getUserShopId(userId);
+      it("is true when the current shop is the Primary Shop", () => {
+        sandbox.stub(core, "getShopId", () => primaryShopId);
+        sandbox.stub(core, "getPrimaryShopId", () => primaryShopId);
 
-      expect(fnUserSettings.called).to.be.true;
+        expect(core.isShopPrimary()).to.be.true;
+      });
+
+      it("is false when the current shop is a Merchant Shop", () => {
+        const shopId = `xxx${primaryShopId}xxx`;
+
+        sandbox.stub(core, "getShopId", () => shopId);
+        sandbox.stub(core, "getPrimaryShopId", () => primaryShopId);
+
+        expect(core.isShopPrimary()).to.be.false;
+      });
     });
   });
-
-  describe("#isShopPrimary", () => {
-    let primaryShopId;
-
-    beforeEach(() => {
-      primaryShopId = randomString();
-    });
-
-    it("is true when the current shop is the Primary Shop", () => {
-      sandbox.stub(core, "getShopId", () => primaryShopId);
-      sandbox.stub(core, "getPrimaryShopId", () => primaryShopId);
-
-      expect(core.isShopPrimary()).to.be.true;
-    });
-
-    it("is false when the current shop is a Merchant Shop", () => {
-      const shopId = `xxx${primaryShopId}xxx`;
-
-      sandbox.stub(core, "getShopId", () => shopId);
-      sandbox.stub(core, "getPrimaryShopId", () => primaryShopId);
-
-      expect(core.isShopPrimary()).to.be.false;
-    });
-  });
-
-  function randomString() {
-    return Math.random().toString(36);
-  }
 });

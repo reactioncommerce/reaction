@@ -98,21 +98,20 @@ const composer = (props, onData) => {
       shopId: Reaction.getShopId()
     }).fetch();
 
-    const adminQuery = {
-      [`roles.${shopId}`]: {
-        $in: ["dashboard"]
-      }
-    };
-
-    const adminUsers = Meteor.users.find(adminQuery, { fields: { _id: 1 } }).fetch();
-    const ids = adminUsers.map((user) => user._id);
-    const accounts = Accounts.find({ userId: { $in: ids } }).fetch();
     const adminGroups = groups.reduce((admGrps, group) => {
       if (group.slug !== "customer" && group.slug !== "guest") {
         admGrps.push(group);
       }
       return admGrps;
     }, []);
+
+    const adminQuery = {
+      [`roles.${shopId}`]: "dashboard"
+    };
+
+    const adminUsers = Meteor.users.find(adminQuery, { fields: { _id: 1 } }).fetch();
+    const ids = adminUsers.map((user) => user._id);
+    const accounts = Accounts.find({ userId: { $in: ids } }).fetch();
 
     onData(null, { accounts, groups, adminGroups });
   }

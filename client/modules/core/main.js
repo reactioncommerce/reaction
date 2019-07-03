@@ -1,5 +1,4 @@
 import _ from "lodash";
-import store from "store";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
@@ -11,7 +10,7 @@ import { Roles } from "meteor/alanning:roles";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from "/client/modules/i18n";
-import { Packages, Shops, Accounts } from "/lib/collections";
+import { Packages, Shops } from "/lib/collections";
 import { Router } from "/client/modules/router";
 import { DomainsMixin } from "./domains";
 import { getUserId } from "./helpers/utils";
@@ -27,8 +26,6 @@ import { getUserId } from "./helpers/utils";
 const reactionState = new ReactiveDict();
 
 export const userPrefs = new ReactiveVar(undefined, (val, newVal) => JSON.stringify(val) === JSON.stringify(newVal));
-
-const deps = new Map();
 
 // Slugify is imported when Reaction.getSlug is called
 let slugify;
@@ -135,7 +132,7 @@ export default {
     });
 
     // Listen for active shop change
-    return Tracker.autorun(() => {
+    return Tracker.autorun(() => { // eslint-disable-line consistent-return
       if (this.Subscriptions.MerchantShops.ready()) {
         // if we don't have an active shopId, try to retrieve it from the userPreferences object
         // and set the shop from the storedShopId
@@ -280,7 +277,7 @@ export default {
 
     //
     // actual logic block to check permissions
-    // we'll bypass unecessary checks during
+    // we'll bypass unnecessary checks during
     // a user logging, as we'll check again
     // when everything is ready
     //
@@ -412,63 +409,6 @@ export default {
   },
 
   /**
-   * @name getUserPreferences
-   * @method
-   * @memberof Core/Client
-   */
-  getUserPreferences(packageName, preference, defaultValue) {
-    getDep(`${packageName}.${preference}`).depend();
-    if (Meteor.user()) {
-      const packageSettings = store.get(packageName);
-      // packageSettings[preference] should not be undefined or null.
-      if (packageSettings && typeof packageSettings[preference] !== "undefined" && packageSettings[preference] !== null) {
-        return packageSettings[preference];
-      }
-    }
-
-    return defaultValue || undefined;
-  },
-
-  /**
-   * @name setUserPreferences
-   * @method
-   * @memberof Core/Client
-   */
-  setUserPreferences(packageName, preference, value) {
-    getDep(`${packageName}.${preference}`).changed();
-    // User preferences are not stored in Meteor.user().profile
-    // to prevent all autorun() with dependency on Meteor.user() to run again.
-    if (Meteor.user()) {
-      // "reaction" package settings should be synced to
-      // the Accounts collection.
-      const syncedPackages = ["reaction"];
-      if (syncedPackages.indexOf(packageName) > -1) {
-        Accounts.update(getUserId(), {
-          $set: {
-            [`profile.preferences.${packageName}.${preference}`]: value
-          }
-        });
-      }
-    }
-    const packageSettings = store.get(packageName) || {};
-    packageSettings[preference] = value;
-    return store.set(packageName, packageSettings);
-  },
-
-  /**
-   * @name updateUserPreferences
-   * @method
-   * @memberof Core/Client
-   */
-  updateUserPreferences(packageName, preference, values) {
-    const currentPreference = this.getUserPreferences(packageName, preference, {});
-    return this.setUserPreferences(packageName, preference, {
-      ...currentPreference,
-      ...values
-    });
-  },
-
-  /**
    * primaryShopId is the first created shop. In a marketplace setting it's
    * the shop that controls the marketplace and can see all other shops.
    * @name primaryShopId
@@ -542,7 +482,7 @@ export default {
    */
   getCurrentShop() {
     // Give preference to shop chosen by the user
-    const activeShopId = this.getUserPreferences("reaction", "activeShopId");
+    const activeShopId = this.getUserShopId();
     if (activeShopId) return Shops.findOne({ _id: activeShopId });
 
     // If no chosen shop, look up the shop by domain
@@ -552,6 +492,20 @@ export default {
     if (!shop) shop = Shops.findOne({ shopType: "primary" });
 
     return shop;
+  },
+
+  /**
+   * @name getUserShopId
+   * @method
+   * @memberof Core/Client
+   * @summary Get current user's shop ID, as stored in preferences
+   * @return {String} active shop ID
+   */
+  getUserShopId() {
+    const preferences = userPrefs.get(); // reactivity on `profile.preferences` changes only
+    if (!preferences) return null;
+
+    return _.get(preferences, "reaction.activeShopId");
   },
 
   /**
@@ -574,7 +528,7 @@ export default {
    * @memberof Core/Client
    */
   getShopId() {
-    return this.shopId || this.getUserPreferences("reaction", "activeShopId");
+    return this.shopId || this.getUserShopId();
   },
 
   /**
@@ -600,9 +554,7 @@ export default {
     if (!id || this.shopId === id) { return; }
 
     this.shopId = id;
-    this.setUserPreferences("reaction", "activeShopId", id);
-
-    Meteor.call("shop/resetShopId");
+    Meteor.call("accounts/setActiveShopId", id);
   },
 
   /**
@@ -661,7 +613,7 @@ export default {
         // If slugify/transliteration is loaded & no lang change
         return;
       } else if (latinLangs.indexOf(lang) >= 0) {
-        // If shop's language uses latin based chars, load slugify, else load transliterations's slugify
+        // If shop's language uses latin based chars, load slugify, else load transliteration's slugify
         mod = await import("slugify");
       } else {
         mod = await import("transliteration");
@@ -1055,26 +1007,7 @@ export default {
     });
 
     return marketplaceSettings && marketplaceSettings.settings;
-  },
-
-  /**
-   * @name getCartShopId
-   * @method
-   * @memberof Core
-   * @summary Get the correct shop ID to use for Cart collection
-   * @return {StringId} The primary or current shop ID, depending on merchantCart setting
-   */
-  getCartShopId() {
-    const marketplaceSettings = this.getMarketplaceSettings();
-    let shopId;
-    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart) {
-      shopId = this.getShopId();
-    } else {
-      shopId = this.getPrimaryShopId();
-    }
-    return shopId;
   }
-
 };
 
 /**
@@ -1098,11 +1031,11 @@ function createCountryCollection(countries) {
       });
     }
   }
-  countryOptions.sort((a, b) => {
-    if (a.label < b.label) {
+  countryOptions.sort((itemA, itemB) => {
+    if (itemA.label < itemB.label) {
       return -1;
     }
-    if (a.label > b.label) {
+    if (itemA.label > itemB.label) {
       return 1;
     }
     return 0;
@@ -1112,20 +1045,4 @@ function createCountryCollection(countries) {
     Countries.insert(country);
   }
   return countryOptions;
-}
-
-/**
- * Gets the dependency for the key if available, else creates
- * a new dependency for the key and returns it.
- * @name getDep
- * @method
- * @param {String} -  The key to get the dependency for
- * @returns {Tracker.Dependency}
- * @private
- */
-function getDep(key) {
-  if (!deps.has(key)) {
-    deps.set(key, new Tracker.Dependency());
-  }
-  return deps.get(key);
 }

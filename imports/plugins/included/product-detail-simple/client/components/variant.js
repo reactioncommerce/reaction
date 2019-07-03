@@ -147,7 +147,6 @@ class Variant extends Component {
 
           <div className="alerts">
             {this.renderDeletionStatus()}
-            <Components.InventoryBadge className="variant-qty-sold-out variant-badge-label" {...this.props} />
             {this.renderValidationButton()}
             {this.props.editButton}
           </div>

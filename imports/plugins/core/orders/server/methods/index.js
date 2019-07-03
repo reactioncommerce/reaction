@@ -3,7 +3,6 @@ import cancelOrder from "./cancelOrder";
 import createRefund from "./createRefund";
 import listRefunds from "./listRefunds";
 import makeAdjustmentsToInvoice from "./makeAdjustmentsToInvoice";
-import processPayment from "./processPayment";
 import refundItems from "./refundItems";
 import sendNotification from "./sendNotification";
 import shipmentDelivered from "./shipmentDelivered";
@@ -24,7 +23,6 @@ export default {
   "orders/approvePayment": approvePayment,
   "orders/cancelOrder": cancelOrder,
   "orders/makeAdjustmentsToInvoice": makeAdjustmentsToInvoice,
-  "orders/processPayment": processPayment,
   "orders/refunds/create": createRefund,
   "orders/refunds/list": listRefunds,
   "orders/refunds/refundItems": refundItems,

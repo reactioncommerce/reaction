@@ -27,10 +27,7 @@ const mockHydratedOrderItems = {
   _id: "tMkp5QwZog5ihYTfG",
   createdAt: "2018-11-01T16:42:03.448Z",
   description: "Represent the city that never sleeps with this classic T.",
-  isBackorder: false,
   isDeleted: false,
-  isLowQuantity: false,
-  isSoldOut: false,
   isTaxable: true,
   isVisible: true,
   pageTitle: "212. 646. 917.",
@@ -47,10 +44,7 @@ const mockHydratedOrderItems = {
   vendor: "Restricted Vendor",
   height: 10,
   index: 0,
-  inventoryManagement: true,
-  inventoryPolicy: false,
   length: 10,
-  lowInventoryWarningThreshold: 0,
   optionTitle: "Small",
   originCountry: "US",
   taxCode: "0000",
@@ -535,6 +529,7 @@ test("deny method - country on deny list, no item restrictions", async () => {
 
   expect(allowedMethods).toEqual([]);
 });
+
 test("deny method - region on deny list, no item restrictions", async () => {
   // Shipping Location: US, CA, 90405
 
@@ -597,6 +592,55 @@ test("deny method - postal on deny list, no item restrictions", async () => {
       destination: {
         postal: [
           "90405"
+        ]
+      }
+    }
+  ];
+
+  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+
+  const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
+
+  expect(allowedMethods).toEqual([]);
+});
+
+test("deny method - region on one deny list, but also is not on other deny lists", async () => {
+  // Shipping Location: US, CA, 90405
+
+  const mockMethodRestrictions = [
+    {
+      _id: "allow001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "allow",
+      destination: {
+        country: [
+          "US"
+        ]
+      }
+    },
+    {
+      _id: "deny001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "deny",
+      destination: {
+        region: [
+          "CA"
+        ]
+      }
+    },
+    {
+      _id: "deny002",
+      methodIds: [
+        "nUjYh7hYtbUh0Ojht7"
+      ],
+      type: "deny",
+      destination: {
+        region: [
+          "NY"
         ]
       }
     }

@@ -20,14 +20,14 @@ beforeAll(async () => {
   await testApp.start();
   query = testApp.query(CatalogItemProductFullQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId })));
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId, slug: `slug${_id}` })));
   await testApp.collections.Catalog.insert(mockCatalogItem);
 });
 
 afterAll(async () => {
-  await testApp.collections.Shops.remove({ _id: internalShopId });
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.remove({ _id })));
-  await testApp.collections.Catalog.remove({ _id: mockCatalogItem._id });
+  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
+  await testApp.collections.Tags.deleteMany({ _id: { $in: internalTagIds } });
+  await testApp.collections.Catalog.deleteOne({ _id: mockCatalogItem._id });
   testApp.stop();
 });
 

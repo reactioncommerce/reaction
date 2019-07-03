@@ -18,16 +18,20 @@ const styles = (theme) => ({
     flexGrow: 1,
     transition: "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
   },
-  leftSidebarOpen: {
-    paddingLeft: 280 + (theme.spacing.unit * 3)
+  leadingDrawerOpen: {
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
+  },
+  trailingDrawerOpen: {
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
   }
 });
 
-const ContentViewExtraWideLayout = ({ children, classes, isMobile, isSidebarOpen }) => (
+const ContentViewExtraWideLayout = ({ children, classes, isLeadingDrawerOpen, isTrailingDrawerOpen }) => (
   <div
     className={
       classNames(classes.root, {
-        [classes.leftSidebarOpen]: isSidebarOpen && isMobile === false
+        [classes.leadingDrawerOpen]: isLeadingDrawerOpen,
+        [classes.trailingDrawerOpen]: isTrailingDrawerOpen
       })
     }
   >
@@ -38,8 +42,9 @@ const ContentViewExtraWideLayout = ({ children, classes, isMobile, isSidebarOpen
 ContentViewExtraWideLayout.propTypes = {
   children: PropTypes.node,
   classes: PropTypes.object,
+  isLeadingDrawerOpen: PropTypes.bool,
   isMobile: PropTypes.bool,
-  isSidebarOpen: PropTypes.bool
+  isTrailingDrawerOpen: PropTypes.bool
 };
 
 export default withStyles(styles, { name: "RuiContentViewExtraWideLayout" })(ContentViewExtraWideLayout);

@@ -1,54 +1,55 @@
-
-
-
+"Input for `addTag` mutation"
 input AddTagInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "Whether the tag is visible"
-  isVisible: Boolean!
-
-  "Unique name of the tag"
-  name: String!
-
   "Title to display to customers"
   displayTitle: String!
 
-  "The shop that owns the tag"
-  shopId: ID!
+  "Hero media URL"
+  heroMediaUrl: String
+
+  "Whether the tag is visible"
+  isVisible: Boolean!
 
   "Tag metafields"
   metafields: [MetafieldInput]
 
-  "Hero media URL"
-  heroMediaUrl: String
-}
-
-type AddTagPayload {
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-
-  "The newly-created tag"
-  tag: Tag!
+  "Unique name of the tag"
+  name: String!
 
   "The shop that owns the tag"
   shopId: ID!
 }
 
+"Response payload for `addTag` mutation"
+type AddTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The shop that owns the tag"
+  shopId: ID!
+
+  "The newly-created tag"
+  tag: Tag!
+}
+
+"Input for `setTagHeroMedia` mutation"
 input SetTagHeroMediaInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "File record document"
+  fileRecord: JSONObject
 
   "ID of tag to add the hero image record to"
   id: ID!
 
   "The shop that owns the tag"
   shopId: ID!
-
-  "File record document"
-  fileRecord: JSONObject
 }
 
+"Response payload for `setTagHeroMedia` mutation"
 type SetTagHeroMediaPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -57,6 +58,7 @@ type SetTagHeroMediaPayload {
   tag: Tag!
 }
 
+"Input for `removeTag` mutation"
 input RemoveTagInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
@@ -68,6 +70,7 @@ input RemoveTagInput {
   shopId: ID!
 }
 
+"Response payload for `removeTag` mutation"
 type RemoveTagPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -76,9 +79,19 @@ type RemoveTagPayload {
   tag: Tag!
 }
 
+"Input for `updateTag` mutation"
 input UpdateTagInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "Title to display to customers"
+  displayTitle: String!
+
+  "A list of the IDs of top products in this tag"
+  featuredProductIds: [ID]
+
+  "Hero media URL"
+  heroMediaUrl: String
 
   "ID of rule to modify"
   id: ID!
@@ -86,25 +99,17 @@ input UpdateTagInput {
   "Whether the tag is visible"
   isVisible: Boolean!
 
-  "Unique name of the tag"
-  name: String!
-
-  "Title to display to customers"
-  displayTitle: String!
-
-  "The shop that owns the tag"
-  shopId: ID!
-
   "Tag metafields"
   metafields: [MetafieldInput]
 
-  "A list of the IDs of top products in this tag"
-  featuredProductIds: [ID]
+  "Unique name of the tag"
+  name: String!
 
-  "Hero media URL"
-  heroMediaUrl: String
+  "The shop that owns the tag"
+  shopId: ID!
 }
 
+"Response payload for `updateTag` mutation"
 type UpdateTagPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -113,6 +118,7 @@ type UpdateTagPayload {
   tag: Tag!
 }
 
+"A tag product"
 type TagProduct {
   "The product id"
   _id: ID!
@@ -120,22 +126,44 @@ type TagProduct {
   "The date and time at which this CatalogProduct was created, which is when the related product was first published"
   createdAt: DateTime!
 
-  "The title of the product"
-  title: String
-
   "Position of the product"
   position: Int
+
+  "The title of the product"
+  title: String
 }
 
+"A connection edge in which each node is a `TagProduct` object"
 type TagProductEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The tag product"
   node: TagProduct
 }
 
+"""
+Wraps a list of `TagProduct`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
 type TagProductConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [TagProductEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [TagProduct]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
@@ -155,11 +183,11 @@ extend type Mutation {
   "Adds a new tag"
   addTag(input: AddTagInput!): AddTagPayload!
 
-  "Add an image to the tag"
-  setTagHeroMedia(input: SetTagHeroMediaInput!): SetTagHeroMediaPayload!
-
   "Removes an existing tag"
   removeTag(input: RemoveTagInput!): RemoveTagPayload!
+
+  "Add an image to the tag"
+  setTagHeroMedia(input: SetTagHeroMediaInput!): SetTagHeroMediaPayload!
 
   "Updates an existing tag"
   updateTag(input: UpdateTagInput!): UpdateTagPayload!

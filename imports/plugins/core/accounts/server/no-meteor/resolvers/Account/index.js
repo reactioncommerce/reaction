@@ -10,6 +10,9 @@ export default {
   currency: (account) => getXformedCurrencyByCode(account.profile && account.profile.currency),
   language: (account) => account.profile && account.profile.language,
   emailRecords: (account) => account.emails,
+  firstName: (account) => account.profile.firstName,
+  lastName: (account) => account.profile.lastName,
+  name: (account) => account.profile.name,
   preferences: (account) => get(account, "profile.preferences"),
   primaryEmailAddress: (account) => {
     const primaryRecord = (account.emails || []).find((record) => record.provides === "default");

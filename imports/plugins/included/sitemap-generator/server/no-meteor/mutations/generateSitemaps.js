@@ -1,6 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Job } from "/imports/plugins/core/job-collection/lib";
-import { Jobs } from "/lib/collections";
+import { Job, Jobs } from "/imports/utils/jobs";
 
 /**
  * @name sitemap/generateSitemaps
@@ -11,7 +10,9 @@ import { Jobs } from "/lib/collections";
  * @return {Undefined} triggers sitemap generation job
  */
 export default async function generateSitemaps(context) {
-  const { shopId, userHasPermission, userId } = context;
+  const { userHasPermission, userId } = context;
+
+  const shopId = await context.queries.primaryShopId(context.collections);
 
   if (userHasPermission(["admin"], shopId) === false) {
     throw new ReactionError("access-denied", "User does not have permissions to generate sitemaps");

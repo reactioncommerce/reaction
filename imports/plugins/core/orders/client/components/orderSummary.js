@@ -31,7 +31,7 @@ class OrderSummary extends Component {
 
   orderLink() {
     const orderId = this.props.order.referenceId;
-    return orderId;
+    return `${window.location.origin}/operator/orders/${orderId}`;
   }
 
   truncateId() {
