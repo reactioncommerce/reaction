@@ -47,7 +47,7 @@ class OrderCard extends Component {
     const { order } = this.props;
 
     return (
-      <Grid container spacing={8}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           {this.renderSummary()}
         </Grid>

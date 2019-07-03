@@ -81,7 +81,7 @@ class OrderCardHeader extends Component {
     const orderDate = (moment && moment(createdAt).format("MM/DD/YYYY")) || createdAt.toLocaleString();
 
     return (
-      <Grid container spacing={8}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <Grid container alignItems="center" spacing={16}>
             <Grid item>

@@ -56,7 +56,7 @@ class OrderCardFulfillmentGroups extends Component {
           <CardContent>
             <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
               <Grid item xs={12} md={6}>
-                <Grid container alignItems="center" spacing={8}>
+                <Grid container alignItems="center" spacing={1}>
                   <Grid item>
                     <Typography variant="body2" inline={true}>
                       Fulfillment group {currentGroupCount} of {totalGroupsCount}
