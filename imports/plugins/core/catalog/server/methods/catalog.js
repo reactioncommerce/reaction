@@ -202,8 +202,6 @@ function createProduct(props = null, info = {}) {
     if (!newProductOrVariant.handle) {
       if (typeof newProductOrVariant.title === "string" && newProductOrVariant.title.length) {
         newProductOrVariant.handle = Reaction.getSlug(newProductOrVariant.title);
-      } else {
-        newProductOrVariant.handle = Random.id();
       }
     }
 
@@ -816,7 +814,7 @@ Meteor.methods({
         // Should be a call similar to the line below.
         [field]: createHandle(Reaction.getSlug(value), _id) // handle should be unique
       };
-    } else if (field === "title" && doc.handle === doc._id) {
+    } else if (field === "title") {
       // update handle once title is set
       const handle = createHandle(Reaction.getSlug(value), _id);
       update = {
