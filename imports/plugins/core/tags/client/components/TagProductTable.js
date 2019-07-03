@@ -5,6 +5,7 @@ import { i18next } from "/client/api";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import Button from "@material-ui/core/Button";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
+import Link from "@material-ui/core/Link";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -73,7 +74,9 @@ class TagProductTable extends Component {
                     return (
                       <TableRow key={product._id}>
                         <TableCell component="th" scope="row">{product._id}</TableCell>
-                        <TableCell>{product.title}</TableCell>
+                        <TableCell>
+                          <Link href={`/operator/products/${product._id}`}>{product.title}</Link>
+                        </TableCell>
                         <TableCell align="right">
                           <TextInput
                             value={position}

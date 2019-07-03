@@ -29,16 +29,8 @@ type Surcharge implements Node {
   "The surcharge ID."
   _id: ID!
 
-  "The shop ID"
-  shopId: ID!
-
-  "Method IDs to apply this surcharge to."
-  methodIds: [ID]
-
-  """
-  The type of this surcharge. Allowed types "surcharge".
-  """
-  type: SurchargeTypeEnum!
+  "Amount."
+  amount: Money!
 
   "Attribute restrictions."
   attributes: [SurchargeAttributeRestrictions]
@@ -46,48 +38,94 @@ type Surcharge implements Node {
   "Destination restrictions."
   destination: SurchargeDestinationRestrictions
 
-  "Amount."
-  amount: Money!
-
   "Message translated into provided / default language."
   message(language: String!): String!
 
   "Messages provided with content and all languages"
   messagesByLanguage: [SurchargeMessagesByLanguage]
+
+  "Method IDs to apply this surcharge to."
+  methodIds: [ID]
+
+  "The shop ID"
+  shopId: ID!
+
+  """
+  The type of this surcharge. Allowed types "surcharge".
+  """
+  type: SurchargeTypeEnum!
 }
 
 "Attribute Restrictions attached to a Surcharge"
 type SurchargeAttributeRestrictions {
-  property: String
-  value: String
-  propertyType: String
+  "The operator to use for value comparison"
   operator: String
+
+  "The property to check"
+  property: String
+
+  "The type of this property"
+  propertyType: String
+
+  "The value to check for"
+  value: String
 }
 
-"Wraps a list of `Surcharge`s, providing pagination cursors and information."
+"""
+Wraps a list of `Surcharge`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
 type SurchargeConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [SurchargeEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Surcharge]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "Total count for all pages"
   totalCount: Int!
 }
 
-"Destination Restrictions attached to a Surcharge"
+"""
+Destination restrictions attached to a surcharge. If multiple of `country`,
+`region`, and `postal` are set, there is an AND relationship.
+"""
 type SurchargeDestinationRestrictions {
+  "Restrict for any of these destination countries"
   country: [String]
-  region: [String]
+
+  "Restrict for any of these destination postal codes"
   postal: [String]
+
+  "Restrict for any of these destination regions"
+  region: [String]
 }
 
 "A connection edge in which each node is a `Surcharge` object"
 type SurchargeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The surcharge"
   node: Surcharge
 }
 
 "Object that includes translated content and language of translation"
 type SurchargeMessagesByLanguage {
+  "The message for this language"
   content: String!
+
+  "The language code"
   language: String!
 }
 
@@ -121,11 +159,15 @@ extend type OrderSummary {
 ###
 # Enums
 ###
+"Allowed values for surcharge `sortBy` parameter"
 enum SurchargeSortByField {
+  "The date the surcharge definition was created"
   createdAt
 }
 
+"Allowed values for surcharge type"
 enum SurchargeTypeEnum {
+  "Surcharge"
   surcharge
 }
 
@@ -138,11 +180,11 @@ input CreateSurchargeInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "This defines the surcharge that you want to create"
-  surcharge: SurchargeInput!
-
   "The shop to create this surcharge for"
   shopId: ID!
+
+  "This defines the surcharge that you want to create"
+  surcharge: SurchargeInput!
 }
 
 "Input for the `deleteSurcharge` mutation"
@@ -150,43 +192,53 @@ input DeleteSurchargeInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "The ID of the flat rate fulfillment method you want to delete"
-  surchargeId: ID!
-
   "The shop that owns the method"
   shopId: ID!
+
+  "The ID of the flat rate fulfillment method you want to delete"
+  surchargeId: ID!
 }
 
 "Input to add a surcharge message with language"
 input MessagesByLanguageInput {
+  "The message for this language"
   content: String!
+
+  "The language code"
   language: String!
 }
 
 "Input to add a surcharge attribute restriction"
 input SurchargeAttributeRestrictionsInput {
-  property: String
-  value: String
-  propertyType: String
+  "The operator to use for value comparison"
   operator: String
+
+  "The property to check"
+  property: String
+
+  "The type of this property"
+  propertyType: String
+
+  "The value to check for"
+  value: String
 }
 
 "Input to add a surcharge destination restriction"
 input SurchargeDestinationRestrictionsInput {
+  "Restrict for any of these destination countries"
   country: [String]
-  region: [String]
+
+  "Restrict for any of these destination postal codes"
   postal: [String]
+
+  "Restrict for any of these destination regions"
+  region: [String]
 }
 
 "Defines a surcharge."
 input SurchargeInput {
-  "Method IDs to apply this surcharge to."
-  methodIds: [ID]
-
-  """
-  The type of this surcharge. Allowed types are "surcharge".
-  """
-  type: SurchargeTypeEnum!
+  "Amount."
+  amount: Float!
 
   "Attribute restrictions."
   attributes: [SurchargeAttributeRestrictionsInput]
@@ -194,11 +246,16 @@ input SurchargeInput {
   "Destination restrictions."
   destination: SurchargeDestinationRestrictionsInput
 
-  "Amount."
-  amount: Float!
-
   "Messages by language."
   messagesByLanguage: [MessagesByLanguageInput]!
+
+  "Method IDs to apply this surcharge to."
+  methodIds: [ID]
+
+  """
+  The type of this surcharge. Allowed types are "surcharge".
+  """
+  type: SurchargeTypeEnum!
 }
 
 "Input for the `updateSurcharge` mutation"
@@ -209,11 +266,11 @@ input UpdateSurchargeInput {
   "The shop that owns the method"
   shopId: ID!
 
-  "The ID of the flat rate fulfillment surcharge you want to update"
-  surchargeId: ID!
-
   "The updated surcharge. Pass the whole updated surcharge object without the ID."
   surcharge: SurchargeInput!
+
+  "The ID of the flat rate fulfillment surcharge you want to update"
+  surchargeId: ID!
 }
 
 
@@ -232,6 +289,7 @@ extend type Query {
     sortBy: SurchargeSortByField = createdAt
   ): SurchargeConnection!
 
+  "Get a single surcharge definition by its ID"
   surchargeById(shopId: ID!, surchargeId: ID!): Surcharge
 }
 

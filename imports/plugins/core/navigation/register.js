@@ -1,51 +1,11 @@
+/**
+ * This file is necessary for backwards compatibility while we refactor
+ * the API to remove Meteor. The no-meteor `register.js` file will
+ * eventually become the main entry point of the plugin, but for now
+ * our Meteor tooling loads this file, so we include this here as a
+ * temporary bridge.
+ */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import mutations from "./server/no-meteor/mutations";
-import queries from "./server/no-meteor/queries";
-import resolvers from "./server/no-meteor/resolvers";
-import schemas from "./server/no-meteor/schemas";
+import register from "./server/no-meteor/register";
 
-Reaction.registerPackage({
-  label: "Navigation",
-  name: "navigation",
-  autoEnable: true,
-  graphQL: {
-    schemas,
-    resolvers
-  },
-  mutations,
-  queries,
-  registry: [
-    {
-      provides: ["settings"],
-      label: "Navigation",
-      description: "Manage navigation",
-      route: "/dashboard/navigation",
-      icon: "fa fa-bars",
-      container: "core",
-      template: "navigationDashboard",
-      name: "navigation-dashboard",
-      workflow: "navigationWorkflow",
-      priority: 2,
-      meta: {
-        actionView: {
-          dashboardSize: "lg"
-        }
-      }
-    }
-  ],
-  layout: [{
-    workflow: "navigationWorkflow",
-    layout: "coreLayout",
-    theme: "default",
-    enabled: true,
-    structure: {
-      template: "navigationDashboard",
-      layoutHeader: "NavBar",
-      layoutFooter: "",
-      notFound: "notFound",
-      dashboardControls: "",
-      dashboardHeaderControls: "",
-      adminControlsFooter: "adminControlsFooter"
-    }
-  }]
-});
+Reaction.whenAppInstanceReady(register);

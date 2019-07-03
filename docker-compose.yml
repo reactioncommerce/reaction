@@ -21,11 +21,16 @@ services:
     build:
       context: .
       target: meteor-dev
-    command: bash -c "time meteor npm install --no-audit && node ./.reaction/waitForMongo.js && node --experimental-modules ./.reaction/run/index.mjs"
+    command: bash -c "time meteor npm install --no-audit && node ./.reaction/waitForMongo.js && node --experimental-modules ./.reaction/scripts/run.mjs"
     depends_on:
       - mongo
     env_file:
       - ./.env
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+      - AWS_REGION
     networks:
       default:
       api:

@@ -2,11 +2,12 @@ import cors from "cors";
 import express from "express";
 import { makeExecutableSchema, mergeSchemas } from "apollo-server";
 import { ApolloServer } from "apollo-server-express";
+import config from "./config";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
 
-const DEFAULT_GRAPHQL_PATH = "/graphql-alpha";
+const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
 
 const resolverValidationOptions = {
   // After we fix all errors that this prints, we should probably go
@@ -59,7 +60,9 @@ export default function createApolloServer(options = {}) {
     schema,
     subscriptions: {
       path
-    }
+    },
+    introspection: config.GRAPHQL_INTROSPECTION_ENABLED,
+    playground: config.GRAPHQL_PLAYGROUND_ENABLED
   });
 
   // GraphQL endpoint, enhanced with JSON body parser

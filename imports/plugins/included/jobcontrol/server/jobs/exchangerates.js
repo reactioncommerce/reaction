@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Job } from "/imports/plugins/core/job-collection/lib";
-import { Jobs } from "/lib/collections";
+import { Job, Jobs } from "/imports/utils/jobs";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import fetchCurrencyRate from "/imports/plugins/core/core/server/util/fetchCurrencyRate";

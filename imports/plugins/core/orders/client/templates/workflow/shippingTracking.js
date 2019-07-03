@@ -23,7 +23,10 @@ Template.coreOrderShippingTracking.onCreated(() => {
   function getOrder(orderId, shipmentId) {
     template.orderDep.depend();
     return Orders.findOne({
-      "_id": orderId,
+      "$or": [
+        { _id: orderId },
+        { referenceId: orderId }
+      ],
       "shipping._id": shipmentId
     });
   }
@@ -129,7 +132,7 @@ Template.coreOrderShippingTracking.helpers({
 
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
     return orderItems.every((item) => {
-      if (fulfillment.itemIds.indexOf(item._id) === -1) {
+      if (!fulfillment.itemIds.includes(item._id)) {
         // The item is not in this shipment so we don't care
         return true;
       }
@@ -147,7 +150,7 @@ Template.coreOrderShippingTracking.helpers({
 
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
     return orderItems.every((item) => {
-      if (fulfillment.itemIds.indexOf(item._id) === -1) {
+      if (!fulfillment.itemIds.includes(item._id)) {
         // The item is not in this shipment so we don't care
         return true;
       }
@@ -164,7 +167,7 @@ Template.coreOrderShippingTracking.helpers({
 
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
     return orderItems.every((item) => {
-      if (fulfillment.itemIds.indexOf(item._id) === -1) {
+      if (!fulfillment.itemIds.includes(item._id)) {
         // The item is not in this shipment so we don't care
         return true;
       }

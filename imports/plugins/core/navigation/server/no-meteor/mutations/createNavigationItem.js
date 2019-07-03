@@ -10,7 +10,7 @@ import { NavigationItem as NavigationItemSchema } from "/imports/collections/sch
  * @return {Promise<Object>} The created navigation item
  */
 export default async function createNavigationItem(context, navigationItem) {
-  const { collections, shopId, userHasPermission } = context;
+  const { collections, userHasPermission } = context;
   const { NavigationItems } = collections;
 
   const { metadata, draftData = {} } = navigationItem;
@@ -27,6 +27,8 @@ export default async function createNavigationItem(context, navigationItem) {
       throw new ReactionError("invalid-metadata-string", "Supplied metadata JSON string could not be parsed");
     }
   }
+
+  const shopId = await context.queries.primaryShopId(collections);
 
   const newNavigationItem = {
     ...navigationItem,

@@ -1,3 +1,5 @@
+import { toFixed } from "accounting-js";
+
 /**
  * @param {Object} [billingAddress] Billing address, if one was collected
  * @param {String} [cartId] The source cart ID, if applicable
@@ -20,7 +22,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
     quantity: item.quantity,
     shopId: item.shopId,
     subtotal: {
-      amount: item.price.amount * item.quantity,
+      amount: +toFixed(item.price.amount * item.quantity, 3),
       currencyCode
     },
     taxCode: item.taxCode,
@@ -50,7 +52,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
         currencyCode
       },
       total: {
-        amount: (shipmentMethod.handling || 0) + (shipmentMethod.rate || 0),
+        amount: +toFixed((shipmentMethod.handling || 0) + (shipmentMethod.rate || 0), 3),
         currencyCode
       }
     };
@@ -60,7 +62,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
 
   // TODO: In the future, we should update this with a discounts update
   // Discounts are stored as the sum of all discounts, per cart. This will need to be updated when we refactor discounts to go by group.
-  const groupItemTotal = group.items.reduce((sum, item) => (sum + item.subtotal), 0);
+  const groupItemTotal = +toFixed(group.items.reduce((sum, item) => (sum + item.subtotal), 0), 3);
   // orderItemTotal will need to be updated to be the actual total when we eventually have more than one group available
   const orderItemTotal = groupItemTotal;
 
@@ -74,7 +76,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
       currencyCode
     },
     groupTotal: {
-      amount: groupItemTotal - discountTotal,
+      amount: +toFixed(groupItemTotal - discountTotal, 3),
       currencyCode
     },
     orderDiscountTotal: {
@@ -86,7 +88,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
       currencyCode
     },
     orderTotal: {
-      amount: orderItemTotal - discountTotal,
+      amount: +toFixed(orderItemTotal - discountTotal, 3),
       currencyCode
     }
   };

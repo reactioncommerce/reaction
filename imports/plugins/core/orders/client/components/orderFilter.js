@@ -199,8 +199,8 @@ class OrderFilter extends Component {
                 menuClassName="status-dropdown"
                 className="order-menu-item-dropdown"
                 onChange={this.handleShippingChange}
-                attachment={`bottom ${attachmentDirection}`}
-                targetAttachment={`top ${attachmentDirection}`}
+                attachment={`top ${attachmentDirection}`}
+                targetAttachment={`bottom ${attachmentDirection}`}
               >
                 {Constants.shippingStatus.map((status, index) => (
                   <Components.MenuItem

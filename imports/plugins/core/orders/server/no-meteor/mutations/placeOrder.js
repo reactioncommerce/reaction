@@ -1,8 +1,9 @@
+import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
+import { getAnonymousAccessToken } from "../util/anonymousToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
@@ -68,6 +69,7 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  * @summary Create all authorized payments for a potential order
  * @param {String} [accountId] The ID of the account placing the order
  * @param {Object} [billingAddress] Billing address for the order as a whole
+ * @param {Object} context - The application context
  * @param {String} currencyCode Currency code for interpreting the amount of all payments
  * @param {Object} currencyExchangeInfo Currency exchange info
  * @param {String} email Email address for the order
@@ -171,15 +173,24 @@ export default async function placeOrder(context, input) {
     shopId
   } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
-  const { Orders } = collections;
+  const { Orders, Cart } = collections;
+
+  let cart;
+  if (cartId) {
+    cart = await Cart.findOne({ _id: cartId });
+    if (!cart) {
+      throw new ReactionError("not-found", "Cart not found while trying to place order");
+    }
+  }
+
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
   // any discounts on the related cart here.
   let discounts = [];
   let discountTotal = 0;
-  if (cartId) {
-    const discountsResult = await getDiscountsTotalForCart(context, cartId);
+  if (cart) {
+    const discountsResult = await getDiscountsTotalForCart(context, cart);
     ({ discounts } = discountsResult);
     discountTotal = discountsResult.total;
   }
@@ -190,6 +201,7 @@ export default async function placeOrder(context, input) {
 
   // Create orderId
   const orderId = Random.id();
+
 
   // Add more props to each fulfillment group, and validate/build the items in each group
   let orderTotal = 0;
@@ -234,14 +246,13 @@ export default async function placeOrder(context, input) {
   });
 
   // Create anonymousAccessToken if no account ID
-  const anonymousAccessToken = accountId ? null : Random.secret();
+  const fullToken = accountId ? null : getAnonymousAccessToken();
 
   const now = new Date();
 
   const order = {
     _id: orderId,
     accountId,
-    anonymousAccessToken: anonymousAccessToken && hashLoginToken(anonymousAccessToken),
     billingAddress,
     cartId,
     createdAt: now,
@@ -249,7 +260,6 @@ export default async function placeOrder(context, input) {
     discounts,
     email,
     payments,
-    referenceId: Random.id(),
     shipping: finalFulfillmentGroups,
     shopId,
     surcharges: orderSurcharges,
@@ -260,6 +270,35 @@ export default async function placeOrder(context, input) {
       workflow: ["new"]
     }
   };
+
+  if (fullToken) {
+    const dbToken = { ...fullToken };
+    // don't store the raw token in db, only the hash
+    delete dbToken.token;
+    order.anonymousAccessTokens = [dbToken];
+  }
+
+  let referenceId;
+  const createReferenceIdFunctions = getFunctionsOfType("createOrderReferenceId");
+  if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
+    // if the cart has a reference Id, and no custom function is created use that
+    if (_.get(cart, "referenceId")) { // we want the else to fallthrough if no cart to keep the if/else logic simple
+      ({ referenceId } = cart);
+    } else {
+      referenceId = Random.id();
+    }
+  } else {
+    referenceId = await createReferenceIdFunctions[0](context, order, cart);
+    if (typeof referenceId !== "string") {
+      throw new ReactionError("invalid-parameter", "createOrderReferenceId function returned a non-string value");
+    }
+    if (createReferenceIdFunctions.length > 1) {
+      Logger.warn("More than one createOrderReferenceId function defined. Using first one defined");
+    }
+  }
+
+  order.referenceId = referenceId;
+
 
   // Apply custom order data transformations from plugins
   const transformCustomOrderFieldsFuncs = getFunctionsOfType("transformCustomOrderFields");
@@ -285,6 +324,7 @@ export default async function placeOrder(context, input) {
 
   return {
     orders: [order],
-    token: anonymousAccessToken
+    // GraphQL response gets the raw token
+    token: fullToken && fullToken.token
   };
 }

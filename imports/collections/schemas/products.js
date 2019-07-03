@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { registerSchema } from "@reactioncommerce/schemas";
@@ -52,28 +53,17 @@ registerSchema("VariantMedia", VariantMedia);
  * @property {String} _id required, Variant ID
  * @property {String[]} ancestors, default value: `[]`
  * @property {String} barcode optional
- * @property {Number} compareAtPrice optional, Compare at price
  * @property {Date} createdAt optional
  * @property {Event[]} eventLog optional, Variant Event Log
  * @property {Number} height optional, default value: `0`
  * @property {Number} index optional, Variant position number in list. Keep array index for moving variants in a list.
- * @property {Boolean} inventoryAvailableToSell required
- * @property {Boolean} inventoryInStock required
- * @property {Boolean} inventoryManagement, default value: `true`
- * @property {Boolean} inventoryPolicy, default value: `false`, If disabled, item can be sold even if it not in stock.
- * @property {Number} inventoryInStock, default value: `0`
- * @property {Boolean} isBackorder denormalized, `true` if product not in stock, but customers anyway could order it
  * @property {Boolean} isDeleted, default value: `false`
- * @property {Boolean} isLowQuantity optional, true when at least 1 variant is below `lowInventoryWarningThreshold`
- * @property {Boolean} isSoldOut optional, denormalized field, indicates when all variants `inventoryInStock` is 0
  * @property {Boolean} isVisible, default value: `false`
  * @property {Number} length optional, default value: `0`
- * @property {Number} lowInventoryWarningThreshold, default value: `0`, Warn of low inventory at this number
  * @property {Metafield[]} metafields optional
  * @property {Number} minOrderQuantity optional
  * @property {String} optionTitle, Option internal name, default value: `"Untitled option"`
  * @property {String} originCountry optional
- * @property {Number} price, default value: `0.00`
  * @property {String} shopId required, Variant ShopId
  * @property {String} sku optional
  * @property {String} title, Label for customers, default value: `""`
@@ -95,24 +85,14 @@ export const ProductVariant = new SimpleSchema({
   "ancestors.$": {
     type: String
   },
+  "attributeLabel": {
+    type: String,
+    optional: true
+  },
   "barcode": {
     label: "Barcode",
     type: String,
-    optional: true,
-    custom() {
-      if (Meteor.isClient) {
-        if (this.siblingField("type").value === "inventory" && !this.value) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
-  },
-  "compareAtPrice": {
-    label: "Compare At Price",
-    type: Number,
-    optional: true,
-    min: 0,
-    defaultValue: 0.00
+    optional: true
   },
   "createdAt": {
     label: "Created at",
@@ -142,89 +122,17 @@ export const ProductVariant = new SimpleSchema({
     type: SimpleSchema.Integer,
     optional: true
   },
-  "inventoryManagement": {
-    type: Boolean,
-    label: "Inventory Tracking",
-    optional: true,
-    defaultValue: true,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === false)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
-  },
-  "inventoryPolicy": {
-    type: Boolean,
-    label: "Deny when out of stock",
-    optional: true,
-    defaultValue: false,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === false)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
-  },
-  "inventoryAvailableToSell": {
-    type: SimpleSchema.Integer,
-    label: "The quantity of this item currently available to sell." +
-    "This number is updated when an order is placed by the customer." +
-    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely the quantity to display in the storefront UI.",
-    optional: true,
-    defaultValue: 0
-  },
-  "inventoryInStock": {
-    type: SimpleSchema.Integer,
-    label: "The quantity of this item currently in stock." +
-    "This number is updated when an order is processed by the operator." +
-    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.",
-    optional: true,
-    defaultValue: 0
-  },
-  "isBackorder": {
-    label: "Indicates when a product is currently backordered",
-    type: Boolean,
-    optional: true
-  },
   "isDeleted": {
     type: Boolean,
-    index: 1,
     defaultValue: false
-  },
-  "isLowQuantity": {
-    label: "Indicates that the product quantity is too low",
-    type: Boolean,
-    optional: true
-  },
-  "isSoldOut": {
-    label: "Indicates when the product quantity is zero",
-    type: Boolean,
-    optional: true
   },
   "isVisible": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "length": {
     label: "Length",
     type: Number,
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
     min: 0,
     optional: true,
     defaultValue: 0
@@ -244,23 +152,14 @@ export const ProductVariant = new SimpleSchema({
   "optionTitle": {
     label: "Option",
     type: String,
-    optional: true,
-    defaultValue: "Untitled Option"
+    optional: true
   },
   "originCountry": {
     type: String,
     optional: true
   },
-  "price": {
-    label: "Price",
-    type: Number,
-    defaultValue: 0.00,
-    min: 0,
-    optional: true
-  },
   "shopId": {
     type: String,
-    index: 1,
     label: "Variant ShopId"
   },
   "sku": {
@@ -271,7 +170,7 @@ export const ProductVariant = new SimpleSchema({
   "title": {
     label: "Label",
     type: String,
-    defaultValue: ""
+    optional: true
   },
   "type": {
     label: "Type",
@@ -315,33 +214,6 @@ export const ProductVariant = new SimpleSchema({
 registerSchema("ProductVariant", ProductVariant);
 
 /**
- * @name PriceRange
- * @type {SimpleSchema}
- * @memberof Schemas
- * @property {String} range, default value: `"0.00"`
- * @property {Number} min optional, default value: `0`
- * @property {Number} max optional, default value: `0`
- */
-export const PriceRange = new SimpleSchema({
-  range: {
-    type: String,
-    defaultValue: "0.00"
-  },
-  min: {
-    type: Number,
-    defaultValue: 0,
-    optional: true
-  },
-  max: {
-    type: Number,
-    defaultValue: 0,
-    optional: true
-  }
-});
-
-registerSchema("PriceRange", PriceRange);
-
-/**
  * @name Product
  * @type {SimpleSchema}
  * @memberof Schemas
@@ -354,12 +226,7 @@ registerSchema("PriceRange", PriceRange);
  * @property {String} googleplusMsg optional
  * @property {String} handle optional, slug
  * @property {String[]} hashtags optional
- * @property {Boolean} inventoryAvailableToSell required
- * @property {Boolean} inventoryInStock required
- * @property {Boolean} isBackorder denormalized, `true` if product not in stock, but customers anyway could order it
  * @property {Boolean} isDeleted, default value: `false`
- * @property {Boolean} isLowQuantity denormalized, true when at least 1 variant is below `lowInventoryWarningThreshold`
- * @property {Boolean} isSoldOut denormalized, Indicates when all variants `inventoryInStock` is zero
  * @property {Boolean} isVisible, default value: `false`
  * @property {String} metaDescription optional
  * @property {Metafield[]} metafields optional
@@ -367,7 +234,6 @@ registerSchema("PriceRange", PriceRange);
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
  * @property {String} pinterestMsg optional
- * @property {PriceRange} price denormalized, object with range string, min and max
  * @property {String} productType optional
  * @property {Date} publishedAt optional
  * @property {String} publishedProductHash optional
@@ -389,16 +255,14 @@ export const Product = new SimpleSchema({
   },
   "ancestors": {
     type: Array,
-    defaultValue: [],
-    index: 1
+    defaultValue: []
   },
   "ancestors.$": {
     type: String
   },
   "createdAt": {
     type: Date,
-    autoValue: createdAtAutoValue,
-    index: 1
+    autoValue: createdAtAutoValue
   },
   "currentProductHash": {
     type: String,
@@ -420,60 +284,21 @@ export const Product = new SimpleSchema({
   },
   "handle": {
     type: String,
-    optional: true,
-    index: 1
+    optional: true
   },
   "hashtags": {
     type: Array,
-    optional: true,
-    index: 1
+    optional: true
   },
   "hashtags.$": {
     type: String
   },
-  "inventoryAvailableToSell": {
-    type: SimpleSchema.Integer,
-    label: "The quantity of this item currently available to sell." +
-    "This number is updated when an order is placed by the customer." +
-    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely the quantity to display in the storefront UI.",
-    optional: true,
-    defaultValue: 0
-  },
-  "inventoryInStock": {
-    type: SimpleSchema.Integer,
-    label: "The quantity of this item currently in stock." +
-    "This number is updated when an order is processed by the operator." +
-    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.",
-    optional: true,
-    defaultValue: 0
-  },
-  "isBackorder": {
-    label: "Indicates when a product is currently backordered",
-    type: Boolean,
-    optional: true
-  },
   "isDeleted": {
     type: Boolean,
-    index: 1,
     defaultValue: false
-  },
-  "isLowQuantity": {
-    label: "Indicates that the product quantity is too low",
-    type: Boolean,
-    optional: true
-  },
-  "isSoldOut": {
-    label: "Indicates when the product quantity is zero",
-    type: Boolean,
-    optional: true
   },
   "isVisible": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "metaDescription": {
@@ -504,10 +329,6 @@ export const Product = new SimpleSchema({
     optional: true,
     max: 255
   },
-  "price": {
-    label: "Price",
-    type: PriceRange
-  },
   "productType": {
     type: String,
     optional: true
@@ -522,7 +343,6 @@ export const Product = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Product ShopId"
   },
   "shouldAppearInSitemap": {

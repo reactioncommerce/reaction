@@ -1,8 +1,15 @@
 "The fields by which you are allowed to sort any query that returns an `GroupConnection`"
 enum GroupSortByField {
+  "Group ID"
   _id
-  name
+
+  "Date and time at which this group was created"
   createdAt
+
+  "Group name"
+  name
+
+  "Date and time at which this group was last updated"
   updatedAt
 }
 
@@ -62,11 +69,11 @@ input AddAccountToGroupInput {
   "The account ID"
   accountId: ID!
 
-  "The group ID"
-  groupId: ID!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The group ID"
+  groupId: ID!
 }
 
 "Defines a group and account that should be unlinked"
@@ -111,63 +118,88 @@ type Group implements Node {
   updatedAt: DateTime!
 }
 
-"Wraps a list of `Groups`, providing pagination cursors and information."
-type GroupConnection implements NodeConnection {
+"""
+Wraps a list of `Groups`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type GroupConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [GroupEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Group]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
 "A connection edge in which each node is a `Group` object"
 type GroupEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The group"
   node: Group
 }
 
 "The response from the `addAccountToGroup` mutation"
 type AddAccountToGroupPayload {
-  "The updated group"
-  group: Group
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The updated group"
+  group: Group
 }
 
 "The response from the `createGroup` mutation"
 type CreateGroupPayload {
-  "The new group"
-  group: Group
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The new group"
+  group: Group
 }
 
 "The response from the `updateGroup` mutation"
 type UpdateGroupPayload {
-  "The updated group"
-  group: Group
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The updated group"
+  group: Group
 }
 
 "The response from the `removeAccountFromGroup` mutation"
 type RemoveAccountFromGroupPayload {
-  "The updated group"
-  group: Group
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The updated group"
+  group: Group
 }
 
 "The response from the `removeGroup` mutation"
 type RemoveGroupPayload {
-  "Successfully removed?"
-  wasRemoved: Boolean!
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "Successfully removed?"
+  wasRemoved: Boolean!
+}
+
+extend type Shop {
+  "Returns a list of groups for this shop, as a Relay-compatible connection."
+  groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
 }
 
 extend type Mutation {
@@ -177,14 +209,14 @@ extend type Mutation {
   "Create a new permission group"
   createGroup(input: CreateGroupInput!): CreateGroupPayload
 
-  "Update an existing permission group"
-  updateGroup(input: UpdateGroupInput!): UpdateGroupPayload
-
   "Remove an account from a group"
   removeAccountFromGroup(input: RemoveAccountFromGroupInput!): RemoveAccountFromGroupPayload
 
   "Remove an existing permission group"
   removeGroup(input: RemoveGroupInput!): RemoveGroupPayload
+
+  "Update an existing permission group"
+  updateGroup(input: UpdateGroupInput!): UpdateGroupPayload
 }
 
 extend type Query {

@@ -29,7 +29,7 @@ async function hashRelatedProduct(media, collections) {
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
+export default async function startup(context) {
   const { appEvents, collections } = context;
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {

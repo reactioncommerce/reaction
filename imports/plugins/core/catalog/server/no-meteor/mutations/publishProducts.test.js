@@ -38,14 +38,9 @@ const mockVariants = [
     createdAt,
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
     isDeleted: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     isVisible: true,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -58,7 +53,6 @@ const mockVariants = [
     ],
     minOrderQuantity: 0,
     originCountry: "US",
-    price: 0,
     shopId: internalShopId,
     sku: "sku",
     taxCode: "0000",
@@ -76,14 +70,9 @@ const mockVariants = [
     compareAtPrice: 15,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
     isDeleted: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     isVisible: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -97,7 +86,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.0,
     shopId: internalShopId,
     sku: "sku",
     taxCode: "0000",
@@ -120,11 +108,7 @@ const mockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
-  isBackorder: false,
-  isLowQuantity: false,
-  isSoldOut: false,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",
@@ -147,11 +131,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
   media: [
     {
       metadata: {
@@ -193,12 +172,7 @@ const expectedOptionsResponse = [
     createdAt: null,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -212,16 +186,6 @@ const expectedOptionsResponse = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.0,
-    pricing: {
-      USD: {
-        compareAtPrice: 15,
-        displayPrice: "992.00",
-        maxPrice: 992.0,
-        minPrice: 992.0,
-        price: 992.0
-      }
-    },
     shop: {
       _id: opaqueShopId
     },
@@ -243,12 +207,7 @@ const expectedVariantsResponse = [
     createdAt: createdAt.toISOString(),
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -262,16 +221,6 @@ const expectedVariantsResponse = [
     minOrderQuantity: 0,
     options: expectedOptionsResponse,
     originCountry: "US",
-    price: 0,
-    pricing: {
-      USD: {
-        compareAtPrice: 0,
-        displayPrice: "2.99 - 5.99",
-        maxPrice: 5.99,
-        minPrice: 2.99,
-        price: null
-      }
-    },
     shop: {
       _id: opaqueShopId
     },
@@ -302,11 +251,7 @@ const expectedItemsResponse = {
           createdAt: createdAt.toISOString(),
           description: "description",
           height: 11.23,
-          isBackorder: false,
-          isLowQuantity: false,
-          isSoldOut: false,
           length: 5.67,
-          lowInventoryWarningThreshold: 2,
           metafields: [
             {
               value: "value",
@@ -327,20 +272,6 @@ const expectedItemsResponse = {
             width: 5.55,
             height: 6.66,
             weight: 7.77
-          },
-          price: {
-            max: 5.99,
-            min: 2.99,
-            range: "2.99 - 5.99"
-          },
-          pricing: {
-            USD: {
-              compareAtPrice: 4.56,
-              displayPrice: "2.99 - 5.99",
-              maxPrice: 5.99,
-              minPrice: 2.99,
-              price: null
-            }
           },
           productId: opaqueProductId,
           media: [

@@ -5,12 +5,13 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import ReactComponentOrBlazeTemplate from "/imports/plugins/core/components/lib/ReactComponentOrBlazeTemplate";
 
 class SettingsCard extends Component {
   static defaultProps = {
+    preferences: {},
     showSwitch: true
   }
 
@@ -97,17 +98,6 @@ class SettingsCard extends Component {
   }
 }
 
-function composer(props, onData) {
-  if (props.packageName && props.saveOpenStateToPreferences) {
-    const preferences = Reaction.getUserPreferences(props.packageName, "settingsCards", {});
-    onData(null, { preferences });
-  } else {
-    onData(null, {});
-  }
-}
+registerComponent("SettingsCard", SettingsCard);
 
-const decoratedComponent = composeWithTracker(composer)(SettingsCard);
-
-registerComponent("SettingsCard", SettingsCard, composeWithTracker(composer));
-
-export default decoratedComponent;
+export default SettingsCard;

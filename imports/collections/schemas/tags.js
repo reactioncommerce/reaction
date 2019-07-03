@@ -16,7 +16,7 @@ import { Metafield } from "./metafield";
  * @property {String[]} relatedTagIds optional
  * @property {Boolean} isDeleted default value: `false`
  * @property {Boolean} isTopLevel required
- * @property {Boolean} isVisible defalut value: `true`
+ * @property {Boolean} isVisible default value: `true`
  * @property {String[]} groups optional, default value: `[],` groupIds that this tag belongs to
  * @property {String} shopId Tag shopId
  * @property {Date} createdAt required
@@ -27,10 +27,7 @@ export const Tag = new SimpleSchema({
     type: String,
     optional: true
   },
-  "name": {
-    type: String,
-    index: 1
-  },
+  "name": String,
   "slug": String,
   "type": {
     type: String,
@@ -47,8 +44,7 @@ export const Tag = new SimpleSchema({
   },
   "relatedTagIds": {
     type: Array,
-    optional: true,
-    index: 1
+    optional: true
   },
   "relatedTagIds.$": String,
   "isDeleted": {
@@ -68,7 +64,6 @@ export const Tag = new SimpleSchema({
   "groups.$": String,
   "shopId": {
     type: String,
-    index: 1,
     label: "Tag shopId"
   },
   "createdAt": {

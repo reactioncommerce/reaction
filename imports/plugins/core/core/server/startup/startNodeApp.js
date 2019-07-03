@@ -1,5 +1,4 @@
 import url from "url";
-import { merge } from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { execute, subscribe } from "graphql";
 import { Accounts } from "meteor/accounts-base";
@@ -9,13 +8,11 @@ import { WebApp } from "meteor/webapp";
 import { formatApolloErrors } from "apollo-server-errors";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
-import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import coreSchemas from "../no-meteor/schemas";
-import coreResolvers from "../no-meteor/resolvers";
-import coreQueries from "../no-meteor/queries";
-import { functionsByType, mutations, queries, resolvers, schemas } from "../no-meteor/pluginRegistration";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
+import { setCollections } from "/imports/collections/rawCollections";
+import meteorFileCollectionStartup from "/imports/plugins/core/files/server/fileCollections";
+import packageJson from "/package.json";
 
 // For Meteor app tests
 let appStartupIsComplete = false;
@@ -23,44 +20,38 @@ export const isAppStartupComplete = () => appStartupIsComplete;
 
 /**
  * @summary Starts the Reaction Node app within a Meteor server
+ * @param {Function} [onAppInstanceCreated] Function to call with `app` after it is created
  * @returns {undefined}
  */
-export default async function startNodeApp() {
+export default async function startNodeApp({ onAppInstanceCreated }) {
   const { ROOT_URL } = process.env;
   const mongodb = MongoInternals.NpmModules.mongodb.module;
-
-  // Adding core resolvers this way because `core` is not a typical plugin and doesn't call registerPackage
-  // Note that coreResolvers comes first so that plugin resolvers can overwrite core resolvers if necessary
-  const finalResolvers = merge({}, coreResolvers, resolvers);
-
-  // Adding core queries this way because `core` is not a typical plugin and doesn't call registerPackage
-  // Note that coreQueries comes first so that plugin queries can overwrite core queries if necessary
-  const finalQueries = merge({}, coreQueries, queries);
 
   const app = new ReactionNodeApp({
     addCallMeteorMethod(context) {
       context.callMeteorMethod = (name, ...args) => runMeteorMethodWithContext(context, name, args);
     },
-    additionalCollections: { Media: NoMeteorMedia },
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
-      createUser(options) {
+      appVersion: packageJson.version,
+      async createUser(options) {
         return Accounts.createUser(options);
       },
-      mutations,
-      queries: finalQueries,
+      mutations: {},
+      queries: {},
       rootUrl: ROOT_URL
     },
-    functionsByType,
     graphQL: {
-      graphiql: Meteor.isDevelopment,
-      resolvers: finalResolvers,
-      schemas: [...coreSchemas, ...schemas]
+      graphiql: Meteor.isDevelopment
     },
     httpServer: WebApp.httpServer,
     mongodb
   });
+
+  if (onAppInstanceCreated) await onAppInstanceCreated(app);
+
+  app.initServer();
 
   const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
   app.setMongoDatabase(db);
@@ -69,7 +60,16 @@ export default async function startNodeApp() {
   // to the one in GraphQL
   setBaseContext(app.context);
 
-  await app.runServiceStartup();
+  try {
+    await app.runServiceStartup();
+  } catch (error) {
+    Logger.error(error, "Error running plugin startup");
+    throw error;
+  }
+
+  setCollections(app.context.collections);
+
+  meteorFileCollectionStartup(app.context);
 
   // bind the specified paths to the Express server running GraphQL
   WebApp.connectHandlers.use(app.expressApp);
@@ -130,7 +130,7 @@ export default async function startNodeApp() {
     } else if (pathname.startsWith("/sockjs")) {
       // Don't do anything, this is meteor socket.
     } else {
-      socket.close();
+      socket.end();
     }
   });
 

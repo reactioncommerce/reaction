@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import ReactionError from "@reactioncommerce/reaction-error";
 import isShippingRestricted from "./util/isShippingRestricted";
 import filterShippingMethods from "./util/filterShippingMethods";
 
@@ -45,24 +44,9 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
     return [rates, retrialTargets];
   }
 
-  let merchantShippingRates = false;
-  const marketplaceSettings = await Packages.findOne({
-    name: "reaction-marketplace",
-    shopId: context.shopId, // the primary shop always owns the marketplace settings
-    enabled: true // only use the marketplace settings if marketplace is enabled
-  });
-  if (marketplaceSettings && marketplaceSettings.settings && marketplaceSettings.settings.enabled) {
-    ({ merchantShippingRates } = marketplaceSettings.settings.public);
-  }
-
-  if (merchantShippingRates) {
-    // TODO this needs to be rewritten to handle getting rates from each shops that's represented on the order
-    throw new ReactionError("not-implemented", "Multiple shipping providers is currently not supported");
-  }
-
   const pkgData = await Packages.findOne({
     name: "reaction-shipping-rates",
-    shopId: context.shopId
+    shopId: commonOrder.shopId
   });
 
   if (!pkgData || pkgData.settings.flatRates.enabled !== true) {

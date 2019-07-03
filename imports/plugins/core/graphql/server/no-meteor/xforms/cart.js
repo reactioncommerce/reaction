@@ -1,6 +1,5 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import ReactionError from "@reactioncommerce/reaction-error";
-import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
 import { xformCatalogProductMedia } from "./catalogProduct";
 import { xformRateToRateObject } from "./core";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
@@ -51,32 +50,30 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
   }
 
   const catalogProduct = catalogItem.product;
-  const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
+
+  const { variant } = context.queries.findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
 
+  // Find one image from the catalog to use for the item.
+  // Prefer the first variant image. Fallback to the first product image.
   let media;
-  if (catalogProduct.media || catalogProduct.primaryImage) {
+  if (variant.media && variant.media.length) {
+    [media] = variant.media;
+  } else if (catalogProduct.media && catalogProduct.media.length) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
-    if (!media) media = catalogProduct.primaryImage;
     if (!media) [media] = catalogProduct.media;
-    if (media) {
-      media = await xformCatalogProductMedia(media, context);
-    }
   }
 
-  const variantSourceProduct = products.find((product) => product._id === variantId);
+  // Allow plugins to transform the media object
+  if (media) {
+    media = await xformCatalogProductMedia(media, context);
+  }
 
   return {
     ...cartItem,
-    currentQuantity: variantSourceProduct && variantSourceProduct.inventoryInStock,
     imageURLs: media && media.URLs,
-    inventoryAvailableToSell: variantSourceProduct && variantSourceProduct.inventoryInStock,
-    inventoryInStock: variantSourceProduct && variantSourceProduct.inventoryInStock,
-    isBackorder: variant.isBackorder || false,
-    isLowQuantity: variant.isLowQuantity || false,
-    isSoldOut: variant.isSoldOut || false,
     productConfiguration: {
       productId: cartItem.productId,
       productVariantId: cartItem.variantId
@@ -90,7 +87,7 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
  * @return {Object[]} Same array with GraphQL-only props added
  */
 export async function xformCartItems(context, items) {
-  const { collections } = context;
+  const { collections, getFunctionsOfType } = context;
   const { Catalog, Products } = collections;
 
   const productIds = items.map((item) => item.productId);
@@ -110,7 +107,13 @@ export async function xformCartItems(context, items) {
     }
   }).toArray();
 
-  return items.map((item) => xformCartItem(context, catalogItems, products, item));
+  const xformedItems = await Promise.all(items.map((item) => xformCartItem(context, catalogItems, products, item)));
+
+  for (const mutateItems of getFunctionsOfType("xformCartItems")) {
+    await mutateItems(context, xformedItems); // eslint-disable-line no-await-in-loop
+  }
+
+  return xformedItems;
 }
 
 /**

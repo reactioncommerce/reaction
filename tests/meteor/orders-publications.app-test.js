@@ -12,45 +12,47 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Collections from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
-Fixtures();
+Reaction.onAppStartupComplete(() => {
+  Fixtures();
 
-describe("Order Publication", function () {
-  const shop = getShop();
-  let sandbox;
+  describe("Order Publication", function () {
+    const shop = getShop();
+    let sandbox;
 
-  beforeEach(function () {
-    sandbox = sinon.sandbox.create();
-    Collections.Orders.remove();
-  });
-
-  afterEach(function () {
-    sandbox.restore();
-    Collections.Orders.remove();
-  });
-
-  describe("Orders", () => {
-    it("should return shop orders for an admin", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Reaction, "getShopId", () => shop._id);
-      sandbox.stub(Roles, "userIsInRole", () => true);
-      const order = Factory.create("order", { status: "created" });
-      const collector = new PublicationCollector({ userId: Random.id() });
-      collector.collect("Orders", (collections) => {
-        expect(collections.Orders.length).to.equal(1);
-        const shopOrder = collections.Orders[0];
-        expect(shopOrder.shopId).to.equal(order.shopId);
-      }).then(() => done(/* empty */)).catch(done);
+    beforeEach(function () {
+      sandbox = sinon.sandbox.create();
+      Collections.Orders.remove();
     });
 
-    it("should not return shop orders for a non-admin", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Reaction, "getShopId", () => shop._id);
-      sandbox.stub(Roles, "userIsInRole", () => false);
-      Factory.create("order", { status: "created" });
-      const collector = new PublicationCollector({ userId: Random.id() });
-      collector.collect("Orders", (collections) => {
-        expect(collections.Orders.length).to.equal(0);
-      }).then(() => done(/* empty */)).catch(done);
+    afterEach(function () {
+      sandbox.restore();
+      Collections.Orders.remove();
+    });
+
+    describe("Orders", () => {
+      it("should return shop orders for an admin", function (done) {
+        sandbox.stub(Reaction, "hasPermission", () => true);
+        sandbox.stub(Reaction, "getShopId", () => shop._id);
+        sandbox.stub(Roles, "userIsInRole", () => true);
+        const order = Factory.create("order", { status: "created" });
+        const collector = new PublicationCollector({ userId: Random.id() });
+        collector.collect("Orders", (collections) => {
+          expect(collections.Orders.length).to.equal(1);
+          const shopOrder = collections.Orders[0];
+          expect(shopOrder.shopId).to.equal(order.shopId);
+        }).then(() => done(/* empty */)).catch(done);
+      });
+
+      it("should not return shop orders for a non-admin", function (done) {
+        sandbox.stub(Reaction, "hasPermission", () => true);
+        sandbox.stub(Reaction, "getShopId", () => shop._id);
+        sandbox.stub(Roles, "userIsInRole", () => false);
+        Factory.create("order", { status: "created" });
+        const collector = new PublicationCollector({ userId: Random.id() });
+        collector.collect("Orders", (collections) => {
+          expect(collections.Orders.length).to.equal(0);
+        }).then(() => done(/* empty */)).catch(done);
+      });
     });
   });
 });

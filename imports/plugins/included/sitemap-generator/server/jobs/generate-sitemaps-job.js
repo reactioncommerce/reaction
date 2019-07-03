@@ -1,8 +1,7 @@
 import Logger from "@reactioncommerce/logger";
-import { Jobs } from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { Job } from "/imports/plugins/core/job-collection/lib";
+import { Job, Jobs } from "/imports/utils/jobs";
 import generateSitemaps from "../lib/generate-sitemaps";
 
 /**
@@ -33,31 +32,31 @@ export default function generateSitemapsJob() {
       .save({
         cancelRepeats: true
       });
-  });
 
-  // Function that processes job
-  const sitemapGenerationJob = Jobs.processJobs(jobId, {
-    pollInterval: 60 * 60 * 1000, // backup polling, see observer below
-    workTimeout: 180 * 1000
-  }, (job, callback) => {
-    Logger.debug(`Processing ${jobId} job`);
+    // Function that processes job
+    const sitemapGenerationJob = Jobs.processJobs(jobId, {
+      pollInterval: 60 * 60 * 1000, // backup polling, see observer below
+      workTimeout: 180 * 1000
+    }, (job, callback) => {
+      Logger.debug(`Processing ${jobId} job`);
 
-    const { notifyUserId = "" } = job.data;
-    generateSitemaps({ notifyUserId });
+      const { notifyUserId = "" } = job.data;
+      generateSitemaps({ notifyUserId });
 
-    const doneMessage = `${jobId} job done`;
-    Logger.debug(doneMessage);
-    job.done(doneMessage, { repeatId: true });
-    callback();
-  });
+      const doneMessage = `${jobId} job done`;
+      Logger.debug(doneMessage);
+      job.done(doneMessage, { repeatId: true });
+      callback();
+    });
 
-  // Observer that triggers processing of job when ready
-  Jobs.find({
-    type: jobId,
-    status: "ready"
-  }).observe({
-    added() {
-      return sitemapGenerationJob.trigger();
-    }
+    // Observer that triggers processing of job when ready
+    Jobs.find({
+      type: jobId,
+      status: "ready"
+    }).observe({
+      added() {
+        return sitemapGenerationJob.trigger();
+      }
+    });
   });
 }

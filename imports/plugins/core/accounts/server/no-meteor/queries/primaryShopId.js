@@ -17,7 +17,7 @@ export default async function primaryShopId(collections) {
   if (typeof ROOT_URL !== "string") return null;
 
   const domain = url.parse(ROOT_URL).hostname;
-  const options = { fields: { _id: 1 } };
+  const options = { projection: { _id: 1 } };
 
   let shop = await Shops.findOne({ domains: domain }, options);
 

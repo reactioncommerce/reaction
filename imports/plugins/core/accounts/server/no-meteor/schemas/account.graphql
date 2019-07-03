@@ -1,8 +1,15 @@
 "The fields by which you are allowed to sort any query that returns an `AccountConnection`"
 enum AccountSortByField {
+  "Account ID"
   _id
-  name
+
+  "Date and time at which the account was created"
   createdAt
+
+  "Account name"
+  name
+
+  "Date and time at which the account was last updated"
   updatedAt
 }
 
@@ -65,11 +72,11 @@ input AddAccountEmailRecordInput {
   "The account ID, which defaults to the viewer account"
   accountId: ID
 
-  "The email address to add"
-  email: Email!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The email address to add"
+  email: Email!
 }
 
 "Defines which email address should be removed from which account"
@@ -77,37 +84,20 @@ input RemoveAccountEmailRecordInput {
   "The account ID, which defaults to the viewer account"
   accountId: ID
 
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
   "The email address to remove"
   email: Email!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-}
-
-"The input object for mutating an existing `Account`"
-input AccountUpdatesInput {
-  currencyCode: String!
-}
-
-"Defines how an account should be updated, and which account"
-input UpdateAccountInput {
-  "The account ID"
-  accountId: ID!
-
-  "The field changes to apply"
-  updates: AccountUpdatesInput!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 
 "Per-account tax exemption settings used by the Avalara plugin"
 type TaxSettings {
-  "Exemption number for an account"
-  exemptionNo: String
-
   "Customer usage type. A value matching the `code` field of one TaxEntityCode, or any custom string."
   customerUsageType: String
+
+  "Exemption number for an account"
+  exemptionNo: String
 }
 
 "Represents a single user account"
@@ -127,8 +117,14 @@ type Account implements Node {
   "A list of email records associated with this account"
   emailRecords: [EmailRecord]
 
+  "The first name of the person this account represents, if known"
+  firstName: String
+
   "A paged list of the permission groups in which this account is listed"
   groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
+
+  "The last name of the person this account represents, if known"
+  lastName: String
 
   "Arbitrary additional metadata about this account"
   metafields: [Metafield]
@@ -157,17 +153,37 @@ type Account implements Node {
   updatedAt: DateTime!
 }
 
-"Wraps a list of `Accounts`, providing pagination cursors and information."
-type AccountConnection implements NodeConnection {
+"""
+Wraps a list of `Accounts`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type AccountConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [AccountEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Account]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
 "A connection edge in which each node is an `Account` object"
 type AccountEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The account"
   node: Account
 }
 
@@ -185,11 +201,11 @@ type AddAccountAddressBookEntryPayload {
 
 "The response from the `addAccountEmailRecord` mutation"
 type AddAccountEmailRecordPayload {
-  "The added email record"
-  emailRecord: EmailRecord
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The added email record"
+  emailRecord: EmailRecord
 }
 
 "The response from the `removeAccountAddressBookEntry` mutation"
@@ -228,6 +244,14 @@ type SetAccountProfileCurrencyPayload {
   clientMutationId: String
 }
 
+extend type Shop {
+  """
+  Returns a list of administrators for this shop, as a Relay-compatible connection.
+  "Administrators" means all linked accounts that have the "admin" role for this shop.
+  """
+  administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
+}
+
 extend type Mutation {
   "Add a new address to the `addressBook` field for an account"
   addAccountAddressBookEntry(input: AddAccountAddressBookEntryInput!): AddAccountAddressBookEntryPayload
@@ -249,9 +273,6 @@ extend type Mutation {
 }
 
 extend type Query {
-  "Returns the account for the authenticated user"
-  viewer: Account
-
   "Returns the account with the provided ID"
   account(id: ID!): Account
 
@@ -260,4 +281,7 @@ extend type Query {
   "Administrators" means all linked accounts that have the "admin" role for this shop.
   """
   administrators(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
+
+  "Returns the account for the authenticated user"
+  viewer: Account
 }

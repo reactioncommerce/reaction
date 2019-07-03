@@ -8,11 +8,11 @@ const createNavigationItemMutation = gql`
   mutation createNavigationItemMutation($input: CreateNavigationItemInput!) {
     createNavigationItem(input: $input) {
       navigationItem {
-        ...NavigationItemCommon
+        ...NavigationItem
       }
     }
   }
-  ${navigationItemFragment.navigationItem}
+  ${navigationItemFragment}
 `;
 
 export default (Component) => (
