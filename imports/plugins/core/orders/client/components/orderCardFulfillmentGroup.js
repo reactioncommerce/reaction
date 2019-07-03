@@ -13,13 +13,13 @@ import OrderCardStatusChip from "./orderCardStatusChip";
 
 const styles = (theme) => ({
   fulfillmentGroupSpacing: {
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   fulfillmentGroupHeader: {
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   leftIcon: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing()
   },
   orderCardInfoTextBold: {
     fontWeight: theme.typography.fontWeightBold

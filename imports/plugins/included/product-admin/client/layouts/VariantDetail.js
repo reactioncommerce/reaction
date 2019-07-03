@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 
 const styles = (theme) => ({
   block: {
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing(3)
   }
 });
 

@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 
 const styles = (theme) => ({
   fulfillmentGroupSpacing: {
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing(3)
   },
   itemTextBold: {
     fontWeight: theme.typography.fontWeightBold

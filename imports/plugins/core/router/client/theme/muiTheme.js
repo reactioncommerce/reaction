@@ -121,8 +121,7 @@ export const rawMuiTheme = {
   },
   dimensions: {
     drawerWidth,
-    detailDrawerWidth,
-    unit: defaultSpacingUnit
+    detailDrawerWidth
   },
   mixins: {
     leadingPaddingWhenPrimaryDrawerIsOpen: {
