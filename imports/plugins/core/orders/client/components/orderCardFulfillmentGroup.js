@@ -68,12 +68,12 @@ class OrderCardFulfillmentGroups extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container spacing={24} className={classes.fulfillmentGroupHeader}>
+            <Grid container spacing={3} className={classes.fulfillmentGroupHeader}>
               <Grid item xs={12} md={6}>
                 {this.renderFulfillmentGroupItems(fulfillmentGroup)}
               </Grid>
               <Grid item xs={12} md={6}>
-                <Grid container spacing={24}>
+                <Grid container spacing={3}>
                   <Grid item xs={12} md={12}>
                     <Typography variant="body2" className={classes.orderCardInfoTextBold}>
                       Shipping address

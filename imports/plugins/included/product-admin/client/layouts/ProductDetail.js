@@ -21,7 +21,7 @@ function ProductDetail(props) {
   return (
     <Fragment>
       <Components.ProductPublish />
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item sm={12}>
           <Blocks region="ProductDetailHeader" blockProps={blockProps} />
         </Grid>

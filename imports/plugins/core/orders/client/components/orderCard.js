@@ -71,7 +71,7 @@ class OrderCard extends Component {
       <Fragment>
         <Helmet title={`Order Details for order reference #${order.referenceId}`} />
         {this.renderAppBar()}
-        <Grid container spacing={24}>
+        <Grid container spacing={3}>
           <Grid item xs={12}>
             {this.renderHeader()}
           </Grid>
@@ -79,7 +79,7 @@ class OrderCard extends Component {
             {this.renderFulfillmentGroups()}
           </Grid>
           <Grid item xs={12}>
-            <Grid container spacing={24}>
+            <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
                 {this.renderPayments()}
               </Grid>
