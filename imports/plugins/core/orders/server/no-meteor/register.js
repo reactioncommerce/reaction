@@ -15,7 +15,6 @@ export default async function register(app) {
     label: "Orders",
     name: "reaction-orders",
     icon: "fa fa-sun-o",
-    autoEnable: true,
     collections: {
       Orders: {
         name: "Orders",

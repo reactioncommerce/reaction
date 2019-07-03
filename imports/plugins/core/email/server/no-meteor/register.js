@@ -1,5 +1,13 @@
-import mutations from "./mutations";
-import startup from "./startup";
+import { Meteor } from "meteor/meteor";
+
+// This is temporary. Mutations still import jobs, which don't
+// work outside of a Meteor environment.
+let mutations = {};
+let startup = () => {};
+if (!Meteor.isFakeMeteor) {
+  mutations = require("./mutations").default;
+  startup = require("./startup").default;
+}
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -11,7 +19,6 @@ export default async function register(app) {
     label: "Email",
     name: "reaction-email",
     icon: "fa fa-envelope-o",
-    autoEnable: true,
     collections: {
       Emails: {
         name: "Emails",

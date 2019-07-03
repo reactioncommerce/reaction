@@ -50,6 +50,11 @@ type RoleEdge implements NodeEdge {
   node: Role
 }
 
+extend type Shop {
+  "Returns a list of roles for this shop, as a Relay-compatible connection."
+  roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
+}
+
 extend type Query {
   "Returns a paged list of all roles associated with a shop"
   roles(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection

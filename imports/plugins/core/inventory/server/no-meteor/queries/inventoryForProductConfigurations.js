@@ -47,15 +47,7 @@ const inputSchema = new SimpleSchema({
   },
   "productConfigurations": Array,
   "productConfigurations.$": productConfigurationSchema,
-  "shopId": String,
-  "variants": {
-    type: Array,
-    optional: true
-  },
-  "variants.$": {
-    type: Object,
-    blackbox: true
-  }
+  "shopId": String
 });
 
 const inventoryInfoSchema = new SimpleSchema({

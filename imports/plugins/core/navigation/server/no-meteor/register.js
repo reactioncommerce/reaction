@@ -13,7 +13,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Navigation",
     name: "reaction-navigation",
-    autoEnable: true,
     collections: {
       NavigationItems: {
         name: "NavigationItems"

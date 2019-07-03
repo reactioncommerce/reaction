@@ -196,7 +196,7 @@ class TextField extends Component {
    * @return {ReactNode|null} react node or null
    */
   renderLabel() {
-    if (this.props.label) {
+    if (this.props.label || this.props.i18nKeyLabel) {
       return (
         <label htmlFor={this.props.id}>
           <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
@@ -232,7 +232,7 @@ class TextField extends Component {
     }
 
     // If this is a non-validation message, only show if helpMode is true
-    if (helpText && helpMode) {
+    if (helpMode && (helpText || i18nKey)) {
       return (
         <span className="help-block">
           <Components.Translation defaultValue={helpText} i18nKey={i18nKey} />

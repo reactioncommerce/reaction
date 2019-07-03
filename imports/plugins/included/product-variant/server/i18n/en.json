@@ -5,19 +5,24 @@
     "reaction-product-variant": {
       "admin": {
         "helpText": {
+          "attributeLabel": "The attribute label describes the category of variant, for example, \"Color\" or \"Size\". In most cases you should enter the same value here for all variants at the same level.",
           "compareAtPrice": "Original price or MSRP",
           "optionInventoryAvailableToSell": "Inventory available to sell",
           "optionInventoryInStock": "Inventory in stock",
-          "optionTitle": "Displayed on Product Detail Page",
+          "optionTitle": "The short title is the value for the attribute label. For example, a variant with attribute label \"Color\" might have short title \"Red\". This is usually shown in a select list or button set on a product detail page in your storefront.",
           "price": "Purchase price",
-          "title": "Displayed in cart, checkout, and orders",
+          "title": "The full title is usually shown on cart, checkout, and order summaries and on invoices. It should fully describe the configured variant. For example, if this is an option with short title \"Large\", its parent variant has short title \"Red\", and the product title is \"Fancy T-Shirt\", then a good title might be \"Fancy T-Shirt - Red - Large\".",
           "variantBackorderToggle": "Backorder allowance is now controlled by options",
           "variantInventoryAvailableToSell": "Variant inventory available to sell quantity is calculated by options inventory",
           "variantInventoryInStock": "Variants inventory in stock quantity is calculated by options inventory"
         },
         "productVariant": {
+          "attributeLabelLabel": "Attribute label",
+          "attributeLabelPlaceholder": "Examples: Color, Size",
           "inventoryAvailableToSell": "Available to sell",
-          "inventoryInStock": "In stock"
+          "inventoryInStock": "In stock",
+          "optionTitlePlaceholder": "Examples: Red, Large",
+          "titlePlaceholder": "Example: Fancy T-Shirt - Red - Large"
         },
         "tooltip": {
           "validationError": "Validation error"
