@@ -181,8 +181,8 @@ class OrderCardFulfillmentGroups extends Component {
 
   renderFulfillmentGroupItems(fulfillmentGroup) {
     return fulfillmentGroup.items.nodes.map((item) => (
-      <Grid item xs={12}>
-        <OrderCardFulfillmentGroupItem key={item._id} item={item} />
+      <Grid key={item._id} item xs={12}>
+        <OrderCardFulfillmentGroupItem item={item} />
       </Grid>
     ));
   }
@@ -470,8 +470,8 @@ class OrderCardFulfillmentGroups extends Component {
       const { data: { shippingAddress }, displayStatus, status } = fulfillmentGroup;
 
       return (
-        <Grid key={index} item xs={12}>
-          <Card key={fulfillmentGroup._id} elevation={0}>
+        <Grid key={fulfillmentGroup._id} item xs={12}>
+          <Card elevation={0}>
             <CardContent>
               <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
                 {/* TODO: EK - make this a spacing heading instread of class */}

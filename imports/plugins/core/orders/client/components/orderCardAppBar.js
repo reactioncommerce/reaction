@@ -9,6 +9,7 @@ import PrimaryAppBar from "/imports/client/ui/components/PrimaryAppBar/PrimaryAp
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 
 
+// TODO: EK - figure out how inventory should work here
 class OrderCardAppBar extends Component {
   static propTypes = {
     classes: PropTypes.object,
