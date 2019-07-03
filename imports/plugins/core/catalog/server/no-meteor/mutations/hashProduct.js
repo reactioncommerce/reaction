@@ -31,6 +31,7 @@ const productFieldsThatNeedPublishing = [
 
 const variantFieldsThatNeedPublishing = [
   "_id",
+  "attributeLabel",
   "barcode",
   "compareAtPrice",
   "height",

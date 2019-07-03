@@ -1,5 +1,6 @@
 import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
+import updateSimpleInventoryBulk from "../../imports/plugins/included/simple-inventory/server/no-meteor/mutations/updateSimpleInventoryBulk";
 import catalogItemQuery from "./catalogItemQuery.graphql";
 import simpleInventoryQuery from "./simpleInventoryQuery.graphql";
 import updateSimpleInventoryMutation from "./updateSimpleInventoryMutation.graphql";
@@ -30,6 +31,7 @@ const product = Factory.Product.makeOne({
 const variant = Factory.Product.makeOne({
   _id: internalVariantId,
   ancestors: [internalProductId],
+  attributeLabel: "Variant",
   isDeleted: false,
   isVisible: true,
   shopId: internalShopId,
@@ -39,6 +41,7 @@ const variant = Factory.Product.makeOne({
 const option1 = Factory.Product.makeOne({
   _id: internalOptionId1,
   ancestors: [internalProductId, internalVariantId],
+  attributeLabel: "Option",
   isDeleted: false,
   isVisible: true,
   shopId: internalShopId,
@@ -48,6 +51,7 @@ const option1 = Factory.Product.makeOne({
 const option2 = Factory.Product.makeOne({
   _id: internalOptionId2,
   ancestors: [internalProductId, internalVariantId],
+  attributeLabel: "Option",
   isDeleted: false,
   isVisible: true,
   shopId: internalShopId,
@@ -243,6 +247,72 @@ test("when all options are sold out and canBackorder, isBackorder is true in Cat
       canBackorder: true,
       inventoryInStock: 0
     }
+  });
+
+  const queryResult = await getCatalogItem({
+    slugOrId: product.handle
+  });
+  expect(queryResult).toEqual({
+    catalogItemProduct: {
+      product: {
+        isBackorder: true,
+        isLowQuantity: true,
+        isSoldOut: true,
+        variants: [{
+          canBackorder: true,
+          inventoryAvailableToSell: 0,
+          inventoryInStock: 0,
+          isBackorder: true,
+          isLowQuantity: true,
+          isSoldOut: true,
+          options: [
+            {
+              canBackorder: true,
+              inventoryAvailableToSell: 0,
+              inventoryInStock: 0,
+              isBackorder: true,
+              isLowQuantity: true,
+              isSoldOut: true
+            },
+            {
+              canBackorder: true,
+              inventoryAvailableToSell: 0,
+              inventoryInStock: 0,
+              isBackorder: true,
+              isLowQuantity: true,
+              isSoldOut: true
+            }
+          ]
+        }]
+      }
+    }
+  });
+});
+
+test("Bulk version test: when all options are sold out and canBackorder, isBackorder is true in Catalog", async () => {
+  await updateSimpleInventoryBulk(testApp.context, {
+    updates: [
+      {
+        productConfiguration: {
+          productId: internalProductId,
+          productVariantId: internalOptionId1
+        },
+        shopId: internalShopId,
+        isEnabled: true,
+        canBackorder: true,
+        inventoryInStock: 0
+      },
+      {
+        productConfiguration: {
+          productId: internalProductId,
+          productVariantId: internalOptionId2
+        },
+        shopId: internalShopId,
+        isEnabled: true,
+        canBackorder: true,
+        inventoryInStock: 0
+      }
+    ]
   });
 
   const queryResult = await getCatalogItem({

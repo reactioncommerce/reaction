@@ -11,7 +11,6 @@ export default async function register(app) {
     label: "Custom Rates",
     name: "reaction-taxes-rates",
     icon: "fa fa-university",
-    autoEnable: true,
     collections: {
       Taxes: {
         name: "Taxes",

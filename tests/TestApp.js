@@ -7,12 +7,8 @@ import ReactionNodeApp from "../imports/node-app/core/ReactionNodeApp";
 import buildContext from "../imports/node-app/core/util/buildContext";
 import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
-import mutations from "../imports/node-app/devserver/mutations";
-import queries from "../imports/node-app/devserver/queries";
-import importedSchemas from "../imports/node-app/devserver/schemas";
-import importedResolvers from "../imports/node-app/devserver/resolvers";
-import registerPlugins from "../imports/node-app/devserver/registerPlugins";
-import "../imports/node-app/devserver/extendSchemas";
+import registerPlugins from "../imports/node-app/registerPlugins";
+import "../imports/node-app/extendSchemas";
 
 class TestApp {
   constructor(options = {}) {
@@ -59,14 +55,13 @@ class TestApp {
 
           await this.reactionNodeApp.collections.Accounts.insertOne({ ...user, userId: user._id });
         },
-        mutations,
-        queries,
+        mutations: {},
+        queries: {},
         rootUrl: "https://shop.fake.site/"
       },
       functionsByType,
       graphQL: {
-        resolvers: { ...importedResolvers },
-        schemas: [...importedSchemas, ...extraSchemas]
+        schemas: extraSchemas
       }
     });
 

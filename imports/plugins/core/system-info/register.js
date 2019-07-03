@@ -1,16 +1,11 @@
+/**
+ * This file is necessary for backwards compatibility while we refactor
+ * the API to remove Meteor. The no-meteor `register.js` file will
+ * eventually become the main entry point of the plugin, but for now
+ * our Meteor tooling loads this file, so we include this here as a
+ * temporary bridge.
+ */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import queries from "./server/no-meteor/queries";
-import resolvers from "./server/no-meteor/resolvers";
-import schemas from "./server/no-meteor/schemas";
+import register from "./server/no-meteor/register";
 
-Reaction.registerPackage({
-  label: "System Information",
-  name: "reaction-systeminfo",
-  icon: "fa fa-info",
-  autoEnable: true,
-  graphQL: {
-    resolvers,
-    schemas
-  },
-  queries
-});
+Reaction.whenAppInstanceReady(register);

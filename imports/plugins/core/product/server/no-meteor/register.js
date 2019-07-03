@@ -10,7 +10,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Product",
     name: "reaction-product",
-    autoEnable: true,
     collections: {
       Products: {
         name: "Products",
