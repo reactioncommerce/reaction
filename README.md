@@ -3,51 +3,47 @@
 [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Open Source Helpers](https://www.codetriage.com/reactioncommerce/reaction/badges/users.svg)](https://www.codetriage.com/reactioncommerce/reaction)
 
-[Reaction](http://reactioncommerce.com) is an event-driven, real-time reactive commerce platform built with JavaScript (ES6). It plays nicely with npm, Docker, and React.
+[Reaction](http://reactioncommerce.com) is an API-first, headless commerce platform built using Node.js, React, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
 
-![Reaction v.1.x](https://raw.githubusercontent.com/reactioncommerce/reaction-docs/v1.7.0/assets/Reaction-Commerce-Illustration-BG-800px.png)
+This project is no longer a customer-facing storefront—it's a **commerce operator tool** that connects with a frontend via a GraphQL API. The Reaction application is coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with the [Example Storefront](https://github.com/reactioncommerce/example-storefront) (previously Storefront Starter Kit) and [reaction-hydra](https://github.com/reactioncommerce/reaction-hydra).
 
+![Reaction v.2.x](/public/resources/Reaction2.0_Catalyst.png "Reaction 2.0 Catalyst")
 ## Features
 
-Reaction’s out-of-the-box core features include:
+Reaction comes with a robust set of core commerce capabilities right out of the box. And since anything in our codebase can be extended, overwritten, or installed as a package, you may also develop, scale, and customize anything on our platform.
 
-- One-step cart and checkout
-- Order processing
-- Payments with Stripe
-- Shipping
-- Taxes
-- Multi-currency support
-- Discounts
-- Integration with dozens of third-party apps
-- See full list of features on our [roadmap](https://reactioncommerce.com/roadmap)
+Check out the full list of Reaction [features](https://www.reactioncommerce.com/features) and [version releases](https://reactioncommerce.com/roadmap) for more info.
 
-Since anything in our codebase can be extended, overwritten, or installed as a package, you may also develop, scale, and customize anything on our platform.
 
 # Getting started
 
-Follow the documentation to install Reaction with [Reaction Platform](https://docs.reactioncommerce.com/docs/installation-reaction-platform) for all operating systems.
+Follow the documentation to install Reaction with [Reaction Platform](https://docs.reactioncommerce.com/docs/installation-reaction-platform) for all supported operating systems.
 
-> Installing an older version of Reaction? Follow the documentation for installing pre-2.0 Reaction on [OS X](https://docs.reactioncommerce.com/docs/1.16.0/installation-osx), [Windows](https://docs.reactioncommerce.com/docs/1.16.0/installation-windows) or [Linux](https://docs.reactioncommerce.com/docs/1.16.0/installation-linux).
 
 # Get involved
 
-## Read documentation & tutorials
+## Tutorials, docs & developer tools
 
-- [Reaction Commerce: Developer documentation](https://docs.reactioncommerce.com)
+- [Developer documentation](https://docs.reactioncommerce.com)
+- [Docs: Introduction to Reaction:  Concepts](https://docs.reactioncommerce.com/docs/concepts-intro)
+- [Swag Shop Tutorial](https://docs.reactioncommerce.com/docs/swag-shop-1)
+- [Storefront UI Development Tutorial](https://docs.reactioncommerce.com/docs/storefront-intro)
 - [Reaction Design System](http://designsystem.reactioncommerce.com/)
-- [Reaction Commerce: API documentation](http://api.docs.reactioncommerce.com)
-- [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
-- [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
+- [API documentation](http://api.docs.reactioncommerce.com)
+- [Engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
+
 
 ## Get help & contact the team
 
-- [Reaction Commerce Gitter chat](https://gitter.im/reactioncommerce/reaction)
-- [Reaction Commerce forum](https://forums.reactioncommerce.com/)
-- [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities): Report security vulnerabilities to <mailto:security@reactioncommerce.com>.
+- [Gitter chat](https://gitter.im/reactioncommerce/reaction)
+- Report security vulnerabilities to <mailto:security@reactioncommerce.com>: [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities)
+- Request features in this [repository](https://github.com/reactioncommerce/reaction-feature-requests/)
 
 ## Contribute
 
-:star: Star us on GitHub — it helps!
+:star: If you like what you see, star us on GitHub.
+
+Find a bug, a typo, or something that’s not documented well? We’d love for you to [open an issue](https://github.com/reactioncommerce/reaction/issues) telling us what we can improve!
 
 Want to request a feature? Use our [Reaction Feature Requests repository](https://github.com/reactioncommerce/reaction-feature-requests) to file a request.
 
@@ -58,14 +54,13 @@ Pull requests should:
 - Pass all Circle CI checks:
   - Run `docker-compose run --rm reaction npm run lint` to make sure your code follows [Reaction's ESLint rules](https://github.com/reactioncommerce/reaction-eslint-config).
   - Run `docker-compose run --rm reaction reaction test` to run [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
-  - Make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and
-- Follow the pull request template.
+  - Make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/docs/styleguide). Check out our guides to [JSDoc](https://docs.reactioncommerce.com/docs/jsdoc-style-guide), [Git](https://docs.reactioncommerce.com/docs/git-style-guide), [error handling](https://docs.reactioncommerce.com/docs/error-handling-guide), [logging](https://docs.reactioncommerce.com/docs/logging), and [React](https://docs.reactioncommerce.com/docs/react-best-practices).
+-  We request that you follow the [pull request template](https://docs.reactioncommerce.com/docs/contributing-to-reaction#fill-out-the-pull-request-template)
+- Please make sure to sign off all commits with the [Developer Certificate of Origin](https://probot.github.io/apps/dco/)
 
-Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/reaction-docs/master/contributing-to-reaction).
+Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/docs/contributing-to-reaction).
 
-## Deploy on Docker
 
-We ensure that all releases are deployable as [Docker](https://hub.docker.com/r/reactioncommerce/reaction/) containers. While we don't regularly test other methods of deployment, our community has documented deployment strategies for AWS, [Digital Ocean](https://gist.github.com/jshimko/745ca66748846551692e24c267a56060), and Galaxy. For an introduction to Docker deployment, the [Reaction deployment guide](https://docs.reactioncommerce.com/reaction-docs/master/deploying) has detailed examples.
 
 ### License
 
