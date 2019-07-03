@@ -119,7 +119,7 @@ export const rawMuiTheme = {
   shape: {
     borderRadius: 2
   },
-  spacing: {
+  dimensions: {
     drawerWidth,
     detailDrawerWidth,
     unit: defaultSpacingUnit
