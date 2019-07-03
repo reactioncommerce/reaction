@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import { Accounts } from "meteor/accounts-base";
+import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Shops } from "/lib/collections";
@@ -9,7 +9,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
 
-Accounts.urls.resetPassword = function reset(token) {
+MeteorAccounts.urls.resetPassword = function reset(token) {
   return Meteor.absoluteUrl(`reset-password/${token}`);
 };
 
@@ -95,7 +95,7 @@ async function sendResetEmail(userId, optionalEmail) {
       }
     },
     // Account Data
-    passwordResetUrl: Accounts.urls.resetPassword(token),
+    passwordResetUrl: MeteorAccounts.urls.resetPassword(token),
     user
   };
 
@@ -123,7 +123,7 @@ export default function sendResetPasswordEmail(options) {
     email: String
   });
 
-  const user = Accounts.findUserByEmail(options.email);
+  const user = MeteorAccounts.findUserByEmail(options.email);
 
   if (!user) {
     Logger.error("accounts/sendResetPasswordEmail - User not found");

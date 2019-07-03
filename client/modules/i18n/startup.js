@@ -87,6 +87,11 @@ const options = {
 
 const userProfileLanguage = new ReactiveVar(null);
 
+function getCookieValue(a) {
+    var b = document.cookie.match('(^|[^;]+)\\s*' + a + '\\s*=\\s*([^;]+)');
+    return b ? b.pop() : '';
+}
+
 Meteor.startup(() => {
   // We need to ensure fine-grained reactivity on only the profile.lang because
   // user.profile changed frequently and causes excessive reruns
@@ -117,7 +122,7 @@ Meteor.startup(() => {
     const shopLanguage = (shop && shop.language) || null;
 
     // Use fallbacks to determine the final language
-    const language = userLanguage || shopLanguage || "en";
+    const language = getCookieValue("lngStorefrontGreenstorm") ||  userLanguage || shopLanguage || "de";
 
     //
     // subscribe to user + shop Translations

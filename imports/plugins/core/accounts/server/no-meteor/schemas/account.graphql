@@ -67,6 +67,18 @@ input SetAccountProfileCurrencyInput {
   currencyCode: String!
 }
 
+"Describes an account profile language change"
+input SetAccountProfileLanguageInput {
+  "The account ID, which defaults to the viewer account"
+  accountId: ID
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The language code"
+  languageCode: String!
+}
+
 "Defines a new Email and the account to which it should be added"
 input AddAccountEmailRecordInput {
   "The account ID, which defaults to the viewer account"
@@ -113,6 +125,9 @@ type Account implements Node {
 
   "The preferred currency used by this account"
   currency: Currency
+
+  "The preferred language used by this account"
+  language: String
 
   "A list of email records associated with this account"
   emailRecords: [EmailRecord]
@@ -267,6 +282,9 @@ extend type Mutation {
 
   "Set the preferred currency for an account"
   setAccountProfileCurrency(input: SetAccountProfileCurrencyInput!): SetAccountProfileCurrencyPayload
+
+  "Set the preferred language for an account"
+  setAccountProfileLanguage(input: SetAccountProfileLanguageInput!): SetAccountProfileLanguagePayload
 
   "Remove an address that exists in the `addressBook` field for an account"
   updateAccountAddressBookEntry(input: UpdateAccountAddressBookEntryInput!): UpdateAccountAddressBookEntryPayload

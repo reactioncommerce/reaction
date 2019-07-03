@@ -1,5 +1,6 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
+import R from "ramda";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -172,6 +173,7 @@ export default async function placeOrder(context, input) {
     fulfillmentGroups,
     shopId
   } = orderInput;
+  let { language } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders, Cart } = collections;
 
@@ -259,6 +261,7 @@ export default async function placeOrder(context, input) {
     currencyCode,
     discounts,
     email,
+    language,
     payments,
     shipping: finalFulfillmentGroups,
     shopId,

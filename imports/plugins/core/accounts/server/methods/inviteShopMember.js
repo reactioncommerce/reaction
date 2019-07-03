@@ -135,5 +135,5 @@ export default function inviteShopMember(options) {
     to: email
   }));
 
-  return Accounts.findOne({ userId });
+  return account;
 }

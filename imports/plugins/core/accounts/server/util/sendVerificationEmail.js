@@ -61,7 +61,7 @@ export default async function sendVerificationEmail({
   });
 
   const shopName = Reaction.getShopName();
-  const url = Accounts.urls.verifyEmail(token);
+  const url = MeteorAccounts.urls.verifyEmail(token);
   const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {

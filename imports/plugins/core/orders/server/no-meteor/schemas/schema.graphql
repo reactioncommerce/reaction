@@ -372,6 +372,8 @@ type Order implements Node {
 
   "The date and time at which this order was last updated"
   updatedAt: DateTime!
+
+  language: String
 }
 
 "A note about an order"
@@ -502,6 +504,8 @@ input OrderInput {
   order, and those shop IDs may or may not match this one.
   """
   shopId: String!
+
+  language: String
 }
 
 "Input for adding order payments"
