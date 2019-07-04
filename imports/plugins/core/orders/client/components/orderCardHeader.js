@@ -9,7 +9,6 @@ import { i18next, Reaction } from "/client/api";
 import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
 import OrderCardStatusChip from "./orderCardStatusChip";
 
-
 const styles = (theme) => ({
   fontWeightSemiBold: {
     fontWeight: theme.typography.fontWeightSemiBold
@@ -102,7 +101,9 @@ class OrderCardHeader extends Component {
               </Button>
             </Grid>
             <Grid className={classes.openSidebarButton} item>
-              <DetailDrawerButton color="primary" size="small" variant="outlined">{i18next.t("orderCard.orderSummary.showOrderSummary", "Show order summary")}</DetailDrawerButton>
+              <DetailDrawerButton color="primary" size="small" variant="outlined">
+                {i18next.t("orderCard.orderSummary.showOrderSummary", "Show order summary")}
+              </DetailDrawerButton>
             </Grid>
           </Grid>
         </Grid>
