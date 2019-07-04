@@ -440,7 +440,7 @@ class TagForm extends Component {
                       </Grid>
                       <Grid item md={6}>
                         <Typography variant="h3">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
-                        <Typography variant="body2">{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
+                        <Typography variant="body1">{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
                         {this.renderMediaGalleryUploader()}
 
                         <PaddedField
