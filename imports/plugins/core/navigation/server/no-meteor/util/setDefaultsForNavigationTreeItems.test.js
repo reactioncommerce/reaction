@@ -40,7 +40,17 @@ const mockNavigationTreeItemsResult = [
   }
 ];
 
-test("filters navigation tree excluding secondary items", async () => {
-  const results = setDefaultsForNavigationTreeItems(mockNavigationTreeItemsInput);
+test("filters navigation tree excluding secondary items, with supplied defaults values", () => {
+  const defaultValues = {
+    shouldNavigationTreeItemsBeAdminOnly: false,
+    shouldNavigationTreeItemsBePubliclyVisible: true,
+    shouldNavigationTreeItemsBeSecondaryNavOnly: false
+  };
+
+  const results = setDefaultsForNavigationTreeItems(mockNavigationTreeItemsInput, defaultValues);
   expect(results).toEqual(mockNavigationTreeItemsResult);
+});
+
+test("throws an error if the `defaultValues` object is not defined", () => {
+  expect(() => setDefaultsForNavigationTreeItems(mockNavigationTreeItemsInput)).toThrow();
 });

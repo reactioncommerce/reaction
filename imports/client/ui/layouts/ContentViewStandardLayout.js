@@ -17,16 +17,20 @@ const styles = (theme) => ({
     paddingBottom: theme.spacing.unit * 2,
     margin: "0 auto"
   },
-  leftSidebarOpen: {
-    paddingLeft: 280
+  leadingDrawerOpen: {
+    paddingLeft: theme.spacing.drawerWidth
+  },
+  trailingDrawerOpen: {
+    paddingRight: theme.spacing.detailDrawerWidth
   }
 });
 
-const ContentViewStandardLayout = ({ children, classes, isMobile, isSidebarOpen }) => (
+const ContentViewStandardLayout = ({ children, classes, isLeadingDrawerOpen, isTrailingDrawerOpen }) => (
   <div
     className={
       classNames(classes.root, {
-        [classes.leftSidebarOpen]: isSidebarOpen && isMobile === false
+        [classes.leadingDrawerOpen]: isLeadingDrawerOpen,
+        [classes.trailingDrawerOpen]: isTrailingDrawerOpen
       })
     }
   >
@@ -39,8 +43,9 @@ const ContentViewStandardLayout = ({ children, classes, isMobile, isSidebarOpen 
 ContentViewStandardLayout.propTypes = {
   children: PropTypes.node,
   classes: PropTypes.object,
+  isLeadingDrawerOpen: PropTypes.bool,
   isMobile: PropTypes.bool,
-  isSidebarOpen: PropTypes.bool
+  isTrailingDrawerOpen: PropTypes.bool
 };
 
 export default withStyles(styles, { name: "RuiContentViewStandardLayout" })(ContentViewStandardLayout);

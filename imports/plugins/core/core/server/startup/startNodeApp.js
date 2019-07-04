@@ -8,13 +8,11 @@ import { WebApp } from "meteor/webapp";
 import { formatApolloErrors } from "apollo-server-errors";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
-import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import coreMutations from "../no-meteor/mutations";
-import coreQueries from "../no-meteor/queries";
-import coreResolvers from "../no-meteor/resolvers";
-import coreSchemas from "../no-meteor/schemas";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
+import { setCollections } from "/imports/collections/rawCollections";
+import meteorFileCollectionStartup from "/imports/plugins/core/files/server/fileCollections";
+import packageJson from "/package.json";
 
 // For Meteor app tests
 let appStartupIsComplete = false;
@@ -33,21 +31,19 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
     addCallMeteorMethod(context) {
       context.callMeteorMethod = (name, ...args) => runMeteorMethodWithContext(context, name, args);
     },
-    additionalCollections: { Media: NoMeteorMedia },
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
-      createUser(options) {
+      appVersion: packageJson.version,
+      async createUser(options) {
         return Accounts.createUser(options);
       },
-      queries: coreQueries,
-      mutations: coreMutations,
+      mutations: {},
+      queries: {},
       rootUrl: ROOT_URL
     },
     graphQL: {
-      graphiql: Meteor.isDevelopment,
-      resolvers: coreResolvers,
-      schemas: coreSchemas
+      graphiql: Meteor.isDevelopment
     },
     httpServer: WebApp.httpServer,
     mongodb
@@ -64,7 +60,16 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
   // to the one in GraphQL
   setBaseContext(app.context);
 
-  await app.runServiceStartup();
+  try {
+    await app.runServiceStartup();
+  } catch (error) {
+    Logger.error(error, "Error running plugin startup");
+    throw error;
+  }
+
+  setCollections(app.context.collections);
+
+  meteorFileCollectionStartup(app.context);
 
   // bind the specified paths to the Express server running GraphQL
   WebApp.connectHandlers.use(app.expressApp);
@@ -125,7 +130,7 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
     } else if (pathname.startsWith("/sockjs")) {
       // Don't do anything, this is meteor socket.
     } else {
-      socket.close();
+      socket.end();
     }
   });
 

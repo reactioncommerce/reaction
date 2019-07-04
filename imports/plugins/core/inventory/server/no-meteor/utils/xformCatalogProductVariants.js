@@ -47,8 +47,11 @@ export default async function xformCatalogProductVariants(context, catalogProduc
     }
   }
 
+  if (productConfigurations.length === 0) return;
+
   const variantsInventoryInfo = await context.queries.inventoryForProductConfigurations(context, {
-    productConfigurations
+    productConfigurations,
+    shopId: catalogProductVariants[0].shopId
   });
 
   for (const catalogProductVariant of catalogProductVariants) {

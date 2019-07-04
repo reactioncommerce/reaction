@@ -12,8 +12,7 @@ Meteor.publish("PaginatedOrders", function (query, options) {
   if (!this.userId) {
     return this.ready();
   }
-
-  const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

@@ -93,17 +93,16 @@ export default async function addCartItems(context, currentItems, inputItems, op
     // not ordered unless back-ordering is enabled.
 
     // Until we do a more complete attributes revamp, we'll do our best to fudge attributes here.
-    // The main issue is we do not have labels.
     const attributes = [];
     if (parentVariant) {
       attributes.push({
-        label: null, // Set label to null for now. We expect to use it in the future.
-        value: parentVariant.title
+        label: parentVariant.attributeLabel,
+        value: parentVariant.optionTitle
       });
     }
     attributes.push({
-      label: null, // Set label to null for now. We expect to use it in the future.
-      value: chosenVariant.title
+      label: chosenVariant.attributeLabel,
+      value: chosenVariant.optionTitle
     });
 
     const cartItem = {

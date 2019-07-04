@@ -10,14 +10,11 @@ import { Metafield } from "./metafield";
  * @name CartItemAttribute
  * @memberof Schemas
  * @type {SimpleSchema}
- * @property {String} label optional
+ * @property {String} label required
  * @property {String} value optional
  */
 const CartItemAttribute = new SimpleSchema({
-  label: {
-    type: String,
-    optional: true
-  },
+  label: String,
   value: {
     type: String,
     optional: true

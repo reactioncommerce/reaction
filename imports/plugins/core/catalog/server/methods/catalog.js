@@ -8,7 +8,6 @@ import { ReactionProduct } from "/lib/api";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords, Products, Tags } from "/lib/collections";
-import { Media } from "/imports/plugins/core/files/server";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
@@ -157,7 +156,7 @@ function createHandle(productHandle, productId) {
  * @return {undefined}
  */
 function copyMedia(newId, variantOldId, variantNewId) {
-  Media.find({
+  rawCollections.Media.find({
     "metadata.variantId": variantOldId
   })
     .then((fileRecords) => {
@@ -410,12 +409,6 @@ Meteor.methods({
     };
 
     const isOption = ancestors.length > 1;
-    if (isOption) {
-      Object.assign(newVariant, {
-        optionTitle: "Untitled",
-        title: `${parent.title} - Untitled`
-      });
-    }
 
     createProduct(newVariant, { product, parentVariant, isOption });
 
@@ -651,7 +644,6 @@ Meteor.methods({
     // Create a product variant
     createProduct({
       ancestors: [newSimpleProduct._id],
-      title: "",
       type: "variant" // needed for multi-schema
     }, { product: newSimpleProduct, parentVariant: null, isOption: false });
 

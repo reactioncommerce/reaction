@@ -3,11 +3,11 @@ import rawCollections from "/imports/collections/rawCollections";
 import createDefaultNavigationTree from "/imports/plugins/core/versions/server/util/createDefaultNavigationTree";
 import migrateTagNav from "/imports/plugins/core/versions/server/util/migrateTagNav";
 
-const { NavigationTrees, Shops } = rawCollections;
-
 Migrations.add({
   version: 50,
   up() {
+    const { Shops } = rawCollections;
+
     Shops.find({}).forEach(async (shop) => {
       const { _id: shopId } = shop;
       const treeId = await createDefaultNavigationTree(shop, "Main Navigation");
@@ -15,6 +15,8 @@ Migrations.add({
     });
   },
   down() {
+    const { NavigationTrees, Shops } = rawCollections;
+
     Shops.find({}).forEach(({ _id, defaultNavigationTreeId }) => {
       if (defaultNavigationTreeId) {
         NavigationTrees.deleteOne({ _id: defaultNavigationTreeId });

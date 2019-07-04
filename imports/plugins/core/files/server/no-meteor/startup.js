@@ -1,22 +1,43 @@
-import collectionIndex from "/imports/utils/collectionIndex";
+import Logger from "@reactioncommerce/logger";
+import setUpFileCollections from "./setUpFileCollections";
 
 /**
  * @summary Called on startup
  * @param {Object} context Startup context
- * @param {Object} context.collections Map of MongoDB collections
+ * @param {Object} context.app The ReactionNodeApp instance
+ * @param {Object} context.collections A map of MongoDB collections
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { collections } = context;
+  const { app, collections, rootUrl } = context;
   const { MediaRecords } = collections;
 
-  // Create indexes. We set specific names for backwards compatibility
-  // with indexes created by the aldeed:schema-index Meteor package.
-  collectionIndex(MediaRecords, { "metadata.productId": 1 });
-  collectionIndex(MediaRecords, { "metadata.variantId": 1 });
-  collectionIndex(MediaRecords, { "metadata.priority": 1 });
+  const {
+    downloadManager,
+    Media,
+    stores,
+    tempStore
+  } = setUpFileCollections({
+    absoluteUrlPrefix: rootUrl,
+    db: app.db,
+    Logger,
+    MediaRecords,
+    mongodb: app.mongodb
+  });
 
-  // These queries are used by the workers in file-collections package
-  collectionIndex(MediaRecords, { "original.remoteURL": 1 });
-  collectionIndex(MediaRecords, { "original.tempStoreId": 1 });
+  // This isn't probably the best solution, but for now this is how
+  // we'll make these things available to the Meteor code that does
+  // the rest of the files configuration.
+  context.files = {
+    stores,
+    tempStore
+  };
+
+  // Make the Media collection available to resolvers
+  collections.Media = Media;
+
+  // Wire up a file download route
+  if (app.expressApp) {
+    app.expressApp.use("/assets/files", downloadManager.connectHandler);
+  }
 }

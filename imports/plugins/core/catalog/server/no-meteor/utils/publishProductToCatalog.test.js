@@ -21,6 +21,7 @@ const updatedAt = new Date("2018-04-17T15:34:28.043Z");
 const mockVariants = [
   {
     _id: internalVariantIds[0],
+    attributeLabel: "attributeLabel",
     barcode: "barcode",
     createdAt,
     height: 0,
@@ -49,6 +50,7 @@ const mockVariants = [
   },
   {
     _id: internalVariantIds[0],
+    attributeLabel: "attributeLabel",
     barcode: "barcode",
     createdAt,
     height: 0,

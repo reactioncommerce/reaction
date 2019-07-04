@@ -8,17 +8,20 @@
         "applyRefund": "Apply refund",
         "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
         "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
-        "cancelOrder": "Do you want to cancel this order?",
+        "cancelGroup": "Do you want to cancel this group?",
+        "cancelGroupLabel": "Cancel group",
+        "cancelOrder": "Do you want to cancel this entire order?",
         "cancelOrderLabel": "Cancel Order",
-        "cancelOrderNoRestock": "Yes, but no restocking",
-        "cancelOrderThenRestock": "Yes, and restock",
+        "cancelOrderNoRestock": "Do not restock",
+        "cancelOrderThenRestock": "Restock",
         "refunding": "Refunding",
         "refundItemsAlert": "Do you want to refund {{refundItemsQuantity}} item(s) totaling {{refundItemsTotal}}?",
         "refundItemsApproveAlert": "Do you want to approve this payment and then refund {{totalAmount}}?",
         "refundItemsCaptureAlert": "Do you want to capture this payment and then refund {{totalAmount}}?",
         "refundItemsSuccess": "Refund was successfully applied",
         "refundItemsTitle": "Refund Items",
-        "refundItemsWait": "Payment is not yet captured"
+        "refundItemsWait": "Payment is not yet captured",
+        "restockInventory": "Restock inventory?"
       },
       "admin": {
         "shortcut": {
@@ -50,6 +53,7 @@
             "cardTitle": "Invoice",
             "adjustedTotal": "Adjusted Total",
             "capturedTotal": "Captured Total",
+            "printInvoice": "Print invoice",
             "refund": "Refund",
             "refundLabel": "For Refund",
             "refundItem": "Items",
@@ -58,7 +62,13 @@
           },
           "fulfillment": "Fulfillment",
           "orderDetails": "Order Details",
-          "shipmentTracking": "Shipment"
+          "shipmentTracking": "Shipment",
+
+          "fulfillmentGroups": {
+            "cancelFulfillmentGroup": "Cancel group",
+            "markAsPacked": "Mark as packed",
+            "printShippingLabel": "Print shipping label"
+          }
         },
         "table": {
           "headers": {

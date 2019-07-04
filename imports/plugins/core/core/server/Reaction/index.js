@@ -1,15 +1,9 @@
 import Log from "@reactioncommerce/logger";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import Core from "./core";
-import addRolesToGroups from "./addRolesToGroups";
-import assignOwnerRoles from "./assignOwnerRoles";
-import Endpoints from "./Endpoints";
 import { Fixture, Importer } from "./importer";
-import getRegistryDomain from "./getRegistryDomain";
 import getSlug from "./getSlug";
 import loadSettings from "./loadSettings";
-import setDomain from "./setDomain";
-import setShopName from "./setShopName";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import * as accountUtils from "./accountUtils";
@@ -17,8 +11,6 @@ import * as accountUtils from "./accountUtils";
 export default {
   ...Core,
   ...accountUtils,
-  addRolesToGroups,
-  assignOwnerRoles,
   Collections,
 
   /**
@@ -40,15 +32,11 @@ export default {
     }
   },
 
-  Endpoints,
   Fixture,
-  getRegistryDomain,
   getSlug,
   Importer,
   loadSettings,
   Log,
   Router: {},
-  Schemas,
-  setDomain,
-  setShopName
+  Schemas
 };

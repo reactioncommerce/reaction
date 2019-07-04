@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import collectionIndex from "/imports/utils/collectionIndex";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 
 /**
@@ -10,11 +9,7 @@ import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-
  */
 export default function startup(context) {
   const { appEvents, collections } = context;
-  const { Cart, Discounts } = collections;
-
-  // Create indexes. We set specific names for backwards compatibility
-  // with indexes created by the aldeed:schema-index Meteor package.
-  collectionIndex(Discounts, { shopId: 1 }, { name: "c2_shopId" });
+  const { Cart } = collections;
 
   appEvents.on("afterCartUpdate", async ({ cart }) => {
     if (!cart) {

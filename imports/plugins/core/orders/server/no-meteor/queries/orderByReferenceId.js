@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
+import { getOrderQuery } from "../util/getOrderQuery";
 
 /**
  * @name orderByReferenceId
@@ -14,33 +14,9 @@ import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
  * @return {Promise<Object>|undefined} - An Order document, if one is found
  */
 export default async function orderByReferenceId(context, { orderReferenceId, shopId, token } = {}) {
-  const { accountId: contextAccountId, collections, userHasPermission } = context;
-  const { Orders } = collections;
-
   if (!orderReferenceId || !shopId) {
     throw new ReactionError("invalid-param", "You must provide orderReferenceId and shopId arguments");
   }
-
-  let accountId;
-  let anonymousAccessToken;
-  if (token) {
-    accountId = null;
-    anonymousAccessToken = hashLoginToken(token);
-  } else {
-    // Unless you are an admin with orders permission, you are limited to seeing it if you placed it
-    if (!userHasPermission(["orders"], shopId)) {
-      if (!contextAccountId) {
-        throw new ReactionError("access-denied", "Access Denied");
-      }
-      accountId = contextAccountId;
-    }
-    anonymousAccessToken = null;
-  }
-
-  return Orders.findOne({
-    accountId,
-    anonymousAccessToken,
-    referenceId: orderReferenceId,
-    shopId
-  });
+  const selector = getOrderQuery(context, { referenceId: orderReferenceId }, shopId, token);
+  return context.collections.Orders.findOne(selector);
 }
