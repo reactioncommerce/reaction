@@ -76,7 +76,7 @@ class OrderCard extends Component {
   renderPayments() {
     const { order } = this.props;
 
-    return <OrderCardPayments order={order} {...this.props} />;
+    return <OrderCardPayments order={order} />;
   }
 
   renderRefunds() {
