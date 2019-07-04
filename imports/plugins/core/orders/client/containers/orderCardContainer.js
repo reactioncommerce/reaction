@@ -4,7 +4,7 @@ import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
-import OrderCard from "../components/orderCard";
+import OrderCard from "../components/OrderCard";
 import orderByReferenceId from "../graphql/queries/orderByReferenceId";
 
 

@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
 import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
-import OrderCardStatusChip from "./orderCardStatusChip";
+import OrderCardStatusChip from "./OrderCardStatusChip";
 
 
 const styles = (theme) => ({

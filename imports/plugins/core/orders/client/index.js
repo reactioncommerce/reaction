@@ -3,7 +3,7 @@ import InboxIcon from "mdi-material-ui/Inbox";
 import { registerBlock } from "@reactioncommerce/reaction-components";
 import { registerOperatorRoute } from "/imports/client/ui";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
-import OrderCardSummary from "./components/orderCardSummary";
+import OrderCardSummary from "./components/OrderCardSummary";
 import Orders from "./containers/orderDashboardContainer";
 import OrderCard from "./containers/orderCardContainer";
 

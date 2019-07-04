@@ -14,8 +14,8 @@ import Typography from "@material-ui/core/Typography";
 import Address from "@reactioncommerce/components/Address/v1";
 import { i18next, Reaction } from "/client/api";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
-import OrderCardFulfillmentGroupTrackingNumber from "./orderCardFulfillmentGroupTrackingNumber";
-import OrderCardStatusChip from "./orderCardStatusChip";
+import OrderCardFulfillmentGroupTrackingNumber from "./OrderCardFulfillmentGroupTrackingNumber";
+import OrderCardStatusChip from "./OrderCardStatusChip";
 import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 
 import FormControl from "@material-ui/core/FormControl";
@@ -26,7 +26,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import { Components } from "@reactioncommerce/reaction-components";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
-import OrderCardFulfillmentGroupItem from "./orderCardFulfillmentGroupItem";
+import OrderCardFulfillmentGroupItem from "./OrderCardFulfillmentGroupItem";
 
 
 const styles = (theme) => ({

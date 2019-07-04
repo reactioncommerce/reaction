@@ -13,10 +13,10 @@ import Typography from "@material-ui/core/Typography";
 import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
-import OrderCardAppBar from "./orderCardAppBar";
+import OrderCardAppBar from "./OrderCardAppBar";
 import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
-import OrderCardHeader from "./orderCardHeader";
+import OrderCardHeader from "./OrderCardHeader";
 import OrderCardPayments from "./orderCardPayments";
 
 
