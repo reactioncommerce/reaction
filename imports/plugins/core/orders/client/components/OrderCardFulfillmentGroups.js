@@ -276,8 +276,8 @@ class OrderCardFulfillmentGroups extends Component {
 
 
   renderUpdateFulfillmentGroupStatusButton = (fulfillmentGroup) => {
-    const { classes } = this.props;
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const { classes } = this.props;
     const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
     const options = [
       {

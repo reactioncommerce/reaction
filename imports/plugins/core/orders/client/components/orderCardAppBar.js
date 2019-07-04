@@ -65,8 +65,8 @@ class OrderCardAppBar extends Component {
   };
 
   handleInventoryRestock = (item) => {
-    const { shouldRestock } = this.state;
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const { shouldRestock } = this.state;
 
     if (hasPermission && shouldRestock) {
       return console.log(" ----- ----- ----- handleInventoryRestock for item ", item);
@@ -76,10 +76,10 @@ class OrderCardAppBar extends Component {
   }
 
   renderCancelOrderButton = () => {
+    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
     const { order } = this.props;
     const { shouldRestock } = this.state;
     const canCancelOrder = (order.status !== "coreOrderWorkflow/canceled");
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
 
     if (hasPermission) {
       if (canCancelOrder) {

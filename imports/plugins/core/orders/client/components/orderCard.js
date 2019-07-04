@@ -2,16 +2,20 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
+import Typography from "@material-ui/core/Typography";
 import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import OrderCardAppBar from "./orderCardAppBar";
 import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
-import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
+import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
 import OrderCardHeader from "./orderCardHeader";
 import OrderCardPayments from "./orderCardPayments";
 
@@ -70,7 +74,7 @@ class OrderCard extends Component {
   renderFulfillmentGroups() {
     const { order } = this.props;
 
-    return <OrderCardFulfillmentGroup order={order} {...this.props} />;
+    return <OrderCardFulfillmentGroups order={order} {...this.props} />;
   }
 
   renderPayments() {
@@ -85,7 +89,14 @@ class OrderCard extends Component {
     if (currentTab === 1) {
       return (
         <Grid item xs={12}>
-          [Placeholder] Refunds will go here
+          <Card elevation={0}>
+            <CardHeader
+              title="Refunds"
+            />
+            <CardContent>
+              <Typography variant="h3">Coming soon!</Typography>
+            </CardContent>
+          </Card>
         </Grid>
       );
     }
@@ -130,18 +141,20 @@ class OrderCard extends Component {
       <Fragment>
         <Helmet title={`Order Details for order reference #${order.referenceId}`} />
         {this.renderAppBar()}
-        <Grid container spacing={24}>
+        <Grid container spacing={32}>
           <Grid item xs={12}>
             {this.renderHeader()}
           </Grid>
           <Grid className={classes.tabs} item xs={12}>
             {this.renderTabs()}
           </Grid>
+          {/* TODO: EK - above here is done / commented on, continue below */}
           {currentTab === 0 &&
             this.renderFulfillment()
           }
           {currentTab === 1 &&
             this.renderRefunds()
+            // TODO: EK - finish refunds
           }
         </Grid>
         <DetailDrawer title={i18next.t("orderCard.orderSummary.title", "Order summary")}>
