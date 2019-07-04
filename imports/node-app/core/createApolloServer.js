@@ -77,7 +77,7 @@ export default function createApolloServer(options = {}) {
     // so that the header is set on 401 responses, too. Otherwise it breaks our 401
     // refresh handling on the clients.
     cors(),
-    tokenMiddleware(contextFromOptions),
+    tokenMiddleware(contextFromOptions)
   );
 
   apolloServer.applyMiddleware({ app, cors: true, path });
