@@ -1,3 +1,4 @@
+// DEPRECATED - delete this when meteor is removed
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import approveOrderPaymentsMutation from "./approveOrderPayments.graphql";

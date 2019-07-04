@@ -2,6 +2,26 @@ import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 
 /**
+ * @method isPaymentRiskElevated
+ * @private
+ * @summary Gets the riskLevel on each payment object of an order, and checks if any payment has an elevated risk.
+ * @param {object} order - order object
+ * @param {array} paymentIds - paymentIds to check
+ * @return {boolean} is there an elevated risk level value for any payment on this order?
+ * */
+export function isPaymentRiskElevated(order, paymentIds) {
+  const paymentsToAssessRisk = (order.payments || []).filter((payment) => paymentIds.includes(payment._id) && payment.mode !== "captured");
+  const isPaymentNormalRisk = paymentsToAssessRisk.every((payment) => !payment.riskLevel || payment.riskLevel === "normal");
+
+  return !isPaymentNormalRisk;
+}
+
+
+// Below here are deprecated Meteor helpers.
+// Keep them for now, but they can be removed once
+// meteor is completely removed from the orders panel.
+
+/**
  * @param {String} orderId The order ID
  * @param {String} paymentId The ID of the payment to approve
  * @returns {Promise<null>} null
@@ -184,3 +204,4 @@ export function getShippingInfo(order) {
   const shippingInfo = order && order.shipping && order.shipping.find((group) => group.shopId === Reaction.getShopId());
   return shippingInfo || {};
 }
+

@@ -97,7 +97,8 @@ export const rawMuiTheme = {
       lineHeight: 1.5
     },
     body2: {
-      fontSize: defaultFontSize,
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.875,
       lineHeight: 1.5
     },
     caption: {

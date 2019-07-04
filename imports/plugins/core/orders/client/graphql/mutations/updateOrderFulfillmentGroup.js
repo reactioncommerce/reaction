@@ -1,7 +1,8 @@
 import gql from "graphql-tag";
+import { orderCommonFragment } from "../fragments/orderCommon";
 
 export default gql`
-  mutation updateOrderFulfillmentGroupMutation($orderFulfillmentGroupId: ID!, $orderId: ID!, $status: String, $tracking: String) {
+  mutation updateOrderFulfillmentGroupMutation($orderFulfillmentGroupId: ID!, $orderId: ID!, $status: String, $tracking: String, $language: String! = "en") {
     updateOrderFulfillmentGroup(input: {
       orderFulfillmentGroupId: $orderFulfillmentGroupId,
       orderId: $orderId,
@@ -9,11 +10,9 @@ export default gql`
       tracking: $tracking
     }) {
       order {
-        fulfillmentGroups {
-          status
-          tracking
-        }
+        ...OrderCommon
       }
     }
   }
+  ${orderCommonFragment}
 `;

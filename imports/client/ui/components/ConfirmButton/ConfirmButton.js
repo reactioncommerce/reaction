@@ -16,6 +16,7 @@ class ConfirmButton extends Component {
     cancelActionText: PropTypes.string,
     children: PropTypes.object,
     confirmActionText: PropTypes.string,
+    isWaiting: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     onConfirm: PropTypes.func,
     size: PropTypes.string,
@@ -50,10 +51,17 @@ class ConfirmButton extends Component {
   }
 
   renderButton = () => {
-    const { buttonColor, buttonText, buttonVariant, size } = this.props;
+    const { buttonColor, buttonText, buttonVariant } = this.props;
 
     return (
-      <Button color={buttonColor} variant={buttonVariant} onClick={this.handleOpen} size={size}>{buttonText}</Button>
+      <Button
+        color={buttonColor}
+        variant={buttonVariant}
+        onClick={this.handleOpen}
+        {...this.props}
+      >
+        {buttonText}
+      </Button>
     );
   }
 
