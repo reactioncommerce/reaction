@@ -1,3 +1,4 @@
+# DEPRECATED - delete this when meteor is removed
 updateOrderFulfillmentGroup($orderFulfillmentGroupId: ID!, $orderId: ID!, $status: String, $tracking: String) {
   updateOrderFulfillmentGroup(input: {
     orderFulfillmentGroupId: $orderFulfillmentGroupId,

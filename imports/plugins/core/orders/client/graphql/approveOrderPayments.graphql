@@ -1,6 +1,6 @@
 # DEPRECATED - delete this when meteor is removed
-captureOrderPayments($input: CaptureOrderPaymentsInput!) {
-  captureOrderPayments(input: $input) {
+approveOrderPayments($input: ApproveOrderPaymentsInput!) {
+  approveOrderPayments(input: $input) {
     order {
       _id
       account {
