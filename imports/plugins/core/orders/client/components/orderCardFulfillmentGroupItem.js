@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 
 const styles = (theme) => ({
   fulfillmentGroupSpacing: {
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing.unit * 10
   },
   itemTextBold: {
     fontWeight: theme.typography.fontWeightBold
@@ -33,33 +33,36 @@ class OrderCardFulfillmentGroupItem extends Component {
 
   render() {
     const { classes, item } = this.props;
-    const { price, productVendor, quantity, subtotal, variantTitle } = item;
+    const { price, productVendor, quantity, subtotal, title, variantTitle } = item;
 
     return (
-      <Grid container className={classes.fulfillmentGroupSpacing}>
-        <Grid item xs={12} md={6}>
+      <Grid container>
+        <Grid item xs={6} md={6}>
           <Grid item className={classes.orderCardSection} xs={12} md={12}>
-            <Typography variant="body2" className={classes.itemTextBold}>
-              {variantTitle}
+            <Typography paragraph variant="h4">
+              {title}
             </Typography>
             <Typography variant="body2">
               {productVendor}
+            </Typography>
+            <Typography variant="body2">
+              {variantTitle}
             </Typography>
             <Typography variant="body2">
               Quantity: {quantity}
             </Typography>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={6} md={6}>
           <Grid item xs={12} md={12}>
-            <Typography variant="body2" align="right">
+            <Typography paragraph variant="h4" align="right">
               {price.displayAmount}
             </Typography>
-            <Typography variant="body2" align="right">
-              &nbsp;
-            </Typography>
-            <Typography variant="body2" align="right">
-              {subtotal.displayAmount}
+            <Typography variant="body1" align="right">
+              Total({quantity}):&nbsp;
+              <Typography variant="h4" inline>
+                {subtotal.displayAmount}
+              </Typography>
             </Typography>
           </Grid>
         </Grid>
