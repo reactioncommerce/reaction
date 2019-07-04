@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 
 /**
  * @name OrderCardCustomerDetails
- * @params {Object} props Component props
+ * @param {Object} props Component props
  * @returns {React.Component} returns a React component
  */
 function OrderCardCustomerDetails({ order }) {
