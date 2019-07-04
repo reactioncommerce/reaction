@@ -12,34 +12,18 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 import Address from "@reactioncommerce/components/Address/v1";
+import { Components } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
+import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
+import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
+import OrderCardFulfillmentGroupItem from "./OrderCardFulfillmentGroupItem";
 import OrderCardFulfillmentGroupTrackingNumber from "./OrderCardFulfillmentGroupTrackingNumber";
 import OrderCardStatusChip from "./OrderCardStatusChip";
-import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
-
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import { Components } from "@reactioncommerce/reaction-components";
-import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
-import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
-import OrderCardFulfillmentGroupItem from "./OrderCardFulfillmentGroupItem";
-
 
 const styles = (theme) => ({
   fulfillmentGroupHeader: {
     marginBottom: theme.spacing.unit * 4
-  },
-  fulfillmentSelect: {
-    height: "37px",
-    minWidth: "205px",
-    marginBottom: "-15px"
-  },
-  printShippingLabelLink: {
-    marginRight: theme.spacing.unit * 2
   },
   verticalDivider: {
     backgroundColor: "#e6e6e6",
@@ -63,14 +47,37 @@ class OrderCardFulfillmentGroups extends Component {
   static propTypes = {
     classes: PropTypes.object,
     order: PropTypes.shape({
-      fulfillmentGroups: PropTypes.array
+      _id: PropTypes.string,
+      fulfillmentGroups: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string,
+        items: PropTypes.array,
+        selectedFulfillmentOption: PropTypes.shape({
+          fulfillmentMethod: PropTypes.shape({
+            carrier: PropTypes.string
+          })
+        }),
+        status: PropTypes.string
+      })),
+      referenceId: PropTypes.string
     })
   };
 
+  // TODO: EK - state
   state = {
     shouldRestock: true
   };
 
+  getPrintShippingLabelLink() {
+    const { order } = this.props;
+
+    return Reaction.Router.pathFor("dashboard/pdf/orders", {
+      hash: {
+        id: order.referenceId
+      }
+    });
+  }
+
+  // TODO: EK - this function
   handleCancelFulfillmentGroup(mutation, fulfillmentGroup) {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
 
@@ -99,6 +106,18 @@ class OrderCardFulfillmentGroups extends Component {
   }
 
   // TODO: EK - move inventory out of this file?
+  // TODO: EK - this function
+  handleInventoryRestock = (item) => {
+    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+
+    if (hasPermission) {
+      // TODO: EK - handle inventory restock
+      console.log(" ----- ----- ----- Handle restocking item", item._id);
+    }
+  }
+
+  // TODO: EK - move inventory out of this file?
+  // TODO: EK - this function
   handleInventoryRestockCheckbox = (name) => (event) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
 
@@ -110,21 +129,22 @@ class OrderCardFulfillmentGroups extends Component {
     }
   };
 
-  // TODO: EK - move inventory out of this file?
-  handleInventoryRestock = (item) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-
-    if (hasPermission) {
-      // TODO: EK - handle inventory restock
-      console.log(" ----- ----- ----- Handle restocking item", item._id);
-    }
-  }
-
   // TODO: EK - what do we do when people click this
+  // TODO: EK - this function
   handlePrintShippingLabel(fulfillmentGroup) {
     console.log(" ----- ----- ----- ----- Print shipping label button has been clicked for fulfillment group", fulfillmentGroup._id);
   }
 
+  // TODO: EK - this function
+  handleSelectChange = (event, value, field) => {
+    console.log(" ------ handle select change", event, value, field);
+
+    // if (this.props.onProductFieldSave) {
+    //   this.props.onProductFieldSave(this.product._id, field, value);
+    // }
+  }
+
+  // TODO: EK - this function
   async handleUpdateFulfillmentGroupStatus(mutation, fulfillmentGroup) {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
 
@@ -167,25 +187,7 @@ class OrderCardFulfillmentGroups extends Component {
     }
   }
 
-  printShippingLabelLink() {
-    const { order } = this.props;
-
-    return Reaction.Router.pathFor("dashboard/pdf/orders", {
-      hash: {
-        id: order.referenceId
-      }
-    });
-  }
-
-
-  renderFulfillmentGroupItems(fulfillmentGroup) {
-    return fulfillmentGroup.items.nodes.map((item) => (
-      <Grid key={item._id} item xs={12}>
-        <OrderCardFulfillmentGroupItem item={item} />
-      </Grid>
-    ));
-  }
-
+  // TODO: EK - this function
   renderCancelFulfillmentGroupButton = (fulfillmentGroup) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
     // "new": "New ",
@@ -245,6 +247,15 @@ class OrderCardFulfillmentGroups extends Component {
     return null;
   }
 
+  renderFulfillmentGroupItems(fulfillmentGroup) {
+    return fulfillmentGroup.items.nodes.map((item) => (
+      <Grid key={item._id} item xs={12}>
+        <OrderCardFulfillmentGroupItem item={item} />
+      </Grid>
+    ));
+  }
+
+  // TODO: EK - this function
   renderPrintShippingLabelLink = (fulfillmentGroup) => {
     const showLink = true; // TODO: EK - remove this, find the real check to use here
 
@@ -252,7 +263,7 @@ class OrderCardFulfillmentGroups extends Component {
       return (
         <Grid item>
           <Button
-            onClick={this.printShippingLabelLink}
+            onClick={this.getPrintShippingLabelLink}
             variant="text"
           >
             {i18next.t("admin.fulfillmentGroups.printShippingLabel", "Print shipping label")}
@@ -264,16 +275,7 @@ class OrderCardFulfillmentGroups extends Component {
     return null;
   }
 
-
-  handleSelectChange = (event, value, field) => {
-    console.log(" ------ handle select change", event, value, field);
-
-    // if (this.props.onProductFieldSave) {
-    //   this.props.onProductFieldSave(this.product._id, field, value);
-    // }
-  }
-
-
+  // TODO: EK - this function
   renderUpdateFulfillmentGroupStatusButton = (fulfillmentGroup) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
     const { classes } = this.props;
@@ -339,7 +341,6 @@ class OrderCardFulfillmentGroups extends Component {
                 onConfirm={() => this.handleUpdateFulfillmentGroupStatus(mutationFunc, fulfillmentGroup)}
               >
                 <Components.Select
-                  className={classes.fulfillmentSelect}
                   clearable={false}
                   i18nKeyPlaceholder="orderActions.selectPrompt"
                   name="fulfillmentStatus"
@@ -457,103 +458,95 @@ class OrderCardFulfillmentGroups extends Component {
     // }
   }
 
-  renderFulfillmentGroups = () => {
+  // TODO: EK - translations i18n
+  render() {
     const { classes, order } = this.props;
     const { fulfillmentGroups } = order;
     const totalGroupsCount = fulfillmentGroups.length;
 
     return fulfillmentGroups.map((fulfillmentGroup, index) => {
-      console.log(" ------------------------------- fulfillmentGroup", fulfillmentGroup);
-
       const currentGroupCount = index + 1;
       const { data: { shippingAddress }, displayStatus, status } = fulfillmentGroup;
 
       return (
-        <Grid key={fulfillmentGroup._id} item xs={12}>
-          <Card elevation={0}>
-            <CardContent>
-              <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
-                {/* TODO: EK - make this a spacing heading instread of class */}
-                <Grid item xs={6} md={6}>
-                  <Grid container alignItems="center" spacing={16}>
-                    <Grid item>
-                      <Typography variant="h4" inline={true}>
-                        Fulfillment group {currentGroupCount} of {totalGroupsCount}
-                      </Typography>
+        <Grid container spacing={32}>
+          <Grid key={fulfillmentGroup._id} item xs={12}>
+            <Card elevation={0}>
+              <CardContent>
+                <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
+                  <Grid item xs={6} md={6}>
+                    <Grid container alignItems="center" spacing={16}>
+                      <Grid item>
+                        <Typography variant="h4" inline={true}>
+                          Fulfillment group {currentGroupCount} of {totalGroupsCount}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <OrderCardStatusChip displayStatus={displayStatus} status={status} type="shipment" variant="contained" />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <OrderCardStatusChip displayStatus={displayStatus} status={status} type="shipment" variant="contained" />
-                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid item xs={6} md={6}>
-                  <Grid container alignItems="center" justify="flex-end" spacing={8}>
-                    {this.renderPrintShippingLabelLink(fulfillmentGroup)}
-                    {this.renderCancelFulfillmentGroupButton(fulfillmentGroup)}
-                    {this.renderUpdateFulfillmentGroupStatusButton(fulfillmentGroup)}
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid container spacing={24}>
-                <Grid item xs={12} md={12}>
-                  <Typography variant="h4">Items</Typography>
-                </Grid>
-                <Grid className={classes.gridItemNeedingDivider} item xs={12} md={5}>
-                  <Grid container spacing={40}>
-                    {this.renderFulfillmentGroupItems(fulfillmentGroup)}
-                  </Grid>
-                </Grid>
-                <Hidden only={["xs", "sm"]}>
-                  <Grid className={classes.gridItemWithDivider} item xs={2}>
-                    <div className={classes.verticalDivider}>&nbsp;</div>
-                  </Grid>
-                </Hidden>
-                <Hidden only={["md", "lg", "xl"]}>
-                  <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                </Hidden>
-                <Grid className={classes.gridItemNeedingDivider} item xs={12} md={5}>
-                  <Grid container spacing={32}>
-                    <Grid item xs={12} md={12}>
-                      <Typography paragraph variant="h4">
-                        Shipping address
-                      </Typography>
-                      <Address address={shippingAddress} />
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                      <Typography paragraph variant="h4">
-                      Shipping method
-                      </Typography>
-                      <Typography
-                        key={fulfillmentGroup._id}
-                        variant="body1"
-                      >
-                        {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName} {/* eslint-disable-line */}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                      <Typography paragraph variant="h4">
-                      Tracking number
-                      </Typography>
-                      <OrderCardFulfillmentGroupTrackingNumber orderId={order._id} fulfillmentGroup={fulfillmentGroup} {...this.props}/>
+                  <Grid item xs={6} md={6}>
+                    <Grid container alignItems="center" justify="flex-end" spacing={8}>
+                      {this.renderPrintShippingLabelLink(fulfillmentGroup)}
+                      {this.renderCancelFulfillmentGroupButton(fulfillmentGroup)}
+                      {this.renderUpdateFulfillmentGroupStatusButton(fulfillmentGroup)}
                     </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
+                <Grid container spacing={24}>
+                  <Grid item xs={12} md={12}>
+                    <Typography variant="h4">Items</Typography>
+                  </Grid>
+                  <Grid className={classes.gridItemNeedingDivider} item xs={12} md={5}>
+                    <Grid container spacing={40}>
+                      {this.renderFulfillmentGroupItems(fulfillmentGroup)}
+                    </Grid>
+                  </Grid>
+                  <Hidden only={["xs", "sm"]}>
+                    <Grid className={classes.gridItemWithDivider} item xs={2}>
+                      <div className={classes.verticalDivider}>&nbsp;</div>
+                    </Grid>
+                  </Hidden>
+                  <Hidden only={["md", "lg", "xl"]}>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                  </Hidden>
+                  <Grid className={classes.gridItemNeedingDivider} item xs={12} md={5}>
+                    <Grid container spacing={32}>
+                      <Grid item xs={12} md={12}>
+                        <Typography paragraph variant="h4">
+                          Shipping address
+                        </Typography>
+                        <Address address={shippingAddress} />
+                      </Grid>
+                      <Grid item xs={12} md={12}>
+                        <Typography paragraph variant="h4">
+                          Shipping method
+                        </Typography>
+                        <Typography
+                          key={fulfillmentGroup._id}
+                          variant="body1"
+                        >
+                          {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName} {/* eslint-disable-line */}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} md={12}>
+                        <Typography paragraph variant="h4">
+                          Tracking number
+                        </Typography>
+                        <OrderCardFulfillmentGroupTrackingNumber orderId={order._id} fulfillmentGroup={fulfillmentGroup} {...this.props}/>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
       );
     });
-  }
-
-  render() {
-    return (
-      <Grid container spacing={32}>
-        {this.renderFulfillmentGroups()}
-      </Grid>
-    );
   }
 }
 
