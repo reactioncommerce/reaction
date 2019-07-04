@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import DangerButton from "../DangerButton";
+import Button from "../Button";
 
 
 class ConfirmButton extends Component {
@@ -17,8 +16,10 @@ class ConfirmButton extends Component {
     cancelActionText: PropTypes.string,
     children: PropTypes.object,
     confirmActionText: PropTypes.string,
+    isWaiting: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     onConfirm: PropTypes.func,
+    size: PropTypes.string,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
   }
 
@@ -52,12 +53,15 @@ class ConfirmButton extends Component {
   renderButton = () => {
     const { buttonColor, buttonText, buttonVariant } = this.props;
 
-    if (buttonColor === "danger") {
-      return <DangerButton color="primary" variant={buttonVariant} onClick={this.handleOpen}>{buttonText}</DangerButton>;
-    }
-
     return (
-      <Button color={buttonColor} variant={buttonVariant} onClick={this.handleOpen}>{buttonText}</Button>
+      <Button
+        color={buttonColor}
+        variant={buttonVariant}
+        onClick={this.handleOpen}
+        {...this.props}
+      >
+        {buttonText}
+      </Button>
     );
   }
 

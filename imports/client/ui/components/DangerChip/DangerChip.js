@@ -50,7 +50,6 @@ DangerChip.propTypes = {
 
 DangerChip.defaultProps = {
   color: "primary",
-  size: "small",
   variant: "outlined"
 };
 

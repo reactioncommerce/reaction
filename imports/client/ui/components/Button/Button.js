@@ -55,6 +55,7 @@ function Button(props) {
           containedPrimary: classes.containedPrimary,
           outlinedPrimary: classes.outlinedPrimary
         }}
+        color="primary"
         disabled={disabled || isWaiting}
         {...otherProps}
       >
