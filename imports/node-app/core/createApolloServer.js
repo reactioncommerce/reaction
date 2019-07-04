@@ -6,6 +6,7 @@ import config from "./config";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
+import createDataLoaders from "./util/createDataLoaders";
 
 const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
 
@@ -53,6 +54,8 @@ export default function createApolloServer(options = {}) {
 
       addCallMeteorMethod(context);
 
+      await createDataLoaders(context);
+
       return context;
     },
     debug: options.debug || false,
@@ -74,7 +77,7 @@ export default function createApolloServer(options = {}) {
     // so that the header is set on 401 responses, too. Otherwise it breaks our 401
     // refresh handling on the clients.
     cors(),
-    tokenMiddleware(contextFromOptions)
+    tokenMiddleware(contextFromOptions),
   );
 
   apolloServer.applyMiddleware({ app, cors: true, path });
