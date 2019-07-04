@@ -74,7 +74,7 @@ class OrderCard extends Component {
   renderFulfillmentGroups() {
     const { order } = this.props;
 
-    return <OrderCardFulfillmentGroups order={order} {...this.props} />;
+    return <OrderCardFulfillmentGroups order={order} />;
   }
 
   renderPayments() {
@@ -148,7 +148,6 @@ class OrderCard extends Component {
           <Grid className={classes.tabs} item xs={12}>
             {this.renderTabs()}
           </Grid>
-          {/* TODO: EK - above here is done / commented on, continue below */}
           {currentTab === 0 &&
             this.renderFulfillment()
           }

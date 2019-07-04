@@ -127,7 +127,6 @@ class OrderCardFulfillmentGroups extends Component {
 
   async handleUpdateFulfillmentGroupStatus(mutation, fulfillmentGroup) {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    console.log(" ----- ----- ----- ----- handleUpdateFulfillmentGroupStatus", fulfillmentGroup.status, fulfillmentGroup);
 
     if (hasPermission) {
       const { order } = this.props;

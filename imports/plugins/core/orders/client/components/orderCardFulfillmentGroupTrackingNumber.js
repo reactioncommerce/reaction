@@ -9,7 +9,7 @@ import Link from "@material-ui/core/Link";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
-import { i18next } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
 
 
@@ -34,13 +34,17 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
   };
 
   handleSubmitForm = () => {
-    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+
+    if (hasPermission) {
       this.form.submit();
     }
   };
 
   handleToggleEdit = () => {
-    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+
+    if (hasPermission) {
       this.setState({
         isEditing: !this.state.isEditing
       });
@@ -48,7 +52,9 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
   };
 
   handleUpdateFulfillmentGroupTrackingNumber = (data, mutation) => {
-    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+
+    if (hasPermission) {
       const { fulfillmentGroup, orderId } = this.props;
       const { tracking } = data;
 
@@ -68,10 +74,11 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
   }
 
   render() {
+    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
     const { fulfillmentGroup } = this.props;
     const { isEditing, trackingNumber } = this.state;
 
-    if (this.props.hasEditPermission) { // TODO: EK - update to better permission handling
+    if (hasPermission) {
       if (isEditing) {
         return (
           <Mutation mutation={updateOrderFulfillmentGroupMutation}>
