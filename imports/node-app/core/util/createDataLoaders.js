@@ -5,13 +5,13 @@ import convertToDataloaderResult from "./convertToDataloaderResult";
 export const dataLoaderFactory = (dlFunc) => new DataLoader(dlFunc);
 
 export default async function createDataLoaders(context) {
-    if (!context.getFunctionsOfType || !context.getFunctionsOfType("createDataLoaders")) return;
+  if (!context.getFunctionsOfType || !context.getFunctionsOfType("createDataLoaders")) return;
 
-    const promises = context.getFunctionsOfType("createDataLoaders").map((fn) => fn(context, dataLoaderFactory, convertToDataloaderResult));
-    const dataLoadersByPlugin = await Promise.all(promises);
-    context.dataLoaders = {};
-    
-    dataLoadersByPlugin.forEach((pluginDataLoaders) => {
-        Object.assign(context.dataLoaders, pluginDataLoaders);
-    });
+  const promises = context.getFunctionsOfType("createDataLoaders").map((fn) => fn(context, dataLoaderFactory, convertToDataloaderResult));
+  const dataLoadersByPlugin = await Promise.all(promises);
+  context.dataLoaders = {};
+
+  dataLoadersByPlugin.forEach((pluginDataLoaders) => {
+    Object.assign(context.dataLoaders, pluginDataLoaders);
+  });
 }
