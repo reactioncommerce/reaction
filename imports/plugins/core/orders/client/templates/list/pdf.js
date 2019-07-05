@@ -31,10 +31,13 @@ Template.completedPDFLayout.onCreated(function () {
   const currentRoute = Router.current();
 
   this.autorun(() => {
-    this.subscribe("Orders");
+    this.subscribe("OrderById", currentRoute.params.id);
 
     const order = Orders.findOne({
-      _id: currentRoute.params.id
+      $or: [
+        { _id: currentRoute.params.id },
+        { referenceId: currentRoute.params.id }
+      ]
     });
     this.state.set({
       order

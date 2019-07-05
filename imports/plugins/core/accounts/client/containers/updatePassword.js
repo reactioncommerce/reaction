@@ -1,11 +1,12 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Random from "@reactioncommerce/random";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { Router } from "/client/api";
+import { Reaction, Router } from "/client/api";
 import { LoginFormValidation } from "/lib/api";
 import UpdatePassword from "../components/updatePassword";
 
@@ -15,7 +16,6 @@ const wrapComponent = (Comp) => (
       callback: PropTypes.func,
       formMessages: PropTypes.object,
       isOpen: PropTypes.bool,
-      onCompleteRoute: PropTypes.string,
       type: PropTypes.string,
       uniqueId: PropTypes.string
     }
@@ -76,7 +76,15 @@ const wrapComponent = (Comp) => (
         } else {
           // Now that Meteor.users is verified, we should do the same with the Accounts collection
           Meteor.call("accounts/verifyAccount");
-          Router.go(this.props.onCompleteRoute);
+          const { storefrontUrls } = Reaction.getCurrentShop();
+
+          if (Reaction.hasDashboardAccessForAnyShop()) {
+            Router.go("/operator");
+          } else if (!storefrontUrls || !storefrontUrls.storefrontLoginUrl) {
+            throw new ReactionError("error-occurred", "Missing storefront URLs. Please set these properties from the shop settings panel.");
+          } else {
+            window.location.href = storefrontUrls.storefrontLoginUrl;
+          }
         }
       });
     }

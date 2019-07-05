@@ -41,8 +41,9 @@ export default (Component) => (
         >
           {({ data, loading, refetch }) => {
             if (!loading) {
-              const { navigationTreeById: { name } } = data;
-              props.navigationTreeName = name;
+              if (data && data.navigationTreeById && data.navigationTreeById.name) {
+                props.navigationTreeName = data.navigationTreeById.name;
+              }
             }
             return <Component {...props} refetchNavigationTree={refetch} />;
           }}

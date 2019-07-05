@@ -18,18 +18,6 @@ type Cart implements Node {
   "An email address that has been associated with the cart"
   email: String
 
-  "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
-  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: CartItemsSortByField = addedAt): CartItemConnection
-
-  "The shop that owns the cart."
-  shop: Shop!
-
-  "Total quantity of all items in the cart"
-  totalItemQuantity: Int!
-
-  "The date and time at which this cart was last updated."
-  updatedAt: DateTime!
-
   # Read-only: Carts that don't have an account should be considered anonymous
   # and should be cleaned up after some time. This should not be set explicitly
   # on the cart but can be derived and add to the Cart as a read-only
@@ -39,27 +27,72 @@ type Cart implements Node {
   # Cart expiry is: updated_at + cart_expiry_threshold < now
   "The date and time at which the cart will expire. Account carts usually do not expire, so they will have a null value here."
   expiresAt: DateTime
+
+  "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
+  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: CartItemsSortByField = addedAt): CartItemConnection
+
+  """
+  If you integrate with third-party systems that require you to send the same ID for order
+  calculations as for cart calculations, you may use this ID, which is the same on a `cart` as on
+  the `order` placed from that cart. This ID can also be customized by plugins and is the best
+  ID to use if it is necessary to show a cart ID in the user interface.
+  """
+  referenceId: String
+
+  "The shop that owns the cart."
+  shop: Shop!
+
+  "Total quantity of all items in the cart"
+  totalItemQuantity: Int!
+
+  "The date and time at which this cart was last updated."
+  updatedAt: DateTime!
 }
 
+"Allowed values for cart item sortBy parameter"
 enum CartItemsSortByField {
+  "Cart item ID"
   _id
+
+  "Date and time at which the item was added to the cart"
   addedAt
 }
 
-"Wraps a list of `CartItem`s, providing pagination cursors and information."
-type CartItemConnection implements NodeConnection {
+"""
+Wraps a list of `CartItem`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type CartItemConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [CartItemEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [CartItem]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
 "A connection edge in which each node is a `CartItem` object"
 type CartItemEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The cart item"
   node: CartItem
 }
 
+"One attribute of a cart item"
 type CartItemAttribute {
   "The attribute label, e.g., Color"
   label: String
@@ -93,11 +126,6 @@ type CartItem implements Node {
   compareAtPrice: Money
 
   """
-  The quantity of this item currently available to order.
-  """
-  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell`.")
-
-  """
   The date and time at which the cart item was created. If an item is added, removed, and then added again,
   the original item is destroyed and this field will reflect the time it was created for the most recent addition.
   """
@@ -105,23 +133,6 @@ type CartItem implements Node {
 
   "The URLs for a picture of the item in various sizes"
   imageURLs: ImageSizes
-
-  """
-  The quantity of this item currently available to sell.
-  This number is updated when an order is placed by the customer.
-  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
-  This is most likely the quantity to display in the storefront UI.
-  """
-  inventoryAvailableToSell: Int
-
-  "Is this item currently backordered?"
-  isBackorder: Boolean!
-
-  "Is this item quantity available currently below it's low quantity threshold?"
-  isLowQuantity: Boolean!
-
-  "Is this item currently sold out?"
-  isSoldOut: Boolean!
 
   "Arbitrary additional metadata about this cart item."
   metafields: [Metafield]
@@ -146,11 +157,11 @@ type CartItem implements Node {
   "The product's slug"
   productSlug: String
 
-  "The type of product, used to display cart items differently"
-  productType: String
-
   "The list of tags that have been applied to this product"
   productTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
+
+  "The type of product, used to display cart items differently"
+  productType: String
 
   "The product vendor"
   productVendor: String
@@ -174,10 +185,19 @@ type CartItem implements Node {
   variantTitle: String
 }
 
+"Supported cart reconciliation modes"
 enum CartReconciliationMode {
-  merge
+  "Delete the anonymous cart and use the account cart."
   keepAccountCart
+
+  "Assign the anonymous cart to the account, and delete the account cart."
   keepAnonymousCart
+
+  """
+  Move all items from the anonymous cart into the account cart along with existing
+  account cart items. If the same item is in both carts, combine the quantities.
+  """
+  merge
 }
 
 ####################
@@ -201,14 +221,14 @@ extend type Query {
 
 "The input necessary to create a cart"
 input CreateCartInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
   "Array of items to add to new cart."
   items: [CartItemInput]!
 
   "ShopId association for the cart."
   shopId: ID!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 
 "Information about an item to add to a cart"
@@ -238,6 +258,7 @@ input ProductConfigurationInput {
   productVariantId: ID!
 }
 
+"Input for the `addCartItems` mutation"
 input AddCartItemsInput {
   "The cart ID"
   cartId: ID!
@@ -252,6 +273,7 @@ input AddCartItemsInput {
   token: String
 }
 
+"Input for the `removeCartItems` mutation"
 input RemoveCartItemsInput {
   "The cart ID"
   cartId: ID!
@@ -266,6 +288,7 @@ input RemoveCartItemsInput {
   token: String
 }
 
+"Input for the `updateCartItem` mutation"
 input UpdateCartItemInput {
   "The cart item ID"
   cartItemId: ID!
@@ -274,6 +297,7 @@ input UpdateCartItemInput {
   quantity: Int!
 }
 
+"Input for the `updateCartItemsQuantity` mutation"
 input UpdateCartItemsQuantityInput {
   "The cart ID"
   cartId: ID!

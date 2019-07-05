@@ -1,45 +1,20 @@
-import mongodb, { MongoClient } from "mongodb";
 import MongoDBMemoryServer from "mongodb-memory-server";
 import { gql } from "apollo-server";
 import { createTestClient } from "apollo-server-testing";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import appEvents from "../imports/node-app/core/util/appEvents";
-import createApolloServer from "../imports/node-app/core/createApolloServer";
-import defineCollections from "../imports/node-app/core/util/defineCollections";
+import ReactionNodeApp from "../imports/node-app/core/ReactionNodeApp";
+import buildContext from "../imports/node-app/core/util/buildContext";
 import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
-import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
-import coreMediaXform from "../imports/plugins/core/files/server/no-meteor/xforms/xformFileCollectionsProductMedia";
-import mutations from "../imports/node-app/devserver/mutations";
-import queries from "../imports/node-app/devserver/queries";
-import schemas from "../imports/node-app/devserver/schemas";
-import resolvers from "../imports/node-app/devserver/resolvers";
-import "../imports/node-app/devserver/extendSchemas";
+import registerPlugins from "../imports/node-app/registerPlugins";
+import "../imports/node-app/extendSchemas";
 
 class TestApp {
   constructor(options = {}) {
-    const { extraSchemas = [], functionsByType = {} } = options;
+    const { extraSchemas = [], functionsByType } = options;
 
-    this.collections = {};
-    this.context = {
-      appEvents,
-      collections: this.collections,
-      getFunctionsOfType: (type) => {
-        let funcs;
-        switch (type) {
-          case "xformCatalogProductMedia":
-            funcs = [coreMediaXform];
-            break;
-          default:
-            funcs = functionsByType[type] || [];
-        }
-        return funcs;
-      },
-      mutations,
-      queries
-    };
-
-    const { apolloServer, expressApp } = createApolloServer({
+    this.reactionNodeApp = new ReactionNodeApp({
       addCallMeteorMethod(context) {
         context.callMeteorMethod = (name) => {
           console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
@@ -47,16 +22,51 @@ class TestApp {
           return null;
         };
       },
-      context: this.context,
-      schemas: [...schemas, ...extraSchemas],
-      resolvers
       // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
       // error logging in the test output.
-      // debug: true
+      // debug: true,
+      context: {
+        createUser: async (userInfo) => {
+          const { email, name, username } = userInfo;
+
+          const user = {
+            _id: Random.id(),
+            createdAt: new Date(),
+            emails: [
+              {
+                address: email,
+                verified: true,
+                provides: "default"
+              }
+            ],
+            name,
+            services: {
+              password: {
+                bcrypt: Random.id(29)
+              },
+              resume: {
+                loginTokens: []
+              }
+            },
+            username
+          };
+
+          await this.reactionNodeApp.collections.users.insertOne(user);
+
+          await this.reactionNodeApp.collections.Accounts.insertOne({ ...user, userId: user._id });
+        },
+        mutations: {},
+        queries: {},
+        rootUrl: "https://shop.fake.site/"
+      },
+      functionsByType,
+      graphQL: {
+        schemas: extraSchemas
+      }
     });
 
-    this.app = expressApp;
-    this.graphClient = createTestClient(apolloServer);
+    this.collections = this.reactionNodeApp.collections;
+    this.context = this.reactionNodeApp.context;
   }
 
   mutate = (mutation) => async (variables) => {
@@ -72,7 +82,7 @@ class TestApp {
   };
 
   async createUserAndAccount(user = {}, globalRoles) {
-    await this.collections.users.insertOne({
+    await this.reactionNodeApp.collections.users.insertOne({
       ...user,
       roles: {
         ...(user.roles || {}),
@@ -85,22 +95,24 @@ class TestApp {
       }
     });
 
-    await this.collections.Accounts.insertOne({ ...user, userId: user._id });
+    await this.reactionNodeApp.collections.Accounts.insertOne({ ...user, userId: user._id });
   }
 
   async setLoggedInUser(user = {}) {
     if (!user._id) throw new Error("setLoggedInUser: user must have _id property set");
 
+    const { users } = this.reactionNodeApp.collections;
+
     const loginToken = Random.id();
     const hashedToken = hashLoginToken(loginToken);
 
-    const existing = await this.collections.users.findOne({ _id: user._id });
+    const existing = await users.findOne({ _id: user._id });
     if (!existing) {
       await this.createUserAndAccount(user);
     }
 
     // Set the hashed login token on the users document
-    await this.collections.users.updateOne({ _id: user._id }, {
+    await users.updateOne({ _id: user._id }, {
       $push: {
         "services.resume.loginTokens": {
           hashedToken,
@@ -111,13 +123,20 @@ class TestApp {
 
     this.userId = user._id;
 
-    const dbUser = await this.collections.users.findOne({ _id: user._id });
-    this.context.user = dbUser;
+    const dbUser = await users.findOne({ _id: user._id });
+    this.reactionNodeApp.context.user = dbUser;
   }
 
   async clearLoggedInUser() {
     this.userId = null;
-    this.context.user = null;
+    this.reactionNodeApp.context.user = null;
+  }
+
+  async publishProducts(productIds) {
+    const requestContext = { ...this.reactionNodeApp.context };
+    await buildContext(requestContext);
+    requestContext.userHasPermission = () => true;
+    return this.reactionNodeApp.context.mutations.publishProducts(requestContext, productIds);
   }
 
   async insertPrimaryShop(shopData) {
@@ -133,45 +152,62 @@ class TestApp {
           symbol: "$"
         }
       },
+      currency: "USD",
       name: "Primary Shop",
       ...shopData,
+      shopType: "primary",
       domains: [domain]
     });
 
-    const result = await this.collections.Shops.insertOne(mockShop);
+    const result = await this.reactionNodeApp.collections.Shops.insertOne(mockShop);
 
     return result.insertedId;
   }
 
+  // Keep this in sync with the real `registerPlugin` in `ReactionNodeApp`
+  async registerPlugin(plugin) {
+    return this.reactionNodeApp.registerPlugin(plugin);
+  }
+
+  async runServiceStartup() {
+    return this.reactionNodeApp.runServiceStartup();
+  }
+
   async startMongo() {
     this.mongoServer = new MongoDBMemoryServer();
-    const mongoUri = await this.mongoServer.getConnectionString();
-    this.connection = await MongoClient.connect(mongoUri, { useNewUrlParser: true });
-    this.db = this.connection.db(await this.mongoServer.getDbName());
-
-    defineCollections(this.db, this.collections);
-
-    const { Media } = setUpFileCollections({
-      absoluteUrlPrefix: "http://fake.com",
-      db: this.db,
-      Logger: { info: console.info.bind(console) }, // eslint-disable-line no-console
-      MediaRecords: this.collections.MediaRecords,
-      mongodb
-    });
-
-    this.collections.Media = Media;
+    const mongoUrl = await this.mongoServer.getConnectionString();
+    return mongoUrl;
   }
 
   stopMongo() {
-    this.connection.close();
     this.mongoServer.stop();
   }
 
   async start() {
-    await this.startMongo();
+    try {
+      await registerPlugins(this.reactionNodeApp);
+    } catch (error) {
+      Logger.error(error, "Error registering plugins in TestApp");
+      throw error;
+    }
+
+    const mongoUrl = await this.startMongo();
+
+    // We intentionally do not pass `port` option, which prevents
+    // it from starting the actual server. We will use
+    // `createTestClient` below instead of an actual server.
+    try {
+      await this.reactionNodeApp.start({ mongoUrl });
+    } catch (error) {
+      Logger.error(error, "Error starting app in TestApp");
+      throw error;
+    }
+
+    this.graphClient = createTestClient(this.reactionNodeApp.apolloServer);
   }
 
   async stop() {
+    await this.reactionNodeApp.stop();
     this.stopMongo();
   }
 }

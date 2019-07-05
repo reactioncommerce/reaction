@@ -1,3 +1,4 @@
+import { toFixed } from "accounting-js";
 
 /**
  * @summary Calculate final shipping, discounts, surcharges, and taxes; builds an invoice object
@@ -19,7 +20,7 @@ export default function addInvoiceToGroup({
   taxTotal
 }) {
   // Items
-  const itemTotal = group.items.reduce((sum, item) => (sum + item.subtotal), 0);
+  const itemTotal = +toFixed(group.items.reduce((sum, item) => (sum + item.subtotal), 0), 3);
 
   // Taxes
   const effectiveTaxRate = taxableAmount > 0 ? taxTotal / taxableAmount : 0;
@@ -32,7 +33,7 @@ export default function addInvoiceToGroup({
   // Totals
   // To avoid rounding errors, be sure to keep this calculation the same between here and
   // `buildOrderInputFromCart.js` in the client code.
-  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + groupSurchargeTotal - groupDiscountTotal);
+  const total = +toFixed(Math.max(0, itemTotal + fulfillmentTotal + taxTotal + groupSurchargeTotal - groupDiscountTotal), 3);
 
   group.invoice = {
     currencyCode,

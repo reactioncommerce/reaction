@@ -10,7 +10,7 @@ test("calls Shops.findOne with hostname query and returns result", async () => {
   expect(mockContext.collections.Shops.findOne).toHaveBeenCalledWith({
     domains: "my.domain.com"
   }, {
-    fields: {
+    projection: {
       _id: 1
     }
   });
@@ -27,14 +27,14 @@ test("returns ID of shop with shopType 'primary' if no domain results", async ()
   expect(mockContext.collections.Shops.findOne).toHaveBeenCalledWith({
     domains: "my.domain.com"
   }, {
-    fields: {
+    projection: {
       _id: 1
     }
   });
   expect(mockContext.collections.Shops.findOne).toHaveBeenCalledWith({
     shopType: "primary"
   }, {
-    fields: {
+    projection: {
       _id: 1
     }
   });

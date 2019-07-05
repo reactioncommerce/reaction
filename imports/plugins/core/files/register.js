@@ -1,15 +1,11 @@
+/**
+ * This file is necessary for backwards compatibility while we refactor
+ * the API to remove Meteor. The no-meteor `register.js` file will
+ * eventually become the main entry point of the plugin, but for now
+ * our Meteor tooling loads this file, so we include this here as a
+ * temporary bridge.
+ */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import xformFileCollectionsProductMedia from "./server/no-meteor/xforms/xformFileCollectionsProductMedia";
+import register from "./server/no-meteor/register";
 
-Reaction.registerPackage({
-  label: "File Collections",
-  name: "reaction-file-collections",
-  icon: "fa fa-files-o",
-  autoEnable: true,
-  settings: {
-    name: "File Collections"
-  },
-  functionsByType: {
-    xformCatalogProductMedia: [xformFileCollectionsProductMedia]
-  }
-});
+Reaction.whenAppInstanceReady(register);

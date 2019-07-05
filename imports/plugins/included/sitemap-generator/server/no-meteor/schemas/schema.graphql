@@ -23,16 +23,17 @@ extend type Query {
   sitemap(handle: String!, shopUrl: String!): Sitemap
 }
 
+"Generated sitemap XML for a single shop"
 type Sitemap {
-  "The shop ID"
-  shopId: String!
+  "Date created"
+  createdAt: Date!
 
   "The Sitemap handle, as set in Sitemaps collection"
   handle: String!
 
+  "The shop ID"
+  shopId: String!
+
   "The Sitemap XML content"
   xml: String!
-
-  "Date created"
-  createdAt: Date!
 }

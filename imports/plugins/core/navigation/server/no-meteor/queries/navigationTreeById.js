@@ -1,21 +1,38 @@
+import filterNavigationTreeItems from "../util/filterNavigationTreeItems";
+
 /**
  * @name navigationTreeById
  * @method
  * @memberof Navigation/NoMeteorQueries
  * @summary Query for loading a navigation tree by _id
  * @param {Object} context An object containing the per-request state
- * @param {String} language Language to filter item content by
- * @param {String} _id The _id of the navigation tree
+ * @param {Object} args Params to find and filter the navigation tree by
+ * @param {String} args.language Language to filter item content by
+ * @param {String} args.navigationTreeId Navigation tree id
+ * @param {Boolean} [args.shouldIncludeSecondary] Include secondary navigation items alongside primary items
  * @return {Promise<MongoCursor>} A MongoDB cursor for the proper query
  */
-export default async function navigationTreeById(context, language, _id) {
-  const { collections } = context;
+export default async function navigationTreeById(context, { language, navigationTreeId, shouldIncludeSecondary = false } = {}) {
+  const { collections, userHasPermission } = context;
   const { NavigationTrees } = collections;
 
-  const navigationTree = await NavigationTrees.findOne({ _id });
+  const navigationTree = await NavigationTrees.findOne({ _id: navigationTreeId });
   if (navigationTree) {
     // Add language from args so that we can use it in items & draftItems resolvers
     navigationTree.language = language;
+
+    const isAdmin = userHasPermission(["admin", "owner", "create-product"]);
+
+    // Filter items based on visibility options and user permissions
+    navigationTree.items = filterNavigationTreeItems(navigationTree.items, {
+      isAdmin,
+      shouldIncludeSecondary
+    });
+
+    // Prevent non-admin users from getting draft items in results
+    if (!isAdmin) {
+      navigationTree.draftItems = null;
+    }
   }
 
   return navigationTree;

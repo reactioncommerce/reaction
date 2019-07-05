@@ -13,7 +13,6 @@ import { registerSchema } from "@reactioncommerce/schemas";
 export const EmailTemplates = new SimpleSchema({
   "shopId": {
     type: String,
-    index: 1,
     label: "Template ShopId"
   },
   "name": {

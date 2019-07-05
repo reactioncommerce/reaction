@@ -13,14 +13,11 @@ const Money = new SimpleSchema({
  * @name CommonOrderItemAttribute
  * @memberof Schemas
  * @type {SimpleSchema}
- * @property {String} label optional
+ * @property {String} label required
  * @property {String} value optional
  */
 export const CommonOrderItemAttribute = new SimpleSchema({
-  label: {
-    type: String,
-    optional: true
-  },
+  label: String,
   value: {
     type: String,
     optional: true

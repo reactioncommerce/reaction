@@ -35,14 +35,11 @@ class ProductDetail extends Component {
 }
 
 ProductDetail.propTypes = {
-  cartQuantity: PropTypes.number,
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   hasAdminPermission: PropTypes.bool,
   layout: PropTypes.string,
   layoutName: PropTypes.string,
   mediaGalleryComponent: PropTypes.node,
-  onAddToCart: PropTypes.func,
-  onCartQuantityChange: PropTypes.func,
   onDeleteProduct: PropTypes.func,
   onProductFieldChange: PropTypes.func,
   priceRange: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

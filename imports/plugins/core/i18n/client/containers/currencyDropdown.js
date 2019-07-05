@@ -4,7 +4,6 @@ import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Shops, Accounts } from "/lib/collections";
-import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import CurrencyDropdown from "../components/currencyDropdown";
 
 const handlers = {
@@ -13,12 +12,6 @@ const handlers = {
     const currencyName = currency[0];
     // update Accounts with the selected currency
     Meteor.call("accounts/setProfileCurrency", currencyName);
-
-    const { cart, token } = getCart();
-    if (!cart) return;
-
-    // Attach changed currency to this users cart
-    Meteor.call("cart/setUserCurrency", cart._id, token, currencyName);
   }
 };
 

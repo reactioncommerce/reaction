@@ -23,13 +23,48 @@ test("adds random ID and unknown type to all errors", () => {
   expect(error.type).toBe("unknown");
 });
 
+test("Falls back to greppable message", () => {
+  const error = { originalError: {} };
+  getErrorFormatter()(error);
+
+  expect(LoggerMock.error).toHaveBeenCalledWith(
+    {
+      errorId: jasmine.any(String)
+    },
+    "ApolloServer error with no message"
+  );
+});
+
 test("if originalError is present, logs the error with some additional details", () => {
   const context = { user: { _id: "123", name: "User" } };
-  const error = { originalError: new Error("TEST_ERROR"), path: "PATH" };
+  const message = "TEST_ERROR";
+  const error = { originalError: new Error(message), path: "PATH" };
   getErrorFormatter(context)(error);
 
-  expect(LoggerMock.error).toHaveBeenCalledWith({
-    errorId: jasmine.any(String),
-    path: "PATH"
-  });
+  expect(LoggerMock.error).toHaveBeenCalledWith(
+    {
+      errorId: jasmine.any(String),
+      path: "PATH"
+    },
+    message
+  );
+});
+
+test("if originalError is validation-error, uses details[0].message", () => {
+  const context = { user: { _id: "123", name: "User" } };
+  const message = "TEST_ERROR";
+  const originalError = new Error("TEST_ORIGINAL_MESSAGE");
+  originalError.details = [{ message }];
+  originalError.error = "validation-error";
+
+  const error = { originalError, path: "PATH" };
+  getErrorFormatter(context)(error);
+
+  expect(LoggerMock.error).toHaveBeenCalledWith(
+    {
+      errorId: jasmine.any(String),
+      path: "PATH"
+    },
+    message
+  );
 });

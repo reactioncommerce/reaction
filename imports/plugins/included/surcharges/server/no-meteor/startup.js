@@ -1,7 +1,6 @@
 import { isEqual } from "lodash";
 import Logger from "@reactioncommerce/logger";
 import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
-import collectionIndex from "/imports/utils/collectionIndex";
 import getSurcharges from "./getSurcharges";
 
 const EMITTED_BY_NAME = "SURCHARGES_PLUGIN";
@@ -14,10 +13,6 @@ const EMITTED_BY_NAME = "SURCHARGES_PLUGIN";
 export default function startup(context) {
   const { appEvents, collections } = context;
   const { Cart } = collections;
-
-  // Adds Surcharges collection to context
-  collections.Surcharges = context.app.db.collection("Surcharges");
-  collectionIndex(collections.Surcharges, { shopId: 1 });
 
   // Update the cart to include surcharges, if applicable
   appEvents.on("afterCartUpdate", async ({ cart }, { emittedBy } = {}) => {

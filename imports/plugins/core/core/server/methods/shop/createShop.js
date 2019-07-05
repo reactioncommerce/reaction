@@ -1,8 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
-import { Accounts, Groups, Shops } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Reaction } from "/lib/api";
 import appEvents from "/imports/node-app/core/util/appEvents";
@@ -143,31 +142,10 @@ export default function createShop(shopAdminUserId, partialShopData) {
 
   const newShop = Shops.findOne({ _id: newShopId });
 
-  // we should have created new shop, or errored
+  // we should have created new shop, or erred
   Logger.info("Created shop: ", newShopId);
 
-  // update user
-  Reaction.insertPackagesForShop(newShopId);
-  Reaction.createGroups({ shopId: newShopId });
-  const ownerGroup = Groups.findOne({ slug: "owner", shopId: newShopId });
-  Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, newShopId);
-  // Set the active shopId for this user
-  Reaction.setUserPreferences("reaction", "activeShopId", newShopId, shopUser._id);
-  Accounts.update({ _id: shopUser._id }, {
-    $set: {
-      shopId: newShopId
-    },
-    $addToSet: {
-      groups: ownerGroup._id
-    }
-  });
-
-  const updatedAccount = Accounts.findOne({ _id: shopUser._id });
-  Promise.await(appEvents.emit("afterAccountUpdate", {
-    account: updatedAccount,
-    updatedBy: userId,
-    updatedFields: ["groups", "shopId"]
-  }));
+  Promise.await(appEvents.emit("afterShopCreate", { createdBy: userId, shop: newShop }));
 
   // Add this shop to the merchant
   Shops.update({ _id: primaryShopId }, {

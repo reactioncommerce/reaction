@@ -1,28 +1,11 @@
+/**
+ * This file is necessary for backwards compatibility while we refactor
+ * the API to remove Meteor. The no-meteor `register.js` file will
+ * eventually become the main entry point of the plugin, but for now
+ * our Meteor tooling loads this file, so we include this here as a
+ * temporary bridge.
+ */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import calculateOrderTaxes from "./server/no-meteor/util/calculateOrderTaxes";
-import getTaxCodes from "./server/no-meteor/util/getTaxCodes";
+import register from "./server/no-meteor/register";
 
-Reaction.registerPackage({
-  label: "Custom Rates",
-  name: "reaction-taxes-rates",
-  icon: "fa fa-university",
-  autoEnable: true,
-  taxServices: [
-    {
-      displayName: "Custom Rates",
-      name: "custom-rates",
-      functions: {
-        calculateOrderTaxes,
-        getTaxCodes
-      }
-    }
-  ],
-  registry: [
-    {
-      label: "Custom Rates",
-      name: "taxes/settings/rates",
-      provides: ["taxSettings"],
-      template: "customTaxRates"
-    }
-  ]
-});
+Reaction.whenAppInstanceReady(register);

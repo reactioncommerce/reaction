@@ -133,6 +133,17 @@ export function groupPermissions(packages) {
   }, []);
 }
 
+/**
+ * @method getUserByEmail
+ * @memberOf Accounts
+ * @summary Returns a user that matches the
+ * @param email
+ * @returns {object}
+ */
+export function getUserByEmail(email) {
+  return Collections.Accounts.findOne({ "emails.address": email });
+}
+
 function getPermissionMap(permissions) {
   const permissionMap = {};
   permissions.forEach(({ label, permission }) => {

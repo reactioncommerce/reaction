@@ -1,4 +1,5 @@
 import { getReactComponentOrBlazeTemplate } from "/imports/plugins/core/components/lib/ReactComponentOrBlazeTemplate";
+import { compose, setDisplayName } from "recompose";
 
 export const operatorRoutes = [];
 
@@ -15,12 +16,14 @@ export const operatorRoutes = [];
  * @returns {undefined}
  */
 export function registerOperatorRoute(route) {
-  const { mainComponent } = route;
+  const { mainComponent, hocs = [] } = route;
   let component = mainComponent;
 
   if (typeof mainComponent === "string") {
     component = () => getReactComponentOrBlazeTemplate(mainComponent);
   }
+
+  component = compose(...hocs, setDisplayName(`Reaction(${name})`))(component);
 
   operatorRoutes.push({ ...route, mainComponent: component });
 }
