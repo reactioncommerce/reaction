@@ -5,9 +5,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
@@ -96,38 +94,10 @@ class OrderCardFulfillmentGroups extends Component {
             reason: "Fulfillment group cancelled via Catalyst"
           }
         });
-
-        // TODO: EK - move inventory out of this file?
-        if (shouldRestock) {
-          this.handleInventoryRestock(item);
-        }
       });
     }
   }
 
-  // TODO: EK - move inventory out of this file?
-  // TODO: EK - this function
-  handleInventoryRestock = (item) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-
-    if (hasPermission) {
-      // TODO: EK - handle inventory restock
-      console.log(" ----- ----- ----- Handle restocking item", item._id);
-    }
-  }
-
-  // TODO: EK - move inventory out of this file?
-  // TODO: EK - this function
-  handleInventoryRestockCheckbox = (name) => (event) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-
-    if (hasPermission) {
-      this.setState({
-        ...this.state,
-        [name]: event.target.checked
-      });
-    }
-  };
 
   // TODO: EK - what do we do when people click this
   // TODO: EK - this function
@@ -224,19 +194,7 @@ class OrderCardFulfillmentGroups extends Component {
                   title={i18next.t("order.cancelGroupLabel")}
                   message={i18next.t("order.cancelGroup")}
                   onConfirm={() => this.handleCancelFulfillmentGroup(mutationFunc, fulfillmentGroup)}
-                >
-                  {/* TODO: EK - move inventory out of this file? */}
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={shouldRestock}
-                        onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
-                        value="shouldRestock"
-                      />
-                    }
-                    label={i18next.t("order.restockInventory")}
-                  />
-                </ConfirmButton>
+                />
               )}
             </Mutation>
           </Grid>
@@ -374,18 +332,7 @@ class OrderCardFulfillmentGroups extends Component {
                   title={i18next.t("orderActions.updateGroupStatus", "Update group status")}
                   message={i18next.t("order.markAsPackedDescription", "Mark all items in this fulfillment group as \"Packed\"")}
                   onConfirm={() => this.handleUpdateFulfillmentGroupStatus(mutationFunc, fulfillmentGroup)}
-                >
-                  {/* <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={shouldRestock}
-                        onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
-                        value="shouldRestock"
-                      />
-                    }
-                    label={i18next.t("order.restockInventory")}
-                  /> */}
-                </ConfirmButton>
+                />
               )}
             </Mutation>
           </Grid>
