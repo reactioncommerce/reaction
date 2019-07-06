@@ -6,10 +6,7 @@ import Typography from "@material-ui/core/Typography";
 
 
 const styles = (theme) => ({
-  fulfillmentGroupSpacing: {
-    marginBottom: theme.spacing.unit * 10
-  },
-  itemTextBold: {
+  fontWeightBold: {
     fontWeight: theme.typography.fontWeightBold
   }
 });
@@ -38,7 +35,7 @@ class OrderCardFulfillmentGroupItem extends Component {
     return (
       <Grid container>
         <Grid item xs={6} md={6}>
-          <Grid item className={classes.orderCardSection} xs={12} md={12}>
+          <Grid item xs={12} md={12}>
             <Typography paragraph variant="h4">
               {title}
             </Typography>
@@ -59,10 +56,7 @@ class OrderCardFulfillmentGroupItem extends Component {
               {price.displayAmount}
             </Typography>
             <Typography variant="body1" align="right">
-              Total({quantity}):&nbsp;
-              <Typography variant="h4" inline>
-                {subtotal.displayAmount}
-              </Typography>
+              Total({quantity}):&nbsp; <span className={classes.fontWeightBold}>{subtotal.displayAmount}</span>
             </Typography>
           </Grid>
         </Grid>

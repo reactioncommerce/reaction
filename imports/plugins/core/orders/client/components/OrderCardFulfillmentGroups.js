@@ -47,7 +47,7 @@ class OrderCardFulfillmentGroups extends Component {
       _id: PropTypes.string,
       fulfillmentGroups: PropTypes.arrayOf(PropTypes.shape({
         _id: PropTypes.string,
-        items: PropTypes.array,
+        items: PropTypes.object,
         selectedFulfillmentOption: PropTypes.shape({
           fulfillmentMethod: PropTypes.shape({
             carrier: PropTypes.string
@@ -59,29 +59,13 @@ class OrderCardFulfillmentGroups extends Component {
     })
   };
 
-  state = {
-    labelWidth: 100,
-    status: ""
-  };
-
-  getPrintShippingLabelLink() {
-    const { order } = this.props;
-
-    return Reaction.Router.pathFor("dashboard/pdf/orders", {
-      hash: {
-        id: order.referenceId
-      }
-    });
-  }
-
   handleCancelFulfillmentGroup(mutation, fulfillmentGroup) {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
 
     if (hasPermission) {
       const { order } = this.props;
 
-      // We need to loop over every fulfillmentGroup
-      // and then loop over every item inside group
+      // Canceling each item will cancel the fulfillment group
       fulfillmentGroup.items.nodes.forEach(async (item) => {
         await mutation({
           variables: {
@@ -95,46 +79,9 @@ class OrderCardFulfillmentGroups extends Component {
     }
   }
 
-  // TODO: EK - what do we do when people click this
-  // TODO: EK - this function
   handlePrintShippingLabel(fulfillmentGroup) {
-    console.log(" ----- ----- ----- ----- Print shipping label button has been clicked for fulfillment group", fulfillmentGroup._id);
-  }
-
-  // TODO: EK - this function
-  handleSelectChange = (event, value, field) => {
-    console.log(" ------ handle select change", event, value, field);
-    this.setState({ [event.target.name]: event.target.value });
-
-    // if (this.props.onProductFieldSave) {
-    //   this.props.onProductFieldSave(this.product._id, field, value);
-    // }
-  }
-
-  // TODO: EK - this function
-  async handleUpdateFulfillmentGroupStatus(mutation, fulfillmentGroup) {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-
-    if (hasPermission) {
-      const { order } = this.props;
-      let status;
-
-      if (fulfillmentGroup.status === "new") {
-        status = "coreOrderWorkflow/packed";
-      }
-
-      if (fulfillmentGroup.status === "coreOrderWorkflow/packed") {
-        status = "coreOrderWorkflow/shipped";
-      }
-
-      await mutation({
-        variables: {
-          orderFulfillmentGroupId: fulfillmentGroup._id,
-          orderId: order._id,
-          status
-        }
-      });
-    }
+    return Reaction.Router.go("http://www.espn.com");
+    // return Reaction.Router.go(fulfillmentGroup.shippingLabelUrl);
   }
 
   renderCancelFulfillmentGroupButton = (fulfillmentGroup) => {
@@ -176,15 +123,12 @@ class OrderCardFulfillmentGroups extends Component {
     ));
   }
 
-  // TODO: EK - this function
   renderPrintShippingLabelLink = (fulfillmentGroup) => {
-    const showLink = true; // TODO: EK - remove this, find the real check to use here
-
-    if (showLink) {
+    if (fulfillmentGroup.shippingLabelUrl) {
       return (
         <Grid item>
           <Button
-            onClick={this.getPrintShippingLabelLink}
+            onClick={this.handlePrintShippingLabel(fulfillmentGroup)}
             variant="text"
           >
             {i18next.t("admin.fulfillmentGroups.printShippingLabel", "Print shipping label")}
@@ -198,12 +142,13 @@ class OrderCardFulfillmentGroups extends Component {
 
   renderUpdateFulfillmentGroupStatusButton = (fulfillmentGroup) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const { order } = this.props;
     const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
 
     if (hasPermission && canUpdateFulfillmentStatus) {
       return (
         <Grid item>
-          <OrderCardFulfillmentGroupStatusButton fulfillmentGroup={fulfillmentGroup} />
+          <OrderCardFulfillmentGroupStatusButton fulfillmentGroup={fulfillmentGroup} order={order} />
         </Grid>
       );
     }
@@ -221,8 +166,8 @@ class OrderCardFulfillmentGroups extends Component {
       const { data: { shippingAddress }, displayStatus, status } = fulfillmentGroup;
 
       return (
-        <Grid container spacing={32}>
-          <Grid key={fulfillmentGroup._id} item xs={12}>
+        <Grid container key={fulfillmentGroup._id} spacing={32}>
+          <Grid item xs={12}>
             <Card elevation={0}>
               <CardContent>
                 <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>

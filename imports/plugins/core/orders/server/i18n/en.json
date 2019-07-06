@@ -6,6 +6,7 @@
       "fulfillment": "Fulfillment",
       "fulfillmentGroupHeader": "Fulfillment group {{currentGroupCount}} of {{totalGroupsCount}}",
       "items": "Items",
+      "newStatus": "New status",
       "notFound": "Order Not Found",
       "refunds": "Refunds",
       "orderActions": {
