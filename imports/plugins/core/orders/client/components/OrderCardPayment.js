@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+/* eslint react/no-multi-comp: 0 */
+import React from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -27,35 +28,25 @@ const displayStatuses = {
   refunded: "Fully refunded"
 };
 
-class OrderCardPayment extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    order: PropTypes.object,
-    payment: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      amount: PropTypes.shape({
-        displayAmount: PropTypes.string
-      }).isRequired,
-      captureErrorMessage: PropTypes.string,
-      displayName: PropTypes.string.isRequired,
-      processor: PropTypes.string.isRequired,
-      riskLevel: PropTypes.string.isRequired,
-      status: PropTypes.string.isRequired,
-      transactionId: PropTypes.string.isRequired
-    }).isRequired
-  };
-
-  handleCapturePayment = async (mutation) => {
+/**
+ * @name OrderCardPayment
+ * @param {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function OrderCardPayment(props) {
+  const handleCapturePayment = async (mutation) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { capturePayments, payment } = this.props;
+    const { capturePayments, payment } = props;
 
     if (hasPermission) {
       return capturePayments(mutation, [payment._id]);
     }
-  }
 
-  renderCaptureErrorMessage() {
-    const { classes, payment } = this.props;
+    return null;
+  };
+
+  const renderCaptureErrorMessage = () => {
+    const { classes, payment } = props;
     const { captureErrorMessage } = payment;
     if (captureErrorMessage) {
       return (
@@ -66,10 +57,10 @@ class OrderCardPayment extends Component {
     }
 
     return null;
-  }
+  };
 
-  renderOrderRiskStatus(riskLevel) {
-    const { classes, payment } = this.props;
+  const renderOrderRiskStatus = (riskLevel) => {
+    const { classes, payment } = props;
     if (riskLevel !== "normal" && payment.mode !== "captured") {
       return (
         <Typography className={classes.fontColorDanger} variant="body2">
@@ -79,15 +70,13 @@ class OrderCardPayment extends Component {
     }
 
     return null;
-  }
+  };
 
-  renderStatus(status) {
-    return displayStatuses[status];
-  }
+  const renderStatus = (status) => displayStatuses[status];
 
-  renderCapturePaymentButton = () => {
+  const renderCapturePaymentButton = () => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order, payment } = this.props;
+    const { order, payment } = props;
     const canCapturePayment = payment.mode !== "captured";
     if (hasPermission && canCapturePayment) {
       // If any payment we are trying to capture has an elevated risk,
@@ -111,7 +100,7 @@ class OrderCardPayment extends Component {
                       "The payment you are attempting to capture has an elevated charge risk. Do you want to proceed?"
                     )
                   }
-                  onConfirm={() => this.handleCapturePayment(mutationFunc)}
+                  onConfirm={() => handleCapturePayment(mutationFunc)}
                   size="small"
                 />
               )}
@@ -125,7 +114,7 @@ class OrderCardPayment extends Component {
             <Button
               color="primary"
               isWaiting={loading}
-              onClick={() => this.handleCapturePayment(mutationFunc)}
+              onClick={() => handleCapturePayment(mutationFunc)}
               size="small"
               variant="outlined"
             >
@@ -136,39 +125,54 @@ class OrderCardPayment extends Component {
       </Grid>);
     }
     return null;
-  }
+  };
 
-  render() {
-    const { payment } = this.props;
-    const { amount, displayName, processor, riskLevel, status, transactionId } = payment;
+  const { payment } = props;
+  const { amount, displayName, processor, riskLevel, status, transactionId } = payment;
 
-    return (
-      <Grid container spacing={16}>
-        <Grid item xs={6} md={6}>
-          <Typography variant="body1">
-            {displayName}
-          </Typography>
-          {this.renderOrderRiskStatus(riskLevel)}
-          <Typography variant="body2">
-            Processor: {processor}
-          </Typography>
-          <Typography variant="body2">
-            Transaction ID: {transactionId}
-          </Typography>
-          <Typography variant="body2" paragraph>
-            Status: {this.renderStatus(status)}
-          </Typography>
-          {this.renderCaptureErrorMessage()}
-        </Grid>
-        <Grid item xs={6} md={6}>
-          <Typography variant="body1" align="right">
-            {amount.displayAmount}
-          </Typography>
-        </Grid>
-        {this.renderCapturePaymentButton()}
+  return (
+    <Grid container spacing={16}>
+      <Grid item xs={6} md={6}>
+        <Typography variant="body1">
+          {displayName}
+        </Typography>
+        {renderOrderRiskStatus(riskLevel)}
+        <Typography variant="body2">
+          Processor: {processor}
+        </Typography>
+        <Typography variant="body2">
+          Transaction ID: {transactionId}
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Status: {renderStatus(status)}
+        </Typography>
+        {renderCaptureErrorMessage()}
       </Grid>
-    );
-  }
+      <Grid item xs={6} md={6}>
+        <Typography variant="body1" align="right">
+          {amount.displayAmount}
+        </Typography>
+      </Grid>
+      {renderCapturePaymentButton()}
+    </Grid>
+  );
 }
+
+OrderCardPayment.propTypes = {
+  classes: PropTypes.object,
+  order: PropTypes.object,
+  payment: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    amount: PropTypes.shape({
+      displayAmount: PropTypes.string
+    }).isRequired,
+    captureErrorMessage: PropTypes.string,
+    displayName: PropTypes.string.isRequired,
+    processor: PropTypes.string.isRequired,
+    riskLevel: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    transactionId: PropTypes.string.isRequired
+  }).isRequired
+};
 
 export default withStyles(styles, { name: "RuiOrderCardPayment" })(OrderCardPayment);
