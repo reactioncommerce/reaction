@@ -1,3 +1,105 @@
+# v2.0.0
+
+Reaction v2.0.0—an API-first, real-time commerce engine built using Node.js, React, and GraphQL. It’s the second major release of our open source commerce software.
+
+This release is coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with the [Example Storefront](https://github.com/reactioncommerce/example-storefront) (previously Storefront Starter Kit) and `[reaction-hydra](https://github.com/reactioncommerce/reaction-hydra)`.
+
+Reaction v2.0.0 is built as a truly headless commerce platform that decouples the Reaction backend services from the frontend. We’ve decoupled the storefront application from the API. Reaction platform now consists of the `reaction` project, which is now primarily our GraphQL API, and for the time being also our operator UI and our identity provider, along with our new to 2.0 [Example Storefront](https://github.com/reactioncommerce/example-storefront), built on Next.js, which connects with the Reaction application via GraphQL API to provide a customer-facing storefront. The legacy integrated Meteor storefront is no longer part of the Reaction project.
+
+
+
+### Notable changes
+Check out [previous release notes](https://github.com/reactioncommerce/reaction/releases) for details and associated issues and PRs.
+
+**Operator experience and UI**
+The store operator experience has been substantially enhanced from v1.x. We’ve shifted the operator UI for managing products from a What You See Is What You Get (WYSIWYG) product editor to one that is designed for greater flexibility. We have transitioned from a single-page admin experience to a full-page operator experience that’s fully separate from the storefront. The new operator UI uses 100% of the screen space for store management and operation, and will benefit users managing large product catalogs and complex fulfillment patterns.
+
+![Reaction-product](https://user-images.githubusercontent.com/42009003/60613775-6d802480-9d80-11e9-86b5-a1683732ee3f.png)
+
+
+![Reaction-product-variant](https://user-images.githubusercontent.com/42009003/60613799-72dd6f00-9d80-11e9-9012-ca59f509e5e3.png)
+
+
+We’ve also added lots of new functionality around tags (tag dashboard and new tag management features), site [navigation](https://github.com/reactioncommerce/reaction/pull/4683) (including sitemaps and navigation tree editor), and fulfillment options (ability to add restrictions or surcharges based on product tags and/or customer location).
+
+**GraphQL API coverage**
+Most Meteor methods are removed in favor of the new GraphQL API. GraphQL is the only way to interact with the API from a storefront app. The operator UI uses a mixture of GraphQL and Meteor DDP while we complete the transition to GraphQL on the administrative side.
+
+**Developer experience and performance**
+For developers, we’ve made a number of enhancements to improve the overall developer experience, especially debugging, logging, and [updated documentation](https://github.com/reactioncommerce/reaction-docs/releases/tag/v2.0.0).
+- Examples for how to [debug Node.js in Docker](https://docs.reactioncommerce.com/docs/next/testing-debugging-server-code#launch-the-application-in-inspect-mode)
+- Better logging of packages and plugins loading
+- `bin/setup` improvements
+- Updated main Reaction app to use `.env` file ([#4826](https://github.com/reactioncommerce/reaction/pull/4826))
+- [Added](https://github.com/reactioncommerce/reaction/pull/4943) `envalid` for validation of environment variables
+
+We’ve made some tweaks to increase performance and improve initial boot time:
+- Removed `reaction-cli` ([v2.0.0-rc.10](https://github.com/reactioncommerce/reaction/blob/master/CHANGELOG.md#v200-rc10))
+- Added and removed a number of indexes since 1.x, see [#4819](https://github.com/reactioncommerce/reaction/pull/4819), [#5106](https://github.com/reactioncommerce/reaction/pull/5106), [#5090](https://github.com/reactioncommerce/reaction/pull/5090), etc. for examples
+
+We’ve also improved Reaction’s extensibility in a number of ways, such as:
+- Reaction now supports remote graphql schemas in plugins ([#4870](https://github.com/reactioncommerce/reaction/pull/4870))
+- Plugins can now directly register React components ([#4875](https://github.com/reactioncommerce/reaction/pull/4875))
+- Plugins can register functions to handle GraphQL transformation of catalog product media items ([#4988](https://github.com/reactioncommerce/reaction/pull/4988))
+- There is now a `collections` option for `registerPlugin`, which allows plugins to define their MongoDB collections and indexes in a standard way ([#5196](https://github.com/reactioncommerce/reaction/pull/5196))
+
+And finally, we’ve updated all Reaction dependencies (such as React and Apollo) to the latest versions, and updated our base docker image to use Meteor 1.8 ([#4760](https://github.com/reactioncommerce/reaction/pull/4760)).
+
+**Security audit**
+For the 2.0 release we’ve done a full security audit of the application, including cart, order methods, payment processing methods, and more, and fixed potential vulnerabilities.
+
+**Other updates**
+- Authentication is now handled via [Hydra](https://github.com/reactioncommerce/reaction/issues/4618)
+- Taxes have been completely re-worked in a new plugin ([v2.0.0-rc.10](https://github.com/reactioncommerce/reaction/blob/master/CHANGELOG.md#v200-rc10))
+- Inventory has been moved into its own `simple-inventory` plugin, and is no longer directly tied to the `Products` collection
+- Pricing has been moved into its own `simple-pricing` plugin, and allows for a 3rd party pricing service integration. ([#5014](https://github.com/reactioncommerce/reaction/pull/5014) & [#5143](https://github.com/reactioncommerce/reaction/pull/5143))
+- Search plugins have been removed ([#5053](https://github.com/reactioncommerce/reaction/pull/5053))
+- A plugin can now be used to override the default `orderId` and `cartId` and create IDs of a different type or in a specific order ([#5054](https://github.com/reactioncommerce/reaction/pull/5054))
+
+
+### New documentation
+See [this page](https://github.com/reactioncommerce/reaction-docs/releases/tag/v2.0.0) for a non-comprehensive list of new and updated docs.
+
+Some highlights:
+- A [Storefront UI Development guide](https://docs.reactioncommerce.com/docs/next/storefront-intro) answering "How do I build a storefront for Reaction or adapt my storefront to get its data from Reaction, without starting from an example app"
+- Helpful info about [GraphQL Resolvers](https://docs.reactioncommerce.com/docs/graphql-resolvers-file-structure) and [extending GraphQL to add a field](https://docs.reactioncommerce.com/docs/how-to-extend-graphql-to-add-field)
+- A guide for [“How To Extend the Product Schema”](https://docs.reactioncommerce.com/docs/how-to-extend-product)
+
+
+### OS notes
+**Support for Windows.**
+`[reaction-platform](https://github.com/reactioncommerce/reaction-platform)` is not compatible with Windows and has not been fully tested on Windows at this time.
+
+**MacOS and Linux are supported.**
+Reaction will support development in a dockerized environment and will focus on tooling and documentation for installation and configuration on the macOS and Linux OSes.
+
+### We've adopted the DCO
+We've adopted the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+```
+Signed-off-by: Jane Doe <jane.doe@example.com>
+```
+
+You can sign your commit automatically with Git by using `git commit -s` if you have your `user.name` and `user.email` set as part of your Git configuration.
+
+We ask that you use your real name (please no anonymous contributions or pseudonyms). By signing your commit you are certifying that you have the right have the right to submit it under the open source license used by that particular Reaction Commerce project. You must use your real name (no pseudonyms or anonymous contributions are allowed.)
+
+We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO signoffs of every commit. If you forget to sign your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
+
+We're following in the footsteps of several other open source projects in adopting the DCO such as [Chef](https://blog.chef.io/2016/09/19/introducing-developer-certificate-of-origin/), [Docker](https://blog.docker.com/2014/01/docker-code-contributions-require-developer-certificate-of-origin/), and [GitLab](https://about.gitlab.com/2017/11/01/gitlab-switches-to-dco-license/)
+
+
+### Contributors
+Our sincere thanks to @rattrayalex-stripe, @willmoss1000, @pmn4, @loan-laux, @lcampanis and the @artlimes folks, and everyone on our Community Council for contributing to this release.
+
+
+### Share your feedback
+We want to hear from you! Here are some good ways to get in touch.
+- Want to request a new feature for Reaction? There’s now a Reaction repo just for [new feature requests](https://github.com/reactioncommerce/reaction-feature-requests).
+- Reaction engineers and community engineers and developers are always collaborating in our [Gitter chat channel](https://gitter.im/reactioncommerce/reaction)
+- Ask Us Anything! Watch this space for details about an upcoming Community Q&A session with the Reaction team.
+
+
+
 # v2.0.0-rc.12
 
 This is our twelfth **release candidate** for v2.0.0 of Reaction.
@@ -130,11 +232,11 @@ This release is being coordinated with `reaction-platform` and is designed to wo
 - `draftItems` is admin only now so to not expose work-in-progress changes to the public
 - Potential for http routing conflicts on /metrics. (#5088)
 - Product components have been broken into smaller peices and the old files removed. This should be an internal breaking change as prior to this PR, those components couldn't be modified without touching core. (#5064)
-- The new order confirmation email template has been updated (#5251) 
-- Multi-shop orders will no longer work (#5096) 
+- The new order confirmation email template has been updated (#5251)
+- Multi-shop orders will no longer work (#5096)
 - If you have custom plugins that use index or unique options in their schemas, add back the aldeed:schema-index dependency or update the plugins to use collectionIndex function. (#5090)
 - Custom plugins importing any of the removed packages or using the removed component will need to be updated. (#5250)
-- The deprecated `price` field has been removed from `CatalogProduct` and `CatalogProductVariant`. (#5143) 
+- The deprecated `price` field has been removed from `CatalogProduct` and `CatalogProductVariant`. (#5143)
 - Custom plugins that manage or use inventory are likely to need a rewrite. (#5164)
 - Older shops must confirm they are using our simple-pricing plugin, and that pricing is available on Catalog items. (#5142)
 - Removed support for undocumented feature Meteor.settings.cdnPrefix
