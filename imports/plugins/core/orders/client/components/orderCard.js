@@ -7,7 +7,7 @@ import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import OrderCardAppBar from "./orderCardAppBar";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
 import OrderCardHeader from "./orderCardHeader";
-import OrderCardPayments from "./orderCardPayments";
+import OrderCardPayments from "./OrderCardPayments";
 import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardSummary from "./orderCardSummary";
 

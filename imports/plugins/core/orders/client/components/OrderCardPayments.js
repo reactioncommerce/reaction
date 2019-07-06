@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from "react";
+/* eslint react/no-multi-comp: 0 */
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -21,24 +22,17 @@ const styles = (theme) => ({
   }
 });
 
-class OrderCardPayments extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    order: PropTypes.shape({
-      payments: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        amount: PropTypes.shape({
-          displayAmount: PropTypes.string
-        }),
-        displayName: PropTypes.string,
-        status: PropTypes.string
-      }))
-    })
-  }
+/**
+ * @name OrderCardPayments
+ * @param {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function OrderCardPayments(props) {
+  const { classes } = props;
 
-  handleCapturePayments = async (mutation, paymentIds) => {
+  const handleCapturePayments = async (mutation, paymentIds) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order } = this.props;
+    const { order } = props;
 
     if (hasPermission) {
       if (!order.payments) return Promise.resolve(null);
@@ -66,11 +60,11 @@ class OrderCardPayments extends Component {
     }
 
     return null;
-  }
+  };
 
-  renderCaptureAllPaymentsButton = (paymentIds) => {
+  const renderCaptureAllPaymentsButton = (paymentIds) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order } = this.props;
+    const { order } = props;
     const canCapturePayment = order.payments.some((payment) => payment.mode !== "captured");
     const paymentIdList = paymentIds || order.payments.map((payment) => payment._id);
 
@@ -97,7 +91,7 @@ class OrderCardPayments extends Component {
                         "One or more of the payments you are attempting to capture has an elevated charge risk. Do you want to proceed?"
                       )
                     }
-                    onConfirm={() => this.handleCapturePayments(mutationFunc)}
+                    onConfirm={() => handleCapturePayments(mutationFunc)}
                   />
                 )}
               </Mutation>
@@ -114,7 +108,7 @@ class OrderCardPayments extends Component {
                 <Button
                   color="primary"
                   isWaiting={loading}
-                  onClick={() => this.handleCapturePayments(mutationFunc)}
+                  onClick={() => handleCapturePayments(mutationFunc)}
                   variant="contained"
                 >
                   {i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
@@ -127,16 +121,16 @@ class OrderCardPayments extends Component {
     }
 
     return null;
-  }
+  };
 
-  renderPayments = () => {
-    const { order } = this.props;
+  const renderPayments = () => {
+    const { order } = props;
     const { payments } = order;
 
     return payments.map((payment, index) => (
       <Fragment key={index} >
         <OrderCardPayment
-          capturePayments={this.handleCapturePayments}
+          capturePayments={handleCapturePayments}
           order={order}
           payment={payment}
         />
@@ -146,31 +140,41 @@ class OrderCardPayments extends Component {
         }
       </Fragment>
     ));
-  }
+  };
 
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Card>
-        <CardContent>
-          <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
-            <Grid item xs={6} md={6}>
-              <Grid container alignItems="center" spacing={16}>
-                <Grid item>
-                  <Typography variant="h4" inline={true}>
-                    Payments
-                  </Typography>
-                </Grid>
+  return (
+    <Card>
+      <CardContent>
+        <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
+          <Grid item xs={6} md={6}>
+            <Grid container alignItems="center" spacing={16}>
+              <Grid item>
+                <Typography variant="h4" inline={true}>
+                  Payments
+                </Typography>
               </Grid>
             </Grid>
-            {this.renderCaptureAllPaymentsButton()}
           </Grid>
-          {this.renderPayments()}
-        </CardContent>
-      </Card>
-    );
-  }
+          {renderCaptureAllPaymentsButton()}
+        </Grid>
+        {renderPayments()}
+      </CardContent>
+    </Card>
+  );
 }
+
+OrderCardPayments.propTypes = {
+  classes: PropTypes.object,
+  order: PropTypes.shape({
+    payments: PropTypes.arrayOf(PropTypes.shape({
+      _id: PropTypes.string,
+      amount: PropTypes.shape({
+        displayAmount: PropTypes.string
+      }),
+      displayName: PropTypes.string,
+      status: PropTypes.string
+    }))
+  })
+};
 
 export default withStyles(styles, { name: "RuiOrderCardPayments" })(OrderCardPayments);
