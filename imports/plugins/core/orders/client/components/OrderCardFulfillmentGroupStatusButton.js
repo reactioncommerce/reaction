@@ -13,16 +13,9 @@ import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
 
 const styles = (theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 120
-  },
-  selectEmpty: {
-    marginTop: theme.spacing.unit * 2
   }
 });
 
