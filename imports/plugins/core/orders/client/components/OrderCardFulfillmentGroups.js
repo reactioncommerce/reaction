@@ -10,13 +10,12 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 import Address from "@reactioncommerce/components/Address/v1";
-import { Components } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
-import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
 import OrderCardFulfillmentGroupItem from "./OrderCardFulfillmentGroupItem";
 import OrderCardFulfillmentGroupTrackingNumber from "./OrderCardFulfillmentGroupTrackingNumber";
+import OrderCardFulfillmentGroupStatusButton from "./OrderCardFulfillmentGroupStatusButton";
 import OrderCardStatusChip from "./OrderCardStatusChip";
 
 const styles = (theme) => ({
@@ -60,9 +59,9 @@ class OrderCardFulfillmentGroups extends Component {
     })
   };
 
-  // TODO: EK - state
   state = {
-    shouldRestock: true
+    labelWidth: 100,
+    status: ""
   };
 
   getPrintShippingLabelLink() {
@@ -75,13 +74,11 @@ class OrderCardFulfillmentGroups extends Component {
     });
   }
 
-  // TODO: EK - this function
   handleCancelFulfillmentGroup(mutation, fulfillmentGroup) {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
 
     if (hasPermission) {
       const { order } = this.props;
-      const { shouldRestock } = this.state;
 
       // We need to loop over every fulfillmentGroup
       // and then loop over every item inside group
@@ -98,7 +95,6 @@ class OrderCardFulfillmentGroups extends Component {
     }
   }
 
-
   // TODO: EK - what do we do when people click this
   // TODO: EK - this function
   handlePrintShippingLabel(fulfillmentGroup) {
@@ -108,6 +104,7 @@ class OrderCardFulfillmentGroups extends Component {
   // TODO: EK - this function
   handleSelectChange = (event, value, field) => {
     console.log(" ------ handle select change", event, value, field);
+    this.setState({ [event.target.name]: event.target.value });
 
     // if (this.props.onProductFieldSave) {
     //   this.props.onProductFieldSave(this.product._id, field, value);
@@ -137,48 +134,14 @@ class OrderCardFulfillmentGroups extends Component {
           status
         }
       });
-
-      // TODO: EK - do we need to loop over items?
-      // We need to loop over every fulfillmentGroup
-      // and then loop over every item inside group
-      // fulfillmentGroup.items.nodes.forEach(async (item) => {
-      //   await mutation({
-      //     variables: {
-      //       orderFulfillmentGroupId: fulfillmentGroup.id,
-      //       orderId: order._id,
-      //       status: fulfillmentGroup.id
-      //     }
-      //   });
-
-      //   if (shouldRestock) {
-      //     this.handleInventoryRestock(item);
-      //   }
-      // });
     }
   }
 
-  // TODO: EK - this function
   renderCancelFulfillmentGroupButton = (fulfillmentGroup) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    // "new": "New ",
-    //           "coreOrderWorkflow/created": "Created ",
-    //           "coreOrderWorkflow/processing": "Processing ",
-    //           "coreOrderWorkflow/completed": "Completed ",
-    //           "coreOrderWorkflow/canceled": "Canceled ",
-    //           "coreOrderWorkflow/picked": "Picked ",
-    //           "coreOrderWorkflow/packed": "Packed ",
-    //           "coreOrderWorkflow/labeled": "Labeled ",
-    //           "coreOrderWorkflow/shipped": "Shipped "
-
-    //           the main ones for overall order are"
-    //           "coreOrderWorkflow/processing": "Processing ",
-    //           "coreOrderWorkflow/completed": "Completed ",
-    //           "coreOrderWorkflow/canceled": "Canceled ",
-
 
     if (hasPermission) {
       const canCancelOrder = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
-      const { shouldRestock } = this.state;
 
       if (canCancelOrder) {
         return (
@@ -233,179 +196,21 @@ class OrderCardFulfillmentGroups extends Component {
     return null;
   }
 
-  // TODO: EK - this function
   renderUpdateFulfillmentGroupStatusButton = (fulfillmentGroup) => {
     const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { classes } = this.props;
     const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
-    const options = [
-      {
-        label: "New",
-        value: "new"
-      }, {
-        label: "Created",
-        value: "coreOrderWorkflow/created"
-      }, {
-        label: "Processing",
-        value: "coreOrderWorkflow/processing"
-      }, {
-        label: "Completed",
-        value: "coreOrderWorkflow/completed"
-      }, {
-        label: "Canceled",
-        value: "coreOrderWorkflow/canceled"
-      }, {
-        label: "Picked",
-        value: "coreOrderWorkflow/picked"
-      }, {
-        label: "Packed",
-        value: "coreOrderWorkflow/packed"
-      }, {
-        label: "Labeled",
-        value: "coreOrderWorkflow/labeled"
-      }, {
-        label: "Shipped",
-        value: "coreOrderWorkflow/shipped"
-      }
-    ];
-
-    let activeOption = null;
-    if (fulfillmentGroup.status === "new") {
-      activeOption = "coreOrderWorkflow/picked";
-    }
-    if (fulfillmentGroup.status === "coreOrderWorkflow/picked") {
-      activeOption = "coreOrderWorkflow/packed";
-    }
-    if (fulfillmentGroup.status === "coreOrderWorkflow/packed") {
-      activeOption = "coreOrderWorkflow/labeled";
-    }
-    if (fulfillmentGroup.status === "coreOrderWorkflow/labeled") {
-      activeOption = "coreOrderWorkflow/shipped";
-    }
 
     if (hasPermission && canUpdateFulfillmentStatus) {
       return (
         <Grid item>
-          <Mutation mutation={updateOrderFulfillmentGroupMutation}>
-            {(mutationFunc) => (
-              <ConfirmButton
-                buttonColor="primary"
-                buttonText={i18next.t("orderActions.updateGroupStatusLabel", "Update group status")}
-                buttonVariant="contained"
-                cancelActionText={i18next.t("app.close")}
-                confirmActionText={i18next.t("orderActions.updateGroupStatusLabel", "Update group status")}
-                title={i18next.t("orderActions.updateGroupStatusLabel", "Update group status")}
-                message={i18next.t("order.updateGroupStatusDescription", "Update status for group and all items in it")}
-                onConfirm={() => this.handleUpdateFulfillmentGroupStatus(mutationFunc, fulfillmentGroup)}
-              >
-                <Components.Select
-                  clearable={false}
-                  i18nKeyPlaceholder="orderActions.selectPrompt"
-                  name="fulfillmentStatus"
-                  onChange={this.handleSelectChange}
-                  placeholder="Select new group status"
-                  ref="updateFulfillmentStatusInput"
-                  value={activeOption}
-                  options={options}
-                />
-              </ConfirmButton>
-            )}
-          </Mutation>
+          <OrderCardFulfillmentGroupStatusButton fulfillmentGroup={fulfillmentGroup} />
         </Grid>
       );
     }
 
     return null;
-
-    if (canUpdateFulfillmentStatus) {
-      if (fulfillmentGroup.status === "new") {
-        return (
-          <Grid item>
-            <Mutation mutation={updateOrderFulfillmentGroupMutation}>
-              {(mutationFunc) => (
-                <ConfirmButton
-                  buttonColor="primary"
-                  buttonText={i18next.t("orderActions.markAsPackedLabel", "Mark as packed")}
-                  buttonVariant="contained"
-                  cancelActionText={i18next.t("app.close")}
-                  confirmActionText={i18next.t("orderActions.markAsPackedLabel", "Mark as packed")}
-                  title={i18next.t("orderActions.updateGroupStatus", "Update group status")}
-                  message={i18next.t("order.markAsPackedDescription", "Mark all items in this fulfillment group as \"Packed\"")}
-                  onConfirm={() => this.handleUpdateFulfillmentGroupStatus(mutationFunc, fulfillmentGroup)}
-                />
-              )}
-            </Mutation>
-          </Grid>
-        );
-      }
-    }
-
-    //   if (fulfillmentGroup.status === "coreOrderWorkflow/packed") {
-    //     return (
-    //       <Grid item>
-    //         <Mutation mutation={updateOrderFulfillmentGroupMutation}>
-    //           {(mutationFunc) => (
-    //             <ConfirmButton
-    //               buttonColor="primary"
-    //               buttonText={i18next.t("orderActions.markAsShippedLabel", "Mark as shipped")}
-    //               buttonVariant="contained"
-    //               cancelActionText={i18next.t("app.close")}
-    //               confirmActionText={i18next.t("orderActions.markAsShippedLabel", "Mark as shipped")}
-    //               title={i18next.t("orderActions.updateGroupStatus", "Update group status")}
-    //               message={i18next.t("order.markAsShippedDescription", "Mark all items in this fulfillment group as \"Shipped\"")}
-    //               onConfirm={() => this.handleUpdateFulfillmentGroupStatus(mutationFunc, fulfillmentGroup)}
-    //             >
-    //               {/* <FormControlLabel
-    //                 control={
-    //                   <Checkbox
-    //                     checked={shouldRestock}
-    //                     onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
-    //                     value="shouldRestock"
-    //                   />
-    //                 }
-    //                 label={i18next.t("order.restockInventory")}
-    //               /> */}
-    //             </ConfirmButton>
-    //           )}
-    //         </Mutation>
-    //       </Grid>
-    //     );
-    //   }
-
-    //   // return (
-    //   //   <Mutation mutation={updateOrderFulfillmentGroupMutation}>
-    //   //     {(mutationFunc) => (
-    //   //       <ConfirmButton
-    //   //         buttonColor="primary"
-    //   //         buttonText={i18next.t("order.updateGroupStatus", "Update group status")}
-    //   //         buttonVariant="contained"
-    //   //         cancelActionText={i18next.t("app.close")}
-    //   //         confirmActionText={i18next.t("order.updateStatus", "Update group status")}
-    //   //         title={i18next.t("order.updateGroupStatus", "Update status")}
-    //   //         message={i18next.t("order.updateGroupStatus", "Update group status")}
-    //   //         onConfirm={() => this.handleUpdateFulfillmentGroupStatus(mutationFunc, fulfillmentGroup)}
-    //   //       >
-    //   //         {/* <FormControlLabel
-    //   //           control={
-    //   //             <Checkbox
-    //   //               checked={shouldRestock}
-    //   //               onChange={this.handleInventoryRestockCheckbox("shouldRestock")}
-    //   //               value="shouldRestock"
-    //   //             />
-    //   //           }
-    //   //           label={i18next.t("order.restockInventory")}
-    //   //         /> */}
-    //   //       </ConfirmButton>
-    //   //     )}
-    //   //   </Mutation>
-    //   // );
-    //   if (fulfillmentGroup.status === "coreOrderWorkflow/shipped") {
-    //     return "it's shipped";
-    //   }
-    // }
   }
 
-  // TODO: EK - translations i18n
   render() {
     const { classes, order } = this.props;
     const { fulfillmentGroups } = order;
@@ -425,7 +230,7 @@ class OrderCardFulfillmentGroups extends Component {
                     <Grid container alignItems="center" spacing={16}>
                       <Grid item>
                         <Typography variant="h4" inline={true}>
-                          Fulfillment group {currentGroupCount} of {totalGroupsCount}
+                          {i18next.t("order.fulfillmentGroupHeader", `Fulfillment group ${currentGroupCount} of ${totalGroupsCount}`)}
                         </Typography>
                       </Grid>
                       <Grid item>
@@ -443,7 +248,7 @@ class OrderCardFulfillmentGroups extends Component {
                 </Grid>
                 <Grid container spacing={24}>
                   <Grid item xs={12} md={12}>
-                    <Typography variant="h4">Items</Typography>
+                    <Typography variant="h4">{i18next.t("order.items", "Items")}</Typography>
                   </Grid>
                   <Grid className={classes.gridItemNeedingDivider} item xs={12} md={5}>
                     <Grid container spacing={40}>
@@ -464,13 +269,13 @@ class OrderCardFulfillmentGroups extends Component {
                     <Grid container spacing={32}>
                       <Grid item xs={12} md={12}>
                         <Typography paragraph variant="h4">
-                          Shipping address
+                          {i18next.t("order.shippingAddress", "Shipping address")}
                         </Typography>
                         <Address address={shippingAddress} />
                       </Grid>
                       <Grid item xs={12} md={12}>
                         <Typography paragraph variant="h4">
-                          Shipping method
+                          {i18next.t("order.shippingMethod", "Shipping method")}
                         </Typography>
                         <Typography
                           key={fulfillmentGroup._id}
@@ -481,7 +286,7 @@ class OrderCardFulfillmentGroups extends Component {
                       </Grid>
                       <Grid item xs={12} md={12}>
                         <Typography paragraph variant="h4">
-                          Tracking number
+                          {i18next.t("order.trackingNumber", "Tracking number")}
                         </Typography>
                         <OrderCardFulfillmentGroupTrackingNumber orderId={order._id} fulfillmentGroup={fulfillmentGroup} {...this.props}/>
                       </Grid>

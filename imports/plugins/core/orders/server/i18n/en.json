@@ -4,6 +4,8 @@
   "translation": {
     "reaction-orders": {
       "fulfillment": "Fulfillment",
+      "fulfillmentGroupHeader": "Fulfillment group {{currentGroupCount}} of {{totalGroupsCount}}",
+      "items": "Items",
       "notFound": "Order Not Found",
       "refunds": "Refunds",
       "orderActions": {
@@ -42,6 +44,9 @@
           "title": "Order Summary"
         }
       },
+      "shippingAddress": "Shipping address",
+      "shippingMethod": "Shipping method",
+      "trackingNumber": "Tracking number",
       "admin": {
         "shortcut": {
           "ordersLabel": "Orders"
