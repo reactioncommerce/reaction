@@ -80,8 +80,7 @@ class OrderCardFulfillmentGroups extends Component {
   }
 
   handlePrintShippingLabel(fulfillmentGroup) {
-    return Reaction.Router.go("http://www.espn.com");
-    // return Reaction.Router.go(fulfillmentGroup.shippingLabelUrl);
+    return Reaction.Router.go(fulfillmentGroup.shippingLabelUrl);
   }
 
   renderCancelFulfillmentGroupButton = (fulfillmentGroup) => {
