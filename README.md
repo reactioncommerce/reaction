@@ -72,7 +72,7 @@ Signed-off-by: Jane Doe <jane.doe@example.com>
 
 You can sign your commit automatically with Git by using `git commit -s` if you have your `user.name` and `user.email` set as part of your Git configuration.
 
-We ask that you use your real name (please no anonymous contributions or pseudonyms). By signing your commit you are certifying that you have the right have the right to submit it under the open source license used by that particular Reaction Commerce project. You must use your real name (no pseudonyms or anonymous contributions are allowed.)
+We ask that you use your real name (please no anonymous contributions or pseudonyms). By signing your commit you are certifying that you have the right to submit it under the open source license used by that particular Reaction Commerce project. You must use your real name (no pseudonyms or anonymous contributions are allowed.)
 
 We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO signoffs of every commit.
 
