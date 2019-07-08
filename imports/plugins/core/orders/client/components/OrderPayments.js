@@ -129,8 +129,7 @@ function OrderPayments(props) {
               </Grid>
             </Grid>
           </Grid>
-          {renderCaptureAllPaymentsButton()}
-          {capturePaymentsButton};
+          {capturePaymentsButton}
         </Grid>
         {
           order.payments.map((payment, index) => (
@@ -140,9 +139,8 @@ function OrderPayments(props) {
                 order={order}
                 payment={payment}
               />
-              {index !== (order.payments.length - 1) ?
+              {index !== (order.payments.length - 1) &&
                 <Divider style={{ marginTop: "30px", marginBottom: "20px" }}/>
-                : null
               }
             </Fragment>
           ))
