@@ -1,4 +1,3 @@
-/* eslint react/no-multi-comp: 0 */
 import React from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
@@ -34,9 +33,13 @@ const displayStatuses = {
  * @returns {React.Component} returns a React component
  */
 function OrderPayment(props) {
+  const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+  const { classes, order, payment } = props;
+  const { amount, captureErrorMessage, displayName, processor, riskLevel, status, transactionId } = payment;
+  const canCapturePayment = payment.mode !== "captured";
+
   const handleCapturePayment = async (mutation) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { capturePayments, payment } = props;
+    const { capturePayments } = props;
 
     if (hasPermission) {
       return capturePayments(mutation, [payment._id]);
@@ -45,90 +48,56 @@ function OrderPayment(props) {
     return null;
   };
 
-  const renderCaptureErrorMessage = () => {
-    const { classes, payment } = props;
-    const { captureErrorMessage } = payment;
-    if (captureErrorMessage) {
-      return (
-        <Typography className={classes.fontColorDanger} variant="body2" paragraph>
-          Capture error: {captureErrorMessage}
-        </Typography>
-      );
+  let capturePaymentButton;
+  if (hasPermission && canCapturePayment) {
+    // If any payment we are trying to capture has an elevated risk,
+    // prompt user to make sure they want to capture payemnt
+    if (isPaymentRiskElevated(order, [payment._id])) {
+      capturePaymentButton =
+        <Grid item xs={12}>
+          <Mutation mutation={captureOrderPaymentsMutation}>
+            {(mutationFunc, { loading }) => (
+              <ConfirmButton
+                buttonColor="primary"
+                buttonText={i18next.t("order.capturePayment", "Capture payment")}
+                buttonVariant="outlined"
+                cancelActionText={i18next.t("app.close", "Close")}
+                confirmActionText={i18next.t("order.capturePayment", "Capture payment")}
+                isWaiting={loading}
+                title={i18next.t("order.capturePayment", "Capture payment")}
+                message={
+                  i18next.t(
+                    "reaction-payments.captureOneElevatedRiskWarning",
+                    "The payment you are attempting to capture has an elevated charge risk. Do you want to proceed?"
+                  )
+                }
+                onConfirm={() => handleCapturePayment(mutationFunc)}
+                size="small"
+              />
+            )}
+          </Mutation>
+        </Grid>
+      ;
+    } else {
+      capturePaymentButton =
+        <Grid item xs={12}>
+          <Mutation mutation={captureOrderPaymentsMutation}>
+            {(mutationFunc, { loading }) => (
+              <Button
+                color="primary"
+                isWaiting={loading}
+                onClick={() => handleCapturePayment(mutationFunc)}
+                size="small"
+                variant="outlined"
+              >
+                {i18next.t("order.capturePayment", "Capture payment")}
+              </Button>
+            )}
+          </Mutation>
+        </Grid>
+      ;
     }
-
-    return null;
-  };
-
-  const renderOrderRiskStatus = (riskLevel) => {
-    const { classes, payment } = props;
-    if (riskLevel !== "normal" && payment.mode !== "captured") {
-      return (
-        <Typography className={classes.fontColorDanger} variant="body2">
-          Payment risk level: {capitalizeString(riskLevel)}
-        </Typography>
-      );
-    }
-
-    return null;
-  };
-
-  const renderStatus = (status) => displayStatuses[status];
-
-  const renderCapturePaymentButton = () => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order, payment } = props;
-    const canCapturePayment = payment.mode !== "captured";
-    if (hasPermission && canCapturePayment) {
-      // If any payment we are trying to capture has an elevated risk,
-      // prompt user to make sure they want to capture payemnt
-      if (isPaymentRiskElevated(order, [payment._id])) {
-        return (
-          <Grid item xs={12}>
-            <Mutation mutation={captureOrderPaymentsMutation}>
-              {(mutationFunc, { loading }) => (
-                <ConfirmButton
-                  buttonColor="primary"
-                  buttonText={i18next.t("order.capturePayment", "Capture payment")}
-                  buttonVariant="outlined"
-                  cancelActionText={i18next.t("app.close", "Close")}
-                  confirmActionText={i18next.t("order.capturePayment", "Capture payment")}
-                  isWaiting={loading}
-                  title={i18next.t("order.capturePayment", "Capture payment")}
-                  message={
-                    i18next.t(
-                      "reaction-payments.captureOneElevatedRiskWarning",
-                      "The payment you are attempting to capture has an elevated charge risk. Do you want to proceed?"
-                    )
-                  }
-                  onConfirm={() => handleCapturePayment(mutationFunc)}
-                  size="small"
-                />
-              )}
-            </Mutation>
-          </Grid>
-        );
-      }
-      return (<Grid item xs={12}>
-        <Mutation mutation={captureOrderPaymentsMutation}>
-          {(mutationFunc, { loading }) => (
-            <Button
-              color="primary"
-              isWaiting={loading}
-              onClick={() => handleCapturePayment(mutationFunc)}
-              size="small"
-              variant="outlined"
-            >
-              {i18next.t("order.capturePayment", "Capture payment")}
-            </Button>
-          )}
-        </Mutation>
-      </Grid>);
-    }
-    return null;
-  };
-
-  const { payment } = props;
-  const { amount, displayName, processor, riskLevel, status, transactionId } = payment;
+  }
 
   return (
     <Grid container spacing={16}>
@@ -136,7 +105,13 @@ function OrderPayment(props) {
         <Typography variant="body1">
           {displayName}
         </Typography>
-        {renderOrderRiskStatus(riskLevel)}
+        {riskLevel !== "normal" && payment.mode !== "captured" ?
+          <Typography className={classes.fontColorDanger} variant="body2">
+            Payment risk level: {capitalizeString(riskLevel)}
+          </Typography>
+          :
+          null
+        }
         <Typography variant="body2">
           Processor: {processor}
         </Typography>
@@ -144,16 +119,22 @@ function OrderPayment(props) {
           Transaction ID: {transactionId}
         </Typography>
         <Typography variant="body2" paragraph>
-          Status: {renderStatus(status)}
+          Status: {displayStatuses[status]}
         </Typography>
-        {renderCaptureErrorMessage()}
+        { captureErrorMessage ?
+          <Typography className={classes.fontColorDanger} variant="body2" paragraph>
+            Capture error: {captureErrorMessage}
+          </Typography>
+          :
+          null
+        }
       </Grid>
       <Grid item xs={6} md={6}>
         <Typography variant="body1" align="right">
           {amount.displayAmount}
         </Typography>
       </Grid>
-      {renderCapturePaymentButton()}
+      {capturePaymentButton}
     </Grid>
   );
 }
