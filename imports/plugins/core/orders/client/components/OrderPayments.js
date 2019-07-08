@@ -14,7 +14,7 @@ import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import { approveOrderPayments } from "../graphql";
 import captureOrderPaymentsMutation from "../graphql/mutations/captureOrderPayments";
 import { isPaymentRiskElevated } from "../helpers";
-import OrderCardPayment from "./OrderCardPayment";
+import OrderPayment from "./OrderPayment";
 
 const styles = (theme) => ({
   fulfillmentGroupHeader: {
@@ -23,11 +23,11 @@ const styles = (theme) => ({
 });
 
 /**
- * @name OrderCardPayments
+ * @name OrderPayments
  * @param {Object} props Component props
  * @returns {React.Component} returns a React component
  */
-function OrderCardPayments(props) {
+function OrderPayments(props) {
   const { classes } = props;
 
   const handleCapturePayments = async (mutation, paymentIds) => {
@@ -129,7 +129,7 @@ function OrderCardPayments(props) {
 
     return payments.map((payment, index) => (
       <Fragment key={index} >
-        <OrderCardPayment
+        <OrderPayment
           capturePayments={handleCapturePayments}
           order={order}
           payment={payment}
@@ -163,7 +163,7 @@ function OrderCardPayments(props) {
   );
 }
 
-OrderCardPayments.propTypes = {
+OrderPayments.propTypes = {
   classes: PropTypes.object,
   order: PropTypes.shape({
     payments: PropTypes.arrayOf(PropTypes.shape({
@@ -177,4 +177,4 @@ OrderCardPayments.propTypes = {
   })
 };
 
-export default withStyles(styles, { name: "RuiOrderCardPayments" })(OrderCardPayments);
+export default withStyles(styles, { name: "RuiOrderPayments" })(OrderPayments);

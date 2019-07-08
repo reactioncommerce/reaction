@@ -18,7 +18,7 @@ const styles = (theme) => ({
   }
 });
 
-class OrderCardHeader extends Component {
+class OrderHeader extends Component {
   static propTypes = {
     classes: PropTypes.object,
     moment: PropTypes.func,
@@ -115,4 +115,4 @@ class OrderCardHeader extends Component {
   }
 }
 
-export default withMoment(withStyles(styles, { name: "RuiOrderCardHeader" })(OrderCardHeader));
+export default withMoment(withStyles(styles, { name: "RuiOrderHeader" })(OrderHeader));

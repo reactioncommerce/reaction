@@ -4,7 +4,7 @@ import { registerBlock } from "@reactioncommerce/reaction-components";
 import { registerOperatorRoute } from "/imports/client/ui";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
 import Orders from "./containers/orderDashboardContainer";
-import OrderCard from "/imports/plugins/core/orders/client/containers/orderCardContainer";
+import OrderCard from "/imports/plugins/core/orders/client/containers/OrderContainer";
 import OrderCardSummary from "/imports/plugins/core/orders/client/components/orderCardSummary";
 import OrderDetail from "./containers/orderDetailContainer";
 
