@@ -28,12 +28,11 @@ const styles = (theme) => ({
  * @returns {React.Component} returns a React component
  */
 function OrderPayments(props) {
-  const { classes } = props;
+  const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+  const { classes, order } = props;
+  const canCapturePayment = order.payments.some((payment) => payment.mode !== "captured");
 
   const handleCapturePayments = async (mutation, paymentIds) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order } = props;
-
     if (hasPermission) {
       if (!order.payments) return Promise.resolve(null);
 
@@ -62,17 +61,15 @@ function OrderPayments(props) {
     return null;
   };
 
-  const renderCaptureAllPaymentsButton = (paymentIds) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order } = props;
-    const canCapturePayment = order.payments.some((payment) => payment.mode !== "captured");
-    const paymentIdList = paymentIds || order.payments.map((payment) => payment._id);
+  let capturePaymentsButton;
+  const renderCaptureAllPaymentsButton = () => {
+    const paymentIdList = order.payments.map((payment) => payment._id);
 
     if (hasPermission && canCapturePayment) {
       // If any payment we are trying to capture has an elevated risk,
       // prompt user to make sure they want to capture payemnt
       if (isPaymentRiskElevated(order, paymentIdList)) {
-        return (
+        capturePaymentsButton =
           <Grid item xs={6} md={6}>
             <Grid container alignItems="center" justify="flex-end" spacing={8}>
               <Mutation mutation={captureOrderPaymentsMutation}>
@@ -97,49 +94,28 @@ function OrderPayments(props) {
               </Mutation>
             </Grid>
           </Grid>
-        );
-      }
-
-      return (
-        <Grid item xs={6} md={6}>
-          <Grid container alignItems="center" justify="flex-end" spacing={8}>
-            <Mutation mutation={captureOrderPaymentsMutation}>
-              {(mutationFunc, { loading }) => (
-                <Button
-                  color="primary"
-                  isWaiting={loading}
-                  onClick={() => handleCapturePayments(mutationFunc)}
-                  variant="contained"
-                >
-                  {i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
-                </Button>
-              )}
-            </Mutation>
+        ;
+      } else {
+        capturePaymentsButton =
+          <Grid item xs={6} md={6}>
+            <Grid container alignItems="center" justify="flex-end" spacing={8}>
+              <Mutation mutation={captureOrderPaymentsMutation}>
+                {(mutationFunc, { loading }) => (
+                  <Button
+                    color="primary"
+                    isWaiting={loading}
+                    onClick={() => handleCapturePayments(mutationFunc)}
+                    variant="contained"
+                  >
+                    {i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
+                  </Button>
+                )}
+              </Mutation>
+            </Grid>
           </Grid>
-        </Grid>
-      );
+        ;
+      }
     }
-
-    return null;
-  };
-
-  const renderPayments = () => {
-    const { order } = props;
-    const { payments } = order;
-
-    return payments.map((payment, index) => (
-      <Fragment key={index} >
-        <OrderPayment
-          capturePayments={handleCapturePayments}
-          order={order}
-          payment={payment}
-        />
-        {index !== (payments.length - 1) ?
-          <Divider style={{ marginTop: "30px", marginBottom: "20px" }}/>
-          : null
-        }
-      </Fragment>
-    ));
   };
 
   return (
@@ -156,8 +132,23 @@ function OrderPayments(props) {
             </Grid>
           </Grid>
           {renderCaptureAllPaymentsButton()}
+          {capturePaymentsButton};
         </Grid>
-        {renderPayments()}
+        {
+          order.payments.map((payment, index) => (
+            <Fragment key={index} >
+              <OrderPayment
+                capturePayments={handleCapturePayments}
+                order={order}
+                payment={payment}
+              />
+              {index !== (order.payments.length - 1) ?
+                <Divider style={{ marginTop: "30px", marginBottom: "20px" }}/>
+                : null
+              }
+            </Fragment>
+          ))
+        }
       </CardContent>
     </Card>
   );
