@@ -105,12 +105,10 @@ function OrderPayment(props) {
         <Typography variant="body1">
           {displayName}
         </Typography>
-        {riskLevel !== "normal" && payment.mode !== "captured" ?
+        {riskLevel !== "normal" && payment.mode !== "captured" &&
           <Typography className={classes.fontColorDanger} variant="body2">
             Payment risk level: {capitalizeString(riskLevel)}
           </Typography>
-          :
-          null
         }
         <Typography variant="body2">
           Processor: {processor}
@@ -121,12 +119,10 @@ function OrderPayment(props) {
         <Typography variant="body2" paragraph>
           Status: {displayStatuses[status]}
         </Typography>
-        { captureErrorMessage ?
+        { captureErrorMessage &&
           <Typography className={classes.fontColorDanger} variant="body2" paragraph>
             Capture error: {captureErrorMessage}
           </Typography>
-          :
-          null
         }
       </Grid>
       <Grid item xs={6} md={6}>
