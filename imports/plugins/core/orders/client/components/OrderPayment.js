@@ -38,14 +38,12 @@ function OrderPayment(props) {
   const { amount, captureErrorMessage, displayName, processor, riskLevel, status, transactionId } = payment;
   const canCapturePayment = payment.mode !== "captured";
 
-  const handleCapturePayment = async (mutation) => {
+  const handleCapturePayment = (mutation) => {
     const { capturePayments } = props;
 
     if (hasPermission) {
-      return capturePayments(mutation, [payment._id]);
+      capturePayments(mutation, [payment._id]);
     }
-
-    return null;
   };
 
   let capturePaymentButton;
@@ -136,6 +134,7 @@ function OrderPayment(props) {
 }
 
 OrderPayment.propTypes = {
+  capturePayments: PropTypes.func,
   classes: PropTypes.object,
   order: PropTypes.object,
   payment: PropTypes.shape({
