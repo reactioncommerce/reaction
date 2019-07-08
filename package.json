@@ -53,6 +53,7 @@
     "core-js": "^2.6.4",
     "cors": "2.8.4",
     "cuid": "^2.1.5",
+    "dataloader": "^1.4.0",
     "deep-equal": "^1.0.1",
     "envalid": "^4.2.1",
     "express": "4.16.2",
