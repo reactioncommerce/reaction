@@ -17,6 +17,10 @@ import { isPaymentRiskElevated } from "../helpers";
 import OrderPayment from "./OrderPayment";
 
 const styles = (theme) => ({
+  dividerSpacing: {
+    marginBottom: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 4
+  },
   fulfillmentGroupHeader: {
     marginBottom: theme.spacing.unit * 4
   }
@@ -60,61 +64,59 @@ function OrderPayments(props) {
   };
 
   let capturePaymentsButton;
-  const renderCaptureAllPaymentsButton = () => {
-    const paymentIdList = order.payments.map((payment) => payment._id);
+  const paymentIdList = order.payments.map((payment) => payment._id);
 
-    if (hasPermission && canCapturePayment) {
-      // If any payment we are trying to capture has an elevated risk,
-      // prompt user to make sure they want to capture payemnt
-      if (isPaymentRiskElevated(order, paymentIdList)) {
-        capturePaymentsButton =
-          <Grid item xs={6} md={6}>
-            <Grid container alignItems="center" justify="flex-end" spacing={8}>
-              <Mutation mutation={captureOrderPaymentsMutation}>
-                {(mutationFunc, { loading }) => (
-                  <ConfirmButton
-                    buttonColor="primary"
-                    buttonText={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
-                    buttonVariant="contained"
-                    cancelActionText={i18next.t("app.close", "Close")}
-                    confirmActionText={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
-                    isWaiting={loading}
-                    title={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
-                    message={
-                      i18next.t(
-                        "reaction-payments.captureAllElevatedRiskWarning",
-                        "One or more of the payments you are attempting to capture has an elevated charge risk. Do you want to proceed?"
-                      )
-                    }
-                    onConfirm={() => handleCapturePayments(mutationFunc)}
-                  />
-                )}
-              </Mutation>
-            </Grid>
+  if (hasPermission && canCapturePayment) {
+    // If any payment we are trying to capture has an elevated risk,
+    // prompt user to make sure they want to capture payemnt
+    if (isPaymentRiskElevated(order, paymentIdList)) {
+      capturePaymentsButton =
+        <Grid item xs={6} md={6}>
+          <Grid container alignItems="center" justify="flex-end" spacing={8}>
+            <Mutation mutation={captureOrderPaymentsMutation}>
+              {(mutationFunc, { loading }) => (
+                <ConfirmButton
+                  buttonColor="primary"
+                  buttonText={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
+                  buttonVariant="contained"
+                  cancelActionText={i18next.t("app.close", "Close")}
+                  confirmActionText={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
+                  isWaiting={loading}
+                  title={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
+                  message={
+                    i18next.t(
+                      "reaction-payments.captureAllElevatedRiskWarning",
+                      "One or more of the payments you are attempting to capture has an elevated charge risk. Do you want to proceed?"
+                    )
+                  }
+                  onConfirm={() => handleCapturePayments(mutationFunc)}
+                />
+              )}
+            </Mutation>
           </Grid>
-        ;
-      } else {
-        capturePaymentsButton =
-          <Grid item xs={6} md={6}>
-            <Grid container alignItems="center" justify="flex-end" spacing={8}>
-              <Mutation mutation={captureOrderPaymentsMutation}>
-                {(mutationFunc, { loading }) => (
-                  <Button
-                    color="primary"
-                    isWaiting={loading}
-                    onClick={() => handleCapturePayments(mutationFunc)}
-                    variant="contained"
-                  >
-                    {i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
-                  </Button>
-                )}
-              </Mutation>
-            </Grid>
+        </Grid>
+      ;
+    } else {
+      capturePaymentsButton =
+        <Grid item xs={6} md={6}>
+          <Grid container alignItems="center" justify="flex-end" spacing={8}>
+            <Mutation mutation={captureOrderPaymentsMutation}>
+              {(mutationFunc, { loading }) => (
+                <Button
+                  color="primary"
+                  isWaiting={loading}
+                  onClick={() => handleCapturePayments(mutationFunc)}
+                  variant="contained"
+                >
+                  {i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
+                </Button>
+              )}
+            </Mutation>
           </Grid>
-        ;
-      }
+        </Grid>
+      ;
     }
-  };
+  }
 
   return (
     <Card>
@@ -140,7 +142,7 @@ function OrderPayments(props) {
                 payment={payment}
               />
               {index !== (order.payments.length - 1) &&
-                <Divider style={{ marginTop: "30px", marginBottom: "20px" }}/>
+                <Divider className={classes.dividerSpacing} />
               }
             </Fragment>
           ))
