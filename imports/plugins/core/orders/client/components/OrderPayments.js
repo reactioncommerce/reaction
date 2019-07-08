@@ -64,9 +64,8 @@ function OrderPayments(props) {
   };
 
   let capturePaymentsButton;
-  const paymentIdList = order.payments.map((payment) => payment._id);
-
   if (hasPermission && canCapturePayment) {
+    const paymentIdList = order.payments.map((payment) => payment._id);
     // If any payment we are trying to capture has an elevated risk,
     // prompt user to make sure they want to capture payemnt
     if (isPaymentRiskElevated(order, paymentIdList)) {
