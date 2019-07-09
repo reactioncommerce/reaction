@@ -29,27 +29,29 @@ export default async function publishProductToCatalog(catalogProduct, { context,
   catalogProduct.isSoldOut = topVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isSoldOut);
 
   // add inventory props to each top level Variant
-  catalogProduct.variants.forEach((variant, variantIndex) => {
+  catalogProduct.variants.forEach((variant) => {
     // attempt to find this variant's inventory info
     const foundVariantInventory = topVariantsAndOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === variant._id);
 
     // if inventory info was found, add to variant
     if (foundVariantInventory) {
-      catalogProduct.variants[variantIndex].isBackorder = foundVariantInventory.inventoryInfo.isBackorder;
-      catalogProduct.variants[variantIndex].isLowQuantity = foundVariantInventory.inventoryInfo.isLowQuantity;
-      catalogProduct.variants[variantIndex].isSoldOut = foundVariantInventory.inventoryInfo.isSoldOut;
+      variant.isBackorder = foundVariantInventory.inventoryInfo.isBackorder;
+      variant.isLowQuantity = foundVariantInventory.inventoryInfo.isLowQuantity;
+      variant.isSoldOut = foundVariantInventory.inventoryInfo.isSoldOut;
     }
 
     // add inventory props to each top level option
-    variant.options.forEach((option, optionIndex) => {
-      const foundOptionInventory = topVariantsAndOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === option._id);
+    if (variant.options) {
+      variant.options.forEach((option) => {
+        const foundOptionInventory = topVariantsAndOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === option._id);
 
-      // if inventory info was found, add to variant
-      if (foundOptionInventory) {
-        catalogProduct.variants[variantIndex].options[optionIndex].isBackorder = foundOptionInventory.inventoryInfo.isBackorder;
-        catalogProduct.variants[variantIndex].options[optionIndex].isLowQuantity = foundOptionInventory.inventoryInfo.isLowQuantity;
-        catalogProduct.variants[variantIndex].options[optionIndex].isSoldOut = foundOptionInventory.inventoryInfo.isSoldOut;
-      }
-    });
+        // if inventory info was found, add to option
+        if (foundOptionInventory) {
+          option.isBackorder = foundOptionInventory.inventoryInfo.isBackorder;
+          option.isLowQuantity = foundOptionInventory.inventoryInfo.isLowQuantity;
+          option.isSoldOut = foundOptionInventory.inventoryInfo.isSoldOut;
+        }
+      });
+    }
   });
 }
