@@ -102,7 +102,9 @@ class OrderCardHeader extends Component {
               </Button>
             </Grid>
             <Grid className={classes.openSidebarButton} item>
-              <DetailDrawerButton color="primary" size="small" variant="outlined">{i18next.t("orderCard.orderSummary.showOrderSummary", "Show order summary")}</DetailDrawerButton>
+              <DetailDrawerButton color="primary" size="small" variant="outlined">
+                {i18next.t("orderCard.orderSummary.showOrderSummary", "Show order summary")}
+              </DetailDrawerButton>
             </Grid>
           </Grid>
         </Grid>
