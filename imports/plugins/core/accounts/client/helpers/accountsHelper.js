@@ -116,7 +116,7 @@ export function groupPermissions(packages) {
         }
       }
       // TODO review this, hardcoded WIP "reaction"
-      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => ` ${x[1].toUpperCase()}`);
+      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (string) => ` ${string[1].toUpperCase()}`);
 
       const newObj = {
         shopId: pkg.shopId,
