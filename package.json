@@ -78,7 +78,7 @@
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
     "libphonenumber-js": "1.4.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.12",
     "match-sorter": "^2.3.0",
     "meteor-node-stubs": "0.4.1",
     "mobx": "^5.8.0",
