@@ -18,6 +18,7 @@ import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
 import OrderCardHeader from "./OrderCardHeader";
 import OrderCardPayments from "./orderCardPayments";
+import OrderCardRefunds from "./OrderCardRefunds";
 
 
 const styles = (theme) => ({
@@ -84,19 +85,13 @@ class OrderCard extends Component {
   }
 
   renderRefunds() {
+    const { order } = this.props;
     const { currentTab } = this.state;
 
     if (currentTab === 1) {
       return (
         <Grid item xs={12}>
-          <Card elevation={0}>
-            <CardHeader
-              title="Refunds"
-            />
-            <CardContent>
-              <Typography variant="h3">Coming soon!</Typography>
-            </CardContent>
-          </Card>
+          <OrderCardRefunds order={order} />
         </Grid>
       );
     }

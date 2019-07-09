@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "calculateRefundByItem": "Calculate refund by item",
       "fulfillment": "Fulfillment",
       "fulfillmentGroupHeader": "Fulfillment group {{currentGroupCount}} of {{totalGroupsCount}}",
       "items": "Items",
@@ -18,6 +19,7 @@
       },
       "orderDetails": "Order Details",
       "order": {
+        "amountToRefund": "Amount to refund",
         "applyRefund": "Apply refund",
         "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
         "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
