@@ -6,8 +6,8 @@ import Typography from "@material-ui/core/Typography";
 
 
 const styles = (theme) => ({
-  fontWeightBold: {
-    fontWeight: theme.typography.fontWeightBold
+  fontWeightSemiBold: {
+    fontWeight: theme.typography.fontWeightSemiBold
   }
 });
 
@@ -56,7 +56,7 @@ class OrderCardFulfillmentGroupItem extends Component {
               {price.displayAmount}
             </Typography>
             <Typography variant="body1" align="right">
-              Total({quantity}):&nbsp; <span className={classes.fontWeightBold}>{subtotal.displayAmount}</span>
+              Total({quantity}):&nbsp; <span className={classes.fontWeightSemiBold}>{subtotal.displayAmount}</span>
             </Typography>
           </Grid>
         </Grid>
