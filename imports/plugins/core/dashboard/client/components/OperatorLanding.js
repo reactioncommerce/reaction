@@ -33,7 +33,7 @@ function OperatorLanding() {
           </Typography>
         </Grid>
         <Grid item>
-          <Typography align="center" variant="body2">
+          <Typography align="center" variant="body1">
             See our <MuiLink href="https://docs.reactioncommerce.com/docs/dashboard">Store Operator’s Guide</MuiLink> for more information.
           </Typography>
         </Grid>
