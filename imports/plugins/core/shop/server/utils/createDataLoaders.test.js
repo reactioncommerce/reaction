@@ -1,0 +1,49 @@
+import convertToDataloaderResult from "../../../../../node-app/core/util/convertToDataloaderResult";
+import createDataLoaders from "./createDataLoaders";
+
+const context = {
+  collections: {
+    Shops: {
+      find: jest.fn(() => ({
+        toArray() {
+          return [
+            {
+              _id: 1
+            },
+            {
+              _id: 2
+            }
+          ];
+        }
+      }))
+    }
+  }
+};
+
+const dataloaderFactory = (fn) => fn;
+
+test("returns a map with Shops dataloader", () => {
+  let dlFn;
+  const dlFactory = (fn) => {
+    dlFn = fn;
+    return fn;
+  };
+  const dlMap = createDataLoaders(context, dlFactory, convertToDataloaderResult);
+  expect(dlMap.Shops).toEqual(dlFn);
+});
+
+test("dataloader function returns correct results", async () => {
+  const { Shops } = createDataLoaders(context, dataloaderFactory, convertToDataloaderResult);
+  const results = await Shops(["1", "2", "3"]);
+  expect(results).toEqual([
+    { _id: 1 },
+    { _id: 2 },
+    null
+  ]);
+});
+
+test("dataloader function calls Shops.find() with correct shop ids", async () => {
+  const { Shops } = createDataLoaders(context, dataloaderFactory, convertToDataloaderResult);
+  await Shops(["1"]);
+  expect(context.collections.Shops.find).toHaveBeenCalledWith({ _id: { $in: ["1"] } });
+});
