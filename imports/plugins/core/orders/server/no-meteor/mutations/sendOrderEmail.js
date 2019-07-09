@@ -15,6 +15,10 @@ const inputSchema = new SimpleSchema({
   dataForEmail: {
     type: Object,
     blackbox: true
+  },
+  language: {
+    type: String,
+    optional: true
   }
 });
 
@@ -28,7 +32,7 @@ const inputSchema = new SimpleSchema({
 export default async function sendOrderEmail(context, input) {
   inputSchema.validate(input);
 
-  const { action, dataForEmail, fromShop, to } = input;
+  const { action, dataForEmail, fromShop, to, language } = input;
 
   // Compile email
   let templateName;
@@ -47,6 +51,7 @@ export default async function sendOrderEmail(context, input) {
     data: dataForEmail,
     fromShop,
     templateName,
-    to
+    to,
+    language
   });
 }

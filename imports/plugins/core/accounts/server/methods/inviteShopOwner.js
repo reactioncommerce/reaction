@@ -2,6 +2,7 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
+import { Accounts } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -53,6 +54,8 @@ export default function inviteShopOwner(options, shopData) {
   // Compile Email with SSR
   const templateName = "accounts/inviteShopOwner";
 
+  const account = Accounts.findOne({ userId }, { _id: 0, profile: 1 });
+  const language = account && account.profile && account.profile.language;
   const token = Random.id();
   const currentUser = Meteor.user();
   const currentUserName = getCurrentUserName(currentUser);
@@ -73,7 +76,8 @@ export default function inviteShopOwner(options, shopData) {
     data: dataForEmail,
     fromShop: primaryShop,
     templateName,
-    to: email
+    to: email,
+    language
   }));
 
   return true;

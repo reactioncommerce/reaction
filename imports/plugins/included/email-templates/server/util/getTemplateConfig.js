@@ -3,9 +3,11 @@
  * @param {Object} context App context
  * @param {String} shopId Shop ID
  * @param {String} templateName Email template name
+ * @param {Object} options 
+ * @param {string} options.language 
  * @returns {Object} returns source
  */
-export default async function getTemplateConfig(context, shopId, templateName) {
+export default async function getTemplateConfig(context, shopId, templateName, options = {}) {
   const { Shops, Templates } = context.collections;
 
   const shop = await Shops.findOne({
@@ -21,7 +23,7 @@ export default async function getTemplateConfig(context, shopId, templateName) {
 
   // check database for a matching template
   const templateDoc = await Templates.findOne({
-    language,
+    language: options.language || language,
     name: templateName,
     shopId,
     type: "email"

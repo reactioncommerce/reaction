@@ -32,7 +32,8 @@ export default async function sendOrderEmail(context, order, action) {
     action,
     dataForEmail,
     fromShop: dataForEmail.shop,
-    to
+    to,
+    language: order.language
   });
 
   return true;

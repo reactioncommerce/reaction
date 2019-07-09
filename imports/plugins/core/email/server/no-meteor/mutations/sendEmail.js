@@ -17,6 +17,7 @@ import getShopLogo from "../util/getShopLogo";
   });
  * @param {Object} context App context
  * @param  {Object} options - object containing to/from/subject/html String keys
+ * @param  {String} options.language  
  * @return {Boolean} returns job object
  */
 export default async function sendEmail(context, options) {

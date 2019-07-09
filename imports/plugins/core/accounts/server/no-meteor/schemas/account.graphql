@@ -259,6 +259,15 @@ type SetAccountProfileCurrencyPayload {
   clientMutationId: String
 }
 
+"The response from the `setAccountProfileLanguage` mutation"
+type SetAccountProfileLanguagePayload {
+  "The updated account"
+  account: Account
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 extend type Shop {
   """
   Returns a list of administrators for this shop, as a Relay-compatible connection.

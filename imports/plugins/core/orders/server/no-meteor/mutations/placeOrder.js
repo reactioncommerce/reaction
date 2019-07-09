@@ -175,7 +175,23 @@ export default async function placeOrder(context, input) {
   } = orderInput;
   let { language } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
-  const { Orders, Cart } = collections;
+  const { Cart, Orders, Shops } = collections;
+
+  // first search for shop based on account id
+  let shop = await Shops.findOne({ _id: shopId }, { languages: 1 });
+
+  if (!shop || !shop.languages || shop.languages.length === 0) {
+    // if non-primary shop does not have any languages use primary shop
+    shop = await Shops.findOne({ shopType: "primary" }, { languages: 1 });
+  }
+
+  const shopLanguages = (shop && shop.languages) || [];
+  const shopLanguage = R.find(R.whereEq({ enabled: true, i18n: language }))(shopLanguages);
+
+  // set to undefined value so order language will not be set
+  if (!shopLanguage) {
+    language = undefined;
+  }
 
   let cart;
   if (cartId) {
@@ -184,7 +200,6 @@ export default async function placeOrder(context, input) {
       throw new ReactionError("not-found", "Cart not found while trying to place order");
     }
   }
-
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up

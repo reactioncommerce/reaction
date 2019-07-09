@@ -2,7 +2,8 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Accounts } from "meteor/accounts-base";
+import { Accounts as MeteorAccounts } from "meteor/accounts-base";
+import { Accounts } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -95,12 +96,14 @@ export default async function sendVerificationEmail({
     confirmationUrl: url,
     userEmailAddress: address
   };
-
+  const account = Accounts.findOne({ userId }, { _id: 0, profile: 1 });
+  const language = account && account.profile && account.profile.language;
   const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   return Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShopId: Reaction.getShopId(),
     templateName: bodyTemplate,
-    to: address
+    to: address,
+    language
   }));
 }

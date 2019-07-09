@@ -4,7 +4,7 @@ import Random from "@reactioncommerce/random";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Shops } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -99,12 +99,15 @@ async function sendResetEmail(userId, optionalEmail) {
     user
   };
 
+  const account = Accounts.findOne({ userId }, { _id: 0, profile: 1 });
+  const language = account && account.profile && account.profile.language;
   const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   return Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: shop,
     templateName: "accounts/resetPassword",
-    to: email
+    to: email,
+    language
   }));
 }
 

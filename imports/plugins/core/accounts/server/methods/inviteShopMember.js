@@ -126,13 +126,16 @@ export default function inviteShopMember(options) {
 
   dataForEmail.groupName = _.startCase(group.name);
 
+  const account = Accounts.findOne({ userId });
+  const language = account && account.profile && account.profile.language;
   // send invitation email from primary shop email
   const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: primaryShop,
     templateName,
-    to: email
+    to: email,
+    language,
   }));
 
   return account;
