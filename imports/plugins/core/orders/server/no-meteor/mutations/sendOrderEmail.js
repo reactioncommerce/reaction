@@ -15,6 +15,10 @@ const inputSchema = new SimpleSchema({
   dataForEmail: {
     type: Object,
     blackbox: true
+  },
+  language: {
+    type: String,
+    optional: true
   }
 });
 
