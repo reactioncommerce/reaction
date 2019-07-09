@@ -52,7 +52,7 @@ function OrderPayments(props) {
         await approve();
       }
 
-      mutation({
+      return mutation({
         variables: {
           orderId: order._id,
           paymentIds: paymentIdList,
@@ -60,6 +60,8 @@ function OrderPayments(props) {
         }
       });
     }
+
+    return null;
   };
 
   let capturePaymentsButton;

@@ -1,6 +1,17 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
+/**
+ * @name getOrderQuery
+ * @method
+ * @memberof Order/helpers
+ * @summary Creates Order mongo selector based on user permissions
+ * @param {Object} context An object containing the per-request state
+ * @param {Object} selector A mongo selector
+ * @param {String} shopId Shop ID of the order
+ * @param {String} token An anonymous order token, required if the order was placed without being logged in
+ * @return {Object} A mongo selector
+ */
 export function getOrderQuery(context, selector, shopId, token) {
   const { accountId: contextAccountId, userHasPermission } = context;
   const newSelector = { ...selector, shopId };
