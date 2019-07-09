@@ -33,7 +33,7 @@ const displayStatuses = {
  * @returns {React.Component} returns a React component
  */
 function OrderPayment(props) {
-  const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+  const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
   const { classes, order, payment } = props;
   const { amount, captureErrorMessage, displayName, processor, riskLevel, status, transactionId } = payment;
   const canCapturePayment = payment.mode !== "captured";

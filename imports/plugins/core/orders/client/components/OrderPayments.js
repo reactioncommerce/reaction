@@ -31,7 +31,7 @@ const styles = (theme) => ({
  * @returns {React.Component} returns a React component
  */
 function OrderPayments(props) {
-  const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+  const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
   const { classes, order } = props;
   const canCapturePayment = order.payments.some((payment) => payment.mode !== "captured");
 

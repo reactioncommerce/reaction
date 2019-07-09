@@ -73,6 +73,17 @@ export default async function register(app) {
       layout: "printLayout",
       name: "dashboard/pdf/orders",
       template: "completedPDFLayout"
+    }, {
+      route: "order/fulfillment",
+      label: "Order Fulfillment",
+      permission: "orderFulfillment",
+      name: "order/fulfillment"
+    },
+    {
+      route: "order/view",
+      label: "Order View",
+      permission: "orderView",
+      name: "order/view"
     }],
     layout: [{
       layout: "coreLayout",

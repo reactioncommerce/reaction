@@ -16,9 +16,11 @@ export function getOrderQuery(context, selector, shopId, token) {
   const { accountId: contextAccountId, userHasPermission } = context;
   const newSelector = { ...selector, shopId };
 
-  if (userHasPermission(["orders"], shopId)) {
+  if (userHasPermission(["orders", "order/fulfillment", "order/view"], shopId)) {
     // admins with orders permissions can see any order in the shop
-    // No need to adjust the selector
+    // admins with order/fulfillment and order/view permissions can also view order
+    // with further permission checks in each component to limit functionality where needed
+    // No need to adjust the selector to get the order
   } else if (contextAccountId) {
     // Regular users can only see their own orders
     newSelector.accountId = contextAccountId;
