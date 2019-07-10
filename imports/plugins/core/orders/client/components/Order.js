@@ -10,7 +10,7 @@ import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import OrderAppBar from "./OrderAppBar";
-import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
+import OrderCustomerDetails from "./OrderCustomerDetails";
 import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
 import OrderHeader from "./OrderHeader";
 import OrderPayments from "./OrderPayments";
@@ -72,7 +72,7 @@ function Order(props) {
             <Blocks region="OrderCardSummary" blockProps={{ order, ...props }} />
           </Grid>
           <Grid item xs={12}>
-            <OrderCardCustomerDetails order={order} />
+            <OrderCustomerDetails order={order} />
           </Grid>
         </Grid>
       </DetailDrawer>
