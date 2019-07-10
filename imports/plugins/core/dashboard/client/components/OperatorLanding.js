@@ -28,7 +28,8 @@ function OperatorLanding() {
         </Grid>
         <Grid item>
           <Typography align="center" variant="body1">
-              Use the Operator UI to manage <Link to="/operator/orders">Orders</Link>, <Link to="/operator/products">Products</Link>, <Link to="/operator/tags">Tags</Link>, <Link to="/operator/accounts">Accounts</Link>, and <Link to="/operator/navigation">Navigation</Link>, or change shop settings.
+            {/* eslint-disable-next-line max-len */}
+            Use the Operator UI to manage <Link to="/operator/orders">Orders</Link>, <Link to="/operator/products">Products</Link>, <Link to="/operator/tags">Tags</Link>, <Link to="/operator/accounts">Accounts</Link>, and <Link to="/operator/navigation">Navigation</Link>, or change shop settings.
           </Typography>
         </Grid>
         <Grid item>

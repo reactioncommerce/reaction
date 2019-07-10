@@ -204,4 +204,3 @@ export function getShippingInfo(order) {
   const shippingInfo = order && order.shipping && order.shipping.find((group) => group.shopId === Reaction.getShopId());
   return shippingInfo || {};
 }
-
