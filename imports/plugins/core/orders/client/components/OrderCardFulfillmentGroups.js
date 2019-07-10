@@ -16,7 +16,7 @@ import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 import OrderCardFulfillmentGroupItem from "./OrderCardFulfillmentGroupItem";
 import OrderCardFulfillmentGroupTrackingNumber from "./OrderCardFulfillmentGroupTrackingNumber";
 import OrderCardFulfillmentGroupStatusButton from "./OrderCardFulfillmentGroupStatusButton";
-import OrderCardStatusChip from "./OrderCardStatusChip";
+import OrderStatusChip from "./OrderStatusChip";
 
 const styles = (theme) => ({
   fulfillmentGroupHeader: {
@@ -178,7 +178,7 @@ class OrderCardFulfillmentGroups extends Component {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <OrderCardStatusChip displayStatus={displayStatus} status={status} type="shipment" variant="contained" />
+                        <OrderStatusChip displayStatus={displayStatus} status={status} type="shipment" variant="contained" />
                       </Grid>
                     </Grid>
                   </Grid>

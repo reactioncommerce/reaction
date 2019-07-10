@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
 import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
-import OrderCardStatusChip from "./OrderCardStatusChip";
+import OrderStatusChip from "./OrderStatusChip";
 
 const styles = (theme) => ({
   fontWeightSemiBold: {
@@ -60,7 +60,7 @@ class OrderHeader extends Component {
       // show a single badge with the status of all payments
       return (
         <Grid item>
-          <OrderCardStatusChip displayStatus={paymentStatus} status={paymentStatus} type="payment" />
+          <OrderStatusChip displayStatus={paymentStatus} status={paymentStatus} type="payment" />
         </Grid>
       );
     }
@@ -69,7 +69,7 @@ class OrderHeader extends Component {
     // and show badges next to payments to represent their status
     return (
       <Grid item>
-        <OrderCardStatusChip displayStatus={i18next.t("data.status.multipleStatuses", "Multiple statuses")} status="multiple" type="payment" />
+        <OrderStatusChip displayStatus={i18next.t("data.status.multipleStatuses", "Multiple statuses")} status="multiple" type="payment" />
       </Grid>
     );
   }
@@ -89,7 +89,7 @@ class OrderHeader extends Component {
               </Typography>
             </Grid>
             <Grid item>
-              <OrderCardStatusChip displayStatus={displayStatus} status={status} type="order" />
+              <OrderStatusChip displayStatus={displayStatus} status={status} type="order" />
             </Grid>
             {this.renderPaymentStatusChip()}
             <Grid item>

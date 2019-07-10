@@ -37,7 +37,7 @@ const styles = (theme) => ({
   }
 });
 
-class OrderCardStatusChip extends Component {
+class OrderStatusChip extends Component {
   static propTypes = {
     classes: PropTypes.object,
     displayStatus: PropTypes.string,
@@ -105,4 +105,4 @@ class OrderCardStatusChip extends Component {
   }
 }
 
-export default withStyles(styles, { name: "RuiOrderCardStatusChip" })(OrderCardStatusChip);
+export default withStyles(styles, { name: "RuiOrderStatusChip" })(OrderStatusChip);
