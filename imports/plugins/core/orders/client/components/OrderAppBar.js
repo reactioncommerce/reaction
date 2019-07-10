@@ -6,7 +6,7 @@ import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import PrimaryAppBar from "/imports/client/ui/components/PrimaryAppBar/PrimaryAppBar";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 
-class OrderCardAppBar extends Component {
+class OrderAppBar extends Component {
   static propTypes = {
     classes: PropTypes.object,
     order: PropTypes.shape({
@@ -78,4 +78,4 @@ class OrderCardAppBar extends Component {
   }
 }
 
-export default OrderCardAppBar;
+export default OrderAppBar;

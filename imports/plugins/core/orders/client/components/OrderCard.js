@@ -9,7 +9,7 @@ import Tabs from "@material-ui/core/Tabs";
 import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
-import OrderCardAppBar from "./OrderCardAppBar";
+import OrderAppBar from "./OrderAppBar";
 import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
 import OrderHeader from "./OrderHeader";
@@ -39,7 +39,7 @@ class OrderCard extends Component {
   renderAppBar() {
     const { order } = this.props;
 
-    return <OrderCardAppBar order={order} />;
+    return <OrderAppBar order={order} />;
   }
 
   renderHeader() {
