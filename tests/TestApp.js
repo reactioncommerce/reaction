@@ -9,6 +9,7 @@ import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
 import registerPlugins from "../imports/node-app/registerPlugins";
 import "../imports/node-app/extendSchemas";
+import createDataLoaders from "../imports/node-app/core/util/createDataLoaders";
 
 class TestApp {
   constructor(options = {}) {
@@ -186,6 +187,7 @@ class TestApp {
   async start() {
     try {
       await registerPlugins(this.reactionNodeApp);
+      await createDataLoaders(this.reactionNodeApp.context);
     } catch (error) {
       Logger.error(error, "Error registering plugins in TestApp");
       throw error;
