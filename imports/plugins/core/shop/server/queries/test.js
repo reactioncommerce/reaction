@@ -5,7 +5,7 @@ const context = {
     Shops: {
       load: jest.fn(() => [
         {
-          _id: "shop-1",
+          _id: "shop-1"
         }
       ])
     }
