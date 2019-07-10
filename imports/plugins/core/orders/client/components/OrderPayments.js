@@ -13,7 +13,7 @@ import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import { approveOrderPayments } from "../graphql";
 import captureOrderPaymentsMutation from "../graphql/mutations/captureOrderPayments";
 import { isPaymentRiskElevated } from "../helpers";
-import OrderCardPayment from "./OrderCardPayment";
+import OrderPayment from "./OrderPayment";
 
 const styles = (theme) => ({
   fulfillmentGroupHeader: {
@@ -135,7 +135,7 @@ class OrderCardPayments extends Component {
 
     return payments.map((payment, index) => (
       <Fragment key={index} >
-        <OrderCardPayment
+        <OrderPayment
           capturePayments={this.handleCapturePayments}
           order={order}
           payment={payment}
