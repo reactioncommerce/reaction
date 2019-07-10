@@ -7,8 +7,8 @@ import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryS
 import Order from "../components/Order";
 import orderByReferenceId from "../graphql/queries/orderByReferenceId";
 
-
-class OrderCardContainer extends Component {
+//TODO: EK - convert to functional component
+class OrderContainer extends Component {
   static propTypes = {
     match: PropTypes.shape({
       params: PropTypes.shape({
@@ -55,4 +55,4 @@ class OrderCardContainer extends Component {
 export default compose(
   withPrimaryShop,
   withRouter
-)(OrderCardContainer);
+)(OrderContainer);
