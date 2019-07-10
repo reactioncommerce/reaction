@@ -14,7 +14,7 @@ import OrderCustomerDetails from "./OrderCustomerDetails";
 import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
 import OrderHeader from "./OrderHeader";
 import OrderPayments from "./OrderPayments";
-import OrderCardRefunds from "./OrderCardRefunds";
+import OrderRefunds from "./OrderRefunds";
 
 const styles = (theme) => ({
   tabs: {
@@ -51,7 +51,7 @@ function Order(props) {
           <Divider />
         </Grid>
         {currentTab === 0 &&
-          <Grid container spacing={16}>
+          <Grid container spacing={24}>
             <Grid item xs={12}>
               <OrderCardFulfillmentGroups order={order} />
             </Grid>
@@ -62,7 +62,7 @@ function Order(props) {
         }
         {currentTab === 1 &&
           <Grid item xs={12}>
-            <OrderCardRefunds order={order} />
+            <OrderRefunds order={order} />
           </Grid>
         }
       </Grid>

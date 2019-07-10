@@ -31,6 +31,7 @@
         "cancelOrderThenRestock": "Restock",
         "order": "Order",
         "placed": "Placed",
+        "previousRefunds": "Previous refunds",
         "refunding": "Refunding",
         "refundItemsAlert": "Do you want to refund {{refundItemsQuantity}} item(s) totaling {{refundItemsTotal}}?",
         "refundItemsApproveAlert": "Do you want to approve this payment and then refund {{totalAmount}}?",
