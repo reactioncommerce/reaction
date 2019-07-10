@@ -16,7 +16,7 @@ import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import OrderCardAppBar from "./OrderCardAppBar";
 import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
-import OrderCardHeader from "./OrderCardHeader";
+import OrderHeader from "./OrderHeader";
 import OrderCardPayments from "./orderCardPayments";
 import OrderCardRefunds from "./OrderCardRefunds";
 
@@ -50,7 +50,7 @@ class OrderCard extends Component {
   renderHeader() {
     const { order } = this.props;
 
-    return <OrderCardHeader order={order} />;
+    return <OrderHeader order={order} />;
   }
 
   renderFulfillment() {
