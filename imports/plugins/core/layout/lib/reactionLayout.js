@@ -53,7 +53,7 @@ class ReactionLayout extends Component {
                 ...(child.props || {}),
                 ...this.props.layoutProps
               });
-            } catch (e) {
+            } catch (error) {
               return null;
             }
           }

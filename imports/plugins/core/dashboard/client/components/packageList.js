@@ -69,7 +69,7 @@ class PackageList extends Component {
 
             try {
               actionComponent = getComponent(`${packageData.template}_ActionDashboard`);
-            } catch (e) {
+            } catch (error) {
               actionComponent = null;
             } finally {
               // If one exists, add it to the list of elements

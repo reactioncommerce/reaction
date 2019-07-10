@@ -74,7 +74,7 @@ const Alerts = {
   See Alerts.defaultOptions for all values.
    */
   add(alertMessage, mode, alertOptions) {
-    let a;
+    let alert;
     let message = alertMessage;
     let options = alertOptions;
     // check options to see if we have translation
@@ -85,11 +85,11 @@ const Alerts = {
     options = _.defaults(alertOptions || {}, Alerts.defaultOptions);
 
     if (options.type) {
-      a = Alerts.collection_.findOne({
+      alert = Alerts.collection_.findOne({
         "options.type": options.type
       });
-      if (a) {
-        Alerts.collection_.update(a._id, {
+      if (alert) {
+        Alerts.collection_.update(alert._id, {
           $set: {
             message,
             mode,
