@@ -8,7 +8,7 @@ import ShopLogoWithData from "/imports/client/ui/components/ShopLogoWithData/Sho
 
 /**
  * OperatorLanding
- * @params {Object} props Component props
+ * @param {Object} props Component props
  * @returns {Node} React component
  */
 function OperatorLanding() {

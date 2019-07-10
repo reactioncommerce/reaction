@@ -7,7 +7,7 @@ import CartSummary from "@reactioncommerce/components/CartSummary/v1";
 
 /**
  * @name OrderCardSummary
- * @params {Object} props Component props
+ * @param {Object} props Component props
  * @returns {React.Component} returns a React component
  */
 function OrderCardSummary({ order }) {
