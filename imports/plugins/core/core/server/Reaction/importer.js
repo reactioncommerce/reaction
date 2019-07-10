@@ -144,8 +144,8 @@ Importer.commit = function (collection) {
       const message = `Error while importing to ${name}`;
       const writeErrors = result.getWriteErrors();
 
-      for (let i = 0; i < writeErrors.length; i += 1) {
-        Logger.warn(`${message}: ${writeErrors[i].errmsg}`);
+      for (let inc = 0; inc < writeErrors.length; inc += 1) {
+        Logger.warn(`${message}: ${writeErrors[inc].errmsg}`);
       }
       const writeConcernError = result.getWriteConcernError();
       if (writeConcernError) {
@@ -460,12 +460,12 @@ Importer.process = function (json, keys, callback, cbArgs) {
 
   const array = EJSON.parse(json);
 
-  for (let i = 0; i < array.length; i += 1) {
+  for (let inc = 0; inc < array.length; inc += 1) {
     const key = {};
-    for (let j = 0; j < keys.length; j += 1) {
-      key[keys[j]] = array[i][keys[j]];
+    for (let subInc = 0; subInc < keys.length; subInc += 1) {
+      key[keys[subInc]] = array[inc][keys[subInc]];
     }
-    callback.call(this, key, array[i], ...cbArgs);
+    callback.call(this, key, array[inc], ...cbArgs);
   }
 };
 
