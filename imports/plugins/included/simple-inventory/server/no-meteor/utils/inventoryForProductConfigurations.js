@@ -22,7 +22,10 @@ export default async function inventoryForProductConfigurations(context, input) 
   const inventoryDocs = await context.dataLoaders.SimpleInventoryByProductVariantId.loadMany(productVariantIds);
 
   return productConfigurations.map((productConfiguration) => {
-    const inventoryDoc = inventoryDocs.find((doc) => isEqual(productConfiguration, doc.productConfiguration));
+    const inventoryDoc = inventoryDocs.find((doc) => {
+      if (!doc) return false;
+      return isEqual(productConfiguration, doc.productConfiguration);
+    });
     if (!inventoryDoc || !inventoryDoc.isEnabled) {
       return {
         inventoryInfo: null,

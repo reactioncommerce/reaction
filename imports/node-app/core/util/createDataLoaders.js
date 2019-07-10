@@ -2,7 +2,7 @@
 import DataLoader from "dataloader";
 import convertToDataloaderResult from "./convertToDataloaderResult";
 
-export const dataLoaderFactory = (dlFunc) => new DataLoader(dlFunc);
+export const dataLoaderFactory = (dlFunc) => new DataLoader(dlFunc, { cache: false });
 
 export default async function createDataLoaders(context) {
   if (!context.getFunctionsOfType || !context.getFunctionsOfType("createDataLoaders")) return;
