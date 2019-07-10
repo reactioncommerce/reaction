@@ -19,24 +19,69 @@ async function updateInventoryBooleansInCatalog(context, productId) {
     shopId: 1
   }).toArray();
 
-  const topVariants = variants.filter((variant) => variant.ancestors.length === 1);
-  if (topVariants.length === 0) return;
+  const topVariantsAndTopOptions = variants.filter((variant) => variant.ancestors.length === 1 || variant.ancestors.length === 2);
+  if (topVariantsAndTopOptions.length === 0) return;
 
-  const topVariantsInventoryInfo = await context.queries.inventoryForProductConfigurations(context, {
+  const variantsOptionsInventory = await context.queries.inventoryForProductConfigurations(context, {
     fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
-    productConfigurations: topVariants.map((option) => ({
+    productConfigurations: topVariantsAndTopOptions.map((option) => ({
       isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
       productId: option.ancestors[0],
       productVariantId: option._id
     })),
-    shopId: topVariants[0].shopId
+    shopId: topVariantsAndTopOptions[0].shopId
+  });
+
+  const catalogProduct = await Catalog.findOne({ "product.productId": productId }, { "product.variants": 1 });
+
+  // Update inventory for the parent product and all variants and options.
+  // If no inventory information is found for a variant or option, it is not mutated.
+  const updatedVariants = [];
+  catalogProduct.product.variants.forEach((variant) => {
+    // Keep variant un-mutated by default
+    let updatedVariant = variant;
+    const foundVariantInventory = variantsOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === variant._id);
+
+    if (foundVariantInventory) {
+      updatedVariant = {
+        ...variant,
+        isBackorder: foundVariantInventory.inventoryInfo.isBackorder,
+        isLowQuantity: foundVariantInventory.inventoryInfo.isLowQuantity,
+        isSoldOut: foundVariantInventory.inventoryInfo.isSoldOut
+      };
+    }
+
+    const updatedOptions = [];
+    if (updatedVariant.options) {
+      updatedVariant.options.forEach((option) => {
+        // Keep option un-mutated by default
+        let updatedOption = option;
+        const foundOptionInventory = variantsOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === option._id);
+
+        if (foundOptionInventory) {
+          updatedOption = {
+            ...option,
+            isBackorder: foundOptionInventory.inventoryInfo.isBackorder,
+            isLowQuantity: foundOptionInventory.inventoryInfo.isLowQuantity,
+            isSoldOut: foundOptionInventory.inventoryInfo.isSoldOut
+          };
+        }
+
+        updatedOptions.push(updatedOption);
+      });
+
+      updatedVariant.options = updatedOptions;
+    }
+
+    updatedVariants.push(updatedVariant);
   });
 
   await Catalog.updateOne({ "product.productId": productId }, {
     $set: {
-      "product.isBackorder": topVariantsInventoryInfo.every(({ inventoryInfo }) => inventoryInfo.isBackorder),
-      "product.isLowQuantity": topVariantsInventoryInfo.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity),
-      "product.isSoldOut": topVariantsInventoryInfo.every(({ inventoryInfo }) => inventoryInfo.isSoldOut)
+      "product.isBackorder": variantsOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isBackorder),
+      "product.isLowQuantity": variantsOptionsInventory.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity),
+      "product.isSoldOut": variantsOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isSoldOut),
+      "product.variants": updatedVariants
     }
   });
 }
