@@ -135,12 +135,12 @@ export default async function register(app) {
       workflow: "coreOrderWorkflow",
       audience: ["dashboard/orders"]
     }, { // Standard Order Fulfillment with shipping
-      template: "coreOrderShippingSummary",
+      template: "OrderSummary",
       label: "Summary",
       workflow: "coreOrderShipmentWorkflow",
       audience: ["dashboard/orders"]
     }, {
-      template: "coreOrderShippingInvoice",
+      template: "OrderInvoice",
       label: "Invoice",
       workflow: "coreOrderShipmentWorkflow",
       audience: ["dashboard/orders"]
