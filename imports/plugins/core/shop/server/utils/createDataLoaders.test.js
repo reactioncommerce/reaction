@@ -8,10 +8,10 @@ const context = {
         toArray() {
           return [
             {
-              _id: 1
+              _id: "shop-1"
             },
             {
-              _id: 2
+              _id: "shop-2"
             }
           ];
         }
@@ -34,16 +34,16 @@ test("returns a map with Shops dataloader", () => {
 
 test("dataloader function returns correct results", async () => {
   const { Shops } = createDataLoaders(context, dataloaderFactory, convertToDataloaderResult);
-  const results = await Shops(["1", "2", "3"]);
+  const results = await Shops(["shop-1", "shop-2", "shop-3"]);
   expect(results).toEqual([
-    { _id: 1 },
-    { _id: 2 },
+    { _id: "shop-1" },
+    { _id: "shop-2" },
     null
   ]);
 });
 
 test("dataloader function calls Shops.find() with correct shop ids", async () => {
   const { Shops } = createDataLoaders(context, dataloaderFactory, convertToDataloaderResult);
-  await Shops(["1"]);
-  expect(context.collections.Shops.find).toHaveBeenCalledWith({ _id: { $in: ["1"] } });
+  await Shops(["shop-1"]);
+  expect(context.collections.Shops.find).toHaveBeenCalledWith({ _id: { $in: ["shop-1"] } });
 });

@@ -7,13 +7,13 @@ const context = {
         toArray() {
           return [
             {
-              _id: 1,
+              _id: "product-1",
               productConfiguration: {
                 productVariantId: "variant-1"
               }
             },
             {
-              _id: 2,
+              _id: "product-2",
               productConfiguration: {
                 productVariantId: "variant-2"
               }
@@ -41,9 +41,9 @@ test("dataloader function returns correct results", async () => {
   const { SimpleInventoryByProductVariantId } = createDataLoaders(context, dataloaderFactory);
   const results = await SimpleInventoryByProductVariantId(["variant-2", "variant-3", "variant-1"]);
   expect(results).toEqual([
-    { _id: 2, productConfiguration: { productVariantId: "variant-2" } },
+    { _id: "product-2", productConfiguration: { productVariantId: "variant-2" } },
     null,
-    { _id: 1, productConfiguration: { productVariantId: "variant-1" } }
+    { _id: "product-1", productConfiguration: { productVariantId: "variant-1" } }
   ]);
 });
 

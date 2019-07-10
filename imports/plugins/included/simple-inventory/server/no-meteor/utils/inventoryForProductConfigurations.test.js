@@ -5,13 +5,13 @@ const context = {
     SimpleInventoryByProductVariantId: {
       loadMany: jest.fn(() => [
         {
-          _id: 1,
+          _id: "item-1",
           productConfiguration: {
             productVariantId: "variant-1"
           }
         },
         {
-          _id: 2,
+          _id: "item-2",
           productConfiguration: {
             productVariantId: "variant-2"
           }
