@@ -48,7 +48,7 @@ function OrderStatusChip(props) {
   let chipClasses;
 
   if (type === "order") {
-    chipVariant = "contained";
+    chipVariant = "default";
 
     if (status === "coreOrderWorkflow/canceled") {
       chipClasses = classes.orderStatusCanceled;
