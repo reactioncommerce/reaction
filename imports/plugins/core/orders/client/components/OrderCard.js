@@ -2,14 +2,10 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import Typography from "@material-ui/core/Typography";
 import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
@@ -17,9 +13,8 @@ import OrderCardAppBar from "./OrderCardAppBar";
 import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
 import OrderHeader from "./OrderHeader";
-import OrderCardPayments from "./orderCardPayments";
+import OrderPayments from "./OrderPayments";
 import OrderCardRefunds from "./OrderCardRefunds";
-
 
 const styles = (theme) => ({
   tabs: {
@@ -81,7 +76,7 @@ class OrderCard extends Component {
   renderPayments() {
     const { order } = this.props;
 
-    return <OrderCardPayments order={order} />;
+    return <OrderPayments order={order} />;
   }
 
   renderRefunds() {
