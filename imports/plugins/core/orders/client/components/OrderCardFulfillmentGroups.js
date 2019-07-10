@@ -60,7 +60,7 @@ class OrderCardFulfillmentGroups extends Component {
   };
 
   handleCancelFulfillmentGroup(mutation, fulfillmentGroup) {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
 
     if (hasPermission) {
       const { order } = this.props;
@@ -84,7 +84,7 @@ class OrderCardFulfillmentGroups extends Component {
   }
 
   renderCancelFulfillmentGroupButton = (fulfillmentGroup) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
 
     if (hasPermission) {
       const canCancelOrder = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
@@ -140,7 +140,7 @@ class OrderCardFulfillmentGroups extends Component {
   }
 
   renderUpdateFulfillmentGroupStatusButton = (fulfillmentGroup) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
     const { order } = this.props;
     const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
 

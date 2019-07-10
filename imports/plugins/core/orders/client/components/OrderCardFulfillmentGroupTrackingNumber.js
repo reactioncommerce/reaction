@@ -34,7 +34,7 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
   };
 
   handleSubmitForm = () => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
 
     if (hasPermission) {
       this.form.submit();
@@ -42,7 +42,7 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
   };
 
   handleToggleEdit = () => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
 
     if (hasPermission) {
       this.setState({
@@ -52,7 +52,7 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
   };
 
   handleUpdateFulfillmentGroupTrackingNumber = (data, mutation) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
 
     if (hasPermission) {
       const { fulfillmentGroup, orderId } = this.props;
@@ -74,7 +74,7 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
   }
 
   render() {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
     const { fulfillmentGroup } = this.props;
     const { isEditing, trackingNumber } = this.state;
 

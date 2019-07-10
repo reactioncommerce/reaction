@@ -46,7 +46,7 @@ class OrderCardFulfillmentGroupStatusButton extends Component {
   }
 
   async handleUpdateFulfillmentGroupStatus(mutation) {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
     const { fulfillmentGroup, order } = this.props;
 
     if (hasPermission) {
@@ -64,7 +64,7 @@ class OrderCardFulfillmentGroupStatusButton extends Component {
   // instead of using a select dropdown in a popup
   // https://material-ui.com/components/buttons/#split-button
   render() {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
     const { classes, fulfillmentGroup } = this.props;
     const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
     const options = [

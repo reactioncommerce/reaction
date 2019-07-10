@@ -82,7 +82,7 @@ class OrderCardRefunds extends Component {
 
 
   renderReason() {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
+    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
     const { fulfillmentGroup } = this.props;
     const { isEditing, trackingNumber } = this.state;
 

@@ -4,7 +4,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CartSummary from "@reactioncommerce/components/CartSummary/v1";
 
-
 /**
  * @name OrderCardSummary
  * @param {Object} props Component props
