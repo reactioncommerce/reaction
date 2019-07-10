@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -22,136 +22,67 @@ const styles = (theme) => ({
   }
 });
 
-class Order extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    order: PropTypes.object
+/**
+ * @name Order
+ * @param {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function Order(props) {
+  const { classes, order } = props;
+  const [currentTab, setTab] = useState(0);
+
+  const handleTabChange = (event, value) => {
+    setTab(value);
   };
 
-  state = {
-    currentTab: 0
-  }
-
-  handleTabChange = (event, value) => {
-    this.setState({ currentTab: value });
-  };
-
-  renderAppBar() {
-    const { order } = this.props;
-
-    return <OrderAppBar order={order} />;
-  }
-
-  renderHeader() {
-    const { order } = this.props;
-
-    return <OrderHeader order={order} />;
-  }
-
-  renderFulfillment() {
-    const { currentTab } = this.state;
-
-    if (currentTab === 0) {
-      return (
-        <Fragment>
-          <Grid item xs={12}>
-            {this.renderFulfillmentGroups()}
+  return (
+    <Fragment>
+      <Helmet title={`Order Details for order reference #${order.referenceId}`} />
+      <OrderAppBar order={order} />
+      <Grid container spacing={32}>
+        <Grid item xs={12}>
+          <OrderHeader order={order} />
+        </Grid>
+        <Grid className={classes.tabs} item xs={12}>
+          <Tabs value={currentTab} onChange={handleTabChange}>
+            <Tab label={i18next.t("fulfillment", "Fulfillment")} />
+            <Tab label={i18next.t("refunds", "Refunds")} />
+          </Tabs>
+          <Divider />
+        </Grid>
+        {currentTab === 0 &&
+          <Grid container>
+            <Grid item xs={12}>
+              <OrderCardFulfillmentGroups order={order} />
+            </Grid>
+            <Grid item xs={12}>
+              <OrderPayments order={order} />
+            </Grid>
           </Grid>
+        }
+        {currentTab === 1 &&
           <Grid item xs={12}>
-            {this.renderPayments()}
+            <OrderCardRefunds order={order} />
           </Grid>
-        </Fragment>
-      );
-    }
-
-    return null;
-  }
-
-  renderFulfillmentGroups() {
-    const { order } = this.props;
-
-    return <OrderCardFulfillmentGroups order={order} />;
-  }
-
-  renderPayments() {
-    const { order } = this.props;
-
-    return <OrderPayments order={order} />;
-  }
-
-  renderRefunds() {
-    const { order } = this.props;
-    const { currentTab } = this.state;
-
-    if (currentTab === 1) {
-      return (
-        <Grid item xs={12}>
-          <OrderCardRefunds order={order} />
-        </Grid>
-      );
-    }
-
-    return null;
-  }
-
-  renderSidebar() {
-    const { order } = this.props;
-
-    return (
-      <Grid container spacing={8}>
-        <Grid item xs={12}>
-          <Blocks region="OrderCardSummary" blockProps={{ order, ...this.props }} />
-        </Grid>
-        <Grid item xs={12}>
-          <OrderCardCustomerDetails order={order} />
-        </Grid>
+        }
       </Grid>
-    );
-  }
-
-  renderTabs() {
-    const { currentTab } = this.state;
-
-    return (
-      <Fragment>
-        <Tabs value={currentTab} onChange={this.handleTabChange}>
-          <Tab label={i18next.t("fulfillment", "Fulfillment")} />
-          <Tab label={i18next.t("refunds", "Refunds")} />
-        </Tabs>
-        <Divider />
-      </Fragment>
-    );
-  }
-
-  render() {
-    const { classes, order } = this.props;
-    const { currentTab } = this.state;
-
-    return (
-      <Fragment>
-        <Helmet title={`Order Details for order reference #${order.referenceId}`} />
-        {this.renderAppBar()}
-        <Grid container spacing={32}>
+      <DetailDrawer title={i18next.t("orderCard.orderSummary.title", "Order summary")}>
+        <Grid container spacing={8}>
           <Grid item xs={12}>
-            {this.renderHeader()}
+            <Blocks region="OrderCardSummary" blockProps={{ order, ...props }} />
           </Grid>
-          <Grid className={classes.tabs} item xs={12}>
-            {this.renderTabs()}
+          <Grid item xs={12}>
+            <OrderCardCustomerDetails order={order} />
           </Grid>
-          {currentTab === 0 &&
-            this.renderFulfillment()
-          }
-          {currentTab === 1 &&
-            this.renderRefunds()
-            // TODO: EK - finish refunds
-          }
         </Grid>
-        <DetailDrawer title={i18next.t("orderCard.orderSummary.title", "Order summary")}>
-          {this.renderSidebar()}
-        </DetailDrawer>
-      </Fragment>
-    );
-  }
+      </DetailDrawer>
+    </Fragment>
+  );
 }
+
+Order.propTypes = {
+  classes: PropTypes.object,
+  order: PropTypes.object
+};
 
 export default withStyles(styles, { name: "RuiOrder" })(Order);
