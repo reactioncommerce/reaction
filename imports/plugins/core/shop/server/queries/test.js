@@ -5,10 +5,7 @@ const context = {
     Shops: {
       load: jest.fn(() => [
         {
-          _id: 1,
-          productConfiguration: {
-            productVariantId: "variant-1"
-          }
+          _id: "shop-1",
         }
       ])
     }
@@ -16,6 +13,6 @@ const context = {
 };
 
 test("shopById calls Shops.load() dataloader", () => {
-  queries.shopById(context, "1");
-  expect(context.dataLoaders.Shops.load).toHaveBeenCalledWith("1");
+  queries.shopById(context, "shop-1");
+  expect(context.dataLoaders.Shops.load).toHaveBeenCalledWith("shop-1");
 });
