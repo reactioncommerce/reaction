@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
 import { i18next, Reaction } from "/client/api";
@@ -6,19 +6,18 @@ import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import PrimaryAppBar from "/imports/client/ui/components/PrimaryAppBar/PrimaryAppBar";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 
-class OrderAppBar extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    order: PropTypes.shape({
-      status: PropTypes.string
-    })
-  }
+/**
+ * @name OrderAppBar
+ * @param {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function OrderAppBar(props) {
+  const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
+  const { order } = props;
+  const canCancelOrder = (order.status !== "coreOrderWorkflow/canceled");
 
-  handleCancelOrder = (mutation) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-
-    if (hasPermission) {
-      const { order } = this.props;
+  const handleCancelOrder = (mutation) => {
+    if (hasPermission && canCancelOrder) {
       const { fulfillmentGroups } = order;
 
       // We need to loop over every fulfillmentGroup
@@ -38,44 +37,40 @@ class OrderAppBar extends Component {
     }
 
     return null;
+  };
+
+  let cancelOrderButton;
+  if (hasPermission && canCancelOrder) {
+    cancelOrderButton =
+      <Mutation mutation={cancelOrderItemMutation}>
+        {(mutationFunc) => (
+          <ConfirmButton
+            buttonColor="danger"
+            buttonText={i18next.t("order.cancelOrderLabel", "Cancel order")}
+            buttonVariant="contained"
+            cancelActionText={i18next.t("app.close", "Close")}
+            confirmActionText={i18next.t("order.cancelOrderLabel", "Cancel order")}
+            title={i18next.t("order.cancelOrderLabel", "Cancel order")}
+            message={i18next.t("order.cancelOrder", "Do you want to cancel this order?")}
+            onConfirm={() => handleCancelOrder(mutationFunc)}
+          />
+        )}
+      </Mutation>
+    ;
   }
 
-  renderCancelOrderButton = () => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order } = this.props;
-    const canCancelOrder = (order.status !== "coreOrderWorkflow/canceled");
-
-    if (hasPermission) {
-      if (canCancelOrder) {
-        return (
-          <Mutation mutation={cancelOrderItemMutation}>
-            {(mutationFunc) => (
-              <ConfirmButton
-                buttonColor="danger"
-                buttonText={i18next.t("order.cancelOrderLabel", "Cancel order")}
-                buttonVariant="contained"
-                cancelActionText={i18next.t("app.close", "Close")}
-                confirmActionText={i18next.t("order.cancelOrderLabel", "Cancel order")}
-                title={i18next.t("order.cancelOrderLabel", "Cancel order")}
-                message={i18next.t("order.cancelOrder", "Do you want to cancel this order?")}
-                onConfirm={() => this.handleCancelOrder(mutationFunc)}
-              />
-            )}
-          </Mutation>
-        );
-      }
-    }
-
-    return null;
-  }
-
-  render() {
-    return (
-      <PrimaryAppBar title={i18next.t("orderDetails", "Order details")}>
-        {this.renderCancelOrderButton()}
-      </PrimaryAppBar>
-    );
-  }
+  return (
+    <PrimaryAppBar title={i18next.t("orderDetails", "Order details")}>
+      {cancelOrderButton}
+    </PrimaryAppBar>
+  );
 }
+
+OrderAppBar.propTypes = {
+  classes: PropTypes.object,
+  order: PropTypes.shape({
+    status: PropTypes.string
+  })
+};
 
 export default OrderAppBar;
