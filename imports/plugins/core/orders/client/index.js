@@ -5,7 +5,7 @@ import { registerOperatorRoute } from "/imports/client/ui";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
 import OrderCardSummary from "./components/OrderCardSummary";
 import Orders from "./containers/orderDashboardContainer";
-import OrderCard from "./containers/OrderCardContainer";
+import Order from "./containers/OrderCardContainer";
 
 // Print page layout
 import "./templates/list/pdf.html";
@@ -49,7 +49,7 @@ registerOperatorRoute({
  */
 registerOperatorRoute({
   isNavigationLink: false,
-  mainComponent: OrderCard,
+  mainComponent: Order,
   path: "/orders/:_id"
 });
 

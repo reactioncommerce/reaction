@@ -22,7 +22,7 @@ const styles = (theme) => ({
   }
 });
 
-class OrderCard extends Component {
+class Order extends Component {
   static propTypes = {
     classes: PropTypes.object,
     order: PropTypes.object
@@ -154,4 +154,4 @@ class OrderCard extends Component {
   }
 }
 
-export default withStyles(styles, { name: "RuiOrderCard" })(OrderCard);
+export default withStyles(styles, { name: "RuiOrder" })(Order);
