@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -16,30 +16,26 @@ import { isPaymentRiskElevated } from "../helpers";
 import OrderPayment from "./OrderPayment";
 
 const styles = (theme) => ({
+  dividerSpacing: {
+    marginBottom: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 4
+  },
   fulfillmentGroupHeader: {
     marginBottom: theme.spacing.unit * 4
   }
 });
 
-class OrderCardPayments extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    order: PropTypes.shape({
-      payments: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        amount: PropTypes.shape({
-          displayAmount: PropTypes.string
-        }),
-        displayName: PropTypes.string,
-        status: PropTypes.string
-      }))
-    })
-  }
+/**
+ * @name OrderPayments
+ * @param {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function OrderPayments(props) {
+  const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
+  const { classes, order } = props;
+  const canCapturePayment = order.payments.some((payment) => payment.mode !== "captured");
 
-  handleCapturePayments = async (mutation, paymentIds) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order } = this.props;
-
+  const handleCapturePayments = async (mutation, paymentIds) => {
     if (hasPermission) {
       if (!order.payments) return Promise.resolve(null);
 
@@ -66,47 +62,42 @@ class OrderCardPayments extends Component {
     }
 
     return null;
-  }
+  };
 
-  renderCaptureAllPaymentsButton = (paymentIds) => {
-    const hasPermission = Reaction.hasPermission("reaction-orders", Reaction.getUserId(), Reaction.getShopId());
-    const { order } = this.props;
-    const canCapturePayment = order.payments.some((payment) => payment.mode !== "captured");
-    const paymentIdList = paymentIds || order.payments.map((payment) => payment._id);
-
-    if (hasPermission && canCapturePayment) {
-      // If any payment we are trying to capture has an elevated risk,
-      // prompt user to make sure they want to capture payemnt
-      if (isPaymentRiskElevated(order, paymentIdList)) {
-        return (
-          <Grid item xs={6} md={6}>
-            <Grid container alignItems="center" justify="flex-end" spacing={8}>
-              <Mutation mutation={captureOrderPaymentsMutation}>
-                {(mutationFunc, { loading }) => (
-                  <ConfirmButton
-                    buttonColor="primary"
-                    buttonText={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
-                    buttonVariant="contained"
-                    cancelActionText={i18next.t("app.close", "Close")}
-                    confirmActionText={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
-                    isWaiting={loading}
-                    title={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
-                    message={
-                      i18next.t(
-                        "reaction-payments.captureAllElevatedRiskWarning",
-                        "One or more of the payments you are attempting to capture has an elevated charge risk. Do you want to proceed?"
-                      )
-                    }
-                    onConfirm={() => this.handleCapturePayments(mutationFunc)}
-                  />
-                )}
-              </Mutation>
-            </Grid>
+  let capturePaymentsButton;
+  if (hasPermission && canCapturePayment) {
+    const paymentIdList = order.payments.map((payment) => payment._id);
+    // If any payment we are trying to capture has an elevated risk,
+    // prompt user to make sure they want to capture payemnt
+    if (isPaymentRiskElevated(order, paymentIdList)) {
+      capturePaymentsButton =
+        <Grid item xs={6} md={6}>
+          <Grid container alignItems="center" justify="flex-end" spacing={8}>
+            <Mutation mutation={captureOrderPaymentsMutation}>
+              {(mutationFunc, { loading }) => (
+                <ConfirmButton
+                  buttonColor="primary"
+                  buttonText={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
+                  buttonVariant="contained"
+                  cancelActionText={i18next.t("app.close", "Close")}
+                  confirmActionText={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
+                  isWaiting={loading}
+                  title={i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
+                  message={
+                    i18next.t(
+                      "reaction-payments.captureAllElevatedRiskWarning",
+                      "One or more of the payments you are attempting to capture has an elevated charge risk. Do you want to proceed?"
+                    )
+                  }
+                  onConfirm={() => handleCapturePayments(mutationFunc)}
+                />
+              )}
+            </Mutation>
           </Grid>
-        );
-      }
-
-      return (
+        </Grid>
+      ;
+    } else {
+      capturePaymentsButton =
         <Grid item xs={6} md={6}>
           <Grid container alignItems="center" justify="flex-end" spacing={8}>
             <Mutation mutation={captureOrderPaymentsMutation}>
@@ -114,7 +105,7 @@ class OrderCardPayments extends Component {
                 <Button
                   color="primary"
                   isWaiting={loading}
-                  onClick={() => this.handleCapturePayments(mutationFunc)}
+                  onClick={() => handleCapturePayments(mutationFunc)}
                   variant="contained"
                 >
                   {i18next.t("reaction-payments.captureAllPayments", "Capture all payments")}
@@ -123,54 +114,56 @@ class OrderCardPayments extends Component {
             </Mutation>
           </Grid>
         </Grid>
-      );
+      ;
     }
-
-    return null;
   }
 
-  renderPayments = () => {
-    const { order } = this.props;
-    const { payments } = order;
-
-    return payments.map((payment, index) => (
-      <Fragment key={index} >
-        <OrderPayment
-          capturePayments={this.handleCapturePayments}
-          order={order}
-          payment={payment}
-        />
-        {index !== (payments.length - 1) ?
-          <Divider style={{ marginTop: "30px", marginBottom: "20px" }}/>
-          : null
-        }
-      </Fragment>
-    ));
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Card>
-        <CardContent>
-          <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
-            <Grid item xs={6} md={6}>
-              <Grid container alignItems="center" spacing={16}>
-                <Grid item>
-                  <Typography variant="h4" inline={true}>
-                    Payments
-                  </Typography>
-                </Grid>
+  return (
+    <Card>
+      <CardContent>
+        <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
+          <Grid item xs={6} md={6}>
+            <Grid container alignItems="center" spacing={16}>
+              <Grid item>
+                <Typography variant="h4" inline={true}>
+                  Payments
+                </Typography>
               </Grid>
             </Grid>
-            {this.renderCaptureAllPaymentsButton()}
           </Grid>
-          {this.renderPayments()}
-        </CardContent>
-      </Card>
-    );
-  }
+          {capturePaymentsButton}
+        </Grid>
+        {
+          order.payments.map((payment, index) => (
+            <Fragment key={index} >
+              <OrderPayment
+                capturePayments={handleCapturePayments}
+                order={order}
+                payment={payment}
+              />
+              {index !== (order.payments.length - 1) &&
+                <Divider className={classes.dividerSpacing} />
+              }
+            </Fragment>
+          ))
+        }
+      </CardContent>
+    </Card>
+  );
 }
 
-export default withStyles(styles, { name: "RuiOrderCardPayments" })(OrderCardPayments);
+OrderPayments.propTypes = {
+  classes: PropTypes.object,
+  order: PropTypes.shape({
+    payments: PropTypes.arrayOf(PropTypes.shape({
+      _id: PropTypes.string,
+      amount: PropTypes.shape({
+        displayAmount: PropTypes.string
+      }),
+      displayName: PropTypes.string,
+      status: PropTypes.string
+    }))
+  })
+};
+
+export default withStyles(styles, { name: "RuiOrderPayments" })(OrderPayments);
