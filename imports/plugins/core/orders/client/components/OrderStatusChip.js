@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Chip from "@material-ui/core/Chip";
-
 
 const styles = (theme) => ({
   orderStatusNew: {
@@ -37,17 +36,19 @@ const styles = (theme) => ({
   }
 });
 
-class OrderStatusChip extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    displayStatus: PropTypes.string,
-    status: PropTypes.string,
-    type: PropTypes.string
-  };
+/**
+ * @name OrderStatusChip
+ * @param {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function OrderStatusChip(props) {
+  const { classes, displayStatus, status, type } = props;
 
-  orderStatus() {
-    const { classes, displayStatus, status } = this.props;
-    let chipClasses;
+  let chipVariant;
+  let chipClasses;
+
+  if (type === "order") {
+    chipVariant = "contained";
 
     if (status === "coreOrderWorkflow/canceled") {
       chipClasses = classes.orderStatusCanceled;
@@ -64,45 +65,30 @@ class OrderStatusChip extends Component {
     if (status === "coreOrderWorkflow/completed") {
       chipClasses = classes.orderStatusShipped;
     }
-
-    return <Chip label={displayStatus} className={chipClasses} color="primary" />;
   }
 
-  paymentStatus() {
-    const { displayStatus } = this.props;
-    let chipClasses;
-
-    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="outlined" />;
+  if (type === "payment") {
+    chipVariant = "outlined";
   }
 
-  shipmentStatus() {
-    const { classes, displayStatus, status } = this.props;
-    let chipClasses;
+  if (type === "shipment") {
+    chipVariant = "outlined";
 
     if (status === "coreOrderWorkflow/canceled") {
       chipClasses = classes.orderStatusCanceledOutlined;
     }
-
-    return <Chip label={displayStatus} className={chipClasses} color="primary" variant="outlined" />;
   }
 
-  render() {
-    const { type } = this.props;
+  const statusChip = <Chip label={displayStatus} className={chipClasses} color="primary" variant={chipVariant} />;
 
-    if (type === "order") {
-      return this.orderStatus();
-    }
-
-    if (type === "payment") {
-      return this.paymentStatus();
-    }
-
-    if (type === "shipment") {
-      return this.shipmentStatus();
-    }
-
-    return null;
-  }
+  return statusChip;
 }
+
+OrderStatusChip.propTypes = {
+  classes: PropTypes.object,
+  displayStatus: PropTypes.string,
+  status: PropTypes.string,
+  type: PropTypes.string
+};
 
 export default withStyles(styles, { name: "RuiOrderStatusChip" })(OrderStatusChip);
