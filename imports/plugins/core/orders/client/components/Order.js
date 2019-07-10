@@ -1,11 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
 import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
@@ -14,7 +11,6 @@ import OrderCustomerDetails from "./OrderCustomerDetails";
 import OrderCardFulfillmentGroups from "./OrderCardFulfillmentGroups";
 import OrderHeader from "./OrderHeader";
 import OrderPayments from "./OrderPayments";
-import OrderCardRefunds from "./OrderCardRefunds";
 
 const styles = (theme) => ({
   tabs: {
@@ -28,12 +24,7 @@ const styles = (theme) => ({
  * @returns {React.Component} returns a React component
  */
 function Order(props) {
-  const { classes, order } = props;
-  const [currentTab, setTab] = useState(0);
-
-  const handleTabChange = (event, value) => {
-    setTab(value);
-  };
+  const { order } = props;
 
   return (
     <Fragment>
@@ -43,28 +34,14 @@ function Order(props) {
         <Grid item xs={12}>
           <OrderHeader order={order} />
         </Grid>
-        <Grid className={classes.tabs} item xs={12}>
-          <Tabs value={currentTab} onChange={handleTabChange}>
-            <Tab label={i18next.t("fulfillment", "Fulfillment")} />
-            <Tab label={i18next.t("refunds", "Refunds")} />
-          </Tabs>
-          <Divider />
-        </Grid>
-        {currentTab === 0 &&
-          <Grid container spacing={16}>
-            <Grid item xs={12}>
-              <OrderCardFulfillmentGroups order={order} />
-            </Grid>
-            <Grid item xs={12}>
-              <OrderPayments order={order} />
-            </Grid>
-          </Grid>
-        }
-        {currentTab === 1 &&
+        <Grid container spacing={16}>
           <Grid item xs={12}>
-            <OrderCardRefunds order={order} />
+            <OrderCardFulfillmentGroups order={order} />
           </Grid>
-        }
+          <Grid item xs={12}>
+            <OrderPayments order={order} />
+          </Grid>
+        </Grid>
       </Grid>
       <DetailDrawer title={i18next.t("orderCard.orderSummary.title", "Order summary")}>
         <Grid container spacing={8}>
