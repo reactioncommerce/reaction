@@ -388,6 +388,20 @@
       "import/resolver": "meteor"
     },
     "rules": {
+      "jsx-a11y/label-has-for": "off",
+      "react/no-did-mount-set-state": "warn",
+      "react/no-did-update-set-state": "warn",
+      "require-jsdoc": [
+        "warn",
+        {
+          "require": {
+            "ArrowFunctionExpression": false,
+            "ClassDeclaration": false,
+            "FunctionDeclaration": true,
+            "MethodDefinition": false
+          }
+        }
+      ],
       "valid-jsdoc": [
         "warn",
         {
@@ -396,8 +410,7 @@
             "argument": "param"
           }
         }
-      ],
-      "jsx-a11y/label-has-for": "off"
+      ]
     }
   },
   "prettier": {
