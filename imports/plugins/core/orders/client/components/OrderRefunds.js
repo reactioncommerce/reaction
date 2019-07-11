@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
+import { Mutation } from "react-apollo";
+import { Form } from "reacto-form";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -7,20 +9,21 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
+import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
-import { i18next, Reaction } from "/client/api";
-import Button from "/imports/client/ui/components/Button";
-import { Mutation } from "react-apollo";
-import { Form } from "reacto-form";
-import Link from "@material-ui/core/Link";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import { i18next, Reaction } from "/client/api";
+import Button from "/imports/client/ui/components/Button";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
 
 const styles = (theme) => ({
+  dividerSpacing: {
+    marginBottom: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 4
+  },
   fontWeightSemiBold: {
     fontWeight: theme.typography.fontWeightSemiBold
   }
@@ -63,6 +66,7 @@ function OrderRefunds(props) {
   // };
 
 
+  // If true, show UI to calculate refunds by item
   const handleRefundCalculateByItemSwitchChange = () => {
     setCalculateByItem(!calculateByItem);
   };
@@ -71,8 +75,6 @@ function OrderRefunds(props) {
 
 
 
-
-  const renderCalculateRefundByItem = () => "Calculate refund by item";
 
   const renderPayments = () => payments.map((payment) => {
       const { displayName } = payment;
@@ -152,6 +154,11 @@ function OrderRefunds(props) {
     }
   };
 
+
+
+
+
+
   return (
     <Grid container spacing={24}>
       <Grid item xs={12}>
@@ -172,9 +179,14 @@ function OrderRefunds(props) {
                 label={i18next.t("order.calculateRefundByItem", "Calculate refund by item")}
               />
             </FormGroup>
-            <Divider />
+            <Divider className={classes.dividerSpacing} />
             {calculateByItem === true &&
-              renderCalculateRefundByItem()
+              <Grid container>
+                <Grid item xs={12}>
+                  <Typography variant="body1">This is the section to render everything by item</Typography>
+                  <Divider className={classes.dividerSpacing} />
+                </Grid>
+              </Grid>
             }
             <Grid container spacing={24}>
               <Grid item xs={12}>
@@ -194,30 +206,11 @@ function OrderRefunds(props) {
               title={i18next.t("order.previousRefunds", "Previous Refunds")}
             />
             <CardContent>
-              <FormGroup row>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={calculateByItem}
-                      onChange={() => handleRefundCalculateByItemSwitchChange("calculateByItem")}
-                      value="calculateByItem"
-                    />
-                  }
-                  label={i18next.t("order.calculateRefundByItem", "Calculate refund by item")}
-                />
-              </FormGroup>
-              <Divider />
-              {calculateByItem === true &&
-                renderCalculateRefundByItem()
-              }
-              <Grid container spacing={24}>
-                <Grid item xs={12}>
-                  {renderPayments()}
-                </Grid>
-                <Grid item xs={12}>
-                  {renderReason()}
-                </Grid>
-              </Grid>
+              <Typography variant="body1">Date</Typography>
+              <Typography variant="body1">Refunded to... source</Typography>
+              <Divider className={classes.dividerSpacing} />
+              <Typography variant="body1">Reason</Typography>
+              <Typography variant="body1">customer changed mind</Typography>
             </CardContent>
           </Card>
         </Grid>
