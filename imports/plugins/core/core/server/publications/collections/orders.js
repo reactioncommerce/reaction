@@ -17,7 +17,7 @@ Meteor.publish("PaginatedOrders", function (query, options) {
     return this.ready();
   }
 
-  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId) === false) {
+  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders", "order/view", "order/fulfillment"], shopId) === false) {
     return this.ready();
   }
 

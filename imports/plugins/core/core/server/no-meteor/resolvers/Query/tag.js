@@ -26,7 +26,7 @@ export default async function tag(_, connectionArgs, context) {
 
   try {
     dbTagId = decodeTagOpaqueId(slugOrId);
-  } catch (e) {
+  } catch (error) {
     dbTagId = slugOrId;
   }
 

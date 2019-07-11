@@ -434,7 +434,7 @@ function ReactionLayout(options = {}) {
   // Find a registered layout using the layoutName and workflowName
   if (shop) {
     const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
-    const foundLayout = sortedLayout.find((x) => selectLayout(x, layoutName, workflowName));
+    const foundLayout = sortedLayout.find((layout) => selectLayout(layout, layoutName, workflowName));
 
     if (foundLayout) {
       if (foundLayout.structure) {
@@ -469,7 +469,7 @@ function ReactionLayout(options = {}) {
 
   try {
     getComponent(layoutStructure.template);
-  } catch (e) {
+  } catch (error) {
     hasReactComponent = false;
   }
 
@@ -504,7 +504,7 @@ function ReactionLayout(options = {}) {
           ...props,
           structure
         });
-      } catch (e) {
+      } catch (error) {
         // eslint-disable-next-line
         console.warn(e, "Failed to create a React layout element");
       }

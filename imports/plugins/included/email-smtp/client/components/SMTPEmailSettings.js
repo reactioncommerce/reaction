@@ -17,14 +17,14 @@ class SMTPEmailSettings extends Component {
     this.handleSelect = this.handleSelect.bind(this);
   }
 
-  handleStateChange(e) {
+  handleStateChange(event) {
     const { settings } = this.state;
-    settings[e.target.name] = e.target.value;
+    settings[event.target.name] = event.target.value;
     this.setState({ settings });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit(event) {
+    event.preventDefault();
     const { saveSettings, providers } = this.props;
     const { settings } = this.state;
     let newSettings = settings;
