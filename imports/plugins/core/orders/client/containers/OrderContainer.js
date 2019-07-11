@@ -4,7 +4,7 @@ import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
-import OrderCard from "../components/orderCard";
+import Order from "../components/Order";
 import orderByReferenceId from "../graphql/queries/orderByReferenceId";
 
 
@@ -43,7 +43,7 @@ class OrderCardContainer extends Component {
           }
 
           return (
-            <OrderCard
+            <Order
               order={order}
             />
           );

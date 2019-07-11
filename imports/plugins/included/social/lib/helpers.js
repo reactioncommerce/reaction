@@ -17,8 +17,8 @@ export function createSocialSettings(options) {
 
     if (socialSettings.appsOrder) {
       const { appsOrder } = socialSettings;
-      for (let i = 0; i < appsOrder.length; i += 1) {
-        const app = appsOrder[i];
+      for (let inc = 0; inc < appsOrder.length; inc += 1) {
+        const app = appsOrder[inc];
 
         if (typeof socialSettings.apps[app] === "object" && socialSettings.apps[app].enabled) {
           socialButtons.push(app);
