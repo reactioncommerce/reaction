@@ -107,7 +107,7 @@ Template.memberSettings.helpers({
           }
         }
         // TODO review this, hardcoded WIP
-        const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => ` ${x[1].toUpperCase()}`);
+        const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (string) => ` ${string[1].toUpperCase()}`);
 
         return permissionGroups.push({
           shopId: pkg.shopId,
