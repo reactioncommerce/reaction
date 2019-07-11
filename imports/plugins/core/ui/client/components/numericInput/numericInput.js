@@ -18,7 +18,8 @@ class NumericInput extends Component {
    * @param  {Object} nextProps new props
    * @return {undefined}
    */
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.value !== undefined && !this.state.isEditing) {
       const value = this.format(nextProps.value);
       this.setState({
