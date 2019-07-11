@@ -7,6 +7,7 @@ export const Meteor = {
   call: jest.fn().mockName("Meteor.call"),
   Error: ReactionError,
   isClient: false,
+  isFakeMeteor: true,
   isServer: true,
   methods: jest.fn().mockName("Meteor.methods"),
   settings: {

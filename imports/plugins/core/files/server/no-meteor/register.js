@@ -11,7 +11,6 @@ export default async function register(app) {
     label: "File Collections",
     name: "reaction-file-collections",
     icon: "fa fa-files-o",
-    autoEnable: true,
     collections: {
       MediaRecords: {
         name: "cfs.Media.filerecord",

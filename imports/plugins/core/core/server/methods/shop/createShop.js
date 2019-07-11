@@ -142,7 +142,7 @@ export default function createShop(shopAdminUserId, partialShopData) {
 
   const newShop = Shops.findOne({ _id: newShopId });
 
-  // we should have created new shop, or errored
+  // we should have created new shop, or erred
   Logger.info("Created shop: ", newShopId);
 
   Promise.await(appEvents.emit("afterShopCreate", { createdBy: userId, shop: newShop }));

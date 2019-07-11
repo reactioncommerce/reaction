@@ -1,3 +1,5 @@
+import resolvers from "./resolvers";
+import schemas from "./schemas";
 import startup from "./startup";
 
 /**
@@ -10,7 +12,6 @@ export default async function register(app) {
     label: "Core",
     name: "core",
     icon: "fa fa-th",
-    autoEnable: true,
     collections: {
       Assets: {
         name: "Assets"
@@ -40,6 +41,10 @@ export default async function register(app) {
     },
     functionsByType: {
       startup: [startup]
+    },
+    graphQL: {
+      resolvers,
+      schemas
     },
     settings: {
       public: {

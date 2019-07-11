@@ -10,7 +10,6 @@ export default async function register(app) {
     label: "Notifications",
     name: "reaction-notification",
     icon: "fa fa-bell",
-    autoEnable: true,
     collections: {
       Notifications: {
         name: "Notifications"
@@ -19,10 +18,6 @@ export default async function register(app) {
     functionsByType: {
       startup: [startup]
     },
-    addRolesToGroups: [{
-      groups: ["guest", "customer"],
-      roles: ["notifications"]
-    }],
     registry: [{
       label: "Notifications",
       name: "notifications",
