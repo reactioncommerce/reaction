@@ -13,7 +13,6 @@ const ALL_FIELDS = [
 export default function validateInventoryInput(input) {
   let errors = [];
   const allFieldsLookup = ALL_FIELDS.reduce((allFields, field) => ({ ...allFields, [field]: true }), {});
-  console.log(allFieldsLookup);
   const { fields, shopId, productConfigurations } = input;
   if (!shopId) {
     errors.push("inventoryInputMissingField[shopId]");
