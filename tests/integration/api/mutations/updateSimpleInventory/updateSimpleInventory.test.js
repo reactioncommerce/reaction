@@ -1,6 +1,5 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
-import updateSimpleInventoryBulk from "/imports/plugins/included/simple-inventory/server/no-meteor/mutations/updateSimpleInventoryBulk";
 import catalogItemQuery from "./catalogItemQuery.graphql";
 import simpleInventoryQuery from "./simpleInventoryQuery.graphql";
 import updateSimpleInventoryMutation from "./updateSimpleInventoryMutation.graphql";
@@ -103,22 +102,6 @@ afterAll(async () => {
   testApp.stop();
 });
 
-test("throws access-denied when getting simpleInventory if not an admin", async () => {
-  await testApp.setLoggedInUser(mockCustomerAccount);
-
-  try {
-    await simpleInventory({
-      productConfiguration: {
-        productId: opaqueProductId,
-        productVariantId: opaqueOptionId1
-      },
-      shopId: opaqueShopId
-    });
-  } catch (errors) {
-    expect(errors[0]).toMatchSnapshot();
-  }
-});
-
 test("throws access-denied when updating simpleInventory if not an admin", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);
 
@@ -136,21 +119,6 @@ test("throws access-denied when updating simpleInventory if not an admin", async
   } catch (errors) {
     expect(errors[0]).toMatchSnapshot();
   }
-});
-
-test("returns null if no SimpleInventory record", async () => {
-  await testApp.setLoggedInUser(mockAdminAccount);
-
-  const result = await simpleInventory({
-    productConfiguration: {
-      productId: opaqueProductId,
-      productVariantId: opaqueOptionId1
-    },
-    shopId: opaqueShopId
-  });
-  expect(result).toEqual({
-    simpleInventory: null
-  });
 });
 
 test("returns SimpleInventory record", async () => {
@@ -247,72 +215,6 @@ test("when all options are sold out and canBackorder, isBackorder is true in Cat
       canBackorder: true,
       inventoryInStock: 0
     }
-  });
-
-  const queryResult = await getCatalogItem({
-    slugOrId: product.handle
-  });
-  expect(queryResult).toEqual({
-    catalogItemProduct: {
-      product: {
-        isBackorder: true,
-        isLowQuantity: true,
-        isSoldOut: true,
-        variants: [{
-          canBackorder: true,
-          inventoryAvailableToSell: 0,
-          inventoryInStock: 0,
-          isBackorder: true,
-          isLowQuantity: true,
-          isSoldOut: true,
-          options: [
-            {
-              canBackorder: true,
-              inventoryAvailableToSell: 0,
-              inventoryInStock: 0,
-              isBackorder: true,
-              isLowQuantity: true,
-              isSoldOut: true
-            },
-            {
-              canBackorder: true,
-              inventoryAvailableToSell: 0,
-              inventoryInStock: 0,
-              isBackorder: true,
-              isLowQuantity: true,
-              isSoldOut: true
-            }
-          ]
-        }]
-      }
-    }
-  });
-});
-
-test("Bulk version test: when all options are sold out and canBackorder, isBackorder is true in Catalog", async () => {
-  await updateSimpleInventoryBulk(testApp.context, {
-    updates: [
-      {
-        productConfiguration: {
-          productId: internalProductId,
-          productVariantId: internalOptionId1
-        },
-        shopId: internalShopId,
-        isEnabled: true,
-        canBackorder: true,
-        inventoryInStock: 0
-      },
-      {
-        productConfiguration: {
-          productId: internalProductId,
-          productVariantId: internalOptionId2
-        },
-        shopId: internalShopId,
-        isEnabled: true,
-        canBackorder: true,
-        inventoryInStock: 0
-      }
-    ]
   });
 
   const queryResult = await getCatalogItem({
