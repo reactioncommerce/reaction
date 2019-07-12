@@ -1,4 +1,5 @@
 import isEqual from "lodash/isEqual";
+import get from "lodash/get";
 
 const ALL_FIELDS = [
   "canBackorder",
@@ -211,11 +212,7 @@ export async function convertCatalogItemVariants(catalogProduct, collections) {
 
   const shopSettings = await AppSettings.findOne({ shopId: catalogProduct.shopId });
 
-  // By default, products that do not have inventory management enabled are sellable.
-  let canSellWithoutInventory = true;
-  if (shopSettings && typeof shopSettings.canSellVariantWithoutInventory === "boolean") {
-    canSellWithoutInventory = shopSettings.canSellVariantWithoutInventory;
-  }
+  const canSellWithoutInventory = get(shopSettings, "canSellVariantWithoutInventory ", true);
 
   const variants = await Products.find({
     ancestors: catalogProduct.product.productId,
