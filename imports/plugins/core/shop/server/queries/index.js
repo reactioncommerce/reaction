@@ -1,7 +1,7 @@
 import url from "url";
 
 export default {
-  shopById: (context, _id) => context.collections.Shops.findOne({ _id }),
+  shopById: (context, _id) => context.dataLoaders.Shops.load(_id),
   shopBySlug: (context, slug) => context.collections.Shops.findOne({ slug }),
   primaryShop: async (context) => {
     const { collections, rootUrl } = context;

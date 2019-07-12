@@ -1,5 +1,5 @@
 /**
- * @name "Order.orderDisplayStatus"
+ * @name Order/orderDisplayStatus
  * @method
  * @memberof Order/GraphQL
  * @summary Displays a human readable status of order state

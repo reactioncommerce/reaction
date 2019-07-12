@@ -41,7 +41,7 @@ describe("DomainsMixin", () => {
       });
 
       test("wraps composeUrl with options only", () => {
-        const options = { a: 1, b: 2 };
+        const options = { optionA: 1, optionB: 2 };
 
         DomainsMixin.absoluteUrl(options);
 
@@ -49,7 +49,7 @@ describe("DomainsMixin", () => {
       });
 
       test("wraps composeUrl both a path and options", () => {
-        const options = { a: 1, b: 2 };
+        const options = { optionA: 1, optionB: 2 };
 
         DomainsMixin.absoluteUrl(path, options);
 

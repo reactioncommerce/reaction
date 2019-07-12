@@ -219,8 +219,8 @@ const wrapComponent = (Comp) => (
  * @returns {Array<Object>} sorted media
  */
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, (m) => {
-    const { priority } = (m && m.metadata) || {};
+  const sortedMedia = _.sortBy(media, (med) => {
+    const { priority } = (med && med.metadata) || {};
     if (!priority && priority !== 0) {
       return 1000;
     }

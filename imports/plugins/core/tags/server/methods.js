@@ -26,7 +26,8 @@ Meteor.methods({
     }
 
     const tags = Tags.find(selector, { limit: 4 }).map((tag) => ({
-      label: tag.name
+      label: tag.name,
+      slug: tag.slug
     }));
 
     return tags;

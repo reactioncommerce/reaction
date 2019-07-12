@@ -46,9 +46,9 @@ export function getLabelsFor(schema, name) {
   Object.keys(schema.mergedSchema()).forEach((fieldName) => {
     const i18nKey = `${titleCaseName}.${fieldName.split(".$").join("")}`;
     // translate autoform label
-    const t = i18next.t(i18nKey);
-    if (t && new RegExp("string").test(t) !== true && t !== i18nKey) {
-      labels[fieldName] = t;
+    const translation = i18next.t(i18nKey);
+    if (translation && new RegExp("string").test(translation) !== true && translation !== i18nKey) {
+      labels[fieldName] = translation;
     }
   });
   return labels;
@@ -84,7 +84,7 @@ export const localeDep = new Tracker.Dependency();
 export const currencyDep = new Tracker.Dependency();
 
 Meteor.startup(() => {
-  Tracker.autorun((c) => {
+  Tracker.autorun((trackerInstance) => {
     let merchantShopsReadyOrSkipped = false;
 
     // Choose shopSubscription based on marketplace settings
@@ -111,7 +111,7 @@ Meteor.startup(() => {
         localeDep.changed();
 
         // Stop the tracker
-        c.stop();
+        trackerInstance.stop();
       });
     }
   });

@@ -115,9 +115,9 @@ class EditGroup extends Component {
     });
   };
 
-  showForm = ((grp) = {}) => (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  showForm = ((grp) = {}) => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     this.setState({ isEditing: true, selectedGroup: grp });
   };
 

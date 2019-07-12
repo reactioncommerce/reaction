@@ -313,7 +313,7 @@ class SortableTable extends Component {
             }
 
             return {
-              onClick: (e) => { // eslint-disable-line no-unused-vars
+              onClick: (event) => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
               },
               className: this.selectedRowsClassName(rowInfo)

@@ -78,7 +78,7 @@
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
     "libphonenumber-js": "1.4.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "match-sorter": "^2.3.0",
     "meteor-node-stubs": "0.4.1",
     "mobx": "^5.8.0",
@@ -388,6 +388,27 @@
       "import/resolver": "meteor"
     },
     "rules": {
+      "consistent-return": [
+        "warn",
+        {
+          "treatUndefinedAsUnspecified": true
+        }
+      ],
+      "jsx-a11y/label-has-for": "off",
+      "promise/no-callback-in-promise": "warn",
+      "react/no-did-mount-set-state": "warn",
+      "react/no-did-update-set-state": "warn",
+      "require-jsdoc": [
+        "warn",
+        {
+          "require": {
+            "ArrowFunctionExpression": false,
+            "ClassDeclaration": false,
+            "FunctionDeclaration": true,
+            "MethodDefinition": false
+          }
+        }
+      ],
       "valid-jsdoc": [
         "warn",
         {
@@ -396,8 +417,7 @@
             "argument": "param"
           }
         }
-      ],
-      "jsx-a11y/label-has-for": "off"
+      ]
     }
   },
   "prettier": {

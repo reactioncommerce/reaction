@@ -24,8 +24,8 @@ export function getUser() {
 export function getUsers(limit = 2) {
   const users = [];
   const existingUsers = Meteor.users.find({}, { limit }).fetch();
-  for (let i = 0; i < limit; i += 1) {
-    const user = existingUsers[i] || Factory.create("user");
+  for (let inc = 0; inc < limit; inc += 1) {
+    const user = existingUsers[inc] || Factory.create("user");
     users.push(user);
   }
   return users;

@@ -15,21 +15,17 @@ import isEqual from "lodash/isEqual";
  * @return {Promise<Object[]>} Array of responses, in same order as `input.productConfigurations` array.
  */
 export default async function inventoryForProductConfigurations(context, input) {
-  const { collections } = context;
-  const { SimpleInventory } = collections;
   const { productConfigurations } = input;
 
   const productVariantIds = productConfigurations.map(({ productVariantId }) => productVariantId);
 
-  const inventoryDocs = await SimpleInventory
-    .find({
-      "productConfiguration.productVariantId": { $in: productVariantIds }
-    })
-    .limit(productConfigurations.length) // optimize query speed
-    .toArray();
+  const inventoryDocs = await context.dataLoaders.SimpleInventoryByProductVariantId.loadMany(productVariantIds);
 
   return productConfigurations.map((productConfiguration) => {
-    const inventoryDoc = inventoryDocs.find((doc) => isEqual(productConfiguration, doc.productConfiguration));
+    const inventoryDoc = inventoryDocs.find((doc) => {
+      if (!doc) return false;
+      return isEqual(productConfiguration, doc.productConfiguration);
+    });
     if (!inventoryDoc || !inventoryDoc.isEnabled) {
       return {
         inventoryInfo: null,

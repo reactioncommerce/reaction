@@ -46,7 +46,7 @@ function composer(props, onData) {
   const settings = Reaction.Apps({ provides: "settings", enabled: true, audience }) || [];
 
   const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true, audience })
-    .filter((d) => typeof Template[d.template] !== "undefined") || [];
+    .filter((dash) => typeof Template[dash.template] !== "undefined") || [];
 
   onData(null, {
     currentView: Reaction.getActionView(),
