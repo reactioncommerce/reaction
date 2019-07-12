@@ -125,7 +125,7 @@ var Signal = Base.compose( [Base, signals.Signal], /** @lends module:mixins/sign
 	 * Check if listener was attached to Signal.
 	 * @param {function} listener The function to check
 	 * @param {?object} listenerContext The context that was bound
-	 * @returns {boolean}
+	 * @returns {Boolean}
 	 */
 	has      : function ( listener, listenerContext ) {
 		listenerContext = listenerContext || this.defaultContext || this.host;

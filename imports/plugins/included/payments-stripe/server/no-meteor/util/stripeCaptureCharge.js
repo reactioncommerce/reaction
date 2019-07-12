@@ -7,7 +7,7 @@ import getStripeInstance from "./getStripeInstance";
  * @summary Capture the results of a previous charge
  * @param {Object} context - an object containing the per-request state
  * @param {Object} payment - object containing info about the previous transaction
- * @returns {object} Object indicating the result, saved = true means success
+ * @returns {Object} Object indicating the result, saved = true means success
  * @private
  */
 export default async function stripeCaptureCharge(context, payment) {

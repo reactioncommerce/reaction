@@ -113,7 +113,7 @@ export class ServiceConfigHelper {
    *  "secret", label: "Client Secret" }]);
    * @see https://github.com/reactioncommerce/reaction/pull/3231
    * @param {String} provider Display Name of the provider
-   * @param {object[]} fields Array of plain old JavaScript objects with the keys `property`
+   * @param {Object[]} fields Array of plain old JavaScript objects with the keys `property`
    * ("apiKey", for example. `apiKey` should correspond to your OAuth provider's
    * implementation) and `label` ("API Key", for example)
    */

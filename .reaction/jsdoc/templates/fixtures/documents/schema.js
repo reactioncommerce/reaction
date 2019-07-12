@@ -65,9 +65,9 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @method
 		 * @name validate
 		 * @memberOf documents/schema#
-		 * @param {object=} record The record to validate
+		 * @param {Object=} record The record to validate
 		 * @param {string|object=} schemaName The name of a previously registered schema
-		 * @param {object=} options Options to pass to the validator
+		 * @param {Object=} options Options to pass to the validator
 		 * @example
 		 * // This supports these signatures:
 		 *
@@ -123,7 +123,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * Extracts only the elements of the object that are defined in the schema
 		 * @memberOf documents/schema#
 		 * @name extract
-		 * @param {object=} record The record to extract from
+		 * @param {Object=} record The record to extract from
 		 * @param {string=} schema The name of the schema to attach
 		 * @method
 		 */
@@ -146,7 +146,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @param {String} name The name of the type
 		 * @param {function(object)} operation What to do with the type.
 		 * @param {Object} operation.value The value to validation
-		 * @returns {boolean}
+		 * @returns {Boolean}
 		 */
 		this.addType = env.addType;
 
@@ -158,7 +158,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @param {String} name The name of the formatter
 		 * @param {function(object)} formatter How to format it
 		 * @param {Object} formatter.value The value to format
-		 * @returns {boolean}
+		 * @returns {Boolean}
 		 */
 		this.addFormat = env.addFormat;
 
@@ -170,7 +170,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @param {String} name The name of the check
 		 * @param {function(...object)} formatter Perform the check
 		 * @param {Object} formatter.value The value to check followed by any parameters from the schema
-		 * @returns {boolean}
+		 * @returns {Boolean}
 		 */
 		this.addCheck = env.addCheck;
 
@@ -183,7 +183,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @param {String} name The name of the coercion
 		 * @param {function(object)} coercer Perform the coercion
 		 * @param {Object} coercer.value The value to coerce
-		 * @returns {boolean}
+		 * @returns {Boolean}
 		 */
 		this.addTypeCoercion = env.addTypeCoercion;
 
@@ -208,8 +208,8 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 	 * extracted object will be represented in this class for reference objects.
 	 *
 	 * @param {string=} schema The schema name to use
-	 * @param {object=} src The object to extract fields from
-	 * @return {object} Data-only version of the class instance.
+	 * @param {Object=} src The object to extract fields from
+	 * @return {Object} Data-only version of the class instance.
 	 */
 	extract     : function ( schemaName, src ) {
 		if ( sys.isObject( schemaName ) ) {

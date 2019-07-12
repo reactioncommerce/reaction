@@ -28,7 +28,7 @@ var prefixOps = ["$and", "$or", "$nor", "$not"];
  @private
  @param {String} path The path to element to work with
  @param {Object} operand The operands to use for the query
- @return {object} A formatted operation definition
+ @return {Object} A formatted operation definition
  **/
 function processNestedOperator( path, operand ) {
 	var opKeys = Object.keys( operand );
@@ -44,7 +44,7 @@ function processNestedOperator( path, operand ) {
  @private
  @param {Object} val The expression
  @param {Object} key The prefix
- @returns {object} A formatted operation definition
+ @returns {Object} A formatted operation definition
  **/
 function processExpressionObject( val, key ) {
 	var operator;
@@ -84,7 +84,7 @@ function processExpressionObject( val, key ) {
  @private
  @param {String} operation The operation prefix
  @param {Object} operand The operands to use for the query
- @return {object} A formatted operation definition
+ @return {Object} A formatted operation definition
  **/
 function processPrefixOperator( operation, operand ) {
 	var component = {
@@ -115,7 +115,7 @@ function processPrefixOperator( operation, operand ) {
  Parses a query request and builds an object that can used to process a query target
  @private
  @param {Object} obj The expression object
- @returns {object} All components of the expression in a kind of execution tree
+ @returns {Object} All components of the expression in a kind of execution tree
  **/
 
 function parseQueryExpression( obj ) {
@@ -157,7 +157,7 @@ exports.delimiter = '.';
  Splits a path expression into its component parts
  @private
  @param {String} path The path to split
- @returns {array}
+ @returns {Array}
  **/
 
 function splitPath( path ) {
@@ -692,8 +692,8 @@ var operations = {
  @private
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute
- @param {?boolean} shortCircuit When true, the condition that matches the query stops evaluation for that record, otherwise all conditions have to be met
- @param {?boolean} stopOnFirst When true all evaluation stops after the first record is found to match the conditons
+ @param {?Boolean} shortCircuit When true, the condition that matches the query stops evaluation for that record, otherwise all conditions have to be met
+ @param {?Boolean} stopOnFirst When true all evaluation stops after the first record is found to match the conditons
  **/
 function execQuery( obj, qu, shortCircuit, stopOnFirst ) {
 	var arrayResults = [];
@@ -745,7 +745,7 @@ exports.update = function ( obj, qu, setDocument ) {
  Find all records that match a query
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
- @returns {array} The results
+ @returns {Array} The results
  **/
 exports.find = function ( obj, qu ) {
 	var expression, _i, _len;
@@ -764,7 +764,7 @@ exports.find = function ( obj, qu ) {
  records, returns the keys. If `obj` is an object it will return the hash key. If 'obj' is an array, it will return the index
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
- @returns {array}
+ @returns {Array}
  */
 exports.findKeys = function ( obj, qu ) {
 	var expression, _i, _len;
@@ -783,7 +783,7 @@ exports.findKeys = function ( obj, qu ) {
  Returns the first record that matches the query. Aliased as `seek`.
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
- @returns {object}
+ @returns {Object}
  */
 exports.findOne = function ( obj, qu ) {
 	var expression, _i, _len;
@@ -808,7 +808,7 @@ exports.seek = exports.findOne;
  Aliased as `seekKey`.
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
- @returns {object}
+ @returns {Object}
  */
 exports.findOneKey = function ( obj, qu ) {
 	var expression, _i, _len;
@@ -866,7 +866,7 @@ exports.remove = function ( obj, qu ) {
 
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
- @returns {boolean}
+ @returns {Boolean}
  **/
 exports.all = function ( obj, qu ) {
 	return exports.find( obj, qu ).length === sys.size( obj );
@@ -877,7 +877,7 @@ exports.all = function ( obj, qu ) {
 
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
- @returns {boolean}
+ @returns {Boolean}
  **/
 exports.any = function ( obj, qu ) {
 	var expression, _i, _len;
@@ -897,7 +897,7 @@ exports.any = function ( obj, qu ) {
  Returns the set of unique records that match a query
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
- @return {array}
+ @returns {Array}
  **/
 exports.unique = function ( obj, qu ) {
 	var test = exports.find( obj, qu );
@@ -936,7 +936,7 @@ exports.get = function ( record, path ) {
  @function
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute
- @returns {boolean}
+ @returns {Boolean}
  */
 exports.some = exports.any;
 
@@ -945,7 +945,7 @@ exports.some = exports.any;
  @function
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute
- @returns {boolean}
+ @returns {Boolean}
  */
 exports.every = exports.all;
 
@@ -970,7 +970,7 @@ var bindables = {
  Binds the query and update methods to a new object. When called these
  methods can skip the first parameter so that find(object, query) can just be called as find(query)
  @param {Object|Array} obj The object or array to bind to
- @return {object} An object with method bindings in place
+ @return {Object} An object with method bindings in place
  **/
 exports.proxy = function ( obj ) {
 	var retVal;
@@ -986,7 +986,7 @@ exports.proxy = function ( obj ) {
  Binds the query and update methods to a specific object and adds the methods to that object. When called these
  methods can skip the first parameter so that find(object, query) can just be called as object.find(query)
  @param {Object|Array} obj The object or array to bind to
- @param {object|array=} collection If the collection is not the same as <code>this</code> but is a property, or even
+ @param {Object|Aarray=} collection If the collection is not the same as <code>this</code> but is a property, or even
  a whole other object, you specify that here. Otherwise the <code>obj</code> is assumed to be the same as the collecion
  **/
 exports.mixin = function ( obj, collection ) {
