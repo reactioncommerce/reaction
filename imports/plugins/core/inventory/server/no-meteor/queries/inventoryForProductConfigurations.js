@@ -49,6 +49,13 @@ async function getInventoryResults(context, input) {
   for (const inventoryFn of context.getFunctionsOfType("inventoryForProductConfigurations")) {
     // eslint-disable-next-line no-await-in-loop
     const pluginResults = await inventoryFn(context, input);
+
+    /**
+     * Custom validation function is replacing what used to be a call to simpl-schema.
+     * However, simpl-schema validate() method on moderately large payloads adds a pretty significant
+     * performance penalty, each call on average taking 40ms.
+     * Please don't replace with simpl-schema.
+     */
     const validationErrors = validateInventoryPluginResult(pluginResults);
     if (validationErrors.length) {
       throw new Error(`Response from "inventoryForProductConfigurations" type function was invalid: ${validationErrors.join("\n")}`);
@@ -102,6 +109,12 @@ export default async function inventoryForProductConfigurations(context, input) 
   const { collections } = context;
   const { Products } = collections;
 
+  /**
+   * Custom validation function is replacing what used to be a call to simpl-schema.
+   * However, simpl-schema validate() method on moderately large payloads adds a pretty significant
+   * performance penalty, each call on average taking 40ms.
+   * Please don't replace with simpl-schema.
+   */
   const validationErrors = validateInventoryInput(input);
   if (validationErrors.length) {
     throw new Error(`Input passed into "inventoryForProductConfigurations" was invalid: ${validationErrors.join("\n")}`);
