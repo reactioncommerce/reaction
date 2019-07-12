@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
-import styled from "styled-components";
 import { Form } from "reacto-form";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -11,11 +10,6 @@ import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next, Reaction } from "/client/api";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
-
-
-const PaddedField = styled(Field)`
-  margin-bottom: 30px;
-`;
 
 class OrderCardFulfillmentGroupTrackingNumber extends Component {
   static propTypes = {
@@ -92,9 +86,8 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
                   onSubmit={(data) => this.handleUpdateFulfillmentGroupTrackingNumber(data, mutationFunc)}
                   value={fulfillmentGroup}
                 >
-                  <PaddedField
+                  <Field
                     name="tracking"
-
                     labelFor="trackingInput"
                   >
                     <TextInput
@@ -104,7 +97,7 @@ class OrderCardFulfillmentGroupTrackingNumber extends Component {
                       value={trackingNumber || ""}
                     />
                     <ErrorsBlock names={["tracking"]} />
-                  </PaddedField>
+                  </Field>
 
                   {trackingNumber ?
                     <Grid container alignItems="center" justify="flex-end" spacing={8}>
