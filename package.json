@@ -397,6 +397,7 @@
         }
       ],
       "jsx-a11y/label-has-for": "off",
+      "node/no-unsupported-features/es-syntax": "off",
       "promise/no-callback-in-promise": "warn",
       "react/no-did-mount-set-state": "warn",
       "react/no-did-update-set-state": "warn",
