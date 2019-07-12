@@ -12,8 +12,9 @@ import getTemplateConfig from "../util/getTemplateConfig";
  * @param {String} language Language of template
  * @return {Object} An object with rendered content in properties `html` and `subject`
  */
-export default async function renderEmail(context, { data, shopId, templateName, language }) {
-  const { template, subject } = await getTemplateConfig(context, shopId, templateName, { language: language });
+export default async function renderEmail(context, { data,  templateName, language }) {
+  const { template, subject } = await getTemplateConfig(context, data.shopId, templateName, { language: language });
+
 
   const renderSubject = Handlebars.compile(subject);
   const renderBody = Handlebars.compile(template);
