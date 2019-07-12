@@ -2,7 +2,7 @@ import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Query.accountCartByAccountId"
+ * @name Query/accountCartByAccountId
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the accountCartByAccountId GraphQL mutation

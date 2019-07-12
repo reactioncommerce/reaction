@@ -1,7 +1,7 @@
 import { xformTotalItemQuantity } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
- * @name "Cart.totalItemQuantity"
+ * @name Cart/totalItemQuantity
  * @method
  * @memberof Cart/GraphQL
  * @summary Calculates the total quantity of items in the cart and returns a number
