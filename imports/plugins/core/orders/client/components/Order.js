@@ -6,8 +6,8 @@ import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
 import OrderCardAppBar from "./orderCardAppBar";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
-import OrderCardHeader from "./orderCardHeader";
-import OrderCardPayments from "./orderCardPayments";
+import OrderHeader from "./OrderHeader";
+import OrderPayments from "./OrderPayments";
 import OrderCardCustomerDetails from "./OrderCardCustomerDetails";
 import OrderCardSummary from "./orderCardSummary";
 
@@ -28,7 +28,7 @@ class OrderCard extends Component {
   renderHeader() {
     const { order } = this.props;
 
-    return <OrderCardHeader order={order} />;
+    return <OrderHeader order={order} />;
   }
 
   renderFulfillmentGroups() {
@@ -40,7 +40,7 @@ class OrderCard extends Component {
   renderPayments() {
     const { order } = this.props;
 
-    return <OrderCardPayments order={order} />;
+    return <OrderPayments order={order} />;
   }
 
   renderSidebar() {

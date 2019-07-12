@@ -57,8 +57,8 @@ Reaction.onAppStartupComplete(() => {
       collector.collect("Tags", (collections) => {
         const collectionTags = collections.Tags;
 
-        expect(collectionTags.map((t) => t.name))
-          .to.eql(expectedTags.map((t) => t.name));
+        expect(collectionTags.map((collectionTag) => collectionTag.name))
+          .to.eql(expectedTags.map((collectionTag) => collectionTag.name));
       }).then(() => done()).catch(done);
     });
 
@@ -72,7 +72,7 @@ Reaction.onAppStartupComplete(() => {
       collector.collect("Tags", (collections) => {
         const collectionTags = collections.Tags;
 
-        expect(collectionTags.map((t) => t.name))
+        expect(collectionTags.map((collectionTag) => collectionTag.name))
           .to.eql([tag.name]);
       }).then(() => done()).catch(done);
     });

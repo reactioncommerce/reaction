@@ -39,7 +39,7 @@ export default async function getCatalogProductMedia(productId, collections) {
         }
       };
     })
-    .sort((a, b) => a.priority - b.priority);
+    .sort((mediaA, mediaB) => mediaA.priority - mediaB.priority);
 
   return catalogProductMedia;
 }

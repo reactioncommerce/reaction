@@ -49,8 +49,8 @@ const wrapComponent = (Comp) => (
           Array.prototype.indexOf.call(items, activeItems[0]),
           Array.prototype.indexOf.call(items, activeItems[selected - 1])
         ];
-        for (let i = _.min(indexes); i <= _.max(indexes); i += 1) {
-          checkbox = items[i].querySelector("input[type=checkbox]");
+        for (let inc = _.min(indexes); inc <= _.max(indexes); inc += 1) {
+          checkbox = items[inc].querySelector("input[type=checkbox]");
           if (checkbox.checked === false) {
             checkbox.checked = true;
             this.props.itemSelectHandler(checkbox.checked, product._id);

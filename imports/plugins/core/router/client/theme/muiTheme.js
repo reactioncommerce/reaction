@@ -54,39 +54,63 @@ export const rawMuiTheme = {
     fontWeightSemiBold,
     fontWeightBold,
     useNextVariants: true,
-    subtitle1: {
-      fontSize: defaultFontSize
-    },
-    body1: {
-      fontSize: defaultFontSize
-    },
     button: {
       fontSize: 14,
       letterSpacing: 0.8
     },
+    h1: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.5,
+      lineHeight: 1.25
+    },
+    h2: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.25,
+      lineHeight: 1.25
+    },
+    h3: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.125,
+      lineHeight: 1.25
+    },
+    h4: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize,
+      fontWeight: fontWeightSemiBold,
+      lineHeight: 1.25
+    },
+    h5: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.875,
+      fontWeight: fontWeightSemiBold,
+      lineHeight: 1.25
+    },
+    h6: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.75,
+      fontWeight: fontWeightSemiBold,
+      lineHeight: 1.25
+    },
+    body1: {
+      color: colors.black70,
+      fontSize: defaultFontSize,
+      lineHeight: 1.5
+    },
+    body2: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.875,
+      lineHeight: 1.5
+    },
     caption: {
       color: colors.black30
     },
-    h1: {
-      fontSize: defaultFontSize * 1.5
-    },
-    h2: {
-      fontSize: defaultFontSize * 1.25
-    },
-    h3: {
-      fontSize: defaultFontSize * 1.125
-    },
-    h4: {
-      fontSize: defaultFontSize,
-      fontWeight: fontWeightSemiBold
-    },
-    h5: {
+    subtitle1: {
       fontSize: defaultFontSize * 0.875,
-      fontWeight: fontWeightSemiBold
+      lineHeight: 1.5
     },
-    h6: {
+    subtitle2: {
       fontSize: defaultFontSize * 0.75,
-      fontWeight: fontWeightSemiBold
+      lineHeight: 1.5
     }
   },
   shadows: [
@@ -191,6 +215,7 @@ export const rawMuiTheme = {
         textTransform: "initial"
       },
       text: {
+        color: colors.coolGrey400,
         padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`
       },
       outlined: {
@@ -208,7 +233,11 @@ export const rawMuiTheme = {
     },
     MuiCard: {
       root: {
-        border: `1px solid ${colors.black10}`
+        border: `1px solid ${colors.black10}`,
+        paddingLeft: defaultSpacingUnit * 2,
+        paddingRight: defaultSpacingUnit * 2,
+        paddingTop: defaultSpacingUnit,
+        paddingBottom: defaultSpacingUnit
       }
     },
     MuiCheckbox: {
