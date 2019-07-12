@@ -16,10 +16,21 @@ import isEqual from "lodash/isEqual";
  */
 export default async function inventoryForProductConfigurations(context, input) {
   const { productConfigurations } = input;
+  const { isInternalCall } = context;
 
   const productVariantIds = productConfigurations.map(({ productVariantId }) => productVariantId);
 
-  const inventoryDocs = await context.dataLoaders.SimpleInventoryByProductVariantId.loadMany(productVariantIds);
+  let inventoryDocs;
+  if (isInternalCall) {
+    inventoryDocs = await context.collections.SimpleInventory
+      .find({
+        "productConfiguration.productVariantId": { $in: productVariantIds }
+      })
+      .limit(productConfigurations.length) // optimize query speed
+      .toArray();
+  } else {
+    inventoryDocs = await context.dataLoaders.SimpleInventoryByProductVariantId.loadMany(productVariantIds);
+  }
 
   return productConfigurations.map((productConfiguration) => {
     const inventoryDoc = inventoryDocs.find((doc) => {
