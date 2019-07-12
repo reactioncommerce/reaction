@@ -727,7 +727,7 @@ function execQuery( obj, qu, shortCircuit, stopOnFirst ) {
 
 /**
  Updates all records in obj that match the query. See {@link module:documents/probe.updateOperators} for the operators that are supported.
- @param {object|array} obj The object to update
+ @param {Object|Array} obj The object to update
  @param {Object} qu The query which will be used to identify the records to updated
  @param {Object} setDocument The update operator. See {@link module:documents/probe.updateOperators}
  */
@@ -833,7 +833,7 @@ exports.seekKey = exports.findOneKey;
  Remove all items in the object/array that match the query
  @param {array|object} obj The object to query
  @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
- @return {object|array} The array or object as appropriate without the records.
+ @return {Object|Array} The array or object as appropriate without the records.
  **/
 exports.remove = function ( obj, qu ) {
 	var expression, _i, _len;
@@ -969,7 +969,7 @@ var bindables = {
 /**
  Binds the query and update methods to a new object. When called these
  methods can skip the first parameter so that find(object, query) can just be called as find(query)
- @param {object|array} obj The object or array to bind to
+ @param {Object|Array} obj The object or array to bind to
  @return {object} An object with method bindings in place
  **/
 exports.proxy = function ( obj ) {
@@ -985,7 +985,7 @@ exports.proxy = function ( obj ) {
 /**
  Binds the query and update methods to a specific object and adds the methods to that object. When called these
  methods can skip the first parameter so that find(object, query) can just be called as object.find(query)
- @param {object|array} obj The object or array to bind to
+ @param {Object|Array} obj The object or array to bind to
  @param {object|array=} collection If the collection is not the same as <code>this</code> but is a property, or even
  a whole other object, you specify that here. Otherwise the <code>obj</code> is assumed to be the same as the collecion
  **/

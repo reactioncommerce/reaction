@@ -21,7 +21,7 @@ var CollectorBase = dcl( Destroyable, {
 		}
 		/**
 		 * The collection that being managed
-		 * @type {object|array}
+		 * @type {Object|Array}
 		 */
 		this.heap = obj || {};
 		// mixin the probe
@@ -434,7 +434,7 @@ exports.object = function ( obj ) {
  Remove all items in the object/array that match the query
 
  @param {Object} qu The query to execute. See {@link module:ink/probe.queryOperators} for the operators you can use.
- @return {object|array} The array or object as appropriate without the records.
+ @return {Object|Array} The array or object as appropriate without the records.
  @memberOf module:documents/collector~CollectorBase#
  @name remove
  @method
