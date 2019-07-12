@@ -190,7 +190,7 @@ var Signalable = Base.compose( [Base], /** @lends mixins/signalable# */{
 	},
 	/**
 	 * Creates a single signal
-	 * @param {string} name The name of the signal
+	 * @param {String} name The name of the signal
 	 * @param {module:mixins/signalable~SignalOptions} options The options the signal expects
 	 * @private
 	 */

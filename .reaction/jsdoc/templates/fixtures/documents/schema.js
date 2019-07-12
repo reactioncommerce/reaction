@@ -143,9 +143,9 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @memberOf documents/schema#
 		 * @name addType
 		 * @method
-		 * @param {string} name The name of the type
+		 * @param {String} name The name of the type
 		 * @param {function(object)} operation What to do with the type.
-		 * @param {object} operation.value The value to validation
+		 * @param {Object} operation.value The value to validation
 		 * @returns {boolean}
 		 */
 		this.addType = env.addType;
@@ -155,9 +155,9 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @memberOf documents/schema#
 		 * @name addFormat
 		 * @method
-		 * @param {string} name The name of the formatter
+		 * @param {String} name The name of the formatter
 		 * @param {function(object)} formatter How to format it
-		 * @param {object} formatter.value The value to format
+		 * @param {Object} formatter.value The value to format
 		 * @returns {boolean}
 		 */
 		this.addFormat = env.addFormat;
@@ -167,9 +167,9 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @memberOf documents/schema#
 		 * @name addCheck
 		 * @method
-		 * @param {string} name The name of the check
+		 * @param {String} name The name of the check
 		 * @param {function(...object)} formatter Perform the check
-		 * @param {object} formatter.value The value to check followed by any parameters from the schema
+		 * @param {Object} formatter.value The value to check followed by any parameters from the schema
 		 * @returns {boolean}
 		 */
 		this.addCheck = env.addCheck;
@@ -180,9 +180,9 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @memberOf documents/schema#
 		 * @name addTypeCoercion
 		 * @method
-		 * @param {string} name The name of the coercion
+		 * @param {String} name The name of the coercion
 		 * @param {function(object)} coercer Perform the coercion
-		 * @param {object} coercer.value The value to coerce
+		 * @param {Object} coercer.value The value to coerce
 		 * @returns {boolean}
 		 */
 		this.addTypeCoercion = env.addTypeCoercion;

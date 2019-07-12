@@ -168,7 +168,7 @@ var CollectorBase = dcl( Destroyable, {
 	 * `.pluck(query, function)` and `.pluck(function)`
 	 * @param {object=} query The query to evaluate. If you pass in a query, only the items that match the query
 	 * are iterated over.
-	 * @param {string} property The property that will be 'plucked' from the contents of the collection
+	 * @param {String} property The property that will be 'plucked' from the contents of the collection
 	 * @return {*}
 	 */
 	pluck         : function ( query, property ) {
@@ -380,7 +380,7 @@ exports.object = function ( obj ) {
  Returns true if all items match the query. Aliases as `all`
  @function
 
- @param {object} qu The query to execute
+ @param {Object} qu The query to execute
  @returns {boolean}
  @name every
  @memberOf module:documents/collector~CollectorBase#
@@ -391,7 +391,7 @@ exports.object = function ( obj ) {
  Returns true if any of the items match the query. Aliases as `any`
  @function
 
- @param {object} qu The query to execute
+ @param {Object} qu The query to execute
  @returns {boolean}
  @memberOf module:documents/collector~CollectorBase#
  @name some
@@ -401,7 +401,7 @@ exports.object = function ( obj ) {
 /**
  Returns the set of unique records that match a query
 
- @param {object} qu The query to execute.
+ @param {Object} qu The query to execute.
  @return {array}
  @memberOf module:documents/collector~CollectorBase#
  @name unique
@@ -412,7 +412,7 @@ exports.object = function ( obj ) {
  Returns true if all items match the query. Aliases as `every`
  @function
 
- @param {object} qu The query to execute
+ @param {Object} qu The query to execute
  @returns {boolean}
  @name all
  @memberOf module:documents/collector~CollectorBase#
@@ -423,7 +423,7 @@ exports.object = function ( obj ) {
  Returns true if any of the items match the query. Aliases as `all`
  @function
 
- @param {object} qu The query to execute
+ @param {Object} qu The query to execute
  @returns {boolean}
  @memberOf module:documents/collector~CollectorBase#
  @name any
@@ -433,7 +433,7 @@ exports.object = function ( obj ) {
 /**
  Remove all items in the object/array that match the query
 
- @param {object} qu The query to execute. See {@link module:ink/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:ink/probe.queryOperators} for the operators you can use.
  @return {object|array} The array or object as appropriate without the records.
  @memberOf module:documents/collector~CollectorBase#
  @name remove
@@ -444,7 +444,7 @@ exports.object = function ( obj ) {
  Returns the first record that matches the query and returns its key or index depending on whether `obj` is an object or array respectively.
  Aliased as `seekKey`.
 
- @param {object} qu The query to execute.
+ @param {Object} qu The query to execute.
  @returns {object}
  @memberOf module:documents/collector~CollectorBase#
  @name findOneKey
@@ -455,7 +455,7 @@ exports.object = function ( obj ) {
 /**
  Returns the first record that matches the query. Aliased as `seek`.
 
- @param {object} qu The query to execute.
+ @param {Object} qu The query to execute.
  @returns {object}
  @memberOf module:documents/collector~CollectorBase#
  @name findOne
@@ -467,7 +467,7 @@ exports.object = function ( obj ) {
  Find all records that match a query and returns the keys for those items. This is similar to {@link module:ink/probe.find} but instead of returning
  records, returns the keys. If `obj` is an object it will return the hash key. If 'obj' is an array, it will return the index
 
- @param {object} qu The query to execute.
+ @param {Object} qu The query to execute.
  @returns {array}
  @memberOf module:documents/collector~CollectorBase#
  @name findKeys
@@ -478,7 +478,7 @@ exports.object = function ( obj ) {
 /**
  Find all records that match a query
 
- @param {object} qu The query to execute.
+ @param {Object} qu The query to execute.
  @returns {array} The results
  @memberOf module:documents/collector~CollectorBase#
  @name find
@@ -488,8 +488,8 @@ exports.object = function ( obj ) {
 /**
  Updates all records in obj that match the query. See {@link module:ink/probe.updateOperators} for the operators that are supported.
 
- @param {object} qu The query which will be used to identify the records to updated
- @param {object} setDocument The update operator. See {@link module:ink/probe.updateOperators}
+ @param {Object} qu The query which will be used to identify the records to updated
+ @param {Object} setDocument The update operator. See {@link module:ink/probe.updateOperators}
  @memberOf module:documents/collector~CollectorBase#
  @name update
  @method

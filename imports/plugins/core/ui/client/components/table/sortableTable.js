@@ -96,8 +96,8 @@ class SortableTable extends Component {
    * @name handleFilterInput()
    * @summary Update state when filter is changed
    * @param {script} event onChange event when typing in filter field
-   * @param {string} value text field input
-   * @param {string} field input field name to watch
+   * @param {String} value text field input
+   * @param {String} field input field name to watch
    * @return {function} state for field value
    */
   handleFilterInput = (event, value, field) => {
@@ -110,7 +110,7 @@ class SortableTable extends Component {
   /**
    * @name handleClick()
    * @summary Handle click on table row
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
@@ -234,7 +234,7 @@ class SortableTable extends Component {
    * @name selectedRowsClassName()
    * @method
    * @summary If any rows are selected, give them a className of "selected-row"
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @returns {String} className to apply to row that is selected, or empty string if no row is selected
    */
   selectedRowsClassName(rowInfo) {

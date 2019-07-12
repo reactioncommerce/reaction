@@ -26,8 +26,8 @@ var prefixOps = ["$and", "$or", "$nor", "$not"];
 /**
  Processes a nested operator by picking the operator out of the expression object. Returns a formatted object that can be used for querying
  @private
- @param {string} path The path to element to work with
- @param {object} operand The operands to use for the query
+ @param {String} path The path to element to work with
+ @param {Object} operand The operands to use for the query
  @return {object} A formatted operation definition
  **/
 function processNestedOperator( path, operand ) {
@@ -42,8 +42,8 @@ function processNestedOperator( path, operand ) {
 /**
  Interrogates a single query expression object and calls the appropriate handler for its contents
  @private
- @param {object} val The expression
- @param {object} key The prefix
+ @param {Object} val The expression
+ @param {Object} key The prefix
  @returns {object} A formatted operation definition
  **/
 function processExpressionObject( val, key ) {
@@ -82,8 +82,8 @@ function processExpressionObject( val, key ) {
 /**
  Processes a prefixed operator and then passes control to the nested operator method to pick out the contained values
  @private
- @param {string} operation The operation prefix
- @param {object} operand The operands to use for the query
+ @param {String} operation The operation prefix
+ @param {Object} operand The operands to use for the query
  @return {object} A formatted operation definition
  **/
 function processPrefixOperator( operation, operand ) {
@@ -114,7 +114,7 @@ function processPrefixOperator( operation, operand ) {
 /**
  Parses a query request and builds an object that can used to process a query target
  @private
- @param {object} obj The expression object
+ @param {Object} obj The expression object
  @returns {object} All components of the expression in a kind of execution tree
  **/
 
@@ -156,7 +156,7 @@ exports.delimiter = '.';
 /**
  Splits a path expression into its component parts
  @private
- @param {string} path The path to split
+ @param {String} path The path to split
  @returns {array}
  **/
 
@@ -167,8 +167,8 @@ function splitPath( path ) {
 /**
  Reaches into an object and allows you to get at a value deeply nested in an object
  @private
- @param {array} path The split path of the element to work with
- @param {object} record The record to reach into
+ @param {Array} path The split path of the element to work with
+ @param {Object} record The record to reach into
  @return {*} Whatever was found in the record
  **/
 function reachin( path, record ) {
@@ -191,10 +191,10 @@ function reachin( path, record ) {
 /**
  This will write the value into a record at the path, creating intervening objects if they don't exist
  @private
- @param {array} path The split path of the element to work with
- @param {object} record The record to reach into
- @param {string} setter The set command, defaults to $set
- @param {object} newValue The value to write to the, or if the operator is $pull, the query of items to look for
+ @param {Array} path The split path of the element to work with
+ @param {Object} record The record to reach into
+ @param {String} setter The set command, defaults to $set
+ @param {Object} newValue The value to write to the, or if the operator is $pull, the query of items to look for
  */
 function pushin( path, record, setter, newValue ) {
 	var context = record;
@@ -691,7 +691,7 @@ var operations = {
  Executes a query by traversing a document and evaluating each record
  @private
  @param {array|object} obj The object to query
- @param {object} qu The query to execute
+ @param {Object} qu The query to execute
  @param {?boolean} shortCircuit When true, the condition that matches the query stops evaluation for that record, otherwise all conditions have to be met
  @param {?boolean} stopOnFirst When true all evaluation stops after the first record is found to match the conditons
  **/
@@ -728,8 +728,8 @@ function execQuery( obj, qu, shortCircuit, stopOnFirst ) {
 /**
  Updates all records in obj that match the query. See {@link module:documents/probe.updateOperators} for the operators that are supported.
  @param {object|array} obj The object to update
- @param {object} qu The query which will be used to identify the records to updated
- @param {object} setDocument The update operator. See {@link module:documents/probe.updateOperators}
+ @param {Object} qu The query which will be used to identify the records to updated
+ @param {Object} setDocument The update operator. See {@link module:documents/probe.updateOperators}
  */
 exports.update = function ( obj, qu, setDocument ) {
 	var records = exports.find( obj, qu );
@@ -744,7 +744,7 @@ exports.update = function ( obj, qu, setDocument ) {
 /**
  Find all records that match a query
  @param {array|object} obj The object to query
- @param {object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
  @returns {array} The results
  **/
 exports.find = function ( obj, qu ) {
@@ -763,7 +763,7 @@ exports.find = function ( obj, qu ) {
  Find all records that match a query and returns the keys for those items. This is similar to {@link module:documents/probe.find} but instead of returning
  records, returns the keys. If `obj` is an object it will return the hash key. If 'obj' is an array, it will return the index
  @param {array|object} obj The object to query
- @param {object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
  @returns {array}
  */
 exports.findKeys = function ( obj, qu ) {
@@ -782,7 +782,7 @@ exports.findKeys = function ( obj, qu ) {
 /**
  Returns the first record that matches the query. Aliased as `seek`.
  @param {array|object} obj The object to query
- @param {object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
  @returns {object}
  */
 exports.findOne = function ( obj, qu ) {
@@ -807,7 +807,7 @@ exports.seek = exports.findOne;
  Returns the first record that matches the query and returns its key or index depending on whether `obj` is an object or array respectively.
  Aliased as `seekKey`.
  @param {array|object} obj The object to query
- @param {object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
  @returns {object}
  */
 exports.findOneKey = function ( obj, qu ) {
@@ -832,7 +832,7 @@ exports.seekKey = exports.findOneKey;
 /**
  Remove all items in the object/array that match the query
  @param {array|object} obj The object to query
- @param {object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
  @return {object|array} The array or object as appropriate without the records.
  **/
 exports.remove = function ( obj, qu ) {
@@ -865,7 +865,7 @@ exports.remove = function ( obj, qu ) {
  Returns true if all items match the query
 
  @param {array|object} obj The object to query
- @param {object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
  @returns {boolean}
  **/
 exports.all = function ( obj, qu ) {
@@ -876,7 +876,7 @@ exports.all = function ( obj, qu ) {
  Returns true if any of the items match the query
 
  @param {array|object} obj The object to query
- @param {object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
  @returns {boolean}
  **/
 exports.any = function ( obj, qu ) {
@@ -896,7 +896,7 @@ exports.any = function ( obj, qu ) {
 /**
  Returns the set of unique records that match a query
  @param {array|object} obj The object to query
- @param {object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
+ @param {Object} qu The query to execute. See {@link module:documents/probe.queryOperators} for the operators you can use.
  @return {array}
  **/
 exports.unique = function ( obj, qu ) {
@@ -910,10 +910,10 @@ exports.unique = function ( obj, qu ) {
  This will write the value into a record at the path, creating intervening objects if they don't exist. This does not work as filtered
  update and is meant to be used on a single record. It is a nice way of setting a property at an arbitrary depth at will.
 
- @param {array} path The split path of the element to work with
- @param {object} record The record to reach into
- @param {string} setter The set operation.  See {@link module:documents/probe.updateOperators} for the operators you can use.
- @param {object} newValue The value to write to the, or if the operator is $pull, the query of items to look for
+ @param {Array} path The split path of the element to work with
+ @param {Object} record The record to reach into
+ @param {String} setter The set operation.  See {@link module:documents/probe.updateOperators} for the operators you can use.
+ @param {Object} newValue The value to write to the, or if the operator is $pull, the query of items to look for
  */
 exports.set = function ( record, path, setter, newValue ) {
 	return pushin( splitPath( path ), record, setter, newValue );
@@ -923,8 +923,8 @@ exports.set = function ( record, path, setter, newValue ) {
  Reaches into an object and allows you to get at a value deeply nested in an object. This is not a query, but a
  straight reach in, useful for event bindings
 
- @param {array} path The split path of the element to work with
- @param {object} record The record to reach into
+ @param {Array} path The split path of the element to work with
+ @param {Object} record The record to reach into
  @return {*} Whatever was found in the record
  **/
 exports.get = function ( record, path ) {
@@ -935,7 +935,7 @@ exports.get = function ( record, path ) {
  Returns true if any of the items match the query. Aliases as `any`
  @function
  @param {array|object} obj The object to query
- @param {object} qu The query to execute
+ @param {Object} qu The query to execute
  @returns {boolean}
  */
 exports.some = exports.any;
@@ -944,7 +944,7 @@ exports.some = exports.any;
  Returns true if all items match the query. Aliases as `all`
  @function
  @param {array|object} obj The object to query
- @param {object} qu The query to execute
+ @param {Object} qu The query to execute
  @returns {boolean}
  */
 exports.every = exports.all;

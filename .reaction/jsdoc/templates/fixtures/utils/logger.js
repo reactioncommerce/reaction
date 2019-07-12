@@ -37,7 +37,7 @@ var Logger = dcl( null, /** @lends  utils/logger.Logger# */{
 	},
 	/**
 	 * Sets the logging level to one of `trace`, `debug`, `info`, `warn`, `error`.
-	 * @param {string} lvl The level to set it to. Can be  one of `trace`, `debug`, `info`, `warn`, `error`.
+	 * @param {String} lvl The level to set it to. Can be  one of `trace`, `debug`, `info`, `warn`, `error`.
 	 *
 	 */
 	level  : function ( lvl ) {
@@ -50,31 +50,31 @@ var Logger = dcl( null, /** @lends  utils/logger.Logger# */{
 	/**
 	 * Log a `trace` call
 	 * @method
-	 * @param {string} The value to log
+	 * @param {String} The value to log
 	 */
 	trace  : log.trace,
 	/**
 	 * Log a `debug` call
 	 * @method
-	 * @param {string} The value to log
+	 * @param {String} The value to log
 	 */
 	debug  : log.debug,
 	/**
 	 * Log a `info` call
 	 * @method
-	 * @param {string} The value to log
+	 * @param {String} The value to log
 	 */
 	info   : log.info,
 	/**
 	 * Log a `warn` call
 	 * @method
-	 * @param {string} The value to log
+	 * @param {String} The value to log
 	 */
 	warn   : log.warn,
 	/**
 	 * Log a `error` call
 	 * @method
-	 * @param {string} The value to log
+	 * @param {String} The value to log
 	 */
 	error  : log.error
 } );

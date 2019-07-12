@@ -11,7 +11,7 @@ class ShopSelect extends Component {
   /**
    * renderDropDownMenu
    * @summary Handles dropdown menu display
-   * @param {object} menuItems
+   * @param {Object} menuItems
    * @return {JSX} React node containing dropdown menu
    */
   renderDropDownMenu(menuItems) {
