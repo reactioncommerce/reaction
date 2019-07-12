@@ -155,7 +155,7 @@
     "@babel/plugin-syntax-import-meta": "7.2.0",
     "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "7.0.0",
-    "@reactioncommerce/eslint-config": "1.9.0",
+    "@reactioncommerce/eslint-config": "2.0.0",
     "apollo-server-testing": "2.3.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
