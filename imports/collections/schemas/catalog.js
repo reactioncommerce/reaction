@@ -144,18 +144,6 @@ export const VariantBaseSchema = new SimpleSchema({
     type: SimpleSchema.Integer,
     label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
   },
-  "isBackorder": {
-    type: Boolean,
-    label: "is Backordered"
-  },
-  "isLowQuantity": {
-    type: Boolean,
-    label: "is Low Quantity"
-  },
-  "isSoldOut": {
-    type: Boolean,
-    label: "Is Sold Out"
-  },
   "length": {
     type: Number,
     label: "Length",

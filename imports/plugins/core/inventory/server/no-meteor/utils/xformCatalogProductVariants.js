@@ -58,6 +58,8 @@ export default async function xformCatalogProductVariants(context, catalogProduc
     const { inventoryInfo: variantInventoryInfo } = variantsInventoryInfo.find(({ productConfiguration }) =>
       productConfiguration.productVariantId === catalogProductVariant.variantId);
     Object.getOwnPropertyNames(variantInventoryInfo).forEach((key) => {
+      // Skip isSoldOut key, it's already present in the variant
+      if (key === "isSoldOut") return;
       catalogProductVariant[key] = variantInventoryInfo[key];
     });
 
@@ -65,6 +67,8 @@ export default async function xformCatalogProductVariants(context, catalogProduc
       const { inventoryInfo: optionInventoryInfo } = variantsInventoryInfo.find(({ productConfiguration }) =>
         productConfiguration.productVariantId === option.variantId);
       Object.getOwnPropertyNames(optionInventoryInfo).forEach((key) => {
+        // Skip isSoldOut key, it's already present in the option
+        if (key === "isSoldOut") return;
         option[key] = optionInventoryInfo[key];
       });
     }

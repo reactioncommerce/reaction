@@ -45,8 +45,6 @@ async function updateInventoryBooleansInCatalog(context, productId) {
     if (foundVariantInventory) {
       updatedVariant = {
         ...variant,
-        isBackorder: foundVariantInventory.inventoryInfo.isBackorder,
-        isLowQuantity: foundVariantInventory.inventoryInfo.isLowQuantity,
         isSoldOut: foundVariantInventory.inventoryInfo.isSoldOut
       };
     }
@@ -61,8 +59,6 @@ async function updateInventoryBooleansInCatalog(context, productId) {
         if (foundOptionInventory) {
           updatedOption = {
             ...option,
-            isBackorder: foundOptionInventory.inventoryInfo.isBackorder,
-            isLowQuantity: foundOptionInventory.inventoryInfo.isLowQuantity,
             isSoldOut: foundOptionInventory.inventoryInfo.isSoldOut
           };
         }

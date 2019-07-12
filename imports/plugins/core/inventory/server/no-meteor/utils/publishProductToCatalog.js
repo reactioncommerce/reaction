@@ -35,8 +35,6 @@ export default async function publishProductToCatalog(catalogProduct, { context,
 
     // if inventory info was found, add to variant
     if (foundVariantInventory) {
-      variant.isBackorder = foundVariantInventory.inventoryInfo.isBackorder;
-      variant.isLowQuantity = foundVariantInventory.inventoryInfo.isLowQuantity;
       variant.isSoldOut = foundVariantInventory.inventoryInfo.isSoldOut;
     }
 
@@ -47,8 +45,6 @@ export default async function publishProductToCatalog(catalogProduct, { context,
 
         // if inventory info was found, add to option
         if (foundOptionInventory) {
-          option.isBackorder = foundOptionInventory.inventoryInfo.isBackorder;
-          option.isLowQuantity = foundOptionInventory.inventoryInfo.isLowQuantity;
           option.isSoldOut = foundOptionInventory.inventoryInfo.isSoldOut;
         }
       });
