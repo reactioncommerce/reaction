@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @summary Publishes our plugin-specific product fields to the catalog
  * @param {Object} catalogProduct The catalog product that is being built. Should mutate this.
@@ -33,20 +35,24 @@ export default async function publishProductToCatalog(catalogProduct, { context,
     // attempt to find this variant's inventory info
     const foundVariantInventory = topVariantsAndOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === variant._id);
 
-    // if inventory info was found, add to variant
-    if (foundVariantInventory) {
-      variant.isSoldOut = foundVariantInventory.inventoryInfo.isSoldOut;
+    if (!foundVariantInventory.inventoryInfo) {
+      throw new ReactionError("inventory-info-not-found", `Inventory info not found in for variant with id: ${variant._id}`);
     }
+
+    // if inventory info was found, add to variant
+    variant.isSoldOut = foundVariantInventory.inventoryInfo.isSoldOut;
 
     // add inventory props to each top level option
     if (variant.options) {
       variant.options.forEach((option) => {
         const foundOptionInventory = topVariantsAndOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === option._id);
 
-        // if inventory info was found, add to option
-        if (foundOptionInventory) {
-          option.isSoldOut = foundOptionInventory.inventoryInfo.isSoldOut;
+        if (!foundOptionInventory.inventoryInfo) {
+          throw new ReactionError("inventory-info-not-found", `Inventory info not found in for option with id: ${option._id}`);
         }
+
+        // if inventory info was found, add to option
+        option.isSoldOut = foundOptionInventory.inventoryInfo.isSoldOut;
       });
     }
   });

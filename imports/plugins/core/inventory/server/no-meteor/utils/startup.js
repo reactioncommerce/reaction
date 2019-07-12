@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @summary Updates `isBackorder`, `isSoldOut`, and `isLowQuantity` as necessary for
  *   a single CatalogProduct. Call this whenever inventory changes for one or more
@@ -32,7 +34,7 @@ async function updateInventoryBooleansInCatalog(context, productId) {
     shopId: topVariantsAndTopOptions[0].shopId
   });
 
-  const catalogProduct = await Catalog.findOne({ "product.productId": productId }, { "product.variants": 1 });
+  const catalogProduct = await Catalog.findOne({ "product.productId": productId });
 
   // Update inventory for the parent product and all variants and options.
   // If no inventory information is found for a variant or option, it is not mutated.
@@ -42,12 +44,15 @@ async function updateInventoryBooleansInCatalog(context, productId) {
     let updatedVariant = variant;
     const foundVariantInventory = variantsOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === variant._id);
 
-    if (foundVariantInventory) {
-      updatedVariant = {
-        ...variant,
-        isSoldOut: foundVariantInventory.inventoryInfo.isSoldOut
-      };
+    if (!foundVariantInventory.inventoryInfo) {
+      throw new ReactionError("inventory-info-not-found", `Inventory info not found in for variant with id: ${variant._id}`);
     }
+
+    // If inventory info was found, update variant
+    updatedVariant = {
+      ...variant,
+      isSoldOut: foundVariantInventory.inventoryInfo.isSoldOut
+    };
 
     const updatedOptions = [];
     if (updatedVariant.options) {
@@ -56,12 +61,15 @@ async function updateInventoryBooleansInCatalog(context, productId) {
         let updatedOption = option;
         const foundOptionInventory = variantsOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === option._id);
 
-        if (foundOptionInventory) {
-          updatedOption = {
-            ...option,
-            isSoldOut: foundOptionInventory.inventoryInfo.isSoldOut
-          };
+        if (!foundOptionInventory.inventoryInfo) {
+          throw new ReactionError("inventory-info-not-found", `Inventory info not found in for option with id: ${option._id}`);
         }
+
+        // If inventory info was found, update option
+        updatedOption = {
+          ...option,
+          isSoldOut: foundOptionInventory.inventoryInfo.isSoldOut
+        };
 
         updatedOptions.push(updatedOption);
       });
