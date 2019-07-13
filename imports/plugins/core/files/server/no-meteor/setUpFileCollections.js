@@ -1,12 +1,18 @@
 import Random from "@reactioncommerce/random";
 import sharp from "sharp";
+import fetch from "node-fetch";
 import {
   FileDownloadManager,
   FileRecord,
   MongoFileCollection,
   TempFileStore
+  // RemoteUrlWorker,
+  // TempFileStoreWorker
 } from "@reactioncommerce/file-collections";
 import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
+import RemoteUrlWorker from "./RemoteUrlWorker";
+import TempFileStoreWorker from "./TempFileStoreWorker";
+import createConvertImageJob from "./util/createConvertImageJob";
 
 /**
  * @return {undefined}
@@ -81,7 +87,7 @@ export default function setUpFileCollections({
         fileRecord.extension(format, { store: name });
 
         // resizing image, adding mod, setting output format
-        return sharp().resize(size, size)[mod]().toFormat(format);
+        sharp().resize(size, size)[mod]().toFormat(format);
       }
     })
   );
@@ -147,10 +153,43 @@ export default function setUpFileCollections({
     }
   });
 
+  const onNewRemoteFileRecord = (doc, collection) => {
+    const { name } = collection;
+    createConvertImageJob(doc, name, true);
+  };
+
+  const onNewTempFileRecord = (doc, collection) => {
+    const { name } = collection;
+    createConvertImageJob(doc, name, false);
+  };
+
+  /**
+   * @name remoteUrlWorker
+   * @type RemoteUrlWorker
+   * @memberof Files
+   * @summary Start a worker to watch for inserted remote URLs and stream them to all stores
+   * @see https://github.com/reactioncommerce/reaction-file-collections
+   */
+  const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [Media], onNewFileRecord: onNewRemoteFileRecord });
+  remoteUrlWorker.start();
+
+  /**
+   * @name fileWorker
+   * @type TempFileStoreWorker
+   * @memberof Files
+   * @summary Start a worker to watch for finished uploads, store them permanently,
+   * and then remove the temporary file
+   * @see https://github.com/reactioncommerce/reaction-file-collections
+   */
+  const fileWorker = new TempFileStoreWorker({ fileCollections: [Media], onNewFileRecord: onNewTempFileRecord });
+  fileWorker.start();
+
   return {
     downloadManager,
     Media,
     stores,
-    tempStore
+    tempStore,
+    remoteUrlWorker,
+    fileWorker
   };
 }
