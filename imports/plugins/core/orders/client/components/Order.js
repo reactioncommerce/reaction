@@ -1,8 +1,11 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import { Blocks } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import DetailDrawer from "/imports/client/ui/components/DetailDrawer";
@@ -25,7 +28,12 @@ const styles = (theme) => ({
  * @returns {React.Component} returns a React component
  */
 function Order(props) {
-  const { order } = props;
+  const { classes, order } = props;
+  const [currentTab, setTab] = useState(0);
+
+  const handleTabChange = (event, value) => {
+    setTab(value);
+  };
 
   return (
     <Fragment>
@@ -51,10 +59,12 @@ function Order(props) {
               <OrderPayments order={order} />
             </Grid>
           </Grid>
+        }
+        {currentTab === 1 &&
           <Grid item xs={12}>
             <OrderRefunds order={order} />
           </Grid>
-        </Grid>
+        }
       </Grid>
       <DetailDrawer title={i18next.t("orderCard.orderSummary.title", "Order summary")}>
         <Grid container spacing={8}>
