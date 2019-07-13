@@ -6,13 +6,12 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
-
 /**
- * @name OrderCardCustomerDetails
- * @params {Object} props Component props
+ * @name OrderCustomerDetails
+ * @param {Object} props Component props
  * @returns {React.Component} returns a React component
  */
-function OrderCardCustomerDetails({ order }) {
+function OrderCustomerDetails({ order }) {
   const { email, fulfillmentGroups } = order;
   const { shippingAddress: { fullName, phone } } = fulfillmentGroups[0].data;
 
@@ -38,7 +37,7 @@ function OrderCardCustomerDetails({ order }) {
   );
 }
 
-OrderCardCustomerDetails.propTypes = {
+OrderCustomerDetails.propTypes = {
   order: PropTypes.shape({
     email: PropTypes.string,
     fulfillmentGroups: PropTypes.arrayOf(PropTypes.shape({
@@ -50,4 +49,4 @@ OrderCardCustomerDetails.propTypes = {
   })
 };
 
-export default OrderCardCustomerDetails;
+export default OrderCustomerDetails;

@@ -47,7 +47,7 @@ Meteor.publish("Accounts", function () {
 
 /**
  * Single account
- * @params {String} userId -  id of user to find
+ * @param {String} userId -  id of user to find
  */
 Meteor.publish("UserAccount", function (userId) {
   check(userId, Match.OneOf(String, null));
@@ -69,7 +69,7 @@ Meteor.publish("UserAccount", function (userId) {
  * users with permissions  ["dashboard/orders", "owner", "admin", "dashboard/
  * customers"] may view the profileUserId"s profile data.
  *
- * @params {String} profileUserId -  view this users profile when permitted
+ * @param {String} profileUserId -  view this users profile when permitted
  */
 Meteor.publish("UserProfile", function (profileUserId) {
   check(profileUserId, Match.OneOf(String, null));
