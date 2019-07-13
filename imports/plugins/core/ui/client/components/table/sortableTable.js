@@ -30,7 +30,8 @@ class SortableTable extends Component {
     this.handleFilterInput = this.handleFilterInput.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
       this.setState({
         query: nextProps.query
