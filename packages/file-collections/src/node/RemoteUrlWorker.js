@@ -19,40 +19,92 @@ function forEachPromise(items, fn) {
 }
 
 export default class RemoteUrlWorker extends EventEmitter {
-  constructor({ fetch, fileCollections = [] } = {}) {
+  constructor({ fetch, fileCollections = [], onNewFileRecord } = {}) {
     super();
 
     this.fetch = fetch;
     this.fileCollections = fileCollections;
     this.observeHandles = [];
+    this.isProcessing = false;
+    this.observedEntries = [];
+    this.processObserved = this.processObserved.bind(this);
+    this.onNewFileRecord = onNewFileRecord;
+  }
+
+  async processObserved(collection, stores) {
+    debug("processObserved called");
+    if (this.isProcessing) {
+      debug("Queue is already processing, return");
+      return;
+    }
+    this.isProcessing = true;
+
+    const doc = this.observedEntries.shift();
+
+    if (doc) {
+      debug("There is another doc in the queue");
+      await this.handleRemoteURLAdded({ collection, doc, stores })
+        .catch((error) => {
+          console.error(error); // eslint-disable-line no-console
+        });
+    }
+    this.isProcessing = false;
+    if (this.observedEntries.length) {
+      debug(`There are ${this.observedEntries.length} more docs in the queue, starting new execution`);
+      return this.processObserved(collection, stores);
+    }
+    debug("processObserved queue finished");
+  }
+
+  pushObservedDocument(doc, collection, stores) {
+    const { onNewFileRecord } = this;
+    if (onNewFileRecord) {
+      onNewFileRecord(doc, collection);
+    } else {
+      debug("No onNewFileRecord function passed to RemoteUrlWorker, using internal queue");
+      this.observedEntries.push(doc);
+      this.processObserved(collection, stores);
+    }
   }
 
   start() {
     this.fileCollections.forEach((collection) => {
       const { stores } = collection.options;
-
-      // Support for storing to multiple stores from a remote URL
-      this.observeHandles.push(collection.mongoCollection.find({
-        "original.remoteURL": { $ne: null }
-      }).observe({
-        added: (doc) => {
-          this._handleRemoteURLAdded({ collection, doc, stores })
-            .catch((error) => {
-              console.error(error); // eslint-disable-line no-console
-            });
+      const handle = collection.collection.watch([{
+        $match: {
+          "operationType": "insert",
+          "fullDocument.original.remoteURL": { $ne: null }
         }
-      }));
+      }]);
+
+      handle.on("change", async (event) => {
+        const { fullDocument } = event;
+        await this.pushObservedDocument(fullDocument, collection, stores);
+      });
+
+      this.observeHandles.push(handle);
     });
   }
 
   stop() {
     this.observeHandles.forEach((handle) => {
-      handle.stop();
+      handle.close();
     });
     this.observeHandles = [];
   }
 
-  async _handleRemoteURLAdded({ collection, doc, stores }) {
+  async addDocumentByCollectionName(doc, collectionName) {
+    const collection = this.fileCollections.find((fileCollection) => fileCollection.name === collectionName);
+
+    if (!collection) {
+      throw new Error(`Error: Collection ${collectionName} could not be found`);
+    }
+
+    const { stores } = collection.options;
+    await this.handleRemoteURLAdded({ collection, doc, stores });
+  }
+
+  async handleRemoteURLAdded({ collection, doc, stores }) {
     const { fetch } = this;
     const { remoteURL } = doc.original;
 
@@ -82,6 +134,7 @@ export default class RemoteUrlWorker extends EventEmitter {
 
         return promise.then(() => {
           debug(`RemoteUrlWorker: Done storing ${loggingIdentifier} to "${store.name}" store`);
+          return true;
         }).catch((error) => {
           throw error;
         });

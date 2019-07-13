@@ -19,49 +19,66 @@ function forEachPromise(items, fn) {
 }
 
 export default class TempFileStoreWorker extends EventEmitter {
-  constructor({ fileCollections = [] } = {}) {
+  constructor({ fileCollections = [], onNewFileRecord } = {}) {
     super();
 
     this.fileCollections = fileCollections;
     this.observeHandles = [];
+    this.onNewFileRecord = onNewFileRecord;
+  }
+
+  pushObservedDocument(doc, collection, stores, tempStore) {
+    const { onNewFileRecord } = this;
+    if (onNewFileRecord) {
+      onNewFileRecord(doc, collection);
+    } else {
+      debug("No onNewFileRecord function passed to TempFileStoreWorker, using internal function");
+      this.handleTempStoreIdAdded({ collection, doc, stores, tempStore })
+        .catch((error) => {
+          console.error(error); // eslint-disable-line no-console
+        });
+    }
   }
 
   start() {
     this.fileCollections.forEach((collection) => {
       const { stores, tempStore } = collection.options;
 
-      // Support for storing to multiple stores from a tempStore
-      this.observeHandles.push(collection.mongoCollection.find({
-        "original.tempStoreId": { $ne: null }
-      }).observe({
-        added: (doc) => {
-          this._handleTempStoreIdAdded({ collection, doc, stores, tempStore })
-            .catch((error) => {
-              console.error(error); // eslint-disable-line no-console
-            });
-        },
-        removed(doc) {
-          const { tempStoreId } = doc.original || {};
-
-          debug(`TempFileStoreWorker: Removing ${tempStoreId} from TempFileStore`);
-
-          // Delete the file from the temp store if it exists
-          tempStore.deleteIfExists(tempStoreId).catch((error) => {
-            console.error(error); // eslint-disable-line no-console
-          });
+      const handle = collection.collection.watch([{
+        $match: {
+          "operationType": "insert",
+          "fullDocument.original.tempStoreId": { $ne: null }
         }
-      })); // END "original.tempStoreId" observe
+      }]);
+
+      handle.on("change", async (event) => {
+        const { fullDocument } = event;
+        await this.pushObservedDocument(fullDocument, collection, stores, tempStore);
+      });
+
+      this.observeHandles.push(handle);
     });
   }
 
   stop() {
     this.observeHandles.forEach((handle) => {
-      handle.stop();
+      handle.close();
     });
     this.observeHandles = [];
   }
 
-  async _handleTempStoreIdAdded({ collection, doc, stores, tempStore }) {
+  async addDocumentByCollectionName(doc, collectionName) {
+    const collection = this.fileCollections.find((fileCollection) => fileCollection.name === collectionName);
+
+    if (!collection) {
+      throw new Error(`Error: Collection ${collectionName} could not be found`);
+    }
+
+    const { stores, tempStore } = collection.options;
+    await this.handleTempStoreIdAdded({ collection, doc, stores, tempStore });
+  }
+
+  async handleTempStoreIdAdded({ collection, doc, stores, tempStore }) {
     if (!tempStore) throw new Error(`TempFileStoreWorker cannot work the "${collection.name}" collection because it has no tempStore`);
 
     const { tempStoreId } = doc.original;
@@ -100,6 +117,7 @@ export default class TempFileStoreWorker extends EventEmitter {
 
         return promise.then(() => {
           debug(`TempFileStoreWorker: Done storing ${loggingIdentifier} to "${store.name}" store`);
+          return true;
         }).catch((error) => {
           throw error;
         });
