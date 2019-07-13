@@ -55,7 +55,7 @@ export default async function addOrderFulfillmentGroup(context, input) {
 
   // Allow update if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall && !userHasPermission(["orders"], order.shopId)) {
+  if (!isInternalCall && !userHasPermission(["orders", "order/fulfillment"], order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

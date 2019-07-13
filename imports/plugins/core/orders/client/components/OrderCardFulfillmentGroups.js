@@ -23,7 +23,7 @@ const styles = (theme) => ({
     marginBottom: theme.spacing.unit * 4
   },
   verticalDivider: {
-    backgroundColor: "#e6e6e6",
+    backgroundColor: theme.palette.colors.black10,
     height: "100%",
     margin: "auto",
     width: "1px"
