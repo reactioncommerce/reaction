@@ -20,7 +20,7 @@ export default async function inventoryForProductConfigurations(context, input) 
 
   const productVariantIds = productConfigurations.map(({ productVariantId }) => productVariantId);
 
-  const inventoryDocs = dataLoaders 
+  const inventoryDocs = dataLoaders
     ? await dataLoaders.SimpleInventoryByProductVariantId.loadMany(productVariantIds)
     : await collections.SimpleInventory
       .find({
