@@ -21,4 +21,4 @@ Not obligatory, but suggest a fix/reason for the bug
 
 
 ### Versions
-(run `grep version package.json` from your `reaction` directory)
+(run `npm run version --silent` from your `reaction` directory)
