@@ -48,7 +48,7 @@ test("calls SimpleInventoryByProductVariantId dataloader with correct product va
   expect(context.dataLoaders.SimpleInventoryByProductVariantId.loadMany).toHaveBeenCalledWith(["variant-2", "variant-1"]);
 });
 
-test("calls SimpleInventory.find() on Mongo Collection when isInternalCall set to true", async () => {
+test("calls SimpleInventory.find() on Mongo Collection when DataLoader is not registered", async () => {
   const input = {
     productConfigurations: [
       {
@@ -59,6 +59,10 @@ test("calls SimpleInventory.find() on Mongo Collection when isInternalCall set t
       }
     ]
   };
-  await inventoryForProductConfigurations({ ...context, isInternalCall: true }, input);
+
+  const newContext = { ...context };
+  delete newContext.dataLoaders;
+
+  await inventoryForProductConfigurations(newContext, input);
   expect(context.collections.SimpleInventory.find).toHaveBeenCalledWith({ "productConfiguration.productVariantId": { $in: ["variant-2", "variant-1"] } });
 });
