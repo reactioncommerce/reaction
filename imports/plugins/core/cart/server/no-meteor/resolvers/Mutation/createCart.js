@@ -2,7 +2,7 @@ import { decodeCartItemsOpaqueIds } from "@reactioncommerce/reaction-graphql-xfo
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Mutation.createCart"
+ * @name Mutation/createCart
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the createCart GraphQL mutation

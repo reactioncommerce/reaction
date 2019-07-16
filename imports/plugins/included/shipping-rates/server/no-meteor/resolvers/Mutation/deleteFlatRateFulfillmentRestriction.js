@@ -3,7 +3,7 @@ import { decodeFulfillmentRestrictionOpaqueId } from "../../xforms/flatRateFulfi
 import deleteFlatRateFulfillmentRestrictionMutation from "../../mutations/deleteFlatRateFulfillmentRestriction";
 
 /**
- * @name "Mutation.deleteFlatRateFulfillmentRestriction"
+ * @name Mutation/deleteFlatRateFulfillmentRestriction
  * @method
  * @memberof Fulfillment/GraphQL
  * @summary resolver for the deleteFlatRateFulfillmentRestriction GraphQL mutation

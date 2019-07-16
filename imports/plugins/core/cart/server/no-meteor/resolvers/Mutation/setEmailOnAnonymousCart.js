@@ -1,7 +1,7 @@
 import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
- * @name "Mutation.setEmailOnAnonymousCart"
+ * @name Mutation/setEmailOnAnonymousCart
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the setEmailOnAnonymousCart GraphQL mutation

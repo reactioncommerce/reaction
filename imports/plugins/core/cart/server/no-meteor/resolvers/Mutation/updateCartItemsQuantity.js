@@ -1,7 +1,7 @@
 import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
- * @name "Mutation.updateCartItemsQuantity"
+ * @name Mutation/updateCartItemsQuantity
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the updateCartItemsQuantity GraphQL mutation

@@ -1,10 +1,10 @@
 /**
- * @name "Shop.brandAssets"
+ * @name Shop/brandAssets
  * @method
  * @memberof Shop/GraphQL
  * @summary Builds the `brandAssets` object for a shop
  * @param {Object} shop - an object containing the result returned from the parent resolver
- * @param {Object} _ - unused
+ * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>} Promise that resolves with the `brandAssets` object
  */

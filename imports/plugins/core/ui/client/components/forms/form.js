@@ -51,7 +51,8 @@ class Form extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (isEqual(nextProps.doc, this.props.doc) === false) {
       this.setState({
         doc: nextProps.doc,

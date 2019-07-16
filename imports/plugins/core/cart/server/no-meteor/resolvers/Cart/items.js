@@ -27,7 +27,7 @@ function sortCartItems(cartItems, connectionArgs) {
 }
 
 /**
- * @name "Cart.items"
+ * @name Cart/items
  * @method
  * @memberof Cart/GraphQL
  * @summary converts the `items` prop on the provided cart to a connection
