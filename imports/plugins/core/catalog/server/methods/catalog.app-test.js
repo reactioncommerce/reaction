@@ -96,7 +96,7 @@ Reaction.onAppStartupComplete(() => {
 
         Meteor.call("products/cloneVariant", product._id, variant[0]._id);
         const variants = Products.find({ ancestors: [product._id] }).fetch();
-        const clonedVariant = variants.filter((v) => v._id !== variant[0]._id);
+        const clonedVariant = variants.filter((filteredVariant) => filteredVariant._id !== variant[0]._id);
         expect(variant[0]._id).to.not.equal(clonedVariant[0]._id);
         expect(_.isEqual(variant[0].ancestors, clonedVariant[0].ancestors)).to.be.true;
         // expect(variant[0].ancestors).to.equal(clonedVariant[0].ancestors);
@@ -226,8 +226,8 @@ Reaction.onAppStartupComplete(() => {
           ancestors: { $in: [clone._id] }
         }).fetch();
         expect(cloneVariants.length).to.equal(3);
-        for (let i = 0; i < variants.length; i += 1) {
-          expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[i].title)).to.be.ok;
+        for (let inc = 0; inc < variants.length; inc += 1) {
+          expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[inc].title)).to.be.ok;
         }
       });
 

@@ -21,7 +21,8 @@ class SocialSettingsContainer extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (isEqual(nextProps.settings, this.props.settings) === false) {
       this.setState({
         settings: nextProps.settings
@@ -65,7 +66,6 @@ class SocialSettingsContainer extends Component {
 
 function composer(props, onData) {
   const subscription = Reaction.Subscriptions.Packages;
-  const preferences = Reaction.getUserPreferences("reaction-social", "settingsCards", {});
 
   const socialPackage = Packages.findOne({
     name: "reaction-social",
@@ -74,7 +74,7 @@ function composer(props, onData) {
 
   if (subscription.ready()) {
     onData(null, {
-      preferences,
+      preferences: {},
       packageData: socialPackage,
       socialSettings: createSocialSettings(props)
     });

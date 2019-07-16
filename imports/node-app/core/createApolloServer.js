@@ -6,8 +6,9 @@ import config from "./config";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
+import createDataLoaders from "./util/createDataLoaders";
 
-const DEFAULT_GRAPHQL_PATH = "/graphql-alpha";
+const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
 
 const resolverValidationOptions = {
   // After we fix all errors that this prints, we should probably go
@@ -52,6 +53,8 @@ export default function createApolloServer(options = {}) {
       await buildContext(context, req);
 
       addCallMeteorMethod(context);
+
+      await createDataLoaders(context);
 
       return context;
     },

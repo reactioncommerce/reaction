@@ -116,7 +116,7 @@ export function groupPermissions(packages) {
         }
       }
       // TODO review this, hardcoded WIP "reaction"
-      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => ` ${x[1].toUpperCase()}`);
+      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (string) => ` ${string[1].toUpperCase()}`);
 
       const newObj = {
         shopId: pkg.shopId,
@@ -131,6 +131,17 @@ export function groupPermissions(packages) {
 
     return registeredPackages;
   }, []);
+}
+
+/**
+ * @method getUserByEmail
+ * @memberOf Accounts
+ * @summary Returns a user that matches the
+ * @param email
+ * @returns {Object}
+ */
+export function getUserByEmail(email) {
+  return Collections.Accounts.findOne({ "emails.address": email });
 }
 
 function getPermissionMap(permissions) {

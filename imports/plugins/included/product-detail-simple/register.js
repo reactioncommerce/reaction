@@ -4,7 +4,6 @@ Reaction.registerPackage({
   label: "Product Detail Simple",
   name: "product-detail-simple",
   icon: "fa fa-cubes",
-  autoEnable: true,
   registry: [{
     route: "/product/:handle/:variantId?",
     name: "product",

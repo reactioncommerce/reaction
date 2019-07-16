@@ -189,6 +189,12 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The CatalogProductVariant ID. Do not assume that this is the same as the related variant ID. See `variantId` for that."
   _id: ID!
 
+  """
+  The attribute label describes the category of variant, for example, "Color" or "Size".
+  In most cases this will be the same for all variants at the same level.
+  """
+  attributeLabel: String!
+
   "The product variant barcode value, if it has one"
   barcode: String
 
@@ -213,7 +219,7 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
 
-  "An option title. If this is set and this variant has a CatalogProductVariant parent, treat this variant as an option"
+  "A short title to use for product detail select lists"
   optionTitle: String
 
   "Child variants, if any"
@@ -231,7 +237,12 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "A stock keeping unit (SKU) identifier for this product"
   sku: String
 
-  "Product title"
+  """
+  The full variant title for use on cart, checkout, and order summaries and on invoices.
+  This fully describes the configured variant. For example, if this is an option with
+  `optionTitle` "Large", its parent variant has `optionTitle` "Red", and the product
+  `title` is "Fancy T-Shirt", then this `title` will be something like "Fancy T-Shirt - Red - Large".
+  """
   title: String
 
   "The date and time at which this CatalogProduct was last updated, which is when the related product was most recently published"

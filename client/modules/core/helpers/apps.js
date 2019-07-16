@@ -145,7 +145,7 @@ export function Apps(optionHash) {
   });
 
   // Sort apps by priority (registry.priority)
-  return reactionApps.sort((a, b) => a.priority - b.priority).slice();
+  return reactionApps.sort((appA, appB) => appA.priority - appB.priority).slice();
 }
 
 /**

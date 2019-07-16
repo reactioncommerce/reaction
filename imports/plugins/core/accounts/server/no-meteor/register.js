@@ -17,11 +17,15 @@ export default async function register(app) {
     label: "Accounts",
     name: "reaction-accounts",
     icon: "fa fa-users",
-    autoEnable: true,
     addRolesToGroups: [{
-      allShops: true,
       groups: ["guest", "customer"],
-      roles: ["account/verify", "reset-password", ENROLL_URI_BASE]
+      roles: [
+        "account/login",
+        "account/verify",
+        "not-found",
+        "reset-password",
+        ENROLL_URI_BASE
+      ]
     }],
     collections: {
       Accounts: {

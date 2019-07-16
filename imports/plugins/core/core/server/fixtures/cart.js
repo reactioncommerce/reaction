@@ -13,9 +13,9 @@ import { addProduct } from "./products";
  * @method getCartItem
  * @memberof Fixtures
  * @param {Object} [options] - Options object (optional)
- * @param {string} [options._id] - id of CartItem
- * @param {string} [options.productId] - _id of product that item came from
- * @param {string} [options.shopId] - _id of shop that item came from
+ * @param {String} [options._id] - id of CartItem
+ * @param {String} [options.productId] - _id of product that item came from
+ * @param {String} [options.shopId] - _id of shop that item came from
  * @param {number} [options.quantity] - quantity of item in CartItem
  * @param {Object} [options.variants] - _single_ variant object. ¯\_(ツ)_/¯ why called variants
  *
@@ -75,9 +75,9 @@ export function getCartItem(options = {}) {
  * @method getSingleCartItem
  * @memberof Fixtures
  * @param {Object} [options] - Options object (optional)
- * @param {string} [options._id] - id of CartItem
- * @param {string} [options.productId] - _id of product that item came from
- * @param {string} [options.shopId] - _id of shop that item came from
+ * @param {String} [options._id] - id of CartItem
+ * @param {String} [options.productId] - _id of product that item came from
+ * @param {String} [options.shopId] - _id of shop that item came from
  * @returns {Object} - randomly generated cartItem/orderItem data object with only one cart item
  */
 function getSingleCartItem(options = {}) {

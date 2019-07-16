@@ -6,83 +6,88 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { composeUrl } from "/lib/core/url-common";
 import core from "./core";
 
-describe("AbsoluteUrlMixin", () => {
-  let sandbox;
+/**
+ * @return {String} A random string
+ */
+function randomString() {
+  return Math.random().toString(36);
+}
 
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
-  });
-
-  describe("#absoluteUrl", () => {
-    let path;
-    let connectionHost;
-    let rootUrl;
-    let meteorRootUrl;
+core.onAppStartupComplete(() => {
+  describe("AbsoluteUrlMixin", () => {
+    let sandbox;
 
     beforeEach(() => {
-      // commonly used test vars
-      path = randomString();
-      connectionHost = `${randomString()}.reactioncommerce.com`;
-      rootUrl = `https://${randomString()}.reactioncommerce.com`;
-
-      // mocking Meteor
-      meteorRootUrl = composeUrl.defaultOptions.rootUrl;
-      // this is a round-about way of mocking $ROOT_URL
-      composeUrl.defaultOptions.rootUrl = rootUrl;
+      sandbox = sinon.sandbox.create();
     });
 
     afterEach(() => {
-      // restore Meteor
-      composeUrl.defaultOptions.rootUrl = meteorRootUrl;
+      sandbox.restore();
     });
 
-    describe("outside of a connection", () => {
-      it("defaults to $ROOT_URL", () => {
-        expect(core.absoluteUrl()).to.include(rootUrl);
-      });
-    });
+    describe("#absoluteUrl", () => {
+      let path;
+      let connectionHost;
+      let rootUrl;
+      let meteorRootUrl;
 
-    describe("within a connection", () => {
       beforeEach(() => {
-        // for reference: https://github.com/meteor/meteor/blob/ed98a07125cd072552482ca2244239f034857814/packages/ddp-server/livedata_server.js#L279-L295
-        sinon.stub(DDP._CurrentMethodInvocation, "get").returns({
-          connection: { httpHeaders: { host: connectionHost } }
-        });
+        // commonly used test vars
+        path = randomString();
+        connectionHost = `${randomString()}.reactioncommerce.com`;
+        rootUrl = `https://${randomString()}.reactioncommerce.com`;
+
+        // mocking Meteor
+        meteorRootUrl = composeUrl.defaultOptions.rootUrl;
+        // this is a round-about way of mocking $ROOT_URL
+        composeUrl.defaultOptions.rootUrl = rootUrl;
       });
 
       afterEach(() => {
-        DDP._CurrentMethodInvocation.get.restore();
+        // restore Meteor
+        composeUrl.defaultOptions.rootUrl = meteorRootUrl;
       });
 
-      it("uses the current connection's host", () => {
-        expect(core.absoluteUrl()).to.include(connectionHost);
+      describe("outside of a connection", () => {
+        it("defaults to $ROOT_URL", () => {
+          expect(core.absoluteUrl()).to.include(rootUrl);
+        });
       });
 
-      it("uses $ROOT_URL's protocol/scheme", () => {
-        // this would he http:// if $ROOT_URL had not used https://
-        expect(core.absoluteUrl()).to.startsWith("https://");
+      describe("within a connection", () => {
+        beforeEach(() => {
+          // for reference: https://github.com/meteor/meteor/blob/ed98a07125cd072552482ca2244239f034857814/packages/ddp-server/livedata_server.js#L279-L295
+          sinon.stub(DDP._CurrentMethodInvocation, "get").returns({
+            connection: { httpHeaders: { host: connectionHost } }
+          });
+        });
+
+        afterEach(() => {
+          DDP._CurrentMethodInvocation.get.restore();
+        });
+
+        it("uses the current connection's host", () => {
+          expect(core.absoluteUrl()).to.include(connectionHost);
+        });
+
+        it("uses $ROOT_URL's protocol/scheme", () => {
+          // this would he http:// if $ROOT_URL had not used https://
+          expect(core.absoluteUrl()).to.startsWith("https://");
+        });
       });
-    });
 
-    it("accepts options the same way composeUrl does", () => {
-      const options = {
-        secure: true,
-        replaceLocalhost: true,
-        rootUrl: "http://127.0.0.1"
-      };
+      it("accepts options the same way composeUrl does", () => {
+        const options = {
+          secure: true,
+          replaceLocalhost: true,
+          rootUrl: "http://127.0.0.1"
+        };
 
-      const reactionVersion = core.absoluteUrl(path, options);
-      const meteorVersion = composeUrl(path, options);
+        const reactionVersion = core.absoluteUrl(path, options);
+        const meteorVersion = composeUrl(path, options);
 
-      expect(reactionVersion).to.equal(meteorVersion);
+        expect(reactionVersion).to.equal(meteorVersion);
+      });
     });
   });
-
-  function randomString() {
-    return Math.random().toString(36);
-  }
 });

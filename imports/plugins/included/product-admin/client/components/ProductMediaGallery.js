@@ -105,6 +105,7 @@ function ProductMediaGallery(props) {
 ProductMediaGallery.propTypes = {
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   media: PropTypes.arrayOf(PropTypes.object),
+  onDrop: PropTypes.func,
   onRemoveMedia: PropTypes.func,
   onSetMediaPriority: PropTypes.func,
   uploadProgress: PropTypes.shape({

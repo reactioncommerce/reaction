@@ -29,11 +29,13 @@ class UpdatePassword extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
-  async componentWillMount() {
+  // eslint-disable-next-line camelcase
+  async UNSAFE_componentWillMount() {
     await this.setState({ showSpinner: false });
   }
 
-  componentWillReceiveProps() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps() {
     this.setState({ showSpinner: false });
   }
 
@@ -63,15 +65,17 @@ class UpdatePassword extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderPasswordErrors() {
     return (
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
-        this.props.messages.errors.password.map((error, i) => (
+        this.props.messages.errors.password.map((error, index) => (
           <Components.Translation
-            key={i}
+            key={index}
             defaultValue={error.reason}
             i18nKey={error.i18nKeyReason}
           />

@@ -14,7 +14,6 @@ export default async function register(app) {
     label: "Shipping Rates",
     name: "reaction-shipping-rates",
     icon: "fa fa-truck-o",
-    autoEnable: true,
     collections: {
       FlatRateFulfillmentRestrictions: {
         name: "FlatRateFulfillmentRestrictions",

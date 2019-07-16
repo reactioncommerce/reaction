@@ -8,13 +8,22 @@ const breakpoints = createBreakpoints({});
 const toolbarHeight = 80;
 const toolbarMobileHeight = 54;
 
+// Colors
+export const colorPrimaryMain = colors.coolGrey;
+export const colorSecondaryMain = colors.reactionBlue;
+
 // Spacing
 export const defaultSpacingUnit = 8;
 export const drawerWidth = 280;
+export const detailDrawerWidth = 400;
 
-// Colors
-export const colorPrimaryMain = colors.coolGrey;
-export const colorSecondaryMain = colors.darkBlue500;
+// Typography
+export const defaultFontSize = 16;
+export const fontWeightLight = 400;
+export const fontWeightRegular = 400;
+export const fontWeightMedium = 500;
+export const fontWeightSemiBold = 600;
+export const fontWeightBold = 700;
 
 export const rawMuiTheme = {
   palette: {
@@ -37,28 +46,71 @@ export const rawMuiTheme = {
     }
   },
   typography: {
-    fontSize: 16,
+    fontSize: defaultFontSize,
     fontFamily: typography.bodyText.fontFamily,
-    fontWeightLight: 400,
-    fontWeightRegular: 400,
-    fontWeightMedium: 500,
-    fontWeightBold: 700,
+    fontWeightLight,
+    fontWeightRegular,
+    fontWeightMedium,
+    fontWeightSemiBold,
+    fontWeightBold,
     useNextVariants: true,
-    h6: {
-      fontSize: 18
-    },
-    subtitle1: {
-      fontSize: 16
-    },
-    body1: {
-      fontSize: 16
-    },
     button: {
       fontSize: 14,
       letterSpacing: 0.8
     },
+    h1: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.5,
+      lineHeight: 1.25
+    },
+    h2: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.25,
+      lineHeight: 1.25
+    },
+    h3: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 1.125,
+      lineHeight: 1.25
+    },
+    h4: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize,
+      fontWeight: fontWeightSemiBold,
+      lineHeight: 1.25
+    },
+    h5: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.875,
+      fontWeight: fontWeightSemiBold,
+      lineHeight: 1.25
+    },
+    h6: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.75,
+      fontWeight: fontWeightSemiBold,
+      lineHeight: 1.25
+    },
+    body1: {
+      color: colors.black70,
+      fontSize: defaultFontSize,
+      lineHeight: 1.5
+    },
+    body2: {
+      color: colors.coolGrey500,
+      fontSize: defaultFontSize * 0.875,
+      lineHeight: 1.5
+    },
     caption: {
       color: colors.black30
+    },
+    subtitle1: {
+      fontSize: defaultFontSize * 0.875,
+      lineHeight: 1.5
+    },
+    subtitle2: {
+      fontSize: defaultFontSize * 0.75,
+      lineHeight: 1.5
     }
   },
   shadows: [
@@ -93,11 +145,15 @@ export const rawMuiTheme = {
   },
   spacing: {
     drawerWidth,
+    detailDrawerWidth,
     unit: defaultSpacingUnit
   },
   mixins: {
     leadingPaddingWhenPrimaryDrawerIsOpen: {
       paddingLeft: drawerWidth + (defaultSpacingUnit * 2)
+    },
+    trailingPaddingWhenDetailDrawerIsOpen: {
+      paddingRight: detailDrawerWidth + (defaultSpacingUnit * 2)
     },
     toolbar: {
       minHeight: toolbarHeight,
@@ -123,7 +179,7 @@ export const rawMuiTheme = {
     },
     MuiCardHeader: {
       titleTypographyProps: {
-        variant: "h6"
+        variant: "h4"
       }
     }
   },
@@ -160,6 +216,7 @@ export const rawMuiTheme = {
         textTransform: "initial"
       },
       text: {
+        color: colors.coolGrey400,
         padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`
       },
       outlined: {
@@ -177,7 +234,11 @@ export const rawMuiTheme = {
     },
     MuiCard: {
       root: {
-        border: `1px solid ${colors.black10}`
+        border: `1px solid ${colors.black10}`,
+        paddingLeft: defaultSpacingUnit * 2,
+        paddingRight: defaultSpacingUnit * 2,
+        paddingTop: defaultSpacingUnit,
+        paddingBottom: defaultSpacingUnit
       }
     },
     MuiCheckbox: {
@@ -203,6 +264,14 @@ export const rawMuiTheme = {
         color: colors.black15
       },
       paperAnchorDockedLeft: {
+        borderRight: "none"
+      },
+      paperAnchorRight: {
+        borderLeft: "none",
+        backgroundColor: colors.black02,
+        width: detailDrawerWidth
+      },
+      paperAnchorDockedRight: {
         borderRight: "none"
       }
     },

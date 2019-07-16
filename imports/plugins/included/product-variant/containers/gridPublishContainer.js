@@ -47,7 +47,7 @@ function composer(props, onData) {
   if (Array.isArray(selectedProducts) && selectedProducts.length) {
     productIds = selectedProducts;
   } else if (Array.isArray(products) && products.length) {
-    productIds = products.map((p) => p._id);
+    productIds = products.map((product) => product._id);
   }
 
   if (productIds) {

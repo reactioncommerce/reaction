@@ -6,12 +6,7 @@ import { Reaction, i18next } from "/client/api";
 import { getPrimaryMediaForItem } from "/lib/api";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { approvePayment, getShippingInfo } from "../helpers";
-import {
-  PACKAGE_NAME,
-  ORDER_LIST_FILTERS_PREFERENCE_NAME,
-  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
-  shippingStates
-} from "../../lib/constants";
+import { shippingStates } from "../../lib/constants";
 import OrderTable from "../components/orderTable";
 import { captureOrderPayments } from "../graphql";
 
@@ -141,17 +136,7 @@ const wrapComponent = (Comp) => (
 
       if (startWorkflow === true) {
         Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
-        Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
       }
-
-      /* TODO:
-      a) What other routes have a query parameter of _id=XXXXXXX ?
-      b) What exactly are we using the order dashboard for? If it's search,
-       well, clicking a search result doesn't CURRENTLY do anything. What's
-       more, there's some debate as to whether that SHOULD link to anywhere.
-       And if it should, why not the existing, modal orders panel?
-      */
-      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
     }
 
     /**

@@ -244,6 +244,14 @@ type SetAccountProfileCurrencyPayload {
   clientMutationId: String
 }
 
+extend type Shop {
+  """
+  Returns a list of administrators for this shop, as a Relay-compatible connection.
+  "Administrators" means all linked accounts that have the "admin" role for this shop.
+  """
+  administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
+}
+
 extend type Mutation {
   "Add a new address to the `addressBook` field for an account"
   addAccountAddressBookEntry(input: AddAccountAddressBookEntryInput!): AddAccountAddressBookEntryPayload

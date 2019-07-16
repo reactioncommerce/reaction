@@ -287,11 +287,17 @@ type OrderFulfillmentGroup implements Node {
   "Information needed by the selected fulfillment method to properly fulfill the order"
   data: OrderFulfillmentGroupData
 
+  "The order status for display in UI"
+  displayStatus(language: String!): String!
+
   "The items that are part of this fulfillment group"
   items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: OrderFulfillmentGroupItemsSortByField = addedAt): OrderItemConnection
 
   "The fulfillment method that was selected, with its price quote"
   selectedFulfillmentOption: FulfillmentOption!
+
+  "The shipping label URL"
+  shippingLabelUrl: String
 
   "The shop responsible for fulfilling this order"
   shop: Shop!

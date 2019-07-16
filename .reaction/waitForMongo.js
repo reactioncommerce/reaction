@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb");
 
 /**
  * Print a message to the console (no trailing newline)
- * @param {string} message User progress message to print
+ * @param {String} message User progress message to print
  * @returns {undefined}
  */
 function defaultOut(message) {
@@ -20,7 +20,7 @@ function defaultOut(message) {
  *   the main check operation. Throw an exception to cause a retry. Resolve the
  *   promise to indicate success.
  * @param {number} options.waitMs milliseconds to wait between checks
- * @param {string} options.timeoutMessage for final timeout
+ * @param {String} options.timeoutMessage for final timeout
  * @returns {Promise} a promise indicating success/failure of the check
  */
 async function checkWaitRetry({
@@ -34,7 +34,7 @@ async function checkWaitRetry({
   /**
    * Show a progress/info message, but not over and over again
    *
-   * @param {string} message to be printed
+   * @param {String} message to be printed
    * @param {number} count retry number for progress dots
    * @returns {undefined}
    */
@@ -74,7 +74,7 @@ async function checkWaitRetry({
 /**
  * Connect to mongodb
  *
- * @param {object} parsedUrl URL to mongodb server and database name, parsed
+ * @param {Object} parsedUrl URL to mongodb server and database name, parsed
  * @returns {Promise} a promise resolving to the mongodb db instance
  */
 async function connect(parsedUrl) {
@@ -92,8 +92,8 @@ async function connect(parsedUrl) {
  * Runs the mongo command replSetInitiate,
  * which we need for the oplog for meteor real-time
  *
- * @param {object} db connected mongo db instance
- * @param {string} parsedUrl URL to mongodb, parsed to an object
+ * @param {Object} db connected mongo db instance
+ * @param {String} parsedUrl URL to mongodb, parsed to an object
  * @returns {Promise} indication of success/failure
  */
 async function initReplicaSet(db, parsedUrl) {

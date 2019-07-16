@@ -13,7 +13,6 @@ export default async function register(app) {
     label: "Tags",
     name: "reaction-tags",
     icon: "fa fa-tag",
-    autoEnable: true,
     collections: {
       Tags: {
         name: "Tags",

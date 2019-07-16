@@ -17,16 +17,20 @@ const styles = (theme) => ({
     transition: "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
     overflow: "hidden"
   },
-  leftSidebarOpen: {
+  leadingDrawerOpen: {
     paddingLeft: theme.spacing.drawerWidth
+  },
+  trailingDrawerOpen: {
+    paddingRight: theme.spacing.detailDrawerWidth
   }
 });
 
-const ContentViewFullLayout = ({ children, classes, isSidebarOpen }) => (
+const ContentViewFullLayout = ({ children, classes, isLeadingDrawerOpen, isTrailingDrawerOpen }) => (
   <div
     className={
       classNames(classes.root, {
-        [classes.leftSidebarOpen]: isSidebarOpen
+        [classes.leadingDrawerOpen]: isLeadingDrawerOpen,
+        [classes.trailingDrawerOpen]: isTrailingDrawerOpen
       })
     }
   >
@@ -37,8 +41,9 @@ const ContentViewFullLayout = ({ children, classes, isSidebarOpen }) => (
 ContentViewFullLayout.propTypes = {
   children: PropTypes.node,
   classes: PropTypes.object,
+  isLeadingDrawerOpen: PropTypes.bool,
   isMobile: PropTypes.bool,
-  isSidebarOpen: PropTypes.bool
+  isTrailingDrawerOpen: PropTypes.bool
 };
 
 export default withStyles(styles, { name: "RuiContentViewFullLayout" })(ContentViewFullLayout);

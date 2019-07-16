@@ -28,6 +28,7 @@ export function xformOrderPayment(payment) {
     _id,
     address,
     amount,
+    captureErrorMessage,
     cardBrand,
     createdAt,
     currencyCode,
@@ -35,8 +36,10 @@ export function xformOrderPayment(payment) {
     displayName,
     mode,
     name: methodName,
+    processor,
     riskLevel,
-    status
+    status,
+    transactionId
   } = payment;
 
   return {
@@ -46,6 +49,7 @@ export function xformOrderPayment(payment) {
       currencyCode
     },
     billingAddress: address,
+    captureErrorMessage,
     cardBrand,
     createdAt,
     currencyCode,
@@ -54,10 +58,14 @@ export function xformOrderPayment(payment) {
     isAuthorizationCanceled: (mode === "cancel"),
     isCaptured: (mode === "captured"),
     method: {
+      displayName,
       name: methodName
     },
+    mode,
+    processor,
     riskLevel,
-    status
+    status,
+    transactionId
   };
 }
 

@@ -1,27 +1,11 @@
-import Reaction from "/imports/plugins/core/core/server/Reaction";
-import addressValidation from "./server/addressValidation.js";
-
 /**
- * @file Address Validation Test - This included example plugin serves
- * not only as a guide for registering a custom address validation plugin,
- * but also as a mock validation endpoint for building
- * custom address validation user interfaces.
- *
- * @namespace AddressValidationTest
+ * This file is necessary for backwards compatibility while we refactor
+ * the API to remove Meteor. The no-meteor `register.js` file will
+ * eventually become the main entry point of the plugin, but for now
+ * our Meteor tooling loads this file, so we include this here as a
+ * temporary bridge.
  */
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import register from "./server/register";
 
-Reaction.registerPackage({
-  label: "Address Validation Test",
-  name: "address-validation-test",
-  autoEnable: !!(process.env.NODE_ENV === "development"),
-  addressValidationServices: [
-    {
-      displayName: "Test Validation",
-      functions: {
-        addressValidation
-      },
-      name: "test",
-      supportedCountryCodes: ["US", "CA"]
-    }
-  ]
-});
+Reaction.whenAppInstanceReady(register);
