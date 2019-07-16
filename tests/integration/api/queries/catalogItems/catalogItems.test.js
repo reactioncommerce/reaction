@@ -1,7 +1,7 @@
 import TestApp from "/imports/test-utils/helpers/TestApp";
 // temp mocks
 import { internalShopId, opaqueShopId, shopName } from "../../../../mocks/mockShop";
-import { internalTagIds } from "../../../../mocks/mockTags";
+import { internalTagIds, opaqueTagIds } from "../../../../mocks/mockTags";
 import { internalCatalogItemIds } from "../../../../mocks/mockCatalogProducts";
 import {
   mockCatalogItems,
