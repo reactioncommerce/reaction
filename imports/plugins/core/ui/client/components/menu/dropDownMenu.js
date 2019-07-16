@@ -12,7 +12,8 @@ class DropDownMenu extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.isControlled) {
       this.setState({
         isOpen: nextProps.isOpen

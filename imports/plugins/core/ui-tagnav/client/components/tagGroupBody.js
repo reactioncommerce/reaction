@@ -21,7 +21,8 @@ class TagGroupBody extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { parentTag, tagsByKey, tagIds } = nextProps.tagGroupBodyProps;
     this.setState({ tagIds, parentTag, tagsByKey });
   }

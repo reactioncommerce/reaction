@@ -61,7 +61,7 @@ export default async function cancelOrderItem(context, input) {
   if (
     !isInternalCall &&
     (!accountId || accountId !== order.accountId) &&
-    !userHasPermission(["orders"], order.shopId)
+    !userHasPermission(["orders", "order/fulfillment"], order.shopId)
   ) {
     throw new ReactionError("access-denied", "Access Denied");
   }

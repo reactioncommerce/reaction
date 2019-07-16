@@ -23,11 +23,13 @@ export default function compose(dataLoader, options = {}) {
         this.propsCache = {};
       }
 
-      componentWillMount() {
+      // eslint-disable-next-line camelcase
+      UNSAFE_componentWillMount() {
         this._subscribe(this.props);
       }
 
-      componentWillReceiveProps(props) {
+      // eslint-disable-next-line camelcase
+      UNSAFE_componentWillReceiveProps(props) {
         this._subscribe(props);
       }
 

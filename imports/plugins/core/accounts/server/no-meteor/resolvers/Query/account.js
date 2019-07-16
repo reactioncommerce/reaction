@@ -1,7 +1,7 @@
 import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
 
 /**
- * @name "Query.account"
+ * @name Query/account
  * @method
  * @memberof Accounts/GraphQL
  * @summary query the Accounts collection and return user account data

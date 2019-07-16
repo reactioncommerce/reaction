@@ -2,7 +2,7 @@ import { decodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
- * @name "Mutation.setShippingAddressOnCart"
+ * @name Mutation/setShippingAddressOnCart
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the setShippingAddressOnCart GraphQL mutation

@@ -1,7 +1,7 @@
 import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
- * @name "Mutation.reconcileCarts"
+ * @name Mutation/reconcileCarts
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the reconcileCarts GraphQL mutation

@@ -138,7 +138,7 @@ export function groupPermissions(packages) {
  * @memberOf Accounts
  * @summary Returns a user that matches the
  * @param email
- * @returns {object}
+ * @returns {Object}
  */
 export function getUserByEmail(email) {
   return Collections.Accounts.findOne({ "emails.address": email });
