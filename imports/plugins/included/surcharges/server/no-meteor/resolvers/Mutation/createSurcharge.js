@@ -3,7 +3,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import createSurchargeMutation from "../../mutations/createSurcharge";
 
 /**
- * @name "Mutation.createSurcharge"
+ * @name Mutation/createSurcharge
  * @method
  * @memberof Fulfillment/GraphQL
  * @summary resolver for the createSurcharge GraphQL mutation

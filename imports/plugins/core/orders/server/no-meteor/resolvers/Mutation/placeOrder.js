@@ -3,7 +3,7 @@ import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-grap
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Mutation.placeOrder"
+ * @name Mutation/placeOrder
  * @method
  * @memberof Payments/GraphQL
  * @summary resolver for the placeOrder GraphQL mutation

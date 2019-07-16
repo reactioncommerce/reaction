@@ -1,7 +1,7 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Mutation.enablePaymentMethodForShop"
+ * @name Mutation/enablePaymentMethodForShop
  * @method
  * @memberof Payment/GraphQL
  * @summary resolver for the enablePaymentMethodForShop GraphQL mutation
