@@ -45,7 +45,8 @@ class PermissionsList extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ group: nextProps.group });
   }
 

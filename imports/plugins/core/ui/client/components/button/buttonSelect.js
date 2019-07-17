@@ -24,7 +24,8 @@ class ButtonSelect extends Component {
     toggleClassNames: classnames({ "button-dropdown": true, "hidden": true })
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     this.handleDefaultState();
   }
 

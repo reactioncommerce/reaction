@@ -262,7 +262,7 @@ class TagItem extends Component {
 
   renderSuggestion(suggestion) {
     return (
-      <span>{suggestion.label}</span>
+      <span>{suggestion.label} ({suggestion.slug})</span>
     );
   }
 

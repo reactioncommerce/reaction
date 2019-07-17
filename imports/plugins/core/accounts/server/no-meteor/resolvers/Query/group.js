@@ -1,7 +1,7 @@
 import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 
 /**
- * @name "Query.group"
+ * @name Query/group
  * @method
  * @memberof Accounts/GraphQL
  * @summary query the Groups collection and return a group by id

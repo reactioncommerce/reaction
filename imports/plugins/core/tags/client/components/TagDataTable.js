@@ -122,7 +122,7 @@ class TagDataTable extends Component {
   /**
    * @name handleFilterInput
    * @summary Update state when filter is changed
-   * @param {string} value text field input
+   * @param {String} value text field input
    * @return {function} state for field value
    */
   handleFilterInput = (value) => {
@@ -154,7 +154,7 @@ class TagDataTable extends Component {
   /**
    * @name handleClick
    * @summary Handle click on table row
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
@@ -175,8 +175,8 @@ class TagDataTable extends Component {
   /**
    * @name handleCellClick
    * @summary Handle click on table cell
-   * @param {object} rowInfo row data passed in from ReactTable
-   * @param {object} column Column data
+   * @param {Object} rowInfo row data passed in from ReactTable
+   * @param {Object} column Column data
    * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleCellClick(rowInfo, column) {
@@ -334,7 +334,7 @@ class TagDataTable extends Component {
    * @name selectedRowsClassName
    * @method
    * @summary If any rows are selected, give them a className of "selected-row"
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @returns {String} className to apply to row that is selected, or empty string if no row is selected
    */
   selectedRowsClassName(rowInfo) {

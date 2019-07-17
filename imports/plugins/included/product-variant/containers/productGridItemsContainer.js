@@ -13,6 +13,7 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       isSearch: PropTypes.bool,
       itemSelectHandler: PropTypes.func,
+      onSelectAllProducts: PropTypes.func,
       product: PropTypes.object,
       unmountMe: PropTypes.func
     }

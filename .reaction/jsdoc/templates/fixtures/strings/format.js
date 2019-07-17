@@ -7,9 +7,9 @@
 
 /**
  * Format a string quickly and easily using .net style format strings
- * @param {string} format A string format like "Hello {0}, now take off your {1}!"
+ * @param {String} format A string format like "Hello {0}, now take off your {1}!"
  * @param {...?} args One argument per `{}` in the string, positionally replaced
- * @returns {string}
+ * @returns {String}
  *
  * @example
  * var strings = require("papyrus/strings");

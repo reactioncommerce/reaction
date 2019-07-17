@@ -117,7 +117,8 @@ const wrapComponent = (Comp) => (
       this._isMounted = true;
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       let selectedTag = {};
       const previousEdit = this.state.editable;
       nextProps.tagsAsArray.forEach((tag) => {
