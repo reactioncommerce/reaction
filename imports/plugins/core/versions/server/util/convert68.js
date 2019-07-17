@@ -1,5 +1,5 @@
+/* eslint-disable require-jsdoc */
 import isEqual from "lodash/isEqual";
-import get from "lodash/get";
 
 const ALL_FIELDS = [
   "canBackorder",
@@ -31,34 +31,42 @@ const DEFAULT_SOLD_OUT_INFO = {
   isSoldOut: true
 };
 
-/**
- * @summary Returns an object with inventory information for one or more
- *   product configurations. For performance.
- * @param {Object} collections Mongo collection
- * @param {Object} input Additional input arguments
- * @param {Object[]} input.productConfigurations An array of ProductConfiguration objects
- *   you have already looked them up. This will save a database query.
- * @param {Object[]} input.canSellWithoutInventory App settings that indicates whether products
- * can be sold without inventory tracking enabled.
- * @return {Promise<Object[]>} Array of responses, in same order as `input.productConfigurations` array.
- */
-async function getInventoryResults(collections, input) {
-  const { SimpleInventory } = collections;
-  const { productConfigurations, canSellWithoutInventory } = input;
-  const results = [];
-  let remainingProductConfigurations = productConfigurations;
+// Similar to /imports/plugins/core/settings/server/queries/appSettings.js
+async function appSettings(context, shopId = null) {
+  const { collections } = context;
+  const { AppSettings } = collections;
+
+  const settings = (await AppSettings.findOne({ shopId })) || {};
+
+  // Use default if not found
+  if (settings.canSellVariantWithoutInventory !== true && settings.canSellVariantWithoutInventory !== false) {
+    settings.canSellVariantWithoutInventory = true;
+  }
+
+  return settings;
+}
+
+// Similar to /imports/plugins/included/simple-inventory/server/no-meteor/utils/inventoryForProductConfigurations.js
+async function simpleInventoryForProductConfigurations(context, input) {
+  const { productConfigurations } = input;
+  const { collections, dataLoaders } = context;
 
   const productVariantIds = productConfigurations.map(({ productVariantId }) => productVariantId);
 
-  const inventoryDocs = await SimpleInventory
-    .find({
-      "productConfiguration.productVariantId": { $in: productVariantIds }
-    })
-    .limit(productConfigurations.length) // optimize query speed
-    .toArray();
+  const inventoryDocs = dataLoaders
+    ? await dataLoaders.SimpleInventoryByProductVariantId.loadMany(productVariantIds)
+    : await collections.SimpleInventory
+      .find({
+        "productConfiguration.productVariantId": { $in: productVariantIds }
+      })
+      .limit(productConfigurations.length) // optimize query speed
+      .toArray();
 
-  const inventoryResults = productConfigurations.map((productConfiguration) => {
-    const inventoryDoc = inventoryDocs.find((doc) => isEqual(productConfiguration, doc.productConfiguration));
+  return productConfigurations.map((productConfiguration) => {
+    const inventoryDoc = inventoryDocs.find((doc) => {
+      if (!doc) return false;
+      return isEqual(productConfiguration, doc.productConfiguration);
+    });
     if (!inventoryDoc || !inventoryDoc.isEnabled) {
       return {
         inventoryInfo: null,
@@ -84,26 +92,50 @@ async function getInventoryResults(collections, input) {
       productConfiguration
     };
   });
+}
 
-  // Add only those with inventory info to final results.
-  // Otherwise add to sellableProductConfigurations for next run
-  remainingProductConfigurations = [];
-  for (const inventoryResult of inventoryResults) {
-    if (inventoryResult.inventoryInfo) {
-      inventoryResult.inventoryInfo.isSoldOut = inventoryResult.inventoryInfo.inventoryAvailableToSell === 0;
-      inventoryResult.inventoryInfo.isBackorder = inventoryResult.inventoryInfo.isSoldOut && inventoryResult.inventoryInfo.canBackorder;
-      results.push(inventoryResult);
-    } else {
-      remainingProductConfigurations.push(inventoryResult.productConfiguration);
+/**
+ * @summary Gets inventory results for multiple product configs
+ * @private
+ * @param {Object} context App context
+ * @param {Object} input Input
+ * @return {Object[]} Array of result objects
+ */
+async function getInventoryResults(context, input) {
+  const { productConfigurations, shopId } = input;
+
+  // If there are multiple plugins providing inventory, we use the first one that has a response
+  // for each product configuration.
+  const results = [];
+  let remainingProductConfigurations = productConfigurations;
+  const inventoryFns = [simpleInventoryForProductConfigurations];
+  for (const inventoryFn of inventoryFns) {
+    // eslint-disable-next-line no-await-in-loop
+    const pluginResults = await inventoryFn(context, input);
+
+    // Add only those with inventory info to final results.
+    // Otherwise add to sellableProductConfigurations for next run
+    remainingProductConfigurations = [];
+    for (const pluginResult of pluginResults) {
+      if (pluginResult.inventoryInfo) {
+        // Add fields that we calculate here so that each plugin doesn't have to
+        pluginResult.inventoryInfo.isSoldOut = pluginResult.inventoryInfo.inventoryAvailableToSell === 0;
+        pluginResult.inventoryInfo.isBackorder = pluginResult.inventoryInfo.isSoldOut && pluginResult.inventoryInfo.canBackorder;
+        results.push(pluginResult);
+      } else {
+        remainingProductConfigurations.push(pluginResult.productConfiguration);
+      }
     }
-  }
 
+    if (remainingProductConfigurations.length === 0) break; // found inventory info for every product config
+  }
 
   // If no inventory info was found for some of the product configs, such as
   // if there are no plugins providing inventory info, then use default info
   // that allows the product to be purchased always.
   if (remainingProductConfigurations.length > 0) {
-    const inventoryInfo = canSellWithoutInventory ? DEFAULT_SELLABLE_INFO : DEFAULT_SOLD_OUT_INFO;
+    const { canSellVariantWithoutInventory } = await appSettings(context, shopId);
+    const inventoryInfo = canSellVariantWithoutInventory ? DEFAULT_SELLABLE_INFO : DEFAULT_SOLD_OUT_INFO;
     for (const productConfiguration of remainingProductConfigurations) {
       results.push({ inventoryInfo, productConfiguration });
     }
@@ -112,24 +144,12 @@ async function getInventoryResults(collections, input) {
   return results;
 }
 
-/**
- * @summary Returns an object with inventory information for one or more
- *   product configurations.
- * @param {Object} collections Mongo collections
- * @param {Object} input Additional input arguments
- * @param {Object[]} input.productConfigurations An array of ProductConfiguration objects
- * @param {String[]} [input.fields] Optional array of fields you need. If you don't need all,
- *   you can pass this to skip some calculations and database lookups, improving speed.
- * @param {Object[]} input.shopId Shop id
- * @param {Object[]} input.canSellWithoutInventory App settings that indicates whether products
- * can be sold without inventory tracking enabled.
- * @return {Promise<Object[]>} Array of responses. Order is not guaranteed to be the same
- *   as `input.productConfigurations` array.
- */
-async function inventoryForProductConfigurations(collections, input) {
+// Similar to /imports/plugins/core/inventory/server/no-meteor/queries/inventoryForProductConfigurations.js
+export default async function inventoryForProductConfigurations(context, input) {
+  const { collections } = context;
   const { Products } = collections;
 
-  const { fields = ALL_FIELDS, productConfigurations, shopId, canSellWithoutInventory } = input;
+  const { fields = ALL_FIELDS, productConfigurations, shopId } = input;
 
   // Inventory plugins are expected to provide inventory info only for sellable variants.
   // If there are any non-sellable parent variants in the list, we remove them now.
@@ -146,11 +166,10 @@ async function inventoryForProductConfigurations(collections, input) {
   }
 
   // Get results for sellable product configs
-  const results = await getInventoryResults(collections, {
+  const results = await getInventoryResults(context, {
     fields,
     productConfigurations: sellableProductConfigurations,
-    shopId,
-    canSellWithoutInventory
+    shopId
   });
 
   // Now it's time to calculate top-level variant aggregated inventory and add those to the results.
@@ -167,14 +186,13 @@ async function inventoryForProductConfigurations(collections, input) {
       }
     }).toArray();
 
-    childOptionResults = await getInventoryResults(collections, {
+    childOptionResults = await getInventoryResults(context, {
       fields,
       productConfigurations: allOptions.map((option) => ({
         productId: option.ancestors[0],
         productVariantId: option._id
       })),
-      shopId,
-      canSellWithoutInventory
+      shopId
     });
 
     for (const productConfiguration of parentVariantProductConfigurations) {
@@ -203,91 +221,91 @@ async function inventoryForProductConfigurations(collections, input) {
 }
 
 /**
- * @param {Object} catalogProduct The catalog item to transform
- * @param {Object} collections The catalog item to transform
- * @returns {Object} The converted item document
+ * @summary Publishes our plugin-specific product fields to the catalog
+ * @param {Object} catalogProduct The catalog product that is being built. Should mutate this.
+ * @param {Object} input Input data
+ * @returns {undefined}
  */
-export async function convertCatalogItemVariants(catalogProduct, collections) {
-  const { AppSettings, Products } = collections;
+export async function transformInventoryOnCatalog(catalogProduct, { context }) {
+  const { productId, shopId } = catalogProduct;
 
-  const shopSettings = await AppSettings.findOne({ shopId: catalogProduct.shopId });
+  // Most inventory information is looked up and included at read time, when
+  // preparing a response to a GraphQL query, but we need to store some
+  // boolean flags in the Catalog collection to enable sorting
+  // catalogItems query results by them and to have them in Elasticsearch.
+  // Build a productConfigurations array based on what's currently in `catalogProduct` object
+  const productConfigurations = [];
+  const hiddenAndDeletedVariants = [];
+  catalogProduct.variants.forEach((variant) => {
+    productConfigurations.push({
+      isSellable: !variant.options || variant.options.length === 0,
+      productId,
+      productVariantId: variant.variantId
+    });
 
-  const canSellWithoutInventory = get(shopSettings, "canSellVariantWithoutInventory ", true);
-
-  const variants = await Products.find({
-    ancestors: catalogProduct.product.productId,
-    isDeleted: { $ne: true },
-    isVisible: true
-  }, {
-    _id: 1,
-    ancestors: 1,
-    shopId: 1
-  }).toArray();
-
-  const topVariantsAndTopOptions = variants.filter((variant) => variant.ancestors.length === 1 || variant.ancestors.length === 2);
-  if (topVariantsAndTopOptions.length === 0) return catalogProduct;
-
-  const variantsOptionsInventory = await inventoryForProductConfigurations(collections, {
-    fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
-    productConfigurations: topVariantsAndTopOptions.map((option) => ({
-      isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
-      productId: option.ancestors[0],
-      productVariantId: option._id
-    })),
-    shopId: topVariantsAndTopOptions[0].shopId,
-    canSellWithoutInventory
-
-  });
-
-  // Update inventory for the parent product and all variants and options.
-  // If no inventory information is found for a variant or option, it is not mutated.
-  const updatedVariants = [];
-  catalogProduct.product.variants.forEach((variant) => {
-    // Keep variant un-mutated by default
-    let updatedVariant = variant;
-    const foundVariantInventory = variantsOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === variant._id);
-
-    if (foundVariantInventory.inventoryInfo) {
-      updatedVariant = {
-        ...variant,
-        isSoldOut: foundVariantInventory.inventoryInfo.isSoldOut
-      };
+    if (variant.isDeleted || !variant.isVisible) {
+      hiddenAndDeletedVariants.push(variant.variantId);
     }
 
-    const updatedOptions = [];
-    if (updatedVariant.options) {
-      updatedVariant.options.forEach((option) => {
-        // Keep option un-mutated by default
-        let updatedOption = option;
-        const foundOptionInventory = variantsOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === option._id);
+    if (variant.options) {
+      variant.options.forEach((option) => {
+        productConfigurations.push({
+          isSellable: true,
+          productId,
+          productVariantId: option.variantId
+        });
 
-        if (foundVariantInventory.inventoryInfo) {
-          updatedOption = {
-            ...option,
-            isSoldOut: foundOptionInventory.inventoryInfo.isSoldOut
-          };
+        if (option.isDeleted || !option.isVisible) {
+          hiddenAndDeletedVariants.push(option.variantId);
+        }
+      });
+    }
+  });
+
+  // Retrieve inventory information for all top level variants and all options
+  const topVariantsAndOptionsInventory = await inventoryForProductConfigurations(context, {
+    fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
+    productConfigurations,
+    shopId
+  });
+
+  // Add inventory properties to the top level parent product.
+  // For this we need to filter out any invisible or deleted.
+  const visibleTopVariantsAndOptionsInventory = topVariantsAndOptionsInventory.filter(({ productConfiguration }) =>
+    !hiddenAndDeletedVariants.includes(productConfiguration.productVariantId));
+
+  catalogProduct.isBackorder = visibleTopVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isBackorder);
+  catalogProduct.isLowQuantity = visibleTopVariantsAndOptionsInventory.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity);
+  catalogProduct.isSoldOut = visibleTopVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isSoldOut);
+
+  // add inventory props to each top level Variant
+  catalogProduct.variants.forEach((variant) => {
+    // attempt to find this variant's inventory info
+    const foundVariantInventory = topVariantsAndOptionsInventory.find((inventoryInfo) =>
+      inventoryInfo.productConfiguration.productVariantId === variant.variantId);
+
+    // This should never happen but we include a check to be safe
+    if (!foundVariantInventory || !foundVariantInventory.inventoryInfo) {
+      throw new Error("inventory-info-not-found", `Inventory info not found for variant with ID: ${variant.variantId}`);
+    }
+
+    // if inventory info was found, add to variant
+    variant.isSoldOut = foundVariantInventory.inventoryInfo.isSoldOut;
+
+    // add inventory props to each top level option
+    if (variant.options) {
+      variant.options.forEach((option) => {
+        const foundOptionInventory = topVariantsAndOptionsInventory.find((inventoryInfo) =>
+          inventoryInfo.productConfiguration.productVariantId === option.variantId);
+
+        // This should never happen but we include a check to be safe
+        if (!foundOptionInventory || !foundOptionInventory.inventoryInfo) {
+          throw new Error("inventory-info-not-found", `Inventory info not found for option with ID: ${option.variantId}`);
         }
 
-        updatedOptions.push(updatedOption);
+        // if inventory info was found, add to option
+        option.isSoldOut = foundOptionInventory.inventoryInfo.isSoldOut;
       });
-
-      updatedVariant.options = updatedOptions;
     }
-
-    updatedVariants.push(updatedVariant);
   });
-
-  const updatedCatalogProduct = {
-    ...catalogProduct.product,
-    variants: updatedVariants
-  };
-
-  const doc = {
-    _id: catalogProduct._id,
-    product: updatedCatalogProduct,
-    shopId: catalogProduct.shopId,
-    createdAt: catalogProduct.createdAt
-  };
-
-  return doc;
 }
