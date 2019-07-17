@@ -213,7 +213,7 @@ export default {
    * @param  {array} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
    * @param  {string} userId Optional userId, defaults to logged in userId
    *                                           Must pass this.userId from publications to avoid error!
-   * @return {array} Array of shopIds that the user has at least one of the given set of roles for
+   * @returns {Array} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = getUserId()) {
     // Owner permission for a shop supersedes grantable permissions, so we always check for owner permissions as well

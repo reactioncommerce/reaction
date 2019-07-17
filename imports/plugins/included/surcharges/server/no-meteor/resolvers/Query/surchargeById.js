@@ -2,7 +2,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
 
 /**
- * @name "Query.surchargeById"
+ * @name Query/surchargeById
  * @method
  * @memberof Fulfillment/GraphQL
  * @summary resolver for the surchargeById GraphQL mutation

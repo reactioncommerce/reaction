@@ -12,7 +12,8 @@ import PropTypes from "prop-types";
 
 export default class Link extends Component {
   static propTypes = {
-    href: PropTypes.string.isRequired
+    href: PropTypes.string.isRequired,
+    onClick: PropTypes.func
   };
 
   handleClick = (event) => {

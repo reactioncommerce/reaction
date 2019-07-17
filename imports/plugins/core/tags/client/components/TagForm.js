@@ -67,6 +67,7 @@ class TagForm extends Component {
     isLoadingShopId: PropTypes.bool,
     onCancel: PropTypes.func,
     onCreate: PropTypes.func,
+    onHeroUpload: PropTypes.func,
     onUpdate: PropTypes.func,
     shopId: PropTypes.string.isRequired,
     tag: PropTypes.object

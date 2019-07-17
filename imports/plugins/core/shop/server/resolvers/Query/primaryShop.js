@@ -1,10 +1,10 @@
 /**
- * @name "Query.primaryShop"
+ * @name Query/primaryShop
  * @method
  * @memberof Shop/GraphQL
  * @summary Gets the primary shop
- * @param {Object} parentObject - unused
- * @param {Object} args - unused
+ * @param {Object} _ - unused
+ * @param {Object} __ - unused
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>} The shop, based on the domain in ROOT_URL
  */

@@ -14,7 +14,8 @@ class TagNav extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ selectedTag: nextProps.selectedTag });
   }
 

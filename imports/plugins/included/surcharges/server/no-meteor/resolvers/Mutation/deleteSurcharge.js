@@ -3,7 +3,7 @@ import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
 import deleteSurchargeMutation from "../../mutations/deleteSurcharge";
 
 /**
- * @name "Mutation.deleteSurcharge"
+ * @name Mutation/deleteSurcharge
  * @method
  * @memberof Fulfillment/GraphQL
  * @summary resolver for the deleteSurcharge GraphQL mutation
