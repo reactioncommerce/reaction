@@ -45,7 +45,8 @@ const wrapComponent = (Comp) => (
       }, 500);
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       this.setState({
         tagIds: nextProps.tagIds || [],
         tagsByKey: nextProps.tagsByKey || {}

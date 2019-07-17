@@ -2,7 +2,7 @@ import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/g
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Mutation.inviteShopMember"
+ * @name Mutation/inviteShopMember
  * @method
  * @memberof Accounts/GraphQL
  * @summary resolver for the inviteShopMember GraphQL mutation

@@ -2,12 +2,12 @@ import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/react
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Shop.tags"
+ * @name Shop/tags
  * @method
  * @memberof Shop/GraphQL
  * @summary Returns the tags for the parent resolver shop
  * @param {Object} _ - unused
- * @param {TagConnectionArgs} args - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
+ * @param {TagConnectionArgs} connectionArgs - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
  * @return {Promise<Object[]>} Promise that resolves with array of Tag objects

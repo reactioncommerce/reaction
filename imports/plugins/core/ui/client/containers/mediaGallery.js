@@ -36,7 +36,8 @@ const wrapComponent = (Comp) => (
       };
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       // We need to do this logic only if we've temporarily set media in state for latency compensation
       if (!this.state.media) return;
 

@@ -3,7 +3,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import updateFlatRateFulfillmentMethodMutation from "../../mutations/updateFlatRateFulfillmentMethod";
 
 /**
- * @name "Mutation.updateFlatRateFulfillmentMethod"
+ * @name Mutation/updateFlatRateFulfillmentMethod
  * @method
  * @memberof Fulfillment/GraphQL
  * @summary resolver for the updateFlatRateFulfillmentMethod GraphQL mutation
