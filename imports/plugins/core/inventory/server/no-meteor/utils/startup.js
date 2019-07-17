@@ -1,4 +1,4 @@
-import ReactionError from "@reactioncommerce/reaction-error";
+import publishProductToCatalog from "./publishProductToCatalog";
 
 /**
  * @summary Updates `isBackorder`, `isSoldOut`, and `isLowQuantity` as necessary for
@@ -9,83 +9,16 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {undefined}
  */
 async function updateInventoryBooleansInCatalog(context, productId) {
-  const { collections: { Catalog, Products } } = context;
+  const { collections: { Catalog } } = context;
 
-  const variants = await Products.find({
-    ancestors: productId,
-    isDeleted: { $ne: true },
-    isVisible: true
-  }, {
-    _id: 1,
-    ancestors: 1,
-    shopId: 1
-  }).toArray();
+  const catalogItem = await Catalog.findOne({ "product.productId": productId });
+  const { product: catalogProduct } = catalogItem;
 
-  const topVariantsAndTopOptions = variants.filter((variant) => variant.ancestors.length === 1 || variant.ancestors.length === 2);
-  if (topVariantsAndTopOptions.length === 0) return;
-
-  const variantsOptionsInventory = await context.queries.inventoryForProductConfigurations(context, {
-    fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
-    productConfigurations: topVariantsAndTopOptions.map((option) => ({
-      isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
-      productId: option.ancestors[0],
-      productVariantId: option._id
-    })),
-    shopId: topVariantsAndTopOptions[0].shopId
-  });
-
-  const catalogProduct = await Catalog.findOne({ "product.productId": productId });
-
-  // Update inventory for the parent product and all variants and options.
-  // If no inventory information is found for a variant or option, it is not mutated.
-  const updatedVariants = [];
-  catalogProduct.product.variants.forEach((variant) => {
-    // Keep variant un-mutated by default
-    let updatedVariant = variant;
-    const foundVariantInventory = variantsOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === variant._id);
-
-    if (!foundVariantInventory.inventoryInfo) {
-      throw new ReactionError("inventory-info-not-found", `Inventory info not found in for variant with id: ${variant._id}`);
-    }
-
-    // If inventory info was found, update variant
-    updatedVariant = {
-      ...variant,
-      isSoldOut: foundVariantInventory.inventoryInfo.isSoldOut
-    };
-
-    const updatedOptions = [];
-    if (updatedVariant.options) {
-      updatedVariant.options.forEach((option) => {
-        // Keep option un-mutated by default
-        let updatedOption = option;
-        const foundOptionInventory = variantsOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === option._id);
-
-        if (!foundOptionInventory.inventoryInfo) {
-          throw new ReactionError("inventory-info-not-found", `Inventory info not found in for option with id: ${option._id}`);
-        }
-
-        // If inventory info was found, update option
-        updatedOption = {
-          ...option,
-          isSoldOut: foundOptionInventory.inventoryInfo.isSoldOut
-        };
-
-        updatedOptions.push(updatedOption);
-      });
-
-      updatedVariant.options = updatedOptions;
-    }
-
-    updatedVariants.push(updatedVariant);
-  });
+  await publishProductToCatalog(catalogProduct, { context });
 
   await Catalog.updateOne({ "product.productId": productId }, {
     $set: {
-      "product.isBackorder": variantsOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isBackorder),
-      "product.isLowQuantity": variantsOptionsInventory.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity),
-      "product.isSoldOut": variantsOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isSoldOut),
-      "product.variants": updatedVariants
+      product: catalogProduct
     }
   });
 }
