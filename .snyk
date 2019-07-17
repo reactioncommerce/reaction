@@ -3,10 +3,4 @@ version: v1.13.5
 patch: {}
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JS-LODASH-450202:
-    - '*':
-        reason: >-
-          No remediation available at this time. I cannot find any examples of
-          defaultsDeep in our codebase. Tracking this PR for release:
-          https://github.com/lodash/lodash/pull/4336
-        expires: '2019-07-11T20:17:33.015Z'
+
