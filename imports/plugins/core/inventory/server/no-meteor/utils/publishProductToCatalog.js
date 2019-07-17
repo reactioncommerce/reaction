@@ -6,37 +6,67 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} input Input data
  * @returns {undefined}
  */
-export default async function publishProductToCatalog(catalogProduct, { context, variants }) {
-  // Most inventory information is looked up and included at read time, when
-  // preparing a response to a GraphQL query, but we need to store these
-  // three boolean flags in the Catalog collection to enable sorting
-  // catalogItems query results by them.
-  // Find all variants + options
-  const topVariantsAndTopOptions = variants.filter((variant) => variant.ancestors.length === 1 || variant.ancestors.length === 2);
+export default async function publishProductToCatalog(catalogProduct, { context }) {
+  const { productId, shopId } = catalogProduct;
 
-  // Retrieve inventory information for all top level variants
+  // Most inventory information is looked up and included at read time, when
+  // preparing a response to a GraphQL query, but we need to store some
+  // boolean flags in the Catalog collection to enable sorting
+  // catalogItems query results by them and to have them in Elasticsearch.
+  // Build a productConfigurations array based on what's currently in `catalogProduct` object
+  const productConfigurations = [];
+  const hiddenAndDeletedVariants = [];
+  catalogProduct.variants.forEach((variant) => {
+    productConfigurations.push({
+      isSellable: !variant.options || variant.options.length === 0,
+      productId,
+      productVariantId: variant.variantId
+    });
+
+    if (variant.isDeleted || !variant.isVisible) {
+      hiddenAndDeletedVariants.push(variant.variantId);
+    }
+
+    if (variant.options) {
+      variant.options.forEach((option) => {
+        productConfigurations.push({
+          isSellable: true,
+          productId,
+          productVariantId: option.variantId
+        });
+
+        if (option.isDeleted || !option.isVisible) {
+          hiddenAndDeletedVariants.push(option.variantId);
+        }
+      });
+    }
+  });
+
+  // Retrieve inventory information for all top level variants and all options
   const topVariantsAndOptionsInventory = await context.queries.inventoryForProductConfigurations(context, {
     fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
-    productConfigurations: topVariantsAndTopOptions.map((option) => ({
-      isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
-      productId: option.ancestors[0],
-      productVariantId: option._id
-    })),
-    shopId: catalogProduct.shopId
+    productConfigurations,
+    shopId
   });
 
   // Add inventory properties to the top level parent product.
-  catalogProduct.isBackorder = topVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isBackorder);
-  catalogProduct.isLowQuantity = topVariantsAndOptionsInventory.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity);
-  catalogProduct.isSoldOut = topVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isSoldOut);
+  // For this we need to filter out any invisible or deleted.
+  const visibleTopVariantsAndOptionsInventory = topVariantsAndOptionsInventory.filter(({ productConfiguration }) =>
+    !hiddenAndDeletedVariants.includes(productConfiguration.productVariantId));
+
+  catalogProduct.isBackorder = visibleTopVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isBackorder);
+  catalogProduct.isLowQuantity = visibleTopVariantsAndOptionsInventory.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity);
+  catalogProduct.isSoldOut = visibleTopVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isSoldOut);
 
   // add inventory props to each top level Variant
   catalogProduct.variants.forEach((variant) => {
     // attempt to find this variant's inventory info
-    const foundVariantInventory = topVariantsAndOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === variant._id);
+    const foundVariantInventory = topVariantsAndOptionsInventory.find((inventoryInfo) =>
+      inventoryInfo.productConfiguration.productVariantId === variant.variantId);
 
-    if (!foundVariantInventory.inventoryInfo) {
-      throw new ReactionError("inventory-info-not-found", `Inventory info not found in for variant with id: ${variant._id}`);
+    // This should never happen but we include a check to be safe
+    if (!foundVariantInventory || !foundVariantInventory.inventoryInfo) {
+      throw new ReactionError("inventory-info-not-found", `Inventory info not found for variant with ID: ${variant.variantId}`);
     }
 
     // if inventory info was found, add to variant
@@ -45,10 +75,12 @@ export default async function publishProductToCatalog(catalogProduct, { context,
     // add inventory props to each top level option
     if (variant.options) {
       variant.options.forEach((option) => {
-        const foundOptionInventory = topVariantsAndOptionsInventory.find((inventoryInfo) => inventoryInfo.productConfiguration.productVariantId === option._id);
+        const foundOptionInventory = topVariantsAndOptionsInventory.find((inventoryInfo) =>
+          inventoryInfo.productConfiguration.productVariantId === option.variantId);
 
-        if (!foundOptionInventory.inventoryInfo) {
-          throw new ReactionError("inventory-info-not-found", `Inventory info not found in for option with id: ${option._id}`);
+        // This should never happen but we include a check to be safe
+        if (!foundOptionInventory || !foundOptionInventory.inventoryInfo) {
+          throw new ReactionError("inventory-info-not-found", `Inventory info not found for option with ID: ${option.variantId}`);
         }
 
         // if inventory info was found, add to option
