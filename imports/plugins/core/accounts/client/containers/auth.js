@@ -207,6 +207,12 @@ class AuthContainer extends Component {
   }
 }
 
+/**
+ * @summary Composer
+ * @param {Object} props Provided props
+ * @param {Function} onData Call this with props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   onData(null, { currentRoute: Router.current() });
 }
