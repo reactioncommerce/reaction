@@ -36,7 +36,8 @@ const wrapComponent = (Comp) => (
       };
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       // We need to do this logic only if we've temporarily set media in state for latency compensation
       if (!this.state.media) return;
 
@@ -214,8 +215,8 @@ const wrapComponent = (Comp) => (
 
 // resort the media in
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, (m) => {
-    const { priority } = (m && m.metadata) || {};
+  const sortedMedia = _.sortBy(media, (med) => {
+    const { priority } = (med && med.metadata) || {};
     if (!priority && priority !== 0) {
       return 1000;
     }

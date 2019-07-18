@@ -56,15 +56,17 @@ class SignUp extends Component {
         </span>
       );
     }
+
+    return null;
   }
 
   renderPasswordErrors() {
     return (
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
-          this.props.messages.errors.password.map((error, i) => (
+          this.props.messages.errors.password.map((error, index) => (
             <Components.Translation
-              key={i}
+              key={index}
               defaultValue={error.reason}
               i18nKey={error.i18nKeyReason}
             />
@@ -82,6 +84,8 @@ class SignUp extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderSpinnerOnWait() {
@@ -160,6 +164,8 @@ class SignUp extends Component {
         </form>
       );
     }
+
+    return null;
   }
 
   render() {

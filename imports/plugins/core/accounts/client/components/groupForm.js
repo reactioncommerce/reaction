@@ -21,7 +21,8 @@ class GroupForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { name, description } = nextProps.group;
     this.setState({ name, description });
   }

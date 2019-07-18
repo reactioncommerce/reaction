@@ -2,7 +2,7 @@ import { decodeCartOpaqueId, decodeFulfillmentGroupOpaqueId } from "@reactioncom
 import updateFulfillmentOptionsForGroupMutation from "../../mutations/updateFulfillmentOptionsForGroup";
 
 /**
- * @name "Mutation.updateFulfillmentOptionsForGroup"
+ * @name Mutation/updateFulfillmentOptionsForGroup
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the updateFulfillmentOptionsForGroup GraphQL mutation

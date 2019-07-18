@@ -147,7 +147,7 @@ export function reloadAllTranslations() {
  * @method reloadTranslationsForShop
  * @memberof i18n
  * @summary Reload translations for specified shop
- * @param {string} shopId - Shop Id to reset translations for
+ * @param {String} shopId - Shop Id to reset translations for
  * @return {undefined}
 */
 export function reloadTranslationsForShop(shopId) {
@@ -191,12 +191,12 @@ export function importAllTranslations() {
     // Then loop through those I18N assets and import them
     if (shopId) {
       // If there isn't a shop yet, and for future shops, this will be done in the "afterShopCreate" listener
-      Assets.find({ type: "i18n" }).forEach((t) => {
-        Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
-        if (t.content) {
-          Reaction.Importer.process(t.content, ["i18n"], Reaction.Importer.translation, [shopId]);
+      Assets.find({ type: "i18n" }).forEach((translation) => {
+        Logger.debug(`Importing ${translation.name} translation for "${translation.ns}"`);
+        if (translation.content) {
+          Reaction.Importer.process(translation.content, ["i18n"], Reaction.Importer.translation, [shopId]);
         } else {
-          Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
+          Logger.debug(`No translation content found for ${translation.name} - ${translation.ns} asset`);
         }
       });
     }

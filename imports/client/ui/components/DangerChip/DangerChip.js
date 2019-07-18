@@ -17,7 +17,7 @@ const styles = (theme) => ({
 
 /**
  * @name DangerChip
- * @params {Object} props Component props
+ * @param {Object} props Component props
  * @returns {React.Component} returns a React component
  */
 function DangerChip({ classes, color, label, onClick, size, variant }) {
@@ -50,7 +50,6 @@ DangerChip.propTypes = {
 
 DangerChip.defaultProps = {
   color: "primary",
-  size: "small",
   variant: "outlined"
 };
 

@@ -1,5 +1,5 @@
 /**
- * @name "Group.createdBy"
+ * @name Group/createdBy
  * @method
  * @memberof Accounts/GraphQL
  * @summary query the Accounts collection and return user account data

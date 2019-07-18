@@ -71,11 +71,20 @@ type Payment implements Node {
   "The payment method"
   method: PaymentMethod!
 
+  "The payment mode"
+  mode: String
+
+  "The payment processor"
+  processor: String
+
   "Risk level of payment"
   riskLevel: RiskLevel
 
   "The current status of this payment"
   status: PaymentStatus!
+
+  "The payment transaction ID"
+  transactionId: String
 }
 
 "Valid payment statuses"

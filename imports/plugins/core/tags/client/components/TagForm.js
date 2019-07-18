@@ -67,6 +67,7 @@ class TagForm extends Component {
     isLoadingShopId: PropTypes.bool,
     onCancel: PropTypes.func,
     onCreate: PropTypes.func,
+    onHeroUpload: PropTypes.func,
     onUpdate: PropTypes.func,
     shopId: PropTypes.string.isRequired,
     tag: PropTypes.object
@@ -440,7 +441,7 @@ class TagForm extends Component {
                       </Grid>
                       <Grid item md={6}>
                         <Typography variant="h3">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
-                        <Typography variant="body2">{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
+                        <Typography variant="body1">{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
                         {this.renderMediaGalleryUploader()}
 
                         <PaddedField
