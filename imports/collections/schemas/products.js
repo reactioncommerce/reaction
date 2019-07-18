@@ -284,7 +284,7 @@ export const Product = new SimpleSchema({
   },
   "handle": {
     type: String,
-    optional: true
+    defaultValue: ""
   },
   "hashtags": {
     type: Array,
