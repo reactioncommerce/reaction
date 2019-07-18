@@ -15,19 +15,20 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    Fixtures();
-    done();
-  });
-});
-
 describe("Account Meteor method ", function () {
   let shopId;
   let fakeUser;
   let fakeAccount;
   const originals = {};
   let sandbox;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      done();
+    });
+  });
 
   after(() => {
     Packages.remove({});

@@ -10,19 +10,19 @@ import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
-import "./members";
-
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    Fixtures();
-    done();
-  });
-});
-
 const shopId = getShop()._id;
 
 describe("Account Publications", function () {
   let sandbox;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      done();
+    });
+  });
+
   beforeEach(function () {
     // reset
     Meteor.users.remove({});

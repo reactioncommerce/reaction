@@ -8,14 +8,15 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    done();
-  });
-});
-
 describe("Server/Core", function () {
   let sandbox;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      done();
+    });
+  });
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();

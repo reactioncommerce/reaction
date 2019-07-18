@@ -3,14 +3,14 @@ import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    done();
-  });
-});
-
 // These are client-side only function (???) so they cannot be test from here
 describe("Account Registration Validation ", function () {
+  before(function (done) {
+    Reaction.onAppStartupComplete(() => {
+      done();
+    });
+  });
+
   describe("username validation ", function () {
     it("should not allow a invalid username of length 3", function (done) {
       const username = "tn";

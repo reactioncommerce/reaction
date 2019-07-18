@@ -8,14 +8,15 @@ import { Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    done();
-  });
-});
-
 describe("Update Package", function () {
   let sandbox;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      done();
+    });
+  });
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();

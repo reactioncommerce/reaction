@@ -9,15 +9,16 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    Fixtures();
-    done();
-  });
-});
-
 describe("i18n methods", function () {
   let sandbox;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      done();
+    });
+  });
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();

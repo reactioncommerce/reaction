@@ -10,13 +10,6 @@ import { Accounts, Groups } from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import { getUser } from "/imports/plugins/core/core/server/fixtures/users";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    Fixtures();
-    done();
-  });
-});
-
 describe("Group test", function () {
   let methods;
   let sandbox;
@@ -32,6 +25,14 @@ describe("Group test", function () {
     slug: "customer",
     permissions: ["guest", "account/profile", "product", "tag", "index", "cart/completed"]
   };
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      done();
+    });
+  });
 
   before(function () {
     methods = {

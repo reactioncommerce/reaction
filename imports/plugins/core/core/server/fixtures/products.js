@@ -42,6 +42,7 @@ export function metaField(options = {}) {
 export function productVariant(options = {}) {
   const defaults = {
     ancestors: [],
+    attributeLabel: "Variant",
     compareAtPrice: _.random(0, 1000),
     weight: _.random(0, 10),
     isTaxable: faker.random.boolean(),

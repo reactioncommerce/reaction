@@ -11,20 +11,23 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import { Orders, Notifications } from "/lib/collections";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    Fixtures();
-    done();
-  });
-});
-
 describe("orders test", function () {
-  const shop = getShop();
-  const shopId = shop._id;
+  let shop;
+  let shopId;
   let methods;
   let sandbox;
   let order;
   let example;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      shop = getShop();
+      shopId = shop._id;
+      done();
+    });
+  });
 
   before(function (done) {
     methods = {

@@ -15,13 +15,6 @@ import publishProductsToCatalog from "/imports/plugins/core/catalog/server/no-me
 import publishProductToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductToCatalog";
 import collections from "/imports/collections/rawCollections";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    Fixtures();
-    done();
-  });
-});
-
 describe("Publication", function () {
   let shopId;
   let merchantShopId;
@@ -36,6 +29,14 @@ describe("Publication", function () {
   let activeMerchantProductIds;
 
   const productScrollLimit = 24;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      done();
+    });
+  });
 
   beforeEach(function () {
     shopId = Random.id();

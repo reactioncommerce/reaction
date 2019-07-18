@@ -12,16 +12,18 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Collections from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    Fixtures();
-    done();
-  });
-});
-
 describe("Order Publication", function () {
-  const shop = getShop();
+  let shop;
   let sandbox;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      shop = getShop();
+      done();
+    });
+  });
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();

@@ -8,19 +8,20 @@ import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { createActiveShop } from "/imports/plugins/core/core/server/fixtures/shops";
 
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    Fixtures();
-    done();
-  });
-});
-
 describe("Tags Publication", () => {
   let sandbox;
   let collector;
   let primaryShop;
   let shop;
   let tags;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      done();
+    });
+  });
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();

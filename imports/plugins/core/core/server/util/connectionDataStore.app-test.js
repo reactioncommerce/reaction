@@ -4,14 +4,14 @@ import { DDP } from "meteor/ddp-client";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ConnectionDataStore from "./connectionDataStore";
 
-
-before((done) => {
-  Reaction.onAppStartupComplete(() => {
-    done();
-  });
-});
-
 describe("ConnectionDataStore", () => {
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      done();
+    });
+  });
+
   describe("used outside of a connection", () => {
     it("sets/gets cached data", () => {
       ConnectionDataStore.set("key", "val");
