@@ -12,70 +12,73 @@ import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 import "./members";
 
-Reaction.onAppStartupComplete(() => {
-  Fixtures();
+before((done) => {
+  Reaction.onAppStartupComplete(() => {
+    Fixtures();
+    done();
+  });
+});
 
-  const shopId = getShop()._id;
+const shopId = getShop()._id;
 
-  describe("Account Publications", function () {
-    let sandbox;
-    beforeEach(function () {
-      // reset
-      Meteor.users.remove({});
-      sandbox = sinon.sandbox.create();
+describe("Account Publications", function () {
+  let sandbox;
+  beforeEach(function () {
+    // reset
+    Meteor.users.remove({});
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  describe("ShopMembers", function () {
+    it("should let an admin fetch userIds", function () {
+      sandbox.stub(Reaction, "getShopId", () => shopId);
+      sandbox.stub(Roles, "userIsInRole", () => true);
+      const publication = Meteor.server.publish_handlers["ShopMembers"];
+      const user = Factory.create("user");
+      const thisContext = {
+        userId: user._id
+      };
+      const cursor = publication.apply(thisContext);
+      // verify
+      const data = cursor.fetch()[0];
+      expect(data._id).to.equal(user._id);
     });
 
-    afterEach(function () {
-      sandbox.restore();
+    it("should not let a regular user fetch userIds", function () {
+      sandbox.stub(Reaction, "getShopId", () => shopId);
+      sandbox.stub(Roles, "userIsInRole", () => false);
+      const thisContext = {
+        userId: "notAdminUser",
+        ready() { return "ready"; }
+      };
+      const publication = Meteor.server.publish_handlers["ShopMembers"];
+      const cursor = publication.apply(thisContext);
+      expect(cursor).to.equal("ready");
     });
 
-    describe("ShopMembers", function () {
-      it("should let an admin fetch userIds", function () {
-        sandbox.stub(Reaction, "getShopId", () => shopId);
-        sandbox.stub(Roles, "userIsInRole", () => true);
-        const publication = Meteor.server.publish_handlers["ShopMembers"];
-        const user = Factory.create("user");
-        const thisContext = {
-          userId: user._id
-        };
-        const cursor = publication.apply(thisContext);
-        // verify
-        const data = cursor.fetch()[0];
-        expect(data._id).to.equal(user._id);
-      });
-
-      it("should not let a regular user fetch userIds", function () {
-        sandbox.stub(Reaction, "getShopId", () => shopId);
-        sandbox.stub(Roles, "userIsInRole", () => false);
-        const thisContext = {
-          userId: "notAdminUser",
-          ready() { return "ready"; }
-        };
-        const publication = Meteor.server.publish_handlers["ShopMembers"];
-        const cursor = publication.apply(thisContext);
-        expect(cursor).to.equal("ready");
-      });
-
-      it("should not overpublish user data to admins", function () {
-        sandbox.stub(Reaction, "getShopId", () => shopId);
-        sandbox.stub(Roles, "userIsInRole", () => true);
-        const user = Factory.create("user");
-        Factory.create("registeredUser");
-        const thisContext = {
-          userId: user._id,
-          ready() { return "ready"; }
-        };
-        const publication = Meteor.server.publish_handlers["ShopMembers"];
-        const cursor = publication.apply(thisContext);
-        // verify
-        const data = cursor.fetch();
-        // we expect services will be clean object
-        expect(data.some((_user) =>
-          // we expect two users. First will be without services, second with
-          // clean services object
-          typeof _user.services === "object" &&
-            _.isEqual(_user.services, {}))).to.be.true;
-      });
+    it("should not overpublish user data to admins", function () {
+      sandbox.stub(Reaction, "getShopId", () => shopId);
+      sandbox.stub(Roles, "userIsInRole", () => true);
+      const user = Factory.create("user");
+      Factory.create("registeredUser");
+      const thisContext = {
+        userId: user._id,
+        ready() { return "ready"; }
+      };
+      const publication = Meteor.server.publish_handlers["ShopMembers"];
+      const cursor = publication.apply(thisContext);
+      // verify
+      const data = cursor.fetch();
+      // we expect services will be clean object
+      expect(data.some((_user) =>
+        // we expect two users. First will be without services, second with
+        // clean services object
+        typeof _user.services === "object" &&
+          _.isEqual(_user.services, {}))).to.be.true;
     });
   });
 });
