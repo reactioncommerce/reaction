@@ -124,6 +124,7 @@ Meteor.startup(() => {
     //
     // subscribe to user + shop Translations
     //
+    // eslint-disable-next-line consistent-return
     return Meteor.subscribe("Translations", language, () => {
       //
       // reduce and merge translations
@@ -180,8 +181,8 @@ Meteor.startup(() => {
           return $("html").removeClass("rtl");
         });
 
-        return null;
-    }); // return
+      return null;
+    });
   });
 
   // Detect user currency changes.

@@ -189,6 +189,8 @@ class AuthContainer extends Component {
         />
       );
     }
+
+    return null;
   }
 
   render() {

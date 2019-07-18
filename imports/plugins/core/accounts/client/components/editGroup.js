@@ -111,7 +111,7 @@ class EditGroup extends Component {
         Object.assign({}, this.state.alertOptions, { i18nKey: "admin.settings.updateGroupSuccess" })
       );
 
-      this.setState({ isEditing: false });
+      return this.setState({ isEditing: false });
     });
   };
 
