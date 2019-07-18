@@ -814,7 +814,7 @@ Meteor.methods({
         // Should be a call similar to the line below.
         [field]: createHandle(Reaction.getSlug(value), _id) // handle should be unique
       };
-    } else if (field === "title") {
+    } else if (field === "title" && !doc.handle) {
       // update handle once title is set
       const handle = createHandle(Reaction.getSlug(value), _id);
       update = {
