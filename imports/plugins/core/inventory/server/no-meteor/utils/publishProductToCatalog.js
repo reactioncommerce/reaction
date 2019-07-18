@@ -15,17 +15,12 @@ export default async function publishProductToCatalog(catalogProduct, { context 
   // catalogItems query results by them and to have them in Elasticsearch.
   // Build a productConfigurations array based on what's currently in `catalogProduct` object
   const productConfigurations = [];
-  const hiddenAndDeletedVariants = [];
   catalogProduct.variants.forEach((variant) => {
     productConfigurations.push({
       isSellable: !variant.options || variant.options.length === 0,
       productId,
       productVariantId: variant.variantId
     });
-
-    if (variant.isDeleted || !variant.isVisible) {
-      hiddenAndDeletedVariants.push(variant.variantId);
-    }
 
     if (variant.options) {
       variant.options.forEach((option) => {
@@ -34,10 +29,6 @@ export default async function publishProductToCatalog(catalogProduct, { context 
           productId,
           productVariantId: option.variantId
         });
-
-        if (option.isDeleted || !option.isVisible) {
-          hiddenAndDeletedVariants.push(option.variantId);
-        }
       });
     }
   });
@@ -50,13 +41,9 @@ export default async function publishProductToCatalog(catalogProduct, { context 
   });
 
   // Add inventory properties to the top level parent product.
-  // For this we need to filter out any invisible or deleted.
-  const visibleTopVariantsAndOptionsInventory = topVariantsAndOptionsInventory.filter(({ productConfiguration }) =>
-    !hiddenAndDeletedVariants.includes(productConfiguration.productVariantId));
-
-  catalogProduct.isBackorder = visibleTopVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isBackorder);
-  catalogProduct.isLowQuantity = visibleTopVariantsAndOptionsInventory.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity);
-  catalogProduct.isSoldOut = visibleTopVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isSoldOut);
+  catalogProduct.isBackorder = topVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isBackorder);
+  catalogProduct.isLowQuantity = topVariantsAndOptionsInventory.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity);
+  catalogProduct.isSoldOut = topVariantsAndOptionsInventory.every(({ inventoryInfo }) => inventoryInfo.isSoldOut);
 
   // add inventory props to each top level Variant
   catalogProduct.variants.forEach((variant) => {
