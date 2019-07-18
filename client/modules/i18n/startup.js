@@ -50,6 +50,8 @@ SimpleSchema.addValidator(function () {
       }
     }
   }
+
+  return null;
 });
 
 /**
@@ -177,6 +179,8 @@ Meteor.startup(() => {
           }
           return $("html").removeClass("rtl");
         });
+
+        return null;
     }); // return
   });
 

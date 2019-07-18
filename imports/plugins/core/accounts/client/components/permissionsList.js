@@ -76,6 +76,8 @@ class PermissionsList extends Component {
     if (this.props.updateGroup) {
       return this.props.updateGroup(this.state.group._id, groupData);
     }
+
+    return null;
   };
 
   checked = (permission) => {

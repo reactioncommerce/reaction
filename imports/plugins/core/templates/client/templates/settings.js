@@ -163,4 +163,6 @@ Blaze.TemplateInstance.prototype.parentTemplate = function (levels = 1) {
     numLevel -= 1;
     view = view.parentView;
   }
+
+  return null;
 };
