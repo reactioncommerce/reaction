@@ -300,7 +300,7 @@ export const rawMuiTheme = {
       },
       /* Styles applied to the root element if `padding="checkbox"`. */
       paddingCheckbox: {
-        padding: "4px 0 4px 4px",
+        padding: "4px 0 4px 4px"
       }
     }
   }
