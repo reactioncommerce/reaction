@@ -23,10 +23,10 @@ const styles = (theme) => ({
   },
   formActions: {
     textAlign: "right",
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   formActionButton: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   }
 });
 

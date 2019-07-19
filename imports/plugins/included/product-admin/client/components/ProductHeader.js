@@ -14,13 +14,13 @@ import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 
 const styles = (theme) => ({
   root: {
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 4
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(4)
   },
   breadcrumbs: {
     display: "flex",
     alignItems: "center",
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   breadcrumbIcon: {
     fontSize: 14

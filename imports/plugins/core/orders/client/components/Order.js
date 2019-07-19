@@ -14,7 +14,7 @@ import OrderPayments from "./OrderPayments";
 
 const styles = (theme) => ({
   tabs: {
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   }
 });
 
@@ -30,11 +30,12 @@ function Order(props) {
     <Fragment>
       <Helmet title={`Order Details for order reference #${order.referenceId}`} />
       <OrderAppBar order={order} />
-      <Grid container spacing={32}>
+      <Grid container spacing={4}>
+
         <Grid item xs={12}>
           <OrderHeader order={order} />
         </Grid>
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           <Grid item xs={12}>
             <OrderCardFulfillmentGroups order={order} />
           </Grid>
@@ -44,7 +45,7 @@ function Order(props) {
         </Grid>
       </Grid>
       <DetailDrawer title={i18next.t("orderCard.orderSummary.title", "Order summary")}>
-        <Grid container spacing={8}>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
             <Blocks region="OrderCardSummary" blockProps={{ order, ...props }} />
           </Grid>
