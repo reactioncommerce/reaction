@@ -348,6 +348,8 @@ class Form extends Component {
         </Components.FormActions>
       );
     }
+
+    return null;
   }
 
   render() {
