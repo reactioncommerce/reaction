@@ -64,6 +64,8 @@ GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
     geoAddress = Meteor.wrapAsync(gc)(geoAddress, this.options);
     return geoAddress[0];
   }
+
+  return null;
 };
 
 function rv(lat, lng, options, callback) {
