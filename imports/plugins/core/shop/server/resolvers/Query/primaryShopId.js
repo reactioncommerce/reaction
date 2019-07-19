@@ -1,12 +1,12 @@
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Query.primaryShopId"
+ * @name Query/primaryShopId
  * @method
  * @memberof Shop/GraphQL
  * @summary Gets the primary shop ID
- * @param {Object} parentObject - unused
- * @param {Object} args - unused
+ * @param {Object} _ - unused
+ * @param {Object} __ - unused
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<String>} The shop ID based on the domain in ROOT_URL
  */

@@ -39,7 +39,7 @@ const styles = (theme) => ({
 
 /**
  * ShopLogoWithData
- * @params {Object} props Component props
+ * @param {Object} props Component props
  * @returns {Node} React component
  */
 function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, linkTo, size }) {

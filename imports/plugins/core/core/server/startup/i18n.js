@@ -147,7 +147,7 @@ export function reloadAllTranslations() {
  * @method reloadTranslationsForShop
  * @memberof i18n
  * @summary Reload translations for specified shop
- * @param {string} shopId - Shop Id to reset translations for
+ * @param {String} shopId - Shop Id to reset translations for
  * @return {undefined}
 */
 export function reloadTranslationsForShop(shopId) {

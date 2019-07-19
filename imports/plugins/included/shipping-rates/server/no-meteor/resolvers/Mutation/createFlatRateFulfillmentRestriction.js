@@ -3,7 +3,7 @@ import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-grap
 import createFlatRateFulfillmentRestrictionMutation from "../../mutations/createFlatRateFulfillmentRestriction";
 
 /**
- * @name "Mutation/createFlatRateFulfillmentMethod"
+ * @name Mutation/createFlatRateFulfillmentMethod
  * @method
  * @memberof Fulfillment/GraphQL
  * @summary resolver for the createFlatRateFulfillmentMethod GraphQL mutation

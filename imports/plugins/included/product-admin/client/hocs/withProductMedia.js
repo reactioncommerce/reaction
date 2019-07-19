@@ -19,7 +19,11 @@ const wrapComponent = (Comp) => (
       editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       id: PropTypes.string,
       media: PropTypes.arrayOf(PropTypes.object),
-      placement: PropTypes.string
+      placement: PropTypes.string,
+      productId: PropTypes.string,
+      shopId: PropTypes.string,
+      userId: PropTypes.string,
+      variantId: PropTypes.string
     }
 
     // Load first image as featuredImage

@@ -29,11 +29,13 @@ class UpdatePassword extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
-  async componentWillMount() {
+  // eslint-disable-next-line camelcase
+  async UNSAFE_componentWillMount() {
     await this.setState({ showSpinner: false });
   }
 
-  componentWillReceiveProps() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps() {
     this.setState({ showSpinner: false });
   }
 

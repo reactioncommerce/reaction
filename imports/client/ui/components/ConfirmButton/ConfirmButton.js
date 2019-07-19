@@ -52,13 +52,21 @@ class ConfirmButton extends Component {
 
   renderButton = () => {
     const { buttonColor, buttonText, buttonVariant } = this.props;
+    // Remove unused "unknown" props to avoid react error: https://reactjs.org/warnings/unknown-prop.html
+    const propsToPass = Object.assign({}, this.props);
+    delete propsToPass.buttonColor;
+    delete propsToPass.buttonText;
+    delete propsToPass.buttonVariant;
+    delete propsToPass.cancelActionText;
+    delete propsToPass.confirmActionText;
+    delete propsToPass.onConfirm;
 
     return (
       <Button
         color={buttonColor}
         variant={buttonVariant}
         onClick={this.handleOpen}
-        {...this.props}
+        {...propsToPass}
       >
         {buttonText}
       </Button>

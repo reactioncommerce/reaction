@@ -211,6 +211,7 @@ ProductHeader.propTypes = {
   onRestoreProduct: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   option: PropTypes.object,
+  parentVariant: PropTypes.object,
   product: PropTypes.object,
   setMenuAnchorEl: PropTypes.func.isRequired,
   variant: PropTypes.object
