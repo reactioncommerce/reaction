@@ -61,6 +61,6 @@ Template.stripeConnectSignupButton.events({
 
     const stripeConnectAuthorizeUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&state=${shopId}&client_id=${clientId}&scope=read_write`;
     const autofillParams = `&stripe_user[email]=${defaultEmailAddress}&stripe_user[country]=${country}&stripe_user[phone_number]=${phoneNumber}&stripe_user[business_name]=${businessName}&stripe_user[street_address]=${streetAddress}&stripe_user[city]=${city}&stripe_user[state]=${state}&stripe_user[zip]=${zip}&stripe_user[first_name]=${firstName}&stripe_user[last_name]=${lastName}`; // eslint-disable-line max-len
-    window.open(stripeConnectAuthorizeUrl + autofillParams, "_blank");
+    return window.open(stripeConnectAuthorizeUrl + autofillParams, "_blank");
   }
 });

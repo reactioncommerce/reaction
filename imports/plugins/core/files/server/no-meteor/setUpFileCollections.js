@@ -81,7 +81,7 @@ export default function setUpFileCollections({
         fileRecord.extension(format, { store: name });
 
         // resizing image, adding mod, setting output format
-        return sharp().resize(size, size)[mod]().toFormat(format);
+        sharp().resize(size, size)[mod]().toFormat(format);
       }
     })
   );
