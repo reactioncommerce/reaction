@@ -72,7 +72,7 @@ function OrderPayments(props) {
     if (isPaymentRiskElevated(order, paymentIdList)) {
       capturePaymentsButton =
         <Grid item xs={6} md={6}>
-          <Grid container alignItems="center" justify="flex-end" spacing={8}>
+          <Grid container alignItems="center" justify="flex-end" spacing={1}>
             <Mutation mutation={captureOrderPaymentsMutation}>
               {(mutationFunc, { loading }) => (
                 <ConfirmButton
@@ -99,7 +99,7 @@ function OrderPayments(props) {
     } else {
       capturePaymentsButton =
         <Grid item xs={6} md={6}>
-          <Grid container alignItems="center" justify="flex-end" spacing={8}>
+          <Grid container alignItems="center" justify="flex-end" spacing={1}>
             <Mutation mutation={captureOrderPaymentsMutation}>
               {(mutationFunc, { loading }) => (
                 <Button
@@ -123,7 +123,7 @@ function OrderPayments(props) {
       <CardContent>
         <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
           <Grid item xs={6} md={6}>
-            <Grid container alignItems="center" spacing={16}>
+            <Grid container alignItems="center" spacing={2}>
               <Grid item>
                 <Typography variant="h4" inline={true}>
                   Payments

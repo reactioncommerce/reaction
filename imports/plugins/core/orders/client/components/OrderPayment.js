@@ -98,7 +98,7 @@ function OrderPayment(props) {
   }
 
   return (
-    <Grid container spacing={16}>
+    <Grid container spacing={2}>
       <Grid item xs={6} md={6}>
         <Typography variant="body1">
           {displayName}
