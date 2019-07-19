@@ -123,7 +123,7 @@ function ProductHeader(props) {
               className={classes.breadcrumbLink}
               to={`/operator/products/${product._id}/${parentVariant._id}`}
             >
-              {parentVariant.optionTitle || "Untitled Variant"}
+              {parentVariant.optionTitle || parentVariant.title || "Untitled Variant"}
             </Link>
           </Fragment>
         )}
@@ -135,7 +135,7 @@ function ProductHeader(props) {
               className={classes.breadcrumbLink}
               to={`/operator/products/${variant.ancestors.join("/")}/${variant._id}`}
             >
-              {variant.optionTitle || "Untitled Variant"}
+              {variant.optionTitle || variant.title || "Untitled Variant"}
             </Link>
           </Fragment>
         )}
