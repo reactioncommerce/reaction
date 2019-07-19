@@ -286,6 +286,14 @@ export const rawMuiTheme = {
         paddingBottom: 8
       }
     },
+    MuiSvgIcon: {
+      root: {
+        // This is a hack to fix issues with the base font-size in the bootstrap
+        // theme being 14px, not allowing for `pxToRem(24)` to be the correct value for MUI icons.
+        // This should be revisited once the Reaction admin no longer has a need for bootstrap.
+        fontSize: 24
+      }
+    },
     MuiTableCell: {
       root: {
         borderBottom: `1px solid ${colors.black10}`
