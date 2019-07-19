@@ -37,9 +37,10 @@ const styles = (theme) => ({
     }
   },
   icon: {
-    width: 32,
+    minWidth: 32,
     display: "flex",
     justifyContent: "center",
+    marginRight: theme.spacing(2),
     color: theme.palette.colors.coolGrey300
   },
   iconActive: {
@@ -61,8 +62,8 @@ const styles = (theme) => ({
     paddingLeft: 0
   },
   listItemNested: {
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: 0,
+    paddingBottom: 0,
     paddingLeft: theme.spacing(8)
   },
   link: {
