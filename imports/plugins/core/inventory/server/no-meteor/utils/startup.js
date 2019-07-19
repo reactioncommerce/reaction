@@ -1,3 +1,5 @@
+import publishProductToCatalog from "./publishProductToCatalog";
+
 /**
  * @summary Updates `isBackorder`, `isSoldOut`, and `isLowQuantity` as necessary for
  *   a single CatalogProduct. Call this whenever inventory changes for one or more
@@ -7,36 +9,16 @@
  * @return {undefined}
  */
 async function updateInventoryBooleansInCatalog(context, productId) {
-  const { collections: { Catalog, Products } } = context;
+  const { collections: { Catalog } } = context;
 
-  const variants = await Products.find({
-    ancestors: productId,
-    isDeleted: { $ne: true },
-    isVisible: true
-  }, {
-    _id: 1,
-    ancestors: 1,
-    shopId: 1
-  }).toArray();
+  const catalogItem = await Catalog.findOne({ "product.productId": productId });
+  const { product: catalogProduct } = catalogItem;
 
-  const topVariants = variants.filter((variant) => variant.ancestors.length === 1);
-  if (topVariants.length === 0) return;
-
-  const topVariantsInventoryInfo = await context.queries.inventoryForProductConfigurations(context, {
-    fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
-    productConfigurations: topVariants.map((option) => ({
-      isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
-      productId: option.ancestors[0],
-      productVariantId: option._id
-    })),
-    shopId: topVariants[0].shopId
-  });
+  await publishProductToCatalog(catalogProduct, { context });
 
   await Catalog.updateOne({ "product.productId": productId }, {
     $set: {
-      "product.isBackorder": topVariantsInventoryInfo.every(({ inventoryInfo }) => inventoryInfo.isBackorder),
-      "product.isLowQuantity": topVariantsInventoryInfo.some(({ inventoryInfo }) => inventoryInfo.isLowQuantity),
-      "product.isSoldOut": topVariantsInventoryInfo.every(({ inventoryInfo }) => inventoryInfo.isSoldOut)
+      product: catalogProduct
     }
   });
 }
