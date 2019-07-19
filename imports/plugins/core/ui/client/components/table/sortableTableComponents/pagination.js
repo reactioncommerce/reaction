@@ -85,7 +85,7 @@ class SortableTablePagination extends Component {
                     if (val === "") {
                       return this.setState({ page: val });
                     }
-                    this.setState({ page: this.getSafePage(currentPage) });
+                    return this.setState({ page: this.getSafePage(currentPage) });
                   }}
                   value={this.state.page === "" ? "" : this.state.page + 1}
                   onBlur={this.applyPage}
@@ -121,6 +121,7 @@ class SortableTablePagination extends Component {
               if (canPrevious) {
                 return this.changePage(page - 1);
               }
+              return null;
             }}
             disabled={!canPrevious}
           >
@@ -134,6 +135,7 @@ class SortableTablePagination extends Component {
               if (canNext) {
                 return this.changePage(page + 1);
               }
+              return null;
             }}
             disabled={!canNext}
           >
