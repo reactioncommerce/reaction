@@ -81,6 +81,7 @@
     "libphonenumber-js": "1.4.2",
     "lodash": "^4.17.13",
     "match-sorter": "^2.3.0",
+    "mdi-material-ui": "^6.2.0",
     "meteor-node-stubs": "0.4.1",
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
