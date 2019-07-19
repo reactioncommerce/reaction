@@ -50,7 +50,8 @@ describe("Update Package", function () {
       }
       expect(() => updatePackage([], "someField", { foo: "bar" })).to.throw(Match.Error, /Match error: Expected string, got object/);
       expect(() => updatePackage("somePackage", [], { foo: "bar" })).to.throw(Match.Error, /Match error: Expected string, got object/);
-      expect(() => updatePackage("somePackage", "someField", "")).to.throw(Match.Error, /Match error: Expected object, got string/);
+      expect(() => updatePackage("somePackage", "someField", ""))
+        .to.throw(Match.Error, /Match error: Failed Match.OneOf, Match.Maybe or Match.Optional validation/);
       expect(pkgUpdateSpy).to.not.have.been.called;
 
       return done();

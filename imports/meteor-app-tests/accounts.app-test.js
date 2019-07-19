@@ -51,6 +51,8 @@ describe("Account Meteor method ", function () {
     // set the _id... some code requires that Account#_id === Account#userId
     fakeAccount = Factory.create("account", { _id: userId, userId, shopId });
     sandbox.stub(Meteor, "user", () => fakeUser);
+    sandbox.stub(Meteor.users, "findOne", () => fakeUser);
+    sandbox.stub(Reaction, "getUserId", () => userId);
     sandbox.stub(Reaction, "getShopId", () => shopId);
 
     Object.keys(originals).forEach((method) => spyOnMethod(method, userId));
@@ -134,16 +136,6 @@ describe("Account Meteor method ", function () {
       }).to.not.throw();
       expect(updateAccountSpy).to.not.have.been.called;
     });
-
-    it("should not let non-Admin to edit address of another user", function () {
-      const account2 = Factory.create("account");
-      const accountUpdateSpy = sandbox.spy(Accounts, "update");
-
-      expect(() => Meteor.call("accounts/addressBookUpdate", getAddress(), account2._id))
-        .to.throw(ReactionError, /Access denied/);
-
-      expect(accountUpdateSpy).to.not.have.been.called;
-    });
   });
 
   describe("addressBookRemove", function () {
@@ -198,20 +190,9 @@ describe("Account Meteor method ", function () {
       expect(updateAccountSpy).to.not.have.been.called;
     });
 
-    it("should not let non-Admin to remove address of another user", function () {
-      const account2 = Factory.create("account");
-      const address2 = account2.profile.addressBook[0];
-      const accountUpdateSpy = sandbox.spy(Accounts, "update");
-      expect(() => Meteor.call(
-        "accounts/addressBookRemove",
-        address2._id, account2.userId
-      )).to.throw(ReactionError, /Access denied/);
-      expect(accountUpdateSpy).to.not.have.been.called;
-    });
-
     it("should throw an error if address does not exist to remove", function () {
       expect(() => Meteor.call("accounts/addressBookRemove", "asdasdasd"))
-        .to.throw(ReactionError, /Unable to remove address from account/);
+        .to.throw(ReactionError, /Address Not Found/);
     });
   });
 

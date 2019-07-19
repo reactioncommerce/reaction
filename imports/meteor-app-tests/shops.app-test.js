@@ -82,16 +82,17 @@ describe("core shop methods", function () {
         shopId = Random.id();
         name = Random.id();
 
-        Factory.create("account", { _id: userId, shopId });
-
-        sandbox.stub(Meteor, "user", () => ({
-          userId,
+        Factory.create("user", {
+          _id: userId,
           emails: [{
             address: `${userId}@example.com`,
             provides: "default",
             verified: true
           }]
-        }));
+        });
+        Factory.create("account", { userId, shopId });
+
+        sandbox.stub(Reaction, "getUserId", () => userId);
         sandbox.stub(Reaction, "hasPermission", () => true);
         sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
 

@@ -54,8 +54,7 @@ describe("orders test", function () {
     sandbox = sinon.sandbox.create();
     order = Factory.create("order");
     sandbox.stub(Reaction, "getShopId", () => order.shopId);
-    const { payment } = shippingObjectMethod(order);
-    sandbox.stub(payment, "paymentPluginName", example.name);
+    sandbox.stub(order.payments[0], "paymentPluginName", example.name);
     return done();
   });
 

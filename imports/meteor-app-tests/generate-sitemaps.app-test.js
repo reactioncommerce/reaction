@@ -42,7 +42,7 @@ describe("generateSitemaps", () => {
     const { _id: shopId } = primaryShop;
 
     // Create a visible tag and product for our primary shop
-    Factory.create("tag", { shopId });
+    Factory.create("tag", { shopId, slug: "slug1" });
     Factory.create("product", { shopId });
 
     generateSitemaps({ urlsPerSitemap: 1 }); // 1 URL per sitemap
@@ -76,12 +76,12 @@ describe("generateSitemaps", () => {
   it("should not include deleted/non-visible products in sitemaps", () => {
     const { _id: shopId } = primaryShop;
 
-    Factory.create("tag", { shopId });
-    Factory.create("product", { shopId });
+    const tag1 = Factory.create("tag", { shopId, slug: "slug2" });
+    Factory.create("product", { shopId, hashtags: [tag1._id] });
 
     // Create a deleted/non-visible tag and product
-    Factory.create("tag", { shopId, isVisible: false, isDeleted: true });
-    Factory.create("product", { shopId, isVisible: false, isDeleted: true });
+    const tag2 = Factory.create("tag", { shopId, isVisible: false, isDeleted: true, slug: "slug3" });
+    Factory.create("product", { shopId, hashtags: [tag2._id], isVisible: false, isDeleted: true });
 
     generateSitemaps({ urlsPerSitemap: 1 }); // 1 URL per sitemap
 
@@ -100,7 +100,7 @@ describe("generateSitemaps", () => {
 
     // Create 4 visible tags
     for (let inc = 0; inc < 4; inc += 1) {
-      Factory.create("tag", shopFields);
+      Factory.create("tag", { ...shopFields, slug: `tag${inc}` });
     }
 
     generateSitemaps({ urlsPerSitemap: 2 }); // 2 URLs per sitemap

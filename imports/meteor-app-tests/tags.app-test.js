@@ -32,6 +32,7 @@ describe("Tags Publication", () => {
     shop = Factory.create("shop");
 
     sandbox.stub(Reaction, "getPrimaryShopId", () => primaryShop._id);
+    sandbox.stub(Reaction, "hasPermission", () => true);
 
     Collections.Tags.remove({});
 
@@ -56,29 +57,16 @@ describe("Tags Publication", () => {
     Collections.Tags.insert(tag);
 
     const expectedTags = [...tags, tag];
+    const tagIds = expectedTags.map((expectedTag) => expectedTag._id);
+    tagIds.sort();
 
     sandbox.stub(Reaction, "getShopId", () => primaryShop._id);
 
-    collector.collect("Tags", (collections) => {
+    collector.collect("Tags", tagIds, (collections) => {
       const collectionTags = collections.Tags;
 
-      expect(collectionTags.map((collectionTag) => collectionTag.name))
-        .to.eql(expectedTags.map((collectionTag) => collectionTag.name));
-    }).then(() => done()).catch(done);
-  });
-
-  it("scopes the list of Tags to the current merchant shop", (done) => {
-    // create a tag for a Merchant Shop
-    const tag = createTag({ shopId: shop._id });
-    Collections.Tags.insert(tag);
-
-    sandbox.stub(Reaction, "getShopId", () => shop._id);
-
-    collector.collect("Tags", (collections) => {
-      const collectionTags = collections.Tags;
-
-      expect(collectionTags.map((collectionTag) => collectionTag.name))
-        .to.eql([tag.name]);
+      expect(collectionTags.map((collectionTag) => collectionTag._id).sort())
+        .to.eql(tagIds);
     }).then(() => done()).catch(done);
   });
 

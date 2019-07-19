@@ -49,14 +49,6 @@ describe("Account Registration Validation ", function () {
       });
     });
 
-    it("should allow a blank optional email address", function (done) {
-      const email = "";
-      Meteor.call("accounts/validation/email", email, true, function (error, result) {
-        expect(result).to.be.true;
-        return done();
-      });
-    });
-
     it("should allow a valid, supplied, optional email address", function (done) {
       const email = "email@website.com";
       Meteor.call("accounts/validation/email", email, true, function (error, result) {
