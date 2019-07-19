@@ -289,6 +289,10 @@ export const rawMuiTheme = {
     MuiTableCell: {
       root: {
         borderBottom: `1px solid ${colors.black10}`
+      },
+      /* Styles applied to the root element if `padding="checkbox"`. */
+      paddingCheckbox: {
+        padding: "4px 0 4px 4px",
       }
     }
   }
