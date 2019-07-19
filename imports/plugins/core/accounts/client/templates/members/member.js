@@ -123,6 +123,8 @@ Template.memberSettings.helpers({
           permissions: _.uniq(permissions)
         });
       }
+
+      return null;
     });
 
     return permissionGroups;

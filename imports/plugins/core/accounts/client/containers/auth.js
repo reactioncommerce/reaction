@@ -210,9 +210,9 @@ class AuthContainer extends Component {
 }
 
 /**
- * @summary Composer
- * @param {Object} props Provided props
- * @param {Function} onData Call this with props
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
  * @returns {undefined}
  */
 function composer(props, onData) {

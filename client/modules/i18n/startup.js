@@ -18,6 +18,7 @@ import { mergeDeep } from "/lib/api";
  * Every schema that feature an expireMonth and an expireYear
  * field will be validated against the dateBeforeNow rule.
  */
+// eslint-disable-next-line consistent-return
 SimpleSchema.addValidator(function () {
   let expireMonth;
   let expireYear;

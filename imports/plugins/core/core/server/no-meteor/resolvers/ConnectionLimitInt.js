@@ -1,10 +1,11 @@
+/* eslint-disable consistent-return */
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
 const MAX_LIMIT = 200;
 
 /**
- * Adjusts value to be between 1 and MAX_LIMIT, inclusive
+ * @description Adjusts value to be between 1 and MAX_LIMIT, inclusive
  * @private
  * @param {Number|undefined} value value to check
  * @return {Number|undefined} parsed value

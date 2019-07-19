@@ -82,6 +82,8 @@ Template.accountsDashboard.helpers({
         });
       }
     }
+
+    return null;
   },
 
   accountsDashboard() {
