@@ -9,6 +9,7 @@
  * @memberof TestHelpers
  * @param {String} collectionName - name of the collection
  * @param {Any} results - results to be returned as part of the cursor
+ * @param {Object} options - options to pass to the query
  * @return {Object} fake cursor
  */
 export default function getFakeMongoCursor(collectionName, results, options) {

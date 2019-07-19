@@ -66,3 +66,4 @@ import "./64_rename_navigation_package";
 import "./65_update_navigation_tree";
 import "./66_attribute_labels";
 import "./67_order_tokens";
+import "./68_add_is_sold_out_to_variants_and_options";

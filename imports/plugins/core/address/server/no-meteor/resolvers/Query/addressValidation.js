@@ -1,7 +1,7 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Query.addressValidation"
+ * @name Query/addressValidation
  * @method
  * @memberof Address/GraphQL
  * @summary Returns address validation results for an address
