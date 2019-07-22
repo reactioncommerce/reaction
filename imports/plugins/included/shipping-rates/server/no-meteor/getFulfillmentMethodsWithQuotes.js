@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import isShippingRestricted from "./util/isShippingRestricted";
 import filterShippingMethods from "./util/filterShippingMethods";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
@@ -19,6 +20,9 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   const { collections } = context;
   const { Packages, Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;
+
+  const primaryShopId = Reaction.getPrimaryShopId();
+
   const currentMethodInfo = {
     packageName: "flat-rate-shipping",
     fileName: "hooks.js"
@@ -46,7 +50,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
 
   const pkgData = await Packages.findOne({
     name: "reaction-shipping-rates",
-    shopId: commonOrder.shopId
+    shopId: primaryShopId
   });
 
   if (!pkgData || pkgData.settings.flatRates.enabled !== true) {
@@ -54,7 +58,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   }
 
   const shippingRateDocs = await Shipping.find({
-    "shopId": commonOrder.shopId,
+    "shopId": primaryShopId,
     "provider.enabled": true
   }).toArray();
 
