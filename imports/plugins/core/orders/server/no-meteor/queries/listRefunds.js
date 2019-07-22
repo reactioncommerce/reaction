@@ -36,7 +36,11 @@ export default async function listRefunds(context, { orderId, shopId, token } = 
       /* eslint-disable no-await-in-loop */
       const shopRefunds = await getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment);
       /* eslint-enable no-await-in-loop */
-      const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({ ...shopRefund, paymentId: payment._id }));
+      const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({
+        ...shopRefund,
+        paymentId: payment._id,
+        paymentDisplayName: payment.displayName
+      }));
       refunds.push(...shopRefundsWithPaymentId);
     }
   }
