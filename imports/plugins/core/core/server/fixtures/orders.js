@@ -1,11 +1,11 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 import faker from "faker";
 import _ from "lodash";
 import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
 import { Orders, Products } from "/lib/collections";
 import { getShop } from "./shops";
-import { getUser } from "./users";
-import { getAddress } from "./accounts";
+import { getAccount, getAddress } from "./accounts";
 import { addProduct } from "./products";
 
 /**
@@ -51,12 +51,12 @@ export function randomMode() {
 }
 
 /**
- * @method getUserId
+ * @method getAccountId
  * @memberof Fixtures
  * @return {String} ID
  */
-export function getUserId() {
-  return getUser()._id;
+export function getAccountId() {
+  return getAccount()._id;
 }
 
 /**
@@ -75,6 +75,7 @@ export function getShopId() {
  */
 export default function defineOrders() {
   const shopId = getShopId();
+  const accountId = getAccountId();
 
   /**
    * @name order
@@ -136,7 +137,7 @@ export default function defineOrders() {
 
     // Schemas.Cart
     shopId,
-    accountId: Random.id(),
+    accountId,
     email: faker.internet.email(),
     workflow: {
       status: "new",
@@ -242,7 +243,7 @@ export default function defineOrders() {
         displayName: "MasterCard 2346",
         method: "credit",
         mode: "authorize",
-        name: "name",
+        name: "iou_example",
         paymentPluginName: "example-paymentmethod",
         processor: "Example",
         shopId,
