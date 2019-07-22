@@ -15,7 +15,7 @@ import { compose } from "recompose";
 
 const styles = (theme) => ({
   card: {
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   }
 });
 

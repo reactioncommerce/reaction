@@ -37,7 +37,7 @@ export default async function updateTag(context, input) {
     throw new ReactionError("access-denied", "User does not have permission");
   }
 
-  let metafields = [];
+  const metafields = [];
 
   // Filter out blank meta fields
   Array.isArray(input.metafields) && input.metafields.forEach((field) => {

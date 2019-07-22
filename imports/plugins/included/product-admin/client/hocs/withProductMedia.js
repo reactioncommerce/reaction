@@ -19,7 +19,11 @@ const wrapComponent = (Comp) => (
       editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       id: PropTypes.string,
       media: PropTypes.arrayOf(PropTypes.object),
-      placement: PropTypes.string
+      placement: PropTypes.string,
+      productId: PropTypes.string,
+      shopId: PropTypes.string,
+      userId: PropTypes.string,
+      variantId: PropTypes.string
     }
 
     // Load first image as featuredImage
@@ -219,8 +223,8 @@ const wrapComponent = (Comp) => (
  * @returns {Array<Object>} sorted media
  */
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, (m) => {
-    const { priority } = (m && m.metadata) || {};
+  const sortedMedia = _.sortBy(media, (med) => {
+    const { priority } = (med && med.metadata) || {};
     if (!priority && priority !== 0) {
       return 1000;
     }

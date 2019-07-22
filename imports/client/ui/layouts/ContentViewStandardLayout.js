@@ -11,17 +11,17 @@ const styles = (theme) => ({
   },
   content: {
     maxWidth: 1140,
-    paddingTop: theme.mixins.toolbar.minHeight + (theme.spacing.unit * 2),
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.mixins.toolbar.minHeight + (theme.spacing(2)),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     margin: "0 auto"
   },
   leadingDrawerOpen: {
-    paddingLeft: theme.spacing.drawerWidth
+    paddingLeft: theme.dimensions.drawerWidth
   },
   trailingDrawerOpen: {
-    paddingRight: theme.spacing.detailDrawerWidth
+    paddingRight: theme.dimensions.detailDrawerWidth
   }
 });
 

@@ -296,6 +296,9 @@ type OrderFulfillmentGroup implements Node {
   "The fulfillment method that was selected, with its price quote"
   selectedFulfillmentOption: FulfillmentOption!
 
+  "The shipping label URL"
+  shippingLabelUrl: String
+
   "The shop responsible for fulfilling this order"
   shop: Shop!
 

@@ -35,6 +35,7 @@ VariantHeader.propTypes = {
   cloneVariant: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
   option: PropTypes.object,
+  parentVariant: PropTypes.object,
   product: PropTypes.object,
   removeVariant: PropTypes.func,
   restoreVariant: PropTypes.func,

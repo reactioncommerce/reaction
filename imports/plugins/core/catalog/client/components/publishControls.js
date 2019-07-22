@@ -8,7 +8,7 @@ import PrimaryAppBar from "/imports/client/ui/components/PrimaryAppBar/PrimaryAp
 
 const styles = (theme) => ({
   label: {
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing(2)
   }
 });
 

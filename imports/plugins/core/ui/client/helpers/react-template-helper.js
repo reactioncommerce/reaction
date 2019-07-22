@@ -69,12 +69,12 @@ function parentTemplateName() {
   // find the first parent view which is a template or body
   view = view.parentView;
   while (view) {
-    const m = view.name.match(/^Template\.(.*)/);
+    const match = view.name.match(/^Template\.(.*)/);
     // check `view.name.match(/^Template\./)` because iron-router (and
     // maybe other packages) create a view named "yield" that has the
     // `template` property set
-    if (view.template && view.name && m) {
-      return m[1];
+    if (view.template && view.name && match) {
+      return match[1];
     } else if (view.name === "body") {
       return "<body>";
     }
