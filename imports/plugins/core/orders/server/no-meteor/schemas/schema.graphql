@@ -407,13 +407,13 @@ type Refund implements Node {
   _id: ID!
 
   "The amount of the refund"
-  amount: Float
+  amount: Money!
 
   "The date and time at which the refund was created"
-  created: DateTime
+  createdAt: DateTime!
 
-  "The code for the currency in which all values are being provided"
-  currency: String
+  "The display name of the payment refunded to"
+  paymentDisplayName: String!
 
   "The reason for the refund"
   reason: String
