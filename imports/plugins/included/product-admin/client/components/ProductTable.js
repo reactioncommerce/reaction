@@ -13,7 +13,7 @@ import withCreateProduct from "../hocs/withCreateProduct";
  */
 function ProductTable({ onCreateProduct }) {
   return (
-    <Grid container spacing={24}>
+    <Grid container spacing={3}>
       <Grid item sm={12}>
         <Button
           color="primary"
