@@ -1,4 +1,7 @@
 extend type Query {
+  "Get refunds applied to an order by order ID"
+  listRefunds(orderId: ID!, shopId: ID!, token: String): [Refund]
+
   "Get an order by its ID"
   orderById(id: ID!, shopId: ID!, token: String): Order
 
@@ -86,6 +89,12 @@ enum OrdersByAccountIdSortByField {
 
   "Sort by the date and time when the order was placed"
   createdAt
+}
+
+"The fields by which you are allowed to sort any query that returns a `NavigationItemConnection`"
+enum RefundType {
+  "Basic refund"
+  refund
 }
 
 """
@@ -390,6 +399,27 @@ type OrderNote {
 
   "The date and time at which this note was last updated"
   updatedAt: DateTime!
+}
+
+"A refund of a payment on an order"
+type Refund implements Node {
+  "The refund ID"
+  _id: ID!
+
+  "The amount of the refund"
+  amount: Float
+
+  "The date and time at which the refund was created"
+  created: DateTime
+
+  "The code for the currency in which all values are being provided"
+  currency: String
+
+  "The reason for the refund"
+  reason: String
+
+  "The type of refund"
+  type: RefundType
 }
 
 "Input for an `OrderFulfillmentGroupItem`"
