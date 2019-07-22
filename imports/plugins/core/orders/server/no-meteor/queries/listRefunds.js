@@ -29,7 +29,7 @@ export default async function listRefunds(context, { orderId, shopId, token } = 
   if (!order) {
     throw new ReactionError("not-found", "Order not found");
   }
-  
+
   const refunds = [];
 
   if (Array.isArray(order.payments)) {
