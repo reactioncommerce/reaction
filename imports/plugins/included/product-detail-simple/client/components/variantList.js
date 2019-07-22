@@ -204,7 +204,9 @@ VariantList.propTypes = {
   onEditVariant: PropTypes.func,
   onMoveVariant: PropTypes.func,
   onVariantClick: PropTypes.func,
+  onVariantEditComplete: PropTypes.func,
   onVariantVisibiltyToggle: PropTypes.func,
+  selectedVariant: PropTypes.string,
   variantIsSelected: PropTypes.func,
   variants: PropTypes.arrayOf(PropTypes.object)
 };

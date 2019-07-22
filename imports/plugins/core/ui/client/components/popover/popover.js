@@ -9,7 +9,8 @@ class Popover extends Component {
     isOpen: false
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.isControlled) {
       this.setState({
         isOpen: nextProps.isOpen

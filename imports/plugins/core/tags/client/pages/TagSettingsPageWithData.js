@@ -23,6 +23,7 @@ class TagSettings extends Component {
     history: PropTypes.shape({
       push: PropTypes.func.isRequired
     }),
+    isLoadingPrimaryShopId: PropTypes.bool,
     isLoadingShopId: PropTypes.bool,
     shopId: PropTypes.string.isRequired
   }

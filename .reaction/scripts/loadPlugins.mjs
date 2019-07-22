@@ -94,7 +94,7 @@ function getImportPaths(baseDirPath) {
       Log.info(`Installing dependencies for ${plugin}...\n`);
 
       try {
-        childProcess.execSync(`cd ${baseDirPath}${plugin} && meteor npm i`, { stdio: 'inherit' });
+        childProcess.execSync(`cd ${baseDirPath}${plugin} && npm i`, { stdio: 'inherit' });
       } catch (err) {
         Log.error(`Failed to install npm dependencies for plugin: ${plugin}`);
         process.exit(1);

@@ -43,7 +43,7 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
       query.shopId = { $in: shopIdsUserHasPermissionFor };
     } else {
       shopIds.forEach((shopId) => {
-        if (!userHasPermission(["orders"], shopId)) {
+        if (!userHasPermission(["orders", "order/fulfillment"], shopId)) {
           throw new ReactionError("access-denied", "Access Denied");
         }
       });

@@ -2,7 +2,7 @@ import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 
 /**
- * @name "Mutation.removeAccountFromGroup"
+ * @name Mutation/removeAccountFromGroup
  * @method
  * @memberof Accounts/GraphQL
  * @summary resolver for the removeAccountFromGroup GraphQL mutation

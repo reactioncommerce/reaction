@@ -17,7 +17,8 @@ class SortableTablePagination extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ page: nextProps.page });
   }
 

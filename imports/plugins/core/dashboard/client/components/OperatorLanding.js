@@ -8,7 +8,7 @@ import ShopLogoWithData from "/imports/client/ui/components/ShopLogoWithData/Sho
 
 /**
  * OperatorLanding
- * @params {Object} props Component props
+ * @param {Object} props Component props
  * @returns {Node} React component
  */
 function OperatorLanding() {
@@ -20,14 +20,14 @@ function OperatorLanding() {
         direction="column"
         justify="center"
         alignItems="center"
-        spacing={40}
+        spacing={5}
       >
         <Grid item />
         <Grid item>
           <ShopLogoWithData size={100} />
         </Grid>
         <Grid item>
-          <Typography align="center" variant="body2">
+          <Typography align="center" variant="body1">
             {/* eslint-disable-next-line max-len */}
             Use the Operator UI to manage <Link to="/operator/orders">Orders</Link>, <Link to="/operator/products">Products</Link>, <Link to="/operator/tags">Tags</Link>, <Link to="/operator/accounts">Accounts</Link>, and <Link to="/operator/navigation">Navigation</Link>, or change shop settings.
           </Typography>
