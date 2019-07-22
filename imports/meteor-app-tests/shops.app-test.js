@@ -41,6 +41,14 @@ describe("Shop Methods", function () {
 describe("core shop methods", function () {
   let sandbox;
 
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      done();
+    });
+  });
+
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
   });
@@ -54,6 +62,7 @@ describe("core shop methods", function () {
     let insertShopSpy;
 
     beforeEach(function () {
+      this.timeout(20000);
       Shops.remove({});
 
       primaryShop = Factory.create("shop");

@@ -63,6 +63,7 @@ describe("core product methods", function () {
 
   describe("products/cloneVariant", function () {
     it("should throw 403 error by non admin", function () {
+      this.timeout(20000);
       sandbox.stub(Roles, "userIsInRole", () => false);
       const product = addProduct();
       const variants = Products.find({ ancestors: [product._id] }).fetch();

@@ -27,7 +27,8 @@ describe("Update Package", function () {
   });
 
   describe("package/update", function () {
-    it("should throw an 'Access Denied' error for non-admins", function (done) {
+    it("should throw an 'Access Denied' error for non-admins", function () {
+      this.timeout(20000);
       const pkgUpdateSpy = sandbox.spy(Packages, "update");
       const examplePackage = Factory.create("examplePackage");
 
@@ -36,11 +37,10 @@ describe("Update Package", function () {
       }
       expect(updatePackage).to.throw(ReactionError, /Access Denied/);
       expect(pkgUpdateSpy).to.not.have.been.called;
-
-      return done();
     });
 
-    it("should throw an error when supplied with an argument of the wrong type", function (done) {
+    it("should throw an error when supplied with an argument of the wrong type", function () {
+      this.timeout(20000);
       const pkgUpdateSpy = sandbox.spy(Packages, "update");
       sandbox.stub(Reaction, "getShopId", () => "randomId");
       sandbox.stub(Reaction, "hasPermission", () => true);
@@ -53,11 +53,10 @@ describe("Update Package", function () {
       expect(() => updatePackage("somePackage", "someField", ""))
         .to.throw(Match.Error, /Match error: Failed Match.OneOf, Match.Maybe or Match.Optional validation/);
       expect(pkgUpdateSpy).to.not.have.been.called;
-
-      return done();
     });
 
-    it("should be able to update any Package", function (done) {
+    it("should be able to update any Package", function () {
+      this.timeout(20000);
       const packageUpdateSpy = sandbox.spy(Packages, "update");
       const oldPackage = Factory.create("examplePackage");
 
@@ -73,8 +72,6 @@ describe("Update Package", function () {
       const updatedPackage = Packages.findOne({ name: packageName });
       expect(oldPackage.settings.enabled).to.not.equal(updatedPackage.settings.enabled);
       expect(oldPackage.settings.apiUrl).to.not.equal(updatedPackage.settings.apiUrl);
-
-      return done();
     });
   });
 });
