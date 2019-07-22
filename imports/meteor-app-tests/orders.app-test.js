@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
-import { getUser } from "/imports/plugins/core/core/server/fixtures/users"
+import { getUser } from "/imports/plugins/core/core/server/fixtures/users";
 import { Orders, Notifications } from "/lib/collections";
 
 describe("orders test", function () {
