@@ -25,11 +25,12 @@ export default async function listRefunds(context, { orderId, shopId, token } = 
 
   const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
   const order = await context.collections.Orders.findOne(selector);
-  const refunds = [];
 
   if (!order) {
     throw new ReactionError("not-found", "Order not found");
   }
+  
+  const refunds = [];
 
   if (Array.isArray(order.payments)) {
     for (const payment of order.payments) {
