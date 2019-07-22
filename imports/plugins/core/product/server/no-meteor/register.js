@@ -18,7 +18,7 @@ export default async function register(app) {
           // with indexes created by the aldeed:schema-index Meteor package.
           [{ ancestors: 1 }, { name: "c2_ancestors" }],
           [{ createdAt: 1 }, { name: "c2_createdAt" }],
-          [{ handle: 1 }, { name: "c2_handle" }],
+          [{ handle: 1 }, { name: "c2_handle" }, { unique: true }],
           [{ hashtags: 1 }, { name: "c2_hashtags" }],
           [{ shopId: 1 }, { name: "c2_shopId" }],
           [{ "workflow.status": 1 }, { name: "c2_workflow.status" }]
