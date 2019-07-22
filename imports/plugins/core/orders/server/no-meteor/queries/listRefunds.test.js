@@ -1,5 +1,4 @@
 /* eslint camelcase: 0 */
-import nock from "nock";
 import listRefunds from "./listRefunds";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 
