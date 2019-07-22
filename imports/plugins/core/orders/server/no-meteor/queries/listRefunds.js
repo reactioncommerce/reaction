@@ -15,9 +15,14 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @return {Promise<Array>|undefined} - An array of refunds applied to this order, if found
  */
 export default async function listRefunds(context, { orderId, shopId, token } = {}) {
+  const { userHasPermission } = context;
+
+  if (!userHasPermission(["orders", "order/fulfillment", "order/view"], shopId)) throw new ReactionError("access-denied", "User does not have permission");
+
   if (!orderId || !shopId) {
     throw new ReactionError("invalid-param", "You must provide orderId and shopId arguments");
   }
+
   const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
   const order = await context.collections.Orders.findOne(selector);
   const refunds = [];
