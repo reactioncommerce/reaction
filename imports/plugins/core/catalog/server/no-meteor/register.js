@@ -23,9 +23,9 @@ export default async function register(app) {
           [{ createdAt: 1, _id: 1 }],
           [{ updatedAt: 1, _id: 1 }],
           [{ shopId: 1 }],
-          [{ "product._id": 1 }],
-          [{ "product.productId": 1 }],
-          [{ "product.slug": 1 }],
+          [{ "product._id": 1 }, { unique: true }],
+          [{ "product.productId": 1 }, { unique: true }],
+          [{ "product.slug": 1 }, { unique: true }],
           [{ "product.tagIds": 1 }]
         ]
       }
