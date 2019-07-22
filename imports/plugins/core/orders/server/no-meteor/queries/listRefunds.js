@@ -27,6 +27,10 @@ export default async function listRefunds(context, { orderId, shopId, token } = 
   const order = await context.collections.Orders.findOne(selector);
   const refunds = [];
 
+  if (!order) {
+    throw new ReactionError("not-found", "Order not found");
+  }
+
   if (Array.isArray(order.payments)) {
     for (const payment of order.payments) {
       /* eslint-disable no-await-in-loop */

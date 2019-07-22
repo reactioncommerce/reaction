@@ -33,7 +33,8 @@ test("throws if the order doesn't exist", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(listRefunds(mockContext, {
-    orderId: "order1"
+    orderId: "order1",
+    shopId: order.shopId
   })).rejects.toThrowErrorMatchingSnapshot();
 });
 

@@ -6,4 +6,4 @@ exports[`throws if permission check fails 1`] = `"User does not have permission"
 
 exports[`throws if shopId isn't supplied 1`] = `"You must provide orderId and shopId arguments"`;
 
-exports[`throws if the order doesn't exist 1`] = `"You must provide orderId and shopId arguments"`;
+exports[`throws if the order doesn't exist 1`] = `"Order not found"`;
