@@ -20,13 +20,13 @@ const styles = (theme) => ({
     border: `1px solid ${theme.palette.colors.black10}`,
     fontSize: "0.73rem",
     display: "inline-block",
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   },
   cardContent: {
     display: "flex",
     alignItems: "center",
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
+    paddingLeft: theme.spacing(),
+    paddingRight: theme.spacing(),
     height: "100%"
   },
   dragIcon: {

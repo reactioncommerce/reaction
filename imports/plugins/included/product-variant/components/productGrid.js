@@ -234,7 +234,7 @@ class ProductGrid extends Component {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell padding="checkbox">
                   <Checkbox
                     onClick={this.handleSelectAll}
                     checked={isAllSelected}

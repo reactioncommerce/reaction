@@ -20,7 +20,7 @@ function OperatorLanding() {
         direction="column"
         justify="center"
         alignItems="center"
-        spacing={40}
+        spacing={5}
       >
         <Grid item />
         <Grid item>

@@ -165,13 +165,13 @@ class OrderCardFulfillmentGroups extends Component {
       const { data: { shippingAddress }, displayStatus, status } = fulfillmentGroup;
 
       return (
-        <Grid container key={fulfillmentGroup._id} spacing={32}>
+        <Grid container key={fulfillmentGroup._id} spacing={4}>
           <Grid item xs={12}>
             <Card elevation={0}>
               <CardContent>
                 <Grid container alignItems="center" className={classes.fulfillmentGroupHeader}>
                   <Grid item xs={6} md={6}>
-                    <Grid container alignItems="center" spacing={16}>
+                    <Grid container alignItems="center" spacing={2}>
                       <Grid item>
                         <Typography variant="h4" inline={true}>
                           {i18next.t("order.fulfillmentGroupHeader", `Fulfillment group ${currentGroupCount} of ${totalGroupsCount}`)}
@@ -183,19 +183,19 @@ class OrderCardFulfillmentGroups extends Component {
                     </Grid>
                   </Grid>
                   <Grid item xs={6} md={6}>
-                    <Grid container alignItems="center" justify="flex-end" spacing={8}>
+                    <Grid container alignItems="center" justify="flex-end" spacing={1}>
                       {this.renderPrintShippingLabelLink(fulfillmentGroup)}
                       {this.renderCancelFulfillmentGroupButton(fulfillmentGroup)}
                       {this.renderUpdateFulfillmentGroupStatusButton(fulfillmentGroup)}
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid container spacing={24}>
+                <Grid container spacing={3}>
                   <Grid item xs={12} md={12}>
                     <Typography variant="h4">{i18next.t("order.items", "Items")}</Typography>
                   </Grid>
                   <Grid className={classes.gridItemNeedingDivider} item xs={12} md={5}>
-                    <Grid container spacing={40}>
+                    <Grid container spacing={5}>
                       {this.renderFulfillmentGroupItems(fulfillmentGroup)}
                     </Grid>
                   </Grid>
@@ -210,7 +210,7 @@ class OrderCardFulfillmentGroups extends Component {
                     </Grid>
                   </Hidden>
                   <Grid className={classes.gridItemNeedingDivider} item xs={12} md={5}>
-                    <Grid container spacing={32}>
+                    <Grid container spacing={4}>
                       <Grid item xs={12} md={12}>
                         <Typography paragraph variant="h4">
                           {i18next.t("order.shippingAddress", "Shipping address")}
