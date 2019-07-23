@@ -185,7 +185,7 @@ jobs:
 
   eslint-changed-files:
     <<: *defaults
-    steps:git
+    steps:
       - checkout
       - restore_cache:
           keys:
