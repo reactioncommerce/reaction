@@ -190,7 +190,7 @@ function getTopVariants() {
       }
     }
     // sort variants in correct order
-    variants.sort((a, b) => a.index - b.index);
+    variants.sort((variantA, variantB) => variantA.index - variantB.index);
 
     return variants;
   }

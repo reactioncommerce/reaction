@@ -108,7 +108,12 @@ class ShopLogoUrls extends Component {
                     <TextInput
                       id="primaryShopLogoUrlInput"
                       name="primaryShopLogoUrl"
-                      placeholder={i18next.t("shopSettings.shopLogoUrls.primaryShopLogoUrlDescription", "This is the primary shop logo, which is used wherever you see a logo throughout the UI")}
+                      placeholder={
+                        i18next.t(
+                          "shopSettings.shopLogoUrls.primaryShopLogoUrlDescription",
+                          "This is the primary shop logo, which is used wherever you see a logo throughout the UI"
+                        )
+                      }
                       value={primaryShopLogoUrl || ""}
                     />
                     <ErrorsBlock names={["primaryShopLogoUrl"]} />

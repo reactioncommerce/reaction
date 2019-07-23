@@ -51,7 +51,8 @@ class Form extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (isEqual(nextProps.doc, this.props.doc) === false) {
       this.setState({
         doc: nextProps.doc,
@@ -146,7 +147,7 @@ class Form extends Component {
   }
 
   handleMultiSelectChange = (value, name) => {
-    this.handleChange(new Event("onMultiSelect"), value.map((v) => v.value), name);
+    this.handleChange(new Event("onMultiSelect"), value.map((val) => val.value), name);
   }
 
   handleSubmit = async (event) => {
@@ -228,7 +229,7 @@ class Form extends Component {
 
     if (this.state.isValid === false) {
       this.state.schema.validationErrors()
-        .filter((v) => v.name === field.name)
+        .filter((val) => val.name === field.name)
         .forEach((validationError) => {
           const message = this.state.schema.keyErrorMessage(validationError.name);
           fieldHasError = true;

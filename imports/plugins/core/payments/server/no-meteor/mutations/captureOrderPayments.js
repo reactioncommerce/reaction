@@ -24,7 +24,7 @@ export default async function captureOrderPayments(context, input = {}) {
   const { Orders } = collections;
   const { orderId, paymentIds, shopId } = input;
 
-  if (!context.userHasPermission(["orders"], shopId)) {
+  if (!context.userHasPermission(["orders", "order/fulfillment"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 

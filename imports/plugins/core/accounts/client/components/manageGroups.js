@@ -6,7 +6,7 @@ import { getInvitableGroups } from "../helpers/accountsHelper";
 
 const styles = (theme) => ({
   editGroup: {
-    paddingTop: theme.spacing.unit
+    paddingTop: theme.spacing()
   }
 });
 

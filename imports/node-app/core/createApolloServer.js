@@ -6,6 +6,7 @@ import config from "./config";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
+import createDataLoaders from "./util/createDataLoaders";
 
 const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
 
@@ -52,6 +53,8 @@ export default function createApolloServer(options = {}) {
       await buildContext(context, req);
 
       addCallMeteorMethod(context);
+
+      await createDataLoaders(context);
 
       return context;
     },

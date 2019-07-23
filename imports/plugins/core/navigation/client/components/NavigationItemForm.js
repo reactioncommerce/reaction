@@ -23,10 +23,10 @@ const styles = (theme) => ({
   },
   formActions: {
     textAlign: "right",
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   formActionButton: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   }
 });
 
@@ -223,7 +223,9 @@ class NavigationItemForm extends Component {
               </ConfirmDialog>
             )}
             <Button className={classes.formActionButton} color="primary" onClick={onCloseForm} variant="outlined">{i18next.t("app.cancel")}</Button>
-            <Button className={classes.formActionButton} color="primary" onClick={this.handleClickSave} variant="contained">{i18next.t("app.saveChanges")}</Button>
+            <Button className={classes.formActionButton} color="primary" onClick={this.handleClickSave} variant="contained">
+              {i18next.t("app.saveChanges")}
+            </Button>
           </Grid>
         </Grid>
       </Fragment>

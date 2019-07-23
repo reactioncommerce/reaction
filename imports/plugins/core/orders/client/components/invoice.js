@@ -6,7 +6,7 @@ import { CustomPropTypes } from "@reactioncommerce/components/utils";
 import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import { formatPriceString, i18next } from "/client/api";
 import LineItems from "./lineItems";
-import OrderPayment from "./OrderPayment";
+import OrderPayment from "./OrderPaymentMeteor";
 
 /**
  * @file Invoice is a React Component for displaying the `invoice` section on the orders sideview
