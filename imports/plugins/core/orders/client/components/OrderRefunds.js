@@ -22,8 +22,8 @@ import OrderPreviousRefunds from "./OrderPreviousRefunds";
 
 const styles = (theme) => ({
   dividerSpacing: {
-    marginBottom: theme.spacing.unit * 4,
-    marginTop: theme.spacing.unit * 4
+    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(4)
   },
   fontWeightSemiBold: {
     fontWeight: theme.typography.fontWeightSemiBold
@@ -129,7 +129,7 @@ function OrderRefunds(props) {
                   </Field>
 
                   {trackingNumber ?
-                    <Grid container alignItems="center" justify="flex-end" spacing={8}>
+                    <Grid container alignItems="center" justify="flex-end" spacing={1}>
                       <Grid item>
                         <Button color="primary" size="small" variant="outlined" onClick={this.handleToggleEdit}>
                           {i18next.t("app.cancel", "Cancel")}
@@ -161,7 +161,7 @@ function OrderRefunds(props) {
 
 
   return (
-    <Grid container spacing={24}>
+    <Grid container spacing={3}>
       <Grid item xs={12}>
         <Card elevation={0}>
           <CardHeader
@@ -189,7 +189,7 @@ function OrderRefunds(props) {
                 </Grid>
               </Grid>
             }
-            <Grid container spacing={24}>
+            <Grid container spacing={3}>
               <Grid item xs={12}>
                 {renderPayments()}
               </Grid>
