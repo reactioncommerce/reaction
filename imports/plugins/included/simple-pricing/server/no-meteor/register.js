@@ -21,7 +21,6 @@ export default async function register(app) {
       getMinPriceSortByFieldPath: [getMinPriceSortByFieldPath],
       mutateNewProductBeforeCreate: [mutateNewProductBeforeCreate],
       mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
-      publishProductToCatalog: [publishProductToCatalog],
       startup: [startup]
     },
     graphQL: {
@@ -31,7 +30,12 @@ export default async function register(app) {
     queries,
     catalog: {
       publishedProductFields: ["price"],
-      publishedProductVariantFields: ["price"]
+      publishedProductVariantFields: ["price"],
+      publisherTransforms: [{
+        name: "pricing",
+        dependsOn: ["inventory"],
+        function: publishProductToCatalog
+      }]
     }
   });
 }

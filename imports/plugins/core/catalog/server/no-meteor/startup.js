@@ -1,5 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import hashProduct from "./mutations/hashProduct";
+import { customPublisherTransforms } from "./registration";
 
 /**
  * @summary Recalculate the currentProductHash for the related product
@@ -24,6 +25,45 @@ async function hashRelatedProduct(media, collections) {
 }
 
 /**
+ *
+ * @method sortPublisherTransforms
+ * @summary This function sorts the Catalog publisher transfroms to run in order of dependency.
+ * @param {Object[]} unsortedTransformList - Array of Publisher Transform info.
+ * @return {Object[]} - Sorted array of Publisher Transforms.
+ */
+function sortPublisherTransforms (unsortedTransformList) {
+  const sorted = [];
+  const visited = {};
+
+  const visit = (info, ancestors = []) => {
+    const { name, dependsOn = [] } = info;
+    ancestors.push(name);
+    visited[name] = true;
+
+    dependsOn.forEach((dep) => {
+      // if already in ancestors, a closed chain exists.
+      if (ancestors.indexOf(dep) >= 0) {
+        // TODO: clean up error.
+        throw new Error('Circular dependency "' +  dep + '" is required by "' + name + '": ' + ancestors.join(' -> '));
+      }
+
+      if (visited[dep]) return;
+      const depInfo = unsortedTransformList.find((transformInfo) => transformInfo.name === dep);
+      visit(depInfo, ancestors.slice(0))
+    });
+
+    sorted.push(info);
+  }
+
+  unsortedTransformList.forEach((info) => {
+    visit(info);
+  });
+
+  return sorted;
+}
+
+
+/**
  * @summary Called on startup
  * @param {Object} context Startup context
  * @param {Object} context.collections Map of MongoDB collections
@@ -31,6 +71,8 @@ async function hashRelatedProduct(media, collections) {
  */
 export default async function startup(context) {
   const { appEvents, collections } = context;
+  const sortedPublisherTransforms = sortPublisherTransforms(customPublisherTransforms);
+  customPublisherTransforms.splice(0, customPublisherTransforms.length, ...sortedPublisherTransforms);
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
     hashRelatedProduct(mediaRecord, collections).catch((error) => {

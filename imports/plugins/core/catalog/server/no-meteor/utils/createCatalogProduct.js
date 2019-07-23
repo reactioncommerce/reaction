@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import { applyCustomPublisherTransforms } from "./applyCustomPublisherTransforms";
 import getCatalogProductMedia from "./getCatalogProductMedia";
 /**
  * @method
@@ -174,6 +175,8 @@ export default async function createCatalogProduct(product, context) {
     // eslint-disable-next-line no-await-in-loop
     await customPublishFn(catalogProduct, { context, product, shop, variants });
   }
+
+  await applyCustomPublisherTransforms(catalogProduct, context);
 
   return catalogProduct;
 }

@@ -1,27 +1,27 @@
-import publishProductToCatalog from "./publishProductToCatalog";
+// import publishProductToCatalog from "./publishProductToCatalog";
 
-/**
- * @summary Updates `isBackorder`, `isSoldOut`, and `isLowQuantity` as necessary for
- *   a single CatalogProduct. Call this whenever inventory changes for one or more
- *   variants of a product.
- * @param {Object} context App context
- * @param {String} productId The product ID
- * @return {undefined}
- */
-async function updateInventoryBooleansInCatalog(context, productId) {
-  const { collections: { Catalog } } = context;
+// /**
+//  * @summary Updates `isBackorder`, `isSoldOut`, and `isLowQuantity` as necessary for
+//  *   a single CatalogProduct. Call this whenever inventory changes for one or more
+//  *   variants of a product.
+//  * @param {Object} context App context
+//  * @param {String} productId The product ID
+//  * @return {undefined}
+//  */
+// async function updateInventoryBooleansInCatalog(context, productId) {
+//   const { collections: { Catalog } } = context;
 
-  const catalogItem = await Catalog.findOne({ "product.productId": productId });
-  const { product: catalogProduct } = catalogItem;
+//   const catalogItem = await Catalog.findOne({ "product.productId": productId });
+//   const { product: catalogProduct } = catalogItem;
 
-  await publishProductToCatalog(catalogProduct, { context });
+//   await publishProductToCatalog(catalogProduct, { context });
 
-  await Catalog.updateOne({ "product.productId": productId }, {
-    $set: {
-      product: catalogProduct
-    }
-  });
-}
+//   await Catalog.updateOne({ "product.productId": productId }, {
+//     $set: {
+//       product: catalogProduct
+//     }
+//   });
+// }
 
 /**
  * @summary Called on startup
@@ -36,7 +36,7 @@ export default function startup(context) {
   // expected to emit `afterInventoryUpdate`. We listen for this and keep the boolean fields
   // on the CatalogProduct correct.
   appEvents.on("afterInventoryUpdate", async ({ productConfiguration }) =>
-    updateInventoryBooleansInCatalog(context, productConfiguration.productId));
+      context.mutations.partialProductPublish(context, { productId: productConfiguration.productId, startFrom: "inventory" }));
 
   appEvents.on("afterBulkInventoryUpdate", async ({ productConfigurations }) => {
     // Since it is a bulk update and many of the product configurations may be for the same
@@ -49,7 +49,7 @@ export default function startup(context) {
       return list;
     }, []);
     uniqueProductIds.forEach((productId) => {
-      updateInventoryBooleansInCatalog(context, productId);
+      context.mutations.partialProductPublish(context, { productId, startFrom: "inventory" });
     });
   });
 }
