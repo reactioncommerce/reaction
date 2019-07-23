@@ -18,6 +18,7 @@ import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next, Reaction } from "/client/api";
 import Button from "/imports/client/ui/components/Button";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
+import OrderPreviousRefunds from "./OrderPreviousRefunds";
 
 const styles = (theme) => ({
   dividerSpacing: {
@@ -199,22 +200,7 @@ function OrderRefunds(props) {
           </CardContent>
         </Card>
       </Grid>
-      {previousRefunds &&
-        <Grid item xs={12}>
-          <Card elevation={0}>
-            <CardHeader
-              title={i18next.t("order.previousRefunds", "Previous Refunds")}
-            />
-            <CardContent>
-              <Typography variant="body1">Date</Typography>
-              <Typography variant="body1">Refunded to... source</Typography>
-              <Divider className={classes.dividerSpacing} />
-              <Typography variant="body1">Reason</Typography>
-              <Typography variant="body1">customer changed mind</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      }
+      <OrderPreviousRefunds order={order} />
     </Grid>
   );
 }
