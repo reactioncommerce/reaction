@@ -25,21 +25,25 @@ Template.stripeConnectSignupButton.events({
       // If the primaryshop has stripe enabled and set the client_id
       clientId = primaryStripePackage.settings.public.client_id;
     } else {
-      return Alerts.toast(`${i18next.t("admin.connect.stripeConnectNotEnabled")}`, "error");
+      Alerts.toast(`${i18next.t("admin.connect.stripeConnectNotEnabled")}`, "error");
+      return;
     }
 
     const shop = Shops.findOne({ _id: shopId });
 
     if (!shop || !shop.workflow || shop.workflow.status !== "active") {
-      return Alerts.toast(`${i18next.t("admin.connect.shopNotActive")}`, "error");
+      Alerts.toast(`${i18next.t("admin.connect.shopNotActive")}`, "error");
+      return;
     }
 
     if (!shop.emails || !Array.isArray(shop.emails) || shop.emails.length === 0) {
-      return Alerts.toast(`${i18next.t("admin.connect.shopEmailNotConfigured")}`, "error");
+      Alerts.toast(`${i18next.t("admin.connect.shopEmailNotConfigured")}`, "error");
+      return;
     }
 
     if (!shop.addressBook || !Array.isArray(shop.addressBook) || shop.addressBook.length === 0) {
-      return Alerts.toast(`${i18next.t("admin.connect.shopAddressNotConfigured")}`, "error");
+      Alerts.toast(`${i18next.t("admin.connect.shopAddressNotConfigured")}`, "error");
+      return;
     }
 
     const { country } = shop.addressBook[0];
@@ -61,6 +65,6 @@ Template.stripeConnectSignupButton.events({
 
     const stripeConnectAuthorizeUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&state=${shopId}&client_id=${clientId}&scope=read_write`;
     const autofillParams = `&stripe_user[email]=${defaultEmailAddress}&stripe_user[country]=${country}&stripe_user[phone_number]=${phoneNumber}&stripe_user[business_name]=${businessName}&stripe_user[street_address]=${streetAddress}&stripe_user[city]=${city}&stripe_user[state]=${state}&stripe_user[zip]=${zip}&stripe_user[first_name]=${firstName}&stripe_user[last_name]=${lastName}`; // eslint-disable-line max-len
-    return window.open(stripeConnectAuthorizeUrl + autofillParams, "_blank");
+    window.open(stripeConnectAuthorizeUrl + autofillParams, "_blank");
   }
 });
