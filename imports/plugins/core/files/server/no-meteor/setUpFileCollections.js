@@ -71,7 +71,7 @@ export default function setUpFileCollections({
       mongodb,
       name,
       async transformWrite(fileRecord) {
-        if (!transform) return;
+        if (!transform) return null;
 
         const { size, mod, format, type } = transform;
 
@@ -81,7 +81,7 @@ export default function setUpFileCollections({
         fileRecord.extension(format, { store: name });
 
         // resizing image, adding mod, setting output format
-        sharp().resize(size, size)[mod]().toFormat(format);
+        return sharp().resize(size, size)[mod]().toFormat(format);
       }
     })
   );
