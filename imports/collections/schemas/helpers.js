@@ -14,9 +14,13 @@ export function createdAtAutoValue() {
   // document, for example, in a product being added to cart items
   if (this.closestSubschemaFieldName) return;
 
+  /* eslint-disable consistent-return */
+  // This function returns different `types`, therefore
+  // consistent-return needs to be disabled
   if (this.isInsert) return new Date();
   if (this.isUpsert) return { $setOnInsert: new Date() };
-  this.unset();
+  return this.unset();
+  /* eslint-enable consistent-return */
 }
 
 /**
@@ -30,7 +34,7 @@ export function createdAtAutoValue() {
 export function updatedAtAutoValue() {
   // We don't want to overwrite an updatedAt in a nested
   // document, for example, in a product being added to cart items
-  if (this.closestSubschemaFieldName) return;
+  if (this.closestSubschemaFieldName) return null;
 
   return new Date();
 }

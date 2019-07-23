@@ -71,7 +71,7 @@ export default function setUpFileCollections({
       mongodb,
       name,
       async transformWrite(fileRecord) {
-        if (!transform) return;
+        if (!transform) return null;
 
         const { size, mod, format, type } = transform;
 
