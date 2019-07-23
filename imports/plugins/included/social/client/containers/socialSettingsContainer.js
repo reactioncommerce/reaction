@@ -52,6 +52,7 @@ class SocialSettingsContainer extends Component {
   }
 
   // Adding this comment as a test so I can make a commit.
+  // adding this as a test
   render() {
     return (
       <SocialSettings
