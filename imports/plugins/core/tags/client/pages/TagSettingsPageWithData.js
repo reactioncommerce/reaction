@@ -107,6 +107,8 @@ class TagSettings extends Component {
     if (action === "delete") {
       this.tableRef.current.refetch();
     }
+
+    return null;
   }
 
   reset() {

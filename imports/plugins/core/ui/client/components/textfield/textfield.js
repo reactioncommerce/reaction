@@ -29,11 +29,9 @@ class TextField extends Component {
 
     if (typeof isValid === "boolean") {
       return isValid;
-    } else if (this.validationMessage) {
-      return false;
     }
 
-    return undefined;
+    return false;
   }
 
   get isHelpMode() {
@@ -53,6 +51,7 @@ class TextField extends Component {
       return validation.messages[name];
     }
 
+    // eslint-disable-next-line consistent-return
     return undefined;
   }
 
