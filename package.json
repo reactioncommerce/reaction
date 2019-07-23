@@ -181,10 +181,12 @@
     "eslint-plugin-react": "7.8.2",
     "fs-extra": "^7.0.1",
     "graphql-schema-linter": "^0.2.0",
+    "husky": "^3.0.1",
     "jest": "^24.8.0",
     "jest-junit": "^6.4.0",
     "js-yaml": "^3.13.1",
     "jsdoc": "^3.6.2",
+    "lint-staged": "^9.2.0",
     "mongodb-memory-server": "2.7.3",
     "nock": "^9.6.1",
     "nodemon": "1.18.9",
@@ -209,6 +211,7 @@
     "inspect-docker": "node --experimental-modules  ./.reaction/scripts/run.mjs --inspect=0.0.0.0:9229",
     "inspect-brk-docker": "node --experimental-modules  ./.reaction/scripts/run.mjs --inspect-brk=0.0.0.0:9229",
     "lint": "eslint .",
+    "lint-staged": "lint-staged",
     "lint:errors": "eslint . --quiet",
     "lint:gql": "graphql-schema-linter **/schemas/*.graphql",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
@@ -409,7 +412,7 @@
       "react/no-did-mount-set-state": "warn",
       "react/no-did-update-set-state": "warn",
       "require-jsdoc": [
-        "warn",
+        "error",
         {
           "require": {
             "ArrowFunctionExpression": false,
@@ -462,6 +465,17 @@
       "types-are-capitalized",
       "types-have-descriptions",
       "descriptions-are-capitalized"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
     ]
   }
 }

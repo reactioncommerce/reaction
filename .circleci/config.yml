@@ -183,6 +183,20 @@ jobs:
           command: |
             npm run lint -- --quiet
 
+  eslint-changed-files:
+    <<: *defaults
+    steps:git
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
+      - run:
+          name: Run Lint for changed files
+          command: |
+            npm run lint-staged
+
   graphql-lint:
     <<: *defaults
     steps:
