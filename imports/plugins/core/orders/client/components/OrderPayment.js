@@ -14,6 +14,9 @@ import captureOrderPaymentsMutation from "../graphql/mutations/captureOrderPayme
 const styles = (theme) => ({
   fontColorDanger: {
     color: theme.palette.colors.red
+  },
+  fontWeightSemiBold: {
+    fontWeight: theme.typography.fontWeightSemiBold
   }
 });
 
@@ -100,7 +103,7 @@ function OrderPayment(props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} md={6}>
-        <Typography variant="body1">
+        <Typography paragraph variant="h4">
           {displayName}
         </Typography>
         {riskLevel !== "normal" && payment.mode !== "captured" &&
@@ -124,7 +127,7 @@ function OrderPayment(props) {
         }
       </Grid>
       <Grid item xs={6} md={6}>
-        <Typography variant="body1" align="right">
+        <Typography className={classes.fontWeightSemiBold} variant="body1" align="right">
           {amount.displayAmount}
         </Typography>
       </Grid>

@@ -17,11 +17,11 @@ import OrderPayment from "./OrderPayment";
 
 const styles = (theme) => ({
   dividerSpacing: {
-    marginBottom: theme.spacing.unit * 4,
-    marginTop: theme.spacing.unit * 4
+    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(4)
   },
   fulfillmentGroupHeader: {
-    marginBottom: theme.spacing.unit * 4
+    marginBottom: theme.spacing(4)
   }
 });
 
