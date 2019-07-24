@@ -16,7 +16,7 @@ function handleError(error) {
       (!error.message.includes("index not found") && !error.message.includes("ns not found"))
     )
   ) {
-    Logger.warn(error, "Caught error from dropIndex calls in migration 99");
+    Logger.warn(error, "Caught error from dropIndex calls in migration 69");
   }
 }
 
