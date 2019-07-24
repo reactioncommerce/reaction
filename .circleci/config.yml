@@ -195,27 +195,27 @@ jobs:
       - run:
           name: Run Lint for Changed Files
           command: |
-          CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" # Determine PR number from pull request link
-          if [[ -v CIRCLE_PR_NUMBER ]] && [ -n ${CIRCLE_PR_NUMBER} ]; then
-            url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/$CIRCLE_PR_NUMBER" # Get PR from github API
-            TARGET_BRANCH=$(curl "$url" | jq '.base.ref' | tr -d '"') # Determine target/base branch from API response
-          fi
+            CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" # Determine PR number from pull request link
+            if [[ -v CIRCLE_PR_NUMBER ]] && [ -n ${CIRCLE_PR_NUMBER} ]; then
+              url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/$CIRCLE_PR_NUMBER" # Get PR from github API
+              TARGET_BRANCH=$(curl "$url" | jq '.base.ref' | tr -d '"') # Determine target/base branch from API response
+            fi
 
-          if [ -z "${TARGET_BRANCH}" ] || [  ${TARGET_BRANCH} == "null" ]; then
-            echo "Not a PR. Skipping eslint-changed-files."
-            exit 0
-          fi
+            if [ -z "${TARGET_BRANCH}" ] || [  ${TARGET_BRANCH} == "null" ]; then
+              echo "Not a PR. Skipping Snyk."
+              exit 0
+            fi
 
-          echo "Getting list of changed files..."
-          CHANGED_FILES=$(git diff --name-only $TARGET_BRANCH..$CIRCLE_BRANCH -- '*.js')
+            echo "Getting list of changed files..."
+            CHANGED_FILES=$(git diff --name-only $TARGET_BRANCH..$CIRCLE_BRANCH -- '*.js')
 
-          # If we have changed files
-          if [ -z "${CHANGED_FILES}" ]; then
-            echo "Files have been changed. Run eslint against these files."
-            eslint $CHANGED_FILES --max-warnings=0
-          else
-            echo "We have no changed files, don't run eslint-changed-files"
-          fi
+            # If we have changed files
+            if [ -z "${CHANGED_FILES}" ]; then
+              echo "Files have been changed. Run eslint against these files."
+              eslint $CHANGED_FILES --max-warnings=0
+            else
+              echo "We have no changed files, don't run eslint-changed-files"
+            fi
 
   graphql-lint:
     <<: *defaults
