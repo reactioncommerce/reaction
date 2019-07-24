@@ -209,13 +209,13 @@ jobs:
             echo "${CIRCLE_PR_NUMBER}"
 
             echo "Getting list of changed files..."
-            CHANGED_FILES=$(git diff --name-only "origin/${TARGET_BRANCH}"..$CIRCLE_BRANCH -- '*.js')
+            CHANGED_FILES=$(git diff --name-only "origin/${TARGET_BRANCH}"..$CIRCLE_BRANCH -- '*.js') | tr '\n' ' '
             echo "${CHANGED_FILES}"
 
             # If we have changed files
             if [ -n "${CHANGED_FILES}" ]; then
               echo "Files have been changed. Run eslint against these files."
-              eslint $CHANGED_FILES --max-warnings=0
+              eslint --max-warnings=0 $CHANGED_FILES
             else
               echo "We have no changed files, don't run eslint-changed-files"
             fi
