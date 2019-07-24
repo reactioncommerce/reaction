@@ -206,8 +206,11 @@ jobs:
               exit 0
             fi
 
+            echo "${CIRCLE_PR_NUMBER}"
+
             echo "Getting list of changed files..."
             CHANGED_FILES=$(git diff --name-only $TARGET_BRANCH $CIRCLE_BRANCH -- '*.js')
+            echo "${CHANGED_FILES}"
 
             # If we have changed files
             if [ -z "${CHANGED_FILES}" ]; then
