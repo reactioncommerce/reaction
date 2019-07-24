@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { at, get, isEqual, set, update } from "lodash";
@@ -348,6 +349,8 @@ class Form extends Component {
         </Components.FormActions>
       );
     }
+
+    return null;
   }
 
   render() {

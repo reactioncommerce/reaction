@@ -27,6 +27,7 @@ const Hooks = {
     }
   },
 
+  // eslint-disable-next-line consistent-return
   leave(callback) {
     if (Array.isArray(callback)) {
       callback.forEach((cb) => {

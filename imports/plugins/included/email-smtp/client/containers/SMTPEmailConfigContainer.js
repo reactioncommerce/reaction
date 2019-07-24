@@ -95,6 +95,8 @@ const composer = (props, onData) => {
     }
     return onData(null, { settings });
   }
+
+  return null;
 };
 
 const handlers = { saveSettings: actions.settings.saveSettings };

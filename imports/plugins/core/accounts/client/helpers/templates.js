@@ -29,4 +29,6 @@ Template.registerHelper("displayName", (displayUser) => {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   }
+
+  return null;
 });

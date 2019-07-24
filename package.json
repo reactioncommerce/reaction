@@ -392,14 +392,7 @@
       "import/resolver": "meteor"
     },
     "rules": {
-      "consistent-return": [
-        "warn",
-        {
-          "treatUndefinedAsUnspecified": true
-        }
-      ],
       "jsx-a11y/label-has-for": "off",
-      "no-undef": "warn",
       "no-process-exit": "warn",
       "node/no-deprecated-api": "warn",
       "node/no-missing-require": "warn",
