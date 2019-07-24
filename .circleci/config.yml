@@ -370,8 +370,8 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      # - build
-      # - dockerfile-lint
+      - build
+      - dockerfile-lint
       # - test-app:
       #     requires:
       #       - build
