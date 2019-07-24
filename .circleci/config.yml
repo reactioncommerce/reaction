@@ -213,7 +213,7 @@ jobs:
             echo "${CHANGED_FILES}"
 
             # If we have changed files
-            if [ -z "${CHANGED_FILES}" ]; then
+            if [ -n "${CHANGED_FILES}" ]; then
               echo "Files have been changed. Run eslint against these files."
               eslint $CHANGED_FILES --max-warnings=0
             else

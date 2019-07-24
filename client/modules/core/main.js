@@ -35,6 +35,8 @@ let slugify;
 // list of lang codes https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 const latinLangs = ["az", "da", "de", "en", "es", "ff", "fr", "ha", "hr", "hu", "ig", "is", "it", "jv", "ku", "ms", "nl", "no", "om", "pl", "pt", "ro", "sv", "sw", "tl", "tr", "uz", "vi", "yo"]; // eslint-disable-line max-len
 
+// temp: random comment to force CI change
+
 export default {
   ...DomainsMixin,
 
