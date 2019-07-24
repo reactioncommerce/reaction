@@ -370,43 +370,43 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - dockerfile-lint
-      - test-app:
-          requires:
-            - build
-      - test-unit:
-          requires:
-            - build
-      - test-integration:
-          requires:
-            - build
-      - eslint:
-          requires:
-            - build
+      # - build
+      # - dockerfile-lint
+      # - test-app:
+      #     requires:
+      #       - build
+      # - test-unit:
+      #     requires:
+      #       - build
+      # - test-integration:
+      #     requires:
+      #       - build
+      # - eslint:
+      #     requires:
+      #       - build
       - eslint-changed-files:
           requires:
             - build
-      - graphql-lint:
-          requires:
-            - build
-      - docker-build:
-          context: reaction-build-read
-          requires:
-            - snyk-security
-      - docker-push:
-          context: reaction-publish-docker
-          requires:
-            - docker-build
-      - deploy-docs:
-          requires:
-            - test-unit
-            - test-app
-            - docker-build
-          filters:
-            branches:
-              only: /^master$/
-      - snyk-security:
-          context: reaction-validation
-          requires:
-            - build
+      # - graphql-lint:
+      #     requires:
+      #       - build
+      # - docker-build:
+      #     context: reaction-build-read
+      #     requires:
+      #       - snyk-security
+      # - docker-push:
+      #     context: reaction-publish-docker
+      #     requires:
+      #       - docker-build
+      # - deploy-docs:
+      #     requires:
+      #       - test-unit
+      #       - test-app
+      #       - docker-build
+      #     filters:
+      #       branches:
+      #         only: /^master$/
+      # - snyk-security:
+      #     context: reaction-validation
+      #     requires:
+      #       - build
