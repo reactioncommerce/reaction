@@ -202,7 +202,7 @@ jobs:
             fi
 
             if [ -z "${TARGET_BRANCH}" ] || [  ${TARGET_BRANCH} == "null" ]; then
-              echo "Not a PR. Skipping Snyk."
+              echo "Not a PR. Skipping eslint-changed-files."
               exit 0
             fi
 
@@ -382,6 +382,9 @@ workflows:
           requires:
             - build
       - eslint:
+          requires:
+            - build
+      - eslint-changed-files:
           requires:
             - build
       - graphql-lint:
