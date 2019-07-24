@@ -209,7 +209,6 @@
     "inspect-docker": "node --experimental-modules  ./.reaction/scripts/run.mjs --inspect=0.0.0.0:9229",
     "inspect-brk-docker": "node --experimental-modules  ./.reaction/scripts/run.mjs --inspect-brk=0.0.0.0:9229",
     "lint": "eslint .",
-    "lint:changed-files": "eslint .",
     "lint:errors": "eslint . --quiet",
     "lint:gql": "graphql-schema-linter **/schemas/*.graphql",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
