@@ -9,6 +9,8 @@ function updateVariantProductField(variants, field, value) {
   return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
 }
 
+// adding a comment here just to test changing a file with eslint warnings
+
 /**
  * @summary Get the list of selected products
  * @returns {Object[]} Product documents
