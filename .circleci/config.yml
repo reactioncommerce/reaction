@@ -207,7 +207,7 @@ jobs:
             fi
 
             echo "Getting list of changed files..."
-            CHANGED_FILES=$(git diff --name-only $TARGET_BRANCH..$CIRCLE_BRANCH -- '*.js')
+            CHANGED_FILES=$(git diff --name-only $TARGET_BRANCH $CIRCLE_BRANCH -- '*.js')
 
             # If we have changed files
             if [ -z "${CHANGED_FILES}" ]; then
