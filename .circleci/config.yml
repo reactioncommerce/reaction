@@ -212,7 +212,7 @@ jobs:
             # If we have changed files
             if [ -n "${CHANGED_FILES}" ]; then
               echo "Files have been changed. Run eslint against these files."
-              eslint --max-warnings=0 $CHANGED_FILES
+              npm run lint:warnings $CHANGED_FILES
             else
               echo "We have no changed files, don't run eslint-changed-files"
             fi
