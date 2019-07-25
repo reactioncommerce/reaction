@@ -10,7 +10,7 @@ import formatForStripe from "./formatForStripe";
  * @param {Object} context an object containing the per-request state
  * @param {Object} paymentMethod object containing transaction ID
  * @param {Number} amount the amount to be refunded
- * @param {Number} [reason] the reason for the refund
+ * @param {Number} [reason] the reason for the refund - allowed values are `duplicate`, `fraudulent`, and `requested_by_customer` (https://stripe.com/docs/api/refunds/object#refund_object-reason)
  * @return {Object} refund result
  * @private
  */

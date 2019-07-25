@@ -6,7 +6,11 @@ import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/ser
 import sendOrderEmail from "../util/sendOrderEmail";
 
 const inputSchema = new SimpleSchema({
-  amount: Number,
+  amount: {
+    type: Number,
+    exclusiveMin: true,
+    min: 0
+  },
   orderId: String,
   paymentId: String,
   reason: {
@@ -105,7 +109,7 @@ export default async function createRefund(context, input) {
   });
 
   // Send email to notify customer of a refund
-  sendOrderEmail(context, order, "refunded");
+  sendOrderEmail(context, updatedOrder, "refunded");
 
   return { order: updatedOrder };
 }
