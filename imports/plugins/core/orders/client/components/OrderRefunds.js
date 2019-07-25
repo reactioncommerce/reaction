@@ -22,7 +22,7 @@ import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next, Reaction } from "/client/api";
 import Button from "/imports/client/ui/components/Button";
-import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
+import createRefundMutation from "../graphql/mutations/createRefund";
 import OrderPreviousRefunds from "./OrderPreviousRefunds";
 
 const styles = (theme) => ({
