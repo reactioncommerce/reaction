@@ -1,5 +1,4 @@
 /* eslint camelcase: 0 */
-import nock from "nock";
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import exampleCreateRefund from "imports/plugins/included/payments-example/server/no-meteor/util/exampleCreateRefund.js";
