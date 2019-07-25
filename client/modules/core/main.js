@@ -1059,5 +1059,3 @@ function createCountryCollection(countries) {
   }
   return countryOptions;
 }
-
-// temp comment to force CI run
