@@ -62,36 +62,11 @@ function OrderRefunds(props) {
   const [refundReasonSelectValues, setRefundReasonSelectValues] = useState({ reason: "" });
   const [refundTotal, setRefundTotal] = useState(0.00);
 
-  const handleFormChange = () => {
-    console.log("do nothing yet");
-  };
-
-
-  // state = {
-  //   isEditing: this.props.fulfillmentGroup.tracking === null,
-  //   trackingNumber: this.props.fulfillmentGroup.tracking
-  // }
-
-  // handleFormChange = (value) => {
-  //   this.formValue = value;
-  // };
-
-  // handleSubmitForm = () => {
-  //   const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
-
-  //   if (hasPermission) {
-  //     this.form.submit();
-  //   }
-  // };
-
-
-  // If true, show UI to calculate refunds by item
-  const handleRefundCalculateByItemSwitchChange = () => {
-    setCalculateByItem(!calculateByItem);
-  };
-
-
-
+  // useEffect
+  // update label width when refund select is activate
+  useEffect(() => {
+    setLabelWidth(inputLabel.current.offsetWidth);
+  }, []);
 
   const handleCreateRefund = (data, mutation) => {
     const { amounts } = data;
@@ -125,64 +100,29 @@ function OrderRefunds(props) {
     });
   };
 
+  // When refund amounts are changed, add up amounts to display in button
+  const handleRefundTotalUpdate = () => {
+    const { amounts } = this.form.state.value;
 
-  const renderReason = () => {
-    const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
-    const { fulfillmentGroup } = props;
+    const reducedRefundTotal = Object.keys(amounts).map((paymentId) => ({
+      paymentId,
+      amount: parseFloat(amounts[paymentId], 10)
+    })).filter((payment) => payment.amount && payment.amount > 0).reduce((acc, value) => acc + value.amount, 0);
 
+    setRefundTotal(() => reducedRefundTotal);
+  };
 
+  const handleRefundReasonSelectChange = (event) => {
+    handleRefundTotalUpdate();
+    setRefundReasonSelectValues((oldValues) => ({
+      ...oldValues,
+      [event.target.name]: event.target.value
+    }));
+  };
+
+  const handleSubmitForm = () => {
     if (hasPermission) {
-      if (isEditing) {
-        return (
-          <Mutation mutation={updateOrderFulfillmentGroupMutation}>
-            {(mutationFunc) => (
-              <Fragment>
-                <Form
-                  ref={(formRef) => {
-                    this.form = formRef;
-                  }}
-                  onChange={() => handleFormChange}
-                  onSubmit={(data) => handleUpdateFulfillmentGroupTrackingNumber(data, mutationFunc)}
-                  value={fulfillmentGroup}
-                >
-                  <Field
-                    name="tracking"
-
-                    labelFor="trackingInput"
-                  >
-                    <TextInput
-                      id="trackingInput"
-                      name="tracking"
-                      placeholder={i18next.t("shopSettings.storefrontUrls.tracking", "Tracking")}
-                      value={trackingNumber || ""}
-                    />
-                    <ErrorsBlock names={["tracking"]} />
-                  </Field>
-
-                  {trackingNumber ?
-                    <Grid container alignItems="center" justify="flex-end" spacing={1}>
-                      <Grid item>
-                        <Button color="primary" size="small" variant="outlined" onClick={this.handleToggleEdit}>
-                          {i18next.t("app.cancel", "Cancel")}
-                        </Button>
-                      </Grid>
-                      <Grid item>
-                        <Button color="primary" size="small" variant="contained" onClick={this.handleSubmitForm}>
-                          {i18next.t("app.save", "Save")}
-                        </Button>
-                      </Grid>
-                    </Grid>
-                    :
-                    <Button color="primary" size="small" variant="outlined" onClick={this.handleSubmitForm}>
-                      {i18next.t("app.add", "Add")}
-                    </Button>
-                  }
-                </Form>
-              </Fragment>
-            )}
-          </Mutation>
-        );
-      }
+      this.form.submit();
     }
   };
 
