@@ -7,9 +7,14 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
+import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
+import MenuItem from "@material-ui/core/MenuItem";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import Select from "@material-ui/core/Select";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
@@ -27,6 +32,13 @@ const styles = (theme) => ({
   },
   fontWeightSemiBold: {
     fontWeight: theme.typography.fontWeightSemiBold
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2)
   }
 });
 
