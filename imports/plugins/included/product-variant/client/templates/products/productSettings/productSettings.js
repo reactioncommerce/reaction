@@ -115,3 +115,5 @@ Template.productSettings.events({
     ReactionProduct.archiveProduct(products);
   }
 });
+
+// temp comment to force CI run
