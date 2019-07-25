@@ -211,6 +211,7 @@
     "lint": "eslint .",
     "lint:errors": "eslint . --quiet",
     "lint:gql": "graphql-schema-linter **/schemas/*.graphql",
+    "lint:warnings": "eslint --max-warnings=0",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "MONGO_URL='' TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
