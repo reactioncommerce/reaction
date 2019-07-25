@@ -50,11 +50,16 @@ const styles = (theme) => ({
 function OrderRefunds(props) {
   const { classes, order } = props;
   const { payments } = order;
+
+  // useRef
+  const inputLabel = useRef(null);
+
+  // useState
+  const [allowShippingRefund, setAllowShippingRefund] = useState(false);
   const [calculateByItem, setCalculateByItem] = useState(false);
-  const [isEditing, setIsEditing] = useState(true);
-  const [refundTotal, setRefundTotal] = useState(true);
-  const trackingNumber = "12345";
-  const previousRefunds = true;
+  const [labelWidth, setLabelWidth] = useState(0);
+  const [refundReasonSelectValues, setRefundReasonSelectValues] = useState({ reason: "" });
+  const [refundTotal, setRefundTotal] = useState(0.00);
 
   const handleFormChange = () => {
     console.log("do nothing yet");
