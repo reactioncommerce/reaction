@@ -6,7 +6,10 @@ import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/ser
 import sendOrderEmail from "../util/sendOrderEmail";
 
 const inputSchema = new SimpleSchema({
-  amount: Number,
+  amount: {
+    type: Number,
+    min: 0.01
+  },
   orderId: String,
   paymentId: String,
   reason: {

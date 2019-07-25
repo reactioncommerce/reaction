@@ -117,3 +117,16 @@ test("throws if payment doesn't exist", async () => {
     reason: "Customer was unsatisfied with purchase"
   })).rejects.toThrowErrorMatchingSnapshot();
 });
+
+test("throws if amount is less than $0.01", async () => {
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
+
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  await expect(createRefund(mockContext, {
+    amount: 0,
+    orderId: fakeOrder._id,
+    paymentId: "payment3",
+    reason: "Customer was unsatisfied with purchase"
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
