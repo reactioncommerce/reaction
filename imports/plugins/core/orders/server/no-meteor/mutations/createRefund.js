@@ -8,7 +8,8 @@ import sendOrderEmail from "../util/sendOrderEmail";
 const inputSchema = new SimpleSchema({
   amount: {
     type: Number,
-    min: 0.01
+    exclusiveMin: true,
+    min: 0
   },
   orderId: String,
   paymentId: String,
