@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`throws if amount is less than $0.01 1`] = `"Amount must be at least 0.01"`;
+exports[`throws if amount is less than $0.01 1`] = `"Amount must be greater than 0"`;
 
 exports[`throws if amount isn't supplied 1`] = `"Amount is required"`;
 
