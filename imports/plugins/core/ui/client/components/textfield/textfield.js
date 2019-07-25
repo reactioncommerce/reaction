@@ -22,16 +22,19 @@ class TextField extends Component {
 
   /**
    * Getter: isValid
-   * @return {Boolean} true/false if field is valid from props.isValid or props.validation[this.props.name].isValid
+   * @return {Boolean|undefined} true/false if field is valid from props.isValid or props.validation[this.props.name].isValid
    */
   get isValid() {
     const { isValid } = this.props;
 
+    // Return a boolean if this field is valid, or invalid
     if (typeof isValid === "boolean") {
       return isValid;
     }
 
-    return false;
+    // Return undefined if the field has not yet been validated
+    // eslint-disable-next-line consistent-return
+    return undefined;
   }
 
   get isHelpMode() {
