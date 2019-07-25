@@ -93,24 +93,37 @@ function OrderRefunds(props) {
 
 
 
+  const handleCreateRefund = (data, mutation) => {
+    const { amounts } = data;
+    const { reason } = refundReasonSelectValues;
 
+    // turn form data into an array of payments that provide paymentID and amount
+    // then filter out any amounts that are `null` or `0`
+    const paymentsToRefund = Object.keys(amounts).map((paymentId) => ({
+      paymentId,
+      amount: parseFloat(amounts[paymentId], 10)
+    })).filter((payment) => payment.amount && payment.amount > 0);
 
-  const renderPayments = () => payments.map((payment) => {
-      const { displayName } = payment;
-      return (
-        <Grid container key={payment._id}>
-          <Grid item xs={6}>
-            <Typography variant="body1">Refund to <span className={classes.fontWeightSemiBold}>{displayName}</span></Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography variant="body1">refund field</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Button color="primary" variant="contained">Refund ${refundTotal}</Button>
-          </Grid>
-        </Grid>
-      );
+    paymentsToRefund.forEach((payment) => {
+      const variables = {
+        amount: payment.amount,
+        orderId: order._id,
+        paymentId: payment.paymentId
+      };
+
+      // Stripe will not accept an empty string or `null` value for the `reason` field,
+      // so we include it in the mutation only if there if a value
+      if (reason) {
+        variables.reason = reason;
+      }
+
+      if (hasPermission) {
+        mutation({
+          variables
+        });
+      }
     });
+  };
 
 
   const renderReason = () => {
