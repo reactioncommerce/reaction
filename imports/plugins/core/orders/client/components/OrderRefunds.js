@@ -48,6 +48,7 @@ const styles = (theme) => ({
  * @returns {React.Component} returns a React component
  */
 function OrderRefunds(props) {
+  const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
   const { classes, order } = props;
   const { payments } = order;
 
