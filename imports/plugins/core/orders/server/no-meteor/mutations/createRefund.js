@@ -109,7 +109,7 @@ export default async function createRefund(context, input) {
   });
 
   // Send email to notify customer of a refund
-  sendOrderEmail(context, order, "refunded");
+  sendOrderEmail(context, order: updatedOrder, "refunded");
 
   return { order: updatedOrder };
 }
