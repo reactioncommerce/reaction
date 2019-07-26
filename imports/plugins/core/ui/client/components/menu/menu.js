@@ -25,6 +25,8 @@ class Menu extends Component {
         );
       });
     }
+
+    return null;
   }
 
   render() {
