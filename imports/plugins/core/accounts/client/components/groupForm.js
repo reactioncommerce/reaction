@@ -39,6 +39,8 @@ class GroupForm extends Component {
     if (this.props.updateGroup) {
       return this.props.updateGroup(this.props.group._id, this.state);
     }
+
+    return null;
   };
 
   render() {

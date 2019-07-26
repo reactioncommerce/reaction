@@ -966,6 +966,8 @@ export default {
     if (this.Router.getRouteName() === "tag") {
       return this.Router.current().params.slug;
     }
+
+    return null;
   },
 
   /**
