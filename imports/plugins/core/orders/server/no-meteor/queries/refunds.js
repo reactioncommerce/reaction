@@ -42,7 +42,7 @@ export default async function refunds(context, { orderId, shopId, token } = {}) 
         paymentId: payment._id,
         paymentDisplayName: payment.displayName
       }));
-      refunds.push(...shopRefundsWithPaymentId);
+      paymentRefunds.push(...shopRefundsWithPaymentId);
     }
   }
 
