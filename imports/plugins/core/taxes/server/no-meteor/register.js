@@ -19,16 +19,12 @@ export default async function register(app) {
     name: "reaction-taxes",
     icon: "fa fa-university",
     catalog: {
-      publishedProductVariantFields: ["isTaxable", "taxCode", "taxDescription"],
-      publisherTransforms: [{
-        name: "taxes",
-        dependsOn: ["inventory", "pricing"],
-        function: publishProductToCatalog
-      }]
+      publishedProductVariantFields: ["isTaxable", "taxCode", "taxDescription"]
     },
     functionsByType: {
       mutateNewOrderItemBeforeCreate: [mutateNewOrderItemBeforeCreate],
       mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
+      publishProductToCatalog: [publishProductToCatalog],
       registerPluginHandler: [registerPluginHandler],
       startup: [startup]
     },

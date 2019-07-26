@@ -1,28 +1,3 @@
-// import publishProductToCatalog from "./publishProductToCatalog";
-
-// /**
-//  * @summary Updates `isBackorder`, `isSoldOut`, and `isLowQuantity` as necessary for
-//  *   a single CatalogProduct. Call this whenever inventory changes for one or more
-//  *   variants of a product.
-//  * @param {Object} context App context
-//  * @param {String} productId The product ID
-//  * @return {undefined}
-//  */
-// async function updateInventoryBooleansInCatalog(context, productId) {
-//   const { collections: { Catalog } } = context;
-
-//   const catalogItem = await Catalog.findOne({ "product.productId": productId });
-//   const { product: catalogProduct } = catalogItem;
-
-//   await publishProductToCatalog(catalogProduct, { context });
-
-//   await Catalog.updateOne({ "product.productId": productId }, {
-//     $set: {
-//       product: catalogProduct
-//     }
-//   });
-// }
-
 /**
  * @summary Called on startup
  * @param {Object} context Startup context
@@ -36,7 +11,7 @@ export default function startup(context) {
   // expected to emit `afterInventoryUpdate`. We listen for this and keep the boolean fields
   // on the CatalogProduct correct.
   appEvents.on("afterInventoryUpdate", async ({ productConfiguration }) =>
-      context.mutations.partialProductPublish(context, { productId: productConfiguration.productId, startFrom: "inventory" }));
+    context.mutations.partialProductPublish(context, { productId: productConfiguration.productId, startFrom: "inventory" }));
 
   appEvents.on("afterBulkInventoryUpdate", async ({ productConfigurations }) => {
     // Since it is a bulk update and many of the product configurations may be for the same

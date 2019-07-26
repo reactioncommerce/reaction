@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
-import { applyCustomPublisherTransforms } from "./applyCustomPublisherTransforms";
 import getCatalogProductMedia from "./getCatalogProductMedia";
+
 /**
  * @method
  * @summary Converts a variant Product document into the catalog schema for variants
@@ -133,7 +133,7 @@ export async function xformProduct({ context, product, variants }) {
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  */
 export default async function createCatalogProduct(product, context) {
-  const { collections, getFunctionsOfType } = context;
+  const { collections } = context;
   const { Products, Shops } = collections;
 
   if (!product) {
@@ -146,15 +146,7 @@ export default async function createCatalogProduct(product, context) {
     return false;
   }
 
-  const shop = await Shops.findOne(
-    { _id: product.shopId },
-    {
-      projection: {
-        currencies: 1,
-        currency: 1
-      }
-    }
-  );
+  const shop = await Shops.findOne({ _id: product.shopId });
   if (!shop) {
     Logger.error(`Cannot publish to catalog: product's shop (ID ${product.shopId}) not found`);
     return false;
@@ -169,14 +161,11 @@ export default async function createCatalogProduct(product, context) {
 
   const catalogProduct = await xformProduct({ context, product, shop, variants });
 
-  // Apply custom transformations from plugins.
-  for (const customPublishFn of getFunctionsOfType("publishProductToCatalog")) {
-    // Functions of type "publishProductToCatalog" are expected to mutate the provided catalogProduct.
-    // eslint-disable-next-line no-await-in-loop
-    await customPublishFn(catalogProduct, { context, product, shop, variants });
-  }
-
-  await applyCustomPublisherTransforms(catalogProduct, context);
+  await context.mutations.applyCustomPublisherTransforms(context, catalogProduct, {
+    product,
+    shop,
+    variants
+  });
 
   return catalogProduct;
 }

@@ -16,17 +16,11 @@ export default async function register(app) {
     label: "Inventory",
     name: "reaction-inventory",
     functionsByType: {
+      publishProductToCatalog: [publishProductToCatalog],
       startup: [startup],
       xformCartItems: [xformCartItems],
       xformCatalogBooleanFilters: [xformCatalogBooleanFilters],
       xformCatalogProductVariants: [xformCatalogProductVariants]
-    },
-    catalog: {
-      publisherTransforms: [{
-        name: "inventory",
-        dependsOn: [],
-        function: publishProductToCatalog
-      }]
     },
     queries,
     graphQL: {
