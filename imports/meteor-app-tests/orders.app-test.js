@@ -366,7 +366,7 @@ describe("orders test", function () {
       const amount = 5.20;
       Meteor.call("orders/refunds/create", order._id, order.payments[0]._id, amount);
       const updateOrder = Orders.findOne({ _id: order._id });
-      expect(updateOrder.payments[0].status).to.equal("refunded");
+      expect(updateOrder.payments[0].status).to.equal("partialRefund");
     });
   });
 
