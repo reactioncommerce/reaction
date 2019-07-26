@@ -87,6 +87,7 @@ function transform(doc, userId) {
   return doc;
 }
 
+// eslint-disable-next-line consistent-return
 Meteor.publish("Packages", function (shopId) {
   check(shopId, Match.Maybe(String));
 

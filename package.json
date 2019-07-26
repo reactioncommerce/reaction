@@ -24,6 +24,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^4.2.1",
+    "@reactioncommerce/catalyst": "1.2.1",
     "@reactioncommerce/components": "^0.65.4",
     "@reactioncommerce/components-context": "1.2.0",
     "@reactioncommerce/data-factory": "^1.0.0",
@@ -211,9 +212,10 @@
     "lint": "eslint .",
     "lint:errors": "eslint . --quiet",
     "lint:gql": "graphql-schema-linter **/schemas/*.graphql",
+    "lint:warnings": "eslint --max-warnings=0",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
-    "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
-    "test:app:watch": "MONGO_URL='' TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
+    "test:app": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
+    "test:app:watch": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
     "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",
     "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --no-cache /tests/integration/",
@@ -392,14 +394,7 @@
       "import/resolver": "meteor"
     },
     "rules": {
-      "consistent-return": [
-        "warn",
-        {
-          "treatUndefinedAsUnspecified": true
-        }
-      ],
       "jsx-a11y/label-has-for": "off",
-      "no-undef": "warn",
       "no-process-exit": "warn",
       "node/no-deprecated-api": "warn",
       "node/no-missing-require": "warn",

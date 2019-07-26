@@ -11,6 +11,8 @@ export const LoginFormSharedHelpers = {
     if (error !== true && typeof error !== "undefined") {
       return "has-error has-feedback";
     }
+
+    return null;
   },
   capitalize(str) {
     const finalString = str === null ? "" : String(str);

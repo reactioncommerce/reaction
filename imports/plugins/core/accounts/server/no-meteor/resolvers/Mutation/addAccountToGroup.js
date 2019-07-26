@@ -2,7 +2,7 @@ import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 
 /**
- * @name "Mutation.addAccountToGroup"
+ * @name Mutation/addAccountToGroup
  * @method
  * @memberof Accounts/GraphQL
  * @summary resolver for the addAccountToGroup GraphQL mutation
