@@ -136,6 +136,9 @@ export function getProducts(limit = 2) {
   return products;
 }
 
+/**
+ * @return {undefined} undefined
+ */
 export default function () {
   /**
    * @name tag

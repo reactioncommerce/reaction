@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
 import _ from "lodash";

@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { Factory } from "meteor/dburles:factory";
