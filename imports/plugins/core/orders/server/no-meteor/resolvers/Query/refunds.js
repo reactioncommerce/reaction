@@ -2,7 +2,7 @@ import { decodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/o
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name Query.listRefunds
+ * @name Query.refunds
  * @method
  * @memberof Order/GraphQL
  * @summary Get refunds applied to an order
@@ -14,10 +14,10 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} context - An object containing the per-request state
  * @return {Promise<Object>|undefined} An Order object
  */
-export default async function listRefunds(_, args, context) {
+export default async function refunds(_, args, context) {
   const { orderId, shopId, token } = args;
 
-  return context.queries.listRefunds(context, {
+  return context.queries.refunds(context, {
     orderId: decodeOrderOpaqueId(orderId),
     shopId: decodeShopOpaqueId(shopId),
     token
