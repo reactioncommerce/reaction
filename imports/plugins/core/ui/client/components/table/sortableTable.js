@@ -90,6 +90,8 @@ class SortableTable extends Component {
         ? String(row[id].toLowerCase()).includes(filter.value.toLowerCase())
         : true);
     }
+
+    return null;
   }
 
 
@@ -130,6 +132,8 @@ class SortableTable extends Component {
         })
       );
     }
+
+    return null;
   }
 
 

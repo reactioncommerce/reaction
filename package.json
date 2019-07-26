@@ -211,6 +211,7 @@
     "lint": "eslint .",
     "lint:errors": "eslint . --quiet",
     "lint:gql": "graphql-schema-linter **/schemas/*.graphql",
+    "lint:warnings": "eslint --max-warnings=0",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
@@ -392,14 +393,7 @@
       "import/resolver": "meteor"
     },
     "rules": {
-      "consistent-return": [
-        "warn",
-        {
-          "treatUndefinedAsUnspecified": true
-        }
-      ],
       "jsx-a11y/label-has-for": "off",
-      "no-undef": "warn",
       "no-process-exit": "warn",
       "node/no-deprecated-api": "warn",
       "node/no-missing-require": "warn",

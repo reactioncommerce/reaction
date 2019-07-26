@@ -59,7 +59,7 @@ class MediaGallery extends Component {
   };
 
   handleDrop = (files) => {
-    if (files.length === 0) return;
+    if (files.length === 0) return null;
     return this.props.onDrop(files);
   };
 
