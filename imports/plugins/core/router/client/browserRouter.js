@@ -17,10 +17,10 @@ import { Reaction } from "/client/api";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import initApollo from "/imports/plugins/core/graphql/lib/helpers/initApollo";
 import { MetaData } from "/lib/api/router/metadata";
+import { defaultTheme } from "@reactioncommerce/catalyst";
 import { Router } from "../lib";
 import appComponents from "./appComponents";
 import theme from "./theme";
-import muiTheme from "./theme/muiTheme";
 
 const { history } = Router;
 
@@ -180,7 +180,7 @@ export function initBrowserRouter() {
               <TranslationProvider>
                 <ComponentsProvider value={appComponents}>
                   <ThemeProvider theme={theme}>
-                    <MuiThemeProvider theme={muiTheme}>
+                    <MuiThemeProvider theme={defaultTheme}>
                       <Components.App children={Router.reactComponents} />
                     </MuiThemeProvider>
                   </ThemeProvider>
