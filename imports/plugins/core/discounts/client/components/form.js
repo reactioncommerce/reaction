@@ -79,7 +79,7 @@ export default class DiscountForm extends Component {
     });
     // TODO: this.debounce doesn't always need to exec we should add some logic to determine based on attempts or some other
     // cleverness if now is a good time to apply the code.
-    this.debounceDiscounts();
+    return this.debounceDiscounts();
   }
 
   // handle display or not

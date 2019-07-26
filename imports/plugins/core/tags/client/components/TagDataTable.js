@@ -117,6 +117,8 @@ class TagDataTable extends Component {
         ? String(row[id].toLowerCase()).includes(filter.value.toLowerCase())
         : true);
     }
+
+    return null;
   }
 
   /**
@@ -248,6 +250,8 @@ class TagDataTable extends Component {
 
       );
     }
+
+    return null;
   }
 
   /**

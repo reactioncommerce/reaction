@@ -92,6 +92,8 @@ class NavBar extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderNotificationIcon() {
@@ -102,6 +104,8 @@ class NavBar extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderMainDropdown() {

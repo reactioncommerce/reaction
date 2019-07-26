@@ -129,6 +129,7 @@ const wrapComponent = (Comp) => (
       });
     };
 
+    // eslint-disable-next-line consistent-return
     handleUpload = (files) => {
       const productId = ReactionProduct.selectedProductId();
       const variant = ReactionProduct.selectedVariant();
@@ -213,7 +214,11 @@ const wrapComponent = (Comp) => (
   }
 );
 
-// resort the media in
+/**
+ * @description re-sort the media
+ * @param {Array} media media to sort
+ * @return {Array} sorted media
+ */
 function sortMedia(media) {
   const sortedMedia = _.sortBy(media, (med) => {
     const { priority } = (med && med.metadata) || {};

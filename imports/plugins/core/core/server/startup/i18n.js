@@ -16,6 +16,11 @@ const translationSources = [];
 const rawAssetsCollection = Assets.rawCollection();
 let bulkAssetOp;
 
+/**
+ * @function directoryExists
+ * @param {String} dirPath directory path
+ * @return {Boolean} isDirectory
+ */
 async function directoryExists(dirPath) {
   let info;
 
@@ -85,6 +90,8 @@ export async function flushTranslationLoad() {
   } catch (error) {
     Logger.error("Error flushing the translation asset upserts");
   }
+
+  return Promise.resolve();
 }
 
 /**
@@ -94,6 +101,7 @@ export async function flushTranslationLoad() {
  * Assets collection is processed with Reaction.Import
  * after all assets have been loaded.
  * @async
+ * @return {undefined} no return
  */
 export async function loadCoreTranslations() {
   const meteorPath = await fs.realpath(`${process.cwd()}/../`);
