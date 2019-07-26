@@ -28,7 +28,7 @@ if [[ -z "${TARGET_BRANCH}" ]] || [[ ${TARGET_BRANCH} == "null" ]]; then
 fi
 
 echo "Getting list of changed files..."
-CHANGED_FILES=$(git diff --name-only "origin/${TARGET_BRANCH}"..$CIRCLE_BRANCH -- '*.js')
+CHANGED_FILES=$(git diff --diff-filter=d --name-only "origin/${TARGET_BRANCH}"..$CIRCLE_BRANCH -- '*.js')
 
 # If we have changed files
 if [[ -n "${CHANGED_FILES}" ]]; then
