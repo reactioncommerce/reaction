@@ -535,6 +535,7 @@ Meteor.methods({
     const results = [];
     const pool = []; // pool of id pairs: { oldId, newId }
 
+    // eslint-disable-next-line require-jsdoc
     function getIds(id) {
       return pool.filter(
         function (pair) {
@@ -546,10 +547,12 @@ Meteor.methods({
       );
     }
 
+    // eslint-disable-next-line require-jsdoc
     function setId(ids) {
       return pool.push(ids);
     }
 
+    // eslint-disable-next-line require-jsdoc
     function buildAncestors(ancestors) {
       const newAncestors = [];
       ancestors.map((oldId) => {
@@ -1034,6 +1037,7 @@ Meteor.methods({
       throw new ReactionError("access-denied", "Access Denied");
     }
 
+    // eslint-disable-next-line require-jsdoc
     function getSet(handle) {
       return {
         $set: {
