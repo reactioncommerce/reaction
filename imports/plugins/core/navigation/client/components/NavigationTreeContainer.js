@@ -6,7 +6,7 @@ import PencilIcon from "mdi-material-ui/Pencil";
 import CloseIcon from "mdi-material-ui/Close";
 import { SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
-import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
+import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
 import SortableTheme from "./SortableTheme";
 
 const styles = (theme) => ({

@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 /* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Match } from "meteor/check";
@@ -11,6 +12,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
 describe("Update Package", function () {
   let sandbox;
 
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      done();
+    });
+  });
+
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
   });
@@ -20,7 +28,8 @@ describe("Update Package", function () {
   });
 
   describe("package/update", function () {
-    it("should throw an 'Access Denied' error for non-admins", function (done) {
+    it("should throw an 'Access Denied' error for non-admins", function () {
+      this.timeout(20000);
       const pkgUpdateSpy = sandbox.spy(Packages, "update");
       const examplePackage = Factory.create("examplePackage");
 
@@ -29,11 +38,10 @@ describe("Update Package", function () {
       }
       expect(updatePackage).to.throw(ReactionError, /Access Denied/);
       expect(pkgUpdateSpy).to.not.have.been.called;
-
-      return done();
     });
 
-    it("should throw an error when supplied with an argument of the wrong type", function (done) {
+    it("should throw an error when supplied with an argument of the wrong type", function () {
+      this.timeout(20000);
       const pkgUpdateSpy = sandbox.spy(Packages, "update");
       sandbox.stub(Reaction, "getShopId", () => "randomId");
       sandbox.stub(Reaction, "hasPermission", () => true);
@@ -43,13 +51,13 @@ describe("Update Package", function () {
       }
       expect(() => updatePackage([], "someField", { foo: "bar" })).to.throw(Match.Error, /Match error: Expected string, got object/);
       expect(() => updatePackage("somePackage", [], { foo: "bar" })).to.throw(Match.Error, /Match error: Expected string, got object/);
-      expect(() => updatePackage("somePackage", "someField", "")).to.throw(Match.Error, /Match error: Expected object, got string/);
+      expect(() => updatePackage("somePackage", "someField", ""))
+        .to.throw(Match.Error, /Match error: Failed Match.OneOf, Match.Maybe or Match.Optional validation/);
       expect(pkgUpdateSpy).to.not.have.been.called;
-
-      return done();
     });
 
-    it("should be able to update any Package", function (done) {
+    it("should be able to update any Package", function () {
+      this.timeout(20000);
       const packageUpdateSpy = sandbox.spy(Packages, "update");
       const oldPackage = Factory.create("examplePackage");
 
@@ -65,8 +73,6 @@ describe("Update Package", function () {
       const updatedPackage = Packages.findOne({ name: packageName });
       expect(oldPackage.settings.enabled).to.not.equal(updatedPackage.settings.enabled);
       expect(oldPackage.settings.apiUrl).to.not.equal(updatedPackage.settings.apiUrl);
-
-      return done();
     });
   });
 });
