@@ -68,6 +68,7 @@ describe("Tags Publication", () => {
 
       expect(collectionTags.map((collectionTag) => collectionTag._id).sort())
         .to.eql(tagIds);
+    // eslint-disable-next-line promise/no-callback-in-promise
     }).then(() => done()).catch(done);
   });
 
