@@ -1,9 +1,16 @@
 /* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 // These are client-side only function (???) so they cannot be test from here
 describe("Account Registration Validation ", function () {
+  before(function (done) {
+    Reaction.onAppStartupComplete(() => {
+      done();
+    });
+  });
+
   describe("username validation ", function () {
     it("should not allow a invalid username of length 3", function (done) {
       const username = "tn";
@@ -37,14 +44,6 @@ describe("Account Registration Validation ", function () {
     it("should allow a valid email address", function (done) {
       const email = "email@website.com";
       Meteor.call("accounts/validation/email", email, false, function (error, result) {
-        expect(result).to.be.true;
-        return done();
-      });
-    });
-
-    it("should allow a blank optional email address", function (done) {
-      const email = "";
-      Meteor.call("accounts/validation/email", email, true, function (error, result) {
         expect(result).to.be.true;
         return done();
       });

@@ -24,7 +24,11 @@ const handlers = {
           Alerts.toast(i18next.t("accountsUI.info.emailUpdated"), "success");
           return callback();
         });
+
+        return null;
       });
+
+      return null;
     });
   }
 };

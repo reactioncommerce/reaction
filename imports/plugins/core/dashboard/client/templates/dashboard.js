@@ -13,6 +13,8 @@ Template.dashboardHeader.helpers({
     if (registry && route) {
       return translateRegistry(registry);
     }
+
+    return null;
   }
 });
 

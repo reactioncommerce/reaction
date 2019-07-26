@@ -129,6 +129,8 @@ Template.accountProfile.helpers({
     if (Reaction.hasPermission("account/profile")) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
+
+    return null;
   },
 
   /**
@@ -147,6 +149,8 @@ Template.accountProfile.helpers({
         return (defaultEmail && defaultEmail.address) || account.emails[0].address;
       }
     }
+
+    return null;
   },
 
   /**

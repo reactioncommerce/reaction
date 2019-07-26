@@ -1,9 +1,17 @@
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { DDP } from "meteor/ddp-client";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ConnectionDataStore from "./connectionDataStore";
 
 describe("ConnectionDataStore", () => {
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      done();
+    });
+  });
+
   describe("used outside of a connection", () => {
     it("sets/gets cached data", () => {
       ConnectionDataStore.set("key", "val");
