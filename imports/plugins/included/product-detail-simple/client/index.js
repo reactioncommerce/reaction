@@ -1,5 +1,3 @@
-import "./templates/productDetailSimple.html";
-import "./templates/productDetailSimple.js";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
 import {
@@ -8,7 +6,6 @@ import {
   ProductMetadata,
   PriceRange,
   ProductNotFound,
-  ProductDetail,
   VariantList
 } from "./components";
 
@@ -25,7 +22,6 @@ import {
 
 
 // Register PDP components and some others
-registerComponent("productDetail", ProductDetail);
 registerComponent("ProductField", ProductField);
 registerComponent("ProductTags", ProductTags);
 registerComponent("ProductMetadata", ProductMetadata);
