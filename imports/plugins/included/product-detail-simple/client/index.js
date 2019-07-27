@@ -15,7 +15,6 @@ import {
 import { Divider } from "/imports/plugins/core/ui/client/components";
 
 import {
-  SocialContainer,
   VariantListContainer
 } from "./containers";
 
@@ -34,7 +33,6 @@ registerComponent("PriceRange", PriceRange);
 registerComponent("AlertContainer", AlertContainer);
 registerComponent("VariantList", VariantList);
 registerComponent("MediaGalleryContainer", MediaGalleryContainer);
-registerComponent("SocialContainer", SocialContainer);
 registerComponent("VariantListContainer", VariantListContainer);
 registerComponent("Divider", Divider);
 registerComponent("ProductNotFound", ProductNotFound);
