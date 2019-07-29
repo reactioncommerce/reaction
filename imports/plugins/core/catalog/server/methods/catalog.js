@@ -202,8 +202,6 @@ function createProduct(props = null, info = {}) {
     if (!newProductOrVariant.handle) {
       if (typeof newProductOrVariant.title === "string" && newProductOrVariant.title.length) {
         newProductOrVariant.handle = Reaction.getSlug(newProductOrVariant.title);
-      } else {
-        newProductOrVariant.handle = Random.id();
       }
     }
 
@@ -537,6 +535,7 @@ Meteor.methods({
     const results = [];
     const pool = []; // pool of id pairs: { oldId, newId }
 
+    // eslint-disable-next-line require-jsdoc
     function getIds(id) {
       return pool.filter(
         function (pair) {
@@ -548,10 +547,12 @@ Meteor.methods({
       );
     }
 
+    // eslint-disable-next-line require-jsdoc
     function setId(ids) {
       return pool.push(ids);
     }
 
+    // eslint-disable-next-line require-jsdoc
     function buildAncestors(ancestors) {
       const newAncestors = [];
       ancestors.map((oldId) => {
@@ -817,7 +818,7 @@ Meteor.methods({
         // Should be a call similar to the line below.
         [field]: createHandle(Reaction.getSlug(value), _id) // handle should be unique
       };
-    } else if (field === "title" && doc.handle === doc._id) {
+    } else if (field === "title" && !doc.handle) {
       // update handle once title is set
       const handle = createHandle(Reaction.getSlug(value), _id);
       update = {
@@ -1036,6 +1037,7 @@ Meteor.methods({
       throw new ReactionError("access-denied", "Access Denied");
     }
 
+    // eslint-disable-next-line require-jsdoc
     function getSet(handle) {
       return {
         $set: {

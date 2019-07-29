@@ -1,11 +1,11 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 import faker from "faker";
 import _ from "lodash";
 import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
 import { Orders, Products } from "/lib/collections";
 import { getShop } from "./shops";
-import { getUser } from "./users";
-import { getAddress } from "./accounts";
+import { getAccount, getAddress } from "./accounts";
 import { addProduct } from "./products";
 
 /**
@@ -51,12 +51,12 @@ export function randomMode() {
 }
 
 /**
- * @method getUserId
+ * @method getAccountId
  * @memberof Fixtures
  * @return {String} ID
  */
-export function getUserId() {
-  return getUser()._id;
+export function getAccountId() {
+  return getAccount()._id;
 }
 
 /**
@@ -75,6 +75,7 @@ export function getShopId() {
  */
 export default function defineOrders() {
   const shopId = getShopId();
+  const accountId = getAccountId();
 
   /**
    * @name order
@@ -136,7 +137,7 @@ export default function defineOrders() {
 
     // Schemas.Cart
     shopId,
-    accountId: Random.id(),
+    accountId,
     email: faker.internet.email(),
     workflow: {
       status: "new",
@@ -144,7 +145,8 @@ export default function defineOrders() {
         "coreOrderWorkflow/created"
       ]
     },
-    items() {
+    supportedFulfillmentTypes: ["shipping"],
+    shipping() {
       const product = addProduct({ shopId });
       const variant = Products.findOne({ ancestors: [product._id] });
       const childVariants = Products.find({
@@ -162,62 +164,98 @@ export default function defineOrders() {
       }).fetch();
       const selectedOption2 = Random.choice(childVariants2);
       return [{
-        _id: itemIdOne,
-        title: "firstItem",
-        shopId: product.shopId,
-        productId: product._id,
-        quantity: 1,
-        product,
-        variants: selectedOption,
-        workflow: {
-          status: "new"
-        }
-      }, {
-        _id: itemIdTwo,
-        title: "secondItem",
-        shopId: product2.shopId,
-        productId: product2._id,
-        quantity: 1,
-        product: product2,
-        variants: selectedOption2,
+        _id: Random.id(),
+        address: getAddress({ isShippingDefault: true }),
+        type: "shipping",
+        invoice: {
+          currencyCode: "USD",
+          discounts: 0,
+          effectiveTaxRate: 0.05,
+          shipping: 4.00,
+          subtotal: 12.45,
+          surcharges: 0,
+          taxableAmount: 12.45,
+          taxes: 0.12,
+          total: 12.45
+        },
+        items: [{
+          _id: itemIdOne,
+          addedAt: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          price: {
+            amount: 1,
+            currencyCode: "USD"
+          },
+          subtotal: 1,
+          title: "firstItem",
+          shopId: product.shopId,
+          productId: product._id,
+          quantity: 1,
+          product,
+          variants: selectedOption,
+          workflow: {
+            status: "new"
+          }
+        }, {
+          _id: itemIdTwo,
+          addedAt: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          price: {
+            amount: 1,
+            currencyCode: "USD"
+          },
+          subtotal: 1,
+          title: "secondItem",
+          shopId: product2.shopId,
+          productId: product2._id,
+          quantity: 1,
+          product: product2,
+          variants: selectedOption2,
+          workflow: {
+            status: "new"
+          }
+        }],
+        itemIds: [itemIdOne, itemIdTwo],
+        shipmentMethod: {
+          _id: Random.id(),
+          currencyCode: "USD",
+          handling: 0,
+          rate: 0,
+          name: "name",
+          label: "label"
+        },
+        totalItemQuantity: 2,
+        shopId,
         workflow: {
           status: "new"
         }
       }];
-    },
-    supportedFulfillmentTypes: ["shipping"],
-    shipping: [{
-      address: getAddress({ isShippingDefault: true }),
-      invoice: {
-        total: 12.45,
-        subtotal: 12.45,
-        discounts: 0,
-        taxes: 0.12,
-        shipping: 4.00
-      },
-      itemIds: [itemIdOne, itemIdTwo],
-      payment: {
+    }, // fulfillment group Schema
+    payments: [
+      {
         _id: Random.id(),
         address: getAddress({ isBillingDefault: true }),
         amount: 12.45,
+        createdAt: new Date(),
+        currencyCode: "USD",
         displayName: "MasterCard 2346",
-        invoice: {
-          total: 12.45,
-          subtotal: 12.45,
-          discounts: 0,
-          taxes: 0.12,
-          shipping: 4.00
-        },
         method: "credit",
         mode: "authorize",
+        name: "iou_example",
         paymentPluginName: "example-paymentmethod",
         processor: "Example",
+        shopId,
         status: "created",
-        shopId
-      },
-      shopId
-    }], // fulfillment group Schema
+        transactionId: "txID",
+        transactions: []
+      }
+    ],
     state: "new",
+    currencyCode: "USD",
+    referenceId: () => Random.id(),
+    totalItemQuantity: 2,
     createdAt: new Date(),
     updatedAt: new Date()
   });
