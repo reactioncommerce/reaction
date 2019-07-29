@@ -25,6 +25,7 @@ Migrations.add({
           .map((user) => user.roles && user.roles[shop._id]);
         // sorts the array of permission sets to contain only unique sets to avoid creating groups with same permissions
         const permissionsArray = sortUniqueArray(customPermissions);
+        // eslint-disable-next-line consistent-return
         permissionsArray.forEach((permissions, index) => {
           if (!permissions) { return null; }
           Logger.debug(`creating custom group for shop ${shop.name}`);

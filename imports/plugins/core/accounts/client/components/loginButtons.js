@@ -60,6 +60,8 @@ class LoginButtons extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   render() {

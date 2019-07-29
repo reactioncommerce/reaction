@@ -658,6 +658,7 @@ Meteor.methods({
    * @param {String} productId - productId to delete
    * @returns {Number} returns number of removed products
    */
+  // eslint-disable-next-line consistent-return
   "products/archiveProduct"(productId) {
     check(productId, Match.OneOf(Array, String));
 

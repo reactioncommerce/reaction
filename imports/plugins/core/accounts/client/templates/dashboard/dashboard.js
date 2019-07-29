@@ -82,6 +82,8 @@ Template.accountsDashboard.helpers({
         });
       }
     }
+
+    return null;
   },
 
   accountsDashboard() {
@@ -104,6 +106,7 @@ Template.accountsSettings.helpers({
     const serviceHelper = new ServiceConfigHelper();
     const configurations = ServiceConfiguration.configurations.find().fetch();
 
+    // eslint-disable-next-line consistent-return
     const services = serviceHelper.services((item) => {
       const matchingConfigurations = _.filter(configurations, {
         service: item.name
