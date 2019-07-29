@@ -1,6 +1,20 @@
 /* eslint camelcase: 0 */
 import refunds from "./refunds";
 import mockContext from "/imports/test-utils/helpers/mockContext";
+import { rewire$getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+
+beforeAll(() => {
+  rewire$getPaymentMethodConfigByName(() => ({
+    functions: {
+      listRefunds: () => [{
+        _id: "refundId",
+        type: "refund",
+        amount: 19.99,
+        currency: "usd"
+      }]
+    }
+  }));
+});
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -48,4 +62,18 @@ test("throws if permission check fails", async () => {
   })).rejects.toThrowErrorMatchingSnapshot();
 
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders", "order/fulfillment", "order/view"], "SHOP_ID");
+});
+
+test("should call refunds with the proper parameters and return a list of refunds for an order", async () => {
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(order));
+
+  const result = await refunds(mockContext, {
+    orderId: order._id,
+    shopId: order.shopId
+  });
+
+  expect(result[0].type).toBe("refund");
+  expect(result[0].amount).toBe(19.99);
+  expect(result[0].currency).toBe("usd");
 });
