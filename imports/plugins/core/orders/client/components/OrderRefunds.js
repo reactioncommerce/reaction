@@ -215,29 +215,30 @@ function OrderRefunds(props) {
                             console.log(" ----- ----- ----- payment map, payment ID", payment._id, ": ", payment);
                             // TODO: EK - fix this up, check payment to see if refund is even available
                             return (
-                              <Fragment>
-                                <Grid item xs={6}>
-                                  <Typography variant="body1">Refund to <span className={classes.fontWeightSemiBold}>{payment.displayName}</span></Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                  <Typography variant="body1">refund field</Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                  <Field
-                                    name={`amounts.${payment._id}`}
-                                    labelFor={`amounts${payment._id}Input`}
-                                  >
-                                    <TextInput
-                                      id={`amounts${payment._id}Input`}
+                              <Grid item xs={12}>
+                                <Grid container>
+                                  <Grid item xs={6}>
+                                    <Typography variant="body1">Refund to <span className={classes.fontWeightSemiBold}>{payment.displayName}</span></Typography>
+                                    <Typography variant="caption">Amount eligible for refund: {payment.amount.displayAmount}</Typography>
+                                  </Grid>
+                                  <Grid item xs={3} md={4} />
+                                  <Grid item xs={3} md={2}>
+                                    <Field
                                       name={`amounts.${payment._id}`}
-                                      onChange={() => handleRefundTotalUpdate}
-                                      placeholder={i18next.t("order.amountToRefund", "Amount to refund")}
-                                      type="number"
-                                    />
-                                    <ErrorsBlock names={["amounts"]} />
-                                  </Field>
+                                      labelFor={`amounts${payment._id}Input`}
+                                    >
+                                      <TextInput
+                                        id={`amounts${payment._id}Input`}
+                                        name={`amounts.${payment._id}`}
+                                        onChange={() => handleRefundTotalUpdate}
+                                        placeholder={i18next.t("order.amountToRefund", "Amount to refund")}
+                                        type="number"
+                                      />
+                                      <ErrorsBlock names={["amounts"]} />
+                                    </Field>
+                                  </Grid>
                                 </Grid>
-                              </Fragment>
+                              </Grid>
                             );
                           })
                         }
