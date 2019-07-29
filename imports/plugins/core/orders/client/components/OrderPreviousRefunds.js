@@ -10,7 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
-import listRefunds from "../graphql/queries/listRefunds";
+import refunds from "../graphql/queries/refunds";
 
 const styles = (theme) => ({
   dividerSpacing: {
@@ -37,13 +37,13 @@ function OrderPreviousRefunds(props) {
   };
 
   return (
-    <Query errorPolicy="all" query={listRefunds} variables={variables}>
-      {({ data: listRefundsData, loading: isLoading }) => {
+    <Query errorPolicy="all" query={refunds} variables={variables}>
+      {({ data: refundsData, loading: isLoading }) => {
         if (isLoading) return null;
 
-        const { listRefunds: refunds } = listRefundsData || {};
+        const { refunds: previousRefunds } = refundsData || {};
 
-        if (Array.isArray(refunds) && refunds.length) {
+        if (Array.isArray(previousRefunds) && previousRefunds.length) {
           return (
             <Grid item xs={12}>
               <Card elevation={0}>
@@ -51,7 +51,7 @@ function OrderPreviousRefunds(props) {
                   title={i18next.t("order.previousRefunds", "Previous Refunds")}
                 />
                 <CardContent>
-                  {refunds.map((refund, index) => {
+                  {previousRefunds.map((refund, index) => {
                     const { amount, createdAt, paymentDisplayName, reason } = refund;
                     const formattedDate = moment(createdAt).format("l");
 
@@ -80,7 +80,7 @@ function OrderPreviousRefunds(props) {
                             </Typography>
                           </Grid>
                         </Grid>
-                        {index + 1 < refunds.length &&
+                        {index + 1 < previousRefunds.length &&
                         <Grid item xs={12} md={12}>
                           <Divider className={classes.dividerSpacing} />
                         </Grid>

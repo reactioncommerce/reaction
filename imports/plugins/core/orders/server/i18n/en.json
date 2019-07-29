@@ -19,6 +19,7 @@
       },
       "orderDetails": "Order Details",
       "order": {
+        "allowShippingRefund": "Allow shipping to be refunded",
         "amountToRefund": "Amount to refund",
         "applyRefund": "Apply refund",
         "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
@@ -34,6 +35,8 @@
         "placed": "Placed",
         "previousRefunds": "Previous refunds",
         "reasonForRefund": "Reason for refund",
+        "reasonForRefundFormLabel": "Reason for refund (optional)",
+        "refundButton": "Refund {{currencySymbol}}{{currentRefundAmount}}",
         "refundedTo": "Refunded to",
         "refunding": "Refunding",
         "refundItemsAlert": "Do you want to refund {{refundItemsQuantity}} item(s) totaling {{refundItemsTotal}}?",

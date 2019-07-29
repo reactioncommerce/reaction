@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query listRefunds($orderId: ID!, $shopId: ID!, $token: String) {
-    listRefunds(orderId: $orderId, shopId: $shopId, token: $token) {
+  query refunds($orderId: ID!, $shopId: ID!, $token: String) {
+    refunds(orderId: $orderId, shopId: $shopId, token: $token) {
       amount {
         amount
         displayAmount
