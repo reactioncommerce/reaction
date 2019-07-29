@@ -14,12 +14,17 @@ import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
  */
 export default async function addTag(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
-  const { shopId, name, isVisible, displayTitle, metafields, heroMediaUrl } = input;
+  const { shopId, name, isVisible, displayTitle, metafields, heroMediaUrl, slug: slugInput } = input;
   const { appEvents, collections, userHasPermission } = context;
   const { Tags } = collections;
 
   if (!userHasPermission(["owner", "admin"], shopId)) {
     throw new ReactionError("access-denied", "User does not have permission");
+  }
+
+  let slug = name;
+  if (typeof slugInput === "string" && slugInput.trim().length > 0) {
+    slug = slugInput;
   }
 
   const now = new Date();
@@ -28,7 +33,7 @@ export default async function addTag(context, input) {
     isDeleted: false,
     isTopLevel: false,
     isVisible,
-    slug: getSlug(name),
+    slug: getSlug(slug),
     metafields,
     name,
     displayTitle,
