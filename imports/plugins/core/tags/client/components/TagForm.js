@@ -347,7 +347,7 @@ class TagForm extends Component {
   render() {
     const tag = this.tagData;
     const { shopId } = this.props;
-    const { currentTab } = this.state;
+    const { currentTab, error } = this.state;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const slugInputId = `slug_${this.uniqueInstanceIdentifier}`;
     const heroMediaUrlInputId = `heroMediaUrl_${this.uniqueInstanceIdentifier}`;
@@ -389,12 +389,12 @@ class TagForm extends Component {
               onChange={this.handleFormChange}
               onSubmit={(data) => this.handleSubmit(data, mutationFunc)}
               validator={getRequiredValidator("name", "displayTitle")}
-              value={tag}
+              value={error ? this.formValue : tag}
             >
-              {this.state.error &&
+              {error &&
                 <InlineAlert
                   alertType="error"
-                  message={this.state.error.message}
+                  message={error.message}
                 />
               }
               {(this.previousSlug && tag.slug && this.previousSlug !== tag.slug) &&
