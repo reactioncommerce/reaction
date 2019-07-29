@@ -3,7 +3,7 @@ import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/ser
 import { getOrderQuery } from "../util/getOrderQuery";
 
 /**
- * @name listRefunds
+ * @name refunds
  * @method
  * @memberof Order/NoMeteorQueries
  * @summary Query the Orders collection for an order, and returns refunds applied to payments associated with this order
@@ -14,7 +14,7 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @param {String} [params.token] - Anonymous order token
  * @return {Promise<Array>|undefined} - An array of refunds applied to this order, if found
  */
-export default async function listRefunds(context, { orderId, shopId, token } = {}) {
+export default async function refunds(context, { orderId, shopId, token } = {}) {
   const { userHasPermission } = context;
 
   if (!userHasPermission(["orders", "order/fulfillment", "order/view"], shopId)) throw new ReactionError("access-denied", "User does not have permission");
@@ -30,7 +30,7 @@ export default async function listRefunds(context, { orderId, shopId, token } = 
     throw new ReactionError("not-found", "Order not found");
   }
 
-  const refunds = [];
+  const paymentRefunds = [];
 
   if (Array.isArray(order.payments)) {
     for (const payment of order.payments) {
@@ -42,9 +42,9 @@ export default async function listRefunds(context, { orderId, shopId, token } = 
         paymentId: payment._id,
         paymentDisplayName: payment.displayName
       }));
-      refunds.push(...shopRefundsWithPaymentId);
+      paymentRefunds.push(...shopRefundsWithPaymentId);
     }
   }
 
-  return refunds;
+  return paymentRefunds;
 }

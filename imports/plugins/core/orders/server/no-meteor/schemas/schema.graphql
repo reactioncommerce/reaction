@@ -1,7 +1,4 @@
 extend type Query {
-  "Get refunds applied to an order by order ID"
-  listRefunds(orderId: ID!, shopId: ID!, token: String): [Refund]
-
   "Get an order by its ID"
   orderById(id: ID!, shopId: ID!, token: String): Order
 
@@ -23,6 +20,12 @@ extend type Query {
 
   "Get an order by its reference ID (the ID shown to customers)"
   orderByReferenceId(id: ID!, shopId: ID!, token: String): Order
+
+  "Get refunds applied to an order by order ID"
+  refunds(orderId: ID!, shopId: ID!, token: String): [Refund]
+
+  "Get refunds applied to a specific payment by payment ID"
+  refundsByPaymentId(orderId: ID!, paymentId: ID!, shopId: ID!, token: String): [Refund]
 }
 
 extend type Mutation {
@@ -366,6 +369,9 @@ type Order implements Node {
   May be null if no payment is needed.
   """
   payments: [Payment]
+
+  "Refunds that have been applied to the payments on this order."
+  refunds: [Refund]
 
   """
   An ID by which the customer can reference this order when enquiring about it. A storefront user
