@@ -44,13 +44,23 @@ export default async function addTag(context, input) {
   };
 
   TagSchema.validate(tag);
-  const { result } = await Tags.insertOne(tag);
 
-  if (result.ok !== 1) {
-    throw new ReactionError("server-error", "Unable to create tag");
+  try {
+    const { result } = await Tags.insertOne(tag);
+
+    if (result.ok !== 1) {
+      throw new ReactionError("server-error", "Unable to create tag");
+    }
+
+    await appEvents.emit("afterTagCreate", tag);
+
+    return tag;
+  } catch ({ message }) {
+    // Mongo duplicate key error.
+    if (message.includes("E11000") && message.includes("slug")) {
+      throw new ReactionError("error", `Slug ${tag.slug} is already in use`);
+    }
+
+    throw new ReactionError("error", message);
   }
-
-  await appEvents.emit("afterTagCreate", tag);
-
-  return tag;
 }
