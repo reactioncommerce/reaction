@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 /* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
@@ -10,6 +11,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
 
 describe("Server/Core", function () {
   let sandbox;
+
+  before(function (done) {
+    this.timeout(20000);
+    Reaction.onAppStartupComplete(() => {
+      done();
+    });
+  });
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
