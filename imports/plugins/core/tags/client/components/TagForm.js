@@ -151,20 +151,26 @@ class TagForm extends Component {
       });
     }
 
-    const result = await mutation({
-      refetchQueries,
-      variables: {
-        input
+    this.setState({ error: null });
+    try {
+      const result = await mutation({
+        refetchQueries,
+        variables: {
+          input
+        }
+      });
+
+      if (result.data.addTag) {
+        this.props.onCreate(result.data.addTag.tag);
+      } else {
+        this.props.onUpdate(result.data.updateTag.tag);
       }
-    });
 
-    if (result.data.addTag) {
-      this.props.onCreate(result.data.addTag.tag);
-    } else {
-      this.props.onUpdate(result.data.updateTag.tag);
+      return result;
+    } catch (error) {
+      this.setState({ error });
+      return {};
     }
-
-    return result;
   }
 
   handleRemove(id, mutation) {
@@ -385,6 +391,12 @@ class TagForm extends Component {
               validator={getRequiredValidator("name", "displayTitle")}
               value={tag}
             >
+              {this.state.error &&
+                <InlineAlert
+                  alertType="error"
+                  message={this.state.error.message}
+                />
+              }
               {(this.previousSlug && tag.slug && this.previousSlug !== tag.slug) &&
                 <InlineAlert
                   isDismissable
