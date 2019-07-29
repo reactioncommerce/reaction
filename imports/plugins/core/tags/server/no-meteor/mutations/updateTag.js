@@ -30,7 +30,7 @@ const inputSchema = new SimpleSchema({
 export default async function updateTag(context, input) {
   const { appEvents, collections, userHasPermission } = context;
   const { Tags } = collections;
-  const { shopId, tagId } = input;
+  const { shopId, tagId, slug: slugInput } = input;
 
   // Check for owner or admin permissions from the user before allowing the mutation
   if (!userHasPermission(["owner", "admin"], shopId)) {
@@ -46,8 +46,13 @@ export default async function updateTag(context, input) {
     }
   });
 
+  let slug = input.name;
+  if (typeof slugInput === "string" && slugInput.trim().length > 0) {
+    slug = slugInput;
+  }
+
   const params = {
-    slug: getSlug(input.name),
+    slug: getSlug(slug),
     name: input.name,
     displayTitle: input.displayTitle,
     isVisible: input.isVisible,
