@@ -69,18 +69,27 @@ export default async function updateTag(context, input) {
   inputSchema.validate(params);
   params.updatedAt = new Date();
 
-  const { result } = await Tags.updateOne(
-    { _id: tagId, shopId },
-    { $set: params }
-  );
+  try {
+    const { result } = await Tags.updateOne(
+      { _id: tagId, shopId },
+      { $set: params }
+    );
 
-  if (result.n === 0) {
-    throw new ReactionError("not-found", "Redirect rule not found");
+    if (result.n === 0) {
+      throw new ReactionError("not-found", "Redirect rule not found");
+    }
+
+    const tag = await Tags.findOne({ _id: tagId, shopId });
+
+    await appEvents.emit("afterTagUpdate", tag);
+
+    return tag;
+  } catch ({ message }) {
+    // Mongo duplicate key error.
+    if (message.includes("E11000") && message.includes("slug")) {
+      throw new ReactionError("error", `Slug ${params.slug} is already in use`);
+    }
+
+    throw new ReactionError("error", message);
   }
-
-  const tag = await Tags.findOne({ _id: tagId, shopId });
-
-  await appEvents.emit("afterTagUpdate", tag);
-
-  return tag;
 }
