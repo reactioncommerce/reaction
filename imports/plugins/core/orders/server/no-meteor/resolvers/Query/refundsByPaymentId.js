@@ -10,7 +10,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - An object of all arguments that were sent by the client
  * @param {String} args.orderId - ID of the order
- * @param {String} args.orderId - ID of the payment
+ * @param {String} args.paymentId - ID of the payment
  * @param {String} args.shopId - shop ID of the order
  * @param {String} [args.token] - An anonymous order token, required if the order was placed without being logged in
  * @param {Object} context - An object containing the per-request state
