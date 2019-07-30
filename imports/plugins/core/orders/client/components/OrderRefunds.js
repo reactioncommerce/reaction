@@ -6,16 +6,12 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
 import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Select from "@material-ui/core/Select";
-import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
@@ -57,8 +53,6 @@ function OrderRefunds(props) {
   const inputLabel = useRef(null);
 
   // useState
-  const [allowShippingRefund, setAllowShippingRefund] = useState(false);
-  const [calculateByItem, setCalculateByItem] = useState(false);
   const [labelWidth, setLabelWidth] = useState(0);
   const [refundReasonSelectValues, setRefundReasonSelectValues] = useState({ reason: "" });
   const [refundTotal, setRefundTotal] = useState(0.00);
@@ -144,16 +138,6 @@ function OrderRefunds(props) {
     }
   };
 
-  // If true, show UI to calculate refunds by item
-  const handleRefundCalculateByItemSwitchChange = () => {
-    setCalculateByItem(!calculateByItem);
-  };
-
-  // If true, add shipping amount into refundable price
-  const handleRefundAllowShippingRefundSwitchChange = () => {
-    setAllowShippingRefund(!allowShippingRefund);
-  };
-
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -163,47 +147,6 @@ function OrderRefunds(props) {
           />
           {canRefund ?
             <CardContent>
-              <FormGroup row>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={calculateByItem}
-                      onChange={() => handleRefundCalculateByItemSwitchChange("calculateByItem")}
-                      value="calculateByItem"
-                    />
-                  }
-                  label={i18next.t("order.calculateRefundByItem", "Calculate refund by item")}
-                />
-              </FormGroup>
-              <FormGroup row>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={allowShippingRefund}
-                      onChange={() => handleRefundAllowShippingRefundSwitchChange("allowShippingRefund")}
-                      value="allowShippingRefund"
-                    />
-                  }
-                  label={i18next.t("order.allowShippingRefund", "Allow shipping to be refunded")}
-                />
-              </FormGroup>
-              <Divider className={classes.dividerSpacing} />
-              {calculateByItem === true &&
-              <Grid container>
-                <Grid item xs={12}>
-                  <Typography variant="body1">This is the section to render everything by item</Typography>
-                  <Divider className={classes.dividerSpacing} />
-                </Grid>
-              </Grid>
-              }
-              {allowShippingRefund === true &&
-              <Grid container>
-                <Grid item xs={12}>
-                  <Typography variant="body1">We will allow shipping to be refunded as well. This is not typical.</Typography>
-                  <Divider className={classes.dividerSpacing} />
-                </Grid>
-              </Grid>
-              }
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <Mutation mutation={createRefundMutation}>
@@ -282,8 +225,8 @@ function OrderRefunds(props) {
                               sizing="50%"
                             >
                               <FormControl variant="outlined" className={classes.formControl}>
-                                <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-                                Reason
+                                <InputLabel ref={inputLabel} htmlFor="reason">
+                                  {i18next.t("order.reason", "Reason")}
                                 </InputLabel>
                                 <Select
                                   input={<OutlinedInput labelWidth={labelWidth} name="reason" id="reasonInput" />}
