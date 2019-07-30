@@ -370,14 +370,14 @@ type Order implements Node {
   """
   payments: [Payment]
 
-  "Refunds that have been applied to the payments on this order."
-  refunds: [Refund]
-
   """
   An ID by which the customer can reference this order when enquiring about it. A storefront user
   interface may show this to customers. Do not display other IDs (`_id`) to customers.
   """
   referenceId: String!
+
+  "Refunds that have been applied to the payments on this order."
+  refunds: [Refund]
 
   "The shop through which the order was placed"
   shop: Shop!
