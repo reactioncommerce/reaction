@@ -168,11 +168,23 @@ export const orderCommonFragment = gql`
       }
       mode
       processor
+      refunds {
+        amount {
+          amount
+          displayAmount
+        }
+      }
       riskLevel
       status
       transactionId
     }
     referenceId
+    refunds {
+      amount {
+        amount
+        displayAmount
+      }
+    }
     shop {
       _id
       currency {
