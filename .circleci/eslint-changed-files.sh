@@ -17,9 +17,14 @@ IFS=$'\n\t'
 CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
 if [[ -n "${CIRCLE_PR_NUMBER}" ]]; then
   # Get PR from github API
-  url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/${CIRCLE_PR_NUMBER}"
+  org_repo=$(git remote -v |
+    head -1 |
+    awk '{print $2}' |
+    cut -d : -f 2 |
+    sed 's/\.git$//')
+  url="https://api.github.com/repos/${org_repo}/pulls/${CIRCLE_PR_NUMBER}"
   # Determine target/base branch from API response
-  TARGET_BRANCH=$(curl --silent --location --fail --show-error "${url}" | jq -r '.base.ref')
+  TARGET_BRANCH=$(curl --silent --location "${url}" | jq -r '.base.ref' || true)
 fi
 
 if [[ -z "${TARGET_BRANCH}" ]] || [[ ${TARGET_BRANCH} == "null" ]]; then
