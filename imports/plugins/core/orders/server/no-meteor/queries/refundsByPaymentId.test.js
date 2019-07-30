@@ -39,7 +39,7 @@ test("throws if orderId isn't supplied", async () => {
 
 test("throws if paymentId isn't supplied", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
-  await expect(refundsByPaymentId(mockContext, { orderId: order._id, paymentId: null, shopId: order.shopId, token: null })).rejects.toThrowErrorMatchingSnapshot();
+  await expect(refundsByPaymentId(mockContext, { orderId: order._id, paymentId: null, shopId: order.shopId, token: null })).rejects.toThrowErrorMatchingSnapshot(); // eslint-disable-line max-len
 });
 
 test("throws if shopId isn't supplied", async () => {
