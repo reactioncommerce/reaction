@@ -22,7 +22,7 @@ import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next, Reaction } from "/client/api";
 import formatMoney from "/imports/utils/formatMoney";
-import Button from "/imports/client/ui/components/Button";
+import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import createRefundMutation from "../graphql/mutations/createRefund";
 import OrderPreviousRefunds from "./OrderPreviousRefunds";
 
@@ -35,8 +35,8 @@ const styles = (theme) => ({
     fontWeight: theme.typography.fontWeightSemiBold
   },
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120
+    minWidth: "250px",
+    width: "250px"
   },
   selectEmpty: {
     marginTop: theme.spacing(2)
@@ -72,6 +72,8 @@ function OrderRefunds(props) {
   }, []);
 
   const canRefund = payments.every((payment) => payment.status !== "refunded");
+  // calculated refund total from inputs
+  const calculatedRefundTotalDisplay = formatMoney(refundTotal, order.currencyCode);
   // previous refunds
   const orderPreviousRefundTotal = order.refunds.reduce((acc, refund) => acc + refund.amount.amount, 0);
   // available to refund
@@ -112,14 +114,16 @@ function OrderRefunds(props) {
 
   // When refund amounts are changed, add up amounts to display in button
   const handleRefundTotalUpdate = () => {
-    const { amounts } = this.form.state.value;
+    if (this.form && this.form.state) {
+      const { amounts } = this.form.state.value;
 
-    const reducedRefundTotal = Object.keys(amounts).map((paymentId) => ({
-      paymentId,
-      amount: parseFloat(amounts[paymentId], 10)
-    })).filter((payment) => payment.amount && payment.amount > 0).reduce((acc, value) => acc + value.amount, 0);
+      const reducedRefundTotal = Object.keys(amounts).map((paymentId) => ({
+        paymentId,
+        amount: parseFloat(amounts[paymentId], 10)
+      })).filter((payment) => payment.amount && payment.amount > 0).reduce((acc, value) => acc + value.amount, 0);
 
-    setRefundTotal(() => reducedRefundTotal);
+      setRefundTotal(() => reducedRefundTotal);
+    }
   };
 
   const handleRefundAmountChange = (amount) => {
@@ -275,6 +279,7 @@ function OrderRefunds(props) {
                               name="reason"
                               label={i18next.t("order.reasonForRefundFormLabel", "Reason for refund (optional)")}
                               labelFor="reasonInput"
+                              sizing="50%"
                             >
                               <FormControl variant="outlined" className={classes.formControl}>
                                 <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
@@ -300,21 +305,29 @@ function OrderRefunds(props) {
                         </Grid>
                         <Grid container alignItems="center" justify="flex-end" spacing={1}>
                           <Grid item>
-                            <Button color="primary"variant="outlined" onClick={this.handleToggleEdit}>
-                              {i18next.t("app.cancel", "Cancel")}
-                            </Button>
-                          </Grid>
-                          <Grid item>
-                            <Button color="primary" variant="contained" onClick={handleSubmitForm} disabled={refundTotal === 0.00}>
-                              {i18next.t(
+                            <ConfirmButton
+                              buttonColor="primary"
+                              buttonText={i18next.t(
                                 "order.refundButton",
                                 {
-                                  currencySymbol: "$",
-                                  currentRefundAmount: refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : refundTotal
+                                  currentRefundAmount: refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay
                                 },
-                                `Refund ${refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : refundTotal}`
+                                `Refund ${refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay}`
                               )}
-                            </Button>
+                              buttonVariant="contained"
+                              cancelActionText={i18next.t("app.cancel", "Cancel")}
+                              confirmActionText={i18next.t("order.applyRefund", "Apply refund")}
+                              disabled={refundTotal === 0.00}
+                              title={i18next.t("order.refund", "Refund")}
+                              message={i18next.t(
+                                "order.applyRefundToThisOrder",
+                                {
+                                  refund: refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay
+                                },
+                                `Apply refund of ${refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay} to this order?`
+                              )}
+                              onConfirm={handleSubmitForm}
+                            />
                           </Grid>
                         </Grid>
                       </Form>
