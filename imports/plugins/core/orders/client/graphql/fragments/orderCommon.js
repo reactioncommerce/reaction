@@ -146,6 +146,7 @@ export const orderCommonFragment = gql`
     payments {
       _id
       amount {
+        amount
         displayAmount
       }
       billingAddress {
@@ -173,6 +174,9 @@ export const orderCommonFragment = gql`
           amount
           displayAmount
         }
+        createdAt
+        paymentDisplayName
+        reason
       }
       riskLevel
       status
@@ -184,6 +188,9 @@ export const orderCommonFragment = gql`
         amount
         displayAmount
       }
+      createdAt
+      paymentDisplayName
+      reason
     }
     shop {
       _id

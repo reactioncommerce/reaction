@@ -21,6 +21,7 @@ import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next, Reaction } from "/client/api";
+import formatMoney from "/imports/utils/formatMoney";
 import Button from "/imports/client/ui/components/Button";
 import createRefundMutation from "../graphql/mutations/createRefund";
 import OrderPreviousRefunds from "./OrderPreviousRefunds";
@@ -65,8 +66,17 @@ function OrderRefunds(props) {
   // useEffect
   // update label width when refund select is activate
   useEffect(() => {
-    setLabelWidth(inputLabel.current.offsetWidth);
+    if (inputLabel && inputLabel.current) {
+      setLabelWidth(inputLabel.current.offsetWidth);
+    }
   }, []);
+
+  const canRefund = payments.every((payment) => payment.status !== "refunded");
+  // previous refunds
+  const orderPreviousRefundTotal = order.refunds.reduce((acc, refund) => acc + refund.amount.amount, 0);
+  // available to refund
+  const orderAmountAvailableForRefund = order.summary.total.amount - orderPreviousRefundTotal;
+  const orderAmountAvailableForRefundDisplay = formatMoney(orderAmountAvailableForRefund, order.currencyCode);
 
   const handleCreateRefund = (data, mutation) => {
     const { amounts } = data;
@@ -112,6 +122,10 @@ function OrderRefunds(props) {
     setRefundTotal(() => reducedRefundTotal);
   };
 
+  const handleRefundAmountChange = (amount) => {
+    if (amount) handleRefundTotalUpdate();
+  };
+
   const handleRefundReasonSelectChange = (event) => {
     handleRefundTotalUpdate();
     setRefundReasonSelectValues((oldValues) => ({
@@ -126,15 +140,6 @@ function OrderRefunds(props) {
     }
   };
 
-
-
-
-
-  // Handle form change, not sure what to do with this
-  const handleFormChange = () => {
-    console.log("do nothing for now");
-  };
-
   // If true, show UI to calculate refunds by item
   const handleRefundCalculateByItemSwitchChange = () => {
     setCalculateByItem(!calculateByItem);
@@ -145,10 +150,6 @@ function OrderRefunds(props) {
     setAllowShippingRefund(!allowShippingRefund);
   };
 
-
-
-
-
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -156,144 +157,181 @@ function OrderRefunds(props) {
           <CardHeader
             title={i18next.t("order.amountToRefund", "Amount to refund")}
           />
-          <CardContent>
-            <FormGroup row>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={calculateByItem}
-                    onChange={() => handleRefundCalculateByItemSwitchChange("calculateByItem")}
-                    value="calculateByItem"
-                  />
-                }
-                label={i18next.t("order.calculateRefundByItem", "Calculate refund by item")}
-              />
-            </FormGroup>
-            <FormGroup row>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={allowShippingRefund}
-                    onChange={() => handleRefundAllowShippingRefundSwitchChange("allowShippingRefund")}
-                    value="allowShippingRefund"
-                  />
-                }
-                label={i18next.t("order.allowShippingRefund", "Allow shipping to be refunded")}
-              />
-            </FormGroup>
-            <Divider className={classes.dividerSpacing} />
-            {calculateByItem === true &&
+          {canRefund ?
+            <CardContent>
+              <FormGroup row>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={calculateByItem}
+                      onChange={() => handleRefundCalculateByItemSwitchChange("calculateByItem")}
+                      value="calculateByItem"
+                    />
+                  }
+                  label={i18next.t("order.calculateRefundByItem", "Calculate refund by item")}
+                />
+              </FormGroup>
+              <FormGroup row>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={allowShippingRefund}
+                      onChange={() => handleRefundAllowShippingRefundSwitchChange("allowShippingRefund")}
+                      value="allowShippingRefund"
+                    />
+                  }
+                  label={i18next.t("order.allowShippingRefund", "Allow shipping to be refunded")}
+                />
+              </FormGroup>
+              <Divider className={classes.dividerSpacing} />
+              {calculateByItem === true &&
               <Grid container>
                 <Grid item xs={12}>
                   <Typography variant="body1">This is the section to render everything by item</Typography>
                   <Divider className={classes.dividerSpacing} />
                 </Grid>
               </Grid>
-            }
-            {allowShippingRefund === true &&
+              }
+              {allowShippingRefund === true &&
               <Grid container>
                 <Grid item xs={12}>
                   <Typography variant="body1">We will allow shipping to be refunded as well. This is not typical.</Typography>
                   <Divider className={classes.dividerSpacing} />
                 </Grid>
               </Grid>
-            }
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Mutation mutation={createRefundMutation}>
-                  {(mutationFunc) => (
-                    <Form
-                      ref={(formRef) => {
-                        this.form = formRef;
-                      }}
-                      onChange={() => handleFormChange}
-                      onSubmit={(data) => handleCreateRefund(data, mutationFunc)}
-                    >
-                      <Grid container spacing={3}>
-                        {
-                          payments.map((payment) => {
-                            console.log(" ----- ----- ----- payment map, payment ID", payment._id, ": ", payment);
-                            // TODO: EK - fix this up, check payment to see if refund is even available
-                            return (
-                              <Grid item xs={12}>
-                                <Grid container>
-                                  <Grid item xs={6}>
-                                    <Typography variant="body1">Refund to <span className={classes.fontWeightSemiBold}>{payment.displayName}</span></Typography>
-                                    <Typography variant="caption">Amount eligible for refund: {payment.amount.displayAmount}</Typography>
-                                  </Grid>
-                                  <Grid item xs={3} md={4} />
-                                  <Grid item xs={3} md={2}>
-                                    <Field
-                                      name={`amounts.${payment._id}`}
-                                      labelFor={`amounts${payment._id}Input`}
-                                    >
-                                      <TextInput
-                                        id={`amounts${payment._id}Input`}
+              }
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Mutation mutation={createRefundMutation}>
+                    {(mutationFunc) => (
+                      <Form
+                        ref={(formRef) => {
+                          this.form = formRef;
+                        }}
+                        onSubmit={(data) => handleCreateRefund(data, mutationFunc)}
+                      >
+                        <Grid container spacing={3}>
+                          {
+                            payments.map((payment) => {
+                              const canRefundPayment = payment.status !== "refunded";
+                              // previous refunds
+                              const paymentPreviousRefundTotal = payment.refunds.reduce((acc, refund) => acc + refund.amount.amount, 0);
+                              const paymentPreviousRefundTotalDisplay = formatMoney(paymentPreviousRefundTotal, order.currencyCode);
+                              // available to refund
+                              const paymentAmountAvailableForRefund = payment.amount.amount - paymentPreviousRefundTotal;
+                              const paymentAmountAvailableForRefundDisplay = formatMoney(paymentAmountAvailableForRefund, order.currencyCode);
+
+                              return (
+                                <Grid item xs={12}>
+                                  <Grid container>
+                                    <Grid item xs={6}>
+                                      <Typography variant="body1">
+                                        {i18next.t("order.refundTo", "Refund to")} <span className={classes.fontWeightSemiBold}>{payment.displayName}</span>
+                                      </Typography>
+                                      {canRefundPayment ?
+                                        <Fragment>
+                                          <Typography variant="body2">
+                                            {i18next.t("order.availableToRefund", "Available to refund")}: {paymentAmountAvailableForRefundDisplay}
+                                          </Typography>
+                                          {paymentPreviousRefundTotal && paymentPreviousRefundTotal > 0 &&
+                                          <Typography variant="body2">
+                                            {i18next.t("order.previouslyRefunded", "Previously refunded")}: {paymentPreviousRefundTotalDisplay}
+                                          </Typography>
+                                          }
+                                        </Fragment>
+                                        :
+                                        <Typography variant="caption">{i18next.t("order.paymentRefunded", "Payment is fully refunded")}</Typography>
+                                      }
+                                    </Grid>
+                                    <Grid item xs={3} md={4} />
+                                    {canRefundPayment &&
+                                    <Grid item xs={3} md={2}>
+                                      <Field
                                         name={`amounts.${payment._id}`}
-                                        onChange={() => handleRefundTotalUpdate}
-                                        placeholder={i18next.t("order.amountToRefund", "Amount to refund")}
-                                        type="number"
-                                      />
-                                      <ErrorsBlock names={["amounts"]} />
-                                    </Field>
+                                        labelFor={`amounts${payment._id}Input`}
+                                      >
+                                        {/* TODO: make sure `min` and `max` function here when `TextInput` is updated */}
+                                        <TextInput
+                                          id={`amounts${payment._id}Input`}
+                                          min={0}
+                                          max={paymentAmountAvailableForRefund}
+                                          name={`amounts.${payment._id}`}
+                                          onChange={handleRefundAmountChange}
+                                          onChanging={handleRefundAmountChange}
+                                          placeholder={i18next.t("order.amountToRefund", "Amount to refund")}
+                                          type="number"
+                                        />
+                                        <ErrorsBlock names={["amounts"]} />
+                                      </Field>
+                                    </Grid>
+                                    }
                                   </Grid>
                                 </Grid>
-                              </Grid>
-                            );
-                          })
-                        }
-                      </Grid>
-                      <Field
-                        name="reason"
-                        label={i18next.t("order.reasonForRefundFormLabel", "Reason for refund (optional)")}
-                        labelFor="reasonInput"
-                      >
-                        {/* TODO: EK - fix width of this form */}
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-                            Reason
-                          </InputLabel>
-                          <Select
-                            input={<OutlinedInput labelWidth={labelWidth} name="reason" id="reasonInput" />}
-                            name="reason"
-                            onChange={handleRefundReasonSelectChange}
-                            value={refundReasonSelectValues.reason}
-                          >
-                            <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem>
-                            <MenuItem value="requested_by_customer">Customer Request</MenuItem>
-                            <MenuItem value="duplicate">Duplicate payment</MenuItem>
-                            <MenuItem value="fraudulent">Fraudulent</MenuItem>
-                          </Select>
-                        </FormControl>
-                        <ErrorsBlock names={["reason"]} />
-                      </Field>
-                      <Grid container alignItems="center" justify="flex-end" spacing={1}>
-                        <Grid item>
-                          <Button color="primary"variant="outlined" onClick={this.handleToggleEdit}>
-                            {i18next.t("app.cancel", "Cancel")}
-                          </Button>
+                              );
+                            })
+                          }
+                          <Grid item xs={12}>
+                            <Field
+                              name="reason"
+                              label={i18next.t("order.reasonForRefundFormLabel", "Reason for refund (optional)")}
+                              labelFor="reasonInput"
+                            >
+                              <FormControl variant="outlined" className={classes.formControl}>
+                                <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
+                                Reason
+                                </InputLabel>
+                                <Select
+                                  input={<OutlinedInput labelWidth={labelWidth} name="reason" id="reasonInput" />}
+                                  name="reason"
+                                  onChange={handleRefundReasonSelectChange}
+                                  value={refundReasonSelectValues.reason}
+                                >
+                                  <MenuItem value="">
+                                    <em>None</em>
+                                  </MenuItem>
+                                  <MenuItem value="requested_by_customer">{i18next.t("order.refundReason.customerRequest", "Customer request")}</MenuItem>
+                                  <MenuItem value="duplicate">{i18next.t("order.refundReason.duplicatePayment", "Duplicate payment")}</MenuItem>
+                                  <MenuItem value="fraudulent">{i18next.t("order.refundReason.fraudulent", "Fraudulent")}</MenuItem>
+                                </Select>
+                              </FormControl>
+                              <ErrorsBlock names={["reason"]} />
+                            </Field>
+                          </Grid>
                         </Grid>
-                        <Grid item>
-                          <Button color="primary" variant="contained" onClick={handleSubmitForm} disabled={refundTotal === 0.00}>
-                            {i18next.t(
-                              "order.refundButton",
-                              {
-                                currencySymbol: "$",
-                                currentRefundAmount: refundTotal
-                              },
-                              `Refund ${refundTotal}`
-                            )}
-                          </Button>
+                        <Grid container alignItems="center" justify="flex-end" spacing={1}>
+                          <Grid item>
+                            <Button color="primary"variant="outlined" onClick={this.handleToggleEdit}>
+                              {i18next.t("app.cancel", "Cancel")}
+                            </Button>
+                          </Grid>
+                          <Grid item>
+                            <Button color="primary" variant="contained" onClick={handleSubmitForm} disabled={refundTotal === 0.00}>
+                              {i18next.t(
+                                "order.refundButton",
+                                {
+                                  currencySymbol: "$",
+                                  currentRefundAmount: refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : refundTotal
+                                },
+                                `Refund ${refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : refundTotal}`
+                              )}
+                            </Button>
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    </Form>
-                  )}
-                </Mutation>
+                      </Form>
+                    )}
+                  </Mutation>
+                </Grid>
               </Grid>
-            </Grid>
-          </CardContent>
+            </CardContent>
+            :
+            <CardContent>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Typography variant="body1">{i18next.t("order.allPaymentsRefunded", "All payments have been fully refunded")}</Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+          }
         </Card>
       </Grid>
       <OrderPreviousRefunds order={order} />
