@@ -14,11 +14,9 @@ const DEFAULT_LIMIT = 20;
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
  * @return {Promise<Object>} `{ hasNextPage, hasPreviousPage }`
  */
-export default async function applyPaginationToMongoCursor(cursor, { first, last, offset } = {}, {
+export default async function applyPaginationToMongoCursor(cursor, { first, offset } = {}, {
   includeHasNextPage = true
 } = {}) {
-  if (offset && last) throw new Error("Request either `last` or `offset` but not both");
-
   // Rewind the cursor to start at a zero index
   cursor.rewind();
 

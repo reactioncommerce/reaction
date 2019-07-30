@@ -29,7 +29,7 @@ async function getPaginatedResponse(mongoCursor, args, {
   includeHasPreviousPage = true,
   includeTotalCount = true
 } = {}) {
-  const { offset, sortBy, sortOrder } = args;
+  const { offset, last, sortBy, sortOrder } = args;
   const baseFilter = mongoCursor.cmd.query;
 
   // Get the total count, prior to adding before/after filtering
@@ -75,6 +75,9 @@ async function getPaginatedResponse(mongoCursor, args, {
   let hasNextPage;
 
   if (offset) {
+    // offset and last cannot be used together
+    if (offset && last) throw new Error("Request either `last` or `offset` but not both");
+
     ({ hasPreviousPage, hasNextPage } = await applyOffsetPaginationToMongoCursor(mongoCursor, args, {
       includeHasNextPage,
       includeHasPreviousPage
