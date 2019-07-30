@@ -14,14 +14,18 @@ const DEFAULT_LIMIT = 20;
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
  * @return {Promise<Object>} `{ hasNextPage, hasPreviousPage }`
  */
-export default async function applyPaginationToMongoCursor(cursor, { first, offset } = {}, {
+export default async function applyOffsetPaginationToMongoCursor(cursor, { first, offset } = {}, {
   includeHasNextPage = true
 } = {}) {
+  // Enforce a `first: 20` limit if no user-supplied limit, using the DEFAULT_LIMIT
+  const limit = first || DEFAULT_LIMIT;
+
   // Rewind the cursor to start at a zero index
   cursor.rewind();
 
-  // Enforce a `first: 20` limit if no user-supplied limit, using the DEFAULT_LIMIT
-  const limit = first || DEFAULT_LIMIT;
+  // Now apply actual limit + skip to the provided cursor
+  cursor.limit(limit);
+  cursor.skip(offset);
 
   let hasNextPage = null;
 
@@ -31,12 +35,10 @@ export default async function applyPaginationToMongoCursor(cursor, { first, offs
     const nextCursor = cursor.clone();
     nextCursor.limit(limit + 1);
     const nextCursorCount = await nextCursor.count();
-    hasNextPage = nextCursorCount > limit;
-  }
 
-  // Now apply actual limit + skip to the provided cursor
-  cursor.limit(limit);
-  cursor.skip(offset);
+    console.log(nextCursorCount, (limit + offset));
+    hasNextPage = nextCursorCount > (limit + offset);
+  }
 
   return {
     hasNextPage,

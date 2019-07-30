@@ -35,6 +35,7 @@ export default function getFakeMongoCursor(collectionName, results, options) {
     cursor.options.db.collection = jest.fn().mockName("cursor.options.db.collection").mockReturnValue({
       findOne: jest.fn().mockName("cursor.options.db.collection.findOne").mockResolvedValue(null)
     });
+    cursor.rewind = jest.fn().mockName("cursor.rewind").mockReturnValue(cursor);
     cursor.skip = jest.fn().mockName("cursor.skip").mockReturnValue(cursor);
     cursor.sort = jest.fn().mockName("cursor.sort").mockReturnValue(cursor);
     cursor.toArray = jest.fn().mockName("cursor.toArray").mockResolvedValue(results);
