@@ -10,16 +10,17 @@ import formatForStripe from "./formatForStripe";
  * @param {Object} context an object containing the per-request state
  * @param {Object} paymentMethod object containing transaction ID
  * @param {Number} amount the amount to be refunded
+ * @param {Number} [reason] the reason for the refund - allowed values are `duplicate`, `fraudulent`, and `requested_by_customer` (https://stripe.com/docs/api/refunds/object#refund_object-reason)
  * @return {Object} refund result
  * @private
  */
-export default async function stripeCreateRefund(context, paymentMethod, amount) {
+export default async function stripeCreateRefund(context, paymentMethod, amount, reason) {
   let result;
   try {
     const stripeKey = await getStripeApiKey(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
     const stripe = getStripeInstance(stripeKey);
 
-    const refundResult = await stripe.refunds.create({ charge: paymentMethod.transactionId, amount: formatForStripe(amount) });
+    const refundResult = await stripe.refunds.create({ charge: paymentMethod.transactionId, amount: formatForStripe(amount), reason });
     Logger.debug(refundResult);
     if (refundResult && refundResult.object === "refund") {
       result = {
