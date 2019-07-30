@@ -79,13 +79,13 @@ async function getPaginatedResponse(mongoCursor, args, {
     if (offset && last) throw new Error("Request either `last` or `offset` but not both");
 
     ({ hasPreviousPage, hasNextPage } = await applyOffsetPaginationToMongoCursor(mongoCursor, args, {
-      includeHasNextPage,
-      includeHasPreviousPage
+      includeHasNextPage
     }));
   } else {
     // Skip calculating pageInfo if it wasn't requested. Saves a db count command.
     ({ hasPreviousPage, hasNextPage } = await applyPaginationToMongoCursor(mongoCursor, args, {
-      includeHasNextPage
+      includeHasNextPage,
+      includeHasPreviousPage
     }));
   }
 
