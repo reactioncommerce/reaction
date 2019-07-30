@@ -82,8 +82,7 @@ async function getPaginatedResponse(mongoCursor, args, {
   } else {
     // Skip calculating pageInfo if it wasn't requested. Saves a db count command.
     ({ hasPreviousPage, hasNextPage } = await applyPaginationToMongoCursor(mongoCursor, args, {
-      includeHasNextPage,
-      includeHasPreviousPage
+      includeHasNextPage
     }));
   }
 
