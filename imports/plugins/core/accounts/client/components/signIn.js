@@ -184,7 +184,7 @@ class SignIn extends Component {
                 "btn": false,
                 "btn-default": false
               }}
-              label="Reset Password"
+              label="Reset password"
               i18nKeyLabel="accountsUI.forgotPassword"
               data-event-category="accounts"
               onClick={this.props.onForgotPasswordClick}
