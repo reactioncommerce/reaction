@@ -253,7 +253,7 @@ function OrderRefunds(props) {
                               buttonText={i18next.t(
                                 "order.refundButton",
                                 {
-                                  currentRefundAmount: refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay
+                                  currentRefundAmount: refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay // eslint-disable-line max-len
                                 },
                                 `Refund ${refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay}`
                               )}
@@ -267,7 +267,7 @@ function OrderRefunds(props) {
                                 {
                                   refund: refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay
                                 },
-                                `Apply refund of ${refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay} to this order?`
+                                `Apply refund of ${refundTotal > orderAmountAvailableForRefund ? orderAmountAvailableForRefundDisplay : calculatedRefundTotalDisplay} to this order?` // eslint-disable-line max-len
                               )}
                               onConfirm={handleSubmitForm}
                             />
