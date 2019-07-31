@@ -1,6 +1,9 @@
 import envalid, { bool, str } from "envalid";
 
 export default envalid.cleanEnv(process.env, {
+  BODY_PARSER_SIZE_LIMIT: str({
+    default: "5mb"
+  }),
   GRAPHQL_INTROSPECTION_ENABLED: bool({ default: false }),
   GRAPHQL_PLAYGROUND_ENABLED: bool({ default: false }),
   MIGRATION_BYPASS_ENABLED: bool({

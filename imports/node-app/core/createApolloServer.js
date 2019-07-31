@@ -75,7 +75,7 @@ export default function createApolloServer(options = {}) {
     // set a higher limit for data transfer, which can help with GraphQL mutations
     // `express` default is 100kb
     // AWS default is 5mb, which we'll use here
-    bodyParser({ limit: "5mb" }),
+    bodyParser({ limit: config.BODY_PARSER_SIZE_LIMIT }),
     // Enable `cors` to set HTTP response header: Access-Control-Allow-Origin: *
     // Although the `cors: true` option to `applyMiddleware` below does this already
     // for successful requests, we need it to be set here, before tokenMiddleware,
