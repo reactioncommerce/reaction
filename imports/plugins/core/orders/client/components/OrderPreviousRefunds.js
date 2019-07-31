@@ -27,7 +27,9 @@ const styles = (theme) => ({
  */
 function OrderPreviousRefunds(props) {
   const { classes, order } = props;
-  const { refunds } = order;
+  const { refunds: unsortedRefunds } = order;
+  // sort refunds by date, newest first, for display purposes
+  const refunds = unsortedRefunds.slice().sort((refundA, refundB) => new Date(refundB.createdAt) - new Date(refundA.createdAt));
 
   if (Array.isArray(refunds) && refunds.length) {
     return (
