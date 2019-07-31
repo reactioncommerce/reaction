@@ -1,7 +1,7 @@
 import envalid, { bool, makeValidator, str } from "envalid";
 
 const bodyParserValidator = makeValidator((value) => {
-  if (typeof value !== "number") throw new Error("Expected type number letters");
+  if (typeof value !== "number") throw new Error("Expected type number");
   if (value <= 0) throw new Error("Expected value to be greater than 0");
   return value;
 });
