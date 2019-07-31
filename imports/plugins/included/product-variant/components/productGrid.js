@@ -87,16 +87,19 @@ class ProductGrid extends Component {
     const count = selectedProductIds.length;
     const filterByProductIds = Session.get("filterByProductIds");
 
-    if(filterByProductIds) {
+    if (filterByProductIds) {
       return (
         <div style={{ paddingTop: "24px", paddingLeft: "8px" }}>
-          <Typography variant="h4" style={{ display: "inline" }}>{i18next.t("admin.productTable.bulkActions.filteredProducts")}</Typography>
-          <Typography variant="h5" style={{ display: "inline", paddingLeft: "16px" }}>{i18next.t("admin.productTable.bulkActions.selectedCount", { count })}</Typography>
+          <Typography variant="h4" style={{ display: "inline" }}>
+            {i18next.t("admin.productTable.bulkActions.filteredProducts")}
+          </Typography>
+          <Typography variant="h5" style={{ display: "inline", paddingLeft: "16px" }}>
+            {i18next.t("admin.productTable.bulkActions.selectedCount", { count })}
+          </Typography>
         </div>
       );
-    } else {
-      return "";
     }
+    return "";
   }
 
   renderProductGridItems() {
