@@ -1,5 +1,3 @@
-import moment from "moment";
-
 /**
  * @name Refund/amount
  * @method
@@ -9,9 +7,9 @@ import moment from "moment";
  * @return {String} A datetime string
  */
 export default function createdAt(refund) {
-  // graphql-iso-data won't accept the Unix timestamp that is provided by Stripe
-  // we need to use moment to convert it to a readable format
-  const formattedDate = moment(refund.created).format();
+  // graphql-iso-data won't accept a Unix timestamp in ms,
+  // so we need to convert it to a readable format
+  const formattedDate = new Date(refund.created);
 
   return formattedDate;
 }

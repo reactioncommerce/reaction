@@ -97,12 +97,6 @@ enum OrdersByAccountIdSortByField {
   createdAt
 }
 
-"The fields by which you are allowed to sort any query that returns a `NavigationItemConnection`"
-enum RefundType {
-  "Basic refund"
-  refund
-}
-
 """
 Wraps a list of `Order`s, providing pagination cursors and information.
 
@@ -424,11 +418,11 @@ type Refund implements Node {
   "The display name of the payment refunded to"
   paymentDisplayName: String!
 
+  "The ID of the payment this refund is applied to"
+  paymentId: ID!
+
   "The reason for the refund"
   reason: String
-
-  "The type of refund"
-  type: RefundType
 }
 
 "Input for an `OrderFulfillmentGroupItem`"
