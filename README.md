@@ -29,7 +29,7 @@ Follow the documentation to install Reaction with [Reaction Platform](https://do
 - [Docs: Introduction to Reaction:  Concepts](https://docs.reactioncommerce.com/docs/concepts-intro)
 - [Swag Shop Tutorial](https://docs.reactioncommerce.com/docs/swag-shop-1)
 - [Storefront UI Development Tutorial](https://docs.reactioncommerce.com/docs/storefront-intro)
-- [Reaction Design System](http://designsystem.reactioncommerce.com/)
+- [Storefront Component Library](http://designsystem.reactioncommerce.com/)
 - [API documentation](http://api.docs.reactioncommerce.com)
 - [Engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
 
