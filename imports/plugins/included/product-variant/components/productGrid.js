@@ -20,6 +20,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import ChevronDownIcon from "mdi-material-ui/ChevronDown";
 import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
+import Typography from "@material-ui/core/Typography";
 
 
 class ProductGrid extends Component {
@@ -78,6 +79,23 @@ class ProductGrid extends Component {
     } else {
       // Reset selection
       onSelectAllProducts(false);
+    }
+  }
+
+  renderFilteredCount() {
+    const { selectedProductIds } = this.props;
+    const count = selectedProductIds.length;
+    const filterByProductIds = Session.get("filterByProductIds");
+
+    if(filterByProductIds) {
+      return (
+        <div style={{ paddingTop: "24px", paddingLeft: "8px" }}>
+          <Typography variant="h4" style={{ display: "inline" }}>{i18next.t("admin.productTable.bulkActions.filteredProducts")}</Typography>
+          <Typography variant="h5" style={{ display: "inline", paddingLeft: "16px" }}>{i18next.t("admin.productTable.bulkActions.selectedCount", { count })}</Typography>
+        </div>
+      );
+    } else {
+      return "";
     }
   }
 
@@ -222,6 +240,7 @@ class ProductGrid extends Component {
 
     return (
       <Card>
+        {this.renderFilteredCount()}
         {this.renderToolbar()}
         <CardContent>
           <Table>
