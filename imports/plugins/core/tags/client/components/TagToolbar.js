@@ -38,7 +38,7 @@ TagToolbar.propTypes = {
   isNew: PropTypes.bool,
   onCancel: PropTypes.func,
   onDelete: PropTypes.func,
-  onSave: PropTypes.func.props,
+  onSave: PropTypes.func,
   title: PropTypes.string
 };
 

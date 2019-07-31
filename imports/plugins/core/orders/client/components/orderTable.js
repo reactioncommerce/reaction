@@ -17,7 +17,7 @@ import { getShippingInfo } from "../helpers";
 const styles = (theme) => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3
+    marginTop: theme.spacing(3)
   },
   table: {
     minWidth: 1020
@@ -74,7 +74,7 @@ function OrderTable(props) {
           <TableCell>{billingTotal}</TableCell>
           <TableCell>{i18next.t(`admin.table.data.status.${shippingWorkFlow.status}`)}</TableCell>
           <TableCell>{i18next.t(`admin.table.data.status.${order.workflow.status}`)}</TableCell>
-          <TableCell>
+          <TableCell padding="checkbox">
             <Link to={orderLink}>
               <IconButton>
                 <ChevronRightIcon />

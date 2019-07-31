@@ -20,6 +20,9 @@ input AddTagInput {
 
   "The shop that owns the tag"
   shopId: ID!
+
+  "The tag slug. If left blank, the name will be slugified and saved as the slug"
+  slug: String
 }
 
 "Response payload for `addTag` mutation"
@@ -107,6 +110,9 @@ input UpdateTagInput {
 
   "The shop that owns the tag"
   shopId: ID!
+
+  "The tag slug. If left blank, the name will be slugified and saved as the slug"
+  slug: String
 }
 
 "Response payload for `updateTag` mutation"

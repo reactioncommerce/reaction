@@ -1,4 +1,8 @@
-import { CatalogProduct } from "/imports/collections/schemas";
+import {
+  CatalogProduct,
+  VariantBaseSchema,
+  CatalogVariantSchema
+} from "/imports/collections/schemas";
 
 /**
  * @property {Boolean} isBackorder required, Indicates when a product is currently backordered
@@ -10,3 +14,11 @@ CatalogProduct.extend({
   isLowQuantity: Boolean,
   isSoldOut: Boolean
 });
+
+// Extend variants by adding a isSoldOut prop
+const variantSchemaExtension = {
+  isSoldOut: Boolean
+};
+
+VariantBaseSchema.extend(variantSchemaExtension);
+CatalogVariantSchema.extend(variantSchemaExtension);

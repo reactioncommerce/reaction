@@ -58,9 +58,9 @@ function OrderHeader(props) {
   }
 
   return (
-    <Grid container spacing={8}>
+    <Grid container spacing={1}>
       <Grid item xs={12}>
-        <Grid container alignItems="center" spacing={16}>
+        <Grid container alignItems="center" spacing={2}>
           <Grid item>
             <Typography variant="h3" className={classes.fontWeightSemiBold} inline={true}>
               {i18next.t("order.order", "Order")} - {referenceId}

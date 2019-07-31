@@ -43,6 +43,8 @@ Template.memberSettings.helpers({
         return true;
       }
     }
+
+    return false;
   },
   userId() {
     return Reaction.getUserId();
@@ -54,6 +56,8 @@ Template.memberSettings.helpers({
     ))) {
       return "checked";
     }
+
+    return null;
   },
   groupsForUser(groupUserId) {
     const userId = groupUserId || this.userId || Template.parentData(1).userId;
@@ -67,6 +71,8 @@ Template.memberSettings.helpers({
     if (shop && shop.name) {
       return shop.name || "Default Shop";
     }
+
+    return null;
   },
   permissionGroups(thisShopId) {
     const permissionGroups = [];
@@ -117,6 +123,8 @@ Template.memberSettings.helpers({
           permissions: _.uniq(permissions)
         });
       }
+
+      return null;
     });
 
     return permissionGroups;
@@ -188,5 +196,7 @@ Template.memberSettings.events({
       }
       return results;
     }
+
+    return null;
   }
 });

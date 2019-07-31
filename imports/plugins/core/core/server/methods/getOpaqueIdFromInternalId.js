@@ -1,3 +1,4 @@
+import { check } from "meteor/check";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { encodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
 

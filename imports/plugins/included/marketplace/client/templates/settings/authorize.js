@@ -22,6 +22,8 @@ Template.stripeConnectAuthorize.onCreated(() => {
       Router.go("/");
     });
   }
+
+  return null;
 });
 
 Template.stripeConnectAuthorize.helpers({

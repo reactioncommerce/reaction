@@ -18,6 +18,7 @@ import { mergeDeep } from "/lib/api";
  * Every schema that feature an expireMonth and an expireYear
  * field will be validated against the dateBeforeNow rule.
  */
+// eslint-disable-next-line consistent-return
 SimpleSchema.addValidator(function () {
   let expireMonth;
   let expireYear;
@@ -50,6 +51,8 @@ SimpleSchema.addValidator(function () {
       }
     }
   }
+
+  return null;
 });
 
 /**
@@ -122,6 +125,7 @@ Meteor.startup(() => {
     //
     // subscribe to user + shop Translations
     //
+    // eslint-disable-next-line consistent-return
     return Meteor.subscribe("Translations", language, () => {
       //
       // reduce and merge translations
@@ -177,7 +181,9 @@ Meteor.startup(() => {
           }
           return $("html").removeClass("rtl");
         });
-    }); // return
+
+      return null;
+    });
   });
 
   // Detect user currency changes.

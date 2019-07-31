@@ -78,13 +78,13 @@ class ProductGridItems extends Component {
 
     const productItem = (
       <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""}`}>
-        <TableCell>
+        <TableCell padding="checkbox">
           <Checkbox
             onClick={this.handleSelect}
             checked={isSelected()}
           />
         </TableCell>
-        <TableCell>
+        <TableCell align="center">
           {this.renderMedia()}
         </TableCell>
         <TableCell>
@@ -99,7 +99,7 @@ class ProductGridItems extends Component {
         <TableCell>
           {i18next.t(product.isVisible ? "admin.tags.visible" : "admin.tags.hidden")}
         </TableCell>
-        <TableCell>
+        <TableCell padding="checkbox">
           <IconButton onClick={this.handleDoubleClick}>
             <PencilIcon />
           </IconButton>
