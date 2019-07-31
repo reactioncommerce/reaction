@@ -144,7 +144,7 @@ class ProductGrid extends Component {
     const { selectedProductIds } = this.props;
     const { bulkActionMenuAnchorEl } = this.state;
     const count = selectedProductIds.length;
-    const isEnabled = !(Array.isArray(selectedProductIds) && selectedProductIds.length);
+    const isEnabled = Array.isArray(selectedProductIds) && selectedProductIds.length;
     return (
       <Toolbar>
         <Button
