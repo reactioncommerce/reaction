@@ -204,17 +204,18 @@ class ProductGrid extends Component {
             </ConfirmDialog>
 
             <ConfirmDialog
-                title={i18next.t("admin.productTable.bulkActions.archiveTitle", { count })}
-                message={i18next.t("admin.productTable.bulkActions.archiveMessage")}
-                onConfirm={this.handleBulkActionArchive}
-              >
-                {({ openDialog }) => (
-                  <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
-                )}
-              </ConfirmDialog>
+              title={i18next.t("admin.productTable.bulkActions.archiveTitle", { count })}
+              message={i18next.t("admin.productTable.bulkActions.archiveMessage")}
+              onConfirm={this.handleBulkActionArchive}
+            >
+              {({ openDialog }) => (
+                <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
+              )}
+            </ConfirmDialog>
           </Menu>
         </Toolbar>
       );
+    // eslint-disable-next-line no-else-return
     } else {
       return (
         <Toolbar>
@@ -274,14 +275,14 @@ class ProductGrid extends Component {
             </ConfirmDialog>
 
             <ConfirmDialog
-                title={i18next.t("admin.productTable.bulkActions.archiveTitle", { count })}
-                message={i18next.t("admin.productTable.bulkActions.archiveMessage")}
-                onConfirm={this.handleBulkActionArchive}
-              >
-                {({ openDialog }) => (
-                  <MenuItem disabled onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
-                )}
-              </ConfirmDialog>
+              title={i18next.t("admin.productTable.bulkActions.archiveTitle", { count })}
+              message={i18next.t("admin.productTable.bulkActions.archiveMessage")}
+              onConfirm={this.handleBulkActionArchive}
+            >
+              {({ openDialog }) => (
+                <MenuItem disabled onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
+              )}
+            </ConfirmDialog>
           </Menu>
         </Toolbar>
       );
