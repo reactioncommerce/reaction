@@ -418,6 +418,9 @@ type Refund implements Node {
   "The display name of the payment refunded to"
   paymentDisplayName: String!
 
+  "The ID of the payment this refund is applied to"
+  paymentId: ID!
+
   "The reason for the refund"
   reason: String
 }
