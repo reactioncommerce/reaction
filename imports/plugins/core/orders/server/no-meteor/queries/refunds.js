@@ -33,17 +33,24 @@ export default async function refunds(context, { orderId, shopId, token } = {}) 
   const paymentRefunds = [];
 
   if (Array.isArray(order.payments)) {
-    for (const payment of order.payments) {
-      /* eslint-disable no-await-in-loop */
-      const shopRefunds = await getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment);
-      /* eslint-enable no-await-in-loop */
+    const shopRefundsWithPaymentPromises = order.payments.map((payment) =>
+      getPaymentMethodConfigByName(payment.name)
+        .functions.listRefunds(context, payment)
+        .then((shopRefunds) => ({ shopRefunds, payment })));
+
+    // this gives us an array of objects with properties
+    // `shopRefunds` and the corresponding `payment`
+    const shopRefundsWithPayments = await Promise.all(shopRefundsWithPaymentPromises);
+
+    // loop over each refund and add `paymentId` and `paymentDisplayName`
+    shopRefundsWithPayments.forEach(({ shopRefunds, payment }) => {
       const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({
         ...shopRefund,
         paymentId: payment._id,
         paymentDisplayName: payment.displayName
       }));
       paymentRefunds.push(...shopRefundsWithPaymentId);
-    }
+    });
   }
 
   return paymentRefunds;
