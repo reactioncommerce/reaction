@@ -205,7 +205,7 @@ function OrderRefunds(props) {
                                           name={`amounts.${payment._id}`}
                                           onChange={handleRefundAmountChange}
                                           onChanging={handleRefundAmountChange}
-                                          placeholder={i18next.t("order.amountToRefund", "Amount to refund")}
+                                          placeholder="0.00"
                                           type="number"
                                         />
                                         <ErrorsBlock names={["amounts"]} />
