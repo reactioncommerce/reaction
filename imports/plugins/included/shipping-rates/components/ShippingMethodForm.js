@@ -90,9 +90,9 @@ export default class ShippingMethodForm extends Component {
         </Form>
         <div className="clearfix">
           <div className="pull-right" style={{ display: "flex" }}>
-            <Button color="secondary" onClick={onCancel}>{i18next.t("app.cancel")}</Button>
+            <Button variant="outlined" onClick={onCancel}>{i18next.t("app.cancel")}</Button>
             {isEditing && <div style={{ marginLeft: 7 }}>
-              <Button color="error" onClick={onDelete}>{i18next.t("app.delete")}</Button>
+              <Button variant="outlined" onClick={onDelete}>{i18next.t("app.delete")}</Button>
             </div>}
             <div style={{ marginLeft: 7 }}>
               <Button variant="contained" color="primary" onClick={this.handleSave}>{i18next.t("app.saveChanges")}</Button>
