@@ -1,6 +1,7 @@
 # v2.1.0
 Work in progress
 
+## Feature
  - feat: catalog partial publish / rerun transformations ([#5355](https://github.com/reactioncommerce/reaction/pull/5355))
  - feat(product table): show Action dropdown, even if no products are selected ([#5391](https://github.com/reactioncommerce/reaction/pull/5391))
  - feat: filter products by id in products table ([#5387](https://github.com/reactioncommerce/reaction/pull/5387))
@@ -12,25 +13,29 @@ Work in progress
  - feat: new button component to wrap MUI button with isWaiting loading state ([#5266](https://github.com/reactioncommerce/reaction/pull/5266))
  - feat: bulk simple inventory mutation ([#5229](https://github.com/reactioncommerce/reaction/pull/5229))
 
+## Fixes
  - fix: set slugified title as permalink ([#5264](https://github.com/reactioncommerce/reaction/pull/5264))
  - fix Add migration for index ([#5358](https://github.com/reactioncommerce/reaction/pull/5358))
  - fix: red textfields ([#5371](https://github.com/reactioncommerce/reaction/pull/5371))
  - integrate catalyst ConfirmDialog component from new Catalyst package ([#5372](https://github.com/reactioncommerce/reaction/pull/5372))
  - (fix) Make catalog indexes unique for product ([#5350](https://github.com/reactioncommerce/reaction/pull/5350))
  - chore: updated Dockerfile to change .meteor/ permissions to the node … ([#5353](https://github.com/reactioncommerce/reaction/pull/5353))
- - chore: fix consistent-return eslint warnings ([#5334](https://github.com/reactioncommerce/reaction/pull/5334))
+ - fix: fix consistent-return eslint warnings ([#5334](https://github.com/reactioncommerce/reaction/pull/5334))
  - fix(5305-slow-simplschema-validate): replace simpl-schema.validate() … ([#5306](https://github.com/reactioncommerce/reaction/pull/5306))
  - fix(5313-dataloaders-not-found): use SimpleInventory collection to fe… ([#5314](https://github.com/reactioncommerce/reaction/pull/5314))
  - fix #5300 Wrong template reference ([#5301](https://github.com/reactioncommerce/reaction/pull/5301))
  - fix: typo breaking docs build (5286) ([#5287](https://github.com/reactioncommerce/reaction/pull/5287))
 
+## Performance Improvements
  - perf: wrap tests in check to make sure app is ready when they run ([#5317](https://github.com/reactioncommerce/reaction/pull/5317))
  - perf: up data transfer limit to allow bigger sizes ([#5396](https://github.com/reactioncommerce/reaction/pull/5396))
 
+## Docs
  - docs(admin): Introducing Reaction Admin ([#5400](https://github.com/reactioncommerce/reaction/pull/5400))
  - docs(readme): introducing the Storefront Component Library to develop ([#5398](https://github.com/reactioncommerce/reaction/pull/5398))
  - Update README.md ([#5319](https://github.com/reactioncommerce/reaction/pull/5319))
 
+## Chores
  - ci: add eslint check to only check changed files and fail when warnings are thrown ([#5357](https://github.com/reactioncommerce/reaction/pull/5357))
  - chore(ci): Work more robustly on forks ([#5386](https://github.com/reactioncommerce/reaction/pull/5386))
  - chore: fix no-undef lint issues ([#5360](https://github.com/reactioncommerce/reaction/pull/5360))
@@ -49,12 +54,14 @@ Work in progress
  - chore: fix all `max-len` eslint warnings ([#5296](https://github.com/reactioncommerce/reaction/pull/5296))
  - chore: fix prefer-const eslint error ([#5290](https://github.com/reactioncommerce/reaction/pull/5290))
 
+## Refactors
  - refactor: add title as backup in product admin breadcrumb ([#5342](https://github.com/reactioncommerce/reaction/pull/5342))
  - refactor: add isSoldOut prop to variants and options in Catalog ([#5289](https://github.com/reactioncommerce/reaction/pull/5289))
  - (refactor): how to get reaction version ([#5324](https://github.com/reactioncommerce/reaction/pull/5324))
  - refactor: fulfillment section of Orders 2.0 ([#5302](https://github.com/reactioncommerce/reaction/pull/5302))
  - refactor: payments section of Orders 2.0 ([#5279](https://github.com/reactioncommerce/reaction/pull/5279))
 
+## Tests
  - test: add integration test for ping query ([#5326](https://github.com/reactioncommerce/reaction/pull/5326))
 
 
