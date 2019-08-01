@@ -385,7 +385,3 @@ workflows:
           filters:
             branches:
               only: /^master$/
-      - snyk-security:
-          context: reaction-validation
-          requires:
-            - build
