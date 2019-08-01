@@ -30,7 +30,8 @@ const styles = (theme) => ({
     paddingTop: theme.spacing(3)
   },
   filterCountText: {
-    paddingLeft: theme.spacing(2)
+    paddingLeft: theme.spacing(2),
+    fontWeight: 400
   }
 });
 
