@@ -10,7 +10,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import styled from "styled-components";
 import Select from "@reactioncommerce/components/Select/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import { i18next } from "/client/api";
 import { pagination } from "./util/pagination";
 import TagTableSelect from "./TagTableSelect";
@@ -564,8 +564,7 @@ class TagDataTable extends Component {
                 <Button
                   isShortHeight
                   onClick={loadPreviousPage}
-                  isDisabled={!hasPreviousPage}
-                  isTextOnly
+                  disabled={!hasPreviousPage}
                 >
                   <ChevronLeftIcon />
                   {i18next.t("admin.routing.tableText.previousText")}
@@ -573,8 +572,7 @@ class TagDataTable extends Component {
                 <Button
                   isShortHeight
                   onClick={loadNextPage}
-                  isDisabled={!hasNextPage}
-                  isTextOnly
+                  disabled={!hasNextPage}
                 >
                   {i18next.t("admin.routing.tableText.nextText")}
                   <ChevronRightIcon />
