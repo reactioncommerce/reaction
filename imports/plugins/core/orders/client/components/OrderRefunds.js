@@ -93,7 +93,7 @@ function OrderRefunds(props) {
       };
 
       // Stripe will not accept an empty string or `null` value for the `reason` field,
-      // so we include it in the mutation only if there if a value
+      // so only include `reason` in the mutation only if its' value is set
       if (reason) {
         variables.reason = reason;
       }
