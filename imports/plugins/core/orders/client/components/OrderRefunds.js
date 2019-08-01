@@ -197,7 +197,6 @@ function OrderRefunds(props) {
                                         name={`amounts.${payment._id}`}
                                         labelFor={`amounts${payment._id}Input`}
                                       >
-                                        {/* TODO: make sure `min` and `max` function here when `TextInput` is updated */}
                                         <TextInput
                                           id={`amounts${payment._id}Input`}
                                           min={0}
