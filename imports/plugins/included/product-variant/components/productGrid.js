@@ -36,6 +36,7 @@ const styles = (theme) => ({
 
 class ProductGrid extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     onArchiveProducts: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangeRowsPerPage: PropTypes.func,
