@@ -150,6 +150,10 @@ export function createCart(productId, variantId) {
   return insertedCart;
 }
 
+/**
+ * @description exports cart fixtures
+ * @return {undefined} undefined
+ */
 export default function () {
   /**
    * @name Cart
