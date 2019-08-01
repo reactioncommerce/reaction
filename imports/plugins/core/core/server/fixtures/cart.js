@@ -150,6 +150,7 @@ export function createCart(productId, variantId) {
   return insertedCart;
 }
 
+// eslint-disable-next-line require-jsdoc
 export default function () {
   /**
    * @name Cart
