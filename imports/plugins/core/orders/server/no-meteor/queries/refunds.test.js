@@ -6,7 +6,7 @@ import { rewire$getPaymentMethodConfigByName } from "/imports/plugins/core/payme
 beforeAll(() => {
   rewire$getPaymentMethodConfigByName(() => ({
     functions: {
-      listRefunds: () => [{
+      listRefunds: async () => [{
         _id: "refundId",
         type: "refund",
         amount: 19.99,
