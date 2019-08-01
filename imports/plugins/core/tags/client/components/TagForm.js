@@ -10,6 +10,7 @@ import Button from "@reactioncommerce/components/Button/v1";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
+import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
@@ -19,6 +20,7 @@ import Divider from "@material-ui/core/Divider";
 import CardContent from "@material-ui/core/CardContent";
 import MUICardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
+import CloseIcon from "mdi-material-ui/Close";
 import { i18next } from "/client/api";
 import { tagListingQuery, tagProductsQuery } from "../../lib/queries";
 import { addTagMutation, updateTagMutation, removeTagMutation, setTagHeroMediaMutation } from "../../lib/mutations";
@@ -67,6 +69,7 @@ class TagForm extends Component {
     isLoadingShopId: PropTypes.bool,
     onCancel: PropTypes.func,
     onCreate: PropTypes.func,
+    onHeroUpload: PropTypes.func,
     onUpdate: PropTypes.func,
     shopId: PropTypes.string.isRequired,
     tag: PropTypes.object
@@ -90,6 +93,8 @@ class TagForm extends Component {
   uniqueInstanceIdentifier = uniqueId("URLRedirectEditForm");
 
   async handleSubmit(data, mutation) {
+    this.previousSlug = this.tagData.slug;
+
     const { shopId } = this.props;
     const isNew = !data._id;
 
@@ -103,6 +108,7 @@ class TagForm extends Component {
     const input = {
       id: data._id,
       name: data.name,
+      slug: data.slug,
       displayTitle: data.displayTitle,
       isVisible: data.isVisible || false,
       shopId,
@@ -145,20 +151,26 @@ class TagForm extends Component {
       });
     }
 
-    const result = await mutation({
-      refetchQueries,
-      variables: {
-        input
+    this.setState({ error: null });
+    try {
+      const result = await mutation({
+        refetchQueries,
+        variables: {
+          input
+        }
+      });
+
+      if (result.data.addTag) {
+        this.props.onCreate(result.data.addTag.tag);
+      } else {
+        this.props.onUpdate(result.data.updateTag.tag);
       }
-    });
 
-    if (result.data.addTag) {
-      this.props.onCreate(result.data.addTag.tag);
-    } else {
-      this.props.onUpdate(result.data.updateTag.tag);
+      return result;
+    } catch (error) {
+      this.setState({ error });
+      return {};
     }
-
-    return result;
   }
 
   handleRemove(id, mutation) {
@@ -335,7 +347,7 @@ class TagForm extends Component {
   render() {
     const tag = this.tagData;
     const { shopId } = this.props;
-    const { currentTab } = this.state;
+    const { currentTab, error } = this.state;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const slugInputId = `slug_${this.uniqueInstanceIdentifier}`;
     const heroMediaUrlInputId = `heroMediaUrl_${this.uniqueInstanceIdentifier}`;
@@ -368,7 +380,7 @@ class TagForm extends Component {
                   title={title}
                   onDelete={() => { this.handleRemove(tag._id, removeMutationFunc); }}
                   onCancel={this.handleCancel}
-                  onSave={this.handleSave}
+                  onSave={this.handleSubmitForm}
                 />
               )}
             </Mutation>
@@ -377,8 +389,24 @@ class TagForm extends Component {
               onChange={this.handleFormChange}
               onSubmit={(data) => this.handleSubmit(data, mutationFunc)}
               validator={getRequiredValidator("name", "displayTitle")}
-              value={tag}
+              value={error ? this.formValue : tag}
             >
+              {error &&
+                <InlineAlert
+                  alertType="error"
+                  message={error.message}
+                />
+              }
+              {(this.previousSlug && tag.slug && this.previousSlug !== tag.slug) &&
+                <InlineAlert
+                  isDismissable
+                  components={{
+                    iconDismiss: <CloseIcon fontSize="small" />
+                  }}
+                  alertType="information"
+                  message={`Slug changed from ${this.previousSlug} to ${tag.slug}`}
+                />
+              }
               <ContentGroup>
                 <PaddedField
                   name="name"
@@ -403,7 +431,7 @@ class TagForm extends Component {
               <Card>
                 <CardContent>
                   {currentTab === 0 &&
-                    <Grid container spacing={24}>
+                    <Grid container spacing={3}>
                       <Grid item md={6}>
                         <Typography variant="h3">{i18next.t("admin.tags.form.displayTitleAndSlug")}</Typography>
                         <PaddedField
@@ -423,7 +451,7 @@ class TagForm extends Component {
                           label={i18next.t("admin.tags.form.slug")}
                           labelFor={slugInputId}
                         >
-                          <TextInput id={slugInputId} isReadOnly name="slug" placeholder={i18next.t("admin.tags.form.slugPlaceholder")} />
+                          <TextInput id={slugInputId} name="slug" placeholder={i18next.t("admin.tags.form.slugPlaceholder")} />
                           <ErrorsBlock names={["slug"]} />
                         </PaddedField>
 
@@ -440,7 +468,7 @@ class TagForm extends Component {
                       </Grid>
                       <Grid item md={6}>
                         <Typography variant="h3">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
-                        <Typography variant="body2">{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
+                        <Typography variant="body1">{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
                         {this.renderMediaGalleryUploader()}
 
                         <PaddedField
@@ -456,7 +484,7 @@ class TagForm extends Component {
                   }
 
                   {currentTab === 1 &&
-                    <Grid container spacing={24}>
+                    <Grid container spacing={3}>
                       <Grid item md={6}>
                         <Typography variant="h3">{i18next.t("admin.tags.form.keywords")}</Typography>
                         <PaddedField
@@ -545,7 +573,7 @@ class TagForm extends Component {
                     />
                   }
 
-                  <CardActions disableActionSpacing>
+                  <CardActions disableSpacing>
                     <Button actionType="secondary" onClick={this.handleSubmitForm}>
                       {i18next.t("admin.tags.form.save")}
                     </Button>

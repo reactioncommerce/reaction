@@ -1,7 +1,7 @@
 import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
 
 /**
- * @name "Mutation.setAccountProfileCurrency"
+ * @name Mutation/setAccountProfileCurrency
  * @method
  * @memberof Accounts/GraphQL
  * @summary resolver for the setAccountProfileCurrency GraphQL mutation

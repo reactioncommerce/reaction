@@ -13,7 +13,7 @@ const wrapComponent = (Comp) => (
     static propTypes = LocalizationSettings.propTypes
 
     handleUpdateLanguageConfiguration = (event, isChecked, name) => {
-      const language = this.props.languages.find((l) => l.value === name);
+      const language = this.props.languages.find((lang) => lang.value === name);
 
       if (language) {
         Meteor.call("shop/updateLanguageConfiguration", language.value, isChecked);

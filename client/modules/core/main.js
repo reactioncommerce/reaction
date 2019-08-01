@@ -346,6 +346,7 @@ export default {
    * @name hasOwnerAccess
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} Boolean - true if user has owner permissions
    */
   hasOwnerAccess() {
     const ownerPermissions = ["owner"];
@@ -373,6 +374,7 @@ export default {
    * @name hasDashboardAccess
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} true if user has access to dashboard access
    */
   hasDashboardAccess() {
     const dashboardPermissions = ["owner", "admin", "dashboard"];
@@ -383,6 +385,7 @@ export default {
    * @name hasShopSwitcherAccess
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} true if user has access to dashboard for multiple shops
    */
   hasShopSwitcherAccess() {
     return this.hasDashboardAccessForMultipleShops();
@@ -392,6 +395,7 @@ export default {
    * @name getSellerShopId
    * @method
    * @memberof Core/Client
+   * @returns {Boolean|String} the shop ID of a seller
    */
   getSellerShopId(userId = getUserId(), noFallback = false) {
     if (userId) {
@@ -422,6 +426,7 @@ export default {
    * @name getPrimaryShopId
    * @method
    * @memberof Core/Client
+   * @returns {String} primary shop ID
    */
   getPrimaryShopId() {
     return this._primaryShopId.get();
@@ -450,6 +455,7 @@ export default {
    * @name getPrimaryShopSettings
    * @method
    * @memberof Core/Client
+   * @returns {Object} shop settings of the primary shop
    */
   getPrimaryShopSettings() {
     const settings = Packages.findOne({
@@ -463,6 +469,7 @@ export default {
    * @name getPrimaryShopCurrency
    * @method
    * @memberof Core/Client
+   * @returns {String} primary shop currency abbreviation
    */
   getPrimaryShopCurrency() {
     const shop = Shops.findOne({
@@ -904,6 +911,7 @@ export default {
    * @name hideActionView
    * @method
    * @memberof Core/Client
+   * @returns {undefined}
    */
   hideActionView() {
     Session.set("admin/showActionView", false);
@@ -914,6 +922,7 @@ export default {
    * @name hideActionViewDetail
    * @method
    * @memberof Core/Client
+   * @returns {undefined}
    */
   hideActionViewDetail() {
     Session.set("admin/showActionViewDetail", false);
@@ -957,12 +966,16 @@ export default {
     if (this.Router.getRouteName() === "tag") {
       return this.Router.current().params.slug;
     }
+
+    return null;
   },
 
   /**
    * @name getRegistryForCurrentRoute
    * @method
    * @memberof Core/Client
+   * @param {String} provides type of template from registry
+   * @returns {Object} settings data from this package
    */
   getRegistryForCurrentRoute(provides = "dashboard") {
     this.Router.watchPathChange();

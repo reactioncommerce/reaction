@@ -17,7 +17,8 @@ class SortableTablePagination extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ page: nextProps.page });
   }
 
@@ -43,8 +44,8 @@ class SortableTablePagination extends Component {
     onPageSizeChange && onPageSizeChange(Number(event.target.value));
   }
 
-  applyPage(e) {
-    e && e.preventDefault();
+  applyPage(event) {
+    event && event.preventDefault();
     const { page } = this.state;
     this.changePage(page === "" ? this.props.page : page);
   }
@@ -78,18 +79,18 @@ class SortableTablePagination extends Component {
               ? <div className="-pageJump">
                 <input
                   type={this.state.page === "" ? "text" : "number"}
-                  onChange={(e) => {
-                    const val = e.target.value;
+                  onChange={(event) => {
+                    const val = event.target.value;
                     const currentPage = val - 1;
                     if (val === "") {
                       return this.setState({ page: val });
                     }
-                    this.setState({ page: this.getSafePage(currentPage) });
+                    return this.setState({ page: this.getSafePage(currentPage) });
                   }}
                   value={this.state.page === "" ? "" : this.state.page + 1}
                   onBlur={this.applyPage}
-                  onKeyPress={(e) => {
-                    if (e.which === 13 || e.keyCode === 13) {
+                  onKeyPress={(event) => {
+                    if (event.which === 13 || event.keyCode === 13) {
                       this.applyPage();
                     }
                   }}
@@ -106,8 +107,8 @@ class SortableTablePagination extends Component {
                 onChange={this.handlePageSizeChange}
                 value={pageSize}
               >
-                {pageSizeOptions.map((option, i) => (
-                  <option key={i} value={option}>
+                {pageSizeOptions.map((option, index) => (
+                  <option key={index} value={option}>
                     {option} {this.props.rowsText}
                   </option>
                 ))}
@@ -116,10 +117,11 @@ class SortableTablePagination extends Component {
         </div>
         <div className="-previous">
           <PreviousComponent
-            onClick={(e) => { // eslint-disable-line no-unused-vars
+            onClick={(event) => { // eslint-disable-line no-unused-vars
               if (canPrevious) {
                 return this.changePage(page - 1);
               }
+              return null;
             }}
             disabled={!canPrevious}
           >
@@ -129,10 +131,11 @@ class SortableTablePagination extends Component {
         <span className="-divider">|</span>
         <div className="-next">
           <NextComponent
-            onClick={(e) => { // eslint-disable-line no-unused-vars
+            onClick={(event) => { // eslint-disable-line no-unused-vars
               if (canNext) {
                 return this.changePage(page + 1);
               }
+              return null;
             }}
             disabled={!canNext}
           >

@@ -29,6 +29,8 @@ class QuickMenu extends Component {
         );
       });
     }
+
+    return null;
   }
 
   render() {

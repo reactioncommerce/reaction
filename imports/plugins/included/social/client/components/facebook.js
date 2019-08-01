@@ -37,6 +37,7 @@ export function getOpenGraphMeta(props) {
 class FacebookSocialButton extends Component {
   componentDidMount() {
     /* eslint-disable wrap-iife */
+    /* eslint-disable id-length */
     if (window && document) {
       $('<div id="fb-root"></div>').appendTo("body");
 
@@ -56,6 +57,7 @@ class FacebookSocialButton extends Component {
         fjs.parentNode.insertBefore(js, fjs);
       })(document, "script", "facebook-jssdk");
     }
+    /* eslint-enable id-length */
     /* eslint-enable wrap-iife */
   }
 

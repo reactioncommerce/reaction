@@ -24,7 +24,8 @@ class TagGroup extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { parentTag, tagsByKey, tagIds } = nextProps.tagGroupProps;
     this.setState({ tagIds, parentTag, tagsByKey });
   }
@@ -117,6 +118,8 @@ class TagGroup extends Component {
         </div>
       ));
     }
+
+    return null;
   }
 
   render() {

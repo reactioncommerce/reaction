@@ -27,7 +27,7 @@ function sortOrderItems(orderItems, connectionArgs) {
 }
 
 /**
- * @name "OrderFulfillmentGroup.items"
+ * @name OrderFulfillmentGroup/items
  * @method
  * @memberof Order/GraphQL
  * @summary converts the `items` prop on the provided order fulfillment group to a connection

@@ -1,7 +1,7 @@
 import { xformRateToRateObject } from "@reactioncommerce/reaction-graphql-xforms/core";
 
 /**
- * @name "OrderFulfillmentGroup.summary"
+ * @name OrderFulfillmentGroup/summary
  * @method
  * @memberof Order/GraphQL
  * @summary converts the `invoice` prop on the provided order fulfillment group to a summary object
