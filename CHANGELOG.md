@@ -1,3 +1,63 @@
+# v2.1.0
+Work in progress
+
+ - feat: catalog partial publish / rerun transformations (#5355)
+ - feat(product table): show Action dropdown, even if no products are selected (#5391)
+ - feat: filter products by id in products table (#5387)
+ - feat: editable tag slug (#5382)
+ - feat: add createRefund GraphQL mutation (#5354)
+ - feat: add handle to tag autosuggest results (#5262)
+ - Add DataLoaders for Shops and SimpleInventory (#5294)
+ - Introduce DataLoaders infrastructure (#5280)
+ - feat: new button component to wrap MUI button with isWaiting loading state (#5266)
+ - feat: bulk simple inventory mutation (#5229)
+
+ - fix: set slugified title as permalink (#5264)
+ - fix Add migration for index (#5358)
+ - fix: red textfields (#5371)
+ - integrate catalyst ConfirmDialog component from new Catalyst package (#5372)
+ - (fix) Make catalog indexes unique for product (#5350)
+ - chore: updated Dockerfile to change .meteor/ permissions to the node … (#5353)
+ - chore: fix consistent-return eslint warnings (#5334)
+ - fix(5305-slow-simplschema-validate): replace simpl-schema.validate() … (#5306)
+ - fix(5313-dataloaders-not-found): use SimpleInventory collection to fe… (#5314)
+ - fix #5300 Wrong template reference (#5301)
+ - fix: typo breaking docs build (5286) (#5287)
+
+ - perf: wrap tests in check to make sure app is ready when they run (#5317)
+ - perf: up data transfer limit to allow bigger sizes (#5396)
+
+ - docs(admin): Introducing Reaction Admin (#5400)
+ - docs(readme): introducing the Storefront Component Library to develop (#5398)
+ - Update README.md (#5319)
+
+ - ci: add eslint check to only check changed files and fail when warnings are thrown (#5357)
+ - chore(ci): Work more robustly on forks (#5386)
+ - chore: fix no-undef lint issues (#5360)
+ - Update Material-UI 4.x (#5278)
+ - chore: Update README DCO - sign-off not sign (#5318)
+ - chore: update snyk ignore (#5331)
+ - chore: update CHANGELOG, update version (#5260)
+ - chore: use npm command rather than meteor npm (#5328)
+ - chore: update js-doc throughout the app, batch 1 (#5309)
+ - chore: fix all `react/no-deprecated` and `react/prop-type` eslint warnings (#5307)
+ - chore: update reaction-eslint-config version in package.json (#5320)
+ - Organize integration tests (#5316)
+ - chore: add overrides for eslint rules that stlll need fixing (#5308)
+ - chore: fix all `id-length` eslint warnings (#5298)
+ - chore: update lodash to fix snyk critical error (#5299)
+ - chore: fix all `max-len` eslint warnings (#5296)
+ - chore: fix prefer-const eslint error (#5290)
+
+ - refactor: add title as backup in product admin breadcrumb (#5342)
+ - refactor: add isSoldOut prop to variants and options in Catalog (#5289)
+ - (refactor): how to get reaction version (#5324)
+ - refactor: fulfillment section of Orders 2.0 (#5302)
+ - refactor: payments section of Orders 2.0 (#5279)
+
+ - test: add integration test for ping query (#5326)
+
+
 # v2.0.0
 
 Reaction v2.0.0—an API-first, real-time commerce engine built using Node.js, React, and GraphQL. It’s the second major release of our open source commerce software.
