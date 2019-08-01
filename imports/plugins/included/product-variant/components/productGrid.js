@@ -31,7 +31,7 @@ const styles = (theme) => ({
   },
   filterCountText: {
     paddingLeft: theme.spacing(2),
-    fontWeight: 400
+    fontWeight: theme.typography.fontWeightRegular
   }
 });
 
