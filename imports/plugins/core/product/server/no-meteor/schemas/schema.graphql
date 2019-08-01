@@ -6,3 +6,78 @@ type ProductConfiguration {
   "The ProductVariant ID"
   productVariantId: ID!
 }
+
+"Bulk operation"
+type BulkOperation {
+  "Id of document"
+  _id: String
+}
+
+"A bulk write error type"
+type WriteError {
+  "index of of error"
+  index: Int
+
+  "Error code"
+  code: Int
+
+  "Error message"
+  errmsg: String
+
+  "Failed operation info"
+  op: BulkOperation
+}
+
+"Input for adding tags to products in bulk"
+input AddTagsToProductsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "An array of product ids to which an array of tags will be added"
+  productIds: [ID]
+
+  "An array of tag ids to add to an array of products"
+  tagIds: [ID]
+}
+
+"Input for adding tags to products identified by a reference id"
+input AddTagsToProductsByRefIdInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  """
+  An array of product reference ids to which an array of tags will be added. Product 
+  reference ids are not part of Reaction by default, they will need to be added to the 
+  schema by a custom plugin.
+  """
+  productRefIds: [String]
+
+  "An array of tag ids to add to an array of products"
+  tagIds: [ID]
+}
+
+"Response payload for `bulkAddTagsToProducts` mutation"
+type AddTagsToProductsPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The number of products found"
+  foundCount: Int
+
+  "The number of products for which a match was not found"
+  notFoundCount: Int
+
+  "The number of products successfully updated"
+  updatedCount: Int
+
+  "An array of write errors if any were generated"
+  writeErrors: [WriteError]
+}
+
+extend type Mutation {
+  "Bulk operation to add an array of tags to an array of products"
+  bulkAddTagsToProducts(
+    "input which must includes an array of product ids and an array of tag ids"
+    input: AddTagsToProductsInput!
+  ): AddTagsToProductsPayload!
+}

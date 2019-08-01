@@ -1,3 +1,4 @@
+import mutations from "./mutations";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 
@@ -28,6 +29,7 @@ export default async function register(app) {
     graphQL: {
       resolvers,
       schemas
-    }
+    },
+    mutations
   });
 }
