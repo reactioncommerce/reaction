@@ -21,7 +21,18 @@ import TableRow from "@material-ui/core/TableRow";
 import ChevronDownIcon from "mdi-material-ui/ChevronDown";
 import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
 import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
 
+
+const styles = (theme) => ({
+  filterCountContainer: {
+    paddingLeft: theme.spacing(2),
+    paddingTop: theme.spacing(3)
+  },
+  filterCountText: {
+    paddingLeft: theme.spacing(2)
+  }
+});
 
 class ProductGrid extends Component {
   static propTypes = {
@@ -83,17 +94,17 @@ class ProductGrid extends Component {
   }
 
   renderFilteredCount() {
-    const { selectedProductIds } = this.props;
+    const { selectedProductIds, classes } = this.props;
     const count = selectedProductIds.length;
     const filterByProductIds = Session.get("filterByProductIds");
 
     if (filterByProductIds) {
       return (
-        <div style={{ paddingTop: "24px", paddingLeft: "8px" }}>
-          <Typography variant="h4" style={{ display: "inline" }}>
+        <div className={classes.filterCountContainer}>
+          <Typography variant="h4" display="inline">
             {i18next.t("admin.productTable.bulkActions.filteredProducts")}
           </Typography>
-          <Typography variant="h5" style={{ display: "inline", paddingLeft: "16px" }}>
+          <Typography variant="h5" display="inline" className={classes.filterCountText}>
             {i18next.t("admin.productTable.bulkActions.selectedCount", { count })}
           </Typography>
         </div>
@@ -285,4 +296,4 @@ class ProductGrid extends Component {
   }
 }
 
-export default ProductGrid;
+export default withStyles(styles)(ProductGrid);
