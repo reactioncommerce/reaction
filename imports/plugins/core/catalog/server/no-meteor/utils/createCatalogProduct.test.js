@@ -343,6 +343,8 @@ const mockGeCatalogProductMedia = jest
     }
   ]));
 
+mockContext.mutations.applyCustomPublisherTransforms = jest.fn().mockName("applyCustomPublisherTransforms");
+
 beforeAll(() => {
   rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
 });
@@ -366,18 +368,14 @@ test("calls functions of type publishProductToCatalog, which can mutate the cata
 
   rewire$xformProduct(() => ({ mock: true }));
 
-  const mockCustomPublisher = jest.fn().mockName("mockCustomPublisher").mockImplementation((obj) => {
+  mockContext.mutations.applyCustomPublisherTransforms.mockImplementation((_, obj) => {
     obj.foo = "bar";
   });
 
-  const catalogProduct = await createCatalogProduct({}, {
-    ...mockContext,
-    getFunctionsOfType: () => [mockCustomPublisher]
-  });
+  const catalogProduct = await createCatalogProduct({}, mockContext);
 
   expect(catalogProduct).toEqual({ foo: "bar", mock: true });
-  expect(mockCustomPublisher).toHaveBeenCalledWith({ foo: "bar", mock: true }, {
-    context: jasmine.any(Object),
+  expect(mockContext.mutations.applyCustomPublisherTransforms).toHaveBeenCalledWith(mockContext, { foo: "bar", mock: true }, {
     product: {},
     shop: mockShop,
     variants: mockVariants

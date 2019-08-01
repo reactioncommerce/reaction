@@ -144,83 +144,76 @@ class ProductGrid extends Component {
     const { selectedProductIds } = this.props;
     const { bulkActionMenuAnchorEl } = this.state;
     const count = selectedProductIds.length;
-
-    if (Array.isArray(selectedProductIds) && selectedProductIds.length) {
-      return (
-        <Toolbar>
-          <Button
-            aria-owns={bulkActionMenuAnchorEl ? "bulk-actions-menu" : undefined}
-            aria-haspopup="true"
-            onClick={this.handleShowBulkActions}
-            variant="outlined"
+    const isEnabled = Array.isArray(selectedProductIds) && selectedProductIds.length;
+    return (
+      <Toolbar>
+        <Button
+          aria-owns={bulkActionMenuAnchorEl ? "bulk-actions-menu" : undefined}
+          aria-haspopup="true"
+          onClick={this.handleShowBulkActions}
+          variant="outlined"
+        >
+          {i18next.t("admin.productTable.bulkActions.actions")}
+          <ChevronDownIcon />
+        </Button>
+        <Menu
+          id="bulk-actions-menu"
+          anchorEl={bulkActionMenuAnchorEl}
+          open={Boolean(bulkActionMenuAnchorEl)}
+          onClose={this.handleCloseBulkActions}
+        >
+          <ConfirmDialog
+            title={i18next.t("admin.productTable.bulkActions.publishTitle", { count })}
+            message={i18next.t("admin.productTable.bulkActions.publishMessage")}
+            onConfirm={this.handleBulkActionPublish}
           >
-            {i18next.t("admin.productTable.bulkActions.actions")}
-            <ChevronDownIcon />
-          </Button>
-          <Menu
-            id="bulk-actions-menu"
-            anchorEl={bulkActionMenuAnchorEl}
-            open={Boolean(bulkActionMenuAnchorEl)}
-            onClose={this.handleCloseBulkActions}
+            {({ openDialog }) => (
+              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.publish")}</MenuItem>
+            )}
+          </ConfirmDialog>
+
+          <ConfirmDialog
+            title={i18next.t("admin.productTable.bulkActions.makeVisibleTitle", { count })}
+            message={i18next.t("admin.productTable.bulkActions.makeVisibleMessage")}
+            onConfirm={this.handleBulkActionMakeVisible}
           >
+            {({ openDialog }) => (
+              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.makeVisible")}</MenuItem>
+            )}
+          </ConfirmDialog>
 
-            <ConfirmDialog
-              title={i18next.t("admin.productTable.bulkActions.publishTitle", { count })}
-              message={i18next.t("admin.productTable.bulkActions.publishMessage")}
-              onConfirm={this.handleBulkActionPublish}
-            >
-              {({ openDialog }) => (
-                <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.publish")}</MenuItem>
-              )}
-            </ConfirmDialog>
+          <ConfirmDialog
+            title={i18next.t("admin.productTable.bulkActions.makeHiddenTitle", { count })}
+            message={i18next.t("admin.productTable.bulkActions.makeHiddenMessage")}
+            onConfirm={this.handleBulkActionMakeHidden}
+          >
+            {({ openDialog }) => (
+              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.makeHidden")}</MenuItem>
+            )}
+          </ConfirmDialog>
 
+          <ConfirmDialog
+            title={i18next.t("admin.productTable.bulkActions.duplicateTitle", { count })}
+            message={i18next.t("admin.productTable.bulkActions.duplicateMessage")}
+            onConfirm={this.handleBulkActionDuplicate}
+          >
+            {({ openDialog }) => (
+              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.duplicate")}</MenuItem>
+            )}
+          </ConfirmDialog>
 
-            <ConfirmDialog
-              title={i18next.t("admin.productTable.bulkActions.makeVisibleTitle", { count })}
-              message={i18next.t("admin.productTable.bulkActions.makeVisibleMessage")}
-              onConfirm={this.handleBulkActionMakeVisible}
-            >
-              {({ openDialog }) => (
-                <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.makeVisible")}</MenuItem>
-              )}
-            </ConfirmDialog>
-
-            <ConfirmDialog
-              title={i18next.t("admin.productTable.bulkActions.makeHiddenTitle", { count })}
-              message={i18next.t("admin.productTable.bulkActions.makeHiddenMessage")}
-              onConfirm={this.handleBulkActionMakeHidden}
-            >
-              {({ openDialog }) => (
-                <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.makeHidden")}</MenuItem>
-              )}
-            </ConfirmDialog>
-
-            <ConfirmDialog
-              title={i18next.t("admin.productTable.bulkActions.duplicateTitle", { count })}
-              message={i18next.t("admin.productTable.bulkActions.duplicateMessage")}
-              onConfirm={this.handleBulkActionDuplicate}
-            >
-              {({ openDialog }) => (
-                <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.duplicate")}</MenuItem>
-              )}
-            </ConfirmDialog>
-
-
-            <ConfirmDialog
-              title={i18next.t("admin.productTable.bulkActions.archiveTitle", { count })}
-              message={i18next.t("admin.productTable.bulkActions.archiveMessage")}
-              onConfirm={this.handleBulkActionArchive}
-            >
-              {({ openDialog }) => (
-                <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
-              )}
-            </ConfirmDialog>
-          </Menu>
-        </Toolbar>
-      );
-    }
-
-    return null;
+          <ConfirmDialog
+            title={i18next.t("admin.productTable.bulkActions.archiveTitle", { count })}
+            message={i18next.t("admin.productTable.bulkActions.archiveMessage")}
+            onConfirm={this.handleBulkActionArchive}
+          >
+            {({ openDialog }) => (
+              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
+            )}
+          </ConfirmDialog>
+        </Menu>
+      </Toolbar>
+    );
   }
 
   render() {
