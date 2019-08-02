@@ -45,7 +45,8 @@
             "duplicateTitle_plural": "Duplicate {{count}} products?",
             "duplicateMessage": "Duplicate selected products and their variants.",
             "filteredProducts": "Filtered products",
-            "selectedCount": "{{count}} selected"
+            "selectedCount": "{{count}} selected",
+            "filterByFile": "Filter by file"
           }
         },
         "products": "Products",
