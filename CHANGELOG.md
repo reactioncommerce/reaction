@@ -5,7 +5,7 @@ Reaction v2.1.0 adds minor features and performance enhancements, fixes bugs and
 This release is being coordinated with `reaction-platform` and is designed to work with the same versions of `example-storefront` and `reaction-hydra`.
 
 ## Notable changes
-**Introduction of the Catalyst UI**
+**Introduction of Catalyst**
 Our new [Catalyst](https://github.com/reactioncommerce/catalyst) design system has been introduced into the Reaction codebase, and is used on various components including `ConfirmDialog` and `Button`.
 
 **Tag slugs are now editable independently of tag name**
