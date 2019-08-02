@@ -21,7 +21,7 @@ type WriteError {
   "Error message"
   errmsg: String
 
-  "index of of error"
+  "Index of of error"
   index: Int
 
   "Failed operation info"
