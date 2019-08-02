@@ -14,7 +14,7 @@ import ShopLogoWithData from "/imports/client/ui/components/ShopLogoWithData/Sho
 function OperatorLanding() {
   return (
     <Fragment>
-      <Helmet title="Operator UI" />
+      <Helmet title="Reaction Admin" />
       <Grid
         container
         direction="column"
@@ -29,7 +29,7 @@ function OperatorLanding() {
         <Grid item>
           <Typography align="center" variant="body1">
             {/* eslint-disable-next-line max-len */}
-            Use the Operator UI to manage <Link to="/operator/orders">Orders</Link>, <Link to="/operator/products">Products</Link>, <Link to="/operator/tags">Tags</Link>, <Link to="/operator/accounts">Accounts</Link>, and <Link to="/operator/navigation">Navigation</Link>, or change shop settings.
+            Use Reaction Admin to manage <Link to="/operator/orders">Orders</Link>, <Link to="/operator/products">Products</Link>, <Link to="/operator/tags">Tags</Link>, <Link to="/operator/accounts">Accounts</Link>, and <Link to="/operator/navigation">Navigation</Link>, or change shop settings.
           </Typography>
         </Grid>
         <Grid item>
