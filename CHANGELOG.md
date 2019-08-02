@@ -16,7 +16,7 @@ Allows operators to change aa tag slug independently of a tag name.
 
 ### Order related GraphQL mutations
 
-A `createRefund` GraphQL mutation has been added to allow refunds to be processed via GraphQL instead of older meteor methods.
+A `createRefund` GraphQL mutation has been added to allow refunds to be processed via GraphQL in addition to the existing meteor methods.
 
 ### Dataloaders introduced into the codebase
 
