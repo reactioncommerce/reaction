@@ -14,6 +14,11 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 // params supplied to the products publication
 //
 const filters = new SimpleSchema({
+  "productIds": {
+    type: Array,
+    optional: true
+  },
+  "productIds.$": String,
   "shops": {
     type: Array,
     optional: true
@@ -170,6 +175,15 @@ function filterProducts(productFilters) {
   if (!selector) return false;
 
   if (productFilters) {
+    // filter by productIds
+    if (productFilters.productIds) {
+      _.extend(selector, {
+        _id: {
+          $in: productFilters.productIds
+        }
+      });
+    }
+
     // filter by tags
     if (productFilters.tags) {
       _.extend(selector, {

@@ -37,7 +37,10 @@ const mockCatalogItemsWithFeatured = Factory.Catalog.makeMany(30, {
 });
 
 const mockCatalogItemsWithoutFeatured = Factory.Catalog.makeMany(50, {
-  product: Factory.CatalogProduct.makeOne({
+  _id: (iterator) => (iterator + 500).toString(),
+  product: (iterator) => Factory.CatalogProduct.makeOne({
+    _id: (iterator + 500).toString(),
+    productId: (iterator + 500).toString(),
     isDeleted: false,
     isVisible: true,
     tagIds: [mockTagWithoutFeatured._id],

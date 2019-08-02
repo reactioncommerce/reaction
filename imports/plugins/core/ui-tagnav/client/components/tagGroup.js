@@ -118,6 +118,8 @@ class TagGroup extends Component {
         </div>
       ));
     }
+
+    return null;
   }
 
   render() {

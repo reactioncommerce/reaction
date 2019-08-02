@@ -25,7 +25,7 @@ class ShopBrandImageOption extends Component {
         return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsFailed"), "error");
       }
 
-      Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
+      return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
     });
   };
 

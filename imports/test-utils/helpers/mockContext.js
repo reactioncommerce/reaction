@@ -61,6 +61,7 @@ export function mockCollection(collectionName) {
   "Cart",
   "Catalog",
   "Emails",
+  "ExampleIOUPaymentRefunds",
   "Groups",
   "MediaRecords",
   "NavigationItems",

@@ -10,7 +10,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import ChevronRight from "mdi-material-ui/ChevronRight";
 import DotsHorizontalCircleIcon from "mdi-material-ui/DotsHorizontalCircle";
-import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
+import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
 
 const styles = (theme) => ({
   root: {

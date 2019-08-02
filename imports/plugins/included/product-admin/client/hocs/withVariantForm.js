@@ -83,6 +83,8 @@ const wrapComponent = (Comp) => (
       if (this.hasChildVariants(variant)) {
         return { backgroundColor: "lightgrey", cursor: "not-allowed" };
       }
+
+      return null;
     }
 
     restoreVariant = (variant) => {
@@ -261,6 +263,8 @@ const wrapComponent = (Comp) => (
           }
         });
       }
+
+      return null;
     }
 
     updateLowInventoryThresholdIfChildVariants = (variant) => {

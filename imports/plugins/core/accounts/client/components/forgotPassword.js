@@ -48,6 +48,8 @@ class Forgot extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderEmailErrors() {
@@ -61,6 +63,8 @@ class Forgot extends Component {
         </span>
       );
     }
+
+    return null;
   }
 
   renderSpinnerOnWait() {
