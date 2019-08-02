@@ -102,9 +102,13 @@ We've updated to using v2.0.0 of our [Reaction ESLint Config](https://github.com
 
 - test: add integration test for ping query ([#5326](https://github.com/reactioncommerce/reaction/pull/5326))
 
-# Breaking Changes
+## Breaking Changes
+
 None
 
+## Contributors
+
+Thanks to @janus-reith for contributing to this release! 🎉
 
 # v2.0.0
 
