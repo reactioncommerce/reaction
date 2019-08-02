@@ -13,10 +13,12 @@ export default async function exampleListRefunds(context, payment) {
   const refunds = await context.collections.ExampleIOUPaymentRefunds.find({ transactionId }).toArray();
 
   return refunds.map((refund) => ({
+    _id: refund._id,
     amount: refund.amount,
     created: refund.createdAt.getTime(),
     currency: refund.currencyCode,
     raw: {},
+    reason: refund.reason,
     type: "refund"
   }));
 }
