@@ -49,7 +49,7 @@ We've updated to using v2.0.0 of our [Reaction ESLint Config](https://github.com
 ## Fixes
 
 - fix: set slugified title as permalink ([#5264](https://github.com/reactioncommerce/reaction/pull/5264))
-- fix Add migration for index ([#5358](https://github.com/reactioncommerce/reaction/pull/5358))
+- fix: Add migration for index ([#5358](https://github.com/reactioncommerce/reaction/pull/5358))
 - fix: red textfields ([#5371](https://github.com/reactioncommerce/reaction/pull/5371))
 - fix: Make catalog indexes unique for product ([#5350](https://github.com/reactioncommerce/reaction/pull/5350))
 - fix: fix consistent-return eslint warnings ([#5334](https://github.com/reactioncommerce/reaction/pull/5334))
