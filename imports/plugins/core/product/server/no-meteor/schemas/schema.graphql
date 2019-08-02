@@ -7,29 +7,29 @@ type ProductConfiguration {
   productVariantId: ID!
 }
 
-"Bulk operation"
-type BulkOperation {
+"Operation"
+type Operation {
   "Id of document"
   _id: String
 }
 
 "A bulk write error type"
 type WriteError {
-  "index of of error"
-  index: Int
-
   "Error code"
   code: Int
 
   "Error message"
   errmsg: String
 
+  "index of of error"
+  index: Int
+
   "Failed operation info"
-  op: BulkOperation
+  op: Operation
 }
 
 "Input for adding tags to products in bulk"
-input AddTagsToProductsInput {
+input ProductsBulkOperationInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -57,7 +57,7 @@ input AddTagsToProductsByRefIdInput {
 }
 
 "Response payload for `bulkAddTagsToProducts` mutation"
-type AddTagsToProductsPayload  {
+type ProductsBulkOperationPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
@@ -75,9 +75,15 @@ type AddTagsToProductsPayload  {
 }
 
 extend type Mutation {
-  "Bulk operation to add an array of tags to an array of products"
+  "Bulk operation for adding an array of tags to an array of products"
   bulkAddTagsToProducts(
     "input which must includes an array of product ids and an array of tag ids"
-    input: AddTagsToProductsInput!
-  ): AddTagsToProductsPayload!
+    input: ProductsBulkOperationInput!
+  ): ProductsBulkOperationPayload!
+
+  "Bulk operation for removing an array of tags from an array of products"
+  bulkRemoveTagsFromProducts(
+    "input which must includes an array of product ids and an array of tag ids"
+    input: ProductsBulkOperationInput!
+  ): ProductsBulkOperationPayload!
 }
