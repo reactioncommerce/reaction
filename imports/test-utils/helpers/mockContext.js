@@ -32,6 +32,11 @@ export function mockCollection(collectionName) {
     update() {
       throw new Error("update mongo method is deprecated, use updateOne or updateMany");
     },
+    bulkWrite: jest.fn().mockName(`${collectionName}.bulkWrite`).mockReturnValue(Promise.resolve({
+      nMatched: 2,
+      nModified: 2,
+      writeErrors: []
+    })),
     deleteOne: jest.fn().mockName(`${collectionName}.deleteOne`).mockReturnValue(Promise.resolve({
       deletedCount: 1
     })),
