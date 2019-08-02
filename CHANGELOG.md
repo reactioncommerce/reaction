@@ -8,8 +8,8 @@ Work in progress
  - feat: editable tag slug ([#5382](https://github.com/reactioncommerce/reaction/pull/5382))
  - feat: add createRefund GraphQL mutation ([#5354](https://github.com/reactioncommerce/reaction/pull/5354))
  - feat: add handle to tag autosuggest results ([#5262](https://github.com/reactioncommerce/reaction/pull/5262))
- - Add DataLoaders for Shops and SimpleInventory ([#5294](https://github.com/reactioncommerce/reaction/pull/5294))
- - Introduce DataLoaders infrastructure ([#5280](https://github.com/reactioncommerce/reaction/pull/5280))
+ - featL Add DataLoaders for Shops and SimpleInventory ([#5294](https://github.com/reactioncommerce/reaction/pull/5294))
+ - feat: Introduce DataLoaders infrastructure ([#5280](https://github.com/reactioncommerce/reaction/pull/5280))
  - feat: new button component to wrap MUI button with isWaiting loading state ([#5266](https://github.com/reactioncommerce/reaction/pull/5266))
  - feat: bulk simple inventory mutation ([#5229](https://github.com/reactioncommerce/reaction/pull/5229))
 
@@ -18,12 +18,11 @@ Work in progress
  - fix Add migration for index ([#5358](https://github.com/reactioncommerce/reaction/pull/5358))
  - fix: red textfields ([#5371](https://github.com/reactioncommerce/reaction/pull/5371))
  - integrate catalyst ConfirmDialog component from new Catalyst package ([#5372](https://github.com/reactioncommerce/reaction/pull/5372))
- - (fix) Make catalog indexes unique for product ([#5350](https://github.com/reactioncommerce/reaction/pull/5350))
- - chore: updated Dockerfile to change .meteor/ permissions to the node … ([#5353](https://github.com/reactioncommerce/reaction/pull/5353))
+ - fix: Make catalog indexes unique for product ([#5350](https://github.com/reactioncommerce/reaction/pull/5350))
  - fix: fix consistent-return eslint warnings ([#5334](https://github.com/reactioncommerce/reaction/pull/5334))
  - fix(5305-slow-simplschema-validate): replace simpl-schema.validate() … ([#5306](https://github.com/reactioncommerce/reaction/pull/5306))
  - fix(5313-dataloaders-not-found): use SimpleInventory collection to fe… ([#5314](https://github.com/reactioncommerce/reaction/pull/5314))
- - fix #5300 Wrong template reference ([#5301](https://github.com/reactioncommerce/reaction/pull/5301))
+ - fix: #5300 Wrong template reference ([#5301](https://github.com/reactioncommerce/reaction/pull/5301))
  - fix: typo breaking docs build (5286) ([#5287](https://github.com/reactioncommerce/reaction/pull/5287))
 
 ## Performance Improvements
@@ -33,10 +32,11 @@ Work in progress
 ## Docs
  - docs(admin): Introducing Reaction Admin ([#5400](https://github.com/reactioncommerce/reaction/pull/5400))
  - docs(readme): introducing the Storefront Component Library to develop ([#5398](https://github.com/reactioncommerce/reaction/pull/5398))
- - Update README.md ([#5319](https://github.com/reactioncommerce/reaction/pull/5319))
+ - docs: Update README.md ([#5319](https://github.com/reactioncommerce/reaction/pull/5319))
 
 ## Chores
- - ci: add eslint check to only check changed files and fail when warnings are thrown ([#5357](https://github.com/reactioncommerce/reaction/pull/5357))
+ - chore: updated Dockerfile to change .meteor/ permissions to the node … ([#5353](https://github.com/reactioncommerce/reaction/pull/5353))
+ - chore(ci): add eslint check to only check changed files and fail when warnings are thrown ([#5357](https://github.com/reactioncommerce/reaction/pull/5357))
  - chore(ci): Work more robustly on forks ([#5386](https://github.com/reactioncommerce/reaction/pull/5386))
  - chore: fix no-undef lint issues ([#5360](https://github.com/reactioncommerce/reaction/pull/5360))
  - Update Material-UI 4.x ([#5278](https://github.com/reactioncommerce/reaction/pull/5278))
@@ -57,7 +57,7 @@ Work in progress
 ## Refactors
  - refactor: add title as backup in product admin breadcrumb ([#5342](https://github.com/reactioncommerce/reaction/pull/5342))
  - refactor: add isSoldOut prop to variants and options in Catalog ([#5289](https://github.com/reactioncommerce/reaction/pull/5289))
- - (refactor): how to get reaction version ([#5324](https://github.com/reactioncommerce/reaction/pull/5324))
+ - refactor: how to get reaction version ([#5324](https://github.com/reactioncommerce/reaction/pull/5324))
  - refactor: fulfillment section of Orders 2.0 ([#5302](https://github.com/reactioncommerce/reaction/pull/5302))
  - refactor: payments section of Orders 2.0 ([#5279](https://github.com/reactioncommerce/reaction/pull/5279))
 
