@@ -6,7 +6,7 @@ This release is being coordinated with `reaction-platform` and is designed to wo
 
 ## Notable changes
 **Introduction of Catalyst**
-Our new [Catalyst](https://github.com/reactioncommerce/catalyst) design system has been introduced into the Reaction codebase, and is used on various components including `ConfirmDialog` and `Button`.
+Our new [Catalyst](https://github.com/reactioncommerce/catalyst) design system has been introduced into the Reaction codebase, and is used on various components including [`ConfirmDialog`](https://catalyst.reactioncommerce.com/#/Components/Feedback/ConfirmDialog) and [`Button`](https://catalyst.reactioncommerce.com/#/Components/Actions/Button). All new default component theme modifications must come from Catalyst.
 
 **Tag slugs are now editable independently of tag name**
 In previous versions of Reaction, tag slugs were always saved as a slugified version of the tag name, would always change if the tag name was updated, and couldn't be changed independently of the tag name.
