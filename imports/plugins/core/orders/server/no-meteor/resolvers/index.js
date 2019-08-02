@@ -4,6 +4,7 @@ import Mutation from "./Mutation";
 import Order from "./Order";
 import OrderFulfillmentGroup from "./OrderFulfillmentGroup";
 import OrderItem from "./OrderItem";
+import Refund from "./Refund";
 import Query from "./Query";
 
 export default {
@@ -20,6 +21,7 @@ export default {
   },
   OrderItem,
   Query,
+  Refund,
   SplitOrderItemPayload: {
     newItemId: (node) => encodeOrderItemOpaqueId(node.newItemId)
   },

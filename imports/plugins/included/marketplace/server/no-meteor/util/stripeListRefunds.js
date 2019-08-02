@@ -25,11 +25,13 @@ export default async function stripeListRefunds(context, paymentMethod) {
   if (refundListResults && refundListResults.data) {
     for (const refund of refundListResults.data) {
       result.push({
-        type: refund.object,
+        _id: refund.id,
         amount: refund.amount / 100,
         created: refund.created * 1000,
         currency: refund.currency,
-        raw: refund
+        reason: refund.reason,
+        raw: refund,
+        type: refund.object
       });
     }
   }
