@@ -5,15 +5,15 @@ Reaction v2.1.0 adds minor features and performance enhancements, fixes bugs and
 This release is being coordinated with `reaction-platform` and is designed to work with the same versions of `example-storefront` and `reaction-hydra`.
 
 ## Notable changes
-**Introductoin of the Catalyst UI**
+**Introduction of the Catalyst UI**
 Our new [Catalyst](https://github.com/reactioncommerce/catalyst) design system has been introduced into the Reaction codebase, and is used on various components including `ConfirmDialog` and `Button`.
 
-**Tag slugs are now editable independetnly of tag name**
+**Tag slugs are now editable independently of tag name**
 In previous versions of Reaction, tag slugs were always saved as a slugified version of the tag name, would always change if the tag name was updated, and couldn't be changed independently of the tag name.
 
 This update initially saves tag slugs as a slugified version of the tag name, but then allows operators to independently change the tag slug if desired, and also does not change the tag slug automatically if the tag name is changed.
 
-**Order related GraphQL queries and Mutations**
+**Order related GraphQL mutations**
 A `createRefund` GraphQL mutation has been added to allow refunds to be processed via GraphQL instead of older meteor methods.
 
 **Dataloaders introduced into the codebase**
