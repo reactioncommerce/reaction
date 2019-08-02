@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { formatPriceString, i18next } from "/client/api";
-import { TableCell, TableRow, Checkbox, IconButton, withStyles } from "@material-ui/core"
+import { TableCell, TableRow, Checkbox, IconButton, withStyles } from "@material-ui/core";
 import PencilIcon from "mdi-material-ui/Pencil";
 import CircleIcon from "mdi-material-ui/CheckboxBlankCircle";
 
@@ -87,7 +87,7 @@ class ProductGridItems extends Component {
     if (product.isVisible) {
       return (
         <div style={{ display: "flex" }}>
-          <CircleIcon className={classes.isVisible}></CircleIcon>
+          <CircleIcon className={classes.isVisible}/>
           <span>{i18next.t("admin.tags.visible")}</span>
         </div>
       );
@@ -95,7 +95,7 @@ class ProductGridItems extends Component {
 
     return (
       <div style={{ display: "flex" }}>
-        <CircleIcon className={classes.isHidden}></CircleIcon>
+        <CircleIcon className={classes.isHidden}/>
         <span>{i18next.t("admin.tags.hidden")}</span>
       </div>
     );
