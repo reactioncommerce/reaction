@@ -40,22 +40,6 @@ input ProductsBulkOperationInput {
   tagIds: [ID]
 }
 
-"Input for adding tags to products identified by a reference id"
-input AddTagsToProductsByRefIdInput {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  """
-  An array of product reference ids to which an array of tags will be added. Product 
-  reference ids are not part of Reaction by default, they will need to be added to the 
-  schema by a custom plugin.
-  """
-  productRefIds: [String]
-
-  "An array of tag ids to add to an array of products"
-  tagIds: [ID]
-}
-
 "Response payload for `bulkAddTagsToProducts` mutation"
 type ProductsBulkOperationPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
