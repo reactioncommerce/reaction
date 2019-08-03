@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import Log from './logger';
-import { exists, getDirectories } from './fs';
+import Log from './logger.mjs';
+import { exists, getDirectories } from './fs.mjs';
 
 // add a message to the top of the plugins import file
 const importFileMessage = `
