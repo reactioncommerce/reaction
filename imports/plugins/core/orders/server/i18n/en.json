@@ -63,7 +63,7 @@
       "orderCard": {
         "orderSummary": {
           "showOrderSummary": "Show order summary",
-          "title": "Order Summary"
+          "title": "Order summary"
         }
       },
       "shippingAddress": "Shipping address",
@@ -107,7 +107,7 @@
             "refundTotal": "Refund Total"
           },
           "fulfillment": "Fulfillment",
-          "orderDetails": "Order Details",
+          "orderDetails": "Order details",
           "shipmentTracking": "Shipment",
 
           "fulfillmentGroups": {
