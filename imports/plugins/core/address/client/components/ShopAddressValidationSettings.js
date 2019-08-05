@@ -101,7 +101,9 @@ export default class ShopAddressValidationSettings extends Component {
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button variant="outlined" onClick={this.hideAddForm}>{i18next.t("addressValidation.cancelButtonText")}</Button>
           <div style={{ marginLeft: 14 }}>
-            <Button variant="contained" color="secondary" onClick={this.handleAddFormSubmitButton}>{i18next.t("addressValidation.entryFormSubmitButtonText")}</Button>
+            <Button variant="contained" color="secondary" onClick={this.handleAddFormSubmitButton}>
+              {i18next.t("addressValidation.entryFormSubmitButtonText")}
+            </Button>
           </div>
         </div>
       </div>
@@ -147,7 +149,9 @@ export default class ShopAddressValidationSettings extends Component {
           ]}
           filterType="none"
         />
-        {!isAdding && <Button color="secondary" variant="contained" fullWidth onClick={this.showAddForm}>{i18next.t("addressValidation.addNewItemButtonText")}</Button>}
+        {!isAdding && <Button color="secondary" variant="contained" fullWidth onClick={this.showAddForm}>
+          {i18next.t("addressValidation.addNewItemButtonText")}
+        </Button>}
         {!!isAdding && this.renderAddForm()}
       </div>
     );
