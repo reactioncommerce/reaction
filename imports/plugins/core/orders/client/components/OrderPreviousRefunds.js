@@ -15,7 +15,7 @@ const styles = (theme) => ({
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4)
   },
-  fontWeightSemiBold: {
+  extraEmphasisText: {
     fontWeight: theme.typography.fontWeightSemiBold
   }
 });
@@ -51,7 +51,7 @@ function OrderPreviousRefunds(props) {
                         {formattedDate}
                       </Typography>
                       <Typography paragraph variant="body1">
-                        {i18next.t("order.refundedTo", "Refunded to")} <span className={classes.fontWeightSemiBold}>{paymentDisplayName}</span>
+                        {i18next.t("order.refundedTo", "Refunded to")} <span className={classes.extraEmphasisText}>{paymentDisplayName}</span>
                       </Typography>
                       <Typography variant="h4">
                         {i18next.t("order.reasonForRefund", "Reason for refund")}

@@ -12,10 +12,10 @@ import Button from "/imports/client/ui/components/Button";
 import captureOrderPaymentsMutation from "../graphql/mutations/captureOrderPayments";
 
 const styles = (theme) => ({
-  fontColorDanger: {
+  dangerText: {
     color: theme.palette.colors.red
   },
-  fontWeightSemiBold: {
+  extraEmphasisText: {
     fontWeight: theme.typography.fontWeightSemiBold
   }
 });
@@ -107,7 +107,7 @@ function OrderPayment(props) {
           {displayName}
         </Typography>
         {riskLevel !== "normal" && payment.mode !== "captured" &&
-          <Typography className={classes.fontColorDanger} variant="body2">
+          <Typography className={classes.dangerText} variant="body2">
             Payment risk level: {capitalizeString(riskLevel)}
           </Typography>
         }
@@ -121,13 +121,13 @@ function OrderPayment(props) {
           Status: {displayStatuses[status]}
         </Typography>
         { captureErrorMessage &&
-          <Typography className={classes.fontColorDanger} variant="body2" paragraph>
+          <Typography className={classes.dangerText} variant="body2" paragraph>
             Capture error: {captureErrorMessage}
           </Typography>
         }
       </Grid>
       <Grid item xs={6} md={6}>
-        <Typography className={classes.fontWeightSemiBold} variant="body1" align="right">
+        <Typography className={classes.extraEmphasisText} variant="body1" align="right">
           {amount.displayAmount}
         </Typography>
       </Grid>

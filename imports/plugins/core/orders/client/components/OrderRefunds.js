@@ -27,7 +27,7 @@ const styles = (theme) => ({
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4)
   },
-  fontWeightSemiBold: {
+  extraEmphasisText: {
     fontWeight: theme.typography.fontWeightSemiBold
   },
   formControl: {
@@ -173,7 +173,7 @@ function OrderRefunds(props) {
                                   <Grid container>
                                     <Grid item xs={6}>
                                       <Typography variant="body1">
-                                        {i18next.t("order.refundTo", "Refund to")} <span className={classes.fontWeightSemiBold}>{payment.displayName}</span>
+                                        {i18next.t("order.refundTo", "Refund to")} <span className={classes.extraEmphasisText}>{payment.displayName}</span>
                                       </Typography>
                                       {canRefundPayment ?
                                         <Fragment>
