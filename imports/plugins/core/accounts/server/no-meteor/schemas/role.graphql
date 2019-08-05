@@ -1,6 +1,9 @@
 "The fields by which you are allowed to sort any query that returns an `RoleConnection`"
 enum RoleSortByField {
+  "Role ID"
   _id
+
+  "Role name"
   name
 }
 
@@ -13,18 +16,43 @@ type Role implements Node {
   name: String!
 }
 
-"Wraps a list of `Roles`, providing pagination cursors and information."
-type RoleConnection implements NodeConnection {
+"""
+Wraps a list of `Roles`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type RoleConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [RoleEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Role]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
 "A connection edge in which each node is a `Role` object"
 type RoleEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The role"
   node: Role
+}
+
+extend type Shop {
+  "Returns a list of roles for this shop, as a Relay-compatible connection."
+  roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
 }
 
 extend type Query {

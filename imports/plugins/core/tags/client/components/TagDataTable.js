@@ -117,12 +117,14 @@ class TagDataTable extends Component {
         ? String(row[id].toLowerCase()).includes(filter.value.toLowerCase())
         : true);
     }
+
+    return null;
   }
 
   /**
    * @name handleFilterInput
    * @summary Update state when filter is changed
-   * @param {string} value text field input
+   * @param {String} value text field input
    * @return {function} state for field value
    */
   handleFilterInput = (value) => {
@@ -154,7 +156,7 @@ class TagDataTable extends Component {
   /**
    * @name handleClick
    * @summary Handle click on table row
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
@@ -175,8 +177,8 @@ class TagDataTable extends Component {
   /**
    * @name handleCellClick
    * @summary Handle click on table cell
-   * @param {object} rowInfo row data passed in from ReactTable
-   * @param {object} column Column data
+   * @param {Object} rowInfo row data passed in from ReactTable
+   * @param {Object} column Column data
    * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleCellClick(rowInfo, column) {
@@ -232,23 +234,21 @@ class TagDataTable extends Component {
    * @param {Number} numRows Number of rows in current set of data
    * @returns {node} returns JSX node or null
    */
-  renderTableFilter(numRows) {
+  renderTableFilter() {
     const { filterType } = this.props;
 
-    if (numRows !== 0) {
-      if (filterType === "both" || filterType === "table") {
-        return (
-          <FilterTextInput>
-            <TextInput
-              placeholder={i18next.t("reactionUI.components.sortableTable.filterPlaceholder", { defaultValue: "Filter Data" })}
-              onChanging={this.handleFilterInput}
-              value={this.state.filterInput}
-              name="filterInput"
-            />
-          </FilterTextInput>
+    if (filterType === "both" || filterType === "table") {
+      return (
+        <FilterTextInput>
+          <TextInput
+            placeholder={i18next.t("reactionUI.components.sortableTable.filterPlaceholder", { defaultValue: "Filter Data" })}
+            onChanging={this.handleFilterInput}
+            value={this.state.filterInput}
+            name="filterInput"
+          />
+        </FilterTextInput>
 
-        );
-      }
+      );
     }
 
     return null;
@@ -338,7 +338,7 @@ class TagDataTable extends Component {
    * @name selectedRowsClassName
    * @method
    * @summary If any rows are selected, give them a className of "selected-row"
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @returns {String} className to apply to row that is selected, or empty string if no row is selected
    */
   selectedRowsClassName(rowInfo) {
@@ -445,8 +445,10 @@ class TagDataTable extends Component {
 
   render() {
     const { query, variables: variablesProp, defaultPageSize, ...otherProps } = this.props;
+    const { filterInput } = this.state;
     const defaultClassName = "-striped -highlight";
     const variables = {
+      filter: filterInput || null,
       first: defaultPageSize,
       ...variablesProp
     };
@@ -503,7 +505,7 @@ class TagDataTable extends Component {
           return (
             <TableContainer>
               <TableHeader>
-                {resultCount > 0 && this.renderBulkActionsSelect()}
+                {this.renderBulkActionsSelect()}
                 {this.renderTableFilter(resultCount)}
               </TableHeader>
               <CheckboxTable

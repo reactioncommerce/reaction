@@ -9,30 +9,58 @@ const Money = new SimpleSchema({
   }
 });
 
+/**
+ * @name CommonOrderItemAttribute
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label required
+ * @property {String} value optional
+ */
+export const CommonOrderItemAttribute = new SimpleSchema({
+  label: String,
+  value: {
+    type: String,
+    optional: true
+  }
+});
+
 export const CommonOrderItem = new SimpleSchema({
-  _id: String,
-  isTaxable: {
+  "_id": String,
+  "attributes": {
+    type: Array,
+    optional: true
+  },
+  "attributes.$": CommonOrderItemAttribute,
+  "isTaxable": {
     type: Boolean,
     optional: true
   },
-  parcel: {
+  "parcel": {
     type: ShippingParcel,
     optional: true
   },
-  price: Money,
-  productId: String,
-  quantity: {
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  shopId: String,
-  subtotal: Money,
-  taxCode: {
+  "price": Money,
+  "productId": String,
+  "productVendor": {
     type: String,
     optional: true
   },
-  title: String,
-  variantId: String
+  "quantity": {
+    type: SimpleSchema.Integer,
+    min: 0
+  },
+  "shopId": String,
+  "subtotal": Money,
+  "taxCode": {
+    type: String,
+    optional: true
+  },
+  "title": String,
+  "variantId": String,
+  "variantTitle": {
+    type: String,
+    optional: true
+  }
 });
 
 const CommonOrderFulfillmentPrices = new SimpleSchema({
@@ -97,6 +125,10 @@ export const CommonOrder = new SimpleSchema({
     optional: true
   },
   currencyCode: String,
+  fulfillmentMethodId: {
+    type: String,
+    optional: true
+  },
   fulfillmentPrices: CommonOrderFulfillmentPrices,
   fulfillmentType: {
     type: String,
@@ -124,4 +156,91 @@ export const CommonOrder = new SimpleSchema({
     type: CommonOrderTotals,
     optional: true
   }
+});
+
+export const orderItemInputSchema = new SimpleSchema({
+  "addedAt": {
+    type: Date,
+    optional: true
+  },
+  "price": Number,
+  "productConfiguration": Object,
+  "productConfiguration.productId": String,
+  "productConfiguration.productVariantId": String,
+  "quantity": {
+    type: SimpleSchema.Integer,
+    min: 1
+  }
+});
+
+export const orderFulfillmentGroupInputSchema = new SimpleSchema({
+  "data": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
+  "items": {
+    type: Array,
+    minCount: 1
+  },
+  "items.$": orderItemInputSchema,
+  "selectedFulfillmentMethodId": String,
+  "shopId": String,
+  "totalPrice": {
+    type: Number,
+    optional: true
+  },
+  "type": {
+    type: String,
+    allowedValues: ["shipping"]
+  }
+});
+
+// Exported for unit tests
+export const orderInputSchema = new SimpleSchema({
+  // Although billing address is typically needed only by the payment plugin,
+  // some tax services require it to calculate taxes for digital items. Thus
+  // it should be provided here in order to be added to the CommonOrder if possible.
+  "billingAddress": {
+    type: Address,
+    optional: true
+  },
+  "cartId": {
+    type: String,
+    optional: true
+  },
+  "currencyCode": String,
+  /**
+   * If you need to store customFields, be sure to add them to your
+   * GraphQL input schema and your Order SimpleSchema with proper typing.
+   * This schema need not care what `customFields` is because the input
+   * and Order schemas will validate. Thus, we use blackbox here.
+   */
+  "customFields": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
+  "email": String,
+  "fulfillmentGroups": {
+    type: Array,
+    minCount: 1
+  },
+  "fulfillmentGroups.$": orderFulfillmentGroupInputSchema,
+  "shopId": String
+});
+
+export const paymentInputSchema = new SimpleSchema({
+  amount: Number,
+  // Optionally override the order.billingAddress for each payment
+  billingAddress: {
+    type: Address,
+    optional: true
+  },
+  data: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  method: String
 });

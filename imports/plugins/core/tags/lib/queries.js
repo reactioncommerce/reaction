@@ -2,8 +2,8 @@ import gql from "graphql-tag";
 import { Tag } from "./fragments";
 
 export const tagListingQuery = gql`
-  query getTags($shopId: ID!, $first: ConnectionLimitInt, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
-    tags(shopId: $shopId, first: $first, last: $last, before: $before, after: $after, shouldIncludeInvisible: true) {
+  query getTags($shopId: ID!, $filter: String, $first: ConnectionLimitInt, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
+    tags(shopId: $shopId, filter: $filter, first: $first, last: $last, before: $before, after: $after, shouldIncludeInvisible: true) {
       pageInfo {
         endCursor
         startCursor
@@ -25,14 +25,16 @@ export const getTag = gql`
   }
 `;
 
-export const tagProductsQuery = gql`
-  query getTagProducts($shopId: ID!, $tagId: ID!) {
-    productsByTagId(shopId: $shopId, tagId: $tagId) {
+export const tagProductsQueryString = `
+  query getTagProducts($shopId: ID!, $first: ConnectionLimitInt, $tagId: ID!, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
+    productsByTagId(shopId: $shopId, tagId: $tagId, first: $first, last: $last, before: $before, after: $after) {
       pageInfo {
         endCursor
         startCursor
         hasNextPage
+        hasPreviousPage
       }
+      totalCount
       nodes {
         _id
         title
@@ -41,3 +43,5 @@ export const tagProductsQuery = gql`
     }
   }
 `;
+
+export const tagProductsQuery = gql`${tagProductsQueryString}`;

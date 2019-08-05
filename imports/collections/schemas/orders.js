@@ -2,17 +2,24 @@ import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue } from "./helpers";
 import { Address } from "./address";
+import { Money, AppliedSurcharge } from "./core";
 import { Invoice, Payment } from "./payments";
 import { ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 
-const Money = new SimpleSchema({
-  currencyCode: String,
-  amount: {
-    type: Number,
-    min: 0
-  }
+
+/**
+ * @name AnonymousAccessToken
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Date} createdAt when token was created
+ * @property {String} hashedToken token hash = base64(sha256(token-random-string))
+ */
+export const AnonymousAccessToken = new SimpleSchema({
+  createdAt: Date,
+  hashedToken: String
 });
+registerSchema("AnonymousAccessToken", AnonymousAccessToken);
 
 /**
  * @name Document
@@ -162,12 +169,29 @@ export const OrderDiscount = new SimpleSchema({
 });
 
 /**
+ * @name OrderItemAttribute
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label required
+ * @property {String} value optional
+ */
+export const OrderItemAttribute = new SimpleSchema({
+  label: String,
+  value: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * @name OrderItem
  * @memberof Schemas
  * @summary Defines one item in an order
  * @type {SimpleSchema}
  * @property {String} _id Unique ID for the item
  * @property {String} addedAt Date/time when this was first added to the cart/order
+ * @property {OrderItemAttribute[]} attributes Attributes of this item
+ * @property {String} cancelReason Free text reason for cancel, if this item is canceled
  * @property {String} createdAt Date/time when this order item was created
  * @property {Document[]} documents optional
  * @property {History[]} history optional
@@ -191,6 +215,15 @@ export const OrderDiscount = new SimpleSchema({
 export const OrderItem = new SimpleSchema({
   "_id": String,
   "addedAt": Date,
+  "attributes": {
+    type: Array,
+    optional: true
+  },
+  "attributes.$": OrderItemAttribute,
+  "cancelReason": {
+    type: String,
+    optional: true
+  },
   "createdAt": Date,
   "documents": {
     type: Array,
@@ -215,10 +248,7 @@ export const OrderItem = new SimpleSchema({
     optional: true
   },
   "price": Money,
-  "productId": {
-    type: String,
-    index: 1
-  },
+  "productId": String,
   "productSlug": {
     type: String,
     optional: true
@@ -244,16 +274,12 @@ export const OrderItem = new SimpleSchema({
     type: SimpleSchema.Integer,
     min: 0
   },
-  "shopId": {
-    type: String,
-    index: 1
-  },
+  "shopId": String,
   "subtotal": Number,
   "title": String,
   "updatedAt": Date,
   "variantId": {
     type: String,
-    index: 1,
     optional: true
   },
   "variantTitle": {
@@ -322,6 +348,7 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {String} shopId The shop that fulfills this group
  * @property {Number} totalItemQuantity The total item quantity, sum of all quantities
  * @property {String} tracking Tracking reference ID
+ * @property {String} trackingUrl Tracking URL
  * @property {String} type Fulfillment type
  * @property {Object} workflow Current status and past statuses for this fulfillment
  */
@@ -356,9 +383,17 @@ export const OrderFulfillmentGroup = new SimpleSchema({
     type: String,
     optional: true
   },
+  "trackingUrl": {
+    type: String,
+    optional: true
+  },
   "type": {
     type: String,
     allowedValues: ["shipping"]
+  },
+  "updatedAt": {
+    type: Date,
+    optional: true
   },
   "workflow": Workflow
 });
@@ -370,11 +405,14 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @summary Order has an array of History, Documents, Notes, Items and OrderTransactions.
  * @property {String} _id required
  * @property {String} accountId Account ID for account orders, or null for anonymous
- * @property {String} anonymousAccessToken Token for accessing anonymous carts, null for account carts
+ * @property {Object[]} anonymousAccessTokens Tokens for accessing anonymous orders, null for account orders
+ * @property {String} anonymousAccessTokens.hashedToken The hashed value for DB queries
+ * @property {Date} anonymousAccessTokens.createdAt When the token was created. Expiry is not currently implemented, but this Date is here to support that.
  * @property {Address} [billingAddress] Optional billing address
  * @property {String} cartId optional For tracking which cart created this order
  * @property {Date} createdAt required
  * @property {String} currencyCode required
+ * @property {Object} customFields optional
  * @property {Document[]} documents optional
  * @property {String} email optional
  * @property {Object[]} exportHistory optional
@@ -383,6 +421,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {Payment[]} payments Array of payments
  * @property {Shipment[]} shipping Array of fulfillment groups
  * @property {String} shopId required The owner shop
+ * @property {Surcharges[]} surcharges Surcharges applied to this order
  * @property {OrderTransaction[]} transactions optional
  * @property {Date} updatedAt optional
  * @property {Workflow} workflow optional
@@ -394,14 +433,13 @@ export const Order = new SimpleSchema({
   },
   "accountId": {
     type: String,
-    index: 1,
     optional: true
   },
-  "anonymousAccessToken": {
-    type: String,
-    index: 1,
+  "anonymousAccessTokens": {
+    type: Array,
     optional: true
   },
+  "anonymousAccessTokens.$": AnonymousAccessToken,
   // Although billing address is typically needed only by the payment plugin,
   // some tax services require it to calculate taxes for digital items. Thus
   // it should be provided here in order to be added to the CommonOrder if possible.
@@ -415,6 +453,11 @@ export const Order = new SimpleSchema({
   },
   "createdAt": Date,
   "currencyCode": String,
+  "customFields": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "discounts": {
     type: Array,
     optional: true
@@ -428,7 +471,6 @@ export const Order = new SimpleSchema({
   "email": {
     type: String,
     optional: true,
-    index: 1,
     regEx: SimpleSchema.RegEx.Email
   },
   "exportHistory": {
@@ -451,11 +493,17 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "payments.$": Payment,
-  "referenceId": String,
+  "referenceId": {
+    type: String
+  },
   "shipping": [OrderFulfillmentGroup],
-  "shopId": {
-    type: String,
-    index: 1
+  "shopId": String,
+  "surcharges": {
+    type: Array,
+    optional: true
+  },
+  "surcharges.$": {
+    type: AppliedSurcharge
   },
   "totalItemQuantity": {
     type: SimpleSchema.Integer,

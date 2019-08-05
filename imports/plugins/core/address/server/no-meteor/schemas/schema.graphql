@@ -53,6 +53,13 @@ input AddressInput {
   "Country"
   country: String!
 
+  """
+  The first name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  firstName: String
+
   "The full name of a person at this address"
   fullName: String!
 
@@ -64,6 +71,13 @@ input AddressInput {
 
   "Is this the default address to use when selecting a shipping address at checkout?"
   isShippingDefault: Boolean
+
+  """
+  The last name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  lastName: String
 
   "Arbitrary additional metadata about this address"
   metafields: [MetafieldInput]
@@ -98,6 +112,13 @@ type Address {
   "Country"
   country: String!
 
+  """
+  The first name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  firstName: String
+
   "The full name of a person at this address"
   fullName: String!
 
@@ -109,6 +130,13 @@ type Address {
 
   "Is this the default address to use when selecting a shipping address at checkout?"
   isShippingDefault: Boolean
+
+  """
+  The last name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  lastName: String
 
   "Arbitrary additional metadata about this address"
   metafields: [Metafield]
@@ -123,20 +151,41 @@ type Address {
   region: String!
 }
 
-"Wraps a list of `Addresses`, providing pagination cursors and information."
+"""
+Wraps a list of `Addresses`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
 type AddressConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [AddressEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Address]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
 "A connection edge in which each node is an `Address` object"
 type AddressEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The address"
   node: Address
 }
 
+"Details about an error that was the result of validating an address that is invalid"
 type AddressValidationError {
   "A longer, detailed error message suitable for showing in the user interface"
   details: String

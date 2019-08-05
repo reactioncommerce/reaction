@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { compose } from "recompose";
+import { i18next } from "/client/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Media } from "/imports/plugins/core/files/client";
@@ -14,7 +17,8 @@ const wrapComponent = (Comp) => (
       isSearch: PropTypes.bool,
       productIds: PropTypes.arrayOf(PropTypes.string),
       products: PropTypes.array,
-      productsByKey: PropTypes.object
+      productsByKey: PropTypes.object,
+      selectedProductIds: PropTypes.array
     }
 
     constructor(props) {
@@ -28,17 +32,64 @@ const wrapComponent = (Comp) => (
     }
 
     handleSelectProductItem = (isChecked, productId) => {
-      let selectedProducts = Session.get("productGrid/selectedProducts") || [];
+      let selectedProductIds = this.props.selectedProductIds || [];
 
       if (isChecked) {
-        selectedProducts.push(productId);
-        selectedProducts = _.uniq(selectedProducts);
+        selectedProductIds.push(productId);
+        selectedProductIds = _.uniq(selectedProductIds);
       } else {
-        selectedProducts = _.without(selectedProducts, productId);
+        selectedProductIds = _.without(selectedProductIds, productId);
       }
 
       // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", selectedProducts);
+      Session.set("productGrid/selectedProducts", selectedProductIds);
+    }
+
+    handleSelectAllProductItems = (isChecked, productIds) => {
+      let selectedProductIds;
+
+      if (isChecked) {
+        selectedProductIds = _.uniq([...productIds]);
+      } else {
+        selectedProductIds = [];
+      }
+
+      // Save the selected items to the Session
+      Session.set("productGrid/selectedProducts", selectedProductIds);
+    }
+
+    handlePublishProducts = (productIds) => {
+      Meteor.call("catalog/publish/products", productIds, (error, result) => {
+        if (result) {
+          Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
+        } else if (error) {
+          Alerts.toast(error.message, "error");
+        }
+      });
+    }
+
+    handleToggleProductVisibility = (productIds, isVisible) => {
+      if (Array.isArray(productIds)) {
+        for (const productId of productIds) {
+          Meteor.call("products/updateProductField", productId, "isVisible", isVisible);
+        }
+      }
+    }
+
+    handleArchiveProducts = (productIds) => {
+      ReactionProduct.archiveProduct(productIds);
+    }
+
+    handleDuplicateProducts = (productIds) => {
+      ReactionProduct.cloneProduct(productIds);
+    }
+
+    handlePageChange = (event, page) => {
+      Session.set("products/page", page);
+    }
+
+    handleChangeRowsPerPage = (event) => {
+      Session.set("productScrollLimit", event.target.value);
     }
 
     get products() {
@@ -54,6 +105,13 @@ const wrapComponent = (Comp) => (
         <Comp
           {...this.props}
           itemSelectHandler={this.handleSelectProductItem}
+          onArchiveProducts={this.handleArchiveProducts}
+          onChangePage={this.handlePageChange}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          onDuplicateProducts={this.handleDuplicateProducts}
+          onPublishProducts={this.handlePublishProducts}
+          onSelectAllProducts={this.handleSelectAllProductItems}
+          onSetProductVisibility={this.handleToggleProductVisibility}
           products={this.products}
         />
       );
@@ -99,7 +157,11 @@ function composer(props, onData) {
   });
 
   onData(null, {
-    productMediaById
+    productMediaById,
+    page: Session.get("products/page") || 0,
+    productsPerPage: Session.get("productScrollLimit"),
+    selectedProductIds: Session.get("productGrid/selectedProducts"),
+    totalProductCount: Counts.get("products-count")
   });
 }
 

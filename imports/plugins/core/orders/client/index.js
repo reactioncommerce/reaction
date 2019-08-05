@@ -1,42 +1,79 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInbox } from "@fortawesome/free-solid-svg-icons";
-
+import InboxIcon from "mdi-material-ui/Inbox";
+import { registerBlock } from "@reactioncommerce/reaction-components";
 import { registerOperatorRoute } from "/imports/client/ui";
+import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
+import OrderCardSummary from "./components/OrderCardSummary";
 import Orders from "./containers/orderDashboardContainer";
-import OrderDetail from "./containers/orderDetailContainer";
-import "./helpers";
+import Order from "./containers/OrderContainer";
 
+// Print page layout
 import "./templates/list/pdf.html";
 import "./templates/list/pdf.js";
+
+
+// To remove with orders-2.0
+// To remove with orders-2.0
+// To remove with orders-2.0
+import "./helpers";
 import "./templates/list/summary.html";
 import "./templates/list/summary.js";
-
 import "./templates/workflow/shippingTracking.html";
 import "./templates/workflow/shippingTracking.js";
 import "./templates/workflow/workflow.html";
 import "./templates/workflow/workflow.js";
-
 import "./templates/orders.html";
 import "./templates/orders.js";
-
 import "./containers/invoiceContainer";
 import "./containers/orderSummaryContainer";
+import "../lib/extendShopSchema";
+
+export { ProductImage } from "./components/productImage";
+
+import OrderDetail from "./containers/orderDetailContainer";
 
 registerOperatorRoute({
-  path: "/orders/:_id",
+  isNavigationLink: false,
   mainComponent: OrderDetail,
-  isNavigationLink: false
+  path: "/orders/:_id"
+});
+// To remove with orders-2.0
+// To remove with orders-2.0
+// To remove with orders-2.0
+
+
+// Register order related routes
+
+/*
+ * Single order page route
+ */
+registerOperatorRoute({
+  isNavigationLink: false,
+  mainComponent: Order,
+  path: "/orders-beta/:_id"
 });
 
+/*
+ * Orders table route
+ */
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
+  priority: 10,
+  layoutComponent: ContentViewExtraWideLayout,
   mainComponent: Orders,
   path: "/orders",
   // eslint-disable-next-line react/display-name
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faInbox} {...props} />,
+  SidebarIconComponent: (props) => <InboxIcon {...props} />,
   sidebarI18nLabel: "admin.dashboard.ordersLabel"
 });
 
-export { ProductImage } from "./components/productImage";
+
+// Register order related blocks
+
+registerBlock({
+  region: "OrderCardSummary",
+  name: "OrderCardSummary",
+  component: OrderCardSummary,
+  priority: 10
+});

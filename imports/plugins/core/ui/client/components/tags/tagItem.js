@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { i18next } from "/client/api";
-import { Button, Handle } from "/imports/plugins/core/ui/client/components";
-import { SortableItem } from "/imports/plugins/core/ui/client/containers";
+import { i18next, Reaction } from "/client/api";
+import { Button } from "/imports/plugins/core/ui/client/components";
 import { Router } from "@reactioncommerce/reaction-router";
 import { highlightInput } from "../../helpers/animations";
 
@@ -45,6 +44,16 @@ class TagItem extends Component {
     if (this.props.onTagSave) {
       this.props.onTagSave(event, this.props.tag);
     }
+  }
+
+  /**
+   * Handle tag edit links to tag editing UI for this specific tag
+   * @return {void} no return value
+   */
+  handleTagEdit = () => {
+    const { tag } = this.props;
+
+    Reaction.Router.go(`/operator/tags/edit/${tag._id}`);
   }
 
   /**
@@ -208,21 +217,21 @@ class TagItem extends Component {
     });
 
     return (
-      this.props.connectDropTarget(<div className="rui item edit draggable">
+      <div className="rui item edit draggable">
         <div
           className={baseClassName}
           data-id={this.props.tag._id}
         >
           <form onSubmit={this.handleTagFormSubmit}>
-            <Handle connectDragSource={this.props.connectDragSource} />
             {this.renderAutosuggestInput()}
+            <Button icon="edit" onClick={this.handleTagEdit} status="default" />
             <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
             {this.props.isTagNav &&
               <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
             }
           </form>
         </div>
-      </div>)
+      </div>
     );
   }
 
@@ -243,7 +252,6 @@ class TagItem extends Component {
       <div className="rui item edit draggable">
         <div className={baseClassName}>
           <form onSubmit={this.handleTagFormSubmit}>
-            <Button icon="tag" />
             {this.renderAutosuggestInput()}
             <Button icon="plus" />
           </form>
@@ -254,7 +262,7 @@ class TagItem extends Component {
 
   renderSuggestion(suggestion) {
     return (
-      <span>{suggestion.label}</span>
+      <span>{suggestion.label} ({suggestion.slug})</span>
     );
   }
 
@@ -302,8 +310,6 @@ class TagItem extends Component {
 
 TagItem.propTypes = {
   blank: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
-  connectDragSource: PropTypes.func,
-  connectDropTarget: PropTypes.func,
   draggable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   fullWidth: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
@@ -323,9 +329,13 @@ TagItem.propTypes = {
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,
   suggestions: PropTypes.arrayOf(PropTypes.object),
-  tag: PropTypes.object
+  tag: PropTypes.shape({
+    _id: PropTypes.string, // newTag will not have an _id
+    name: PropTypes.string.isRequired,
+    slug: PropTypes.string
+  })
 };
 
-registerComponent("TagItem", TagItem, SortableItem("tag"));
+registerComponent("TagItem", TagItem);
 
-export default SortableItem("tag")(TagItem);
+export default TagItem;

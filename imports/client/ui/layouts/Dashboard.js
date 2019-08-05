@@ -1,179 +1,177 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import styled, { css, injectGlobal } from "styled-components";
-import styledMUI from "styled-components-mui";
-import { ContainerQuery } from "react-container-query";
-import MUIAppBar from "@material-ui/core/AppBar";
-import MUIToolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import { applyTheme, CustomPropTypes } from "@reactioncommerce/components/utils";
+import Helmet from "react-helmet";
+import { i18next } from "/client/api";
+import { compose } from "recompose";
+import withStyles from "@material-ui/core/styles/withStyles";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import { CustomPropTypes } from "@reactioncommerce/components/utils";
 import { withComponents } from "@reactioncommerce/components-context";
 import { Route, Switch } from "react-router";
+import { withRouter } from "react-router-dom";
+import PrimaryAppBar from "../components/PrimaryAppBar/PrimaryAppBar";
 import ProfileImageWithData from "../components/ProfileImageWithData";
 import Sidebar from "../components/Sidebar";
 import { operatorRoutes } from "../index";
+import { UIContext } from "../context/UIContext";
+import ContentViewFullLayout from "./ContentViewFullLayout";
+import ContentViewStandardLayout from "./ContentViewStandardLayout";
 
-const query = {
-  isMobile: {
-    minWidth: 0,
-    maxWidth: 600
-  }
-};
-
-// Remove the 10px fontSize from the html element as it affects fonts that rely on rem
-injectGlobal`
-  html {
-    font-size: inherit;
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-`;
-
-// The reason we can't simply do `styled.div` here is because we're passing in isMobile and isSidebarOpen
-// props for the styled-components conditionals, but React does not recognize these as valid attributes
-// for DOM elements and prints warnings in the console. Someday there may be a better solution.
-// See https://github.com/styled-components/styled-components/issues/305
-const Main = styled(({ children, isMobile, isSidebarOpen, ...divProps }) => (<div {...divProps}>{children}</div>))`
-  width: 100vw;
-  background-color: ${applyTheme("Layout.pageBackgroundColor")};
-  flex-grow: 1;
-  transition: ${(props) =>
-    (props.isSidebarOpen && props.isMobile !== true
-      ? "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
-      : "padding 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
-  padding-left: ${(props) => (props.isSidebarOpen && props.isMobile === false ? "280px" : 0)};
-`;
-
-const MainContent = styled.div`
-  max-width: ${applyTheme("Layout.pageContentMaxWidth")};
-  padding-bottom: ${applyTheme("Layout.pageContentPaddingBottom")};
-  padding-left: ${applyTheme("Layout.pageContentPaddingLeft")};
-  padding-right: ${applyTheme("Layout.pageContentPaddingRight")};
-  padding-top: ${applyTheme("Layout.pageContentPaddingTop")};
-  margin: 0 auto;
-`;
-
-// The reason we can't simply do `styledMUI(MUIAppBar)` here is because we're passing in isMobile and isSidebarOpen
-// props for the styled-components conditionals, but React does not recognize these as valid attributes
-// for DOM elements and prints warnings in the console. Someday there may be a better solution.
-// See https://github.com/styled-components/styled-components/issues/305
-const AppBar = styledMUI(({ children, isMobile, isSidebarOpen, ...restProps }) => (<MUIAppBar {...restProps}>{children}</MUIAppBar>))`
-  background-color: ${applyTheme("Layout.pageHeaderBackgroundColor")};
-  transition: ${(props) =>
-    (props.isSidebarOpen && props.isMobile !== true
-      ? "margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,width 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms"
-      : "margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
-  ${(props) => {
-    if (props.isSidebarOpen && props.isMobile !== true) {
-      return css`
-        margin-left: ${applyTheme("Sidebar.drawerWidth")};
-        width: calc(100% - ${applyTheme("Sidebar.drawerWidth")});`;
+const styles = (theme) => ({
+  "@global": {
+    html: {
+      // Remove the 10px fontSize from the html element as it affects fonts that rely on rem
+      fontSize: "inherit"
     }
-    return null;
-  }};
-`;
-
-const Grow = styled.div`
-  flex-grow: 1;
-`;
-
-const HamburgerIconButton = styledMUI(IconButton)`
-  color: ${applyTheme("Layout.burgerIconColor")};
-  position: fixed;
-  left: ${applyTheme("Layout.burgerIconLeft")};
-  top: ${applyTheme("Layout.burgerIconTop")};
-  z-index: 2000;
-`;
-
-// This is an invisible element that is needed only to push the page content down below the `AppBar`
-const DrawerHeader = styled.div`
-  min-height: 48px;
-  @media (min-width: 600px) {
-    min-height: 64px;
+  },
+  "container": {
+    display: "flex"
+  },
+  "leftSidebarOpen": {
+    ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
   }
-  @media (min-width: 0px) and (orientation: landscape) {
-    min-height: 48px;
-  }
-`;
+});
 
 class Dashboard extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     components: PropTypes.shape({
       IconHamburger: CustomPropTypes.component.isRequired
-    })
+    }),
+    location: PropTypes.object,
+    width: PropTypes.string
   };
 
-  state = {
-    isSidebarOpen: null
+  constructor(props) {
+    super(props);
+
+    // State also contains the updater function so it will
+    // be passed down into the context provider
+    this.state = {
+      isDetailDrawerOpen: false,
+      isMobile: false,
+      isPrimarySidebarOpen: true,
+      onClosePrimarySidebar: this.onClosePrimarySidebar,
+      onTogglePrimarySidebar: this.onTogglePrimarySidebar,
+      onCloseDetailDrawer: this.onCloseDetailDrawer,
+      onToggleDetailDrawer: this.onToggleDetailDrawer
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { width, location } = this.props;
+    const isMobile = isWidthDown("sm", width);
+
+    if (prevState.isMobile !== isMobile) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        isMobile
+      });
+    }
+
+    if (!isMobile && prevState.isPrimarySidebarOpen === false) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        isPrimarySidebarOpen: true
+      });
+    }
+
+    // Close the detail drawer on route change
+    if (location.pathname !== prevProps.location.pathname) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        isDetailDrawerOpen: false
+      });
+    }
+  }
+
+  onTogglePrimarySidebar = () => {
+    this.setState((state) => ({
+      isPrimarySidebarOpen: !state.isPrimarySidebarOpen
+    }));
   };
 
-  handleDrawerClose = () => {
-    this.setState({ isSidebarOpen: false });
+  onToggleDetailDrawer = () => {
+    this.setState((state) => ({
+      isDetailDrawerOpen: !state.isDetailDrawerOpen
+    }));
   };
 
-  handleDrawerToggle = () => {
-    this.setState({ isSidebarOpen: !this.state.isSidebarOpen });
+  onCloseDetailDrawer = () => {
+    this.setState({ isDetailDrawerOpen: false });
+  };
+
+  onClosePrimarySidebar = () => {
+    this.setState({ isPrimarySidebarOpen: false });
   };
 
   render() {
-    const { components: { IconHamburger } } = this.props;
-    const { isSidebarOpen } = this.state;
+    const { classes, width } = this.props;
+    const { isDetailDrawerOpen, isPrimarySidebarOpen } = this.state;
+    const isMobile = isWidthDown("sm", width);
 
     return (
-      <ContainerQuery query={query}>
-        {({ isMobile }) => {
-          // Sidebar should be initially open on desktop but not on mobile.
-          // isMobile is initially undefined, so need the explicit `=== false` check
-          if (isSidebarOpen === null && isMobile === false) {
-            // React logs warnings when using `setState` in render, but in this
-            // case it works fine and I don't see any other way given how `ContainerQuery`
-            // works. Wrapping in `setTimeout` fools React into not printing the warning.
-            setTimeout(() => {
-              this.setState({ isSidebarOpen: true });
-            }, 0);
-          }
-
-          return (
-            <Container>
-              <HamburgerIconButton onClick={this.handleDrawerToggle}>
-                <IconHamburger />
-              </HamburgerIconButton>
-              <AppBar elevation={0} position="fixed" isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
-                <MUIToolbar>
-                  <Grow />
-                  <ProfileImageWithData size={40} />
-                </MUIToolbar>
-              </AppBar>
-              <Sidebar
-                isMobile={isMobile}
-                isSidebarOpen={isSidebarOpen || false}
-                onDrawerClose={this.handleDrawerClose}
-                routes={operatorRoutes}
-              />
-              <Main isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
-                <DrawerHeader />
-                <MainContent>
-                  <Switch>
-                    {
-                      operatorRoutes.map((route) => (
-                        <Route
-                          key={route.path}
-                          path={`/operator${route.path}`}
-                          component={route.mainComponent}
-                        />
-                      ))
+      <UIContext.Provider value={this.state}>
+        <div className={classes.container}>
+          <PrimaryAppBar>
+            <ProfileImageWithData size={40} />
+          </PrimaryAppBar>
+          <Sidebar
+            isMobile={isMobile}
+            isSidebarOpen={isPrimarySidebarOpen && !isDetailDrawerOpen}
+            setIsSidebarOpen={(value) => {
+              this.setState({ isPrimarySidebarOpen: value });
+            }}
+            onDrawerClose={this.state.onClosePrimarySidebar}
+            routes={operatorRoutes}
+          />
+          <Switch>
+            {
+              operatorRoutes.map((route) => (
+                <Route
+                  exact
+                  key={route.path}
+                  path={`/operator${route.path}`}
+                  render={(props) => {
+                    const title = i18next.t(route.sidebarI18nLabel, { defaultValue: "Reaction Admin" });
+                    // If the layout component is explicitly null
+                    if (route.layoutComponent === null) {
+                      return (
+                        <ContentViewFullLayout
+                          isLeadingDrawerOpen={!isMobile}
+                          isTrailingDrawerOpen={isDetailDrawerOpen && !isMobile}
+                        >
+                          <Helmet title={title} />
+                          <route.mainComponent uiState={this.state} {...props} />
+                        </ContentViewFullLayout>
+                      );
                     }
-                  </Switch>
-                </MainContent>
-              </Main>
-            </Container>
-          );
-        }}
-      </ContainerQuery>
+
+                    const LayoutComponent = route.layoutComponent || ContentViewStandardLayout;
+
+                    return (
+                      <LayoutComponent
+                        isLeadingDrawerOpen={!isMobile}
+                        isTrailingDrawerOpen={isDetailDrawerOpen && !isMobile}
+                      >
+                        <Helmet title={title} />
+                        <route.mainComponent uiState={this.state} {...props} />
+                      </LayoutComponent>
+                    );
+                  }}
+                />
+              ))
+            }
+          </Switch>
+        </div>
+      </UIContext.Provider>
     );
   }
 }
 
-export default withComponents(Dashboard);
+export default compose(
+  withComponents,
+  withRouter,
+  withWidth({ initialWidth: "md" }),
+  withStyles(styles, { name: "RuiDashboard" })
+)(Dashboard);

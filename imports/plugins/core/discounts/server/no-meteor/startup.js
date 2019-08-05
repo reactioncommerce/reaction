@@ -1,4 +1,4 @@
-import appEvents from "/imports/node-app/core/util/appEvents";
+import Logger from "@reactioncommerce/logger";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 
 /**
@@ -8,17 +8,18 @@ import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { Cart } = context.collections;
+  const { appEvents, collections } = context;
+  const { Cart } = collections;
 
   appEvents.on("afterCartUpdate", async ({ cart }) => {
     if (!cart) {
       throw new Error("afterCartUpdate hook run with no cart argument");
     }
+    Logger.debug("Handling afterCartUpdate: discounts");
 
-    const cartId = cart._id;
-    const { total: discount } = await getDiscountsTotalForCart(context, cartId);
+    const { total: discount } = await getDiscountsTotalForCart(context, cart);
     if (discount !== cart.discount) {
-      await Cart.update({ _id: cartId }, { $set: { discount } });
+      await Cart.update({ _id: cart._id }, { $set: { discount } });
     }
   });
 }

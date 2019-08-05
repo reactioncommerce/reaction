@@ -1,40 +1,11 @@
+/**
+ * This file is necessary for backwards compatibility while we refactor
+ * the API to remove Meteor. The no-meteor `register.js` file will
+ * eventually become the main entry point of the plugin, but for now
+ * our Meteor tooling loads this file, so we include this here as a
+ * temporary bridge.
+ */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import register from "./server/no-meteor/register";
 
-Reaction.registerPackage({
-  label: "Email",
-  name: "reaction-email",
-  icon: "fa fa-envelope-o",
-  autoEnable: true,
-  settings: {
-    name: "Email"
-  },
-  registry: [{
-    label: "Email Settings",
-    description: "Email settings",
-    icon: "fa fa-envelope-o",
-    name: "email/settings",
-    provides: ["settings"],
-    workflow: "coreEmailWorkflow",
-    template: "emailSettings",
-    meta: {
-      actionView: {
-        dashboardSize: "md"
-      }
-    }
-  }],
-  layout: [{
-    layout: "coreLayout",
-    workflow: "coreEmailWorkflow",
-    theme: "default",
-    enabled: true,
-    structure: {
-      template: "email",
-      layoutHeader: "NavBar",
-      layoutFooter: "",
-      notFound: "notFound",
-      dashboardHeader: "dashboardHeader",
-      dashboardControls: "dashboardControls",
-      adminControlsFooter: "adminControlsFooter"
-    }
-  }]
-});
+Reaction.whenAppInstanceReady(register);

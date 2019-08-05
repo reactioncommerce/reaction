@@ -11,10 +11,8 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { addProduct, addProductSingleVariant } from "/imports/plugins/core/core/server/fixtures/products";
+import { getBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
-
-Fixtures();
-
 
 describe("core product methods", function () {
   // we can't clean Products collection after each test from now, because we
@@ -28,8 +26,23 @@ describe("core product methods", function () {
   let removeStub;
   let insertStub;
 
-  before(function () {
-    Products.remove({});
+  before(function (done) {
+    this.timeout(20000);
+
+    Reaction.onAppStartupComplete(() => {
+      Fixtures();
+      Products.remove({});
+
+      // We sleep until `setBaseContext` has run. I wish there were a better way to
+      // do this but Meteor starts app tests whenever it decides to, without waiting
+      // for all the startup code to run.
+      const handle = Meteor.setInterval(() => {
+        if (getBaseContext().queries) {
+          Meteor.clearInterval(handle);
+          done();
+        }
+      }, 500);
+    });
   });
 
   after(function () {
@@ -50,6 +63,7 @@ describe("core product methods", function () {
 
   describe("products/cloneVariant", function () {
     it("should throw 403 error by non admin", function () {
+      this.timeout(20000);
       sandbox.stub(Roles, "userIsInRole", () => false);
       const product = addProduct();
       const variants = Products.find({ ancestors: [product._id] }).fetch();
@@ -83,7 +97,7 @@ describe("core product methods", function () {
 
       Meteor.call("products/cloneVariant", product._id, variant[0]._id);
       const variants = Products.find({ ancestors: [product._id] }).fetch();
-      const clonedVariant = variants.filter((v) => v._id !== variant[0]._id);
+      const clonedVariant = variants.filter((filteredVariant) => filteredVariant._id !== variant[0]._id);
       expect(variant[0]._id).to.not.equal(clonedVariant[0]._id);
       expect(_.isEqual(variant[0].ancestors, clonedVariant[0].ancestors)).to.be.true;
       // expect(variant[0].ancestors).to.equal(clonedVariant[0].ancestors);
@@ -213,8 +227,8 @@ describe("core product methods", function () {
         ancestors: { $in: [clone._id] }
       }).fetch();
       expect(cloneVariants.length).to.equal(3);
-      for (let i = 0; i < variants.length; i += 1) {
-        expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[i].title)).to.be.ok;
+      for (let inc = 0; inc < variants.length; inc += 1) {
+        expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[inc].title)).to.be.ok;
       }
     });
 
@@ -512,77 +526,6 @@ describe("core product methods", function () {
       expect(product.metafields.length).to.be.equal(1);
 
       return done();
-    });
-  });
-
-  describe("publishProduct", function () {
-    it("should throw 403 error by non admin", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      const product = addProduct();
-      const updateProductSpy = sandbox.spy(Products, "update");
-      expect(() => Meteor.call("products/publishProduct", product._id)).to.throw(ReactionError, /Access Denied/);
-      expect(updateProductSpy).to.not.have.been.called;
-    });
-
-    it("should let admin toggle product visibility", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      let product = addProduct();
-      const { isVisible } = product;
-      expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(ReactionError, /Access Denied/);
-      product = Products.findOne(product._id);
-      expect(product.isVisible).to.equal(!isVisible);
-    });
-
-    it("should not publish product when missing title", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      let product = addProduct();
-      const { isVisible } = product;
-      Products.update(product._id, {
-        $set: {
-          title: ""
-        }
-      }, {
-        bypassCollection2: true
-      });
-
-      expect(() => Meteor.call("products/publishProduct", product._id))
-        .to.throw(ReactionError, /Bad Request/);
-
-      product = Products.findOne(product._id);
-      expect(product.isVisible).to.equal(isVisible);
-    });
-
-    it("should not publish product when missing even one of child variant price", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      let product = addProduct();
-      const { isVisible } = product;
-      const variant = Products.findOne({ ancestors: [product._id] });
-      expect(variant.ancestors[0]).to.equal(product._id);
-      const options = Products.find({
-        ancestors: [product._id, variant._id]
-      }).fetch();
-      expect(options.length).to.equal(2);
-      Products.update(options[0]._id, {
-        $set: {
-          isVisible: true,
-          price: 0
-        }
-      }, {
-        selector: { type: "variant" },
-        validate: false
-      });
-      product = Products.findOne(product._id);
-      expect(product.isVisible).to.equal(isVisible);
-    });
-
-
-    it("should not publish product when missing variant", function () {
-      let product = addProduct();
-      const { isVisible } = product;
-      sandbox.stub(Roles, "userIsInRole", () => true);
-      Products.remove({ ancestors: { $in: [product._id] } });
-      product = Products.findOne(product._id);
-      expect(product.isVisible).to.equal(isVisible);
     });
   });
 });

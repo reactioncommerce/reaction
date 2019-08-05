@@ -11,6 +11,9 @@ extend type Query {
 }
 
 extend type Mutation {
+  "Approve one or more payments for an order"
+  approveOrderPayments(input: ApproveOrderPaymentsInput!): ApproveOrderPaymentsPayload!
+
   "Capture one or more payments for an order"
   captureOrderPayments(input: CaptureOrderPaymentsInput!): CaptureOrderPaymentsPayload!
 
@@ -68,8 +71,23 @@ type Payment implements Node {
   "The payment method"
   method: PaymentMethod!
 
+  "The payment mode"
+  mode: String
+
+  "The payment processor"
+  processor: String
+
+  "Refunds that have been applied to this payment."
+  refunds: [Refund]
+
+  "Risk level of payment"
+  riskLevel: RiskLevel
+
   "The current status of this payment"
   status: PaymentStatus!
+
+  "The payment transaction ID"
+  transactionId: String
 }
 
 "Valid payment statuses"
@@ -99,18 +117,32 @@ enum PaymentStatus {
   refunded
 }
 
+"Valid payment risk levels"
+enum RiskLevel {
+  "An elevated risk level for a payment"
+  elevated
+
+  "The highest risk level for a payment"
+  highest
+
+  "A normal risk level for a payment"
+  normal
+}
+
 # Use `extend union` to define a payment plugin's PaymentData type
 "Data identifying a payment for an order"
-union PaymentData
+union PaymentData = FakeData
 
 # Use `extend enum` to add a plugin's payment method name
 "The name of a payment method, which is how payment methods are keyed"
 enum PaymentMethodName {
+  "No payment method"
   none
 }
 
 # Use `extend union` to define a payment plugin's PaymentMethodData type
-union PaymentMethodData
+"Any extra data needed by the payment method"
+union PaymentMethodData = FakeData
 
 "Describes a payment method"
 type PaymentMethod {
@@ -149,12 +181,37 @@ input EnablePaymentMethodForShopInput {
   shopId: ID!
 }
 
+"Response payload for the `enablePaymentMethodForShop` mutation"
 type EnablePaymentMethodForShopPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
   "The full list of payment methods for the shop"
   paymentMethods: [PaymentMethod]!
+}
+
+"Input for the `approveOrderPayments` mutation"
+input ApproveOrderPaymentsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order ID"
+  orderId: ID!
+
+  "The IDs of one or more payments to approve for this order"
+  paymentIds: [ID]!
+
+  "The ID of the shop that owns this order"
+  shopId: ID!
+}
+
+"Response from the `approveOrderPayments` mutation"
+type ApproveOrderPaymentsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
 }
 
 "Input for the `captureOrderPayments` mutation"

@@ -23,6 +23,7 @@ class TagSettings extends Component {
     history: PropTypes.shape({
       push: PropTypes.func.isRequired
     }),
+    isLoadingPrimaryShopId: PropTypes.bool,
     isLoadingShopId: PropTypes.bool,
     shopId: PropTypes.string.isRequired
   }
@@ -106,6 +107,8 @@ class TagSettings extends Component {
     if (action === "delete") {
       this.tableRef.current.refetch();
     }
+
+    return null;
   }
 
   reset() {

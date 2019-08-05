@@ -130,7 +130,21 @@
         "shopLocalizationSettingsSaved": "Shop localization settings saved.",
         "shopLocalizationSettingsFailed": "Shop localization settings update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
-        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed.",
+        "storefrontUrls": {
+          "description": "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails.",
+          "storefrontHomeUrlTitle": "Homepage URL",
+          "storefrontHomeUrlDescription": "URL of your shops homepage",
+          "storefrontOrderUrlTitle": "Single Order page URL",
+          "storefrontOrderUrlDescription": "URL of your shops single order page, with `:orderId` and `:token` variables provided",
+          "storefrontOrderUrlHelpText": "In order for email links to work, you must provide an `:orderId` and `:token` in this field. These act as placeholders that are replaced with the correct data in your email template when an order email is generated. For example: http://shop.example.com/my-orders/:orderId?token=:token",
+          "storefrontOrdersUrlTitle": "Orders page URL",
+          "storefrontOrdersUrlDescription": "URL of your shops orders page",
+          "storefrontAccountProfileUrlTitle": "Account Profile page URL",
+          "storefrontAccountProfileUrlDescription": "URL of your shops account profile homepage",
+          "title": "Storefront Urls",
+          "update": "Update storefront Urls"
+        }
       },
       "notifications": {
         "body": {
@@ -181,6 +195,7 @@
         "addedToCart": "added",
         "showBarcodes": "Show barcodes",
         "soldOut": "Sold out!",
+        "inStock": "In Stock",
         "backOrder": "Backorder",
         "limitedSupply": "Limited supply",
         "publishProductVisible": "{{product}} is now visible",
@@ -256,10 +271,9 @@
       },
       "productVariant": {
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
-        "inventoryInStock": "Quantity",
         "title": "Title",
         "price": "Price",
-        "optionTitle": "Option title",
+        "optionTitle": "Short title",
         "barcode": "Barcode",
         "compareAtPrice": "Compare at price",
         "fulfillmentService": "Fulfillment service",
@@ -270,12 +284,6 @@
         "taxable": "Taxable",
         "taxCode": "Tax code",
         "taxDescription": "Tax description",
-        "inventoryManagement": "Inventory tracking",
-        "inventoryManagementLabel": "Register product in inventory system and track its status",
-        "inventoryPolicy": "Allow backorder",
-        "inventoryPolicyLabel": "Do not sell the product variant when it is not in stock",
-        "lowInventoryWarningThreshold": "Warn at",
-        "lowInventoryWarningThresholdLabel": "Warn customers that the product will be close to sold out when the quantity reaches the next threshold",
         "originCountry": "Origin country",
         "selectTaxCode": "Select tax code"
       },
@@ -318,6 +326,7 @@
         "orderItems": "Items in order",
         "subtotal": "Sub total",
         "shipping": "Shipping",
+        "surcharge": "Surcharge",
         "tax": "Tax",
         "total": "Total"
       },
@@ -595,6 +604,9 @@
         }
       },
       "accountsUI": {
+        "promoteExistingAccountConfirm": "Do you want to promote their existing account?",
+        "sendNewInviteConfirm": "Do you want to send a new invitation?",
+        "yes": "Yes",
         "usersOrders": "User's orders",
         "oops": "Oops!",
         "nonExistentAccount": "The user you're looking for does not exist.",
@@ -641,7 +653,7 @@
         "signupCode": "Registration code",
         "signUpWithYourEmailAddress": "Register with your email address",
         "terms": "Terms of use",
-        "updateYourPassword": "Set New password",
+        "updateYourPassword": "Set new password",
         "updatePasswordAndContinue": "Update",
         "updatedServiceConfiguration": "Updated service configuration for {{service}}",
         "username": "Username",
@@ -683,6 +695,7 @@
           "errorSendingEmail": "Error sending email, possible configuration issue.",
           "unableToSendInvitationEmail": "Unable to send invitation email.",
           "userWithEmailAlreadyExists": "A user with this email address already exists",
+          "inviteAlreadyPending": "An invite is already pending for this user",
           "failedToLogout": "Failed to logout.",
           "invalidLoginToken": "Invalid login token",
           "loginForbidden": "Login forbidden",

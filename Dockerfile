@@ -14,6 +14,7 @@ COPY --chown=node package.json $APP_SOURCE_DIR/
 # by root by default, we have to initially create node_modules here with correct owner.
 # Without this NPM cannot write packages into node_modules later, when running in a container.
 RUN mkdir "$APP_SOURCE_DIR/node_modules" && chown node "$APP_SOURCE_DIR/node_modules"
+RUN mkdir -p "$APP_SOURCE_DIR/.meteor/local" && chown node "$APP_SOURCE_DIR/.meteor/local"
 
 RUN meteor npm install
 
@@ -25,8 +26,7 @@ COPY --chown=node . $APP_SOURCE_DIR
 ##############################################################################
 FROM meteor-dev as builder
 
-RUN printf "\\n[-] Running Reaction plugin loader...\\n" \
- && reaction plugins load
+RUN node --experimental-modules ./.reaction/scripts/build.mjs
 RUN printf "\\n[-] Building Meteor application...\\n" \
  && meteor build --server-only --architecture os.linux.x86_64 --directory "$APP_BUNDLE_DIR"
 

@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
+import { toFixed } from "accounting-js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 
 const inputItemSchema = new SimpleSchema({
   "metafields": {
@@ -27,7 +27,7 @@ const inputItemSchema = new SimpleSchema({
 /**
  * @summary Given a list of current cart items and a list of items a shopper wants
  *   to add, validate available quantities and return the full merged list.
- * @param {Object} collections - Map of raw MongoDB collections
+ * @param {Object} context - App context
  * @param {Object[]} currentItems - Array of current items in CartItem schema
  * @param {Object[]} inputItems - Array of items to add in CartItemInput schema
  * @param {Object} [options] - Options
@@ -35,7 +35,9 @@ const inputItemSchema = new SimpleSchema({
  *   Skipping this is not recommended for new code.
  * @return {Object} Object with `incorrectPriceFailures` and `minOrderQuantityFailures` and `updatedItemList` props
  */
-export default async function addCartItems(collections, currentItems, inputItems, options = {}) {
+export default async function addCartItems(context, currentItems, inputItems, options = {}) {
+  const { queries } = context;
+
   inputItemSchema.validate(inputItems);
 
   const incorrectPriceFailures = [];
@@ -55,9 +57,9 @@ export default async function addCartItems(collections, currentItems, inputItems
       catalogProduct,
       parentVariant,
       variant: chosenVariant
-    } = await findProductAndVariant(collections, productId, productVariantId);
+    } = await queries.findProductAndVariant(context, productId, productVariantId);
 
-    const variantPriceInfo = chosenVariant.pricing[price.currencyCode];
+    const variantPriceInfo = await queries.getVariantPrice(context, chosenVariant, price.currencyCode);
     if (!variantPriceInfo) {
       throw new ReactionError("invalid-param", `This product variant does not have a price for ${price.currencyCode}`);
     }
@@ -91,17 +93,16 @@ export default async function addCartItems(collections, currentItems, inputItems
     // not ordered unless back-ordering is enabled.
 
     // Until we do a more complete attributes revamp, we'll do our best to fudge attributes here.
-    // The main issue is we do not have labels.
     const attributes = [];
     if (parentVariant) {
       attributes.push({
-        label: null, // Set label to null for now. We expect to use it in the future.
-        value: parentVariant.title
+        label: parentVariant.attributeLabel,
+        value: parentVariant.optionTitle
       });
     }
     attributes.push({
-      label: null, // Set label to null for now. We expect to use it in the future.
-      value: chosenVariant.title
+      label: chosenVariant.attributeLabel,
+      value: chosenVariant.optionTitle
     });
 
     const cartItem = {
@@ -131,7 +132,7 @@ export default async function addCartItems(collections, currentItems, inputItems
       shopId: catalogProduct.shopId,
       // Subtotal will be kept updated by event handler watching for catalog changes.
       subtotal: {
-        amount: variantPriceInfo.price * quantity,
+        amount: +toFixed(variantPriceInfo.price * quantity, 3),
         currencyCode: price.currencyCode
       },
       taxCode: chosenVariant.taxCode,
@@ -158,14 +159,21 @@ export default async function addCartItems(collections, currentItems, inputItems
       updatedItemList.push(cartItem);
     } else {
       const currentCartItem = updatedItemList[currentMatchingItemIndex];
+      // Combine quantities. This is not atomic like $inc would be, but what are the
+      // chances that someone is adding the same item to the same cart in two different
+      // browsers at the same time? Doing it this way allows for more functional and
+      // testable code.
+      const updatedQuantity = currentCartItem.quantity + cartItem.quantity;
+      // Recalculate subtotal with new quantity number
+      const updatedSubtotalAmount = +toFixed(updatedQuantity * cartItem.price.amount, 3);
       updatedItemList[currentMatchingItemIndex] = {
         ...currentCartItem,
         ...cartItem,
-        // Combine quantities. This is not atomic like $inc would be, but what are the
-        // chances that someone is adding the same item to the same cart in two different
-        // browsers at the same time? Doing it this way allows for more functional and
-        // testable code.
-        quantity: currentCartItem.quantity + cartItem.quantity
+        quantity: updatedQuantity,
+        subtotal: {
+          amount: updatedSubtotalAmount,
+          currencyCode: price.currencyCode
+        }
       };
     }
   });

@@ -117,7 +117,8 @@ const wrapComponent = (Comp) => (
       this._isMounted = true;
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       let selectedTag = {};
       const previousEdit = this.state.editable;
       nextProps.tagsAsArray.forEach((tag) => {
@@ -248,7 +249,7 @@ const wrapComponent = (Comp) => (
     }
 
     get canEdit() {
-      return this.props.hasEditRights && Reaction.isPreview() === false;
+      return this.props.hasEditRights;
     }
 
     attachBodyListener = () => {

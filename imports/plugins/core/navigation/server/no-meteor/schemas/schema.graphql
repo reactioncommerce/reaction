@@ -1,6 +1,15 @@
 extend type Query {
   "Returns a navigation tree by its ID in the specified language"
-  navigationTreeById(id: ID!, language: String!): NavigationTree
+  navigationTreeById(
+    "The ID of the navigation tee"
+    id: ID!,
+
+    "Navigation language"
+    language: String!,
+
+    "Set to true if you want to include secondary navigation items along with the primary items"
+    shouldIncludeSecondary: Boolean = false
+  ): NavigationTree
 
   "Returns the navigation items for a shop"
   navigationItemsByShopId(
@@ -20,21 +29,44 @@ extend type Query {
 
 "The fields by which you are allowed to sort any query that returns a `NavigationItemConnection`"
 enum NavigationItemSortByField {
+  "Sort by NavigationItem ID"
   _id
+
+  "Sort by when the NavigationItem was created"
   createdAt
 }
 
-"Wraps a list of `NavigationItem`s, providing pagination cursors and information"
-type NavigationItemConnection implements NodeConnection {
+"""
+Wraps a list of `NavigationItem`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type NavigationItemConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [NavigationItemEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [NavigationItem]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
 "A connection edge in which each node is a `NavigationItem` object"
 type NavigationItemEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The navigation item"
   node: NavigationItem
 }
 
@@ -43,8 +75,8 @@ type NavigationItem implements Node {
   "The navigation item ID"
   _id: ID!
 
-  "The ID of the shop the navigation item belongs to"
-  shopId: ID!
+  "The date and time at which this navigation item was created"
+  createdAt: DateTime!
 
   "The published data for this navigation item"
   data: NavigationItemData
@@ -52,35 +84,35 @@ type NavigationItem implements Node {
   "The draft/unpublished data for this navigation item"
   draftData: NavigationItemData
 
+  "Whether the navigation item has unpublished changes"
+  hasUnpublishedChanges: Boolean
+
   "An object storing additional metadata about the navigation item (such as its related tag)"
   metadata: JSONObject
 
-  "The date and time at which this navigation item was created"
-  createdAt: DateTime!
-
-  "Whether the navigation item has unpublished changes"
-  hasUnpublishedChanges: Boolean
+  "The ID of the shop the navigation item belongs to"
+  shopId: ID!
 }
 
 "Represents the data for a navigation item"
 type NavigationItemData {
+  "CSS class names to add to the menu item for display"
+  classNames: String
+
   "The content for the navigation item, in one or more languages"
   content: [NavigationItemContent]
 
   "The translated content for a navigation item"
   contentForLanguage: String
 
-  "CSS class names to add to the menu item for display"
-  classNames: String
-
-  "The URL for the navigation item to link to"
-  url: String
-
   "Whether the provided URL is relative or external"
   isUrlRelative: Boolean
 
   "Whether the navigation item should trigger a new tab/window to open when clicked"
   shouldOpenInNewWindow: Boolean
+
+  "The URL for the navigation item to link to"
+  url: String
 }
 
 "Represents the translated content for a navigation item"
@@ -97,67 +129,82 @@ type NavigationTree implements Node {
   "The navigation tree ID"
   _id: ID!
 
-  "The ID of the shop this navigation tree belongs to"
-  shopId: ID!
-
-  "The name of the tree, for operator display purposes. Assumed to be in the primary shop's language"
-  name: String!
-
-  "The published navigation items that make up this tree"
-  items: [NavigationTreeItem]
-
   "The draft navigation items that make up this tree"
   draftItems: [NavigationTreeItem]
 
   "Whether the navigation item has unpublished changes"
   hasUnpublishedChanges: Boolean
+
+  "The published navigation items that make up this tree"
+  items: [NavigationTreeItem]
+
+  "The name of the tree, for operator display purposes. Assumed to be in the primary shop's language"
+  name: String!
+
+  "The ID of the shop this navigation tree belongs to"
+  shopId: ID!
 }
 
 "Represents a navigation item and its children in a tree"
 type NavigationTreeItem {
-  "The navigation item"
-  navigationItem: NavigationItem!
+  "Whether the navigation item should display its children"
+  expanded: Boolean
+
+  "Whether the navigation item should be hidden from customers"
+  isPrivate: Boolean
+
+  "Whether the navigaton item is a secondary navigation item"
+  isSecondary: Boolean
+
+  "Whether the navigation ttem should shown in query results for customers and admins"
+  isVisible: Boolean
 
   "The child navigation items"
   items: [NavigationTreeItem]
+
+  "The navigation item"
+  navigationItem: NavigationItem!
 }
 
 extend type Mutation {
   "Create a new navigation item"
   createNavigationItem(input: CreateNavigationItemInput!): CreateNavigationItemPayload
 
-  "Update an existing navigation item's draft data. Sets hasUnpublishedChanges to true"
-  updateNavigationItem(input: UpdateNavigationItemInput!): UpdateNavigationItemPayload
-
   "Delete a navigation item"
   deleteNavigationItem(input: DeleteNavigationItemInput!): DeleteNavigationItemPayload
 
-  "Update an existing navigation tree's draft items. Sets hasUnpublishedChanges to true"
-  updateNavigationTree(input: UpdateNavigationTreeInput!): UpdateNavigationTreePayload
-
   "Publish the draft structure for a navigation tree and the draft changes for all of its navigation items. Sets hasUnpublishedChanges to false on tree and its items"
   publishNavigationChanges(input: PublishNavigationChangesInput!): PublishNavigationChangesPayload
+
+  "Update an existing navigation item's draft data. Sets hasUnpublishedChanges to true"
+  updateNavigationItem(input: UpdateNavigationItemInput!): UpdateNavigationItemPayload
+
+  "Update an existing navigation tree's draft items. Sets hasUnpublishedChanges to true"
+  updateNavigationTree(input: UpdateNavigationTreeInput!): UpdateNavigationTreePayload
 }
 
+"Input for the `createNavigationItem` mutation"
 input CreateNavigationItemInput {
-  "The navigation item to create"
-  navigationItem: NavigationItemInput!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The navigation item to create"
+  navigationItem: NavigationItemInput!
 }
 
+"Input for the `updateNavigationItem` mutation"
 input UpdateNavigationItemInput {
   "The ID of the navigation item to update"
   _id: ID!
 
-  "The field updates to apply"
-  navigationItem: NavigationItemInput!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The field updates to apply"
+  navigationItem: NavigationItemInput!
 }
 
+"Input for the `deleteNavigationItem` mutation"
 input DeleteNavigationItemInput {
   "The ID of the navigation item to delete"
   _id: ID!
@@ -166,17 +213,19 @@ input DeleteNavigationItemInput {
   clientMutationId: String
 }
 
+"Input for the `updateNavigationTree` mutation"
 input UpdateNavigationTreeInput {
   "The ID of the navigation tree to update"
   _id: ID!
 
-  "The field updates to apply"
-  navigationTree: NavigationTreeInput!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The field updates to apply"
+  navigationTree: NavigationTreeInput!
 }
 
+"Input for the `publishNavigationChanges` mutation"
 input PublishNavigationChangesInput {
   "The ID of the navigation tree"
   _id: ID!
@@ -185,6 +234,7 @@ input PublishNavigationChangesInput {
   clientMutationId: String
 }
 
+"NavigationItem input"
 input NavigationItemInput {
   "The draft/unpublished data for this navigation item"
   draftData: NavigationItemDataInput
@@ -193,23 +243,25 @@ input NavigationItemInput {
   metadata: JSONObject
 }
 
+"NavigationItemData input"
 input NavigationItemDataInput {
-  "The content for the navigation item, in one or more languages"
-  content: [NavigationItemContentInput]
-
   "CSS class names to add to the menu item for display"
   classNames: String
 
-  "The URL for the navigation item to link to"
-  url: String
+  "The content for the navigation item, in one or more languages"
+  content: [NavigationItemContentInput]
 
   "Whether the provided URL is relative or external"
   isUrlRelative: Boolean
 
   "Whether the navigation item should trigger a new tab/window to open when clicked"
   shouldOpenInNewWindow: Boolean
+
+  "The URL for the navigation item to link to"
+  url: String
 }
 
+"NavigationItem content input"
 input NavigationItemContentInput {
   "The language of the piece of navigation content"
   language: String!
@@ -218,58 +270,77 @@ input NavigationItemContentInput {
   value: String
 }
 
+"NavigationTree input"
 input NavigationTreeInput {
-  "The name of the tree, for operator display purposes"
-  name: String
-
   "The draft navigation items that make up this tree"
   draftItems: [NavigationTreeItemInput]
+
+  "The name of the tree, for operator display purposes"
+  name: String
 }
 
+"NavigationTree item input"
 input NavigationTreeItemInput {
-  "The ID of the navigation item"
-  navigationItemId: ID!
+  "Whether the navigation item should display its children"
+  expanded: Boolean
+
+  "Whether the navigation item should be hidden from customers"
+  isPrivate: Boolean
+
+  "Whether the navigaton item is a secondary navigation item"
+  isSecondary: Boolean
+
+  "Whether the navigation ttem should shown in query results for customers and admins"
+  isVisible: Boolean
 
   "The child navigation items"
   items: [NavigationTreeItemInput]
+
+  "The ID of the navigation item"
+  navigationItemId: ID!
 }
 
+"Response payload for the `createNavigationItem` mutation"
 type CreateNavigationItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
   "The created navigation item"
   navigationItem: NavigationItem
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
 }
 
+"Response payload for the `updateNavigationItem` mutation"
 type UpdateNavigationItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
   "The updated navigation item"
   navigationItem: NavigationItem
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
 }
 
+"Response payload for the `deleteNavigationItem` mutation"
 type DeleteNavigationItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
   "The deleted navigation item"
   navigationItem: NavigationItem
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
 }
 
+"Response payload for the `updateNavigationTree` mutation"
 type UpdateNavigationTreePayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
   "The updated navigation tree"
   navigationTree: NavigationTree
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
 }
 
+"Response payload for the `publishNavigationChanges` mutation"
 type PublishNavigationChangesPayload {
-  "The navigation tree with updated items"
-  navigationTree: NavigationTree
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The navigation tree with updated items"
+  navigationTree: NavigationTree
 }

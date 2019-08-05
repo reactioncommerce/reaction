@@ -13,7 +13,7 @@ class AuthContainer extends Component {
     currentRoute: PropTypes.object,
     currentView: PropTypes.string,
     formMessages: PropTypes.object
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -96,7 +96,7 @@ class AuthContainer extends Component {
         }
       });
     }
-  }
+  };
 
   hasError = (error) => {
     // True here means the field is valid
@@ -106,18 +106,14 @@ class AuthContainer extends Component {
     }
 
     return false;
-  }
+  };
 
-  formMessages = () => (
-    <Components.LoginFormMessages
-      messages={this.state.formMessages}
-    />
-  )
+  formMessages = () => <Components.LoginFormMessages messages={this.state.formMessages} />;
 
   services = () => {
     const serviceHelper = new ServiceConfigHelper();
     return serviceHelper.services();
-  }
+  };
 
   shouldShowSeperator = () => {
     const serviceHelper = new ServiceConfigHelper();
@@ -127,9 +123,9 @@ class AuthContainer extends Component {
     });
 
     return !!Package["accounts-password"] && enabledServices.length > 0;
-  }
+  };
 
-  capitalizeName = (str) => LoginFormSharedHelpers.capitalize(str)
+  capitalizeName = (str) => LoginFormSharedHelpers.capitalize(str);
 
   handleSocialLogin = (value) => {
     let serviceName = value;
@@ -153,9 +149,9 @@ class AuthContainer extends Component {
         });
       }
     });
-  }
+  };
 
-  hasPasswordService = () => !!Package["accounts-password"]
+  hasPasswordService = () => !!Package["accounts-password"];
 
   renderAuthView() {
     if (this.props.currentView === "loginFormSignInView") {
@@ -181,7 +177,20 @@ class AuthContainer extends Component {
           isLoading={this.state.isLoading}
         />
       );
+    } else if (this.props.currentView === "loginFormUpdatePasswordView") {
+      return (
+        <Components.UpdatePassword
+          {...this.props}
+          messages={this.state.formMessages}
+          onError={this.hasError}
+          loginFormMessages={this.formMessages}
+          isLoading={this.state.isLoading}
+          isOpen
+        />
+      );
     }
+
+    return null;
   }
 
   render() {
@@ -200,6 +209,12 @@ class AuthContainer extends Component {
   }
 }
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   onData(null, { currentRoute: Router.current() });
 }

@@ -45,11 +45,11 @@ function GeoCoder(options) {
 }
 
 function gc(address, options, callback) {
-  const g = require("node-geocoder")(
+  const geocoder = require("node-geocoder")(
     options.geocoderProvider, options.httpAdapter,
     options.extra
   );
-  g.geocode(address, callback);
+  geocoder.geocode(address, callback);
 }
 
 GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
@@ -64,14 +64,16 @@ GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
     geoAddress = Meteor.wrapAsync(gc)(geoAddress, this.options);
     return geoAddress[0];
   }
+
+  return null;
 };
 
 function rv(lat, lng, options, callback) {
-  const g = require("node-geocoder")(
+  const geocoder = require("node-geocoder")(
     options.geocoderProvider, options.httpAdapter,
     options.extra
   );
-  g.reverse({
+  geocoder.reverse({
     lat,
     lon: lng
   }, callback);
@@ -83,25 +85,24 @@ GeoCoder.prototype.reverse = function geoCoderReverse(lat, lng, callback) {
     geoCallback = Meteor.bindEnvironment(geoCallback, (error) => {
       if (error) throw error;
     });
-    rv(lat, lng, this.options, geoCallback);
-  } else {
-    try {
-      const address = Meteor.wrapAsync(rv)(lat, lng, this.options);
-      return address[0];
-    } catch (_error) {
-      return {
-        latitude: null,
-        longitude: null,
-        country: "United States",
-        city: null,
-        state: null,
-        stateCode: null,
-        zipcode: null,
-        streetName: null,
-        streetNumber: null,
-        countryCode: "US"
-      };
-    }
+    return rv(lat, lng, this.options, geoCallback);
+  }
+  try {
+    const address = Meteor.wrapAsync(rv)(lat, lng, this.options);
+    return address[0];
+  } catch (_error) {
+    return {
+      latitude: null,
+      longitude: null,
+      country: "United States",
+      city: null,
+      state: null,
+      stateCode: null,
+      zipcode: null,
+      streetName: null,
+      streetNumber: null,
+      countryCode: "US"
+    };
   }
 };
 
@@ -124,15 +125,14 @@ GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
     geoCallback = Meteor.bindEnvironment(geoCallback, (error) => {
       if (error) throw error;
     });
-    gi(geoAddress, this.options, geoCallback);
-  } else {
-    try {
-      geoAddress = Meteor.wrapAsync(gi)(geoAddress);
-      return geoAddress.data;
-    } catch (error) {
-      Logger.warn("shop/getLocale geoip lookup failure", error);
-      return {};
-    }
+    return gi(geoAddress, this.options, geoCallback);
+  }
+  try {
+    geoAddress = Meteor.wrapAsync(gi)(geoAddress);
+    return geoAddress.data;
+  } catch (error) {
+    Logger.warn("shop/getLocale geoip lookup failure", error);
+    return {};
   }
 };
 

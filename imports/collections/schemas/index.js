@@ -12,7 +12,6 @@
  * @namespace Schemas
  */
 
-import "./schemaIndex";
 import "./schemaErrors";
 
 export * from "./accounts";
@@ -20,8 +19,8 @@ export * from "./address";
 export * from "./assets";
 export * from "./catalog";
 export * from "./cart";
+export * from "./core";
 export * from "./emails";
-export * from "./inventory";
 export * from "./layouts";
 export * from "./metafield";
 export * from "./navigationItems";

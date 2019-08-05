@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -9,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object|null} The group or null if no viable group
  */
 function determineInitialGroupForItem(currentGroups, supportedFulfillmentTypes, shopId) {
-  const compatibleGroup = currentGroups.find((group) => supportedFulfillmentTypes.indexOf(group.type) !== -1 &&
+  const compatibleGroup = currentGroups.find((group) => supportedFulfillmentTypes.includes(group.type) &&
     shopId === group.shopId);
   return compatibleGroup || null;
 }
@@ -28,6 +29,7 @@ export default function startup({ appEvents, collections }) {
     if (!updatedCart) {
       throw new Error("afterCartUpdate hook run with no cart argument");
     }
+    Logger.debug("Handling afterCartUpdate: shipping");
 
     // Every time the cart is updated, create any missing fulfillment groups as necessary.
     // We need one group per type per shop, containing only the items from that shop.
@@ -58,7 +60,7 @@ export default function startup({ appEvents, collections }) {
         // If there is a compatible group but it has no items array, add one with just this item in it
         didModifyGroups = true;
         group.itemIds = [item._id];
-      } else if (group.itemIds.indexOf(item._id) === -1) {
+      } else if (!group.itemIds.includes(item._id)) {
         // If there is a compatible group with an items array but it is missing this item, add this item ID to the array
         didModifyGroups = true;
         group.itemIds.push(item._id);

@@ -1,0 +1,19 @@
+mutation ($fromFulfillmentGroupId: ID!, $itemIds: [ID]!, $orderId: ID!, $toFulfillmentGroupId: ID!) {
+  moveOrderItems(input: {
+    fromFulfillmentGroupId: $fromFulfillmentGroupId,
+    itemIds: $itemIds,
+    orderId: $orderId,
+    toFulfillmentGroupId: $toFulfillmentGroupId
+  }) {
+    order {
+      fulfillmentGroups {
+        _id
+        items {
+          nodes {
+            _id
+          }
+        }
+      }
+    }
+  }
+}

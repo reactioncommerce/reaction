@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import classnames from "classnames";
 import { Components } from "@reactioncommerce/reaction-components";
-import { PropTypes as ReactionPropTypes } from "/lib/api";
 
 class TagList extends Component {
   displayName = "Tag List (TagList)";
@@ -138,7 +137,9 @@ class TagList extends Component {
   }
 
   render() {
-    if (this.props.isTagNav) {
+    const { editable, isTagNav, parentTag } = this.props;
+
+    if (isTagNav) {
       return (
         <div className="tag-group">
           {this.renderTags()}
@@ -149,13 +150,13 @@ class TagList extends Component {
     const classes = classnames({
       rui: true,
       tags: true,
-      edit: this.props.editable
+      edit: editable
     });
 
     return (
       <div
         className={classes}
-        data-id={this.props.parentTag._id}
+        data-id={parentTag && parentTag._id}
         ref="tags"
       >
         {this.renderTags()}
@@ -165,7 +166,7 @@ class TagList extends Component {
 }
 
 TagList.defaultProps = {
-  parentTag: {}
+  parentTag: null
 };
 
 TagList.propTypes = {
@@ -189,10 +190,14 @@ TagList.propTypes = {
   onTagSave: PropTypes.func,
   onTagSort: PropTypes.func,
   onTagUpdate: PropTypes.func,
-  parentTag: ReactionPropTypes.Tag,
+  parentTag: PropTypes.shape({
+    _id: PropTypes.string.isRequired
+  }),
   showBookmark: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   suggestions: PropTypes.arrayOf(PropTypes.object),
-  tags: ReactionPropTypes.arrayOfTags
+  tags: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired
+  }))
 };
 
 export default TagList;

@@ -4,24 +4,17 @@ import { Session } from "meteor/session";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Tags, Shops } from "/lib/collections";
+import { Shops } from "/lib/collections";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 
 const handleAddProduct = () => {
-  Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
   Meteor.call("products/createProduct", (error, productId) => {
     if (Meteor.isClient) {
-      let currentTag;
-      let currentTagId;
-
       if (error) {
         throw new ReactionError("create-product-error", error);
-      } else if (productId) {
-        currentTagId = Session.get("currentTag");
-        currentTag = Tags.findOne(currentTagId);
-        if (currentTag) {
-          Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-        }
+      }
+
+      if (productId) {
         Session.set("productGrid/selectedProducts", [productId]);
         // go to new product
         Reaction.Router.go("product", {
@@ -45,6 +38,12 @@ const handleShopSelectChange = (event, shopId) => {
   }
 };
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   // Reactive data sources
   const routeName = Reaction.Router.getRouteName();
@@ -81,7 +80,6 @@ function composer(props, onData) {
   onData(null, {
     packageButtons,
     dashboardHeaderTemplate: props.data.dashboardHeader,
-    isPreview: Reaction.isPreview(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
     hasCreateProductAccess: Reaction.hasPermission("createProduct", Reaction.getUserId(), Reaction.getShopId()),
@@ -90,8 +88,7 @@ function composer(props, onData) {
 
     // Callbacks
     onAddProduct: handleAddProduct,
-    onShopSelectChange: handleShopSelectChange,
-    onViewContextChange: props.handleViewContextChange
+    onShopSelectChange: handleShopSelectChange
   });
 }
 

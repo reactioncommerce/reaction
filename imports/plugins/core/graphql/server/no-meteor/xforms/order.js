@@ -1,7 +1,7 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import { xformCatalogProductMedia } from "./catalogProduct";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
-import { xformProductMedia } from "./catalogProduct";
 
 export const assocOrderInternalId = assocInternalId(namespaces.Order);
 export const assocOrderOpaqueId = assocOpaqueId(namespaces.Order);
@@ -28,6 +28,7 @@ export function xformOrderPayment(payment) {
     _id,
     address,
     amount,
+    captureErrorMessage,
     cardBrand,
     createdAt,
     currencyCode,
@@ -35,7 +36,10 @@ export function xformOrderPayment(payment) {
     displayName,
     mode,
     name: methodName,
-    status
+    processor,
+    riskLevel,
+    status,
+    transactionId
   } = payment;
 
   return {
@@ -45,6 +49,7 @@ export function xformOrderPayment(payment) {
       currencyCode
     },
     billingAddress: address,
+    captureErrorMessage,
     cardBrand,
     createdAt,
     currencyCode,
@@ -53,9 +58,14 @@ export function xformOrderPayment(payment) {
     isAuthorizationCanceled: (mode === "cancel"),
     isCaptured: (mode === "captured"),
     method: {
+      displayName,
       name: methodName
     },
-    status
+    mode,
+    processor,
+    riskLevel,
+    status,
+    transactionId
   };
 }
 
@@ -93,7 +103,7 @@ export function xformOrderFulfillmentGroupSelectedOption(fulfillmentOption) {
  * @param {Object[]} products Array of Product docs from the db
  * @return {Object} Same object with GraphQL-only props added
  */
-function xformOrderItem(context, item, catalogItems) {
+async function xformOrderItem(context, item, catalogItems) {
   const { productId, variantId } = item;
 
   const catalogItem = catalogItems.find((cItem) => cItem.product.productId === productId);
@@ -103,12 +113,26 @@ function xformOrderItem(context, item, catalogItems) {
 
   const catalogProduct = catalogItem.product;
 
+  const { variant } = context.queries.findVariantInCatalogProduct(catalogProduct, variantId);
+  if (!variant) {
+    throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
+  }
+
+  // Find one image from the catalog to use for the item.
+  // Prefer the first variant image. Fallback to the first product image.
   let media;
-  if (catalogProduct.media) {
+  if (variant.media && variant.media.length) {
+    [media] = variant.media;
+  } else if (catalogProduct.media && catalogProduct.media.length) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
     if (!media) [media] = catalogProduct.media;
-    media = xformProductMedia(media, context);
   }
+
+  // Allow plugins to transform the media object
+  if (media) {
+    media = await xformCatalogProductMedia(media, context);
+  }
+
 
   return {
     ...item,
@@ -144,5 +168,5 @@ export async function xformOrderItems(context, items) {
     "isDeleted": { $ne: true }
   }).toArray();
 
-  return items.map((item) => xformOrderItem(context, item, catalogItems));
+  return Promise.all(items.map((item) => xformOrderItem(context, item, catalogItems)));
 }

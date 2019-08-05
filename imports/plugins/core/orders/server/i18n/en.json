@@ -3,15 +3,53 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "calculateRefundByItem": "Calculate refund by item",
+      "fulfillment": "Fulfillment",
+      "fulfillmentGroupHeader": "Fulfillment group {{currentGroupCount}} of {{totalGroupsCount}}",
+      "items": "Items",
+      "newStatus": "New status",
       "notFound": "Order Not Found",
-      "order": {
-        "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
-        "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
-        "cancelOrder": "Do you want to cancel this order?",
-        "cancelOrderLabel": "Cancel Order",
-        "cancelOrderThenRestock": "Yes, and restock",
-        "cancelOrderNoRestock": "Yes, but no restocking"
+      "refunds": "Refunds",
+      "orderActions": {
+        "markAsPackedDescription": "Mark all items in this fulfillment group as \"Packed\"",
+        "markAsPackedLabel": "Mark as packed",
+        "markAsShippedDescription": "Mark all items in this fulfillment group as \"Shipped\"",
+        "markAsShippedLabel": "Mark as shipped",
+        "updateGroupStatus": "Update group status"
       },
+      "orderDetails": "Order Details",
+      "order": {
+        "amountToRefund": "Amount to refund",
+        "applyRefund": "Apply refund",
+        "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
+        "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
+        "cancelGroup": "Do you want to cancel this group?",
+        "cancelGroupLabel": "Cancel group",
+        "cancelOrder": "Do you want to cancel this entire order?",
+        "cancelOrderLabel": "Cancel order",
+        "cancelOrderNoRestock": "Do not restock",
+        "cancelOrderThenRestock": "Restock",
+        "order": "Order",
+        "placed": "Placed",
+        "refunding": "Refunding",
+        "refundItemsAlert": "Do you want to refund {{refundItemsQuantity}} item(s) totaling {{refundItemsTotal}}?",
+        "refundItemsApproveAlert": "Do you want to approve this payment and then refund {{totalAmount}}?",
+        "refundItemsCaptureAlert": "Do you want to capture this payment and then refund {{totalAmount}}?",
+        "refundItemsSuccess": "Refund was successfully applied",
+        "refundItemsTitle": "Refund Items",
+        "refundItemsWait": "Payment is not yet captured",
+        "restockInventory": "Restock inventory?",
+        "updateFulfillmentGroupStatus": "Update group status"
+      },
+      "orderCard": {
+        "orderSummary": {
+          "showOrderSummary": "Show order summary",
+          "title": "Order Summary"
+        }
+      },
+      "shippingAddress": "Shipping address",
+      "shippingMethod": "Shipping method",
+      "trackingNumber": "Tracking number",
       "admin": {
         "shortcut": {
           "ordersLabel": "Orders"
@@ -42,6 +80,7 @@
             "cardTitle": "Invoice",
             "adjustedTotal": "Adjusted Total",
             "capturedTotal": "Captured Total",
+            "printInvoice": "Print invoice",
             "refund": "Refund",
             "refundLabel": "For Refund",
             "refundItem": "Items",
@@ -50,7 +89,13 @@
           },
           "fulfillment": "Fulfillment",
           "orderDetails": "Order Details",
-          "shipmentTracking": "Shipment"
+          "shipmentTracking": "Shipment",
+
+          "fulfillmentGroups": {
+            "cancelFulfillmentGroup": "Cancel group",
+            "markAsPacked": "Mark as packed",
+            "printShippingLabel": "Print shipping label"
+          }
         },
         "table": {
           "headers": {
@@ -87,7 +132,8 @@
               "coreOrderWorkflow/picked": "Picked ",
               "coreOrderWorkflow/packed": "Packed ",
               "coreOrderWorkflow/labeled": "Labeled ",
-              "coreOrderWorkflow/shipped": "Shipped "
+              "coreOrderWorkflow/shipped": "Shipped ",
+              "multipleStatuses": "Multiple statuses"
             }
           }
         }

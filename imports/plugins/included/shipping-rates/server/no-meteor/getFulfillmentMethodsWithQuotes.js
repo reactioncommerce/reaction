@@ -1,8 +1,6 @@
 import Logger from "@reactioncommerce/logger";
-import ReactionError from "@reactioncommerce/reaction-error";
 import isShippingRestricted from "./util/isShippingRestricted";
 import filterShippingMethods from "./util/filterShippingMethods";
-import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttributes";
 
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
@@ -26,7 +24,6 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
     fileName: "hooks.js"
   };
 
-
   if (retrialTargets.length > 0) {
     const isNotAmongFailedRequests = retrialTargets.every((target) =>
       target.packageName !== currentMethodInfo.packageName &&
@@ -37,34 +34,19 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   }
 
   // Verify that we have a valid address to work with
-  let shippingErrorDetails;
   if (!commonOrder.shippingAddress) {
-    shippingErrorDetails = {
+    const errorDetails = {
       requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
       message: "Fulfillment group is missing a shipping address"
     };
-    return [[shippingErrorDetails], []];
-  }
-
-  let merchantShippingRates = false;
-  const marketplaceSettings = await Packages.findOne({
-    name: "reaction-marketplace",
-    shopId: context.shopId, // the primary shop always owns the marketplace settings
-    enabled: true // only use the marketplace settings if marketplace is enabled
-  });
-  if (marketplaceSettings && marketplaceSettings.settings && marketplaceSettings.settings.enabled) {
-    ({ merchantShippingRates } = marketplaceSettings.settings.public);
-  }
-
-  if (merchantShippingRates) {
-    // TODO this needs to be rewritten to handle getting rates from each shops that's represented on the order
-    throw new ReactionError("not-implemented", "Multiple shipping providers is currently not supported");
+    rates.push(errorDetails);
+    return [rates, retrialTargets];
   }
 
   const pkgData = await Packages.findOne({
     name: "reaction-shipping-rates",
-    shopId: context.shopId
+    shopId: commonOrder.shopId
   });
 
   if (!pkgData || pkgData.settings.flatRates.enabled !== true) {
@@ -79,8 +61,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   const initialNumOfRates = rates.length;
 
   // Get hydrated order, an object of current order data including item and destination information
-  const hydratedOrder = await getShippingRestrictionAttributes(context, commonOrder); // TODO: possibly change function name
-  const isOrderShippingRestricted = await isShippingRestricted(context, hydratedOrder);
+  const isOrderShippingRestricted = await isShippingRestricted(context, commonOrder);
 
   if (isOrderShippingRestricted) {
     const errorDetails = {
@@ -93,7 +74,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
     const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {
       const carrier = doc.provider.label;
       // Check for method specific shipping restrictions
-      const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedOrder);
+      const availableShippingMethods = await filterShippingMethods(context, doc.methods, commonOrder);
       for (const method of availableShippingMethods) {
         if (!method.rate) {
           method.rate = 0;

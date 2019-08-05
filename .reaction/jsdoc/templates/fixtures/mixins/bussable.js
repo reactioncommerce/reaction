@@ -32,10 +32,10 @@ var Bussable = Base.compose( [Base], /** @lends mixins/bussable# */{
 
 	/**
 	 * Subscribe to an event
-	 * @param {string} channel The channel to subscribe to
-	 * @param {string} topic The topic to subscribe to
+	 * @param {String} channel The channel to subscribe to
+	 * @param {String} topic The topic to subscribe to
 	 * @param {callback} callback What to do when you get the event
-	 * @returns {object} The subscription definition
+	 * @returns {Object} The subscription definition
 	 */
 	subscribe : function ( channel, topic, callback ) {
 		this.log.trace( "Bussable subscribe" );
@@ -46,10 +46,10 @@ var Bussable = Base.compose( [Base], /** @lends mixins/bussable# */{
 
 	/**
 	 * Subscribe to an event once
-	 * @param {string} channel The channel to subscribe to
-	 * @param {string} topic The topic to subscribe to
+	 * @param {String} channel The channel to subscribe to
+	 * @param {String} topic The topic to subscribe to
 	 * @param {callback} callback What to do when you get the event
-	 * @returns {object} The subscription definition
+	 * @returns {Object} The subscription definition
 	 */
 	once : function ( channel, topic, callback ) {
 		this.log.trace( "Bussable once" );
@@ -61,9 +61,9 @@ var Bussable = Base.compose( [Base], /** @lends mixins/bussable# */{
 
 	/**
 	 * Publish an event on the system bus
-	 * @param {string} channel The channel to publish to
-	 * @param {string} topic The topic to publish to
-	 * @param {object=} options What to pass to the event
+	 * @param {String} channel The channel to publish to
+	 * @param {String} topic The topic to publish to
+	 * @param {Object=} options What to pass to the event
 	 */
 	publish : function ( channel, topic, options ) {
 		this.log.trace( "Bussable publish" );
@@ -73,9 +73,9 @@ var Bussable = Base.compose( [Base], /** @lends mixins/bussable# */{
 	/**
 	 * Get a subscription definition
 	 *
-	 * @param {string} channel
-	 * @param {string} topic
-	 * @returns {object=} The subscription definition
+	 * @param {String} channel
+	 * @param {String} topic
+	 * @returns {Object=} The subscription definition
 	 */
 	getSubscription : function ( channel, topic ) {
 		this.log.trace( "Bussable getSubscription" );

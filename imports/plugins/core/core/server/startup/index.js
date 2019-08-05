@@ -1,17 +1,14 @@
 import Logger from "@reactioncommerce/logger";
-import { Shops } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "../Reaction";
+import register from "../no-meteor/register";
 import startNodeApp from "./startNodeApp";
-import Accounts from "./accounts";
 import "./browser-policy";
 import CollectionSecurity from "./collection-security";
 import { importAllTranslations } from "./i18n";
-import LoadFixtureData from "./load-data";
-import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
-import RegisterCore from "./register-core";
-import RegisterRouter from "./register-router";
-import setupCdn from "./cdn";
+
+const { REACTION_METEOR_APP_COMMAND_START_TIME } = process.env;
 
 /**
  * @summary Core startup function
@@ -20,35 +17,37 @@ import setupCdn from "./cdn";
 export default function startup() {
   const startTime = Date.now();
 
-  setupCdn();
-  Accounts();
-  RegisterCore();
-  RegisterRouter();
+  // This env may be set by the launch script, allowing us to time how long Meteor build/startup took.
+  if (REACTION_METEOR_APP_COMMAND_START_TIME) {
+    const elapsedMs = startTime - Number(REACTION_METEOR_APP_COMMAND_START_TIME);
+    Logger.info(`Meteor startup finished: ${elapsedMs}ms (This is incorrect if this is a restart.)`);
+  }
 
-  // initialize shop registry when a new shop is added
-  Shops.find().observe({
-    added(doc) {
-      Reaction.setShopName(doc);
-      Reaction.setDomain();
-    },
-    removed() {
-      // TODO SHOP REMOVAL CLEANUP FOR #357
-    }
-  });
+  Reaction.whenAppInstanceReady(register);
 
-  LoadFixtureData();
-  Reaction.init();
+  Reaction.setAppVersion();
 
   importAllTranslations();
 
-  Prerender();
   CollectionSecurity();
   RateLimiters();
 
-  startNodeApp()
+  startNodeApp({
+    async onAppInstanceCreated(app) {
+      await Reaction.onAppInstanceCreated(app);
+    }
+  })
     .then(() => {
       const endTime = Date.now();
       Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
+
+      Promise.await(appEvents.emit("readyForMigrations"));
+
+      // DEPRECATED. Avoid consuming this hook in new code
+      Promise.await(appEvents.emit("afterCoreInit"));
+
+      // Main purpose of this right now is to wait to start Meteor app tests
+      Reaction.emitAppStartupComplete();
 
       return null;
     })

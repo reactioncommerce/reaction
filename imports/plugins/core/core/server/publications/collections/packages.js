@@ -9,8 +9,14 @@ import { translateRegistry } from "/lib/api";
 const IDENTITY_PROVIDER_PLUGIN_NAME = "reaction-hydra-oauth";
 const { IDENTITY_PROVIDER_MODE } = process.env;
 
-// for transforming packages before publication sets some defaults for the client and adds i18n while checking
-// privileged settings for enabled status.
+/**
+ * @method transform
+ * @memberof Packages
+ * @description For transforming packages before publication sets some defaults for the client and adds i18n while checking privileged settings for enabled status
+ * @param {Object} doc Registry doc
+ * @param {String} userId Id of user to check permissions for
+ * @return {Object} Registry doc with permissions
+ */
 function transform(doc, userId) {
   const registrySettings = {};
   const packageSettings = {};
@@ -81,6 +87,7 @@ function transform(doc, userId) {
   return doc;
 }
 
+// eslint-disable-next-line consistent-return
 Meteor.publish("Packages", function (shopId) {
   check(shopId, Match.Maybe(String));
 

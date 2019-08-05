@@ -31,10 +31,6 @@ export function metaField(options = {}) {
  * @param {String} [options.parentId] - variant's parent's ID. Sets variant as child.
  * @param {String} [options.compareAtPrice] - MSRP Price / Compare At Price
  * @param {String} [options.weight] - productVariant weight
- * @param {String} [options.inventoryManagement] - Track inventory for this product?
- * @param {String} [options.inventoryPolicy] - Allow overselling of this product?
- * @param {String} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
- * @param {String} [options.inventoryInStock] - Inventory Quantity
  * @param {String} [options.price] - productVariant price
  * @param {String} [options.title] - productVariant title
  * @param {String} [options.optionTitle] - productVariant option title
@@ -46,12 +42,9 @@ export function metaField(options = {}) {
 export function productVariant(options = {}) {
   const defaults = {
     ancestors: [],
+    attributeLabel: "Variant",
     compareAtPrice: _.random(0, 1000),
     weight: _.random(0, 10),
-    inventoryManagement: faker.random.boolean(),
-    inventoryPolicy: faker.random.boolean(),
-    lowInventoryWarningThreshold: _.random(1, 5),
-    inventoryInStock: _.random(0, 100),
     isTaxable: faker.random.boolean(),
     isVisible: true,
     price: _.random(10, 1000),
@@ -84,10 +77,6 @@ export function productVariant(options = {}) {
  * @param {String} [options.parentId] - variant's parent's ID. Sets variant as child.
  * @param {String} [options.compareAtPrice] - MSRP Price / Compare At Price
  * @param {String} [options.weight] - productVariant weight
- * @param {String} [options.inventoryManagement] - Track inventory for this product?
- * @param {String} [options.inventoryPolicy] - Allow overselling of this product?
- * @param {String} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
- * @param {String} [options.inventoryInStock] - Inventory Quantity
  * @param {String} [options.price] - productVariant price
  * @param {String} [options.title] - productVariant title
  * @param {String} [options.optionTitle] - productVariant option title
@@ -140,13 +129,16 @@ export function getProduct() {
 export function getProducts(limit = 2) {
   const products = [];
   const existingProducts = Products.find({}, { limit }).fetch();
-  for (let i = 0; i < limit; i += 1) {
-    const product = existingProducts[i] || Factory.create("product");
+  for (let inc = 0; inc < limit; inc += 1) {
+    const product = existingProducts[inc] || Factory.create("product");
     products.push(product);
   }
   return products;
 }
 
+/**
+ * @return {undefined} undefined
+ */
 export default function () {
   /**
    * @name tag
@@ -191,9 +183,6 @@ export default function () {
    * @property {String} price.range `"1.00 - 12.99"`
    * @property {Number} price.min `1.00`
    * @property {Number} price.max `12.9`
-   * @property {Boolean} isLowQuantity `false`
-   * @property {Boolean} isSoldOut `false`
-   * @property {Boolean} isBackorder `false`
    * @property {Array} metafields `[]`
    * @property {String[]} supportedFulfillmentTypes - ["shipping"]
    * @property {Array} hashtags `[]`
@@ -223,9 +212,6 @@ export default function () {
     type: "simple",
     vendor: faker.company.companyName(),
     price: priceRange,
-    isLowQuantity: false,
-    isSoldOut: false,
-    isBackorder: false,
     metafields: [],
     supportedFulfillmentTypes: ["shipping"],
     hashtags: [],

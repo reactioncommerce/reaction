@@ -1,8 +1,9 @@
+/* eslint-disable require-jsdoc */
 import faker from "faker";
 import _ from "lodash";
 import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
-import rawCollections from "/imports/collections/rawCollections";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import publishProductToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductToCatalog";
 import { Cart, Products } from "/lib/collections";
 import { getShop } from "./shops";
@@ -13,9 +14,9 @@ import { addProduct } from "./products";
  * @method getCartItem
  * @memberof Fixtures
  * @param {Object} [options] - Options object (optional)
- * @param {string} [options._id] - id of CartItem
- * @param {string} [options.productId] - _id of product that item came from
- * @param {string} [options.shopId] - _id of shop that item came from
+ * @param {String} [options._id] - id of CartItem
+ * @param {String} [options.productId] - _id of product that item came from
+ * @param {String} [options.shopId] - _id of shop that item came from
  * @param {number} [options.quantity] - quantity of item in CartItem
  * @param {Object} [options.variants] - _single_ variant object. ¯\_(ツ)_/¯ why called variants
  *
@@ -23,14 +24,8 @@ import { addProduct } from "./products";
  */
 export function getCartItem(options = {}) {
   const product = addProduct();
-  Promise.await(publishProductToCatalog(product, {
-    appEvents: {
-      emit() {},
-      on() {}
-    },
-    collections: rawCollections,
-    getFunctionsOfType: () => []
-  }));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+  Promise.await(publishProductToCatalog(product, context));
   const variant = Products.findOne({ ancestors: [product._id] });
   const childVariants = Products.find({
     ancestors: [
@@ -38,7 +33,8 @@ export function getCartItem(options = {}) {
     ]
   }).fetch();
   const selectedOption = Random.choice(childVariants);
-  const quantity = _.random(1, selectedOption.inventoryInStock);
+  const quantity = 1;
+  const price = _.random(1, 100);
   const defaults = {
     _id: Random.id(),
     addedAt: new Date(),
@@ -46,11 +42,11 @@ export function getCartItem(options = {}) {
     isTaxable: false,
     optionTitle: selectedOption.optionTitle,
     price: {
-      amount: selectedOption.price,
+      amount: price,
       currencyCode: "USD"
     },
     priceWhenAdded: {
-      amount: selectedOption.price,
+      amount: price,
       currencyCode: "USD"
     },
     productId: product._id,
@@ -59,7 +55,7 @@ export function getCartItem(options = {}) {
     quantity,
     shopId: options.shopId || getShop()._id,
     subtotal: {
-      amount: selectedOption.price * quantity,
+      amount: price * quantity,
       currencyCode: "USD"
     },
     title: product.title,
@@ -74,9 +70,9 @@ export function getCartItem(options = {}) {
  * @method getSingleCartItem
  * @memberof Fixtures
  * @param {Object} [options] - Options object (optional)
- * @param {string} [options._id] - id of CartItem
- * @param {string} [options.productId] - _id of product that item came from
- * @param {string} [options.shopId] - _id of shop that item came from
+ * @param {String} [options._id] - id of CartItem
+ * @param {String} [options.productId] - _id of product that item came from
+ * @param {String} [options.shopId] - _id of shop that item came from
  * @returns {Object} - randomly generated cartItem/orderItem data object with only one cart item
  */
 function getSingleCartItem(options = {}) {
@@ -98,7 +94,7 @@ export function createCart(productId, variantId) {
   const variant = Products.findOne(variantId);
   const user = Factory.create("user");
   const account = Factory.create("account", { userId: user._id });
-  const quantity = _.random(1, variant.inventoryInStock);
+  const quantity = 1;
   const cartItem = {
     _id: Random.id(),
     addedAt: new Date(),
@@ -149,6 +145,10 @@ export function createCart(productId, variantId) {
   return insertedCart;
 }
 
+/**
+ * @description exports cart fixtures
+ * @return {undefined} undefined
+ */
 export default function () {
   /**
    * @name Cart

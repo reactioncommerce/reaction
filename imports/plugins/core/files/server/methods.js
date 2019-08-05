@@ -112,8 +112,51 @@ export function updateMediaPriorities(sortedMediaIDs) {
   return true;
 }
 
+/**
+ * @name media/updateMediaPriority
+ * @method
+ * @memberof Media/Methods
+ * @summary sorting media by array indexes
+ * @param {String} mediaId Media item ID
+ * @param {Number} priority Priority
+ * @return {Boolean} true
+ */
+export function updateMediaPriority(mediaId, priority) {
+  check(mediaId, String);
+  check(priority, Number);
+
+  if (!Reaction.hasPermission("createProduct")) {
+    throw new ReactionError("access-denied", "Access Denied");
+  }
+
+  // Check to be sure product linked with each media belongs to the current user's current shop
+  const shopId = Reaction.getShopId();
+
+  const mediaRecord = MediaRecords.findOne({
+    _id: mediaId
+  });
+
+  if (!mediaRecord.metadata || mediaRecord.metadata.shopId !== shopId) {
+    throw new ReactionError("access-denied", `Access Denied. No access to shop ${mediaRecord.metadata.shopId}`);
+  }
+
+  MediaRecords.update({
+    _id: mediaId
+  }, {
+    $set: {
+      "metadata.priority": priority
+    }
+  });
+
+  const updatedMediaRecord = MediaRecords.findOne({ _id: mediaId });
+  appEvents.emit("afterMediaUpdate", { createdBy: Reaction.getUserId(), updatedMediaRecord });
+
+  return true;
+}
+
 Meteor.methods({
   "media/insert": insertMedia,
   "media/updatePriorities": updateMediaPriorities,
+  "media/updatePriority": updateMediaPriority,
   "media/remove": removeMedia
 });

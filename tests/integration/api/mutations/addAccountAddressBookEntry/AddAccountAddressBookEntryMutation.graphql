@@ -1,0 +1,28 @@
+mutation ($accountId: ID!, $address: AddressInput!) {
+  addAccountAddressBookEntry(input: { accountId: $accountId, address: $address }) {
+    address {
+      address1
+      address2
+      city
+      company
+      country
+      fullName
+      firstName
+      lastName
+      isBillingDefault
+      isCommercial
+      isShippingDefault
+      metafields {
+        description
+        key
+        namespace
+        scope
+        value
+        valueType
+      }
+      phone
+      postal
+      region
+    }
+  }
+}

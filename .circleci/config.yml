@@ -23,7 +23,7 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           name: Restoring Meteor cache
-          key: ${GLOBAL_CACHE_VERSION}-meteor
+          key: reaction-v2-meteor
       - run:
           name: Install Meteor
           command: |
@@ -36,7 +36,7 @@ jobs:
             fi
       - save_cache:
           name: Saving Meteor to cache
-          key: ${GLOBAL_CACHE_VERSION}-meteor-{{ epoch }}
+          key: reaction-v2-meteor-{{ epoch }}
           paths:
             - ~/.meteor
       - run:
@@ -70,11 +70,11 @@ jobs:
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
-          key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}
+          key: reaction-v2-node-modules-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
 
@@ -141,26 +141,6 @@ jobs:
               echo "No deploy for forks"
             fi
 
-  deploy-to-ecs-release-branch:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          name: Deploy new task definition and update service in ECS
-          command: |
-            .circleci/bin/ecs-deploy-release-branch.sh
-          no_output_timeout: 30m
-
-  deploy-to-ecs-feature-branch:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          name: Deploy new task definition and update service in ECS
-          command: |
-            .circleci/bin/ecs-deploy-feature-branch.sh
-          no_output_timeout: 30m
-
   deploy-docs:
     <<: *defaults
     steps:
@@ -195,13 +175,40 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Run Lint
           command: |
             npm run lint -- --quiet
+
+  eslint-changed-files:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
+      - run:
+          name: Run Lint for Changed Files
+          command: .circleci/eslint-changed-files.sh
+
+  graphql-lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
+      - run:
+          name: Lint GraphQL schemas
+          command: |
+            npm run lint:gql
 
   test-app:
     <<: *defaults
@@ -209,22 +216,19 @@ jobs:
       - checkout
       - restore_cache:
           name: Restoring Meteor cache
-          key: ${GLOBAL_CACHE_VERSION}-meteor
+          key: reaction-v2-meteor
       - run:
           name: Link Restored Meteor
           command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
       - restore_cache:
           # Fall back to less specific caches
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
-      - run:
-          name: Install Reaction CLI
-          command: sudo npm install -g reaction-cli
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Load App Plugins
-          command: reaction plugins load
+          command: node --experimental-modules ./.reaction/scripts/build.mjs
       - run:
           name: Run Meteor Integration Tests
           command: .circleci/tests.sh
@@ -235,9 +239,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Run Unit Tests
           command: npm run test:unit
@@ -248,9 +252,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v2-node-modules-{{ .Branch }}
+            - reaction-v2-node-modules-master
       - run:
           name: Run Integration Tests
           command: npm run test:integration
@@ -267,6 +271,27 @@ jobs:
           command: |
             docker run -t -e URL=${STAGING_URL} reactioncommerce/reaction-automation-client:latest npm run-script chrome
 
+  test-metrics:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: California
+          command: |
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} California
+      - run:
+          name: North Virginia
+          command: |
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} NorthVirginia
+      - run:
+          name: London
+          command: |
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} London
+      - run:
+          name: Frankfurt
+          command: |
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
+
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -277,48 +302,8 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Dockerfile Lint
-          command: | 
-            hadolint Dockerfile
-
-  snyk-security:
-    <<: *defaults
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - restore_cache:
-          keys:
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
-            - ${GLOBAL_CACHE_VERSION}-node-modules-master
-      - run:
-          name: Snyk Test
           command: |
-            CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" # Determine PR number from pull request link
-            if [[ -v CIRCLE_PR_NUMBER ]] && [ -n ${CIRCLE_PR_NUMBER} ]; then
-              url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/$CIRCLE_PR_NUMBER" # Get PR from github API
-              TARGET_BRANCH=$(curl "$url" | jq '.base.ref' | tr -d '"') # Determine target/base branch from API response
-            fi
-
-            if [ -z "${TARGET_BRANCH}" ] || [  ${TARGET_BRANCH} == "null" ]; then
-              echo "Not a PR. Skipping Snyk."
-              exit 0
-            fi
-
-            # If target branch does not exist or is master, run snyk tests
-            if [ ${TARGET_BRANCH} == "master" ] || [ -z "${TARGET_BRANCH/[ ]*\n/}" ]; then
-              PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
-                snyk test
-            else
-              # If package.json is different from the base branch, run snyk
-              if git diff origin/$CIRCLE_BRANCH..origin/$TARGET_BRANCH package.json | grep diff; then
-                echo "package.json different. Running Snyk."
-                PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
-                snyk test
-              else
-                echo "package.json identical to target branch. Skipping Snyk."
-              fi
-            fi
+            hadolint Dockerfile
 
 workflows:
   version: 2
@@ -335,32 +320,21 @@ workflows:
       - test-integration:
           requires:
             - build
-      - test-e2e:
-          requires:
-            - deploy-to-ecs-release-branch
       - eslint:
+          requires:
+            - build
+      - eslint-changed-files:
+          requires:
+            - build
+      - graphql-lint:
           requires:
             - build
       - docker-build:
           context: reaction-build-read
-          requires:
-            - snyk-security
       - docker-push:
           context: reaction-publish-docker
           requires:
             - docker-build
-      - deploy-to-ecs-release-branch:
-          requires:
-            - docker-push
-          filters:
-            branches:
-              only: /^release-2.*/
-      # - deploy-to-ecs-feature-branch:
-      #     requires:
-      #       - docker-push
-      #     filters:
-      #       branches:
-      #         only: /^feat.*/
       - deploy-docs:
           requires:
             - test-unit
@@ -369,7 +343,3 @@ workflows:
           filters:
             branches:
               only: /^master$/
-      - snyk-security:
-          context: reaction-validation
-          requires:
-            - build

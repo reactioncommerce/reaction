@@ -1,15 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
-import { formatPriceString } from "/client/api";
+import { Link } from "react-router-dom";
+import { formatPriceString, i18next } from "/client/api";
+import { TableCell, TableRow, Checkbox, IconButton, withStyles } from "@material-ui/core";
+import PencilIcon from "mdi-material-ui/Pencil";
+import CircleIcon from "mdi-material-ui/CheckboxBlankCircle";
+
+const styles = (theme) => ({
+  isVisible: {
+    color: theme.palette.colors.forestGreen300,
+    fontSize: theme.typography.fontSize * 1.25,
+    marginRight: theme.spacing(1)
+  },
+  isHidden: {
+    color: theme.palette.colors.black40,
+    fontSize: theme.typography.fontSize * 1.25,
+    marginRight: theme.spacing(1)
+  }
+});
 
 class ProductGridItems extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     displayPrice: PropTypes.func,
     isSearch: PropTypes.bool,
     isSelected: PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
+    onSelect: PropTypes.func,
     pdpPath: PropTypes.func,
     product: PropTypes.object,
     productMedia: PropTypes.object
@@ -32,96 +50,96 @@ class ProductGridItems extends Component {
     this.props.onClick(event);
   }
 
-  renderVisible() {
-    return this.props.product.isVisible ? "" : "not-visible";
-  }
+  renderMedia() {
+    const { productMedia } = this.props;
 
-  renderOverlay() {
-    if (this.props.product.isVisible === false) {
+    const fileRecord = productMedia.primaryMedia;
+
+    if (fileRecord) {
+      const mediaUrl = fileRecord.url({ store: "thumbnail" });
       return (
-        <div className="product-grid-overlay" />
+        <img alt="" src={mediaUrl} height={30} />
       );
     }
-    return null;
-  }
-
-  renderMedia() {
-    const { product, productMedia } = this.props;
 
     return (
-      <Components.ProductImage displayMedia={() => productMedia.primaryMedia} item={product} size="large" mode="span" />
+      <span>{"-"}</span>
     );
   }
 
-  renderNotices() {
+  renderPublishStatus() {
     const { product } = this.props;
 
+    if (product.publishedProductHash === product.currentProductHash) {
+      return (
+        <span>Published</span>
+      );
+    }
+
     return (
-      <div className="grid-alerts">
-        <Components.GridItemNotice product={product} />
-        <Components.GridItemControls product={product} />
+      <span>Unpublished</span>
+    );
+  }
+
+  renderStatusIcon() {
+    const { product, classes } = this.props;
+
+    if (product.isVisible) {
+      return (
+        <div style={{ display: "flex" }}>
+          <CircleIcon className={classes.isVisible}/>
+          <span>{i18next.t("admin.tags.visible")}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ display: "flex" }}>
+        <CircleIcon className={classes.isHidden}/>
+        <span>{i18next.t("admin.tags.hidden")}</span>
       </div>
     );
   }
 
-  renderGridContent() {
-    return (
-      <div className="grid-content">
-        <a
-          href={this.props.pdpPath()}
-          data-event-category="grid"
-          data-event-action="product-click"
-          data-event-label="grid product click"
-          data-event-value={this.props.product._id}
-          onDoubleClick={this.handleDoubleClick}
-          onClick={this.handleClick}
-        >
-          <div className="overlay">
-            <div className="overlay-title">{this.props.product.title}</div>
-            <div className="currency-symbol">{formatPriceString(this.props.displayPrice())}</div>
-            {this.props.isSearch &&
-                <div className="overlay-description">{this.props.product.description}</div>
-            }
-          </div>
-        </a>
-      </div>
-    );
+  handleSelect = (event) => {
+    this.props.onSelect(event.target.checked, this.props.product);
   }
 
   render() {
-    const { isSearch, isSelected, pdpPath, product } = this.props;
-
+    const { isSelected, product } = this.props;
     const productItem = (
-      <li
-        className={`product-grid-item product-small ${isSelected() ? "active" : ""}`}
-        data-id={product._id}
-        id={product._id}
-      >
-        <div className={isSearch ? "item-content" : ""}>
-          <span className="product-grid-item-alerts" />
-
-          <a className="product-grid-item-images"
-            href={pdpPath()}
-            data-event-category="grid"
-            data-event-label="grid product click"
-            data-event-value={product._id}
-            onDoubleClick={this.handleDoubleClick}
-            onClick={this.handleClick}
-          >
-            <div className={`product-primary-images ${this.renderVisible()}`}>
-              {this.renderMedia()}
-              {this.renderOverlay()}
-            </div>
-          </a>
-
-          {!isSearch && this.renderNotices()}
-          {this.renderGridContent()}
-        </div>
-      </li>
+      <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""}`}>
+        <TableCell padding="checkbox">
+          <Checkbox
+            onClick={this.handleSelect}
+            checked={isSelected()}
+          />
+        </TableCell>
+        <TableCell align="center">
+          {this.renderMedia()}
+        </TableCell>
+        <TableCell>
+          <Link to={`/operator/products/${product._id}`}>{product.title}</Link>
+        </TableCell>
+        <TableCell>
+          {formatPriceString(this.props.displayPrice())}
+        </TableCell>
+        <TableCell>
+          {this.renderPublishStatus()}
+        </TableCell>
+        <TableCell>
+          {this.renderStatusIcon()}
+        </TableCell>
+        <TableCell padding="checkbox">
+          <IconButton onClick={this.handleDoubleClick}>
+            <PencilIcon />
+          </IconButton>
+        </TableCell>
+      </TableRow>
     );
 
     return productItem;
   }
 }
 
-export default ProductGridItems;
+export default withStyles(styles)(ProductGridItems);

@@ -1,124 +1,86 @@
 "The list of currently supported social network identifiers"
 enum SocialNetwork {
-  twitter
+  "Facebook"
   facebook
-  pinterest
+
+  "Google+"
   googleplus
+
+  "Pinterest"
+  pinterest
+
+  "Twitter"
+  twitter
 }
 
-"Represents the minimum and maximum price of a product, among all its variants"
-type PriceRange {
-  """
-  A range display string in the format "min - max", without any currency symbol
-  """
-  range: String!
+"The list of currently supported top level Catalog props on which catalog items can be filtered."
+enum CatalogBooleanFilterName {
+  "isDeleted"
+  isDeleted
 
-  "The price, in shop currency, of the least expensive possible variant with the least expensive possible option"
-  min: Float!
-
-  "The price, in shop currency, of the most expensive possible variant with the most expensive possible option"
-  max: Float!
+  "isVisible"
+  isVisible
 }
 
-"The product price or price range for a specific currency"
-type ProductPricingInfo {
-  """
-  A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
-  only purchasable variants will have a `compareAtPrice`.
-  """
-  compareAtPrice: Money
+"A filter to be applied to a Catalog query"
+input CatalogBooleanFilter {
+  "The name of the filter"
+  name: CatalogBooleanFilterName!
 
-  "The code for the currency these pricing details applies to"
-  currency: Currency!
-
-  "Pricing converted to specified currency"
-  currencyExchangePricing(
-    currencyCode: String!
-  ): CurrencyExchangeProductPricingInfo
-
-  """
-  UI should display this price. If a product has multiple potential prices depending on selected
-  variants and options, then this is a price range string such as "$3.95 - $6.99". It includes the currency
-  symbols.
-  """
-  displayPrice: String!
-
-  "The price of the most expensive possible variant+option combination"
-  maxPrice: Float!
-
-  "The price of the least expensive possible variant+option combination"
-  minPrice: Float!
-
-  """
-  For variants with no options and for options, this will always be set to a price. For variants
-  with options and products, this will be `null`. There must be a price for a variant to be
-  added to a cart or purchased. Otherwise you would instead add one of its child options to a cart.
-  """
-  price: Float
-}
-
-"The product price or price range for a specific currency"
-type CurrencyExchangeProductPricingInfo {
-  """
-  A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
-  only purchasable variants will have a `compareAtPrice`.
-  """
-  compareAtPrice: Money
-
-  "The code for the currency these pricing details applies to"
-  currency: Currency!
-
-  """
-  UI should display this price. If a product has multiple potential prices depending on selected
-  variants and options, then this is a price range string such as "$3.95 - $6.99". It includes the currency
-  symbols.
-  """
-  displayPrice: String!
-
-  "The price of the most expensive possible variant+option combination"
-  maxPrice: Float!
-
-  "The price of the least expensive possible variant+option combination"
-  minPrice: Float!
-
-  """
-  For variants with no options and for options, this will always be set to a price. For variants
-  with options and products, this will be `null`. There must be a price for a variant to be
-  added to a cart or purchased. Otherwise you would instead add one of its child options to a cart.
-  """
-  price: Float
+  "The filter value"
+  value: Boolean!
 }
 
 "Holds metadata specific to a specific social network service"
 type SocialMetadata {
-  "Which social network is this metadata for"
-  service: SocialNetwork
-
   "Default share message to use when sharing this product on this social network"
   message: String
+
+  "Which social network is this metadata for"
+  service: SocialNetwork
 }
 
 "This interface represents the fields that are identical for both Products and Variants"
 interface CatalogProductOrVariant {
+  "The product barcode value, if it has one"
   barcode: String
 
   # This should be required but we need to migrate existing data first
+  "The date and time at which this CatalogProduct was created, which is when the related product was first published"
   createdAt: DateTime
+
+  "The height of the product, if it has physical dimensions"
   height: Float
-  isLowQuantity: Boolean!
-  isSoldOut: Boolean!
+
+  "The length of the product, if it has physical dimensions"
   length: Float
-  lowInventoryWarningThreshold: Int
+
+  "Arbitrary additional metadata about this product"
   metafields: [Metafield]
+
+  "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
+
+  "The country of origin"
   originCountry: String
+
+  "The shop to which this product belongs"
   shop: Shop!
+
+  "A stock keeping unit (SKU) identifier for this product"
   sku: String
+
+  "Product or variant title"
   title: String
 
   # This should be required but we need to migrate existing data first
+  "The date and time at which this CatalogProduct was last updated, which is when the related product was most recently published"
   updatedAt: DateTime
+
+  "The weight of the product on Earth, if it has physical dimensions"
   weight: Float
+
+  "The width of the product, if it has physical dimensions"
   width: Float
 }
 
@@ -143,35 +105,8 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The height of the product, if it has physical dimensions"
   height: Float
 
-  """
-  The quantity of this item currently available to sell.
-  This number is updated when an order is placed by the customer.
-  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
-  This number is calculated by summing all child variant inventory numbers.
-  This is most likely the quantity to display in the storefront UI.
-  """
-  inventoryAvailableToSell: Int
-
-  """
-  The quantity of this item currently in stock.
-  This number is updated when an order is processed by the operator.
-  This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
-  This number is calculated by summing all child variant inventory numbers.
-  This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.
-  """
-  inventoryInStock: Int
-
-  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
-  isBackorder: Boolean!
-
   "True if this product has been deleted. Typically, deleted products are not returned in queries."
   isDeleted: Boolean!
-
-  "True if at least one of the variants has inventoryManagement enabled and has an available quantity less than its lowInventoryWarningThreshold"
-  isLowQuantity: Boolean!
-
-  "True if every product variant has inventoryManagement enabled and has 0 inventory"
-  isSoldOut: Boolean!
 
   "True if this product should be shown to shoppers. Typically, non-visible products are not returned in queries."
   isVisible: Boolean!
@@ -179,17 +114,14 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The length of the product, if it has physical dimensions"
   length: Float
 
-  "The quantity value below which `isLowQuantity` should be true"
-  lowInventoryWarningThreshold: Int
-
   "All media for this product and its variants"
   media: [ImageInfo]
 
-  "Arbitrary additional metadata about this product"
-  metafields: [Metafield]
-
   "The product description to use for page `description` meta element in HTML"
   metaDescription: String
+
+  "Arbitrary additional metadata about this product"
+  metafields: [Metafield]
 
   "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
@@ -202,12 +134,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
 
   "Dimensions and other information about the containers in which this product will be shipped"
   parcel: ShippingParcel
-
-  "The range of prices among all variants (Deprecated use Pricing instead)"
-  price: PriceRange
-
-  "Price and related information, per currency"
-  pricing: [ProductPricingInfo]!
 
   "The primary image"
   primaryImage: ImageInfo
@@ -258,15 +184,19 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   width: Float
 }
 
+"A variant of a catalog product"
 type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The CatalogProductVariant ID. Do not assume that this is the same as the related variant ID. See `variantId` for that."
   _id: ID!
 
+  """
+  The attribute label describes the category of variant, for example, "Color" or "Size".
+  In most cases this will be the same for all variants at the same level.
+  """
+  attributeLabel: String!
+
   "The product variant barcode value, if it has one"
   barcode: String
-
-  "Indicates when the seller has allowed the sale of product which is not in stock. True if inventoryManagement is true AND none of the variants have an inventoryPolicy set."
-  canBackorder: Boolean!
 
   "The date and time at which this CatalogProductVariant was created, which is when the related product was first published"
   createdAt: DateTime
@@ -277,44 +207,8 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
   index: Int!
 
-  """
-  The quantity of this item currently available to sell.
-  This number is updated when an order is placed by the customer.
-  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
-  If this is a variant, this number is created by summing all child option inventory numbers.
-  This is most likely the quantity to display in the storefront UI.
-  """
-  inventoryAvailableToSell: Int
-
-  """
-  The quantity of this item currently in stock.
-  This number is updated when an order is processed by the operator.
-  This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
-  If this is a variant, this number is created by summing all child option inventory numbers.
-  This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.
-  """
-  inventoryInStock: Int
-
-  "True if inventory management is enabled for this variant"
-  inventoryManagement: Boolean!
-
-  "True if inventory policy is enabled for this variant"
-  inventoryPolicy: Boolean!
-
-  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
-  isBackorder: Boolean!
-
-  "True if inventoryManagement is enabled and this variant has an available quantity less than its lowInventoryWarningThreshold"
-  isLowQuantity: Boolean!
-
-  "True if inventoryManagement is enabled and this variant has 0 inventory"
-  isSoldOut: Boolean!
-
   "The length of the product, if it has physical dimensions"
   length: Float
-
-  "The quantity value below which `isLowQuantity` should be true"
-  lowInventoryWarningThreshold: Int
 
   "All media for this variant / option"
   media: [ImageInfo]
@@ -325,20 +219,14 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
 
+  "A short title to use for product detail select lists"
+  optionTitle: String
+
   "Child variants, if any"
   options: [CatalogProductVariant]
 
-  "An option title. If this is set and this variant has a CatalogProductVariant parent, treat this variant as an option"
-  optionTitle: String
-
   "The country of origin"
   originCountry: String
-
-  "The price, in the default shop currency (Deprecated use Pricing instead)"
-  price: Float!
-
-  "Price and related information, per currency"
-  pricing: [ProductPricingInfo]!
 
   "The primary image of this variant / option"
   primaryImage: ImageInfo
@@ -349,7 +237,12 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "A stock keeping unit (SKU) identifier for this product"
   sku: String
 
-  "Product title"
+  """
+  The full variant title for use on cart, checkout, and order summaries and on invoices.
+  This fully describes the configured variant. For example, if this is an option with
+  `optionTitle` "Large", its parent variant has `optionTitle` "Red", and the product
+  `title` is "Fancy T-Shirt", then this `title` will be something like "Fancy T-Shirt - Red - Large".
+  """
   title: String
 
   "The date and time at which this CatalogProduct was last updated, which is when the related product was most recently published"
@@ -369,9 +262,16 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
 Catalog items are combined to create a catalog. Each item can represent a different type of content.
 """
 interface CatalogItem {
+  "Item ID"
   _id: ID!
-  shop: Shop!
+
+  "Date and time at which the item was created"
   createdAt: DateTime
+
+  "Shop that owns the item"
+  shop: Shop!
+
+  "Date and time at which the item was last updated"
   updatedAt: DateTime
 }
 
@@ -380,14 +280,14 @@ type CatalogItemProduct implements CatalogItem & Node {
   "The CatalogItemProduct ID"
   _id: ID!
 
-  "The shop to which this catalog belongs"
-  shop: Shop!
+  "The date and time at which this CatalogItem was first created, which is when the related product was first published"
+  createdAt: DateTime!
 
   "The catalog product"
   product: CatalogProduct
 
-  "The date and time at which this CatalogItem was first created, which is when the related product was first published"
-  createdAt: DateTime!
+  "The shop to which this catalog belongs"
+  shop: Shop!
 
   "The date and time at which this CatalogItem was last updated, which is when the related product was most recently published"
   updatedAt: DateTime!
@@ -398,46 +298,80 @@ type CatalogItemContent implements CatalogItem & Node {
   "The CatalogItemProduct ID"
   _id: ID!
 
-  "The shop to which this catalog belongs"
-  shop: Shop!
-
   "The date and time at which this CatalogItem was first created"
   createdAt: DateTime!
+
+  "The shop to which this catalog belongs"
+  shop: Shop!
 
   "The date and time at which this CatalogItem was last updated"
   updatedAt: DateTime!
 }
 
+"A connection edge in which each node is a `CatalogItem` object"
 type CatalogItemEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The catalog item"
   node: CatalogItem
 }
 
+"""
+Wraps a list of `CatalogItem`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
 type CatalogItemConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [CatalogItemEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [CatalogItem]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
+"One product catalog for a particular shop"
 type Catalog implements Node {
   "The Catalog ID"
   _id: ID!
 
-  "The shop to which this catalog belongs"
-  shop: Shop!
-
   "The date and time at which this Catalog was first created"
   createdAt: DateTime!
+
+  "The shop to which this catalog belongs"
+  shop: Shop!
 
   "The date and time at which this Catalog was last updated"
   updatedAt: DateTime!
 }
 
+"Allowed values for sorting catalog items"
 enum CatalogItemSortByField {
+  "Sort by item ID"
   _id
+
+  "Sort by date and time at which the item was created"
   createdAt
+
+  "Sort in the shop-defined order for the tag filter"
+  featured
+
+  "Sort by price"
   minPrice
+
+  "Sort by date and time at which the item was last updated"
   updatedAt
 }
 
@@ -450,6 +384,9 @@ extend type Query {
     "Optionally provide a list of tag IDs to further filter the item list"
     tagIds: [ID],
 
+    "Additional filters to apply"
+    booleanFilters: [CatalogBooleanFilter],
+
     after: ConnectionCursor,
     before: ConnectionCursor,
     first: ConnectionLimitInt,
@@ -459,9 +396,10 @@ extend type Query {
     "Provide a Currency code if sortBy is minPrice"
     sortByPriceCurrencyCode: String
 
-    "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
-    sortBy: CatalogItemSortByField = createdAt
+    "By default, items are sorted by newest products. Set this to sort by one of the other allowed fields"
+    sortBy: CatalogItemSortByField = updatedAt
   ): CatalogItemConnection
+
   "Gets product from catalog"
   catalogItemProduct(
     "Provide either a product ID or slug"

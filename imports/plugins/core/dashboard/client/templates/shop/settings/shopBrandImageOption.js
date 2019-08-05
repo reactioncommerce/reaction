@@ -4,6 +4,8 @@ import { Meteor } from "meteor/meteor";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Media } from "/imports/plugins/core/files/client";
 import { i18next, Logger } from "/client/api";
+import Radio from "@material-ui/core/Radio";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 class ShopBrandImageOption extends Component {
   static propTypes = {
@@ -23,7 +25,7 @@ class ShopBrandImageOption extends Component {
         return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsFailed"), "error");
       }
 
-      Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
+      return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
     });
   };
 
@@ -41,16 +43,29 @@ class ShopBrandImageOption extends Component {
   };
 
   render() {
-    const { media } = this.props;
+    const { isSelected, media } = this.props;
 
     return (
-      <Components.MediaItem
-        editable
-        onClick={this.handleClick}
-        onRemoveMedia={this.handleRemoveClick}
-        size="small"
-        source={media}
-      />
+      <div>
+        <Components.MediaItem
+          editable
+          onClick={this.handleClick}
+          onRemoveMedia={this.handleRemoveClick}
+          size="small"
+          source={media}
+        />
+
+        <FormControlLabel
+          control={
+            <Radio
+              checked={isSelected}
+              onClick={this.handleClick}
+            />
+          }
+          label="Use as shop logo"
+        />
+      </div>
+
     );
   }
 }

@@ -1,9 +1,10 @@
 import ReactionError from "@reactioncommerce/reaction-error";
+import arrayJoinPlusRemainingQuery from "/imports/utils/arrayJoinPlusRemainingQuery";
 
 /**
  * @name queries.productsByTagId
  * @method
- * @memberof Tags/GraphQL
+ * @memberof Tags/Queries
  * @summary get a list of products by tag id
  * @param {Object} context - an object containing the per-request state
  * @param {Object} [params] - an object of all arguments that were sent by the client
@@ -12,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Array<Object>>} array of TagProducts
  */
 export default async function productsByTagId(context, params) {
-  const { shopId, tagId } = params;
+  const { connectionArgs, shopId, tagId } = params;
   const { collections, userHasPermission } = context;
   const { Products, Tags } = collections;
 
@@ -21,45 +22,17 @@ export default async function productsByTagId(context, params) {
     throw new ReactionError("access-denied", "User does not have permission");
   }
 
-  const tag = await Tags.findOne({
-    _id: tagId
+  return arrayJoinPlusRemainingQuery({
+    arrayFieldPath: "featuredProductIds",
+    collection: Tags,
+    connectionArgs,
+    joinCollection: Products,
+    joinFieldPath: "_id",
+    joinSelector: { hashtags: tagId, shopId },
+    joinSortOrder: "asc",
+    positionFieldName: "position",
+    selector: { _id: tagId },
+    sortByForRemainingDocs: "createdAt",
+    sortOrderForRemainingDocs: "asc"
   });
-
-  if (!tag) {
-    throw new ReactionError("not-found", "Tag not found");
-  }
-
-  // Products from catalog sample data
-  const positions = tag.featuredProductIds;
-
-  // Aggregation Pipeline
-  // Find the products in the "order" array
-  const match = {
-    $match: {
-      shopId,
-      hashtags: { $in: [tagId] }
-    }
-  };
-
-  // Add a new field "__order" to each product with the order they are in the array
-  const addFields = {
-    $addFields: {
-      position: {
-        $indexOfArray: [positions, "$_id"]
-      }
-    }
-  };
-
-  // Sort the results by "__order"
-  const sort = {
-    $sort: {
-      position: 1
-    }
-  };
-
-  // Profit
-  return {
-    collection: Products,
-    pipeline: [match, addFields, sort]
-  };
 }

@@ -21,6 +21,16 @@ OrderFulfillmentGroup.extend({
 });
 
 CartItem.extend({
+  /**
+   * Custom key/value data that you need to store.
+   * You'll need to extend GraphQL schemas if you
+   * want to expose any of this data through the API.
+   */
+  "customTaxFields": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "isTaxable": Boolean,
   // For a cart item, `tax` will be `null` until there is enough information to calculate it,
   // or whenever no tax service is active for the shop.
@@ -46,6 +56,16 @@ CartItem.extend({
 });
 
 OrderItem.extend({
+  /**
+   * Custom key/value data that you need to store.
+   * You'll need to extend GraphQL schemas if you
+   * want to expose any of this data through the API.
+   */
+  "customTaxFields": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "isTaxable": Boolean,
   "tax": Number,
   "taxableAmount": Number,

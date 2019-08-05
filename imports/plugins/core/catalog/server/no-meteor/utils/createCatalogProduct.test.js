@@ -3,9 +3,6 @@ import {
   rewire as rewire$getCatalogProductMedia,
   restore as restore$getCatalogProductMedia
 } from "./getCatalogProductMedia";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 import createCatalogProduct, { restore as restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
 
 const internalShopId = "123";
@@ -26,22 +23,13 @@ const mockVariants = [
     _id: internalVariantIds[0],
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
-    canBackorder: true,
     createdAt,
     compareAtPrice: 1100,
     height: 0,
     index: 0,
-    inventoryAvailableToSell: 10,
-    inventoryInStock: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isBackorder: false,
     isDeleted: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     isVisible: true,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -55,7 +43,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Untitled Option",
     originCountry: "US",
-    price: 0,
     shopId: internalShopId,
     sku: "sku",
     title: "Small Concrete Pizza",
@@ -68,21 +55,12 @@ const mockVariants = [
     _id: internalVariantIds[1],
     ancestors: [internalCatalogProductId, internalVariantIds[0]],
     barcode: "barcode",
-    canBackorder: false,
     createdAt,
     height: 2,
     index: 0,
-    inventoryAvailableToSell: 10,
-    inventoryInStock: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isBackorder: false,
     isDeleted: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     isVisible: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -96,7 +74,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.0,
     shopId: internalShopId,
     sku: "sku",
     title: "One pound bag",
@@ -117,13 +94,7 @@ const mockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
-  inventoryAvailableToSell: 10,
-  inventoryInStock: 0,
-  isBackorder: false,
-  isLowQuantity: false,
-  isSoldOut: false,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",
@@ -146,11 +117,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
   media: [
     {
       metadata: {
@@ -202,15 +168,9 @@ const mockCatalogProduct = {
   createdAt,
   description: "description",
   height: 11.23,
-  inventoryAvailableToSell: 10,
-  inventoryInStock: 0,
-  isBackorder: false,
   isDeleted: false,
-  isLowQuantity: false,
-  isSoldOut: false,
   isVisible: false,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   media: [{
     URLs: {
       large: "large/path/to/image.jpg",
@@ -241,20 +201,6 @@ const mockCatalogProduct = {
     length: 4.44,
     weight: 7.77,
     width: 5.55
-  },
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
-  pricing: {
-    USD: {
-      compareAtPrice: null,
-      displayPrice: "$992.00",
-      maxPrice: 992,
-      minPrice: 992,
-      price: null
-    }
   },
   primaryImage: {
     URLs: {
@@ -295,19 +241,10 @@ const mockCatalogProduct = {
   variants: [{
     _id: "875",
     barcode: "barcode",
-    canBackorder: false,
     createdAt,
     height: 0,
     index: 0,
-    inventoryAvailableToSell: 10,
-    inventoryInStock: 0,
-    isBackorder: false,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isLowQuantity: false,
-    isSoldOut: false,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     media: [],
     metafields: [{
       description: "description",
@@ -322,19 +259,10 @@ const mockCatalogProduct = {
     options: [{
       _id: "874",
       barcode: "barcode",
-      canBackorder: false,
       createdAt,
       height: 2,
       index: 0,
-      inventoryAvailableToSell: 10,
-      inventoryInStock: 0,
-      inventoryManagement: true,
-      inventoryPolicy: true,
-      isBackorder: false,
-      isLowQuantity: false,
-      isSoldOut: false,
       length: 2,
-      lowInventoryWarningThreshold: 0,
       media: [{
         URLs: {
           large: "large/path/to/image.jpg",
@@ -359,16 +287,6 @@ const mockCatalogProduct = {
       minOrderQuantity: 0,
       optionTitle: "Awesome Soft Bike",
       originCountry: "US",
-      price: 992,
-      pricing: {
-        USD: {
-          compareAtPrice: null,
-          displayPrice: "$992.00",
-          maxPrice: 992,
-          minPrice: 992,
-          price: 992
-        }
-      },
       primaryImage: {
         URLs: {
           large: "large/path/to/image.jpg",
@@ -391,16 +309,6 @@ const mockCatalogProduct = {
       width: 2
     }],
     originCountry: "US",
-    price: 0,
-    pricing: {
-      USD: {
-        compareAtPrice: 1100,
-        displayPrice: "$992.00",
-        maxPrice: 992,
-        minPrice: 992,
-        price: 0
-      }
-    },
     primaryImage: null,
     shopId: "123",
     sku: "sku",
@@ -435,30 +343,13 @@ const mockGeCatalogProductMedia = jest
     }
   ]));
 
-const mockIsBackorder = jest
-  .fn()
-  .mockName("isBackorder")
-  .mockReturnValue(false);
-const mockIsLowQuantity = jest
-  .fn()
-  .mockName("isLowQuantity")
-  .mockReturnValue(false);
-const mockIsSoldOut = jest
-  .fn()
-  .mockName("isSoldOut")
-  .mockReturnValue(false);
+mockContext.mutations.applyCustomPublisherTransforms = jest.fn().mockName("applyCustomPublisherTransforms");
 
 beforeAll(() => {
   rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
-  rewire$isBackorder(mockIsBackorder);
-  rewire$isLowQuantity(mockIsLowQuantity);
-  rewire$isSoldOut(mockIsSoldOut);
 });
 
 afterAll(() => {
-  restore$isBackorder();
-  restore$isLowQuantity();
-  restore$isSoldOut();
   restore$getCatalogProductMedia();
   restore$createCatalogProduct();
 });
@@ -477,18 +368,14 @@ test("calls functions of type publishProductToCatalog, which can mutate the cata
 
   rewire$xformProduct(() => ({ mock: true }));
 
-  const mockCustomPublisher = jest.fn().mockName("mockCustomPublisher").mockImplementation((obj) => {
+  mockContext.mutations.applyCustomPublisherTransforms.mockImplementation((_, obj) => {
     obj.foo = "bar";
   });
 
-  const catalogProduct = await createCatalogProduct({}, {
-    ...mockContext,
-    getFunctionsOfType: () => [mockCustomPublisher]
-  });
+  const catalogProduct = await createCatalogProduct({}, mockContext);
 
   expect(catalogProduct).toEqual({ foo: "bar", mock: true });
-  expect(mockCustomPublisher).toHaveBeenCalledWith({ foo: "bar", mock: true }, {
-    context: jasmine.any(Object),
+  expect(mockContext.mutations.applyCustomPublisherTransforms).toHaveBeenCalledWith(mockContext, { foo: "bar", mock: true }, {
     product: {},
     shop: mockShop,
     variants: mockVariants

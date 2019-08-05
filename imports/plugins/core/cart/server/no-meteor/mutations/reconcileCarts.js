@@ -45,7 +45,7 @@ export default async function reconcileCarts(context, input) {
   // Don't use `userHasPermission` for this check because that always returns true if there
   // is "owner" role. We want to know explicitly whether they have the "anonymous" role.
   const roles = (user.roles && user.roles[shopId]) || [];
-  if (roles.indexOf("anonymous") !== -1) {
+  if (roles.includes("anonymous")) {
     Logger.warn("reconcileCarts called by an anonymous user. Check client code.");
     throw new ReactionError("access-denied", "Access Denied");
   }
@@ -67,7 +67,7 @@ export default async function reconcileCarts(context, input) {
 
       case "merge":
         return {
-          cart: await reconcileCartsMerge({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, collections, userId })
+          cart: await reconcileCartsMerge({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, context, userId })
         };
 
       default:

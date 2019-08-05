@@ -1,46 +1,11 @@
-/* eslint camelcase: 0 */
+/**
+ * This file is necessary for backwards compatibility while we refactor
+ * the API to remove Meteor. The no-meteor `register.js` file will
+ * eventually become the main entry point of the plugin, but for now
+ * our Meteor tooling loads this file, so we include this here as a
+ * temporary bridge.
+ */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import schemas from "./server/no-meteor/schemas";
-import stripeCapturePayment from "./server/no-meteor/util/stripeCapturePayment";
-import stripeCreateAuthorizedPayment from "./server/no-meteor/util/stripeCreateAuthorizedPayment";
-import stripeCreateRefund from "./server/no-meteor/util/stripeCreateRefund";
-import stripeListRefunds from "./server/no-meteor/util/stripeListRefunds";
-import { STRIPE_PACKAGE_NAME } from "./lib/constants";
+import register from "./server/no-meteor/register";
 
-Reaction.registerPackage({
-  label: "Stripe",
-  name: STRIPE_PACKAGE_NAME,
-  icon: "fa fa-cc-stripe",
-  autoEnable: true,
-  graphQL: {
-    schemas
-  },
-  paymentMethods: [{
-    name: "stripe_card",
-    displayName: "Stripe Card",
-    functions: {
-      capturePayment: stripeCapturePayment,
-      createAuthorizedPayment: stripeCreateAuthorizedPayment,
-      createRefund: stripeCreateRefund,
-      listRefunds: stripeListRefunds
-    }
-  }],
-  settings: {
-    mode: false,
-    api_key: "",
-    public: {
-      publishable_key: "",
-      client_id: ""
-    },
-    connectAuth: {}
-  },
-  registry: [
-    // Settings panel
-    {
-      label: "Stripe",
-      provides: ["paymentSettings"],
-      container: "dashboard",
-      template: "stripeSettings"
-    }
-  ]
-});
+Reaction.whenAppInstanceReady(register);

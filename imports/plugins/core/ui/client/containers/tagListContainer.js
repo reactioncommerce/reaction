@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import update from "immutability-helper";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker, Components } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import TagList from "../components/tags/tagList";
@@ -45,7 +45,8 @@ const wrapComponent = (Comp) => (
       }, 500);
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       this.setState({
         tagIds: nextProps.tagIds || [],
         tagsByKey: nextProps.tagsByKey || {}
@@ -88,6 +89,8 @@ const wrapComponent = (Comp) => (
             return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
           }
 
+          Alerts.toast(i18next.t("tagAddedToProduct", { defaultValue: `Tag "${tag.name}" added to product`, tagName: tag.name }), "success");
+
           this.setState({
             newTag: {
               name: ""
@@ -113,6 +116,8 @@ const wrapComponent = (Comp) => (
             return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
           }
 
+          Alerts.toast(i18next.t("tagAddedToProduct", { defaultValue: `Tag "${tag.name}" added to product`, tagName: tag.name }), "success");
+
           this.setState({
             suggestions: []
           });
@@ -128,6 +133,8 @@ const wrapComponent = (Comp) => (
           if (error) {
             Alerts.toast(i18next.t("productDetail.tagInUse"), "error");
           }
+
+          Alerts.toast(i18next.t("tagRemovedFromProduct", { defaultValue: `Tag "${tag.name}" removed from product`, tagName: tag.name }), "success");
         });
       }
     }
@@ -194,24 +201,22 @@ const wrapComponent = (Comp) => (
 
     render() {
       return (
-        <Components.DragDropProvider>
-          <Comp
-            newTag={this.state.newTag}
-            onClick={this.handleEditButtonClick}
-            onClearSuggestions={this.handleClearSuggestions}
-            onGetSuggestions={this.handleGetSuggestions}
-            onMoveTag={this.handleMoveTag}
-            onNewTagSave={this.handleNewTagSave}
-            onNewTagUpdate={this.handleNewTagUpdate}
-            onTagRemove={this.handleTagRemove}
-            onTagSave={this.handleTagSave}
-            onTagUpdate={this.handleTagUpdate}
-            suggestions={this.state.suggestions}
-            tags={this.tags}
-            tooltip="Unpublished changes"
-            {...this.props}
-          />
-        </Components.DragDropProvider>
+        <Comp
+          newTag={this.state.newTag}
+          onClick={this.handleEditButtonClick}
+          onClearSuggestions={this.handleClearSuggestions}
+          onGetSuggestions={this.handleGetSuggestions}
+          onMoveTag={this.handleMoveTag}
+          onNewTagSave={this.handleNewTagSave}
+          onNewTagUpdate={this.handleNewTagUpdate}
+          onTagRemove={this.handleTagRemove}
+          onTagSave={this.handleTagSave}
+          onTagUpdate={this.handleTagUpdate}
+          suggestions={this.state.suggestions}
+          tags={this.tags}
+          tooltip="Unpublished changes"
+          {...this.props}
+        />
       );
     }
   }

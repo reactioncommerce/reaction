@@ -3,7 +3,7 @@ import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-grap
 import selectFulfillmentOptionForGroupMutation from "../../mutations/selectFulfillmentOptionForGroup";
 
 /**
- * @name "Mutation.selectFulfillmentOptionForGroup"
+ * @name Mutation/selectFulfillmentOptionForGroup
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the selectFulfillmentOptionForGroup GraphQL mutation

@@ -1,12 +1,15 @@
 import cors from "cors";
 import express from "express";
+import bodyParser from "body-parser";
 import { makeExecutableSchema, mergeSchemas } from "apollo-server";
 import { ApolloServer } from "apollo-server-express";
+import config from "./config";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
+import createDataLoaders from "./util/createDataLoaders";
 
-const DEFAULT_GRAPHQL_PATH = "/graphql-alpha";
+const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
 
 const resolverValidationOptions = {
   // After we fix all errors that this prints, we should probably go
@@ -52,6 +55,8 @@ export default function createApolloServer(options = {}) {
 
       addCallMeteorMethod(context);
 
+      await createDataLoaders(context);
+
       return context;
     },
     debug: options.debug || false,
@@ -59,12 +64,18 @@ export default function createApolloServer(options = {}) {
     schema,
     subscriptions: {
       path
-    }
+    },
+    introspection: config.GRAPHQL_INTROSPECTION_ENABLED,
+    playground: config.GRAPHQL_PLAYGROUND_ENABLED
   });
 
   // GraphQL endpoint, enhanced with JSON body parser
   app.use(
     path,
+    // set a higher limit for data transfer, which can help with GraphQL mutations
+    // `express` default is 100kb
+    // AWS default is 5mb, which we'll use here
+    bodyParser({ limit: config.BODY_PARSER_SIZE_LIMIT }),
     // Enable `cors` to set HTTP response header: Access-Control-Allow-Origin: *
     // Although the `cors: true` option to `applyMiddleware` below does this already
     // for successful requests, we need it to be set here, before tokenMiddleware,

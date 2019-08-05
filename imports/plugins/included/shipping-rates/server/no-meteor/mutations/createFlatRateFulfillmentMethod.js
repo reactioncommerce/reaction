@@ -33,8 +33,9 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
       name: "Default Shipping Provider",
       shopId,
       provider: {
-        name: "flatRates",
-        label: "Flat Rate"
+        enabled: true,
+        label: "Flat Rate",
+        name: "flatRates"
       }
     });
   }

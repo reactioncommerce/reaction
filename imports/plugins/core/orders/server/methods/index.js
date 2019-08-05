@@ -3,7 +3,6 @@ import cancelOrder from "./cancelOrder";
 import createRefund from "./createRefund";
 import listRefunds from "./listRefunds";
 import makeAdjustmentsToInvoice from "./makeAdjustmentsToInvoice";
-import processPayment from "./processPayment";
 import refundItems from "./refundItems";
 import sendNotification from "./sendNotification";
 import shipmentDelivered from "./shipmentDelivered";
@@ -12,7 +11,6 @@ import shipmentPacked from "./shipmentPacked";
 import shipmentPicked from "./shipmentPicked";
 import shipmentShipped from "./shipmentShipped";
 import updateHistory from "./updateHistory";
-import updateShipmentTracking from "./updateShipmentTracking";
 
 /**
  * @file Methods for Orders.
@@ -25,7 +23,6 @@ export default {
   "orders/approvePayment": approvePayment,
   "orders/cancelOrder": cancelOrder,
   "orders/makeAdjustmentsToInvoice": makeAdjustmentsToInvoice,
-  "orders/processPayment": processPayment,
   "orders/refunds/create": createRefund,
   "orders/refunds/list": listRefunds,
   "orders/refunds/refundItems": refundItems,
@@ -35,6 +32,5 @@ export default {
   "orders/shipmentPacked": shipmentPacked,
   "orders/shipmentPicked": shipmentPicked,
   "orders/shipmentShipped": shipmentShipped,
-  "orders/updateHistory": updateHistory,
-  "orders/updateShipmentTracking": updateShipmentTracking
+  "orders/updateHistory": updateHistory
 };

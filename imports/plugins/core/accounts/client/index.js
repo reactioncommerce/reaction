@@ -1,15 +1,10 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
+import AccountIcon from "mdi-material-ui/AccountMultiple";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 import Accounts from "./containers/accountsDashboardContainer";
 
 export { default as AccountsDashboard } from "./components/accountsDashboard";
-export { default as AddressBookForm } from "./components/addressBookForm";
-export { default as AddressBookReview } from "./components/addressBookReview";
-export { default as AddressBookGrid } from "./components/addressBookGrid";
-export { default as AddressBook } from "./components/addressBook.js";
 export { default as AdminInviteForm } from "./components/adminInviteForm";
 export { default as EditGroup } from "./components/editGroup";
 export { default as ForgotPassword } from "./components/forgotPassword";
@@ -30,7 +25,6 @@ export { default as UpdateEmail } from "./containers/updateEmail";
 export { default as UpdatePassword } from "./components/updatePassword";
 
 export { default as AccountsDashboardContainer } from "./containers/accountsDashboardContainer";
-export { default as AddressBookContainer } from "./containers/addressBookContainer";
 export { default as UserOrdersListContainer } from "./containers/userOrdersListContainer";
 export { default as AuthContainer } from "./containers/auth";
 export { default as EditGroupContainer } from "./containers/editGroupContainer";
@@ -60,9 +54,10 @@ registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
   path: "/accounts",
+  priority: 40,
   mainComponent: Accounts,
   // eslint-disable-next-line react/display-name, react/no-multi-comp
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faUsers} {...props} />,
+  SidebarIconComponent: (props) => <AccountIcon {...props} />,
   sidebarI18nLabel: "admin.dashboard.accountsLabel"
 });
 
@@ -72,6 +67,13 @@ registerOperatorRoute({
   path: "/login-services",
   mainComponent: "accountsSettings",
   // eslint-disable-next-line react/display-name, react/no-multi-comp
-  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faSignInAlt} {...props} />,
+  // SidebarIconComponent: (props) => <FontAwesomeIcon icon={faSignInAlt} {...props} />,
   sidebarI18nLabel: "admin.settings.accountSettingsLabel"
+});
+
+registerOperatorRoute({
+  isNavigationLink: false,
+  isSetting: false,
+  path: "/profile",
+  mainComponent: "accountProfile"
 });

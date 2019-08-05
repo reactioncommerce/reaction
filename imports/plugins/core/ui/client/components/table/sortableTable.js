@@ -30,7 +30,8 @@ class SortableTable extends Component {
     this.handleFilterInput = this.handleFilterInput.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
       this.setState({
         query: nextProps.query
@@ -89,6 +90,8 @@ class SortableTable extends Component {
         ? String(row[id].toLowerCase()).includes(filter.value.toLowerCase())
         : true);
     }
+
+    return null;
   }
 
 
@@ -96,8 +99,8 @@ class SortableTable extends Component {
    * @name handleFilterInput()
    * @summary Update state when filter is changed
    * @param {script} event onChange event when typing in filter field
-   * @param {string} value text field input
-   * @param {string} field input field name to watch
+   * @param {String} value text field input
+   * @param {String} field input field name to watch
    * @return {function} state for field value
    */
   handleFilterInput = (event, value, field) => {
@@ -110,7 +113,7 @@ class SortableTable extends Component {
   /**
    * @name handleClick()
    * @summary Handle click on table row
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
@@ -129,6 +132,8 @@ class SortableTable extends Component {
         })
       );
     }
+
+    return null;
   }
 
 
@@ -234,7 +239,7 @@ class SortableTable extends Component {
    * @name selectedRowsClassName()
    * @method
    * @summary If any rows are selected, give them a className of "selected-row"
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @returns {String} className to apply to row that is selected, or empty string if no row is selected
    */
   selectedRowsClassName(rowInfo) {
@@ -313,7 +318,7 @@ class SortableTable extends Component {
             }
 
             return {
-              onClick: (e) => { // eslint-disable-line no-unused-vars
+              onClick: (event) => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
               },
               className: this.selectedRowsClassName(rowInfo)

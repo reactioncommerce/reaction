@@ -59,7 +59,7 @@ class MediaGallery extends Component {
   };
 
   handleDrop = (files) => {
-    if (files.length === 0) return;
+    if (files.length === 0) return null;
     return this.props.onDrop(files);
   };
 
@@ -235,9 +235,9 @@ class MediaGallery extends Component {
     // Note that only editable mode actually uses drag-drop, but since both views render
     // MediaItems, which are SortableItems, there is an error if it isn't in the ancester tree
     return (
-      <Components.DragDropProvider>
+      <div>
         {gallery}
-      </Components.DragDropProvider>
+      </div>
     );
   }
 }

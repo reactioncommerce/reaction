@@ -19,7 +19,7 @@ export function getComponent(name) {
 
   try {
     component = newGetComponent(name);
-  } catch (e) {
+  } catch (error) {
     console.log("Component not found");
   }
 

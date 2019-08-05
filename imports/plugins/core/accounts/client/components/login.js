@@ -20,8 +20,11 @@ class Login extends Component {
   constructor(props) {
     super(props);
 
+    const currentRoute = Router.current().route;
+    const isPasswordReset = ["reset-password", "account/enroll"].includes(currentRoute.name);
+
     this.state = {
-      currentView: props.loginFormCurrentView
+      currentView: isPasswordReset ? "loginFormUpdatePasswordView" : props.loginFormCurrentView
     };
 
     this.showForgotPasswordView = this.showForgotPasswordView.bind(this);
@@ -57,7 +60,8 @@ class Login extends Component {
     const currentRoute = Router.current().route;
     const isOauthFlow = currentRoute.options && currentRoute.options.meta && currentRoute.options.meta.oauthLoginFlow;
     const idpFormClass = isOauthFlow ? "idp-form" : "";
-    if (this.state.currentView === "loginFormSignInView" || this.state.currentView === "loginFormSignUpView") {
+    const { currentView } = this.state;
+    if (currentView === "loginFormSignInView" || currentView === "loginFormSignUpView" || currentView === "loginFormUpdatePasswordView") {
       if (isOauthFlow) {
         return (
           <Components.OAuthFormContainer
@@ -71,24 +75,26 @@ class Login extends Component {
         <Components.AuthContainer
           credentials={this.props.credentials}
           uniqueId={this.props.uniqueId}
-          currentView={this.state.currentView}
+          currentView={currentView}
           onForgotPasswordClick={this.showForgotPasswordView}
           onSignUpClick={this.showSignUpView}
           onSignInClick={this.showSignInView}
         />
       );
-    } else if (this.state.currentView === "loginFormResetPasswordView") {
+    } else if (currentView === "loginFormResetPasswordView") {
       return (
         <div className={idpFormClass}>
           <Components.ForgotPassword
             credentials={this.props.credentials}
             uniqueId={this.props.uniqueId}
-            currentView={this.state.currentView}
+            currentView={currentView}
             onSignInClick={this.showSignInView}
           />
         </div>
       );
     }
+
+    return null;
   }
 }
 

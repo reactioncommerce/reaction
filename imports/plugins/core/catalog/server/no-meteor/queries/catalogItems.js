@@ -11,7 +11,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String[]} [params.tags] - Tag IDs to include (OR)
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function catalogItems(context, { shopIds, tagIds } = {}) {
+export default async function catalogItems(context, { shopIds, tagIds, catalogBooleanFilters } = {}) {
   const { collections } = context;
   const { Catalog } = collections;
 
@@ -21,6 +21,7 @@ export default async function catalogItems(context, { shopIds, tagIds } = {}) {
 
   const query = {
     "product.isDeleted": { $ne: true },
+    ...catalogBooleanFilters,
     "product.isVisible": true
   };
 

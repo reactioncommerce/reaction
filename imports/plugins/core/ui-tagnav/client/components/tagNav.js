@@ -14,7 +14,8 @@ class TagNav extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ selectedTag: nextProps.selectedTag });
   }
 
@@ -106,27 +107,25 @@ class TagNav extends Component {
         </div>
         {this.renderShopSelect()}
         <div className="navbar-items">
-          <Components.DragDropProvider>
-            <Components.TagList
-              {...this.props}
-              isTagNav={true}
-              draggable={true}
-              enableNewTagForm={true}
-            >
-              <div className="dropdown-container">
-                <Components.TagGroup
-                  {...this.props}
-                  editable={this.props.editable === true}
-                  tagGroupProps={this.tagGroupProps(this.state.selectedTag || {})}
-                  onMove={this.props.onMoveTag}
-                  onTagInputBlur={this.handleTagSave}
-                  onTagMouseOut={this.handleTagMouseOut}
-                  onTagMouseOver={this.handleTagMouseOver}
-                  onTagSave={this.handleTagSave}
-                />
-              </div>
-            </Components.TagList>
-          </Components.DragDropProvider>
+          <Components.TagList
+            {...this.props}
+            isTagNav={true}
+            draggable={true}
+            enableNewTagForm={true}
+          >
+            <div className="dropdown-container">
+              <Components.TagGroup
+                {...this.props}
+                editable={this.props.editable === true}
+                tagGroupProps={this.tagGroupProps(this.state.selectedTag || {})}
+                onMove={this.props.onMoveTag}
+                onTagInputBlur={this.handleTagSave}
+                onTagMouseOut={this.handleTagMouseOut}
+                onTagMouseOver={this.handleTagMouseOver}
+                onTagSave={this.handleTagSave}
+              />
+            </div>
+          </Components.TagList>
           {this.props.canEdit && this.renderEditButton()}
         </div>
       </div>

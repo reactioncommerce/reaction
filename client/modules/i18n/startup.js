@@ -9,7 +9,7 @@ import { Tracker } from "meteor/tracker";
 import { ReactiveVar } from "meteor/reactive-var";
 import SimpleSchema from "simpl-schema";
 import { Reaction } from "/client/api";
-import { Shops, Translations, Packages } from "/lib/collections";
+import { Shops, Translations } from "/lib/collections";
 import Schemas from "@reactioncommerce/schemas";
 import i18next, { getLabelsFor, getValidationErrorMessages, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
@@ -18,6 +18,7 @@ import { mergeDeep } from "/lib/api";
  * Every schema that feature an expireMonth and an expireYear
  * field will be validated against the dateBeforeNow rule.
  */
+// eslint-disable-next-line consistent-return
 SimpleSchema.addValidator(function () {
   let expireMonth;
   let expireYear;
@@ -50,6 +51,8 @@ SimpleSchema.addValidator(function () {
       }
     }
   }
+
+  return null;
 });
 
 /**
@@ -122,25 +125,19 @@ Meteor.startup(() => {
     //
     // subscribe to user + shop Translations
     //
+    // eslint-disable-next-line consistent-return
     return Meteor.subscribe("Translations", language, () => {
-      // Get the list of packages for that shop
-      const packageNamespaces = Packages.find({
-        shopId
-      }, {
-        fields: {
-          name: 1
-        }
-      }).map((pkg) => pkg.name);
-
       //
       // reduce and merge translations
       // into i18next resource format
       //
+      const packageNamespaces = [];
       let resources = {};
       Translations.find({}).forEach((translation) => {
         resources = mergeDeep(resources, {
           [translation.i18n]: translation.translation
         });
+        packageNamespaces.push(translation.ns);
       });
 
       //
@@ -184,7 +181,9 @@ Meteor.startup(() => {
           }
           return $("html").removeClass("rtl");
         });
-    }); // return
+
+      return null;
+    });
   });
 
   // Detect user currency changes.

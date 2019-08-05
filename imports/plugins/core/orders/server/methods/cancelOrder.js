@@ -24,7 +24,7 @@ export default function cancelOrder(order, returnToStock) {
 
   const authUserId = Reaction.getUserId();
 
-  if (!Reaction.hasPermission("orders", authUserId, order.shopId)) {
+  if (!Reaction.hasPermission(["orders", "order/fulfillment"], authUserId, order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
@@ -81,7 +81,7 @@ export default function cancelOrder(order, returnToStock) {
   }));
 
   Promise.await(appEvents.emit("afterOrderCancel", {
-    cancelledBy: authUserId,
+    canceledBy: authUserId,
     order: updatedOrder,
     returnToStock
   }));

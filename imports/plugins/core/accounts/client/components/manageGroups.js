@@ -1,12 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import withStyles from "@material-ui/core/styles/withStyles";
 import { getInvitableGroups } from "../helpers/accountsHelper";
+
+const styles = (theme) => ({
+  editGroup: {
+    paddingTop: theme.spacing()
+  }
+});
 
 class ManageGroups extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     adminGroups: PropTypes.array,
+    classes: PropTypes.object,
     group: PropTypes.object,
     groups: PropTypes.array,
     isAdmin: PropTypes.bool,
@@ -24,12 +32,14 @@ class ManageGroups extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { group, groups, adminGroups, accounts } = nextProps;
     this.setState({ group, groups, accounts, adminGroups });
   }
 
   render() {
+    const { classes } = this.props;
     // this gets a list of groups the user can invite to, we show only those in the dropdown
     // see doc for getInvitableGroups in helpers/accountsHelper.js
     const groupsInvitable = getInvitableGroups(this.state.adminGroups);
@@ -42,19 +52,23 @@ class ManageGroups extends Component {
           />
         }
         {this.props.isAdmin &&
-          <Components.EditGroup
-            // filter out owner group from editable groups.
-            // The edit group meteor method also prevents editing owner group
-            groups={this.state.groups.filter((grp) => grp.slug !== "owner")}
-            selectedGroup={this.state.group}
-            onChangeGroup={this.props.onChangeGroup}
-          />
+          <div className={classes.editGroup}>
+            <Components.EditGroup
+              // filter out owner group from editable groups.
+              // The edit group meteor method also prevents editing owner group
+              groups={this.state.groups.filter((grp) => grp.slug !== "owner")}
+              selectedGroup={this.state.group}
+              onChangeGroup={this.props.onChangeGroup}
+            />
+          </div>
         }
       </div>
     );
   }
 }
 
-registerComponent("ManageGroups", ManageGroups);
+registerComponent("ManageGroups", ManageGroups, [
+  withStyles(styles, { name: "RuiManageGroups" })
+]);
 
-export default ManageGroups;
+export default withStyles(styles, { name: "RuiManageGroups" })(ManageGroups);

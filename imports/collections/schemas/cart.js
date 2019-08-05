@@ -1,30 +1,20 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { Address } from "./address";
+import { Money, AppliedSurcharge } from "./core";
 import { Shipment, ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 import { Metafield } from "./metafield";
-
-const Money = new SimpleSchema({
-  currencyCode: String,
-  amount: {
-    type: Number,
-    min: 0
-  }
-});
 
 /**
  * @name CartItemAttribute
  * @memberof Schemas
  * @type {SimpleSchema}
- * @property {String} label optional
+ * @property {String} label required
  * @property {String} value optional
  */
 const CartItemAttribute = new SimpleSchema({
-  label: {
-    type: String,
-    optional: true
-  },
+  label: String,
   value: {
     type: String,
     optional: true
@@ -84,10 +74,7 @@ export const CartItem = new SimpleSchema({
   },
   "price": Money,
   "priceWhenAdded": Money,
-  "productId": {
-    type: String,
-    index: 1
-  },
+  "productId": String,
   "productSlug": {
     type: String,
     optional: true
@@ -115,7 +102,6 @@ export const CartItem = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Cart Item shopId"
   },
   "subtotal": Money,
@@ -131,7 +117,6 @@ export const CartItem = new SimpleSchema({
   "updatedAt": Date,
   "variantId": {
     type: String,
-    index: 1,
     optional: true
   },
   "variantTitle": {
@@ -175,6 +160,7 @@ registerSchema("CartItems", CartItems);
  * @property {Payment[]} billing Array of Payment optional, blackbox
  * @property {String} sessionId Optional and deprecated
  * @property {Number} discount optional
+ * @property {Surcharges[]} surcharges optional
  * @property {Workflow} workflow optional
  * @property {Date} createdAt required
  * @property {Date} updatedAt optional
@@ -186,17 +172,14 @@ export const Cart = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Cart ShopId"
   },
   "accountId": {
     type: String,
-    index: 1,
     optional: true
   },
   "anonymousAccessToken": {
     type: String,
-    index: 1,
     optional: true
   },
   "currencyCode": String,
@@ -206,13 +189,15 @@ export const Cart = new SimpleSchema({
   },
   "sessionId": {
     type: String,
-    index: 1,
+    optional: true
+  },
+  "referenceId": {
+    type: String,
     optional: true
   },
   "email": {
     type: String,
     optional: true,
-    index: 1,
     regEx: SimpleSchema.RegEx.Email
   },
   "items": {
@@ -246,6 +231,13 @@ export const Cart = new SimpleSchema({
   "discount": {
     type: Number,
     optional: true
+  },
+  "surcharges": {
+    type: Array,
+    optional: true
+  },
+  "surcharges.$": {
+    type: AppliedSurcharge
   },
   "workflow": {
     type: Workflow,
