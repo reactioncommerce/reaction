@@ -13,13 +13,9 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @param {String} params.paymentId - Payment ID
  * @param {String} params.shopId - Shop ID for the shop that owns the order
  * @param {String} [params.token] - Anonymous order token
- * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payemnt from this order, if found
+ * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payment from this order, if found
  */
 export default async function refundsByPaymentId(context, { orderId, paymentId, shopId, token } = {}) {
-  const { userHasPermission } = context;
-
-  if (!userHasPermission(["orders", "order/fulfillment", "order/view"], shopId)) throw new ReactionError("access-denied", "User does not have permission");
-
   if (!orderId || !paymentId || !shopId) {
     throw new ReactionError("invalid-param", "You must provide orderId, paymentId, and shopId arguments");
   }
