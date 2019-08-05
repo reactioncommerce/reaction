@@ -125,7 +125,6 @@ function OrderRefunds(props) {
   };
 
   const handleRefundReasonSelectChange = (event) => {
-    handleRefundTotalUpdate();
     setRefundReasonSelectValues((oldValues) => ({
       ...oldValues,
       [event.target.name]: event.target.value
