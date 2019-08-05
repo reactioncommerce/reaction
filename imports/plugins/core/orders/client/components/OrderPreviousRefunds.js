@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -10,7 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   dividerSpacing: {
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4)
@@ -18,7 +18,7 @@ const styles = (theme) => ({
   extraEmphasisText: {
     fontWeight: theme.typography.fontWeightSemiBold
   }
-});
+}));
 
 /**
  * @name OrderPreviousRefunds
@@ -26,7 +26,8 @@ const styles = (theme) => ({
  * @returns {React.Component} returns a React component
  */
 function OrderPreviousRefunds(props) {
-  const { classes, order } = props;
+  const { order } = props;
+  const classes = useStyles();
   const { refunds: unsortedRefunds } = order;
   // sort refunds by date, newest first, for display purposes
   const refunds = unsortedRefunds.slice().sort((refundA, refundB) => new Date(refundB.createdAt) - new Date(refundA.createdAt));
@@ -95,4 +96,4 @@ OrderPreviousRefunds.propTypes = {
   })
 };
 
-export default withStyles(styles, { name: "RuiOrderPreviousRefunds" })(OrderPreviousRefunds);
+export default OrderPreviousRefunds;

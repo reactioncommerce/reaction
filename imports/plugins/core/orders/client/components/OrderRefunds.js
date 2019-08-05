@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
 import { Form } from "reacto-form";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -22,7 +22,7 @@ import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import createRefundMutation from "../graphql/mutations/createRefund";
 import OrderPreviousRefunds from "./OrderPreviousRefunds";
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   dividerSpacing: {
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4)
@@ -37,7 +37,7 @@ const styles = (theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2)
   }
-});
+}));
 
 /**
  * @name OrderRefunds
@@ -46,7 +46,8 @@ const styles = (theme) => ({
  */
 function OrderRefunds(props) {
   const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
-  const { classes, order } = props;
+  const { order } = props;
+  const classes = useStyles();
   const { payments } = order;
 
   // useRef
@@ -299,4 +300,4 @@ OrderRefunds.propTypes = {
   order: PropTypes.object
 };
 
-export default withStyles(styles, { name: "RuiOrderRefunds" })(OrderRefunds);
+export default OrderRefunds;
