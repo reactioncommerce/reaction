@@ -20,10 +20,24 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import ChevronDownIcon from "mdi-material-ui/ChevronDown";
 import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
 
+
+const styles = (theme) => ({
+  filterCountContainer: {
+    paddingLeft: theme.spacing(2),
+    paddingTop: theme.spacing(3)
+  },
+  filterCountText: {
+    paddingLeft: theme.spacing(2),
+    fontWeight: theme.typography.fontWeightRegular
+  }
+});
 
 class ProductGrid extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     onArchiveProducts: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangeRowsPerPage: PropTypes.func,
@@ -79,6 +93,26 @@ class ProductGrid extends Component {
       // Reset selection
       onSelectAllProducts(false);
     }
+  }
+
+  renderFilteredCount() {
+    const { selectedProductIds, classes } = this.props;
+    const count = selectedProductIds.length;
+    const filterByProductIds = Session.get("filterByProductIds");
+
+    if (filterByProductIds) {
+      return (
+        <div className={classes.filterCountContainer}>
+          <Typography variant="h4" display="inline">
+            {i18next.t("admin.productTable.bulkActions.filteredProducts")}
+          </Typography>
+          <Typography variant="h5" display="inline" className={classes.filterCountText}>
+            {i18next.t("admin.productTable.bulkActions.selectedCount", { count })}
+          </Typography>
+        </div>
+      );
+    }
+    return "";
   }
 
   renderProductGridItems() {
@@ -222,6 +256,7 @@ class ProductGrid extends Component {
 
     return (
       <Card>
+        {this.renderFilteredCount()}
         {this.renderToolbar()}
         <CardContent>
           <Table>
@@ -263,4 +298,4 @@ class ProductGrid extends Component {
   }
 }
 
-export default ProductGrid;
+export default withStyles(styles)(ProductGrid);
