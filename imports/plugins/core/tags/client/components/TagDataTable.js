@@ -562,7 +562,7 @@ class TagDataTable extends Component {
               />
               <PaginationContainer>
                 <Button
-                  isShortHeight
+                  size="small"
                   onClick={loadPreviousPage}
                   disabled={!hasPreviousPage}
                 >
@@ -570,7 +570,7 @@ class TagDataTable extends Component {
                   {i18next.t("admin.routing.tableText.previousText")}
                 </Button>
                 <Button
-                  isShortHeight
+                  size="small"
                   onClick={loadNextPage}
                   disabled={!hasNextPage}
                 >

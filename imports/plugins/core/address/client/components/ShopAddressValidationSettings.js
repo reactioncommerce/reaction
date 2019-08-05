@@ -139,7 +139,7 @@ export default class ShopAddressValidationSettings extends Component {
             {
               accessor: "_id",
               Cell: (row) => (
-                <Button color="error" variant="outlined" isShortHeight onClick={() => { onItemDeleted(row.value); }}>
+                <Button color="error" variant="outlined" size="small" onClick={() => { onItemDeleted(row.value); }}>
                   {i18next.t("addressValidation.deleteItemButtonText")}
                 </Button>
               )

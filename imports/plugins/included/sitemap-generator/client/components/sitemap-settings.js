@@ -45,7 +45,7 @@ export default class SitemapSettings extends Component {
           />
         </div>
         <div className="form-group pull-left" style={{ width: "100%", marginBottom: 30 }}>
-          <Button variant="outlined" className="pull-right" isShortHeight onClick={onGenerateClick}>
+          <Button variant="outlined" className="pull-right" size="small" onClick={onGenerateClick}>
             <i className="rui font-icon fa fa-refresh" />&nbsp;
             <Translation defaultValue="Refresh sitemap" i18nKey={"shopSettings.refreshSitemapsNow"} />
           </Button>

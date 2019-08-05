@@ -287,7 +287,7 @@ class TagForm extends Component {
             <Button
               variant="contained"
               color="primary"
-              isShortHeight
+              size="small"
               onClick={this.handleDeleteHeroImage}
             >
               {i18next.t("admin.tags.form.delete")}
@@ -302,7 +302,7 @@ class TagForm extends Component {
           <Button
             variant="outlined"
             actionType="secondary"
-            isShortHeight
+            size="small"
             onClick={this.handleDropzoneClick}
           >
             {i18next.t("admin.tags.form.uploadImage")}
