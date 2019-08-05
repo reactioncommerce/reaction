@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import Log from './logger';
+import Log from './logger.mjs';
 
 /**
  * Synchronously check if a file or directory exists
