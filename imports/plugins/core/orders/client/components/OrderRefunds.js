@@ -107,10 +107,10 @@ function OrderRefunds(props) {
   };
 
   // When refund amounts are changed, add up amounts to display in button
-  const handleRefundTotalUpdate = () => {
-    if (this.form && this.form.state) {
-      const { amounts } = this.form.state.value;
+  const handleRefundTotalUpdate = (formData) => {
+    const { amounts } = formData;
 
+    if (amounts) {
       const reducedRefundTotal = Object.keys(amounts).map((paymentId) => ({
         paymentId,
         amount: parseFloat(amounts[paymentId], 10)
@@ -118,10 +118,6 @@ function OrderRefunds(props) {
 
       setRefundTotal(() => reducedRefundTotal);
     }
-  };
-
-  const handleRefundAmountChange = (amount) => {
-    if (amount) handleRefundTotalUpdate();
   };
 
   const handleRefundReasonSelectChange = (event) => {
@@ -168,15 +164,19 @@ function OrderRefunds(props) {
                           ref={(formRef) => {
                             this.form = formRef;
                           }}
+                          onChange={handleRefundTotalUpdate}
+                          onChanging={handleRefundTotalUpdate}
                           onSubmit={(data) => handleCreateRefund(data, mutationFunc)}
                         >
-                          {error &&
-                            <InlineAlert
-                              alertType="error"
-                              message={error.message}
-                            />
-                          }
                           <Grid container spacing={3}>
+                            {error &&
+                              <Grid item xs={12}>
+                                <InlineAlert
+                                  alertType="error"
+                                  message={error.message}
+                                />
+                              </Grid>
+                            }
                             {
                               payments.map((payment) => {
                                 const isPaymentRefundable = payment.method.canRefund === true;
@@ -226,8 +226,6 @@ function OrderRefunds(props) {
                                               min={0}
                                               max={paymentAmountAvailableForRefund}
                                               name={`amounts.${payment._id}`}
-                                              onChange={handleRefundAmountChange}
-                                              onChanging={handleRefundAmountChange}
                                               placeholder="0.00"
                                               step=".01"
                                               type="number"
