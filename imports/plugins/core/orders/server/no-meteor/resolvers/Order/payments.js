@@ -18,10 +18,8 @@ export default async function payments(context, order) {
 
       const refunds = await context.queries.refundsByPaymentId(context, {
         order,
-        orderId: order._id,
         paymentId: payment._id,
-        shopId: order.shopId,
-        token: order.token || null
+        shopId: order.shopId
       });
 
 

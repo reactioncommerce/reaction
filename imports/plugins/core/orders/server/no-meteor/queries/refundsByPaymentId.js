@@ -16,8 +16,8 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payment from this order, if found
  */
 export default async function refundsByPaymentId(context, { order: providedOrder, orderId, paymentId, shopId, token } = {}) {
-  if (!providedOrder && (!orderId || !paymentId || !shopId)) {
-    throw new ReactionError("invalid-param", "If order is not provided, then you must provide orderId, paymentId, and shopId arguments");
+  if (!paymentId || !shopId || (!providedOrder && !orderId)) {
+    throw new ReactionError("invalid-param", "You must provide paymentId, shopId, and either order or orderId arguments");
   }
 
   let order = providedOrder;
