@@ -51,7 +51,7 @@ export default async function createRefund(context, input) {
   // When called internally by another plugin, context.isInternalCall
   // can be set to `true` to disable this check.
   if (!isInternalCall && !userHasPermission(["orders", "order/fulfillment"], order.shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "You do not have permission to create a refund");
   }
 
   // Verify payment exists
