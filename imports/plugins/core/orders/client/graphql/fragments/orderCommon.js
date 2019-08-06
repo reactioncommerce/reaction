@@ -164,6 +164,7 @@ export const orderCommonFragment = gql`
       captureErrorMessage
       displayName
       method {
+        canRefund
         displayName
         name
       }
