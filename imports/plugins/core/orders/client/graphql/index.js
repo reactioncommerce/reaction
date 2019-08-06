@@ -20,17 +20,17 @@ export const approveOrderPayments = async ({ orderId, paymentIds, shopId }) => {
     conversionRequests.push({ namespace: "Payment", id: paymentId });
   });
 
-  // const [
-  //   opaqueOrderId,
-  //   opaqueShopId,
-  //   ...opaquePaymentIds
-  // ] = await getOpaqueIds(conversionRequests);
+  const [
+    opaqueOrderId,
+    opaqueShopId,
+    ...opaquePaymentIds
+  ] = await getOpaqueIds(conversionRequests);
 
   return approveOrderPaymentsMutate({
     input: {
-      orderId,
-      paymentIds,
-      shopId
+      orderId: opaqueOrderId,
+      paymentIds: opaquePaymentIds,
+      shopId: opaqueShopId
     }
   });
 };
@@ -46,17 +46,17 @@ export const captureOrderPayments = async ({ orderId, paymentIds, shopId }) => {
     conversionRequests.push({ namespace: "Payment", id: paymentId });
   });
 
-  // const [
-  //   opaqueOrderId,
-  //   opaqueShopId,
-  //   ...opaquePaymentIds
-  // ] = await getOpaqueIds(conversionRequests);
+  const [
+    opaqueOrderId,
+    opaqueShopId,
+    ...opaquePaymentIds
+  ] = await getOpaqueIds(conversionRequests);
 
   return captureOrderPaymentsMutate({
     input: {
-      orderId,
-      paymentIds,
-      shopId
+      orderId: opaqueOrderId,
+      paymentIds: opaquePaymentIds,
+      shopId: opaqueShopId
     }
   });
 };
