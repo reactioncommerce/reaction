@@ -35,7 +35,7 @@ import OrderDetail from "./containers/orderDetailContainer";
 registerOperatorRoute({
   isNavigationLink: false,
   mainComponent: OrderDetail,
-  path: "/orders/:_id"
+  path: "/orders-classic/:_id"
 });
 // To remove with orders-2.0
 // To remove with orders-2.0
@@ -50,7 +50,7 @@ registerOperatorRoute({
 registerOperatorRoute({
   isNavigationLink: false,
   mainComponent: Order,
-  path: "/orders-beta/:_id"
+  path: "/orders/:_id"
 });
 
 /*
