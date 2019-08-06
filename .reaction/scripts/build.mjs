@@ -1,3 +1,3 @@
-import appSetup from "./appSetup";
+import appSetup from "./appSetup.mjs";
 
 appSetup();
