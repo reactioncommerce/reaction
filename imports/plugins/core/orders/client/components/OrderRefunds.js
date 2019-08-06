@@ -17,7 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
-import { i18next, Reaction } from "/client/api";
+import { i18next } from "/client/api";
 import formatMoney from "/imports/utils/formatMoney";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import createRefundMutation from "../graphql/mutations/createRefund";
@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
  * @returns {React.Component} returns a React component
  */
 function OrderRefunds(props) {
-  const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
   const { order } = props;
   const classes = useStyles();
   const { payments } = order;
@@ -100,11 +99,9 @@ function OrderRefunds(props) {
         variables.reason = refundReason;
       }
 
-      if (hasPermission) {
-        mutation({
-          variables
-        });
-      }
+      mutation({
+        variables
+      });
     });
   };
 
@@ -131,9 +128,7 @@ function OrderRefunds(props) {
   };
 
   const handleSubmitForm = () => {
-    if (hasPermission) {
-      this.form.submit();
-    }
+    this.form.submit();
   };
 
   return (
