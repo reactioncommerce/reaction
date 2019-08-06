@@ -1,7 +1,7 @@
-import Log from "./logger";
-import loadPlugins from "./loadPlugins";
-import loadStyles from "./loadStyles";
-import provisionAssets from "./provisionAssets";
+import Log from "./logger.mjs";
+import loadPlugins from "./loadPlugins.mjs";
+import loadStyles from "./loadStyles.mjs";
+import provisionAssets from "./provisionAssets.mjs";
 
 export default function appSetup() {
   let start, sec, ns;

@@ -1,8 +1,8 @@
 import Random from "@reactioncommerce/random";
+import { STRIPE_PACKAGE_NAME } from "../../../lib/constants";
 import getStripeInstanceForShop from "../util/getStripeInstanceForShop";
 
 const METHOD = "credit";
-const PACKAGE_NAME = "reaction-stripe";
 const PAYMENT_METHOD_NAME = "stripe_card";
 
 // NOTE: The "processor" value is lowercased and then prefixed to various payment Meteor method names,
@@ -95,7 +95,7 @@ export default async function stripeCreateAuthorizedPayment(context, input) {
     method: METHOD,
     mode: "authorize",
     name: PAYMENT_METHOD_NAME,
-    paymentPluginName: PACKAGE_NAME,
+    paymentPluginName: STRIPE_PACKAGE_NAME,
     processor: PROCESSOR,
     riskLevel: riskLevelMap[charge.outcome && charge.outcome.risk_level] || "normal",
     shopId,

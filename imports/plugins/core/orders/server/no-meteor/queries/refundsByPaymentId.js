@@ -13,19 +13,19 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @param {String} params.paymentId - Payment ID
  * @param {String} params.shopId - Shop ID for the shop that owns the order
  * @param {String} [params.token] - Anonymous order token
+ * @param {String} [providedOrder] - Order object
  * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payment from this order, if found
  */
-export default async function refundsByPaymentId(context, { orderId, paymentId, shopId, token } = {}) {
-  const { userHasPermission } = context;
-
-  if (!userHasPermission(["orders", "order/fulfillment", "order/view"], shopId)) throw new ReactionError("access-denied", "User does not have permission");
-
+export default async function refundsByPaymentId(context, { orderId, paymentId, shopId, token } = {}, providedOrder) {
   if (!orderId || !paymentId || !shopId) {
     throw new ReactionError("invalid-param", "You must provide orderId, paymentId, and shopId arguments");
   }
 
-  const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
-  const order = await context.collections.Orders.findOne(selector);
+  let order = providedOrder;
+  if (!providedOrder) {
+    const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
+    order = await context.collections.Orders.findOne(selector);
+  }
 
   if (!order) {
     throw new ReactionError("not-found", "Order not found");
