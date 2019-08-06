@@ -15,12 +15,11 @@ export default async function payments(context, order) {
       const xformPayment = xformOrderPayment(payment);
 
       const refunds = await context.queries.refundsByPaymentId(context, {
-        order,
         orderId: order._id,
         paymentId: payment._id,
         shopId: order.shopId,
         token: order.token || null
-      });
+      }, order);
 
 
       if (Array.isArray(refunds)) {

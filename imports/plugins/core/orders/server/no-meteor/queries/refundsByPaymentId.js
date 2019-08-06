@@ -9,14 +9,14 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @summary Query the Orders collection for an order, and returns refunds applied to a specific payment associated with this order
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
- * @param {String} [params.order] - Order object
  * @param {String} params.orderId - Order ID
  * @param {String} params.paymentId - Payment ID
  * @param {String} params.shopId - Shop ID for the shop that owns the order
  * @param {String} [params.token] - Anonymous order token
+ * @param {String} [providedOrder] - Order object
  * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payment from this order, if found
  */
-export default async function refundsByPaymentId(context, { order: providedOrder, orderId, paymentId, shopId, token } = {}) {
+export default async function refundsByPaymentId(context, { orderId, paymentId, shopId, token } = {}, providedOrder) {
   if (!orderId || !paymentId || !shopId) {
     throw new ReactionError("invalid-param", "You must provide orderId, paymentId, and shopId arguments");
   }

@@ -25,7 +25,7 @@ extend type Query {
   refunds(orderId: ID!, shopId: ID!, token: String): [Refund]
 
   "Get refunds applied to a specific payment by payment ID"
-  refundsByPaymentId(order: Order, orderId: ID!, paymentId: ID!, shopId: ID!, token: String): [Refund]
+  refundsByPaymentId(orderId: ID!, paymentId: ID!, shopId: ID!, token: String): [Refund]
 }
 
 extend type Mutation {
