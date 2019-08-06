@@ -68,7 +68,7 @@ function OrderPayments(props) {
   if (hasPermission && canCapturePayment) {
     const paymentIdList = order.payments.map((payment) => payment._id);
     // If any payment we are trying to capture has an elevated risk,
-    // prompt user to make sure they want to capture payemnt
+    // prompt user to make sure they want to capture payment
     if (isPaymentRiskElevated(order, paymentIdList)) {
       capturePaymentsButton =
         <Grid item xs={6} md={6}>

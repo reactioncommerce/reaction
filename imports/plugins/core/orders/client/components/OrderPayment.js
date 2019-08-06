@@ -52,7 +52,7 @@ function OrderPayment(props) {
   let capturePaymentButton;
   if (hasPermission && canCapturePayment) {
     // If any payment we are trying to capture has an elevated risk,
-    // prompt user to make sure they want to capture payemnt
+    // prompt user to make sure they want to capture payment
     if (isPaymentRiskElevated(order, [payment._id])) {
       capturePaymentButton =
         <Grid item xs={12}>

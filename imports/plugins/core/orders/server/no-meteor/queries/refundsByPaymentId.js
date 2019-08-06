@@ -13,7 +13,7 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @param {String} params.paymentId - Payment ID
  * @param {String} params.shopId - Shop ID for the shop that owns the order
  * @param {String} [params.token] - Anonymous order token
- * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payemnt from this order, if found
+ * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payment from this order, if found
  */
 export default async function refundsByPaymentId(context, { orderId, paymentId, shopId, token } = {}) {
   const { userHasPermission } = context;
