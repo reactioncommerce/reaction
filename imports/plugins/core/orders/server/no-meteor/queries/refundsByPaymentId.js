@@ -15,13 +15,16 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @param {String} [params.token] - Anonymous order token
  * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payment from this order, if found
  */
-export default async function refundsByPaymentId(context, { orderId, paymentId, shopId, token } = {}) {
-  if (!orderId || !paymentId || !shopId) {
-    throw new ReactionError("invalid-param", "You must provide orderId, paymentId, and shopId arguments");
+export default async function refundsByPaymentId(context, { order: providedOrder, orderId, paymentId, shopId, token } = {}) {
+  if (!providedOrder && (!orderId || !paymentId || !shopId)) {
+    throw new ReactionError("invalid-param", "If order is not provided, then you must provide orderId, paymentId, and shopId arguments");
   }
 
-  const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
-  const order = await context.collections.Orders.findOne(selector);
+  let order = providedOrder;
+  if (!providedOrder) {
+    const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
+    order = await context.collections.Orders.findOne(selector);
+  }
 
   if (!order) {
     throw new ReactionError("not-found", "Order not found");

@@ -9,6 +9,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @summary Get refunds applied to an order
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - An object of all arguments that were sent by the client
+ * @param {Object} [args.order] - Order object
  * @param {String} args.orderId - ID of the order
  * @param {String} args.paymentId - ID of the payment
  * @param {String} args.shopId - shop ID of the order
@@ -17,9 +18,10 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @return {Promise<Object>|undefined} An Order object
  */
 export default async function refundsByPaymentId(_, args, context) {
-  const { orderId, paymentId, shopId, token } = args;
+  const { order, orderId, paymentId, shopId, token } = args;
 
   return context.queries.refundsByPaymentId(context, {
+    order,
     orderId: decodeOrderOpaqueId(orderId),
     paymentId: decodePaymentOpaqueId(paymentId),
     shopId: decodeShopOpaqueId(shopId),

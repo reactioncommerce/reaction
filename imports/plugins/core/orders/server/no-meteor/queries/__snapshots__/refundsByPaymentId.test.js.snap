@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`throws if orderId isn't supplied 1`] = `"You must provide orderId, paymentId, and shopId arguments"`;
+exports[`throws if orderId isn't supplied 1`] = `"If order is not provided, then you must provide orderId, paymentId, and shopId arguments"`;
 
-exports[`throws if paymentId isn't supplied 1`] = `"You must provide orderId, paymentId, and shopId arguments"`;
+exports[`throws if paymentId isn't supplied 1`] = `"If order is not provided, then you must provide orderId, paymentId, and shopId arguments"`;
 
-exports[`throws if shopId isn't supplied 1`] = `"You must provide orderId, paymentId, and shopId arguments"`;
+exports[`throws if shopId isn't supplied 1`] = `"If order is not provided, then you must provide orderId, paymentId, and shopId arguments"`;
 
 exports[`throws if the order doesn't exist 1`] = `"Order not found"`;
 
