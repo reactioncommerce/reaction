@@ -16,6 +16,7 @@ import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
+import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
 import formatMoney from "/imports/utils/formatMoney";
@@ -162,13 +163,19 @@ function OrderRefunds(props) {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Mutation mutation={createRefundMutation}>
-                      {(mutationFunc) => (
+                      {(mutationFunc, { error }) => (
                         <Form
                           ref={(formRef) => {
                             this.form = formRef;
                           }}
                           onSubmit={(data) => handleCreateRefund(data, mutationFunc)}
                         >
+                          {error &&
+                            <InlineAlert
+                              alertType="error"
+                              message={error.message}
+                            />
+                          }
                           <Grid container spacing={3}>
                             {
                               payments.map((payment) => {
