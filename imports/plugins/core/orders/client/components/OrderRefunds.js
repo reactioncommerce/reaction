@@ -56,11 +56,11 @@ function OrderRefunds(props) {
 
   // useState
   const [labelWidth, setLabelWidth] = useState(0);
-  const [refundReasonSelectValues, setRefundReasonSelectValues] = useState({ reason: "" });
+  const [refundReason, setRefundReason] = useState("");
   const [refundTotal, setRefundTotal] = useState(0.00);
 
   // useEffect
-  // update label width when refund select is activate
+  // update label width when refund select is active
   useEffect(() => {
     if (inputLabel && inputLabel.current) {
       setLabelWidth(inputLabel.current.offsetWidth);
@@ -79,7 +79,6 @@ function OrderRefunds(props) {
 
   const handleCreateRefund = (data, mutation) => {
     const { amounts } = data;
-    const { reason } = refundReasonSelectValues;
 
     // turn form data into an array of payments that provide paymentID and amount
     // then filter out any amounts that are `null` or `0`
@@ -97,8 +96,8 @@ function OrderRefunds(props) {
 
       // Stripe will not accept an empty string or `null` value for the `reason` field,
       // so only include `reason` in the mutation only if its' value is set
-      if (reason) {
-        variables.reason = reason;
+      if (refundReason) {
+        variables.reason = refundReason;
       }
 
       if (hasPermission) {
@@ -128,10 +127,7 @@ function OrderRefunds(props) {
   };
 
   const handleRefundReasonSelectChange = (event) => {
-    setRefundReasonSelectValues((oldValues) => ({
-      ...oldValues,
-      [event.target.name]: event.target.value
-    }));
+    setRefundReason(event.target.value);
   };
 
   const handleSubmitForm = () => {
@@ -258,7 +254,7 @@ function OrderRefunds(props) {
                                     input={<OutlinedInput labelWidth={labelWidth} name="reason" id="reasonInput" />}
                                     name="reason"
                                     onChange={handleRefundReasonSelectChange}
-                                    value={refundReasonSelectValues.reason}
+                                    value={refundReason}
                                   >
                                     <MenuItem value="">
                                       <em>None</em>
