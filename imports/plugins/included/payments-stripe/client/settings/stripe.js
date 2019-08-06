@@ -3,6 +3,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { StripePackageConfig } from "../../lib/collections/schemas";
+import { STRIPE_PACKAGE_NAME } from "../../lib/constants";
 
 /**
  * @summary get Stripe Package record
@@ -10,7 +11,7 @@ import { StripePackageConfig } from "../../lib/collections/schemas";
  */
 function packageData() {
   return Packages.findOne({
-    name: "reaction-stripe",
+    name: STRIPE_PACKAGE_NAME,
     shopId: Reaction.getShopId()
   });
 }
