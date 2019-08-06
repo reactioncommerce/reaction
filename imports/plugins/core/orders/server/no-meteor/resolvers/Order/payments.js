@@ -14,12 +14,12 @@ export default async function payments(context, order) {
     return order.payments.map(async (payment) => {
       const xformPayment = xformOrderPayment(payment);
 
-
-
       const refunds = await context.queries.refundsByPaymentId(context, {
         order,
+        orderId: order._id,
         paymentId: payment._id,
-        shopId: order.shopId
+        shopId: order.shopId,
+        token: order.token || null
       });
 
 
