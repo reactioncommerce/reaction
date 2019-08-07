@@ -1,8 +1,8 @@
-import _ from "lodash";
+/* eslint-disable node/no-missing-require, node/no-unpublished-require */
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Accounts, Groups } from "/lib/collections";
+import { Accounts } from "/lib/collections";
 import { lifecycle } from "recompose";
 import { composeWithTracker } from "./composer";
 

@@ -12,19 +12,17 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * @property {Function} handleRemoveUserFromGroup - function to call on button click
  * @return {Node} React node containing wrapped button
  */
-const GroupsTableButton = ({ account, group, handleRemoveUserFromGroup }) => {
-  return (
-    <div className="group-table-button">
-      <Components.Button
-        bezelStyle="solid"
-        i18nKeyLabel="admin.groups.remove"
-        label="Remove"
-        onClick={handleRemoveUserFromGroup(account, group._id)}
-        status="danger"
-      />
-    </div>
-  );
-};
+const GroupsTableButton = ({ account, group, handleRemoveUserFromGroup }) => (
+  <div className="group-table-button">
+    <Components.Button
+      bezelStyle="solid"
+      i18nKeyLabel="admin.groups.remove"
+      label="Remove"
+      onClick={handleRemoveUserFromGroup(account, group._id)}
+      status="danger"
+    />
+  </div>
+);
 
 GroupsTableButton.propTypes = {
   account: PropTypes.object,

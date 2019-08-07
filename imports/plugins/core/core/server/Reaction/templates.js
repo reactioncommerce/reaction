@@ -63,7 +63,7 @@ export function registerTemplateForMemoryCache(templateInfo, shopId) {
 export function registerTemplateForDatabase(templateInfo) {
   const templateInfoForDatabase = processTemplateInfoForDatabase(templateInfo);
 
-  // Import template into the Assets collecton.
+  // Import template into the Assets collection.
   Assets.update({
     type: "template",
     name: templateInfoForDatabase.name
@@ -84,7 +84,7 @@ export function registerTemplateForDatabase(templateInfo) {
  * @memberof Core
  * @summary Sets parser to Handlebars for string-based templates and
  * React for functions, objects
- * @param  {Object} templateInfo
+ * @param  {Object} templateInfo Template info with parser info
  * @param  {String} templateInfo.template Accepted values: `string`, `function`, `object`
  * @return {Boolean|null}              True on success or null
  */

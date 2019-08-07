@@ -8,7 +8,6 @@ import { EmailTemplates } from "../../lib/collections/schemas";
 import { i18next } from "/client/api";
 import { Templates } from "/lib/collections";
 
-
 /*
  * template templateSettings onCreated
  */
@@ -26,7 +25,6 @@ Template.templateSettings.onCreated(function () {
   });
 });
 
-
 /*
  * template templateSettings helpers
  */
@@ -36,10 +34,11 @@ Template.templateSettings.helpers({
     const noDataMessage = i18next.t("templateGrid.noTemplatesFound");
     const instance = Template.instance();
 
-    //
-    // helper to get and select row from griddle
-    // into blaze to get correct template to edit
-    //
+    /**
+     * @summary helper to get and select row from griddle into blaze to get correct template to edit
+     * @param {Object} options Options with `props` property
+     * @return {undefined}
+     */
     function editRow(options) {
       const currentId = instance.state.get("editingId");
 

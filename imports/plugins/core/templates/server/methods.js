@@ -17,6 +17,7 @@ export const methods = {
    * @method
    * @memberof Templates/Methods
    * @summary Updates email template in Templates collection
+   * @param {Object} details Details
    * @param {String} details._id - id of template to update
    * @param {Object} details.modifier - data to update
    * @return {Number} update template
