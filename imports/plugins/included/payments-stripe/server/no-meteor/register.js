@@ -1,4 +1,5 @@
 /* eslint camelcase: 0 */
+import { STRIPE_PACKAGE_NAME } from "../../lib/constants";
 import schemas from "./schemas";
 import stripeCapturePayment from "./util/stripeCapturePayment";
 import stripeCreateAuthorizedPayment from "./util/stripeCreateAuthorizedPayment";
@@ -13,7 +14,7 @@ import stripeListRefunds from "./util/stripeListRefunds";
 export default async function register(app) {
   await app.registerPlugin({
     label: "Stripe",
-    name: "reaction-stripe",
+    name: STRIPE_PACKAGE_NAME,
     icon: "fa fa-cc-stripe",
     graphQL: {
       schemas

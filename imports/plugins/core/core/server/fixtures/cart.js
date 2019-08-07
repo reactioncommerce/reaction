@@ -1,8 +1,9 @@
+/* eslint-disable require-jsdoc */
 import faker from "faker";
 import _ from "lodash";
 import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
-import rawCollections from "/imports/collections/rawCollections";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import publishProductToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductToCatalog";
 import { Cart, Products } from "/lib/collections";
 import { getShop } from "./shops";
@@ -23,14 +24,8 @@ import { addProduct } from "./products";
  */
 export function getCartItem(options = {}) {
   const product = addProduct();
-  Promise.await(publishProductToCatalog(product, {
-    appEvents: {
-      emit() {},
-      on() {}
-    },
-    collections: rawCollections,
-    getFunctionsOfType: () => []
-  }));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+  Promise.await(publishProductToCatalog(product, context));
   const variant = Products.findOne({ ancestors: [product._id] });
   const childVariants = Products.find({
     ancestors: [
@@ -150,6 +145,10 @@ export function createCart(productId, variantId) {
   return insertedCart;
 }
 
+/**
+ * @description exports cart fixtures
+ * @return {undefined} undefined
+ */
 export default function () {
   /**
    * @name Cart
