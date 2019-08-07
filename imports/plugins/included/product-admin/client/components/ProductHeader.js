@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { i18next } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import { compose, withState } from "recompose";
 import withStyles from "@material-ui/core/styles/withStyles";
 import IconButton from "@material-ui/core/IconButton";
@@ -64,6 +64,9 @@ function ProductHeader(props) {
   }
 
   const currentProduct = variant || product;
+
+  const hasCloneProductPermission = Reaction.hasPermission(["createProduct", "product/admin", "product/clone"], Reaction.getUserId(), Reaction.getShopId());
+  const hasArchiveProductPermission = Reaction.hasPermission(["createProduct", "product/admin", "product/archive"], Reaction.getUserId(), Reaction.getShopId());
 
   // Archive menu item
   let archiveMenuItem = (
@@ -179,22 +182,26 @@ function ProductHeader(props) {
               i18next.t("admin.productTable.bulkActions.makeVisible")
             }
           </MenuItem>
-          <MenuItem
-            onClick={() => {
-              if (product && variant) {
-                // Clone variant
-                onCloneVariant(product._id, variant._id);
-              } else {
-                // Clone product
-                onCloneProduct(product._id);
-              }
+          {hasCloneProductPermission &&
+            <MenuItem
+              onClick={() => {
+                if (product && variant) {
+                  // Clone variant
+                  onCloneVariant(product._id, variant._id);
+                } else {
+                  // Clone product
+                  onCloneProduct(product._id);
+                }
 
-              setMenuAnchorEl(null);
-            }}
-          >
-            {i18next.t("admin.productTable.bulkActions.duplicate")}
-          </MenuItem>
-          {archiveMenuItem}
+                setMenuAnchorEl(null);
+              }}
+            >
+              {i18next.t("admin.productTable.bulkActions.duplicate")}
+            </MenuItem>
+          }
+          {hasArchiveProductPermission &&
+            archiveMenuItem
+          }
         </Menu>
 
       </div>
