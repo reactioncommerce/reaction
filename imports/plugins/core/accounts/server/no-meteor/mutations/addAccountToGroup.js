@@ -42,7 +42,7 @@ export default async function addAccountToGroup(context, input) {
   // has all permissions granted by that group.
   // We can't use `userHasPermission` here because we want to make sure they
   // have ALL the permissions rather than ANY.
-  if (difference(groupPermissions, user.roles[shopId] || []).length > 0) {
+  if (!context.isInternalCall && difference(groupPermissions, user.roles[shopId] || []).length > 0) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

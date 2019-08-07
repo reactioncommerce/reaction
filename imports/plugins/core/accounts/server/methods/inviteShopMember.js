@@ -84,10 +84,18 @@ export default function inviteShopMember(options) {
     userId = user._id;
   }
 
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+
   // If the user already has an account, send informative email, not "invite" email
   if (user && isEmailVerified) {
     // The user already exists, we promote the account, rather than creating a new one
-    Meteor.call("group/addUser", userId, groupId);
+    const account = Accounts.findOne({ userId });
+    if (!account) throw new ReactionError("not-found", "User found but matching account not found");
+
+    Promise.await(context.mutations.addAccountToGroup({ ...context, isInternalCall: true }, {
+      accountId: account._id,
+      groupId
+    }));
 
     // do not send token, as no password reset is needed
     const url = Reaction.absoluteUrl();
@@ -127,7 +135,6 @@ export default function inviteShopMember(options) {
   dataForEmail.groupName = _.startCase(group.name);
 
   // send invitation email from primary shop email
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: primaryShop,
