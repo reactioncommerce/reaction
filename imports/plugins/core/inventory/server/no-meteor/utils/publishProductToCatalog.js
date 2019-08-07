@@ -8,6 +8,9 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function publishProductToCatalog(catalogProduct, { context }) {
   const { productId, shopId } = catalogProduct;
+  // If the product being published does not have variants, do not
+  // attempt to publish inventory information.
+  if (!catalogProduct.variants.length) return;
 
   // Most inventory information is looked up and included at read time, when
   // preparing a response to a GraphQL query, but we need to store some
