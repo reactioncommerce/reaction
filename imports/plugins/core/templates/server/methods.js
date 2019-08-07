@@ -3,6 +3,7 @@ import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Templates } from "/lib/collections";
+import { EmailTemplates } from "./no-meteor/simpleSchemas";
 
 /**
  * @file Methods for Templates. Run these methods using `Meteor.call()`.
@@ -33,11 +34,15 @@ export const methods = {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
+    const { _id, modifier } = details;
+
+    EmailTemplates.validate(modifier, { modifier: true });
+
     return Templates.update({
-      _id: details._id,
+      _id,
       type: "email",
       shopId // Ensure that the template we're attempting to update is owned by the active shop.
-    }, details.modifier);
+    }, modifier);
   }
 };
 
