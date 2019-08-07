@@ -2,7 +2,6 @@ import { Meteor } from "meteor/meteor";
 import Logger from "@reactioncommerce/logger";
 import methods from "./methods";
 import "./publications";
-import "./hooks";
 import startup from "./startup";
 
 // handle any unhandled Promise rejections because
