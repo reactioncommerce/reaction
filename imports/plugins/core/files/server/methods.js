@@ -75,7 +75,7 @@ export async function removeMedia(fileRecordId) {
 export function updateMediaPriorities(sortedMediaIDs) {
   check(sortedMediaIDs, [String]);
 
-  if (!Reaction.hasPermission("createProduct")) {
+  if (!Reaction.hasPermission(["createProduct", "product/admin", "product/update"])) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
@@ -125,7 +125,7 @@ export function updateMediaPriority(mediaId, priority) {
   check(mediaId, String);
   check(priority, Number);
 
-  if (!Reaction.hasPermission("createProduct")) {
+  if (!Reaction.hasPermission(["createProduct", "product/admin", "product/update"])) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

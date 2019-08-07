@@ -102,7 +102,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
 
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package
-  if (Reaction.hasPermission(["owner", "createProduct"], this.userId, product.shopId)) {
+  if (Reaction.hasPermission(["owner", "createProduct", "product/admin"], this.userId, product.shopId)) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };

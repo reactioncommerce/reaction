@@ -82,7 +82,7 @@ function composer(props, onData) {
     dashboardHeaderTemplate: props.data.dashboardHeader,
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
-    hasCreateProductAccess: Reaction.hasPermission("createProduct", Reaction.getUserId(), Reaction.getShopId()),
+    hasCreateProductAccess: Reaction.hasPermission(["createProduct", "product/admin", "product/create"], Reaction.getUserId(), Reaction.getShopId()),
     shopId: Reaction.getShopId(),
     shops,
 

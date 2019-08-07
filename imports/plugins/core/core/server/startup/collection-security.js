@@ -126,7 +126,7 @@ export default function () {
 
   Security.permit(["insert", "update", "remove"])
     .collections([MediaRecords])
-    .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct"] })
+    .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct", "product/admin"] })
     .ifFileBelongsToShop();
 
   /*
@@ -145,7 +145,7 @@ export default function () {
    */
 
   Products.permit(["insert", "update", "remove"])
-    .ifHasRoleForActiveShop({ role: ["createProduct"] })
+    .ifHasRoleForActiveShop({ role: ["createProduct", "product/admin"] })
     .ifShopIdMatches()
     .allowInClientCode();
 
