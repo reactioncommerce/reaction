@@ -14,11 +14,17 @@ import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/g
  * @param {Object} context - an object containing the per-request state
  * @return {Object} AddAccountToGroupPayload
  */
-export default function addAccountToGroup(parentResult, { input }, context) {
-  const { accountId, groupId, clientMutationId = null } = input;
-  const dbAccountId = decodeAccountOpaqueId(accountId);
-  const dbGroupId = decodeGroupOpaqueId(groupId);
-  const group = context.callMeteorMethod("group/addUser", dbAccountId, dbGroupId);
+export default async function addAccountToGroup(parentResult, { input }, context) {
+  const { accountId: opaqueAccountId, groupId: opaqueGroupId, clientMutationId = null } = input;
+
+  const accountId = decodeAccountOpaqueId(opaqueAccountId);
+  const groupId = decodeGroupOpaqueId(opaqueGroupId);
+
+  const group = await context.mutations.addAccountToGroup(context, {
+    accountId,
+    groupId
+  });
+
   return {
     group,
     clientMutationId
