@@ -1,8 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
-import { Templates } from "/lib/collections";
-import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * @name EmailTemplates
@@ -82,8 +78,4 @@ export const EmailTemplates = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
-
-registerSchema("EmailTemplates", EmailTemplates);
-
-Templates.attachSchema(EmailTemplates, { selector: { type: "email" } });
+});
