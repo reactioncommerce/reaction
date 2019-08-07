@@ -15,12 +15,13 @@ test("without first limits to first 20", async () => {
     hasPreviousPage: true
   });
 
-  expect(mockCursor.limit.mock.calls).toEqual([[20], [21]]);
+  expect(mockCursor.limit.mock.calls).toEqual([[20], [1]]);
   expect(mockCursor.skip).toHaveBeenCalled();
 });
 
 test("returns hasNextPage correctly when no more items exist", async () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(11));
+  mockCursor.count
+    .mockReturnValueOnce(Promise.resolve(0));
   const result = await applyOffsetPaginationToMongoCursor(mockCursor, { offset: 1, first: 10 });
 
   expect(result).toEqual({
