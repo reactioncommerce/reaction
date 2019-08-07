@@ -21,6 +21,11 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
   const query = { shopId };
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
+  
+  // Use `filter` to filter out results on the server
+  if (filter) {
+    query.name = { $regex: escapeRegExp(filter), $options: "i" };
+  }
 
   if (context.userHasPermission(["owner", "admin"], shopId)) {
     if (shouldIncludeDeleted === true) {
@@ -32,11 +37,6 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
       query.isVisible = { $in: [false, true] };
     } else {
       query.isVisible = true;
-    }
-
-    // Use `filter` to filter out resutls on the server
-    if (filter) {
-      query.name = { $regex: escapeRegExp(filter), $options: "i" };
     }
   } else {
     query.isDeleted = false;
