@@ -27,6 +27,10 @@ const handlers = {
       return updateMethodCall(groupId);
     };
 
+    /**
+     * @param {String} groupId groupId
+     * @return {undefined} undefined
+     */
     function updateMethodCall(groupId) {
       Meteor.call("group/addUser", account._id, groupId, (err) => {
         if (err) {
@@ -39,6 +43,9 @@ const handlers = {
       });
     }
 
+    /**
+     * @return {Component} Alert component
+     */
     function alertConfirm() {
       let changeOwnerWarn = "changeShopOwnerWarn";
       if (Reaction.getShopId() === Reaction.getPrimaryShopId()) {
@@ -66,6 +73,9 @@ const handlers = {
         })
         .catch(() => false);
 
+      /**
+       * @return {undefined} undefined
+       */
       function removeMethodCall() {
         Meteor.call("group/removeUser", account._id, groupId, (err) => {
           if (err) {
@@ -76,6 +86,9 @@ const handlers = {
       }
     };
 
+    /**
+     * @return {Component} Alert component
+     */
     function alertConfirm() {
       return Alert({
         title: i18next.t("admin.settings.removeUser"),
