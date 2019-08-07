@@ -36,9 +36,6 @@ export default async function applyOffsetPaginationToMongoCursor(cursor, { first
     nextCursor.skip(offset + limit);
     nextCursor.limit(1);
     const nextDoc = await nextCursor.count();
-
-    console.log(nextDoc);
-
     hasNextPage = !!nextDoc;
   }
 
