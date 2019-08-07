@@ -19,7 +19,6 @@
           "createGroupError": "Det gick inte att skapa en grupp",
           "updateGroupError": "Det gick inte att uppdatera gruppen",
           "changeShopOwnerWarn": "Du håller på att byta affärsägare. Nuvarande ägare kommer att ersättas",
-          "changeMktOwnerWarn": "Du håller på att ändra marknadsplatsägaren. Nuvarande ägare kommer att ersättas",
           "removeUserWarn": "Du håller på att ta bort en användare grom en grupp. Användaren kommer att förlora tillhörande behörigheter",
           "accountsSettingsLabel": "Konton",
           "accountsSettingsTitle": "Konton",

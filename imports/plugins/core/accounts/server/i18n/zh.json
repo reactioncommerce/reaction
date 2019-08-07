@@ -19,7 +19,6 @@
           "createGroupError": "创建组时出错",
           "updateGroupError": "更新组时出错",
           "changeShopOwnerWarn": "您即将改变店主。当前所有者将被替换",
-          "changeMktOwnerWarn": "您即将更改Marketplace所有者。当前所有者将被替换",
           "removeUserWarn": "您即将删除用户群组。用户将丢失相关权限",
           "accountsSettingsLabel": "帐户",
           "accountsSettingsTitle": "帐户",
