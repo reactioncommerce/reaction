@@ -318,7 +318,6 @@ registerSchema("StorefrontUrls", StorefrontUrls);
  * @property {Layout[]} layout optional
  * @property {ShopTheme} theme optional
  * @property {BrandAsset[]} brandAssets optional
- * @property {String} appVersion optional
  * @property {Date} createdAt optional
  * @property {Date} updatedAt optional
  * @property {Object[]} paymentMethods blackbox, default value: `[]`
@@ -525,10 +524,6 @@ export const Shop = new SimpleSchema({
   },
   "brandAssets.$": {
     type: BrandAsset
-  },
-  "appVersion": {
-    type: String,
-    optional: true
   },
   "createdAt": {
     type: Date,
