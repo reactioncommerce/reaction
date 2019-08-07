@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import packageJson from "/package.json";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -663,28 +662,6 @@ export default {
       return marketplace.settings;
     }
     return {};
-  },
-
-  /**
-   * @name getAppVersion
-   * @method
-   * @memberof Core
-   * @return {String} App version
-   */
-  getAppVersion() {
-    return Shops.findOne().appVersion;
-  },
-
-  /**
-   * @name setAppVersion
-   * @method
-   * @memberof Core
-   * @return {undefined} no return value
-   */
-  setAppVersion() {
-    const { version } = packageJson;
-    Logger.info(`Reaction Version: ${version}`);
-    Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   },
 
   /**
