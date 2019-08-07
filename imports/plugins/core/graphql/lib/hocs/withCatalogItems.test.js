@@ -1,6 +1,7 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
-import { MockedProvider } from "react-apollo/test-utils";
+import { MockedProvider } from "@apollo/react-testing";
 import waitForFalseyProp from "/imports/test-utils/helpers/waitForFalseyProp";
 import getCatalogItems from "../queries/getCatalogItems";
 import withCatalogItems from "./withCatalogItems";
@@ -105,11 +106,14 @@ const mocks = [
 ];
 
 test("renders child component with correct catalogItems connection", async () => {
-  const wrapper = mount((
-    <MockedProvider mocks={mocks}>
-      <TestComponent shopId={fakeOpaqueShopId} tagId={fakeOpaqueTagId} />
-    </MockedProvider>
-  ));
+  let wrapper;
+  act(() => {
+    wrapper = mount((
+      <MockedProvider mocks={mocks}>
+        <TestComponent shopId={fakeOpaqueShopId} tagId={fakeOpaqueTagId} />
+      </MockedProvider>
+    ));
+  });
 
   await waitForFalseyProp(wrapper, "MockComponent", "isLoadingCatalogItems");
 
@@ -120,11 +124,14 @@ test("renders child component with correct catalogItems connection", async () =>
 });
 
 test("doesn't query GraphQL if no shopId is provided", async () => {
-  const wrapper = mount((
-    <MockedProvider mocks={mocks}>
-      <TestComponent />
-    </MockedProvider>
-  ));
+  let wrapper;
+  act(() => {
+    wrapper = mount((
+      <MockedProvider mocks={mocks}>
+        <TestComponent />
+      </MockedProvider>
+    ));
+  });
 
   const mockComponentInstance = wrapper.find("MockComponent");
   expect(mockComponentInstance.prop("catalogItems")).toBe(undefined);
@@ -132,11 +139,14 @@ test("doesn't query GraphQL if no shopId is provided", async () => {
 });
 
 test("returns an empty array for catalogItems if invalid shopId is provided", async () => {
-  const wrapper = mount((
-    <MockedProvider mocks={mocks}>
-      <TestComponent shopId="invalidShopId" />
-    </MockedProvider>
-  ));
+  let wrapper;
+  act(() => {
+    wrapper = mount((
+      <MockedProvider mocks={mocks}>
+        <TestComponent shopId="invalidShopId" />
+      </MockedProvider>
+    ));
+  });
 
   await waitForFalseyProp(wrapper, "MockComponent", "isLoadingCatalogItems");
 
