@@ -118,7 +118,7 @@ export default function inviteShopMember(options) {
       });
     }
 
-    // set token to be used for first login for the new accoun
+    // set token to be used for first login for the new account
     const tokenUpdate = {
       "services.password.reset": { token, email, when: new Date() },
       name

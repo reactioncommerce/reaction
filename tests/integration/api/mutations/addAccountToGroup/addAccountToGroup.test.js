@@ -9,9 +9,12 @@ jest.setTimeout(300000);
 
 let accountOpaqueId;
 let addAccountToGroup;
+let customerGroup;
+let customerGroupOpaqueId;
 let mockAdminAccount;
 let mockAdminAccountWithMissingPermission;
 let mockOtherAccount;
+let shopId;
 let shopManagerGroup;
 let shopManagerGroupOpaqueId;
 let shopOpaqueId;
@@ -20,12 +23,12 @@ let testApp;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  const shopId = await testApp.insertPrimaryShop();
+  shopId = await testApp.insertPrimaryShop();
 
   mockAdminAccount = Factory.Accounts.makeOne({
     _id: "mockAdminAccount",
     roles: {
-      [shopId]: ["admin", "shopManagerGroupPermission", "someOtherPermission"]
+      [shopId]: ["admin", "shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
     },
     shopId
   });
@@ -56,7 +59,16 @@ beforeAll(async () => {
   });
   await testApp.collections.Groups.insertOne(shopManagerGroup);
 
+  customerGroup = Factory.Groups.makeOne({
+    name: "customer",
+    permissions: ["customerGroupPermission"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   accountOpaqueId = encodeAccountOpaqueId(mockOtherAccount._id);
+  customerGroupOpaqueId = encodeGroupOpaqueId(customerGroup._id);
   shopOpaqueId = encodeShopOpaqueId(shopId);
   shopManagerGroupOpaqueId = encodeGroupOpaqueId(shopManagerGroup._id);
 
@@ -104,14 +116,14 @@ test("anyone can add account to group if they have ALL the group permissions", a
   expect(account.groups).toEqual([shopManagerGroup._id]);
 
   const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopManagerGroup.shopId]).toEqual(shopManagerGroup.permissions);
+  expect(user.roles[shopId]).toEqual(shopManagerGroup.permissions);
 });
 
 test("anyone cannot add account to group if they do not have ALL the group permissions", async () => {
   await testApp.setLoggedInUser(mockAdminAccountWithMissingPermission);
 
   const beforeUser = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(beforeUser.roles[shopManagerGroup.shopId]).toBe(undefined);
+  expect(beforeUser.roles[shopId]).toBe(undefined);
 
   try {
     await addAccountToGroup({ accountId: accountOpaqueId, groupId: shopManagerGroupOpaqueId });
@@ -123,5 +135,25 @@ test("anyone cannot add account to group if they do not have ALL the group permi
   expect(account.groups.length).toBe(0);
 
   const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopManagerGroup.shopId]).toBe(undefined);
+  expect(user.roles[shopId]).toBe(undefined);
+});
+
+test("permissions from the account's previous group are removed", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  await addAccountToGroup({ accountId: accountOpaqueId, groupId: shopManagerGroupOpaqueId });
+
+  let account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
+  expect(account.groups).toEqual([shopManagerGroup._id]);
+
+  let user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
+  expect(user.roles[shopId]).toEqual(shopManagerGroup.permissions);
+
+  await addAccountToGroup({ accountId: accountOpaqueId, groupId: customerGroupOpaqueId });
+
+  account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
+  expect(account.groups).toEqual([customerGroup._id]);
+
+  user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
+  expect(user.roles[shopId]).toEqual(customerGroup.permissions);
 });
