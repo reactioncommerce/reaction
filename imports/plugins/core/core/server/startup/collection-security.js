@@ -33,6 +33,10 @@ const {
  * database operation is executed in a server method.
  */
 
+/**
+  * @description security definitions for collections
+  * @returns {undefined} undefined
+  */
 export default function () {
   /*
    * Define some additional rule chain methods

@@ -92,7 +92,17 @@ function composer(props, onData) {
   });
 }
 
+/**
+ * @name ToolbarContainer
+ * @param {React.Component} Comp wrapped component
+ * @returns {React.Component} returns a React component
+ */
 export default function ToolbarContainer(Comp) {
+  /**
+   * @name CompositeComponent
+   * @param {Object} props Component props
+   * @returns {React.Component} Wrapped Toolbar component
+   */
   function CompositeComponent(props) {
     return (
       <AdminContextProvider>
