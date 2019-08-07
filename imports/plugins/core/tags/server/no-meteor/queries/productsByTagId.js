@@ -18,7 +18,7 @@ export default async function productsByTagId(context, params) {
   const { Products, Tags } = collections;
 
   // Check for owner or admin permissions from the user before allowing the query
-  if (!userHasPermission(["owner", "admin"], shopId)) {
+  if (!userHasPermission(["owner", "admin", "tag/admin", "tag/edit"], shopId)) {
     throw new ReactionError("access-denied", "User does not have permission");
   }
 
