@@ -126,7 +126,7 @@ export default function () {
 
   Security.permit(["insert", "update", "remove"])
     .collections([MediaRecords])
-    .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct", "product/admin"] })
+    .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct", "product/admin", "product/update"] })
     .ifFileBelongsToShop();
 
   /*

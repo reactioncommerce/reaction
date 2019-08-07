@@ -272,7 +272,7 @@ function composer(props, onData) {
   });
 
   onData(null, {
-    editable: Reaction.hasPermission(props.permission || ["createProduct", "product/admin"]),
+    editable: Reaction.hasPermission(props.permission || ["createProduct", "product/admin", "product/update"]),
     media: sortMedia(media),
     userId: Reaction.getUserId(),
     shopId: Reaction.getShopId(),
