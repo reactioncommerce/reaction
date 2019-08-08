@@ -19,7 +19,7 @@ export default async function payments(context, order) {
         paymentId: payment._id,
         shopId: order.shopId,
         token: order.token || null
-      });
+      }, order);
 
 
       if (Array.isArray(refunds)) {

@@ -29,9 +29,13 @@ Migrations.add({
   version: 69,
   up() {
     const { Catalog } = rawCollections;
-    Catalog.dropIndex("product.productId", handleError);
-    Catalog.createIndex("product.productId", { unique: true, background: true }, handleError);
-    Catalog.dropIndex("product.product._id", handleError);
-    Catalog.createIndex("product.product._id", { unique: true, background: true }, handleError);
+    Catalog.dropIndex("product.productId", (err) => {
+      if (err) handleError(err);
+      else Catalog.createIndex("product.productId", { unique: true, background: true }, handleError);
+    });
+    Catalog.dropIndex("product.product._id", (err) => {
+      if (err) handleError(err);
+      else Catalog.createIndex("product.product._id", { unique: true, background: true }, handleError);
+    });
   }
 });

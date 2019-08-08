@@ -52,18 +52,6 @@ test("throws if the order doesn't exist", async () => {
   })).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("throws if permission check fails", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
-  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(order));
-
-  await expect(refunds(mockContext, {
-    orderId: order._id,
-    shopId: order.shopId
-  })).rejects.toThrowErrorMatchingSnapshot();
-
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders", "order/fulfillment", "order/view"], "SHOP_ID");
-});
-
 test("should call refunds with the proper parameters and return a list of refunds for an order", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(order));
