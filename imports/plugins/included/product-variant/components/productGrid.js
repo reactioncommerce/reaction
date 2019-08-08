@@ -200,14 +200,20 @@ class ProductGrid extends Component {
           anchorEl={bulkActionMenuAnchorEl}
           open={Boolean(bulkActionMenuAnchorEl)}
           onClose={this.handleCloseBulkActions}
-        > 
-          <Button
+        >
+          <MenuItem
+            disabled
+            variant="default"
+          >
+            Actions
+          </MenuItem>
+
+          <MenuItem
             onClick={this.handleShowFilterByFile}
             variant="default"
-            fullWidth
           >
             {i18next.t("admin.productTable.bulkActions.filterByFile")}
-          </Button>
+          </MenuItem>
 
           <ConfirmDialog
             title={i18next.t("admin.productTable.bulkActions.publishTitle", { count })}
