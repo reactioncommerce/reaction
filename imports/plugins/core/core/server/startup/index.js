@@ -25,8 +25,6 @@ export default function startup() {
 
   Reaction.whenAppInstanceReady(register);
 
-  Reaction.setAppVersion();
-
   importAllTranslations();
 
   CollectionSecurity();
