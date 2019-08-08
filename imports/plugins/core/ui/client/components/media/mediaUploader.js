@@ -71,12 +71,15 @@ class MediaUploader extends Component {
         disabled={!!isUploading}
         onDrop={this.uploadFiles}
       >
-        <div className="contents">
+      {({getRootProps, getInputProps}) => (
+        <div className="contents" {...getRootProps()}>
+          <input {...getInputProps()} />
           {!!isUploading && <div style={{ marginLeft: "auto", marginRight: "auto" }}><Components.CircularProgress indeterminate={true} /></div>}
           {!isUploading && <span className="title">
             <Components.Translation defaultValue="Click or drop images here to upload media" i18nKey="mediaUploader.dropFiles" />
           </span>}
         </div>
+      )}
       </Dropzone>
     );
   }
