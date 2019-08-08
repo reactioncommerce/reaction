@@ -6,7 +6,7 @@ import { orderBy, uniqueId } from "lodash";
 import Dropzone from "react-dropzone";
 import styled from "styled-components";
 import { Form } from "reacto-form";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
@@ -285,7 +285,9 @@ class TagForm extends Component {
         <Fragment>
           <HeroEditButton>
             <Button
-              isShortHeight
+              variant="contained"
+              color="primary"
+              size="small"
               onClick={this.handleDeleteHeroImage}
             >
               {i18next.t("admin.tags.form.delete")}
@@ -298,8 +300,9 @@ class TagForm extends Component {
       content = (
         <HeroUploadButton>
           <Button
+            variant="outlined"
             actionType="secondary"
-            isShortHeight
+            size="small"
             onClick={this.handleDropzoneClick}
           >
             {i18next.t("admin.tags.form.uploadImage")}
