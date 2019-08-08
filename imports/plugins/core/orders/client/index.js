@@ -16,14 +16,6 @@ import "./templates/list/pdf.js";
 // To remove with orders-2.0
 // To remove with orders-2.0
 import "./helpers";
-import "./templates/list/summary.html";
-import "./templates/list/summary.js";
-import "./templates/workflow/shippingTracking.html";
-import "./templates/workflow/shippingTracking.js";
-import "./templates/workflow/workflow.html";
-import "./templates/workflow/workflow.js";
-import "./templates/orders.html";
-import "./templates/orders.js";
 import "./containers/invoiceContainer";
 import "./containers/orderSummaryContainer";
 import "../lib/extendShopSchema";
