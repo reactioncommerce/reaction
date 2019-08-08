@@ -12,8 +12,11 @@ import Button from "/imports/client/ui/components/Button";
 import captureOrderPaymentsMutation from "../graphql/mutations/captureOrderPayments";
 
 const styles = (theme) => ({
-  fontColorDanger: {
+  dangerText: {
     color: theme.palette.colors.red
+  },
+  extraEmphasisText: {
+    fontWeight: theme.typography.fontWeightSemiBold
   }
 });
 
@@ -49,7 +52,7 @@ function OrderPayment(props) {
   let capturePaymentButton;
   if (hasPermission && canCapturePayment) {
     // If any payment we are trying to capture has an elevated risk,
-    // prompt user to make sure they want to capture payemnt
+    // prompt user to make sure they want to capture payment
     if (isPaymentRiskElevated(order, [payment._id])) {
       capturePaymentButton =
         <Grid item xs={12}>
@@ -100,11 +103,11 @@ function OrderPayment(props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} md={6}>
-        <Typography variant="body1">
+        <Typography paragraph variant="h4">
           {displayName}
         </Typography>
         {riskLevel !== "normal" && payment.mode !== "captured" &&
-          <Typography className={classes.fontColorDanger} variant="body2">
+          <Typography className={classes.dangerText} variant="body2">
             Payment risk level: {capitalizeString(riskLevel)}
           </Typography>
         }
@@ -118,13 +121,13 @@ function OrderPayment(props) {
           Status: {displayStatuses[status]}
         </Typography>
         { captureErrorMessage &&
-          <Typography className={classes.fontColorDanger} variant="body2" paragraph>
+          <Typography className={classes.dangerText} variant="body2" paragraph>
             Capture error: {captureErrorMessage}
           </Typography>
         }
       </Grid>
       <Grid item xs={6} md={6}>
-        <Typography variant="body1" align="right">
+        <Typography className={classes.extraEmphasisText} variant="body1" align="right">
           {amount.displayAmount}
         </Typography>
       </Grid>
