@@ -10,7 +10,7 @@ import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton
 import OrderStatusChip from "./OrderStatusChip";
 
 const styles = (theme) => ({
-  fontWeightSemiBold: {
+  extraEmphasisText: {
     fontWeight: theme.typography.fontWeightSemiBold
   },
   openSidebarButton: {
@@ -62,7 +62,7 @@ function OrderHeader(props) {
       <Grid item xs={12}>
         <Grid container alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h3" className={classes.fontWeightSemiBold} inline={true}>
+            <Typography variant="h3" className={classes.extraEmphasisText} inline={true}>
               {i18next.t("order.order", "Order")} - {referenceId}
             </Typography>
           </Grid>

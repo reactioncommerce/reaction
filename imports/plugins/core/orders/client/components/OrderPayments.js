@@ -10,7 +10,8 @@ import Typography from "@material-ui/core/Typography";
 import { i18next, Reaction } from "/client/api";
 import Button from "/imports/client/ui/components/Button";
 import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
-import { approveOrderPayments } from "../graphql";
+import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
+import approveOrderPaymentsMutation from "../graphql/mutations/approveOrderPayments";
 import captureOrderPaymentsMutation from "../graphql/mutations/captureOrderPayments";
 import { isPaymentRiskElevated } from "../helpers";
 import OrderPayment from "./OrderPayment";
@@ -46,10 +47,16 @@ function OrderPayments(props) {
       // allowed to be captured. This is a legacy workflow step, and we can
       // look into removing it in the future. For now, we just combined it into
       // the capture flow.
-      const paymentIdsNeedingApproval = order.payments.filter((payment) => paymentIdList.includes(payment._id) && ["adjustments", "created"].includes(payment.status)).map((payment) => payment._id); // eslint-disable-line
-      const approve = () => approveOrderPayments({ orderId: order._id, paymentIds: paymentIdsNeedingApproval, shopId: order.shop._id });
+      const paymentIdsNeedingApproval = order.payments.filter((payment) => paymentIdList.includes(payment._id) && ["adjustments", "created"].includes(payment.status)).map((payment) => payment._id); // eslint-disable-line max-len
+      const approveOrderPaymentsMutate = simpleGraphQLClient.createMutationFunction(approveOrderPaymentsMutation);
       if (Array.isArray(paymentIdsNeedingApproval) && paymentIdsNeedingApproval.length !== 0) {
-        await approve();
+        await approveOrderPaymentsMutate({
+          input: {
+            orderId: order._id,
+            paymentIds: paymentIdList,
+            shopId: order.shop._id
+          }
+        });
       }
 
       return mutation({
@@ -68,7 +75,7 @@ function OrderPayments(props) {
   if (hasPermission && canCapturePayment) {
     const paymentIdList = order.payments.map((payment) => payment._id);
     // If any payment we are trying to capture has an elevated risk,
-    // prompt user to make sure they want to capture payemnt
+    // prompt user to make sure they want to capture payment
     if (isPaymentRiskElevated(order, paymentIdList)) {
       capturePaymentsButton =
         <Grid item xs={6} md={6}>

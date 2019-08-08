@@ -51,6 +51,8 @@
         "refundItemsSuccess": "Refund was successfully applied",
         "refundItemsTitle": "Refund Items",
         "refundItemsWait": "Payment is not yet captured",
+        "refundNotSupported": "Payment method does not support refunds",
+        "refundsNotSupported": "Refunds are not supported with the payment method(s) used for this order",
         "refundReason" :{
           "customerRequest": "Customer request",
           "duplicatePayment": "Duplicate payment",
@@ -63,7 +65,7 @@
       "orderCard": {
         "orderSummary": {
           "showOrderSummary": "Show order summary",
-          "title": "Order Summary"
+          "title": "Order summary"
         }
       },
       "shippingAddress": "Shipping address",
@@ -107,7 +109,7 @@
             "refundTotal": "Refund Total"
           },
           "fulfillment": "Fulfillment",
-          "orderDetails": "Order Details",
+          "orderDetails": "Order details",
           "shipmentTracking": "Shipment",
 
           "fulfillmentGroups": {
