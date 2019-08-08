@@ -64,6 +64,19 @@ const HeroUploadButton = styled.div`
   width: 100%;
 `;
 
+function TagDropzone({children,...dzoneProps}) {
+  return (
+    <Dropzone {...dzoneProps}>
+    {({getRootProps, getInputProps}) => (
+        <div {...getRootProps()}>
+          <input {...getInputProps()} />
+          {children}
+        </div>
+    )}
+    </Dropzone>
+  );
+}
+
 class TagForm extends Component {
   static propTypes = {
     isLoadingShopId: PropTypes.bool,
@@ -302,6 +315,7 @@ class TagForm extends Component {
           <Button
             variant="outlined"
             actionType="secondary"
+            color="secondary"
             size="small"
             onClick={this.handleDropzoneClick}
           >
@@ -312,17 +326,14 @@ class TagForm extends Component {
     }
 
     return (
-      <DropzoneWrapper>
-        <Dropzone
-          disableClick
-          className="dropzone"
-          onDrop={this.handleDrop}
-          ref={(inst) => { this.dropzone = inst; }}
-          accept="image/jpg, image/png, image/jpeg"
-        >
-          {content}
-        </Dropzone>
-      </DropzoneWrapper>
+      <TagDropzone
+        disableClick
+        className="dropzone"
+        onDrop={this.handleDrop}
+        accept="image/jpg, image/png, image/jpeg"
+      >
+        {content}
+      </TagDropzone>
     );
   }
 
@@ -577,7 +588,7 @@ class TagForm extends Component {
                   }
 
                   <CardActions disableSpacing>
-                    <Button actionType="secondary" onClick={this.handleSubmitForm}>
+                    <Button color="secondary" onClick={this.handleSubmitForm}>
                       {i18next.t("admin.tags.form.save")}
                     </Button>
                   </CardActions>
