@@ -1,8 +1,8 @@
 // Assumes Node 8.x
 import _ from "lodash";
 import childProcess from "child_process";
-import Log from "./logger";
-import appSetup from "./appSetup";
+import Log from "./logger.mjs";
+import appSetup from "./appSetup.mjs";
 
 function run() {
   appSetup();
