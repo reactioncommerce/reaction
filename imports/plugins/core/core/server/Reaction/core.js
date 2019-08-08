@@ -1,12 +1,10 @@
 import Logger from "@reactioncommerce/logger";
-import packageJson from "/package.json";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 import { getUserId } from "./accountUtils";
 
@@ -128,15 +126,6 @@ export default {
   },
 
   /**
-   * @name registerTemplate
-   * @method
-   * @memberof Core
-   * @summary Registers Templates into the Templates Collection
-   * @return {function} Registers template
-   */
-  registerTemplate,
-
-  /**
    * @name hasPermission
    * @method
    * @memberof Core
@@ -213,7 +202,7 @@ export default {
    * @param  {array} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
    * @param  {string} userId Optional userId, defaults to logged in userId
    *                                           Must pass this.userId from publications to avoid error!
-   * @return {array} Array of shopIds that the user has at least one of the given set of roles for
+   * @returns {Array} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = getUserId()) {
     // Owner permission for a shop supersedes grantable permissions, so we always check for owner permissions as well
@@ -673,28 +662,6 @@ export default {
       return marketplace.settings;
     }
     return {};
-  },
-
-  /**
-   * @name getAppVersion
-   * @method
-   * @memberof Core
-   * @return {String} App version
-   */
-  getAppVersion() {
-    return Shops.findOne().appVersion;
-  },
-
-  /**
-   * @name setAppVersion
-   * @method
-   * @memberof Core
-   * @return {undefined} no return value
-   */
-  setAppVersion() {
-    const { version } = packageJson;
-    Logger.info(`Reaction Version: ${version}`);
-    Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   },
 
   /**

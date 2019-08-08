@@ -8,6 +8,8 @@ Template.shopSelect.helpers({
     if (Reaction.Subscriptions.PrimaryShop.ready() && Reaction.Subscriptions.MerchantShops.ready()) {
       return Shops.find();
     }
+
+    return null;
   },
 
   isActiveShop(shopId) {

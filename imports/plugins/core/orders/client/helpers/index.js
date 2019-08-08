@@ -2,6 +2,26 @@ import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 
 /**
+ * @method isPaymentRiskElevated
+ * @private
+ * @summary Gets the riskLevel on each payment object of an order, and checks if any payment has an elevated risk.
+ * @param {Object} order - order object
+ * @param {Array} paymentIds - paymentIds to check
+ * @return {boolean} is there an elevated risk level value for any payment on this order?
+ * */
+export function isPaymentRiskElevated(order, paymentIds) {
+  const paymentsToAssessRisk = (order.payments || []).filter((payment) => paymentIds.includes(payment._id) && payment.mode !== "captured");
+  const isPaymentNormalRisk = paymentsToAssessRisk.every((payment) => !payment.riskLevel || payment.riskLevel === "normal");
+
+  return !isPaymentNormalRisk;
+}
+
+
+// Below here are deprecated Meteor helpers.
+// Keep them for now, but they can be removed once
+// meteor is completely removed from the orders panel.
+
+/**
  * @param {String} orderId The order ID
  * @param {String} paymentId The ID of the payment to approve
  * @returns {Promise<null>} null
@@ -22,7 +42,7 @@ export async function approvePayment(orderId, paymentId) {
  * @method getOrderRiskBadge
  * @private
  * @summary Selects appropriate color badge (e.g  danger, warning) value based on risk level
- * @param {string} riskLevel - risk level value on the payment
+ * @param {String} riskLevel - risk level value on the payment
  * @return {string} label - style color class based on risk level
  */
 export function getOrderRiskBadge(riskLevel) {
@@ -45,7 +65,7 @@ export function getOrderRiskBadge(riskLevel) {
  * @private
  * @summary Gets the risk label on the payment object for a shop on an order.
  * An empty string is returned if the value is "normal" because we don't flag a normal charge
- * @param {object} order - order object
+ * @param {Object} order - order object
  * @return {string} label - risk level value (if risk level is not normal)
  */
 export function getOrderRiskStatus(order) {
@@ -64,7 +84,7 @@ export function getOrderRiskStatus(order) {
  * @method getTaxRiskStatus
  * @private
  * @summary Gets the tax status of the order.
- * @param {object} order - order object
+ * @param {Object} order - order object
  * @return {boolean} label - true if the tax was not submitted by user.
  */
 export function getTaxRiskStatus(order) {

@@ -46,6 +46,7 @@ function enableReactionPackage(reactionPackage) {
         "warning"
       );
     }
+    return null;
   });
 }
 
@@ -64,6 +65,7 @@ function disableReactionPackage(reactionPackage) {
       showCancelButton: true
     },
     () => {
+      // eslint-disable-next-line consistent-return
       Meteor.call("shop/togglePackage", self.packageId, true, (error, result) => {
         if (result === 1) {
           return Alerts.toast(

@@ -13,14 +13,14 @@ import withCreateProduct from "../hocs/withCreateProduct";
  */
 function ProductTable({ onCreateProduct }) {
   return (
-    <Grid container spacing={24}>
+    <Grid container spacing={3}>
       <Grid item sm={12}>
         <Button
           color="primary"
           onClick={onCreateProduct}
           variant="contained"
         >
-          {i18next.t("admin.createProduct") || "Create Product"}
+          {i18next.t("admin.createProduct") || "Create product"}
         </Button>
       </Grid>
       <Grid item sm={12}>

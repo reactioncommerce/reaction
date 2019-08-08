@@ -61,7 +61,12 @@ export default class GeneralTaxSettings extends Component {
       <div className="clearfix">
         <Form ref={(formRef) => { this.form = formRef; }} onSubmit={onSubmit} validator={validator} value={settingsDoc}>
           <Field name="primaryTaxServiceName" label={i18next.t("admin.taxSettings.primaryTaxServiceName")} labelFor={primaryTaxServiceNameInputId}>
-            <Select id={primaryTaxServiceNameInputId} name="primaryTaxServiceName" options={this.taxServicesOptions} placeholder={i18next.t("admin.taxSettings.primaryTaxServiceNamePlaceholder")} />
+            <Select
+              id={primaryTaxServiceNameInputId}
+              name="primaryTaxServiceName"
+              options={this.taxServicesOptions}
+              placeholder={i18next.t("admin.taxSettings.primaryTaxServiceNamePlaceholder")}
+            />
             <ErrorsBlock names={["primaryTaxServiceName"]} />
           </Field>
           <Field name="fallbackTaxServiceName" label={i18next.t("admin.taxSettings.fallbackTaxServiceName")} labelFor={fallbackTaxServiceNameInputId}>

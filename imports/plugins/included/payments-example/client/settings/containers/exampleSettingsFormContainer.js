@@ -19,9 +19,9 @@ class ExampleSettingsFormContainer extends Component {
     this.saveUpdate = this.saveUpdate.bind(this);
   }
 
-  handleChange(e) {
-    e.preventDefault();
-    this.setState({ apiKey: e.target.value });
+  handleChange(event) {
+    event.preventDefault();
+    this.setState({ apiKey: event.target.value });
   }
 
   handleSubmit(settings) {

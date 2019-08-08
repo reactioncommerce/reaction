@@ -37,6 +37,7 @@ class ParcelSizeSettings extends Component {
   * @param {Object} card - card component
   * @param {String} cardName - card name
   * @param {Boolean} isExpanded - boolean value from card component
+  * @returns {undefined}
   */
   handleCardExpand = (event, card, cardName, isExpanded) => {
     if (this.props.onCardExpand) {
@@ -48,10 +49,10 @@ class ParcelSizeSettings extends Component {
   }
 
   /**
-  * renderComponent
+  * @name renderComponent
   * @method render()
   * @summary React component for displaying default parcel size form
-  * @return {Node} React node containing form view
+  * @returns {Node} React node containing form view
   */
   render() {
     const { hiddenFields, shownFields, fieldsProp } = this.props;

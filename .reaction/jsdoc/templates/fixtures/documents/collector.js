@@ -21,7 +21,7 @@ var CollectorBase = dcl( Destroyable, {
 		}
 		/**
 		 * The collection that being managed
-		 * @type {object|array}
+		 * @type {Object|Array}
 		 */
 		this.heap = obj || {};
 		// mixin the probe
@@ -43,7 +43,7 @@ var CollectorBase = dcl( Destroyable, {
 		 * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
 		 * @function
 		 * @memberOf module:documents/collector~CollectorBase#
-		 * @returns {array}
+		 * @returns {Array}
 		 */
 		this.shuffle = sys.bind( sys.shuffle, this, this.heap );
 
@@ -60,9 +60,9 @@ var CollectorBase = dcl( Destroyable, {
 	 * Iterate over each item in the collection, or a subset that matches a query. This supports two signatures:
 	 * `.each(query, function)` and `.each(function)`. If you pass in a query, only the items that match the query
 	 * are iterated over.
-	 * @param {object=} query A query to evaluate
+	 * @param {Object=} query A query to evaluate
 	 * @param {function(val, key)} iterator Function to execute against each item in the collection
-	 * @param {object=} thisobj The value of `this`
+	 * @param {Object=} thisobj The value of `this`
 	 */
 	each          : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -75,14 +75,14 @@ var CollectorBase = dcl( Destroyable, {
 	},
 	/**
 	 * Returns the collection as an array. If it is already an array, it just returns that.
-	 * @return {array}
+	 * @returns {Array}
 	 */
 	toArray       : function () {
 		return sys.toArray( this.heap );
 	},
 	/**
 	 * Supports conversion to a JSON string or for passing over the wire
-	 * @return {object}
+	 * @return {Object}
 	 * @returns {Object|array}
 	 */
 	toJSON        : function () {
@@ -92,9 +92,9 @@ var CollectorBase = dcl( Destroyable, {
 	 * Maps the contents to an array by iterating over it and transforming it. You supply the iterator. Supports two signatures:
 	 * `.map(query, function)` and `.map(function)`. If you pass in a query, only the items that match the query
 	 * are iterated over.
-	 * @param {object=} query A query to evaluate
+	 * @param {Object=} query A query to evaluate
 	 * @param {function(val, key)} iterator Function to execute against each item in the collection
-	 * @param {object=} thisobj The value of `this`
+	 * @param {Object=} thisobj The value of `this`
 	 */
 	map           : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -110,10 +110,10 @@ var CollectorBase = dcl( Destroyable, {
 	 * callback, where each successive callback execution consumes the return value of the previous execution. If accumulator
 	 * is not passed, the first element of the collection will be used as the initial accumulator value.
 	 * are iterated over.
-	 * @param {object=} query A query to evaluate
+	 * @param {Object=} query A query to evaluate
 	 * @param {function(result, val, key)} iterator The function that will be executed in each item in the collection
 	 * @param {*=} accumulator Initial value of the accumulator.
-	 * @param {object=} thisobj The value of `this`
+	 * @param {Object=} thisobj The value of `this`
 	 * @return {*}
 	 */
 	reduce        : function ( query, iterator, accumulator, thisobj ) {
@@ -129,11 +129,11 @@ var CollectorBase = dcl( Destroyable, {
 	 * Creates an object composed of keys returned from running each element
 	 * of the collection through the given callback. The corresponding value of each key
 	 * is the number of times the key was returned by the callback.
-	 * @param {object=} query A query to evaluate. If you pass in a query, only the items that match the query
+	 * @param {Object=} query A query to evaluate. If you pass in a query, only the items that match the query
 	 * are iterated over.
 	 * @param  {function(value, key, collection)} iterator
-	 * @param {object=} thisobj The value of `this`
-	 * @return {object}
+	 * @param {Object=} thisobj The value of `this`
+	 * @return {Object}
 	 */
 	countBy       : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -148,11 +148,11 @@ var CollectorBase = dcl( Destroyable, {
 	 * Creates an object composed of keys returned from running each element of the collection through the callback.
 	 * The corresponding value of each key is an array of elements passed to callback that returned the key.
 	 * The callback is invoked with three arguments: (value, index|key, collection).
-	 * @param {object=} query A query to evaluate . If you pass in a query, only the items that match the query
+	 * @param {Object=} query A query to evaluate . If you pass in a query, only the items that match the query
 	 * are iterated over.
 	 * @param {function(value, key, collection)} iterator
-	 * @param {object=} thisobj The value of `this`
-	 * @return {object}
+	 * @param {Object=} thisobj The value of `this`
+	 * @return {Object}
 	 */
 	groupBy       : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -166,9 +166,9 @@ var CollectorBase = dcl( Destroyable, {
 	/**
 	 * Reduce the collection to a single value. Supports two signatures:
 	 * `.pluck(query, function)` and `.pluck(function)`
-	 * @param {object=} query The query to evaluate. If you pass in a query, only the items that match the query
+	 * @param {Object=} query The query to evaluate. If you pass in a query, only the items that match the query
 	 * are iterated over.
-	 * @param {string} property The property that will be 'plucked' from the contents of the collection
+	 * @param {String} property The property that will be 'plucked' from the contents of the collection
 	 * @return {*}
 	 */
 	pluck         : function ( query, property ) {
@@ -184,11 +184,11 @@ var CollectorBase = dcl( Destroyable, {
 	},
 	/**
 	 * Returns a sorted copy of the collection.
-	 * @param {object=} query The query to evaluate. If you pass in a query, only the items that match the query
+	 * @param {Object=} query The query to evaluate. If you pass in a query, only the items that match the query
 	 * are iterated over.
 	 * @param {function(value, key)} iterator
-	 * @param {object=} thisobj The value of `this`
-	 * @return {array}
+	 * @param {Object=} thisobj The value of `this`
+	 * @returns {Array}
 	 */
 	sortBy        : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -202,10 +202,10 @@ var CollectorBase = dcl( Destroyable, {
 	/**
 	 * Retrieves the maximum value of an array. If callback is passed,
 	 * it will be executed for each value in the array to generate the criterion by which the value is ranked.
-	 * @param {object=} query A query to evaluate . If you pass in a query, only the items that match the query
+	 * @param {Object=} query A query to evaluate . If you pass in a query, only the items that match the query
 	 * are iterated over.
 	 * @param {function(value, key, collection)} iterator
-	 * @param {object=} thisobj The value of `this`
+	 * @param {Object=} thisobj The value of `this`
 	 * @return {number}
 	 */
 	max           : function ( query, iterator, thisobj ) {
@@ -220,10 +220,10 @@ var CollectorBase = dcl( Destroyable, {
 	/**
 	 * Retrieves the minimum value of an array. If callback is passed,
 	 * it will be executed for each value in the array to generate the criterion by which the value is ranked.
-	 * @param {object=} query A query to evaluate . If you pass in a query, only the items that match the query
+	 * @param {Object=} query A query to evaluate . If you pass in a query, only the items that match the query
 	 * are iterated over.
 	 * @param {function(value, key, collection)} iterator
-	 * @param {object=} thisobj The value of `this`
+	 * @param {Object=} thisobj The value of `this`
 	 * @return {number}
 	 */
 	min           : function ( query, iterator, thisobj ) {
@@ -273,7 +273,7 @@ var ACollector = dcl( CollectorBase, {
 			this.heap = obj || [];
 			/**
 			 * Creates an array of array elements not present in the other arrays using strict equality for comparisons, i.e. ===.
-			 * @returns {array}
+			 * @returns {Array}
 			 */
 			this.difference = sys.bind( sys.difference, this, this.heap );
 			/**
@@ -329,10 +329,10 @@ var ACollector = dcl( CollectorBase, {
 		/**
 		 * Flattens a nested array (the nesting can be to any depth). If isShallow is truthy, array will only be flattened a single level.
 		 * If callback is passed, each element of array is passed through a callback before flattening.
-		 * @param {object=} query A query to evaluate . If you pass in a query, only the items that match the query
+		 * @param {Object=} query A query to evaluate . If you pass in a query, only the items that match the query
 		 * are iterated over.
 		 * @param {function(value, key, collection)} iterator,
-		 * @param {object=} thisobj The value of `this`
+		 * @param {Object=} thisobj The value of `this`
 		 * @return {number}
 		 */
 		flatten     : function ( query, iterator, thisobj ) {
@@ -380,8 +380,8 @@ exports.object = function ( obj ) {
  Returns true if all items match the query. Aliases as `all`
  @function
 
- @param {object} qu The query to execute
- @returns {boolean}
+ @param {Object} qu The query to execute
+ @returns {Boolean}
  @name every
  @memberOf module:documents/collector~CollectorBase#
  */
@@ -391,8 +391,8 @@ exports.object = function ( obj ) {
  Returns true if any of the items match the query. Aliases as `any`
  @function
 
- @param {object} qu The query to execute
- @returns {boolean}
+ @param {Object} qu The query to execute
+ @returns {Boolean}
  @memberOf module:documents/collector~CollectorBase#
  @name some
  */
@@ -401,8 +401,8 @@ exports.object = function ( obj ) {
 /**
  Returns the set of unique records that match a query
 
- @param {object} qu The query to execute.
- @return {array}
+ @param {Object} qu The query to execute.
+ @returns {Array}
  @memberOf module:documents/collector~CollectorBase#
  @name unique
  @method
@@ -412,8 +412,8 @@ exports.object = function ( obj ) {
  Returns true if all items match the query. Aliases as `every`
  @function
 
- @param {object} qu The query to execute
- @returns {boolean}
+ @param {Object} qu The query to execute
+ @returns {Boolean}
  @name all
  @memberOf module:documents/collector~CollectorBase#
  */
@@ -423,8 +423,8 @@ exports.object = function ( obj ) {
  Returns true if any of the items match the query. Aliases as `all`
  @function
 
- @param {object} qu The query to execute
- @returns {boolean}
+ @param {Object} qu The query to execute
+ @returns {Boolean}
  @memberOf module:documents/collector~CollectorBase#
  @name any
  */
@@ -433,8 +433,8 @@ exports.object = function ( obj ) {
 /**
  Remove all items in the object/array that match the query
 
- @param {object} qu The query to execute. See {@link module:ink/probe.queryOperators} for the operators you can use.
- @return {object|array} The array or object as appropriate without the records.
+ @param {Object} qu The query to execute. See {@link module:ink/probe.queryOperators} for the operators you can use.
+ @return {Object|Array} The array or object as appropriate without the records.
  @memberOf module:documents/collector~CollectorBase#
  @name remove
  @method
@@ -444,8 +444,8 @@ exports.object = function ( obj ) {
  Returns the first record that matches the query and returns its key or index depending on whether `obj` is an object or array respectively.
  Aliased as `seekKey`.
 
- @param {object} qu The query to execute.
- @returns {object}
+ @param {Object} qu The query to execute.
+ @returns {Object}
  @memberOf module:documents/collector~CollectorBase#
  @name findOneKey
  @method
@@ -455,8 +455,8 @@ exports.object = function ( obj ) {
 /**
  Returns the first record that matches the query. Aliased as `seek`.
 
- @param {object} qu The query to execute.
- @returns {object}
+ @param {Object} qu The query to execute.
+ @returns {Object}
  @memberOf module:documents/collector~CollectorBase#
  @name findOne
  @method
@@ -467,8 +467,8 @@ exports.object = function ( obj ) {
  Find all records that match a query and returns the keys for those items. This is similar to {@link module:ink/probe.find} but instead of returning
  records, returns the keys. If `obj` is an object it will return the hash key. If 'obj' is an array, it will return the index
 
- @param {object} qu The query to execute.
- @returns {array}
+ @param {Object} qu The query to execute.
+ @returns {Array}
  @memberOf module:documents/collector~CollectorBase#
  @name findKeys
  @method
@@ -478,8 +478,8 @@ exports.object = function ( obj ) {
 /**
  Find all records that match a query
 
- @param {object} qu The query to execute.
- @returns {array} The results
+ @param {Object} qu The query to execute.
+ @returns {Array} The results
  @memberOf module:documents/collector~CollectorBase#
  @name find
  @method
@@ -488,8 +488,8 @@ exports.object = function ( obj ) {
 /**
  Updates all records in obj that match the query. See {@link module:ink/probe.updateOperators} for the operators that are supported.
 
- @param {object} qu The query which will be used to identify the records to updated
- @param {object} setDocument The update operator. See {@link module:ink/probe.updateOperators}
+ @param {Object} qu The query which will be used to identify the records to updated
+ @param {Object} setDocument The update operator. See {@link module:ink/probe.updateOperators}
  @memberOf module:documents/collector~CollectorBase#
  @name update
  @method

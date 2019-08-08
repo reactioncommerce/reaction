@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import childProcess from 'child_process';
 import _ from 'lodash';
-import Log from './logger';
-import { exists, getDirectories } from './fs';
-import pluginConfig from "../pluginConfig";
+import Log from './logger.mjs';
+import { exists, getDirectories } from './fs.mjs';
+import pluginConfig from "../pluginConfig.js";
 
 // add a message to the top of the plugins import file
 const importFileMessage = `
@@ -94,7 +94,7 @@ function getImportPaths(baseDirPath) {
       Log.info(`Installing dependencies for ${plugin}...\n`);
 
       try {
-        childProcess.execSync(`cd ${baseDirPath}${plugin} && meteor npm i`, { stdio: 'inherit' });
+        childProcess.execSync(`cd ${baseDirPath}${plugin} && npm i`, { stdio: 'inherit' });
       } catch (err) {
         Log.error(`Failed to install npm dependencies for plugin: ${plugin}`);
         process.exit(1);

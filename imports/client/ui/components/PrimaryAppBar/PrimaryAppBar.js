@@ -12,7 +12,7 @@ import { UIContext } from "../../context/UIContext";
 
 const styles = (theme) => ({
   action: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   },
   primarySidebarOpen: {
     ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen

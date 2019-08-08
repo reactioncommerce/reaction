@@ -1,0 +1,9 @@
+query simpleInventoryQuery($shopId: ID!, $productConfiguration: ProductConfigurationInput!) {
+  simpleInventory(shopId: $shopId, productConfiguration: $productConfiguration) {
+    canBackorder
+    inventoryInStock
+    inventoryReserved
+    isEnabled
+    lowInventoryWarningThreshold
+  }
+}

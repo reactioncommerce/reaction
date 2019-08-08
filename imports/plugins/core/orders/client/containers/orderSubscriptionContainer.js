@@ -30,6 +30,8 @@ function composer(props, onData) {
       currentPage
     });
   }
+
+  return null;
 }
 
 export default composeWithTracker(composer, Components.Loading)(OrderSubscription);

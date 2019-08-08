@@ -10,17 +10,17 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import ChevronRight from "mdi-material-ui/ChevronRight";
 import DotsHorizontalCircleIcon from "mdi-material-ui/DotsHorizontalCircle";
-import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
+import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
 
 const styles = (theme) => ({
   root: {
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 4
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(4)
   },
   breadcrumbs: {
     display: "flex",
     alignItems: "center",
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   breadcrumbIcon: {
     fontSize: 14
@@ -123,7 +123,7 @@ function ProductHeader(props) {
               className={classes.breadcrumbLink}
               to={`/operator/products/${product._id}/${parentVariant._id}`}
             >
-              {parentVariant.optionTitle || "Untitled Variant"}
+              {parentVariant.optionTitle || parentVariant.title || "Untitled Variant"}
             </Link>
           </Fragment>
         )}
@@ -135,7 +135,7 @@ function ProductHeader(props) {
               className={classes.breadcrumbLink}
               to={`/operator/products/${variant.ancestors.join("/")}/${variant._id}`}
             >
-              {variant.optionTitle || "Untitled Variant"}
+              {variant.optionTitle || variant.title || "Untitled Variant"}
             </Link>
           </Fragment>
         )}
@@ -211,6 +211,7 @@ ProductHeader.propTypes = {
   onRestoreProduct: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   option: PropTypes.object,
+  parentVariant: PropTypes.object,
   product: PropTypes.object,
   setMenuAnchorEl: PropTypes.func.isRequired,
   variant: PropTypes.object

@@ -189,6 +189,8 @@ class AuthContainer extends Component {
         />
       );
     }
+
+    return null;
   }
 
   render() {
@@ -207,6 +209,12 @@ class AuthContainer extends Component {
   }
 }
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   onData(null, { currentRoute: Router.current() });
 }

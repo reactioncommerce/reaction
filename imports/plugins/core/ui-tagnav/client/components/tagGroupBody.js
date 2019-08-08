@@ -21,7 +21,8 @@ class TagGroupBody extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { parentTag, tagsByKey, tagIds } = nextProps.tagGroupBodyProps;
     this.setState({ tagIds, parentTag, tagsByKey });
   }
@@ -81,7 +82,7 @@ class TagGroupBody extends Component {
 
     // Set local state so the component does't have to wait for a round-trip
     // to the server to get the updated list of variants
-    this.setState(newState, () => {
+    return this.setState(newState, () => {
       _.debounce(() => this.props.onTagSort(this.state.tagIds, this.state.parentTag), 500)();
     });
   }
@@ -128,6 +129,8 @@ class TagGroupBody extends Component {
         />
       ));
     }
+
+    return null;
   }
 
   render() {

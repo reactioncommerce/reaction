@@ -25,6 +25,7 @@ Migrations.add({
           .map((user) => user.roles && user.roles[shop._id]);
         // sorts the array of permission sets to contain only unique sets to avoid creating groups with same permissions
         const permissionsArray = sortUniqueArray(customPermissions);
+        // eslint-disable-next-line consistent-return
         permissionsArray.forEach((permissions, index) => {
           if (!permissions) { return null; }
           Logger.debug(`creating custom group for shop ${shop.name}`);
@@ -123,16 +124,16 @@ Migrations.add({
  * and returns this: [["product", "tag"], ["product", "shop", "tag"], ["shop", "tag"]]
  */
 function sortUniqueArray(multiArray) {
-  const sorted = multiArray.map((x) => {
-    if (!x) { return []; }
-    return x.sort();
+  const sorted = multiArray.map((array) => {
+    if (!array) { return []; }
+    return array.sort();
   }).sort();
   const uniqueArray = [];
   uniqueArray.push(sorted[0]);
 
-  for (let i = 1; i < sorted.length; i += 1) {
-    if (JSON.stringify(sorted[i]) !== JSON.stringify(sorted[i - 1])) {
-      uniqueArray.push(sorted[i]);
+  for (let inc = 1; inc < sorted.length; inc += 1) {
+    if (JSON.stringify(sorted[inc]) !== JSON.stringify(sorted[inc - 1])) {
+      uniqueArray.push(sorted[inc]);
     }
   }
   return uniqueArray;

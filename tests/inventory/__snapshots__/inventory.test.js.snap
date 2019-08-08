@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws access-denied when getting simpleInventory if not an admin 1`] = `[GraphQLError: Access denied]`;
-
-exports[`throws access-denied when updating simpleInventory if not an admin 1`] = `[GraphQLError: Access denied]`;

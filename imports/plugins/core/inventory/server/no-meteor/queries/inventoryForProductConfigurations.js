@@ -1,4 +1,5 @@
-import SimpleSchema from "simpl-schema";
+import validateInventoryInput from "../utils/validateInventoryInput";
+import validateInventoryPluginResult from "../utils/validateInventoryPluginResults";
 
 const ALL_FIELDS = [
   "canBackorder",
@@ -30,55 +31,6 @@ const DEFAULT_SOLD_OUT_INFO = {
   isSoldOut: true
 };
 
-const productConfigurationSchema = new SimpleSchema({
-  isSellable: Boolean,
-  productId: String,
-  productVariantId: String
-});
-
-const inputSchema = new SimpleSchema({
-  "fields": {
-    type: Array,
-    optional: true
-  },
-  "fields.$": {
-    type: String,
-    allowedValues: ALL_FIELDS
-  },
-  "productConfigurations": Array,
-  "productConfigurations.$": productConfigurationSchema,
-  "shopId": String
-});
-
-const inventoryInfoSchema = new SimpleSchema({
-  canBackorder: Boolean,
-  inventoryAvailableToSell: {
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  inventoryInStock: {
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  inventoryReserved: {
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  isLowQuantity: Boolean
-});
-
-const responseProductConfigurationSchema = new SimpleSchema({
-  productId: String,
-  productVariantId: String
-});
-
-const pluginResultSchema = new SimpleSchema({
-  inventoryInfo: {
-    type: inventoryInfoSchema,
-    optional: true
-  },
-  productConfiguration: responseProductConfigurationSchema
-});
 
 /**
  * @summary Gets inventory results for multiple product configs
@@ -98,10 +50,15 @@ async function getInventoryResults(context, input) {
     // eslint-disable-next-line no-await-in-loop
     const pluginResults = await inventoryFn(context, input);
 
-    try {
-      pluginResultSchema.validate(pluginResults);
-    } catch (error) {
-      throw new Error(`Response from "inventoryForProductConfigurations" type function was invalid: ${error.message}`);
+    /**
+     * Custom validation function is replacing what used to be a call to simpl-schema.
+     * However, simpl-schema validate() method on moderately large payloads adds a pretty significant
+     * performance penalty, each call on average taking 40ms.
+     * Please don't replace with simpl-schema.
+     */
+    const validationErrors = validateInventoryPluginResult(pluginResults);
+    if (validationErrors.length) {
+      throw new Error(`Response from "inventoryForProductConfigurations" type function was invalid: ${validationErrors.join("\n")}`);
     }
 
     // Add only those with inventory info to final results.
@@ -152,7 +109,16 @@ export default async function inventoryForProductConfigurations(context, input) 
   const { collections } = context;
   const { Products } = collections;
 
-  inputSchema.validate(input);
+  /**
+   * Custom validation function is replacing what used to be a call to simpl-schema.
+   * However, simpl-schema validate() method on moderately large payloads adds a pretty significant
+   * performance penalty, each call on average taking 40ms.
+   * Please don't replace with simpl-schema.
+   */
+  const validationErrors = validateInventoryInput(input);
+  if (validationErrors.length) {
+    throw new Error(`Input passed into "inventoryForProductConfigurations" was invalid: ${validationErrors.join("\n")}`);
+  }
 
   const { fields = ALL_FIELDS, productConfigurations, shopId } = input;
 

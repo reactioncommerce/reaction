@@ -11,16 +11,16 @@ import { UIContext } from "../../context/UIContext";
 
 const styles = (theme) => ({
   action: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   },
   content: {
-    paddingTop: theme.spacing.unit,
+    paddingTop: theme.spacing(),
     marginLeft: "-1px",
     marginRight: "-1px"
   },
   title: {
     flex: 1,
-    paddingLeft: theme.spacing.unit
+    paddingLeft: theme.spacing()
   }
 });
 

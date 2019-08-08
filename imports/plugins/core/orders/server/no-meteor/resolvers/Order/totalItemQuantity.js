@@ -1,5 +1,5 @@
 /**
- * @name "Order.totalItemQuantity"
+ * @name Order/totalItemQuantity
  * @method
  * @memberof Order/GraphQL
  * @summary Calculates the total quantity of items in the order and returns a number
