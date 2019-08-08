@@ -6,14 +6,13 @@ import CloseIcon from "mdi-material-ui/Close";
 import ImportIcon from "mdi-material-ui/Download";
 import Dropzone from "react-dropzone";
 import { i18next } from "/client/api";
-import withCreateProduct from "../hocs/withCreateProduct";
-import Chip from "@reactioncommerce/catalyst/Chip";
-import csv from "csv";
 import { Session } from "meteor/session";
+import Chip from "@reactioncommerce/catalyst/Chip";
+import withCreateProduct from "../hocs/withCreateProduct";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   leftIcon: {
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(1)
   },
   helpText: {
     marginLeft: "20px",
@@ -37,47 +36,47 @@ const useStyles = makeStyles(theme => ({
  * @returns {Node} React node
  */
 function ProductTable({ onCreateProduct }) {
-  const [files,setFiles] = useState([]);
+  const [files, setFiles] = useState([]);
 
-  const handleDrop = useCallback(accepted => {
+  const handleDrop = useCallback((accepted) => {
     if (accepted.length === 0) return;
     setFiles(accepted);
   });
 
-  const handleDelete = useCallback( deleted_filename => {
-    const newFiles = files.filter(file => file.name !== deleted_filename);
+  const handleDelete = useCallback((deletedFilename) => {
+    const newFiles = files.filter((file) => file.name !== deletedFilename);
     setFiles(newFiles);
   });
 
-  const importFiles = useCallback( () => {
+  const importFiles = useCallback(() => {
     let productIds = [];
 
-    files.map( file => {
+    files.map((file) => {
       const output = [];
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onloadend = () => {
-        const parse = require('csv-parse');
+        const parse = require("csv-parse");
 
         parse(reader.result, {
           trim: true,
           skip_empty_lines: true
         })
-        .on('readable', function() {
-          let record;
-          while( record = this.read()) {
-            output.push(record);
-          }
-        })
-        .on('end', function() {
-          output.map( outputarray => {
-            productIds = productIds.concat(outputarray);
+          .on("readable", function () {
+            let record;
+            while (record = this.read()) {
+              output.push(record);
+            }
+          })
+          .on("end", function () {
+            output.map((outputarray) => {
+              productIds = productIds.concat(outputarray);
+            });
+            Session.set("filterByProductIds", productIds);
           });
-          Session.set( "filterByProductIds", productIds );
-        });
       };
     });
-});
+  });
 
   const classes = useStyles();
 
@@ -95,16 +94,16 @@ function ProductTable({ onCreateProduct }) {
             title="Filter products by file"
           />
           <CardContent>
-              { files.length > 0 ? (
+            { files.length > 0 ? (
               <Grid container spacing={1} className={classes.cardContainer}>
                 <Grid item sm={12}>
-                  {files.map(file => <Chip label={file.name} onDelete={() => handleDelete(file.name)} />)}
+                  {files.map((file) => <Chip label={file.name} onDelete={() => handleDelete(file.name)} />)}
                 </Grid>
                 <Grid item sm={12}>
                   <Button
                     variant="contained"
                     color="primary"
-                    style={{ float: "right"}}
+                    style={{ float: "right" }}
                     onClick={importFiles}
                   >
                     Filter products
@@ -122,7 +121,7 @@ function ProductTable({ onCreateProduct }) {
                     onDrop={handleDrop}
                     ref={(inst) => { this.dropzone = inst; }}
                     accept="text/csv"
-                    >
+                  >
                     <Button
                       variant="contained"
                       color="primary"
