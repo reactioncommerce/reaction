@@ -28,7 +28,6 @@ import "./containers/invoiceContainer";
 import "./containers/orderSummaryContainer";
 import "../lib/extendShopSchema";
 
-export { ProductImage } from "./components/productImage";
 
 import OrderDetail from "./containers/orderDetailContainer";
 
