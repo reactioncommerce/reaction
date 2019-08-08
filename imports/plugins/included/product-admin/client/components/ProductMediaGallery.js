@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Dropzone from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import { i18next } from "/client/api";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -23,20 +23,19 @@ function ProductMediaGallery(props) {
   if (editable) {
     const hasMedia = Array.isArray(media) && media.length > 0;
 
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({
+      onDrop: (files) => {
+        if (files.length === 0) return;
+        props.onDrop(files);
+      },
+      multiple: true,
+      disablePreview: true,
+      accept: "image/jpg, image/png, image/jpeg",
+      disableClick: true
+    });  
+
     return (
-      <div className="rui media-gallery">
-        <Dropzone
-          className="rui gallery-drop-pane"
-          disableClick
-          multiple
-          disablePreview
-          onDrop={(files) => {
-            if (files.length === 0) return;
-            props.onDrop(files);
-          }}
-          ref={(inst) => { this.dropzone = inst; }}
-          accept="image/jpg, image/png, image/jpeg"
-        >
+        <div className="rui media-gallery">
           <Table padding="dense">
             <TableHead>
               <TableRow>
@@ -66,22 +65,19 @@ function ProductMediaGallery(props) {
                 </TableRow>
               )}
               <TableRow>
-                <TableCell colSpan={3}>
+                <TableCell colSpan={3} {...getRootProps({className: 'dropzone'})}>
                   <Button
                     fullWidth
-                    onClick={() => {
-                      this.dropzone && this.dropzone.open();
-                    }}
                     size="large"
                   >
+                    <input {...getInputProps()} />
                     {"Drag image or click to upload"}
                   </Button>
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
-        </Dropzone>
-      </div>
+        </div>
     );
   }
 
