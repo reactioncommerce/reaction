@@ -4,7 +4,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "mdi-material-ui/Close";
 import ImportIcon from "mdi-material-ui/Download";
-import Dropzone from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import { i18next } from "/client/api";
 import { Session } from "meteor/session";
 import Chip from "@reactioncommerce/catalyst/Chip";
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 function ProductTable({ onCreateProduct }) {
   const [files, setFiles] = useState([]);
 
-  const handleDrop = useCallback((accepted) => {
+  const onDrop = useCallback((accepted) => {
     if (accepted.length === 0) return;
     setFiles(accepted);
   });
@@ -80,6 +80,14 @@ function ProductTable({ onCreateProduct }) {
       };
       return;
     });
+  });
+
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+    onDrop,
+    multiple: true,
+    disablePreview: true,
+    accept: "text/csv",
+    disableClick: true
   });
 
   const classes = useStyles();
@@ -131,26 +139,15 @@ function ProductTable({ onCreateProduct }) {
             ) : (
               <Grid container spacing={1} className={classes.cardContainer}>
                 <Grid item sm={12}>
-                  <Dropzone
-                    className={classes.dropzone}
-                    disableClick
-                    multiple
-                    disablePreview
-                    onDrop={handleDrop}
-                    ref={(inst) => { this.dropzone = inst; }}
-                    accept="text/csv"
+                  <Button 
+                    {...getRootProps({className: 'dropzone'})}
+                    variant="contained"
+                    color="primary"
                   >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        this.dropzone && this.dropzone.open();
-                      }}
-                    >
+                    <input {...getInputProps()} />
                       <ImportIcon className={classes.leftIcon}/>
                       Import
-                    </Button>
-                  </Dropzone>
+                  </Button>
                   <Typography variant="h5" display="inline" className={classes.helpText}>
                     Import a .csv file with a list of product IDs, separated by commas.
                   </Typography>
