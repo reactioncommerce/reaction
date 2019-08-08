@@ -16,13 +16,7 @@ import "./templates/list/pdf.js";
 // To remove with orders-2.0
 // To remove with orders-2.0
 import "./helpers";
-import "./containers/invoiceContainer";
-import "./containers/orderSummaryContainer";
 import "../lib/extendShopSchema";
-
-
-import OrderDetail from "./containers/orderDetailContainer";
-
 registerOperatorRoute({
   isNavigationLink: false,
   mainComponent: OrderDetail,
