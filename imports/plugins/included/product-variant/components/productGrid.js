@@ -203,6 +203,8 @@ class ProductGrid extends Component {
         > 
           <Button
             onClick={this.handleShowFilterByFile}
+            variant="default"
+            fullWidth
           >
             {i18next.t("admin.productTable.bulkActions.filterByFile")}
           </Button>
