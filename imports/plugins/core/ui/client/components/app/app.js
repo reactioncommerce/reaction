@@ -97,6 +97,12 @@ class App extends Component {
     });
 
     const { currentRoute } = this.props;
+
+    // Since we currently don't have any content on `/`, forward to /operator when landing on `/`
+    if (currentRoute && currentRoute.route && currentRoute.route.fullPath === "/") {
+      window.location.replace("/operator");
+    }
+
     const layout = currentRoute && currentRoute.route && currentRoute.route.options && currentRoute.route.options.layout;
     if (this.isAdminApp && layout !== "printLayout" && !this.noAdminControls) {
       if (currentRoute.route.path.startsWith("/operator")) {

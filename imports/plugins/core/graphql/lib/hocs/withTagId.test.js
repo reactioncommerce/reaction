@@ -1,6 +1,7 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
-import { MockedProvider } from "react-apollo/test-utils";
+import { MockedProvider } from "@apollo/react-testing";
 import waitForFalseyProp from "/imports/test-utils/helpers/waitForFalseyProp";
 import getTagId from "../queries/getTagId";
 import withTagId from "./withTagId";
@@ -65,11 +66,14 @@ test("doesn't query GraphQL if no tagSlug is provided", async () => {
 });
 
 test("passes shouldSkipGraphql to child component if invalid tagSlug is provided", async () => {
-  const wrapper = mount((
-    <MockedProvider mocks={mocks} addTypename={false}>
-      <TestComponent tagSlugOrId="fakeSlug" />
-    </MockedProvider>
-  ));
+  let wrapper;
+  act(() => {
+    wrapper = mount((
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <TestComponent tagSlugOrId="fakeSlug" />
+      </MockedProvider>
+    ));
+  });
 
   await waitForFalseyProp(wrapper, "MockComponent", "isLoadingTagId");
 
