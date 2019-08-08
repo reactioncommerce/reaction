@@ -60,21 +60,25 @@ function ProductTable({ onCreateProduct }) {
 
         parse(reader.result, {
           trim: true,
+          // eslint-disable-next-line camelcase
           skip_empty_lines: true
         })
           .on("readable", function () {
             let record;
+            // eslint-disable-next-line no-cond-assign
             while (record = this.read()) {
               output.push(record);
             }
           })
-          .on("end", function () {
+          .on("end", () => {
             output.map((outputarray) => {
               productIds = productIds.concat(outputarray);
+              return;
             });
             Session.set("filterByProductIds", productIds);
           });
       };
+      return;
     });
   });
 

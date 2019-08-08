@@ -56,6 +56,7 @@
     "core-js": "^2.6.4",
     "cors": "2.8.4",
     "csv": "^5.1.1",
+    "csv-parse": "^4.4.4",
     "cuid": "^2.1.5",
     "dataloader": "^1.4.0",
     "deep-equal": "^1.0.1",
