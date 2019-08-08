@@ -200,7 +200,7 @@ class ProductGrid extends Component {
           anchorEl={bulkActionMenuAnchorEl}
           open={Boolean(bulkActionMenuAnchorEl)}
           onClose={this.handleCloseBulkActions}
-        > 
+        >
           <Button
             onClick={this.handleShowFilterByFile}
           >

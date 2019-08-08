@@ -82,7 +82,7 @@ function ProductTable({ onCreateProduct }) {
     });
   });
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     multiple: true,
     disablePreview: true,
@@ -94,13 +94,14 @@ function ProductTable({ onCreateProduct }) {
   const [isClosed, setClosed] = useState(true);
 
   let displayCard;
-  if ( isClosed === true ) {
+  let displayButton;
+  if (isClosed === true) {
     displayCard = "none";
     displayButton = "block";
   } else {
-    displayCard = "block"
+    displayCard = "block";
     displayButton = "none";
-  };
+  }
 
   const closeCard = () => {
     setClosed(false);
@@ -139,14 +140,14 @@ function ProductTable({ onCreateProduct }) {
             ) : (
               <Grid container spacing={1} className={classes.cardContainer}>
                 <Grid item sm={12}>
-                  <Button 
-                    {...getRootProps({className: 'dropzone'})}
+                  <Button
+                    {...getRootProps({ className: "dropzone" })}
                     variant="contained"
                     color="primary"
                   >
                     <input {...getInputProps()} />
-                      <ImportIcon className={classes.leftIcon}/>
-                      Import
+                    <ImportIcon className={classes.leftIcon}/>
+                    Import
                   </Button>
                   <Typography variant="h5" display="inline" className={classes.helpText}>
                     Import a .csv file with a list of product IDs, separated by commas.

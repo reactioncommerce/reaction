@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { applyTheme, getRequiredValidator } from "@reactioncommerce/components/utils";
+import { getRequiredValidator } from "@reactioncommerce/components/utils";
 import { Mutation } from "react-apollo";
 import { orderBy, uniqueId } from "lodash";
 import Dropzone from "react-dropzone";
@@ -40,17 +40,6 @@ const ContentGroup = styled.div`
   margin-bottom: 30px;
 `;
 
-const DropzoneWrapper = styled.div`
-  .dropzone {
-    background-color: ${applyTheme("MediaUploader.backgroundColor")};
-    border: ${applyTheme("MediaUploader.border")};
-    min-height: 325px;
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-`;
-
 const HeroEditButton = styled.div`
   position: absolute;
   top: 10px;
@@ -64,15 +53,15 @@ const HeroUploadButton = styled.div`
   width: 100%;
 `;
 
-function TagDropzone({children,...dzoneProps}) {
+function TagDropzone({ children, ...dzoneProps }) {
   return (
     <Dropzone {...dzoneProps}>
-    {({getRootProps, getInputProps}) => (
+      {({ getRootProps, getInputProps }) => (
         <div {...getRootProps()}>
           <input {...getInputProps()} />
           {children}
         </div>
-    )}
+      )}
     </Dropzone>
   );
 }

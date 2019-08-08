@@ -50,7 +50,6 @@ class Products extends Component {
    */
   renderProductGrid() {
     const { products } = this.props;
-    console.log(this.props)
     const productsByKey = {};
 
     if (Array.isArray(products)) {
