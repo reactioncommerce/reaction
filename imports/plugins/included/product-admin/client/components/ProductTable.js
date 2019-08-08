@@ -8,6 +8,8 @@ import Dropzone from "react-dropzone";
 import { i18next } from "/client/api";
 import withCreateProduct from "../hocs/withCreateProduct";
 import Chip from "@reactioncommerce/catalyst/Chip";
+import csv from "csv";
+import { Session } from "meteor/session";
 
 const useStyles = makeStyles(theme => ({
   leftIcon: {
@@ -43,9 +45,39 @@ function ProductTable({ onCreateProduct }) {
   });
 
   const handleDelete = useCallback( deleted_filename => {
-    const newFiles = files.filter(file => file.name != deleted_filename);
+    const newFiles = files.filter(file => file.name !== deleted_filename);
     setFiles(newFiles);
   });
+
+  const importFiles = useCallback( () => {
+    let productIds = [];
+
+    files.map( file => {
+      const output = [];
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onloadend = () => {
+        const parse = require('csv-parse');
+
+        parse(reader.result, {
+          trim: true,
+          skip_empty_lines: true
+        })
+        .on('readable', function() {
+          let record;
+          while( record = this.read()) {
+            output.push(record);
+          }
+        })
+        .on('end', function() {
+          output.map( outputarray => {
+            productIds = productIds.concat(outputarray);
+          });
+          Session.set( "filterByProductIds", productIds );
+        });
+      };
+    });
+});
 
   const classes = useStyles();
 
@@ -73,6 +105,7 @@ function ProductTable({ onCreateProduct }) {
                     variant="contained"
                     color="primary"
                     style={{ float: "right"}}
+                    onClick={importFiles}
                   >
                     Filter products
                   </Button>
