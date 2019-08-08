@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useCallback } from "react";
 import PropTypes from "prop-types";
 import { applyTheme, getRequiredValidator } from "@reactioncommerce/components/utils";
 import { Mutation } from "react-apollo";
 import { orderBy, uniqueId } from "lodash";
-import Dropzone from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import { Form } from "reacto-form";
 import Button from "@reactioncommerce/components/Button/v1";
@@ -63,6 +63,28 @@ const HeroUploadButton = styled.div`
   align-items: center;
   width: 100%;
 `;
+
+// Functional component for Dropzone hook
+function DropZoneButton({ onDrop }) {
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+    onDrop: useCallback(onDrop),
+    multiple: true,
+    disablePreview: true,
+    accept: "image/jpg, image/png, image/jpeg",
+    disableClick: true
+  });
+
+  return (
+    <Button
+      actionType="secondary"
+      isShortHeight
+      {...getRootProps({className: 'dropzone'})}
+    >
+      <input {...getInputProps()} />
+      {i18next.t("admin.tags.form.uploadImage")}
+    </Button>
+  );
+}
 
 class TagForm extends Component {
   static propTypes = {
@@ -261,10 +283,6 @@ class TagForm extends Component {
     });
   }
 
-  handleDropzoneClick = () => {
-    this.dropzone && this.dropzone.open();
-  }
-
   renderMediaGalleryUploader() {
     const { tag } = this.props;
     const { uploadPreview } = this.state;
@@ -297,28 +315,14 @@ class TagForm extends Component {
     } else {
       content = (
         <HeroUploadButton>
-          <Button
-            actionType="secondary"
-            isShortHeight
-            onClick={this.handleDropzoneClick}
-          >
-            {i18next.t("admin.tags.form.uploadImage")}
-          </Button>
+          <DropZoneButton onDrop={this.handleDrop} />
         </HeroUploadButton>
       );
     }
 
     return (
       <DropzoneWrapper>
-        <Dropzone
-          disableClick
-          className="dropzone"
-          onDrop={this.handleDrop}
-          ref={(inst) => { this.dropzone = inst; }}
-          accept="image/jpg, image/png, image/jpeg"
-        >
           {content}
-        </Dropzone>
       </DropzoneWrapper>
     );
   }

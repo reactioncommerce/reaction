@@ -91,16 +91,30 @@ function ProductTable({ onCreateProduct }) {
   });
 
   const classes = useStyles();
+  const [isClosed, setClosed] = useState(true);
+
+  let displayCard;
+  if ( isClosed === true ) {
+    displayCard = "none";
+    displayButton = "block";
+  } else {
+    displayCard = "block"
+    displayButton = "none";
+  };
+
+  const closeCard = () => {
+    setClosed(false);
+  };
 
   return (
     <Grid container spacing={3}>
-      <Grid item sm={12}>
+      <Grid item sm={12} style={{ display: displayCard }}>
         <Card raised>
           <CardHeader
             className={classes.cardHeaderTitle}
             action={
               <IconButton aria-label="close">
-                <CloseIcon />
+                <CloseIcon onClick={() => setClosed(true)} />
               </IconButton>
             }
             title="Filter products by file"
@@ -143,7 +157,7 @@ function ProductTable({ onCreateProduct }) {
           </CardContent>
         </Card>
       </Grid>
-      <Grid item sm={12}>
+      <Grid item sm={12} style={{ display: displayButton }}>
         <Button
           color="primary"
           onClick={onCreateProduct}
@@ -153,7 +167,7 @@ function ProductTable({ onCreateProduct }) {
         </Button>
       </Grid>
       <Grid item sm={12}>
-        <Components.ProductsAdmin />
+        <Components.ProductsAdmin onShowFilterByFile={() => closeCard()}/>
       </Grid>
     </Grid>
   );
