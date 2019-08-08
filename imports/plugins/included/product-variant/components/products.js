@@ -50,7 +50,7 @@ class Products extends Component {
    */
   renderProductGrid() {
     const { products } = this.props;
-
+    console.log(this.props)
     const productsByKey = {};
 
     if (Array.isArray(products)) {
@@ -61,6 +61,7 @@ class Products extends Component {
 
     return (
       <Components.ProductGrid
+        onShowFilterByFile={this.props.onShowFilterByFile}
         productsByKey={productsByKey || {}}
         productIds={getIds({ tags: products })}
         products={products}

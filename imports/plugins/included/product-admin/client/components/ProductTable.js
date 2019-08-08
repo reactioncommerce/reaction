@@ -83,7 +83,7 @@ function ProductTable({ onCreateProduct }) {
   });
 
   const classes = useStyles();
-  const [isClosed, setClosed] = useState(false);
+  const [isClosed, setClosed] = useState(true);
 
   let displayCard;
   if ( isClosed === true ) {
@@ -94,6 +94,10 @@ function ProductTable({ onCreateProduct }) {
     displayButton = "none";
   };
 
+  const closeCard = () => {
+    setClosed(false);
+  };
+
   return (
     <Grid container spacing={3}>
       <Grid item sm={12} style={{ display: displayCard }}>
@@ -102,7 +106,7 @@ function ProductTable({ onCreateProduct }) {
             className={classes.cardHeaderTitle}
             action={
               <IconButton aria-label="close">
-                <CloseIcon  onClick={() => setClosed(true)} />
+                <CloseIcon onClick={() => setClosed(true)} />
               </IconButton>
             }
             title="Filter products by file"
@@ -166,7 +170,7 @@ function ProductTable({ onCreateProduct }) {
         </Button>
       </Grid>
       <Grid item sm={12}>
-        <Components.ProductsAdmin />
+        <Components.ProductsAdmin onShowFilterByFile={() => closeCard()}/>
       </Grid>
     </Grid>
   );
