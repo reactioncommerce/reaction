@@ -99,7 +99,7 @@ class App extends Component {
     const { currentRoute } = this.props;
 
     // Since we currently don't have any content on `/`, forward to /operator when landing on `/`
-    if (currentRoute.route.fullPath === "/") {
+    if (currentRoute && currentRoute.route && currentRoute.route.fullPath === "/") {
       window.location.replace("/operator");
     }
 
