@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 
 /**
@@ -20,23 +19,6 @@ export function isPaymentRiskElevated(order, paymentIds) {
 // Below here are deprecated Meteor helpers.
 // Keep them for now, but they can be removed once
 // meteor is completely removed from the orders panel.
-
-/**
- * @param {String} orderId The order ID
- * @param {String} paymentId The ID of the payment to approve
- * @returns {Promise<null>} null
- */
-export async function approvePayment(orderId, paymentId) {
-  return new Promise((resolve, reject) => {
-    Meteor.call("orders/approvePayment", orderId, paymentId, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-}
 
 /**
  * @method getOrderRiskBadge
