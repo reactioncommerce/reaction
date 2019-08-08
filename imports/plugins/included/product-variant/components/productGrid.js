@@ -45,6 +45,7 @@ class ProductGrid extends Component {
     onPublishProducts: PropTypes.func,
     onSelectAllProducts: PropTypes.func,
     onSetProductVisibility: PropTypes.func,
+    onShowFilterByFile: PropTypes.func,
     page: PropTypes.number,
     productMediaById: PropTypes.object,
     products: PropTypes.arrayOf(PropTypes.object),
@@ -141,6 +142,10 @@ class ProductGrid extends Component {
     );
   }
 
+  handleShowFilterByFile = () => {
+    this.props.onShowFilterByFile();
+  }
+
   handleShowBulkActions = (event) => {
     this.setState({ bulkActionMenuAnchorEl: event.currentTarget });
   }
@@ -197,6 +202,7 @@ class ProductGrid extends Component {
           onClose={this.handleCloseBulkActions}
         > 
           <Button
+            onClick={this.handleShowFilterByFile}
           >
             {i18next.t("admin.productTable.bulkActions.filterByFile")}
           </Button>
