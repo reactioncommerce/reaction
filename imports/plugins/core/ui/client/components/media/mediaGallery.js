@@ -183,10 +183,11 @@ class MediaGallery extends Component {
           multiple
           disablePreview
           onDrop={this.handleDrop}
-          ref={(inst) => { this.dropzone = inst; }}
           accept="image/jpg, image/png, image/jpeg"
         >
-          <div className="rui gallery">
+        {({getRootProps, getInputProps}) => (
+          <div className="rui gallery" {...getRootProps()}>
+            <input {...getInputProps()} />
             <div className={classnames(classes)} style={{ height: containerWidth }}>
               {this.featuredMedia ? this.renderFeaturedMedia() : this.renderAddItem()}
             </div>
@@ -196,6 +197,7 @@ class MediaGallery extends Component {
               {this.renderAddItem()}
             </div>
           </div>
+        )}
         </Dropzone>
       </div>
     );

@@ -1,12 +1,12 @@
-import React, { Component, Fragment, useCallback } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { applyTheme, getRequiredValidator } from "@reactioncommerce/components/utils";
 import { Mutation } from "react-apollo";
 import { orderBy, uniqueId } from "lodash";
-import { useDropzone } from "react-dropzone";
+import Dropzone from "react-dropzone";
 import styled from "styled-components";
 import { Form } from "reacto-form";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
@@ -64,25 +64,16 @@ const HeroUploadButton = styled.div`
   width: 100%;
 `;
 
-// Functional component for Dropzone hook
-function DropZoneButton({ onDrop }) {
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({
-    onDrop: useCallback(onDrop),
-    multiple: true,
-    disablePreview: true,
-    accept: "image/jpg, image/png, image/jpeg",
-    disableClick: true
-  });
-
+function TagDropzone({children,...dzoneProps}) {
   return (
-    <Button
-      actionType="secondary"
-      isShortHeight
-      {...getRootProps({className: 'dropzone'})}
-    >
-      <input {...getInputProps()} />
-      {i18next.t("admin.tags.form.uploadImage")}
-    </Button>
+    <Dropzone {...dzoneProps}>
+    {({getRootProps, getInputProps}) => (
+        <div {...getRootProps()}>
+          <input {...getInputProps()} />
+          {children}
+        </div>
+    )}
+    </Dropzone>
   );
 }
 
@@ -303,7 +294,9 @@ class TagForm extends Component {
         <Fragment>
           <HeroEditButton>
             <Button
-              isShortHeight
+              variant="contained"
+              color="primary"
+              size="small"
               onClick={this.handleDeleteHeroImage}
             >
               {i18next.t("admin.tags.form.delete")}
@@ -315,15 +308,27 @@ class TagForm extends Component {
     } else {
       content = (
         <HeroUploadButton>
-          <DropZoneButton onDrop={this.handleDrop} />
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="small"
+            onClick={this.handleDropzoneClick}
+          >
+            {i18next.t("admin.tags.form.uploadImage")}
+          </Button>
         </HeroUploadButton>
       );
     }
 
     return (
-      <DropzoneWrapper>
-          {content}
-      </DropzoneWrapper>
+      <TagDropzone
+        disableClick
+        className="dropzone"
+        onDrop={this.handleDrop}
+        accept="image/jpg, image/png, image/jpeg"
+      >
+        {content}
+      </TagDropzone>
     );
   }
 
@@ -578,7 +583,7 @@ class TagForm extends Component {
                   }
 
                   <CardActions disableSpacing>
-                    <Button actionType="secondary" onClick={this.handleSubmitForm}>
+                    <Button color="secondary" onClick={this.handleSubmitForm}>
                       {i18next.t("admin.tags.form.save")}
                     </Button>
                   </CardActions>
