@@ -18,10 +18,10 @@ const styles = (theme) => ({
     overflow: "hidden"
   },
   leadingDrawerOpen: {
-    paddingLeft: theme.spacing.drawerWidth
+    paddingLeft: theme.dimensions.drawerWidth
   },
   trailingDrawerOpen: {
-    paddingRight: theme.spacing.detailDrawerWidth
+    paddingRight: theme.dimensions.detailDrawerWidth
   }
 });
 

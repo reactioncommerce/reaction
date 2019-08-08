@@ -33,7 +33,7 @@ const fieldNames = [
 
 const styles = (theme) => ({
   card: {
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing(3)
   }
 });
 

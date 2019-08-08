@@ -106,7 +106,7 @@ function composer(props, onData) {
   } else {
     variants = ReactionProduct.getTopVariants();
   }
-  let variantMedia: [];
+  let variantMedia = [];
 
   if (variants) {
     if (Array.isArray(variants)) {

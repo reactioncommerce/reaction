@@ -72,7 +72,7 @@ function VariantDetailForm(props) {
           onChange={onVariantSelectChange}
           value={variant.originCountry}
         />
-        <Grid container spacing={8}>
+        <Grid container spacing={1}>
           <Grid item sm={6}>
             <Components.NumericInput
               i18nKeyLabel="productVariant.price"
@@ -109,7 +109,7 @@ function VariantDetailForm(props) {
           </Grid>
         </Grid>
         <Components.Divider />
-        <Grid container spacing={8}>
+        <Grid container spacing={1}>
           <Grid item sm={6}>
             <Components.TextField
               i18nKeyLabel="productVariant.width"
@@ -140,7 +140,7 @@ function VariantDetailForm(props) {
           </Grid>
         </Grid>
 
-        <Grid container spacing={8}>
+        <Grid container spacing={1}>
           <Grid item sm={6}>
             <Components.TextField
               i18nKeyLabel="productVariant.height"

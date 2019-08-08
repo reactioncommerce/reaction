@@ -87,7 +87,7 @@ class EditGroup extends Component {
         Object.assign({}, this.state.alertOptions, { i18nKey: "admin.settings.createGroupSuccess" })
       );
 
-      this.setState({ isEditing: false });
+      return this.setState({ isEditing: false });
     });
   };
 
@@ -111,13 +111,13 @@ class EditGroup extends Component {
         Object.assign({}, this.state.alertOptions, { i18nKey: "admin.settings.updateGroupSuccess" })
       );
 
-      this.setState({ isEditing: false });
+      return this.setState({ isEditing: false });
     });
   };
 
-  showForm = ((grp) = {}) => (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  showForm = ((grp) = {}) => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     this.setState({ isEditing: true, selectedGroup: grp });
   };
 

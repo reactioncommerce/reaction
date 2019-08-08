@@ -15,8 +15,8 @@ const styles = (theme) => ({
     height: 60,
     display: "flex",
     alignItems: "center",
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit
+    paddingLeft: theme.spacing(),
+    paddingRight: theme.spacing()
   },
   iconButton: {
     "padding": 6,

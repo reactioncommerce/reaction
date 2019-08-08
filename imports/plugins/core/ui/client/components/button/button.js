@@ -62,6 +62,7 @@ Template.button.helpers({
           if (!href) {
             return type || "button";
           }
+          return href;
         }
       }
     };
@@ -92,6 +93,8 @@ Template.button.helpers({
 
       return toggleOn;
     }
+
+    return null;
   }
 });
 

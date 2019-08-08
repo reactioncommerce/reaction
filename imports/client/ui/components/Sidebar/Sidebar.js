@@ -37,9 +37,10 @@ const styles = (theme) => ({
     }
   },
   icon: {
-    width: 32,
+    minWidth: 32,
     display: "flex",
     justifyContent: "center",
+    marginRight: theme.spacing(2),
     color: theme.palette.colors.coolGrey300
   },
   iconActive: {
@@ -47,23 +48,23 @@ const styles = (theme) => ({
   },
   shopLogo: {
     flex: 1,
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing(2)
   },
   toolbar: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
   },
   listItem: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
   },
   listItemText: {
     paddingLeft: 0
   },
   listItemNested: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    paddingLeft: theme.spacing.unit * 8
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: theme.spacing(8)
   },
   link: {
     [`&.${activeClassName} span`]: {

@@ -224,7 +224,7 @@ registerSchema("ProductVariant", ProductVariant);
  * @property {String} description optional
  * @property {String} facebookMsg optional
  * @property {String} googleplusMsg optional
- * @property {String} handle optional, slug
+ * @property {String} handle slug
  * @property {String[]} hashtags optional
  * @property {Boolean} isDeleted, default value: `false`
  * @property {Boolean} isVisible, default value: `false`
@@ -284,7 +284,8 @@ export const Product = new SimpleSchema({
   },
   "handle": {
     type: String,
-    optional: true
+    defaultValue: "",
+    label: "Permalink"
   },
   "hashtags": {
     type: Array,

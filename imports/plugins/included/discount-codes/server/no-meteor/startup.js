@@ -10,15 +10,17 @@ export default function startup({ collections }) {
   const { Discounts } = collections;
 
   appEvents.on("afterOrderCreate", async ({ order }) => {
-    await Promise.all(order.discounts.map(async (orderDiscount) => {
-      const { discountId } = orderDiscount;
-      const transaction = {
-        appliedAt: new Date(),
-        cartId: order.cartId,
-        userId: order.accountId
-      };
+    if (Array.isArray(order.discounts)) {
+      await Promise.all(order.discounts.map(async (orderDiscount) => {
+        const { discountId } = orderDiscount;
+        const transaction = {
+          appliedAt: new Date(),
+          cartId: order.cartId,
+          userId: order.accountId
+        };
 
-      await Discounts.updateOne({ _id: discountId }, { $addToSet: { transactions: transaction } });
-    }));
+        await Discounts.updateOne({ _id: discountId }, { $addToSet: { transactions: transaction } });
+      }));
+    }
   });
 }

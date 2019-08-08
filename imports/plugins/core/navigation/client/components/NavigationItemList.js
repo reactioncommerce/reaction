@@ -14,7 +14,7 @@ const styles = (theme) => ({
     maxWidth: 380
   },
   header: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     textAlign: "right",
     flex: 0
   },
@@ -24,9 +24,9 @@ const styles = (theme) => ({
     height: "100%"
   },
   listContent: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   }
 });
 

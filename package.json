@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -23,7 +23,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.14",
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "@material-ui/core": "^3.9.2",
+    "@material-ui/core": "^4.2.1",
+    "@reactioncommerce/catalyst": "1.2.1",
     "@reactioncommerce/components": "^0.65.4",
     "@reactioncommerce/components-context": "1.2.0",
     "@reactioncommerce/data-factory": "^1.0.0",
@@ -44,7 +45,7 @@
     "apollo-server-express": "2.3.1",
     "autoprefixer": "^7.2.5",
     "autosize": "^4.0.0",
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.19.0",
     "bootstrap": "^3.4.1",
     "classnames": "^2.2.5",
     "connect": "^3.6.6",
@@ -53,8 +54,10 @@
     "core-js": "^2.6.4",
     "cors": "2.8.4",
     "cuid": "^2.1.5",
+    "dataloader": "^1.4.0",
     "deep-equal": "^1.0.1",
     "envalid": "^4.2.1",
+    "eslint-plugin-node": "^9.1.0",
     "express": "4.16.2",
     "faker": "^4.1.0",
     "fibers": "^2.0.0",
@@ -77,8 +80,9 @@
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
     "libphonenumber-js": "1.4.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "match-sorter": "^2.3.0",
+    "mdi-material-ui": "^6.2.0",
     "meteor-node-stubs": "0.4.1",
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
@@ -154,7 +158,7 @@
     "@babel/plugin-syntax-import-meta": "7.2.0",
     "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "7.0.0",
-    "@reactioncommerce/eslint-config": "1.9.0",
+    "@reactioncommerce/eslint-config": "2.0.0",
     "apollo-server-testing": "2.3.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
@@ -169,7 +173,7 @@
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
     "enzyme-to-json": "^3.3.5",
-    "eslint": "^4.19.1",
+    "eslint": "^6.0.1",
     "eslint-import-resolver-meteor": "^0.4.0",
     "eslint-plugin-import": "2.12.0",
     "eslint-plugin-jest": "^21.27.2",
@@ -186,7 +190,8 @@
     "nock": "^9.6.1",
     "nodemon": "1.18.9",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.181.0"
+    "snyk": "^1.181.0",
+    "wait-for-expect": "^1.2.0"
   },
   "postcss": {
     "plugins": {
@@ -207,15 +212,17 @@
     "lint": "eslint .",
     "lint:errors": "eslint . --quiet",
     "lint:gql": "graphql-schema-linter **/schemas/*.graphql",
+    "lint:warnings": "eslint --max-warnings=0",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
-    "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
-    "test:app:watch": "MONGO_URL='' TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
-    "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/",
-    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/ --watch",
-    "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --no-cache /tests/",
-    "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --no-cache --watch /tests/",
+    "test:app": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
+    "test:app:watch": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
+    "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
+    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",
+    "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --no-cache /tests/integration/",
+    "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --no-cache --watch /tests/integration/",
     "test:file": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --watch",
-    "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
+    "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md",
+    "version": "echo $npm_package_version"
   },
   "babel": {
     "plugins": [
@@ -387,6 +394,26 @@
       "import/resolver": "meteor"
     },
     "rules": {
+      "jsx-a11y/label-has-for": "off",
+      "no-process-exit": "warn",
+      "node/no-deprecated-api": "warn",
+      "node/no-missing-require": "warn",
+      "node/no-unsupported-features/es-syntax": "off",
+      "node/no-unpublished-require": "warn",
+      "promise/no-callback-in-promise": "warn",
+      "react/no-did-mount-set-state": "warn",
+      "react/no-did-update-set-state": "warn",
+      "require-jsdoc": [
+        "warn",
+        {
+          "require": {
+            "ArrowFunctionExpression": false,
+            "ClassDeclaration": false,
+            "FunctionDeclaration": true,
+            "MethodDefinition": false
+          }
+        }
+      ],
       "valid-jsdoc": [
         "warn",
         {
@@ -395,8 +422,7 @@
             "argument": "param"
           }
         }
-      ],
-      "jsx-a11y/label-has-for": "off"
+      ]
     }
   },
   "prettier": {

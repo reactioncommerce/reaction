@@ -12,6 +12,7 @@ import { setTagHeroMediaMutation } from "../../lib/mutations";
 
 class TagFormPageWithData extends Component {
   static propTypes = {
+    client: PropTypes.object,
     history: PropTypes.shape({
       push: PropTypes.func.isRequired
     }),

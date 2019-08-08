@@ -5,9 +5,9 @@
 
 [Reaction](http://reactioncommerce.com) is an API-first, headless commerce platform built using Node.js, React, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
 
-Reaction v2.0.0 is built as a truly headless commerce platform that decouples the Reaction backend services from the frontend. We’ve decoupled the storefront application from the API. Reaction platform consists of this `reaction` project - which is now primarily our GraphQL API (and for the time being also our operator UI and our identity provider) - alongside our new to 2.0 [Example Storefront](https://github.com/reactioncommerce/example-storefront) - which connects with the Reaction application via GraphQL API to provide a customer-facing storefront.
+Reaction v2.0.0 is built as a truly headless commerce platform that decouples the Reaction backend services from the frontend. We’ve decoupled the storefront application from the API. Reaction platform consists of this `reaction` project - which is now primarily our GraphQL API (and for the time being Reaction Admin and our identity provider) - alongside our new-to-2.0 [Example Storefront](https://github.com/reactioncommerce/example-storefront), which connects with the Reaction application via GraphQL API to provide a customer-facing storefront.
 
-![3-up-Catalyst-UI-lg](https://user-images.githubusercontent.com/42009003/60614171-4118d800-9d81-11e9-8bfd-d9b67a361459.png)
+![Reaction Admin](https://user-images.githubusercontent.com/20409254/61161477-bb033c80-a4b8-11e9-9c5e-4f4f6a68b8d0.png)
 
 ## Features
 
@@ -29,7 +29,7 @@ Follow the documentation to install Reaction with [Reaction Platform](https://do
 - [Docs: Introduction to Reaction:  Concepts](https://docs.reactioncommerce.com/docs/concepts-intro)
 - [Swag Shop Tutorial](https://docs.reactioncommerce.com/docs/swag-shop-1)
 - [Storefront UI Development Tutorial](https://docs.reactioncommerce.com/docs/storefront-intro)
-- [Reaction Design System](http://designsystem.reactioncommerce.com/)
+- [Storefront Component Library](http://designsystem.reactioncommerce.com/)
 - [API documentation](http://api.docs.reactioncommerce.com)
 - [Engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
 
@@ -65,20 +65,19 @@ We also request that you follow the our [pull request template](https://docs.rea
 Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/docs/contributing-to-reaction).
 
 ### Developer Certificate of Origin
-We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing-off all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
 ```
 Signed-off-by: Jane Doe <jane.doe@example.com>
 ```
 
-You can sign your commit automatically with Git by using `git commit -s` if you have your `user.name` and `user.email` set as part of your Git configuration.
+You can sign-off your commit automatically with Git by using `git commit -s` if you have your `user.name` and `user.email` set as part of your Git configuration.
 
-We ask that you use your real name (please no anonymous contributions or pseudonyms). By signing your commit you are certifying that you have the right to submit it under the open source license used by that particular Reaction Commerce project. You must use your real name (no pseudonyms or anonymous contributions are allowed.)
+We ask that you use your real full name (please no anonymous contributions or pseudonyms) and a real email address. By signing-off your commit you are certifying that you have the right to submit it under the [GNU GPLv3 Licensed](./LICENSE.md). 
 
-We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO signoffs of every commit.
+We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO sign-offs of every commit.
 
-If you forget to sign your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
+If you forget to sign-off your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
 
 
 ### License
-
-Copyright © [GNU General Public License v3.0](./LICENSE.md)
+Reaction is [GNU GPLv3 Licensed](./LICENSE.md)

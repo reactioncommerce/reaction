@@ -21,7 +21,8 @@ class SocialSettingsContainer extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (isEqual(nextProps.settings, this.props.settings) === false) {
       this.setState({
         settings: nextProps.settings

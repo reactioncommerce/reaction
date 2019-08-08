@@ -22,7 +22,7 @@ const styles = (theme) => ({
   logo: {
     display: "flex",
     justifyContent: "center",
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing(3)
   },
   logoutButton: {
     textAlign: "center"

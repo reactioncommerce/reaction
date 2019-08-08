@@ -26,6 +26,8 @@ export const LoginFormSharedHelpers = {
     if (error !== true && typeof error !== "undefined") {
       return "has-error has-feedback";
     }
+
+    return null;
   },
 
   /**
