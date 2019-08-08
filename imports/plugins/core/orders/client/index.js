@@ -17,11 +17,6 @@ import "./templates/list/pdf.js";
 // To remove with orders-2.0
 import "./helpers";
 import "../lib/extendShopSchema";
-registerOperatorRoute({
-  isNavigationLink: false,
-  mainComponent: OrderDetail,
-  path: "/orders-classic/:_id"
-});
 // To remove with orders-2.0
 // To remove with orders-2.0
 // To remove with orders-2.0
