@@ -6,20 +6,12 @@ import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewEx
 import OrderCardSummary from "./components/OrderCardSummary";
 import Orders from "./containers/orderDashboardContainer";
 import Order from "./containers/OrderContainer";
+import "../lib/extendShopSchema";
+import "./helpers";
 
 // Print page layout
 import "./templates/list/pdf.html";
 import "./templates/list/pdf.js";
-
-
-// To remove with orders-2.0
-// To remove with orders-2.0
-// To remove with orders-2.0
-import "./helpers";
-import "../lib/extendShopSchema";
-// To remove with orders-2.0
-// To remove with orders-2.0
-// To remove with orders-2.0
 
 
 // Register order related routes
