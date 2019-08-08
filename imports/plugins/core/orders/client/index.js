@@ -15,7 +15,6 @@ import "./templates/list/pdf.js";
 
 
 // Register order related routes
-
 /*
  * Single order page route
  */
@@ -42,7 +41,9 @@ registerOperatorRoute({
 
 
 // Register order related blocks
-
+/*
+ * OrderCardSummary
+ */
 registerBlock({
   region: "OrderCardSummary",
   name: "OrderCardSummary",
