@@ -6,6 +6,7 @@ import { Session } from "meteor/session";
 import { i18next } from "/client/api";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
 import CardContent from "@material-ui/core/CardContent";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
@@ -25,13 +26,44 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 
 const styles = (theme) => ({
+  toolbar: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+  },
   filterCountContainer: {
     paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(3),
   },
   filterCountText: {
     paddingLeft: theme.spacing(2),
-    fontWeight: theme.typography.fontWeightRegular
+    fontWeight: theme.typography.fontWeightRegular,
+    letterSpacing: "0.5px"
+  },
+  productsTitle: {
+    letterSpacing: "0.3px"
+  },
+  actionDropdownTrigger: {
+    border: `1px solid ${theme.palette.colors.coolGrey}`,
+    fontSize: "16px",
+    letterSpacing: "0.3px",
+    fontWeight: 600,
+    color: theme.palette.colors.coolGrey500
+  },
+  actionDropdownMenuList: {
+    border: `1px solid ${theme.palette.colors.black10}`,
+    fontSize: "16px",
+    letterSpacing: "0.3px"
+  },
+  actionDropdownMenuItem: {
+    fontSize: "16px",
+    letterSpacing: "0.3px",
+    "&:hover": {
+      "backgroundColor": "#EBF7FC",
+    }
   }
 });
 
@@ -97,14 +129,16 @@ class ProductGrid extends Component {
   }
 
   renderFilteredCount() {
-    const { selectedProductIds, classes } = this.props;
+    const { selectedProductIds, classes, products } = this.props;
     const count = selectedProductIds.length;
+    const totalCount = products.length;
     const filterByProductIds = Session.get("filterByProductIds");
 
     if (filterByProductIds) {
       return (
         <div className={classes.filterCountContainer}>
-          <Typography variant="h4" display="inline">
+          <Typography variant="h4" display="inline" className=
+          {classes.productsTitle}>
             {i18next.t("admin.productTable.bulkActions.filteredProducts")}
           </Typography>
           <Typography variant="h5" display="inline" className={classes.filterCountText}>
@@ -113,7 +147,17 @@ class ProductGrid extends Component {
         </div>
       );
     }
-    return "";
+    return (
+      <div className={classes.filterCountContainer}>
+        <Typography variant="h4" display="inline" className=
+        {classes.productsTitle}>
+          All products
+        </Typography>
+        <Typography variant="h5" display="inline" className={classes.filterCountText}>
+          { totalCount } products
+        </Typography>
+      </div>
+    );
   }
 
   renderProductGridItems() {
@@ -180,17 +224,18 @@ class ProductGrid extends Component {
   }
 
   renderToolbar() {
-    const { selectedProductIds } = this.props;
+    const { selectedProductIds, classes } = this.props;
     const { bulkActionMenuAnchorEl } = this.state;
     const count = selectedProductIds.length;
     const isEnabled = Array.isArray(selectedProductIds) && selectedProductIds.length;
     return (
-      <Toolbar>
+      <Toolbar disableGutters={true} className={classes.toolbar}>
         <Button
           aria-owns={bulkActionMenuAnchorEl ? "bulk-actions-menu" : undefined}
           aria-haspopup="true"
           onClick={this.handleShowBulkActions}
           variant="outlined"
+          className={classes.actionDropdownTrigger}
         >
           {i18next.t("admin.productTable.bulkActions.actions")}
           <ChevronDownIcon />
@@ -200,10 +245,13 @@ class ProductGrid extends Component {
           anchorEl={bulkActionMenuAnchorEl}
           open={Boolean(bulkActionMenuAnchorEl)}
           onClose={this.handleCloseBulkActions}
+          className={classes.actionDropdownContainer}
+          MenuListProps={{disablePadding: true, className: classes.actionDropdownMenuList}}
         >
           <MenuItem
             disabled
             variant="default"
+            className={classes.actionDropdownMenuItem}
           >
             Actions
           </MenuItem>
@@ -211,6 +259,7 @@ class ProductGrid extends Component {
           <MenuItem
             onClick={this.handleShowFilterByFile}
             variant="default"
+            className={classes.actionDropdownMenuItem}
           >
             {i18next.t("admin.productTable.bulkActions.filterByFile")}
           </MenuItem>
@@ -221,7 +270,7 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionPublish}
           >
             {({ openDialog }) => (
-              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.publish")}</MenuItem>
+              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.publish")}</MenuItem>
             )}
           </ConfirmDialog>
 
@@ -231,7 +280,7 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionMakeVisible}
           >
             {({ openDialog }) => (
-              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.makeVisible")}</MenuItem>
+              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.makeVisible")}</MenuItem>
             )}
           </ConfirmDialog>
 
@@ -241,7 +290,7 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionMakeHidden}
           >
             {({ openDialog }) => (
-              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.makeHidden")}</MenuItem>
+              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.makeHidden")}</MenuItem>
             )}
           </ConfirmDialog>
 
@@ -251,7 +300,7 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionDuplicate}
           >
             {({ openDialog }) => (
-              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.duplicate")}</MenuItem>
+              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.duplicate")}</MenuItem>
             )}
           </ConfirmDialog>
 
@@ -261,7 +310,7 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionArchive}
           >
             {({ openDialog }) => (
-              <MenuItem onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
+              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
             )}
           </ConfirmDialog>
         </Menu>
@@ -274,10 +323,10 @@ class ProductGrid extends Component {
     const { isAllSelected } = this.state;
 
     return (
-      <Card>
+      <Card raised>
         {this.renderFilteredCount()}
-        {this.renderToolbar()}
         <CardContent>
+          {this.renderToolbar()}
           <Table>
             <TableHead>
               <TableRow>
