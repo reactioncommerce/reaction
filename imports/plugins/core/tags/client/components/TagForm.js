@@ -53,6 +53,9 @@ const HeroUploadButton = styled.div`
   width: 100%;
 `;
 
+/**
+ * Extra component to use Dropzone v10 with the TagForm class component
+ */
 function TagDropzone({ children, ...dzoneProps }) {
   return (
     <Dropzone {...dzoneProps}>
@@ -65,7 +68,11 @@ function TagDropzone({ children, ...dzoneProps }) {
     </Dropzone>
   );
 }
+TagDropzone.propTypes = {
+  children: PropTypes.node
+};
 
+// eslint-disable-next-line react/no-multi-comp
 class TagForm extends Component {
   static propTypes = {
     isLoadingShopId: PropTypes.bool,
