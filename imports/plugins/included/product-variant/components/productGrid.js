@@ -6,7 +6,6 @@ import { Session } from "meteor/session";
 import { i18next } from "/client/api";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-import Grid from "@material-ui/core/Grid";
 import CardContent from "@material-ui/core/CardContent";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
@@ -129,9 +128,8 @@ class ProductGrid extends Component {
   }
 
   renderFilteredCount() {
-    const { selectedProductIds, classes, products } = this.props;
+    const { selectedProductIds, totalProductCount, classes } = this.props;
     const count = selectedProductIds.length;
-    const totalCount = products.length;
     const filterByProductIds = Session.get("filterByProductIds");
 
     if (filterByProductIds) {
@@ -154,7 +152,7 @@ class ProductGrid extends Component {
           All products
         </Typography>
         <Typography variant="h5" display="inline" className={classes.filterCountText}>
-          { totalCount } products
+          { totalProductCount } products
         </Typography>
       </div>
     );
