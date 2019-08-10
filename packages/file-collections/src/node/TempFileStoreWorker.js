@@ -43,17 +43,22 @@ export default class TempFileStoreWorker extends EventEmitter {
   start() {
     this.fileCollections.forEach((collection) => {
       const { stores, tempStore } = collection.options;
+      const mongoCollection = collection.rawCollection || collection.collection;
 
-      const handle = collection.collection.watch([{
+      if (typeof mongoCollection.watch !== "function") {
+        throw new Error("RemoteUrlWorker requires a version of the MongoDB Node library that has collection#watch method available");
+      }
+
+      const handle = mongoCollection.watch([{
         $match: {
           "operationType": "insert",
           "fullDocument.original.tempStoreId": { $ne: null }
         }
       }]);
 
-      handle.on("change", async (event) => {
+      handle.on("change", (event) => {
         const { fullDocument } = event;
-        await this.pushObservedDocument(fullDocument, collection, stores, tempStore);
+        this.pushObservedDocument(fullDocument, collection, stores, tempStore);
       });
 
       this.observeHandles.push(handle);
@@ -129,6 +134,10 @@ export default class TempFileStoreWorker extends EventEmitter {
     debug(`TempFileStoreWorker: Done storing ${loggingIdentifier} to all stores. Removing tempStoreId prop.`);
 
     await collection.update(doc._id, { $unset: { "original.tempStoreId": "" } }, { raw: true });
+
+    tempStore.deleteIfExists(tempStoreId).catch((error) => {
+      console.error(error); // eslint-disable-line no-console
+    });
 
     debug(`TempFileStoreWorker: tempStoreId prop removed for ${loggingIdentifier}`);
   }

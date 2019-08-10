@@ -27,7 +27,6 @@ export default class RemoteUrlWorker extends EventEmitter {
     this.observeHandles = [];
     this.isProcessing = false;
     this.observedEntries = [];
-    this.processObserved = this.processObserved.bind(this);
     this.onNewFileRecord = onNewFileRecord;
   }
 
@@ -70,16 +69,22 @@ export default class RemoteUrlWorker extends EventEmitter {
   start() {
     this.fileCollections.forEach((collection) => {
       const { stores } = collection.options;
-      const handle = collection.collection.watch([{
+      const mongoCollection = collection.rawCollection || collection.collection;
+
+      if (typeof mongoCollection.watch !== "function") {
+        throw new Error("RemoteUrlWorker requires a version of the MongoDB Node library that has collection#watch method available");
+      }
+
+      const handle = mongoCollection.watch([{
         $match: {
           "operationType": "insert",
           "fullDocument.original.remoteURL": { $ne: null }
         }
       }]);
 
-      handle.on("change", async (event) => {
+      handle.on("change", (event) => {
         const { fullDocument } = event;
-        await this.pushObservedDocument(fullDocument, collection, stores);
+        this.pushObservedDocument(fullDocument, collection, stores);
       });
 
       this.observeHandles.push(handle);

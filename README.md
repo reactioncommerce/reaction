@@ -12,6 +12,7 @@ Reaction FileCollections is a set of NPM packages that provide the ability to su
     - [GridFSStore](#gridfsstore)
   - [Create TempFileStore and Enable File Uploads](#create-tempfilestore-and-enable-file-uploads)
   - [Create FileCollection](#create-filecollection)
+    - [MongoFileCollection](#mongofilecollection)
     - [MeteorFileCollection](#meteorfilecollection)
   - [Enable File Downloads](#enable-file-downloads)
   - [Set Up a File Worker](#set-up-a-file-worker)
@@ -43,7 +44,7 @@ The overall steps are:
 
 1. Create one or more stores where files will be saved. You can choose a storage adapter that works for you.
 1. Create an instance of TempFileStore, which defines where multi-part browser uploads will be stored temporarily while the upload is in progress. You can create multiple, but usually one is enough even if you have multiple FileCollections and/or multiple stores.
-1. Create one or more FileCollection (or MeteorFileCollection) instances, where information about files will be stored. The backing store for these is MongoDB, and each document is known as a FileRecord. You must link one or more of the stores created in the previous step with your FileCollection.
+1. Create one or more FileCollection (or MeteorFileCollection) instances, where information about files will be stored. The backing store for these is MongoDB ( >= 3.6 due to the usage of Change Streams ), and each document is known as a FileRecord. You must link one or more of the stores created in the previous step with your FileCollection.
 1. Create a FileDownloadManager instance, which you will use to register an HTTP endpoint for file downloads. Usually one is enough, even if you have multiple FileCollections and/or multiple stores, but you could create multiple if you need different response headers for different FileCollections.
 1. Create and start a RemoteUrlWorker instance, which triggers final storage streaming from a remote URL, after you've inserted a FileRecord that you created using `FileRecord.fromUrl`.
 1. Create and start a TempFileStoreWorker instance, which triggers final storage after an upload from a browser is complete.
@@ -253,9 +254,9 @@ This means that all files in the Images file collection will have URLs that begi
 
 ### Set Up a Worker for Browser Uploads
 
-A `TempFileStoreWorker` instance observes one or more MeteorFileCollections and triggers final storage after an upload from a browser is complete and all the chunks have been assembled into a single file in the temp store.
+A `TempFileStoreWorker` instance observes one or more MongoFileCollections and triggers final storage after an upload from a browser is complete and all the chunks have been assembled into a single file in the temp store.
 
-All provided FileCollections must be `MeteorFileCollections` rather than `MongoFileCollections` because Meteor's observe API is used. A variation of this could be created to use polling or some other method for detecting waiting temporary files.
+All provided FileCollections should be `MongoFileCollections` and need to use MongoDB version 3.6 or higher because Change Streams are used to watch for new files. Passing `MeteorFileCollections` is also supported for backward compatibility.
 
 Example:
 
@@ -272,9 +273,9 @@ Also, a `TempFileStoreWorker` must be running on the same machine (or container)
 
 ### Set Up a Worker for Streaming Remote URLs to Storage
 
-A `RemoteUrlWorker` instance observes one or more MeteorFileCollections and triggers final storage streaming from a remote URL, after you've inserted a FileRecord that you created using `FileRecord.fromUrl`. You'll need to pass in a reference to a `fetch` implementation.
+A `RemoteUrlWorker` instance observes one or more MongoFileCollections and triggers final storage streaming from a remote URL, after you've inserted a FileRecord that you created using `FileRecord.fromUrl`. You'll need to pass in a reference to a `fetch` implementation.
 
-All provided FileCollections must be `MeteorFileCollections` rather than `MongoFileCollections` because Meteor's observe API is used. A variation of this could be created to use polling or some other method for detecting waiting remote URL inserts.
+All provided FileCollections should be `MongoFileCollections` and need to use MongoDB version 3.6 or higher because Change Streams are used to watch for new files. Passing `MeteorFileCollections` is also supported for backward compatibility.
 
 Example:
 
