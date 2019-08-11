@@ -1,12 +1,10 @@
 import Logger from "@reactioncommerce/logger";
-import packageJson from "/package.json";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 import { getUserId } from "./accountUtils";
 
@@ -126,15 +124,6 @@ export default {
     // we are not using Reaction.hasPermission here because it returns true if the user has at least one
     return _.difference(groupPermissions, userPermissions).length === 0;
   },
-
-  /**
-   * @name registerTemplate
-   * @method
-   * @memberof Core
-   * @summary Registers Templates into the Templates Collection
-   * @return {function} Registers template
-   */
-  registerTemplate,
 
   /**
    * @name hasPermission
@@ -673,28 +662,6 @@ export default {
       return marketplace.settings;
     }
     return {};
-  },
-
-  /**
-   * @name getAppVersion
-   * @method
-   * @memberof Core
-   * @return {String} App version
-   */
-  getAppVersion() {
-    return Shops.findOne().appVersion;
-  },
-
-  /**
-   * @name setAppVersion
-   * @method
-   * @memberof Core
-   * @return {undefined} no return value
-   */
-  setAppVersion() {
-    const { version } = packageJson;
-    Logger.info(`Reaction Version: ${version}`);
-    Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   },
 
   /**

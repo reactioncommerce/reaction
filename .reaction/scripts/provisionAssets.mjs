@@ -1,8 +1,8 @@
 import fs  from 'fs-extra';
 import path from 'path';
 import rimraf from 'rimraf';
-import Log from './logger';
-import { exists, getDirectories } from './fs';
+import Log from './logger.mjs';
+import { exists, getDirectories } from './fs.mjs';
 
 
 /**

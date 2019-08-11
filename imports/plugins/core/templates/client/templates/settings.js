@@ -1,13 +1,11 @@
 import { $ } from "meteor/jquery";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { Blaze } from "meteor/blaze";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Template } from "meteor/templating";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
-import { EmailTemplates } from "../../lib/collections/schemas";
+import { EmailTemplates } from "../simpleSchemas";
 import { i18next } from "/client/api";
 import { Templates } from "/lib/collections";
-
 
 /*
  * template templateSettings onCreated
@@ -36,10 +34,11 @@ Template.templateSettings.helpers({
     const noDataMessage = i18next.t("templateGrid.noTemplatesFound");
     const instance = Template.instance();
 
-    //
-    // helper to get and select row from griddle
-    // into blaze to get correct template to edit
-    //
+    /**
+     * @summary helper to get and select row from griddle into blaze to get correct template to edit
+     * @param {Object} options Options object with `props` field
+     * @return {undefined}
+     */
     function editRow(options) {
       const currentId = instance.state.get("editingId");
 
@@ -151,18 +150,3 @@ AutoForm.hooks({
     }
   }
 });
-
-
-Blaze.TemplateInstance.prototype.parentTemplate = function (levels = 1) {
-  let view = Blaze.currentView;
-  let numLevel = levels;
-  while (view) {
-    if (view.name.substring(0, 9) === "Template." && !numLevel) {
-      return view.templateInstance();
-    }
-    numLevel -= 1;
-    view = view.parentView;
-  }
-
-  return null;
-};

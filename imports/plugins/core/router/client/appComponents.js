@@ -11,7 +11,7 @@ import AddressBook from "@reactioncommerce/components/AddressBook/v1";
 import AddressForm from "@reactioncommerce/components/AddressForm/v1";
 import AddressReview from "@reactioncommerce/components/AddressReview/v1";
 import BadgeOverlay from "@reactioncommerce/components/BadgeOverlay/v1";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
 import CatalogGridItem from "@reactioncommerce/components/CatalogGridItem/v1";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
