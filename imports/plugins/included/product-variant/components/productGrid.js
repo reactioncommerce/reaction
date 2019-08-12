@@ -134,7 +134,7 @@ class ProductGrid extends Component {
 
   renderFilteredCount() {
     const { selectedProductIds, totalProductCount, classes } = this.props;
-    const count = selectedProductIds.length;
+    const selectedCount = selectedProductIds.length;
     const filterByProductIds = Session.get("filterByProductIds");
 
     if (filterByProductIds) {
@@ -145,22 +145,25 @@ class ProductGrid extends Component {
             {i18next.t("admin.productTable.bulkActions.filteredProducts")}
           </Typography>
           <Typography variant="h5" display="inline" className={classes.filterCountText}>
-            {i18next.t("admin.productTable.bulkActions.selectedCount", { count })}
+            {i18next.t("admin.productTable.bulkActions.selectedCount", { selectedCount })}
+          </Typography>
+        </div>
+      );
+    } else {
+      const totalOrSelected = (selectedCount > 0) ? selectedCount + " selected" : totalProductCount + " products";
+      return (
+        <div className={classes.filterCountContainer}>
+          <Typography variant="h4" display="inline" className=
+          {classes.productsTitle}>
+            All products
+          </Typography>
+          <Typography variant="h5" display="inline" className={classes.filterCountText}>
+            { totalOrSelected }
           </Typography>
         </div>
       );
     }
-    return (
-      <div className={classes.filterCountContainer}>
-        <Typography variant="h4" display="inline" className=
-        {classes.productsTitle}>
-          All products
-        </Typography>
-        <Typography variant="h5" display="inline" className={classes.filterCountText}>
-          { totalProductCount } products
-        </Typography>
-      </div>
-    );
+    
   }
 
   renderProductGridItems() {
