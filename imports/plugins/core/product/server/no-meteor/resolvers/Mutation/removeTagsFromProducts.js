@@ -1,6 +1,6 @@
 /**
  *
- * @method bulkRemoveTagsFromProducts
+ * @method removeTagsFromProducts
  * @summary Takes an array of productsIds and tagsIds
  * and removes provided tags from the array of products.
  * @param {Object} _ - unused
@@ -13,10 +13,10 @@
  * @return {Promise<Object>} Returns an object with information about the results
  * of the bulk operation
  */
-export default async function bulkRemoveTagsFromProducts(_, { input }, context) {
+export default async function removeTagsFromProducts(_, { input }, context) {
   const { clientMutationId } = input;
 
-  const results = await context.mutations.bulkRemoveTagsFromProducts(context, input);
+  const results = await context.mutations.removeTagsFromProducts(context, input);
 
   return {
     clientMutationId,

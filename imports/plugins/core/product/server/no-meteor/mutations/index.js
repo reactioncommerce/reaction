@@ -1,7 +1,7 @@
-import bulkAddTagsToProducts from "./bulkAddTagsToProducts";
-import bulkRemoveTagsFromProducts from "./bulkRemoveTagsFromProducts";
+import addTagsToProducts from "./addTagsToProducts";
+import removeTagsFromProducts from "./removeTagsFromProducts";
 
 export default {
-  bulkAddTagsToProducts,
-  bulkRemoveTagsFromProducts
+  addTagsToProducts,
+  removeTagsFromProducts
 };

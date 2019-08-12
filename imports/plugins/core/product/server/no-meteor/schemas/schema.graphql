@@ -29,7 +29,7 @@ type WriteError {
 }
 
 "Input for adding tags to products in bulk"
-input ProductsBulkOperationInput {
+input ProductTagsOperationInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -40,8 +40,8 @@ input ProductsBulkOperationInput {
   tagIds: [ID]
 }
 
-"Response payload for `bulkAddTagsToProducts` mutation"
-type ProductsBulkOperationPayload  {
+"Response payload managing tags on products"
+type ProductTagsOperationPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
@@ -60,14 +60,14 @@ type ProductsBulkOperationPayload  {
 
 extend type Mutation {
   "Bulk operation for adding an array of tags to an array of products"
-  bulkAddTagsToProducts(
+  addTagsToProducts(
     "input which must includes an array of product ids and an array of tag ids"
-    input: ProductsBulkOperationInput!
-  ): ProductsBulkOperationPayload!
+    input: ProductTagsOperationInput!
+  ): ProductTagsOperationPayload!
 
   "Bulk operation for removing an array of tags from an array of products"
-  bulkRemoveTagsFromProducts(
+  removeTagsFromProducts(
     "input which must includes an array of product ids and an array of tag ids"
-    input: ProductsBulkOperationInput!
-  ): ProductsBulkOperationPayload!
+    input: ProductTagsOperationInput!
+  ): ProductTagsOperationPayload!
 }

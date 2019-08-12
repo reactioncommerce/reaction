@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 
-const logCtx = { name: "core/product", file: " bulkRemoveTagsFromProducts" };
+const logCtx = { name: "core/product", file: " removeTagsFromProducts" };
 
 /**
  *

@@ -1,6 +1,6 @@
 /**
  *
- * @method bulkAddTagsToProducts
+ * @method addTagsToProducts
  * @summary Takes an array of productsIds and tagsIds
  * and performs a bulk operation to add an array of tag ids to an
  * array of products
@@ -14,10 +14,10 @@
  * @return {Promise<Object>} Returns an object with information about the results
  * of the bulk operation
  */
-export default async function bulkAddTagsToProducts(_, { input }, context) {
+export default async function addTagsToProducts(_, { input }, context) {
   const { clientMutationId } = input;
 
-  const results = await context.mutations.bulkAddTagsToProducts(context, input);
+  const results = await context.mutations.addTagsToProducts(context, input);
 
   return {
     clientMutationId,
