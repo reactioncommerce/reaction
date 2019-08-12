@@ -7,25 +7,13 @@ type ProductConfiguration {
   productVariantId: ID!
 }
 
-"Operation"
-type Operation {
-  "Id of document"
-  _id: String
-}
-
 "A bulk write error type"
 type WriteError {
-  "Error code"
-  code: Int
+  "The documentId(_id) on which the error occurred"
+  documentId: Int
 
-  "Error message"
-  errmsg: String
-
-  "Index of of error"
-  index: Int
-
-  "Failed operation info"
-  op: Operation
+  "Error message for a documentId"
+  errorMsg: String
 }
 
 "Input for adding tags to products in bulk"
@@ -33,7 +21,7 @@ input ProductTagsOperationInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "An array of product ids to which an array of tags will be added"
+  "An array of product productIds to which an array of tags will be added"
   productIds: [ID]
 
   "An array of tag ids to add to an array of products"

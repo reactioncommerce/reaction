@@ -21,13 +21,18 @@ export default async function executeBulkOperation(collection, operations, total
     response = error; // error object has details about failed & successful operations
   }
 
-  const { nMatched, nModified, writeErrors } = response;
+  const { nMatched, nModified, result: { writeErrors } } = response;
   const notFoundCount = totalProducts - nMatched;
+
+  const cleanedErrors = writeErrors.map((error) => ({
+    documentId: error.op._id,
+    errorMsg: error.errmsg
+  }));
 
   return {
     foundCount: nMatched,
     notFoundCount,
     updatedCount: nModified,
-    writeErrors
+    writeErrors: cleanedErrors
   };
 }
