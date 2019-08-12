@@ -199,6 +199,9 @@ class LocalizationSettings extends Component {
               language: {
                 type: "select",
                 options: this.props.enabledLanguages
+              },
+              allowCustomUserLocale: {
+                type: "boolean",
               }
             }}
             name="localization"

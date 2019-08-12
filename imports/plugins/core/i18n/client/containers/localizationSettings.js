@@ -45,7 +45,8 @@ const wrapComponent = (Comp) => (
           currency: doc.currency,
           baseUOM: doc.baseUOM,
           baseUOL: doc.baseUOL,
-          language: doc.language
+          language: doc.language,
+          allowCustomUserLocale: doc.allowCustomUserLocale
         }
       });
     }
