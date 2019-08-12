@@ -27,6 +27,7 @@ export const defaultOwnerRoles = [
   "index",
   "owner",
   "product",
+  "product/admin",
   "shopSettings",
   "tag"
 ];
@@ -39,6 +40,7 @@ export const defaultShopManagerRoles = [
   "guest",
   "index",
   "product",
+  "product/admin",
   "shopSettings",
   "tag"
 ];

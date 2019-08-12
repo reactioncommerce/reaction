@@ -30,7 +30,7 @@ export default async function publishProducts(context, productIds) {
   if (!isInternalCall) {
     const uniqueShopIds = uniq(products.map((product) => product.shopId));
     uniqueShopIds.forEach((shopId) => {
-      if (!userHasPermission(["createProduct"], shopId)) {
+      if (!userHasPermission(["createProduct", "product/admin", "product/publish"], shopId)) {
         throw new ReactionError("access-denied", "Access Denied");
       }
     });

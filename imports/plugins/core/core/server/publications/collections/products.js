@@ -326,7 +326,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   }
 
   // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId) || [];
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct", "product/admin"], this.userId) || [];
 
   // We publish an admin version of this publication to admins of products who are in "Edit Mode"
   if (editMode) {
