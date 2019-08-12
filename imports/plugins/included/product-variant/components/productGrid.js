@@ -21,6 +21,7 @@ import TableRow from "@material-ui/core/TableRow";
 import ChevronDownIcon from "mdi-material-ui/ChevronDown";
 import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
 import Typography from "@material-ui/core/Typography";
+import Chip from "@reactioncommerce/catalyst/Chip";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 
@@ -38,6 +39,9 @@ const styles = (theme) => ({
 class ProductGrid extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    files: PropTypes.arrayOf(PropTypes.file),
+    handleDelete: PropTypes.func,
+    isFiltered: PropTypes.bool,
     onArchiveProducts: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangeRowsPerPage: PropTypes.func,
@@ -51,6 +55,7 @@ class ProductGrid extends Component {
     products: PropTypes.arrayOf(PropTypes.object),
     productsPerPage: PropTypes.number,
     selectedProductIds: PropTypes.arrayOf(PropTypes.string),
+    setFilteredProductIdsCount: PropTypes.func,
     totalProductCount: PropTypes.number
   }
 
@@ -179,6 +184,20 @@ class ProductGrid extends Component {
     this.handleCloseBulkActions();
   }
 
+  renderFiles() {
+    const { files, handleDelete, isFiltered } = this.props;
+
+    if (isFiltered) {
+      return (
+        <div>
+          {files.map((file) => <Chip label={file.name} onDelete={() => handleDelete(file.name)} />)}
+        </div>
+      );
+    }
+
+    return "";
+  }
+
   renderToolbar() {
     const { selectedProductIds } = this.props;
     const { bulkActionMenuAnchorEl } = this.state;
@@ -264,11 +283,13 @@ class ProductGrid extends Component {
   render() {
     const { totalProductCount, page, productsPerPage, onChangePage, onChangeRowsPerPage } = this.props;
     const { isAllSelected } = this.state;
+    this.props.setFilteredProductIdsCount(totalProductCount);
 
     return (
       <Card>
         {this.renderFilteredCount()}
         {this.renderToolbar()}
+        {this.renderFiles()}
         <CardContent>
           <Table>
             <TableHead>

@@ -5,6 +5,8 @@
     "reaction-product-admin": {
       "admin": {
         "createProduct": "Create product",
+        "productListFiltered": "Product list filtered",
+        "showingFilteredProducts": "Showing {{count}} found products from imported file(s).",
         "productAdmin": {
           "details": "Details",
           "metadata": "Metadata",
