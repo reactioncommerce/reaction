@@ -20,7 +20,7 @@ import OrderStatusChip from "./OrderStatusChip";
 
 const styles = (theme) => ({
   fulfillmentGroupHeader: {
-    marginBottom: theme.spacing.unit * 4
+    marginBottom: theme.spacing(4)
   },
   verticalDivider: {
     backgroundColor: theme.palette.colors.black10,

@@ -6,7 +6,7 @@ import { compose } from "recompose";
 import { withApollo } from "react-apollo";
 import { uniqueId } from "lodash";
 import styled from "styled-components";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { i18next } from "/client/api";
@@ -194,7 +194,7 @@ class TagSettings extends Component {
     return (
       <div>
         <ButtonBar>
-          <Button onClick={this.handleShowCreateForm}>
+          <Button variant="contained" color="primary" onClick={this.handleShowCreateForm}>
             {i18next.t("admin.tags.form.createNew")}
           </Button>
         </ButtonBar>

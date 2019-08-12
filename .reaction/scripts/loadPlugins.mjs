@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import childProcess from 'child_process';
 import _ from 'lodash';
-import Log from './logger';
-import { exists, getDirectories } from './fs';
-import pluginConfig from "../pluginConfig";
+import Log from './logger.mjs';
+import { exists, getDirectories } from './fs.mjs';
+import pluginConfig from "../pluginConfig.js";
 
 // add a message to the top of the plugins import file
 const importFileMessage = `
