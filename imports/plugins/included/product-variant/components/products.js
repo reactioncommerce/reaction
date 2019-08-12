@@ -16,10 +16,15 @@ import { getTagIds as getIds } from "/lib/selectors/tags";
 class Products extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
+    files: PropTypes.arrayOf(PropTypes.file),
+    handleDelete: PropTypes.func,
+    isFiltered: PropTypes.bool,
     isProductsSubscriptionReady: PropTypes.bool,
     isReady: PropTypes.bool,
     loadProducts: PropTypes.func,
+    onShowFilterByFile: PropTypes.func,
     products: PropTypes.array,
+    setFilteredProductIdsCount: PropTypes.func,
     showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
@@ -62,9 +67,13 @@ class Products extends Component {
     return (
       <Components.ProductGrid
         onShowFilterByFile={this.props.onShowFilterByFile}
+        setFilteredProductIdsCount={this.props.setFilteredProductIdsCount}
         productsByKey={productsByKey || {}}
         productIds={getIds({ tags: products })}
         products={products}
+        files={this.props.files}
+        handleDelete={this.props.handleDelete}
+        isFiltered={this.props.isFiltered}
       />
     );
   }

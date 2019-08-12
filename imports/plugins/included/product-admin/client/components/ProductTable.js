@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import { Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "mdi-material-ui/Close";
 import ImportIcon from "mdi-material-ui/Download";
@@ -37,21 +38,19 @@ const useStyles = makeStyles((theme) => ({
  */
 function ProductTable({ onCreateProduct }) {
   const [files, setFiles] = useState([]);
+  const [isFiltered, setFiltered] = useState(false);
+  const [isClosed, setClosed] = useState(true);
+  const [filteredProductIdsCount, setFilteredProductIdsCount] = useState(0);
 
   const onDrop = useCallback((accepted) => {
     if (accepted.length === 0) return;
     setFiles(accepted);
   });
 
-  const handleDelete = useCallback((deletedFilename) => {
-    const newFiles = files.filter((file) => file.name !== deletedFilename);
-    setFiles(newFiles);
-  });
-
-  const importFiles = useCallback(() => {
+  const importFiles = useCallback((newFiles) => {
     let productIds = [];
 
-    files.map((file) => {
+    newFiles.map((file) => {
       const output = [];
       const reader = new FileReader();
       reader.readAsText(file);
@@ -76,13 +75,26 @@ function ProductTable({ onCreateProduct }) {
               return;
             });
             Session.set("filterByProductIds", productIds);
+            setClosed(true);
+            setFiltered(true);
           });
       };
       return;
     });
   });
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+  const handleDelete = useCallback((deletedFilename) => {
+    const newFiles = files.filter((file) => file.name !== deletedFilename);
+    setFiles(newFiles);
+    if (newFiles.length === 0) {
+      setFiltered(false);
+      Session.delete("filterByProductIds");
+    } else if (isFiltered) {
+      importFiles(newFiles);
+    }
+  });
+
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     multiple: true,
     disablePreview: true,
@@ -91,12 +103,15 @@ function ProductTable({ onCreateProduct }) {
   });
 
   const classes = useStyles();
-  const [isClosed, setClosed] = useState(true);
 
   let displayCard;
   if ( isClosed === true ) {
     displayCard = "none";
-    displayButton = "block";
+    if (isFiltered === true) {
+      displayButton = "none";
+    } else {
+      displayButton = "block";
+    }
   } else {
     displayCard = "block"
     displayButton = "none";
@@ -104,6 +119,10 @@ function ProductTable({ onCreateProduct }) {
 
   const closeCard = () => {
     setClosed(false);
+  };
+
+  const iconComponents = {
+    iconDismiss: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
   };
 
   return (
@@ -130,7 +149,7 @@ function ProductTable({ onCreateProduct }) {
                     variant="contained"
                     color="primary"
                     style={{ float: "right" }}
-                    onClick={importFiles}
+                    onClick={() => importFiles(files)}
                   >
                     Filter products
                   </Button>
@@ -166,8 +185,25 @@ function ProductTable({ onCreateProduct }) {
           {i18next.t("admin.createProduct") || "Create product"}
         </Button>
       </Grid>
+      { isFiltered ? (
+        <Grid item sm={12}>
+          <InlineAlert
+            isDismissable
+            components={iconComponents}
+            alertType="information"
+            title={i18next.t("admin.productListFiltered") || "Product list filtered"}
+            message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
+          />
+        </Grid>
+      ) : "" }
       <Grid item sm={12}>
-        <Components.ProductsAdmin onShowFilterByFile={() => closeCard()}/>
+        <Components.ProductsAdmin
+          onShowFilterByFile={() => closeCard()}
+          setFilteredProductIdsCount={setFilteredProductIdsCount}
+          files={files}
+          handleDelete={handleDelete}
+          isFiltered={isFiltered}
+        />
       </Grid>
     </Grid>
   );
