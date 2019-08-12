@@ -99,6 +99,12 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const languages = [];
   const shop = Shops.findOne();

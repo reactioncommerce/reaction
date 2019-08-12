@@ -17,6 +17,12 @@ const handlers = {
   }
 };
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const alerts = ReactionAlerts.collection_.find({
     "options.placement": props.placement || "",
