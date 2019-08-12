@@ -569,6 +569,12 @@ export const Shop = new SimpleSchema({
     type: StorefrontUrls,
     optional: true,
     defaultValue: {}
+  },
+  "allowCustomUserLocale": {
+    type: Boolean,
+    defaultValue: true,
+    optional: true,
+    label: "Allow custom user locale"
   }
 });
 

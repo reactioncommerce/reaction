@@ -41,6 +41,12 @@ function handleOpenShortcut(event, app) {
   Reaction.showActionView(app);
 }
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const audience = Roles.getRolesForUser(Reaction.getUserId(), Reaction.getShopId());
   const settings = Reaction.Apps({ provides: "settings", enabled: true, audience }) || [];
