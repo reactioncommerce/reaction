@@ -1,15 +1,17 @@
 import Logger from "@reactioncommerce/logger";
 
-const logCtx = { name: "core/product", file: " removeTagsFromProducts" };
+const logCtx = { name: "core/product", file: " executeBulkOperation" };
 
 /**
  *
+ * @method executeBulkOperation
+ * @summary Executes an array of operations in bulk
  * @param {Object[]} collection Mongo collection
  * @param {Object[]} operations bulk operations to perform
  * @param {Int} totalProducts total number of products to operate on
  * @return {Object} Object with information of results of bulk the operations
  */
-export default async function (collection, operations, totalProducts) {
+export default async function executeBulkOperation(collection, operations, totalProducts) {
   let response;
   try {
     Logger.trace({ ...logCtx, operations }, "Running bulk operation");

@@ -28,8 +28,7 @@ export default async function removeTagsFromProducts(context, input) {
       },
       multi: true
     }
-  }
-  ));
+  }));
 
   const results = await executeBulkOperation(Products, operations, totalProducts);
 

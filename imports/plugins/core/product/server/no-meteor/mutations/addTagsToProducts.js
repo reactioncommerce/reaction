@@ -27,8 +27,7 @@ export default async function addTagsToProducts(context, input) {
         }
       }
     }
-  }
-  ));
+  }));
 
   const results = await executeBulkOperation(Products, operations, totalProducts);
 
