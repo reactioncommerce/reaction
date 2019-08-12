@@ -8,6 +8,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import PlusIcon from "mdi-material-ui/Plus";
+import { Reaction } from "/client/api";
 
 /**
  * Get url for product, variant or option
@@ -50,16 +51,24 @@ function ProductList({ items, title, onCreate, selectedVariantId }) {
     return null;
   }
 
+  const hasCreateProductPermission = Reaction.hasPermission(["createProduct", "product/admin", "product/create"], Reaction.getUserId(), Reaction.getShopId());
+
   return (
     <Card>
-      <CardHeader
-        action={
-          <IconButton onClick={onCreate}>
-            <PlusIcon />
-          </IconButton>
-        }
-        title={title}
-      />
+      {hasCreateProductPermission ?
+        <CardHeader
+          action={
+            <IconButton onClick={onCreate}>
+              <PlusIcon />
+            </IconButton>
+          }
+          title={title}
+        />
+        :
+        <CardHeader
+          title={title}
+        />
+      }
       <List dense>
         {items.map((item) => (
           <Link key={item._id} to={getURL(item)}>
