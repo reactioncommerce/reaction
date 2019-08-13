@@ -1,4 +1,3 @@
-import approvePayment from "./approvePayment";
 import makeAdjustmentsToInvoice from "./makeAdjustmentsToInvoice";
 import sendNotification from "./sendNotification";
 import shipmentDelivered from "./shipmentDelivered";
@@ -16,7 +15,6 @@ import updateHistory from "./updateHistory";
  */
 
 export default {
-  "orders/approvePayment": approvePayment,
   "orders/makeAdjustmentsToInvoice": makeAdjustmentsToInvoice,
   "orders/sendNotification": sendNotification,
   "orders/shipmentDelivered": shipmentDelivered,

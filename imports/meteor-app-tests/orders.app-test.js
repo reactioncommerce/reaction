@@ -34,7 +34,6 @@ describe("orders test", function () {
         "shipmentPicked": Meteor.server.method_handlers["orders/shipmentPicked"],
         "shipmentPacked": Meteor.server.method_handlers["orders/shipmentPacked"],
         "shipmentLabeled": Meteor.server.method_handlers["orders/shipmentLabeled"],
-        "approvePayment": Meteor.server.method_handlers["orders/approvePayment"],
         "shipmentShipped": Meteor.server.method_handlers["orders/shipmentShipped"],
         "shipmentDelivered": Meteor.server.method_handlers["orders/shipmentDelivered"],
         "sendNotification": Meteor.server.method_handlers["orders/sendNotification"],
@@ -166,25 +165,6 @@ describe("orders test", function () {
       Meteor.call("orders/shipmentLabeled", order, shipment);
       const orderShipment = shippingObjectMethod(Orders.findOne({ _id: order._id }));
       expect(orderShipment.workflow.status).to.equal("coreOrderWorkflow/labeled");
-    });
-  });
-
-  describe("orders/approvePayment", function () {
-    it("should throw an error if user is not admin", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      spyOnMethod("approvePayment", order.accountId);
-      function approvePayment() {
-        return Meteor.call("orders/approvePayment", order._id, order.payments[0]._id);
-      }
-      expect(approvePayment).to.throw(ReactionError, /Access Denied/);
-    });
-
-    it("should approve payment", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("approvePayment", order.accountId);
-      Meteor.call("orders/approvePayment", order._id, order.payments[0]._id);
-      const orderDoc = Orders.findOne({ _id: order._id });
-      expect(orderDoc.payments[0].status).to.equal("approved");
     });
   });
 
