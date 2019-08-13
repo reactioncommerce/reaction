@@ -132,8 +132,8 @@ function ProductTable({ onCreateProduct }) {
           <CardHeader
             className={classes.cardHeaderTitle}
             action={
-              <IconButton aria-label="close">
-                <CloseIcon onClick={() => setClosed(true)} />
+              <IconButton aria-label="close" onClick={() => setClosed(true)}>
+                <CloseIcon/>
               </IconButton>
             }
             title="Filter products by file"
