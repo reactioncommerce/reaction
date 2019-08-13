@@ -25,9 +25,6 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContainer: {
     alignItems: "center"
-  },
-  dropzone: {
-    display: "inline-block"
   }
 }));
 
