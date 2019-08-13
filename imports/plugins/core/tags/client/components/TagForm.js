@@ -55,6 +55,7 @@ const HeroUploadButton = styled.div`
 
 /**
  * Extra component to use Dropzone v10 with the TagForm class component
+ * @returns {React.Component} Dropzone Component
  */
 function TagDropzone({ children, ...dzoneProps }) {
   return (
