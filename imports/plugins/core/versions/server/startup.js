@@ -65,6 +65,7 @@ appEvents.on("readyForMigrations", () => {
         ` below your current DB migration state (${currentMigrationVersion})`);
       Logger.fatal(`Upgrade to a version of Reaction containing migration ${currentMigrationVersion} or higher.`);
       Logger.fatal("If you really want to downgrade to this version, you should restore your DB to a previous state from your backup.");
+      // eslint-disable-next-line no-process-exit
       process.exit(0);
     }
 
