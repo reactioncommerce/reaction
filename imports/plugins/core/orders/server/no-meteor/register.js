@@ -134,11 +134,6 @@ export default async function register(app) {
       status: "completed",
       workflow: "coreOrderWorkflow",
       audience: ["dashboard/orders"]
-    }, {
-      template: "OrderInvoice",
-      label: "Invoice",
-      workflow: "coreOrderShipmentWorkflow",
-      audience: ["dashboard/orders"]
     }, { // Standard Order Item workflow
       label: "Inventory Adjust",
       workflow: "coreOrderItemWorkflow",
