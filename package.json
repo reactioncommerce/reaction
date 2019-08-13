@@ -397,12 +397,9 @@
     },
     "rules": {
       "jsx-a11y/label-has-for": "off",
-      "no-process-exit": "warn",
-      "node/no-deprecated-api": "warn",
       "node/no-missing-require": "off",
       "node/no-unsupported-features/es-syntax": "off",
       "node/no-unpublished-require": "off",
-      "promise/no-callback-in-promise": "warn",
       "react/no-did-mount-set-state": "warn",
       "react/no-did-update-set-state": "warn",
       "require-jsdoc": [
