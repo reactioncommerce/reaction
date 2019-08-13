@@ -10,7 +10,7 @@ import filterNavigationTreeItems from "../util/filterNavigationTreeItems";
  * @param {String} args.language Language to filter item content by
  * @param {String} args.navigationTreeId Navigation tree id
  * @param {Boolean} [args.shouldIncludeSecondary] Include secondary navigation items alongside primary items
- * @return {Promise<MongoCursor>} A MongoDB cursor for the proper query
+ * @returns {Promise<MongoCursor>} A MongoDB cursor for the proper query
  */
 export default async function navigationTreeById(context, { language, navigationTreeId, shouldIncludeSecondary = false } = {}) {
   const { collections, userHasPermission } = context;

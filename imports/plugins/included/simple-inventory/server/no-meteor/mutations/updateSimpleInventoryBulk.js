@@ -11,7 +11,7 @@ const logCtx = { name: "simple-inventory", file: "updateSimpleInventoryBulk" };
  * @param {Object} context App context
  * @param {Object} input Input
  * @param {Object} input.updates Array of objects, each containing fields for productConfiguration, shopId, canBackorder, inventoryInStock, isEnabled, lowInventoryWarningThreshold. See definition of these values on single updateSimpleInventory mutation.
- * @return {Object} Empty object, or an object with a `failedOps` field containing any failed update operations
+ * @returns {Object} Empty object, or an object with a `failedOps` field containing any failed update operations
  */
 export default async function updateSimpleInventoryBulk(context, input) {
   const { appEvents, collections, userId } = context;

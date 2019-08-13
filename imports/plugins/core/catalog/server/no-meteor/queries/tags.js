@@ -12,7 +12,7 @@ import escapeRegExp from "lodash/escapeRegExp";
  * @param {Boolean} [params.isTopLevel] - If set, look for `isTopLevel` matching this value
  * @param {Boolean} [params.shouldIncludeDeleted] - Admin only. Whether or not to include `isDeleted=true` tags. Default is `false`
  * @param {Boolean} [params.shouldIncludeInvisible] - Admin only. Whether or not to include `isVisible=false` tags.  Default is `false`.
- * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
+ * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function tags(context, shopId, { filter, shouldIncludeDeleted = false, isTopLevel, shouldIncludeInvisible = false } = {}) {
   const { collections } = context;

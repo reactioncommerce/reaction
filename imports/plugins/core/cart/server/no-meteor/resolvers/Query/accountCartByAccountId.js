@@ -11,7 +11,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} args.accountId - The account for which to generate an account cart
  * @param {String} args.shopId - The shop that will own this cart
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>|undefined} A Cart object
+ * @returns {Promise<Object>|undefined} A Cart object
  */
 export default async function accountCartByAccountId(parentResult, args, context) {
   const { accountId, shopId } = args;

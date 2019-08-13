@@ -11,7 +11,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * @summary Approve payment and apply any adjustments
  * @param {String} orderId - The order ID
  * @param {String} paymentId - The payment ID
- * @return {Object} The updated order document
+ * @returns {Object} The updated order document
  */
 export default function approvePayment(orderId, paymentId) {
   check(orderId, String);

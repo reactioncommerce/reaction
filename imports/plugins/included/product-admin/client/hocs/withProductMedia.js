@@ -11,9 +11,6 @@ import { Logger, Reaction } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 
 const wrapComponent = (Comp) => (
-  /**
-   * ProductMediaGallery
-   */
   class ProductMediaGallery extends Component {
     static propTypes = {
       editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
@@ -120,7 +117,7 @@ const wrapComponent = (Comp) => (
         ]
       });
 
-      // Set local state so the component does't have to wait for a round-trip
+      // Set local state so the component doesn't have to wait for a round-trip
       // to the server to get the updated list of variants
       this.setState({ media: newMediaOrder });
 
@@ -272,7 +269,7 @@ function composer(props, onData) {
   });
 
   onData(null, {
-    editable: Reaction.hasPermission(props.permission || ["createProduct"]),
+    editable: Reaction.hasPermission(props.permission || ["createProduct", "product/admin", "product/update"]),
     media: sortMedia(media),
     userId: Reaction.getUserId(),
     shopId: Reaction.getShopId(),

@@ -26,7 +26,7 @@ class Form extends Component {
   * @property {Func} onSubmit
   * @property {Boolean} renderFromFields - this controls whether form is rendered from schema or from fields.
   * @property {Object} schema - the schema used for validation and rendering.
-  * @return {Array} React propTypes
+  * @returns {Array} React propTypes
   * @ignore
   */
   static propTypes = {

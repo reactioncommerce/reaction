@@ -7,7 +7,7 @@ const INVENTORY_PLUGIN_BOOLEAN_FILTERS = ["isBackorder", "isLowQuantity", "isSol
  * @summary Transforms a boolean filters array into an array of Mongo expressions.
  * @param {Object} context - contains per-request state
  * @param {Object[]} booleanFilters - Array of Boolean filters
- * @return {Object[]} Array Mongo filter expressions
+ * @returns {Object[]} Array Mongo filter expressions
  */
 export default async function xformCatalogBooleanFilters(context, booleanFilters) {
   const mongoFilters = [];

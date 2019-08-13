@@ -156,7 +156,7 @@ async function createPayments({
  * @summary Places an order, authorizing all payments first
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
- * @return {Promise<Object>} Object with `order` property containing the created order
+ * @returns {Promise<Object>} Object with `order` property containing the created order
  */
 export default async function placeOrder(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such

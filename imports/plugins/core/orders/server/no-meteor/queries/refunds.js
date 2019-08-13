@@ -12,7 +12,7 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @param {String} params.orderId - Order ID
  * @param {String} params.shopId - Shop ID for the shop that owns the order
  * @param {String} [params.token] - Anonymous order token
- * @return {Promise<Array>|undefined} - An array of refunds applied to this order, if found
+ * @returns {Promise<Array>|undefined} - An array of refunds applied to this order, if found
  */
 export default async function refunds(context, { orderId, shopId, token } = {}) {
   if (!orderId || !shopId) {

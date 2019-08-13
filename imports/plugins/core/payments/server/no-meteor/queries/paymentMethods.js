@@ -8,7 +8,7 @@ import { paymentMethods as allPaymentMethods } from "../registration";
  * @summary get list of all registered payment methods for a shop
  * @param {Object} context - an object containing the per-request state
  * @param {String} shopId - shop id for which to get payment methods
- * @return {Array<Object>} Array of PaymentMethods
+ * @returns {Array<Object>} Array of PaymentMethods
  */
 export default async function paymentMethods(context, shopId) {
   const shop = await context.queries.shopById(context, shopId);

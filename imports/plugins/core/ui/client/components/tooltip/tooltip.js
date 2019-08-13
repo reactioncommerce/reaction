@@ -8,7 +8,7 @@ class Tooltip extends Component {
   /**
    * attachment
    * @description Return the attachment for the tooltip or the default
-   * @return {String} attachment
+   * @returns {String} attachment
    */
   get attachment() {
     return this.props.attachment || Tooltip.defaultProps.attachment;

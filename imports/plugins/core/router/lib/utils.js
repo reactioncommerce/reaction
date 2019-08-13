@@ -4,7 +4,7 @@ import Hooks from "./hooks";
  * assemble route name to be standard prefix/package name + registry name or route
  * @param  {String} packageName  [package name]
  * @param  {Object} registryItem [registry object]
- * @return {String}              [route name]
+ * @returns {String}              [route name]
  * @private
  */
 function getRegistryRouteName(packageName, registryItem) {
@@ -28,7 +28,7 @@ function getRegistryRouteName(packageName, registryItem) {
 /**
  * allows overriding of prefix in route definitions
  * @param  {Array} packageRoutes package routes
- * @return {Array} updatedRoutes
+ * @returns {Array} updatedRoutes
  */
 export function addRoutePrefixToPackageRoutes(packageRoutes) {
   // add group and routes to routing table
@@ -52,7 +52,7 @@ export function addRoutePrefixToPackageRoutes(packageRoutes) {
  * get package registry route configurations
  * @param  {Function} ReactionLayout ReactionLayout
  * @param  {Array} packages package routes
- * @return {Array} enabled package routes
+ * @returns {Array} enabled package routes
  */
 export function getEnabledPackageRoutes(ReactionLayout, packages) {
   const enabledPackageRoutes = []; // enabledPackageRoutes

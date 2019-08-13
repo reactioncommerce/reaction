@@ -13,7 +13,7 @@ import { decodeOrderOpaqueId, decodeOrderItemOpaqueId } from "@reactioncommerce/
  * @param {String} args.input.orderId - The order ID
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} SplitOrderItemPayload
+ * @returns {Promise<Object>} SplitOrderItemPayload
  */
 export default async function splitOrderItem(parentResult, { input }, context) {
   const {

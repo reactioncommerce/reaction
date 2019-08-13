@@ -217,7 +217,7 @@ const wrapComponent = (Comp) => (
 /**
  * @description re-sort the media
  * @param {Array} media media to sort
- * @return {Array} sorted media
+ * @returns {Array} sorted media
  */
 function sortMedia(media) {
   const sortedMedia = _.sortBy(media, (med) => {
@@ -238,7 +238,7 @@ function sortMedia(media) {
  */
 function composer(props, onData) {
   onData(null, {
-    editable: Reaction.hasPermission(props.permission || ["createProduct"]),
+    editable: Reaction.hasPermission(props.permission || ["createProduct", "product/admin", "product/update"]),
     media: sortMedia(props.media)
   });
 }

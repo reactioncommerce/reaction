@@ -17,7 +17,7 @@ import setUserPermissions from "../../util/setUserPermissions";
  * @param {Object} newGroupData - updated group info (similar to current group data)
  * slug remains untouched; used as key in querying
  * @param {String} shopId - id of the shop the group belongs to
- * @return {Object} - `object.status` of 200 on success or Error object on failure
+ * @returns {Object} - `object.status` of 200 on success or Error object on failure
  */
 export default function updateGroup(groupId, newGroupData, shopId) {
   check(groupId, String);

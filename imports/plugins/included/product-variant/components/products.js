@@ -25,7 +25,7 @@ class Products extends Component {
 
   /**
    * Checks and returns a Boolean if the `products` array from props is not empty.
-   * @return {Boolean} Boolean value `true` if products are available, `false` otherwise.
+   * @returns {Boolean} Boolean value `true` if products are available, `false` otherwise.
    */
   get hasProducts() {
     return Array.isArray(this.props.products) && this.props.products.length > 0;
@@ -35,7 +35,7 @@ class Products extends Component {
    * Handle load more button click
    * @access protected
    * @param  {SyntheticEvent} event Synthetic event object
-   * @return {undefined}
+   * @returns {undefined}
    */
   handleClick = (event) => {
     if (this.props.loadProducts) {
@@ -46,7 +46,7 @@ class Products extends Component {
   /**
    * Render product grid
    * @access protected
-   * @return {Node} React node containing the `ProductGrid` component.
+   * @returns {Node} React node containing the `ProductGrid` component.
    */
   renderProductGrid() {
     const { products } = this.props;
@@ -71,7 +71,7 @@ class Products extends Component {
   /**
    * Render load more button
    * @access protected
-   * @return {Node|undefined} React node containing a `load more` button or undefined.
+   * @returns {Node|undefined} React node containing a `load more` button or undefined.
    */
   renderLoadMoreProductsButton() {
     if (this.props.canLoadMoreProducts) {
@@ -93,7 +93,7 @@ class Products extends Component {
   /**
    * Render the not found component
    * @access protected
-   * @return {Node} React node containing the `NotFound` component.
+   * @returns {Node} React node containing the `NotFound` component.
    */
   renderNotFound() {
     return (
@@ -108,7 +108,7 @@ class Products extends Component {
   /**
    * Render component
    * @access protected
-   * @return {Node} React node containing elements that make up the `Products` component.
+   * @returns {Node} React node containing elements that make up the `Products` component.
    */
   render() {
     const { isProductsSubscriptionReady, isReady, showNotFound } = this.props;

@@ -4,7 +4,7 @@ import { getShop } from "./shops";
 
 /**
  * @summary define group factory
- * @return {undefined}
+ * @returns {undefined}
  */
 export default function () {
   const group = {

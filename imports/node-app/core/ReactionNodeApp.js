@@ -84,7 +84,7 @@ export default class ReactionNodeApp {
    *   A side effect is that `this.collections`/`this.context.collections`
    *   will have all collections available on it after this is called.
    * @param {Database} db MongoDB library database instance
-   * @return {undefined}
+   * @returns {undefined}
    */
   setMongoDatabase(db) {
     this.db = db;
@@ -134,7 +134,7 @@ export default class ReactionNodeApp {
    *   resolves the Promise.
    * @param {Object} options Options object
    * @param {String} options.mongoUrl MongoDB connection URL
-   * @return {Promise<undefined>} Nothing
+   * @returns {Promise<undefined>} Nothing
    */
   async connectToMongo({ mongoUrl } = {}) {
     const lastSlash = mongoUrl.lastIndexOf("/");
@@ -164,7 +164,7 @@ export default class ReactionNodeApp {
    * @summary Calls all `registerPluginHandler` type functions from all registered
    *   plugins, and then calls all `startup` type functions in series, in the order
    *   in which they were registered.
-   * @return {Promise<undefined>} Nothing
+   * @returns {Promise<undefined>} Nothing
    */
   async runServiceStartup() {
     // Call `functionsByType.registerPluginHandler` functions for every plugin that
@@ -197,7 +197,7 @@ export default class ReactionNodeApp {
 
   /**
    * @summary Creates the Apollo server and the Express app
-   * @return {undefined}
+   * @returns {undefined}
    */
   initServer() {
     const { addCallMeteorMethod, debug, httpServer } = this.options;
@@ -229,7 +229,7 @@ export default class ReactionNodeApp {
    * @param {Object} options Options object
    * @param {Number} [options.port] Port to listen on. If not provided,
    *   the server will be created but will not listen.
-   * @return {Promise<undefined>} Nothing
+   * @returns {Promise<undefined>} Nothing
    */
   async startServer({ port } = {}) {
     if (!this.httpServer) this.initServer();
@@ -275,7 +275,7 @@ export default class ReactionNodeApp {
    * @param {String} options.mongoUrl MongoDB connection URL
    * @param {Number} [options.port] Port to listen on. If not provided,
    *   the server will be created but will not listen.
-   * @return {Promise<undefined>} Nothing
+   * @returns {Promise<undefined>} Nothing
    */
   async start({ mongoUrl, port } = {}) {
     // (1) Connect to MongoDB database
@@ -291,7 +291,7 @@ export default class ReactionNodeApp {
   /**
    * @summary Stops the entire app. Closes the MongoDB connection and
    *   stops the Express server listening.
-   * @return {Promise<undefined>} Nothing
+   * @returns {Promise<undefined>} Nothing
    */
   async stop() {
     // (1) Disconnect from MongoDB database
@@ -305,7 +305,7 @@ export default class ReactionNodeApp {
    * @summary Plugins should call this to register everything they provide.
    *   This is a non-Meteor replacement for the old `Reaction.registerPackage`.
    * @param {Object} plugin Plugin configuration object
-   * @return {Promise<undefined>} Nothing
+   * @returns {Promise<undefined>} Nothing
    */
   async registerPlugin(plugin = {}) {
     if (typeof plugin.name !== "string" || plugin.name.length === 0) {

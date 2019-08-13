@@ -10,7 +10,7 @@ import { getShop } from "./shops";
 /**
  * @method getAccount
  * @memberof Fixtures
- * @return {Object} Existing account or Factory account
+ * @returns {Object} Existing account or Factory account
  */
 export function getAccount() {
   const existingAccount = Accounts.findOne();
@@ -35,7 +35,7 @@ export function getAccount() {
  * @param {Boolean} [options.isShippingDefault] isShippingDefault
  * @param {Boolean} [options.isBillingDefault] isBillingDefault
  * @param {Array} [options.metafields] metafields
- * @return {Object}              Address object
+ * @returns {Object}              Address object
  */
 export function getAddress(options = {}) {
   const defaults = {

@@ -7,7 +7,7 @@ import { xformRateToRateObject } from "@reactioncommerce/reaction-graphql-xforms
  * @summary Returns an aggregate of all fulfillmentGroup summaries to provide a single orderSummary
  * @param {Object} context An object with request-specific state
  * @param {Object} order - Result of the parent resolver, which is a Order object in GraphQL schema format
- * @return {Object} An object containing order pricing information from all fulfillmentGroups
+ * @returns {Object} An object containing order pricing information from all fulfillmentGroups
  */
 export default async function orderSummary(context, order) {
   const { currencyCode, shipping: fulfillmentMethods } = order;

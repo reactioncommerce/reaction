@@ -17,7 +17,7 @@ import { EJSON } from "meteor/ejson";
  * Meteor account services can be added in `settings.services`
  * @memberof Core
  * @param {Object} json - json object to insert
- * @return {Boolean} boolean -  returns true on insert
+ * @returns {Boolean} boolean -  returns true on insert
  * @example
  *  ReactionRegistry.loadSettings Assets.getText("settings/reaction.json")
  */

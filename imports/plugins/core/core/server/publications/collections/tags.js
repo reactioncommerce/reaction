@@ -17,7 +17,7 @@ Meteor.publish("Tags", function (tagIds) {
   const shopId = Reaction.getShopId();
 
   // Only let users what have createProduct permissions see the tags
-  if (!Reaction.hasPermission(["createProduct"], this.userId)) {
+  if (!Reaction.hasPermission(["createProduct", "product/admin", "product/update"], this.userId)) {
     return this.ready();
   }
 

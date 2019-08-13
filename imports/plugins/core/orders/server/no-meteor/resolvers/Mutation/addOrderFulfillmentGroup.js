@@ -16,7 +16,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} args.input.orderId Order ID
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} AddOrderFulfillmentGroupPayload
+ * @returns {Promise<Object>} AddOrderFulfillmentGroupPayload
  */
 export default async function addOrderFulfillmentGroup(parentResult, { input }, context) {
   const {

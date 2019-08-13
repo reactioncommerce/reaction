@@ -7,7 +7,7 @@ import getStripeInstanceForShop from "./getStripeInstanceForShop";
  * @summary List refunds
  * @param {Object} context an object containing the per-request state
  * @param {Object} paymentMethod object containing transaction ID
- * @return {Object} list refunds result
+ * @returns {Object} list refunds result
  * @private
  */
 export default async function stripeListRefunds(context, paymentMethod) {

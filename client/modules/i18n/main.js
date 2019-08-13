@@ -16,7 +16,7 @@ import { Logger, Reaction } from "/client/api";
  * @method
  * @memberof i18n
  * @summary Detects device default language
- * @return {String} language code
+ * @returns {String} language code
  */
 export function getBrowserLanguage() {
   if (typeof navigator.languages !== "undefined") {
@@ -37,7 +37,7 @@ export function getBrowserLanguage() {
  * @summary Get Labels for simple.schema keys
  * @param  {Object} schema - schema
  * @param  {String} name - name
- * @return {Object} return schema label object
+ * @returns {Object} return schema label object
  */
 export function getLabelsFor(schema, name) {
   const titleCaseName = name.charAt(0).toLowerCase() + name.slice(1);
@@ -63,7 +63,7 @@ export function getLabelsFor(schema, name) {
  * 2. Use schema-specific message for generic key
  * 3. Use schema-specific message for type
  * @todo Implement messaging hierarchy from simple-schema
- * @return {Object} returns i18n translated message for schema labels
+ * @returns {Object} returns i18n translated message for schema labels
  */
 export function getValidationErrorMessages() {
   const messages = {};

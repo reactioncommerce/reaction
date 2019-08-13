@@ -16,7 +16,7 @@ const importFileMessage = `
  * Create a plugin imports file on client or server
  * @param  {String} file - absolute path to file to write
  * @param  {Array} imports - array of import path strings
- * @return {Boolean} returns true if no error
+ * @returns {Boolean} returns true if no error
  */
 function generateImportsFile(file, imports) {
   // Don't create a file if there is nothing to import.
@@ -48,7 +48,7 @@ function generateImportsFile(file, imports) {
 /**
  * Import Reaction plugins
  * @param {String} baseDirPath - path to a plugins sub-directory (core/included/custom)
- * @return {Object} - returns object with client, server, and registry path arrays
+ * @returns {Object} - returns object with client, server, and registry path arrays
  */
 function getImportPaths(baseDirPath) {
 

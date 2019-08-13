@@ -7,7 +7,7 @@ import { Reaction, i18next, i18nextDep } from "/client/api";
  * @method displayName
  * @memberof BlazeTemplateHelpers
  * @summary Return a registered and logged in user's name or Guest
- * @return {String} username
+ * @returns {String} username
  */
 Template.registerHelper("displayName", (displayUser) => {
   i18nextDep.depend();

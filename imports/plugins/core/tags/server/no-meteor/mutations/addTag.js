@@ -10,7 +10,7 @@ import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
  * @summary Add a tag
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - mutation input
- * @return {Promise<Object>} AddTagPayload
+ * @returns {Promise<Object>} AddTagPayload
  */
 export default async function addTag(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation

@@ -14,7 +14,7 @@ import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
  * @param {String} tagName will insert, tagName + tagId will update existing
  * @param {String} tagId - tagId to update
  * @param {String} currentTagId - currentTagId will update related/hierarchy
- * @return {Boolean} return true/false after insert
+ * @returns {Boolean} return true/false after insert
  */
 export default function updateHeaderTags(tagName, tagId, currentTagId) {
   check(tagName, String);

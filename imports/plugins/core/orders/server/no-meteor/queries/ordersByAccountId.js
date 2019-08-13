@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} params.accountId - Account ID to search orders for
  * @param {String} params.orderStatus - Workflow status to limit search results
  * @param {String} params.shopIds - Shop IDs for the shops that owns the orders
- * @return {Promise<Object>|undefined} - An Array of Order documents, if found
+ * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function ordersByAccountId(context, { accountId, orderStatus, shopIds } = {}) {
   const { accountId: contextAccountId, collections, shopsUserHasPermissionFor, userHasPermission } = context;

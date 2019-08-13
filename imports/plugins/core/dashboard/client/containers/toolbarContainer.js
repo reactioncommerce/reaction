@@ -82,7 +82,7 @@ function composer(props, onData) {
     dashboardHeaderTemplate: props.data.dashboardHeader,
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
-    hasCreateProductAccess: Reaction.hasPermission("createProduct", Reaction.getUserId(), Reaction.getShopId()),
+    hasCreateProductAccess: Reaction.hasPermission(["createProduct", "product/admin", "product/create"], Reaction.getUserId(), Reaction.getShopId()),
     shopId: Reaction.getShopId(),
     shops,
 
@@ -92,7 +92,17 @@ function composer(props, onData) {
   });
 }
 
+/**
+ * @name ToolbarContainer
+ * @param {React.Component} Comp wrapped component
+ * @returns {React.Component} returns a React component
+ */
 export default function ToolbarContainer(Comp) {
+  /**
+   * @name CompositeComponent
+   * @param {Object} props Component props
+   * @returns {React.Component} Wrapped Toolbar component
+   */
   function CompositeComponent(props) {
     return (
       <AdminContextProvider>

@@ -19,7 +19,7 @@ let bulkAssetOp;
 /**
  * @function directoryExists
  * @param {String} dirPath directory path
- * @return {Boolean} isDirectory
+ * @returns {Boolean} isDirectory
  */
 async function directoryExists(dirPath) {
   let info;
@@ -40,7 +40,7 @@ async function directoryExists(dirPath) {
  * loadTranslation should generally be used
  * before startup, to ensure that Assets load.
  * @param  {Object} source a json i18next object
- * @return {Boolean} false if assets weren't loaded
+ * @returns {Boolean} false if assets weren't loaded
  */
 export function loadTranslation(source) {
   try {
@@ -69,7 +69,7 @@ export function loadTranslation(source) {
  * @memberof i18n
  * @summary Load an array of translation objects and import using loadTranslation
  * @param  {Object} sources array of i18next translations
- * @return {Boolean} false if assets weren't loaded
+ * @returns {Boolean} false if assets weren't loaded
  */
 export function loadTranslations(sources) {
   sources.forEach(loadTranslation);
@@ -79,7 +79,7 @@ export function loadTranslations(sources) {
  * @method flushTranslationLoad
  * @memberof i18n
  * @summary Execute the bulk asset operation
- * @return {undefined} No return
+ * @returns {undefined} No return
  */
 export async function flushTranslationLoad() {
   if (!bulkAssetOp) return Promise.resolve();
@@ -101,7 +101,7 @@ export async function flushTranslationLoad() {
  * Assets collection is processed with Reaction.Import
  * after all assets have been loaded.
  * @async
- * @return {undefined} no return
+ * @returns {undefined} no return
  */
 export async function loadCoreTranslations() {
   const meteorPath = await fs.realpath(`${process.cwd()}/../`);
@@ -135,7 +135,7 @@ export async function loadCoreTranslations() {
  * @method reloadAllTranslations
  * @memberof i18n
  * @summary Reload translations for all shops
- * @return {undefined}
+ * @returns {undefined}
 */
 export function reloadAllTranslations() {
   // Clear assets for i18n
@@ -156,7 +156,7 @@ export function reloadAllTranslations() {
  * @memberof i18n
  * @summary Reload translations for specified shop
  * @param {String} shopId - Shop Id to reset translations for
- * @return {undefined}
+ * @returns {undefined}
 */
 export function reloadTranslationsForShop(shopId) {
   // Clear assets for i18n
@@ -176,7 +176,7 @@ export function reloadTranslationsForShop(shopId) {
  * @method importAllTranslations
  * @memberof i18n
  * @summary Imports all translations into Assets collection and Translation collection
- * @return {undefined}
+ * @returns {undefined}
  */
 export function importAllTranslations() {
   // Get count of all i18n assets

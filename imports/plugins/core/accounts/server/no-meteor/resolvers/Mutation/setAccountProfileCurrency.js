@@ -11,7 +11,7 @@ import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
  * @param {String} args.input.currencyCode - The currencyCode to add to user profile
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Object} setAccountProfileCurrency
+ * @returns {Object} setAccountProfileCurrency
  */
 export default function setAccountProfileCurrency(_, { input }, context) {
   const { accountId, currencyCode, clientMutationId = null } = input;

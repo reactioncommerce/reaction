@@ -15,7 +15,7 @@ import setUserPermissions from "../../util/setUserPermissions";
  * (NB: At this time, a user only belongs to only one group per shop)
  * @param {String} userId - The account ID to remove from the group
  * @param {String} groupId - ID of the group
- * @return {Object} - The modified group object
+ * @returns {Object} - The modified group object
  */
 export default function removeUser(userId, groupId) {
   check(userId, String);

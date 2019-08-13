@@ -9,7 +9,7 @@
  * @param {String} args.language The language to load items in
  * @param {Boolean} args.shouldIncludeSecondary Include secondary navigation items alongside primary items
  * @param {Object} context An object containing the per-request state
- * @return {Promise<Object[]>} Promise that resolves to a navigation tree document
+ * @returns {Promise<Object[]>} Promise that resolves to a navigation tree document
  */
 export default async function defaultNavigationTree(shop, args, context) {
   const { defaultNavigationTreeId: navigationTreeId } = shop;

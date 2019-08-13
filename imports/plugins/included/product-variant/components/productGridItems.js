@@ -107,12 +107,13 @@ class ProductGridItems extends Component {
 
   render() {
     const { isSelected, product } = this.props;
+    const isChecked = isSelected() === "active" || false;
     const productItem = (
       <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""}`}>
         <TableCell padding="checkbox">
           <Checkbox
             onClick={this.handleSelect}
-            checked={isSelected()}
+            checked={isChecked}
           />
         </TableCell>
         <TableCell align="center">

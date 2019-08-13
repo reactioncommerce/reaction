@@ -21,7 +21,7 @@ const inputSchema = new SimpleSchema({
  * @param {String} [input.cartToken] - The token for the cart, required if it is an anonymous cart
  * @param {String} input.fulfillmentGroupId - The group to select a fulfillment option for
  * @param {String} input.fulfillmentMethodId - The fulfillment method ID from the option the shopper selected
- * @return {Promise<Object>} An object with a `cart` property containing the updated cart
+ * @returns {Promise<Object>} An object with a `cart` property containing the updated cart
  */
 export default async function selectFulfillmentOptionForGroup(context, input) {
   const cleanedInput = inputSchema.clean(input || {});

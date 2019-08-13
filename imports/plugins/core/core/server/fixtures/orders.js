@@ -12,7 +12,7 @@ import { addProduct } from "./products";
  * @method randomProcessor
  * @memberof Fixtures
  * @summary Return a random payment processor string, either: `"Stripe"` `"Braintree"`
- * @return {String} Name of payment processor
+ * @returns {String} Name of payment processor
  */
 export function randomProcessor() {
   return _.sample(["Stripe", "Braintree"]);
@@ -25,7 +25,7 @@ const itemIdTwo = Random.id();
  * @method randomStatus
  * @memberof Fixtures
  * @summary Return a random payment status, from: `"created", "approved", "failed", "canceled", "expired", "pending", "voided", "settled"`
- * @return {String} Payment status string
+ * @returns {String} Payment status string
  */
 export function randomStatus() {
   return _.sample([
@@ -44,7 +44,7 @@ export function randomStatus() {
  * @method randomMode
  * @memberof Fixtures
  * @summary Return a random credit card status, from: `"authorize", "capture", "refund", "void"`
- * @return {String} Payment status string
+ * @returns {String} Payment status string
  */
 export function randomMode() {
   return _.sample(["authorize", "capture", "refund", "void"]);
@@ -53,7 +53,7 @@ export function randomMode() {
 /**
  * @method getAccountId
  * @memberof Fixtures
- * @return {String} ID
+ * @returns {String} ID
  */
 export function getAccountId() {
   return getAccount()._id;
@@ -62,7 +62,7 @@ export function getAccountId() {
 /**
  * @method getShopId
  * @memberof Fixtures
- * @return {String} ID
+ * @returns {String} ID
  */
 export function getShopId() {
   return getShop()._id;
@@ -71,7 +71,7 @@ export function getShopId() {
 /**
  * @method defineOrders
  * @memberof Fixtures
- * @return {undefined}
+ * @returns {undefined}
  */
 export default function defineOrders() {
   const shopId = getShopId();

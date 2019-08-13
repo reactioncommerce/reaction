@@ -11,7 +11,7 @@ import addCartItemsUtil from "../util/addCartItems";
  * @param {Object} [options] - Options
  * @param {Boolean} [options.skipPriceCheck] - For backwards compatibility, set to `true` to skip checking price.
  *   Skipping this is not recommended for new code.
- * @return {Promise<Object>} An object with `cart`, `minOrderQuantityFailures`, and `incorrectPriceFailures` properties.
+ * @returns {Promise<Object>} An object with `cart`, `minOrderQuantityFailures`, and `incorrectPriceFailures` properties.
  *   `cart` will always be the full updated cart document, but `incorrectPriceFailures` and
  *   `minOrderQuantityFailures` may still contain other failures that the caller should
  *   optionally retry with the corrected price or quantity.

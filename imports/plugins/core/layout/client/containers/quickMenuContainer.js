@@ -3,6 +3,12 @@ import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { QuickMenu } from "../components";
 import { Reaction } from "/client/api";
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });
   const items = [];

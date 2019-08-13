@@ -3,7 +3,7 @@
  * @constant
  * @memberof Helpers
  * @summary Checks matching via various operators
- * @return {Boolean} the result of the check
+ * @returns {Boolean} the result of the check
  */
 export default {
   bool(varA) { return varA.trim().toLowerCase() === "true"; },

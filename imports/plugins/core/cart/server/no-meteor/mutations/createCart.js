@@ -15,7 +15,7 @@ import addCartItems from "../util/addCartItems";
  * @param {Boolean} [input.shouldCreateWithoutItems] - Create even if `items` is empty or becomes empty
  *   due to price mismatches? Default is false. This is for backwards compatibility with old Meteor code
  *   that creates the cart prior to adding items and should not be set to `true` in new code.
- * @return {Promise<Object>} An object with `cart`, `minOrderQuantityFailures`, and `incorrectPriceFailures` properties.
+ * @returns {Promise<Object>} An object with `cart`, `minOrderQuantityFailures`, and `incorrectPriceFailures` properties.
  *   `cart` will be null if all prices were incorrect. If at least one item could be added,
  *   then the cart will have been created and returned, but `incorrectPriceFailures` and
  *   `minOrderQuantityFailures` may still contain other failures that the caller should

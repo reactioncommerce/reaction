@@ -9,7 +9,7 @@ import {
 import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
 
 /**
- * @return {undefined}
+ * @returns {undefined}
  */
 export default function setUpFileCollections({
   absoluteUrlPrefix,
@@ -61,7 +61,7 @@ export default function setUpFileCollections({
    * @memberof Files
    * @param {Object} options Options
    * @summary buildGFS returns a fresh GridFSStore instance from provided image transform settings.
-   * @return {GridFSStore} New GridFS store instance
+   * @returns {GridFSStore} New GridFS store instance
    */
   const buildGFS = ({ name, transform }) => (
     new GridFSStore({

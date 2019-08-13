@@ -15,7 +15,7 @@ import groups from "./groups";
 */
 
 /**
- * @return {undefined}
+ * @returns {undefined}
  */
 export default function fixtures() {
   shops();

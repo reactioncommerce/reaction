@@ -6,7 +6,7 @@
  * @param {Object} context - an object containing the per-request state
  * @param {String} slugOrId - ID or slug of tag to query
  * @param {Boolean} [params.shouldIncludeInvisible] - Whether or not to include `isVisible=true` tags. Default is `false`
- * @return {Object} - A Tag document if one was found
+ * @returns {Object} - A Tag document if one was found
  */
 export default async function tag(context, slugOrId, { shouldIncludeInvisible = false } = {}) {
   const { collections, userHasPermission } = context;
