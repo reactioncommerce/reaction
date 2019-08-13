@@ -13,6 +13,10 @@
           "metafields": "Meta fields",
           "mediaGallery": "Media Gallery"
         },
+        "importCard": {
+          "import": "Import",
+          "importHelpText": "Import .csv files with the product IDs in the first column."
+        },
         "productTable": {
           "header": {
             "order": "Order",
@@ -46,6 +50,7 @@
             "duplicateTitle": "Duplicate {{count}} product?",
             "duplicateTitle_plural": "Duplicate {{count}} products?",
             "duplicateMessage": "Duplicate selected products and their variants.",
+            "allProducts": "All products",
             "filteredProducts": "Filtered products",
             "selectedCount": "{{count}} selected",
             "filterByFile": "Filter by file"

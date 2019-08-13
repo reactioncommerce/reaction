@@ -152,7 +152,7 @@ class ProductGrid extends Component {
     return (
       <div className={classes.filterCountContainer}>
         <Typography variant="h4" display="inline" className={classes.productsTitle}>
-            All products
+          {i18next.t("admin.productTable.bulkActions.allProducts")}
         </Typography>
         <Typography variant="h5" display="inline" className={classes.filterCountText}>
           { totalOrSelected }

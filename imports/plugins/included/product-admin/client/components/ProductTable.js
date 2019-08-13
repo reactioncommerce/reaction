@@ -165,10 +165,10 @@ function ProductTable({ onCreateProduct }) {
                   >
                     <input {...getInputProps()} />
                       <ImportIcon className={classes.leftIcon}/>
-                      Import
+                      {i18next.t("admin.importCard.import")}
                   </Button>
                   <Typography variant="h5" display="inline" className={classes.helpText}>
-                    Import a .csv file with a list of product IDs, separated by commas.
+                  {i18next.t("admin.importCard.importHelpText")}
                   </Typography>
                 </Grid>
               </Grid>
