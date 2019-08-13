@@ -61,7 +61,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 
 		/**
 		 * Validate an object against the schema
-		 * @return {object?}
+		 * @returns {object?}
 		 * @method
 		 * @name validate
 		 * @memberOf documents/schema#
@@ -146,7 +146,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @param {String} name The name of the type
 		 * @param {function(object)} operation What to do with the type.
 		 * @param {Object} operation.value The value to validation
-		 * @return {Boolean}
+		 * @returns {Boolean}
 		 */
 		this.addType = env.addType;
 
@@ -158,7 +158,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @param {String} name The name of the formatter
 		 * @param {function(object)} formatter How to format it
 		 * @param {Object} formatter.value The value to format
-		 * @return {Boolean}
+		 * @returns {Boolean}
 		 */
 		this.addFormat = env.addFormat;
 
@@ -170,7 +170,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @param {String} name The name of the check
 		 * @param {function(...object)} formatter Perform the check
 		 * @param {Object} formatter.value The value to check followed by any parameters from the schema
-		 * @return {Boolean}
+		 * @returns {Boolean}
 		 */
 		this.addCheck = env.addCheck;
 
@@ -183,14 +183,14 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 		 * @param {String} name The name of the coercion
 		 * @param {function(object)} coercer Perform the coercion
 		 * @param {Object} coercer.value The value to coerce
-		 * @return {Boolean}
+		 * @returns {Boolean}
 		 */
 		this.addTypeCoercion = env.addTypeCoercion;
 
 		/**
 		 * Get a registered schema by name
 		 * @param {string=} schemaName
-		 * @return {object?}
+		 * @returns {object?}
 		 * @memberOf documents/schema#
 		 * @name getSchema
 		 * @method
@@ -241,7 +241,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 	 * that has a default value or is required, the resultant object will contain that property. It is useful for extending
 	 * values from some source that may be incomplete, like options or some such.
 	 * @param {json-schema} schema A schema to use to create the default document
-	 * @return {object?}
+	 * @returns {object?}
 	 * @name defaultDoc
 	 * @memberOf documents/schema#
 	 * @method
