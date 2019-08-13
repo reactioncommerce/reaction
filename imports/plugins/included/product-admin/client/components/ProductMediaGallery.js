@@ -23,7 +23,7 @@ function ProductMediaGallery(props) {
   if (editable) {
     const hasMedia = Array.isArray(media) && media.length > 0;
 
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({
+    const { getRootProps, getInputProps } = useDropzone({
       onDrop: (files) => {
         if (files.length === 0) return;
         props.onDrop(files);
@@ -32,52 +32,52 @@ function ProductMediaGallery(props) {
       disablePreview: true,
       accept: "image/jpg, image/png, image/jpeg",
       disableClick: true
-    });  
+    });
 
     return (
-        <div className="rui media-gallery">
-          <Table padding="dense">
-            <TableHead>
+      <div className="rui media-gallery">
+        <Table padding="dense">
+          <TableHead>
+            <TableRow>
+              <TableCell>{i18next.t("admin.productTable.header.order")}</TableCell>
+              <TableCell>{"Media"}</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!!hasMedia && (
+              (media || []).map((mediaItem) => (
+                <ProductMediaItem
+                  editable={editable}
+                  key={mediaItem._id}
+                  onSetMediaPriority={onSetMediaPriority}
+                  onRemoveMedia={onRemoveMedia}
+                  size="small"
+                  source={mediaItem}
+                />
+              ))
+            )}
+            {!!uploadProgress && (
               <TableRow>
-                <TableCell>{i18next.t("admin.productTable.header.order")}</TableCell>
-                <TableCell>{"Media"}</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {!!hasMedia && (
-                (media || []).map((mediaItem) => (
-                  <ProductMediaItem
-                    editable={editable}
-                    key={mediaItem._id}
-                    onSetMediaPriority={onSetMediaPriority}
-                    onRemoveMedia={onRemoveMedia}
-                    size="small"
-                    source={mediaItem}
-                  />
-                ))
-              )}
-              {!!uploadProgress && (
-                <TableRow>
-                  <TableCell colSpan={3}>
-                    <LinearProgress indeterminate={true} />
-                  </TableCell>
-                </TableRow>
-              )}
-              <TableRow>
-                <TableCell colSpan={3} {...getRootProps({className: 'dropzone'})}>
-                  <Button
-                    fullWidth
-                    size="large"
-                  >
-                    <input {...getInputProps()} />
-                    {"Drag image or click to upload"}
-                  </Button>
+                <TableCell colSpan={3}>
+                  <LinearProgress indeterminate={true} />
                 </TableCell>
               </TableRow>
-            </TableBody>
-          </Table>
-        </div>
+            )}
+            <TableRow>
+              <TableCell colSpan={3} {...getRootProps({ className: "dropzone" })}>
+                <Button
+                  fullWidth
+                  size="large"
+                >
+                  <input {...getInputProps()} />
+                  {"Drag image or click to upload"}
+                </Button>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
     );
   }
 

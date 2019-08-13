@@ -158,17 +158,17 @@ function ProductTable({ onCreateProduct }) {
             ) : (
               <Grid container spacing={1} className={classes.cardContainer}>
                 <Grid item sm={12}>
-                  <Button 
-                    {...getRootProps({className: 'dropzone'})}
+                  <Button
+                    {...getRootProps({ className: "dropzone" })}
                     variant="contained"
                     color="primary"
                   >
                     <input {...getInputProps()} />
-                      <ImportIcon className={classes.leftIcon}/>
-                      {i18next.t("admin.importCard.import")}
+                    <ImportIcon className={classes.leftIcon}/>
+                    {i18next.t("admin.importCard.import")}
                   </Button>
                   <Typography variant="h5" display="inline" className={classes.helpText}>
-                  {i18next.t("admin.importCard.importHelpText")}
+                    {i18next.t("admin.importCard.importHelpText")}
                   </Typography>
                 </Grid>
               </Grid>
