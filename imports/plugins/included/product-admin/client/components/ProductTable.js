@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
-import { Slide, Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
+import { Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "mdi-material-ui/Close";
 import ImportIcon from "mdi-material-ui/Download";
 import { useDropzone } from "react-dropzone";
@@ -39,12 +39,12 @@ function ProductTable({ onCreateProduct }) {
   const [isClosed, setClosed] = useState(true);
   const [filteredProductIdsCount, setFilteredProductIdsCount] = useState(0);
 
-  const onDrop = useCallback((accepted) => {
+  const onDrop = (accepted) => {
     if (accepted.length === 0) return;
     setFiles(accepted);
-  });
+  };
 
-  const importFiles = useCallback((newFiles) => {
+  const importFiles = (newFiles) => {
     let productIds = [];
 
     newFiles.map((file) => {
@@ -78,9 +78,9 @@ function ProductTable({ onCreateProduct }) {
       };
       return;
     });
-  });
+  };
 
-  const handleDelete = useCallback((deletedFilename) => {
+  const handleDelete = (deletedFilename) => {
     const newFiles = files.filter((file) => file.name !== deletedFilename);
     setFiles(newFiles);
     if (newFiles.length === 0) {
@@ -89,7 +89,7 @@ function ProductTable({ onCreateProduct }) {
     } else if (isFiltered) {
       importFiles(newFiles);
     }
-  });
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -103,7 +103,6 @@ function ProductTable({ onCreateProduct }) {
 
   let displayCard;
   let displayButton;
-  let fade;
   if (isClosed === true) {
     displayCard = "none";
     if (isFiltered === true) {
@@ -114,7 +113,6 @@ function ProductTable({ onCreateProduct }) {
   } else {
     displayCard = "block";
     displayButton = "none";
-    fade = true;
   }
 
   const closeCard = () => {

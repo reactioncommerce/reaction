@@ -20,19 +20,19 @@ import ProductMediaItem from "./ProductMediaItem";
 function ProductMediaGallery(props) {
   const { editable, media, onSetMediaPriority, onRemoveMedia, uploadProgress } = props;
 
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (files) => {
+      if (files.length === 0) return;
+      props.onDrop(files);
+    },
+    multiple: true,
+    disablePreview: true,
+    accept: "image/jpg, image/png, image/jpeg",
+    disableClick: true
+  });
+
   if (editable) {
     const hasMedia = Array.isArray(media) && media.length > 0;
-
-    const { getRootProps, getInputProps } = useDropzone({
-      onDrop: (files) => {
-        if (files.length === 0) return;
-        props.onDrop(files);
-      },
-      multiple: true,
-      disablePreview: true,
-      accept: "image/jpg, image/png, image/jpeg",
-      disableClick: true
-    });
 
     return (
       <div className="rui media-gallery">
