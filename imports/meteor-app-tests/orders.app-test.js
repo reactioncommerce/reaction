@@ -11,7 +11,7 @@ import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import { getUser } from "/imports/plugins/core/core/server/fixtures/users";
-import { Orders, Notifications } from "/lib/collections";
+import { Orders } from "/lib/collections";
 
 describe("orders test", function () {
   let example;
@@ -39,8 +39,6 @@ describe("orders test", function () {
         "shipmentDelivered": Meteor.server.method_handlers["orders/shipmentDelivered"],
         "sendNotification": Meteor.server.method_handlers["orders/sendNotification"],
         "updateHistory": Meteor.server.method_handlers["orders/updateHistory"],
-        "refunds/create": Meteor.server.method_handlers["orders/refunds/create"],
-        "refunds/refundItems": Meteor.server.method_handlers["orders/refunds/refundItems"],
         "example/payment/capture": Meteor.server.method_handlers["example/payment/capture"]
       };
 
@@ -302,69 +300,6 @@ describe("orders test", function () {
       expect(orders.history[0].event).to.equal(event);
       expect(orders.history[0].value).to.equal(trackingValue);
       expect(orders.history[0].userId).to.equal(userId);
-    });
-  });
-
-  describe("orders/refunds/create", function () {
-    beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
-        check(args, [Match.Any]);
-      });
-    });
-
-    it("should throw error if user does not have admin permissions", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      spyOnMethod("refunds/create", order.accountId);
-      function refundsCreate() {
-        const amount = 5.20;
-        return Meteor.call("orders/refunds/create", order._id, order.payments[0]._id, amount);
-      }
-      expect(refundsCreate).to.throw(ReactionError, /Access Denied/);
-    });
-
-    it("should update the order as refunded", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("refunds/create", order.accountId);
-      const amount = 5.20;
-      Meteor.call("orders/refunds/create", order._id, order.payments[0]._id, amount);
-      const updateOrder = Orders.findOne({ _id: order._id });
-      expect(updateOrder.payments[0].status).to.equal("partialRefund");
-    });
-  });
-
-  describe("orders/refunds/refundItems", function () {
-    beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
-        check(args, [Match.Any]);
-      });
-    });
-
-    it("should throw error if user does not have admin permissions", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      spyOnMethod("refunds/refundItems", order.accountId);
-      function refundItems() {
-        const refundItemsInfo = {
-          total: 9.90,
-          quantity: 2,
-          items: [{}, {}]
-        };
-        return Meteor.call("orders/refunds/refundItems", order._id, order.payments[0]._id, refundItemsInfo);
-      }
-      expect(refundItems).to.throw(ReactionError, /Access Denied/);
-    });
-
-    it("should update the order as refunded if all items in the order are refunded", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("refunds/refundItems", order.accountId);
-      const originalQuantity = order.totalItemQuantity;
-      const refundItemsInfo = {
-        total: 9.90,
-        quantity: originalQuantity,
-        items: [{}, {}]
-      };
-      Meteor.call("orders/refunds/refundItems", order._id, order.payments[0]._id, refundItemsInfo);
-      const updateOrder = Orders.findOne({ _id: order._id });
-      expect(updateOrder.payments[0].status).to.equal("refunded");
     });
   });
 });
