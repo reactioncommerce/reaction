@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Migrations } from "meteor/percolate:migrations";
