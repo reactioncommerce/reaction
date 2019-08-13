@@ -10,14 +10,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import { getDefaultUserInviteGroup, getUserByEmail } from "../helpers/accountsHelper";
 
-/**
- * @summary React component to display admin invite form
- * @memberof Accounts
- * @extends {Component}
- * @property {Function} canInviteToGroup
- * @property {Array} groups
- * @returns {Node} React node containing admin invite form
- */
 class AdminInviteForm extends Component {
   static propTypes = {
     canInviteToGroup: PropTypes.func,

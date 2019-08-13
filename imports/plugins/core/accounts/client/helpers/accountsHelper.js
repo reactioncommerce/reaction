@@ -137,7 +137,7 @@ export function groupPermissions(packages) {
  * @method getUserByEmail
  * @memberOf Accounts
  * @summary Returns a user that matches the email address
- * @param email email address
+ * @param {String} email email address
  * @returns {Object} account of user from provided email address
  */
 export function getUserByEmail(email) {
@@ -146,7 +146,7 @@ export function getUserByEmail(email) {
 
 /**
  *
- * @param {Array} permissions
+ * @param {Array} permissions permissions
  * @returns {Array} permissions mapped by label
  */
 function getPermissionMap(permissions) {
