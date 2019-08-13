@@ -1,3 +1,5 @@
+/* eslint-disable node/no-deprecated-api */
+/* TODO: revisit `url.parse` throughout Reaction */
 import url from "url";
 import { DDP } from "meteor/ddp-client";
 import { composeUrl } from "/lib/core/url-common";
