@@ -19,6 +19,7 @@ class Products extends Component {
     isProductsSubscriptionReady: PropTypes.bool,
     isReady: PropTypes.bool,
     loadProducts: PropTypes.func,
+    onShowFilterByFile: PropTypes.func,
     products: PropTypes.array,
     showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };

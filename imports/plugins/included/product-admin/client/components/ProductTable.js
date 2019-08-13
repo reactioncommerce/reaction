@@ -8,9 +8,9 @@ import Dropzone from "react-dropzone";
 import { i18next } from "/client/api";
 import withCreateProduct from "../hocs/withCreateProduct";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   leftIcon: {
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(1)
   },
   helpText: {
     marginLeft: "20px",
@@ -38,7 +38,9 @@ function ProductTable({ onCreateProduct }) {
   const [isClosed, setClosed] = useState(true);
 
   let displayCard;
-  if ( isClosed === true ) {
+  let displayButton;
+  let fade;
+  if (isClosed === true) {
     displayCard = "none";
     displayButton = "block";
     fade = false;
@@ -46,7 +48,7 @@ function ProductTable({ onCreateProduct }) {
     displayCard = "block";
     displayButton = "none";
     fade = true;
-  };
+  }
 
   const closeCard = () => {
     setClosed(false);
@@ -69,28 +71,16 @@ function ProductTable({ onCreateProduct }) {
             <CardContent>
               <Grid container spacing={1} className={classes.cardContainer}>
                 <Grid item sm={12}>
-                  <Dropzone
-                    className={classes.dropzone}
-                    dzisableClick
-                    multiple
-                    disablePreview
-                    onDrop={(files) => {
-                      console.log(files)
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      this.dropzone && this.dropzone.open();
                     }}
-                    ref={(inst) => { this.dropzone = inst; }}
-                    accept="csv"
-                    >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        this.dropzone && this.dropzone.open();
-                      }}
-                    >
-                      <ImportIcon className={classes.leftIcon}/>
-                      Import
-                    </Button>
-                  </Dropzone>
+                  >
+                    <ImportIcon className={classes.leftIcon}/>
+                    Import
+                  </Button>
                   <Typography variant="h5" display="inline" className={classes.helpText}>
                     Import a .csv file with a list of product IDs, separated by commas.
                   </Typography>
