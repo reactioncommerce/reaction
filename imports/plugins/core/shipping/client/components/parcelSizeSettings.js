@@ -50,7 +50,6 @@ class ParcelSizeSettings extends Component {
 
   /**
   * @name renderComponent
-  * @method render()
   * @summary React component for displaying default parcel size form
   * @returns {Node} React node containing form view
   */
@@ -93,7 +92,7 @@ class ParcelSizeSettings extends Component {
   * @type {propTypes}
   * @param {Object} props - React PropTypes
   * @property {Function} doc the parcel object
-  * @property {Obejct} fieldsProp properties of the fields
+  * @property {Object} fieldsProp properties of the fields
   * @property {Function} getEditFocus provides function that gets edit/focus value in Reaction state
   * @property {Array} hiddenFields fields not to be shown
   * @property {Function} onCardExpand provides function that controls card expansion

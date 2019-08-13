@@ -43,16 +43,16 @@ const onCardExpand = (cardName) => {
  * @method getEditFocus
  * @summary get "edit/focus" value from current Reaction state
  * @since 1.1.12
+ * @returns {String} focus value
 */
 const getEditFocus = () => Reaction.state.get("edit/focus");
 
 /**
- * @method composer
- * @summary composer - reactive Tracker wrapped function
- * @param {Object} props
- * @param {Function} onData
- * @since 1.1.12
-*/
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 const composer = (props, onData) => {
   const shop = Shops.findOne({
     _id: Reaction.getShopId()

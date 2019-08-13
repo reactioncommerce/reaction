@@ -16,7 +16,7 @@ function handleShowPackage(event, app) {
 }
 
 /**
- * Open full dashbaord menu
+ * Open full dashboard menu
  * @returns {undefined} No return value
  * @private
  */
@@ -30,7 +30,7 @@ function handleShowDashboard() {
 }
 
 /**
- * Push dashbaord & package into action view navigation stack
+ * Push dashboard & package into action view navigation stack
  * @param  {SyntheticEvent} event Original event
  * @param  {Object} app Package data
  * @returns {undefined} No return value
@@ -76,7 +76,17 @@ function composer(props, onData) {
   });
 }
 
+/**
+ * @name PackageListContainer
+ * @param {React.Component} Comp wrapped component
+ * @returns {React.Component} returns a React component
+ */
 export default function PackageListContainer(Comp) {
+  /**
+   * @name CompositeComponent
+   * @param {Object} props Component props
+   * @returns {React.Component} Wrapped Toolbar component
+   */
   function CompositeComponent(props) {
     return (
       <Comp {...props} />

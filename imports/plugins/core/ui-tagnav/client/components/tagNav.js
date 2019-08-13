@@ -23,7 +23,7 @@ class TagNav extends Component {
    * onShopSelectChange
    * @method
    * @summary Handle change in selected shop
-   * @param {script} event
+   * @param {Script} event onchange event
    * @param {String} shopId - selected shopId
    * @since 1.5.8
    * @returns {void}

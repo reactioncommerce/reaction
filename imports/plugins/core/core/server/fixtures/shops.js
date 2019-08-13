@@ -317,6 +317,9 @@ export function createActiveShopFactory() {
   Factory.define("activeShop", Shops, Object.assign({}, shop, activeShop));
 }
 
+/**
+ * @returns {undefined}
+ */
 export default function () {
   createShopFactory();
   createActiveShopFactory();

@@ -32,7 +32,7 @@ class NumericInput extends Component {
    * Gets the displayed value. If in edit mode,
    * the field's value is not formatted. If not in
    * edit mode, the field gets formatted according to chosen locale.
-   * @returns {*}
+   * @returns {*} display value
    */
   get displayValue() {
     const { value } = this.state;
@@ -44,6 +44,7 @@ class NumericInput extends Component {
 
   /**
    * Format this inputs value to a numeric string
+   * @param {*} value input value
    * @returns {String} Formatted numeric string
    */
   format(value) {
@@ -58,7 +59,8 @@ class NumericInput extends Component {
 
   /**
    * Get the field's value as rational number
-   * @param { Number } the field's value
+   * @param {Number} value field's value
+   * @returns {Number} unformatted value
    */
   unformat(value) {
     const unformattedValue = accounting.unformat(value, this.props.format.decimal);
@@ -105,7 +107,8 @@ class NumericInput extends Component {
 
   /**
    * Selects the text of the passed input field
-   * @param ctrl
+   * @param {Object} ctrl input field
+   * @returns {undefined}
    */
   selectAll(ctrl) {
     if (ctrl.setSelectionRange) {

@@ -82,7 +82,6 @@ var CollectorBase = dcl( Destroyable, {
 	},
 	/**
 	 * Supports conversion to a JSON string or for passing over the wire
-	 * @returns {Object}
 	 * @returns {Object|array}
 	 */
 	toJSON        : function () {

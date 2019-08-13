@@ -31,6 +31,7 @@ export const getPkgData = (pkgName) => {
  * @property {String} settings.apikey - `""`
  * @property {Array} registry - `[]`
  * @property {Object} layout - `null`
+ * @returns {undefined}
  */
 export function examplePaymentMethod() {
   const examplePaymentMethodPackage = {
@@ -59,6 +60,7 @@ export function examplePaymentMethod() {
  * @property {Boolean} settings.enabled `false`
  * @property {String} settings.apiUrl `http://example.com/api`
  * @property {String} shopId `"random-shop-id"`
+ * @returns {undefined}
  */
 export function examplePackage() {
   const examplePkg = {
