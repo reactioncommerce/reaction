@@ -19,18 +19,31 @@
       },
       "orderDetails": "Order Details",
       "order": {
+        "allowShippingRefund": "Allow shipping to be refunded",
+        "allPaymentsRefunded": "All payments have been fully refunded",
         "amountToRefund": "Amount to refund",
         "applyRefund": "Apply refund",
         "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
-        "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
+        "applyRefundToThisOrder": "Apply refund of {{refund}} to this order?",
+        "availableToRefund": "Available to refund",
         "cancelGroup": "Do you want to cancel this group?",
         "cancelGroupLabel": "Cancel group",
         "cancelOrder": "Do you want to cancel this entire order?",
         "cancelOrderLabel": "Cancel order",
         "cancelOrderNoRestock": "Do not restock",
         "cancelOrderThenRestock": "Restock",
+        "noRefundReason": "No reason provided",
         "order": "Order",
+        "paymentRefunded": "Payment is fully refunded",
         "placed": "Placed",
+        "previousRefunds": "Previous refunds",
+        "previouslyRefunded": "Previously refunded",
+        "reason": "Reason",
+        "reasonForRefund": "Reason for refund",
+        "reasonForRefundFormLabel": "Reason for refund (optional)",
+        "refund": "Refund",
+        "refundButton": "Refund {{currentRefundAmount}}",
+        "refundedTo": "Refunded to",
         "refunding": "Refunding",
         "refundItemsAlert": "Do you want to refund {{refundItemsQuantity}} item(s) totaling {{refundItemsTotal}}?",
         "refundItemsApproveAlert": "Do you want to approve this payment and then refund {{totalAmount}}?",
@@ -38,13 +51,21 @@
         "refundItemsSuccess": "Refund was successfully applied",
         "refundItemsTitle": "Refund Items",
         "refundItemsWait": "Payment is not yet captured",
+        "refundNotSupported": "Payment method does not support refunds",
+        "refundsNotSupported": "Refunds are not supported with the payment method(s) used for this order",
+        "refundReason" :{
+          "customerRequest": "Customer request",
+          "duplicatePayment": "Duplicate payment",
+          "fraudulent": "Fraudulent"
+        },
+        "refundTo": "Refund to",
         "restockInventory": "Restock inventory?",
         "updateFulfillmentGroupStatus": "Update group status"
       },
       "orderCard": {
         "orderSummary": {
           "showOrderSummary": "Show order summary",
-          "title": "Order Summary"
+          "title": "Order summary"
         }
       },
       "shippingAddress": "Shipping address",
@@ -88,7 +109,7 @@
             "refundTotal": "Refund Total"
           },
           "fulfillment": "Fulfillment",
-          "orderDetails": "Order Details",
+          "orderDetails": "Order details",
           "shipmentTracking": "Shipment",
 
           "fulfillmentGroups": {

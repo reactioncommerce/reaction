@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import Chip from "@reactioncommerce/catalyst/Chip";
 import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
-import { Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
+import { Slide, Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "mdi-material-ui/Close";
 import ImportIcon from "mdi-material-ui/Download";
 import { useDropzone } from "react-dropzone";
 import { i18next } from "/client/api";
 import { Session } from "meteor/session";
-import Chip from "@reactioncommerce/catalyst/Chip";
 import withCreateProduct from "../hocs/withCreateProduct";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,9 +25,6 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContainer: {
     alignItems: "center"
-  },
-  dropzone: {
-    display: "inline-block"
   }
 }));
 
@@ -37,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
  * @return {Node} React node
  */
 function ProductTable({ onCreateProduct }) {
+  const classes = useStyles();
   const [files, setFiles] = useState([]);
   const [isFiltered, setFiltered] = useState(false);
   const [isClosed, setClosed] = useState(true);
@@ -102,20 +100,17 @@ function ProductTable({ onCreateProduct }) {
     disableClick: true
   });
 
-  const classes = useStyles();
-
   let displayCard;
   let displayButton;
+  let fade;
   if (isClosed === true) {
     displayCard = "none";
-    if (isFiltered === true) {
-      displayButton = "none";
-    } else {
-      displayButton = "block";
-    }
+    displayButton = "block";
+    fade = false;
   } else {
     displayCard = "block";
     displayButton = "none";
+    fade = true;
   }
 
   const closeCard = () => {
@@ -128,55 +123,57 @@ function ProductTable({ onCreateProduct }) {
 
   return (
     <Grid container spacing={3}>
-      <Grid item sm={12} style={{ display: displayCard }}>
-        <Card raised>
-          <CardHeader
-            className={classes.cardHeaderTitle}
-            action={
-              <IconButton aria-label="close">
-                <CloseIcon onClick={() => setClosed(true)} />
-              </IconButton>
-            }
-            title="Filter products by file"
-          />
-          <CardContent>
-            { files.length > 0 ? (
-              <Grid container spacing={1} className={classes.cardContainer}>
-                <Grid item sm={12}>
-                  {files.map((file) => <Chip label={file.name} onDelete={() => handleDelete(file.name)} />)}
+      <Slide direction="down" in={fade} mountOnEnter unmountOnExit>
+        <Grid item sm={12} style={{ display: displayCard }}>
+          <Card raised>
+            <CardHeader
+              className={classes.cardHeaderTitle}
+              action={
+                <IconButton aria-label="close" onClick={() => setClosed(true)}>
+                  <CloseIcon/>
+                </IconButton>
+              }
+              title="Filter products by file"
+            />
+            <CardContent>
+              { files.length > 0 ? (
+                <Grid container spacing={1} className={classes.cardContainer}>
+                  <Grid item sm={12}>
+                    {files.map((file) => <Chip label={file.name} onDelete={() => handleDelete(file.name)} />)}
+                  </Grid>
+                  <Grid item sm={12}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{ float: "right" }}
+                      onClick={() => importFiles(files)}
+                    >
+                      Filter products
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item sm={12}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ float: "right" }}
-                    onClick={() => importFiles(files)}
-                  >
-                    Filter products
-                  </Button>
+              ) : (
+                <Grid container spacing={1} className={classes.cardContainer}>
+                  <Grid item sm={12}>
+                    <Button
+                      {...getRootProps({ className: "dropzone" })}
+                      variant="contained"
+                      color="primary"
+                    >
+                      <input {...getInputProps()} />
+                      <ImportIcon className={classes.leftIcon}/>
+                      {i18next.t("admin.importCard.import")}
+                    </Button>
+                    <Typography variant="h5" display="inline" className={classes.helpText}>
+                      {i18next.t("admin.importCard.importHelpText")}
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-            ) : (
-              <Grid container spacing={1} className={classes.cardContainer}>
-                <Grid item sm={12}>
-                  <Button
-                    {...getRootProps({ className: "dropzone" })}
-                    variant="contained"
-                    color="primary"
-                  >
-                    <input {...getInputProps()} />
-                    <ImportIcon className={classes.leftIcon}/>
-                    Import
-                  </Button>
-                  <Typography variant="h5" display="inline" className={classes.helpText}>
-                    Import a .csv file with a list of product IDs, separated by commas.
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
-          </CardContent>
-        </Card>
-      </Grid>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Slide>
       <Grid item sm={12} style={{ display: displayButton }}>
         <Button
           color="primary"

@@ -146,6 +146,7 @@ export const orderCommonFragment = gql`
     payments {
       _id
       amount {
+        amount
         displayAmount
       }
       billingAddress {
@@ -163,16 +164,35 @@ export const orderCommonFragment = gql`
       captureErrorMessage
       displayName
       method {
+        canRefund
         displayName
         name
       }
       mode
       processor
+      refunds {
+        amount {
+          amount
+          displayAmount
+        }
+        createdAt
+        paymentDisplayName
+        reason
+      }
       riskLevel
       status
       transactionId
     }
     referenceId
+    refunds {
+      amount {
+        amount
+        displayAmount
+      }
+      createdAt
+      paymentDisplayName
+      reason
+    }
     shop {
       _id
       currency {

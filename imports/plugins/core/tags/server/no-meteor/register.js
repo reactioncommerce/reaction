@@ -46,6 +46,16 @@ export default async function register(app) {
           dashboardSize: "md"
         }
       }
+    }, {
+      route: "tag/admin",
+      label: "Tag Admin",
+      permission: "tagAdmin",
+      name: "tag/admin"
+    }, {
+      route: "tag/edit",
+      label: "Edit Tag",
+      permission: "tagEdit",
+      name: "tag/edit"
     }],
     layout: [{
       layout: "coreLayout",
