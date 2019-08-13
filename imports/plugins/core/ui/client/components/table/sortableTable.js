@@ -40,8 +40,6 @@ class SortableTable extends Component {
   }
 
   /**
-   * @name getMeteorData()
-   * @method
    * @summary Absorb publication / collection information from props, output data from subscription.
    * Use props to get collection, use that information to call Meteor to get subscription and output data for table.
    * @prop {String} matchingResultsCount - Send to Counts collection to get results count of sub
@@ -75,8 +73,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name customFilter()
-   * @method
    * @summary Replace default filter with customized filter, custom filter is case insensitive
    * custom filter searches entire string, not just from string start
    * @param {Object} filter user-typed data
@@ -96,7 +92,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name handleFilterInput()
    * @summary Update state when filter is changed
    * @param {script} event onChange event when typing in filter field
    * @param {String} value text field input
@@ -111,7 +106,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name handleClick()
    * @summary Handle click on table row
    * @param {Object} rowInfo row data passed in from ReactTable
    * @return {function} return onRowClick function prop, or undefined if not supplied
@@ -138,7 +132,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name renderColumns()
    * @method
    * @summary Absorb columnMetadata information from props, output columns to display
    * @prop {String} columnMetadata - Object of data field, column header
@@ -157,7 +150,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name renderData()
    * @method
    * @summary Take data from getMeteorData() and filter if needed, or spit out raw if no filter
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
@@ -182,7 +174,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name renderColumnFilter()
    * @summary Uses props to determine if Column Filters should be shown
    * @returns {Bool} returns true or false for column filters
    */
@@ -198,7 +189,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name getTableData()
    * @method
    * @summary Checks if JSON data is passed vs publication data
    * @returns {Number} returns number of available data
@@ -212,7 +202,6 @@ class SortableTable extends Component {
   }
 
   /**
-   * @name renderTableFilter()
    * @method
    * @summary Uses props to determine if a Table Filter should be shown
    * @returns {node} returns JSX node or null
@@ -236,7 +225,6 @@ class SortableTable extends Component {
   }
 
   /**
-   * @name selectedRowsClassName()
    * @method
    * @summary If any rows are selected, give them a className of "selected-row"
    * @param {Object} rowInfo row data passed in from ReactTable
@@ -256,7 +244,6 @@ class SortableTable extends Component {
   }
 
   /**
-   * @name displayNoResultsFound()
    * @method
    * @summary This function displays a 'No Results Found' when there is no data to populate the table
    * @return {node} returns a JSX node or empty string

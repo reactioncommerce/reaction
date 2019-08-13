@@ -1,12 +1,12 @@
 import _ from "lodash";
 import { DDPRateLimiter } from "meteor/ddp-rate-limiter";
 
-
+/**
+ * @description rate limit Meteor Accounts methods to two (2) attempts
+ * per connection per five (5) seconds
+ * @returns {undefined}
+ */
 export default function setRateLimits() {
-  /**
-   * Rate limit Meteor Accounts methods
-   * 2 attempts per connection per 5 seconds
-   */
   const authMethods = [
     "login",
     "logout",

@@ -4,6 +4,11 @@ import { Logger, Reaction } from "/client/api";
 import { Products } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
 
+/**
+ * @description handles uploading a file record
+ * @param {event} event the JS event
+ * @returns {undefined}
+ */
 function uploadHandler(event) {
   const shopId = Reaction.getShopId();
   const userId = Reaction.getUserId();

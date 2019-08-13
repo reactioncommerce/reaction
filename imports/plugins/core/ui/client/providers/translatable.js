@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+/**
+ * @returns {Component} translatable component
+ */
 export default function Translatable() {
   return (Component) => {
     const TranslatableComponent = (props, context) => {
