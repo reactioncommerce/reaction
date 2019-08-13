@@ -19,7 +19,7 @@ function arraysEqual(a, b) {
  * @summary Returns `true` if the list is in alphabetical order,
  *   or an alphabetized list if not
  * @param {String[]} list Array of strings
- * @returns {Object} { isSorted: Bool, sortedList: String[] }
+ * @return {Object} { isSorted: Bool, sortedList: String[] }
  */
 function listIsAlphabetical(list) {
   const sortedList = list.slice().sort();

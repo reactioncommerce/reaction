@@ -362,7 +362,7 @@ function linktoExternal(longName, name) {
  * @param {array<object>} members.tutorials
  * @param {array<object>} members.events
  * @param {array<object>} members.interfaces
- * @returns {String} The HTML for the navigation sidebar.
+ * @return {String} The HTML for the navigation sidebar.
  */
 
 function buildNav(members) {
