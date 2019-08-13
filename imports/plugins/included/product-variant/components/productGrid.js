@@ -372,7 +372,6 @@ class ProductGrid extends Component {
     return (
       <Card raised>
         {this.renderFilteredCount()}
-        {this.renderToolbar()}
         {this.renderFiles()}
         <CardContent>
           {this.renderToolbar()}
