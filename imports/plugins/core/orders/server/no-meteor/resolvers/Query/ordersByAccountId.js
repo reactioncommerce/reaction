@@ -14,7 +14,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} args.shopIds - shop IDs to check for orders from
  * @param {Object} context - An object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @return {Promise<Object>|undefined} An Order object
+ * @returns {Promise<Object>|undefined} An Order object
  */
 export default async function ordersByAccountId(parentResult, args, context, info) {
   const { accountId, orderStatus, shopIds: opaqueShopIds, ...connectionArgs } = args;

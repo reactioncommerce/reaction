@@ -21,7 +21,7 @@ export const methods = {
    * @param {Object} details Details
    * @param {String} details._id - id of template to update
    * @param {Object} details.modifier - data to update
-   * @return {Number} update template
+   * @returns {Number} update template
    */
   "templates/email/update"(details) {
     check(details, Object);

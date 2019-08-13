@@ -14,7 +14,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} input Input
  * @param {Object} input.productConfiguration Product configuration object
  * @param {String} input.shopId Shop ID
- * @return {Object|null} SimpleInventory info
+ * @returns {Object|null} SimpleInventory info
  */
 export default async function simpleInventory(context, input) {
   inputSchema.validate(input);

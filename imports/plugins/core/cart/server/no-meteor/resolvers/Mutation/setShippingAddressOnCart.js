@@ -14,7 +14,7 @@ import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/ca
  * @param {String} [args.input.cartToken] - The token for the cart, required if it is an anonymous cart
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} SetShippingAddressOnCartPayload
+ * @returns {Promise<Object>} SetShippingAddressOnCartPayload
  */
 export default async function setShippingAddressOnCart(parentResult, { input }, context) {
   const { address, addressId: opaqueAddressId, cartId: opaqueCartId, cartToken, clientMutationId = null } = input;

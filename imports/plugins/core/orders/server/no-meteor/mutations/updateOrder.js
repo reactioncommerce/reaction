@@ -25,7 +25,7 @@ const inputSchema = new SimpleSchema({
  *   properties
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
- * @return {Promise<Object>} Object with `order` property containing the updated order
+ * @returns {Promise<Object>} Object with `order` property containing the updated order
  */
 export default async function updateOrder(context, input) {
   inputSchema.validate(input);

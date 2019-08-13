@@ -6,7 +6,7 @@ import rawCollections from "/imports/collections/rawCollections";
  * @summary Migrates the existing tag nav items to a navigation tree
  * @param {String} shopId Shop navigation tree belongs to
  * @param {String} treeId Navigation tree _id
- * @return {Undefined} undefined
+ * @returns {Undefined} undefined
  */
 export default async function migrateTagNav(shopId, treeId) {
   const { NavigationTrees, Shops } = rawCollections;
@@ -30,7 +30,7 @@ export default async function migrateTagNav(shopId, treeId) {
  * @param {String} treeId Navigation Tree _id
  * @param {Array} tags Cache of all visible tags in database. Used when function calls itself
  * @param {Array} [childTagIds] A tag's child tag _ids. Used when function recursively calls itself
- * @return {Array} Navigation tree items
+ * @returns {Array} Navigation tree items
  */
 async function getTreeItemsForTags(shop, treeId, tags = [], childTagIds = []) {
   const { Tags } = rawCollections;
@@ -92,7 +92,7 @@ async function getTreeItemsForTags(shop, treeId, tags = [], childTagIds = []) {
  * @param {Object} tag Tag item should be created for
  * @param {String} language Shop language
  * @param {String} treeId Navigation tree _id
- * @return {Object} Navigation tree item
+ * @returns {Object} Navigation tree item
  */
 async function createTagNavItem(tag, language, treeId) {
   const { NavigationItems } = rawCollections;

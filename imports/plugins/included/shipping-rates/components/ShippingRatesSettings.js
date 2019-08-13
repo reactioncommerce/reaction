@@ -1,3 +1,4 @@
+/* eslint-disable promise/no-promise-in-callback */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import SimpleSchema from "simpl-schema";

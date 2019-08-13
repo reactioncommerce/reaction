@@ -100,7 +100,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
   pub._iteration = 1;
 
   /**
-   * @return {undefined}
+   * @returns {undefined}
    */
   function update() {
     if (initializing) {

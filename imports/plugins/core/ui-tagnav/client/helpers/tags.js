@@ -172,7 +172,7 @@ export const TagHelpers = {
  * @method reactionSubTags
  * @summary Template method to return subTags
  * @param parentTag {Object} Tag
- * @return {Array} Array of subtags or empty Array
+ * @returns {Array} Array of subtags or empty Array
  * @memberof BlazeTemplateHelpers
  */
 Template.registerHelper("reactionSubTags", TagHelpers.subTags);

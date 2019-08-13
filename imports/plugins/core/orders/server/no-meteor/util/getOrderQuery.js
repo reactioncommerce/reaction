@@ -10,7 +10,7 @@ import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
  * @param {Object} selector A mongo selector
  * @param {String} shopId Shop ID of the order
  * @param {String} token An anonymous order token, required if the order was placed without being logged in
- * @return {Object} A mongo selector
+ * @returns {Object} A mongo selector
  */
 export function getOrderQuery(context, selector, shopId, token) {
   const { accountId: contextAccountId, userHasPermission } = context;

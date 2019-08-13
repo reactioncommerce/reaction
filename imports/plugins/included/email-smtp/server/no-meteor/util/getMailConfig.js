@@ -1,3 +1,5 @@
+/* eslint-disable node/no-deprecated-api */
+/* TODO: revisit `url.parse` throughout Reaction */
 import url from "url";
 import Logger from "@reactioncommerce/logger";
 import getServiceConfig from "nodemailer-wellknown";
@@ -6,7 +8,7 @@ import getServiceConfig from "nodemailer-wellknown";
  * @summary get email sending config for Nodemailer based on parsing a mail URL
  * @param {Boolean} logger Whether to log debug messages
  * @param {String} mailUrl The mail URL
- * @return {Object} A mail config object
+ * @returns {Object} A mail config object
  */
 function getConfigFromMailUrl({ logger, mailUrl }) {
   // parse the url
@@ -48,7 +50,7 @@ function getConfigFromMailUrl({ logger, mailUrl }) {
  * @param {String} [password] The service password
  * @param {String} service The service name
  * @param {String} [user] The service user
- * @return {Object} A mail config object
+ * @returns {Object} A mail config object
  */
 function getStandardServiceConfig({ logger, password, service, user }) {
   Logger.debug(`Using ${service} to send email`);
@@ -77,7 +79,7 @@ function getStandardServiceConfig({ logger, password, service, user }) {
  * @param {String} [password] The service password
  * @param {Number} port The port number
  * @param {String} [user] The service user
- * @return {Object} A mail config object
+ * @returns {Object} A mail config object
  */
 function getCustomServiceConfig({ host, logger, password, port, user }) {
   const conf = {
@@ -106,7 +108,7 @@ function getCustomServiceConfig({ host, logger, password, port, user }) {
  * @summary get the email sending config for Nodemailer
  * @param {Object} context App context
  * @param {String} shopId The ID of the shop for which to get email sending config
- * @return {{host: String, port: Number, secure: Boolean, auth: Object, logger: Boolean}} returns a config object
+ * @returns {{host: String, port: Number, secure: Boolean, auth: Object, logger: Boolean}} returns a config object
  */
 export default async function getMailConfig(context, shopId) {
   const { collections } = context;

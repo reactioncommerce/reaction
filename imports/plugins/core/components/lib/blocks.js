@@ -146,7 +146,7 @@ export function registerBlockHOC(regionName, blockName, hocs = []) {
  * @summary Get a block registered with registerBlock({ name, component, hocs, region }).
  * @param {String} regionName The name of region the block belongs to.
  * @param {String} blockName The name of the block.
- * @return {Function|React.Component} A (wrapped) React component
+ * @returns {Function|React.Component} A (wrapped) React component
  * @memberof Components/Helpers
  */
 export function getBlock(regionName, blockName) {
@@ -166,7 +166,7 @@ export function getBlock(regionName, blockName) {
  * @method
  * @summary Get a component registered with registerComponent(name, component, ...hocs).
  * @param {String} regionName The name of the region to get.
- * @return {Function|React.Component} A (wrapped) React component
+ * @returns {Function|React.Component} A (wrapped) React component
  * @memberof Components/Helpers
  */
 export function getBlocks(regionName) {

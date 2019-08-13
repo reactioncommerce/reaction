@@ -24,7 +24,7 @@ const DefaultValuesSchema = new SimpleSchema({
  * @param {Boolean} defaultValues.shouldNavigationTreeItemsBeAdminOnly Default value for `isPrivate`
  * @param {Boolean} defaultValues.shouldNavigationTreeItemsBePubliclyVisible Default value for `isVisible`
  * @param {Boolean} defaultValues.shouldNavigationTreeItemsBeSecondaryNavOnly Default value for `isSecondary`
- * @return {Array} Navigation tree items
+ * @returns {Array} Navigation tree items
  */
 export function setDefaultsForNavigationTreeItems(items = [], defaultValues = {}) {
   if (typeof defaultValues !== "object") {

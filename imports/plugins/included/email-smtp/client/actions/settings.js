@@ -8,7 +8,7 @@ export default {
    * Save email settings
    * @param {Object} settings - object of mail provider settings
    * @param {Function} callback - optional callback
-   * @return {Boolean} returns true if all fields provided and update method called
+   * @returns {Boolean} returns true if all fields provided and update method called
    */
   saveSettings(settings, callback) {
     const { service, host, port, user, password } = settings;
@@ -59,6 +59,7 @@ export default {
       callback();
       // if the connection fails
       if (error) {
+        // eslint-disable-next-line promise/no-promise-in-callback
         Alert({
           title: i18next.t("mail.alerts.connectionFailed"),
           text: i18next.t("mail.alerts.saveAnyway"),

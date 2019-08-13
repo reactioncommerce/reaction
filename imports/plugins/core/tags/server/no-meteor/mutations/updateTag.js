@@ -25,7 +25,7 @@ const inputSchema = new SimpleSchema({
  * @summary Add a tag
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - mutation input
- * @return {Promise<Object>} UpdateTagPayload
+ * @returns {Promise<Object>} UpdateTagPayload
  */
 export default async function updateTag(context, input) {
   const { appEvents, collections, userHasPermission } = context;

@@ -7,7 +7,7 @@
  * @param {String[]} tagIds - tag IDs to get
  * @param {Object} [params] - Additional options for the query
  * @param {Boolean} [params.shouldIncludeDeleted] - Whether or not to include `isDeleted=true` tags. Default is `false`
- * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
+ * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function tagsByIds(context, tagIds, { shouldIncludeDeleted = false } = {}) {
   const { collections } = context;

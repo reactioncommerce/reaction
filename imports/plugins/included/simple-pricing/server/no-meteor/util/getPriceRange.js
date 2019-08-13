@@ -6,7 +6,7 @@ import getDisplayPrice from "./getDisplayPrice";
  * @summary Get Price object from array of Product prices
  * @param {Array} prices - Array of Product price properties
  * @param {Object} [currencyInfo] - A currency object in Reaction schema
- * @return {Promise<Object>} PriceRange object
+ * @returns {Promise<Object>} PriceRange object
  */
 export default function getPriceRange(prices, currencyInfo) {
   if (prices.length === 1) {

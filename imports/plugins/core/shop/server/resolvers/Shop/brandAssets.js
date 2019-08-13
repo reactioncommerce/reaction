@@ -6,7 +6,7 @@
  * @param {Object} shop - an object containing the result returned from the parent resolver
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} Promise that resolves with the `brandAssets` object
+ * @returns {Promise<Object>} Promise that resolves with the `brandAssets` object
  */
 export default async function brandAssets(shop, args, context) {
   if (!shop || !Array.isArray(shop.brandAssets)) return null;

@@ -15,7 +15,7 @@ import updateFlatRateFulfillmentRestrictionMutation from "../../mutations/update
  * @param {String} args.input.shopId - The shop to update this flat rate fulfillment restriction for
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} updateFlatRateFulfillmentRestrictionPayload
+ * @returns {Promise<Object>} updateFlatRateFulfillmentRestrictionPayload
  */
 export default async function updateFlatRateFulfillmentRestriction(parentResult, { input }, context) {
   const { clientMutationId = null, restriction, restrictionId: opaqueRestrictionId, shopId: opaqueShopId } = input;

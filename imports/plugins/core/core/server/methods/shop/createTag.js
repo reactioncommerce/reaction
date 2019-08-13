@@ -14,7 +14,7 @@ import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
  * tags tree
  * @since 0.14.0
  * @hooks after method
- * @return {String} with created tag _id
+ * @returns {String} with created tag _id
  */
 export default function createTag(tagName, isTopLevel) {
   check(tagName, String);

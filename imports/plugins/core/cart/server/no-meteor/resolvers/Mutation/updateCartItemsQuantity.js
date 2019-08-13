@@ -14,7 +14,7 @@ import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "@reactioncommerce/re
  * @param {String} args.input.token - The token if the cart is an anonymous cart
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} UpdateCartItemsQuantityPayload
+ * @returns {Promise<Object>} UpdateCartItemsQuantityPayload
  */
 export default async function updateCartItemsQuantity(parentResult, { input }, context) {
   const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, token } = input;

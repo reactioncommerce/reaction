@@ -21,7 +21,7 @@ export const methods = {
    * @method
    * @memberof Discounts/Codes/Methods
    * @param  {Object} doc A Discounts document to be inserted
-   * @return {String} Insert result
+   * @returns {String} Insert result
    */
   "discounts/addCode"(doc) {
     check(doc, Object); // actual schema validation happens during insert below
@@ -41,7 +41,7 @@ export const methods = {
    * @method
    * @memberof Discounts/Codes/Methods
    * @param  {Object} details An object with _id and modifier props
-   * @return {String} Update result
+   * @returns {String} Update result
    */
   "discounts/editCode"(details) {
     check(details, {
@@ -64,7 +64,7 @@ export const methods = {
    * @method
    * @memberof Discounts/Codes/Methods
    * @param  {String} discountId discount id to delete
-   * @return {String} returns remove result
+   * @returns {String} returns remove result
    */
   "discounts/deleteCode"(discountId) {
     check(discountId, String);
@@ -90,7 +90,7 @@ export const methods = {
    * @param  {String} codeId discount Id from cart.billing
    * @param  {String} collection collection (either Orders or Cart)
    * @param  {String} [token] Cart or order token if anonymous
-   * @return {String} returns update/insert result
+   * @returns {String} returns update/insert result
    */
   "discounts/codes/remove"(id, codeId, collection = "Cart", token) {
     check(id, String);
@@ -155,7 +155,7 @@ export const methods = {
    * @param  {String} code valid discount code
    * @param  {String} collection collection (either Orders or Cart)
    * @param  {String} [token] Cart or order token if anonymous
-   * @return {Boolean} returns true if successfully applied
+   * @returns {Boolean} returns true if successfully applied
    */
   "discounts/codes/apply"(id, code, collection = "Cart", token) {
     check(id, String);

@@ -1,5 +1,8 @@
 /**
- *
+ * @param {Object} context - an object containing the per-request state
+ * @param {Object} connectionArgs - an object of all arguments that were sent by the client
+ * @param {String} connectionArgs.sortPriceByCurrencyCode - currency code
+ * @returns {Number} minimum price
  */
 export default function getMinPriceSortByFieldPath(context, { connectionArgs }) {
   const { sortByPriceCurrencyCode } = connectionArgs || {};

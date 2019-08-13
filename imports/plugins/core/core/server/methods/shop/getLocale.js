@@ -12,12 +12,11 @@ import GeoCoder from "../../util/geocoder";
  * @memberof Shop/Methods
  * @summary determine user's countryCode and return locale object
  * determine local currency and conversion rate from shop currency
- * @return {Object} returns user location and locale
+ * @returns {Object} returns user location and locale
  */
 export default function getLocale() {
   this.unblock();
   let clientAddress;
-  const geo = new GeoCoder();
   const result = {};
   let defaultCountryCode = "US";
   let localeCurrency = "USD";
@@ -32,6 +31,7 @@ export default function getLocale() {
   const shop = Shops.findOne(Reaction.getShopId(), {
     fields: {
       addressBook: 1,
+      allowCustomUserLocale: 1,
       locales: 1,
       currencies: 1,
       currency: 1
@@ -50,8 +50,14 @@ export default function getLocale() {
       }
     }
   }
+
+  // If custom user locales are allowed,
   // geocode reverse ip lookup
-  const geoCountryCode = geo.geoip(clientAddress).country_code;
+  let geoCountryCode;
+  if (shop && shop.allowCustomUserLocale === true) {
+    const geo = new GeoCoder();
+    geoCountryCode = geo.geoip(clientAddress).country_code;
+  }
 
   // countryCode either from geo or defaults
   const countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();

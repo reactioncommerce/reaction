@@ -15,7 +15,7 @@ export default function processEmailJobs(context) {
    *  Updates email status in DB, logs a debug message, and marks job as done.
    * @param {Object} job The job that completed
    * @param {String} message A message to log
-   * @return {undefined} undefined
+   * @returns {undefined} undefined
    */
   async function sendEmailCompleted(job, message) {
     const jobId = job._doc._id;
@@ -37,7 +37,7 @@ export default function processEmailJobs(context) {
    *  Updates email status in DB, logs an error message, and marks job as failed.
    * @param {Object} job The job that failed
    * @param {String} message A message to log
-   * @return {undefined} undefined
+   * @returns {undefined} undefined
    */
   async function sendEmailFailed(job, message) {
     const jobId = job._doc._id;

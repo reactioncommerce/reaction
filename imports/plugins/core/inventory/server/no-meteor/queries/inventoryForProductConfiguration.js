@@ -8,7 +8,7 @@
  * @param {Object} input.productConfiguration A ProductConfiguration object
  * @param {String[]} [input.fields] Optional array of fields you need. If you don't need all,
  *   you can pass this to skip some calculations and database lookups, improving speed.
- * @return {Promise<Object>} InventoryInfo
+ * @returns {Promise<Object>} InventoryInfo
  */
 export default async function inventoryForProductConfiguration(context, input) {
   const { fields, productConfiguration, shopId } = input;

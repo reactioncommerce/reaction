@@ -7,7 +7,7 @@ Template.settingsHeader.helpers({
 
   /**
    * Data pased to action view
-   * @return {Object} Registry entry for item
+   * @returns {Object} Registry entry for item
    * @ignore
    */
   registry() {
@@ -20,7 +20,7 @@ Template.settingsHeader.helpers({
 
   /**
    * thisApp
-   * @return {Object} Registry entry for item
+   * @returns {Object} Registry entry for item
    * @ignore
    */
   thisApp() {
@@ -57,7 +57,7 @@ Template.settingsHeader.events({
 Template.settingsSidebar.helpers({
   /**
    * pkgPermissions Check package permissions
-   * @return {Boolean} user has permission to see settings for this package
+   * @returns {Boolean} user has permission to see settings for this package
    * @ignore
    */
   pkgPermissions() {
@@ -76,7 +76,7 @@ Template.settingsSidebar.helpers({
 Template.settingsSidebarItem.helpers({
   /**
    * label
-   * @return {String} Label for item
+   * @returns {String} Label for item
    * @ignore
    */
   label() {

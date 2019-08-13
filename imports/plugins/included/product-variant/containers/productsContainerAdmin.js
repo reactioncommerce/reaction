@@ -30,7 +30,7 @@ Tracker.autorun(() => {
  * This basically runs this:
  *   Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
  * @summary whenever `#productScrollLimitLoader` becomes visible, retrieve more results.
- * @return {undefined}
+ * @returns {undefined}
  * @private
  */
 function loadMoreProducts() {

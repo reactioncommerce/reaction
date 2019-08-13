@@ -8,7 +8,7 @@ import { getShopId } from "./shops";
  * @summary Get package data object, given a package name
  * @example getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe"
  * @param  {String} pkgName name of package
- * @return {Object}         Package object
+ * @returns {Object}         Package object
  */
 export const getPkgData = (pkgName) => {
   const pkgData = Packages.findOne({
@@ -31,6 +31,7 @@ export const getPkgData = (pkgName) => {
  * @property {String} settings.apikey - `""`
  * @property {Array} registry - `[]`
  * @property {Object} layout - `null`
+ * @returns {undefined}
  */
 export function examplePaymentMethod() {
   const examplePaymentMethodPackage = {
@@ -59,6 +60,7 @@ export function examplePaymentMethod() {
  * @property {Boolean} settings.enabled `false`
  * @property {String} settings.apiUrl `http://example.com/api`
  * @property {String} shopId `"random-shop-id"`
+ * @returns {undefined}
  */
 export function examplePackage() {
   const examplePkg = {

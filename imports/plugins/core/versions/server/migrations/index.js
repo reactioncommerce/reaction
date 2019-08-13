@@ -69,3 +69,4 @@ import "./67_order_tokens";
 import "./68_add_is_sold_out_to_variants_and_options";
 import "./69_make_catalog_product_unique";
 import "./70_remove_shop_app_version";
+import "./71_add_allow_custom_user_locale";

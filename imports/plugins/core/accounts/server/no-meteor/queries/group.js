@@ -7,7 +7,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary query the Groups collection and return group data
  * @param {Object} context - an object containing the per-request state
  * @param {String} id - id of group to query
- * @return {Object} group object
+ * @returns {Object} group object
  */
 export default async function groupQuery(context, id) {
   const { collections, userHasPermission, userId } = context;

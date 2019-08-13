@@ -234,7 +234,7 @@ const wrapComponent = (Comp) => (
     /**
      * @summary update parent inventory policy if variant has children
      * @param {Object} variant product or variant document
-     * @return {undefined} return nothing
+     * @returns {undefined} return nothing
      * @private
      */
     updateInventoryPolicyIfChildVariants = (variant) => {

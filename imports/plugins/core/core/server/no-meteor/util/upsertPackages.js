@@ -4,7 +4,7 @@ import layouts from "./layouts";
 
 /**
  * @param {Object} context App context
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function upsertPackages(context) {
   const {

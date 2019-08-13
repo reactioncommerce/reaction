@@ -10,7 +10,7 @@ import updateShipmentStatus from "../util/updateShipmentStatus";
  * @memberof Orders/Methods
  * @summary trigger shipmentShipped status and workflow update
  * @param {Object} order - order object
- * @return {Object} return workflow result
+ * @returns {Object} return workflow result
  */
 export default function shipmentDelivered(order) {
   check(order, Object);

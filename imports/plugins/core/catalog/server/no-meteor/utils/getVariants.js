@@ -5,7 +5,7 @@
  * @param {String} productOrVariantId - A Product or top level Product Variant ID.
  * @param {Object} collections - Raw mongo collections.
  * @param {Boolean} topOnly - True to return only a products top level variants.
- * @return {Promise<Object[]>} Array of Product Variant objects.
+ * @returns {Promise<Object[]>} Array of Product Variant objects.
  */
 export default async function getVariants(productOrVariantId, collections, topOnly) {
   const { Products } = collections;

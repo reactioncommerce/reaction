@@ -77,7 +77,7 @@ class Switch extends Component {
 
   /**
    * Render help text or validation message
-   * @return {ReactNode|null} react node or null
+   * @returns {ReactNode|null} react node or null
    */
   renderHelpText() {
     const helpMode = this.isHelpMode;

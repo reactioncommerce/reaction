@@ -9,7 +9,7 @@ import getMailConfig from "./getMailConfig";
  * @param {Object} job Current sendEmail job being processed
  * @param {Function} sendEmailCompleted Called when email was successfully sent
  * @param {Function} sendEmailFailed Called on error
- * @return {undefined} Calls one of the callbacks with a return
+ * @returns {undefined} Calls one of the callbacks with a return
  */
 export default async function sendSMTPEmail(context, { job, sendEmailCompleted, sendEmailFailed }) {
   const config = await getMailConfig(context);

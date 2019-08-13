@@ -8,7 +8,7 @@ import { getShop } from "./shops";
 /**
  * @method getUser
  * @memberof Fixtures
- * @return {Object} Existing user or Factory user
+ * @returns {Object} Existing user or Factory user
  */
 export function getUser() {
   const existingUser = Meteor.users.findOne();
@@ -19,7 +19,7 @@ export function getUser() {
  * @method getUsers
  * @memberof Fixtures
  * @param {Number} limit Default set to 2
- * @return {Array} Array of existing users or Factory user
+ * @returns {Array} Array of existing users or Factory user
  */
 export function getUsers(limit = 2) {
   const users = [];
@@ -103,7 +103,7 @@ const user = {
 
 /**
  * @summary Users factory setup
- * @return {undefined}
+ * @returns {undefined}
  */
 export default function () {
   const numDaysToAdd = Math.floor(Math.random() * 32); // random number of days between 0 and 31

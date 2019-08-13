@@ -7,7 +7,7 @@ import orderIsApproved from "./orderIsApproved";
  * This function can take any variant object.
  * @param {Object} context App context
  * @param {Object} productConfiguration Product configuration
- * @return {Promise<Number>} Reserved variant quantity
+ * @returns {Promise<Number>} Reserved variant quantity
  */
 export default async function getReservedQuantity(context, productConfiguration) {
   const { productVariantId } = productConfiguration;

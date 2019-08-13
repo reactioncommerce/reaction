@@ -10,7 +10,7 @@ import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/ca
  * @param {String} args.cartId - ID of the anonymous cart
  * @param {String} args.token - An anonymous cart token
  * @param {Object} context - An object containing the per-request state
- * @return {Promise<Object>|undefined} A Cart object
+ * @returns {Promise<Object>|undefined} A Cart object
  */
 export default async function anonymousCartByCartId(parentResult, args, context) {
   const { cartId, token } = args;

@@ -13,7 +13,7 @@ const styles = (theme) => ({
 /**
  * ProductDetail layout component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function ProductDetail(props) {
   const { classes, ...blockProps } = props;

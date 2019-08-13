@@ -7,7 +7,7 @@
  * @param {String} [options.startFrom] Not yet implemented, but a custom plugin that overrides
  *   this function may choose to use this to start from a certain step in the transformation
  *   pipeline.
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function applyCustomPublisherTransforms(context, catalogProduct, {
   product,

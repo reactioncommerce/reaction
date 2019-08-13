@@ -9,7 +9,7 @@ import { Session } from "meteor/session";
  * @summary Quick and easy snippet for toggling sessions
  * @param {String} sessionVariable - string name, see http://docs.meteor.com/#/basic/session
  * @param {String} positiveState - optional, if is is positiveState, set opposite
- * @return {Object} return session value
+ * @returns {Object} return session value
  */
 export function toggleSession(sessionVariable, positiveState) {
   const session = Session.get(sessionVariable);
@@ -30,7 +30,7 @@ export function toggleSession(sessionVariable, positiveState) {
  * @summary Determine the card type and return label
  * @todo needs i18n conversion?
  * @param {String} cardNumber - a credit card number
- * @return {String} card label, ie: visa
+ * @returns {String} card label, ie: visa
  */
 export function getCardType(cardNumber) {
   let re = new RegExp("^4");

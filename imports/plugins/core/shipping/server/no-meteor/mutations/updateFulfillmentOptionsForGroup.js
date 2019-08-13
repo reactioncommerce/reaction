@@ -17,7 +17,7 @@ const inputSchema = new SimpleSchema({
 /**
  * @name getShipmentQuotesQueryStatus
  * @param  {Array} rates    Rate array
- * @return {Object} An object with `shipmentQuotes` and `shipmentQuotesQueryStatus` on it
+ * @returns {Object} An object with `shipmentQuotes` and `shipmentQuotesQueryStatus` on it
  * @private
  */
 function getShipmentQuotesQueryStatus(rates) {
@@ -59,7 +59,7 @@ function getShipmentQuotesQueryStatus(rates) {
  * @param {String} input.cartId - The ID of the cart to update fulfillment options for
  * @param {String} [input.cartToken] - The token for the cart, required if it is an anonymous cart
  * @param {String} input.fulfillmentGroupId - The group to update fulfillment options for
- * @return {Promise<Object>} An object with a `cart` property containing the updated cart
+ * @returns {Promise<Object>} An object with a `cart` property containing the updated cart
  */
 export default async function updateFulfillmentOptionsForGroup(context, input) {
   const cleanedInput = inputSchema.clean(input || {});

@@ -14,7 +14,7 @@ const DEFAULT_LIMIT = 20;
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
  * @param {Boolean} [options.includeHasNextPage] Whether to return the `pageInfo.hasNextPage`.
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
- * @return {Promise<Object>} `{ hasNextPage, hasPreviousPage }`
+ * @returns {Promise<Object>} `{ hasNextPage, hasPreviousPage }`
  */
 export default async function applyPaginationToMongoCursor(cursor, { first, last } = {}, {
   includeHasNextPage = true,

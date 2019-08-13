@@ -23,6 +23,12 @@ class AdminContextProvider extends Component {
   }
 }
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   onData(null, {
     adminContext: {

@@ -7,7 +7,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary query the Groups collection and return a MongoDB cursor
  * @param {Object} context - an object containing the per-request state
  * @param {String} shopId - shop ID to get groups for
- * @return {Object} Groups collection cursor
+ * @returns {Object} Groups collection cursor
  */
 export default async function groups(context, shopId) {
   const { collections, userHasPermission, userId } = context;

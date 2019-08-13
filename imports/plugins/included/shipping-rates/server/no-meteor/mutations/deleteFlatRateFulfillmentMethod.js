@@ -11,7 +11,7 @@ const inputSchema = new SimpleSchema({
  * @summary deletes a flat rate fulfillment method
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
- * @return {Promise<Object>} An object with a `method` property containing the deleted method
+ * @returns {Promise<Object>} An object with a `method` property containing the deleted method
  */
 export default async function deleteFlatRateFulfillmentMethodMutation(context, input) {
   inputSchema.validate(input);

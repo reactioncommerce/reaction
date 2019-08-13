@@ -4,7 +4,7 @@ import { addGlobalSettingDefaults, addShopSettingDefaults } from "../util/settin
  * @summary Returns app settings for a shop or global app settings.
  * @param {Object} context App context
  * @param {String} [shopId] Shop ID. Pass `null` for global settings.
- * @return {Promise<Object>} App settings for a shop or global app settings
+ * @returns {Promise<Object>} App settings for a shop or global app settings
  */
 export default async function appSettings(context, shopId = null) {
   const { collections } = context;

@@ -33,7 +33,7 @@ const inputItemSchema = new SimpleSchema({
  * @param {Object} [options] - Options
  * @param {Boolean} [options.skipPriceCheck] - For backwards compatibility, set to `true` to skip checking price.
  *   Skipping this is not recommended for new code.
- * @return {Object} Object with `incorrectPriceFailures` and `minOrderQuantityFailures` and `updatedItemList` props
+ * @returns {Object} Object with `incorrectPriceFailures` and `minOrderQuantityFailures` and `updatedItemList` props
  */
 export default async function addCartItems(context, currentItems, inputItems, options = {}) {
   const { queries } = context;

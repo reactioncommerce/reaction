@@ -15,7 +15,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Number} connectionArgs.last - Connection argument
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @return {Promise<Object[]>} Promise that resolves with array of user Roles objects
+ * @returns {Promise<Object[]>} Promise that resolves with array of user Roles objects
  */
 export default async function roles({ _id }, connectionArgs, context, info) {
   // Transform ID from base64

@@ -6,7 +6,7 @@ import { curryN } from "ramda";
  * @memberof Accounts
  * @param {Object} user - The user object, with `roles` property, to check.
  * @param {String} permission - Permission to check for.
- * @return {Array} Shop IDs user has provided permissions for
+ * @returns {Array} Shop IDs user has provided permissions for
  */
 export default function shopsUserHasPermissionFor(user, permission) {
   if (!user || !user.roles || !permission) return [];

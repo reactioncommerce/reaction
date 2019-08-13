@@ -10,7 +10,7 @@ import { Shops } from "/lib/collections";
  * @summary enable / disable a currency
  * @param {String} currency - currency name | "all" to bulk enable / disable
  * @param {Boolean} enabled - true / false
- * @return {Number} returns mongo update result
+ * @returns {Number} returns mongo update result
  */
 export default function updateCurrencyConfiguration(currency, enabled) {
   check(currency, String);

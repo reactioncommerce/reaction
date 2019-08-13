@@ -15,7 +15,7 @@ import setUserPermissions from "../../util/setUserPermissions";
  * @param {Object} options -
  * @param {String} options.userId - userID
  * @param {String} options.permissions - permissions
- * @return {null} -
+ * @returns {null} -
  */
 function changeMarketplaceOwner({ userId, permissions }) {
   // give global marketplace role to new owner
@@ -33,7 +33,7 @@ function changeMarketplaceOwner({ userId, permissions }) {
  * (NB: At this time, a user only belongs to only one group per shop)
  * @param {String} userId - The account ID to add to the group
  * @param {String} groupId - ID of the group
- * @return {Object} - The modified group object
+ * @returns {Object} - The modified group object
  */
 export default function addUser(userId, groupId) {
   check(userId, String);

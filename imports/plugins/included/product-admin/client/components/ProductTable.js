@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ProductTable component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function ProductTable({ onCreateProduct }) {
   const classes = useStyles();

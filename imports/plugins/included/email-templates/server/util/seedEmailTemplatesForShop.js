@@ -6,7 +6,7 @@ import seedEmailTemplate from "./seedEmailTemplate";
  *   that live in the codebase.
  * @param {Object} context App context
  * @param {String} shopId Shop ID
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function seedEmailTemplatesForShop(context, shopId) {
   const promises = templateDefinitions.map((templateDefinition) => (

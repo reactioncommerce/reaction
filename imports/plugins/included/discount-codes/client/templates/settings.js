@@ -61,10 +61,11 @@ Template.customDiscountCodes.helpers({
     const noDataMessage = i18next.t("admin.settings.noCustomDiscountCodesFound");
     const instance = Template.instance();
 
-    //
-    // helper to get and select row from griddle
-    // into blaze for to select discount row for editing
-    //
+    /**
+     * @description helper to get and select row from griddle into blaze for to select discount row for editing
+     * @param {Object} options row data
+     * @returns {undefined}
+     */
     function editRow(options) {
       const currentId = instance.state.get("editingId");
       // isEditing is discount rate object

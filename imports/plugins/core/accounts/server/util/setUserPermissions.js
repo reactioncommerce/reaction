@@ -7,7 +7,7 @@ import { Roles } from "meteor/alanning:roles";
  * @param {Object} users -
  * @param {String} permissions -
  * @param {String} shopId -
- * @return {null} -
+ * @returns {null} -
  */
 export default function setUserPermissions(users, permissions, shopId) {
   let affectedUsers = users;

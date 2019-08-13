@@ -7,7 +7,7 @@ import getNavigationTreeItemIds from "../util/getNavigationTreeItemIds";
  * @summary Publishes changes for a navigation tree and its items
  * @param {Object} context An object containing the per-request state
  * @param {String} _id _id of navigation tree to publish
- * @return {Promise<Object>} Updated navigation tree
+ * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function publishNavigationChanges(context, _id) {
   const { collections, userHasPermission } = context;
