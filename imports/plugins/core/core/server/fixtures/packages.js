@@ -8,7 +8,7 @@ import { getShopId } from "./shops";
  * @summary Get package data object, given a package name
  * @example getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe"
  * @param  {String} pkgName name of package
- * @return {Object}         Package object
+ * @returns {Object}         Package object
  */
 export const getPkgData = (pkgName) => {
   const pkgData = Packages.findOne({

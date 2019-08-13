@@ -10,7 +10,7 @@ import ParcelSizeSettings from "../components/parcelSizeSettings";
  * @summary call "shop/updateDefaultParcelSize" method
  * @param {Object} size - size object to be saved
  * @since 1.1.12
- * @return {Function} callback
+ * @returns {Function} callback
 */
 const saveDefaultSize = (size) => {
   const parcel = ShippingParcel.clean(size);
@@ -33,7 +33,7 @@ const saveDefaultSize = (size) => {
  * @summary set "edit/focus" in current Reaction state
  * @param {String} cardName - card name to be set
  * @since 1.1.12
- * @return {Function} callback
+ * @returns {Function} callback
 */
 const onCardExpand = (cardName) => {
   Reaction.state.set("edit/focus", cardName);

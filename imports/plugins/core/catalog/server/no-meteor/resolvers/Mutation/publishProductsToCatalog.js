@@ -7,7 +7,7 @@ import { decodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
  * @param {Object} _ - unused
  * @param {String[]} args.productIds - an array of Product IDs
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} TODO: make sure this is the correct return type and this function needs to be async
+ * @returns {Promise<Object>} TODO: make sure this is the correct return type and this function needs to be async
  */
 export default async function publishProductsToCatalog(_, args, context) {
   const { productIds } = args;

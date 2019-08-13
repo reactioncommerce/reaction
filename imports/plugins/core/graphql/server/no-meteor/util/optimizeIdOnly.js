@@ -9,7 +9,7 @@ import graphqlFields from "graphql-fields";
  * @memberof GraphQL/ResolverUtilities
  * @summary Wraps a query function, and calls it only if fields other than `_id` were requested
  *   in the GraphQL query.
- * @return {Object} `{ nodes, pageInfo, totalCount }`
+ * @returns {Object} `{ nodes, pageInfo, totalCount }`
  */
 export default function optimizeIdOnly(_id, info, queryFunc) {
   const topLevelFields = Object.keys(graphqlFields(info));

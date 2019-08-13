@@ -5,7 +5,7 @@ import hashProduct from "./mutations/hashProduct";
  * @summary Recalculate the currentProductHash for the related product
  * @param {Object} media The media document
  * @param {Object} collections Map of MongoDB collections
- * @return {Promise<null>} Null
+ * @returns {Promise<null>} Null
  */
 async function hashRelatedProduct(media, collections) {
   if (!media) {

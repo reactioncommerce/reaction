@@ -8,7 +8,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} cartId cartId
  * @param {String} discountId discountId
  * @param {Object} collections Map of MongoDB collections
- * @return {Number} returns discount total
+ * @returns {Number} returns discount total
  */
 export default async function getPercentageOffDiscount(cartId, discountId, collections) {
   const { Cart, Discounts } = collections;

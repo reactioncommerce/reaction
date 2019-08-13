@@ -5,7 +5,7 @@ import { Shops } from "/lib/collections";
  * @method setDomain
  * @memberof Core
  * @summary update the default shop url if ROOT_URL supplied is different from current
- * @return {String} returns insert result
+ * @returns {String} returns insert result
  */
 export default function setDomain() {
   let currentDomain;

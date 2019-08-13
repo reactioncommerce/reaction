@@ -37,7 +37,7 @@ import registerTestAddressValidationPlugin from "/imports/plugins/included/addre
  * @summary A function in which you should call `register` function for each API plugin,
  *   in the order in which you want to register them.
  * @param {ReactionNodeApp} app The ReactionNodeApp instance
- * @return {Promise<null>} Null
+ * @returns {Promise<null>} Null
  */
 export default async function registerPlugins(app) {
   /**

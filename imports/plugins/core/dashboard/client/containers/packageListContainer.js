@@ -8,7 +8,7 @@ import { Reaction } from "/client/api";
  * Push package into action view navigation stack
  * @param  {SyntheticEvent} event Original event
  * @param  {Object} app Package data
- * @return {undefined} No return value
+ * @returns {undefined} No return value
  * @private
  */
 function handleShowPackage(event, app) {
@@ -17,7 +17,7 @@ function handleShowPackage(event, app) {
 
 /**
  * Open full dashbaord menu
- * @return {undefined} No return value
+ * @returns {undefined} No return value
  * @private
  */
 function handleShowDashboard() {
@@ -33,7 +33,7 @@ function handleShowDashboard() {
  * Push dashbaord & package into action view navigation stack
  * @param  {SyntheticEvent} event Original event
  * @param  {Object} app Package data
- * @return {undefined} No return value
+ * @returns {undefined} No return value
  * @private
  */
 function handleOpenShortcut(event, app) {

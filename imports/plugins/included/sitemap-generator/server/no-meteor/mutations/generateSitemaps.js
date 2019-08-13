@@ -7,7 +7,7 @@ import { Job, Jobs } from "/imports/utils/jobs";
  * @method
  * @summary Regenerates sitemap files for primary shop
  * @param {Object} context - GraphQL execution context
- * @return {Undefined} triggers sitemap generation job
+ * @returns {Undefined} triggers sitemap generation job
  */
 export default async function generateSitemaps(context) {
   const { userHasPermission, userId } = context;

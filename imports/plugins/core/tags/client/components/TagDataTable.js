@@ -125,7 +125,7 @@ class TagDataTable extends Component {
    * @name handleFilterInput
    * @summary Update state when filter is changed
    * @param {String} value text field input
-   * @return {function} state for field value
+   * @returns {function} state for field value
    */
   handleFilterInput = (value) => {
     this.setState({
@@ -157,7 +157,7 @@ class TagDataTable extends Component {
    * @name handleClick
    * @summary Handle click on table row
    * @param {Object} rowInfo row data passed in from ReactTable
-   * @return {function} return onRowClick function prop, or undefined if not supplied
+   * @returns {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
     const { onRowClick } = this.props;
@@ -179,7 +179,7 @@ class TagDataTable extends Component {
    * @summary Handle click on table cell
    * @param {Object} rowInfo row data passed in from ReactTable
    * @param {Object} column Column data
-   * @return {function} return onRowClick function prop, or undefined if not supplied
+   * @returns {function} return onRowClick function prop, or undefined if not supplied
    */
   handleCellClick(rowInfo, column) {
     const { onCellClick } = this.props;
@@ -359,7 +359,7 @@ class TagDataTable extends Component {
    * @method
    * @summary This function displays a 'No Results Found' when there is no data to populate the table
    * @param {Number} numRows Number of rows in current set of data
-   * @return {node} returns a JSX node or empty string
+   * @returns {node} returns a JSX node or empty string
    */
   displayNoResultsFound(numRows) {
     let displayText = "";
@@ -605,7 +605,7 @@ class TagDataTable extends Component {
   * @property {object} query GraphQL query object
   * @property {Array} selectedRows provides selected rows in the table
   * @property {Function} transform transform of collection for grid results
-  * @return {Array} React propTypes
+  * @returns {Array} React propTypes
   */
 TagDataTable.propTypes = {
   bulkActions: PropTypes.arrayOf(PropTypes.shape({

@@ -14,7 +14,7 @@ import getMailConfig from "../no-meteor/util/getMailConfig";
  * @summary Verify the current email configuration
  * @memberof Email/Methods
  * @param {Object} [settings] optional settings object (otherwise uses settings in database)
- * @return {Boolean} - returns true if SMTP connection succeeds
+ * @returns {Boolean} - returns true if SMTP connection succeeds
  */
 export default function verifySettings(settings) {
   if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {

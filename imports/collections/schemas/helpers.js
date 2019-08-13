@@ -7,7 +7,7 @@ import { Meteor } from "meteor/meteor";
  * @method
  * @summary Helper method used for schema injection autoValue
  * @example autoValue: createdAtAutoValue
- * @return {Date} Date representing now if it's an insert
+ * @returns {Date} Date representing now if it's an insert
  */
 export function createdAtAutoValue() {
   // We don't want to unset or overwrite a createdAt in a nested
@@ -29,7 +29,7 @@ export function createdAtAutoValue() {
  * @method
  * @summary Helper method used for schema injection autoValue
  * @example autoValue: updatedAtAutoValue
- * @return {Date} Date representing now
+ * @returns {Date} Date representing now
  */
 export function updatedAtAutoValue() {
   // We don't want to overwrite an updatedAt in a nested
@@ -45,7 +45,7 @@ export function updatedAtAutoValue() {
  * @method
  * @summary Helper method used for schema injection autoValue
  * @example autoValue: schemaIdAutoValue
- * @return {String} randomId
+ * @returns {String} randomId
  */
 export function schemaIdAutoValue() {
   if (this.isSet && Meteor.isServer) {

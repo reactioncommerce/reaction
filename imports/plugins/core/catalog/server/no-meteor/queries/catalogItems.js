@@ -9,7 +9,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} params - request parameters
  * @param {String[]} [params.shopIds] - Shop IDs to include (OR)
  * @param {String[]} [params.tags] - Tag IDs to include (OR)
- * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
+ * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function catalogItems(context, { shopIds, tagIds, catalogBooleanFilters } = {}) {
   const { collections } = context;

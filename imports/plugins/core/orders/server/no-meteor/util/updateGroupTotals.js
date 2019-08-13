@@ -17,7 +17,7 @@ import getSurchargesForGroup from "./getSurchargesForGroup";
  * @param {Object} group The fulfillment group to mutate
  * @param {String} orderId ID of existing or new order to which this group will belong
  * @param {String} selectedFulfillmentMethodId ID of the fulfillment method option chosen by the user
- * @return {Promise<Object>} Object with surcharge and tax info on it
+ * @returns {Promise<Object>} Object with surcharge and tax info on it
  */
 export default async function updateGroupTotals(context, {
   billingAddress = null,

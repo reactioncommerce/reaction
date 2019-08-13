@@ -217,7 +217,7 @@ const wrapComponent = (Comp) => (
 /**
  * @description re-sort the media
  * @param {Array} media media to sort
- * @return {Array} sorted media
+ * @returns {Array} sorted media
  */
 function sortMedia(media) {
   const sortedMedia = _.sortBy(media, (med) => {

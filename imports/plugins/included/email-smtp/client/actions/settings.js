@@ -8,7 +8,7 @@ export default {
    * Save email settings
    * @param {Object} settings - object of mail provider settings
    * @param {Function} callback - optional callback
-   * @return {Boolean} returns true if all fields provided and update method called
+   * @returns {Boolean} returns true if all fields provided and update method called
    */
   saveSettings(settings, callback) {
     const { service, host, port, user, password } = settings;

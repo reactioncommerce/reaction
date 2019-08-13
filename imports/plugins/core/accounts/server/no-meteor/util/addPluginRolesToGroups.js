@@ -7,7 +7,7 @@ import ensureRoles from "./ensureRoles";
  *   of various plugin `registerPlugin` config. Either for one shop or all.
  * @param {Object} context App context
  * @param {String} shopId Shop ID
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function addPluginRolesToGroups(context, shopId) {
   const promises = packageRolesAndGroups.map(async ({ groups, roles }) => {

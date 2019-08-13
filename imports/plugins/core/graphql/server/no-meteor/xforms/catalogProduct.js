@@ -14,7 +14,7 @@ export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogPro
  *  "xformCatalogProductMedia". First to return an object is returned here
  * @param {Object} mediaItem Media item object. See ImageInfo SimpleSchema
  * @param {Object} context Request context
- * @return {Object} Transformed media item
+ * @returns {Object} Transformed media item
  */
 export async function xformCatalogProductMedia(mediaItem, context) {
   const xformCatalogProductMediaFuncs = context.getFunctionsOfType("xformCatalogProductMedia");

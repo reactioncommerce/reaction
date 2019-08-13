@@ -7,7 +7,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {Object} shopSummary - An object representing the summary information for this Shop
- * @return {Node} React node containing the summary information for each shop
+ * @returns {Node} React node containing the summary information for each shop
  */
 class ShopOrderSummary extends Component {
   static propTypes = {

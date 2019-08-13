@@ -142,7 +142,7 @@ const wrapComponent = (Comp) => (
     /**
      * @summary return formatted shipping object to update state
      * @param {String} status - the shipping status to be set
-     * @return {Object} the formatted shipping object
+     * @returns {Object} the formatted shipping object
      * @private
      */
     updateBulkStatusHelper = (status) => {
@@ -156,7 +156,7 @@ const wrapComponent = (Comp) => (
     /**
      * @summary return formatted isLoading object to update state
      * @param {String} status - the shipping status to be set
-     * @return {Object} the formatted isLoading object
+     * @returns {Object} the formatted isLoading object
      * @private
      */
     updateBulkLoadingHelper = (status) => {
@@ -185,7 +185,7 @@ const wrapComponent = (Comp) => (
      * @summary set selected order(s) to the provided shipping state
      * @param {Array} selectedOrders - array of selected orders
      * @param {String} status - the shipping status to be set
-     * @return {null} no return value
+     * @returns {null} no return value
      * @private
      */
     shippingStatusUpdateCall = (selectedOrders, status) => {
@@ -574,7 +574,7 @@ const wrapComponent = (Comp) => (
      * @param {String} status - the selected shipping status to be set
      * @param {Array} selectedOrdersIds - array of ids of the selected orders
      * @param {Array} orders - array of orders
-     * @return {null} no return value
+     * @returns {null} no return value
      * @private
      */
     setShippingStatus = (status, selectedOrdersIds, orders) => {

@@ -7,7 +7,7 @@ import extendCommonOrder from "../util/extendCommonOrder";
  * @summary Just gets rates, without updating anything
  * @param {Object} commonOrder - details about the purchase a user wants to make.
  * @param {Object} context - Context
- * @return {Array} return updated rates in cart
+ * @returns {Array} return updated rates in cart
  * @private
  */
 export default async function getFulfillmentMethodsWithQuotes(commonOrder, context) {

@@ -26,7 +26,7 @@ class TagNav extends Component {
    * @param {script} event
    * @param {String} shopId - selected shopId
    * @since 1.5.8
-   * @return {void}
+   * @returns {void}
   */
   onShopSelectChange = (event, shopId) => {
     if (this.props.handleShopSelectChange) {
@@ -55,7 +55,7 @@ class TagNav extends Component {
   * renderShopSelect
   * @method
   * @summary Handles shop options display on mobile view
-  * @return {JSX} React node containing dropdown menu
+  * @returns {JSX} React node containing dropdown menu
   */
   renderShopSelect() {
     if (this.props.handleShopSelectChange) {

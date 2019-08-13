@@ -24,7 +24,7 @@ export const xformLegacyCurrencies = compose(map(xformCurrencyEntry), toPairs);
  * @method
  * @memberof GraphQL/Transforms
  * @param {Object} shop A shop object
- * @return {Object} A potentially-empty array of currency objects for this shop
+ * @returns {Object} A potentially-empty array of currency objects for this shop
  */
 export function getXformedCurrenciesByShop(shop) {
   if (!shop || !shop.currencies) return [];
@@ -37,7 +37,7 @@ export function getXformedCurrenciesByShop(shop) {
  * @memberof GraphQL/Transforms
  * @summary Get an individual transformed currency
  * @param {String} code The code that must match the `currency.code`
- * @return {Object} A Currency object
+ * @returns {Object} A Currency object
  */
 export async function getXformedCurrencyByCode(code) {
   if (!code) return null;

@@ -16,7 +16,7 @@ MeteorAccounts.urls.enrollAccount = function (token) {
  * @method
  * @private
  * @param  {Object} options - shop, currentUserName, token, name
- * @return {Object} data - primaryShop, shop, contactEmail, homepage,
+ * @returns {Object} data - primaryShop, shop, contactEmail, homepage,
  * legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
 export default function getDataForEmail(options) {

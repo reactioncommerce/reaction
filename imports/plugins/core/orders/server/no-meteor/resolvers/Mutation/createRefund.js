@@ -13,7 +13,7 @@ import { decodePaymentOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
  * @param {Object} args.input.paymentId - ID of payment to refund
  * @param {Object} [args.input.reason] - reason for refund
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} createRefundPayload
+ * @returns {Promise<Object>} createRefundPayload
  */
 export default async function createRefund(_, { input }, context) {
   const {

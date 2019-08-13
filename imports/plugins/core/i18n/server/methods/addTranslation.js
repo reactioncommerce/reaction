@@ -13,7 +13,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * @param {String} key - i18n key
  * @param {String} message - i18n message
  * @summary Meteor method to add translations
- * @return {String} insert result
+ * @returns {String} insert result
  */
 export default function addTranslation(lng, namespace, key, message) {
   check(lng, Match.OneOf(String, Array));

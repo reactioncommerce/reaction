@@ -14,7 +14,7 @@ const sortOrderEnumToMongo = {
  * @memberof GraphQL/ResolverUtilities
  * @summary Converts GraphQL `sortBy` and `sortOrder` params to the sort object format
  *   that MongoDB uses.
- * @return {Object} Sort object
+ * @returns {Object} Sort object
  */
 export default function getMongoSort({ sortBy, sortOrder } = {}) {
   const mongoSortDirection = sortOrderEnumToMongo[sortOrder || "asc"];

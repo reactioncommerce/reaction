@@ -28,7 +28,7 @@ export function addCleanupJobControlHook() {
 
 /**
  * @summary Cleanup job worker
- * @return {undefined}
+ * @returns {undefined}
  */
 export function cleanupJob() {
   const removeStaleJobs = Jobs.processJobs("jobControl/removeStaleJobs", {

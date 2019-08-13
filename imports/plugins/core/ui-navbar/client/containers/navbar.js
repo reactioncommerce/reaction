@@ -43,7 +43,7 @@ export function composer(props, onData) {
    * @param {script} event DOM Event
    * @param {String} shopId - selected shopId
    * @since 1.5.8
-   * @return {void}
+   * @returns {void}
    * @private
    */
   const handleShopSelectChange = (event, shopId) => {

@@ -8,7 +8,7 @@ import { Shops } from "/lib/collections";
  * @method getShop
  * @memberof Fixtures
  * @summary Get an existing shop or create a shop factory
- * @return {Object} Shop
+ * @returns {Object} Shop
  */
 export function getShop() {
   createShopFactory();
@@ -20,7 +20,7 @@ export function getShop() {
  * @method getShopId
  * @memberof Fixtures
  * @summary Get the first shop found and return the shop id
- * @return {String} Shop ID
+ * @returns {String} Shop ID
  */
 export function getShopId() {
   const shop = Shops.find({}).fetch()[0];
@@ -45,7 +45,7 @@ export function getShopId() {
  * @param {Boolean} [options.isShippingDefault] isShippingDefault - `faker.random.boolean()`
  * @param {Boolean} [options.isBillingDefault] isBillingDefault - `faker.random.boolean()`
  * @param {Array} [options.metafields] metafields - `[]`
- * @return {Object} Address object
+ * @returns {Object} Address object
  */
 export function getAddress(options = {}) {
   const defaults = {
@@ -194,7 +194,7 @@ const activeShop = {
  * @memberof Fixtures
  * @summary Find and return an existing shop from option parameters, or create an active shop factory
  * @param  {Object} [options={}] Any shop properties
- * @return {Object}              Shop, with active status
+ * @returns {Object}              Shop, with active status
  */
 export function createActiveShop(options = {}) {
   const existingActiveShop = Shops.findOne({ "workflow.status": "active", ...options });
@@ -298,7 +298,7 @@ export function createActiveShop(options = {}) {
  * @property {String} shopType - `"primary"` - Not having a primary shop will cause test failures. one shop in the marketplace is required as default shop. This is used to control marketplace settings.
  * @property {Date} createdAt - `new Date()`
  * @property {Date} updatedAt - `new Date()`
- * @return {Object} Shop with status `"active"`
+ * @returns {Object} Shop with status `"active"`
  */
 export function createShopFactory() {
   Factory.define("shop", Shops, shop);
@@ -311,7 +311,7 @@ export function createShopFactory() {
  * @property {Object} workflow
  * @property {String} status - `"active"`
  * @property {String} id - `Random.id()`
- * @return {Object} Shop with status `"active"`
+ * @returns {Object} Shop with status `"active"`
  */
 export function createActiveShopFactory() {
   Factory.define("activeShop", Shops, Object.assign({}, shop, activeShop));

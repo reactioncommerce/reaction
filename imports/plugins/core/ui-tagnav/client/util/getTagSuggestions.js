@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
  * @param {String} term search query
  * @param {Object} options options
  * @param {Array} [options.excludeTags] array of tag ids (String) to exclude
- * @return {Promise<Array>} matching tags
+ * @returns {Promise<Array>} matching tags
  */
 export default async function getTagSuggestions(term, { excludeTags }) {
   try {

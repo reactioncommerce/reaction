@@ -8,7 +8,7 @@
  * @param {String} params.language - Language to retrieve surcharge message in
  * @param {String} params.shopId - Shop ID for the shop that owns the surcharge
  * @param {String} params.surchargeId - Surcharge ID of the surcharge we are requesting
- * @return {Promise<Object>|undefined} - A surcharge document, if one is found
+ * @returns {Promise<Object>|undefined} - A surcharge document, if one is found
  */
 export default async function surchargeById(context, { surchargeId, shopId } = {}) {
   const { collections } = context;

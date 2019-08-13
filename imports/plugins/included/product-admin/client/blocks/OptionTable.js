@@ -5,7 +5,7 @@ import VariantTable from "../components/VariantTable";
 /**
  * Variant Option table block component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function OptionTable(props) {
   const {

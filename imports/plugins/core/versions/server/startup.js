@@ -6,7 +6,7 @@ import config from "/imports/node-app/core/config";
 
 /**
  * @param {Object} opts Logger options
- * @return {undefined}
+ * @returns {undefined}
  */
 function reactionLogger(opts) {
   if (["warn", "info", "error"].includes(opts.level)) {

@@ -37,7 +37,7 @@ const DEFAULT_SOLD_OUT_INFO = {
  * @private
  * @param {Object} context App context
  * @param {Object} input Input
- * @return {Object[]} Array of result objects
+ * @returns {Object[]} Array of result objects
  */
 async function getInventoryResults(context, input) {
   const { productConfigurations, shopId } = input;
@@ -102,7 +102,7 @@ async function getInventoryResults(context, input) {
  * @param {Object[]} input.productConfigurations An array of ProductConfiguration objects
  * @param {String[]} [input.fields] Optional array of fields you need. If you don't need all,
  *   you can pass this to skip some calculations and database lookups, improving speed.
- * @return {Promise<Object[]>} Array of responses. Order is not guaranteed to be the same
+ * @returns {Promise<Object[]>} Array of responses. Order is not guaranteed to be the same
  *   as `input.productConfigurations` array.
  */
 export default async function inventoryForProductConfigurations(context, input) {

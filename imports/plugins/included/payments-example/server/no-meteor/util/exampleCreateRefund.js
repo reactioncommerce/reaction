@@ -6,7 +6,7 @@
  * @param {Object} payment object containing transaction ID
  * @param {Number} amount the amount to be refunded
  * @param {String} [reason] the reason for the refund
- * @return {Object} refund result
+ * @returns {Object} refund result
  * @private
  */
 export default async function exampleCreateRefund(context, payment, amount, reason) {

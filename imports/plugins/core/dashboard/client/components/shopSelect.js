@@ -12,7 +12,7 @@ class ShopSelect extends Component {
    * renderDropDownMenu
    * @summary Handles dropdown menu display
    * @param {Object} menuItems
-   * @return {JSX} React node containing dropdown menu
+   * @returns {JSX} React node containing dropdown menu
    */
   renderDropDownMenu(menuItems) {
     if (this.props.isTagNav) {

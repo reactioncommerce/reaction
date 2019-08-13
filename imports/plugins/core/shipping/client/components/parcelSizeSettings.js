@@ -23,7 +23,7 @@ class ParcelSizeSettings extends Component {
   * @summary Handle form submission
   * @param {Object} event - onChange event when typing in input field
   * @param {Object} formData - the data of the whole form
-  * @return {function} state for field value
+  * @returns {function} state for field value
   */
   handleSubmit = (event, formData) => {
     const parcel = formData.doc;
@@ -99,7 +99,7 @@ class ParcelSizeSettings extends Component {
   * @property {Function} onCardExpand provides function that controls card expansion
   * @property {Function} saveDefaultSize provides function / action when form is submitted
   * @property {Object} shownFields fields to be shown and how to be shown
-  * @return {Array} React propTypes
+  * @returns {Array} React propTypes
 */
 
 ParcelSizeSettings.propTypes = {

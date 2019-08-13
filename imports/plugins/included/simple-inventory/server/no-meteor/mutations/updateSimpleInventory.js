@@ -17,7 +17,7 @@ import getModifier from "../utils/getMongoUpdateModifier";
  * @param {Object} [options] Other options
  * @param {Boolean} [options.returnUpdatedDoc=true] Set to `false` as a performance optimization
  *   if you don't need the updated document returned.
- * @return {Object|null} Updated inventory values, or `null` if `returnUpdatedDoc` is `false`
+ * @returns {Object|null} Updated inventory values, or `null` if `returnUpdatedDoc` is `false`
  */
 export default async function updateSimpleInventory(context, input, options = {}) {
   inputSchema.validate(input);

@@ -10,7 +10,7 @@ import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
  * @param {Object} params - request parameters
  * @param {String} [params.cartId] - Cart id to include
  * @param {String} [params.token] - Anonymous cart token
- * @return {Promise<Object>|undefined} - A Cart document, if one is found
+ * @returns {Promise<Object>|undefined} - A Cart document, if one is found
  */
 export default async function anonymousCartByCartId(context, { cartId, token } = {}) {
   const { collections } = context;

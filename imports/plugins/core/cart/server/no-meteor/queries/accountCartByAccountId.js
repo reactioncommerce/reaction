@@ -9,7 +9,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} params - request parameters
  * @param {String} [params.accountId] - An account ID
  * @param {String} [params.shopId] - A shop ID
- * @return {Promise<Object>|undefined} A Cart document, if one is found
+ * @returns {Promise<Object>|undefined} A Cart document, if one is found
  */
 export default async function accountCartByAccountId(context, { accountId, shopId } = {}) {
   const { accountId: contextAccountId, collections, userHasPermission } = context;

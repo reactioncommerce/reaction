@@ -6,7 +6,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary prepends country code to phone no. if required
  * @param  {String} phone the original phone no.
  * @param  {String} countryCode the country's code to which the phone no. belongs to
- * @return {Promise} that resolves to a string - the phone no. with country extension.
+ * @returns {Promise} that resolves to a string - the phone no. with country extension.
  */
 export default function formatPhoneNumber(phone, countryCode) {
   try {

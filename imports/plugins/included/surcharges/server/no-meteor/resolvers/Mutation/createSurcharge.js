@@ -13,7 +13,7 @@ import createSurchargeMutation from "../../mutations/createSurcharge";
  * @param {String} args.input.shopId - The shop to create this surcharge for
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} CreateSurchargePayload
+ * @returns {Promise<Object>} CreateSurchargePayload
  */
 export default async function createSurcharge(parentResult, { input }, context) {
   const { clientMutationId = null, surcharge, shopId: opaqueShopId } = input;

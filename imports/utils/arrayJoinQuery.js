@@ -14,7 +14,7 @@ const DEFAULT_LIMIT = 20;
  * @param {String} positionFieldName Name of field to add to each document with its position index
  * @param {Object} [projection] An optional projection to limit the fields included
  *   from `joinCollection` collection.
- * @return {Object[]} Array of found documents in correct sort
+ * @returns {Object[]} Array of found documents in correct sort
  */
 export default async function arrayJoinQuery({
   connectionArgs: {

@@ -5,7 +5,7 @@
  * @param {Object} options Filter options
  * @param {Boolean} [options.isAdmin] Filter by admin rights
  * @param {Boolean} [options.shouldIncludeSecondary] Include secondary items
- * @return {Array} Navigation tree items
+ * @returns {Array} Navigation tree items
  */
 export default function filterNavigationTreeItems(items = [], { isAdmin = false, shouldIncludeSecondary = false } = {}) {
   return items.map((node) => {

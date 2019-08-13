@@ -101,7 +101,7 @@ class SortableTable extends Component {
    * @param {script} event onChange event when typing in filter field
    * @param {String} value text field input
    * @param {String} field input field name to watch
-   * @return {function} state for field value
+   * @returns {function} state for field value
    */
   handleFilterInput = (event, value, field) => {
     this.setState({
@@ -114,7 +114,7 @@ class SortableTable extends Component {
    * @name handleClick()
    * @summary Handle click on table row
    * @param {Object} rowInfo row data passed in from ReactTable
-   * @return {function} return onRowClick function prop, or undefined if not supplied
+   * @returns {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
     const { onRowClick } = this.props;
@@ -259,7 +259,7 @@ class SortableTable extends Component {
    * @name displayNoResultsFound()
    * @method
    * @summary This function displays a 'No Results Found' when there is no data to populate the table
-   * @return {node} returns a JSX node or empty string
+   * @returns {node} returns a JSX node or empty string
    */
   displayNoResultsFound() {
     let displayText = "";
@@ -360,7 +360,7 @@ class SortableTable extends Component {
   * @property {object} query provides query for publication filtering
   * @property {Array} selectedRows provides selected rows in the table
   * @property {Function} transform transform of collection for grid results
-  * @return {Array} React propTypes
+  * @returns {Array} React propTypes
   */
 SortableTable.propTypes = {
   collection: PropTypes.object,

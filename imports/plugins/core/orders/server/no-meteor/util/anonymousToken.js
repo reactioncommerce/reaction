@@ -5,10 +5,10 @@ import Random from "@reactioncommerce/random";
  * Generate a new secret token for the purpose of controlled access to
  * anonymous-user-specific data.
  *
- * @return {Object} token object with associated token properties
- * @return {Date} token.createdAt creation date, could potentially be useful for implementing expiration, but these do not currently expire.
- * @return {String} token.hashedToken used to locate this token in the database
- * @return {String} token.token raw token for use in URLs, email, etc. Do not store in the DB.
+ * @returns {Object} token object with associated token properties
+ * @returns {Date} token.createdAt creation date, could potentially be useful for implementing expiration, but these do not currently expire.
+ * @returns {String} token.hashedToken used to locate this token in the database
+ * @returns {String} token.token raw token for use in URLs, email, etc. Do not store in the DB.
  */
 export function getAnonymousAccessToken() {
   const token = Random.secret();
@@ -25,7 +25,7 @@ export function getAnonymousAccessToken() {
  * @param {Object} context app context
  * @param {String} orderId order id
  *
- * @return {String} raw token secret
+ * @returns {String} raw token secret
  */
 export async function addAnonymousOrderToken(context, orderId) {
   const token = getAnonymousAccessToken();

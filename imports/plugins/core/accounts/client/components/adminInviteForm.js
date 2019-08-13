@@ -16,6 +16,7 @@ import { getDefaultUserInviteGroup, getUserByEmail } from "../helpers/accountsHe
  * @extends {Component}
  * @property {Function} canInviteToGroup
  * @property {Array} groups
+ * @returns {Node} React node containing admin invite form
  */
 class AdminInviteForm extends Component {
   static propTypes = {

@@ -13,7 +13,7 @@ import { mergeDeep } from "/lib/api";
  * @param  {String} name      Name of package
  * @param  {Array} fields     Fields to update
  * @todo Name could be optional. Just use package name as default.
- * @return {Boolean}          true on success, false on error
+ * @returns {Boolean}          true on success, false on error
  */
 export default function updateRegistry(packageId, name, fields) {
   check(packageId, String);

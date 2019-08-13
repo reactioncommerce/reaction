@@ -10,7 +10,7 @@ import { decodeFulfillmentRestrictionOpaqueId } from "../../xforms/flatRateFulfi
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
  * @param {String} args.shopId - The shop that owns this restriction
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>|undefined} A Restriction object
+ * @returns {Promise<Object>|undefined} A Restriction object
  */
 export default async function getFlatRateFulfillmentRestriction(parentResult, args, context) {
   const { restrictionId, shopId } = args;

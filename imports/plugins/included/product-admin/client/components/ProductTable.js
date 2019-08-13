@@ -9,7 +9,7 @@ import withCreateProduct from "../hocs/withCreateProduct";
 /**
  * ProductTable component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function ProductTable({ onCreateProduct }) {
   return (

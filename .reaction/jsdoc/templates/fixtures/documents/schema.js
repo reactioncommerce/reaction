@@ -209,7 +209,7 @@ var Schema = Base.compose( [Base], /** @lends documents/schema# */{
 	 *
 	 * @param {string=} schema The schema name to use
 	 * @param {Object=} src The object to extract fields from
-	 * @return {Object} Data-only version of the class instance.
+	 * @returns {Object} Data-only version of the class instance.
 	 */
 	extract     : function ( schemaName, src ) {
 		if ( sys.isObject( schemaName ) ) {

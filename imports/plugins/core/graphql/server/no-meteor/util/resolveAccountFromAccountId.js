@@ -6,7 +6,7 @@
  * @param {Object} parent - result of the parent resolver
  * @param {Object} _ - unused param
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} The account having ID parent.accountId, in GraphQL schema format
+ * @returns {Promise<Object>} The account having ID parent.accountId, in GraphQL schema format
  */
 export default async function resolveAccountFromAccountId(parent, _, context) {
   const { accountId } = parent;

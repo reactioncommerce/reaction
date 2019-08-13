@@ -17,7 +17,7 @@ import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters";
  * @param {Object[]} [args.booleanFilters] - Array of boolean filter objects with `name` and `value`
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @return {Promise<Object>} A CatalogItemConnection object
+ * @returns {Promise<Object>} A CatalogItemConnection object
  */
 export default async function catalogItems(_, args, context, info) {
   const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, booleanFilters, ...connectionArgs } = args;

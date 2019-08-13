@@ -14,7 +14,7 @@ import { xformAddressInput } from "@reactioncommerce/reaction-graphql-xforms/add
  * @param {String} args.input.type - If present, make this address the default address of this type (billing or shipping)
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Object} UpdateAccountAddressBookEntryPayload
+ * @returns {Object} UpdateAccountAddressBookEntryPayload
  */
 export default function updateAccountAddressBookEntry(_, { input }, context) {
   const { accountId, addressId, clientMutationId, type, updates } = input;

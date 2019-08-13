@@ -31,7 +31,7 @@ import hashProduct from "../no-meteor/mutations/hashProduct";
  * existing copies
  * @param {String} newTitle - product `title`
  * @param {String} productId - current product `_id`
- * @return {String} title - modified `title`
+ * @returns {String} title - modified `title`
  */
 function createTitle(newTitle, productId) {
   // exception product._id needed for cases then double triggering happens
@@ -89,7 +89,7 @@ function createTitle(newTitle, productId) {
  * existing copies
  * @param {String} productHandle - product `handle`
  * @param {String} productId - current product `_id`
- * @return {String} handle - modified `handle`
+ * @returns {String} handle - modified `handle`
  */
 function createHandle(productHandle, productId) {
   let handle = productHandle || "";
@@ -153,7 +153,7 @@ function createHandle(productHandle, productId) {
  * @param {String} newId - [cloned|original] product _id
  * @param {String} variantOldId - old variant _id
  * @param {String} variantNewId - - cloned variant _id
- * @return {undefined}
+ * @returns {undefined}
  */
 function copyMedia(newId, variantOldId, variantNewId) {
   rawCollections.Media.find({
@@ -179,7 +179,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
  * @description creates a product
  * @param {Object} props - initial product properties
  * @param {Object} info - Other info
- * @return {Object} product - new product
+ * @returns {Object} product - new product
  */
 function createProduct(props = null, info = {}) {
   const newProductOrVariant = {
@@ -225,7 +225,7 @@ function createProduct(props = null, info = {}) {
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
  * @param {Object} validation - simple schema validation options
- * @return {String} _id of updated document
+ * @returns {String} _id of updated document
  */
 function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
@@ -252,7 +252,7 @@ Meteor.methods({
    * cloning
    * @param {String} variantId - the variantId that we're cloning
    * @todo rewrite @description
-   * @return {Array} - list with cloned variants _ids
+   * @returns {Array} - list with cloned variants _ids
    */
   "products/cloneVariant"(productId, variantId) {
     check(productId, String);
@@ -362,7 +362,7 @@ Meteor.methods({
    * @summary initializes empty variant template
    * @param {String} parentId - the product _id or top level variant _id where
    * we create variant
-   * @return {String} new variantId
+   * @returns {String} new variantId
    */
   "products/createVariant"(parentId) {
     check(parentId, String);
@@ -631,7 +631,7 @@ Meteor.methods({
    * @memberof Methods/Products
    * @method
    * @summary when we create a new product, we create it with an empty variant.
-   * @return {String} The new product ID
+   * @returns {String} The new product ID
    */
   "products/createProduct"() {
     // Ensure user has createProduct permission for active shop
@@ -789,7 +789,7 @@ Meteor.methods({
    * do something like: const type = Products.findOne(_id).type or transmit type
    * as param if it possible
    * latest changes. its used for products and variants
-   * @return {Number} returns update result
+   * @returns {Number} returns update result
    */
   "products/updateProductField"(_id, field, value) {
     check(_id, String);
@@ -869,7 +869,7 @@ Meteor.methods({
    * @param {String} productId - productId
    * @param {String} tagName - tagName
    * @param {String} tagId - tagId
-   * @return {Number} return result
+   * @returns {Number} return result
    */
   "products/updateProductTags"(productId, tagName, tagId) {
     check(productId, String);
@@ -953,7 +953,7 @@ Meteor.methods({
    * @summary method to remove tag from product
    * @param {String} productId - productId
    * @param {String} tagId - tagId
-   * @return {String} return update result
+   * @returns {String} return update result
    */
   "products/removeProductTag"(productId, tagId) {
     check(productId, String);
@@ -1024,7 +1024,7 @@ Meteor.methods({
    * @summary set or toggle product handle
    * @param {String} productId - productId
    * @param {String} tagId - tagId
-   * @return {String} return update result
+   * @returns {String} return update result
    */
   "products/setHandleTag"(productId, tagId) {
     check(productId, String);
@@ -1092,7 +1092,7 @@ Meteor.methods({
    * @param {Array} sortedVariantIds - array of top level variant `_id`s
    * @param {String} shopId - The ID of the shop that owns all variants being sorted
    * @since 0.11.0
-   * @return {Number} Products.update result
+   * @returns {Number} Products.update result
    */
   "products/updateVariantsPosition"(sortedVariantIds, shopId) {
     check(sortedVariantIds, [String]);
@@ -1134,7 +1134,7 @@ Meteor.methods({
    * @param {Object} updatedMeta - update object with metadata
    * @param {Object|Number|undefined|null} meta - current meta object, or a number index
    * @todo should this method works for variants also?
-   * @return {Number} collection update result
+   * @returns {Number} collection update result
    */
   "products/updateMetaFields"(productId, updatedMeta, meta) {
     check(productId, String);
@@ -1208,7 +1208,7 @@ Meteor.methods({
    * @param {String} productId - productId
    * @param {Object} metafields - metadata object to remove
    * @param {Object} type - optional product type for schema selection
-   * @return {Number} collection update result
+   * @returns {Number} collection update result
    */
   "products/removeMetaFields"(productId, metafields, type = "simple") {
     check(productId, String);
@@ -1242,7 +1242,7 @@ Meteor.methods({
    * @summary publish (visibility) of product
    * @todo hook into publishing flow
    * @param {String} productId - productId
-   * @return {Boolean} product.isVisible
+   * @returns {Boolean} product.isVisible
    */
   "products/toggleVisibility"(productId) {
     check(productId, String);

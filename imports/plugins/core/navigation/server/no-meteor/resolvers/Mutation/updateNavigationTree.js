@@ -11,7 +11,7 @@ import { decodeNavigationTreeOpaqueId } from "@reactioncommerce/reaction-graphql
  * @param {String} args.input.navigationTree The updated navigation tree
  * @param {Object} context An object containing the per-request state
  * @param {String} [args.input.clientMutationId] An optional string identifying the mutation call
- * @return {Promise<Object>} UpdateNavigationTreePayload
+ * @returns {Promise<Object>} UpdateNavigationTreePayload
  */
 export default async function updateNavigationTree(parentResult, { input }, context) {
   const {

@@ -11,7 +11,7 @@ const inputSchema = new SimpleSchema({
  * @summary deletes a surcharge
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
- * @return {Promise<Object>} An object with a `surcharge` property containing the deleted surcharge
+ * @returns {Promise<Object>} An object with a `surcharge` property containing the deleted surcharge
  */
 export default async function deleteSurcharge(context, input) {
   inputSchema.validate(input);

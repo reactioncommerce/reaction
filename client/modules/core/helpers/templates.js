@@ -68,7 +68,7 @@ Template.registerHelper("Schemas", () => Schemas);
  * @method currentUser
  * @memberof BlazeTemplateHelpers
  * @summary overrides Meteor Package.blaze currentUser method
- * @return {Boolean} returns true/null if user has registered
+ * @returns {Boolean} returns true/null if user has registered
  */
 Template.registerHelper("currentUser", () => {
   if (typeof Reaction === "object") {
@@ -90,7 +90,7 @@ Template.registerHelper("currentUser", () => {
  * @memberof BlazeTemplateHelpers
  * @summary Get monthOptionsVar ReactiveVar
  * @param {Boolean} [showDefaultOption]
- * @return {Array} returns array of months
+ * @returns {Array} returns array of months
  */
 Template.registerHelper("monthOptions", (showDefaultOption = true) => {
   const label = i18next.t("app.monthOptions", "Choose month");
@@ -116,7 +116,7 @@ Template.registerHelper("monthOptions", (showDefaultOption = true) => {
  * @memberof BlazeTemplateHelpers
  * @summary formats moment.js next 9 years into array for autoform selector
  * @param {Boolean} [showDefaultOption]
- * @return {Array} returns array of years [value:, label:]
+ * @returns {Array} returns array of years [value:, label:]
  */
 Template.registerHelper("yearOptions", (showDefaultOption = true) => {
   const label = i18next.t("app.yearOptions", "Choose year");
@@ -144,7 +144,7 @@ Template.registerHelper("yearOptions", (showDefaultOption = true) => {
  * @method camelToSpace
  * @summary convert a camelcased string to spaces
  * @param {String} str - camelcased string
- * @return {String} returns space formatted string
+ * @returns {String} returns space formatted string
  */
 Template.registerHelper("camelToSpace", (str) => {
   const downCamel = str.replace(/\W+/g, "-").replace(/([a-z\d])([A-Z])/g, "$1 $2");
@@ -156,7 +156,7 @@ Template.registerHelper("camelToSpace", (str) => {
  * @memberof BlazeTemplateHelpers
  * @summary convert a string to lower case
  * @param {String} str - string
- * @return {String} returns lowercased string
+ * @returns {String} returns lowercased string
  */
 Template.registerHelper("toLowerCase", (str) => str.toLowerCase());
 
@@ -165,7 +165,7 @@ Template.registerHelper("toLowerCase", (str) => str.toLowerCase());
  * @memberof BlazeTemplateHelpers
  * @summary convert a string to upper case
  * @param {String} str - string
- * @return {String} returns uppercased string
+ * @returns {String} returns uppercased string
  */
 Template.registerHelper("toUpperCase", (str) => str.toUpperCase());
 
@@ -174,7 +174,7 @@ Template.registerHelper("toUpperCase", (str) => str.toUpperCase());
  * @memberof BlazeTemplateHelpers
  * @summary capitalize first character of string
  * @param {String} str - string
- * @return {String} returns string with first letter capitalized
+ * @returns {String} returns string with first letter capitalized
  */
 Template.registerHelper("capitalize", (str) => str.charAt(0).toUpperCase() + str.slice(1));
 
@@ -183,7 +183,7 @@ Template.registerHelper("capitalize", (str) => str.charAt(0).toUpperCase() + str
  * @memberof BlazeTemplateHelpers
  * @summary camelCases a string
  * @param {String} str - string
- * @return {String|undefined} returns camelCased string
+ * @returns {String|undefined} returns camelCased string
  */
 Template.registerHelper("toCamelCase", (str) => !!str && toCamelCase(str));
 
@@ -192,7 +192,7 @@ Template.registerHelper("toCamelCase", (str) => !!str && toCamelCase(str));
  * @memberof BlazeTemplateHelpers
  * @summary get the shop name
  * @example <a href="{{pathFor 'index'}}"><span>{{siteName}}</span></a>
- * @return {String} returns site name
+ * @returns {String} returns site name
  */
 Template.registerHelper("siteName", () => {
   const shop = Collections.Shops.findOne();
@@ -207,7 +207,7 @@ Template.registerHelper("siteName", () => {
  * @param {String} v1 - first variable to compare
  * @param {String} operator - eq,neq,ideq,or,lt,gt comparision operator
  * @param {String} v2 - second variable to compare
- * @return {Boolean} returns true/false
+ * @returns {Boolean} returns true/false
  */
 Template.registerHelper("condition", (v1, operator, v2) => {
   switch (operator) {
@@ -256,7 +256,7 @@ Template.registerHelper("condition", (v1, operator, v2) => {
   <div class="badge">{{orElse cartCount 0}}</div>
  * @param {String} v1 - variable one
  * @param {String} v2 - variable two
- * @return {String} returns v1 || v2
+ * @returns {String} returns v1 || v2
  */
 Template.registerHelper("orElse", (v1, v2) => v1 || v2);
 
@@ -265,7 +265,7 @@ Template.registerHelper("orElse", (v1, v2) => v1 || v2);
  * @summary template helper pushing object key/value into array
  * @memberof BlazeTemplateHelpers
  * @param {Object} context - object to parse into key / value
- * @return {Array} returns array[key:,value:]
+ * @returns {Array} returns array[key:,value:]
  */
 Template.registerHelper("key_value", (context) => {
   const result = [];

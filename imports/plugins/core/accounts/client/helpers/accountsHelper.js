@@ -8,7 +8,7 @@ import * as Collections from "/lib/collections";
  * @summary helper - client puts each full user object into an array on the group they belong
  * @param {Array} accounts - list of user account objects
  * @param {Array} groups - list of permission groups
- * @return {Array} - array of groups, each having a `users` field
+ * @returns {Array} - array of groups, each having a `users` field
  */
 export default function sortUsersIntoGroups({ accounts, groups }) {
   const newGroups = groups.map((group) => {
@@ -24,7 +24,7 @@ export default function sortUsersIntoGroups({ accounts, groups }) {
  * @memberof Accounts
  * @summary Sort to display higher permission groups and "owner" at the top
  * @param  {Array} groups [description]
- * @return {Array}        [description]
+ * @returns {Array}        [description]
  */
 export function sortGroups(groups) {
   return groups.sort((prev, next) => {
@@ -41,7 +41,7 @@ export function sortGroups(groups) {
  * It also filters out groups that the user does not have needed permissions to invite to.
  * All these are also checked by the Meteor method, so this is done to prevent trying to invite and getting error
  * @param {Array} groups - list of user account objects
- * @return {Array} - array of groups or empty object
+ * @returns {Array} - array of groups or empty object
  */
 export function getInvitableGroups(groups) {
   return groups
@@ -57,7 +57,7 @@ export function getInvitableGroups(groups) {
  * to an existing shop as owner). If no match still, use the first of the groups passed
  * (e.g in case of Marketplace owner accessing a merchant shop)
  * @param  {Array} groups [description]
- * @return {Object}        [description]
+ * @returns {Object}        [description]
  */
 export function getDefaultUserInviteGroup(groups) {
   let result;
@@ -81,7 +81,7 @@ export function getDefaultUserInviteGroup(groups) {
  * @summary Return all permissions for packages
  * @todo Review hardcoded `reaction` in package names
  * @param  {Array} packages [description]
- * @return {Object}          [description]
+ * @returns {Object}          [description]
  */
 export function groupPermissions(packages) {
   return packages.reduce((registeredPackages, pkg) => {

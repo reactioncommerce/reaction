@@ -11,7 +11,7 @@ import { Shops } from "/lib/collections";
  *                 the asset should be applied (defaults to Reaction.getShopId())
  * @param {String} userId - the user id on whose behalf we are performing this
  *                 action (defaults to logged in user ID)
- * @return {Int} returns update result
+ * @returns {Int} returns update result
  * @private
  */
 function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Reaction.getUserId()) {
@@ -65,7 +65,7 @@ function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Re
  * @method
  * @memberof Shop/Methods
  * @param {Object} asset - brand asset {mediaId: "", type, ""}
- * @return {Int} returns update result
+ * @returns {Int} returns update result
  */
 export default function updateBrandAssets(asset) {
   check(asset, {

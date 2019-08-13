@@ -37,7 +37,7 @@ Template.templateSettings.helpers({
     /**
      * @summary helper to get and select row from griddle into blaze to get correct template to edit
      * @param {Object} options Options object with `props` field
-     * @return {undefined}
+     * @returns {undefined}
      */
     function editRow(options) {
       const currentId = instance.state.get("editingId");

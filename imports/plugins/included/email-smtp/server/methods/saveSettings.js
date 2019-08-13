@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Save new email configuration
  * @memberof Email/Methods
  * @param {Object} settings - mail provider settings
- * @return {Boolean} - returns true if update succeeds
+ * @returns {Boolean} - returns true if update succeeds
  */
 export default function saveSettings(settings) {
   if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {

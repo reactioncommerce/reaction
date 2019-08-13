@@ -16,7 +16,7 @@ import { Groups } from "/lib/collections";
  * @param {String} groupData.description - Optional description of the group to be created
  * @param {Array} groupData.permissions - permissions to assign to the group being created
  * @param {String} shopId - id of the shop the group belongs to
- * @return {Object} - `object.status` of 200 on success or Error object on failure
+ * @returns {Object} - `object.status` of 200 on success or Error object on failure
  */
 export default function createGroup(groupData, shopId) {
   check(groupData, Object);

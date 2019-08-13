@@ -82,7 +82,7 @@ var CollectorBase = dcl( Destroyable, {
 	},
 	/**
 	 * Supports conversion to a JSON string or for passing over the wire
-	 * @return {Object}
+	 * @returns {Object}
 	 * @returns {Object|array}
 	 */
 	toJSON        : function () {
@@ -114,7 +114,7 @@ var CollectorBase = dcl( Destroyable, {
 	 * @param {function(result, val, key)} iterator The function that will be executed in each item in the collection
 	 * @param {*=} accumulator Initial value of the accumulator.
 	 * @param {Object=} thisobj The value of `this`
-	 * @return {*}
+	 * @returns {*}
 	 */
 	reduce        : function ( query, iterator, accumulator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -133,7 +133,7 @@ var CollectorBase = dcl( Destroyable, {
 	 * are iterated over.
 	 * @param  {function(value, key, collection)} iterator
 	 * @param {Object=} thisobj The value of `this`
-	 * @return {Object}
+	 * @returns {Object}
 	 */
 	countBy       : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -152,7 +152,7 @@ var CollectorBase = dcl( Destroyable, {
 	 * are iterated over.
 	 * @param {function(value, key, collection)} iterator
 	 * @param {Object=} thisobj The value of `this`
-	 * @return {Object}
+	 * @returns {Object}
 	 */
 	groupBy       : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -169,7 +169,7 @@ var CollectorBase = dcl( Destroyable, {
 	 * @param {Object=} query The query to evaluate. If you pass in a query, only the items that match the query
 	 * are iterated over.
 	 * @param {String} property The property that will be 'plucked' from the contents of the collection
-	 * @return {*}
+	 * @returns {*}
 	 */
 	pluck         : function ( query, property ) {
 		if ( arguments.length === 2 ) {
@@ -206,7 +206,7 @@ var CollectorBase = dcl( Destroyable, {
 	 * are iterated over.
 	 * @param {function(value, key, collection)} iterator
 	 * @param {Object=} thisobj The value of `this`
-	 * @return {number}
+	 * @returns {number}
 	 */
 	max           : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -224,7 +224,7 @@ var CollectorBase = dcl( Destroyable, {
 	 * are iterated over.
 	 * @param {function(value, key, collection)} iterator
 	 * @param {Object=} thisobj The value of `this`
-	 * @return {number}
+	 * @returns {number}
 	 */
 	min           : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -252,7 +252,7 @@ var OCollector = dcl( CollectorBase, {
 	/**
 	 * Get a record by key
 	 * @param {*} key The key of the record to get
-	 * @return {*}
+	 * @returns {*}
 	 */
 	key : function ( key ) {
 		return this.heap[key];
@@ -333,7 +333,7 @@ var ACollector = dcl( CollectorBase, {
 		 * are iterated over.
 		 * @param {function(value, key, collection)} iterator,
 		 * @param {Object=} thisobj The value of `this`
-		 * @return {number}
+		 * @returns {number}
 		 */
 		flatten     : function ( query, iterator, thisobj ) {
 			if ( sys.isPlainObject( query ) ) {
@@ -347,7 +347,7 @@ var ACollector = dcl( CollectorBase, {
 		/**
 		 * Gets an items by its index
 		 * @param {number} key The index to get
-		 * @return {*}
+		 * @returns {*}
 		 */
 		index       : function ( index ) {
 			return this.heap[ index ];

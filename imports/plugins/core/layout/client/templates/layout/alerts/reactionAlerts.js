@@ -67,7 +67,7 @@ Object.assign(Alerts, {
    * @param  {string}   messageOrCallback [description]
    * @param  {string}   options           [description]
    * @param  {function} callback          [description]
-   * @return {string}                     [description]
+   * @returns {string}                     [description]
    */
   alert(titleOrOptions, messageOrCallback, options, callback) {
     if (_.isObject(titleOrOptions)) {

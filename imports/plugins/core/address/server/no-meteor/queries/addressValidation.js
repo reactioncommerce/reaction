@@ -12,7 +12,7 @@ import { getAddressValidationService } from "../registration";
  * @param {Object} input.address - The AddressInput to validate
  * @param {Object} input.shopId - The shop to use for address validation settings
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} Promise that resolves with an object with results
+ * @returns {Promise<Object>} Promise that resolves with an object with results
  */
 export default async function addressValidation({ address, shopId }, context) {
   const { collections } = context;
