@@ -28,14 +28,14 @@ const styles = (theme) => ({
   toolbar: {
     paddingLeft: 0,
     paddingRight: 0,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       paddingLeft: 0,
-      paddingRight: 0,
-    },
+      paddingRight: 0
+    }
   },
   filterCountContainer: {
     paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(3),
+    paddingTop: theme.spacing(3)
   },
   filterCountText: {
     paddingLeft: theme.spacing(2),
@@ -58,10 +58,10 @@ const styles = (theme) => ({
     letterSpacing: "0.3px"
   },
   actionDropdownMenuItem: {
-    fontSize: "16px",
-    letterSpacing: "0.3px",
+    "fontSize": "16px",
+    "letterSpacing": "0.3px",
     "&:hover": {
-      "backgroundColor": "#EBF7FC",
+      backgroundColor: "#EBF7FC"
     }
   }
 });
@@ -139,8 +139,7 @@ class ProductGrid extends Component {
     if (filterByProductIds) {
       return (
         <div className={classes.filterCountContainer}>
-          <Typography variant="h4" display="inline" className=
-          {classes.productsTitle}>
+          <Typography variant="h4" display="inline" className={classes.productsTitle}>
             {i18next.t("admin.productTable.bulkActions.filteredProducts")}
           </Typography>
           <Typography variant="h5" display="inline" className={classes.filterCountText}>
@@ -148,21 +147,18 @@ class ProductGrid extends Component {
           </Typography>
         </div>
       );
-    } else {
-      const totalOrSelected = (selectedCount > 0) ? selectedCount + " selected" : totalProductCount + " products";
-      return (
-        <div className={classes.filterCountContainer}>
-          <Typography variant="h4" display="inline" className=
-          {classes.productsTitle}>
-            All products
-          </Typography>
-          <Typography variant="h5" display="inline" className={classes.filterCountText}>
-            { totalOrSelected }
-          </Typography>
-        </div>
-      );
     }
-    
+    const totalOrSelected = (selectedCount > 0) ? `${selectedCount} selected` : `${totalProductCount} products`;
+    return (
+      <div className={classes.filterCountContainer}>
+        <Typography variant="h4" display="inline" className={classes.productsTitle}>
+            All products
+        </Typography>
+        <Typography variant="h5" display="inline" className={classes.filterCountText}>
+          { totalOrSelected }
+        </Typography>
+      </div>
+    );
   }
 
   renderProductGridItems() {
@@ -266,7 +262,7 @@ class ProductGrid extends Component {
           open={Boolean(bulkActionMenuAnchorEl)}
           onClose={this.handleCloseBulkActions}
           className={classes.actionDropdownContainer}
-          MenuListProps={{disablePadding: true, className: classes.actionDropdownMenuList}}
+          MenuListProps={{ disablePadding: true, className: classes.actionDropdownMenuList }}
         >
           <MenuItem
             disabled
@@ -290,7 +286,13 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionPublish}
           >
             {({ openDialog }) => (
-              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.publish")}</MenuItem>
+              <MenuItem
+                className={classes.actionDropdownMenuItem}
+                onClick={openDialog}
+                disabled={!isEnabled}
+              >
+                {i18next.t("admin.productTable.bulkActions.publish")}
+              </MenuItem>
             )}
           </ConfirmDialog>
 
@@ -300,7 +302,13 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionMakeVisible}
           >
             {({ openDialog }) => (
-              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.makeVisible")}</MenuItem>
+              <MenuItem
+                className={classes.actionDropdownMenuItem}
+                onClick={openDialog}
+                disabled={!isEnabled}
+              >
+                {i18next.t("admin.productTable.bulkActions.makeVisible")}
+              </MenuItem>
             )}
           </ConfirmDialog>
 
@@ -310,7 +318,13 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionMakeHidden}
           >
             {({ openDialog }) => (
-              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.makeHidden")}</MenuItem>
+              <MenuItem
+                className={classes.actionDropdownMenuItem}
+                onClick={openDialog}
+                disabled={!isEnabled}
+              >
+                {i18next.t("admin.productTable.bulkActions.makeHidden")}
+              </MenuItem>
             )}
           </ConfirmDialog>
 
@@ -320,7 +334,13 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionDuplicate}
           >
             {({ openDialog }) => (
-              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.duplicate")}</MenuItem>
+              <MenuItem
+                className={classes.actionDropdownMenuItem}
+                onClick={openDialog}
+                disabled={!isEnabled}
+              >
+                {i18next.t("admin.productTable.bulkActions.duplicate")}
+              </MenuItem>
             )}
           </ConfirmDialog>
 
@@ -330,7 +350,13 @@ class ProductGrid extends Component {
             onConfirm={this.handleBulkActionArchive}
           >
             {({ openDialog }) => (
-              <MenuItem className={classes.actionDropdownMenuItem} onClick={openDialog} disabled={!isEnabled}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
+              <MenuItem
+                className={classes.actionDropdownMenuItem}
+                onClick={openDialog}
+                disabled={!isEnabled}
+              >
+                {i18next.t("admin.productTable.bulkActions.archive")}
+              </MenuItem>
             )}
           </ConfirmDialog>
         </Menu>

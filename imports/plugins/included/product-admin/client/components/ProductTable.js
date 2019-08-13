@@ -1,12 +1,8 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-<<<<<<< HEAD
 import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
-import { Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
-=======
 import { Slide, Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
->>>>>>> f459b6600... style(card): slide
 import CloseIcon from "mdi-material-ui/Close";
 import ImportIcon from "mdi-material-ui/Download";
 import { useDropzone } from "react-dropzone";
@@ -109,7 +105,9 @@ function ProductTable({ onCreateProduct }) {
   const classes = useStyles();
 
   let displayCard;
-  if ( isClosed === true ) {
+  let displayButton;
+  let fade;
+  if (isClosed === true) {
     displayCard = "none";
     if (isFiltered === true) {
       displayButton = "none";
@@ -120,7 +118,7 @@ function ProductTable({ onCreateProduct }) {
     displayCard = "block";
     displayButton = "none";
     fade = true;
-  };
+  }
 
   const closeCard = () => {
     setClosed(false);
