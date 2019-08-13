@@ -43,7 +43,7 @@ var CollectorBase = dcl( Destroyable, {
 		 * See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
 		 * @function
 		 * @memberOf module:documents/collector~CollectorBase#
-		 * @return {Array}
+		 * @returns {Array}
 		 */
 		this.shuffle = sys.bind( sys.shuffle, this, this.heap );
 
@@ -75,15 +75,15 @@ var CollectorBase = dcl( Destroyable, {
 	},
 	/**
 	 * Returns the collection as an array. If it is already an array, it just returns that.
-	 * @return {Array}
+	 * @returns {Array}
 	 */
 	toArray       : function () {
 		return sys.toArray( this.heap );
 	},
 	/**
 	 * Supports conversion to a JSON string or for passing over the wire
-   * @return {Object}
-	 * @return {Object|array}
+	 * @return {Object}
+	 * @returns {Object|array}
 	 */
 	toJSON        : function () {
 		return this.heap;
@@ -183,12 +183,12 @@ var CollectorBase = dcl( Destroyable, {
 		}
 	},
 	/**
-	 * return { a sorted copy of the collection.
+	 * Returns a sorted copy of the collection.
 	 * @param {Object=} query The query to evaluate. If you pass in a query, only the items that match the query
 	 * are iterated over.
 	 * @param {function(value, key)} iterator
 	 * @param {Object=} thisobj The value of `this`
-	 * @return {Array}
+	 * @returns {Array}
 	 */
 	sortBy        : function ( query, iterator, thisobj ) {
 		if ( sys.isPlainObject( query ) ) {
@@ -273,19 +273,19 @@ var ACollector = dcl( CollectorBase, {
 			this.heap = obj || [];
 			/**
 			 * Creates an array of array elements not present in the other arrays using strict equality for comparisons, i.e. ===.
-			 * @return {Array}
+			 * @returns {Array}
 			 */
 			this.difference = sys.bind( sys.difference, this, this.heap );
 			/**
 			 * This method gets all but the first values of array
 			 * @param {number=} n The numer of items to return
-			 * @return {*}
+			 * @returns {*}
 			 */
 			this.tail = sys.bind( sys.tail, this, this.heap );
 			/**
 			 * Gets the first n values of the array
 			 * @param {number=} n The numer of items to return
-			 * @return {*}
+			 * @returns {*}
 			 */
 			this.head = sys.bind( sys.head, this, this.heap );
 		},
@@ -377,54 +377,54 @@ exports.object = function ( obj ) {
 };
 
 /**
- return { true if all items match the query. Aliases as `all`
+ Returns true if all items match the query. Aliases as `all`
  @function
 
  @param {Object} qu The query to execute
- @return {Boolean}
+ @returns {Boolean}
  @name every
  @memberOf module:documents/collector~CollectorBase#
  */
 
 
 /**
- return { true if any of the items match the query. Aliases as `any`
+ Returns true if any of the items match the query. Aliases as `any`
  @function
 
  @param {Object} qu The query to execute
- @return {Boolean}
+ @returns {Boolean}
  @memberOf module:documents/collector~CollectorBase#
  @name some
  */
 
 
 /**
- return { the set of unique records that match a query
+ Returns the set of unique records that match a query
 
  @param {Object} qu The query to execute.
- @return {Array}
+ @returns {Array}
  @memberOf module:documents/collector~CollectorBase#
  @name unique
  @method
  **/
 
 /**
- return { true if all items match the query. Aliases as `every`
+ Returns true if all items match the query. Aliases as `every`
  @function
 
  @param {Object} qu The query to execute
- @return {Boolean}
+ @returns {Boolean}
  @name all
  @memberOf module:documents/collector~CollectorBase#
  */
 
 
 /**
- return { true if any of the items match the query. Aliases as `all`
+ Returns true if any of the items match the query. Aliases as `all`
  @function
 
  @param {Object} qu The query to execute
- @return {Boolean}
+ @returns {Boolean}
  @memberOf module:documents/collector~CollectorBase#
  @name any
  */
@@ -441,11 +441,11 @@ exports.object = function ( obj ) {
  **/
 
 /**
- return { the first record that matches the query and return { its key or index depending on whether `obj` is an object or array respectively.
+ Returns the first record that matches the query and returns its key or index depending on whether `obj` is an object or array respectively.
  Aliased as `seekKey`.
 
  @param {Object} qu The query to execute.
- @return {Object}
+ @returns {Object}
  @memberOf module:documents/collector~CollectorBase#
  @name findOneKey
  @method
@@ -453,10 +453,10 @@ exports.object = function ( obj ) {
 
 
 /**
- return { the first record that matches the query. Aliased as `seek`.
+ Returns the first record that matches the query. Aliased as `seek`.
 
  @param {Object} qu The query to execute.
- @return {Object}
+ @returns {Object}
  @memberOf module:documents/collector~CollectorBase#
  @name findOne
  @method
@@ -464,11 +464,11 @@ exports.object = function ( obj ) {
 
 
 /**
- Find all records that match a query and return { the keys for those items. This is similar to {@link module:ink/probe.find} but instead of returning
- records, return { the keys. If `obj` is an object it will return the hash key. If 'obj' is an array, it will return the index
+ Find all records that match a query and returns the keys for those items. This is similar to {@link module:ink/probe.find} but instead of returning
+ records, returns the keys. If `obj` is an object it will return the hash key. If 'obj' is an array, it will return the index
 
  @param {Object} qu The query to execute.
- @return {Array}
+ @returns {Array}
  @memberOf module:documents/collector~CollectorBase#
  @name findKeys
  @method
@@ -479,7 +479,7 @@ exports.object = function ( obj ) {
  Find all records that match a query
 
  @param {Object} qu The query to execute.
- @return {Array} The results
+ @returns {Array} The results
  @memberOf module:documents/collector~CollectorBase#
  @name find
  @method
