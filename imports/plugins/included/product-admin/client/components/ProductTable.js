@@ -4,7 +4,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Slide, Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "mdi-material-ui/Close";
 import ImportIcon from "mdi-material-ui/Download";
-import Dropzone from "react-dropzone";
 import { i18next } from "/client/api";
 import withCreateProduct from "../hocs/withCreateProduct";
 
@@ -22,9 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContainer: {
     alignItems: "center"
-  },
-  dropzone: {
-    display: "inline-block"
   }
 }));
 
@@ -74,9 +70,6 @@ function ProductTable({ onCreateProduct }) {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                      this.dropzone && this.dropzone.open();
-                    }}
                   >
                     <ImportIcon className={classes.leftIcon}/>
                     Import
