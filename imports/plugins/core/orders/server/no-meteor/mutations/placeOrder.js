@@ -201,6 +201,10 @@ export default async function placeOrder(context, input) {
     }
   }
 
+  const customOrderValidationFunctions = getFunctionsOfType("customOrderValidation");
+  const customOrderValidationPromises = customOrderValidationFunctions.map((validator) => validator(context, cleanedInput, cart))
+  await Promise.all(customOrderValidationPromises)
+
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
   // any discounts on the related cart here.
