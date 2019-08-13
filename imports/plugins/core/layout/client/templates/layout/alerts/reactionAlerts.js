@@ -103,6 +103,7 @@ Object.assign(Alerts, {
       ...options
     }).then((isConfirm) => {
       if (isConfirm === true && typeof callback === "function") {
+        // eslint-disable-next-line promise/no-callback-in-promise
         callback(isConfirm);
       }
       return null;

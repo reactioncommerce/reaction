@@ -59,6 +59,7 @@ export default {
       callback();
       // if the connection fails
       if (error) {
+        // eslint-disable-next-line promise/no-promise-in-callback
         Alert({
           title: i18next.t("mail.alerts.connectionFailed"),
           text: i18next.t("mail.alerts.saveAnyway"),

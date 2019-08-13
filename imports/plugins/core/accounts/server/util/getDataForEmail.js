@@ -24,6 +24,10 @@ export default function getDataForEmail(options) {
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
   const copyrightDate = new Date().getFullYear();
 
+  /**
+   * @param {String} userToken token of user
+   * @returns {String} url
+   */
   function getEmailUrl(userToken) {
     if (userToken) {
       return MeteorAccounts.urls.enrollAccount(userToken);
