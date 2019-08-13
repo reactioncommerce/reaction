@@ -24,7 +24,6 @@ import Typography from "@material-ui/core/Typography";
 import Chip from "@reactioncommerce/catalyst/Chip";
 import withStyles from "@material-ui/core/styles/withStyles";
 
-
 const styles = (theme) => ({
   toolbar: {
     paddingLeft: 0,
@@ -193,6 +192,7 @@ class ProductGrid extends Component {
   }
 
   handleShowFilterByFile = () => {
+    this.handleCloseBulkActions();
     this.props.onShowFilterByFile();
   }
 
