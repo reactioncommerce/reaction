@@ -31,7 +31,6 @@ describe("orders test", function () {
       userId = getUser()._id;
 
       methods = {
-        "cancelOrder": Meteor.server.method_handlers["orders/cancelOrder"],
         "shipmentPicked": Meteor.server.method_handlers["orders/shipmentPicked"],
         "shipmentPacked": Meteor.server.method_handlers["orders/shipmentPacked"],
         "shipmentLabeled": Meteor.server.method_handlers["orders/shipmentLabeled"],
@@ -78,43 +77,6 @@ describe("orders test", function () {
     const shippingObject = orderObject.shipping.find((shipping) => shipping.shopId === shopId);
     return shippingObject;
   }
-
-  describe("orders/cancelOrder", function () {
-    beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
-        check(args, [Match.Any]);
-      });
-    });
-
-    it("should return an error if user is not admin", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      const returnToStock = false;
-      spyOnMethod("cancelOrder", order.accountId);
-
-      function cancelOrder() {
-        return Meteor.call("orders/cancelOrder", order, returnToStock);
-      }
-      expect(cancelOrder).to.throw(ReactionError, /Access Denied/);
-    });
-
-    it("should notify owner of the order, if the order is canceled", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const returnToStock = true;
-      spyOnMethod("cancelOrder", order.accountId);
-      Meteor.call("orders/cancelOrder", order, returnToStock);
-      const notify = Notifications.findOne({ to: order.accountId, type: "orderCanceled" });
-      expect(notify.message).to.equal("Your order was canceled.");
-    });
-
-    it("should change the workflow status of the item to coreOrderItemWorkflow/canceled", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const returnToStock = false;
-      spyOnMethod("cancelOrder", order.accountId);
-      Meteor.call("orders/cancelOrder", order, returnToStock);
-      const orderItem = Orders.findOne({ _id: order._id }).shipping[0].items[0];
-      expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/canceled");
-    });
-  });
 
   describe("orders/shipmentPicked", function () {
     it("should throw an error if user is not admin", function () {

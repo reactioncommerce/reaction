@@ -1,7 +1,5 @@
 import approvePayment from "./approvePayment";
-import cancelOrder from "./cancelOrder";
 import createRefund from "./createRefund";
-import listRefunds from "./listRefunds";
 import makeAdjustmentsToInvoice from "./makeAdjustmentsToInvoice";
 import refundItems from "./refundItems";
 import sendNotification from "./sendNotification";
@@ -21,10 +19,8 @@ import updateHistory from "./updateHistory";
 
 export default {
   "orders/approvePayment": approvePayment,
-  "orders/cancelOrder": cancelOrder,
   "orders/makeAdjustmentsToInvoice": makeAdjustmentsToInvoice,
   "orders/refunds/create": createRefund,
-  "orders/refunds/list": listRefunds,
   "orders/refunds/refundItems": refundItems,
   "orders/sendNotification": sendNotification,
   "orders/shipmentDelivered": shipmentDelivered,
