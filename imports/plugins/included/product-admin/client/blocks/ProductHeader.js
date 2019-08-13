@@ -5,7 +5,7 @@ import ProductHeaderComponent from "../components/ProductHeader";
 /**
  * Product header block component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function ProductHeader(props) {
   const {

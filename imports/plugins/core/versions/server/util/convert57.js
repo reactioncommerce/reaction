@@ -5,7 +5,7 @@ import _ from "lodash";
  * @summary If all the products variants have inventory policy disabled and inventory management enabled
  * @memberof Catalog
  * @param {Object[]} variants - Array with product variant objects
- * @return {boolean} is backorder allowed or not for a product
+ * @returns {boolean} is backorder allowed or not for a product
  */
 function canBackorder(variants) {
   const results = variants.map((variant) => !variant.inventoryPolicy && variant.inventoryManagement);
@@ -18,7 +18,7 @@ function canBackorder(variants) {
  * @summary If all the products variants have inventory policy disabled, inventory management enabled and a quantity of zero return `true`
  * @memberof Catalog
  * @param {Object[]} variants - Array with product variant objects
- * @return {boolean} is backorder currently active or not for a product
+ * @returns {boolean} is backorder currently active or not for a product
  */
 function isBackorder(variants) {
   const results = variants.map((variant) => !variant.inventoryPolicy && variant.inventoryManagement && variant.inventoryAvailableToSell === 0);
@@ -30,7 +30,7 @@ function isBackorder(variants) {
  * @summary If all the product variants have a quantity of 0 return `true`.
  * @memberof Catalog
  * @param {Object[]} variants - Array with top-level variants
- * @return {Boolean} true if quantity is zero.
+ * @returns {Boolean} true if quantity is zero.
  */
 function isSoldOut(variants) {
   const results = variants.map((variant) => variant.inventoryManagement && variant.inventoryAvailableToSell <= 0);
@@ -43,7 +43,7 @@ function isSoldOut(variants) {
  * @summary If at least one of the product variants quantity is less than the low inventory threshold return `true`.
  * @memberof Catalog
  * @param {Object[]} variants - Array of child variants
- * @return {boolean} low quantity or not
+ * @returns {boolean} low quantity or not
  */
 function isLowQuantity(variants) {
   const threshold = variants && variants.length && variants[0].lowInventoryWarningThreshold;

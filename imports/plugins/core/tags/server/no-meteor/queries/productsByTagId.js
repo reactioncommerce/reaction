@@ -10,7 +10,7 @@ import arrayJoinPlusRemainingQuery from "/imports/utils/arrayJoinPlusRemainingQu
  * @param {Object} [params] - an object of all arguments that were sent by the client
  * @param {String} [params.shopId] - Shop ID
  * @param {String} [params.tagId] - Tag ID
- * @return {Promise<Array<Object>>} array of TagProducts
+ * @returns {Promise<Array<Object>>} array of TagProducts
  */
 export default async function productsByTagId(context, params) {
   const { connectionArgs, shopId, tagId } = params;

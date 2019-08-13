@@ -29,7 +29,7 @@ const handlers = {
 
     /**
      * @param {String} groupId groupId
-     * @return {undefined} undefined
+     * @returns {undefined} undefined
      */
     function updateMethodCall(groupId) {
       Meteor.call("group/addUser", account._id, groupId, (err) => {
@@ -44,7 +44,7 @@ const handlers = {
     }
 
     /**
-     * @return {Component} Alert component
+     * @returns {Component} Alert component
      */
     function alertConfirm() {
       let changeOwnerWarn = "changeShopOwnerWarn";
@@ -74,7 +74,7 @@ const handlers = {
         .catch(() => false);
 
       /**
-       * @return {undefined} undefined
+       * @returns {undefined} undefined
        */
       function removeMethodCall() {
         Meteor.call("group/removeUser", account._id, groupId, (err) => {
@@ -87,7 +87,7 @@ const handlers = {
     };
 
     /**
-     * @return {Component} Alert component
+     * @returns {Component} Alert component
      */
     function alertConfirm() {
       return Alert({

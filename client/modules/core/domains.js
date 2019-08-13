@@ -1,3 +1,5 @@
+/* eslint-disable node/no-deprecated-api */
+/* TODO: revisit `url.parse` throughout Reaction */
 import url from "url";
 import { composeUrl } from "/lib/core/url-common";
 
@@ -24,7 +26,7 @@ export const DomainsMixin = {
    * @param {String} optionalOptions.rootUrl Override the default ROOT_URL from
    *                 the server environment.
    *                 For example: "`http://foo.example.com`"
-   * @return {String} URL for the given path and options
+   * @returns {String} URL for the given path and options
    */
   absoluteUrl(pathOrOptions, optionalOptions) {
     let path;
@@ -67,7 +69,7 @@ export const DomainsMixin = {
    *                  domain name.
    * @param {String} options.rootUrl Override the default ROOT_URL from the
    *                 server environment. For example: "`http://foo.example.com`"
-   * @return {String} Domain/hostname for the given options
+   * @returns {String} Domain/hostname for the given options
    */
   getDomain(options) {
     const absoluteUrl = this.absoluteUrl(options);

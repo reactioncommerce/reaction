@@ -19,7 +19,7 @@ const inputSchema = new SimpleSchema({
  * @param {Boolean} input.isEnabled Whether the SimpleInventory plugin should manage inventory for this product configuration
  * @param {Number} input.lowInventoryWarningThreshold The "low quantity" flag will be applied to this product configuration
  *   when the available quantity is at or below this threshold.
- * @return {Object} Updated inventory values
+ * @returns {Object} Updated inventory values
  */
 export default async function recalculateReservedSimpleInventory(context, input) {
   inputSchema.validate(input);

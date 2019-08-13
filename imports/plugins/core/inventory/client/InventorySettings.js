@@ -11,7 +11,7 @@ import Switch from "@material-ui/core/Switch";
 /**
  * Inventory settings form block component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function InventorySettings(props) {
   const {

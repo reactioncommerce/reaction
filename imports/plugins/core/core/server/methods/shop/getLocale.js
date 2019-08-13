@@ -12,7 +12,7 @@ import GeoCoder from "../../util/geocoder";
  * @memberof Shop/Methods
  * @summary determine user's countryCode and return locale object
  * determine local currency and conversion rate from shop currency
- * @return {Object} returns user location and locale
+ * @returns {Object} returns user location and locale
  */
 export default function getLocale() {
   this.unblock();

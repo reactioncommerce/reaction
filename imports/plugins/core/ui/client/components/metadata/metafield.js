@@ -31,7 +31,7 @@ class Metafield extends Component {
   /**
    * Handle form submit
    * @param  {Event} event Event object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleSubmit = (event) => {
     event.preventDefault();
@@ -110,7 +110,7 @@ class Metafield extends Component {
 
   /**
    * Render a metadata form
-   * @return {JSX} metadata forms for each row of metadata
+   * @returns {JSX} metadata forms for each row of metadata
    */
   render() {
     if (this.props.metafield) {

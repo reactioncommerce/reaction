@@ -16,7 +16,7 @@ MeteorAccounts.urls.enrollAccount = function (token) {
  * @method
  * @private
  * @param  {Object} options - shop, currentUserName, token, name
- * @return {Object} data - primaryShop, shop, contactEmail, homepage,
+ * @returns {Object} data - primaryShop, shop, contactEmail, homepage,
  * legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
 export default function getDataForEmail(options) {
@@ -24,6 +24,10 @@ export default function getDataForEmail(options) {
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
   const copyrightDate = new Date().getFullYear();
 
+  /**
+   * @param {String} userToken token of user
+   * @returns {String} url
+   */
   function getEmailUrl(userToken) {
     if (userToken) {
       return MeteorAccounts.urls.enrollAccount(userToken);

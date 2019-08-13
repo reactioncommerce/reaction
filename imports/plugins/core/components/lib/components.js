@@ -82,7 +82,7 @@ export function registerHOC(name, hocs = []) {
  * @method
  * @summary Get a component registered with registerComponent(name, component, ...hocs).
  * @param {String} name The name of the component to get.
- * @return {Function|React.Component} A (wrapped) React component
+ * @returns {Function|React.Component} A (wrapped) React component
  * @memberof Components/Helpers
  */
 export function getComponent(name) {

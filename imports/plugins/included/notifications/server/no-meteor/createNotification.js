@@ -21,7 +21,7 @@ const messageForType = {
  * @param {String} input.type - The type of Notification
  * @param {String} input.url - url link
  * @param {String} [input.message] - Message to send, if not already defined in messageForType
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function createNotification(collections, { accountId, details, type, url, userId, message = "" }) {
   const doc = {

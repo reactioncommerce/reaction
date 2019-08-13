@@ -4,7 +4,7 @@
  *   variants of a product.
  * @param {Object} context App context
  * @param {String} productId The product ID
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function partialProductPublish(context, { productId, startFrom }) {
   const { collections: { Catalog, Products, Shops } } = context;

@@ -8,7 +8,7 @@ jest.setTimeout(300000);
 
 /**
  * @param {Object} mongoAccount The Account document in MongoDB schema
- * @return {Object} The Account document in GraphQL schema
+ * @returns {Object} The Account document in GraphQL schema
  */
 function accountMongoSchemaToGraphQL(mongoAccount) {
   return {

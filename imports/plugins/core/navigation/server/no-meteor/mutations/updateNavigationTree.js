@@ -9,7 +9,7 @@ import setDefaultsForNavigationTreeItems from "../util/setDefaultsForNavigationT
  * @param {Object} context An object containing the per-request state
  * @param {String} _id _id of navigation tree to update
  * @param {Object} navigationTree Updated navigation tree
- * @return {Promise<Object>} Updated navigation tree
+ * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function updateNavigationTree(context, _id, navigationTree) {
   const { collections, userHasPermission } = context;

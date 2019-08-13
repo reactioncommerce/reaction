@@ -11,7 +11,7 @@ import {
  * @param {Object} context App context
  * @param {Object} settingsUpdates Fields to be updated
  * @param {String} [shopId] Shop ID. Pass `null` for global settings.
- * @return {Promise<Object>} Updated app settings for a shop or global app settings
+ * @returns {Promise<Object>} Updated app settings for a shop or global app settings
  */
 export default async function updateAppSettings(context, settingsUpdates, shopId = null) {
   const { collections, userHasPermission } = context;

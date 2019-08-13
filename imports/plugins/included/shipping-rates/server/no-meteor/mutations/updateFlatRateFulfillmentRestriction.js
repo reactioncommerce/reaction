@@ -14,7 +14,7 @@ const inputSchema = new SimpleSchema({
  * @summary updates a flat rate fulfillment method
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
- * @return {Promise<Object>} An object with a `restriction` property containing the updated method
+ * @returns {Promise<Object>} An object with a `restriction` property containing the updated method
  */
 export default async function updateFlatRateFulfillmentRestrictionMutation(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such

@@ -7,7 +7,7 @@ import { composeUrl } from "/lib/core/url-common";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
- * @return {String} A random string
+ * @returns {String} A random string
  */
 function randomString() {
   return Math.random().toString(36);

@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import { toArray, fromArray } from "./convert67";
 
 function orderWithArray() {

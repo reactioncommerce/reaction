@@ -23,7 +23,7 @@ const inputSchema = new SimpleSchema({
  * @summary A mutation that compiles and server-side renders the email template with order data, and sends the email
  * @param {Object} context GraphQL context
  * @param {Object} input Data for email: action, dataForEmail, fromShop, to
- * @return {Undefined} no return
+ * @returns {Undefined} no return
  */
 export default async function sendOrderEmail(context, input) {
   inputSchema.validate(input);

@@ -21,7 +21,7 @@ import getMongoSort from "./getMongoSort";
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
  * @param {Boolean} [options.includeHasNextPage] Whether to return the `pageInfo.hasNextPage`.
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
- * @return {Promise<Object>} `{ nodes, pageInfo, totalCount }`
+ * @returns {Promise<Object>} `{ nodes, pageInfo, totalCount }`
  */
 async function getPaginatedResponse(mongoCursor, args, {
   includeHasNextPage = true,

@@ -3,7 +3,7 @@
  * @param {Object} context App context
  * @param {Object[]} items An array of CartItem objects
  * @param {Object} info Additional info
- * @return {undefined} Returns nothing. Potentially mutates `items`
+ * @returns {undefined} Returns nothing. Potentially mutates `items`
  */
 export default async function xformCartItems(context, items) {
   if (items.length === 0) return;

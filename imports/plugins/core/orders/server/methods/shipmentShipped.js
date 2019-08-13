@@ -15,7 +15,7 @@ import updateShipmentStatus from "../util/updateShipmentStatus";
  * @summary trigger shipmentShipped status and workflow update
  * @param {Object} order - order object
  * @param {Object} fulfillmentGroup - fulfillmentGroup object
- * @return {Object} return results of several operations
+ * @returns {Object} return results of several operations
  */
 export default function shipmentShipped(order, fulfillmentGroup) {
   check(order, Object);

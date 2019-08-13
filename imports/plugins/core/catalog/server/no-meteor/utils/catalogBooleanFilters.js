@@ -7,7 +7,7 @@ const CATALOG_PLUGIN_BOOLEAN_FILTERS = ["isDeleted", "isVisible"];
  * @summary Transforms a boolean filters array into a mongo filter expression
  * @param {Object} context - an object containing per-request state
  * @param {Object[]} booleanFilters - Array of Boolean filters
- * @return {Object} Mongo filter expression
+ * @returns {Object} Mongo filter expression
  */
 export default async function xformCatalogBooleanFilters(context, booleanFilters) {
   const mongoFilters = [];

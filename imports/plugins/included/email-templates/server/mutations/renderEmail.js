@@ -9,7 +9,7 @@ import getTemplateConfig from "../util/getTemplateConfig";
  * @param {Object} [data] Data that will be used to populate placeholders in the template
  * @param {String} shopId The shop ID, to look up the email template for this shop
  * @param {String} templateName Template name
- * @return {Object} An object with rendered content in properties `html` and `subject`
+ * @returns {Object} An object with rendered content in properties `html` and `subject`
  */
 export default async function renderEmail(context, { data, shopId, templateName }) {
   const { template, subject } = await getTemplateConfig(context, shopId, templateName);

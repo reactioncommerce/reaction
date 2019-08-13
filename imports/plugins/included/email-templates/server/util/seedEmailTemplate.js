@@ -5,7 +5,7 @@ import Random from "@reactioncommerce/random";
  * @param {Object} context App context
  * @param {String} shopId Shop ID
  * @param {Object} doc The template document
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function seedEmailTemplate(context, shopId, doc) {
   const { Templates } = context.collections;

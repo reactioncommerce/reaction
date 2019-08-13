@@ -12,7 +12,7 @@ import isEqual from "lodash/isEqual";
  *   you can pass this to skip some calculations and database lookups, improving speed.
  * @param {Object[]} [input.variants] Optionally pass an array of the relevant variants if
  *   you have already looked them up. This will save a database query.
- * @return {Promise<Object[]>} Array of responses, in same order as `input.productConfigurations` array.
+ * @returns {Promise<Object[]>} Array of responses, in same order as `input.productConfigurations` array.
  */
 export default async function inventoryForProductConfigurations(context, input) {
   const { productConfigurations } = input;

@@ -137,7 +137,7 @@ export function getProducts(limit = 2) {
 }
 
 /**
- * @return {undefined} undefined
+ * @returns {undefined} undefined
  */
 export default function () {
   /**

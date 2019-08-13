@@ -28,7 +28,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} input.orderId - order ID of order where payment was applied
  * @param {Object} input.paymentId - ID of payment to refund
  * @param {Object} input.reason - reason for refund
- * @return {Promise<Object>} Object with `order` property containing the updated order
+ * @returns {Promise<Object>} Object with `order` property containing the updated order
  */
 export default async function createRefund(context, input) {
   inputSchema.validate(input);

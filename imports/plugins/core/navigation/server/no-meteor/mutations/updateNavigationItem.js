@@ -7,7 +7,7 @@ import { NavigationItemData } from "/imports/collections/schemas";
  * @param {Object} context An object containing the per-request state
  * @param {String} _id _id of navigation item to update
  * @param {Object} navigationItem Updated navigation item
- * @return {Promise<Object>} Updated navigation item
+ * @returns {Promise<Object>} Updated navigation item
  */
 export default async function updateNavigationItem(context, _id, navigationItem) {
   const { collections, userHasPermission } = context;

@@ -14,7 +14,7 @@ import {
  * @summary creates groups for a shop
  * @param {Object} context App context
  * @param {String} shopId ID of shop to create the group for
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function createGroups(context, shopId) {
   const {

@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Retry a failed or cancelled email job
  * @memberof Email/Methods
  * @param {String} jobId - a sendEmail job ID
- * @return {Boolean} - returns true if job is successfully restarted
+ * @returns {Boolean} - returns true if job is successfully restarted
  */
 export default function retryFailed(jobId) {
   if (!Reaction.hasPermission(["owner", "admin", "reaction-email"], this.userId, Reaction.getPrimaryShopId())) {

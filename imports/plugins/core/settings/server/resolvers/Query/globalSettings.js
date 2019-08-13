@@ -6,7 +6,7 @@
  * @param {Object} _ - unused
  * @param {Object} __ - unused
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} The global settings object
+ * @returns {Promise<Object>} The global settings object
  */
 export default async function globalSettings(_, __, context) {
   return context.queries.appSettings(context);

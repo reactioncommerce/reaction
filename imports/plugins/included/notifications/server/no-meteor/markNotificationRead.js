@@ -5,7 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Update a notification's status to "read"
  * @param {Object} collections - Map of MongoDB collections
  * @param {String} id - The notification ID
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function markNotificationRead(collections, id) {
   const { matchedCount } = await collections.Notifications.updateOne({ _id: id }, {
