@@ -45,7 +45,8 @@ const wrapComponent = (Comp) => (
           currency: doc.currency,
           baseUOM: doc.baseUOM,
           baseUOL: doc.baseUOL,
-          language: doc.language
+          language: doc.language,
+          allowCustomUserLocale: doc.allowCustomUserLocale
         }
       });
     }
@@ -98,6 +99,12 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const languages = [];
   const shop = Shops.findOne();

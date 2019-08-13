@@ -238,7 +238,7 @@ function sortMedia(media) {
  */
 function composer(props, onData) {
   onData(null, {
-    editable: Reaction.hasPermission(props.permission || ["createProduct"]),
+    editable: Reaction.hasPermission(props.permission || ["createProduct", "product/admin", "product/update"]),
     media: sortMedia(props.media)
   });
 }
