@@ -1,5 +1,3 @@
-/* eslint-disable node/no-deprecated-api */
-/* TODO: revisit `url.parse` throughout Reaction */
 const url = require("url");
 const { MongoClient } = require("mongodb");
 
