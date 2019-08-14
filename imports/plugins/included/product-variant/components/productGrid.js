@@ -135,6 +135,8 @@ class ProductGrid extends Component {
     const { selectedProductIds, totalProductCount, classes } = this.props;
     const selectedCount = selectedProductIds.length;
     const filterByProductIds = Session.get("filterByProductIds");
+    const totalCount = i18next.t("admin.productTable.bulkActions.totalCount", { count: totalProductCount });
+    const selected = i18next.t("admin.productTable.bulkActions.selectedCount", { count: selectedCount });
 
     if (filterByProductIds) {
       return (
@@ -148,14 +150,14 @@ class ProductGrid extends Component {
         </div>
       );
     }
-    const totalOrSelected = (selectedCount > 0) ? `${selectedCount} selected` : `${totalProductCount} products`;
+
     return (
       <div className={classes.filterCountContainer}>
         <Typography variant="h4" display="inline" className={classes.productsTitle}>
           {i18next.t("admin.productTable.bulkActions.allProducts")}
         </Typography>
         <Typography variant="h5" display="inline" className={classes.filterCountText}>
-          { totalOrSelected }
+          {(selectedCount > 0) ? selected : totalCount}
         </Typography>
       </div>
     );

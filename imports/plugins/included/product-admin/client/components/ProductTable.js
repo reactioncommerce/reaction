@@ -134,7 +134,7 @@ function ProductTable({ onCreateProduct }) {
                 <CloseIcon/>
               </IconButton>
             }
-            title="Filter products by file"
+            title={i18next.t("admin.importCard.title")}
           />
           <CardContent>
             { files.length > 0 ? (
@@ -149,7 +149,7 @@ function ProductTable({ onCreateProduct }) {
                     style={{ float: "right" }}
                     onClick={() => importFiles(files)}
                   >
-                    Filter products
+                    {i18next.t("admin.importCard.button")}
                   </Button>
                 </Grid>
               </Grid>

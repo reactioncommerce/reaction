@@ -14,6 +14,8 @@
           "mediaGallery": "Media Gallery"
         },
         "importCard": {
+          "title": "Filter products by file",
+          "button": "Filter products",
           "import": "Import",
           "importHelpText": "Import .csv files with the product IDs in the first column."
         },
@@ -53,6 +55,8 @@
             "allProducts": "All products",
             "filteredProducts": "Filtered products",
             "selectedCount": "{{count}} selected",
+            "totalCount": "{{count}} product",
+            "totalCount_plural": "{{count}} products",
             "filterByFile": "Filter by file"
           }
         },
