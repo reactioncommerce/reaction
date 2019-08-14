@@ -28,14 +28,4 @@ export default function setRateLimits() {
     name: (name) => _.includes(authMethods, name),
     connectionId: () => true
   }, 2, 5000);
-
-
-  /**
-   * Rate limit "orders/sendNotification"
-   * 1 attempt per connection per 2 seconds
-   */
-  DDPRateLimiter.addRule({
-    name: "orders/sendNotification",
-    connectionId: () => true
-  }, 1, 2000);
 }
