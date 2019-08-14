@@ -9,7 +9,7 @@
  * @returns {String} original string, transformed with capitalizations
  */
 export default function capitalizeString(string, options) {
-  // if (!string) return null;
+  if (!string) return null;
 
   if (options && options.titleCase) {
     const str = string.toLowerCase().split(" ");
