@@ -69,7 +69,7 @@ const styles = (theme) => ({
 class ProductGrid extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    files: PropTypes.arrayOf(PropTypes.file),
+    files: PropTypes.arrayOf(PropTypes.object),
     handleDelete: PropTypes.func,
     isFiltered: PropTypes.bool,
     onArchiveProducts: PropTypes.func,
