@@ -106,7 +106,7 @@ function OrderPayment(props) {
         <Typography paragraph variant="h4">
           {displayName}
         </Typography>
-        {riskLevel !== "normal" && payment.mode !== "captured" &&
+        {riskLevel && riskLevel !== "normal" && payment.mode !== "captured" &&
           <Typography className={classes.dangerText} variant="body2">
             Payment risk level: {capitalizeString(riskLevel)}
           </Typography>
