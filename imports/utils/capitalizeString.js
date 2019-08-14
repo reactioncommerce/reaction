@@ -9,6 +9,8 @@
  * @returns {String} original string, transformed with capitalizations
  */
 export default function capitalizeString(string, options) {
+  // if (!string) return null;
+
   if (options && options.titleCase) {
     const str = string.toLowerCase().split(" ");
     for (let i = 0; i < str.length; i++) { // eslint-disable-line
