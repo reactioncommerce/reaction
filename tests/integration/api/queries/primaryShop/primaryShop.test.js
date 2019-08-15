@@ -23,7 +23,7 @@ test("get primaryShop, no auth necessary", async () => {
   const result = await primaryShopQuery();
   expect(result).toEqual({
     primaryShop: {
-      name: "Test Shop"
+      name: "${shopName}"
     }
   });
 });
