@@ -5,11 +5,19 @@
     "reaction-product-admin": {
       "admin": {
         "createProduct": "Create product",
+        "productListFiltered": "Product list filtered",
+        "showingFilteredProducts": "Showing {{count}} found products from imported file(s).",
         "productAdmin": {
           "details": "Details",
           "metadata": "Metadata",
           "metafields": "Meta fields",
           "mediaGallery": "Media Gallery"
+        },
+        "importCard": {
+          "title": "Filter products by file",
+          "button": "Filter products",
+          "import": "Import",
+          "importHelpText": "Import .csv files with the product IDs in the first column."
         },
         "productTable": {
           "header": {
@@ -44,8 +52,12 @@
             "duplicateTitle": "Duplicate {{count}} product?",
             "duplicateTitle_plural": "Duplicate {{count}} products?",
             "duplicateMessage": "Duplicate selected products and their variants.",
+            "allProducts": "All products",
             "filteredProducts": "Filtered products",
-            "selectedCount": "{{count}} selected"
+            "selectedCount": "{{count}} selected",
+            "totalCount": "{{count}} product",
+            "totalCount_plural": "{{count}} products",
+            "filterByFile": "Filter by file"
           }
         },
         "products": "Products",
