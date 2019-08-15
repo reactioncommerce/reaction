@@ -23,9 +23,9 @@ afterAll(() => testApp.stop());
 
 test("get primaryShop, no auth necessary", async () => {
   const result = await primaryShopQuery();
-  expect(result).toEqual({ 
-    'primaryShop: {
-        'name': 'Test Shop'
-      }
-    });
+  expect(result).toEqual({
+    primaryShop: {
+      name: "Test Shop"
+    }
+  });
 });
