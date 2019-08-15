@@ -145,7 +145,7 @@ class ProductGrid extends Component {
             {i18next.t("admin.productTable.bulkActions.filteredProducts")}
           </Typography>
           <Typography variant="h5" display="inline" className={classes.filterCountText}>
-            {i18next.t("admin.productTable.bulkActions.selectedCount", { selectedCount })}
+            { selected }
           </Typography>
         </div>
       );
