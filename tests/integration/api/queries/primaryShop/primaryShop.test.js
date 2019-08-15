@@ -1,7 +1,5 @@
 import TestApp from "/imports/test-utils/helpers/TestApp";
 
-jest.setTimeout(300000);
-
 const internalShopId = "123";
 const shopName = "Test Shop";
 
