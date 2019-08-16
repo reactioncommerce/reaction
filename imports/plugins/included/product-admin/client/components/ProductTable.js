@@ -136,16 +136,16 @@ function ProductTable({ onCreateProduct }) {
     } else {
       setFilteredProductIdsCount(count);
     }
-    return;
   };
 
   const iconComponents = {
     iconDismiss: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
   };
 
+  // eslint-disable-next-line react/no-multi-comp
   const renderMissedFilterItems = () => {
     if (!Session.get("filterByProductIds")) {
-      return "";
+      return null;
     }
     const filterProductIds = Session.get("filterByProductIds").length;
     if (isFiltered && filteredProductIdsCount < filterProductIds) {
@@ -162,12 +162,12 @@ function ProductTable({ onCreateProduct }) {
         </Grid>
       );
     }
-    return "";
+    return null;
   };
 
-  const renderNoProductsFoundError = () => {
-    if (noProductsFoundError) {
-      return (
+  return (
+    <Grid container spacing={3}>
+      { noProductsFoundError ? (
         <Grid item sm={12}>
           <InlineAlert
             isDismissable
@@ -177,14 +177,7 @@ function ProductTable({ onCreateProduct }) {
             message={i18next.t("admin.noProductsFoundText")}
           />
         </Grid>
-      );
-    }
-    return "";
-  };
-
-  return (
-    <Grid container spacing={3}>
-      {renderNoProductsFoundError()}
+      ) : null }
       <Grid item sm={12} style={{ display: displayCard }}>
         <Card raised>
           <CardHeader
@@ -253,7 +246,7 @@ function ProductTable({ onCreateProduct }) {
             message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
           />
         </Grid>
-      ) : "" }
+      ) : null }
       {renderMissedFilterItems()}
       <Grid item sm={12}>
         <Components.ProductsAdmin
