@@ -1,7 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-// Modification of https://github.com/ethanselzer/react-image-magnify/blob/master/src/hint/DefaultHint.js
+/**
+ * @see link Modification of https://github.com/ethanselzer/react-image-magnify/blob/master/src/hint/DefaultHint.js
+ * @param {Object} props props to pass
+ * @returns {Node} react node of Hint component
+ */
 function Hint({ isTouchDetected, hintTextMouse, hintTextTouch }) {
   return (
     <div style={{

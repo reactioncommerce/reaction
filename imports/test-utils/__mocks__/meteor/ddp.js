@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 function withValueMock(invocation, func) {
   return func();
 }

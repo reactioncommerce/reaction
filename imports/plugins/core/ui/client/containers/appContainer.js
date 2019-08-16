@@ -3,6 +3,12 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Reaction, Router } from "/client/api";
 import { App } from "../components";
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   onData(null, {
     isActionViewOpen: Reaction.isActionViewOpen(),

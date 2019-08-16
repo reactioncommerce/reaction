@@ -402,29 +402,7 @@
       "jsx-a11y/label-has-for": "off",
       "node/no-missing-require": "off",
       "node/no-unsupported-features/es-syntax": "off",
-      "node/no-unpublished-require": "off",
-      "react/no-did-mount-set-state": "warn",
-      "react/no-did-update-set-state": "warn",
-      "require-jsdoc": [
-        "warn",
-        {
-          "require": {
-            "ArrowFunctionExpression": false,
-            "ClassDeclaration": false,
-            "FunctionDeclaration": true,
-            "MethodDefinition": false
-          }
-        }
-      ],
-      "valid-jsdoc": [
-        "warn",
-        {
-          "prefer": {
-            "arg": "param",
-            "argument": "param"
-          }
-        }
-      ]
+      "node/no-unpublished-require": "off"
     }
   },
   "prettier": {

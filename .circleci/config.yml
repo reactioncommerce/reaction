@@ -183,19 +183,6 @@ jobs:
           command: |
             npm run lint -- --quiet
 
-  eslint-changed-files:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v2-node-modules-{{ .Branch }}
-            - reaction-v2-node-modules-master
-      - run:
-          name: Run Lint for Changed Files
-          command: .circleci/eslint-changed-files.sh
-
   graphql-lint:
     <<: *defaults
     steps:
@@ -321,9 +308,6 @@ workflows:
           requires:
             - build
       - eslint:
-          requires:
-            - build
-      - eslint-changed-files:
           requires:
             - build
       - graphql-lint:

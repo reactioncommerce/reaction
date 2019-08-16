@@ -1,3 +1,6 @@
+/* eslint-disable react/no-did-update-set-state */
+/* eslint-disable react/no-did-mount-set-state */
+/* TODO: revisit this component and convert to functional component to remove need for state */
 import React, { Component } from "react";
 import { compose } from "recompose";
 import PropTypes from "prop-types";
