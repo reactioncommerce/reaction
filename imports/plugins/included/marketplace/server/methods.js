@@ -10,6 +10,11 @@ const status = [
   SHOP_WORKFLOW_STATUS_DISABLED
 ];
 
+/**
+ * @param {String} shopId shopId
+ * @param {String} workflowStatus workflow Status
+ * @returns {undefined}
+ */
 export function marketplaceUpdateShopWorkflow(shopId, workflowStatus) {
   check(shopId, String);
   check(workflowStatus, String);

@@ -9,7 +9,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} args.shopId Shop ID
  * @param {Object} args.productConfiguration Product configuration object
  * @param {Object} context App context
- * @return {Object|null} SimpleInventory info
+ * @returns {Object|null} SimpleInventory info
  */
 export default async function simpleInventory(_, args, context) {
   const { productConfiguration, shopId: opaqueShopId } = args;

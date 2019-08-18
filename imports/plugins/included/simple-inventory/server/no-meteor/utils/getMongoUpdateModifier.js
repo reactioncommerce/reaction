@@ -8,7 +8,7 @@ import { updateFields, defaultValues } from "./defaults";
  * @param {Object} input Input
  * @param {Object} input.productConfiguration Product configuration object
  * @param {String} input.shopId ID of shop that owns the product
- * @return {Object} Object
+ * @returns {Object} Object
  */
 export default function getMongoUpdateModifier(input) {
   const { productConfiguration, shopId } = input;

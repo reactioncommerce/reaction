@@ -10,7 +10,7 @@ import { decodeNavigationItemOpaqueId } from "@reactioncommerce/reaction-graphql
  * @param {String} args.input._id ID of the navigation item to delete
  * @param {String} [args.input.clientMutationId] An optional string identifying the mutation call
  * @param {Object} context An object containing the per-request state
- * @return {Promise<Object>} DeleteNavigationItemPayload
+ * @returns {Promise<Object>} DeleteNavigationItemPayload
  */
 export default async function deleteNavigationItem(parentResult, { input }, context) {
   const {

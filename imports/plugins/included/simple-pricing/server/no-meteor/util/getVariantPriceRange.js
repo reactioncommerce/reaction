@@ -7,7 +7,7 @@ import getPriceRange from "./getPriceRange";
  * price to create the PriceRange. If only one variant use that variant's price to create the PriceRange
  * @param {String} variantId - A product variant ID.
  * @param {Object[]} variants - A list of documents from a Products.find call
- * @return {Object} Product PriceRange object
+ * @returns {Object} Product PriceRange object
  */
 export default function getVariantPriceRange(variantId, variants) {
   const visibleOptions = variants.filter((option) => option.ancestors.includes(variantId) &&

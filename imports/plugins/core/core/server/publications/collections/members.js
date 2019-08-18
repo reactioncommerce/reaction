@@ -10,7 +10,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * This publication is only exposed to owner/admin in
  * Accounts page, and should not be used anywhere else.
  *
- * @return {Array} users
+ * @returns {Array} users
  */
 Meteor.publish("ShopMembers", function () {
   // here we are comparing with the string to make it compatible with tests

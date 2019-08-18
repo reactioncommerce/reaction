@@ -9,7 +9,7 @@ import { optimizeIdOnly } from "@reactioncommerce/reaction-graphql-utils";
  * @param {Object} __ - unused
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info - an object of all arguments that were sent by the client
- * @return {Object} user account object
+ * @returns {Object} user account object
  */
 export default async function viewer(_, __, context, info) {
   if (!context.userId) return null;

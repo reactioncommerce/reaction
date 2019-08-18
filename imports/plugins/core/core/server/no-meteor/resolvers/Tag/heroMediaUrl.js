@@ -6,7 +6,7 @@
  * @param {Object} tag - Tag response from parent resolver
  * @param {SubTagConnectionArgs} connectionArgs - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state
- * @return {String|null} The absolute URL
+ * @returns {String|null} The absolute URL
  */
 export default function heroMediaUrl({ heroMediaUrl: url }, connectionArgs, context) {
   if (typeof url !== "string") return null;

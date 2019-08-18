@@ -10,7 +10,7 @@ import { addAnonymousOrderToken } from "./anonymousToken";
  * @private
  * @summary helper to generate the order date as a string for emails
  * @param {Date} date The date to format
- * @return {String} return date formatted as a MM/DD/YYYY string
+ * @returns {String} return date formatted as a MM/DD/YYYY string
  */
 function formatDateForEmail(date) {
   const emailDate = new Date(date); // Clone date

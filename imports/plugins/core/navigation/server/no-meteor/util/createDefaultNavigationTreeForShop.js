@@ -7,7 +7,7 @@ const DEFAULT_NAME = "Main Navigation";
  * @summary Creates a default navigation tree for a shop
  * @param {Object} context App context
  * @param {Object} shop Shop to create tree for
- * @return {String} Navigation tree _id
+ * @returns {String} Navigation tree _id
  */
 export default async function createDefaultNavigationTreeForShop(context, shop) {
   const { collections: { NavigationTrees, Shops } } = context;

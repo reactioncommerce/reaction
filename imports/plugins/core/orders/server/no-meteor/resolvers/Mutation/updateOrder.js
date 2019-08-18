@@ -13,7 +13,7 @@ import { decodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/o
  * @param {String} [args.input.status] - Set this as the current order status
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} UpdateOrderPayload
+ * @returns {Promise<Object>} UpdateOrderPayload
  */
 export default async function updateOrder(parentResult, { input }, context) {
   const {

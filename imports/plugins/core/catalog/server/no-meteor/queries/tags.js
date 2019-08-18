@@ -12,7 +12,7 @@ import escapeRegExp from "lodash/escapeRegExp";
  * @param {Boolean} [params.isTopLevel] - If set, look for `isTopLevel` matching this value
  * @param {Boolean} [params.shouldIncludeDeleted] - Admin only. Whether or not to include `isDeleted=true` tags. Default is `false`
  * @param {Boolean} [params.shouldIncludeInvisible] - Admin only. Whether or not to include `isVisible=false` tags.  Default is `false`.
- * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
+ * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function tags(context, shopId, { filter, shouldIncludeDeleted = false, isTopLevel, shouldIncludeInvisible = false } = {}) {
   const { collections } = context;
@@ -21,6 +21,11 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
   const query = { shopId };
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
+
+  // Use `filter` to filter out results on the server
+  if (filter) {
+    query.name = { $regex: escapeRegExp(filter), $options: "i" };
+  }
 
   if (context.userHasPermission(["owner", "admin"], shopId)) {
     if (shouldIncludeDeleted === true) {
@@ -32,11 +37,6 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
       query.isVisible = { $in: [false, true] };
     } else {
       query.isVisible = true;
-    }
-
-    // Use `filter` to filter out resutls on the server
-    if (filter) {
-      query.name = { $regex: escapeRegExp(filter), $options: "i" };
     }
   } else {
     query.isDeleted = false;

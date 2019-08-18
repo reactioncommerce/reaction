@@ -11,7 +11,7 @@ import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/react
  * @param {String} args.shopId - The shop that owns these surcharges
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @return {Promise<Object>|undefined} A Surcharge object
+ * @returns {Promise<Object>|undefined} A Surcharge object
  */
 export default async function surcharges(parentResult, args, context, info) {
   const { shopId, ...connectionArgs } = args;

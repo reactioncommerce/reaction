@@ -21,7 +21,7 @@ Accounts.urls.resetPassword = function reset(token) {
  * @param {String} [optionalEmail] Address to send the email to.
  *                 This address must be in the user's `emails` list.
  *                 Defaults to the first email in the list.
- * @return {Job} - returns a sendEmail Job instance
+ * @returns {Job} - returns a sendEmail Job instance
  */
 async function sendResetEmail(userId, optionalEmail) {
   // Make sure the user exists, and email is one of their addresses.

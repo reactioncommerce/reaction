@@ -1,3 +1,5 @@
+/* eslint-disable node/no-deprecated-api */
+/* TODO: revisit `url.parse` throughout Reaction */
 import url from "url";
 import { DDP } from "meteor/ddp-client";
 import { composeUrl } from "/lib/core/url-common";
@@ -6,7 +8,7 @@ export const AbsoluteUrlMixin = {
   /**
    * connectionDomain
    * @summary inspects the current connection to the client to get the host
-   * @return {String} - the current host (domain sans protocol) or undefined
+   * @returns {String} - the current host (domain sans protocol) or undefined
    */
   connectionDomain() {
     const invocation =
@@ -34,7 +36,7 @@ export const AbsoluteUrlMixin = {
    * @param {Boolean} optionalOptions.secure Create an HTTPS URL.
    * @param {Boolean} optionalOptions.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
    * @param {String} optionalOptions.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
-   * @return {String} - the constructed URL
+   * @returns {String} - the constructed URL
    */
   absoluteUrl(pathOrOptions, optionalOptions) {
     let path;
@@ -72,7 +74,7 @@ export const AbsoluteUrlMixin = {
    * @method
    * @memberof Core
    * @summary Get shop domain for URL
-   * @return {String} Shop domain
+   * @returns {String} Shop domain
    */
   getDomain() {
     return url.parse(this.absoluteUrl()).hostname;

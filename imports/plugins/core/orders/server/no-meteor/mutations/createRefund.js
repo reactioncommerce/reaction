@@ -28,7 +28,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} input.orderId - order ID of order where payment was applied
  * @param {Object} input.paymentId - ID of payment to refund
  * @param {Object} input.reason - reason for refund
- * @return {Promise<Object>} Object with `order` property containing the updated order
+ * @returns {Promise<Object>} Object with `order` property containing the updated order
  */
 export default async function createRefund(context, input) {
   inputSchema.validate(input);
@@ -51,7 +51,7 @@ export default async function createRefund(context, input) {
   // When called internally by another plugin, context.isInternalCall
   // can be set to `true` to disable this check.
   if (!isInternalCall && !userHasPermission(["orders", "order/fulfillment"], order.shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "You do not have permission to create a refund");
   }
 
   // Verify payment exists

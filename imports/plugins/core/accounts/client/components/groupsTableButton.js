@@ -11,7 +11,7 @@ import { Components, registerComponent, withPermissions } from "@reactioncommerc
  * @property {Object} group - Group data
  * @property {Function} handleRemoveUserFromGroup - function to call on button click
  * @property {Boolean} hasPermissions - true or false depending on if user is granted access
- * @return {Node} React node containing wrapped button
+ * @returns {Node} React node containing wrapped button
  */
 const GroupsTableButton = ({ account, group, handleRemoveUserFromGroup, hasPermissions }) => {
   if (group.slug === "owner") {

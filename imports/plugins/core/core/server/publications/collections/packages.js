@@ -15,7 +15,7 @@ const { IDENTITY_PROVIDER_MODE } = process.env;
  * @description For transforming packages before publication sets some defaults for the client and adds i18n while checking privileged settings for enabled status
  * @param {Object} doc Registry doc
  * @param {String} userId Id of user to check permissions for
- * @return {Object} Registry doc with permissions
+ * @returns {Object} Registry doc with permissions
  */
 function transform(doc, userId) {
   const registrySettings = {};

@@ -9,7 +9,7 @@ import { currencyDep } from "./main";
  * @private
  * @param {Object}  defaultCurrency    The default currency
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
- * @return {Object}  user currency or shop currency if none is found
+ * @returns {Object}  user currency or shop currency if none is found
  */
 export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
@@ -47,7 +47,7 @@ export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
  * @memberof i18n
  * @method
  * @param {String} formatPrice - currentPrice or "xx.xx - xx.xx" formatted String
- * @return {String} returns locale formatted and exchange rate converted values
+ * @returns {String} returns locale formatted and exchange rate converted values
  */
 export function formatPriceString(formatPrice) {
   currencyDep.depend();

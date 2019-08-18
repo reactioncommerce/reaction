@@ -8,7 +8,7 @@ import { check } from "meteor/check";
  * @summary Blank method. Serves as a place for Method Hooks,
  * in other shipping packages, like Shippo
  * @param  {String} orderId order ID
- * @return {String}         order ID
+ * @returns {String}         order ID
  */
 export default function statusRefresh(orderId) {
   check(orderId, String);

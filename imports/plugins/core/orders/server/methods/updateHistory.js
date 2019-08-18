@@ -12,7 +12,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} orderId - add tracking to orderId
  * @param {String} event - workflow event
  * @param {String} value - event value
- * @return {String} returns order update result
+ * @returns {String} returns order update result
  */
 export default function updateHistory(orderId, event, value) {
   check(orderId, String);

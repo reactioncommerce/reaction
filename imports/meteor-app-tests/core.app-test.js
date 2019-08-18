@@ -9,7 +9,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 
 /**
- * @return {String} A random string
+ * @returns {String} A random string
  */
 function randomString() {
   return Math.random().toString(36);

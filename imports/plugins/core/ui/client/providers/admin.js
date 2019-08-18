@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+/**
+ * @returns {Component} admin component
+ */
 export default function Admin() {
   return (Component) => {
     const AdminComponent = (props, context) => {

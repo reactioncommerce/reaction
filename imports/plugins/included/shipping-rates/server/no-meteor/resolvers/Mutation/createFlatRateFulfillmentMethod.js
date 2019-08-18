@@ -12,7 +12,7 @@ import createFlatRateFulfillmentMethodMutation from "../../mutations/createFlatR
  * @param {String} args.input.shopId - The shop to create this flat rate fulfillment method for
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} CreateFlatRateFulfillmentMethodPayload
+ * @returns {Promise<Object>} CreateFlatRateFulfillmentMethodPayload
  */
 export default async function createFlatRateFulfillmentMethod(parentResult, { input }, context) {
   const { clientMutationId = null, method, shopId: opaqueShopId } = input;

@@ -6,7 +6,7 @@
  * @param {Object} parent - result of the parent resolver
  * @param {Object} _ - unused
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} The shop having ID parent.shopId, in GraphQL schema format
+ * @returns {Promise<Object>} The shop having ID parent.shopId, in GraphQL schema format
  */
 export default async function resolveShopFromShopId(parent, _, context) {
   const { shopId } = parent;

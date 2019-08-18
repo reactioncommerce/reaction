@@ -9,7 +9,7 @@ import { decodeCatalogItemOpaqueId } from "@reactioncommerce/reaction-graphql-xf
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
  * @param {String} args.slugOrId - slug or id for catalog item product
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} A CatalogItemProduct object
+ * @returns {Promise<Object>} A CatalogItemProduct object
  */
 export default async function catalogItemProduct(_, args, context) {
   const { slugOrId } = args;

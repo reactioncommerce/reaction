@@ -20,7 +20,7 @@ class CalendarPicker extends Component {
 
   /**
    * Getter returning a value of `true` if the current drection is set to RTL
-   * @return {Boolean} true if RTL false if LTR
+   * @returns {Boolean} true if RTL false if LTR
    */
   get isRTL() {
     if (typeof this.props.isRTL === "boolean") {

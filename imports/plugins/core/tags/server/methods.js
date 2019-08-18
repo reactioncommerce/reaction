@@ -9,7 +9,7 @@ Meteor.methods({
     check(excludedTagIds, Match.OneOf(undefined, Array));
 
     // Return a blank result set for non admins
-    if (!Reaction.hasPermission(["admin", "owner", "createProduct"], this.userId)) {
+    if (!Reaction.hasPermission(["admin", "owner", "createProduct", "product/admin", "product/update"], this.userId)) {
       return [];
     }
 

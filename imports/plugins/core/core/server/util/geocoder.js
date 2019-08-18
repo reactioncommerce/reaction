@@ -13,8 +13,9 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * The MIT License (MIT)
  * Copyright (c) 2014 Eric Dobbertin
  * @ignore
+ * @param {Object} options to pass
+ * @returns {undefined}
  */
-
 function GeoCoder(options) {
   let extra;
   const self = this;
@@ -44,6 +45,12 @@ function GeoCoder(options) {
   }, options || {});
 }
 
+/**
+ * @param {String} address ip address
+ * @param {Object} options options to pass
+ * @param {Function} callback callback
+ * @returns {undefined}
+ */
 function gc(address, options, callback) {
   const geocoder = require("node-geocoder")(
     options.geocoderProvider, options.httpAdapter,
@@ -68,6 +75,13 @@ GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
   return null;
 };
 
+/**
+ * @param {String} lat latitude
+ * @param {String} lng longitude
+ * @param {Object} options geocoder options
+ * @param {Function} callback callback
+ * @returns {undefined}
+ */
 function rv(lat, lng, options, callback) {
   const geocoder = require("node-geocoder")(
     options.geocoderProvider, options.httpAdapter,
@@ -106,6 +120,11 @@ GeoCoder.prototype.reverse = function geoCoderReverse(lat, lng, callback) {
   }
 };
 
+/**
+ * @param {String} address ip address
+ * @param {Function} callback callback
+ * @returns {undefined}
+ */
 function gi(address, callback) {
   let lookupAddress = address;
   // short term solution to an haproxy ssl cert installation issue

@@ -15,7 +15,7 @@ import { Icon } from "../icon";
  * @property {String} icon - icon font class names
  * @property {String} message - extra message text
  * @property {String} title - title of page
- * @return {Node} React node containing not-found view
+ * @returns {Node} React node containing not-found view
  */
 const NotFound = (props) => {
   // ClassName for base wrapper,

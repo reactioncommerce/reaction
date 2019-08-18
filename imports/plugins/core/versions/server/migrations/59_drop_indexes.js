@@ -10,7 +10,7 @@ const Inventory = db.collection("Inventory");
 /**
  * @private
  * @param {Error} error Error or null
- * @return {undefined}
+ * @returns {undefined}
  */
 function handleError(error) {
   // This may fail if the index or the collection doesn't exist, which is what we want anyway

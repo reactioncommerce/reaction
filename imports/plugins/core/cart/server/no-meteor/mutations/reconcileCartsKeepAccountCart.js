@@ -5,7 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} accountCart The account cart document
  * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
  * @param {MongoDB.Collection} Cart The Cart collection
- * @return {Object} The account cart
+ * @returns {Object} The account cart
  */
 export default async function reconcileCartsKeepAccountCart({ accountCart, anonymousCartSelector, Cart }) {
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);

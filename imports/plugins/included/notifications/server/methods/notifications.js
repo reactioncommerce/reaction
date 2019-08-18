@@ -16,7 +16,7 @@ Meteor.methods({
    * @method
    * @summary This marks a user's notification as "read"
    * @param {String} id - The notification ID
-   * @return {Object} returns cursor
+   * @returns {Object} returns cursor
    */
   "notification/markOneAsRead": (id) => {
     check(id, String);

@@ -8,7 +8,7 @@
  * @param {String} args.input.navigationItem The navigation item to add
  * @param {String} [args.input.clientMutationId] An optional string identifying the mutation call
  * @param {Object} context An object containing the per-request state
- * @return {Promise<Object>} CreateNavigationItemPayload
+ * @returns {Promise<Object>} CreateNavigationItemPayload
  */
 export default async function createNavigationItem(parentResult, { input }, context) {
   const {

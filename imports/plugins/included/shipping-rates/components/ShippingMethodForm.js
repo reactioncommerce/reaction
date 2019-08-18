@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { uniqueId } from "lodash";
 import { Form } from "reacto-form";
 import { i18next } from "/client/api";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
@@ -90,12 +90,12 @@ export default class ShippingMethodForm extends Component {
         </Form>
         <div className="clearfix">
           <div className="pull-right" style={{ display: "flex" }}>
-            <Button actionType="secondary" onClick={onCancel}>{i18next.t("app.cancel")}</Button>
+            <Button variant="outlined" onClick={onCancel}>{i18next.t("app.cancel")}</Button>
             {isEditing && <div style={{ marginLeft: 7 }}>
-              <Button actionType="danger" onClick={onDelete}>{i18next.t("app.delete")}</Button>
+              <Button variant="outlined" onClick={onDelete}>{i18next.t("app.delete")}</Button>
             </div>}
             <div style={{ marginLeft: 7 }}>
-              <Button onClick={this.handleSave}>{i18next.t("app.saveChanges")}</Button>
+              <Button variant="contained" color="primary" onClick={this.handleSave}>{i18next.t("app.saveChanges")}</Button>
             </div>
           </div>
         </div>

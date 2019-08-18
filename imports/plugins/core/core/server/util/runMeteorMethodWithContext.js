@@ -14,7 +14,7 @@ import { Meteor } from "meteor/meteor";
  * @param {Object} context - A GraphQL context.
  * @param {String} name - The Meteor method name.
  * @param {Array} args - an array of Meteor method args.
- * @return {any} The result of the Meteor method call.
+ * @returns {any} The result of the Meteor method call.
  */
 export default function runMeteorMethodWithContext(context, name, args) {
   const userId = context && context.user && context.user._id;

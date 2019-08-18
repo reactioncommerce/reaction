@@ -13,7 +13,7 @@ import { decodeCartItemsOpaqueIds, decodeCartOpaqueId } from "@reactioncommerce/
  * @param {String} [args.input.token] - The anonymous access token that was returned from `createCart`.
  *   Required for anonymous carts.
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} AddCartItemsPayload
+ * @returns {Promise<Object>} AddCartItemsPayload
  */
 export default async function addCartItems(parentResult, { input }, context) {
   const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, token } = input;

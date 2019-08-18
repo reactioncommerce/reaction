@@ -12,7 +12,7 @@ import appEvents from "/imports/node-app/core/util/appEvents";
  * @param {Object} anonymousCart The anonymous cart document
  * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
  * @param {MongoDB.Collection} Cart The Cart collection
- * @return {Object} The updated account cart
+ * @returns {Object} The updated account cart
  */
 export default async function reconcileCartsKeepAnonymousCart({
   accountCart,

@@ -8,7 +8,7 @@ const fieldsThatChangeAncestorPricing = ["isDeleted", "isVisible", "price"];
  * @method startup
  * @summary Simple pricing startup function.
  * @param {Object} context - App context.
- * @return {undefined} - void, no return.
+ * @returns {undefined} - void, no return.
  */
 export default async function startup(context) {
   const { appEvents, collections } = context;
@@ -28,7 +28,7 @@ export default async function startup(context) {
    * Updates the `price` field for a Products collection product based on its
    * updated variants.
    * @param {Object} variant The updated variant object
-   * @return {undefined}
+   * @returns {undefined}
    */
   async function updateProductPrice(variant) {
     const productDocs = await Products.find({

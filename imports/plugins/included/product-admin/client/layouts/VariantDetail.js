@@ -13,7 +13,7 @@ const styles = (theme) => ({
 /**
  * VariantDetail layout component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function VariantDetail(props) {
   const { classes, ...blockProps } = props;

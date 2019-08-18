@@ -3,7 +3,7 @@
  * @summary Returns translated navigation item content
  * @param {Array} content Navigation item's data or draftData content
  * @param {String} language Language
- * @return {String} Translated navigation item content, or first navigation item content if translation in
+ * @returns {String} Translated navigation item content, or first navigation item content if translation in
  *  provided language is not available.
  */
 export default function getNavigationItemContentForLanguage(content, language) {

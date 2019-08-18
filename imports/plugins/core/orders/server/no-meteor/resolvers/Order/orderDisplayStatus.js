@@ -6,7 +6,7 @@
  * @param {Object} context An object with request-specific state
  * @param {Object} order - Result of the parent resolver, which is a Order object in GraphQL schema format
  * @param {String} language Language to filter item content by
- * @return {String} A string of the order status
+ * @returns {String} A string of the order status
  */
 export default async function orderDisplayStatus(context, order, language) {
   const { Shops } = context.collections;

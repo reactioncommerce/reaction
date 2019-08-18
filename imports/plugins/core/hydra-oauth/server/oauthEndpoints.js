@@ -1,3 +1,5 @@
+/* eslint-disable node/no-deprecated-api */
+/* TODO: revisit `url.parse` throughout Reaction */
 import url from "url";
 import Logger from "@reactioncommerce/logger";
 import { WebApp } from "meteor/webapp";

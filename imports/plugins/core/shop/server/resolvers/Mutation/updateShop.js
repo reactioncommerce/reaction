@@ -10,7 +10,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} arts.input.shopLogoUrls - An object containing the shop logo urls to update
  * @param {Object} args.input.storefrontUrls - An object containing storefront url locations
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} ShopsPayload
+ * @returns {Promise<Object>} ShopsPayload
  */
 export default async function updateShop(_, { input }, context) {
   const {

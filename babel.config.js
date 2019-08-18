@@ -8,6 +8,8 @@ const fs = require("fs");
  * Meteor currently only loads Babel config through .babelrc or package.json. So, in order to support Babel transpiling
  * of Jest tests, we load the babel config defined in package.json and export it here.
  * See this Github comment: https://github.com/facebook/jest/issues/6053#issuecomment-383632515
+ * @param {Object} api api data object
+ * @returns {Object} babel formatted package.json
  */
 module.exports = function (api) {
   api.cache(false);

@@ -22,7 +22,7 @@ const inventoryVariantFields = [
  * @param {Object} context App context
  * @param {Object[]} catalogProductVariants An array of CatalogProductVariant objects
  * @param {Object} info Additional info
- * @return {undefined} Returns nothing. Potentially mutates `catalogProductVariants`
+ * @returns {undefined} Returns nothing. Potentially mutates `catalogProductVariants`
  */
 export default async function xformCatalogProductVariants(context, catalogProductVariants, info) {
   const { catalogProduct, fields } = info;

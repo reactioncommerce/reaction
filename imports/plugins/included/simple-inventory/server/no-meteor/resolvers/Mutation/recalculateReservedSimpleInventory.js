@@ -10,7 +10,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} args.input.productConfiguration Product configuration object
  * @param {String} args.input.shopId ID of shop that owns the product
  * @param {Object} context App context
- * @return {Object} Updated inventory values
+ * @returns {Object} Updated inventory values
  */
 export default async function recalculateReservedSimpleInventory(_, { input }, context) {
   const { clientMutationId = null, productConfiguration, shopId: opaqueShopId, ...passThroughInput } = input;

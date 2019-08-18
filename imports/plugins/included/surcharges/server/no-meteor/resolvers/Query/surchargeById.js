@@ -12,7 +12,7 @@ import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
  * @param {String} args.surchargeId - Surcharge ID of the surcharge we are requesting
  * @param {String} args.shopId - The shop that owns this surcharge
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>|undefined} A Surcharge object
+ * @returns {Promise<Object>|undefined} A Surcharge object
  */
 export default async function surchargeById(parentResult, args, context) {
   const { surchargeId, shopId } = args;

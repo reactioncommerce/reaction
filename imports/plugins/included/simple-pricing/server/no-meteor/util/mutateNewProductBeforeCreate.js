@@ -1,7 +1,7 @@
 /**
  * @summary Mutates a new top-level Product being created
  * @param {Object} product Product object to mutate
- * @return {undefined}
+ * @returns {undefined}
  */
 export default function mutateNewProductBeforeCreate(product) {
   if (!product.price) {

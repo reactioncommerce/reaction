@@ -16,7 +16,7 @@ const inputSchema = new SimpleSchema({
  * @param {String} input.orderId - The order ID
  * @param {String[]} input.paymentIds - An array of one or more payment IDs to capture
  * @param {String} input.shopId - The ID of the shop that owns this order
- * @return {Promise<Object>} CaptureOrderPaymentsResult
+ * @returns {Promise<Object>} CaptureOrderPaymentsResult
  */
 export default async function captureOrderPayments(context, input = {}) {
   inputSchema.validate(input);

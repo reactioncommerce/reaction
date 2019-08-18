@@ -4,9 +4,9 @@ import { DragSource, DropTarget } from "react-dnd";
 
 /**
  * Specifies the props to inject into your component.
- * @param {DragSourceConnector} connect An onject containing functions to assign roles to a component's DOM nodes
+ * @param {DragSourceConnector} connect An object containing functions to assign roles to a component's DOM nodes
  * @param {DragSourceMonitor} monitor An object containing functions that return information about drag state
- * @return {Object} Props for drag source
+ * @returns {Object} Props for drag source
  * @private
  */
 function collectDropSource(connect, monitor) {
@@ -16,6 +16,11 @@ function collectDropSource(connect, monitor) {
   };
 }
 
+/**
+ * @description collectDropTarget
+ * @param {Object} connect connect object
+ * @returns {undefined}
+ */
 function collectDropTarget(connect) {
   return {
     connectDropTarget: connect.dropTarget()
@@ -55,6 +60,11 @@ const cardTarget = {
   }
 };
 
+/**
+ * @description decorate sortable item component
+ * @param {String} itemType type of item
+ * @returns {*} decorated component
+ */
 export default function ComposeSortableItem(itemType) {
   return function (SortableItemComponent) {
     const SortableItem = (props) => <SortableItemComponent {...props} />;

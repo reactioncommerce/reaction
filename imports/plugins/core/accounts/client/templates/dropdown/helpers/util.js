@@ -2,6 +2,10 @@ import _ from "lodash";
 import { Accounts } from "meteor/accounts-base";
 import { ServiceConfiguration } from "meteor/service-configuration";
 
+/**
+ * @param {String} str string to capitalize
+ * @returns {String} capitalized string
+ */
 function capitalize(str) {
   const finalString = str === null ? "" : String(str);
   return finalString.charAt(0).toUpperCase() + str.slice(1);

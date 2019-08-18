@@ -16,7 +16,7 @@ const handlers = {
   /**
    * Restart a failed or cancelled email job
    * @param {Object} email - the email job object
-   * @return {null} triggers an alert
+   * @returns {null} triggers an alert
    */
   resend(email) {
     Meteor.call("emails/retryFailed", email._id, (err) => {

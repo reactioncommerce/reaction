@@ -59,8 +59,10 @@ Template.React.onDestroyed(function () {
   }
 });
 
-// Gets the name of the template inside of which this instance of `{{> React ...}}`
-// is being used. Used to print more explicit error messages
+/**
+ * @description Gets the name of the template inside of which this instance of `{{> React ...}}` is being used. Used to print more explicit error messages
+ * @returns {String} name of template
+ */
 function parentTemplateName() {
   let view = Blaze.getView();
   if (!view || view.name !== "Template.React") {

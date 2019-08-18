@@ -11,7 +11,7 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
  * @param {String} [params.shopId] - Shop id
  * @param {String} [params.tagId] - Tag id
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Array<Object>>} TagProducts Connection
+ * @returns {Promise<Array<Object>>} TagProducts Connection
  */
 export default async function productsByTagId(_, params, context) {
   const {

@@ -3338,6 +3338,7 @@ export default {
       "account/profile",
       "product",
       "createProduct",
+      "product/admin",
       "tag",
       "index",
       "cart/completed"

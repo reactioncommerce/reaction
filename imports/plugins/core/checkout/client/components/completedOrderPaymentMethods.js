@@ -14,7 +14,7 @@ const creditCardClasses = {
  * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {Object} paymentMethod - An object representing the payment method
- * @return {Node} React node containing each payment method
+ * @returns {Node} React node containing each payment method
  */
 const CompletedOrderPaymentMethod = ({ paymentMethod }) => {
   const { cardBrand, displayName, processor } = paymentMethod;
