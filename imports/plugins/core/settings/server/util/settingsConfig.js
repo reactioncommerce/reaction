@@ -8,7 +8,7 @@ export const shopSettingsSchema = new SimpleSchema();
 
 /**
  * @param {Object} settings The settings object
- * @return {Object} Settings object with default values added
+ * @returns {Object} Settings object with default values added
  */
 export function addGlobalSettingDefaults(settings) {
   Object.getOwnPropertyNames(globalSettingsSchema).forEach((field) => {
@@ -25,7 +25,7 @@ export function addGlobalSettingDefaults(settings) {
 
 /**
  * @param {Object} settings The settings object
- * @return {Object} Settings object with default values added
+ * @returns {Object} Settings object with default values added
  */
 export function addShopSettingDefaults(settings) {
   Object.getOwnPropertyNames(shopSettingsConfig).forEach((field) => {
@@ -42,7 +42,7 @@ export function addShopSettingDefaults(settings) {
 
 /**
  * @param {String} field The setting field name
- * @return {String[]} List of roles that can edit this setting.
+ * @returns {String[]} List of roles that can edit this setting.
  */
 export function rolesThatCanEditGlobalSetting(field) {
   const config = globalSettingsSchema[field];
@@ -53,7 +53,7 @@ export function rolesThatCanEditGlobalSetting(field) {
 
 /**
  * @param {String} field The setting field name
- * @return {String[]} List of roles that can edit this setting.
+ * @returns {String[]} List of roles that can edit this setting.
  */
 export function rolesThatCanEditShopSetting(field) {
   const config = shopSettingsConfig[field];
@@ -80,7 +80,7 @@ const configSchema = new SimpleSchema({
 
 /**
  * @summary Reads and merges `appSettingsConfig` from all plugin registration.
- * @return {undefined}
+ * @returns {undefined}
  */
 export function registerPluginHandler({
   globalSettingsConfig: globalSettingsConfigFromPlugin,

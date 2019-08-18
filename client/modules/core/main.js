@@ -1,5 +1,4 @@
 import _ from "lodash";
-import store from "store";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
@@ -11,7 +10,7 @@ import { Roles } from "meteor/alanning:roles";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from "/client/modules/i18n";
-import { Packages, Shops, Accounts } from "/lib/collections";
+import { Packages, Shops } from "/lib/collections";
 import { Router } from "/client/modules/router";
 import { DomainsMixin } from "./domains";
 import { getUserId } from "./helpers/utils";
@@ -27,8 +26,6 @@ import { getUserId } from "./helpers/utils";
 const reactionState = new ReactiveDict();
 
 export const userPrefs = new ReactiveVar(undefined, (val, newVal) => JSON.stringify(val) === JSON.stringify(newVal));
-
-const deps = new Map();
 
 // Slugify is imported when Reaction.getSlug is called
 let slugify;
@@ -73,6 +70,7 @@ export default {
    * @summary Initialization code
    * @memberof Core/Client
    * @method
+   * @returns {Tracker} tracker
    */
   init() {
     Tracker.autorun(() => {
@@ -135,7 +133,7 @@ export default {
     });
 
     // Listen for active shop change
-    return Tracker.autorun(() => {
+    return Tracker.autorun(() => { // eslint-disable-line consistent-return
       if (this.Subscriptions.MerchantShops.ready()) {
         // if we don't have an active shopId, try to retrieve it from the userPreferences object
         // and set the shop from the storedShopId
@@ -201,7 +199,7 @@ export default {
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
    * @param {String} checkUserId - userId, defaults to logged in user ID
    * @param {String} checkGroup group - default to shopId
-   * @return {Boolean} Boolean - true if has permission
+   * @returns {Boolean} Boolean - true if has permission
    */
   hasPermission(checkPermissions, checkUserId, checkGroup) {
     let group;
@@ -220,6 +218,10 @@ export default {
     // is the bulk of the logic
     // called out a userId is validated.
     //
+    /**
+     * @description local roleCheck function is the bulk of the logic called out a userId is validated
+     * @returns {Boolean} does user have permission
+     */
     function roleCheck() {
       // permissions can be either a string or an array
       // we'll force it into an array and use that
@@ -265,10 +267,10 @@ export default {
       return false;
     }
 
-    //
-    // check if a user id has been found
-    // in line 156 setTimeout
-    //
+    /**
+     * @description check if a user id has been found in line 156 setTimeout
+     * @returns {Boolean} is userId valid
+     */
     function validateUserId() {
       if (getUserId()) {
         Meteor.clearTimeout(id);
@@ -280,7 +282,7 @@ export default {
 
     //
     // actual logic block to check permissions
-    // we'll bypass unecessary checks during
+    // we'll bypass unnecessary checks during
     // a user logging, as we'll check again
     // when everything is ready
     //
@@ -315,7 +317,7 @@ export default {
    * @memberof Core/Client
    * @todo This could be faster with a dedicated hasAdminDashboard boolean on the user object
    * @param { Object } options - options object that can be passed a user and/or a set of permissions
-   * @return {Boolean} Boolean - true if has dashboard access for any shop
+   * @returns {Boolean} Boolean - true if has dashboard access for any shop
    */
   hasDashboardAccessForAnyShop(options = { user: Meteor.user(), permissions: ["owner", "admin", "dashboard"] }) {
     const { user, permissions } = options;
@@ -338,7 +340,7 @@ export default {
    * @method
    * @memberof Core/Client
    * @summary - client permission check for any "owner", "admin", or "dashboard" permissions for more than one shop.
-   * @return {Boolean} Boolean - true if has dashboard access for more than one shop
+   * @returns {Boolean} Boolean - true if has dashboard access for more than one shop
    */
   hasDashboardAccessForMultipleShops() {
     const adminShopIds = this.getShopsForUser(["owner", "admin", "dashboard"]);
@@ -349,6 +351,7 @@ export default {
    * @name hasOwnerAccess
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} Boolean - true if user has owner permissions
    */
   hasOwnerAccess() {
     const ownerPermissions = ["owner"];
@@ -362,7 +365,7 @@ export default {
    * @method
    * @memberof Core/Client
    * @param  {string} [shopId] Optional shopId to check access against
-   * @return {Boolean} true if the user has admin or owner permission, otherwise false
+   * @returns {Boolean} true if the user has admin or owner permission, otherwise false
    */
   hasAdminAccess(shopId) {
     const adminPermissions = ["owner", "admin"];
@@ -376,6 +379,7 @@ export default {
    * @name hasDashboardAccess
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} true if user has access to dashboard access
    */
   hasDashboardAccess() {
     const dashboardPermissions = ["owner", "admin", "dashboard"];
@@ -386,6 +390,7 @@ export default {
    * @name hasShopSwitcherAccess
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} true if user has access to dashboard for multiple shops
    */
   hasShopSwitcherAccess() {
     return this.hasDashboardAccessForMultipleShops();
@@ -395,6 +400,9 @@ export default {
    * @name getSellerShopId
    * @method
    * @memberof Core/Client
+   * @param {String} userId user id of user to check seller shop ID for
+   * @param {Boolean} noFallback should we allow function to continue if there is no userID
+   * @returns {Boolean|String} the shop ID of a seller
    */
   getSellerShopId(userId = getUserId(), noFallback = false) {
     if (userId) {
@@ -412,63 +420,6 @@ export default {
   },
 
   /**
-   * @name getUserPreferences
-   * @method
-   * @memberof Core/Client
-   */
-  getUserPreferences(packageName, preference, defaultValue) {
-    getDep(`${packageName}.${preference}`).depend();
-    if (Meteor.user()) {
-      const packageSettings = store.get(packageName);
-      // packageSettings[preference] should not be undefined or null.
-      if (packageSettings && typeof packageSettings[preference] !== "undefined" && packageSettings[preference] !== null) {
-        return packageSettings[preference];
-      }
-    }
-
-    return defaultValue || undefined;
-  },
-
-  /**
-   * @name setUserPreferences
-   * @method
-   * @memberof Core/Client
-   */
-  setUserPreferences(packageName, preference, value) {
-    getDep(`${packageName}.${preference}`).changed();
-    // User preferences are not stored in Meteor.user().profile
-    // to prevent all autorun() with dependency on Meteor.user() to run again.
-    if (Meteor.user()) {
-      // "reaction" package settings should be synced to
-      // the Accounts collection.
-      const syncedPackages = ["reaction"];
-      if (syncedPackages.indexOf(packageName) > -1) {
-        Accounts.update(getUserId(), {
-          $set: {
-            [`profile.preferences.${packageName}.${preference}`]: value
-          }
-        });
-      }
-    }
-    const packageSettings = store.get(packageName) || {};
-    packageSettings[preference] = value;
-    return store.set(packageName, packageSettings);
-  },
-
-  /**
-   * @name updateUserPreferences
-   * @method
-   * @memberof Core/Client
-   */
-  updateUserPreferences(packageName, preference, values) {
-    const currentPreference = this.getUserPreferences(packageName, preference, {});
-    return this.setUserPreferences(packageName, preference, {
-      ...currentPreference,
-      ...values
-    });
-  },
-
-  /**
    * primaryShopId is the first created shop. In a marketplace setting it's
    * the shop that controls the marketplace and can see all other shops.
    * @name primaryShopId
@@ -482,6 +433,7 @@ export default {
    * @name getPrimaryShopId
    * @method
    * @memberof Core/Client
+   * @returns {String} primary shop ID
    */
   getPrimaryShopId() {
     return this._primaryShopId.get();
@@ -491,6 +443,7 @@ export default {
    * @name getPrimaryShopName
    * @method
    * @memberof Core/Client
+   * @returns {String} shop name
    */
   getPrimaryShopName() {
     const shopId = this.getPrimaryShopId();
@@ -510,6 +463,7 @@ export default {
    * @name getPrimaryShopSettings
    * @method
    * @memberof Core/Client
+   * @returns {Object} shop settings of the primary shop
    */
   getPrimaryShopSettings() {
     const settings = Packages.findOne({
@@ -523,6 +477,7 @@ export default {
    * @name getPrimaryShopCurrency
    * @method
    * @memberof Core/Client
+   * @returns {String} primary shop currency abbreviation
    */
   getPrimaryShopCurrency() {
     const shop = Shops.findOne({
@@ -542,7 +497,7 @@ export default {
    */
   getCurrentShop() {
     // Give preference to shop chosen by the user
-    const activeShopId = this.getUserPreferences("reaction", "activeShopId");
+    const activeShopId = this.getUserShopId();
     if (activeShopId) return Shops.findOne({ _id: activeShopId });
 
     // If no chosen shop, look up the shop by domain
@@ -552,6 +507,20 @@ export default {
     if (!shop) shop = Shops.findOne({ shopType: "primary" });
 
     return shop;
+  },
+
+  /**
+   * @name getUserShopId
+   * @method
+   * @memberof Core/Client
+   * @summary Get current user's shop ID, as stored in preferences
+   * @returns {String} active shop ID
+   */
+  getUserShopId() {
+    const preferences = userPrefs.get(); // reactivity on `profile.preferences` changes only
+    if (!preferences) return null;
+
+    return _.get(preferences, "reaction.activeShopId");
   },
 
   /**
@@ -572,9 +541,10 @@ export default {
    * @name getShopId
    * @method
    * @memberof Core/Client
+   * @returns {String} shopId
    */
   getShopId() {
-    return this.shopId || this.getUserPreferences("reaction", "activeShopId");
+    return this.shopId || this.getUserShopId();
   },
 
   /**
@@ -582,6 +552,7 @@ export default {
    * as the primary shop, but for administrators this will usually be the shop
    * they administer.
    * @name shopId
+   * @param {String} id ID to set as shop ID
    * @memberof Core/Client
    */
   set shopId(id) {
@@ -595,20 +566,20 @@ export default {
    * @name setShopId
    * @method
    * @memberof Core/Client
+   * @param {String} id ID to set as shop ID
+   * @returns {undefined} undefined
    */
   setShopId(id) {
     if (!id || this.shopId === id) { return; }
 
     this.shopId = id;
-    this.setUserPreferences("reaction", "activeShopId", id);
-
-    Meteor.call("shop/resetShopId");
+    Meteor.call("accounts/setActiveShopId", id);
   },
 
   /**
    * @name isShopPrimary
    * @summary Whether the current shop is the Primary Shop (vs a Merchant Shop)
-   * @return {Boolean}
+   * @returns {Boolean} does shopID equal primaryShopId
    */
   isShopPrimary() {
     return this.getShopId() === this.getPrimaryShopId();
@@ -619,8 +590,8 @@ export default {
    * @method
    * @memberof Core/Client
    * @summary gets name of shop by provided shopId, or current active shop if shopId is not provided
-   * @param {String} providedShopID - shopId of shop to return name of
-   * @return {String} - shop name
+   * @param {String} providedShopId - shopId of shop to return name of
+   * @returns {String} - shop name
    */
   getShopName(providedShopId) {
     const shopId = providedShopId || this.getShopId();
@@ -634,6 +605,7 @@ export default {
    * @name getShopSettings
    * @method
    * @memberof Core/Client
+   * @returns {Object} shop settings
    */
   getShopSettings() {
     const settings = Packages.findOne({
@@ -661,7 +633,7 @@ export default {
         // If slugify/transliteration is loaded & no lang change
         return;
       } else if (latinLangs.indexOf(lang) >= 0) {
-        // If shop's language uses latin based chars, load slugify, else load transliterations's slugify
+        // If shop's language uses latin based chars, load slugify, else load transliteration's slugify
         mod = await import("slugify");
       } else {
         mod = await import("transliteration");
@@ -685,6 +657,8 @@ export default {
    * @name getPackageSettings
    * @method
    * @memberof Core/Client
+   * @param {String} name package name
+   * @returns {Object} package settings
    */
   getPackageSettings(name) {
     const shopId = this.getShopId();
@@ -701,6 +675,8 @@ export default {
    * @name getPackageSettingsWithOptions
    * @method
    * @memberof Core/Client
+   * @param {Object} options options to pass to query
+   * @returns {Object} package settings with options
    */
   getPackageSettingsWithOptions(options) {
     const query = options;
@@ -711,6 +687,7 @@ export default {
    * @name allowGuestCheckout
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} is guest checkout allowed
    */
   allowGuestCheckout() {
     const settings = this.getShopSettings();
@@ -727,7 +704,7 @@ export default {
    * @param {Object} options -
    * @param {Object} options.group - group to invite to
    * @param {Object} options.user - user object  making the invite (Meteor.user())
-   * @return {Boolean} -
+   * @returns {Boolean} -
    */
   canInviteToGroup(options) {
     const { group } = options;
@@ -764,6 +741,7 @@ export default {
    * @name isActionViewOpen
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} is action view open
    */
   isActionViewOpen() {
     return Session.equals("admin/showActionView", true);
@@ -773,6 +751,7 @@ export default {
    * @name isActionViewDetailOpen
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} is action view detail open
    */
   isActionViewDetailOpen() {
     return Session.equals("admin/showActionViewDetail", true);
@@ -782,6 +761,8 @@ export default {
    * @name setActionView
    * @method
    * @memberof Core/Client
+   * @param {Array|Object} viewData data from open view
+   * @returns {undefined}
    */
   setActionView(viewData) {
     this.hideActionViewDetail();
@@ -812,6 +793,8 @@ export default {
    * @name pushActionView
    * @method
    * @memberof Core/Client
+   * @param {Array|Object} viewData data from open view
+   * @returns {undefined}
    */
   pushActionView(viewData) {
     Session.set("admin/showActionView", true);
@@ -836,6 +819,7 @@ export default {
    * @name isActionViewAtRootView
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} is actionView at root view
    */
   isActionViewAtRootView() {
     const actionViewStack = Session.get("admin/actionView");
@@ -851,6 +835,7 @@ export default {
    * @name popActionView
    * @method
    * @memberof Core/Client
+   * @returns {undefined}
    */
   popActionView() {
     const actionViewStack = Session.get("admin/actionView");
@@ -865,6 +850,9 @@ export default {
    * @name setActionViewDetail
    * @method
    * @memberof Core/Client
+   * @param {Array|Object} viewData viewData to push
+   * @param {Object} options to check if view is open
+   * @returns {undefined}
    */
   setActionViewDetail(viewData, options = {}) {
     const { open } = options;
@@ -878,6 +866,8 @@ export default {
    * @name pushActionViewDetail
    * @method
    * @memberof Core/Client
+   * @param {Array|Object} viewData viewData to push
+   * @returns {undefined}
    */
   pushActionViewDetail(viewData) {
     Session.set("admin/showActionView", true);
@@ -895,6 +885,7 @@ export default {
    * @name popActionViewDetail
    * @method
    * @memberof Core/Client
+   * @returns {undefined}
    */
   popActionViewDetail() {
     const detailViewStack = Session.get("admin/detailView");
@@ -907,6 +898,7 @@ export default {
    * @name isActionViewDetailAtRootView
    * @method
    * @memberof Core/Client
+   * @returns {Boolean} is action view detail at root view
    */
   isActionViewDetailAtRootView() {
     const actionViewDetailStack = Session.get("admin/detailView");
@@ -922,6 +914,7 @@ export default {
    * @name getActionView
    * @method
    * @memberof Core/Client
+   * @returns {Object} current action view data
    */
   getActionView() {
     const actionViewStack = Session.get("admin/actionView");
@@ -937,6 +930,7 @@ export default {
    * @name getActionViewDetail
    * @method
    * @memberof Core/Client
+   * @returns {Object} current action view detail data
    */
   getActionViewDetail() {
     const detailViewStack = Session.get("admin/detailView");
@@ -952,6 +946,7 @@ export default {
    * @name hideActionView
    * @method
    * @memberof Core/Client
+   * @returns {undefined}
    */
   hideActionView() {
     Session.set("admin/showActionView", false);
@@ -962,6 +957,7 @@ export default {
    * @name hideActionViewDetail
    * @method
    * @memberof Core/Client
+   * @returns {undefined}
    */
   hideActionViewDetail() {
     Session.set("admin/showActionViewDetail", false);
@@ -972,6 +968,7 @@ export default {
    * @name clearActionView
    * @method
    * @memberof Core/Client
+   * @returns {undefined}
    */
   clearActionView() {
     Session.set("admin/actionView", [{
@@ -988,6 +985,7 @@ export default {
    * @name clearActionViewDetail
    * @method
    * @memberof Core/Client
+   * @returns {undefined}
    */
   clearActionViewDetail() {
     Session.set("admin/detailView", [{
@@ -1000,17 +998,22 @@ export default {
    * @name getCurrentTag
    * @method
    * @memberof Core/Client
+   * @returns {String} current tag
    */
   getCurrentTag() {
     if (this.Router.getRouteName() === "tag") {
       return this.Router.current().params.slug;
     }
+
+    return null;
   },
 
   /**
    * @name getRegistryForCurrentRoute
    * @method
    * @memberof Core/Client
+   * @param {String} provides type of template from registry
+   * @returns {Object} settings data from this package
    */
   getRegistryForCurrentRoute(provides = "dashboard") {
     this.Router.watchPathChange();
@@ -1045,7 +1048,7 @@ export default {
    * @method
    * @memberof Core/Client
    * @summary finds the enabled `reaction-marketplace` package for the primary shop and returns the settings
-   * @return {Object} The marketplace settings from the primary shop or undefined
+   * @returns {Object} The marketplace settings from the primary shop or undefined
    */
   getMarketplaceSettings() {
     const marketplaceSettings = Packages.findOne({
@@ -1079,11 +1082,11 @@ function createCountryCollection(countries) {
       });
     }
   }
-  countryOptions.sort((a, b) => {
-    if (a.label < b.label) {
+  countryOptions.sort((itemA, itemB) => {
+    if (itemA.label < itemB.label) {
       return -1;
     }
-    if (a.label > b.label) {
+    if (itemA.label > itemB.label) {
       return 1;
     }
     return 0;
@@ -1093,20 +1096,4 @@ function createCountryCollection(countries) {
     Countries.insert(country);
   }
   return countryOptions;
-}
-
-/**
- * Gets the dependency for the key if available, else creates
- * a new dependency for the key and returns it.
- * @name getDep
- * @method
- * @param {String} -  The key to get the dependency for
- * @returns {Tracker.Dependency}
- * @private
- */
-function getDep(key) {
-  if (!deps.has(key)) {
-    deps.set(key, new Tracker.Dependency());
-  }
-  return deps.get(key);
 }

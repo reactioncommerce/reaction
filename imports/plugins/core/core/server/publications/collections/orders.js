@@ -12,13 +12,12 @@ Meteor.publish("PaginatedOrders", function (query, options) {
   if (!this.userId) {
     return this.ready();
   }
-
-  const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
 
-  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId) === false) {
+  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders", "order/view", "order/fulfillment"], shopId) === false) {
     return this.ready();
   }
 

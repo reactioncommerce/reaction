@@ -3,7 +3,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import deleteFlatRateFulfillmentMethodMutation from "../../mutations/deleteFlatRateFulfillmentMethod";
 
 /**
- * @name "Mutation.deleteFlatRateFulfillmentMethod"
+ * @name Mutation/deleteFlatRateFulfillmentMethod
  * @method
  * @memberof Fulfillment/GraphQL
  * @summary resolver for the deleteFlatRateFulfillmentMethod GraphQL mutation
@@ -13,7 +13,7 @@ import deleteFlatRateFulfillmentMethodMutation from "../../mutations/deleteFlatR
  * @param {String} args.input.shopId - The shop to delete this flat rate fulfillment method for
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} DeleteFlatRateFulfillmentMethodPayload
+ * @returns {Promise<Object>} DeleteFlatRateFulfillmentMethodPayload
  */
 export default async function deleteFlatRateFulfillmentMethod(parentResult, { input }, context) {
   const { clientMutationId = null, methodId: opaqueMethodId, shopId: opaqueShopId } = input;

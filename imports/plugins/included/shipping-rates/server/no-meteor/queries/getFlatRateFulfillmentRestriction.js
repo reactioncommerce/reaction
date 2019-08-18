@@ -8,7 +8,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
  * @param {String} params.shopId - Shop ID for the shop that owns the restriction
- * @return {Promise<Object>|undefined} - A restrictions document, if one is found
+ * @returns {Promise<Object>|undefined} - A restrictions document, if one is found
  */
 export default async function getFlatRateFulfillmentRestriction(context, { restrictionId, shopId } = {}) {
   const { collections, userHasPermission } = context;

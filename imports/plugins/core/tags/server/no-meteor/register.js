@@ -6,14 +6,13 @@ import schemas from "./schemas";
 /**
  * @summary Import and call this function to add this plugin to your API.
  * @param {ReactionNodeApp} app The ReactionNodeApp instance
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function register(app) {
   await app.registerPlugin({
     label: "Tags",
     name: "reaction-tags",
     icon: "fa fa-tag",
-    autoEnable: true,
     collections: {
       Tags: {
         name: "Tags",
@@ -47,6 +46,16 @@ export default async function register(app) {
           dashboardSize: "md"
         }
       }
+    }, {
+      route: "tag/admin",
+      label: "Tag Admin",
+      permission: "tagAdmin",
+      name: "tag/admin"
+    }, {
+      route: "tag/edit",
+      label: "Edit Tag",
+      permission: "tagEdit",
+      name: "tag/edit"
     }],
     layout: [{
       layout: "coreLayout",

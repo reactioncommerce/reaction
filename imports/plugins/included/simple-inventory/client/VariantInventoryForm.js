@@ -13,7 +13,7 @@ import Switch from "@material-ui/core/Switch";
 /**
  * Variant inventory form block component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function VariantInventoryForm(props) {
   const {
@@ -71,7 +71,7 @@ function VariantInventoryForm(props) {
           }
           label={i18next.t("productVariant.isInventoryManagementEnabled")}
         />
-        <Grid container spacing={8}>
+        <Grid container spacing={1}>
           <Grid item sm={6}>
             <Components.TextField
               disabled={!isEnabled}
@@ -141,7 +141,7 @@ function VariantInventoryForm(props) {
             />
           </Grid>
         </Grid>
-        <Grid container spacing={8}>
+        <Grid container spacing={1}>
           <Grid item sm={12}>
             <FormControlLabel
               control={

@@ -8,7 +8,7 @@ import updateShipmentStatus from "../util/updateShipmentStatus";
  * @summary update labeling status
  * @param {Object} order - order object
  * @param {Object} fulfillmentGroup - fulfillmentGroup object
- * @return {Object} return workflow result
+ * @returns {Object} return workflow result
  */
 export default function shipmentLabeled(order, fulfillmentGroup) {
   check(order, Object);

@@ -116,7 +116,7 @@ function VariantTable(props) {
               </TableCell>
               <TableCell>
                 <Link to={getURL(item)}>
-                  {item.title || item.optionTitle || item.name}
+                  {item.optionTitle || item.title || item.name}
                 </Link>
               </TableCell>
               <TableCell>{item.displayPrice}</TableCell>

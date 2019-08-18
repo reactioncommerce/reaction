@@ -25,7 +25,7 @@ const inputSchema = new SimpleSchema({
  *   fulfillment groups.
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
- * @return {Promise<Object>} Object with `order` property containing the updated order
+ * @returns {Promise<Object>} Object with `order` property containing the updated order
  */
 export default async function moveOrderItems(context, input) {
   inputSchema.validate(input);
@@ -50,7 +50,7 @@ export default async function moveOrderItems(context, input) {
   if (
     !isInternalCall &&
     (!accountId || accountId !== order.accountId) &&
-    !userHasPermission(["orders"], order.shopId)
+    !userHasPermission(["orders", "order/fulfillment"], order.shopId)
   ) {
     throw new ReactionError("access-denied", "Access Denied");
   }

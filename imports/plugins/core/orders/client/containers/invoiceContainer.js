@@ -457,7 +457,7 @@ class InvoiceContainer extends Component {
  * @summary helper method to capture payments
  * @param {Object} order - object representing an order
  * @param {String[]} [paymentIds] - Optional array of payment IDs, to capture certain payments
- * @return {Promise<null>} null
+ * @returns {Promise<null>} null
  * @private
  */
 function capturePayments(order, paymentIds) {

@@ -14,7 +14,8 @@ class TagNav extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ selectedTag: nextProps.selectedTag });
   }
 
@@ -22,10 +23,10 @@ class TagNav extends Component {
    * onShopSelectChange
    * @method
    * @summary Handle change in selected shop
-   * @param {script} event
+   * @param {Script} event onchange event
    * @param {String} shopId - selected shopId
    * @since 1.5.8
-   * @return {void}
+   * @returns {void}
   */
   onShopSelectChange = (event, shopId) => {
     if (this.props.handleShopSelectChange) {
@@ -54,7 +55,7 @@ class TagNav extends Component {
   * renderShopSelect
   * @method
   * @summary Handles shop options display on mobile view
-  * @return {JSX} React node containing dropdown menu
+  * @returns {JSX} React node containing dropdown menu
   */
   renderShopSelect() {
     if (this.props.handleShopSelectChange) {

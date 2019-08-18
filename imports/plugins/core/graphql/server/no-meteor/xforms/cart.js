@@ -22,7 +22,7 @@ export const encodeFulfillmentGroupOpaqueId = encodeOpaqueId(namespaces.Fulfillm
 
 /**
  * @param {Object[]} items Array of CartItemInput
- * @return {Object[]} Same array with all IDs transformed to internal
+ * @returns {Object[]} Same array with all IDs transformed to internal
  */
 export function decodeCartItemsOpaqueIds(items) {
   return items.map((item) => ({
@@ -39,7 +39,7 @@ export function decodeCartItemsOpaqueIds(items) {
  * @param {Object[]} catalogItems Array of CatalogItem docs from the db
  * @param {Object[]} products Array of Product docs from the db
  * @param {Object} cartItem CartItem
- * @return {Object} Same object with GraphQL-only props added
+ * @returns {Object} Same object with GraphQL-only props added
  */
 async function xformCartItem(context, catalogItems, products, cartItem) {
   const { productId, variantId } = cartItem;
@@ -84,7 +84,7 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
 /**
  * @param {Object} context - an object containing the per-request state
  * @param {Object[]} items Array of CartItem
- * @return {Object[]} Same array with GraphQL-only props added
+ * @returns {Object[]} Same array with GraphQL-only props added
  */
 export async function xformCartItems(context, items) {
   const { collections, getFunctionsOfType } = context;

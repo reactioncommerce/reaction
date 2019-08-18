@@ -31,6 +31,7 @@ const productFieldsThatNeedPublishing = [
 
 const variantFieldsThatNeedPublishing = [
   "_id",
+  "attributeLabel",
   "barcode",
   "compareAtPrice",
   "height",
@@ -56,7 +57,7 @@ const variantFieldsThatNeedPublishing = [
  * @memberof Catalog
  * @param {String} product - The Product document to hash. Expected to be a top-level product, not a variant
  * @param {Object} collections - Raw mongo collections
- * @return {String} product hash
+ * @returns {String} product hash
  */
 export async function createProductHash(product, collections) {
   const variants = await collections.Products.find({ ancestors: product._id, type: "variant" }).toArray();
@@ -94,7 +95,7 @@ export async function createProductHash(product, collections) {
  * @param {String} productId - A productId
  * @param {Object} collections - Raw mongo collections
  * @param {Boolean} isPublished - Is product published to catalog
- * @return {Object} updated product if successful, original product if unsuccessful
+ * @returns {Object} updated product if successful, original product if unsuccessful
  */
 export default async function hashProduct(productId, collections, isPublished = true) {
   const { Products } = collections;

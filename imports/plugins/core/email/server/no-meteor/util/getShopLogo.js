@@ -3,7 +3,7 @@
  * @summary Get absolute URL for shop logo, if available. If not, use default logo URL.
  * @param  {Object} context App context
  * @param  {Object} shop The shop document
- * @return {String} Absolute image URL
+ * @returns {String} Absolute image URL
  */
 export default async function getShopLogo(context, shop) {
   const { collections } = context;

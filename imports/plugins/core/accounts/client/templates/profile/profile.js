@@ -9,7 +9,7 @@ import { Components } from "@reactioncommerce/reaction-components";
  * @summary checks whether or not the user viewing this profile is also
  * its owner.
  * @since 1.5.0
- * @return {Boolean} - whether or not the current user is also this
+ * @returns {Boolean} - whether or not the current user is also this
  * profile's owner.
  */
 function isOwnerOfProfile() {
@@ -23,7 +23,7 @@ function isOwnerOfProfile() {
  * @memberof Accounts
  * @summary gets the account of the userId in the route, or the current user.
  * @since 1.5.0
- * @return {Object} - the account of the identified user.
+ * @returns {Object} - the account of the identified user.
  */
 function getTargetAccount() {
   const targetUserId = Reaction.Router.getQueryParam("userId") || Reaction.getUserId();
@@ -42,7 +42,7 @@ Template.accountProfile.helpers({
    * @method doesUserExist
    * @summary confirms that a given userId belongs to an existing user.
    * @since 1.5.0
-   * @return {Boolean} - whether or not a user with a given ID exists.
+   * @returns {Boolean} - whether or not a user with a given ID exists.
    * @ignore
    */
   doesUserExist() {
@@ -61,7 +61,7 @@ Template.accountProfile.helpers({
    * @summary checks whether or not the user viewing this profile is also
    * its owner.
    * @since 1.5.0
-   * @return {Boolean} - whether or not the current user is also this profile's owner.
+   * @returns {Boolean} - whether or not the current user is also this profile's owner.
    * @ignore
    */
   isOwnerOfProfile() {
@@ -72,7 +72,7 @@ Template.accountProfile.helpers({
    * @method UpdateEmail
    * @summary returns a component for updating a user's email.
    * @since 1.5.0
-   * @return {Object} - contains the component for updating a user's email.
+   * @returns {Object} - contains the component for updating a user's email.
    * @ignore
    */
   UpdateEmail() {
@@ -85,7 +85,7 @@ Template.accountProfile.helpers({
    * @method ReactionAvatar
    * @summary returns a component that displays a user's avatar.
    * @since 1.5.0
-   * @return {Object} - contains the component that displays a user's avatar.
+   * @returns {Object} - contains the component that displays a user's avatar.
    * @ignore
    */
   ReactionAvatar() {
@@ -108,7 +108,7 @@ Template.accountProfile.helpers({
    * @method displayName
    * @summary returns the name of a user.
    * @since 1.5.0
-   * @return {String} - the name of a given user.
+   * @returns {String} - the name of a given user.
    * @ignore
    */
   displayName() {
@@ -129,13 +129,15 @@ Template.accountProfile.helpers({
     if (Reaction.hasPermission("account/profile")) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
+
+    return null;
   },
 
   /**
    * @method displayEmail
    * @summary returns a user's email.
    * @since 1.5.0
-   * @return {String} - the email of a given user.
+   * @returns {String} - the email of a given user.
    * @ignore
    */
   displayEmail() {
@@ -147,6 +149,8 @@ Template.accountProfile.helpers({
         return (defaultEmail && defaultEmail.address) || account.emails[0].address;
       }
     }
+
+    return null;
   },
 
   /**
@@ -154,7 +158,7 @@ Template.accountProfile.helpers({
    * @summary determines whether or not to show the button for signing up
    * as a merchant/seller.
    * @since 1.5.0
-   * @return {Boolean} - true if the merchant signup button is to be shown, and false if otherwise.
+   * @returns {Boolean} - true if the merchant signup button is to be shown, and false if otherwise.
    * @ignore
    */
   showMerchantSignup() {

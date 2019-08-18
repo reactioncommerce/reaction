@@ -17,7 +17,7 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
  * @param {Object} _ - unused
  * @param {Object} connectionArgs - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object[]>} Promise that resolves with array of Tag objects
+ * @returns {Promise<Object[]>} Promise that resolves with array of Tag objects
  */
 export default async function tag(_, connectionArgs, context) {
   const { slugOrId } = connectionArgs;
@@ -26,7 +26,7 @@ export default async function tag(_, connectionArgs, context) {
 
   try {
     dbTagId = decodeTagOpaqueId(slugOrId);
-  } catch (e) {
+  } catch (error) {
     dbTagId = slugOrId;
   }
 

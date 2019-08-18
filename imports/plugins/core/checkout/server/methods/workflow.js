@@ -31,7 +31,7 @@ Meteor.methods({
    * @param  {String} workflow workflow to push to
    * @param  {String} status - Workflow status
    * @param  {Order} order - Schemas.Order, an order object
-   * @return {Boolean} true if update was successful
+   * @returns {Boolean} true if update was successful
    */
   "workflow/pushOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
@@ -82,7 +82,7 @@ Meteor.methods({
    * @param  {String} status  Workflow status
    * @param  {Object} order   Schemas.Order, an order object
    * @param  {String[]} itemIds Array of item IDs
-   * @return {Boolean}         true if update was successful
+   * @returns {Boolean}         true if update was successful
    */
   "workflow/pushItemWorkflow"(status, order, itemIds) {
     check(status, String);

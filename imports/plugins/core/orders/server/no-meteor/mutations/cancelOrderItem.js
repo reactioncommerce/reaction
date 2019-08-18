@@ -36,7 +36,7 @@ const inputSchema = new SimpleSchema({
  *   the full order will also be canceled.
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
- * @return {Promise<Object>} Object with `order` property containing the created order
+ * @returns {Promise<Object>} Object with `order` property containing the created order
  */
 export default async function cancelOrderItem(context, input) {
   inputSchema.validate(input);
@@ -61,7 +61,7 @@ export default async function cancelOrderItem(context, input) {
   if (
     !isInternalCall &&
     (!accountId || accountId !== order.accountId) &&
-    !userHasPermission(["orders"], order.shopId)
+    !userHasPermission(["orders", "order/fulfillment"], order.shopId)
   ) {
     throw new ReactionError("access-denied", "Access Denied");
   }

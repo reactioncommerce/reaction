@@ -3,8 +3,12 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-// resolvePermissions - helper to resolve toggled permission(s).
-// It returns a list of all parent and child permissions when a parent permission is toggled.
+/**
+ * @function
+ * @description helper to resolve toggled permissions
+ * @param {Object} permission permission to check
+ * @returns {Array} list of all parent and child permissions when a parent permission is toggled
+ */
 function resolvePermissions(permission) {
   const result = [];
 
@@ -19,7 +23,14 @@ function resolvePermissions(permission) {
 
   return result;
 }
-// helper to remove all array items in "old" from "current"
+
+/**
+ * @function
+ * @description helper to remove all array items in "old" from "current"
+ * @param {Array} current current array items
+ * @param {Array} old older array items
+ * @returns {Array} updated permissions array
+ */
 function removePermissions(current, old) {
   const currentArray = [...current];
 
@@ -45,7 +56,8 @@ class PermissionsList extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({ group: nextProps.group });
   }
 
@@ -64,6 +76,8 @@ class PermissionsList extends Component {
     if (this.props.updateGroup) {
       return this.props.updateGroup(this.state.group._id, groupData);
     }
+
+    return null;
   };
 
   checked = (permission) => {

@@ -29,7 +29,8 @@ export default function sendWelcomeEmail(shopId, userId, token) {
   const shop = Shops.findOne({ _id: shopId });
 
   const copyrightDate = new Date().getFullYear();
-  const user = Meteor.user();
+  const authUserId = Reaction.getUserId();
+  const user = authUserId ? Meteor.users.findOne({ _id: authUserId }) : null;
   const dataForEmail = {
     // Shop Data
     shop,
@@ -68,7 +69,7 @@ export default function sendWelcomeEmail(shopId, userId, token) {
 
   const userEmail = account.emails[0].address;
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(authUserId));
   Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: shop,

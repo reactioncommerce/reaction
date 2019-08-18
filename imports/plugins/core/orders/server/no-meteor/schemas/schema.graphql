@@ -20,6 +20,12 @@ extend type Query {
 
   "Get an order by its reference ID (the ID shown to customers)"
   orderByReferenceId(id: ID!, shopId: ID!, token: String): Order
+
+  "Get refunds applied to an order by order ID"
+  refunds(orderId: ID!, shopId: ID!, token: String): [Refund]
+
+  "Get refunds applied to a specific payment by payment ID"
+  refundsByPaymentId(orderId: ID!, paymentId: ID!, shopId: ID!, token: String): [Refund]
 }
 
 extend type Mutation {
@@ -39,6 +45,9 @@ extend type Mutation {
   also be canceled.
   """
   cancelOrderItem(input: CancelOrderItemInput!): CancelOrderItemPayload!
+
+  "Use this mutation to create a refund on a payment method used to make the order"
+  createRefund(input: CreateRefundInput!): CreateRefundPayload!
 
   """
   Use this mutation to move one or more items between existing order fulfillment groups.
@@ -287,11 +296,17 @@ type OrderFulfillmentGroup implements Node {
   "Information needed by the selected fulfillment method to properly fulfill the order"
   data: OrderFulfillmentGroupData
 
+  "The order status for display in UI"
+  displayStatus(language: String!): String!
+
   "The items that are part of this fulfillment group"
   items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: OrderFulfillmentGroupItemsSortByField = addedAt): OrderItemConnection
 
   "The fulfillment method that was selected, with its price quote"
   selectedFulfillmentOption: FulfillmentOption!
+
+  "The shipping label URL"
+  shippingLabelUrl: String
 
   "The shop responsible for fulfilling this order"
   shop: Shop!
@@ -355,6 +370,9 @@ type Order implements Node {
   """
   referenceId: String!
 
+  "Refunds that have been applied to the payments on this order."
+  refunds: [Refund]
+
   "The shop through which the order was placed"
   shop: Shop!
 
@@ -384,6 +402,27 @@ type OrderNote {
 
   "The date and time at which this note was last updated"
   updatedAt: DateTime!
+}
+
+"A refund of a payment on an order"
+type Refund implements Node {
+  "The refund ID"
+  _id: ID!
+
+  "The amount of the refund"
+  amount: Money!
+
+  "The date and time at which the refund was created"
+  createdAt: DateTime!
+
+  "The display name of the payment refunded to"
+  paymentDisplayName: String!
+
+  "The ID of the payment this refund is applied to"
+  paymentId: ID!
+
+  "The reason for the refund"
+  reason: String
 }
 
 "Input for an `OrderFulfillmentGroupItem`"
@@ -561,6 +600,24 @@ input CancelOrderItemInput {
   reason: String
 }
 
+"Input for the cancelOrderItem mutation"
+input CreateRefundInput {
+  "Amount to cancel. Must be equal to or less than the remaining non-refunded payment amount for this payment method."
+  amount: Float!
+
+  "ID of the order that has the item you want to cancel"
+  orderId: ID!
+
+  "ID of the payment that you want to refund"
+  paymentId: ID!
+
+  """
+  An optional free text reason for refund, which may be shown to operators
+  or to the user who requested the refund.
+  """
+  reason: String
+}
+
 "Input for the placeOrder mutation"
 input PlaceOrderInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -661,6 +718,15 @@ type AddOrderFulfillmentGroupPayload {
 
 "Response payload for the cancelOrderItem mutation"
 type CancelOrderItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
+}
+
+"Response payload for the createRefund mutation"
+type CreateRefundPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 

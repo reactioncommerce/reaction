@@ -1,7 +1,7 @@
 import { decodeCartItemsOpaqueIds, decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
- * @name "Mutation.addCartItems"
+ * @name Mutation/addCartItems
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the addCartItems GraphQL mutation
@@ -13,7 +13,7 @@ import { decodeCartItemsOpaqueIds, decodeCartOpaqueId } from "@reactioncommerce/
  * @param {String} [args.input.token] - The anonymous access token that was returned from `createCart`.
  *   Required for anonymous carts.
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} AddCartItemsPayload
+ * @returns {Promise<Object>} AddCartItemsPayload
  */
 export default async function addCartItems(parentResult, { input }, context) {
   const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, token } = input;

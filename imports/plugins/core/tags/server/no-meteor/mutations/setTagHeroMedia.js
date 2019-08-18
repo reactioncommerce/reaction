@@ -9,7 +9,7 @@ import { FileRecord } from "@reactioncommerce/file-collections";
  * @summary Insert a new hero media record and attach it to a tag.
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - mutation input
- * @return {Promise<Object>} SetTagHeroMediaPayload
+ * @returns {Promise<Object>} SetTagHeroMediaPayload
  */
 export default async function setTagHeroMedia(context, input) {
   const { collections, userHasPermission } = context;

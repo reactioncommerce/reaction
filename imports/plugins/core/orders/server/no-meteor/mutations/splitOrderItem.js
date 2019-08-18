@@ -31,7 +31,7 @@ const inputSchema = new SimpleSchema({
  *   the item order right now.
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
- * @return {Promise<Object>} Object with `order` property containing the created order
+ * @returns {Promise<Object>} Object with `order` property containing the created order
  *   and `newItemId` property set to the ID of the new item
  */
 export default async function splitOrderItem(context, input) {
@@ -52,7 +52,7 @@ export default async function splitOrderItem(context, input) {
 
   // Allow split if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall && !userHasPermission(["orders"], order.shopId)) {
+  if (!isInternalCall && !userHasPermission(["orders", "order/fulfillment"], order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

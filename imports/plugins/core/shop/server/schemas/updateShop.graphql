@@ -1,0 +1,52 @@
+"Storefront route URLs to provide for the updateShop mutation"
+input StorefrontUrlsInput {
+  "Storefront Account Profile URL (can include `:accountId` in string)"
+  storefrontAccountProfileUrl: String
+
+  "Storefront Home URL"
+  storefrontHomeUrl: String
+
+  "Storefront login URL"
+  storefrontLoginUrl: String
+
+  "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
+  storefrontOrderUrl: String
+
+  "Storefront orders URL (can include `:accountId` in string)"
+  storefrontOrdersUrl: String
+}
+
+"Shop Logo URLs to provide for the updateShop mutation"
+input ShopLogoUrlsInput {
+  "Primary Shop logo"
+  primaryShopLogoUrl: String
+}
+
+"Input parameters for the updateShopLogoUrls mutation"
+input UpdateShopInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The ID of the shop for the logos to update"
+  shopId: ID!
+
+  "Object of shop logo urls "
+  shopLogoUrls: ShopLogoUrlsInput
+
+  "Object of storefront routes urls"
+  storefrontUrls: StorefrontUrlsInput
+}
+
+"The response from the `updateShopLogoUrls` mutation"
+type UpdateShopPayload {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The shop which was updated"
+  shop: Shop!
+}
+
+extend type Mutation {
+  "Given shop data, update the Shops collection with this data"
+  updateShop(input: UpdateShopInput!): UpdateShopPayload!
+}

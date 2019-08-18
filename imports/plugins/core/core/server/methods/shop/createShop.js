@@ -1,8 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
-import { Accounts, Groups, Shops } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Reaction } from "/lib/api";
 import appEvents from "/imports/node-app/core/util/appEvents";
@@ -16,7 +15,7 @@ import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
  * @method
  * @param {Object} shop - the shop to clone
  * @param {Object} partialShopData - any properties you'd like to override
- * @return {Object|null} The cloned shop object or null if a shop with that ID can't be found
+ * @returns {Object|null} The cloned shop object or null if a shop with that ID can't be found
  * @private
  */
 function cloneShop(shop, partialShopData = {}) {
@@ -60,7 +59,7 @@ function cloneShop(shop, partialShopData = {}) {
  *                 which will be merged with properties from the primary shop
  *                 in order to create a document which meets the Shops schema
  *                 requirements.
- * @return {String} return shopId
+ * @returns {String} return shopId
  */
 export default function createShop(shopAdminUserId, partialShopData) {
   check(shopAdminUserId, Match.Optional(String));
@@ -101,8 +100,8 @@ export default function createShop(shopAdminUserId, partialShopData) {
   }
 
   const currentUser = Meteor.users.findOne({ _id: userId });
-  const currentAccount = Accounts.findOne({ _id: currentUser._id });
-  if (!currentUser) {
+  const currentAccount = Accounts.findOne({ userId });
+  if (!currentUser || !currentAccount) {
     throw new ReactionError("server-error", "Unable to create shop without a user");
   }
 
@@ -143,31 +142,10 @@ export default function createShop(shopAdminUserId, partialShopData) {
 
   const newShop = Shops.findOne({ _id: newShopId });
 
-  // we should have created new shop, or errored
+  // we should have created new shop, or erred
   Logger.info("Created shop: ", newShopId);
 
-  // update user
-  Reaction.insertPackagesForShop(newShopId);
-  Reaction.createGroups({ shopId: newShopId });
-  const ownerGroup = Groups.findOne({ slug: "owner", shopId: newShopId });
-  Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, newShopId);
-  // Set the active shopId for this user
-  Reaction.setUserPreferences("reaction", "activeShopId", newShopId, shopUser._id);
-  Accounts.update({ _id: shopUser._id }, {
-    $set: {
-      shopId: newShopId
-    },
-    $addToSet: {
-      groups: ownerGroup._id
-    }
-  });
-
-  const updatedAccount = Accounts.findOne({ _id: shopUser._id });
-  Promise.await(appEvents.emit("afterAccountUpdate", {
-    account: updatedAccount,
-    updatedBy: userId,
-    updatedFields: ["groups", "shopId"]
-  }));
+  Promise.await(appEvents.emit("afterShopCreate", { createdBy: userId, shop: newShop }));
 
   // Add this shop to the merchant
   Shops.update({ _id: primaryShopId }, {

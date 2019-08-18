@@ -8,7 +8,7 @@ import getStripeApi from "./getStripeApi";
  * @summary List refunds
  * @param {Object} context an object containing the per-request state
  * @param {Object} paymentMethod object containing transaction ID
- * @return {Object} list refunds result
+ * @returns {Object} list refunds result
  * @private
  */
 export default async function stripeListRefunds(context, paymentMethod) {
@@ -25,11 +25,13 @@ export default async function stripeListRefunds(context, paymentMethod) {
   if (refundListResults && refundListResults.data) {
     for (const refund of refundListResults.data) {
       result.push({
-        type: refund.object,
+        _id: refund.id,
         amount: refund.amount / 100,
         created: refund.created * 1000,
         currency: refund.currency,
-        raw: refund
+        reason: refund.reason,
+        raw: refund,
+        type: refund.object
       });
     }
   }

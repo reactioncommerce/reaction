@@ -4,7 +4,7 @@
  * @summary Get an array of ImageInfo objects by Product ID
  * @param {String} productId -  A product ID. Must be a top-level product.
  * @param {Object} collections - Raw mongo collections
- * @return {Promise<Object[]>} Array of ImageInfo objects sorted by priority
+ * @returns {Promise<Object[]>} Array of ImageInfo objects sorted by priority
  */
 export default async function getCatalogProductMedia(productId, collections) {
   const { Media } = collections;
@@ -39,7 +39,7 @@ export default async function getCatalogProductMedia(productId, collections) {
         }
       };
     })
-    .sort((a, b) => a.priority - b.priority);
+    .sort((mediaA, mediaB) => mediaA.priority - mediaB.priority);
 
   return catalogProductMedia;
 }

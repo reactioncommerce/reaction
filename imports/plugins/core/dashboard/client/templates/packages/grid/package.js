@@ -14,7 +14,7 @@ Template.gridPackage.helpers({
   /**
    * Properties for the card
    * @see packages/reaction-ui/client/components/cards/cards.js
-   * @return {CardProps} Object of properties for the card component
+   * @returns {CardProps} Object of properties for the card component
    * @ignore
    */
   cardProps() {
@@ -71,5 +71,6 @@ Template.gridPackage.helpers({
     if (pkg.name && pkg.route && pkg.template) {
       return "showPackageManagement";
     }
+    return null;
   }
 });

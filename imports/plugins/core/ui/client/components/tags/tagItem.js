@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { i18next } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import { Button } from "/imports/plugins/core/ui/client/components";
 import { Router } from "@reactioncommerce/reaction-router";
 import { highlightInput } from "../../helpers/animations";
@@ -47,9 +47,19 @@ class TagItem extends Component {
   }
 
   /**
+   * Handle tag edit links to tag editing UI for this specific tag
+   * @returns {void} no return value
+   */
+  handleTagEdit = () => {
+    const { tag } = this.props;
+
+    Reaction.Router.go(`/operator/tags/edit/${tag._id}`);
+  }
+
+  /**
    * Handle tag form submit events and pass them up the component chain
    * @param  {Event} event Event object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagFormSubmit = (event) => {
     event.preventDefault();
@@ -60,7 +70,7 @@ class TagItem extends Component {
   /**
    * Handle tag remove events and pass them up the component chain
    * @param  {Event} event Event object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagRemove = () => {
     if (this.props.onTagRemove) {
@@ -71,7 +81,7 @@ class TagItem extends Component {
   /**
    * Handle tag update events and pass them up the component chain
    * @param  {Event} event Event object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagUpdate = (event) => {
     if (this.props.onTagUpdate && event.keyCode === 13) {
@@ -90,7 +100,7 @@ class TagItem extends Component {
   /**
    * Handle tag mouse out events and pass them up the component chain
    * @param  {Event} event Event object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagMouseOut = (event) => {
     // event.preventDefault();
@@ -101,7 +111,7 @@ class TagItem extends Component {
 
   /**
    * Handle click event on drop button and pass up the component chain
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagSelect = () => {
     if (this.props.onTagSelect) { // Pass the tag back up to the parent component
@@ -112,7 +122,7 @@ class TagItem extends Component {
   /**
    * Handle tag mouse over events and pass them up the component chain
    * @param  {Event} event Event object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagMouseOver = (event) => {
     if (this.props.onTagMouseOver) {
@@ -123,7 +133,7 @@ class TagItem extends Component {
   /**
    * Handle tag inout blur events and pass them up the component chain
    * @param  {Event} event Event object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagInputBlur = (event) => {
     if (this.props.onTagInputBlur) {
@@ -162,7 +172,7 @@ class TagItem extends Component {
 
   /**
    * Render a simple tag for display purposes only
-   * @return {JSX} simple tag
+   * @returns {JSX} simple tag
    */
   renderTag() {
     const baseClassName = classnames({
@@ -195,7 +205,7 @@ class TagItem extends Component {
 
   /**
    * Render an admin editable tag
-   * @return {JSX} editable tag
+   * @returns {JSX} editable tag
    */
   renderEditableTag() {
     const baseClassName = classnames({
@@ -214,6 +224,7 @@ class TagItem extends Component {
         >
           <form onSubmit={this.handleTagFormSubmit}>
             {this.renderAutosuggestInput()}
+            <Button icon="edit" onClick={this.handleTagEdit} status="default" />
             <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
             {this.props.isTagNav &&
               <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
@@ -226,7 +237,7 @@ class TagItem extends Component {
 
   /**
    * Render a tag creation form
-   * @return {JSX} blank tag for creating new tags
+   * @returns {JSX} blank tag for creating new tags
    */
   renderBlankEditableTag() {
     const baseClassName = classnames({
@@ -251,7 +262,7 @@ class TagItem extends Component {
 
   renderSuggestion(suggestion) {
     return (
-      <span>{suggestion.label}</span>
+      <span>{suggestion.label} ({suggestion.slug})</span>
     );
   }
 
@@ -284,7 +295,7 @@ class TagItem extends Component {
 
   /**
    * Render component
-   * @return {JSX} tag component
+   * @returns {JSX} tag component
    */
   render() {
     if (this.props.blank) {

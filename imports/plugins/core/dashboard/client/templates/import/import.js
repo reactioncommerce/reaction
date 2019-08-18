@@ -4,13 +4,18 @@ import { Logger, Reaction } from "/client/api";
 import { Products } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
 
+/**
+ * @description handles uploading a file record
+ * @param {event} event the JS event
+ * @returns {undefined}
+ */
 function uploadHandler(event) {
   const shopId = Reaction.getShopId();
   const userId = Reaction.getUserId();
   const { files } = event.target.files;
 
-  for (let i = 0; i < files.length; i += 1) {
-    const parts = files[i].name.split(".");
+  for (let inc = 0; inc < files.length; inc += 1) {
+    const parts = files[inc].name.split(".");
     let product;
     if (parts[0]) {
       product = Products.findOne({
@@ -24,7 +29,7 @@ function uploadHandler(event) {
       });
     }
     if (product) {
-      const fileRecord = FileRecord.fromFile(files[i]);
+      const fileRecord = FileRecord.fromFile(files[inc]);
       fileRecord.metadata = {
         ownerId: userId,
         productId: product._id,

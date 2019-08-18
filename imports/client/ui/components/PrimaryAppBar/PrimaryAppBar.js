@@ -12,10 +12,13 @@ import { UIContext } from "../../context/UIContext";
 
 const styles = (theme) => ({
   action: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   },
   primarySidebarOpen: {
     ...theme.mixins.leadingPaddingWhenPrimaryDrawerIsOpen
+  },
+  detailDrawerOpen: {
+    ...theme.mixins.trailingPaddingWhenDetailDrawerIsOpen
   },
   title: {
     flex: 1
@@ -31,13 +34,17 @@ const styles = (theme) => ({
 function PrimaryAppBar({ children, classes, title }) {
   return (
     <UIContext.Consumer>
-      {({ isMobile, isPrimarySidebarOpen, onTogglePrimarySidebar }) => {
+      {({ isMobile, isDetailDrawerOpen, isPrimarySidebarOpen, onTogglePrimarySidebar }) => {
         const toolbarClassName = classNames({
-          // Add padding to the right when the primary sidebar is open,
+          // Add padding to the left when the primary sidebar is open,
           // only if we're on desktop. On mobile the sidebar floats over
           // the content like a modal that's docked to either the left
           // or right side of the screen.
-          [classes.primarySidebarOpen]: isPrimarySidebarOpen && !isMobile
+          [classes.primarySidebarOpen]: isPrimarySidebarOpen && !isMobile,
+
+          // Add padding to the right when the detail sidebar is open.
+          // Omit on mobile as the sidebar will float over content.
+          [classes.detailDrawerOpen]: isDetailDrawerOpen && !isMobile
         });
 
         return (
@@ -51,7 +58,7 @@ function PrimaryAppBar({ children, classes, title }) {
               <Typography
                 className={classes.title}
                 component="h1"
-                variant="h6"
+                variant="h3"
               >
                 {title}
               </Typography>

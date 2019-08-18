@@ -9,7 +9,8 @@ class Popover extends Component {
     isOpen: false
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.isControlled) {
       this.setState({
         isOpen: nextProps.isOpen
@@ -28,7 +29,7 @@ class Popover extends Component {
   /**
    * attachment
    * @description Return the attachment for the tooltip or the default
-   * @return {String} attachment
+   * @returns {String} attachment
    */
   get attachment() {
     return this.props.attachment || Components.Tooltip.defaultProps.attachment;

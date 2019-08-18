@@ -1,10 +1,24 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { withComponents } from "@reactioncommerce/components-context";
-import { CustomPropTypes } from "@reactioncommerce/components/utils";
-import { Components } from "@reactioncommerce/reaction-components";
-import { formatPriceString, i18next } from "/client/api";
-import CurrencyDefinitions from "/imports/utils/CurrencyDefinitions";
+import { Mutation } from "react-apollo";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { i18next, Reaction } from "/client/api";
+import capitalizeString from "/imports/utils/capitalizeString";
+import { isPaymentRiskElevated } from "../helpers";
+import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
+import Button from "/imports/client/ui/components/Button";
+import captureOrderPaymentsMutation from "../graphql/mutations/captureOrderPayments";
+
+const styles = (theme) => ({
+  dangerText: {
+    color: theme.palette.colors.red
+  },
+  extraEmphasisText: {
+    fontWeight: theme.typography.fontWeightSemiBold
+  }
+});
 
 const displayStatuses = {
   approved: "Approved",
@@ -16,192 +30,128 @@ const displayStatuses = {
   refunded: "Fully refunded"
 };
 
-class OrderPayment extends Component {
-  static propTypes = {
-    /**
-     * If you've set up a components context using
-     * [@reactioncommerce/components-context](https://github.com/reactioncommerce/components-context)
-     * (recommended), then this prop will come from there automatically. If you have not
-     * set up a components context or you want to override one of the components in a
-     * single spot, you can pass in the components prop directly.
-     */
-    components: PropTypes.shape({
-      /**
-       * Button component used for payment buttons
-       */
-      Button: CustomPropTypes.component.isRequired
-    }),
-    /**
-     * True if currently capturing this payment
-     */
-    isCapturing: PropTypes.bool,
-    /**
-     * True while a refund is being created
-     */
-    isRefunding: PropTypes.bool,
-    /**
-     * Function to be called when "Approve" is clicked for a payment
-     */
-    onApprovePayment: PropTypes.func.isRequired,
-    /**
-     * Function to be called when "Capture" is clicked for a payment
-     */
-    onCapturePayment: PropTypes.func.isRequired,
-    /**
-     * Function to be called when a refund is requested for a payment
-     */
-    onRefundPayment: PropTypes.func.isRequired,
-    /**
-     * Payment details
-     */
-    payment: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      amount: PropTypes.number.isRequired,
-      captureErrorMessage: PropTypes.string,
-      currencyCode: PropTypes.string.isRequired,
-      displayName: PropTypes.string.isRequired,
-      processor: PropTypes.string.isRequired,
-      status: PropTypes.string.isRequired,
-      transactionId: PropTypes.string.isRequired
-    }).isRequired,
-    /**
-     * The payment method definition
-     */
-    paymentMethod: PropTypes.shape({
-      canRefund: PropTypes.bool.isRequired
-    }),
-    /**
-     * List of refunds
-     */
-    refunds: PropTypes.arrayOf(PropTypes.shape({
-      amount: PropTypes.number.isRequired,
-      paymentId: PropTypes.string.isRequired
-    }))
+/**
+ * @name OrderPayment
+ * @param {Object} props Component props
+ * @returns {React.Component} returns a React component
+ */
+function OrderPayment(props) {
+  const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
+  const { classes, order, payment } = props;
+  const { amount, captureErrorMessage, displayName, processor, riskLevel, status, transactionId } = payment;
+  const canCapturePayment = payment.mode !== "captured";
+
+  const handleCapturePayment = (mutation) => {
+    const { capturePayments } = props;
+
+    if (hasPermission) {
+      capturePayments(mutation, [payment._id]);
+    }
   };
 
-  static defaultProps = {
-    isCapturing: false
-  };
-
-  state = {
-    isApproving: false,
-    value: 0
+  let capturePaymentButton;
+  if (hasPermission && canCapturePayment) {
+    // If any payment we are trying to capture has an elevated risk,
+    // prompt user to make sure they want to capture payment
+    if (isPaymentRiskElevated(order, [payment._id])) {
+      capturePaymentButton =
+        <Grid item xs={12}>
+          <Mutation mutation={captureOrderPaymentsMutation}>
+            {(mutationFunc, { loading }) => (
+              <ConfirmButton
+                buttonColor="primary"
+                buttonText={i18next.t("order.capturePayment", "Capture payment")}
+                buttonVariant="outlined"
+                cancelActionText={i18next.t("app.close", "Close")}
+                confirmActionText={i18next.t("order.capturePayment", "Capture payment")}
+                isWaiting={loading}
+                title={i18next.t("order.capturePayment", "Capture payment")}
+                message={
+                  i18next.t(
+                    "reaction-payments.captureOneElevatedRiskWarning",
+                    "The payment you are attempting to capture has an elevated charge risk. Do you want to proceed?"
+                  )
+                }
+                onConfirm={() => handleCapturePayment(mutationFunc)}
+                size="small"
+              />
+            )}
+          </Mutation>
+        </Grid>
+      ;
+    } else {
+      capturePaymentButton =
+        <Grid item xs={12}>
+          <Mutation mutation={captureOrderPaymentsMutation}>
+            {(mutationFunc, { loading }) => (
+              <Button
+                color="primary"
+                isWaiting={loading}
+                onClick={() => handleCapturePayment(mutationFunc)}
+                size="small"
+                variant="outlined"
+              >
+                {i18next.t("order.capturePayment", "Capture payment")}
+              </Button>
+            )}
+          </Mutation>
+        </Grid>
+      ;
+    }
   }
 
-  componentDidMount() {
-    this._isMounted = true;
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  handleClickApprove = async () => {
-    const { onApprovePayment, payment } = this.props;
-
-    this.setState({ isApproving: true });
-
-    await onApprovePayment(payment._id);
-
-    if (this._isMounted) this.setState({ isApproving: false });
-  }
-
-  handleClickCapture = async () => {
-    const { onCapturePayment, payment } = this.props;
-
-    return onCapturePayment(payment._id);
-  }
-
-  handleClickRefund = async () => {
-    const { onRefundPayment, payment } = this.props;
-
-    await onRefundPayment(payment._id, this.state.value);
-
-    if (this._isMounted) this.setState({ value: 0 });
-  }
-
-  renderRefundForm() {
-    const {
-      components: { Button },
-      payment,
-      isRefunding
-    } = this.props;
-
-    return (
-      <div className="flex refund-container">
-        <div className="refund-input">
-          <Components.NumericInput
-            numericType="currency"
-            value={this.state.value}
-            format={CurrencyDefinitions[payment.currencyCode]}
-            classNames={{
-              input: {
-                amount: true
-              }
-            }}
-            onChange={(event, value) => {
-              this.setState({ value });
-            }}
-          />
-        </div>
-
-        <Button
-          isDisabled={this.state.value === 0}
-          isShortHeight
-          isWaiting={isRefunding}
-          onClick={this.handleClickRefund}
-        >
-          {i18next.t("order.applyRefund")}
-        </Button>
-      </div>
-    );
-  }
-
-  renderStatus(status) {
-    return displayStatuses[status];
-  }
-
-  render() {
-    const { components: { Button }, isCapturing, payment, paymentMethod, refunds } = this.props;
-    const { isApproving } = this.state;
-    const { _id, amount, captureErrorMessage, displayName, processor, status, transactionId } = payment;
-    const refundTotal = (refunds || []).reduce((acc, item) => acc + item.amount, 0);
-
-    return (
-      <div key={_id} className="order-payment-list-item">
-        <div><strong>{displayName}</strong></div>
-        <div><strong data-i18n="order.processor">Processor: </strong> {processor}</div>
-        <div><strong data-i18n="order.transaction">Transaction ID:</strong> {transactionId}</div>
-        <div><strong data-i18n="order.amount">Amount:</strong> {formatPriceString(amount)}</div>
-        {!!refundTotal && <div><strong data-i18n="order.refundAmount">Refunded Amount:</strong> {formatPriceString(refundTotal)}</div>}
-        <div><strong data-i18n="order.status">Status:</strong> {this.renderStatus(status)}</div>
-        {!!captureErrorMessage && <div>{captureErrorMessage}</div>}
-        <div className="order-payment-action-area">
-          {["created", "adjustments"].indexOf(status) > -1 &&
-            <Button
-              actionType="important"
-              isFullWidth
-              isWaiting={isApproving}
-              onClick={this.handleClickApprove}
-            >
-              {i18next.t("order.approveInvoice")}
-            </Button>
-          }
-          {["approved", "error"].indexOf(payment.status) > -1 &&
-            <Button
-              actionType="important"
-              isFullWidth
-              isWaiting={isCapturing}
-              onClick={this.handleClickCapture}
-            >
-              {i18next.t("order.capturePayment")}
-            </Button>
-          }
-          {!!paymentMethod && paymentMethod.canRefund && ["completed", "partialRefund"].indexOf(status) > -1 && this.renderRefundForm()}
-        </div>
-      </div>
-    );
-  }
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={6} md={6}>
+        <Typography paragraph variant="h4">
+          {displayName}
+        </Typography>
+        {riskLevel && riskLevel !== "normal" && payment.mode !== "captured" &&
+          <Typography className={classes.dangerText} variant="body2">
+            Payment risk level: {capitalizeString(riskLevel)}
+          </Typography>
+        }
+        <Typography variant="body2">
+          Processor: {processor}
+        </Typography>
+        <Typography variant="body2">
+          Transaction ID: {transactionId}
+        </Typography>
+        <Typography variant="body2" paragraph>
+          Status: {displayStatuses[status]}
+        </Typography>
+        { captureErrorMessage &&
+          <Typography className={classes.dangerText} variant="body2" paragraph>
+            Capture error: {captureErrorMessage}
+          </Typography>
+        }
+      </Grid>
+      <Grid item xs={6} md={6}>
+        <Typography className={classes.extraEmphasisText} variant="body1" align="right">
+          {amount.displayAmount}
+        </Typography>
+      </Grid>
+      {capturePaymentButton}
+    </Grid>
+  );
 }
 
-export default withComponents(OrderPayment);
+OrderPayment.propTypes = {
+  capturePayments: PropTypes.func,
+  classes: PropTypes.object,
+  order: PropTypes.object,
+  payment: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    amount: PropTypes.shape({
+      displayAmount: PropTypes.string
+    }).isRequired,
+    captureErrorMessage: PropTypes.string,
+    displayName: PropTypes.string.isRequired,
+    processor: PropTypes.string.isRequired,
+    riskLevel: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    transactionId: PropTypes.string.isRequired
+  }).isRequired
+};
+
+export default withStyles(styles, { name: "RuiOrderPayment" })(OrderPayment);

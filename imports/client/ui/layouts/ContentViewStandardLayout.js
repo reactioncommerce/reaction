@@ -11,22 +11,26 @@ const styles = (theme) => ({
   },
   content: {
     maxWidth: 1140,
-    paddingTop: theme.mixins.toolbar.minHeight + (theme.spacing.unit * 2),
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingTop: theme.mixins.toolbar.minHeight + (theme.spacing(2)),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     margin: "0 auto"
   },
-  leftSidebarOpen: {
-    paddingLeft: theme.spacing.drawerWidth
+  leadingDrawerOpen: {
+    paddingLeft: theme.dimensions.drawerWidth
+  },
+  trailingDrawerOpen: {
+    paddingRight: theme.dimensions.detailDrawerWidth
   }
 });
 
-const ContentViewStandardLayout = ({ children, classes, isSidebarOpen }) => (
+const ContentViewStandardLayout = ({ children, classes, isLeadingDrawerOpen, isTrailingDrawerOpen }) => (
   <div
     className={
       classNames(classes.root, {
-        [classes.leftSidebarOpen]: isSidebarOpen
+        [classes.leadingDrawerOpen]: isLeadingDrawerOpen,
+        [classes.trailingDrawerOpen]: isTrailingDrawerOpen
       })
     }
   >
@@ -39,8 +43,9 @@ const ContentViewStandardLayout = ({ children, classes, isSidebarOpen }) => (
 ContentViewStandardLayout.propTypes = {
   children: PropTypes.node,
   classes: PropTypes.object,
+  isLeadingDrawerOpen: PropTypes.bool,
   isMobile: PropTypes.bool,
-  isSidebarOpen: PropTypes.bool
+  isTrailingDrawerOpen: PropTypes.bool
 };
 
 export default withStyles(styles, { name: "RuiContentViewStandardLayout" })(ContentViewStandardLayout);

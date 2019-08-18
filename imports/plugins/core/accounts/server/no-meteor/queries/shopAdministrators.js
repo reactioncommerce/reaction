@@ -7,7 +7,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary return Account object for all users who are "owner" or "admin" role for the shop
  * @param {Object} context - an object containing the per-request state
  * @param {String} id - ID of shop
- * @return {Object[]} Array of user account objects
+ * @returns {Object[]} Array of user account objects
  */
 export default async function shopAdministratorsQuery(context, id) {
   const { collections, userHasPermission } = context;

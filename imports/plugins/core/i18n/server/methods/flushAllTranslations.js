@@ -8,7 +8,7 @@ import { reloadAllTranslations } from "/imports/plugins/core/core/server/startup
  * @memberof i18n
  * @example Meteor.call("i18n/flushAllTranslations")
  * @summary Method to remove all translations for all shops, and reload from jsonFiles
- * @return {undefined}
+ * @returns {undefined}
  */
 export default function flushAllTranslations() {
   if (!Reaction.hasPermission("admin", Reaction.getUserId(), Reaction.getPrimaryShopId())) {

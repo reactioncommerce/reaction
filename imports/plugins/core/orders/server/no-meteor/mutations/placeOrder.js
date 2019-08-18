@@ -3,7 +3,7 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
+import { getAnonymousAccessToken } from "../util/anonymousToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
@@ -156,7 +156,7 @@ async function createPayments({
  * @summary Places an order, authorizing all payments first
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
- * @return {Promise<Object>} Object with `order` property containing the created order
+ * @returns {Promise<Object>} Object with `order` property containing the created order
  */
 export default async function placeOrder(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
@@ -246,14 +246,13 @@ export default async function placeOrder(context, input) {
   });
 
   // Create anonymousAccessToken if no account ID
-  const anonymousAccessToken = accountId ? null : Random.secret();
+  const fullToken = accountId ? null : getAnonymousAccessToken();
 
   const now = new Date();
 
   const order = {
     _id: orderId,
     accountId,
-    anonymousAccessToken: anonymousAccessToken && hashLoginToken(anonymousAccessToken),
     billingAddress,
     cartId,
     createdAt: now,
@@ -271,6 +270,13 @@ export default async function placeOrder(context, input) {
       workflow: ["new"]
     }
   };
+
+  if (fullToken) {
+    const dbToken = { ...fullToken };
+    // don't store the raw token in db, only the hash
+    delete dbToken.token;
+    order.anonymousAccessTokens = [dbToken];
+  }
 
   let referenceId;
   const createReferenceIdFunctions = getFunctionsOfType("createOrderReferenceId");
@@ -318,6 +324,7 @@ export default async function placeOrder(context, input) {
 
   return {
     orders: [order],
-    token: anonymousAccessToken
+    // GraphQL response gets the raw token
+    token: fullToken && fullToken.token
   };
 }

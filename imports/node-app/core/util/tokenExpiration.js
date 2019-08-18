@@ -11,7 +11,7 @@ const tokenLifetimeMs = LOGIN_UNEXPIRING_TOKEN_DAYS * 24 * 60 * 60 * 1000;
  * @memberof GraphQL
  * @summary Meteor's Accounts._tokenExpiration
  * @param {Date} when - A date from which token expiration date should be calculated
- * @return {Date} A date that is `tokenLifetimeMs` after the "when" date
+ * @returns {Date} A date that is `tokenLifetimeMs` after the "when" date
  */
 export default function tokenExpiration(when) {
   // We pass when through the Date constructor for backwards compatibility;

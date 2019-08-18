@@ -16,7 +16,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  *                 This address must be in the user's emails list.
  *                 Defaults to the first unverified email in the list.
  * @param {String} [input.bodyTemplate] Template name for rendering the email body
- * @return {Job} - returns a sendEmail Job instance
+ * @returns {Job} - returns a sendEmail Job instance
  */
 export default async function sendVerificationEmail({
   bodyTemplate = "accounts/verifyEmail",
@@ -24,18 +24,15 @@ export default async function sendVerificationEmail({
   userId
 }) {
   // Make sure the user exists, and email is one of their addresses.
-  const user = Meteor.users.findOne(userId);
+  const user = Meteor.users.findOne({ _id: userId });
 
-  if (!user) {
-    Logger.error("sendVerificationEmail - User not found");
-    throw new ReactionError("not-found", "User not found");
-  }
+  if (!user) throw new ReactionError("not-found", `User ${userId} not found`);
 
   let address = email;
 
   // pick the first unverified address if no address provided.
   if (!email) {
-    const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
+    const unverifiedEmail = _.find(user.emails || [], (item) => !item.verified) || {};
 
     ({ address } = unverifiedEmail);
 

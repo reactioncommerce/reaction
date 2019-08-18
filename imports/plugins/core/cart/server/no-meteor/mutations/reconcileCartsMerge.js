@@ -11,7 +11,7 @@ import addCartItems from "../util/addCartItems";
  * @param {Object} anonymousCart The anonymous cart document
  * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
  * @param {Object} context App context
- * @return {Object} The updated account cart
+ * @returns {Object} The updated account cart
  */
 export default async function reconcileCartsMerge({
   accountCart,

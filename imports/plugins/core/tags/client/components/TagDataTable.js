@@ -10,7 +10,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import styled from "styled-components";
 import Select from "@reactioncommerce/components/Select/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import { i18next } from "/client/api";
 import { pagination } from "./util/pagination";
 import TagTableSelect from "./TagTableSelect";
@@ -117,13 +117,15 @@ class TagDataTable extends Component {
         ? String(row[id].toLowerCase()).includes(filter.value.toLowerCase())
         : true);
     }
+
+    return null;
   }
 
   /**
    * @name handleFilterInput
    * @summary Update state when filter is changed
-   * @param {string} value text field input
-   * @return {function} state for field value
+   * @param {String} value text field input
+   * @returns {function} state for field value
    */
   handleFilterInput = (value) => {
     this.setState({
@@ -154,8 +156,8 @@ class TagDataTable extends Component {
   /**
    * @name handleClick
    * @summary Handle click on table row
-   * @param {object} rowInfo row data passed in from ReactTable
-   * @return {function} return onRowClick function prop, or undefined if not supplied
+   * @param {Object} rowInfo row data passed in from ReactTable
+   * @returns {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
     const { onRowClick } = this.props;
@@ -175,9 +177,9 @@ class TagDataTable extends Component {
   /**
    * @name handleCellClick
    * @summary Handle click on table cell
-   * @param {object} rowInfo row data passed in from ReactTable
-   * @param {object} column Column data
-   * @return {function} return onRowClick function prop, or undefined if not supplied
+   * @param {Object} rowInfo row data passed in from ReactTable
+   * @param {Object} column Column data
+   * @returns {function} return onRowClick function prop, or undefined if not supplied
    */
   handleCellClick(rowInfo, column) {
     const { onCellClick } = this.props;
@@ -232,23 +234,21 @@ class TagDataTable extends Component {
    * @param {Number} numRows Number of rows in current set of data
    * @returns {node} returns JSX node or null
    */
-  renderTableFilter(numRows) {
+  renderTableFilter() {
     const { filterType } = this.props;
 
-    if (numRows !== 0) {
-      if (filterType === "both" || filterType === "table") {
-        return (
-          <FilterTextInput>
-            <TextInput
-              placeholder={i18next.t("reactionUI.components.sortableTable.filterPlaceholder", { defaultValue: "Filter Data" })}
-              onChanging={this.handleFilterInput}
-              value={this.state.filterInput}
-              name="filterInput"
-            />
-          </FilterTextInput>
+    if (filterType === "both" || filterType === "table") {
+      return (
+        <FilterTextInput>
+          <TextInput
+            placeholder={i18next.t("reactionUI.components.sortableTable.filterPlaceholder", { defaultValue: "Filter Data" })}
+            onChanging={this.handleFilterInput}
+            value={this.state.filterInput}
+            name="filterInput"
+          />
+        </FilterTextInput>
 
-        );
-      }
+      );
     }
 
     return null;
@@ -338,7 +338,7 @@ class TagDataTable extends Component {
    * @name selectedRowsClassName
    * @method
    * @summary If any rows are selected, give them a className of "selected-row"
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @returns {String} className to apply to row that is selected, or empty string if no row is selected
    */
   selectedRowsClassName(rowInfo) {
@@ -359,7 +359,7 @@ class TagDataTable extends Component {
    * @method
    * @summary This function displays a 'No Results Found' when there is no data to populate the table
    * @param {Number} numRows Number of rows in current set of data
-   * @return {node} returns a JSX node or empty string
+   * @returns {node} returns a JSX node or empty string
    */
   displayNoResultsFound(numRows) {
     let displayText = "";
@@ -445,8 +445,10 @@ class TagDataTable extends Component {
 
   render() {
     const { query, variables: variablesProp, defaultPageSize, ...otherProps } = this.props;
+    const { filterInput } = this.state;
     const defaultClassName = "-striped -highlight";
     const variables = {
+      filter: filterInput || null,
       first: defaultPageSize,
       ...variablesProp
     };
@@ -503,7 +505,7 @@ class TagDataTable extends Component {
           return (
             <TableContainer>
               <TableHeader>
-                {resultCount > 0 && this.renderBulkActionsSelect()}
+                {this.renderBulkActionsSelect()}
                 {this.renderTableFilter(resultCount)}
               </TableHeader>
               <CheckboxTable
@@ -560,19 +562,17 @@ class TagDataTable extends Component {
               />
               <PaginationContainer>
                 <Button
-                  isShortHeight
+                  size="small"
                   onClick={loadPreviousPage}
-                  isDisabled={!hasPreviousPage}
-                  isTextOnly
+                  disabled={!hasPreviousPage}
                 >
                   <ChevronLeftIcon />
                   {i18next.t("admin.routing.tableText.previousText")}
                 </Button>
                 <Button
-                  isShortHeight
+                  size="small"
                   onClick={loadNextPage}
-                  isDisabled={!hasNextPage}
-                  isTextOnly
+                  disabled={!hasNextPage}
                 >
                   {i18next.t("admin.routing.tableText.nextText")}
                   <ChevronRightIcon />
@@ -605,7 +605,7 @@ class TagDataTable extends Component {
   * @property {object} query GraphQL query object
   * @property {Array} selectedRows provides selected rows in the table
   * @property {Function} transform transform of collection for grid results
-  * @return {Array} React propTypes
+  * @returns {Array} React propTypes
   */
 TagDataTable.propTypes = {
   bulkActions: PropTypes.arrayOf(PropTypes.shape({

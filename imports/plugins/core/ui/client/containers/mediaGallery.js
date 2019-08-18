@@ -36,7 +36,8 @@ const wrapComponent = (Comp) => (
       };
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       // We need to do this logic only if we've temporarily set media in state for latency compensation
       if (!this.state.media) return;
 
@@ -128,6 +129,7 @@ const wrapComponent = (Comp) => (
       });
     };
 
+    // eslint-disable-next-line consistent-return
     handleUpload = (files) => {
       const productId = ReactionProduct.selectedProductId();
       const variant = ReactionProduct.selectedVariant();
@@ -212,10 +214,14 @@ const wrapComponent = (Comp) => (
   }
 );
 
-// resort the media in
+/**
+ * @description re-sort the media
+ * @param {Array} media media to sort
+ * @returns {Array} sorted media
+ */
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, (m) => {
-    const { priority } = (m && m.metadata) || {};
+  const sortedMedia = _.sortBy(media, (med) => {
+    const { priority } = (med && med.metadata) || {};
     if (!priority && priority !== 0) {
       return 1000;
     }
@@ -232,7 +238,7 @@ function sortMedia(media) {
  */
 function composer(props, onData) {
   onData(null, {
-    editable: Reaction.hasPermission(props.permission || ["createProduct"]),
+    editable: Reaction.hasPermission(props.permission || ["createProduct", "product/admin", "product/update"]),
     media: sortMedia(props.media)
   });
 }

@@ -1,7 +1,7 @@
 import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
- * @name "Mutation.setEmailOnAnonymousCart"
+ * @name Mutation/setEmailOnAnonymousCart
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the setEmailOnAnonymousCart GraphQL mutation
@@ -12,7 +12,7 @@ import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/ca
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {String} args.input.email - The email address to associate with this cart
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} SetEmailOnAnonymousCartPayload
+ * @returns {Promise<Object>} SetEmailOnAnonymousCartPayload
  */
 export default async function setEmailOnAnonymousCart(parentResult, { input }, context) {
   const {

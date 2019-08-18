@@ -53,7 +53,7 @@ class ReactionLayout extends Component {
                 ...(child.props || {}),
                 ...this.props.layoutProps
               });
-            } catch (e) {
+            } catch (error) {
               return null;
             }
           }
@@ -112,6 +112,12 @@ ReactionLayout.propTypes = {
   layoutProps: PropTypes.object
 };
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const sub = Meteor.subscribe("Templates");
 

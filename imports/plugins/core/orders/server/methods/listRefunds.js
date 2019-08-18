@@ -12,7 +12,7 @@ import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/ser
  * @method
  * @memberof Orders/Methods
  * @param {Object} order - order object
- * @return {Array} Array contains refund records
+ * @returns {Array} Array contains refund records
  */
 export default function listRefunds(order) {
   check(order, Object);

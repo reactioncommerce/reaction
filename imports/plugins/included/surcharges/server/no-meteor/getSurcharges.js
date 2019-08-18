@@ -7,7 +7,7 @@ import { surchargeCheck } from "./util/surchargeCheck";
  * @summary Returns a list of surcharges to apply based on the cart.
  * @param {Object} context - Context
  * @param {Object} cart - the user's cart
- * @return {Array} - an array that surcharges to apply to cart / order
+ * @returns {Array} - an array that surcharges to apply to cart / order
  * @private
  */
 export default async function getSurcharges(context, { commonOrder }) {

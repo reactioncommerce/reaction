@@ -27,6 +27,10 @@ const handlers = {
       return updateMethodCall(groupId);
     };
 
+    /**
+     * @param {String} groupId groupId
+     * @returns {undefined} undefined
+     */
     function updateMethodCall(groupId) {
       Meteor.call("group/addUser", account._id, groupId, (err) => {
         if (err) {
@@ -39,6 +43,9 @@ const handlers = {
       });
     }
 
+    /**
+     * @returns {Component} Alert component
+     */
     function alertConfirm() {
       let changeOwnerWarn = "changeShopOwnerWarn";
       if (Reaction.getShopId() === Reaction.getPrimaryShopId()) {
@@ -66,6 +73,9 @@ const handlers = {
         })
         .catch(() => false);
 
+      /**
+       * @returns {undefined} undefined
+       */
       function removeMethodCall() {
         Meteor.call("group/removeUser", account._id, groupId, (err) => {
           if (err) {
@@ -76,6 +86,9 @@ const handlers = {
       }
     };
 
+    /**
+     * @returns {Component} Alert component
+     */
     function alertConfirm() {
       return Alert({
         title: i18next.t("admin.settings.removeUser"),
@@ -98,21 +111,16 @@ const composer = (props, onData) => {
       shopId: Reaction.getShopId()
     }).fetch();
 
-    const adminQuery = {
-      [`roles.${shopId}`]: {
-        $in: ["dashboard"]
-      }
-    };
-
-    const adminUsers = Meteor.users.find(adminQuery, { fields: { _id: 1 } }).fetch();
-    const ids = adminUsers.map((user) => user._id);
-    const accounts = Accounts.find({ userId: { $in: ids } }).fetch();
     const adminGroups = groups.reduce((admGrps, group) => {
       if (group.slug !== "customer" && group.slug !== "guest") {
         admGrps.push(group);
       }
       return admGrps;
     }, []);
+
+    const adminGroupIds = adminGroups.map((adminGroup) => adminGroup._id);
+
+    const accounts = Accounts.find({ groups: { $in: adminGroupIds } }).fetch();
 
     onData(null, { accounts, groups, adminGroups });
   }

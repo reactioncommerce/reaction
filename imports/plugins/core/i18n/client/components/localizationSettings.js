@@ -32,7 +32,8 @@ class LocalizationSettings extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       currencies: nextProps.currencies,
       languages: nextProps.languages
@@ -72,7 +73,7 @@ class LocalizationSettings extends Component {
   }
 
   renderCurrencies() {
-    return this.props.currencies.map((currency, key) => (
+    return this.props.currencies.sort((currencyA, currencyB) => currencyA.name.localeCompare(currencyB.name)).map((currency, key) => (
       <Components.ListItem
         actionType={"switch"}
         key={key}
@@ -152,8 +153,8 @@ class LocalizationSettings extends Component {
         {name === "language" && "|"}
         {name === "language" &&
           <Components.FlatButton
-            i18nKeyTooltip={"admin.i18nSettings.reloadTranslations"}
-            tooltip={"Reload translations asdasdasdasdasd"}
+            i18nKeyTooltip="admin.i18nSettings.reloadTranslations"
+            tooltip="Reload translations"
             tooltipAttachment="middle left"
             icon="fa fa-refresh"
             onClick={this.handleReloadTranslations}
@@ -198,6 +199,9 @@ class LocalizationSettings extends Component {
               language: {
                 type: "select",
                 options: this.props.enabledLanguages
+              },
+              allowCustomUserLocale: {
+                type: "boolean"
               }
             }}
             name="localization"

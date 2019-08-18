@@ -2,6 +2,26 @@ import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 
 /**
+ * @method isPaymentRiskElevated
+ * @private
+ * @summary Gets the riskLevel on each payment object of an order, and checks if any payment has an elevated risk.
+ * @param {Object} order - order object
+ * @param {Array} paymentIds - paymentIds to check
+ * @returns {boolean} is there an elevated risk level value for any payment on this order?
+ * */
+export function isPaymentRiskElevated(order, paymentIds) {
+  const paymentsToAssessRisk = (order.payments || []).filter((payment) => paymentIds.includes(payment._id) && payment.mode !== "captured");
+  const isPaymentNormalRisk = paymentsToAssessRisk.every((payment) => !payment.riskLevel || payment.riskLevel === "normal");
+
+  return !isPaymentNormalRisk;
+}
+
+
+// Below here are deprecated Meteor helpers.
+// Keep them for now, but they can be removed once
+// meteor is completely removed from the orders panel.
+
+/**
  * @param {String} orderId The order ID
  * @param {String} paymentId The ID of the payment to approve
  * @returns {Promise<null>} null
@@ -22,8 +42,8 @@ export async function approvePayment(orderId, paymentId) {
  * @method getOrderRiskBadge
  * @private
  * @summary Selects appropriate color badge (e.g  danger, warning) value based on risk level
- * @param {string} riskLevel - risk level value on the payment
- * @return {string} label - style color class based on risk level
+ * @param {String} riskLevel - risk level value on the payment
+ * @returns {string} label - style color class based on risk level
  */
 export function getOrderRiskBadge(riskLevel) {
   let label;
@@ -45,8 +65,8 @@ export function getOrderRiskBadge(riskLevel) {
  * @private
  * @summary Gets the risk label on the payment object for a shop on an order.
  * An empty string is returned if the value is "normal" because we don't flag a normal charge
- * @param {object} order - order object
- * @return {string} label - risk level value (if risk level is not normal)
+ * @param {Object} order - order object
+ * @returns {string} label - risk level value (if risk level is not normal)
  */
 export function getOrderRiskStatus(order) {
   const groupForShop = order.shipping.find((group) => group.shopId === Reaction.getShopId());
@@ -64,8 +84,8 @@ export function getOrderRiskStatus(order) {
  * @method getTaxRiskStatus
  * @private
  * @summary Gets the tax status of the order.
- * @param {object} order - order object
- * @return {boolean} label - true if the tax was not submitted by user.
+ * @param {Object} order - order object
+ * @returns {boolean} label - true if the tax was not submitted by user.
  */
 export function getTaxRiskStatus(order) {
   return order.bypassAddressValidation;
@@ -77,7 +97,7 @@ export function getTaxRiskStatus(order) {
  * @memberof Helpers
  * @summary get query for a given filter
  * @param {String} filter - filter string to check against
- * @return {Object} query for the workflow status
+ * @returns {Object} query for the workflow status
  */
 export function filterWorkflowStatus(filter) {
   let query = {};
@@ -137,7 +157,7 @@ export function filterWorkflowStatus(filter) {
  * @memberof Helpers
  * @summary get query for a given filter
  * @param {String} filter - filter string to check against
- * @return {Object} query for the shipping status
+ * @returns {Object} query for the shipping status
  */
 export function filterShippingStatus(filter) {
   let query = {};
@@ -178,7 +198,7 @@ export function filterShippingStatus(filter) {
  * @memberof Helpers
  * @summary get proper shipping object as per current active shop
  * @param {Object} order - order object to check against
- * @return {Object} proper shipping object to use
+ * @returns {Object} proper shipping object to use
  */
 export function getShippingInfo(order) {
   const shippingInfo = order && order.shipping && order.shipping.find((group) => group.shopId === Reaction.getShopId());

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { at, get, isEqual, set, update } from "lodash";
@@ -25,7 +26,7 @@ class Form extends Component {
   * @property {Func} onSubmit
   * @property {Boolean} renderFromFields - this controls whether form is rendered from schema or from fields.
   * @property {Object} schema - the schema used for validation and rendering.
-  * @return {Array} React propTypes
+  * @returns {Array} React propTypes
   * @ignore
   */
   static propTypes = {
@@ -51,7 +52,8 @@ class Form extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (isEqual(nextProps.doc, this.props.doc) === false) {
       this.setState({
         doc: nextProps.doc,
@@ -146,7 +148,7 @@ class Form extends Component {
   }
 
   handleMultiSelectChange = (value, name) => {
-    this.handleChange(new Event("onMultiSelect"), value.map((v) => v.value), name);
+    this.handleChange(new Event("onMultiSelect"), value.map((val) => val.value), name);
   }
 
   handleSubmit = async (event) => {
@@ -228,7 +230,7 @@ class Form extends Component {
 
     if (this.state.isValid === false) {
       this.state.schema.validationErrors()
-        .filter((v) => v.name === field.name)
+        .filter((val) => val.name === field.name)
         .forEach((validationError) => {
           const message = this.state.schema.keyErrorMessage(validationError.name);
           fieldHasError = true;
@@ -347,6 +349,8 @@ class Form extends Component {
         </Components.FormActions>
       );
     }
+
+    return null;
   }
 
   render() {

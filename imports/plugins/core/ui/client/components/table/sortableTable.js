@@ -30,7 +30,8 @@ class SortableTable extends Component {
     this.handleFilterInput = this.handleFilterInput.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
       this.setState({
         query: nextProps.query
@@ -39,8 +40,6 @@ class SortableTable extends Component {
   }
 
   /**
-   * @name getMeteorData()
-   * @method
    * @summary Absorb publication / collection information from props, output data from subscription.
    * Use props to get collection, use that information to call Meteor to get subscription and output data for table.
    * @prop {String} matchingResultsCount - Send to Counts collection to get results count of sub
@@ -74,8 +73,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name customFilter()
-   * @method
    * @summary Replace default filter with customized filter, custom filter is case insensitive
    * custom filter searches entire string, not just from string start
    * @param {Object} filter user-typed data
@@ -89,15 +86,16 @@ class SortableTable extends Component {
         ? String(row[id].toLowerCase()).includes(filter.value.toLowerCase())
         : true);
     }
+
+    return null;
   }
 
 
   /**
-   * @name handleFilterInput()
    * @summary Update state when filter is changed
    * @param {script} event onChange event when typing in filter field
-   * @param {string} value text field input
-   * @param {string} field input field name to watch
+   * @param {String} value text field input
+   * @param {String} field input field name to watch
    * @return {function} state for field value
    */
   handleFilterInput = (event, value, field) => {
@@ -108,9 +106,8 @@ class SortableTable extends Component {
 
 
   /**
-   * @name handleClick()
    * @summary Handle click on table row
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
@@ -129,11 +126,12 @@ class SortableTable extends Component {
         })
       );
     }
+
+    return null;
   }
 
 
   /**
-   * @name renderColumns()
    * @method
    * @summary Absorb columnMetadata information from props, output columns to display
    * @prop {String} columnMetadata - Object of data field, column header
@@ -152,7 +150,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name renderData()
    * @method
    * @summary Take data from getMeteorData() and filter if needed, or spit out raw if no filter
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
@@ -177,7 +174,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name renderColumnFilter()
    * @summary Uses props to determine if Column Filters should be shown
    * @returns {Bool} returns true or false for column filters
    */
@@ -193,7 +189,6 @@ class SortableTable extends Component {
 
 
   /**
-   * @name getTableData()
    * @method
    * @summary Checks if JSON data is passed vs publication data
    * @returns {Number} returns number of available data
@@ -207,7 +202,6 @@ class SortableTable extends Component {
   }
 
   /**
-   * @name renderTableFilter()
    * @method
    * @summary Uses props to determine if a Table Filter should be shown
    * @returns {node} returns JSX node or null
@@ -231,10 +225,9 @@ class SortableTable extends Component {
   }
 
   /**
-   * @name selectedRowsClassName()
    * @method
    * @summary If any rows are selected, give them a className of "selected-row"
-   * @param {object} rowInfo row data passed in from ReactTable
+   * @param {Object} rowInfo row data passed in from ReactTable
    * @returns {String} className to apply to row that is selected, or empty string if no row is selected
    */
   selectedRowsClassName(rowInfo) {
@@ -251,7 +244,6 @@ class SortableTable extends Component {
   }
 
   /**
-   * @name displayNoResultsFound()
    * @method
    * @summary This function displays a 'No Results Found' when there is no data to populate the table
    * @return {node} returns a JSX node or empty string
@@ -313,7 +305,7 @@ class SortableTable extends Component {
             }
 
             return {
-              onClick: (e) => { // eslint-disable-line no-unused-vars
+              onClick: (event) => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
               },
               className: this.selectedRowsClassName(rowInfo)

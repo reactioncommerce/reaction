@@ -15,7 +15,7 @@ const inputSchema = new SimpleSchema({
  * @param {String} input.orderId - The order ID
  * @param {String[]} input.paymentIds - An array of one or more payment IDs to approve
  * @param {String} input.shopId - The ID of the shop that owns this order
- * @return {Promise<Object>} ApproveOrderPaymentsResult
+ * @returns {Promise<Object>} ApproveOrderPaymentsResult
  */
 export default async function approveOrderPayments(context, input = {}) {
   inputSchema.validate(input);
@@ -24,7 +24,7 @@ export default async function approveOrderPayments(context, input = {}) {
   const { Orders } = collections;
   const { orderId, paymentIds, shopId } = input;
 
-  if (!context.userHasPermission(["orders"], shopId)) {
+  if (!context.userHasPermission(["orders", "order/fulfillment"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 

@@ -1,7 +1,7 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Query.addressValidation"
+ * @name Query/addressValidation
  * @method
  * @memberof Address/GraphQL
  * @summary Returns address validation results for an address
@@ -10,7 +10,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} args.address - The AddressInput to validate
  * @param {Object} args.shopId - The shop to use for address validation settings
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} Promise that resolves with an object with results
+ * @returns {Promise<Object>} Promise that resolves with an object with results
  */
 export default async function addressValidation(_, { address, shopId: opaqueShopId }, context) {
   const shopId = decodeShopOpaqueId(opaqueShopId);

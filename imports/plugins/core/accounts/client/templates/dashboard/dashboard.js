@@ -17,7 +17,7 @@ Template.accountsDashboard.onCreated(function () {
 Template.accountsDashboard.helpers({
   /**
    * isShopMember
-   * @return {Boolean} True if the memnber is an administrator
+   * @returns {Boolean} True if the memnber is an administrator
    * @ignore
    */
   isShopMember() {
@@ -26,7 +26,7 @@ Template.accountsDashboard.helpers({
 
   /**
    * isShopGuest
-   * @return {Boolean} True if the member is a guest
+   * @returns {Boolean} True if the member is a guest
    * @ignore
    */
   isShopGuest() {
@@ -34,7 +34,7 @@ Template.accountsDashboard.helpers({
   },
   /**
    * members
-   * @return {Boolean} True array of adminsitrative members
+   * @returns {Boolean} True array of adminsitrative members
    * @ignore
    */
   members() {
@@ -82,6 +82,8 @@ Template.accountsDashboard.helpers({
         });
       }
     }
+
+    return null;
   },
 
   accountsDashboard() {
@@ -97,13 +99,14 @@ Template.accountsSettings.helpers({
 
   /**
    * services
-   * @return {Array} available services
+   * @returns {Array} available services
    * @ignore
    */
   services() {
     const serviceHelper = new ServiceConfigHelper();
     const configurations = ServiceConfiguration.configurations.find().fetch();
 
+    // eslint-disable-next-line consistent-return
     const services = serviceHelper.services((item) => {
       const matchingConfigurations = _.filter(configurations, {
         service: item.name
@@ -119,7 +122,7 @@ Template.accountsSettings.helpers({
   /**
    * Template helper to add a hidden class if the condition is false
    * @param  {Boolean} enabled Service enabled
-   * @return {String}          "hidden" or ""
+   * @returns {String}          "hidden" or ""
    * @ignore
    */
   shown(enabled) {
@@ -129,7 +132,7 @@ Template.accountsSettings.helpers({
   /**
    * Return checked classname if true
    * @param  {Boolean} enabled Boolean value true/false
-   * @return {String}          "checked" or ""
+   * @returns {String}          "checked" or ""
    * @ignore
    */
   checked(enabled) {
@@ -140,7 +143,7 @@ Template.accountsSettings.helpers({
    * Returns a value from the supplied service object with a field name
    * @param  {String} fieldName name of field to retrive the value for.
    * @param  {Object} service   Service object to find the value in.
-   * @return {String}           A value or blank string if nothing is found.
+   * @returns {String}           A value or blank string if nothing is found.
    * @ignore
    */
   valueForField(fieldName, service) {

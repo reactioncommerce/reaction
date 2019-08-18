@@ -14,7 +14,7 @@ import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
-import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
+import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
 import { changeNodeAtPath } from "react-sortable-tree";
 
 const styles = (theme) => ({
@@ -23,10 +23,10 @@ const styles = (theme) => ({
   },
   formActions: {
     textAlign: "right",
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   formActionButton: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing()
   }
 });
 
@@ -223,7 +223,9 @@ class NavigationItemForm extends Component {
               </ConfirmDialog>
             )}
             <Button className={classes.formActionButton} color="primary" onClick={onCloseForm} variant="outlined">{i18next.t("app.cancel")}</Button>
-            <Button className={classes.formActionButton} color="primary" onClick={this.handleClickSave} variant="contained">{i18next.t("app.saveChanges")}</Button>
+            <Button className={classes.formActionButton} color="primary" onClick={this.handleClickSave} variant="contained">
+              {i18next.t("app.saveChanges")}
+            </Button>
           </Grid>
         </Grid>
       </Fragment>

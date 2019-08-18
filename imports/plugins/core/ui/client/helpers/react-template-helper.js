@@ -10,7 +10,7 @@ import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
 import appComponents from "/imports/plugins/core/router/client/appComponents";
 import theme from "/imports/plugins/core/router/client/theme";
-import muiTheme from "/imports/plugins/core/router/client/theme/muiTheme";
+import { defaultTheme } from "@reactioncommerce/catalyst";
 import initApollo from "/imports/plugins/core/graphql/lib/helpers/initApollo";
 
 // Ideally this will be done only in browserRouter.js, but we lose context within Blaze templates,
@@ -41,7 +41,7 @@ Template.React.onRendered(function () {
         <ApolloProvider client={apolloClient}>
           <ComponentsProvider value={appComponents}>
             <ThemeProvider theme={theme}>
-              <MuiThemeProvider theme={muiTheme}>
+              <MuiThemeProvider theme={defaultTheme}>
                 {elem}
               </MuiThemeProvider>
             </ThemeProvider>
@@ -59,8 +59,10 @@ Template.React.onDestroyed(function () {
   }
 });
 
-// Gets the name of the template inside of which this instance of `{{> React ...}}`
-// is being used. Used to print more explicit error messages
+/**
+ * @description Gets the name of the template inside of which this instance of `{{> React ...}}` is being used. Used to print more explicit error messages
+ * @returns {String} name of template
+ */
 function parentTemplateName() {
   let view = Blaze.getView();
   if (!view || view.name !== "Template.React") {
@@ -69,12 +71,12 @@ function parentTemplateName() {
   // find the first parent view which is a template or body
   view = view.parentView;
   while (view) {
-    const m = view.name.match(/^Template\.(.*)/);
+    const match = view.name.match(/^Template\.(.*)/);
     // check `view.name.match(/^Template\./)` because iron-router (and
     // maybe other packages) create a view named "yield" that has the
     // `template` property set
-    if (view.template && view.name && m) {
-      return m[1];
+    if (view.template && view.name && match) {
+      return match[1];
     } else if (view.name === "body") {
       return "<body>";
     }

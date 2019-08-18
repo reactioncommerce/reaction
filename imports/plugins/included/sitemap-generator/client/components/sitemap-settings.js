@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import Select from "@reactioncommerce/components/Select/v1";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 export default class SitemapSettings extends Component {
@@ -45,7 +45,7 @@ export default class SitemapSettings extends Component {
           />
         </div>
         <div className="form-group pull-left" style={{ width: "100%", marginBottom: 30 }}>
-          <Button actionType="secondary" className="pull-right" isShortHeight onClick={onGenerateClick}>
+          <Button variant="outlined" className="pull-right" size="small" onClick={onGenerateClick}>
             <i className="rui font-icon fa fa-refresh" />&nbsp;
             <Translation defaultValue="Refresh sitemap" i18nKey={"shopSettings.refreshSitemapsNow"} />
           </Button>

@@ -11,7 +11,7 @@ import { decodeNavigationTreeOpaqueId } from "@reactioncommerce/reaction-graphql
  * @param {String} args.language The language to load items in
  * @param {Boolean} args.shouldIncludeSecondary Include secondary navigation items alongside primary items
  * @param {Object} context An object containing the per-request state
- * @return {Promise<Object>} A NavigationTree object
+ * @returns {Promise<Object>} A NavigationTree object
  */
 export default async function navigationTreeById(_, args, context) {
   const { id, language, shouldIncludeSecondary } = args;

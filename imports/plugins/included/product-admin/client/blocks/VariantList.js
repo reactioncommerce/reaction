@@ -6,7 +6,7 @@ import ProductList from "../components/ProductList";
  * Variant and Option list component
  * @summary A list component for variant and option depending on passed in props
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function VariantList(props) {
   const {

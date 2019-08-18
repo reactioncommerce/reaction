@@ -4,7 +4,7 @@ const collections = {};
  * @summary Use this to set the raw collections after all plugins
  *   have been registered.
  * @param {Object} registeredCollections Collections map
- * @return {undefined}
+ * @returns {undefined}
  */
 export function setCollections(registeredCollections) {
   for (const name in registeredCollections) {

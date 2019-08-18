@@ -6,7 +6,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 /**
  * @memberof Components
  * @param {Object} props component props
- * @return {node} react element node
+ * @returns {node} react element node
  */
 const ToolbarText = (props) => {
   const baseClassName = classnames({

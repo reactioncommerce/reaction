@@ -20,6 +20,9 @@ const getShop = gql`
         }
       }
       name
+      shopLogoUrls {
+        primaryShopLogoUrl
+      }
     }
   }
 `;
@@ -30,13 +33,13 @@ const styles = (theme) => ({
     alignItems: "center"
   },
   logo: {
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing(2)
   }
 });
 
 /**
  * ShopLogoWithData
- * @params {Object} props Component props
+ * @param {Object} props Component props
  * @returns {Node} React component
  */
 function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, linkTo, size }) {
@@ -49,7 +52,8 @@ function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, link
           if (loading) return null;
           if (data && data.shop) {
             const { shop } = data;
-            const customLogo = shop.brandAssets && shop.brandAssets.navbarBrandImage && shop.brandAssets.navbarBrandImage.large;
+            const customLogoFromUpload = shop.brandAssets && shop.brandAssets.navbarBrandImage && shop.brandAssets.navbarBrandImage.large;
+            const customLogoFromUrlInput = shop.shopLogoUrls && shop.shopLogoUrls.primaryShopLogoUrl;
             const defaultLogo = "/resources/reaction-logo-circular.svg";
 
             return (
@@ -60,14 +64,13 @@ function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, link
                 <img
                   alt={shop.name}
                   className={classes.logo}
-                  src={customLogo || defaultLogo}
+                  src={customLogoFromUrlInput || customLogoFromUpload || defaultLogo}
                   width={size}
                 />
                 {shouldShowShopName &&
                   <Typography
                     color="textSecondary"
-                    display="display"
-                    variant="h6"
+                    variant="h3"
                     component="span"
                   >
                     {shop.name}

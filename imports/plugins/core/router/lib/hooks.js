@@ -27,6 +27,7 @@ const Hooks = {
     }
   },
 
+  // eslint-disable-next-line consistent-return
   leave(callback) {
     if (Array.isArray(callback)) {
       callback.forEach((cb) => {
@@ -50,7 +51,7 @@ function logSomeStuff() {
 Router.Hooks.onEnter("product", logSomeStuff);
    * @param  {String}   routeName Name of route
    * @param  {Function} callback  Callback method
-   * @return {undefined}
+   * @returns {undefined}
    */
   onEnter(routeName, callback) {
     // if first argument is a function it's a global callback
@@ -69,7 +70,7 @@ Router.Hooks.onEnter("product", logSomeStuff);
    * Can be called as many times as needed to add more than one callback
    * @param  {String}   routeName Name of route
    * @param  {Function} callback  Callback method
-   * @return {undefined}
+   * @returns {undefined}
    */
   onExit(routeName, callback) {
     // if first argument is a function it's a global callback
@@ -87,7 +88,7 @@ Router.Hooks.onEnter("product", logSomeStuff);
    * @summary Get all registered hooks for a specific route
    * @param  {String} type Type of hook - `"onEnter"` or `"onExit"`
    * @param  {String} name Name of Route
-   * @return {Array}  Array of hooks
+   * @returns {Array}  Array of hooks
    */
   get(type, name) {
     const group = this._hooks[type] || {};
@@ -102,7 +103,7 @@ Router.Hooks.onEnter("product", logSomeStuff);
    * @param  {String} type Type of hook - `"onEnter"` or `"onExit"`
    * @param  {String} name "GLOBAL" for all registered global hooks
    * @param  {Object} [context] Context object, optional, or `routeName`
-   * @return {Array}  Array of hooks
+   * @returns {Array}  Array of hooks
    */
   run(type, name, context) {
     const callbacks = this.get(type, name);

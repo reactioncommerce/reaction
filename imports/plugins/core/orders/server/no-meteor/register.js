@@ -8,14 +8,13 @@ import getDataForOrderEmail from "./util/getDataForOrderEmail";
 /**
  * @summary Import and call this function to add this plugin to your API.
  * @param {ReactionNodeApp} app The ReactionNodeApp instance
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function register(app) {
   await app.registerPlugin({
     label: "Orders",
     name: "reaction-orders",
     icon: "fa fa-sun-o",
-    autoEnable: true,
     collections: {
       Orders: {
         name: "Orders",
@@ -74,6 +73,17 @@ export default async function register(app) {
       layout: "printLayout",
       name: "dashboard/pdf/orders",
       template: "completedPDFLayout"
+    }, {
+      route: "order/fulfillment",
+      label: "Order Fulfillment",
+      permission: "orderFulfillment",
+      name: "order/fulfillment"
+    },
+    {
+      route: "order/view",
+      label: "Order View",
+      permission: "orderView",
+      name: "order/view"
     }],
     layout: [{
       layout: "coreLayout",
@@ -125,12 +135,12 @@ export default async function register(app) {
       workflow: "coreOrderWorkflow",
       audience: ["dashboard/orders"]
     }, { // Standard Order Fulfillment with shipping
-      template: "coreOrderShippingSummary",
+      template: "OrderSummary",
       label: "Summary",
       workflow: "coreOrderShipmentWorkflow",
       audience: ["dashboard/orders"]
     }, {
-      template: "coreOrderShippingInvoice",
+      template: "OrderInvoice",
       label: "Invoice",
       workflow: "coreOrderShipmentWorkflow",
       audience: ["dashboard/orders"]

@@ -11,7 +11,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} args.shopId The ID of the shop to load navigation items for
  * @param {Object} context An object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @return {Promise<Object>} A NavigationItemConnection object
+ * @returns {Promise<Object>} A NavigationItemConnection object
  */
 export default async function navigationItemsByShopId(_, args, context, info) {
   const { shopId, ...connectionArgs } = args;

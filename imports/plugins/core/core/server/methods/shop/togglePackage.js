@@ -10,7 +10,7 @@ import { Packages } from "/lib/collections";
  * @summary enable/disable Reaction package
  * @param {String} packageId - package _id
  * @param {Boolean} enabled - current package `enabled` state
- * @return {Number} mongo update result
+ * @returns {Number} mongo update result
  */
 export default function togglePackage(packageId, enabled) {
   check(packageId, String);

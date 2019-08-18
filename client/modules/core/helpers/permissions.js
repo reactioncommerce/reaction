@@ -8,7 +8,7 @@ import { Reaction } from "/client/api";
  * @example {{hasPermission admin userId}}
  * @param  {String|Array} "permissions"
  * @param  {String} options - object
- * @return {Boolean}
+ * @returns {Boolean}
  */
 Template.registerHelper("hasPermission", (permissions, options) => {
   const loggedInUser = Reaction.getUserId();
@@ -29,7 +29,7 @@ Template.registerHelper("hasPermission", (permissions, options) => {
  * @method hasOwnerAccess
  * @memberof BlazeTemplateHelpers
  * @summary check if user has owner access, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
- * @return {Boolean} return true if owner
+ * @returns {Boolean} return true if owner
  */
 Template.registerHelper("hasOwnerAccess", () => Reaction.hasOwnerAccess());
 
@@ -37,7 +37,7 @@ Template.registerHelper("hasOwnerAccess", () => Reaction.hasOwnerAccess());
  * @method hasAdminAccess
  * @memberof BlazeTemplateHelpers
  * @summary check if user has admin access, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
- * @return {Boolean} return true if admin
+ * @returns {Boolean} return true if admin
  */
 Template.registerHelper("hasAdminAccess", () => Reaction.hasAdminAccess());
 
@@ -45,7 +45,7 @@ Template.registerHelper("hasAdminAccess", () => Reaction.hasAdminAccess());
  * @method hasDashboardAccess
  * @memberof BlazeTemplateHelpers
  * @summary check if user has dashboard access, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
- * @return {Boolean} return true if user has dashboard permission
+ * @returns {Boolean} return true if user has dashboard permission
  */
 Template.registerHelper("hasDashboardAccess", () => Reaction.hasDashboardAccess());
 
@@ -53,6 +53,6 @@ Template.registerHelper("hasDashboardAccess", () => Reaction.hasDashboardAccess(
  * @method allowGuestCheckout
  * @memberof BlazeTemplateHelpers
  * @summary check if guest users are allowed to checkout, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
- * @return {Boolean} return true if shop has guest checkout enabled
+ * @returns {Boolean} return true if shop has guest checkout enabled
  */
 Template.registerHelper("allowGuestCheckout", () => Reaction.allowGuestCheckout());

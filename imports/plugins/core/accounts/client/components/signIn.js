@@ -48,12 +48,24 @@ class SignIn extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  /**
+   * @summary Arrow function to handle login form state changes
+   * @param {event} event The JS event
+   * @param {string} value The value being set in the form field
+   * @param {string} field The field name / state key changing
+   * @returns {undefined} returns nothing
+   */
   handleFieldChange = (event, value, field) => {
     this.setState({
       [field]: value
     });
   }
 
+  /**
+   * @summary Arrow function to handle Submit button
+   * @param {event} event The JS event
+   * @returns {undefined} returns nothing
+   */
   handleSubmit = (event) => {
     if (this.props.onFormSubmit) {
       this.props.onFormSubmit(event, this.state.email, this.state.password);
@@ -71,15 +83,17 @@ class SignIn extends Component {
         </span>
       );
     }
+
+    return null;
   }
 
   renderPasswordErrors() {
     return (
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
-          this.props.messages.errors.password.map((error, i) => (
+          this.props.messages.errors.password.map((error, index) => (
             <Components.Translation
-              key={i}
+              key={index}
               defaultValue={error.reason}
               i18nKey={error.i18nKeyReason}
             />
@@ -97,6 +111,8 @@ class SignIn extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderSpinnerOnWait() {
@@ -180,7 +196,7 @@ class SignIn extends Component {
                 "btn": false,
                 "btn-default": false
               }}
-              label="Reset Password"
+              label="Reset password"
               i18nKeyLabel="accountsUI.forgotPassword"
               data-event-category="accounts"
               onClick={this.props.onForgotPasswordClick}

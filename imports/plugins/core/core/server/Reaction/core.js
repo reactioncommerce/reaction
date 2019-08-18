@@ -1,16 +1,10 @@
 import Logger from "@reactioncommerce/logger";
-import packageJson from "/package.json";
-import _, { merge, uniqWith } from "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
-import appEvents from "/imports/node-app/core/util/appEvents";
-import { Jobs } from "/imports/utils/jobs";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import createGroups from "./createGroups";
-import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 import { getUserId } from "./accountUtils";
 
@@ -26,41 +20,13 @@ const { Packages, Shops, Accounts: AccountsCollection } = Collections;
 export default {
   ...AbsoluteUrlMixin,
 
-  init() {
-    // make sure the default shop has been created before going further
-    while (!this.getShopId()) {
-      Logger.warn("No shopId, waiting one second...");
-      Meteor._sleepForMs(1000);
-    }
-
-    // start job server
-    Jobs.startJobServer(() => {
-      Logger.info("JobServer started");
-      appEvents.emit("jobServerStart");
-    });
-    if (process.env.VERBOSE_JOBS) {
-      Jobs.setLogStream(process.stdout);
-    }
-
-    this.loadPackages();
-    createGroups();
-    this.setAppVersion();
-
-    // DEPRECATED. Avoid consuming this hook in new code
-    appEvents.emit("afterCoreInit");
-
-    Logger.debug("Reaction.init() has run");
-
-    return true;
-  },
-
   Packages: {},
 
   /**
    * @summary This is used only for the old `registerPackage` in this file. After that is removed,
    *   this likely can be removed, too.
    * @param {ReactionNodeApp} app App instance
-   * @return {undefined}
+   * @returns {undefined}
    */
   async onAppInstanceCreated(app) {
     this.reactionNodeApp = app;
@@ -70,14 +36,13 @@ export default {
       }
       this.whenAppInstanceReadyCallbacks = [];
     }
-    appEvents.emit("readyForMigrations");
   },
 
   /**
    * @summary This is used only for the old `registerPackage` in this file. After that is removed,
    *   this likely can be removed, too.
    * @param {Function} callback Function to call after `this.reactionNodeApp` is set, which might be immediately
-   * @return {undefined}
+   * @returns {undefined}
    */
   whenAppInstanceReady(callback) {
     if (this.reactionNodeApp) {
@@ -91,7 +56,7 @@ export default {
   /**
    * @summary Called to indicate that startup is done, causing all
    *   `onAppStartupComplete` callbacks to run in series.
-   * @return {undefined}
+   * @returns {undefined}
    */
   async emitAppStartupComplete() {
     if (this.appStartupIsComplete) return;
@@ -108,7 +73,7 @@ export default {
    * @summary Register a function to be called once after the app startup is
    *   fully done running.
    * @param {Function} callback Function to call after app startup, which might be immediately
-   * @return {undefined}
+   * @returns {undefined}
    */
   onAppStartupComplete(callback) {
     if (this.appStartupIsComplete) {
@@ -122,7 +87,7 @@ export default {
   /**
    * @deprecated Use `app.registerPlugin` pattern instead. See the simple-pricing plugin.
    * @param {Object} packageInfo Plugin options
-   * @return {Object} Plugin options
+   * @returns {Object} Plugin options
    */
   registerPackage(packageInfo) {
     this.whenAppInstanceReady((app) => app.registerPlugin(packageInfo));
@@ -130,7 +95,6 @@ export default {
 
   defaultCustomerRoles: ["guest", "account/profile", "product", "tag", "index", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/completed"],
-  createGroups,
 
   /**
    * @name canInviteToGroup
@@ -140,7 +104,7 @@ export default {
    * @param {Object} options -
    * @param {Object} options.group - group to invite to
    * @param {Object} options.user - user object  making the invite (Meteor.user())
-   * @return {Boolean} -
+   * @returns {Boolean} -
    */
   canInviteToGroup(options) {
     const { group } = options;
@@ -162,15 +126,6 @@ export default {
   },
 
   /**
-   * @name registerTemplate
-   * @method
-   * @memberof Core
-   * @summary Registers Templates into the Templates Collection
-   * @return {function} Registers template
-   */
-  registerTemplate,
-
-  /**
    * @name hasPermission
    * @method
    * @memberof Core
@@ -178,7 +133,7 @@ export default {
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
    * @param {String} userId - userId, defaults to logged in userId
    * @param {String} checkGroup group - default to shopId
-   * @return {Boolean} Boolean - true if has permission
+   * @returns {Boolean} Boolean - true if has permission
    */
   hasPermission(checkPermissions, userId = getUserId(), checkGroup = this.getShopId()) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
@@ -213,7 +168,7 @@ export default {
    * @name hasOwnerAccess
    * @method
    * @memberof Core
-   * @return {Boolean} Boolean - true if has permission
+   * @returns {Boolean} Boolean - true if has permission
    */
   hasOwnerAccess() {
     return this.hasPermission(["owner"]);
@@ -223,7 +178,7 @@ export default {
    * @name hasAdminAccess
    * @method
    * @memberof Core
-   * @return {Boolean} Boolean - true if has permission
+   * @returns {Boolean} Boolean - true if has permission
    */
   hasAdminAccess() {
     return this.hasPermission(["owner", "admin"]);
@@ -233,7 +188,7 @@ export default {
    * @name hasDashboardAccess
    * @method
    * @memberof Core
-   * @return {Boolean} Boolean - true if has permission
+   * @returns {Boolean} Boolean - true if has permission
    */
   hasDashboardAccess() {
     return this.hasPermission(["owner", "admin", "dashboard"]);
@@ -247,10 +202,10 @@ export default {
    * @param  {array} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
    * @param  {string} userId Optional userId, defaults to logged in userId
    *                                           Must pass this.userId from publications to avoid error!
-   * @return {array} Array of shopIds that the user has at least one of the given set of roles for
+   * @returns {Array} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = getUserId()) {
-    // Owner permission for a shop supercedes grantable permissions, so we always check for owner permissions as well
+    // Owner permission for a shop supersedes grantable permissions, so we always check for owner permissions as well
     roles.push("owner");
 
     // Reducer that returns a unique list of shopIds that results from calling getGroupsForUser for each role
@@ -273,7 +228,7 @@ export default {
    * @name getSellerShopId
    * @method
    * @memberof Core
-   * @return {String} Shop ID
+   * @returns {String} Shop ID
    */
   getSellerShopId() {
     return Roles.getGroupsForUser(this.userId, "admin");
@@ -285,7 +240,7 @@ export default {
    * and can see all other shops
    * @method
    * @memberof Core
-   * @return {Object} Shop
+   * @returns {Object} Shop
    */
   getPrimaryShop() {
     const primaryShop = Shops.findOne({
@@ -301,7 +256,7 @@ export default {
    * and can see all other shops
    * @method
    * @memberof Core
-   * @return {String} ID
+   * @returns {String} ID
    */
   getPrimaryShopId() {
     const primaryShop = this.getPrimaryShop();
@@ -316,7 +271,7 @@ export default {
    * @method
    * @summary Get primary shop name or empty string
    * @memberof Core
-   * @return {String} Return shop name or empty string
+   * @returns {String} Return shop name or empty string
    */
   getPrimaryShopName() {
     const primaryShop = this.getPrimaryShop();
@@ -332,7 +287,7 @@ export default {
    * @memberof Core
    * @method
    * @todo Primary Shop should probably not have a prefix (or should it be /shop?)
-   * @return {String} Prefix in the format of "/<slug>"
+   * @returns {String} Prefix in the format of "/<slug>"
    */
   getPrimaryShopPrefix() {
     return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
@@ -343,7 +298,7 @@ export default {
    * @method
    * @memberof Core
    * @summary Get primary shop settings object
-   * @return {Object} Get settings object or empty object
+   * @returns {Object} Get settings object or empty object
    */
   getPrimaryShopSettings() {
     const settings = Packages.findOne({
@@ -358,7 +313,7 @@ export default {
    * @method
    * @memberof Core
    * @summary Get primary shop currency string
-   * @return {String} Get shop currency or "USD"
+   * @returns {String} Get shop currency or "USD"
    */
   getPrimaryShopCurrency() {
     const primaryShop = this.getPrimaryShop();
@@ -376,7 +331,7 @@ export default {
    * @deprecated
    * @memberof Core
    * @method getCurrentShopCursor
-   * @return {Cursor} cursor of shops that match the current domain
+   * @returns {Cursor} cursor of shops that match the current domain
    */
   getCurrentShopCursor() {
     const domain = this.getDomain();
@@ -395,7 +350,7 @@ export default {
    * @deprecated
    * @memberof Core
    * @method getCurrentShop
-   * @return {Object} returns the first shop object from the shop cursor
+   * @returns {Object} returns the first shop object from the shop cursor
    */
   getCurrentShop() {
     const currentShopCursor = this.getCurrentShopCursor();
@@ -413,7 +368,7 @@ export default {
    * @summary Get shop ID, first by checking the current user's preferences
    * then by getting the shop by the current domain.
    * @todo should we return the Primary Shop if none found?
-   * @return {String} active shop ID
+   * @returns {String} active shop ID
    */
   getShopId() {
     // is there a stored value?
@@ -457,7 +412,7 @@ export default {
    * @memberof Core
    * @summary allows the client to trigger an uncached lookup of the shopId.
    *          this is useful when a user switches shops.
-   * @return {undefined}
+   * @returns {undefined}
    */
   resetShopId() {
     ConnectionDataStore.clear("shopId");
@@ -468,7 +423,7 @@ export default {
    * @summary Whether the current shop is the Primary Shop (vs a Merchant Shop)
    * @method
    * @memberof Core
-   * @return {Boolean} whether shop is flagged as primary
+   * @returns {Boolean} whether shop is flagged as primary
    */
   isShopPrimary() {
     return this.getShopId() === this.getPrimaryShopId();
@@ -479,7 +434,7 @@ export default {
    * @method
    * @memberof Core
    * @summary searches for a shop which should be used given the current domain
-   * @return {StringId} shopId
+   * @returns {StringId} shopId
    */
   getShopIdByDomain() {
     const domain = this.getDomain();
@@ -509,18 +464,16 @@ export default {
    * @method
    * @memberof Core
    * @summary Get a user's shop ID, as stored in preferences
-   * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
    * @param {String} userId (probably logged in userId)
-   * @return {StringId} active shop ID
+   * @returns {String} active shop ID
    */
   getUserShopId(userId) {
     check(userId, String);
 
-    return this.getUserPreferences({
-      userId,
-      packageName: "reaction",
-      preference: "activeShopId"
-    });
+    const user = AccountsCollection.findOne({ _id: userId });
+    if (!user) return null;
+
+    return _.get(user, "profile.preferences.reaction.activeShopId");
   },
 
   /**
@@ -528,7 +481,7 @@ export default {
    * @method
    * @memberof Core
    * @summary Get the correct shop ID to use for Cart collection
-   * @return {StringId} The primary or current shop ID, depending on merchantCart setting
+   * @returns {StringId} The primary or current shop ID, depending on merchantCart setting
    */
   getCartShopId() {
     const marketplaceSettings = this.getMarketplaceSettings();
@@ -546,7 +499,7 @@ export default {
    * @method
    * @memberof Core
    * @summary If we can't find the shop or shop name return an empty string
-   * @return {String} Shop name or empty string ""
+   * @returns {String} Shop name or empty string ""
    */
   getShopName() {
     const shopId = this.getShopId();
@@ -580,7 +533,7 @@ export default {
    * @method
    * @memberof Core
    * @summary Get shop prefix for URL
-   * @return {String} String in the format of "/shop/slug"
+   * @returns {String} String in the format of "/shop/slug"
    */
   getShopPrefix() {
     const shopName = this.getShopName();
@@ -602,7 +555,7 @@ export default {
    * @method
    * @memberof Core
    * @summary Get shop email
-   * @return {String} String with the first store email
+   * @returns {String} String with the first store email
    */
   getShopEmail() {
     const shop = Shops.find({
@@ -622,7 +575,7 @@ export default {
    * @memberof Core
    * @summary Get shop settings object
    * @param  {String} [name="core"] Package name
-   * @return {Object}               Shop settings object or empty object
+   * @returns {Object}               Shop settings object or empty object
    */
   getShopSettings(name = "core") {
     const settings = Packages.findOne({ name, shopId: this.getShopId() }) || {};
@@ -634,7 +587,7 @@ export default {
    * @method
    * @memberof Core
    * @summary Get shop currency
-   * @return {String} Shop currency or "USD"
+   * @returns {String} Shop currency or "USD"
    */
   getShopCurrency() {
     const shop = Shops.findOne({
@@ -649,7 +602,7 @@ export default {
    * @method
    * @memberof Core
    * @summary Get all currencies available to a shop
-   * @return {Object} Shop currency or "USD"
+   * @returns {Object} Shop currency or "USD"
    */
   getShopCurrencies() {
     const shop = Shops.findOne({
@@ -665,7 +618,7 @@ export default {
    * @memberof Core
    * @todo TODO: Marketplace - should each shop set their own default language or
    * should the Marketplace set a language that's picked up by all shops?
-   * @return {String} language
+   * @returns {String} language
    */
   getShopLanguage() {
     const { language } = Shops.findOne({
@@ -684,23 +637,10 @@ export default {
    * @memberof Core
    * @summary Get package settings
    * @param  {String} name Package name
-   * @return {Object|null}      Package setting object or null
+   * @returns {Object|null}      Package setting object or null
    */
   getPackageSettings(name) {
     return Packages.findOne({ name, shopId: this.getShopId() }) || null;
-  },
-
-  /**
-   * @summary Takes options in the form of a query object. Returns a package that matches.
-   * @method
-   * @memberof Core
-   * @name getPackageSettingsWithOptions
-   * @param  {object} options Options object, forms the query for Packages.findOne
-   * @return {object} Returns the first package found with the provided options
-   */
-  getPackageSettingsWithOptions(options) {
-    const query = options;
-    return Packages.findOne(query);
   },
 
   /**
@@ -709,7 +649,7 @@ export default {
    * @memberof Core
    * @summary finds the enabled `reaction-marketplace` package for
    * the primary shop and returns the settings
-   * @return {Object} The marketplace settings from the primary shop or undefined
+   * @returns {Object} The marketplace settings from the primary shop or undefined
    */
   getMarketplaceSettings() {
     const marketplace = Packages.findOne({
@@ -725,286 +665,13 @@ export default {
   },
 
   /**
-   * @name getUserPreferences
-   * @method
-   * @memberof Core
-   * @param  {Object} options {packageName, preference, defaultValue}
-   * @return {String|undefined} User's package preference or undefined
-   */
-  getUserPreferences(options) {
-    const { userId, packageName, preference, defaultValue } = options;
-
-    if (!userId) {
-      return undefined;
-    }
-
-    const user = AccountsCollection.findOne({ _id: userId });
-
-    if (user) {
-      const { profile } = user;
-      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
-        return profile.preferences[packageName][preference];
-      }
-    }
-    return defaultValue || undefined;
-  },
-
-  /**
-   * @name setUserPreferences
-   * @method
-   * @memberof Core
-   * @summary save user preferences in the Accounts collection
-   * @param {String} packageName Package name
-   * @param {String} preference Preference key
-   * @param {String} value Preference value
-   * @param {String} userId User ID
-   * @return {Number} setPreferenceResult
-   */
-  setUserPreferences(packageName, preference, value, userId) {
-    const setPreferenceResult = AccountsCollection.update(userId, {
-      $set: {
-        [`profile.preferences.${packageName}.${preference}`]: value
-      }
-    });
-    return setPreferenceResult;
-  },
-
-  /**
-   * @name insertPackagesForShop
-   * @method
-   * @memberof Core
-   * @summary insert Reaction packages into Packages collection registry for a new shop
-   * - Assigns owner roles for new packages
-   * - Imports layouts from packages
-   * @param {String} shopId - the shopId to create packages for
-   * @return {String} returns insert result
-   */
-  insertPackagesForShop(shopId) {
-    const layouts = [];
-    if (!shopId) return;
-
-    // Check to see what packages should be enabled
-    const shop = Shops.findOne({ _id: shopId });
-    const marketplaceSettings = this.getMarketplaceSettings();
-    let enabledPackages;
-
-    // Unless we have marketplace settings and an enabledPackagesByShopTypes Array
-    // we will skip this
-    if (marketplaceSettings &&
-        marketplaceSettings.shops &&
-        Array.isArray(marketplaceSettings.shops.enabledPackagesByShopTypes)) {
-      // Find the correct packages list for this shopType
-      const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find((EnabledPackagesByShopType) => EnabledPackagesByShopType.shopType === shop.shopType); // eslint-disable-line max-len
-      if (matchingShopType) {
-        ({ enabledPackages } = matchingShopType);
-      }
-    }
-
-    this.whenAppInstanceReady((app) => {
-      const { registeredPlugins } = app;
-
-      // for each shop, we're loading packages in a unique registry
-      // Object.keys(pkgConfigs).forEach((pkgName) => {
-      for (const packageName in registeredPlugins) {
-        // Guard to prevent unexpected `for in` behavior
-        if ({}.hasOwnProperty.call(registeredPlugins, packageName)) {
-          const config = registeredPlugins[packageName];
-          this.assignOwnerRoles(shopId, packageName, config.registry);
-
-          const pkg = Object.assign({}, config, {
-            shopId
-          });
-
-          // populate array of layouts that don't already exist (?!)
-          if (pkg.layout) {
-            // filter out layout templates
-            for (const template of pkg.layout) {
-              if (template && template.layout) {
-                layouts.push(template);
-              }
-            }
-          }
-
-          if (enabledPackages && Array.isArray(enabledPackages)) {
-            if (!enabledPackages.includes(pkg.name)) {
-              pkg.enabled = false;
-            } else if (pkg.settings && pkg.settings[packageName]) { // Enable "soft switch" for package.
-              pkg.settings[packageName].enabled = true;
-            }
-          }
-          Packages.insert(pkg);
-          Logger.debug(`Initializing ${shopId} ${packageName}`);
-        }
-      }
-
-      // helper for removing layout duplicates
-      const uniqLayouts = uniqWith(layouts, _.isEqual);
-      Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
-    });
-  },
-
-  /**
-   * @name getAppVersion
-   * @method
-   * @memberof Core
-   * @return {String} App version
-   */
-  getAppVersion() {
-    return Shops.findOne().appVersion;
-  },
-
-  /**
-   *  @name loadPackages
-   *  @method
-   *  @memberof Core
-   *  @summary Insert Reaction packages into registry
-   *  we check to see if the number of packages have changed against current data
-   *  if there is a change, we'll either insert or upsert package registry
-   *  into the Packages collection
-   *  import is processed on hook in init()
-   *  @return {String} returns insert result
-   */
-  loadPackages() {
-    let registryFixtureData;
-
-    if (process.env.REACTION_REGISTRY) {
-      // check the environment for the registry fixture data first
-      registryFixtureData = process.env.REACTION_REGISTRY;
-      Logger.info("Loaded REACTION_REGISTRY environment variable for registry fixture import");
-    } else {
-      // or attempt to load reaction.json fixture data
-      try {
-        registryFixtureData = Assets.getText("settings/reaction.json");
-        Logger.info("Loaded \"/private/settings/reaction.json\" for registry fixture import");
-      } catch (error) {
-        Logger.warn("Skipped loading settings from reaction.json.");
-        Logger.debug(error, "loadSettings reaction.json not loaded.");
-      }
-    }
-
-    if (registryFixtureData) {
-      const validatedJson = EJSON.parse(registryFixtureData);
-
-      if (!Array.isArray(validatedJson[0])) {
-        Logger.warn("Registry fixture data is not an array. Failed to load.");
-      } else {
-        registryFixtureData = validatedJson;
-      }
-    }
-
-    this.whenAppInstanceReady((app) => {
-      const layouts = [];
-      const packages = Packages.find().fetch();
-      const shops = Shops.find().fetch();
-      const { registeredPlugins } = app;
-      const totalPackages = Object.keys(registeredPlugins).length;
-      let loadedIndex = 1;
-      // for each shop, we're loading packages in a unique registry
-      _.each(registeredPlugins, (config, pkgName) => {
-        shops.forEach((shop) => {
-          const shopId = shop._id;
-          if (!shopId) return;
-
-          // existing registry will be upserted with changes, perhaps we should add:
-          this.assignOwnerRoles(shopId, pkgName, config.registry);
-
-          // Settings from the package registry.js
-          const settingsFromPackage = {
-            name: pkgName,
-            version: config.version,
-            icon: config.icon,
-            enabled: !!config.autoEnable,
-            settings: config.settings,
-            registry: config.registry,
-            layout: config.layout
-          };
-
-          // Settings from a fixture file, most likely reaction.json
-          let settingsFromFixture;
-          if (registryFixtureData) {
-            settingsFromFixture = registryFixtureData[0].find((packageSetting) => config.name === packageSetting.name);
-          }
-
-          // Settings already imported into the packages collection
-          const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
-
-          const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
-
-          // always use version from package
-          if (combinedSettings.version) {
-            combinedSettings.version = settingsFromPackage.version || settingsFromDB.version;
-          }
-          if (combinedSettings.registry) {
-            combinedSettings.registry = combinedSettings.registry.map((entry) => {
-              if (entry.provides && !Array.isArray(entry.provides)) {
-                entry.provides = [entry.provides];
-                Logger.warn(`Plugin ${combinedSettings.name} is using a deprecated version of the provides property for` +
-                            ` the ${entry.name || entry.route} registry entry. Since v1.5.0 registry provides accepts` +
-                            " an array of strings.");
-              }
-              return entry;
-            });
-          }
-
-          // populate array of layouts that don't already exist in Shops
-          if (combinedSettings.layout) {
-            // filter out layout Templates
-            for (const pkg of combinedSettings.layout) {
-              if (pkg.layout) {
-                layouts.push(pkg);
-              }
-            }
-          }
-          // Import package data
-          this.Importer.package(combinedSettings, shopId);
-          Logger.info(`Successfully initialized package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
-          loadedIndex += 1;
-        });
-      });
-
-      // helper for removing layout duplicates
-      const uniqLayouts = uniqWith(layouts, _.isEqual);
-      // import layouts into Shops
-      Shops.find().forEach((shop) => {
-        this.Importer.layout(uniqLayouts, shop._id);
-      });
-
-      this.Importer.flush();
-
-      //
-      // package cleanup
-      //
-      Shops.find().forEach((shop) => Packages.find().forEach((pkg) => {
-        // delete registry entries for packages that have been removed
-        if (!_.has(registeredPlugins, pkg.name)) {
-          Logger.debug(`Removing ${pkg.name}`);
-          return Packages.remove({ shopId: shop._id, name: pkg.name });
-        }
-        return false;
-      }));
-    });
-  },
-
-  /**
-   * @name setAppVersion
-   * @method
-   * @memberof Core
-   * @return {undefined} no return value
-   */
-  setAppVersion() {
-    const { version } = packageJson;
-    Logger.info(`Reaction Version: ${version}`);
-    Shops.update({}, { $set: { appVersion: version } }, { multi: true });
-  },
-
-  /**
    * @summary Method for getting all schemas attached to a given collection
    * @deprecated by simpl-schema
    * @private
    * @name collectionSchema
    * @param  {string} collection The mongo collection to get schemas for
    * @param  {Object} [selector] Optional selector for multi schema collections
-   * @return {Object} Returns a simpleSchema that is a combination of all schemas
+   * @returns {Object} Returns a simpleSchema that is a combination of all schemas
    *                  that have been attached to the collection or false if
    *                  the collection or schema could not be found
    */

@@ -4,7 +4,7 @@ import orderIsApproved from "./utils/orderIsApproved";
 /**
  * @summary Get all order items
  * @param {Object} order The order
- * @return {Object[]} Order items from all fulfillment groups in a single array
+ * @returns {Object[]} Order items from all fulfillment groups in a single array
  */
 function getAllOrderItems(order) {
   return order.shipping.reduce((list, group) => [...list, ...group.items], []);
@@ -117,6 +117,7 @@ export default function startup(context) {
       });
   });
 
+  // TODO: When the approval step is removed, change this to afterFulfillmentGroupPacked
   appEvents.on("afterOrderApprovePayment", async ({ order }) => {
     // We only decrease the inventory quantity after the final payment is approved
     if (!orderIsApproved(order)) return;

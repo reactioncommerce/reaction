@@ -30,7 +30,7 @@ Tracker.autorun(() => {
  * This basically runs this:
  *   Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
  * @summary whenever `#productScrollLimitLoader` becomes visible, retrieve more results.
- * @return {undefined}
+ * @returns {undefined}
  * @private
  */
 function loadMoreProducts() {
@@ -83,6 +83,10 @@ const wrapComponent = (Comp) => (
       return isProductsSubscriptionReady;
     }
 
+    filterByProductIds = (productIds) => {
+      Session.set("filterByProductIds", productIds);
+    }
+
     loadProducts = (event) => {
       event.preventDefault();
       this.setState({
@@ -97,6 +101,7 @@ const wrapComponent = (Comp) => (
           {...this.props}
           isReady={this.isReady}
           loadProducts={this.loadProducts}
+          filterByProductIds={this.filterByProductIds}
         />
       );
     }
@@ -113,6 +118,14 @@ function composer(props, onData) {
   window.prerenderReady = false;
 
   const queryParams = Object.assign({}, Reaction.Router.current().query);
+
+  const filterByProductIds = Session.get("filterByProductIds");
+
+  if (Array.isArray(filterByProductIds) && filterByProductIds.length) {
+    queryParams.productIds = filterByProductIds;
+  } else if (queryParams.productIds) {
+    queryParams.productIds = queryParams.productIds.split(",").map((id) => id.trim());
+  }
 
   // Filter by tag
   const tagIdOrSlug = Reaction.Router.getParam("slug");

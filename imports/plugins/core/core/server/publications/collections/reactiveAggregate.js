@@ -36,10 +36,17 @@ Mongo.Collection.prototype._getCollection = function () {
   return db.collection(this._name);
 };
 
+/**
+ * Provides a way to get at the underlying instance of the DB connection
+ * @param {Object} mongoConn mongo connection
+ * @returns {Object} The underlying Mongo connection database
+ */
 function wrapWithDb(mongoConn) {
   if (mongoConn.db) {
     return mongoConn.db;
   }
+
+  return null;
 }
 
 
@@ -92,7 +99,9 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
   pub._ids = {};
   pub._iteration = 1;
 
-  // run this function every time a record changes
+  /**
+   * @returns {undefined}
+   */
   function update() {
     if (initializing) {
       return;

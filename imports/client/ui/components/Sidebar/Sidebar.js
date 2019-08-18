@@ -25,10 +25,22 @@ const activeClassName = "nav-item-active";
 const routeSort = (routeA, routeB) => (routeA.priority || Number.MAX_SAFE_INTEGER) - (routeB.priority || Number.MAX_SAFE_INTEGER);
 
 const styles = (theme) => ({
+  closeButton: {
+    "color": theme.palette.colors.white,
+    "backgroundColor": theme.palette.colors.darkBlue500,
+    "&:hover": {
+      "backgroundColor": theme.palette.colors.darkBlue600,
+      // Reset on touch devices, it doesn't add specificity
+      "@media (hover: none)": {
+        backgroundColor: theme.palette.colors.darkBlue500
+      }
+    }
+  },
   icon: {
-    width: 32,
+    minWidth: 32,
     display: "flex",
     justifyContent: "center",
+    marginRight: theme.spacing(2),
     color: theme.palette.colors.coolGrey300
   },
   iconActive: {
@@ -36,23 +48,23 @@ const styles = (theme) => ({
   },
   shopLogo: {
     flex: 1,
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing(2)
   },
   toolbar: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
   },
   listItem: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
   },
   listItemText: {
     paddingLeft: 0
   },
   listItemNested: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    paddingLeft: theme.spacing.unit * 8
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: theme.spacing(8)
   },
   link: {
     [`&.${activeClassName} span`]: {
@@ -115,7 +127,7 @@ function Sidebar(props) {
           <ShopLogoWithData className={classes.shopLogo} shouldShowShopName size={32} />
 
           <Hidden mdUp>
-            <Fab color="secondary" onClick={onDrawerClose} size="small">
+            <Fab classes={{ root: classes.closeButton }} onClick={onDrawerClose} size="small">
               <CloseIcon />
             </Fab>
           </Hidden>

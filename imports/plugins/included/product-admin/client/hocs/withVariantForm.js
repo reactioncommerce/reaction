@@ -83,6 +83,8 @@ const wrapComponent = (Comp) => (
       if (this.hasChildVariants(variant)) {
         return { backgroundColor: "lightgrey", cursor: "not-allowed" };
       }
+
+      return null;
     }
 
     restoreVariant = (variant) => {
@@ -232,7 +234,7 @@ const wrapComponent = (Comp) => (
     /**
      * @summary update parent inventory policy if variant has children
      * @param {Object} variant product or variant document
-     * @return {undefined} return nothing
+     * @returns {undefined} return nothing
      * @private
      */
     updateInventoryPolicyIfChildVariants = (variant) => {
@@ -261,6 +263,8 @@ const wrapComponent = (Comp) => (
           }
         });
       }
+
+      return null;
     }
 
     updateLowInventoryThresholdIfChildVariants = (variant) => {

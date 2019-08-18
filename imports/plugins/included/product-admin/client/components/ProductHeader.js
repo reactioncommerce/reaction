@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { i18next } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import { compose, withState } from "recompose";
 import withStyles from "@material-ui/core/styles/withStyles";
 import IconButton from "@material-ui/core/IconButton";
@@ -10,17 +10,17 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import ChevronRight from "mdi-material-ui/ChevronRight";
 import DotsHorizontalCircleIcon from "mdi-material-ui/DotsHorizontalCircle";
-import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
+import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
 
 const styles = (theme) => ({
   root: {
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 4
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(4)
   },
   breadcrumbs: {
     display: "flex",
     alignItems: "center",
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   breadcrumbIcon: {
     fontSize: 14
@@ -64,6 +64,9 @@ function ProductHeader(props) {
   }
 
   const currentProduct = variant || product;
+
+  const hasCloneProductPermission = Reaction.hasPermission(["createProduct", "product/admin", "product/clone"], Reaction.getUserId(), Reaction.getShopId());
+  const hasArchiveProductPermission = Reaction.hasPermission(["createProduct", "product/admin", "product/archive"], Reaction.getUserId(), Reaction.getShopId());
 
   // Archive menu item
   let archiveMenuItem = (
@@ -123,7 +126,7 @@ function ProductHeader(props) {
               className={classes.breadcrumbLink}
               to={`/operator/products/${product._id}/${parentVariant._id}`}
             >
-              {parentVariant.title || "Untitled Variant"}
+              {parentVariant.optionTitle || parentVariant.title || "Untitled Variant"}
             </Link>
           </Fragment>
         )}
@@ -135,7 +138,7 @@ function ProductHeader(props) {
               className={classes.breadcrumbLink}
               to={`/operator/products/${variant.ancestors.join("/")}/${variant._id}`}
             >
-              {variant.title || "Untitled Variant"}
+              {variant.optionTitle || variant.title || "Untitled Variant"}
             </Link>
           </Fragment>
         )}
@@ -179,22 +182,26 @@ function ProductHeader(props) {
               i18next.t("admin.productTable.bulkActions.makeVisible")
             }
           </MenuItem>
-          <MenuItem
-            onClick={() => {
-              if (product && variant) {
-                // Clone variant
-                onCloneVariant(product._id, variant._id);
-              } else {
-                // Clone product
-                onCloneProduct(product._id);
-              }
+          {hasCloneProductPermission &&
+            <MenuItem
+              onClick={() => {
+                if (product && variant) {
+                  // Clone variant
+                  onCloneVariant(product._id, variant._id);
+                } else {
+                  // Clone product
+                  onCloneProduct(product._id);
+                }
 
-              setMenuAnchorEl(null);
-            }}
-          >
-            {i18next.t("admin.productTable.bulkActions.duplicate")}
-          </MenuItem>
-          {archiveMenuItem}
+                setMenuAnchorEl(null);
+              }}
+            >
+              {i18next.t("admin.productTable.bulkActions.duplicate")}
+            </MenuItem>
+          }
+          {hasArchiveProductPermission &&
+            archiveMenuItem
+          }
         </Menu>
 
       </div>
@@ -211,6 +218,7 @@ ProductHeader.propTypes = {
   onRestoreProduct: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   option: PropTypes.object,
+  parentVariant: PropTypes.object,
   product: PropTypes.object,
   setMenuAnchorEl: PropTypes.func.isRequired,
   variant: PropTypes.object

@@ -3,14 +3,13 @@ import startup from "./startup";
 /**
  * @summary Import and call this function to add this plugin to your API.
  * @param {ReactionNodeApp} app The ReactionNodeApp instance
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function register(app) {
   await app.registerPlugin({
     label: "Notifications",
     name: "reaction-notification",
     icon: "fa fa-bell",
-    autoEnable: true,
     collections: {
       Notifications: {
         name: "Notifications"
@@ -19,10 +18,6 @@ export default async function register(app) {
     functionsByType: {
       startup: [startup]
     },
-    addRolesToGroups: [{
-      groups: ["guest", "customer"],
-      roles: ["notifications"]
-    }],
     registry: [{
       label: "Notifications",
       name: "notifications",

@@ -19,7 +19,7 @@ import sendOrderEmail from "../no-meteor/util/sendOrderEmail";
  * @param {Number} amount - Amount of the refund, as a positive number. If this is
  *   more than the remaining amount to be refunded for this payment, the rest of
  *   the payment will be refunded, making it fully refunded.
- * @return {null} no return value
+ * @returns {null} no return value
  */
 export default function createRefund(orderId, paymentId, amount) {
   check(orderId, String);

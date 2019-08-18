@@ -8,7 +8,7 @@ export const LoginFormSharedHelpers = {
   /**
    * @method messages
    * @memberof Accounts
-   * @return {Object} Message object
+   * @returns {Object} Message object
    */
   messages() {
     return Template.instance().formMessages.get();
@@ -19,13 +19,15 @@ export const LoginFormSharedHelpers = {
    * @memberof Accounts
    * @summary Check to see if there are error or other messages to display
    * @param  {Object}  error Error
-   * @return {String}       "has-error has-feedback" string
+   * @returns {String}       "has-error has-feedback" string
    */
   hasError(error) {
     // True here means the field is valid
     if (error !== true && typeof error !== "undefined") {
       return "has-error has-feedback";
     }
+
+    return null;
   },
 
   /**
@@ -33,7 +35,7 @@ export const LoginFormSharedHelpers = {
    * @memberof Accounts
    * @summary Client-side helper to capitalize word
    * @param  {String} str String to capitalize
-   * @return {String}     First letter of first word capitalized
+   * @returns {String}     First letter of first word capitalized
    */
   capitalize(str) {
     const finalString = str === null ? "" : String(str);
@@ -48,7 +50,7 @@ export const LoginFormSharedHelpers = {
  * @summary ReactionAvatar Component helper to get a user's Avatar
  * @example const userAvatar = getUserAvatar(account);
  * @param  {Object} currentUser User
- * @return {Component}          ReactionAvatar component
+ * @returns {Component}          ReactionAvatar component
  */
 export function getUserAvatar(currentUser) {
   const user = currentUser || Accounts.user();

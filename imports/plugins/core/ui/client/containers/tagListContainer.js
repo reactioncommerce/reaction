@@ -45,7 +45,8 @@ const wrapComponent = (Comp) => (
       }, 500);
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       this.setState({
         tagIds: nextProps.tagIds || [],
         tagsByKey: nextProps.tagsByKey || {}
@@ -88,6 +89,8 @@ const wrapComponent = (Comp) => (
             return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
           }
 
+          Alerts.toast(i18next.t("tagAddedToProduct", { defaultValue: `Tag "${tag.name}" added to product`, tagName: tag.name }), "success");
+
           this.setState({
             newTag: {
               name: ""
@@ -113,6 +116,8 @@ const wrapComponent = (Comp) => (
             return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
           }
 
+          Alerts.toast(i18next.t("tagAddedToProduct", { defaultValue: `Tag "${tag.name}" added to product`, tagName: tag.name }), "success");
+
           this.setState({
             suggestions: []
           });
@@ -128,6 +133,8 @@ const wrapComponent = (Comp) => (
           if (error) {
             Alerts.toast(i18next.t("productDetail.tagInUse"), "error");
           }
+
+          Alerts.toast(i18next.t("tagRemovedFromProduct", { defaultValue: `Tag "${tag.name}" removed from product`, tagName: tag.name }), "success");
         });
       }
     }
@@ -215,6 +222,12 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   let { tags } = props;
 

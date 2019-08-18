@@ -3,7 +3,7 @@ import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-grap
 import selectFulfillmentOptionForGroupMutation from "../../mutations/selectFulfillmentOptionForGroup";
 
 /**
- * @name "Mutation.selectFulfillmentOptionForGroup"
+ * @name Mutation/selectFulfillmentOptionForGroup
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the selectFulfillmentOptionForGroup GraphQL mutation
@@ -15,7 +15,7 @@ import selectFulfillmentOptionForGroupMutation from "../../mutations/selectFulfi
  * @param {String} args.input.fulfillmentMethodId - The fulfillment method ID from the option the shopper selected
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} SelectFulfillmentOptionForGroupPayload
+ * @returns {Promise<Object>} SelectFulfillmentOptionForGroupPayload
  */
 export default async function selectFulfillmentOptionForGroup(parentResult, { input }, context) {
   const {

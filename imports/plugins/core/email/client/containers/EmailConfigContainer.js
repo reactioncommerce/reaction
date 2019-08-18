@@ -1,3 +1,5 @@
+/* eslint-disable react/no-did-mount-set-state */
+/* TODO: revisit this component and convert to functional component to remove need for state */
 import React, { Component, Fragment } from "react";
 import { Reaction } from "/client/api";
 import EmailConfig from "../components/EmailConfig";

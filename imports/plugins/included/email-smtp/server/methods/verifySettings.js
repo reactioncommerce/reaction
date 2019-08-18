@@ -6,7 +6,7 @@ import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getMailConfig from "../util/getMailConfig";
+import getMailConfig from "../no-meteor/util/getMailConfig";
 
 /**
  * @name email/verifySettings
@@ -14,7 +14,7 @@ import getMailConfig from "../util/getMailConfig";
  * @summary Verify the current email configuration
  * @memberof Email/Methods
  * @param {Object} [settings] optional settings object (otherwise uses settings in database)
- * @return {Boolean} - returns true if SMTP connection succeeds
+ * @returns {Boolean} - returns true if SMTP connection succeeds
  */
 export default function verifySettings(settings) {
   if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
@@ -54,7 +54,9 @@ export default function verifySettings(settings) {
     config = Promise.await(getMailConfig(context, shopId));
   }
 
-  Logger.debug(config, "Verifying email config settings");
+  const logConfig = { ...config };
+  delete logConfig.auth;
+  Logger.debug(logConfig, "Verifying email config settings");
 
   const transporter = nodemailer.createTransport(config);
 

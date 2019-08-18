@@ -42,6 +42,7 @@ export function metaField(options = {}) {
 export function productVariant(options = {}) {
   const defaults = {
     ancestors: [],
+    attributeLabel: "Variant",
     compareAtPrice: _.random(0, 1000),
     weight: _.random(0, 10),
     isTaxable: faker.random.boolean(),
@@ -128,13 +129,16 @@ export function getProduct() {
 export function getProducts(limit = 2) {
   const products = [];
   const existingProducts = Products.find({}, { limit }).fetch();
-  for (let i = 0; i < limit; i += 1) {
-    const product = existingProducts[i] || Factory.create("product");
+  for (let inc = 0; inc < limit; inc += 1) {
+    const product = existingProducts[inc] || Factory.create("product");
     products.push(product);
   }
   return products;
 }
 
+/**
+ * @returns {undefined} undefined
+ */
 export default function () {
   /**
    * @name tag

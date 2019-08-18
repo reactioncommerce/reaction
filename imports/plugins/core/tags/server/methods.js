@@ -9,7 +9,7 @@ Meteor.methods({
     check(excludedTagIds, Match.OneOf(undefined, Array));
 
     // Return a blank result set for non admins
-    if (!Reaction.hasPermission(["admin", "owner", "createProduct"], this.userId)) {
+    if (!Reaction.hasPermission(["admin", "owner", "createProduct", "product/admin", "product/update"], this.userId)) {
       return [];
     }
 
@@ -26,7 +26,8 @@ Meteor.methods({
     }
 
     const tags = Tags.find(selector, { limit: 4 }).map((tag) => ({
-      label: tag.name
+      label: tag.name,
+      slug: tag.slug
     }));
 
     return tags;

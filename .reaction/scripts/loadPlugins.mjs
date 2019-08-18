@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import childProcess from 'child_process';
 import _ from 'lodash';
-import Log from './logger';
-import { exists, getDirectories } from './fs';
-import pluginConfig from "../pluginConfig";
+import Log from './logger.mjs';
+import { exists, getDirectories } from './fs.mjs';
+import pluginConfig from "../pluginConfig.js";
 
 // add a message to the top of the plugins import file
 const importFileMessage = `
@@ -19,7 +19,7 @@ const importFileMessage = `
  * Create a plugin imports file on client or server
  * @param  {String} file - absolute path to file to write
  * @param  {Array} imports - array of import path strings
- * @return {Boolean} returns true if no error
+ * @returns {Boolean} returns true if no error
  */
 function generateImportsFile(file, imports) {
   // create/reset imports file
@@ -46,7 +46,7 @@ function generateImportsFile(file, imports) {
 /**
  * Import Reaction plugins
  * @param {String} baseDirPath - path to a plugins sub-directory (core/included/custom)
- * @return {Object} - returns object with client, server, and registry path arrays
+ * @returns {Object} - returns object with client, server, and registry path arrays
  */
 function getImportPaths(baseDirPath) {
 
@@ -94,7 +94,7 @@ function getImportPaths(baseDirPath) {
       Log.info(`Installing dependencies for ${plugin}...\n`);
 
       try {
-        childProcess.execSync(`cd ${baseDirPath}${plugin} && meteor npm i`, { stdio: 'inherit' });
+        childProcess.execSync(`cd ${baseDirPath}${plugin} && npm i`, { stdio: 'inherit' });
       } catch (err) {
         Log.error(`Failed to install npm dependencies for plugin: ${plugin}`);
         process.exit(1);

@@ -14,7 +14,7 @@ import { formatPriceString } from "./currency";
  * @param {String} i18nKey - i18nKey
  * @param {String} i18nMessage - message text
  * @example {{i18n "accountsTemplate.error" "Invalid Email"}}
- * @return {String} returns i18n translated message
+ * @returns {String} returns i18n translated message
  */
 Template.registerHelper("i18n", (i18nKey, i18nMessage) => {
   if (!i18nKey || typeof i18nMessage !== "string") {
@@ -60,7 +60,7 @@ Template.registerHelper("currencySymbol", () => {
  * @example {{formatPrice displayPrice}}
  * @param {String} currentPrice - currentPrice or "xx.xx - xx.xx" formatted String
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
- * @return {String} returns locale formatted and exchange rate converted values
+ * @returns {String} returns locale formatted and exchange rate converted values
  */
 Template.registerHelper("formatPrice", (formatPrice, useDefaultShopCurrency) => {
   localeDep.depend();

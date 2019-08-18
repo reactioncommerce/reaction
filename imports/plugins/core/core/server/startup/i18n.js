@@ -16,6 +16,11 @@ const translationSources = [];
 const rawAssetsCollection = Assets.rawCollection();
 let bulkAssetOp;
 
+/**
+ * @function directoryExists
+ * @param {String} dirPath directory path
+ * @returns {Boolean} isDirectory
+ */
 async function directoryExists(dirPath) {
   let info;
 
@@ -35,7 +40,7 @@ async function directoryExists(dirPath) {
  * loadTranslation should generally be used
  * before startup, to ensure that Assets load.
  * @param  {Object} source a json i18next object
- * @return {Boolean} false if assets weren't loaded
+ * @returns {Boolean} false if assets weren't loaded
  */
 export function loadTranslation(source) {
   try {
@@ -64,7 +69,7 @@ export function loadTranslation(source) {
  * @memberof i18n
  * @summary Load an array of translation objects and import using loadTranslation
  * @param  {Object} sources array of i18next translations
- * @return {Boolean} false if assets weren't loaded
+ * @returns {Boolean} false if assets weren't loaded
  */
 export function loadTranslations(sources) {
   sources.forEach(loadTranslation);
@@ -74,7 +79,7 @@ export function loadTranslations(sources) {
  * @method flushTranslationLoad
  * @memberof i18n
  * @summary Execute the bulk asset operation
- * @return {undefined} No return
+ * @returns {undefined} No return
  */
 export async function flushTranslationLoad() {
   if (!bulkAssetOp) return Promise.resolve();
@@ -85,6 +90,8 @@ export async function flushTranslationLoad() {
   } catch (error) {
     Logger.error("Error flushing the translation asset upserts");
   }
+
+  return Promise.resolve();
 }
 
 /**
@@ -94,6 +101,7 @@ export async function flushTranslationLoad() {
  * Assets collection is processed with Reaction.Import
  * after all assets have been loaded.
  * @async
+ * @returns {undefined} no return
  */
 export async function loadCoreTranslations() {
   const meteorPath = await fs.realpath(`${process.cwd()}/../`);
@@ -127,7 +135,7 @@ export async function loadCoreTranslations() {
  * @method reloadAllTranslations
  * @memberof i18n
  * @summary Reload translations for all shops
- * @return {undefined}
+ * @returns {undefined}
 */
 export function reloadAllTranslations() {
   // Clear assets for i18n
@@ -147,8 +155,8 @@ export function reloadAllTranslations() {
  * @method reloadTranslationsForShop
  * @memberof i18n
  * @summary Reload translations for specified shop
- * @param {string} shopId - Shop Id to reset translations for
- * @return {undefined}
+ * @param {String} shopId - Shop Id to reset translations for
+ * @returns {undefined}
 */
 export function reloadTranslationsForShop(shopId) {
   // Clear assets for i18n
@@ -168,7 +176,7 @@ export function reloadTranslationsForShop(shopId) {
  * @method importAllTranslations
  * @memberof i18n
  * @summary Imports all translations into Assets collection and Translation collection
- * @return {undefined}
+ * @returns {undefined}
  */
 export function importAllTranslations() {
   // Get count of all i18n assets
@@ -189,14 +197,18 @@ export function importAllTranslations() {
     const shopId = Reaction.getShopId();
 
     // Then loop through those I18N assets and import them
-    Assets.find({ type: "i18n" }).forEach((t) => {
-      Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
-      if (t.content) {
-        Reaction.Importer.process(t.content, ["i18n"], Reaction.Importer.translation, [shopId]);
-      } else {
-        Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
-      }
-    });
+    if (shopId) {
+      // If there isn't a shop yet, and for future shops, this will be done in the "afterShopCreate" listener
+      Assets.find({ type: "i18n" }).forEach((translation) => {
+        Logger.debug(`Importing ${translation.name} translation for "${translation.ns}"`);
+        if (translation.content) {
+          Reaction.Importer.process(translation.content, ["i18n"], Reaction.Importer.translation, [shopId]);
+        } else {
+          Logger.debug(`No translation content found for ${translation.name} - ${translation.ns} asset`);
+        }
+      });
+    }
+
     Reaction.Importer.flush();
 
     Logger.debug("All translation imported into translations collection from Assets.");

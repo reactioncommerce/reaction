@@ -1,3 +1,5 @@
+/* eslint-disable node/no-deprecated-api */
+/* TODO: revisit `url.parse` throughout Reaction */
 import url from "url";
 import Logger from "@reactioncommerce/logger";
 import { execute, subscribe } from "graphql";
@@ -9,10 +11,6 @@ import { formatApolloErrors } from "apollo-server-errors";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import coreMutations from "../no-meteor/mutations";
-import coreQueries from "../no-meteor/queries";
-import coreResolvers from "../no-meteor/resolvers";
-import coreSchemas from "../no-meteor/schemas";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 import { setCollections } from "/imports/collections/rawCollections";
 import meteorFileCollectionStartup from "/imports/plugins/core/files/server/fileCollections";
@@ -38,18 +36,16 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
-      createUser(options) {
+      appVersion: packageJson.version,
+      async createUser(options) {
         return Accounts.createUser(options);
       },
-      queries: coreQueries,
-      mutations: coreMutations,
-      rootUrl: ROOT_URL,
-      appVersion: packageJson.version
+      mutations: {},
+      queries: {},
+      rootUrl: ROOT_URL
     },
     graphQL: {
-      graphiql: Meteor.isDevelopment,
-      resolvers: coreResolvers,
-      schemas: coreSchemas
+      graphiql: Meteor.isDevelopment
     },
     httpServer: WebApp.httpServer,
     mongodb
@@ -136,7 +132,7 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
     } else if (pathname.startsWith("/sockjs")) {
       // Don't do anything, this is meteor socket.
     } else {
-      socket.close();
+      socket.end();
     }
   });
 

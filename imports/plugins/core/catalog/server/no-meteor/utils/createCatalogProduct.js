@@ -1,5 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import getCatalogProductMedia from "./getCatalogProductMedia";
+
 /**
  * @method
  * @summary Converts a variant Product document into the catalog schema for variants
@@ -13,6 +14,7 @@ export function xformVariant(variant, variantMedia) {
 
   return {
     _id: variant._id,
+    attributeLabel: variant.attributeLabel,
     barcode: variant.barcode,
     createdAt: variant.createdAt || new Date(),
     height: variant.height,
@@ -128,10 +130,10 @@ export async function xformProduct({ context, product, variants }) {
  * @memberof Catalog
  * @param {Object} product - A product object
  * @param {Object} context - The app context
- * @return {boolean} true on successful publish, false if publish was unsuccessful
+ * @returns {boolean} true on successful publish, false if publish was unsuccessful
  */
 export default async function createCatalogProduct(product, context) {
-  const { collections, getFunctionsOfType } = context;
+  const { collections } = context;
   const { Products, Shops } = collections;
 
   if (!product) {
@@ -144,15 +146,7 @@ export default async function createCatalogProduct(product, context) {
     return false;
   }
 
-  const shop = await Shops.findOne(
-    { _id: product.shopId },
-    {
-      projection: {
-        currencies: 1,
-        currency: 1
-      }
-    }
-  );
+  const shop = await Shops.findOne({ _id: product.shopId });
   if (!shop) {
     Logger.error(`Cannot publish to catalog: product's shop (ID ${product.shopId}) not found`);
     return false;
@@ -167,12 +161,11 @@ export default async function createCatalogProduct(product, context) {
 
   const catalogProduct = await xformProduct({ context, product, shop, variants });
 
-  // Apply custom transformations from plugins.
-  for (const customPublishFn of getFunctionsOfType("publishProductToCatalog")) {
-    // Functions of type "publishProductToCatalog" are expected to mutate the provided catalogProduct.
-    // eslint-disable-next-line no-await-in-loop
-    await customPublishFn(catalogProduct, { context, product, shop, variants });
-  }
+  await context.mutations.applyCustomPublisherTransforms(context, catalogProduct, {
+    product,
+    shop,
+    variants
+  });
 
   return catalogProduct;
 }

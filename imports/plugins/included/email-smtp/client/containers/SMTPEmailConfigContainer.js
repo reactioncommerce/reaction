@@ -36,7 +36,8 @@ const wrapComponent = (Comp) => (
       this.checkEmailStatus();
     }
 
-    componentWillReceiveProps(nextProps) {
+    // eslint-disable-next-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
       const { settings } = this.props;
       const { settings: nextSettings } = nextProps;
       // if the email settings do not match check the email status
@@ -94,6 +95,8 @@ const composer = (props, onData) => {
     }
     return onData(null, { settings });
   }
+
+  return null;
 };
 
 const handlers = { saveSettings: actions.settings.saveSettings };

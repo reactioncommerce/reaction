@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} params - request parameters
  * @param {String} [params._id] - Product id to include
  * @param {String} [param.slug] - Product slug (handle)
- * @return {Object} - A Product from the Catalog
+ * @returns {Object} - A Product from the Catalog
  */
 export default async function catalogItemProduct(context, { _id, slug } = {}) {
   const { collections } = context;

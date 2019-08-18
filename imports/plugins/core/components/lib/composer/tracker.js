@@ -28,7 +28,7 @@ import compose from "./compose";
  * @summary getTrackerLoader creates a Meteor Tracker to watch dep updates from
  * the passed in reactiveMapper function
  * @param  {Function} reactiveMapper data fetching function to bind to a tracker
- * @return {Function} composed function
+ * @returns {Function} composed function
  * @memberof Components/Helpers
  * @private
  */
@@ -54,7 +54,7 @@ function getTrackerLoader(reactiveMapper) {
  * @summary A higher order component to wrap a reactive function with Meteor's Tracker
  * @param {Function} reactiveMapper data fetching function to bind to a tracker
  * @param {React.Component|Boolean|Object} options can be a custom loader, false (to disable), or a full options object
- * @return {Function} composed function
+ * @returns {Function} composed function
  * @memberof Components/Helpers
  */
 export function composeWithTracker(reactiveMapper, options) {

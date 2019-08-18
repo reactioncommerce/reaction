@@ -1,16 +1,21 @@
+/* eslint-disable consistent-return */
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
 const MAX_LIMIT = 200;
 
 /**
- * Adjusts value to be between 1 and MAX_LIMIT, inclusive
+ * @description Adjusts value to be between 1 and MAX_LIMIT, inclusive
  * @private
+ * @param {Number|undefined} value value to check
+ * @returns {Number|undefined} parsed value
  */
 function parseValue(value) {
+  /* eslint-disable consistent-return */
   if (value === undefined || isNaN(value)) return undefined;
   if (typeof value !== "number") return MAX_LIMIT;
   return Math.min(Math.max(1, value), MAX_LIMIT);
+  /* eslint-enable consistent-return */
 }
 
 const description = `

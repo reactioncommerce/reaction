@@ -5,7 +5,7 @@ import ProductHeader from "../components/ProductHeader";
 /**
  * Variant table block component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function VariantHeader(props) {
   const {
@@ -35,6 +35,7 @@ VariantHeader.propTypes = {
   cloneVariant: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
   option: PropTypes.object,
+  parentVariant: PropTypes.object,
   product: PropTypes.object,
   removeVariant: PropTypes.func,
   restoreVariant: PropTypes.func,

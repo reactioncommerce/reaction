@@ -3,7 +3,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import updateFlatRateFulfillmentMethodMutation from "../../mutations/updateFlatRateFulfillmentMethod";
 
 /**
- * @name "Mutation.updateFlatRateFulfillmentMethod"
+ * @name Mutation/updateFlatRateFulfillmentMethod
  * @method
  * @memberof Fulfillment/GraphQL
  * @summary resolver for the updateFlatRateFulfillmentMethod GraphQL mutation
@@ -14,7 +14,7 @@ import updateFlatRateFulfillmentMethodMutation from "../../mutations/updateFlatR
  * @param {String} args.input.shopId - The shop to update this flat rate fulfillment method for
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} UpdateFlatRateFulfillmentMethodPayload
+ * @returns {Promise<Object>} UpdateFlatRateFulfillmentMethodPayload
  */
 export default async function updateFlatRateFulfillmentMethod(parentResult, { input }, context) {
   const { clientMutationId = null, method, methodId: opaqueMethodId, shopId: opaqueShopId } = input;

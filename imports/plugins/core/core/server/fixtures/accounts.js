@@ -1,18 +1,20 @@
+/* eslint-disable require-jsdoc */
+/* eslint-disable node/no-unsupported-features/es-syntax */
 import faker from "faker";
 import _ from "lodash";
-import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { Accounts } from "/lib/collections";
+import { getUser } from "./users";
 import { getShop } from "./shops";
 
 /**
- * @method getUser
+ * @method getAccount
  * @memberof Fixtures
- * @return {Object} Existing user or Factory user
+ * @returns {Object} Existing account or Factory account
  */
-export function getUser() {
-  const existingUser = Meteor.users.findOne();
-  return existingUser || Factory.create("user");
+export function getAccount() {
+  const existingAccount = Accounts.findOne();
+  return existingAccount || Factory.create("account");
 }
 
 /**
@@ -33,7 +35,7 @@ export function getUser() {
  * @param {Boolean} [options.isShippingDefault] isShippingDefault
  * @param {Boolean} [options.isBillingDefault] isBillingDefault
  * @param {Array} [options.metafields] metafields
- * @return {Object}              Address object
+ * @returns {Object}              Address object
  */
 export function getAddress(options = {}) {
   const defaults = {
@@ -76,6 +78,7 @@ export function getAddress(options = {}) {
  * @property {Array} metafields - '[]'
  * @property {Date} createdAt - `new Date()`
  * @property {Date} updatedAt - `new Date()`
+ * @returns {undefined}
  */
 export function createAccountFactory() {
   // there are many places in code which require that an Account's _id be equal

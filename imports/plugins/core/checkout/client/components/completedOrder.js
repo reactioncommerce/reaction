@@ -12,7 +12,7 @@ import CompletedOrderSummary from "./completedOrderSummary";
  * @property {Object} order - An object representing the order
  * @property {Array} paymentMethods - An array of paymentMethod objects
  * @property {Boolean} isProfilePage - A boolean value that checks if current page is user profile page
- * @return {Node} React node containing the top-level component for displaying the completed order/receipt page
+ * @returns {Node} React node containing the top-level component for displaying the completed order/receipt page
  */
 const CompletedOrder = ({ order, paymentMethods, isProfilePage }) => {
   if (!order) {

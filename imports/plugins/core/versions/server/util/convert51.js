@@ -7,7 +7,7 @@ import _ from "lodash";
  * This function can take any variant object.
  * @param {Object} variant - A product variant object.
  * @param {Object} collections - Raw mongo collections.
- * @return {Promise<number>} Reserved variant quantity.
+ * @returns {Promise<number>} Reserved variant quantity.
  */
 function getVariantInventoryNotAvailableToSellQuantity(variant, collections) {
   // Find orders that are new or processing
@@ -39,10 +39,10 @@ function getVariantInventoryNotAvailableToSellQuantity(variant, collections) {
  *
  * @method getVariants
  * @summary Get all of a Product's Variants or only a Product's top level Variants.
- * @param {string} productOrVariantId - A Product or top level Product Variant ID.
+ * @param {String} productOrVariantId - A Product or top level Product Variant ID.
  * @param {Object} collections - Raw mongo collections.
- * @param {boolean} topOnly - True to return only a products top level variants.
- * @return {Promise<Object[]>} Array of Product Variant objects.
+ * @param {Boolean} topOnly - True to return only a products top level variants.
+ * @returns {Promise<Object[]>} Array of Product Variant objects.
  */
 function getVariants(productOrVariantId, collections, topOnly) {
   const { Products } = collections;
@@ -63,7 +63,7 @@ function getVariants(productOrVariantId, collections, topOnly) {
  * @summary Get a top level variant based on provided ID
  * @param {String} productOrVariantId - A variant or top level Product Variant ID.
  * @param {Object} collections - Raw mongo collections.
- * @return {Promise<Object[]>} Top level product object.
+ * @returns {Promise<Object[]>} Top level product object.
  */
 function getTopLevelVariant(productOrVariantId, collections) {
   const { Products } = collections;
@@ -95,7 +95,7 @@ function getTopLevelVariant(productOrVariantId, collections) {
  * @param {Object} variant - A top level product variant object.
  * @param {Object} collections - Raw mongo collections.
  * @param {Object[]} variants - Array of product variant option objects.
- * @return {Promise<number>} Variant quantity.
+ * @returns {Promise<number>} Variant quantity.
  */
 function getVariantInventoryAvailableToSellQuantity(variant, collections, variants) {
   let options;
@@ -121,7 +121,7 @@ function getVariantInventoryAvailableToSellQuantity(variant, collections, varian
  * @param {Object} productId - A top level product variant object.
  * @param {Object} collections - Raw mongo collections.
  * @param {Object[]} variants - Array of product variant option objects.
- * @return {Promise<number>} Variant quantity.
+ * @returns {Promise<number>} Variant quantity.
  */
 function getProductInventoryAvailableToSellQuantity(productId, collections) {
   const variants = getVariants(productId, collections, true);
@@ -143,7 +143,7 @@ function getProductInventoryAvailableToSellQuantity(productId, collections) {
  * @param {Object} variant - A top level product variant object.
  * @param {Object} collections - Raw mongo collections.
  * @param {Object[]} variants - Array of product variant option objects.
- * @return {Promise<number>} Variant quantity.
+ * @returns {Promise<number>} Variant quantity.
  */
 function getVariantInventoryInStockQuantity(variant, collections, variants) {
   let options;
@@ -168,7 +168,7 @@ function getVariantInventoryInStockQuantity(variant, collections, variants) {
  * @param {Object} productId - A top level product variant object.
  * @param {Object} collections - Raw mongo collections.
  * @param {Object[]} variants - Array of product variant option objects.
- * @return {Promise<number>} Variant quantity.
+ * @returns {Promise<number>} Variant quantity.
  */
 function getProductInventoryInStockQuantity(productId, collections) {
   const variants = getVariants(productId, collections, true);
@@ -187,7 +187,7 @@ function getProductInventoryInStockQuantity(productId, collections) {
  * This function can take any variant object.
  * @param {Object} item - A product item object, either from the cart or the products catalog
  * @param {Object} collections - Raw mongo collections.
- * @return {Promise<number>} Reserved variant quantity.
+ * @returns {Promise<number>} Reserved variant quantity.
  */
 function updateParentVariantsInventoryAvailableToSellQuantity(item, collections) {
   // Since either a cart item or a product catalog item can be provided, we need to determine
@@ -292,9 +292,9 @@ export function addInventoryAvailableToSellFieldToProduct(item, collections) {
  *
  * @method hasChildVariant
  * @summary Return true if a Product or Variant has at least 1 child Product that is visible and not deleted.
- * @param {string} productOrVariantId - A Product or Product Variant ID.
+ * @param {String} productOrVariantId - A Product or Product Variant ID.
  * @param {Object} collections - Raw mongo collections.
- * @return {Promise<boolean>} True if Product has a child.
+ * @returns {Promise<boolean>} True if Product has a child.
  */
 function hasChildVariant(productOrVariantId, collections) {
   const { Products } = collections;
@@ -312,7 +312,7 @@ function hasChildVariant(productOrVariantId, collections) {
  * @summary If all the products variants have inventory policy disabled and inventory management enabled
  * @memberof Catalog
  * @param {Object[]} variants - Array with product variant objects
- * @return {boolean} is backorder allowed or not for a product
+ * @returns {boolean} is backorder allowed or not for a product
  */
 function canBackorder(variants) {
   const results = variants.map((variant) => !variant.inventoryPolicy && variant.inventoryManagement);
@@ -325,7 +325,7 @@ function canBackorder(variants) {
  * @summary If all the products variants have inventory policy disabled, inventory management enabled and a quantity of zero return `true`
  * @memberof Catalog
  * @param {Object[]} variants - Array with product variant objects
- * @return {boolean} is backorder currently active or not for a product
+ * @returns {boolean} is backorder currently active or not for a product
  */
 function isBackorder(variants) {
   const results = variants.map((variant) => !variant.inventoryPolicy && variant.inventoryManagement && variant.inventoryAvailableToSell === 0);
@@ -337,7 +337,7 @@ function isBackorder(variants) {
  * @summary If all the product variants have a quantity of 0 return `true`.
  * @memberof Catalog
  * @param {Object[]} variants - Array with top-level variants
- * @return {Boolean} true if quantity is zero.
+ * @returns {Boolean} true if quantity is zero.
  */
 function isSoldOut(variants) {
   const results = variants.map((variant) => variant.inventoryManagement && variant.inventoryAvailableToSell <= 0);
@@ -350,7 +350,7 @@ function isSoldOut(variants) {
  * @summary If at least one of the product variants quantity is less than the low inventory threshold return `true`.
  * @memberof Catalog
  * @param {Object[]} variants - Array of child variants
- * @return {boolean} low quantity or not
+ * @returns {boolean} low quantity or not
  */
 function isLowQuantity(variants) {
   const threshold = variants && variants.length && variants[0].lowInventoryWarningThreshold;

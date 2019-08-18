@@ -1,7 +1,7 @@
 import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
- * @name "Mutation.reconcileCarts"
+ * @name Mutation/reconcileCarts
  * @method
  * @memberof Cart/GraphQL
  * @summary resolver for the reconcileCarts GraphQL mutation
@@ -12,7 +12,7 @@ import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/ca
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {String} [args.input.mode] - The reconciliation mode, "merge", "keepAccountCart", or "keepAnonymousCart". Default "merge"
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} ReconcileCartsPayload
+ * @returns {Promise<Object>} ReconcileCartsPayload
  */
 export default async function reconcileCarts(parentResult, { input }, context) {
   const {

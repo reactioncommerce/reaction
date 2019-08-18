@@ -12,7 +12,7 @@ import paymentMethods from "../queries/paymentMethods.graphql";
  * components and other code, but ideally we will not need this forever.
  */
 
-const client = graphql(Reaction.absoluteUrl("graphql-alpha"), { asJSON: true });
+const client = graphql(Reaction.absoluteUrl("graphql-beta"), { asJSON: true });
 
 /**
  * @summary Sets the meteor-login-token header for all GraphQL requests done

@@ -10,16 +10,21 @@ import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
  * @summary Add a tag
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - mutation input
- * @return {Promise<Object>} AddTagPayload
+ * @returns {Promise<Object>} AddTagPayload
  */
 export default async function addTag(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
-  const { shopId, name, isVisible, displayTitle, metafields, heroMediaUrl } = input;
+  const { shopId, name, isVisible, displayTitle, metafields, heroMediaUrl, slug: slugInput } = input;
   const { appEvents, collections, userHasPermission } = context;
   const { Tags } = collections;
 
   if (!userHasPermission(["owner", "admin"], shopId)) {
     throw new ReactionError("access-denied", "User does not have permission");
+  }
+
+  let slug = name;
+  if (typeof slugInput === "string" && slugInput.trim().length > 0) {
+    slug = slugInput;
   }
 
   const now = new Date();
@@ -28,7 +33,7 @@ export default async function addTag(context, input) {
     isDeleted: false,
     isTopLevel: false,
     isVisible,
-    slug: getSlug(name),
+    slug: getSlug(slug),
     metafields,
     name,
     displayTitle,
@@ -39,13 +44,23 @@ export default async function addTag(context, input) {
   };
 
   TagSchema.validate(tag);
-  const { result } = await Tags.insertOne(tag);
 
-  if (result.ok !== 1) {
-    throw new ReactionError("server-error", "Unable to create tag");
+  try {
+    const { result } = await Tags.insertOne(tag);
+
+    if (result.ok !== 1) {
+      throw new ReactionError("server-error", "Unable to create tag");
+    }
+
+    await appEvents.emit("afterTagCreate", tag);
+
+    return tag;
+  } catch ({ message }) {
+    // Mongo duplicate key error.
+    if (message.includes("E11000") && message.includes("slug")) {
+      throw new ReactionError("error", `Slug ${tag.slug} is already in use`);
+    }
+
+    throw new ReactionError("error", message);
   }
-
-  await appEvents.emit("afterTagCreate", tag);
-
-  return tag;
 }

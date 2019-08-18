@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "/client/api";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@reactioncommerce/catalyst/Button";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
 import AddressValidationSettingsForm from "./AddressValidationSettingsForm";
 
@@ -99,9 +99,11 @@ export default class ShopAddressValidationSettings extends Component {
           serviceOptions={this.serviceOptions}
         />
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button actionType="secondary" onClick={this.hideAddForm}>{i18next.t("addressValidation.cancelButtonText")}</Button>
+          <Button variant="outlined" onClick={this.hideAddForm}>{i18next.t("addressValidation.cancelButtonText")}</Button>
           <div style={{ marginLeft: 14 }}>
-            <Button actionType="important" onClick={this.handleAddFormSubmitButton}>{i18next.t("addressValidation.entryFormSubmitButtonText")}</Button>
+            <Button variant="contained" color="secondary" onClick={this.handleAddFormSubmitButton}>
+              {i18next.t("addressValidation.entryFormSubmitButtonText")}
+            </Button>
           </div>
         </div>
       </div>
@@ -139,7 +141,7 @@ export default class ShopAddressValidationSettings extends Component {
             {
               accessor: "_id",
               Cell: (row) => (
-                <Button actionType="secondaryDanger" isShortHeight onClick={() => { onItemDeleted(row.value); }}>
+                <Button color="error" variant="outlined" size="small" onClick={() => { onItemDeleted(row.value); }}>
                   {i18next.t("addressValidation.deleteItemButtonText")}
                 </Button>
               )
@@ -147,7 +149,9 @@ export default class ShopAddressValidationSettings extends Component {
           ]}
           filterType="none"
         />
-        {!isAdding && <Button actionType="important" isFullWidth onClick={this.showAddForm}>{i18next.t("addressValidation.addNewItemButtonText")}</Button>}
+        {!isAdding && <Button color="secondary" variant="contained" fullWidth onClick={this.showAddForm}>
+          {i18next.t("addressValidation.addNewItemButtonText")}
+        </Button>}
         {!!isAdding && this.renderAddForm()}
       </div>
     );

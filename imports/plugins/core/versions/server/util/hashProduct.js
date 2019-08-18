@@ -60,7 +60,7 @@ const variantFieldsThatNeedPublishing = [
  * @summary Get an array of ImageInfo objects by Product ID
  * @param {String} productId -  A product ID. Must be a top-level product.
  * @param {Object} collections - Raw mongo collections
- * @return {Promise<Object[]>} Array of ImageInfo objects sorted by priority
+ * @returns {Promise<Object[]>} Array of ImageInfo objects sorted by priority
  */
 async function getCatalogProductMedia(productId, collections) {
   const { Media } = collections;
@@ -106,7 +106,7 @@ async function getCatalogProductMedia(productId, collections) {
  * @summary Get a top level product based on provided ID
  * @param {String} productOrVariantId - A variant or top level Product Variant ID.
  * @param {Object} collections - Raw mongo collections.
- * @return {Promise<Object[]>} Top level product object.
+ * @returns {Promise<Object[]>} Top level product object.
  */
 async function getTopLevelProduct(productOrVariantId, collections) {
   const { Products } = collections;
@@ -133,7 +133,7 @@ async function getTopLevelProduct(productOrVariantId, collections) {
  * @memberof Catalog
  * @param {String} product - The Product document to hash. Expected to be a top-level product, not a variant
  * @param {Object} collections - Raw mongo collections
- * @return {String} product hash
+ * @returns {String} product hash
  */
 async function createProductHash(product, collections) {
   const variants = await collections.Products.find({ ancestors: product._id, type: "variant" }).toArray();
@@ -175,7 +175,7 @@ async function createProductHash(product, collections) {
  * @param {String} productId - A productId
  * @param {Object} collections - Raw mongo collections
  * @param {Boolean} isPublished - Is product published to catalog
- * @return {Object} updated product if successful, original product if unsuccessful
+ * @returns {Object} updated product if successful, original product if unsuccessful
  */
 export default async function hashProduct(productId, collections, isPublished = true) {
   const { Products } = collections;

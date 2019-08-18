@@ -6,14 +6,14 @@ import Grid from "@material-ui/core/Grid";
 
 const styles = (theme) => ({
   block: {
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing(3)
   }
 });
 
 /**
  * VariantDetail layout component
  * @param {Object} props Component props
- * @return {Node} React node
+ * @returns {Node} React node
  */
 function VariantDetail(props) {
   const { classes, ...blockProps } = props;
@@ -21,7 +21,7 @@ function VariantDetail(props) {
   return (
     <Fragment>
       <Components.ProductPublish />
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item sm={12}>
           <Blocks region="VariantDetailHeader" blockProps={blockProps} />
         </Grid>

@@ -12,24 +12,28 @@ import isEqual from "lodash/isEqual";
  *   you can pass this to skip some calculations and database lookups, improving speed.
  * @param {Object[]} [input.variants] Optionally pass an array of the relevant variants if
  *   you have already looked them up. This will save a database query.
- * @return {Promise<Object[]>} Array of responses, in same order as `input.productConfigurations` array.
+ * @returns {Promise<Object[]>} Array of responses, in same order as `input.productConfigurations` array.
  */
 export default async function inventoryForProductConfigurations(context, input) {
-  const { collections } = context;
-  const { SimpleInventory } = collections;
   const { productConfigurations } = input;
+  const { collections, dataLoaders } = context;
 
   const productVariantIds = productConfigurations.map(({ productVariantId }) => productVariantId);
 
-  const inventoryDocs = await SimpleInventory
-    .find({
-      "productConfiguration.productVariantId": { $in: productVariantIds }
-    })
-    .limit(productConfigurations.length) // optimize query speed
-    .toArray();
+  const inventoryDocs = dataLoaders
+    ? await dataLoaders.SimpleInventoryByProductVariantId.loadMany(productVariantIds)
+    : await collections.SimpleInventory
+      .find({
+        "productConfiguration.productVariantId": { $in: productVariantIds }
+      })
+      .limit(productConfigurations.length) // optimize query speed
+      .toArray();
 
   return productConfigurations.map((productConfiguration) => {
-    const inventoryDoc = inventoryDocs.find((doc) => isEqual(productConfiguration, doc.productConfiguration));
+    const inventoryDoc = inventoryDocs.find((doc) => {
+      if (!doc) return false;
+      return isEqual(productConfiguration, doc.productConfiguration);
+    });
     if (!inventoryDoc || !inventoryDoc.isEnabled) {
       return {
         inventoryInfo: null,

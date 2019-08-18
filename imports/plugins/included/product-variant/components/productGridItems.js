@@ -2,14 +2,26 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { formatPriceString, i18next } from "/client/api";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
+import { TableCell, TableRow, Checkbox, IconButton, withStyles } from "@material-ui/core";
 import PencilIcon from "mdi-material-ui/Pencil";
+import CircleIcon from "mdi-material-ui/CheckboxBlankCircle";
+
+const styles = (theme) => ({
+  isVisible: {
+    color: theme.palette.colors.forestGreen300,
+    fontSize: theme.typography.fontSize * 1.25,
+    marginRight: theme.spacing(1)
+  },
+  isHidden: {
+    color: theme.palette.colors.black40,
+    fontSize: theme.typography.fontSize * 1.25,
+    marginRight: theme.spacing(1)
+  }
+});
 
 class ProductGridItems extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     displayPrice: PropTypes.func,
     isSearch: PropTypes.bool,
     isSelected: PropTypes.func,
@@ -69,22 +81,42 @@ class ProductGridItems extends Component {
     );
   }
 
+  renderStatusIcon() {
+    const { product, classes } = this.props;
+
+    if (product.isVisible) {
+      return (
+        <div style={{ display: "flex" }}>
+          <CircleIcon className={classes.isVisible}/>
+          <span>{i18next.t("admin.tags.visible")}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ display: "flex" }}>
+        <CircleIcon className={classes.isHidden}/>
+        <span>{i18next.t("admin.tags.hidden")}</span>
+      </div>
+    );
+  }
+
   handleSelect = (event) => {
     this.props.onSelect(event.target.checked, this.props.product);
   }
 
   render() {
     const { isSelected, product } = this.props;
-
+    const isChecked = isSelected() === "active" || false;
     const productItem = (
       <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""}`}>
-        <TableCell>
+        <TableCell padding="checkbox">
           <Checkbox
             onClick={this.handleSelect}
-            checked={isSelected()}
+            checked={isChecked}
           />
         </TableCell>
-        <TableCell>
+        <TableCell align="center">
           {this.renderMedia()}
         </TableCell>
         <TableCell>
@@ -97,9 +129,9 @@ class ProductGridItems extends Component {
           {this.renderPublishStatus()}
         </TableCell>
         <TableCell>
-          {i18next.t(product.isVisible ? "admin.tags.visible" : "admin.tags.hidden")}
+          {this.renderStatusIcon()}
         </TableCell>
-        <TableCell>
+        <TableCell padding="checkbox">
           <IconButton onClick={this.handleDoubleClick}>
             <PencilIcon />
           </IconButton>
@@ -111,4 +143,4 @@ class ProductGridItems extends Component {
   }
 }
 
-export default ProductGridItems;
+export default withStyles(styles)(ProductGridItems);

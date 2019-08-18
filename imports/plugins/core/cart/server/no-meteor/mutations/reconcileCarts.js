@@ -18,7 +18,7 @@ import reconcileCartsMerge from "./reconcileCartsMerge";
  * @param {String} input.anonymousCartId - The anonymous cart ID
  * @param {String} input.anonymousCartToken - The anonymous cart token
  * @param {String} [input.mode] - The reconciliation mode, "merge", "keepAccountCart", or "keepAnonymousCart". Default "merge"
- * @return {Promise<Object>} Object in which `cart` property is set to the updated account cart
+ * @returns {Promise<Object>} Object in which `cart` property is set to the updated account cart
  */
 export default async function reconcileCarts(context, input) {
   const { accountId, collections, user, userId = null } = context;

@@ -27,14 +27,14 @@ function sortCartItems(cartItems, connectionArgs) {
 }
 
 /**
- * @name "Cart.items"
+ * @name Cart/items
  * @method
  * @memberof Cart/GraphQL
  * @summary converts the `items` prop on the provided cart to a connection
  * @param {Object} cart - result of the parent resolver, which is a Cart object in GraphQL schema format
  * @param {ConnectionArgs} connectionArgs - An object of all arguments that were sent by the client
  * @param {Object} context - The per-request context object
- * @return {Promise<Object>} A connection object
+ * @returns {Promise<Object>} A connection object
  */
 export default async function items(cart, connectionArgs, context) {
   let { items: cartItems } = cart;

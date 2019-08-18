@@ -5,6 +5,11 @@ import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import ReactionError from "@reactioncommerce/reaction-error";
 
+/**
+ * @description checks to see if user has permissions to enable / disable package
+ * @param {Object} pkg package to disable
+ * @returns {Boolean} does the user have permission to enable / disable this package
+ */
 function pkgPermissions(pkg) {
   // if (Reaction.hasPermission("dashboard")) {
   //   // route specific permissions
@@ -19,6 +24,11 @@ function pkgPermissions(pkg) {
   return Reaction.hasPermission(pkg.name);
 }
 
+/**
+ * @description enables a reaction package
+ * @param {Object} reactionPackage package to enable
+ * @returns {String|null} alert or redirect to a package
+ */
 function enableReactionPackage(reactionPackage) {
   const self = reactionPackage;
 
@@ -46,9 +56,15 @@ function enableReactionPackage(reactionPackage) {
         "warning"
       );
     }
+    return null;
   });
 }
 
+/**
+ * @description disables a reaction package
+ * @param {Object} reactionPackage package to disable
+ * @returns {undefined}
+ */
 function disableReactionPackage(reactionPackage) {
   const self = reactionPackage;
 
@@ -64,6 +80,7 @@ function disableReactionPackage(reactionPackage) {
       showCancelButton: true
     },
     () => {
+      // eslint-disable-next-line consistent-return
       Meteor.call("shop/togglePackage", self.packageId, true, (error, result) => {
         if (result === 1) {
           return Alerts.toast(

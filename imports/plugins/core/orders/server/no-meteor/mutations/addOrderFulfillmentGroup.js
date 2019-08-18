@@ -34,7 +34,7 @@ const inputSchema = new SimpleSchema({
  *   item, which can be provided or moved from another existing group.
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
- * @return {Promise<Object>} Object with `order` property containing the updated order and a
+ * @returns {Promise<Object>} Object with `order` property containing the updated order and a
  *   `newFulfillmentGroupId` property set to the ID of the added group
  */
 export default async function addOrderFulfillmentGroup(context, input) {
@@ -55,7 +55,7 @@ export default async function addOrderFulfillmentGroup(context, input) {
 
   // Allow update if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall && !userHasPermission(["orders"], order.shopId)) {
+  if (!isInternalCall && !userHasPermission(["orders", "order/fulfillment"], order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

@@ -28,6 +28,7 @@ export function xformOrderPayment(payment) {
     _id,
     address,
     amount,
+    captureErrorMessage,
     cardBrand,
     createdAt,
     currencyCode,
@@ -35,8 +36,10 @@ export function xformOrderPayment(payment) {
     displayName,
     mode,
     name: methodName,
+    processor,
     riskLevel,
-    status
+    status,
+    transactionId
   } = payment;
 
   return {
@@ -46,6 +49,7 @@ export function xformOrderPayment(payment) {
       currencyCode
     },
     billingAddress: address,
+    captureErrorMessage,
     cardBrand,
     createdAt,
     currencyCode,
@@ -54,10 +58,14 @@ export function xformOrderPayment(payment) {
     isAuthorizationCanceled: (mode === "cancel"),
     isCaptured: (mode === "captured"),
     method: {
+      displayName,
       name: methodName
     },
+    mode,
+    processor,
     riskLevel,
-    status
+    status,
+    transactionId
   };
 }
 
@@ -93,7 +101,7 @@ export function xformOrderFulfillmentGroupSelectedOption(fulfillmentOption) {
  * @param {Object} item The order fulfillment group item in DB format
  * @param {Object[]} catalogItems Array of CatalogItem docs from the db
  * @param {Object[]} products Array of Product docs from the db
- * @return {Object} Same object with GraphQL-only props added
+ * @returns {Object} Same object with GraphQL-only props added
  */
 async function xformOrderItem(context, item, catalogItems) {
   const { productId, variantId } = item;
@@ -143,7 +151,7 @@ async function xformOrderItem(context, item, catalogItems) {
 /**
  * @param {Object} context - an object containing the per-request state
  * @param {Object[]} items Array of order fulfillment group items
- * @return {Object[]} Same array with GraphQL-only props added
+ * @returns {Object[]} Same array with GraphQL-only props added
  */
 export async function xformOrderItems(context, items) {
   const { collections } = context;

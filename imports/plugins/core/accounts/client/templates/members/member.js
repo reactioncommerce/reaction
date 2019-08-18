@@ -43,6 +43,8 @@ Template.memberSettings.helpers({
         return true;
       }
     }
+
+    return false;
   },
   userId() {
     return Reaction.getUserId();
@@ -54,6 +56,8 @@ Template.memberSettings.helpers({
     ))) {
       return "checked";
     }
+
+    return null;
   },
   groupsForUser(groupUserId) {
     const userId = groupUserId || this.userId || Template.parentData(1).userId;
@@ -67,6 +71,8 @@ Template.memberSettings.helpers({
     if (shop && shop.name) {
       return shop.name || "Default Shop";
     }
+
+    return null;
   },
   permissionGroups(thisShopId) {
     const permissionGroups = [];
@@ -107,7 +113,7 @@ Template.memberSettings.helpers({
           }
         }
         // TODO review this, hardcoded WIP
-        const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => ` ${x[1].toUpperCase()}`);
+        const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (string) => ` ${string[1].toUpperCase()}`);
 
         return permissionGroups.push({
           shopId: pkg.shopId,
@@ -117,6 +123,8 @@ Template.memberSettings.helpers({
           permissions: _.uniq(permissions)
         });
       }
+
+      return null;
     });
 
     return permissionGroups;
@@ -128,7 +136,7 @@ Template.memberSettings.helpers({
 
   /**
    * showAvalaraTaxSettings
-   * @return {Boolean} True if avalara is enabled. Defaults to false if not found
+   * @returns {Boolean} True if avalara is enabled. Defaults to false if not found
    * @ignore
    */
   showAvalaraTaxSettings() {
@@ -188,5 +196,7 @@ Template.memberSettings.events({
       }
       return results;
     }
+
+    return null;
   }
 });

@@ -11,15 +11,16 @@ import { Logger, Reaction } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 
 const wrapComponent = (Comp) => (
-  /**
-   * ProductMediaGallery
-   */
   class ProductMediaGallery extends Component {
     static propTypes = {
       editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       id: PropTypes.string,
       media: PropTypes.arrayOf(PropTypes.object),
-      placement: PropTypes.string
+      placement: PropTypes.string,
+      productId: PropTypes.string,
+      shopId: PropTypes.string,
+      userId: PropTypes.string,
+      variantId: PropTypes.string
     }
 
     // Load first image as featuredImage
@@ -116,7 +117,7 @@ const wrapComponent = (Comp) => (
         ]
       });
 
-      // Set local state so the component does't have to wait for a round-trip
+      // Set local state so the component doesn't have to wait for a round-trip
       // to the server to get the updated list of variants
       this.setState({ media: newMediaOrder });
 
@@ -219,8 +220,8 @@ const wrapComponent = (Comp) => (
  * @returns {Array<Object>} sorted media
  */
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, (m) => {
-    const { priority } = (m && m.metadata) || {};
+  const sortedMedia = _.sortBy(media, (med) => {
+    const { priority } = (med && med.metadata) || {};
     if (!priority && priority !== 0) {
       return 1000;
     }
@@ -268,7 +269,7 @@ function composer(props, onData) {
   });
 
   onData(null, {
-    editable: Reaction.hasPermission(props.permission || ["createProduct"]),
+    editable: Reaction.hasPermission(props.permission || ["createProduct", "product/admin", "product/update"]),
     media: sortMedia(media),
     userId: Reaction.getUserId(),
     shopId: Reaction.getShopId(),

@@ -19,7 +19,7 @@ const inputSchema = new SimpleSchema({
  * @param {String} input.cartId - An anonymous cart ID
  * @param {String} input.token - The token for accessing the anonymous cart
  * @param {String} input.email - The email address to associate with this cart
- * @return {Promise<Object>} An object with `cart` property containing the updated cart
+ * @returns {Promise<Object>} An object with `cart` property containing the updated cart
  */
 export default async function setEmailOnAnonymousCart(context, input) {
   inputSchema.validate(input || {});

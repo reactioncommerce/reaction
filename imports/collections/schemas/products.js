@@ -85,17 +85,14 @@ export const ProductVariant = new SimpleSchema({
   "ancestors.$": {
     type: String
   },
+  "attributeLabel": {
+    type: String,
+    optional: true
+  },
   "barcode": {
     label: "Barcode",
     type: String,
-    optional: true,
-    custom() {
-      if (Meteor.isClient) {
-        if (this.siblingField("type").value === "inventory" && !this.value) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
+    optional: true
   },
   "createdAt": {
     label: "Created at",
@@ -155,8 +152,7 @@ export const ProductVariant = new SimpleSchema({
   "optionTitle": {
     label: "Option",
     type: String,
-    optional: true,
-    defaultValue: "Untitled Option"
+    optional: true
   },
   "originCountry": {
     type: String,
@@ -174,7 +170,7 @@ export const ProductVariant = new SimpleSchema({
   "title": {
     label: "Label",
     type: String,
-    defaultValue: ""
+    optional: true
   },
   "type": {
     label: "Type",
@@ -228,7 +224,7 @@ registerSchema("ProductVariant", ProductVariant);
  * @property {String} description optional
  * @property {String} facebookMsg optional
  * @property {String} googleplusMsg optional
- * @property {String} handle optional, slug
+ * @property {String} handle slug
  * @property {String[]} hashtags optional
  * @property {Boolean} isDeleted, default value: `false`
  * @property {Boolean} isVisible, default value: `false`
@@ -288,7 +284,8 @@ export const Product = new SimpleSchema({
   },
   "handle": {
     type: String,
-    optional: true
+    defaultValue: "",
+    label: "Permalink"
   },
   "hashtags": {
     type: Array,

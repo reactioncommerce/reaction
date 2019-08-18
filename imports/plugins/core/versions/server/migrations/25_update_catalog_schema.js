@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import { Migrations } from "meteor/percolate:migrations";
 import _ from "lodash";
 import { Catalog, Shops } from "/lib/collections";

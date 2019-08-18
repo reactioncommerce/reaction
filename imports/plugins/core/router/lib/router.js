@@ -73,7 +73,7 @@ class Router {
 
   /**
    * Triggers reactively on router ready state changed
-   * @return {Boolean} Router initialization state
+   * @returns {Boolean} Router initialization state
    */
   static ready() {
     routerReadyDependency.depend();
@@ -82,7 +82,7 @@ class Router {
 
   /**
    * Re-triggers router ready dependency
-   * @return {undefined}
+   * @returns {undefined}
    */
   static triggerRouterReady() {
     routerReadyDependency.changed();
@@ -98,7 +98,7 @@ class Router {
 
   /**
    * Get the current route date. Not reactive.
-   * @return {Object} Object containing route data
+   * @returns {Object} Object containing route data
    */
   static current() {
     return currentRoute.toJS();
@@ -107,7 +107,7 @@ class Router {
   /**
    * Set current route data. Is reactive.
    * @param {Object} routeData Object containing route data
-   * @return {undefined}
+   * @returns {undefined}
    */
   static setCurrentRoute(routeData) {
     currentRoute = Immutable.Map(routeData);
@@ -116,7 +116,7 @@ class Router {
 
   /**
    * Get the name of the current route. Is reactive.
-   * @return {String} Name of current route
+   * @returns {String} Name of current route
    */
   static getRouteName() {
     const current = Router.current();
@@ -127,7 +127,7 @@ class Router {
   /**
    * Get param by name. Is reactive.
    * @param  {String} name Param name
-   * @return {String|undefined} String value or undefined
+   * @returns {String|undefined} String value or undefined
    */
   static getParam(name) {
     routerChangeDependency.depend();
@@ -139,7 +139,7 @@ class Router {
   /**
    * Get query param by name
    * @param  {String} name Query param name. Is reactive.
-   * @return {String|undefined} String value or undefined
+   * @returns {String|undefined} String value or undefined
    */
   static getQueryParam(name) {
     routerChangeDependency.depend();
@@ -151,7 +151,7 @@ class Router {
   /**
    * Merge new query params with current params
    * @param {Object} newParams Object containing params
-   * @return {undefined}
+   * @returns {undefined}
    */
   static setQueryParams(newParams) {
     const current = Router.current();
@@ -172,7 +172,7 @@ class Router {
 
   /**
    * Watch path change. Is Reactive.
-   * @return {undefined}
+   * @returns {undefined}
    */
   static watchPathChange() {
     routerChangeDependency.depend();
@@ -183,7 +183,7 @@ class Router {
  * @summary get current router path
  * @param {String} path - path to fetch
  * @param {Object} options - url params
- * @return {String} returns current router path
+ * @returns {String} returns current router path
  */
 Router.pathFor = (path, options = {}) => {
   const foundPath = Router.routes.find((pathObject) => {
@@ -236,7 +236,7 @@ Router.pathFor = (path, options = {}) => {
  * @param  {String} path Path string
  * @param  {Object} params Route params object
  * @param  {Object} query Query params object
- * @return {undefined} undefined
+ * @returns {undefined} undefined
  */
 Router.go = (path, params, query) => {
   let actualPath;
@@ -278,7 +278,7 @@ Router.go = (path, params, query) => {
  * @param  {String} path Path string
  * @param  {Object} params Route params object
  * @param  {Object} query Query params object
- * @return {undefined} undefined
+ * @returns {undefined} undefined
  */
 Router.replace = (path, params, query) => {
   const actualPath = Router.pathFor(path, {
@@ -295,7 +295,7 @@ Router.replace = (path, params, query) => {
 
 /**
  * Reload router
- * @return {undefined} undefined
+ * @returns {undefined} undefined
  */
 Router.reload = () => {
   const current = Router.current();
@@ -310,7 +310,7 @@ Router.reload = () => {
  * @summary general helper to return "active" when on current path
  * @example {{active "name"}}
  * @param {String} routeName - route name as defined in registry
- * @return {String} return "active" or null
+ * @returns {String} return "active" or null
  */
 Router.isActiveClassName = (routeName) => {
   const current = Router.current();
@@ -343,7 +343,7 @@ Router.isActiveClassName = (routeName) => {
 /**
  * check if user has route permissions
  * @param  {Object} route - route context
- * @return {Boolean} returns `true` if user is allowed to see route, `false` otherwise
+ * @returns {Boolean} returns `true` if user is allowed to see route, `false` otherwise
  * @private
  */
 function hasRoutePermission(route) {
@@ -434,7 +434,7 @@ function ReactionLayout(options = {}) {
   // Find a registered layout using the layoutName and workflowName
   if (shop) {
     const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
-    const foundLayout = sortedLayout.find((x) => selectLayout(x, layoutName, workflowName));
+    const foundLayout = sortedLayout.find((layout) => selectLayout(layout, layoutName, workflowName));
 
     if (foundLayout) {
       if (foundLayout.structure) {
@@ -469,7 +469,7 @@ function ReactionLayout(options = {}) {
 
   try {
     getComponent(layoutStructure.template);
-  } catch (e) {
+  } catch (error) {
     hasReactComponent = false;
   }
 
@@ -504,7 +504,7 @@ function ReactionLayout(options = {}) {
           ...props,
           structure
         });
-      } catch (e) {
+      } catch (error) {
         // eslint-disable-next-line
         console.warn(e, "Failed to create a React layout element");
       }

@@ -14,6 +14,11 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 // params supplied to the products publication
 //
 const filters = new SimpleSchema({
+  "productIds": {
+    type: Array,
+    optional: true
+  },
+  "productIds.$": String,
   "shops": {
     type: Array,
     optional: true
@@ -78,7 +83,7 @@ registerSchema("filters", filters);
  * @private
  * @param {Object} selector - Current selector
  * @param {Array} shopIdsOrSlugs - Shop _ids or slugs to filter for
- * @return {Object} updated selector with shop filters
+ * @returns {Object} updated selector with shop filters
  */
 function applyShopsFilter(selector, shopIdsOrSlugs) {
   // Active shop
@@ -145,7 +150,7 @@ function applyShopsFilter(selector, shopIdsOrSlugs) {
  * @summary Builds a selector for Products collection, given a set of filters
  * @private
  * @param {Object} productFilters - See filters schema above
- * @return {Object} Selector
+ * @returns {Object} Selector
  */
 function filterProducts(productFilters) {
   // if there are filter/params that don't match the schema
@@ -170,6 +175,15 @@ function filterProducts(productFilters) {
   if (!selector) return false;
 
   if (productFilters) {
+    // filter by productIds
+    if (productFilters.productIds) {
+      _.extend(selector, {
+        _id: {
+          $in: productFilters.productIds
+        }
+      });
+    }
+
     // filter by tags
     if (productFilters.tags) {
       _.extend(selector, {
@@ -297,7 +311,7 @@ function filterProducts(productFilters) {
  * @param {Object} [sort] - Optional MongoDB sort object
  * @param {Boolean} [editMode] - If true, will add a shopId filter limiting the results to shops
  *   for which the logged in user has "createProduct" permission. Default is false.
- * @return {MongoCursor|undefined} Products collection cursor, or undefined if none to publish
+ * @returns {MongoCursor|undefined} Products collection cursor, or undefined if none to publish
  */
 Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = false) {
   check(productScrollLimit, Number);
@@ -312,7 +326,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   }
 
   // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId) || [];
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct", "product/admin"], this.userId) || [];
 
   // We publish an admin version of this publication to admins of products who are in "Edit Mode"
   if (editMode) {
@@ -361,7 +375,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
  * @param {Object} [sort] - Optional MongoDB sort object
  * @param {Boolean} [editMode] - If true, will add a shopId filter limiting the results to shops
  *   for which the logged in user has "createProduct" permission. Default is false.
- * @return {MongoCursor|undefined} Products collection cursor, or undefined if none to publish
+ * @returns {MongoCursor|undefined} Products collection cursor, or undefined if none to publish
  */
 Meteor.publish("ProductsAdminList", function (page = 0, limit = 24, productFilters, sort = {}) {
   check(page, Number);

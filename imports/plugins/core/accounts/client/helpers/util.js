@@ -2,6 +2,10 @@ import _ from "lodash";
 import { Accounts } from "meteor/accounts-base";
 import { ServiceConfiguration } from "meteor/service-configuration";
 
+/**
+ * @param {String} str string to capitalize
+ * @returns {String} capitalized string
+ */
 function capitalize(str) {
   const finalString = str === null ? "" : String(str);
   return finalString.charAt(0).toUpperCase() + str.slice(1);
@@ -112,10 +116,11 @@ export class ServiceConfigHelper {
    * @example ServiceConfigHelper.addProvider("Untappd", [{ property: "clientId", label: "Client ID" }]), { property:
    *  "secret", label: "Client Secret" }]);
    * @see https://github.com/reactioncommerce/reaction/pull/3231
-   * @param {string} provider Display Name of the provider
-   * @param {object[]} fields Array of plain old JavaScript objects with the keys `property`
+   * @param {String} provider Display Name of the provider
+   * @param {Object[]} fields Array of plain old JavaScript objects with the keys `property`
    * ("apiKey", for example. `apiKey` should correspond to your OAuth provider's
    * implementation) and `label` ("API Key", for example)
+   * @returns {undefined}
    */
   static addProvider(provider, fields) {
     providers[provider] = {

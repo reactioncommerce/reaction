@@ -1,4 +1,5 @@
-import SimpleSchema from "simpl-schema";
+import validateInventoryInput from "../utils/validateInventoryInput";
+import validateInventoryPluginResult from "../utils/validateInventoryPluginResults";
 
 const ALL_FIELDS = [
   "canBackorder",
@@ -30,70 +31,13 @@ const DEFAULT_SOLD_OUT_INFO = {
   isSoldOut: true
 };
 
-const productConfigurationSchema = new SimpleSchema({
-  isSellable: Boolean,
-  productId: String,
-  productVariantId: String
-});
-
-const inputSchema = new SimpleSchema({
-  "fields": {
-    type: Array,
-    optional: true
-  },
-  "fields.$": {
-    type: String,
-    allowedValues: ALL_FIELDS
-  },
-  "productConfigurations": Array,
-  "productConfigurations.$": productConfigurationSchema,
-  "shopId": String,
-  "variants": {
-    type: Array,
-    optional: true
-  },
-  "variants.$": {
-    type: Object,
-    blackbox: true
-  }
-});
-
-const inventoryInfoSchema = new SimpleSchema({
-  canBackorder: Boolean,
-  inventoryAvailableToSell: {
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  inventoryInStock: {
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  inventoryReserved: {
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  isLowQuantity: Boolean
-});
-
-const responseProductConfigurationSchema = new SimpleSchema({
-  productId: String,
-  productVariantId: String
-});
-
-const pluginResultSchema = new SimpleSchema({
-  inventoryInfo: {
-    type: inventoryInfoSchema,
-    optional: true
-  },
-  productConfiguration: responseProductConfigurationSchema
-});
 
 /**
  * @summary Gets inventory results for multiple product configs
  * @private
  * @param {Object} context App context
  * @param {Object} input Input
- * @return {Object[]} Array of result objects
+ * @returns {Object[]} Array of result objects
  */
 async function getInventoryResults(context, input) {
   const { productConfigurations, shopId } = input;
@@ -106,10 +50,15 @@ async function getInventoryResults(context, input) {
     // eslint-disable-next-line no-await-in-loop
     const pluginResults = await inventoryFn(context, input);
 
-    try {
-      pluginResultSchema.validate(pluginResults);
-    } catch (error) {
-      throw new Error(`Response from "inventoryForProductConfigurations" type function was invalid: ${error.message}`);
+    /**
+     * Custom validation function is replacing what used to be a call to simpl-schema.
+     * However, simpl-schema validate() method on moderately large payloads adds a pretty significant
+     * performance penalty, each call on average taking 40ms.
+     * Please don't replace with simpl-schema.
+     */
+    const validationErrors = validateInventoryPluginResult(pluginResults);
+    if (validationErrors.length) {
+      throw new Error(`Response from "inventoryForProductConfigurations" type function was invalid: ${validationErrors.join("\n")}`);
     }
 
     // Add only those with inventory info to final results.
@@ -153,14 +102,23 @@ async function getInventoryResults(context, input) {
  * @param {Object[]} input.productConfigurations An array of ProductConfiguration objects
  * @param {String[]} [input.fields] Optional array of fields you need. If you don't need all,
  *   you can pass this to skip some calculations and database lookups, improving speed.
- * @return {Promise<Object[]>} Array of responses. Order is not guaranteed to be the same
+ * @returns {Promise<Object[]>} Array of responses. Order is not guaranteed to be the same
  *   as `input.productConfigurations` array.
  */
 export default async function inventoryForProductConfigurations(context, input) {
   const { collections } = context;
   const { Products } = collections;
 
-  inputSchema.validate(input);
+  /**
+   * Custom validation function is replacing what used to be a call to simpl-schema.
+   * However, simpl-schema validate() method on moderately large payloads adds a pretty significant
+   * performance penalty, each call on average taking 40ms.
+   * Please don't replace with simpl-schema.
+   */
+  const validationErrors = validateInventoryInput(input);
+  if (validationErrors.length) {
+    throw new Error(`Input passed into "inventoryForProductConfigurations" was invalid: ${validationErrors.join("\n")}`);
+  }
 
   const { fields = ALL_FIELDS, productConfigurations, shopId } = input;
 

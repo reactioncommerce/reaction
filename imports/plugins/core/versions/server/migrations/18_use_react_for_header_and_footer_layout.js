@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import { Migrations } from "meteor/percolate:migrations";
 import { Shops, Packages } from "/lib/collections";
 
@@ -38,6 +39,8 @@ Migrations.add({
 
 function updateHandler(collection) {
   return function (doc) {
+    if (!Array.isArray(doc.layout)) return;
+
     let changed = false;
     for (const layout of doc.layout) {
       if (layout.structure && layout.structure.template === "cartCheckout") {
@@ -63,6 +66,8 @@ function updateHandler(collection) {
 
 function downgradeHandler(collection) {
   return function (doc) {
+    if (!Array.isArray(doc.layout)) return;
+
     let changed = false;
     for (const layout of doc.layout) {
       if (layout.structure && layout.structure.layoutHeader === "NavBar") {

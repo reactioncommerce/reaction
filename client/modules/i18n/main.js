@@ -16,7 +16,7 @@ import { Logger, Reaction } from "/client/api";
  * @method
  * @memberof i18n
  * @summary Detects device default language
- * @return {String} language code
+ * @returns {String} language code
  */
 export function getBrowserLanguage() {
   if (typeof navigator.languages !== "undefined") {
@@ -37,7 +37,7 @@ export function getBrowserLanguage() {
  * @summary Get Labels for simple.schema keys
  * @param  {Object} schema - schema
  * @param  {String} name - name
- * @return {Object} return schema label object
+ * @returns {Object} return schema label object
  */
 export function getLabelsFor(schema, name) {
   const titleCaseName = name.charAt(0).toLowerCase() + name.slice(1);
@@ -46,9 +46,9 @@ export function getLabelsFor(schema, name) {
   Object.keys(schema.mergedSchema()).forEach((fieldName) => {
     const i18nKey = `${titleCaseName}.${fieldName.split(".$").join("")}`;
     // translate autoform label
-    const t = i18next.t(i18nKey);
-    if (t && new RegExp("string").test(t) !== true && t !== i18nKey) {
-      labels[fieldName] = t;
+    const translation = i18next.t(i18nKey);
+    if (translation && new RegExp("string").test(translation) !== true && translation !== i18nKey) {
+      labels[fieldName] = translation;
     }
   });
   return labels;
@@ -63,7 +63,7 @@ export function getLabelsFor(schema, name) {
  * 2. Use schema-specific message for generic key
  * 3. Use schema-specific message for type
  * @todo Implement messaging hierarchy from simple-schema
- * @return {Object} returns i18n translated message for schema labels
+ * @returns {Object} returns i18n translated message for schema labels
  */
 export function getValidationErrorMessages() {
   const messages = {};
@@ -84,7 +84,7 @@ export const localeDep = new Tracker.Dependency();
 export const currencyDep = new Tracker.Dependency();
 
 Meteor.startup(() => {
-  Tracker.autorun((c) => {
+  Tracker.autorun((trackerInstance) => {
     let merchantShopsReadyOrSkipped = false;
 
     // Choose shopSubscription based on marketplace settings
@@ -111,7 +111,7 @@ Meteor.startup(() => {
         localeDep.changed();
 
         // Stop the tracker
-        c.stop();
+        trackerInstance.stop();
       });
     }
   });

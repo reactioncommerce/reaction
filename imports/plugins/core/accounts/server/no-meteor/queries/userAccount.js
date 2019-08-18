@@ -7,7 +7,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary query the Accounts collection and return user account data
  * @param {Object} context - an object containing the per-request state
  * @param {String} id - id of user to query
- * @return {Object} user account object
+ * @returns {Object} user account object
  */
 export default async function userAccountQuery(context, id) {
   const { collections, userHasPermission, userId } = context;

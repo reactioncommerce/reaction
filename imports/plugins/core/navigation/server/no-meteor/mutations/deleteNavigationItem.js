@@ -5,7 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Deletes a navigation item
  * @param {Object} context An object containing the per-request state
  * @param {String} _id _id of navigation item to delete
- * @return {Promise<Object>} Deleted navigation item
+ * @returns {Promise<Object>} Deleted navigation item
  */
 export default async function deleteNavigationItem(context, _id) {
   const { collections, userHasPermission } = context;

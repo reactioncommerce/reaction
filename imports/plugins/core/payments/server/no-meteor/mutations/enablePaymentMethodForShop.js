@@ -17,7 +17,7 @@ const paramsSchema = new SimpleSchema({
  * @param {String} input.paymentMethodName - The name of the payment method to enable or disable
  * @param {String} input.shopId - The id of the shop to enable payment method on
  * @param {String} [input.clientMutationId] - An optional string identifying the mutation call
- * @return {Promise<Array<Object>>} Array<PaymentMethod>
+ * @returns {Promise<Array<Object>>} Array<PaymentMethod>
  */
 export default async function enablePaymentMethodForShop(context, input = {}) {
   paramsSchema.validate(input, { ignore: [SimpleSchema.ErrorTypes.KEY_NOT_IN_SCHEMA] });

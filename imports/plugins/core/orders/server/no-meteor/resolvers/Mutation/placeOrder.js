@@ -3,7 +3,7 @@ import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-grap
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Mutation.placeOrder"
+ * @name Mutation/placeOrder
  * @method
  * @memberof Payments/GraphQL
  * @summary resolver for the placeOrder GraphQL mutation
@@ -13,7 +13,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object[]} args.input.payments - Payment info
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} PlaceOrderPayload
+ * @returns {Promise<Object>} PlaceOrderPayload
  */
 export default async function placeOrder(parentResult, { input }, context) {
   const { clientMutationId = null, order, payments } = input;

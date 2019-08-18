@@ -34,7 +34,7 @@ class LineItems extends Component {
    * @property {Bool} selectAllItems - A boolean indicating whether all items have been selected
    * @property {Bool} isRefunding - A boolean indicating whether payment is being refunded
    * @property {Bool} popOverIsOpen - A boolean indicating whether popover is open
-   * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
+   * @returns {Node} React node containing component for displaying the `invoice` section on the orders sideview
    */
   static propTypes = {
     clearRefunds: PropTypes.func,

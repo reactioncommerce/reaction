@@ -35,7 +35,7 @@ const wrapComponent = (Comp) => {
   /**
    * withVariant HOC
    * @param {Object} props Component props
-   * @return {Node} React component
+   * @returns {Node} React component
    */
   function withVariant(props) {
     const {
@@ -106,7 +106,7 @@ function composer(props, onData) {
   } else {
     variants = ReactionProduct.getTopVariants();
   }
-  let variantMedia: [];
+  let variantMedia = [];
 
   if (variants) {
     if (Array.isArray(variants)) {
