@@ -429,8 +429,6 @@ class ProductGrid extends Component {
                   rowsPerPageOptions={[10, 24, 50, 100]}
                   onChangePage={onChangePage}
                   onChangeRowsPerPage={onChangeRowsPerPage}
-                  labelRowsPerPage={""}
-                  labelDisplayedRows={({ page, count }) => `Page ${page+1} of ${count}`}
                 />
               </TableRow>
             </TableFooter>
