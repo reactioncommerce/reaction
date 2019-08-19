@@ -59,8 +59,8 @@ const styles = (theme) => ({
     letterSpacing: "0.3px"
   },
   actionDropdownMenuItem: {
-    "fontSize": theme.typography.fontSize,
-    "letterSpacing": "0.3px"
+    fontSize: theme.typography.fontSize,
+    letterSpacing: "0.3px"
   },
   tableBody: {
     "& tr:nth-child(odd)": {
