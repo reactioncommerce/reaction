@@ -2,14 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
 import withStyles from "@material-ui/core/styles/withStyles";
-import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import Select from "@material-ui/core/Select";
+import SplitButton from "@reactioncommerce/catalyst/SplitButton";
 import { i18next, Reaction } from "/client/api";
-import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
 
 const styles = (theme) => ({
@@ -45,7 +40,7 @@ class OrderCardFulfillmentGroupStatusButton extends Component {
     });
   }
 
-  async handleUpdateFulfillmentGroupStatus(mutation) {
+  async handleUpdateFulfillmentGroupStatus(mutation, option) {
     const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
     const { fulfillmentGroup, order } = this.props;
 
@@ -54,43 +49,41 @@ class OrderCardFulfillmentGroupStatusButton extends Component {
         variables: {
           orderFulfillmentGroupId: fulfillmentGroup._id,
           orderId: order._id,
-          status: this.state.status
+          status: option.value
         }
       });
     }
   }
 
-  // TODO: When MUI 4.x is implemented, change this to `SplitButton`
-  // instead of using a select dropdown in a popup
-  // https://material-ui.com/components/buttons/#split-button
+  // TODO: Decide on a logic for when certain statuses might be disabled
   render() {
     const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
-    const { classes, fulfillmentGroup } = this.props;
+    const { fulfillmentGroup } = this.props;
     const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
     const options = [
       {
-        label: "New",
+        label: i18next.t("status.new"),
         value: "new"
       }, {
-        label: "Created",
+        label: i18next.t("status.coreOrderWorkflow/created"),
         value: "coreOrderWorkflow/created"
       }, {
-        label: "Processing",
+        label: i18next.t("status.coreOrderWorkflow/processing"),
         value: "coreOrderWorkflow/processing"
       }, {
-        label: "Completed",
+        label: i18next.t("status.coreOrderWorkflow/completed"),
         value: "coreOrderWorkflow/completed"
       }, {
-        label: "Picked",
+        label: i18next.t("status.coreOrderWorkflow/picked"),
         value: "coreOrderWorkflow/picked"
       }, {
-        label: "Packed",
+        label: i18next.t("status.coreOrderWorkflow/packed"),
         value: "coreOrderWorkflow/packed"
       }, {
-        label: "Labeled",
+        label: i18next.t("status.coreOrderWorkflow/labeled"),
         value: "coreOrderWorkflow/labeled"
       }, {
-        label: "Shipped",
+        label: i18next.t("status.coreOrderWorkflow/shipped"),
         value: "coreOrderWorkflow/shipped"
       }
     ];
@@ -100,40 +93,10 @@ class OrderCardFulfillmentGroupStatusButton extends Component {
         <Grid item>
           <Mutation mutation={updateOrderFulfillmentGroupMutation}>
             {(mutationFunc) => (
-              <ConfirmButton
-                buttonColor="primary"
-                buttonText={i18next.t("orderActions.updateGroupStatusLabel", "Update group status")}
-                buttonVariant="contained"
-                cancelActionText={i18next.t("app.close")}
-                confirmActionText={i18next.t("orderActions.updateGroupStatusLabel", "Update group status")}
-                title={i18next.t("orderActions.updateGroupStatusLabel", "Update group status")}
-                message={i18next.t("order.updateGroupStatusDescription", "Update status for group and all items in it")}
-                onConfirm={() => this.handleUpdateFulfillmentGroupStatus(mutationFunc)}
-              >
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel
-                    ref={(ref) => {
-                      this.InputLabelRef = ref;
-                    }}
-                    htmlFor="outlined-age-simple"
-                  >
-                    {i18next.t("order.newStatus", "New status")}
-                  </InputLabel>
-                  <Select
-                    value={this.state.status}
-                    onChange={this.handleSelectChange}
-                    input={
-                      <OutlinedInput
-                        labelWidth={this.state.labelWidth}
-                        name="status"
-                        id="outlined-status-simple"
-                      />
-                    }
-                  >
-                    {options.map((option, index) => <MenuItem key={index} value={option.value}>{option.label}</MenuItem>)}
-                  </Select>
-                </FormControl>
-              </ConfirmButton>
+              <SplitButton
+                options={options}
+                onClick={(option) => this.handleUpdateFulfillmentGroupStatus(mutationFunc, option)}
+              />
             )}
           </Mutation>
         </Grid>
