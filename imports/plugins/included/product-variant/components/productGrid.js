@@ -47,22 +47,43 @@ const styles = (theme) => ({
   },
   actionDropdownTrigger: {
     border: `1px solid ${theme.palette.colors.coolGrey}`,
-    fontSize: "16px",
+    fontSize: theme.typography.fontSize,
     letterSpacing: "0.3px",
-    fontWeight: 600,
-    color: theme.palette.colors.coolGrey500
+    fontWeight: theme.typography.fontWeightSemiBold,
+    color: theme.palette.colors.coolGrey500,
+    lineHeight: 1.5
   },
   actionDropdownMenuList: {
     border: `1px solid ${theme.palette.colors.black10}`,
-    fontSize: "16px",
+    fontSize: theme.typography.fontSize,
     letterSpacing: "0.3px"
   },
   actionDropdownMenuItem: {
-    "fontSize": "16px",
-    "letterSpacing": "0.3px",
-    "&:hover": {
-      backgroundColor: "#EBF7FC"
+    fontSize: theme.typography.fontSize,
+    letterSpacing: "0.3px"
+  },
+  tableBody: {
+    "& tr:nth-child(odd)": {
+      backgroundColor: theme.palette.colors.black02
     }
+  },
+  tableHead: {
+    "& tr th": {
+      borderBottom: "none",
+      fontWeight: theme.typography.fontWeightSemiBold,
+      letterSpacing: "0.5px",
+      padding: 0,
+      color: theme.palette.colors.coolGrey500
+    },
+    "& tr th:first-child": {
+      padding: "7px 0 1px 4px"
+    }
+  },
+  pagination: {
+    borderBottom: "none",
+    color: theme.palette.colors.coolGrey500,
+    letterSpacing: "0.28px",
+    paddingTop: theme.spacing(2)
   }
 });
 
@@ -368,7 +389,7 @@ class ProductGrid extends Component {
   }
 
   render() {
-    const { totalProductCount, page, productsPerPage, onChangePage, onChangeRowsPerPage } = this.props;
+    const { totalProductCount, page, productsPerPage, onChangePage, onChangeRowsPerPage, classes } = this.props;
     const { isAllSelected } = this.state;
     this.props.setFilteredProductIdsCount(totalProductCount);
 
@@ -379,9 +400,9 @@ class ProductGrid extends Component {
           {this.renderToolbar()}
           {this.renderFiles()}
           <Table>
-            <TableHead>
+            <TableHead className={classes.tableHead}>
               <TableRow>
-                <TableCell padding="checkbox">
+                <TableCell>
                   <Checkbox
                     onClick={this.handleSelectAll}
                     checked={isAllSelected}
@@ -389,18 +410,20 @@ class ProductGrid extends Component {
                 </TableCell>
                 <TableCell />
                 <TableCell>Title</TableCell>
+                <TableCell>Product ID</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Published</TableCell>
-                <TableCell>Visible</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
-            <TableBody id="product-grid-list">
+            <TableBody id="product-grid-list" className={classes.tableBody}>
               {this.renderProductGridItems()}
             </TableBody>
             <TableFooter>
               <TableRow>
                 <TablePagination
+                  className={classes.pagination}
                   count={totalProductCount}
                   page={page}
                   rowsPerPage={productsPerPage}

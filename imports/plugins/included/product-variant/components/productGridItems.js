@@ -16,6 +16,21 @@ const styles = (theme) => ({
     color: theme.palette.colors.black40,
     fontSize: theme.typography.fontSize * 1.25,
     marginRight: theme.spacing(1)
+  },
+  tableRow: {
+    "& td": {
+      borderBottom: "none",
+      letterSpacing: "0.28px",
+      padding: 0,
+      color: theme.palette.colors.coolGrey500
+    },
+    "& td:first-child": {
+      padding: "4px",
+      width: "50px"
+    },
+    "& td:nth-child(2)": {
+      width: "60px"
+    }
   }
 });
 
@@ -106,11 +121,11 @@ class ProductGridItems extends Component {
   }
 
   render() {
-    const { isSelected, product } = this.props;
+    const { isSelected, product, classes } = this.props;
     const isChecked = isSelected() === "active" || false;
     const productItem = (
-      <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""}`}>
-        <TableCell padding="checkbox">
+      <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""} ${classes.tableRow}`}>
+        <TableCell>
           <Checkbox
             onClick={this.handleSelect}
             checked={isChecked}
@@ -123,6 +138,9 @@ class ProductGridItems extends Component {
           <Link to={`/operator/products/${product._id}`}>{product.title}</Link>
         </TableCell>
         <TableCell>
+          {product._id}
+        </TableCell>
+        <TableCell>
           {formatPriceString(this.props.displayPrice())}
         </TableCell>
         <TableCell>
@@ -131,7 +149,7 @@ class ProductGridItems extends Component {
         <TableCell>
           {this.renderStatusIcon()}
         </TableCell>
-        <TableCell padding="checkbox">
+        <TableCell>
           <IconButton onClick={this.handleDoubleClick}>
             <PencilIcon />
           </IconButton>
