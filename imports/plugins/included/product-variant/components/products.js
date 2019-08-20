@@ -16,7 +16,7 @@ import { getTagIds as getIds } from "/lib/selectors/tags";
 class Products extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
-    files: PropTypes.arrayOf(PropTypes.file),
+    files: PropTypes.arrayOf(PropTypes.object),
     handleDelete: PropTypes.func,
     isFiltered: PropTypes.bool,
     isProductsSubscriptionReady: PropTypes.bool,

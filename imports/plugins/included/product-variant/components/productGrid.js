@@ -165,11 +165,12 @@ class ProductGrid extends Component {
 
   renderProductGridItems() {
     const { productMediaById, products } = this.props;
+    const { classes, ...notClasses } = this.props;
 
     if (Array.isArray(products) && products.length > 0) {
       return products.map((product, index) => (
         <Components.ProductGridItems
-          {...this.props}
+          {...notClasses}
           product={product}
           productMedia={productMediaById[product._id]}
           key={index}
