@@ -1,18 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
-import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import SplitButton from "@reactioncommerce/catalyst/SplitButton";
 import { i18next, Reaction } from "/client/api";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
-
-const styles = (theme) => ({
-  formControl: {
-    margin: theme.spacing(),
-    minWidth: 120
-  }
-});
 
 class OrderCardFulfillmentGroupStatusButton extends Component {
   static propTypes = {
@@ -28,17 +20,6 @@ class OrderCardFulfillmentGroupStatusButton extends Component {
       status: PropTypes.string
     })
   };
-
-  state = {
-    labelWidth: 100,
-    status: this.props.fulfillmentGroup.status
-  };
-
-  handleSelectChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  }
 
   async handleUpdateFulfillmentGroupStatus(mutation, option) {
     const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
@@ -107,4 +88,4 @@ class OrderCardFulfillmentGroupStatusButton extends Component {
   }
 }
 
-export default withStyles(styles, { name: "RuiOrderCardFulfillmentGroupStatusButton" })(OrderCardFulfillmentGroupStatusButton);
+export default OrderCardFulfillmentGroupStatusButton;
