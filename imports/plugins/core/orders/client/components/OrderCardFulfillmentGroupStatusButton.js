@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Mutation } from "react-apollo";
+import { useMutation } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
 import SplitButton from "@reactioncommerce/catalyst/SplitButton";
 import { i18next, Reaction } from "/client/api";
@@ -13,6 +13,7 @@ import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrde
  */
 function OrderCardFulfillmentGroupStatusButton({ fulfillmentGroup, order }) {
   const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
+  const [updateOrderFulfillmentGroup] = useMutation(updateOrderFulfillmentGroupMutation);
   const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
   const options = [
     {
@@ -42,9 +43,9 @@ function OrderCardFulfillmentGroupStatusButton({ fulfillmentGroup, order }) {
     }
   ];
 
-  const handleUpdateFulfillmentGroupStatus = async (mutation, option) => {
+  const handleUpdateFulfillmentGroupStatus = async (option) => {
     if (hasPermission) {
-      await mutation({
+      updateOrderFulfillmentGroup({
         variables: {
           orderFulfillmentGroupId: fulfillmentGroup._id,
           orderId: order._id,
@@ -57,14 +58,10 @@ function OrderCardFulfillmentGroupStatusButton({ fulfillmentGroup, order }) {
   if (hasPermission && canUpdateFulfillmentStatus) {
     return (
       <Grid item>
-        <Mutation mutation={updateOrderFulfillmentGroupMutation}>
-          {(mutationFunc) => (
-            <SplitButton
-              options={options}
-              onClick={(option) => handleUpdateFulfillmentGroupStatus(mutationFunc, option)}
-            />
-          )}
-        </Mutation>
+        <SplitButton
+          options={options}
+          onClick={(option) => handleUpdateFulfillmentGroupStatus(option)}
+        />
       </Grid>
     );
   }
