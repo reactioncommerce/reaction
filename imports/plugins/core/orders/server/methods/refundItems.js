@@ -15,7 +15,7 @@ import sendOrderEmail from "../no-meteor/util/sendOrderEmail";
  * @private
  * @param  {String} orderId      orderId
  * @param  {Object} refundedItem refunded item
- * @return {null} no return value
+ * @returns {null} no return value
  */
 function orderQuantityAdjust(orderId, refundedItem) {
   check(orderId, String);
@@ -58,7 +58,7 @@ function orderQuantityAdjust(orderId, refundedItem) {
  * @param {String} orderId - order object
  * @param {String} paymentId - ID of payment to refund
  * @param {Object} refundItemsInfo - info about refund items
- * @return {Object} refund boolean and result/error value
+ * @returns {Object} refund boolean and result/error value
  */
 export default function refundItemsMethod(orderId, paymentId, refundItemsInfo) {
   check(orderId, String);

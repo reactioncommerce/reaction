@@ -7,7 +7,7 @@ import getVariantPriceRange from "./getVariantPriceRange";
  * @summary Get the PriceRange object for a Product by ID
  * @param {String} productId - A product ID
  * @param {Object[]} variants - A list of documents from a Products.find call
- * @return {Object} Product PriceRange object
+ * @returns {Object} Product PriceRange object
  */
 export default function getProductPriceRange(productId, variants) {
   const visibleVariants = variants.filter((option) => option.ancestors.length === 1 &&

@@ -10,4 +10,4 @@ exports[`throws if payment doesn't exist 1`] = `"Payment not found"`;
 
 exports[`throws if paymentId isn't supplied 1`] = `"Payment ID is required"`;
 
-exports[`throws if permission check fails 1`] = `"Access Denied"`;
+exports[`throws if permission check fails 1`] = `"You do not have permission to create a refund"`;

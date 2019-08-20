@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import { getOrderQuery } from "./getOrderQuery";
 
 function makeContext() {

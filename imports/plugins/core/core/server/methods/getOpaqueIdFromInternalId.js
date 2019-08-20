@@ -9,7 +9,7 @@ import { encodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
  *   between older Meteor publications that publish internal IDs to clients and newer GraphQL
  *   queries where the client only ever sees the globally unique and opaque ID.
  * @param {Object[]} input - Array of objects with id and namespace props
- * @return {String[]} - Array of opaque IDs
+ * @returns {String[]} - Array of opaque IDs
  */
 export default function getOpaqueIdFromInternalId(input) {
   check(input, Array);

@@ -14,6 +14,12 @@ const handlers = {
   }
 };
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   if (Meteor.subscribe("Notification", Reaction.getUserId()).ready()) {
     const notificationList = Notifications.find({}, { sort: { timeSent: -1 } }).fetch();

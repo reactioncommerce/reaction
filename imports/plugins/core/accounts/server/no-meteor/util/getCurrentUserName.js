@@ -3,7 +3,7 @@
  * @method
  * @private
  * @param  {Object} currentUser - User
- * @return {String} Name of currentUser or "Admin"
+ * @returns {String} Name of currentUser or "Admin"
  */
 export default function getCurrentUserName(currentUser) {
   if (currentUser) {

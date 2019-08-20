@@ -25,7 +25,7 @@ const inputSchema = new SimpleSchema({
  * @summary Add a tag
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - mutation input
- * @return {Promise<Object>} UpdateTagPayload
+ * @returns {Promise<Object>} UpdateTagPayload
  */
 export default async function updateTag(context, input) {
   const { appEvents, collections, userHasPermission } = context;
@@ -33,7 +33,7 @@ export default async function updateTag(context, input) {
   const { shopId, tagId, slug: slugInput } = input;
 
   // Check for owner or admin permissions from the user before allowing the mutation
-  if (!userHasPermission(["owner", "admin"], shopId)) {
+  if (!userHasPermission(["owner", "admin", "tag/admin", "tag/edit"], shopId)) {
     throw new ReactionError("access-denied", "User does not have permission");
   }
 

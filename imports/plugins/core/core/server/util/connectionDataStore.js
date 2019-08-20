@@ -3,6 +3,9 @@ import { DDP } from "meteor/ddp-client";
 const inMemoryCache = {};
 const connectionKey = "connection-data";
 
+/**
+ * @returns {Object} connection data store or in memory cache
+ */
 function connectionData() {
   const invocation =
     DDP._CurrentMethodInvocation.get() ||

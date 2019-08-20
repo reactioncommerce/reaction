@@ -24,6 +24,12 @@ TranslationProvider.propTypes = {
   translations: PropTypes.object.isRequired
 };
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   i18nextDep.depend();
 

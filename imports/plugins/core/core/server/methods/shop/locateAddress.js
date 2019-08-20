@@ -8,7 +8,7 @@ import GeoCoder from "../../util/geocoder";
  * @summary determine user's full location for autopopulating addresses
  * @param {Number} latitude - latitude
  * @param {Number} longitude - longitude
- * @return {Object} returns address
+ * @returns {Object} returns address
  */
 export default function locateAddress(latitude, longitude) {
   check(latitude, Match.Optional(Number));

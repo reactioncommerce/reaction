@@ -10,7 +10,7 @@ import ShopOrderSummary from "./shopOrderSummary";
  * @param {Object} props - React PropTypes
  * @property {Array} shops - An array of summary information broken down by shop
  * @property {Object} orderSummary - An object representing the "bottom line" summary for the order
- * @return {Node} React node containing the order summary broken down by shop
+ * @returns {Node} React node containing the order summary broken down by shop
  */
 class CompletedOrderSummary extends Component {
   static propTypes = {

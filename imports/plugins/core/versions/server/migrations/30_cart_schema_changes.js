@@ -8,7 +8,7 @@ const LIMIT = 200;
 /**
  * @private
  * @param {String} currencyCode The currency code
- * @return {Function} A map function for converting cart items
+ * @returns {Function} A map function for converting cart items
  */
 function getConvertCartItemUp(currencyCode) {
   return (item) => {
@@ -75,7 +75,7 @@ function convertCartUp(cart) {
 /**
  * @private
  * @param {Object} item The cart item
- * @return {Object} Converted cart item
+ * @returns {Object} Converted cart item
  */
 function convertCartItemDown(item) {
   const newItem = {

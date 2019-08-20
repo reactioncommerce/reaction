@@ -16,7 +16,7 @@ import { MediaRecords } from "/lib/collections";
  * @memberof Media/Methods
  * @summary Insert a new media record.
  * @param {Object} fileRecord - document from file collection upload.
- * @return {String} - _id of the new inserted media record.
+ * @returns {String} - _id of the new inserted media record.
  */
 export async function insertMedia(fileRecord) {
   check(fileRecord, Object);
@@ -41,7 +41,7 @@ export async function insertMedia(fileRecord) {
  * @memberof Media/Methods
  * @summary Unpublish a media record by updating it's workflow
  * @param {String} fileRecordId - _id of file record to be deleted.
- * @return {Boolean}
+ * @returns {Boolean} was media successfully removed
  */
 export async function removeMedia(fileRecordId) {
   check(fileRecordId, String);
@@ -69,13 +69,13 @@ export async function removeMedia(fileRecordId) {
  * @method
  * @memberof Media/Methods
  * @summary sorting media by array indexes
- * @param {String[]} sortedMediaIDs
- * @return {Boolean} true
+ * @param {String[]} sortedMediaIDs ID's of sorted media
+ * @returns {Boolean} true
  */
 export function updateMediaPriorities(sortedMediaIDs) {
   check(sortedMediaIDs, [String]);
 
-  if (!Reaction.hasPermission("createProduct")) {
+  if (!Reaction.hasPermission(["createProduct", "product/admin", "product/update"])) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
@@ -119,13 +119,13 @@ export function updateMediaPriorities(sortedMediaIDs) {
  * @summary sorting media by array indexes
  * @param {String} mediaId Media item ID
  * @param {Number} priority Priority
- * @return {Boolean} true
+ * @returns {Boolean} true
  */
 export function updateMediaPriority(mediaId, priority) {
   check(mediaId, String);
   check(priority, Number);
 
-  if (!Reaction.hasPermission("createProduct")) {
+  if (!Reaction.hasPermission(["createProduct", "product/admin", "product/update"])) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

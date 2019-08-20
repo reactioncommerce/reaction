@@ -11,7 +11,7 @@ const DOM = {};
  * @memberof DOM
  * @summary Sets/adds a meta tag to the document head
  * @param {Object} attributes - key/value pairs for tag attributes
- * @return {undefined} no return value
+ * @returns {undefined} no return value
  */
 DOM.setMetaTag = (attributes) => {
   const currentMetaTag = document.querySelector(`meta[name="${attributes.name}"]`);
@@ -40,7 +40,7 @@ DOM.setMetaTag = (attributes) => {
  * @memberof DOM
  * @summary Adds a link tags to the document head
  * @param {Object} attributes - key/value pairs for tag attributes
- * @return {undefined} no return value
+ * @returns {undefined} no return value
  */
 DOM.addLinkTag = (attributes) => {
   const newLinkTag = document.createElement("link");

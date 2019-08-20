@@ -6,7 +6,7 @@
  * @param {Object} parentResult - unused
  * @param {Object} args - unused
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Boolean>} true on success
+ * @returns {Promise<Boolean>} true on success
  */
 export default async function generateSitemaps(parentResult, { input = {} }, context) {
   const { clientMutationId = null } = input;

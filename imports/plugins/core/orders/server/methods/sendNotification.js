@@ -12,7 +12,7 @@ import sendOrderEmail from "../no-meteor/util/sendOrderEmail";
  * @summary send order notification email
  * @param {String} orderId - The order ID
  * @param {String} action - send notification action
- * @return {Boolean} email sent or not
+ * @returns {Boolean} email sent or not
  */
 export default function sendNotification(orderId, action) {
   check(orderId, String);

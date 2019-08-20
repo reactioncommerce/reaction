@@ -16,16 +16,21 @@ import { getTagIds as getIds } from "/lib/selectors/tags";
 class Products extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
+    files: PropTypes.arrayOf(PropTypes.object),
+    handleDelete: PropTypes.func,
+    isFiltered: PropTypes.bool,
     isProductsSubscriptionReady: PropTypes.bool,
     isReady: PropTypes.bool,
     loadProducts: PropTypes.func,
+    onShowFilterByFile: PropTypes.func,
     products: PropTypes.array,
+    setFilteredProductIdsCount: PropTypes.func,
     showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
   /**
    * Checks and returns a Boolean if the `products` array from props is not empty.
-   * @return {Boolean} Boolean value `true` if products are available, `false` otherwise.
+   * @returns {Boolean} Boolean value `true` if products are available, `false` otherwise.
    */
   get hasProducts() {
     return Array.isArray(this.props.products) && this.props.products.length > 0;
@@ -35,7 +40,7 @@ class Products extends Component {
    * Handle load more button click
    * @access protected
    * @param  {SyntheticEvent} event Synthetic event object
-   * @return {undefined}
+   * @returns {undefined}
    */
   handleClick = (event) => {
     if (this.props.loadProducts) {
@@ -46,11 +51,10 @@ class Products extends Component {
   /**
    * Render product grid
    * @access protected
-   * @return {Node} React node containing the `ProductGrid` component.
+   * @returns {Node} React node containing the `ProductGrid` component.
    */
   renderProductGrid() {
     const { products } = this.props;
-
     const productsByKey = {};
 
     if (Array.isArray(products)) {
@@ -61,9 +65,14 @@ class Products extends Component {
 
     return (
       <Components.ProductGrid
+        onShowFilterByFile={this.props.onShowFilterByFile}
+        setFilteredProductIdsCount={this.props.setFilteredProductIdsCount}
         productsByKey={productsByKey || {}}
         productIds={getIds({ tags: products })}
         products={products}
+        files={this.props.files}
+        handleDelete={this.props.handleDelete}
+        isFiltered={this.props.isFiltered}
       />
     );
   }
@@ -71,7 +80,7 @@ class Products extends Component {
   /**
    * Render load more button
    * @access protected
-   * @return {Node|undefined} React node containing a `load more` button or undefined.
+   * @returns {Node|undefined} React node containing a `load more` button or undefined.
    */
   renderLoadMoreProductsButton() {
     if (this.props.canLoadMoreProducts) {
@@ -93,7 +102,7 @@ class Products extends Component {
   /**
    * Render the not found component
    * @access protected
-   * @return {Node} React node containing the `NotFound` component.
+   * @returns {Node} React node containing the `NotFound` component.
    */
   renderNotFound() {
     return (
@@ -108,7 +117,7 @@ class Products extends Component {
   /**
    * Render component
    * @access protected
-   * @return {Node} React node containing elements that make up the `Products` component.
+   * @returns {Node} React node containing elements that make up the `Products` component.
    */
   render() {
     const { isProductsSubscriptionReady, isReady, showNotFound } = this.props;

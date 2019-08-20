@@ -22,7 +22,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {TagConnectionArgs} connectionArgs - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @return {Promise<Object[]>} Promise that resolves with array of Tag objects
+ * @returns {Promise<Object[]>} Promise that resolves with array of Tag objects
  */
 export default async function tags(_, connectionArgs, context, info) {
   const { shopId } = connectionArgs;

@@ -9,7 +9,7 @@ jest.setTimeout(300000);
 
 /**
  * @param {Object} mongoGroup The Group document in MongoDB schema
- * @return {Object} The Group document in GraphQL schema
+ * @returns {Object} The Group document in GraphQL schema
  */
 function groupMongoSchemaToGraphQL(mongoGroup) {
   const doc = {

@@ -11,7 +11,7 @@ import MainDropdown from "../components/mainDropdown";
 /**
  * @summary Returns the display name for a user
  * @param {Object} [displayUser] The user object. Defaults to logged in user.
- * @return {String} Display name for a user
+ * @returns {String} Display name for a user
  */
 function displayName(displayUser) {
   i18nextDep.depend();
@@ -58,7 +58,7 @@ function getAdminShortcutIcons() {
  * @summary Selection change handler
  * @param {Event} event Event
  * @param {String} value New selected value
- * @return {undefined}
+ * @returns {undefined}
  */
 function handleChange(event, value) {
   event.preventDefault();

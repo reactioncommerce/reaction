@@ -23,7 +23,7 @@ const inputSchema = new SimpleSchema({
  * @param {String} input.cartId - The ID of the cart in which all of the items exist
  * @param {String[]} input.cartItemIds - Array of cart item IDs to remove
  * @param {String} input.token - The token if the cart is an anonymous cart
- * @return {Promise<Object>} An object containing the updated cart in a `cart` property
+ * @returns {Promise<Object>} An object containing the updated cart in a `cart` property
  */
 export default async function removeCartItems(context, input) {
   inputSchema.validate(input || {});

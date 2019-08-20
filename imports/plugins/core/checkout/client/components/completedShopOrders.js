@@ -10,7 +10,7 @@ import CompletedOrderItem from "./completedOrderItem";
  * @property {String} shopName - The name of the shop
  * @property {Array} items - an array of individual items for this shop
  * @property {boolean} isProfilePage - Checks if current page is profile page
- * @return {Node} React node containing the break down of the order by Shop
+ * @returns {Node} React node containing the break down of the order by Shop
  */
 const CompletedShopOrders = ({ shopName, items, shippingMethod, isProfilePage }) => {
   const shippingName = isProfilePage ? (

@@ -6,7 +6,7 @@ import getNavigationItemContentForLanguage from "../util/getNavigationItemConten
  * @param {Object} context An object containing the per-request state
  * @param {Object} language Language to filter items by
  * @param {Object} item Object within navigationTree.items array
- * @return {Object} Object with navigationItem and items properties
+ * @returns {Object} Object with navigationItem and items properties
  */
 export default async function xformNavigationTreeItem(context, language, item) {
   const { collections } = context;

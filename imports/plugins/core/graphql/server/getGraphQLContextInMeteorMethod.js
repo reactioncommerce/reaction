@@ -35,7 +35,7 @@ export function getBaseContext() {
  * @summary Call this in a Meteor method that wraps a GraphQL mutation, to get a context
  *   to pass to the mutation.
  * @param {String} userId - The user ID for the current request
- * @return {Object} A GraphQL context object
+ * @returns {Object} A GraphQL context object
  */
 export default async function getGraphQLContextInMeteorMethod(userId) {
   let user;

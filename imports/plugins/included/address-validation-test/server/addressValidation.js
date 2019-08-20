@@ -73,7 +73,7 @@ for (let index = 0; index < 9; index += 1) {
  * @summary Creating a array of suggested addresses by using the first number of the `address.postal`
  * to grab a slice of faker created addresses. If the `address.postal` code starts with "9" we return an empty array.
  * @param {String} postalCode - address postal code.
- * @return {Object[]} SuggestedAddresses - array of suggested addresses.
+ * @returns {Object[]} SuggestedAddresses - array of suggested addresses.
  */
 function getSuggestedAddress(postalCode) {
   if (postalCode[0] === "9") return [];
@@ -86,7 +86,7 @@ function getSuggestedAddress(postalCode) {
  * @summary Creating a array of validation errors by using the second number of the `address.postal`
  * to grab a slice of mock validation errors. If the `address.postal` code starts with "9" we return an empty array.
  * @param {String} postalCode - address postal code.
- * @return {Object[]} ValidationErrors - array of address validation errors.
+ * @returns {Object[]} ValidationErrors - array of address validation errors.
  */
 function getValidationErrors(postalCode) {
   if (postalCode[0] === "9") return [];
@@ -100,7 +100,7 @@ function getValidationErrors(postalCode) {
  * @param {Object} input - Input object
  * @param {Object} input.address - input address object
  * @param {Object} input.context - input GQL context
- * @return {Object} AddressValidationResults
+ * @returns {Object} AddressValidationResults
  */
 export default function addressValidation({ address: { postal } }) {
   return {

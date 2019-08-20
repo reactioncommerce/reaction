@@ -36,7 +36,7 @@ class TagList extends Component {
    * Handle tag mouse out events and pass them up the component chain
    * @param  {Event} event Event object
    * @param  {Tag} tag Reaction.Schemas.Tag - a tag object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagMouseOut = (event, tag) => {
     if (this.props.onTagMouseOut) {
@@ -48,7 +48,7 @@ class TagList extends Component {
    * Handle tag mouse over events and pass them up the component chain
    * @param  {Event} event Event object
    * @param  {Tag} tag Reaction.Schemas.Tag - a tag object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleTagMouseOver = (event, tag) => {
     if (this.props.onTagMouseOver) {

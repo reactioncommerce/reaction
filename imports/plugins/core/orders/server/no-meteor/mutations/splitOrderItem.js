@@ -31,7 +31,7 @@ const inputSchema = new SimpleSchema({
  *   the item order right now.
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
- * @return {Promise<Object>} Object with `order` property containing the created order
+ * @returns {Promise<Object>} Object with `order` property containing the created order
  *   and `newItemId` property set to the ID of the new item
  */
 export default async function splitOrderItem(context, input) {

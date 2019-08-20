@@ -4,7 +4,7 @@
  * @param {Object} context - App context
  * @param {Object} catalogVariant - A selected product variant.
  * @param {String} currencyCode - The currency code in which to get price
- * @return {Object} - A cart item price value.
+ * @returns {Object} - A cart item price value.
  */
 export default function getVariantPrice(context, catalogVariant, currencyCode) {
   if (!currencyCode) throw new Error("getVariantPrice received no currency code");

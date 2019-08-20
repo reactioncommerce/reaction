@@ -7,7 +7,7 @@ Template.coreOrderWorkflow.helpers({
    * @summary Creates an Object with order id and a fulfillment object
    * @param  {String} orderId - An order id
    * @param  {Object} fulfillment - An order fulfillment. e.g. a shipment
-   * @return {Object} An object with the order id and fulfillment
+   * @returns {Object} An object with the order id and fulfillment
    * @ignore
    */
   orderFulfillmentData(orderId, fulfillment) {
@@ -18,7 +18,7 @@ Template.coreOrderWorkflow.helpers({
   },
 
   /**
-   * @return {Object|Boolean} An order or false
+   * @returns {Object|Boolean} An order or false
    * @ignore
    */
   order() {
@@ -36,7 +36,7 @@ Template.coreOrderWorkflow.helpers({
 
   /**
    * @param  {Number} index - A number
-   * @return {Number} index + 1
+   * @returns {Number} index + 1
    * @ignore
    */
   fulfillmentNumber(index) {
@@ -45,7 +45,7 @@ Template.coreOrderWorkflow.helpers({
 
   /**
    * @todo may need to be refactored
-   * @return {String|Boolean} order completion status or false
+   * @returns {String|Boolean} order completion status or false
    * @ignore
    */
   isCompleted() {
@@ -58,7 +58,7 @@ Template.coreOrderWorkflow.helpers({
 
   /**
    * @todo may need to be refactored
-   * @return {String|Boolean} status or false
+   * @returns {String|Boolean} status or false
    * @ignore
    */
   isPending() {

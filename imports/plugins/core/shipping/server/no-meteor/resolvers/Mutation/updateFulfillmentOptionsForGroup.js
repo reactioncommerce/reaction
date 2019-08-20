@@ -13,7 +13,7 @@ import updateFulfillmentOptionsForGroupMutation from "../../mutations/updateFulf
  * @param {String} args.input.fulfillmentGroupId - The group to update fulfillment options for
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} UpdateFulfillmentOptionsForGroupPayload
+ * @returns {Promise<Object>} UpdateFulfillmentOptionsForGroupPayload
  */
 export default async function updateFulfillmentOptionsForGroup(parentResult, { input }, context) {
   const { cartId: opaqueCartId, cartToken, clientMutationId = null, fulfillmentGroupId: opaqueFulfillmentGroupId } = input;

@@ -12,7 +12,7 @@ import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/g
  * @param {String} args.input.groupId - The group ID
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Object} AddAccountToGroupPayload
+ * @returns {Object} AddAccountToGroupPayload
  */
 export default async function addAccountToGroup(parentResult, { input }, context) {
   const { accountId: opaqueAccountId, groupId: opaqueGroupId, clientMutationId = null } = input;

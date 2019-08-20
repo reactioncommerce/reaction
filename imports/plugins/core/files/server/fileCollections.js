@@ -17,7 +17,7 @@ import { MediaRecords } from "/lib/collections";
 
 /**
  * @param {Object} context App context
- * @return {undefined}
+ * @returns {undefined}
  */
 export default function meteorFileCollectionStartup(context) {
   const { files } = context;

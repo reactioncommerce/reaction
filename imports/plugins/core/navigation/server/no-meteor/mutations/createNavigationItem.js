@@ -7,7 +7,7 @@ import { NavigationItem as NavigationItemSchema } from "/imports/collections/sch
  * @summary Creates a nav item
  * @param {Object} context An object containing the per-request state
  * @param {Object} navigationItem Nav item to add. See schema.graphql
- * @return {Promise<Object>} The created navigation item
+ * @returns {Promise<Object>} The created navigation item
  */
 export default async function createNavigationItem(context, navigationItem) {
   const { collections, userHasPermission } = context;

@@ -14,7 +14,7 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @param {String} params.shopId - Shop ID for the shop that owns the order
  * @param {String} [params.token] - Anonymous order token
  * @param {String} [providedOrder] - Order object
- * @return {Promise<Array>|undefined} - An array of refunds applied to a specific payment from this order, if found
+ * @returns {Promise<Array>|undefined} - An array of refunds applied to a specific payment from this order, if found
  */
 export default async function refundsByPaymentId(context, { orderId, paymentId, shopId, token } = {}, providedOrder) {
   if (!orderId || !paymentId || !shopId) {

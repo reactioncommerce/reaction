@@ -33,6 +33,10 @@ const {
  * database operation is executed in a server method.
  */
 
+/**
+  * @description security definitions for collections
+  * @returns {undefined} undefined
+  */
 export default function () {
   /*
    * Define some additional rule chain methods
@@ -126,7 +130,7 @@ export default function () {
 
   Security.permit(["insert", "update", "remove"])
     .collections([MediaRecords])
-    .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct"] })
+    .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct", "product/admin", "product/update"] })
     .ifFileBelongsToShop();
 
   /*
@@ -145,7 +149,7 @@ export default function () {
    */
 
   Products.permit(["insert", "update", "remove"])
-    .ifHasRoleForActiveShop({ role: ["createProduct"] })
+    .ifHasRoleForActiveShop({ role: ["createProduct", "product/admin"] })
     .ifShopIdMatches()
     .allowInClientCode();
 

@@ -7,7 +7,7 @@ const LIMIT = 200;
 /**
  * @private
  * @param {String} currencyCode The currency code
- * @return {Function} A map function for converting order items
+ * @returns {Function} A map function for converting order items
  */
 function getConvertOrderItemUp(currencyCode) {
   return (item) => {
@@ -69,7 +69,7 @@ function convertOrderUp(order) {
 /**
  * @private
  * @param {Object} item The order item
- * @return {Object} Converted order item
+ * @returns {Object} Converted order item
  */
 function convertOrderItemDown(item) {
   const newItem = {

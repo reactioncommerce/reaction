@@ -9,7 +9,7 @@ import filterShippingMethods from "./util/filterShippingMethods";
  * @param {Array} [previousQueryResults] - an array of shipping rates and
  * info about failed calls to the APIs of some shipping methods providers
  * e.g Shippo.
- * @return {Array} - an array that contains two arrays: the first array will
+ * @returns {Array} - an array that contains two arrays: the first array will
  * be an updated list of shipping rates, and the second will contain info for
  * retrying this specific package if any errors occurred while retrieving the
  * shipping rates.

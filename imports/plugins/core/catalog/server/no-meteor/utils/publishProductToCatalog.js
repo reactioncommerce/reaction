@@ -10,7 +10,7 @@ import createCatalogProduct from "./createCatalogProduct";
  * @memberof Catalog
  * @param {Object} product - A product object
  * @param {Object} context - The app context
- * @return {boolean} true on successful publish, false if publish was unsuccessful
+ * @returns {boolean} true on successful publish, false if publish was unsuccessful
  */
 export default async function publishProductToCatalog(product, context) {
   const { appEvents, collections } = context;

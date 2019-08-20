@@ -11,7 +11,7 @@ const { HYDRA_SESSION_LIFESPAN } = process.env;
  * @param  {Object} options - options passed from client call
  * @param {String} options.challenge Used to fetch information about the login request from Hydra.
  * @param {Boolean} options.remember tells hydra to remember the browser and automatically authenticate the user in future requests
- * @return {String} redirectUrl
+ * @returns {String} redirectUrl
  */
 export function oauthLogin(options) {
   check(options, Object);

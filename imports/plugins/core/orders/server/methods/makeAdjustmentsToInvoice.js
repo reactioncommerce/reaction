@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @memberof Orders/Methods
  * @summary Update the status of an invoice to allow adjustments to be made
  * @param {Object} order - order object
- * @return {Object} Mongo update
+ * @returns {Object} Mongo update
  */
 export default function makeAdjustmentsToInvoice(order) {
   check(order, Object);

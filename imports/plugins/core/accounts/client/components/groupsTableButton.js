@@ -10,7 +10,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * @property {Object} account - User account object
  * @property {Object} group - Group data
  * @property {Function} handleRemoveUserFromGroup - function to call on button click
- * @return {Node} React node containing wrapped button
+ * @returns {Node} React node containing wrapped button
  */
 const GroupsTableButton = ({ account, group, handleRemoveUserFromGroup }) => (
   <div className="group-table-button">

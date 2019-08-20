@@ -14,7 +14,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} args.input.shopId - The ID of the shop to which you want to invite this person
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Object} InviteShopMemberPayload
+ * @returns {Object} InviteShopMemberPayload
  */
 export default function inviteShopMember(_, { input }, context) {
   const { email, groupId, name, shopId, clientMutationId = null } = input;

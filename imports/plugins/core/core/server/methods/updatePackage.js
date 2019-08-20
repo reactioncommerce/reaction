@@ -13,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object|Array} value - the new data that's to be stored for the said
  * Package.
  * @since 1.5.1
- * @return {Object} - returns an object with info about the update operation.
+ * @returns {Object} - returns an object with info about the update operation.
  */
 export default function updatePackage(packageName, field, value) {
   check(packageName, String);

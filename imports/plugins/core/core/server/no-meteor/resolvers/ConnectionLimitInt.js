@@ -8,7 +8,7 @@ const MAX_LIMIT = 200;
  * @description Adjusts value to be between 1 and MAX_LIMIT, inclusive
  * @private
  * @param {Number|undefined} value value to check
- * @return {Number|undefined} parsed value
+ * @returns {Number|undefined} parsed value
  */
 function parseValue(value) {
   /* eslint-disable consistent-return */

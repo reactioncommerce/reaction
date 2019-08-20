@@ -12,7 +12,7 @@ import appEvents from "/imports/node-app/core/util/appEvents";
  * @param {MongoDB.Collection} Cart The Cart collection
  * @param {String} shopId The shop ID to associate with the new account cart
  * @param {String} userId The ID of the user
- * @return {Object} The new account cart
+ * @returns {Object} The new account cart
  */
 export default async function convertAnonymousCartToNewAccountCart({
   accountId,

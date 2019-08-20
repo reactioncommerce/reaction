@@ -16,7 +16,7 @@ import appEvents from "/imports/node-app/core/util/appEvents";
  * @summary Start the cancel order process
  * @param {Object} order - order object
  * @param {Boolean} returnToStock - condition to return product to stock
- * @return {Object} ret
+ * @returns {Object} ret
  */
 export default function cancelOrder(order, returnToStock) {
   check(order, Object);

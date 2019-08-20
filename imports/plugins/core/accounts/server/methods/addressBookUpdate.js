@@ -15,7 +15,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} address - address
  * @param {String|null} [accountUserId] - `account.userId` used by admin to edit users
  * @param {shipping|billing} [type] - name of selected address type
- * @return {Object} The updated address
+ * @returns {Object} The updated address
  */
 export default function addressBookUpdate(address, accountUserId, type) {
   Schemas.Address.validate(address);

@@ -11,7 +11,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} args.input.shopId - Shop ID
  * @param {Object} args.input.settingsUpdates - Updated fields
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} ShopsPayload
+ * @returns {Promise<Object>} ShopsPayload
  */
 export default async function updateShopSettings(_, { input }, context) {
   const {
