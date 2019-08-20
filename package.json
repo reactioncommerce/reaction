@@ -25,8 +25,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^4.2.1",
-    "@reactioncommerce/components": "^0.66.0",
     "@reactioncommerce/catalyst": "1.4.0",
+    "@reactioncommerce/components": "^0.67.1",
     "@reactioncommerce/components-context": "1.2.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.1",
@@ -53,7 +53,7 @@
     "connect": "^3.6.6",
     "connect-route": "^0.1.5",
     "copy-to-clipboard": "^3.0.8",
-    "core-js": "^2.6.4",
+    "core-js": "^3.2.1",
     "cors": "2.8.4",
     "csv": "^5.1.1",
     "csv-parse": "^4.4.4",
@@ -133,6 +133,7 @@
     "react-transition-group": "2.4.0",
     "reacto-form": "0.0.2",
     "recompose": "^0.26.0",
+    "regenerator-runtime": "^0.13.3",
     "shallowequal": "^1.0.2",
     "sharp": "^0.20.5",
     "simpl-schema": "1.5.0",
@@ -143,7 +144,7 @@
     "styled-components-mui": "^0.3.2",
     "sweetalert2": "^7.33.1",
     "tether-tooltip": "^1.2.0",
-    "transliteration": "^2.1.2",
+    "transliteration": "^2.1.5",
     "url": "^0.11.0"
   },
   "devDependencies": {
@@ -230,6 +231,15 @@
     "version": "echo $npm_package_version"
   },
   "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "corejs": 3,
+          "useBuiltIns": "entry"
+        }
+      ]
+    ],
     "plugins": [
       [
         "@babel/plugin-proposal-class-properties",

@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import iconClear from "@reactioncommerce/components/svg/iconClear";
 import iconError from "@reactioncommerce/components/svg/iconError";
 import iconValid from "@reactioncommerce/components/svg/iconValid";
