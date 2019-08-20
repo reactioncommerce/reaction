@@ -156,6 +156,11 @@ function composer(props, onData) {
     };
   });
 
+  if (Session.get("filterByProductIds")) {
+    const selectedProductIds = Object.keys(productMediaById);
+    Session.set("productGrid/selectedProducts", selectedProductIds);
+  }
+
   onData(null, {
     productMediaById,
     page: Session.get("products/page") || 0,

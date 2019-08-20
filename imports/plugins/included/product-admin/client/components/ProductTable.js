@@ -8,7 +8,6 @@ import ImportIcon from "mdi-material-ui/Download";
 import { useDropzone } from "react-dropzone";
 import { i18next } from "/client/api";
 import { Session } from "meteor/session";
-import _ from "lodash";
 import Chip from "@reactioncommerce/catalyst/Chip";
 import withCreateProduct from "../hocs/withCreateProduct";
 
@@ -80,8 +79,6 @@ function ProductTable({ onCreateProduct }) {
             Session.set("filterByProductIds", productIds);
             setClosed(true);
             setFiltered(true);
-            const selectedProductIds = _.uniq(productIds);
-            Session.set("productGrid/selectedProducts", selectedProductIds);
           });
       };
       return;
@@ -94,6 +91,7 @@ function ProductTable({ onCreateProduct }) {
     if (newFiles.length === 0) {
       setFiltered(false);
       Session.delete("filterByProductIds");
+      Session.set("productGrid/selectedProducts", []);
     } else if (isFiltered) {
       importFiles(newFiles);
     }
@@ -133,9 +131,9 @@ function ProductTable({ onCreateProduct }) {
       Session.delete("filterByProductIds");
       setFiles([]);
       setNoProductsFoundError(true);
-    } else {
-      setFilteredProductIdsCount(count);
+      Session.set("productGrid/selectedProducts", []);
     }
+    setFilteredProductIdsCount(count);
   };
 
   const iconComponents = {
