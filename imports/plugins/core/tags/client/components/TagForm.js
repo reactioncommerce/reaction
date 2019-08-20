@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { applyTheme, getRequiredValidator } from "@reactioncommerce/components/utils";
+import { getRequiredValidator } from "@reactioncommerce/components/utils";
 import { Mutation } from "react-apollo";
 import { orderBy, uniqueId } from "lodash";
 import Dropzone from "react-dropzone";
@@ -40,17 +40,6 @@ const ContentGroup = styled.div`
   margin-bottom: 30px;
 `;
 
-const DropzoneWrapper = styled.div`
-  .dropzone {
-    background-color: ${applyTheme("MediaUploader.backgroundColor")};
-    border: ${applyTheme("MediaUploader.border")};
-    min-height: 325px;
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-`;
-
 const HeroEditButton = styled.div`
   position: absolute;
   top: 10px;
@@ -64,6 +53,27 @@ const HeroUploadButton = styled.div`
   width: 100%;
 `;
 
+/**
+ * Extra component to use Dropzone v10 with the TagForm class component
+ * @returns {React.Component} Dropzone Component
+ */
+function TagDropzone({ children, ...dzoneProps }) {
+  return (
+    <Dropzone {...dzoneProps}>
+      {({ getRootProps, getInputProps }) => (
+        <div {...getRootProps()}>
+          <input {...getInputProps()} />
+          {children}
+        </div>
+      )}
+    </Dropzone>
+  );
+}
+TagDropzone.propTypes = {
+  children: PropTypes.node
+};
+
+// eslint-disable-next-line react/no-multi-comp
 class TagForm extends Component {
   static propTypes = {
     isLoadingShopId: PropTypes.bool,
@@ -302,6 +312,7 @@ class TagForm extends Component {
           <Button
             variant="outlined"
             actionType="secondary"
+            color="secondary"
             size="small"
             onClick={this.handleDropzoneClick}
           >
@@ -312,17 +323,14 @@ class TagForm extends Component {
     }
 
     return (
-      <DropzoneWrapper>
-        <Dropzone
-          disableClick
-          className="dropzone"
-          onDrop={this.handleDrop}
-          ref={(inst) => { this.dropzone = inst; }}
-          accept="image/jpg, image/png, image/jpeg"
-        >
-          {content}
-        </Dropzone>
-      </DropzoneWrapper>
+      <TagDropzone
+        disableClick
+        className="dropzone"
+        onDrop={this.handleDrop}
+        accept="image/jpg, image/png, image/jpeg"
+      >
+        {content}
+      </TagDropzone>
     );
   }
 
@@ -577,7 +585,7 @@ class TagForm extends Component {
                   }
 
                   <CardActions disableSpacing>
-                    <Button actionType="secondary" onClick={this.handleSubmitForm}>
+                    <Button color="secondary" onClick={this.handleSubmitForm}>
                       {i18next.t("admin.tags.form.save")}
                     </Button>
                   </CardActions>

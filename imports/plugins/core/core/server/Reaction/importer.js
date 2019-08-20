@@ -235,6 +235,7 @@ Importer.buffer = function (collection) {
  * @summary Store a product in the import buffer.
  * @param {Object} key A key to look up the product
  * @param {Object} product The product data to be updated
+ * @param {String} shopId The shopId of the product
  * @returns {Object}
  * Importing a variant currently consists of the following steps:
  *
@@ -354,6 +355,7 @@ Importer.layout = function (layout, shopId) {
  * @summary Store shipping in the import buffer.
  * @param {Object} key A shipping service key used in combination with provider
  * @param {Object} shipping The shipping data to be updated
+ * @param {String} shopId The shopId of the shipping
  * @returns {Object} this shipping
  */
 Importer.shipping = function (key, shipping, shopId) {
@@ -386,6 +388,7 @@ Importer.shipping = function (key, shipping, shopId) {
  * @summary Store a tag in the import buffer.
  * @param {Object} key A key to look up the tag
  * @param {Object} tag The tag data to be updated
+ * @param {String} shopId The shopId of the tag
  * @returns {Object} this tag
  */
 Importer.tag = function (key, tag, shopId) {

@@ -4,6 +4,10 @@ import convertToDataloaderResult from "./convertToDataloaderResult";
 
 export const dataLoaderFactory = (dlFunc) => new DataLoader(dlFunc, { cache: false });
 
+/**
+ * @param {Object} context An object with request-specific state
+ * @returns {undefined}
+ */
 export default async function createDataLoaders(context) {
   if (!context.getFunctionsOfType || !context.getFunctionsOfType("createDataLoaders")) return;
 
