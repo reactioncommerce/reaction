@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@apollo/react-testing": "^3.0.0",
-    "@babel/runtime": "7.4.5",
+    "@babel/runtime": "^7.5.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.14",
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
@@ -148,32 +148,30 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.4.4",
-    "@babel/core": "7.4.5",
-    "@babel/node": "7.4.5",
-    "@babel/plugin-proposal-class-properties": "7.4.4",
+    "@babel/cli": "7.5.5",
+    "@babel/core": "7.5.5",
+    "@babel/plugin-proposal-class-properties": "7.5.5",
     "@babel/plugin-proposal-decorators": "7.4.4",
-    "@babel/plugin-proposal-export-namespace-from": "7.2.0",
-    "@babel/plugin-proposal-function-sent": "7.2.0",
+    "@babel/plugin-proposal-export-namespace-from": "7.5.2",
+    "@babel/plugin-proposal-function-sent": "7.5.0",
     "@babel/plugin-proposal-json-strings": "7.2.0",
     "@babel/plugin-proposal-numeric-separator": "7.2.0",
-    "@babel/plugin-proposal-object-rest-spread": "7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.5.5",
     "@babel/plugin-proposal-throw-expressions": "7.2.0",
     "@babel/plugin-syntax-dynamic-import": "7.2.0",
     "@babel/plugin-syntax-import-meta": "7.2.0",
-    "@babel/preset-env": "7.4.5",
+    "@babel/preset-env": "7.5.5",
     "@babel/preset-react": "7.0.0",
     "@reactioncommerce/eslint-config": "2.1.0",
     "apollo-server-testing": "2.8.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "24.9.0",
     "babel-plugin-inline-import": "3.0.0",
-    "babel-plugin-lodash": "3.3.2",
-    "babel-plugin-module-resolver": "3.1.1",
+    "babel-plugin-lodash": "3.3.4",
+    "babel-plugin-module-resolver": "3.2.0",
     "babel-plugin-rewire-exports": "1.0.1",
     "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-preset-meteor": "7.4.3",
     "chai": "^4.2.0",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
@@ -192,6 +190,7 @@
     "jest-junit": "^6.4.0",
     "js-yaml": "^3.13.1",
     "jsdoc": "^3.6.2",
+    "meteor-babel": "^7.5.7",
     "mongodb-memory-server": "2.7.3",
     "nock": "^9.6.1",
     "nodemon": "1.18.9",
@@ -231,15 +230,6 @@
     "version": "echo $npm_package_version"
   },
   "babel": {
-    "presets": [
-      [
-        "@babel/env",
-        {
-          "corejs": 3,
-          "useBuiltIns": "entry"
-        }
-      ]
-    ],
     "plugins": [
       [
         "@babel/plugin-proposal-class-properties",
@@ -282,7 +272,9 @@
             "@babel/env",
             {
               "targets": {
-                "node": "current"
+                "corejs": 3,
+                "node": "current",
+                "useBuiltIns": "entry"
               }
             }
           ]
@@ -298,6 +290,7 @@
           "@babel/plugin-proposal-function-sent",
           "@babel/plugin-proposal-export-namespace-from",
           "@babel/plugin-proposal-numeric-separator",
+          "@babel/plugin-proposal-object-rest-spread",
           "@babel/plugin-proposal-throw-expressions",
           "@babel/plugin-syntax-dynamic-import",
           "@babel/plugin-syntax-import-meta",
@@ -335,7 +328,9 @@
             "@babel/env",
             {
               "targets": {
-                "node": "current"
+                "corejs": 3,
+                "node": "current",
+                "useBuiltIns": "entry"
               }
             }
           ],
@@ -355,6 +350,7 @@
           "@babel/plugin-proposal-function-sent",
           "@babel/plugin-proposal-export-namespace-from",
           "@babel/plugin-proposal-numeric-separator",
+          "@babel/plugin-proposal-object-rest-spread",
           "@babel/plugin-proposal-throw-expressions",
           "@babel/plugin-syntax-dynamic-import",
           "@babel/plugin-syntax-import-meta",
