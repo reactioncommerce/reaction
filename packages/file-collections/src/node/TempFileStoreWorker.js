@@ -19,49 +19,71 @@ function forEachPromise(items, fn) {
 }
 
 export default class TempFileStoreWorker extends EventEmitter {
-  constructor({ fileCollections = [] } = {}) {
+  constructor({ fileCollections = [], onNewFileRecord } = {}) {
     super();
 
     this.fileCollections = fileCollections;
     this.observeHandles = [];
+    this.onNewFileRecord = onNewFileRecord;
+  }
+
+  pushObservedDocument(doc, collection, stores, tempStore) {
+    const { onNewFileRecord } = this;
+    if (onNewFileRecord) {
+      onNewFileRecord(doc, collection);
+    } else {
+      debug("No onNewFileRecord function passed to TempFileStoreWorker, using internal function");
+      this.handleTempStoreIdAdded({ collection, doc, stores, tempStore })
+        .catch((error) => {
+          console.error(error); // eslint-disable-line no-console
+        });
+    }
   }
 
   start() {
     this.fileCollections.forEach((collection) => {
       const { stores, tempStore } = collection.options;
+      const mongoCollection = collection.rawCollection || collection.collection;
 
-      // Support for storing to multiple stores from a tempStore
-      this.observeHandles.push(collection.mongoCollection.find({
-        "original.tempStoreId": { $ne: null }
-      }).observe({
-        added: (doc) => {
-          this._handleTempStoreIdAdded({ collection, doc, stores, tempStore })
-            .catch((error) => {
-              console.error(error); // eslint-disable-line no-console
-            });
-        },
-        removed(doc) {
-          const { tempStoreId } = doc.original || {};
+      if (typeof mongoCollection.watch !== "function") {
+        throw new Error("RemoteUrlWorker requires a version of the MongoDB Node library that has collection#watch method available");
+      }
 
-          debug(`TempFileStoreWorker: Removing ${tempStoreId} from TempFileStore`);
-
-          // Delete the file from the temp store if it exists
-          tempStore.deleteIfExists(tempStoreId).catch((error) => {
-            console.error(error); // eslint-disable-line no-console
-          });
+      const handle = mongoCollection.watch([{
+        $match: {
+          "operationType": "insert",
+          "fullDocument.original.tempStoreId": { $ne: null }
         }
-      })); // END "original.tempStoreId" observe
+      }]);
+
+      handle.on("change", (event) => {
+        const { fullDocument } = event;
+        this.pushObservedDocument(fullDocument, collection, stores, tempStore);
+      });
+
+      this.observeHandles.push(handle);
     });
   }
 
   stop() {
     this.observeHandles.forEach((handle) => {
-      handle.stop();
+      handle.close();
     });
     this.observeHandles = [];
   }
 
-  async _handleTempStoreIdAdded({ collection, doc, stores, tempStore }) {
+  async addDocumentByCollectionName(doc, collectionName) {
+    const collection = this.fileCollections.find((fileCollection) => fileCollection.name === collectionName);
+
+    if (!collection) {
+      throw new Error(`Error: Collection ${collectionName} could not be found`);
+    }
+
+    const { stores, tempStore } = collection.options;
+    await this.handleTempStoreIdAdded({ collection, doc, stores, tempStore });
+  }
+
+  async handleTempStoreIdAdded({ collection, doc, stores, tempStore }) {
     if (!tempStore) throw new Error(`TempFileStoreWorker cannot work the "${collection.name}" collection because it has no tempStore`);
 
     const { tempStoreId } = doc.original;
@@ -100,6 +122,7 @@ export default class TempFileStoreWorker extends EventEmitter {
 
         return promise.then(() => {
           debug(`TempFileStoreWorker: Done storing ${loggingIdentifier} to "${store.name}" store`);
+          return true;
         }).catch((error) => {
           throw error;
         });
@@ -111,6 +134,10 @@ export default class TempFileStoreWorker extends EventEmitter {
     debug(`TempFileStoreWorker: Done storing ${loggingIdentifier} to all stores. Removing tempStoreId prop.`);
 
     await collection.update(doc._id, { $unset: { "original.tempStoreId": "" } }, { raw: true });
+
+    tempStore.deleteIfExists(tempStoreId).catch((error) => {
+      console.error(error); // eslint-disable-line no-console
+    });
 
     debug(`TempFileStoreWorker: tempStoreId prop removed for ${loggingIdentifier}`);
   }
