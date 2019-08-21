@@ -8,7 +8,6 @@ import {
   FileDownloadManager,
   FileRecord,
   RemoteUrlWorker,
-  MeteorFileCollection,
   MongoFileCollection,
   TempFileStore,
   TempFileStoreWorker
@@ -83,20 +82,6 @@ const tempStore = new TempFileStore({
 
 const ImagesCollection = new Mongo.Collection("ImagesFileCollection");
 
-const MeteorImages = new MeteorFileCollection("Images", {
-  // add more security depending on who should be able to manipulate the file records
-  allowInsert: () => true,
-  allowUpdate: () => true,
-  allowRemove: () => true,
-  // add more security here if the files should not be public
-  allowGet: () => true,
-  check,
-  collection: ImagesCollection,
-  DDP: Meteor,
-  stores,
-  tempStore
-});
-
 const Images = new MongoFileCollection("Images", {
   // add more security here if the files should not be public
   allowGet: () => true,
@@ -142,10 +127,10 @@ const downloadManager = new FileDownloadManager({
   }
 });
 
-const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [MeteorImages] });
+const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [Images] });
 remoteUrlWorker.start();
 
-const uploadWorker = new TempFileStoreWorker({ fileCollections: [MeteorImages] });
+const uploadWorker = new TempFileStoreWorker({ fileCollections: [Images] });
 uploadWorker.start();
 
 WebApp.connectHandlers.use("/juicy/uploads", (req, res) => {

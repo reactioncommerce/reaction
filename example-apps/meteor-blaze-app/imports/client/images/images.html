@@ -10,7 +10,14 @@
   {{/with}}
   <h2>Image Files</h2>
   <div class="well imageDropArea">
-    <input type="file" multiple class="images">
+    <div>
+      <input type="file" multiple class="images">
+    </div>
+    -- OR --
+    <div>
+      <input type="text" placeholder="Enter an image URL" class="js-remoteUrl">
+      <button type="button" class="grabButton">Grab</button>
+    </div>
   </div>
   <div class="imageArea clearfix">
     {{#each uploadedImages}}

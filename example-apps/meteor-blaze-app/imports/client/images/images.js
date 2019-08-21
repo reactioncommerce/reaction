@@ -88,5 +88,11 @@ Template.images.events({
   },
   "click .js-cloneFile"() {
     Meteor.call("cloneImage", this._id);
+  },
+  "click .grabButton"() {
+    const url = document.getElementsByClassName("js-remoteUrl")[0].value || "";
+    Meteor.call("insertRemoteImage", url.trim(), (error) => {
+      if (!error) document.getElementsByClassName("js-remoteUrl")[0].value = "";
+    });
   }
 });
