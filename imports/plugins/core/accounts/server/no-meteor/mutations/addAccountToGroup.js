@@ -33,16 +33,23 @@ export default async function addAccountToGroup(context, input) {
     user
   } = context;
 
-  const group = await Groups.findOne({ _id: groupId });
-  if (!group) throw new ReactionError("not-found", "No group found with that ID");
+  const allGroups = await Groups.find().toArray();
+  const groupToMoveUserTo = allGroups.filter((grp) => grp._id === groupId);
+  if (!groupToMoveUserTo) throw new ReactionError("not-found", "No group found with that ID");
 
-  const { permissions: groupPermissions = [], shopId } = group;
+  const { permissions: groupPermissions = [], shopId } = groupToMoveUserTo;
 
   // An account can add another account to a group as long as the person adding
   // has all permissions granted by that group.
   // We can't use `userHasPermission` here because we want to make sure they
   // have ALL the permissions rather than ANY.
-  if (!context.isInternalCall && difference(groupPermissions, user.roles[shopId] || []).length > 0) {
+  // Accounts in the "Owner" group are able to add any user to any group,
+  // regardless of other permissions.
+  const [ownerGroup] = allGroups.filter((grp) => grp.name === "owner");
+  const contextUserAccount = await Accounts.findOne({ _id: user._id });
+  const isOwnerAccount = contextUserAccount.groups.includes(ownerGroup._id);
+
+  if (!context.isInternalCall && !isOwnerAccount && difference(groupPermissions, user.roles[shopId] || []).length > 0) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
