@@ -63,6 +63,7 @@ class OrderCardFulfillmentGroupStatusButton extends Component {
   // TODO: When MUI 4.x is implemented, change this to `SplitButton`
   // instead of using a select dropdown in a popup
   // https://material-ui.com/components/buttons/#split-button
+  // TODO: Decide on a logic for when certain statuses might be disabled
   render() {
     const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
     const { classes, fulfillmentGroup } = this.props;
