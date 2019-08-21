@@ -45,7 +45,7 @@ export default async function addAccountToGroup(context, input) {
   // have ALL the permissions rather than ANY.
   // Accounts in the "Owner" group are able to add any user to any group,
   // regardless of other permissions.
-  const [ownerGroup] = allGroups.filter((grp) => grp.name === "owner");
+  const ownerGroup = allGroups.find((grp) => grp.name === "owner");
   const contextUserAccount = await Accounts.findOne({ _id: user._id });
   const isOwnerAccount = contextUserAccount.groups.includes(ownerGroup._id);
 
