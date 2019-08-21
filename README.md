@@ -415,7 +415,7 @@ Install [Meteor](https://www.meteor.com/), and then run the following commands:
 npm install
 npm run bootstrap
 cd example-apps/meteor-blaze-app
-meteor npm install
+npm install
 npm start
 ```
 
