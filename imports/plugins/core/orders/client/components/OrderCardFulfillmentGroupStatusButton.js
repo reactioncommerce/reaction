@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useMutation } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
-import SplitButton from "@reactioncommerce/catalyst/SplitButton";
+import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
+import Select from "@reactioncommerce/catalyst/Select";
 import { i18next, Reaction } from "/client/api";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
 
@@ -14,6 +15,7 @@ import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrde
 function OrderCardFulfillmentGroupStatusButton({ fulfillmentGroup, order }) {
   const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
   const [updateOrderFulfillmentGroup] = useMutation(updateOrderFulfillmentGroupMutation);
+  const [groupStatus, setGroupStatus] = useState();
   const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
   const options = [
     {
@@ -43,25 +45,48 @@ function OrderCardFulfillmentGroupStatusButton({ fulfillmentGroup, order }) {
     }
   ];
 
-  const handleUpdateFulfillmentGroupStatus = async (option) => {
+  const handleUpdateFulfillmentGroupStatus = async () => {
+    const newGroupStatus = groupStatus;
+
     if (hasPermission) {
       updateOrderFulfillmentGroup({
         variables: {
           orderFulfillmentGroupId: fulfillmentGroup._id,
           orderId: order._id,
-          status: option.value
+          status: newGroupStatus.value
         }
       });
     }
   };
 
+  const handleSelectChange = (value, openDialog) => {
+    // Set value into state to use inside confirm dialog
+    setGroupStatus(value);
+    openDialog();
+  };
+
   if (hasPermission && canUpdateFulfillmentStatus) {
     return (
       <Grid item>
-        <SplitButton
+        <ConfirmDialog
+          message={i18next.t("order.updateFulfillmentGroupStatusMessage")}
+          title={i18next.t("order.updateFulfillmentGroupStatusTitle", { groupStatus: "holiday" })}
+          onConfirm={handleUpdateFulfillmentGroupStatus}
+        >
+          {({ openDialog }) => (
+            <Select
+              options={options}
+              onSelection={(value) => handleSelectChange(value, openDialog)}
+              placeholder="Update group status"
+            />
+          )}
+        </ConfirmDialog>
+
+        {/* <Select
           options={options}
-          onClick={(option) => handleUpdateFulfillmentGroupStatus(option)}
-        />
+          onSelection={handleUpdateFulfillmentGroupStatus}
+          placeholder="Update group status"
+        /> */}
       </Grid>
     );
   }
