@@ -47,16 +47,7 @@ const styles = (theme) => ({
   },
   actionDropdownTrigger: {
     border: `1px solid ${theme.palette.colors.coolGrey}`,
-    fontSize: theme.typography.fontSize,
-    letterSpacing: "0.3px",
-    fontWeight: theme.typography.fontWeightSemiBold,
-    color: theme.palette.colors.coolGrey500,
-    lineHeight: 1.5
-  },
-  actionDropdownMenuList: {
-    border: `1px solid ${theme.palette.colors.black10}`,
-    fontSize: theme.typography.fontSize,
-    letterSpacing: "0.3px"
+    color: theme.palette.colors.coolGrey500
   },
   actionDropdownMenuItem: {
     fontSize: theme.typography.fontSize,
@@ -286,7 +277,7 @@ class ProductGrid extends Component {
           open={Boolean(bulkActionMenuAnchorEl)}
           onClose={this.handleCloseBulkActions}
           className={classes.actionDropdownContainer}
-          MenuListProps={{ disablePadding: true, className: classes.actionDropdownMenuList }}
+          MenuListProps={{ disablePadding: true}}
         >
           <MenuItem
             disabled
