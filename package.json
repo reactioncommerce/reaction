@@ -26,7 +26,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^4.2.1",
     "@reactioncommerce/components": "^0.66.0",
-    "@reactioncommerce/catalyst": "1.4.0",
+    "@reactioncommerce/catalyst": "1.7.0",
     "@reactioncommerce/components-context": "1.2.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.1",
