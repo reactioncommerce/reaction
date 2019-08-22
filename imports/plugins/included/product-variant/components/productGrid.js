@@ -252,7 +252,16 @@ class ProductGrid extends Component {
     if (isFiltered) {
       return (
         <div>
-          {files.map((file, idx) => <Chip variant="default" color="primary" label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
+          {files.map((file, idx) => (
+            <Chip
+              variant="default"
+              color="primary"
+              label={file.name}
+              key={idx}
+              className={classes.leftChip}
+              onDelete={() => handleDelete(file.name)}
+            />
+          ))}
         </div>
       );
     }
@@ -283,7 +292,7 @@ class ProductGrid extends Component {
           open={Boolean(bulkActionMenuAnchorEl)}
           onClose={this.handleCloseBulkActions}
           className={classes.actionDropdownContainer}
-          MenuListProps={{ disablePadding: true}}
+          MenuListProps={{ disablePadding: true }}
         >
           <MenuItem
             disabled

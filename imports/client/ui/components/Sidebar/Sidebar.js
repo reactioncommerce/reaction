@@ -55,8 +55,8 @@ const styles = (theme) => ({
     paddingRight: theme.spacing(2)
   },
   listItem: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    "paddingLeft": theme.spacing(2),
+    "paddingRight": theme.spacing(2),
     "&:hover": {
       backgroundColor: theme.palette.colors.darkBlue600,
       transition: `background-color ${theme.transitions.duration.shortest} ${theme.transitions.easing.easeInOut}`
@@ -70,9 +70,9 @@ const styles = (theme) => ({
     color: theme.palette.colors.black15
   },
   listItemNested: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: theme.spacing(8),
+    "paddingTop": 0,
+    "paddingBottom": 0,
+    "paddingLeft": theme.spacing(8),
     "&:hover": {
       backgroundColor: theme.palette.colors.darkBlue600,
       transition: `background-color ${theme.transitions.duration.shortest} ${theme.transitions.easing.easeInOut}`
