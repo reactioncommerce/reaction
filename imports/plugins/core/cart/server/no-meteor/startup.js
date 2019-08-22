@@ -2,6 +2,9 @@ import Logger from "@reactioncommerce/logger";
 import updateCartItemsForVariantPriceChange from "./util/updateCartItemsForVariantPriceChange";
 
 const AFTER_CATALOG_UPDATE_EMITTED_BY_NAME = "CART_CORE_PLUGIN_AFTER_CATALOG_UPDATE";
+const BULK_WRITE_LIMIT = 50;
+
+const logCtx = { name: "cart", file: "startup", fn: "updateAllCartsForVariant" };
 
 /**
  * @param {Object[]} catalogProductVariants The `product.variants` array from a catalog item
@@ -32,44 +35,116 @@ async function updateAllCartsForVariant({ Cart, context, variant }) {
   const { appEvents, queries } = context;
   const { variantId } = variant;
 
-  // Do find + update because we need the `cart.currencyCode` to figure out pricing
-  // and we need current quantity to recalculate `subtotal` for each item.
-  // It should be fine to load all results into an array because even for large shops,
-  // there will likely not be a huge number of the same product in carts at the same time.
-  const carts = await Cart.find({
-    "items.variantId": variantId
-  }, {
-    projection: { _id: 1, currencyCode: 1, items: 1 }
-  }).toArray();
+  Logger.debug({ ...logCtx, variantId }, "Running updateAllCartsForVariant");
 
-  await Promise.all(carts.map(async (cart) => {
+  let bulkWrites = [];
+
+  /**
+   * @summary Pass `bulkWrites` array to Cart.bulkWrite and then clear the array.
+   * @return {undefined}
+   */
+  async function flushBulkWrites() {
+    if (bulkWrites.length === 0) return;
+
+    let writeErrors;
+    try {
+      Logger.trace({ ...logCtx, bulkWrites }, "Running bulk op");
+      const bulkWriteResult = await Cart.bulkWrite(bulkWrites, { ordered: false });
+      ({ writeErrors } = bulkWriteResult.result);
+    } catch (error) {
+      // This happens only if all writes fail. `error` object has the result on it.
+      writeErrors = error.result.getWriteErrors();
+    }
+
+    // Figure out which failed and which succeeded
+    const updatedCartIds = [];
+    bulkWrites.forEach((bulkWrite, index) => {
+      const cartId = bulkWrite.updateOne.filter._id;
+
+      // If updating this cart failed, log the error details and stop
+      const writeError = writeErrors.find((writeErr) => writeErr.index === index);
+      if (writeError) {
+        Logger.error({
+          ...logCtx,
+          errorCode: writeError.code,
+          errorMsg: writeError.errmsg,
+          cartId
+        }, "MongoDB writeError updating cart prices after catalog publish");
+        return;
+      }
+
+      // For now we're just going to make a list of which were updated successfully.
+      // This way we can do a single `find` to get them for the "afterCartUpdate" emit
+      // rather than a bunch of `findOne`.
+      updatedCartIds.push(cartId);
+    });
+
+    bulkWrites = [];
+
+    if (updatedCartIds.length === 0) return;
+
+    // Emit "after update"
+    const updatedCarts = await Cart.find({ _id: { $in: updatedCartIds } }).toArray();
+    await Promise.all(updatedCarts.map(async (updatedCart) => {
+      Logger.debug({ ...logCtx, cartId: updatedCart._id }, "Successfully updated cart prices after catalog publish");
+      await appEvents.emit("afterCartUpdate", {
+        cart: updatedCart,
+        updatedBy: null
+      }, { emittedBy: AFTER_CATALOG_UPDATE_EMITTED_BY_NAME });
+    }));
+  }
+
+  /**
+   * @summary Get updated prices for a single cart, and check whether there are any changes.
+   *   If so, push into `bulkWrites` array.
+   * @param {Object} cart The cart
+   * @return {undefined}
+   */
+  async function updateOneCart(cart) {
     const prices = await queries.getVariantPrice(context, variant, cart.currencyCode);
     if (!prices) return;
 
     const { didUpdate, updatedItems } = updateCartItemsForVariantPriceChange(cart.items, variantId, prices);
     if (!didUpdate) return;
 
-    // Update the cart
-    const { result } = await Cart.updateOne({
-      _id: cart._id
-    }, {
-      $set: {
-        items: updatedItems,
-        updatedAt: new Date()
+    bulkWrites.push({
+      updateOne: {
+        filter: { _id: cart._id },
+        update: {
+          $set: {
+            items: updatedItems,
+            updatedAt: new Date()
+          }
+        }
       }
     });
-    if (result.ok !== 1) {
-      Logger.warn(`MongoDB error trying to update cart ${cart._id} in "afterPublishProductToCatalog" listener. Check MongoDB logs.`);
-      return;
+  }
+
+  // Do find + update because we need the `cart.currencyCode` to figure out pricing
+  // and we need current quantity to recalculate `subtotal` for each item.
+  // It should be fine to load all results into an array because even for large shops,
+  // there will likely not be a huge number of the same product in carts at the same time.
+  const cartsCursor = Cart.find({
+    "items.variantId": variantId
+  }, {
+    projection: { _id: 1, currencyCode: 1, items: 1 }
+  });
+
+  /* eslint-disable no-await-in-loop */
+  let cart = await cartsCursor.next();
+  while (cart) {
+    await updateOneCart(cart);
+
+    if (bulkWrites.length >= BULK_WRITE_LIMIT) {
+      await flushBulkWrites();
     }
 
-    // Emit "after update"
-    const updatedCart = await Cart.findOne({ _id: cart._id });
-    appEvents.emit("afterCartUpdate", {
-      cart: updatedCart,
-      updatedBy: null
-    }, { emittedBy: AFTER_CATALOG_UPDATE_EMITTED_BY_NAME });
-  }));
+    cart = await cartsCursor.next();
+  }
+  /* eslint-enable no-await-in-loop */
+
+  // Flush remaining bulk writes
+  await flushBulkWrites();
 
   return null;
 }
@@ -80,7 +155,7 @@ async function updateAllCartsForVariant({ Cart, context, variant }) {
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
+export default async function startup(context) {
   const { appEvents, collections } = context;
   const { Cart } = collections;
 
@@ -95,15 +170,15 @@ export default function startup(context) {
     }
   });
 
-  // When a variant's price changes, change the `price` and `subtotal` fields of all CartItems for that variant.
-  // When a variant's compare-at price changes, change the `compareAtPrice` field of all CartItems for that variant.
+  // Propagate any price changes to all corresponding cart items
   appEvents.on("afterPublishProductToCatalog", async ({ catalogProduct }) => {
-    const { variants } = catalogProduct;
+    const { _id: catalogProductId, variants } = catalogProduct;
+
+    Logger.debug({ ...logCtx, catalogProductId, fn: "startup" }, "Running afterPublishProductToCatalog");
 
     const variantsAndOptions = getFlatVariantsAndOptions(variants);
 
-    // Update all cart items that are linked with the updated variants
-    await Promise.all(variantsAndOptions.map(async (variant) =>
-      updateAllCartsForVariant({ Cart, context, variant })));
+    // Update all cart items that are linked with the updated variants.
+    await Promise.all(variantsAndOptions.map((variant) => updateAllCartsForVariant({ Cart, context, variant })));
   });
 }

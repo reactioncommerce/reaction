@@ -16,6 +16,8 @@ export default async function publishProductToCatalog(product, context) {
   const { appEvents, collections } = context;
   const { Catalog, Products } = collections;
 
+  const startTime = Date.now();
+
   // Convert Product schema object to Catalog schema object
   const catalogProduct = await createCatalogProduct(product, context);
 
@@ -68,10 +70,19 @@ export default async function publishProductToCatalog(product, context) {
     }
 
     const updatedProduct = { ...product, ...productUpdates };
-    appEvents.emit("afterPublishProductToCatalog", {
+
+    // For bulk publication, we need to await this so that we know when all of the
+    // things this triggers are done, and we can publish the next one.
+    await appEvents.emit("afterPublishProductToCatalog", {
       catalogProduct,
       product: updatedProduct
     });
+
+    Logger.debug({
+      name: "cart",
+      ms: Date.now() - startTime,
+      productId: catalogProduct.productId
+    }, "publishProductToCatalog finished");
   }
 
   return wasUpdateSuccessful;
