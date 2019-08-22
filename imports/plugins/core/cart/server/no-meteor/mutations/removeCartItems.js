@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
