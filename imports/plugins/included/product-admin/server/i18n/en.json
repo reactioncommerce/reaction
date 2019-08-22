@@ -6,7 +6,13 @@
       "admin": {
         "createProduct": "Create product",
         "productListFiltered": "Product list filtered",
-        "showingFilteredProducts": "Showing {{count}} found products from imported file(s).",
+        "showingFilteredProducts": "Showing {{count}} found product from imported file(s).",
+        "showingFilteredProducts_plural": "Showing {{count}} found products from imported file(s).",
+        "productListIdsNotFound": "{{missing}} of {{all}} products not found",
+        "missingFilteredProducts": "{{count}} product ID could not be found in the catalog.",
+        "missingFilteredProducts_plural": "{{count}} product IDs could not be found in the catalog.",
+        "noProductsFoundTitle": "No products found",
+        "noProductsFoundText": "No product IDs could be found in the catalog.",
         "productAdmin": {
           "details": "Details",
           "metadata": "Metadata",

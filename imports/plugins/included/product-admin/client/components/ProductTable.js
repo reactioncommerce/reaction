@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
   leftIcon: {
     marginRight: theme.spacing(1)
   },
+  leftChip: {
+    marginRight: theme.spacing(1)
+  },
   helpText: {
     marginLeft: "20px",
     letterSpacing: "0.28px",
@@ -38,10 +41,12 @@ function ProductTable({ onCreateProduct }) {
   const [isFiltered, setFiltered] = useState(false);
   const [isClosed, setClosed] = useState(true);
   const [filteredProductIdsCount, setFilteredProductIdsCount] = useState(0);
+  const [noProductsFoundError, setNoProductsFoundError] = useState(false);
 
   const onDrop = (accepted) => {
     if (accepted.length === 0) return;
     setFiles(accepted);
+    setNoProductsFoundError(false);
   };
 
   const importFiles = (newFiles) => {
@@ -86,6 +91,7 @@ function ProductTable({ onCreateProduct }) {
     if (newFiles.length === 0) {
       setFiltered(false);
       Session.delete("filterByProductIds");
+      Session.set("productGrid/selectedProducts", []);
     } else if (isFiltered) {
       importFiles(newFiles);
     }
@@ -119,12 +125,57 @@ function ProductTable({ onCreateProduct }) {
     setClosed(false);
   };
 
+  const setFilteredCount = (count) => {
+    if (count === 0) {
+      setFiltered(false);
+      Session.delete("filterByProductIds");
+      setFiles([]);
+      setNoProductsFoundError(true);
+      Session.set("productGrid/selectedProducts", []);
+    }
+    setFilteredProductIdsCount(count);
+  };
+
   const iconComponents = {
     iconDismiss: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
   };
 
+  // eslint-disable-next-line react/no-multi-comp
+  const renderMissedFilterItems = () => {
+    if (!Session.get("filterByProductIds")) {
+      return null;
+    }
+    const filterProductIds = Session.get("filterByProductIds").length;
+    if (isFiltered && filteredProductIdsCount < filterProductIds) {
+      const missing = filterProductIds - filteredProductIdsCount;
+      return (
+        <Grid item sm={12}>
+          <InlineAlert
+            isDismissable
+            components={iconComponents}
+            alertType="error"
+            title={i18next.t("admin.productListIdsNotFound", { missing, all: filterProductIds }) || "Product Ids not found"}
+            message={i18next.t("admin.missingFilteredProducts", { count: missing })}
+          />
+        </Grid>
+      );
+    }
+    return null;
+  };
+
   return (
     <Grid container spacing={3}>
+      { noProductsFoundError ? (
+        <Grid item sm={12}>
+          <InlineAlert
+            isDismissable
+            components={iconComponents}
+            alertType="error"
+            title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
+            message={i18next.t("admin.noProductsFoundText")}
+          />
+        </Grid>
+      ) : null }
       <Grid item sm={12} style={{ display: displayCard }}>
         <Card raised>
           <CardHeader
@@ -140,7 +191,7 @@ function ProductTable({ onCreateProduct }) {
             { files.length > 0 ? (
               <Grid container spacing={1} className={classes.cardContainer}>
                 <Grid item sm={12}>
-                  {files.map((file) => <Chip variant="default" color="primary" label={file.name} onDelete={() => handleDelete(file.name)} />)}
+                  {files.map((file, idx) => <Chip variant="default" color="primary" label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
                 </Grid>
                 <Grid item sm={12}>
                   <Button
@@ -193,11 +244,12 @@ function ProductTable({ onCreateProduct }) {
             message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
           />
         </Grid>
-      ) : "" }
+      ) : null }
+      {renderMissedFilterItems()}
       <Grid item sm={12}>
         <Components.ProductsAdmin
           onShowFilterByFile={() => closeCard()}
-          setFilteredProductIdsCount={setFilteredProductIdsCount}
+          setFilteredProductIdsCount={setFilteredCount}
           files={files}
           handleDelete={handleDelete}
           isFiltered={isFiltered}

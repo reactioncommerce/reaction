@@ -190,12 +190,12 @@
     "jest": "^24.8.0",
     "jest-junit": "^6.4.0",
     "js-yaml": "^3.13.1",
-    "jsdoc": "^3.6.2",
+    "jsdoc": "^3.6.3",
     "mongodb-memory-server": "2.7.3",
     "nock": "^9.6.1",
     "nodemon": "1.18.9",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.181.0",
+    "snyk": "^1.217.3",
     "wait-for-expect": "^1.2.0"
   },
   "postcss": {
