@@ -1,13 +1,10 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Cart as CartSchema } from "/imports/collections/schemas";
-import appEvents from "/imports/node-app/core/util/appEvents";
 import addCartItems from "../util/addCartItems";
 
 /**
  * @summary Update account cart to have only the anonymous cart items, delete anonymous
  *   cart, and return updated accountCart.
  * @param {Object} accountCart The account cart document
- * @param {Object} accountCartSelector The MongoDB selector for the account cart
  * @param {Object} anonymousCart The anonymous cart document
  * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
  * @param {Object} context App context
@@ -15,11 +12,9 @@ import addCartItems from "../util/addCartItems";
  */
 export default async function reconcileCartsMerge({
   accountCart,
-  accountCartSelector,
   anonymousCart,
   anonymousCartSelector,
-  context,
-  userId
+  context
 }) {
   const { collections } = context;
   const { Cart } = collections;
@@ -40,34 +35,17 @@ export default async function reconcileCartsMerge({
     skipPriceCheck: true
   });
 
-  // Update account cart
-  const updatedAt = new Date();
-
-  const modifier = {
-    $set: {
-      items,
-      updatedAt
-    }
-  };
-  CartSchema.validate(modifier, { modifier: true });
-
-  const { modifiedCount } = await Cart.updateOne(accountCartSelector, modifier);
-  if (modifiedCount === 0) throw new ReactionError("server-error", "Unable to update cart");
-
   const updatedCart = {
     ...accountCart,
     items,
-    updatedAt
+    updatedAt: new Date()
   };
 
-  await appEvents.emit("afterCartUpdate", {
-    cart: updatedCart,
-    updatedBy: userId
-  });
+  const savedCart = await context.mutations.saveCart(context, updatedCart);
 
   // Delete anonymous cart
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
   if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
 
-  return updatedCart;
+  return savedCart;
 }
