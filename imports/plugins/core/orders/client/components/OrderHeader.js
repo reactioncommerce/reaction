@@ -31,8 +31,6 @@ function OrderHeader(props) {
   const paymentStatuses = payments.map((payment) => payment.status);
   const uniqueStatuses = [...new Set(paymentStatuses)];
 
-  const handleClickPrintLink = () => Reaction.Router.go(`/operator/orders/print/${order.referenceId}`);
-
   let paymentStatusChip;
   // If there are multiple payment statuses, show Multiple statuses badge
   if (Array.isArray(uniqueStatuses) && uniqueStatuses.length > 1) {
@@ -68,7 +66,7 @@ function OrderHeader(props) {
           {paymentStatusChip}
           <Grid item>
             <Button
-              href={handleClickPrintLink}
+              onClick={() => Reaction.Router.go(`/operator/orders/print/${order.referenceId}`)}
               variant="text"
             >
               {i18next.t("admin.orderWorkflow.invoice.printInvoice", "Print invoice")}
