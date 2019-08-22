@@ -53,7 +53,7 @@ function OrderPrint(props) {
       <Grid container spacing={10}>
         <Grid className={classes.nonPrintable} item xs={12}>
           <Grid container alignItems="center" direction="row" justify="space-between">
-            <Grid item xs={4}>
+            <Grid item>
               <Button
                 onClick={() => Reaction.Router.go(`/operator/orders/${order.referenceId}`)}
               >
@@ -61,7 +61,7 @@ function OrderPrint(props) {
                 Back
               </Button>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item>
               <Button
                 color="primary"
                 onClick={printInvoice}
