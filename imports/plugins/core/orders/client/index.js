@@ -10,11 +10,6 @@ import OrderPrint from "./containers/OrderPrintContainer";
 import "../lib/extendShopSchema";
 import "./helpers";
 
-// Print page layout
-import "./templates/list/pdf.html";
-import "./templates/list/pdf.js";
-
-
 // Register order related routes
 /*
  * Single order page route
