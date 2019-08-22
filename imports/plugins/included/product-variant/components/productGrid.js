@@ -246,7 +246,7 @@ class ProductGrid extends Component {
     if (isFiltered) {
       return (
         <div>
-          {files.map((file) => <Chip label={file.name} onDelete={() => handleDelete(file.name)} />)}
+          {files.map((file) => <Chip variant="default" color="primary" label={file.name} onDelete={() => handleDelete(file.name)} />)}
         </div>
       );
     }

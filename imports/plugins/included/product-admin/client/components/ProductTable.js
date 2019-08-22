@@ -140,7 +140,7 @@ function ProductTable({ onCreateProduct }) {
             { files.length > 0 ? (
               <Grid container spacing={1} className={classes.cardContainer}>
                 <Grid item sm={12}>
-                  {files.map((file) => <Chip label={file.name} onDelete={() => handleDelete(file.name)} />)}
+                  {files.map((file) => <Chip variant="default" color="primary" label={file.name} onDelete={() => handleDelete(file.name)} />)}
                 </Grid>
                 <Grid item sm={12}>
                   <Button
