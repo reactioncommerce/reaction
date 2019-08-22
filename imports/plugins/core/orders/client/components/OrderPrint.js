@@ -3,7 +3,6 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import ChevronLeftIcon from "mdi-material-ui/ChevronLeft";
-import PrintIcon from "mdi-material-ui/Printer";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -73,7 +72,6 @@ function OrderPrint(props) {
                 size="large"
                 variant="contained"
               >
-                <PrintIcon className={classes.iconButton} />
                 {i18next.t("admin.orderWorkflow.invoice.printInvoice")}
               </Button>
             </Grid>
