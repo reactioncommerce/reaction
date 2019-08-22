@@ -1,6 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
+import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
   "cartId": String,
@@ -28,35 +29,39 @@ const inputSchema = new SimpleSchema({
 export default async function removeCartItems(context, input) {
   inputSchema.validate(input || {});
 
-  const { accountId, appEvents, collections, userId } = context;
+  const { appEvents, collections, userId } = context;
+  const { cartId, cartItemIds, token: cartToken } = input;
+
+  const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
+
+  const updatedAt = new Date();
+
   const { Cart } = collections;
-  const { cartId, cartItemIds, token } = input;
-
-  const selector = { _id: cartId };
-  if (token) {
-    selector.anonymousAccessToken = hashLoginToken(token);
-  } else if (accountId) {
-    selector.accountId = accountId;
-  } else {
-    throw new ReactionError("invalid-param", "A token is required when updating an anonymous cart");
-  }
-
-  const { modifiedCount } = await Cart.updateOne(selector, {
+  const { modifiedCount } = await Cart.updateOne({ _id: cartId }, {
     $pull: {
       items: {
         _id: { $in: cartItemIds }
       }
-    }
+    },
+    $set: { updatedAt }
   });
+
   if (modifiedCount === 0) throw new ReactionError("not-found", "Cart not found or provided items are not in the cart");
 
-  const cart = await Cart.findOne(selector);
-  if (!cart) throw new ReactionError("not-found", "Cart not found");
+  const updatedItems = cart.items.reduce((list, item) => {
+    if (!cartItemIds.includes(item._id)) {
+      return [...list, item];
+    }
+    return list;
+  }, []);
+
+  const updatedCart = { ...cart, items: updatedItems, updatedAt };
 
   await appEvents.emit("afterCartUpdate", {
-    cart,
+    cart: updatedCart,
     updatedBy: userId
   });
 
-  return { cart };
+  const updatedCartAfterAppEvents = await Cart.findOne({ _id: cartId });
+  return { cart: updatedCartAfterAppEvents };
 }
