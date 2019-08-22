@@ -70,13 +70,13 @@ function OrderCardFulfillmentGroupStatusButton({ fulfillmentGroup, order }) {
       <Grid item>
         <ConfirmDialog
           message={i18next.t("order.updateFulfillmentGroupStatusMessage")}
-          title={i18next.t("order.updateFulfillmentGroupStatusTitle", { groupStatus: "holiday" })}
+          title={i18next.t("order.updateFulfillmentGroupStatusTitle", { groupStatus: "holiday" })} // TODO: groupStatus doesn't work here
           onConfirm={handleUpdateFulfillmentGroupStatus}
         >
           {({ openDialog }) => (
             <Select
               options={options}
-              onSelection={(value) => handleSelectChange(value, openDialog)}
+              onSelection={(value) => handleSelectChange(value, openDialog)} // TODO: get this to reset once updated
               placeholder="Update group status"
             />
           )}
