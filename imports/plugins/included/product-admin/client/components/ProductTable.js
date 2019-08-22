@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1)
   },
   leftChip: {
-    marginBottom: theme.spacing(3),
     marginRight: theme.spacing(1)
   },
   helpText: {

@@ -26,9 +26,12 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = (theme) => ({
   leftChip: {
+    marginBottom: theme.spacing(2),
     marginRight: theme.spacing(1)
   },
   toolbar: {
+    marginBottom: theme.spacing(2),
+    minHeight: "65px",
     paddingLeft: 0,
     paddingRight: 0,
     [theme.breakpoints.up("sm")]: {
