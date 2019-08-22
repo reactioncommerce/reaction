@@ -2,34 +2,22 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
-import { Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
-import CloseIcon from "mdi-material-ui/Close";
-import ImportIcon from "mdi-material-ui/Download";
+import { Grid, Button, makeStyles } from "@material-ui/core";
 import { useDropzone } from "react-dropzone";
 import { i18next } from "/client/api";
 import { Session } from "meteor/session";
-import Chip from "@reactioncommerce/catalyst/Chip";
+import classNames from "classnames";
 import withCreateProduct from "../hocs/withCreateProduct";
+import FilterByFileCard from "./FilterByFileCard";
 
-const useStyles = makeStyles((theme) => ({
-  leftIcon: {
-    marginRight: theme.spacing(1)
+const useStyles = makeStyles({
+  hidden: {
+    display: "none"
   },
-  leftChip: {
-    marginRight: theme.spacing(1)
-  },
-  helpText: {
-    marginLeft: "20px",
-    letterSpacing: "0.28px",
-    fontWeight: theme.typography.fontWeightRegular
-  },
-  cardHeaderTitle: {
-    letterSpacing: "0.3px"
-  },
-  cardContainer: {
-    alignItems: "center"
+  visible: {
+    display: "block"
   }
-}));
+});
 
 /**
  * ProductTable component
@@ -37,9 +25,10 @@ const useStyles = makeStyles((theme) => ({
  * @returns {Node} React node
  */
 function ProductTable({ onCreateProduct }) {
+  // Filter by file state
   const [files, setFiles] = useState([]);
   const [isFiltered, setFiltered] = useState(false);
-  const [isClosed, setClosed] = useState(true);
+  const [isFilterByFileVisible, setFilterByFileVisible] = useState(true);
   const [filteredProductIdsCount, setFilteredProductIdsCount] = useState(0);
   const [noProductsFoundError, setNoProductsFoundError] = useState(false);
 
@@ -77,7 +66,7 @@ function ProductTable({ onCreateProduct }) {
               return;
             });
             Session.set("filterByProductIds", productIds);
-            setClosed(true);
+            setFilterByFileVisible(true);
             setFiltered(true);
           });
       };
@@ -105,24 +94,8 @@ function ProductTable({ onCreateProduct }) {
     disableClick: true
   });
 
-  const classes = useStyles();
-
-  let displayCard;
-  let displayButton;
-  if (isClosed === true) {
-    displayCard = "none";
-    if (isFiltered === true) {
-      displayButton = "none";
-    } else {
-      displayButton = "block";
-    }
-  } else {
-    displayCard = "block";
-    displayButton = "none";
-  }
-
-  const closeCard = () => {
-    setClosed(false);
+  const handleOnShowFilterByFile = () => {
+    setFilterByFileVisible(false);
   };
 
   const setFilteredCount = (count) => {
@@ -163,69 +136,34 @@ function ProductTable({ onCreateProduct }) {
     return null;
   };
 
+  const classes = useStyles();
+  const createProductBtnClasses = classNames({
+    [classes.visible]: !isFiltered,
+    [classes.hidden]: isFiltered
+  });
+
   return (
     <Grid container spacing={3}>
       { noProductsFoundError ? (
         <Grid item sm={12}>
           <InlineAlert
-            isDismissable
-            components={iconComponents}
             alertType="error"
-            title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
+            components={iconComponents}
+            isDismissable
             message={i18next.t("admin.noProductsFoundText")}
+            title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
           />
         </Grid>
       ) : null }
-      <Grid item sm={12} style={{ display: displayCard }}>
-        <Card raised>
-          <CardHeader
-            className={classes.cardHeaderTitle}
-            action={
-              <IconButton aria-label="close" onClick={() => setClosed(true)}>
-                <CloseIcon/>
-              </IconButton>
-            }
-            title={i18next.t("admin.importCard.title")}
-          />
-          <CardContent>
-            { files.length > 0 ? (
-              <Grid container spacing={1} className={classes.cardContainer}>
-                <Grid item sm={12}>
-                  {files.map((file, idx) => <Chip label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
-                </Grid>
-                <Grid item sm={12}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ float: "right" }}
-                    onClick={() => importFiles(files)}
-                  >
-                    {i18next.t("admin.importCard.button")}
-                  </Button>
-                </Grid>
-              </Grid>
-            ) : (
-              <Grid container spacing={1} className={classes.cardContainer}>
-                <Grid item sm={12}>
-                  <Button
-                    {...getRootProps({ className: "dropzone" })}
-                    variant="contained"
-                    color="primary"
-                  >
-                    <input {...getInputProps()} />
-                    <ImportIcon className={classes.leftIcon}/>
-                    {i18next.t("admin.importCard.import")}
-                  </Button>
-                  <Typography variant="h5" display="inline" className={classes.helpText}>
-                    {i18next.t("admin.importCard.importHelpText")}
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item sm={12} style={{ display: displayButton }}>
+      <FilterByFileCard
+        isFilterByFileVisible={isFilterByFileVisible}
+        files={files}
+        getInputProps={getInputProps}
+        getRootProps={getRootProps}
+        importFiles={importFiles}
+        setFilterByFileVisible={setFilterByFileVisible}
+      />
+      <Grid item sm={12} className={createProductBtnClasses}>
         <Button
           color="primary"
           onClick={onCreateProduct}
@@ -248,7 +186,7 @@ function ProductTable({ onCreateProduct }) {
       {renderMissedFilterItems()}
       <Grid item sm={12}>
         <Components.ProductsAdmin
-          onShowFilterByFile={() => closeCard()}
+          onShowFilterByFile={() => handleOnShowFilterByFile()}
           setFilteredProductIdsCount={setFilteredCount}
           files={files}
           handleDelete={handleDelete}
