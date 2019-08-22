@@ -18,9 +18,6 @@ const styles = (theme) => ({
   extraEmphasisText: {
     fontWeight: theme.typography.fontWeightSemiBold
   },
-  fullWidthButton: {
-    width: "100%"
-  },
   gridContainer: {
     margin: "auto",
     maxWidth: "960px",
@@ -66,7 +63,6 @@ function OrderPrint(props) {
             </Grid>
             <Grid item xs={4}>
               <Button
-                className={classes.fullWidthButton}
                 color="primary"
                 onClick={printInvoice}
                 size="large"
