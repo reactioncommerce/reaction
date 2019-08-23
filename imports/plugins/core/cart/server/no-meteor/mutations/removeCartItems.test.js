@@ -8,14 +8,18 @@ const dbCart = {
 
 const cartItemIds = ["cartItemId1", "cartItemId2"];
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 test("removes multiple items from account cart", async () => {
+  mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
 
   const result = await removeCartItems(mockContext, { cartId: "cartId", cartItemIds });
 
   expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    accountId: "FAKE_ACCOUNT_ID"
+    _id: "cartId"
   }, {
     $pull: {
       items: {
@@ -23,20 +27,23 @@ test("removes multiple items from account cart", async () => {
           $in: cartItemIds
         }
       }
+    },
+    $set: {
+      updatedAt: jasmine.any(Date)
     }
   });
 
   expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    accountId: "FAKE_ACCOUNT_ID"
+    _id: "cartId"
   });
 
   expect(result).toEqual({ cart: dbCart });
 });
 
-test("updates the quantity of multiple items in anonymous cart", async () => {
+test("removes multiple items from anonymous cart", async () => {
   const hashedToken = "+YED6SF/CZIIVp0pXBsnbxghNIY2wmjIVLsqCG4AN80=";
 
+  mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
 
   const cachedAccountId = mockContext.accountId;
@@ -49,8 +56,7 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
   mockContext.accountId = cachedAccountId;
 
   expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    anonymousAccessToken: hashedToken
+    _id: "cartId"
   }, {
     $pull: {
       items: {
@@ -58,6 +64,9 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
           $in: cartItemIds
         }
       }
+    },
+    $set: {
+      updatedAt: jasmine.any(Date)
     }
   });
 
