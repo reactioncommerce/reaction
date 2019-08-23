@@ -2,7 +2,6 @@ import mutations from "./mutations";
 import queries from "./queries";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
-import startup from "./startup";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -14,9 +13,6 @@ export default async function register(app) {
     label: "Shipping",
     name: "reaction-shipping",
     icon: "fa fa-truck",
-    functionsByType: {
-      startup: [startup]
-    },
     graphQL: {
       resolvers,
       schemas
