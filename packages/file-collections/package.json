@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/file-collections",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "A way to manage file uploads, downloads, and transformed copies in Node/Web apps. Used by Reaction Commerce.",
   "author": "Reaction Commerce (https://reactioncommerce.com/)",
   "license": "MIT",

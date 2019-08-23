@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections-sa-gridfs@0.0.2...@reactioncommerce/file-collections-sa-gridfs@0.1.0) (2019-08-23)
+
+**Note:** Version bump only for package @reactioncommerce/file-collections-sa-gridfs
+
+
+
+
+
 <a name="0.0.2"></a>
 ## [0.0.2](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections-sa-gridfs@0.0.1...@reactioncommerce/file-collections-sa-gridfs@0.0.2) (2018-03-06)
 
