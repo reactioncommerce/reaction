@@ -4,12 +4,9 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import ChevronLeftIcon from "mdi-material-ui/ChevronLeft";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { Button, Divider, Grid, Typography } from "@material-ui/core";
 import Address from "@reactioncommerce/components/Address/v1";
-import { i18next, Reaction } from "/client/api";
+import { i18next } from "/client/api";
 
 const styles = (theme) => ({
   dividerSpacing: {
