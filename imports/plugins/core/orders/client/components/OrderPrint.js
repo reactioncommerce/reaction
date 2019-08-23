@@ -3,12 +3,12 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import ChevronLeftIcon from "mdi-material-ui/ChevronLeft";
-import withStyles from "@material-ui/core/styles/withStyles";
 import { Button, Divider, Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import Address from "@reactioncommerce/components/Address/v1";
 import { i18next } from "/client/api";
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   dividerSpacing: {
     marginTop: theme.spacing(4)
   },
@@ -24,7 +24,7 @@ const styles = (theme) => ({
   iconButton: {
     marginRight: "10px"
   }
-});
+}));
 
 /**
  * @name OrderPrint
@@ -32,7 +32,8 @@ const styles = (theme) => ({
  * @returns {React.Component} returns a React component
  */
 function OrderPrint(props) {
-  const { classes, order } = props;
+  const { order } = props;
+  const classes = useStyles();
   const { fulfillmentGroups } = order;
   const orderDate = new Date(order.createdAt).toLocaleDateString("en-US");
 
@@ -271,4 +272,4 @@ OrderPrint.propTypes = {
   order: PropTypes.object
 };
 
-export default withStyles(styles, { name: "RuiOrder" })(OrderPrint);
+export default OrderPrint;
