@@ -61,6 +61,23 @@ test("expect CatalogItemProducts sorted by minPrice from highest to lowest when 
   expect(result).toEqual(mockSortedByPriceHigh2LowCatalogItemsResponse);
 });
 
+test("expect CatalogItemProducts with offset 0 to return first item", async () => {
+  let result;
+  try {
+    result = await paginatedQuery({
+      shopIds: [opaqueShopId],
+      offset: 0
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.catalogItems.totalCount).toBe(2);
+  expect(result.catalogItems.nodes.length).toBe(2);
+  expect(result.catalogItems.nodes[0].product._id).toEqual(mockUnsortedCatalogItemsResponse.catalogItems.nodes[0].product._id);
+});
+
 // expect CatalogItems with offset to skip items
 test("expect CatalogitemProducts with offset to skip items", async () => {
   let result;

@@ -396,7 +396,7 @@ extend type Query {
     "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt,
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
-    offset: ConnectionLimitInt,
+    offset: Int,
     "Return results sorted in this order"
     sortOrder: SortOrder = desc,
 

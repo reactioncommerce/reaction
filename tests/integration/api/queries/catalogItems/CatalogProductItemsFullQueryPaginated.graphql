@@ -2,7 +2,7 @@ query (
   $shopIds: [ID]!,
   $tagIds: [ID],
   $first: ConnectionLimitInt,
-  $offset: ConnectionLimitInt,
+  $offset: Int,
   $sortBy: CatalogItemSortByField,
   $sortOrder: SortOrder,
   $sortByPriceCurrencyCode: String
