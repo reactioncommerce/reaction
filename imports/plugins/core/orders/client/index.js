@@ -6,13 +6,9 @@ import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewEx
 import OrderCardSummary from "./components/OrderCardSummary";
 import Orders from "./containers/orderDashboardContainer";
 import Order from "./containers/OrderContainer";
+import OrderPrint from "./containers/OrderPrintContainer";
 import "../lib/extendShopSchema";
 import "./helpers";
-
-// Print page layout
-import "./templates/list/pdf.html";
-import "./templates/list/pdf.js";
-
 
 // Register order related routes
 /*
@@ -22,6 +18,15 @@ registerOperatorRoute({
   isNavigationLink: false,
   mainComponent: Order,
   path: "/orders/:_id"
+});
+
+/*
+ * Single order print layout route
+ */
+registerOperatorRoute({
+  isNavigationLink: false,
+  mainComponent: OrderPrint,
+  path: "/orders/print/:_id"
 });
 
 /*

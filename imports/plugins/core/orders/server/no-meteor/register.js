@@ -46,12 +46,6 @@ export default async function register(app) {
       name: "Orders"
     },
     registry: [{
-      route: "/dashboard/pdf/orders/:id",
-      workflow: "coreOrderPrintWorkflow",
-      layout: "printLayout",
-      name: "dashboard/pdf/orders",
-      template: "completedPDFLayout"
-    }, {
       route: "order/fulfillment",
       label: "Order Fulfillment",
       permission: "orderFulfillment",
@@ -63,16 +57,6 @@ export default async function register(app) {
       permission: "orderView",
       name: "order/view"
     }],
-    layout: [{
-      layout: "printLayout",
-      workflow: "coreOrderPrintWorkflow",
-      collection: "Orders",
-      enabled: true,
-      structure: {
-        template: "completedPDFLayout",
-        layoutHeader: "NavBar",
-        layoutFooter: "Footer"
-      }
-    }]
+    layout: []
   });
 }

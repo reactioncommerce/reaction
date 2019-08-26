@@ -198,6 +198,7 @@ export const orderCommonFragment = gql`
       currency {
         code
       }
+      name
     }
     status
     summary {
