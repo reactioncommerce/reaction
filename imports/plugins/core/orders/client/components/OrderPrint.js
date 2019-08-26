@@ -9,20 +9,36 @@ import Address from "@reactioncommerce/components/Address/v1";
 import { i18next } from "/client/api";
 
 const useStyles = makeStyles((theme) => ({
-  dividerSpacing: {
+  "dividerSpacing": {
     marginTop: theme.spacing(4)
   },
-  extraEmphasisText: {
+  "extraEmphasisText": {
     fontWeight: theme.typography.fontWeightSemiBold
   },
-  gridContainer: {
-    margin: "auto",
+  "gridContainer": {
+    border: `solid 1px ${theme.palette.colors.black}`,
+    marginBottom: theme.spacing(8),
+    marginLeft: "auto",
+    marginRight: "auto",
     maxWidth: "960px",
-    width: "960px",
-    border: "solid 1px #000000"
+    width: "960px"
   },
-  iconButton: {
+  "iconButton": {
     marginRight: "10px"
+  },
+  "@media print": {
+    "@global": {
+      html: {
+        visibility: "hidden"
+      }
+    },
+    "gridContainer": {
+      visibility: "visible",
+      display: "block",
+      position: "absolute",
+      top: "0",
+      left: "0"
+    }
   }
 }));
 
@@ -37,19 +53,11 @@ function OrderPrint(props) {
   const { fulfillmentGroups } = order;
   const orderDate = new Date(order.createdAt).toLocaleDateString("en-US");
 
-  const printInvoice = () => {
-    const printContents = document.getElementById("printable").innerHTML;
-    const originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
-  };
-
   return (
     <Fragment>
       <Helmet title={`Order #${order.referenceId} printable invoice`} />
       <Grid container spacing={10}>
-        <Grid className={classes.nonPrintable} item xs={12}>
+        <Grid item xs={12}>
           <Grid container alignItems="center" direction="row" justify="space-between">
             <Grid item>
               <Button
@@ -62,7 +70,7 @@ function OrderPrint(props) {
             <Grid item>
               <Button
                 color="primary"
-                onClick={printInvoice}
+                onClick={() => window.print()}
                 size="large"
                 variant="contained"
               >
