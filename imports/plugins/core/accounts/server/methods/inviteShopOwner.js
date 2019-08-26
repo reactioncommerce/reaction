@@ -72,6 +72,7 @@ export default function inviteShopOwner(options, shopData) {
   });
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  /*
   Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: primaryShop,
@@ -79,6 +80,7 @@ export default function inviteShopOwner(options, shopData) {
     to: email,
     language
   }));
+  */
 
   return true;
 }
