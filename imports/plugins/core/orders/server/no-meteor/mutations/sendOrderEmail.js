@@ -47,11 +47,13 @@ export default async function sendOrderEmail(context, input) {
     templateName = `orders/${dataForEmail.order.workflow.status}`;
   }
 
-  await context.mutations.sendEmail(context, {
-    data: dataForEmail,
-    fromShop,
-    templateName,
-    to,
-    language
-  });
+  if (action === "shipped") {
+    await context.mutations.sendEmail(context, {
+      data: dataForEmail,
+      fromShop,
+      templateName,
+      to,
+      language
+    });
+  }
 }
