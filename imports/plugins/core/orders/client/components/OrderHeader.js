@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withMoment } from "@reactioncommerce/reaction-components";
-import { i18next, Reaction } from "/client/api";
+import { i18next } from "/client/api";
 import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
 import OrderStatusChip from "./OrderStatusChip";
 
