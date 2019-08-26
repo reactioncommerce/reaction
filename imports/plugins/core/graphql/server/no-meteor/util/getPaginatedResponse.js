@@ -74,9 +74,9 @@ async function getPaginatedResponse(mongoCursor, args, {
   let hasPreviousPage;
   let hasNextPage;
 
-  if (offset) {
+  if (offset !== undefined) {
     // offset and last cannot be used together
-    if (offset && last) throw new Error("Request either `last` or `offset` but not both");
+    if (last) throw new Error("Request either `last` or `offset` but not both");
 
     ({ hasPreviousPage, hasNextPage } = await applyOffsetPaginationToMongoCursor(mongoCursor, args, {
       includeHasNextPage
