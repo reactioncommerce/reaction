@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useMutation } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
-import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
-import Select from "@reactioncommerce/catalyst/Select";
+import ActionMenu from "@reactioncommerce/catalyst/ActionMenu";
 import { i18next, Reaction } from "/client/api";
 import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrderFulfillmentGroup";
 
@@ -14,8 +13,7 @@ import updateOrderFulfillmentGroupMutation from "../graphql/mutations/updateOrde
  */
 function OrderCardFulfillmentGroupStatusButton({ fulfillmentGroup, order }) {
   const hasPermission = Reaction.hasPermission(["reaction-orders", "order/fulfillment"], Reaction.getUserId(), Reaction.getShopId());
-  const [updateOrderFulfillmentGroup] = useMutation(updateOrderFulfillmentGroupMutation);
-  const [groupStatus, setGroupStatus] = useState();
+  const [updateOrderFulfillmentGroup, { loading: updateOrderFulfillmentGroupLoading }] = useMutation(updateOrderFulfillmentGroupMutation);
   const canUpdateFulfillmentStatus = (fulfillmentGroup.status !== "coreOrderWorkflow/canceled");
   const options = [
     {
@@ -45,48 +43,29 @@ function OrderCardFulfillmentGroupStatusButton({ fulfillmentGroup, order }) {
     }
   ];
 
-  const handleUpdateFulfillmentGroupStatus = async () => {
-    const newGroupStatus = groupStatus;
-
+  const handleUpdateFulfillmentGroupStatus = async (option) => {
     if (hasPermission) {
       updateOrderFulfillmentGroup({
         variables: {
           orderFulfillmentGroupId: fulfillmentGroup._id,
           orderId: order._id,
-          status: newGroupStatus.value
+          status: option.value
         }
       });
     }
   };
 
-  const handleSelectChange = (value, openDialog) => {
-    // Set value into state to use inside confirm dialog
-    setGroupStatus(value);
-    openDialog();
-  };
-
   if (hasPermission && canUpdateFulfillmentStatus) {
     return (
       <Grid item>
-        <ConfirmDialog
-          message={i18next.t("order.updateFulfillmentGroupStatusMessage")}
-          title={i18next.t("order.updateFulfillmentGroupStatusTitle", { groupStatus: "holiday" })} // TODO: groupStatus doesn't work here
-          onConfirm={handleUpdateFulfillmentGroupStatus}
-        >
-          {({ openDialog }) => (
-            <Select
-              options={options}
-              onSelection={(value) => handleSelectChange(value, openDialog)} // TODO: get this to reset once updated
-              placeholder="Update group status"
-            />
-          )}
-        </ConfirmDialog>
-
-        {/* <Select
+        <ActionMenu
+          isWaiting={updateOrderFulfillmentGroupLoading}
           options={options}
-          onSelection={handleUpdateFulfillmentGroupStatus}
-          placeholder="Update group status"
-        /> */}
+          onSelect={(option) => handleUpdateFulfillmentGroupStatus(option)}
+          variant="contained"
+        >
+          Update group status
+        </ActionMenu>
       </Grid>
     );
   }
