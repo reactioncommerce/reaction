@@ -1,14 +1,15 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 
-const MAX_CART_COUNT = 50;
+export const MAX_CART_COUNT = 50;
 const logCtx = { name: "cart", file: "saveManyCarts" };
 
 /**
  * @summary Takes a new or updated cart, runs it through all registered transformations,
  *   validates, and upserts to database.
  * @param {Object} context - App context
- * @param {Object[]} carts - The carts to transform and insert or replace
+ * @param {Object[]} carts - The carts to transform and insert or replace. There is a limit
+ *   of 50 carts. If the array has more than 50 items, an error is thrown.
  * @returns {undefined}
  */
 export default async function saveManyCarts(context, carts) {

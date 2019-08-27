@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import updateCartItemsForVariantChanges from "./util/updateCartItemsForVariantChanges";
+import { MAX_CART_COUNT as SAVE_MANY_CARTS_LIMIT } from "./mutations/saveManyCarts";
 
-const SAVE_MANY_CARTS_LIMIT = 50;
 const logCtx = { name: "cart", file: "startup" };
 
 /**
