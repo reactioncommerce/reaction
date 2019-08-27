@@ -9,6 +9,7 @@ import { Session } from "meteor/session";
 import classNames from "classnames";
 import withCreateProduct from "../hocs/withCreateProduct";
 import FilterByFileCard from "./FilterByFileCard";
+import TagSelector from "./TagSelector";
 
 const useStyles = makeStyles({
   hidden: {
@@ -28,7 +29,8 @@ function ProductTable({ onCreateProduct }) {
   // Filter by file state
   const [files, setFiles] = useState([]);
   const [isFiltered, setFiltered] = useState(false);
-  const [isFilterByFileVisible, setFilterByFileVisible] = useState(true);
+  const [isFilterByFileVisible, setFilterByFileVisible] = useState(false);
+  const [isTagSelectorVisible, setTagSelectorVisible] = useState(false);
   const [filteredProductIdsCount, setFilteredProductIdsCount] = useState(0);
   const [noProductsFoundError, setNoProductsFoundError] = useState(false);
 
@@ -94,8 +96,14 @@ function ProductTable({ onCreateProduct }) {
     disableClick: true
   });
 
-  const handleOnShowFilterByFile = () => {
-    setFilterByFileVisible(false);
+  const handleShowFilterByFile = (isVisible) => {
+    if (isTagSelectorVisible) setTagSelectorVisible(false);
+    setFilterByFileVisible(isVisible);
+  };
+
+  const handleDisplayTagSelector = (isVisible) => {
+    if (isFilterByFileVisible) setFilterByFileVisible(false);
+    setTagSelectorVisible(isVisible);
   };
 
   const setFilteredCount = (count) => {
@@ -163,6 +171,10 @@ function ProductTable({ onCreateProduct }) {
         importFiles={importFiles}
         setFilterByFileVisible={setFilterByFileVisible}
       />
+      <TagSelector
+        isVisible={isTagSelectorVisible}
+        setVisibility={setTagSelectorVisible}
+      />
       <Grid item sm={12} className={createProductBtnClasses}>
         <Button
           color="primary"
@@ -186,7 +198,8 @@ function ProductTable({ onCreateProduct }) {
       {renderMissedFilterItems()}
       <Grid item sm={12}>
         <Components.ProductsAdmin
-          onShowFilterByFile={() => handleOnShowFilterByFile()}
+          onShowFilterByFile={(isVisible) => handleShowFilterByFile(isVisible)}
+          onDisplayTagSelector={(isVisible) => handleDisplayTagSelector(isVisible)}
           setFilteredProductIdsCount={setFilteredCount}
           files={files}
           handleDelete={handleDelete}

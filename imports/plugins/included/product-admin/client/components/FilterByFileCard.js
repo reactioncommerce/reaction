@@ -58,7 +58,10 @@ export default function FilterByFileCard(props) {
   } = props;
   const classes = useStyles();
 
-  const cardClasses = classNames({ [classes.hidden]: true, [classes.visible]: !isFilterByFileVisible });
+  const cardClasses = classNames({
+    [classes.hidden]: true,
+    [classes.visible]: isFilterByFileVisible
+  });
 
   return (
     <Grid item sm={12} className={cardClasses}>
@@ -66,7 +69,7 @@ export default function FilterByFileCard(props) {
         <CardHeader
           className={classes.cardHeaderTitle}
           action={
-            <IconButton aria-label="close" onClick={() => setFilterByFileVisible(true)}>
+            <IconButton aria-label="close" onClick={() => setFilterByFileVisible(false)}>
               <CloseIcon/>
             </IconButton>
           }
