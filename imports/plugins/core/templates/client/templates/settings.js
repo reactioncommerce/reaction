@@ -24,7 +24,6 @@ Template.templateSettings.onCreated(function () {
   });
 });
 
-
 /*
  * template templateSettings helpers
  */
