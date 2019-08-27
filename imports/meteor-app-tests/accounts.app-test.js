@@ -1,7 +1,6 @@
 /* eslint-disable require-jsdoc */
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
@@ -13,7 +12,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
+import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 describe("Account Meteor method ", function () {
