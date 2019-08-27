@@ -23,6 +23,7 @@ function getErrorFormatter() {
       const eventObj = {
         errorId: err.errorId,
         path: err.path,
+        stack: originalError.stack,
         ...(originalError.eventData || {})
       };
 

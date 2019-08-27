@@ -15,6 +15,12 @@ const items = [{
   quantity: 1
 }];
 
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
+
 test("add an item to an existing anonymous cart", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "cartId",

@@ -44,7 +44,8 @@ test("if originalError is present, logs the error with some additional details",
   expect(LoggerMock.error).toHaveBeenCalledWith(
     {
       errorId: jasmine.any(String),
-      path: "PATH"
+      path: "PATH",
+      stack: jasmine.any(String)
     },
     message
   );
@@ -63,7 +64,8 @@ test("if originalError is validation-error, uses details[0].message", () => {
   expect(LoggerMock.error).toHaveBeenCalledWith(
     {
       errorId: jasmine.any(String),
-      path: "PATH"
+      path: "PATH",
+      stack: jasmine.any(String)
     },
     message
   );

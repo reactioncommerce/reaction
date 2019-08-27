@@ -19,7 +19,6 @@
           "createGroupError": "Lỗi khi tạo nhóm",
           "updateGroupError": "Lỗi khi cập nhật nhóm",
           "changeShopOwnerWarn": "Bạn sắp thay đổi chủ cửa hàng. Chủ sở hữu hiện tại sẽ được thay thế",
-          "changeMktOwnerWarn": "Bạn sắp thay đổi chủ sở hữu Thị trường. Chủ sở hữu hiện tại sẽ được thay thế",
           "removeUserWarn": "Bạn sắp xóa một người dùng grom khỏi nhóm. Người dùng sẽ mất quyền liên quan",
           "accountsSettingsLabel": "tài khoản",
           "accountsSettingsTitle": "tài khoản",

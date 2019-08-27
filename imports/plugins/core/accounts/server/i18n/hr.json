@@ -19,7 +19,6 @@
           "createGroupError": "Pogreška pri izradi grupe",
           "updateGroupError": "Pogreška prilikom ažuriranja grupe",
           "changeShopOwnerWarn": "Namjeravate promijeniti vlasnika trgovine. Sadašnji vlasnik bit će zamijenjen",
-          "changeMktOwnerWarn": "Namjeravate promijeniti vlasnika tržišta. Sadašnji vlasnik bit će zamijenjen",
           "removeUserWarn": "Upravo ćete ukloniti korisnika iz grupe. Korisnik će izgubiti pridružene dozvole",
           "accountsSettingsLabel": "Računi",
           "accountsSettingsTitle": "Računi",

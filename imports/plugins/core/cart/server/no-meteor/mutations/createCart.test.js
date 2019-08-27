@@ -39,6 +39,12 @@ const items = [{
   quantity: 1
 }];
 
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
+
 test("creates an anonymous cart if no user is logged in", async () => {
   const originalAccountId = mockContext.accountId;
   mockContext.accountId = null;

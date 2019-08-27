@@ -19,7 +19,6 @@
           "createGroupError": "Grupo de criação de erros",
           "updateGroupError": "Grupo de atualização de erros",
           "changeShopOwnerWarn": "Você está prestes a mudar o proprietário da loja. O proprietário atual será substituído",
-          "changeMktOwnerWarn": "Você está prestes a mudar o proprietário do Marketplace. O proprietário atual será substituído",
           "removeUserWarn": "Você está prestes a remover um usuário de um grupo. O usuário perderá as permissões associadas",
           "accountsSettingsLabel": "Contas",
           "accountsSettingsTitle": "Contas",

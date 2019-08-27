@@ -19,7 +19,6 @@
           "createGroupError": "Napaka pri ustvarjanju skupine",
           "updateGroupError": "Napaka pri posodabljanju skupine",
           "changeShopOwnerWarn": "Pravkar boste spremenili lastnika trgovine. Trenutni lastnik bo zamenjal",
-          "changeMktOwnerWarn": "Spremenili boste lastnika trga. Trenutni lastnik bo zamenjal",
           "removeUserWarn": "Namesto tega boste odstranili uporabniško skupino. Uporabnik izgubi povezana dovoljenja",
           "accountsSettingsLabel": "računi",
           "accountsSettingsTitle": "računi",

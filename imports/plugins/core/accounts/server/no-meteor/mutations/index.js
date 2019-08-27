@@ -1,5 +1,7 @@
 import addressBookAdd from "./addressBookAdd";
+import addAccountToGroup from "./addAccountToGroup";
 
 export default {
-  addressBookAdd
+  addressBookAdd,
+  addAccountToGroup
 };

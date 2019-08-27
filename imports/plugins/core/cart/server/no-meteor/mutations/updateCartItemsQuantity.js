@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import ReactionError from "@reactioncommerce/reaction-error";
-import { Cart as CartSchema } from "/imports/collections/schemas";
 import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
@@ -59,30 +57,13 @@ export default async function updateCartItemsQuantity(context, input) {
     return list;
   }, []);
 
-  const { appEvents, collections, userId } = context;
-  const { Cart } = collections;
-
-  const updatedAt = new Date();
-  const modifier = {
-    $set: {
-      items: updatedItems,
-      updatedAt
-    }
+  const updatedCart = {
+    ...cart,
+    items: updatedItems,
+    updatedAt: new Date()
   };
-  CartSchema.validate(modifier, { modifier: true });
 
-  const { matchedCount } = await Cart.updateOne({ _id: cartId }, modifier);
-  if (matchedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
+  const savedCart = await context.mutations.saveCart(context, updatedCart);
 
-  const updatedCart = { ...cart, items: updatedItems, updatedAt };
-
-  await appEvents.emit("afterCartUpdate", {
-    cart: updatedCart,
-    updatedBy: userId
-  });
-
-  // Re-fetch cart with updated data
-  const updatedCartAfterAppEvents = await Cart.findOne({ _id: cartId });
-
-  return { cart: updatedCartAfterAppEvents };
+  return { cart: savedCart };
 }
