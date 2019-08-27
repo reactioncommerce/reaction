@@ -14,7 +14,6 @@ const inputSchema = new SimpleSchema({
 /**
  * @name accounts/updateAccountAddressBookEntry
  * @memberof Mutations/Accounts
- * @method
  * @summary Update an existing address on an account
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
