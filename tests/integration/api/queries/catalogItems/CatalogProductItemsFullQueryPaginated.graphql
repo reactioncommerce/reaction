@@ -2,18 +2,25 @@ query (
   $shopIds: [ID]!,
   $tagIds: [ID],
   $first: ConnectionLimitInt,
+  $offset: Int,
   $sortBy: CatalogItemSortByField,
   $sortOrder: SortOrder,
   $sortByPriceCurrencyCode: String
 ) {
   catalogItems(
     first: $first,
+    offset: $offset,
     shopIds: $shopIds,
     tagIds: $tagIds,
     sortBy: $sortBy,
     sortOrder: $sortOrder,
     sortByPriceCurrencyCode: $sortByPriceCurrencyCode
   ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+    }
     nodes {
       _id
       shop {

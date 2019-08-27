@@ -25,6 +25,9 @@ import Chip from "@reactioncommerce/catalyst/Chip";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = (theme) => ({
+  leftChip: {
+    marginRight: theme.spacing(1)
+  },
   toolbar: {
     paddingLeft: 0,
     paddingRight: 0,
@@ -250,12 +253,12 @@ class ProductGrid extends Component {
   }
 
   renderFiles() {
-    const { files, handleDelete, isFiltered } = this.props;
+    const { files, handleDelete, isFiltered, classes } = this.props;
 
     if (isFiltered) {
       return (
         <div>
-          {files.map((file) => <Chip label={file.name} onDelete={() => handleDelete(file.name)} />)}
+          {files.map((file, idx) => <Chip label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
         </div>
       );
     }
