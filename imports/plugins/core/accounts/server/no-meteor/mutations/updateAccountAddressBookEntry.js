@@ -68,9 +68,15 @@ export default async function updateAccountAddressBookEntry(context, input) {
   }
 
   // Update the Reaction Accounts collection with new address info
-  const { value: updatedAccount } = await Accounts.findOneAndUpdate({
-    _id: accountId
-  }, accountsUpdateQuery);
+  const { value: updatedAccount } = await Accounts.findOneAndUpdate(
+    {
+      _id: accountId
+    },
+    accountsUpdateQuery,
+    {
+      returnOriginal: false
+    }
+  );
 
   if (!updatedAccount) {
     throw new ReactionError("server-error", "Unable to update account address");
