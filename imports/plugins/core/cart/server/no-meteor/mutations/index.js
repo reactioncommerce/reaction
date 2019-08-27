@@ -6,8 +6,11 @@ import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart";
 import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart";
 import reconcileCartsMerge from "./reconcileCartsMerge";
 import removeCartItems from "./removeCartItems";
+import saveCart from "./saveCart";
+import saveManyCarts from "./saveManyCarts";
 import setEmailOnAnonymousCart from "./setEmailOnAnonymousCart";
 import setShippingAddressOnCart from "./setShippingAddressOnCart";
+import transformAndValidateCart from "./transformAndValidateCart";
 import updateCartItemsQuantity from "./updateCartItemsQuantity";
 
 export default {
@@ -19,7 +22,10 @@ export default {
   reconcileCartsKeepAnonymousCart,
   reconcileCartsMerge,
   removeCartItems,
+  saveCart,
+  saveManyCarts,
   setEmailOnAnonymousCart,
   setShippingAddressOnCart,
+  transformAndValidateCart,
   updateCartItemsQuantity
 };

@@ -169,12 +169,20 @@ export const ShipmentQuote = new SimpleSchema({
   carrier: {
     type: String
   },
+  handlingPrice: {
+    type: Number,
+    optional: true
+  },
   method: {
     type: ShippingMethod
   },
   rate: {
     type: Number,
     defaultValue: 0.00
+  },
+  shippingPrice: {
+    type: Number,
+    optional: true
   },
   shopId: {
     type: String,
