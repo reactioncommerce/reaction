@@ -19,7 +19,6 @@
           "createGroupError": "Hiba történt a csoport létrehozásában",
           "updateGroupError": "Hiba történt a csoport frissítésével",
           "changeShopOwnerWarn": "Ön módosítani kívánja a Shop tulajdonost. A jelenlegi tulajdonost kicserélik",
-          "changeMktOwnerWarn": "Ön megváltoztatja a Marketplace tulajdonosát. A jelenlegi tulajdonost kicserélik",
           "removeUserWarn": "Egy felhasználó eltávolít egy csoportot. A felhasználó elveszti a kapcsolódó jogosultságokat",
           "accountsSettingsLabel": "Fiókok",
           "accountsSettingsTitle": "Fiókok",

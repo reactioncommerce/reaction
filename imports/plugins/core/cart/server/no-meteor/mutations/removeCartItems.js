@@ -28,7 +28,7 @@ const inputSchema = new SimpleSchema({
 export default async function removeCartItems(context, input) {
   inputSchema.validate(input || {});
 
-  const { accountId, appEvents, collections, userId } = context;
+  const { accountId, collections } = context;
   const { Cart } = collections;
   const { cartId, cartItemIds, token } = input;
 
@@ -41,22 +41,16 @@ export default async function removeCartItems(context, input) {
     throw new ReactionError("invalid-param", "A token is required when updating an anonymous cart");
   }
 
-  const { modifiedCount } = await Cart.updateOne(selector, {
-    $pull: {
-      items: {
-        _id: { $in: cartItemIds }
-      }
-    }
-  });
-  if (modifiedCount === 0) throw new ReactionError("not-found", "Cart not found or provided items are not in the cart");
-
   const cart = await Cart.findOne(selector);
   if (!cart) throw new ReactionError("not-found", "Cart not found");
 
-  await appEvents.emit("afterCartUpdate", {
-    cart,
-    updatedBy: userId
-  });
+  const updatedCart = {
+    ...cart,
+    items: cart.items.filter((item) => !cartItemIds.includes(item._id)),
+    updatedAt: new Date()
+  };
 
-  return { cart };
+  const savedCart = await context.mutations.saveCart(context, updatedCart);
+
+  return { cart: savedCart };
 }

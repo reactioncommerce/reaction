@@ -51,19 +51,21 @@ const GroupsTableCell = (props) => {
   }
 
   if (columnName === "dropdown") {
-    const groupName = <span className="group-dropdown">{_.startCase(groups[0].name)}</span>;
+    const groupName = group.name && _.startCase(group.name);
+    const groupNameSpan = <span className="group-dropdown">{groupName}</span>;
     const ownerGroup = groups.find((grp) => grp.slug === "owner") || {};
     const hasOwnerAccess = Reaction.hasPermission("owner", Reaction.getUserId(), Reaction.getShopId());
 
-    if (groups.length === 1) {
-      return groupName;
+    // Permission check. Remove owner option, if user is not current owner.
+    // Also remove groups user does not have roles to manage. This is also checked on the server
+    const dropOptions = groups
+      .filter((grp) => !((grp.slug === "owner" && !hasOwnerAccess)))
+      .filter((grp) => Reaction.canInviteToGroup({ group: grp })) || [];
+
+    if (dropOptions.length < 2) {
+      return groupNameSpan;
     }
 
-    if (group.slug === "owner") {
-      return groupName;
-    }
-
-    const { onMethodDone, onMethodLoad } = props;
     const dropDownButton = (opt) => ( // eslint-disable-line
       <div className="group-dropdown">
         <Components.Button bezelStyle="solid" label={group.name && _.startCase(group.name)}>
@@ -75,21 +77,14 @@ const GroupsTableCell = (props) => {
       </div>
     );
 
-    // Permission check. Remove owner option, if user is not current owner.
-    // Also remove groups user does not have roles to manage. This is also checked on the server
-    const dropOptions = groups
-      .filter((grp) => !((grp.slug === "owner" && !hasOwnerAccess)))
-      .filter((grp) => Reaction.canInviteToGroup({ group: grp })) || [];
-
-    if (dropOptions.length < 2) { return dropDownButton(); } // do not use dropdown if only one option
-
+    const { onMethodDone, onMethodLoad } = props;
     return (
       <div className="group-dropdown">
         <Components.DropDownMenu
           buttonElement={dropDownButton(groups)}
           attachment="bottom right"
           targetAttachment="top right"
-          onChange={handleUserGroupChange({ account, ownerGrpId: ownerGroup._id, onMethodDone, onMethodLoad })}
+          onChange={handleUserGroupChange({ account, currentGroupId: group._id, ownerGrpId: ownerGroup._id, onMethodDone, onMethodLoad })}
         >
           {dropOptions
             .filter((grp) => grp._id !== group._id)
@@ -117,7 +112,7 @@ GroupsTableCell.propTypes = {
   account: PropTypes.object,
   adminGroups: PropTypes.array, // all admin groups
   columnName: PropTypes.string,
-  group: PropTypes.object, // current group in interation
+  group: PropTypes.object, // current group in interaction
   handleRemoveUserFromGroup: PropTypes.func,
   handleUserGroupChange: PropTypes.func,
   moment: PropTypes.func,

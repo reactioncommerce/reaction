@@ -2,7 +2,6 @@ import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "@reactioncommerce/logger";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
-import { Cart as CartSchema } from "/imports/collections/schemas";
 import addCartItems from "../util/addCartItems";
 
 /**
@@ -23,7 +22,7 @@ import addCartItems from "../util/addCartItems";
  */
 export default async function createCart(context, input) {
   const { items, shopId, shouldCreateWithoutItems = false } = input;
-  const { appEvents, collections, accountId = null, userId = null, getFunctionsOfType } = context;
+  const { collections, accountId = null, getFunctionsOfType } = context;
   const { Cart, Shops } = collections;
 
   if (shouldCreateWithoutItems !== true && (!Array.isArray(items) || !items.length)) {
@@ -90,16 +89,7 @@ export default async function createCart(context, input) {
 
   newCart.referenceId = referenceId;
 
-  CartSchema.validate(newCart);
+  const savedCart = await context.mutations.saveCart(context, newCart);
 
-  const { result } = await Cart.insertOne(newCart);
-
-  if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create cart");
-
-  await appEvents.emit("afterCartCreate", {
-    cart: newCart,
-    createdBy: userId
-  });
-
-  return { cart: newCart, incorrectPriceFailures, minOrderQuantityFailures, token: anonymousAccessToken };
+  return { cart: savedCart, incorrectPriceFailures, minOrderQuantityFailures, token: anonymousAccessToken };
 }

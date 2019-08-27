@@ -19,7 +19,6 @@
           "createGroupError": "Eroare la crearea grupului",
           "updateGroupError": "Eroare la actualizarea grupului",
           "changeShopOwnerWarn": "Sunteți pe punctul de a schimba proprietarul magazinului. Actualul proprietar va fi înlocuit",
-          "changeMktOwnerWarn": "Sunteți pe punctul de a schimba proprietarul Marketplace. Actualul proprietar va fi înlocuit",
           "removeUserWarn": "Sunteți pe cale să eliminați un grup de utilizatori grom. Utilizatorul va pierde permisiunile asociate",
           "accountsSettingsLabel": "Conturi",
           "accountsSettingsTitle": "Conturi",

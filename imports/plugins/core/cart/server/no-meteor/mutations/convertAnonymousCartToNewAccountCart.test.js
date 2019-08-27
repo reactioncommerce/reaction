@@ -9,18 +9,22 @@ const anonymousCartSelector = { _id: "123" };
 const shopId = "shopId";
 const items = [Factory.CartItem.makeOne()];
 
-test("inserts a cart with the existing cart's items and returns it", async () => {
-  Cart.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
 
-  const result = await convertAnonymousCartToNewAccountCart({
-    accountId,
+test("inserts a cart with the existing cart's items and returns it", async () => {
+  mockContext.accountId = accountId;
+
+  const result = await convertAnonymousCartToNewAccountCart(mockContext, {
     anonymousCart: {
       currencyCode,
-      items
+      items,
+      shopId
     },
-    anonymousCartSelector,
-    Cart,
-    shopId
+    anonymousCartSelector
   });
 
   const newCart = {
@@ -37,43 +41,24 @@ test("inserts a cart with the existing cart's items and returns it", async () =>
     }
   };
 
-  expect(Cart.insertOne).toHaveBeenCalledWith(newCart);
-
   expect(Cart.deleteOne).toHaveBeenCalledWith(anonymousCartSelector);
 
   expect(result).toEqual(newCart);
-});
-
-test("throws if insertOne fails", async () => {
-  Cart.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
-
-  const promise = convertAnonymousCartToNewAccountCart({
-    accountId,
-    anonymousCart: {
-      currencyCode,
-      items
-    },
-    anonymousCartSelector,
-    Cart,
-    shopId
-  });
-
-  return expect(promise).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("throws if deleteOne fails", async () => {
   Cart.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   Cart.deleteOne.mockReturnValueOnce(Promise.resolve({ deletedCount: 0 }));
 
-  const promise = convertAnonymousCartToNewAccountCart({
-    accountId,
+  mockContext.accountId = accountId;
+
+  const promise = convertAnonymousCartToNewAccountCart(mockContext, {
     anonymousCart: {
       currencyCode,
-      items
+      items,
+      shopId
     },
-    anonymousCartSelector,
-    Cart,
-    shopId
+    anonymousCartSelector
   });
 
   return expect(promise).rejects.toThrowErrorMatchingSnapshot();

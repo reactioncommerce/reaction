@@ -19,7 +19,6 @@
           "createGroupError": "Fehler beim Erstellen der Gruppe",
           "updateGroupError": "Fehler beim Aktualisieren der Gruppe",
           "changeShopOwnerWarn": "Sie sind dabei, den Ladenbesitzer zu wechseln. Der derzeitige Besitzer wird ersetzt",
-          "changeMktOwnerWarn": "Sie sind dabei, den Marktbesitzer zu wechseln. Der derzeitige Besitzer wird ersetzt",
           "removeUserWarn": "Du bist dabei, einen Benutzer aus einer Gruppe zu entfernen. Der Benutzer verliert die zugehörigen Berechtigungen",
           "accountsSettingsLabel": "Buchhaltung",
           "accountsSettingsTitle": "Buchhaltung",
