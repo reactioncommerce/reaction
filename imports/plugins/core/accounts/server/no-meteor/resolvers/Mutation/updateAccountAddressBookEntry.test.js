@@ -2,6 +2,7 @@ import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import { encodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/address";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
 
+// TODO: UPDATE WITH NON METEOR
 test("correctly passes through to accounts/addressBookUpdate method", () => {
   const accountId = encodeAccountOpaqueId("1");
   const addressId = encodeAddressOpaqueId("2");
