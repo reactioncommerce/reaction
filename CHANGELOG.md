@@ -12,11 +12,15 @@ The Reaction code base is now clean of all `eslint` warnings. Going forward, all
 
 ### Product filtering by CSV
 
-Admins can filter products by uploading a CSV in the product admin
+Admins can filter products by uploading a CSV in the product admin.
 
 ### Introduce Apollo hooks
 
-Apollo has been updated to v3.0.0, which introduces GraphQL hooks into Reaction
+Apollo has been updated to v3.0.0, which introduces GraphQL hooks into Reaction.
+
+### Updated Orders Admin UI
+
+The new Orders UI allows is completely GraphQL based and allows for updates to multiple fulfillment groups on each order.
 
 ## Feature
 
@@ -84,7 +88,7 @@ None
 
 ## Contributors
 
-Thanks to @loan-laux for contributing to this release! 🎉
+Thanks to @loan-laux and @rattrayalex-stripe for contributing to this release! 🎉
 
 # v2.1.0
 
