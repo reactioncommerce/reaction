@@ -7,8 +7,7 @@ import { i18next } from "/client/api";
 
 class MultiSelect extends Component {
   static defaultProps = {
-    multi: true,
-    simpleValue: true
+    multi: true
   }
 
   static propTypes = {
@@ -38,8 +37,13 @@ class MultiSelect extends Component {
   }
 
   handleChange = (value) => {
+    const { value: valueProp } = this.props;
     if (typeof this.props.onChange === "function") {
-      this.props.onChange(value, this.props.name);
+      if (typeof valueProp === "string") {
+        this.props.onChange(value.value, this.props.name);
+      } else {
+        this.props.onChange(value, this.props.name);
+      }
     }
   }
 
@@ -47,6 +51,8 @@ class MultiSelect extends Component {
     const {
       label, i18nKeyLabel, // eslint-disable-line no-unused-vars
       placeholder, i18nKeyPlaceholder,
+      value: valueProp,
+      options,
       ...selectProps
     } = this.props;
 
@@ -59,6 +65,11 @@ class MultiSelect extends Component {
 
     const translatedPlaceholder = i18next.t(i18nKeyPlaceholder, { defaultValue: placeholder });
 
+    let transformedValue = valueProp;
+    if (typeof valueProp !== "object") {
+      transformedValue = options && options.filter(({ value }) => value === valueProp);
+    }
+
     return (
       <div className={classes}>
         {this.renderLabel()}
@@ -66,6 +77,8 @@ class MultiSelect extends Component {
           {...selectProps}
           placeholder={translatedPlaceholder}
           onChange={this.handleChange}
+          options={options}
+          value={transformedValue}
         />
       </div>
     );
