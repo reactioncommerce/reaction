@@ -68,7 +68,7 @@ function ProductTable({ onCreateProduct }) {
               return;
             });
             Session.set("filterByProductIds", productIds);
-            setFilterByFileVisible(true);
+            setFilterByFileVisible(false);
             setFiltered(true);
           });
       };
@@ -170,6 +170,7 @@ function ProductTable({ onCreateProduct }) {
         getInputProps={getInputProps}
         getRootProps={getRootProps}
         importFiles={importFiles}
+        handleDelete={handleDelete}
         setFilterByFileVisible={setFilterByFileVisible}
       />
       <TagSelector
@@ -190,6 +191,7 @@ function ProductTable({ onCreateProduct }) {
         <Grid item sm={12}>
           <InlineAlert
             isDismissable
+            isAutoClosing
             components={iconComponents}
             alertType="information"
             title={i18next.t("admin.productListFiltered") || "Product list filtered"}
