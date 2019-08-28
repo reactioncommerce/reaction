@@ -21,7 +21,7 @@ Admins can filter products by uploading a CSV in the product admin
 - feat: add refunds GraphQL query ([#5352](https://github.com/reactioncommerce/reaction/pull/5352))
 - feat: #5366 show filter count ([#5395](https://github.com/reactioncommerce/reaction/pull/5395))
 - feat: #5379 integrate catalyst button ([#5406](https://github.com/reactioncommerce/reaction/pull/5406))
-- Feature: add bulk mutations to manage products and tags ([#5404](https://github.com/reactioncommerce/reaction/pull/5404))
+- feat: add bulk mutations to manage products and tags ([#5404](https://github.com/reactioncommerce/reaction/pull/5404))
 - feat: remove startup template import ([#5430](https://github.com/reactioncommerce/reaction/pull/5430))
 - feat: add new setting to allow / disallow custom user locale lookup ([#5444](https://github.com/reactioncommerce/reaction/pull/5444))
 - feat: add isvisible/hidden icons ([#5407](https://github.com/reactioncommerce/reaction/pull/5407))
