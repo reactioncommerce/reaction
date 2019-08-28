@@ -5,15 +5,27 @@
  *   the cart items were last updated. The return object will have a `didUpdate`
  *   boolean property that you can check to see whether any changes were made.
  * @param {Object[]} items Cart items
- * @param {String} variantId ID of variant to update items for
+ * @param {Object} catalogProductVariant The updated variant
  * @param {Object} prices Various updated price info for this variant
  * @returns {Object} { didUpdate, updatedItems }
  */
-export default function updateCartItemsForVariantPriceChange(items, variantId, prices) {
+export default function updateCartItemsForVariantChanges(items, catalogProductVariant, prices) {
   let didUpdate = false;
 
   const updatedItems = items.map((item) => {
-    if (item.variantId !== variantId) return item;
+    if (item.variantId !== catalogProductVariant.variantId) return item;
+
+    // If taxCode has changed
+    if (item.taxCode !== catalogProductVariant.taxCode) {
+      didUpdate = true;
+      item.taxCode = catalogProductVariant.taxCode;
+    }
+
+    // If isTaxable has changed
+    if (item.isTaxable !== (catalogProductVariant.isTaxable || false)) {
+      didUpdate = true;
+      item.isTaxable = catalogProductVariant.isTaxable || false;
+    }
 
     // If price has changed
     if (item.price.amount !== prices.price) {

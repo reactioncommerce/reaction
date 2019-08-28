@@ -8,33 +8,32 @@ const dbCart = {
 
 const cartItemIds = ["cartItemId1", "cartItemId2"];
 
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
+
 test("removes multiple items from account cart", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
 
   const result = await removeCartItems(mockContext, { cartId: "cartId", cartItemIds });
-
-  expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    accountId: "FAKE_ACCOUNT_ID"
-  }, {
-    $pull: {
-      items: {
-        _id: {
-          $in: cartItemIds
-        }
-      }
-    }
-  });
 
   expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({
     _id: "cartId",
     accountId: "FAKE_ACCOUNT_ID"
   });
 
-  expect(result).toEqual({ cart: dbCart });
+  expect(result).toEqual({
+    cart: {
+      ...dbCart,
+      items: dbCart.items.filter((item) => !cartItemIds.includes(item._id)),
+      updatedAt: jasmine.any(Date)
+    }
+  });
 });
 
-test("updates the quantity of multiple items in anonymous cart", async () => {
+test("removes multiple items from anonymous cart", async () => {
   const hashedToken = "+YED6SF/CZIIVp0pXBsnbxghNIY2wmjIVLsqCG4AN80=";
 
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
@@ -48,25 +47,18 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
   });
   mockContext.accountId = cachedAccountId;
 
-  expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    anonymousAccessToken: hashedToken
-  }, {
-    $pull: {
-      items: {
-        _id: {
-          $in: cartItemIds
-        }
-      }
-    }
-  });
-
   expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({
     _id: "cartId",
     anonymousAccessToken: hashedToken
   });
 
-  expect(result).toEqual({ cart: dbCart });
+  expect(result).toEqual({
+    cart: {
+      ...dbCart,
+      items: dbCart.items.filter((item) => !cartItemIds.includes(item._id)),
+      updatedAt: jasmine.any(Date)
+    }
+  });
 });
 
 test("throws when no account and no token passed", async () => {

@@ -26,12 +26,14 @@
           "filtrationDescription": "Products filtration"
         },
         "groups": {
+          "addUserError": "Unable to change the group for this account",
+          "removeUserError": "Unable to remove this account from the group",
           "appearance": "Appearance",
           "email": "Email",
           "connect": "Connect",
           "description": "Description",
           "core": "Core",
-          "remove": "Remove",
+          "remove": "Remove from Group",
           "dashboard": "Dashboard",
           "misc": "Misc",
           "paymentMethod": "Payment Providers",

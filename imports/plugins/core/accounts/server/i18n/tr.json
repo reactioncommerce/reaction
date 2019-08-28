@@ -19,7 +19,6 @@
           "createGroupError": "Grup oluşturulurken hata oluştu",
           "updateGroupError": "Grubu güncelleme hatası",
           "changeShopOwnerWarn": "Dükkan sahibini değiştirmek üzeresin. Geçerli sahib değiştirilecek",
-          "changeMktOwnerWarn": "Marketplace sahibini değiştirmek üzeresiniz. Geçerli sahib değiştirilecek",
           "removeUserWarn": "Bir grubun üyesini kaldırmak üzeresiniz. Kullanıcı ilişkili izinlerini kaybedecek",
           "accountsSettingsLabel": "Hesaplar",
           "accountsSettingsTitle": "Hesaplar",

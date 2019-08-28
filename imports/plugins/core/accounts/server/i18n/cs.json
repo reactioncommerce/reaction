@@ -19,7 +19,6 @@
           "createGroupError": "Chyba při vytváření skupiny",
           "updateGroupError": "Při aktualizaci skupiny došlo k chybě",
           "changeShopOwnerWarn": "Chystáte se změnit majitele obchodu. Aktuální majitel bude nahrazen",
-          "changeMktOwnerWarn": "Chystáte se změnit majitele Marketplace. Aktuální majitel bude nahrazen",
           "removeUserWarn": "Chystáte se odstranit uživatele grom skupiny. Uživatel ztratí přidružená oprávnění",
           "accountsSettingsLabel": "účty",
           "accountsSettingsTitle": "účty",

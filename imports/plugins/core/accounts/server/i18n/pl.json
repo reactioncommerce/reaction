@@ -19,7 +19,6 @@
           "createGroupError": "Wystąpił błąd podczas tworzenia grupy",
           "updateGroupError": "Wystąpił błąd podczas aktualizowania grupy",
           "changeShopOwnerWarn": "Zamierzasz zmienić właściciela sklepu. Aktualny właściciel zostanie zastąpiony",
-          "changeMktOwnerWarn": "Zamierzasz zmienić właściciela Marketplace. Aktualny właściciel zostanie zastąpiony",
           "removeUserWarn": "Zamierzasz usunąć użytkownika grom grupy. Użytkownik utraci związane z tym uprawnienia",
           "accountsSettingsLabel": "Konta",
           "accountsSettingsTitle": "Konta",
