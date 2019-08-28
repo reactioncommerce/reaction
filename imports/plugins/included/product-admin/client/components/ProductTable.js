@@ -149,6 +149,7 @@ function ProductTable({ onCreateProduct }) {
     [classes.visible]: !isFiltered,
     [classes.hidden]: isFiltered
   });
+  const selectedProductIds = Session.get("productGrid/selectedProducts");
 
   return (
     <Grid container spacing={3}>
@@ -174,6 +175,7 @@ function ProductTable({ onCreateProduct }) {
       <TagSelector
         isVisible={isTagSelectorVisible}
         setVisibility={setTagSelectorVisible}
+        selectedProductIds={selectedProductIds}
       />
       <Grid item sm={12} className={createProductBtnClasses}>
         <Button
