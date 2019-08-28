@@ -18,7 +18,6 @@ export default function removeAccountFromGroup(_, { input }, context) {
   const { accountId, groupId, clientMutationId = null } = input;
   const dbAccountId = decodeAccountOpaqueId(accountId);
   const dbGroupId = decodeGroupOpaqueId(groupId);
-  const group = context.callMeteorMethod("group/removeUser", dbAccountId, dbGroupId);
   return {
     group,
     clientMutationId
