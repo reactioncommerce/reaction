@@ -92,7 +92,7 @@ None
 
 ## Contributors
 
-Thanks to @loan-laux and @rattrayalex-stripe for contributing to this release! 🎉
+Thanks to @cmbirk, @loan-laux and @rattrayalex-stripe for contributing to this release! 🎉
 
 # v2.1.0
 
