@@ -20,8 +20,8 @@ export default async function removeAccountFromGroup(_, { input }, context) {
   const decodedGroupId = decodeGroupOpaqueId(groupId);
 
   const group = await context.mutations.removeAccountFromGroup(context, {
-    decodedAccountId,
-    decodedGroupId
+    accountId: decodedAccountId,
+    groupId: decodedGroupId
   });
 
   return {

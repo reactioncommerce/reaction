@@ -25,7 +25,7 @@ test("correctly passes through to internal mutation function", async () => {
 
   expect(mockContext.mutations.removeAccountFromGroup).toHaveBeenCalledWith(
     mockContext,
-    { decodedAccountId: "1", decodedGroupId: "g2" }
+    { accountId: "1", groupId: "g2" }
   );
 
   expect(result).toEqual({

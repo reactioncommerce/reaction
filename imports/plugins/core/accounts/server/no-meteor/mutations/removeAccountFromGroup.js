@@ -2,8 +2,8 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
-  decodedAccountId: String,
-  decodedGroupId: String
+  accountId: String,
+  groupId: String
 });
 /**
  * @name accounts/removeAccountFromGroup
@@ -13,8 +13,8 @@ const inputSchema = new SimpleSchema({
  * (NB: At this time, a user only belongs to only one group per shop)
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
- * @param {String} input.decodedAccountId - optional decoded ID of account on which entry should be updated, for admin
- * @param {String} input.decodedGroupId - decoded ID of the group to remove account from
+ * @param {String} input.accountId - optional decoded ID of account on which entry should be updated, for admin
+ * @param {String} input.groupId - decoded ID of the group to remove account from
  * @returns {Promise<Object>} with modified group
  */
 export default async function removeAccountFromGroup(context, input) {
@@ -22,11 +22,11 @@ export default async function removeAccountFromGroup(context, input) {
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
   const { Accounts, Groups } = collections;
   const {
-    decodedAccountId,
-    decodedGroupId: groupId
+    accountId: providedAccountId,
+    groupId
   } = input;
 
-  const account = await Accounts.findOne({ _id: decodedAccountId });
+  const account = await Accounts.findOne({ _id: providedAccountId });
   const { shopId } = await Groups.findOne({ _id: groupId }) || {};
   const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
 
@@ -39,7 +39,7 @@ export default async function removeAccountFromGroup(context, input) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   const { value: updatedAccount } = await Accounts.findOneAndUpdate({
-    _id: decodedAccountId,
+    _id: providedAccountId,
     groups: groupId
   }, {
     $set: { "groups.$": defaultCustomerGroupForShop._id }
