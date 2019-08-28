@@ -49,11 +49,12 @@ const useStyles = makeStyles((theme) => ({
  */
 export default function FilterByFileCard(props) {
   const {
-    isFilterByFileVisible,
     files,
     getInputProps,
     getRootProps,
+    handleDelete,
     importFiles,
+    isFilterByFileVisible,
     setFilterByFileVisible
   } = props;
   const classes = useStyles();
@@ -79,7 +80,16 @@ export default function FilterByFileCard(props) {
           { files.length > 0 ? (
             <Grid container spacing={1} className={classes.cardContainer}>
               <Grid item sm={12}>
-                {files.map((file, idx) => <Chip label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
+                {
+                  files.map((file, index) => (
+                    <Chip
+                      label={file.name}
+                      key={index}
+                      className={classes.leftChip}
+                      onDelete={() => handleDelete(file.name)}
+                    />
+                  ))
+                }
               </Grid>
               <Grid item sm={12}>
                 <Button
@@ -88,7 +98,7 @@ export default function FilterByFileCard(props) {
                   style={{ float: "right" }}
                   onClick={() => importFiles(files)}
                 >
-                  {i18next.t("admin.importCard.button")}
+                  {i18next.t("admin.importCard.filterProducts")}
                 </Button>
               </Grid>
             </Grid>
@@ -120,6 +130,7 @@ FilterByFileCard.propTypes = {
   files: PropTypes.array,
   getInputProps: PropTypes.func,
   getRootProps: PropTypes.func,
+  handleDelete: PropTypes.func,
   importFiles: PropTypes.func,
   isFilterByFileVisible: PropTypes.bool,
   setFilterByFileVisible: PropTypes.func

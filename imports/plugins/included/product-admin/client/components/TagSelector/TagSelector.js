@@ -92,7 +92,7 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
    * @returns {undefined}
    */
   function handleOnSelection(tags) {
-    const tagIds = tags.map(({ value }) => (value));
+    const tagIds = tags && tags.map(({ value }) => (value));
     setSelectedTagIds(tagIds);
   }
 

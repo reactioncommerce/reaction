@@ -21,7 +21,7 @@
         },
         "importCard": {
           "title": "Filter products by file",
-          "button": "Filter products",
+          "filterProducts": "Filter products",
           "import": "Import",
           "importHelpText": "Import .csv files with the product IDs in the first column."
         },
