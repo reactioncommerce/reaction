@@ -8,7 +8,6 @@ const inputSchema = new SimpleSchema({
 /**
  * @name accounts/removeAccountFromGroup
  * @memberof Mutations/Accounts
- * @method
  * @summary Removes a user from a group for a shop, and adds them to the default customer group.
  * Updates the user's permission list to reflect.
  * (NB: At this time, a user only belongs to only one group per shop)
