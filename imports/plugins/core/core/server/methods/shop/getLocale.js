@@ -2,6 +2,7 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Shops } from "/lib/collections";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { Reaction } from "/lib/api";
 import ReactionError from "@reactioncommerce/reaction-error";
 import GeoCoder from "../../util/geocoder";
@@ -108,7 +109,13 @@ export default function getLocale() {
       [profileCurrency] = shop.currency.split(",");
     }
 
-    Meteor.call("accounts/setProfileCurrency", profileCurrency);
+    const userId = Reaction.getUserId();
+    const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
+
+    Promise.await(context.mutations.setAccountProfileCurrency(context, {
+      profileCurrency,
+      userId
+    }));
   }
 
   // set server side locale
