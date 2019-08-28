@@ -1,18 +1,18 @@
-import { GET_PRIMARY_SHOP_ID, GET_TAGS } from "./graphqlQueries";
+import { GET_PRIMARY_SHOP_ID, GET_TAGS } from "./queries";
 
 /**
  * @summary Queries for tags the match the provided user query
- * @param {Object} client The Apollo client
+ * @param {Object} apolloClient The apolloClient
  * @param {String} query Query provided by the user
  * @returns {Array} An array of options formatted for use with react-select
  */
-export async function getTags(client, query) {
-  const { data: shopData } = await client.query({
+export async function getTags(apolloClient, query) {
+  const { data: shopData } = await apolloClient.query({
     query: GET_PRIMARY_SHOP_ID
   });
   const { primaryShopId } = shopData;
 
-  const { data, error } = await client.query({
+  const { data, error } = await apolloClient.query({
     query: GET_TAGS,
     variables: {
       shopId: primaryShopId,

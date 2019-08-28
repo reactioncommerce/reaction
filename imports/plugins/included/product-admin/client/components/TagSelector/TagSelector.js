@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "/client/api";
+import CloseIcon from "mdi-material-ui/Close";
+import Select from "@reactioncommerce/catalyst/Select";
+import SplitButton from "@reactioncommerce/catalyst/SplitButton";
+import classNames from "classnames";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import {
   Grid,
   Card as MuiCard,
@@ -10,12 +15,18 @@ import {
   IconButton,
   makeStyles
 } from "@material-ui/core";
-import CloseIcon from "mdi-material-ui/Close";
-import Select from "@reactioncommerce/catalyst/Select";
-import SplitButton from "@reactioncommerce/catalyst/SplitButton";
-import classNames from "classnames";
-import { useApolloClient } from "@apollo/react-hooks";
 import { getTags } from "./helpers";
+import { ADD_TAGS_TO_PRODUCTS, REMOVE_TAGS_FROM_PRODUCTS } from "./mutations";
+
+
+const ACTION_OPTIONS = [{
+  label: "Add tags to products",
+  type: "ADD"
+}, {
+  label: "Remove tags from products",
+  isDestructive: true,
+  type: "REMOVE"
+}];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,13 +65,16 @@ const useStyles = makeStyles((theme) => ({
  * @param {Object} props Component props
  * @returns {React.Component} A React component
  */
-function TagSelector({ isVisible, setVisibility }) {
+function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
+  const apolloClient = useApolloClient();
+  const [selectedTagIds, setSelectedTagIds] = useState([]);
+  const [addTagsToProducts, { data: addTagsResult, loading: addTagsLoading }] = useMutation(ADD_TAGS_TO_PRODUCTS);
+  const [removeTagsFromProducts, { data: removeTagsResult, loading: removeTagsLoading }] = useMutation(REMOVE_TAGS_FROM_PRODUCTS);
   const classes = useStyles();
   const cardClasses = classNames({
     [classes.hidden]: true,
     [classes.visible]: isVisible
   });
-  const client = useApolloClient();
 
   /**
    * @summary Loads tags based on user input
@@ -68,22 +82,53 @@ function TagSelector({ isVisible, setVisibility }) {
    * @returns {Array} Array of tag options
    */
   function loadOptions(query) {
-    const options = getTags(client, query);
+    const options = getTags(apolloClient, query);
 
     return options;
   }
 
-  // Log selected value
-  function handleOnSelection(value) {
-    console.log("Selected value: ", value);
+  /**
+   * @param {Array} tags User selected tags
+   * @returns {undefined}
+   */
+  function handleOnSelection(tags) {
+    const tagIds = tags.map(({ value }) => (value));
+    setSelectedTagIds(tagIds);
   }
 
-  const actionOptions = [{
-    label: "Add tags to products"
-  }, {
-    label: "Remove tags from products",
-    isDestructive: true
-  }];
+  /**
+   *
+   * @param {Object} option The selected action option
+   * @param {Integer} index The index of the selected action option
+   * @returns {undefined}
+   */
+  async function handleTagsAction(option) {
+    switch (option.type) {
+      case "ADD":
+        addTagsToProducts({
+          variables: {
+            input: {
+              productIds: selectedProductIds,
+              tagIds: selectedTagIds
+            }
+          }
+        });
+        break;
+      case "REMOVE":
+        removeTagsFromProducts({
+          variables: {
+            input: {
+              productIds: selectedProductIds,
+              tagIds: selectedTagIds
+            }
+          }
+        });
+
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
     <Grid item sm={12} className={cardClasses}>
@@ -115,8 +160,9 @@ function TagSelector({ isVisible, setVisibility }) {
         <CardActions className={classes.cardActions}>
           <SplitButton
             color="primary"
-            options={actionOptions}
-            onClick={(option, index) => alert(`Selected option "${option.label}" at index (${index})`)}
+            options={ACTION_OPTIONS}
+            onClick={handleTagsAction}
+            isWaiting={addTagsLoading || removeTagsLoading}
           />
         </CardActions>
       </MuiCard>
@@ -126,6 +172,7 @@ function TagSelector({ isVisible, setVisibility }) {
 
 TagSelector.propTypes = {
   isVisible: PropTypes.bool,
+  selectedProductIds: PropTypes.array,
   setVisibility: PropTypes.func
 };
 
