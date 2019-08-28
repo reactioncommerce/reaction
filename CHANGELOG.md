@@ -63,6 +63,7 @@ Snyk was unable to work with PR's from forked repositories, which in turn caused
 - chore: use file extensions for node 12 compatibility ([#5415](https://github.com/reactioncommerce/reaction/pull/5415))
 - chore: remove snyk as a CI task ([#5403](https://github.com/reactioncommerce/reaction/pull/5403))
 - chore: Update Apollo packages to support hooks ([#5427](https://github.com/reactioncommerce/reaction/pull/5427))
+- chore: update catalyst sidebar font and color styles ([#5494](https://github.com/reactioncommerce/reaction/pull/5494))
 
 ## Refactors
 
