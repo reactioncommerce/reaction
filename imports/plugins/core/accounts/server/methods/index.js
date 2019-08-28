@@ -1,4 +1,3 @@
-import addressBookRemove from "./addressBookRemove";
 import addressBookUpdate from "./addressBookUpdate";
 import addUserPermissions from "./addUserPermissions";
 import createFallbackLoginToken from "./createFallbackLoginToken";
@@ -31,7 +30,6 @@ import verifyAccount from "./verifyAccount";
 */
 
 export default {
-  "accounts/addressBookRemove": addressBookRemove,
   "accounts/addressBookUpdate": addressBookUpdate,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
