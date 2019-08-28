@@ -22,7 +22,6 @@ export default async function setAccountProfileCurrency(context, input) {
   const { Accounts, Shops } = collections;
   const { currencyCode, decodedAccountId } = input;
 
-  const currentUserId = this.userId;
   const accountId = decodedAccountId || userIdFromContext;
   if (!accountId) throw new ReactionError("access-denied", "You must be logged in to set profile currency");
 
@@ -44,7 +43,7 @@ export default async function setAccountProfileCurrency(context, input) {
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
-    updatedBy: currentUserId,
+    updatedBy: accountId,
     updatedFields: ["profile.currency"]
   });
 
