@@ -3,7 +3,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
   currencyCode: String,
-  decodedAccountId: String
+  accountId: String
 });
 
 /**
@@ -13,22 +13,22 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} input.currencyCode - currency symbol to add to user profile
- * @param {String} [input.decodedAccountId] - optional decoded ID of account on which entry should be updated, for admin
+ * @param {String} [input.accountId] - optional decoded ID of account on which entry should be updated, for admin
  * @returns {Promise<Object>} with updated address
  */
 export default async function setAccountProfileCurrency(context, input) {
   inputSchema.validate(input);
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
   const { Accounts, Shops } = collections;
-  const { currencyCode, decodedAccountId } = input;
+  const { currencyCode, accountId: providedAccountId } = input;
 
-  const accountId = decodedAccountId || userIdFromContext;
+  const accountId = providedAccountId || userIdFromContext;
   if (!accountId) throw new ReactionError("access-denied", "You must be logged in to set profile currency");
 
   const account = await Accounts.findOne({ _id: accountId }, { fields: { shopId: 1 } });
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (userIdFromContext !== decodedAccountId) {
+  if (userIdFromContext !== providedAccountId) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }
 

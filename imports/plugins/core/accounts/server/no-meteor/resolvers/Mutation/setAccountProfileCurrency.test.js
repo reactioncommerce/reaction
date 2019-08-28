@@ -22,7 +22,7 @@ test("correctly passes through to internal mutation function", async () => {
 
   expect(mockContext.mutations.setAccountProfileCurrency).toHaveBeenCalledWith(
     mockContext,
-    { decodedAccountId: "1", currencyCode: "USD" }
+    { accountId: "1", currencyCode: "USD" }
   );
 
   expect(result).toEqual({

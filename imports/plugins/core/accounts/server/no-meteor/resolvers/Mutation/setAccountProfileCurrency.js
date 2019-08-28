@@ -19,7 +19,7 @@ export default async function setAccountProfileCurrency(_, { input }, context) {
 
   const updatedAccount = await context.mutations.setAccountProfileCurrency(context, {
     currencyCode,
-    decodedAccountId
+    accountId: decodedAccountId
   });
 
   return {
