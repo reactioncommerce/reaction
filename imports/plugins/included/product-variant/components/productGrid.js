@@ -217,6 +217,7 @@ class ProductGrid extends Component {
   }
 
   handleDisplayTagSelector = () => {
+    this.handleCloseBulkActions();
     this.props.onDisplayTagSelector(true);
   }
 
