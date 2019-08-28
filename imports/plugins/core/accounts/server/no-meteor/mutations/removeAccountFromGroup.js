@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import setUserPermissions from "/imports/plugins/core/accounts/server/util/setUserPermissions";
 
 const inputSchema = new SimpleSchema({
   accountId: String,
@@ -38,6 +39,7 @@ export default async function removeAccountFromGroup(context, input) {
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
+  setUserPermissions(account, defaultCustomerGroupForShop.permissions, shopId);
   const { value: updatedAccount } = await Accounts.findOneAndUpdate({
     _id: providedAccountId,
     groups: groupId
