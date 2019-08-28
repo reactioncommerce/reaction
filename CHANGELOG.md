@@ -82,6 +82,10 @@ Apollo has been updated to v3.0.0, which introduces GraphQL hooks into Reaction
 
 None
 
+## Contributors
+
+Thanks to @loan-laux for contributing to this release! 🎉
+
 # v2.1.0
 
 Reaction v2.1.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.0.0.
