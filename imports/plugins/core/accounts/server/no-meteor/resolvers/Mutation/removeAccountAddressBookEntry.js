@@ -20,8 +20,8 @@ export default async function removeAccountAddressBookEntry(_, { input }, contex
   const decodedAddressId = decodeAddressOpaqueId(addressId);
 
   const removedAddress = await context.mutations.removeAccountAddressBookEntry(context, {
-    decodedAddressId,
-    decodedAccountId
+    addressId: decodedAddressId,
+    accountId: decodedAccountId
   });
 
   return {

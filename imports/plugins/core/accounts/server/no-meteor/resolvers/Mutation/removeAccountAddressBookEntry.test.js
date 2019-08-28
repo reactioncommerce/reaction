@@ -22,7 +22,7 @@ test("correctly passes through to internal mutation function", async () => {
 
   expect(mockContext.mutations.removeAccountAddressBookEntry).toHaveBeenCalledWith(
     mockContext,
-    { decodedAccountId: "2", decodedAddressId: "1" }
+    { accountId: "2", addressId: "1" }
   );
 
   expect(result).toEqual({

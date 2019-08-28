@@ -2,8 +2,8 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
-  decodedAccountId: String,
-  decodedAddressId: String
+  accountId: String,
+  addressId: String
 });
 
 /**
@@ -12,8 +12,8 @@ const inputSchema = new SimpleSchema({
  * @summary Remove existing address in user's profile
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
- * @param {String} [input.decodedAccountId] - optional decoded ID of account on which entry should be updated, for admin
- * @param {String} input.decodedAddressId - decoded ID of the address to remove
+ * @param {String} [input.accountId] - optional decoded ID of account on which entry should be updated, for admin
+ * @param {String} input.addressId - decoded ID of the address to remove
  * @returns {Promise<Object>} with removed address
  */
 export default async function removeAccountAddressBookEntry(context, input) {
@@ -21,15 +21,15 @@ export default async function removeAccountAddressBookEntry(context, input) {
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
   const { Accounts } = collections;
   const {
-    decodedAccountId,
-    decodedAddressId: addressId
+    accountId: providedAccountId,
+    addressId
   } = input;
 
-  const accountId = decodedAccountId || userIdFromContext;
+  const accountId = providedAccountId || userIdFromContext;
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "Not Found");
 
-  if (userIdFromContext !== decodedAccountId && !userHasPermission(["reaction-accounts"], account.shopId)) {
+  if (userIdFromContext !== providedAccountId && !userHasPermission(["reaction-accounts"], account.shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
