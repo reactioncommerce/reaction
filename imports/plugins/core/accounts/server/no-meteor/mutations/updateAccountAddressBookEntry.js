@@ -4,7 +4,7 @@ import { Address } from "/imports/collections/schemas/address.js";
 
 const inputSchema = new SimpleSchema({
   address: Address,
-  decodedAccountId: String,
+  accountId: String,
   type: {
     type: String,
     optional: true
@@ -18,7 +18,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {Object} input.address - address to update
- * @param {String} [input.decodedAccountId] - optional decoded ID of account on which entry should be updated, for admins
+ * @param {String} [input.accountId] - optional decoded ID of account on which entry should be updated, for admins
  * @param {String} [input.type] - If present, make this address the default address of this type (billing or shipping)
  * @returns {Promise<Object>} with updated address
  */
@@ -26,14 +26,14 @@ export default async function updateAccountAddressBookEntry(context, input) {
   inputSchema.validate(input);
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
   const { Accounts } = collections;
-  const { address, decodedAccountId, type } = input;
+  const { address, accountId: providedAccountId, type } = input;
 
-  const accountId = decodedAccountId || userIdFromContext;
+  const accountId = providedAccountId || userIdFromContext;
   const account = await Accounts.findOne({ _id: accountId });
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (!context.isInternalCall && typeof accountUserId === "string" && userIdFromContext !== decodedAccountId) {
+  if (!context.isInternalCall && typeof accountUserId === "string" && userIdFromContext !== providedAccountId) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }
 

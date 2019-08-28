@@ -23,7 +23,7 @@ export default async function updateAccountAddressBookEntry(_, { input }, contex
 
   const updatedAddress = await context.mutations.updateAccountAddressBookEntry(context, {
     address,
-    decodedAccountId,
+    accountId: decodedAccountId,
     type
   });
 

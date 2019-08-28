@@ -26,7 +26,7 @@ test("correctly passes through to internal mutation function", async () => {
 
   expect(mockContext.mutations.updateAccountAddressBookEntry).toHaveBeenCalledWith(
     mockContext,
-    { address: fakeResult, decodedAccountId: "1", type: "billing" }
+    { address: fakeResult, accountId: "1", type: "billing" }
   );
 
   expect(result).toEqual({
