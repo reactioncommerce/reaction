@@ -1,32 +1,32 @@
 import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
 import { encodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/address";
+import mockContext from "/imports/test-utils/helpers/mockContext";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry";
 
-test("correctly passes through to accounts/addressBookRemove method", () => {
+mockContext.mutations.removeAccountAddressBookEntry = jest.fn().mockName("mutations.removeAccountAddressBookEntry");
+
+test("correctly passes through to internal mutation function", async () => {
   const accountId = encodeAccountOpaqueId("2");
   const addressId = encodeAddressOpaqueId("1");
-  const address = { address1: "123 Main St" };
+  const removedAddress = { address1: "123 Main St" };
 
-  const fakeResult = { _id: "1", ...address };
+  mockContext.mutations.removeAccountAddressBookEntry.mockReturnValueOnce(Promise.resolve(removedAddress));
 
-  const mockMethod = jest.fn().mockName("accounts/addressBookRemove method");
-  mockMethod.mockReturnValueOnce(fakeResult);
-  const context = {
-    callMeteorMethod: mockMethod
-  };
-
-  const result = removeAccountAddressBookEntry(null, {
+  const result = await removeAccountAddressBookEntry(null, {
     input: {
       accountId,
       addressId,
       clientMutationId: "clientMutationId"
     }
-  }, context);
+  }, mockContext);
 
-  expect(mockMethod).toHaveBeenCalledWith("accounts/addressBookRemove", "1", "2");
+  expect(mockContext.mutations.removeAccountAddressBookEntry).toHaveBeenCalledWith(
+    mockContext,
+    { decodedAccountId: "2", decodedAddressId: "1" }
+  );
 
   expect(result).toEqual({
-    address: fakeResult,
+    address: removedAddress,
     clientMutationId: "clientMutationId"
   });
 });
