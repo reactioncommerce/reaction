@@ -14,6 +14,10 @@ The Reaction code base is now clean of all `eslint` warnings. Going forward, all
 
 Admins can filter products by uploading a CSV in the product admin
 
+### Introduce Apollo hooks
+
+Apollo has been updated to v3.0.0, which introduces GraphQL hooks into Reaction
+
 ## Feature
 
 - feat: add offset for pagination with tests ([#5228](https://github.com/reactioncommerce/reaction/pull/5228))
