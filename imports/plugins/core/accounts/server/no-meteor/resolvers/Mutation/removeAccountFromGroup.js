@@ -14,10 +14,16 @@ import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/g
  * @param {Object} context - an object containing the per-request state
  * @returns {Object} RemoveAccountFromGroupPayload
  */
-export default function removeAccountFromGroup(_, { input }, context) {
+export default async function removeAccountFromGroup(_, { input }, context) {
   const { accountId, groupId, clientMutationId = null } = input;
-  const dbAccountId = decodeAccountOpaqueId(accountId);
-  const dbGroupId = decodeGroupOpaqueId(groupId);
+  const decodedAccountId = decodeAccountOpaqueId(accountId);
+  const decodedGroupId = decodeGroupOpaqueId(groupId);
+
+  const group = await context.mutations.removeAccountFromGroup(context, {
+    decodedAccountId,
+    decodedGroupId
+  });
+
   return {
     group,
     clientMutationId
