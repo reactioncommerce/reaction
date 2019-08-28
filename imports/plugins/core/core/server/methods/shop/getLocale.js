@@ -1,6 +1,5 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { Accounts, Shops } from "/lib/collections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { Reaction } from "/lib/api";
