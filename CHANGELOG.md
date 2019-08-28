@@ -1,3 +1,115 @@
+# v2.1.0
+
+Reaction v2.1.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.0.0.
+
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.1.0` of `example-storefront` and `reaction-hydra`.
+
+## Notable changes
+
+### Introduction of Catalyst
+
+Our new [Catalyst](https://github.com/reactioncommerce/catalyst) design system has been introduced into the Reaction codebase, and is used on various components including [`ConfirmDialog`](https://catalyst.reactioncommerce.com/#/Components/Feedback/ConfirmDialog) and [`Button`](https://catalyst.reactioncommerce.com/#/Components/Actions/Button). All new default component theme modifications must come from Catalyst.
+
+### Tag slugs are now editable independently of tag name
+
+Allows operators to change aa tag slug independently of a tag name.
+
+### Order related GraphQL mutations
+
+A `createRefund` GraphQL mutation has been added to allow refunds to be processed via GraphQL in addition to the existing meteor methods.
+
+### Dataloaders introduced into the codebase
+
+"`DataLoader` is a generic utility to be used as part of your application's data fetching layer to provide a simplified and consistent API over various remote data sources such as databases or web services via batching and caching."
+
+Added the first couple of DataLoaders for Shops and SimpleInventory. Shops will benefit product listing pages as product and variant resolvers all query Shops collection for each product. SimpleInventory query benefits from batching.
+
+### Bulk simple inventory mutation
+
+When running large inventory import via an external sync system, the lack of a bulk mutation made the import takes many hours. This update introduces a bulk import option which cuts down import time significantly.
+
+### Overhaul of `eslint` rules, and bulk fix of over 500 `eslint` warnings
+
+We've updated to using v2.0.0 of our [Reaction ESLint Config](https://github.com/reactioncommerce/reaction-eslint-config) package, and have brought our `eslint` warnings down from 800 to under 300.
+
+## Feature
+
+- feat: catalog partial publish / rerun transformations ([#5355](https://github.com/reactioncommerce/reaction/pull/5355))
+- feat(product table): show Action dropdown, even if no products are selected ([#5391](https://github.com/reactioncommerce/reaction/pull/5391))
+- feat: filter products by id in products table ([#5387](https://github.com/reactioncommerce/reaction/pull/5387))
+- feat: editable tag slug ([#5382](https://github.com/reactioncommerce/reaction/pull/5382))
+- feat: add createRefund GraphQL mutation ([#5354](https://github.com/reactioncommerce/reaction/pull/5354))
+- feat: add handle to tag autosuggest results ([#5262](https://github.com/reactioncommerce/reaction/pull/5262))
+- feat: Add DataLoaders for Shops and SimpleInventory ([#5294](https://github.com/reactioncommerce/reaction/pull/5294))
+- feat: Introduce DataLoaders infrastructure ([#5280](https://github.com/reactioncommerce/reaction/pull/5280))
+- feat: new button component to wrap MUI button with isWaiting loading state ([#5266](https://github.com/reactioncommerce/reaction/pull/5266))
+- feat: bulk simple inventory mutation ([#5229](https://github.com/reactioncommerce/reaction/pull/5229))
+- feat: integrate catalyst ConfirmDialog component from new Catalyst package ([#5372](https://github.com/reactioncommerce/reaction/pull/5372))
+
+## Fixes
+
+- fix: set slugified title as permalink ([#5264](https://github.com/reactioncommerce/reaction/pull/5264))
+- fix: Add migration for index ([#5358](https://github.com/reactioncommerce/reaction/pull/5358))
+- fix: red textfields ([#5371](https://github.com/reactioncommerce/reaction/pull/5371))
+- fix: Make catalog indexes unique for product ([#5350](https://github.com/reactioncommerce/reaction/pull/5350))
+- fix: fix consistent-return eslint warnings ([#5334](https://github.com/reactioncommerce/reaction/pull/5334))
+- fix: replace simpl-schema.validate() … ([#5306](https://github.com/reactioncommerce/reaction/pull/5306))
+- fix: use SimpleInventory collection to fe… ([#5314](https://github.com/reactioncommerce/reaction/pull/5314))
+- fix: #5300 Wrong template reference ([#5301](https://github.com/reactioncommerce/reaction/pull/5301))
+- fix: typo breaking docs build (5286) ([#5287](https://github.com/reactioncommerce/reaction/pull/5287))
+
+## Performance Improvements
+
+- perf: wrap tests in check to make sure app is ready when they run ([#5317](https://github.com/reactioncommerce/reaction/pull/5317))
+- perf: up data transfer limit to allow bigger sizes ([#5396](https://github.com/reactioncommerce/reaction/pull/5396))
+
+## Docs
+
+- docs(admin): Introducing Reaction Admin ([#5400](https://github.com/reactioncommerce/reaction/pull/5400))
+- docs(readme): introducing the Storefront Component Library to develop ([#5398](https://github.com/reactioncommerce/reaction/pull/5398))
+- docs: Update README.md ([#5319](https://github.com/reactioncommerce/reaction/pull/5319))
+
+## Chores
+
+- chore: updated Dockerfile to change .meteor/ permissions to the node … ([#5353](https://github.com/reactioncommerce/reaction/pull/5353))
+- chore(ci): add eslint check to only check changed files and fail when warnings are thrown ([#5357](https://github.com/reactioncommerce/reaction/pull/5357))
+- chore(ci): Work more robustly on forks ([#5386](https://github.com/reactioncommerce/reaction/pull/5386))
+- chore: fix no-undef lint issues ([#5360](https://github.com/reactioncommerce/reaction/pull/5360))
+- chore: update Material-UI 4.x ([#5278](https://github.com/reactioncommerce/reaction/pull/5278))
+- chore: Update README DCO - sign-off not sign ([#5318](https://github.com/reactioncommerce/reaction/pull/5318))
+- chore: update snyk ignore ([#5331](https://github.com/reactioncommerce/reaction/pull/5331))
+- chore: update CHANGELOG, update version ([#5260](https://github.com/reactioncommerce/reaction/pull/5260))
+- chore: use npm command rather than meteor npm ([#5328](https://github.com/reactioncommerce/reaction/pull/5328))
+- chore: update js-doc throughout the app, batch 1 ([#5309](https://github.com/reactioncommerce/reaction/pull/5309))
+- chore: fix all `react/no-deprecated` and `react/prop-type` eslint warnings ([#5307](https://github.com/reactioncommerce/reaction/pull/5307))
+- chore: update reaction-eslint-config version in package.json ([#5320](https://github.com/reactioncommerce/reaction/pull/5320))
+- chore: organize integration tests ([#5316](https://github.com/reactioncommerce/reaction/pull/5316))
+- chore: add overrides for eslint rules that stlll need fixing ([#5308](https://github.com/reactioncommerce/reaction/pull/5308))
+- chore: fix all `id-length` eslint warnings ([#5298](https://github.com/reactioncommerce/reaction/pull/5298))
+- chore: update lodash to fix snyk critical error ([#5299](https://github.com/reactioncommerce/reaction/pull/5299))
+- chore: fix all `max-len` eslint warnings ([#5296](https://github.com/reactioncommerce/reaction/pull/5296))
+- chore: fix prefer-const eslint error ([#5290](https://github.com/reactioncommerce/reaction/pull/5290))
+
+## Refactors
+
+- refactor: add title as backup in product admin breadcrumb ([#5342](https://github.com/reactioncommerce/reaction/pull/5342))
+- refactor: add isSoldOut prop to variants and options in Catalog ([#5289](https://github.com/reactioncommerce/reaction/pull/5289))
+- refactor: how to get reaction version ([#5324](https://github.com/reactioncommerce/reaction/pull/5324))
+- refactor: fulfillment section of Orders 2.0 ([#5302](https://github.com/reactioncommerce/reaction/pull/5302))
+- refactor: payments section of Orders 2.0 ([#5279](https://github.com/reactioncommerce/reaction/pull/5279))
+
+## Tests
+
+- test: add integration test for ping query ([#5326](https://github.com/reactioncommerce/reaction/pull/5326))
+
+## Breaking Changes
+
+None
+
+## Contributors
+
+Thanks to @janus-reith for contributing to this release! 🎉
+
 # v2.0.0
 
 Reaction v2.0.0—an API-first, real-time commerce engine built using Node.js, React, and GraphQL. It’s the second major release of our open source commerce software.
