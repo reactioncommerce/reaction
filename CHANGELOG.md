@@ -22,6 +22,8 @@ Apollo has been updated to v3.0.0, which introduces GraphQL hooks into Reaction.
 
 The new Orders UI allows is completely GraphQL based and allows for updates to multiple fulfillment groups on each order.
 
+![image](https://user-images.githubusercontent.com/4482263/63883915-12d30580-c98a-11e9-8484-debd9eda34ab.png)
+
 ### Remove Snyk as a CI step
 
 Snyk was unable to work with PR's from forked repositories, which in turn caused every contribution to fail the CI check. We have removed Snyk as a blocking CI check because of this, and will run it locally on a schedule to still see which packages are in need of an update.
