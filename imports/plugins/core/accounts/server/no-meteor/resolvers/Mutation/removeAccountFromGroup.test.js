@@ -1,8 +1,11 @@
 import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
 import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
+import mockContext from "/imports/test-utils/helpers/mockContext";
 import removeAccountFromGroup from "./removeAccountFromGroup";
 
-test("correctly passes through to group/removeUser method", () => {
+mockContext.mutations.removeAccountFromGroup = jest.fn().mockName("mutations.removeAccountFromGroup");
+
+test("correctly passes through to internal mutation function", async () => {
   const accountId = encodeAccountOpaqueId("1");
   const groupId = encodeGroupOpaqueId("g2");
 
@@ -10,21 +13,20 @@ test("correctly passes through to group/removeUser method", () => {
   const group = { name: "customer" };
   const fakeResult = { _id: "g1", ...group };
 
-  const mockMethod = jest.fn().mockName("group/removeUser method");
-  mockMethod.mockReturnValueOnce(fakeResult);
-  const context = {
-    callMeteorMethod: mockMethod
-  };
+  mockContext.mutations.removeAccountFromGroup.mockReturnValueOnce(Promise.resolve(fakeResult));
 
-  const result = removeAccountFromGroup(null, {
+  const result = await removeAccountFromGroup(null, {
     input: {
       accountId,
       groupId,
       clientMutationId: "clientMutationId"
     }
-  }, context);
+  }, mockContext);
 
-  expect(mockMethod).toHaveBeenCalledWith("group/removeUser", "1", "g2");
+  expect(mockContext.mutations.removeAccountFromGroup).toHaveBeenCalledWith(
+    mockContext,
+    { decodedAccountId: "1", decodedGroupId: "g2" }
+  );
 
   expect(result).toEqual({
     group: fakeResult,
