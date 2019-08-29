@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import methods from "./methods";
 import "./publications";
 import startup from "./startup";
+import "./i18n";
 
 // handle any unhandled Promise rejections because
 // Node 8 no longer swallows them
