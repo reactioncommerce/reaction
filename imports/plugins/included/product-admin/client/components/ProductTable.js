@@ -154,7 +154,7 @@ function ProductTable({ onCreateProduct }) {
             isDismissable
             components={iconComponents}
             alertType="error"
-            title={i18next.t("admin.productListIdsNotFound", { missing, all: filterProductIds }) || "Product Ids not found"}
+            title={i18next.t("admin.productListIdsNotFound", { missing, all: filterProductIds }) || "Product Is not found"}
             message={i18next.t("admin.missingFilteredProducts", { count: missing })}
           />
         </Grid>
@@ -246,6 +246,7 @@ function ProductTable({ onCreateProduct }) {
       { isFiltered ? (
         <Grid item sm={12}>
           <InlineAlert
+            isAutoClosing
             isDismissable
             components={iconComponents}
             alertType="information"
