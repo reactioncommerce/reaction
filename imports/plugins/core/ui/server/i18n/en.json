@@ -2,7 +2,7 @@
   "i18n": "en",
   "ns": "reaction-ui",
   "translation": {
-    "reaction-catalog": {
+    "reaction-ui": {
       "reactionUI": {
         "components": {
           "navbar": "Navigation Bar",

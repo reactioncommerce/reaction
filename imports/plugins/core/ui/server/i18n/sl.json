@@ -2,7 +2,7 @@
   "i18n": "sl",
   "ns": "reaction-ui",
   "translation": {
-    "reaction-catalog": {
+    "reaction-ui": {
       "admin": {
         "dashboard": {
           "themesLabel": "Teme",
