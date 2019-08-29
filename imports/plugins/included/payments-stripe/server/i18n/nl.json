@@ -3,7 +3,7 @@
   "i18n": "nl",
   "ns": "reaction-stripe",
   "translation": {
-    "reaction-payments": {
+    "reaction-stripe": {
       "admin": {
         "shortcut": {
           "stripeLabel": "Stripe"
