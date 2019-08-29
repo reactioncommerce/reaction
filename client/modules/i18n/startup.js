@@ -8,7 +8,6 @@ import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { ReactiveVar } from "meteor/reactive-var";
-import SimpleSchema from "simpl-schema";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { Shops } from "/lib/collections";
@@ -29,59 +28,6 @@ const configuredI18next = i18next
   // This uses `fetch` to load resources from the backend based on `backend`
   // config object below.
   .use(i18nextMultiLoadBackendAdapter);
-
-/**
- * Every schema that feature an expireMonth and an expireYear
- * field will be validated against the dateBeforeNow rule.
- */
-// eslint-disable-next-line consistent-return
-SimpleSchema.addValidator(function () {
-  let expireMonth;
-  let expireYear;
-  let sibling;
-  if (this.key === "expireMonth") {
-    sibling = "expireYear";
-    expireMonth = this.value;
-    expireYear = this.field(sibling).value;
-  }
-  if (this.key === "expireYear") {
-    sibling = "expireMonth";
-    expireMonth = this.field(sibling).value;
-    expireYear = this.value;
-  }
-  if (expireYear && expireMonth) {
-    const now = new Date();
-    const expire = new Date(expireYear, expireMonth);
-    if (now > expire) {
-      return "dateBeforeNow";
-    }
-
-    // Remove error message from the other field as well.
-    const validationErrors = this.validationContext && this.validationContext._validationErrors;
-    const deps = this.validationContext && this.validationContext._deps;
-    if (validationErrors) {
-      const index = validationErrors.findIndex((error) => error.name === sibling && error.type === "dateBeforeNow");
-      if (index !== -1) {
-        validationErrors.splice(index, 1);
-        if (deps) deps[sibling].changed();
-      }
-    }
-  }
-
-  return null;
-});
-
-/**
- * Error messages that are used for all SimpleSchema instances
- * ATM, validation errors are not translated in Reaction in general.
- */
-SimpleSchema.setDefaultMessages({
-  messages: {
-    en: {
-      dateBeforeNow: "Dates in the past are not allowed."
-    }
-  }
-});
 
 /**
  * @summary Async function to initialize i18next after we have a fallback
