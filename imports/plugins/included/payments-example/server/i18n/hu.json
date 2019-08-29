@@ -3,7 +3,7 @@
   "i18n": "hu",
   "ns": "example-paymentmethod",
   "translation": {
-    "reaction-payments": {
+    "example-paymentmethod": {
       "admin": {
         "shortcut": {
           "examplePaymentProviderLabel": "példa Fizetési",

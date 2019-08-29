@@ -3,7 +3,7 @@
   "i18n": "vi",
   "ns": "example-paymentmethod",
   "translation": {
-    "reaction-payments": {
+    "example-paymentmethod": {
       "admin": {
         "shortcut": {
           "examplePaymentProviderLabel": "Ví dụ thanh toán",

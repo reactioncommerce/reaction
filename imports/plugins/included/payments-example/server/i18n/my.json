@@ -3,7 +3,7 @@
   "i18n": "my",
   "ns": "example-paymentmethod",
   "translation": {
-    "reaction-payments": {
+    "example-paymentmethod": {
       "admin": {
         "shortcut": {
           "examplePaymentProviderLabel": "ဥပမာအားငွေပေးချေမှုရမည့်",

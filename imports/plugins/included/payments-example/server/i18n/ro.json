@@ -3,7 +3,7 @@
   "i18n": "ro",
   "ns": "example-paymentmethod",
   "translation": {
-    "reaction-payments": {
+    "example-paymentmethod": {
       "admin": {
         "shortcut": {
           "examplePaymentProviderLabel": "Exemplul de plată",

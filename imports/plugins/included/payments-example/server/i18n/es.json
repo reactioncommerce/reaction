@@ -3,7 +3,7 @@
   "i18n": "es",
   "ns": "example-paymentmethod",
   "translation": {
-    "reaction-payments": {
+    "example-paymentmethod": {
       "admin": {
         "shortcut": {
           "examplePaymentProviderLabel": "ejemplo de Pago",

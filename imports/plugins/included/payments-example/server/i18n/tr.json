@@ -3,7 +3,7 @@
   "i18n": "tr",
   "ns": "example-paymentmethod",
   "translation": {
-    "reaction-payments": {
+    "example-paymentmethod": {
       "admin": {
         "shortcut": {
           "examplePaymentProviderLabel": "Örnek Ödeme",
