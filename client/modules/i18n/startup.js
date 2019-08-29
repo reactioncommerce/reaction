@@ -7,12 +7,11 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
-import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { Shops } from "/lib/collections";
 import Schemas from "@reactioncommerce/schemas";
-import i18next, { getLabelsFor, getValidationErrorMessages, i18nextDep, currencyDep } from "./main";
+import i18next, { getLabelsFor, getValidationErrorMessages, i18nextDep } from "./main";
 
 const configuredI18next = i18next
   // https://github.com/i18next/i18next-browser-languageDetector
@@ -102,17 +101,7 @@ async function initializeI18n(fallbackLng) {
   i18nextDep.changed();
 }
 
-const userProfileLanguage = new ReactiveVar(null);
-
 Meteor.startup(() => {
-  // We need to ensure fine-grained reactivity on only the profile.lang because
-  // user.profile changed frequently and causes excessive reruns
-  Tracker.autorun(() => {
-    const userId = Reaction.getUserId();
-    const user = userId && Meteor.users.findOne(userId, { fields: { profile: 1 } });
-    userProfileLanguage.set((user && user.profile && user.profile.lang) || null);
-  });
-
   // Autorun only long enough to be sure we have a shop ID
   Tracker.autorun((computation) => {
     const shopId = Reaction.getPrimaryShopId();
@@ -124,27 +113,6 @@ Meteor.startup(() => {
     const shopLanguage = (shop && shop.language) || null;
 
     initializeI18n(shopLanguage || "en");
-  });
-
-  // Detect user currency changes.
-  // These two autoruns work together to ensure currencyDep is only considered
-  // to be changed when it should be.
-  // XXX currencyDep is not used by the main app. Maybe can get rid of this
-  // if no add-on packages use it?
-  const userCurrency = new ReactiveVar();
-  Tracker.autorun(() => {
-    // We are using the reactive var only to be sure that currencyDep.changed()
-    // is called only when the value is actually changed from the previous value.
-    const currency = userCurrency.get();
-    if (currency) currencyDep.changed();
-  });
-  Tracker.autorun(() => {
-    const user = Meteor.user();
-    if (Reaction.Subscriptions.PrimaryShop.ready() &&
-        Reaction.Subscriptions.MerchantShops.ready() &&
-        user) {
-      userCurrency.set((user.profile && user.profile.currency) || undefined);
-    }
   });
 
   //

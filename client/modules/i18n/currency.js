@@ -1,7 +1,6 @@
 import { formatMoney } from "accounting-js";
 import { Reaction } from "/client/api";
 import { Shops, Accounts } from "/lib/collections";
-import { currencyDep } from "./main";
 
 /**
  * @name findCurrency
@@ -50,7 +49,6 @@ export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
  * @returns {String} returns locale formatted and exchange rate converted values
  */
 export function formatPriceString(formatPrice) {
-  currencyDep.depend();
   const locale = Reaction.Locale.get();
 
   if (typeof locale !== "object" || typeof locale.currency !== "object") {

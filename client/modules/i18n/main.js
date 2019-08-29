@@ -81,7 +81,6 @@ export function getValidationErrorMessages() {
 // initialize i18n and load data resources for the current language and fallback "EN"
 export const i18nextDep = new Tracker.Dependency();
 export const localeDep = new Tracker.Dependency();
-export const currencyDep = new Tracker.Dependency();
 
 Meteor.startup(() => {
   Tracker.autorun((trackerInstance) => {
