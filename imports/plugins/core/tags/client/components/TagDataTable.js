@@ -393,9 +393,9 @@ class TagDataTable extends Component {
     // update the state
     this.setState((prevState) => {
       // start off with the existing state
-      let selection = prevState.selection;ta
+      const { selection } = prevState;
 
-      const keyIndex = selection.findIndex((element) => 'select-'+element._id === key);
+      const keyIndex = selection.findIndex((element) => `select-${element._id}` === key);
 
       // check to see if the key exists
       if (keyIndex === -1) {
