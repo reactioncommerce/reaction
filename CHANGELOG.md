@@ -1,3 +1,102 @@
+# v2.2.0
+
+Reaction v2.2.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.1.0.
+
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.2.0` of `example-storefront` and `reaction-hydra`.
+
+## Notable changes
+
+### Elimination of all `eslint` warnings
+
+The Reaction code base is now clean of all `eslint` warnings. Going forward, all `eslint` rules have been changed to `error`, and CI will fail if any are present.
+
+### Product filtering by CSV
+
+Admins can filter products by uploading a CSV in the product admin.
+
+### Introduce Apollo hooks
+
+Apollo has been updated to v3.0.0, which introduces GraphQL hooks into Reaction.
+
+### Updated Orders Admin UI
+
+The new Orders UI allows is completely GraphQL based and allows for updates to multiple fulfillment groups on each order.
+
+![image](https://user-images.githubusercontent.com/4482263/63883915-12d30580-c98a-11e9-8484-debd9eda34ab.png)
+
+### Remove Snyk as a CI step
+
+Snyk was unable to work with PR's from forked repositories, which in turn caused every contribution to fail the CI check. We have removed Snyk as a blocking CI check because of this, and will run it locally on a schedule to still see which packages are in need of an update.
+
+## Feature
+
+- feat: add offset for pagination with tests ([#5228](https://github.com/reactioncommerce/reaction/pull/5228))
+- feat: bulk actions UI updates ([#5461](https://github.com/reactioncommerce/reaction/pull/5461))
+- feat: add refunds GraphQL query ([#5352](https://github.com/reactioncommerce/reaction/pull/5352))
+- feat: #5366 show filter count ([#5395](https://github.com/reactioncommerce/reaction/pull/5395))
+- feat: #5379 integrate catalyst button ([#5406](https://github.com/reactioncommerce/reaction/pull/5406))
+- feat: add bulk mutations to manage products and tags ([#5404](https://github.com/reactioncommerce/reaction/pull/5404))
+- feat: remove startup template import ([#5430](https://github.com/reactioncommerce/reaction/pull/5430))
+- feat: add new setting to allow / disallow custom user locale lookup ([#5444](https://github.com/reactioncommerce/reaction/pull/5444))
+- feat: add isvisible/hidden icons ([#5407](https://github.com/reactioncommerce/reaction/pull/5407))
+- feat: Part I: An admin user can filter products by uploaded CSV ([#5451](https://github.com/reactioncommerce/reaction/pull/5451))
+
+## Fixes
+
+- fix: style the product table as close as possible ([#5468](https://github.com/reactioncommerce/reaction/pull/5468))
+- fix: console warnings ([#5463](https://github.com/reactioncommerce/reaction/pull/5463))
+- fix: update comp-lib to fix broken components ([#5475](https://github.com/reactioncommerce/reaction/pull/5475))
+- fix: add check against missing riskLevel field, and missing string in capitalization function ([#5452](https://github.com/reactioncommerce/reaction/pull/5452))
+- fix: partial product publish error ([#5433](https://github.com/reactioncommerce/reaction/pull/5433))
+- fix: popover z-index ([#5437](https://github.com/reactioncommerce/reaction/pull/5437))
+- fix: issues with refund queries ([#5422](https://github.com/reactioncommerce/reaction/pull/5422))
+- fix: load account into context during surcharges ([#5466](https://github.com/reactioncommerce/reaction/pull/5466))
+- fix: Correct index migration ([#5408](https://github.com/reactioncommerce/reaction/pull/5408))
+
+## Chores
+
+- chore: add redirect for blank route ([#5439](https://github.com/reactioncommerce/reaction/pull/5439))
+- chore: update vulnerable packages ([#5470](https://github.com/reactioncommerce/reaction/pull/5470))
+- chore: update reaction to use reaction-eslint-rules v2.1.0 ([#5445](https://github.com/reactioncommerce/reaction/pull/5445))
+- chore: remove unused shop.appVersion ([#5429](https://github.com/reactioncommerce/reaction/pull/5429))
+- chore: update bodyParser to use individual method ([#5435](https://github.com/reactioncommerce/reaction/pull/5435))
+- chore: use file extensions for node 12 compatibility ([#5415](https://github.com/reactioncommerce/reaction/pull/5415))
+- chore: remove snyk as a CI task ([#5403](https://github.com/reactioncommerce/reaction/pull/5403))
+- chore: Update Apollo packages to support hooks ([#5427](https://github.com/reactioncommerce/reaction/pull/5427))
+- chore: update catalyst sidebar font and color styles ([#5494](https://github.com/reactioncommerce/reaction/pull/5494))
+
+## Refactors
+
+- refactor: use SplitButton from Catalyst instead of ConrifmButton ([#5469](https://github.com/reactioncommerce/reaction/pull/5469))
+- refactor: Rewrite addAccountToGroup to not call through to Meteor method ([#5431](https://github.com/reactioncommerce/reaction/pull/5431))
+- refactor: after-publish cart updates for speed ([#5477](https://github.com/reactioncommerce/reaction/pull/5477))
+- refactor: order invoice print layout ([#5476](https://github.com/reactioncommerce/reaction/pull/5476))
+- refactor: update Reaction Admin Orders panel ([#5158](https://github.com/reactioncommerce/reaction/pull/5158))
+- refactor: payments-stripe to only use getStripeInstanceForShop ([#4951](https://github.com/reactioncommerce/reaction/pull/4951))
+- refactor: add tag permissions to allow non-owner to edit ([#5436](https://github.com/reactioncommerce/reaction/pull/5436))
+- refactor: refunds section of Orders 2.0 ([#5405](https://github.com/reactioncommerce/reaction/pull/5405))
+- refactor: move filter outside of admin check ([#5434](https://github.com/reactioncommerce/reaction/pull/5434))
+- refactor: use Accounts collection instead of Meteor.users to get admin accounts ([#5432](https://github.com/reactioncommerce/reaction/pull/5432))
+- refactor: Remove legacy social plugin, PDP, product grid and WYSIWYG code ([#5394](https://github.com/reactioncommerce/reaction/pull/5394))
+- refactor: expanded product admin permissions ([#5428](https://github.com/reactioncommerce/reaction/pull/5428))
+
+## Style
+
+- style: update jsdoc to always use `returns` instead of `return` ([#5447](https://github.com/reactioncommerce/reaction/pull/5447))
+- style: ESLint errors and warnings === 0 ([#5450](https://github.com/reactioncommerce/reaction/pull/5450))
+
+## Tests
+
+- test: add integration test for primaryShop query ([#5459](https://github.com/reactioncommerce/reaction/pull/5459))
+
+## Breaking Changes
+
+None
+
+## Contributors
+
+Thanks to @cmbirk, @loan-laux and @rattrayalex-stripe for contributing to this release! 🎉
+
 # v2.1.0
 
 Reaction v2.1.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.0.0.
