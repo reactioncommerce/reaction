@@ -393,21 +393,17 @@ class TagDataTable extends Component {
     // update the state
     this.setState((prevState) => {
       // start off with the existing state
-      let selection = [...prevState.selection];
-      // let selectedObjects = { ...prevState.selectedObjects }
+      let selection = prevState.selection;ta
 
-      const keyIndex = selection.findIndex((element) => element._id === key);
+      const keyIndex = selection.findIndex((element) => 'select-'+element._id === key);
 
       // check to see if the key exists
-      if (keyIndex >= 0) {
-        // it does exist so we will remove it using destructing
-        selection = [
-          ...selection.slice(0, keyIndex),
-          ...selection.slice(keyIndex + 1)
-        ];
-      } else {
+      if (keyIndex === -1) {
         // it does not exist so add it
         selection.push(row);
+      } else {
+        // it does exist so we will remove it using destructing
+        selection.splice(keyIndex, 1);
       }
 
       return {
