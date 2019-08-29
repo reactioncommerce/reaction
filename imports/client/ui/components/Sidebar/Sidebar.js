@@ -195,7 +195,7 @@ function Sidebar(props) {
             disableTypography
             className={classes.listItemText}
           >
-            <Translation defaultValue="Settings" i18nKey={"app.settings"} />
+            <Translation i18nKey={"app.settings"} />
           </ListItemText>
         </ListItem>
 
