@@ -2,14 +2,41 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { formatPriceString, i18next } from "/client/api";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
+import { TableCell, TableRow, Checkbox, IconButton, withStyles } from "@material-ui/core";
 import PencilIcon from "mdi-material-ui/Pencil";
+import CircleIcon from "mdi-material-ui/CheckboxBlankCircle";
+
+const styles = (theme) => ({
+  isVisible: {
+    color: theme.palette.colors.forestGreen300,
+    fontSize: theme.typography.fontSize * 1.25,
+    marginRight: theme.spacing(1)
+  },
+  isHidden: {
+    color: theme.palette.colors.black40,
+    fontSize: theme.typography.fontSize * 1.25,
+    marginRight: theme.spacing(1)
+  },
+  tableRow: {
+    "& td": {
+      borderBottom: "none",
+      letterSpacing: "0.28px",
+      padding: 0,
+      color: theme.palette.colors.coolGrey500
+    },
+    "& td:first-child": {
+      padding: "4px",
+      width: "50px"
+    },
+    "& td:nth-child(2)": {
+      width: "60px"
+    }
+  }
+});
 
 class ProductGridItems extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     displayPrice: PropTypes.func,
     isSearch: PropTypes.bool,
     isSelected: PropTypes.func,
@@ -69,19 +96,39 @@ class ProductGridItems extends Component {
     );
   }
 
+  renderStatusIcon() {
+    const { product, classes } = this.props;
+
+    if (product.isVisible) {
+      return (
+        <div style={{ display: "flex" }}>
+          <CircleIcon className={classes.isVisible}/>
+          <span>{i18next.t("admin.tags.visible")}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ display: "flex" }}>
+        <CircleIcon className={classes.isHidden}/>
+        <span>{i18next.t("admin.tags.hidden")}</span>
+      </div>
+    );
+  }
+
   handleSelect = (event) => {
     this.props.onSelect(event.target.checked, this.props.product);
   }
 
   render() {
-    const { isSelected, product } = this.props;
-
+    const { isSelected, product, classes } = this.props;
+    const isChecked = isSelected() === "active" || false;
     const productItem = (
-      <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""}`}>
-        <TableCell padding="checkbox">
+      <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""} ${classes.tableRow}`}>
+        <TableCell>
           <Checkbox
             onClick={this.handleSelect}
-            checked={isSelected()}
+            checked={isChecked}
           />
         </TableCell>
         <TableCell align="center">
@@ -91,15 +138,18 @@ class ProductGridItems extends Component {
           <Link to={`/operator/products/${product._id}`}>{product.title}</Link>
         </TableCell>
         <TableCell>
+          {product._id}
+        </TableCell>
+        <TableCell>
           {formatPriceString(this.props.displayPrice())}
         </TableCell>
         <TableCell>
           {this.renderPublishStatus()}
         </TableCell>
         <TableCell>
-          {i18next.t(product.isVisible ? "admin.tags.visible" : "admin.tags.hidden")}
+          {this.renderStatusIcon()}
         </TableCell>
-        <TableCell padding="checkbox">
+        <TableCell>
           <IconButton onClick={this.handleDoubleClick}>
             <PencilIcon />
           </IconButton>
@@ -111,4 +161,4 @@ class ProductGridItems extends Component {
   }
 }
 
-export default ProductGridItems;
+export default withStyles(styles)(ProductGridItems);

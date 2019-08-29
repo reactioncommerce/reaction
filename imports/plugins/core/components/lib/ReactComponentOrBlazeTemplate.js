@@ -25,6 +25,10 @@ export default class ReactComponentOrBlazeTemplate extends Component {
   }
 }
 
+/**
+ * @param {name} name name of component
+ * @returns {Node} React component or Blaze template
+ */
 export function getReactComponentOrBlazeTemplate(name) {
   if (!name) return null;
 

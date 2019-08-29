@@ -6,7 +6,7 @@
  * @param {Object} order - Result of the parent resolver, which is a Order object in GraphQL schema format
  * @param {Object} connectionArgs - Connection args. (not used for this resolver)
  * @param {Object} context - An object containing the per-request state
- * @return {Promise<Number>} A promise that resolves to the number of the total item quantity
+ * @returns {Promise<Number>} A promise that resolves to the number of the total item quantity
  */
 export default async function totalItemQuantity(order) {
   if (!Array.isArray(order.shipping)) return 0;

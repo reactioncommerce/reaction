@@ -15,7 +15,7 @@ import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
  * @method
  * @param {Object} shop - the shop to clone
  * @param {Object} partialShopData - any properties you'd like to override
- * @return {Object|null} The cloned shop object or null if a shop with that ID can't be found
+ * @returns {Object|null} The cloned shop object or null if a shop with that ID can't be found
  * @private
  */
 function cloneShop(shop, partialShopData = {}) {
@@ -59,7 +59,7 @@ function cloneShop(shop, partialShopData = {}) {
  *                 which will be merged with properties from the primary shop
  *                 in order to create a document which meets the Shops schema
  *                 requirements.
- * @return {String} return shopId
+ * @returns {String} return shopId
  */
 export default function createShop(shopAdminUserId, partialShopData) {
   check(shopAdminUserId, Match.Optional(String));

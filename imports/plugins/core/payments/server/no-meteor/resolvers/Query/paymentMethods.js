@@ -9,7 +9,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.shopId - shop id for which to get payment methods
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Array<Object>>} Array of PaymentMethods
+ * @returns {Promise<Array<Object>>} Array of PaymentMethods
  */
 export default async function paymentMethods(_, { shopId }, context) {
   const dbShopId = decodeShopOpaqueId(shopId);

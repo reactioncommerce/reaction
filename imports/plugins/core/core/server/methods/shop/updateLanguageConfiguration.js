@@ -10,7 +10,7 @@ import { Shops } from "/lib/collections";
  * @summary enable / disable a language
  * @param {String} language - language name | "all" to bulk enable / disable
  * @param {Boolean} enabled - true / false
- * @return {Array} returns workflow array
+ * @returns {Array} returns workflow array
  */
 export default function updateLanguageConfiguration(language, enabled) {
   check(language, String);

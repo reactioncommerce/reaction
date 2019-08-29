@@ -8,7 +8,7 @@ import { xformTotalItemQuantity } from "@reactioncommerce/reaction-graphql-xform
  * @param {Object} cart - Result of the parent resolver, which is a Cart object in GraphQL schema format
  * @param {Object} connectionArgs - Connection args. (not used for this resolver)
  * @param {Object} context - An object containing the per-request state
- * @return {Promise<Number>} A promise that resolves to the number of the total item quantity
+ * @returns {Promise<Number>} A promise that resolves to the number of the total item quantity
  */
 export default async function totalItemQuantity(cart, connectionArgs, context) {
   if (!Array.isArray(cart.items)) return 0;

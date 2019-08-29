@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 jest.mock("/lib/core/url-common");
 
 import { composeUrl } from "/lib/core/url-common";

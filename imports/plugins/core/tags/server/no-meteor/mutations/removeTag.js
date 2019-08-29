@@ -7,7 +7,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Add a tag
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - mutation input
- * @return {Promise<Object>} RemoveTagPayload
+ * @returns {Promise<Object>} RemoveTagPayload
  */
 export default async function removeTag(context, input) {
   const { shopId, tagId } = input;

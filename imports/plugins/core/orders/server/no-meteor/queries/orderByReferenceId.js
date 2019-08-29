@@ -11,7 +11,7 @@ import { getOrderQuery } from "../util/getOrderQuery";
  * @param {String} params.orderReferenceId - Order reference ID
  * @param {String} params.shopId - Shop ID for the shop that owns the order
  * @param {String} [params.token] - Anonymous order token
- * @return {Promise<Object>|undefined} - An Order document, if one is found
+ * @returns {Promise<Object>|undefined} - An Order document, if one is found
  */
 export default async function orderByReferenceId(context, { orderReferenceId, shopId, token } = {}) {
   if (!orderReferenceId || !shopId) {

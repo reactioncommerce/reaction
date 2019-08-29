@@ -1,4 +1,5 @@
 /* eslint camelcase: 0 */
+import { STRIPE_PACKAGE_NAME } from "../../lib/constants";
 import schemas from "./schemas";
 import stripeCapturePayment from "./util/stripeCapturePayment";
 import stripeCreateAuthorizedPayment from "./util/stripeCreateAuthorizedPayment";
@@ -8,12 +9,12 @@ import stripeListRefunds from "./util/stripeListRefunds";
 /**
  * @summary Import and call this function to add this plugin to your API.
  * @param {ReactionNodeApp} app The ReactionNodeApp instance
- * @return {undefined}
+ * @returns {undefined}
  */
 export default async function register(app) {
   await app.registerPlugin({
     label: "Stripe",
-    name: "reaction-stripe",
+    name: STRIPE_PACKAGE_NAME,
     icon: "fa fa-cc-stripe",
     graphQL: {
       schemas

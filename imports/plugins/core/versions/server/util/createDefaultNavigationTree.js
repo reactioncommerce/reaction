@@ -6,7 +6,7 @@ import rawCollections from "/imports/collections/rawCollections";
  * @summary Creates a default navigation tree for a shop
  * @param {Object} shop Shop to create tree for
  * @param {String} name Name of navigation tree
- * @return {String} Navigation tree _id
+ * @returns {String} Navigation tree _id
  */
 export default async function createDefaultNavigationTree(shop, name) {
   const { NavigationTrees, Shops } = rawCollections;

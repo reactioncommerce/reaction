@@ -13,6 +13,12 @@ jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promis
 
 const address = Factory.Address.makeOne({ _id: undefined });
 
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
+
 test("expect to return a cart that has address added to all shipping fulfillment groups", async () => {
   const result = await setShippingAddressOnCart(mockContext, {
     address,

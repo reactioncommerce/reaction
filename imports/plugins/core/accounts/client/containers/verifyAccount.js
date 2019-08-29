@@ -25,6 +25,12 @@ Accounts.onEmailVerificationLink((token, done) => {
   });
 });
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function wrapper(props, onData) {
   Meteor.setTimeout(() => {
     if (!verified.get()) {

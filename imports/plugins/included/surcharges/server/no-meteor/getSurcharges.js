@@ -6,21 +6,27 @@ import { surchargeCheck } from "./util/surchargeCheck";
 /**
  * @summary Returns a list of surcharges to apply based on the cart.
  * @param {Object} context - Context
- * @param {Object} cart - the user's cart
- * @return {Array} - an array that surcharges to apply to cart / order
+ * @param {Object} input - Additional input
+ * @param {Object} input.commonOrder - CommonOrder
+ * @returns {Array} - an array that surcharges to apply to cart / order
  * @private
  */
 export default async function getSurcharges(context, { commonOrder }) {
   const { collections: { Surcharges } } = context;
-  const extendedCommonOrder = await extendCommonOrder(context, commonOrder);
 
   // Get surcharges from Mongo
   // Use forEach to use Mongos built in memory handling to not
-  // overload memory while fetching the entire colleciotn
+  // overload memory while fetching the entire collection
   const surcharges = [];
-  await Surcharges.find({ shopId: extendedCommonOrder.shopId }).forEach((surcharge) => {
+  await Surcharges.find({ shopId: commonOrder.shopId }).forEach((surcharge) => {
     surcharges.push(surcharge);
   });
+
+  if (surcharges.length === 0) return [];
+
+  // Keep this after the early exit since this hits the DB a bunch and isn't needed
+  // when there are no surcharges defined.
+  const extendedCommonOrder = await extendCommonOrder(context, commonOrder);
 
   const allAppliedSurcharges = await surcharges.reduce(async (appliedSurcharges, surcharge) => {
     const awaitedAppliedSurcharges = await appliedSurcharges;
@@ -32,7 +38,7 @@ export default async function getSurcharges(context, { commonOrder }) {
     // If it doesn't, this surcharge can apply to any fulfillmentMethod
     if (Array.isArray(methodIds) && methodIds.length > 0) {
       // If surcharge has methodIds attached to it, and fulfillmentMethodId is not yet set,
-      // don't apply any surchages at this time
+      // don't apply any surcharges at this time
       if (!fulfillmentMethodId) return awaitedAppliedSurcharges;
 
       // If surcharge has methodIds attached to it, and fulfillmentMethodId is set,
@@ -52,16 +58,14 @@ export default async function getSurcharges(context, { commonOrder }) {
   }, Promise.resolve([]));
 
   // We don't need all data to be passed to Cart / Order
-  // Parse provided surcharge data to pass only relevent data to match Cart / Order schema
-  const appliedSurchargesFormattedForFulfillment = allAppliedSurcharges.map((surcharge) => (
-    {
-      _id: Random.id(),
-      surchargeId: surcharge._id,
-      amount: surcharge.amount,
-      messagesByLanguage: surcharge.messagesByLanguage,
-      cartId: commonOrder.cartId
-    }
-  ));
+  // Parse provided surcharge data to pass only relevant data to match Cart / Order schema
+  const appliedSurchargesFormattedForFulfillment = allAppliedSurcharges.map((surcharge) => ({
+    _id: Random.id(),
+    surchargeId: surcharge._id,
+    amount: surcharge.amount,
+    messagesByLanguage: surcharge.messagesByLanguage,
+    cartId: commonOrder.cartId
+  }));
 
   return appliedSurchargesFormattedForFulfillment;
 }

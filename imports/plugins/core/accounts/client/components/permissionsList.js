@@ -7,7 +7,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * @function
  * @description helper to resolve toggled permissions
  * @param {Object} permission permission to check
- * @return {Array} list of all parent and child permissions when a parent permission is toggled
+ * @returns {Array} list of all parent and child permissions when a parent permission is toggled
  */
 function resolvePermissions(permission) {
   const result = [];
@@ -29,7 +29,7 @@ function resolvePermissions(permission) {
  * @description helper to remove all array items in "old" from "current"
  * @param {Array} current current array items
  * @param {Array} old older array items
- * @return {Array} updated permissions array
+ * @returns {Array} updated permissions array
  */
 function removePermissions(current, old) {
   const currentArray = [...current];

@@ -1,6 +1,7 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
-import { MockedProvider } from "react-apollo/test-utils";
+import { MockedProvider } from "@apollo/react-testing";
 import waitForFalseyProp from "/imports/test-utils/helpers/waitForFalseyProp";
 import getPrimaryShopId from "../queries/getPrimaryShopId";
 import withPrimaryShopId from "./withPrimaryShopId";
@@ -19,11 +20,12 @@ test("renders child component with correct shop id", async () => {
     }
   }];
 
-  const wrapper = mount((
-    <MockedProvider mocks={mocks}>
+  let wrapper;
+  act(() => {
+    wrapper = mount(<MockedProvider mocks={mocks}>
       <TestComponent />
-    </MockedProvider>
-  ));
+    </MockedProvider>);
+  });
 
   await waitForFalseyProp(wrapper, "MockComponent", "isLoadingPrimaryShopId");
 

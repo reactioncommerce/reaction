@@ -8,7 +8,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {Object} item - An object representing each item on the order
- * @return {Node} React node containing each line item on an order
+ * @returns {Node} React node containing each line item on an order
  */
 class CompletedOrderItem extends Component {
   static propTypes = {

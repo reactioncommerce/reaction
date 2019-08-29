@@ -4,7 +4,7 @@
  * @memberof GraphQL/Transforms
  * @param {Object} mediaItem object from a catalog product
  * @param {Object} context - an object containing the per-request state
- * @return {Object} transformed product media item
+ * @returns {Object} transformed product media item
  */
 export default function xformFileCollectionsProductMedia(mediaItem, context) {
   if (!(mediaItem && mediaItem.URLs)) return null;

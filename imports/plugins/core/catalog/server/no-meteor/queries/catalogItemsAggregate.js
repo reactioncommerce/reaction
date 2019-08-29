@@ -11,7 +11,7 @@ import arrayJoinPlusRemainingQuery from "/imports/utils/arrayJoinPlusRemainingQu
  * @param {Object} [params.catalogBooleanFilters] - Additional filters object to add to the selector
  * @param {String[]} [params.shopIds] - Shop IDs to include
  * @param {String} params.tagId - Tag ID
- * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
+ * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function catalogItemsAggregate(context, {
   connectionArgs,

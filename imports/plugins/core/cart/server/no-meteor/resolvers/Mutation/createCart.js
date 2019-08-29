@@ -12,7 +12,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} args.input.items - An array of cart items to add to the new cart. Must not be empty.
  * @param {String} args.input.shopId - The ID of the shop that will own this cart
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} CreateCartPayload
+ * @returns {Promise<Object>} CreateCartPayload
  */
 export default async function createCart(parentResult, { input }, context) {
   const { clientMutationId = null, items: itemsInput, shopId: opaqueShopId } = input;

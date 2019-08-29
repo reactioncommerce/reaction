@@ -16,7 +16,7 @@ class NumericInput extends Component {
   /**
    * update state when component receives props
    * @param  {Object} nextProps new props
-   * @return {undefined}
+   * @returns {undefined}
    */
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -32,7 +32,7 @@ class NumericInput extends Component {
    * Gets the displayed value. If in edit mode,
    * the field's value is not formatted. If not in
    * edit mode, the field gets formatted according to chosen locale.
-   * @returns {*}
+   * @returns {*} display value
    */
   get displayValue() {
     const { value } = this.state;
@@ -44,7 +44,8 @@ class NumericInput extends Component {
 
   /**
    * Format this inputs value to a numeric string
-   * @return {String} Formatted numeric string
+   * @param {*} value input value
+   * @returns {String} Formatted numeric string
    */
   format(value) {
     const moneyFormat = Object.assign({}, this.props.format);
@@ -58,7 +59,8 @@ class NumericInput extends Component {
 
   /**
    * Get the field's value as rational number
-   * @param { Number } the field's value
+   * @param {Number} value field's value
+   * @returns {Number} unformatted value
    */
   unformat(value) {
     const unformattedValue = accounting.unformat(value, this.props.format.decimal);
@@ -69,7 +71,7 @@ class NumericInput extends Component {
    * onBlur
    * @summary set the state when the value of the input is changed
    * @param  {Event} event Event object
-   * @return {void}
+   * @returns {void}
    */
   onBlur = (event) => {
     let { value } = this.state;
@@ -90,7 +92,7 @@ class NumericInput extends Component {
    * onKeyDown
    * @summary set the state when the value of the input is changed
    * @param  {Event} event Event object
-   * @return {void}
+   * @returns {void}
    */
   onKeyDown(event) {
     if (this.props.onKeyDown) {
@@ -105,7 +107,8 @@ class NumericInput extends Component {
 
   /**
    * Selects the text of the passed input field
-   * @param ctrl
+   * @param {Object} ctrl input field
+   * @returns {undefined}
    */
   selectAll(ctrl) {
     if (ctrl.setSelectionRange) {
@@ -117,7 +120,7 @@ class NumericInput extends Component {
    * onFocus
    * @summary set the state when the input is focused
    * @param  {Event} event Event object
-   * @return {void}
+   * @returns {void}
    */
   onFocus = (event) => {
     const { currentTarget } = event;
@@ -135,7 +138,7 @@ class NumericInput extends Component {
   /**
    * Handle change event from text input
    * @param  {SyntheticEvent} event Change event
-   * @return {undefined}
+   * @returns {undefined}
    */
   handleChange = (event) => {
     const { value } = event.currentTarget;
@@ -152,7 +155,7 @@ class NumericInput extends Component {
   /**
    * renderLabel
    * @summary Render the label for the field if one is provided in props
-   * @return {ReactNode|null} react node or null
+   * @returns {ReactNode|null} react node or null
    */
   renderLabel() {
     if (this.props.label) {
@@ -169,7 +172,7 @@ class NumericInput extends Component {
   /**
    * renderField
    * @summary Render input box or field
-   * @return {JSX} jsx template
+   * @returns {JSX} jsx template
    */
   renderField() {
     const { classNames } = this.props;
@@ -208,7 +211,7 @@ class NumericInput extends Component {
 
   /**
    * render
-   * @return {ReactElement} markup
+   * @returns {ReactElement} markup
    */
   render() {
     return (

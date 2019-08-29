@@ -19,7 +19,6 @@
           "createGroupError": "Errore durante la creazione del gruppo",
           "updateGroupError": "Errore durante l'aggiornamento del gruppo",
           "changeShopOwnerWarn": "Stai per cambiare il proprietario del negozio. L'attuale proprietario verrà sostituito",
-          "changeMktOwnerWarn": "Stai per cambiare il proprietario del Marketplace. L'attuale proprietario verrà sostituito",
           "removeUserWarn": "Stai per rimuovere un utente da un gruppo. L'utente perderà le autorizzazioni associate",
           "accountsSettingsLabel": "Conti",
           "accountsSettingsTitle": "Conti",

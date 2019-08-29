@@ -9,7 +9,7 @@ import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/g
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.id - id of group to query
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} group object
+ * @returns {Promise<Object>} group object
  */
 export default async function group(_, { id }, context) {
   const dbGroupId = decodeGroupOpaqueId(id);

@@ -16,7 +16,7 @@ if (process.env.MOCK_TLS_TERMINATION) {
  * @private
  * @param  {String} flow Request or Consent
  * @param  {String} challenge To fetch information about the login/consent
- * @return {Object|String} API res
+ * @returns {Object|String} API res
  */
 function get(flow, challenge) {
   return fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/requests/${flow}/${challenge}`)
@@ -38,7 +38,7 @@ function get(flow, challenge) {
  * @param  {String} action Accept/Reject
  * @param  {String} challenge To fetch information about the login/consent
  * @param  {String} body Request body
- * @return {Object|String} API res
+ * @returns {Object|String} API res
  */
 function put(flow, action, challenge, body) {
   return fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/requests/${flow}/${challenge}/${action}`, {
@@ -64,7 +64,7 @@ function put(flow, action, challenge, body) {
  * @method
  * @private
  * @param  {String} id userId
- * @return {Object|String} API res
+ * @returns {Object|String} API res
  */
 function deleteUserSession(id) {
   return fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/sessions/login/${id}`, { method: "DELETE" })
@@ -83,7 +83,7 @@ function deleteUserSession(id) {
  * @method
  * @private
  * @param  {String} options options
- * @return {Object|String} API res
+ * @returns {Object|String} API res
  */
 async function refreshAuthToken({ refreshToken, clientId, clientSecret }) {
   const res = await fetch(`${HYDRA_TOKEN_URL}`, {

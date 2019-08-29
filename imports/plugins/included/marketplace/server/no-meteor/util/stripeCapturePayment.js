@@ -10,7 +10,7 @@ import unformatFromStripe from "./unformatFromStripe";
  * @summary Capture payment for Stripe payment method
  * @param {Object} context an object containing the per-request state
  * @param {Object} paymentMethod object containing transaction ID
- * @return {Promise} capturing a payment in Stripe
+ * @returns {Promise} capturing a payment in Stripe
  * @private
  */
 export default async function stripeCapturePayment(context, paymentMethod) {

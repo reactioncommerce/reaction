@@ -35,7 +35,7 @@ const wrapComponent = (Comp) => {
   /**
    * withVariant HOC
    * @param {Object} props Component props
-   * @return {Node} React component
+   * @returns {Node} React component
    */
   function withVariant(props) {
     const {

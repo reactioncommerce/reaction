@@ -11,7 +11,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Remove existing address in user's profile
  * @param {String} addressId - address `_id`
  * @param {String} [accountUserId] - `account.userId` used by admin to edit users
- * @return {Object} Removed address object
+ * @returns {Object} Removed address object
  */
 export default function addressBookRemove(addressId, accountUserId) {
   check(addressId, String);

@@ -5,12 +5,12 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withMoment } from "@reactioncommerce/reaction-components";
-import { i18next, Reaction } from "/client/api";
+import { i18next } from "/client/api";
 import DetailDrawerButton from "/imports/client/ui/components/DetailDrawerButton";
 import OrderStatusChip from "./OrderStatusChip";
 
 const styles = (theme) => ({
-  fontWeightSemiBold: {
+  extraEmphasisText: {
     fontWeight: theme.typography.fontWeightSemiBold
   },
   openSidebarButton: {
@@ -30,12 +30,6 @@ function OrderHeader(props) {
   const { payments } = order;
   const paymentStatuses = payments.map((payment) => payment.status);
   const uniqueStatuses = [...new Set(paymentStatuses)];
-
-  const handleClickPrintLink = () => Reaction.Router.pathFor("dashboard/pdf/orders", {
-    hash: {
-      id: order.referenceId
-    }
-  });
 
   let paymentStatusChip;
   // If there are multiple payment statuses, show Multiple statuses badge
@@ -62,7 +56,7 @@ function OrderHeader(props) {
       <Grid item xs={12}>
         <Grid container alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h3" className={classes.fontWeightSemiBold} inline={true}>
+            <Typography variant="h3" className={classes.extraEmphasisText} inline={true}>
               {i18next.t("order.order", "Order")} - {referenceId}
             </Typography>
           </Grid>
@@ -72,7 +66,7 @@ function OrderHeader(props) {
           {paymentStatusChip}
           <Grid item>
             <Button
-              href={handleClickPrintLink()}
+              href={`/operator/orders/print/${order.referenceId}`}
               variant="text"
             >
               {i18next.t("admin.orderWorkflow.invoice.printInvoice", "Print invoice")}

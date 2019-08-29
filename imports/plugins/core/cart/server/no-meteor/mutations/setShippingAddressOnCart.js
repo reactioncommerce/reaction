@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { Address as AddressSchema } from "/imports/collections/schemas";
 import getCartById from "../util/getCartById";
 
@@ -23,7 +22,7 @@ const inputSchema = new SimpleSchema({
  *   a type of "shipping"
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
- * @return {Promise<Object>} An object with a `cart` property containing the updated cart
+ * @returns {Promise<Object>} An object with a `cart` property containing the updated cart
  */
 export default async function setShippingAddressOnCart(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
@@ -45,24 +44,13 @@ export default async function setShippingAddressOnCart(context, input) {
 
   if (!didModify) return { cart };
 
-  const { appEvents, collections, userId } = context;
-  const { Cart } = collections;
+  const updatedCart = {
+    ...cart,
+    shipping: updatedFulfillmentGroups,
+    updatedAt: new Date()
+  };
 
-  const updatedAt = new Date();
-  const { matchedCount } = await Cart.updateOne({ _id: cartId }, {
-    $set: {
-      shipping: updatedFulfillmentGroups,
-      updatedAt
-    }
-  });
-  if (matchedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
+  const savedCart = await context.mutations.saveCart(context, updatedCart);
 
-  const updatedCart = { ...cart, shipping: updatedFulfillmentGroups, updatedAt };
-
-  await appEvents.emit("afterCartUpdate", {
-    cart: updatedCart,
-    updatedBy: userId
-  });
-
-  return { cart: updatedCart };
+  return { cart: savedCart };
 }

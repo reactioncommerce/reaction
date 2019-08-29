@@ -5,23 +5,44 @@ import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 
-
+/**
+ * @description function to handle back button on action view
+ * @returns {undefined}
+ */
 function handleActionViewBack() {
   Reaction.popActionView();
 }
 
+/**
+ * @description function to handle back button on action view detail
+ * @returns {undefined}
+ */
 function handleActionViewDetailBack() {
   Reaction.popActionViewDetail();
 }
 
+/**
+ * @description function to handle close button on action view
+ * @returns {undefined}
+ */
 function handleActionViewClose() {
   Reaction.hideActionView();
 }
 
+/**
+ * @description function to handle close button on action view detail
+ * @returns {undefined}
+ */
 function handleActionViewDetailClose() {
   Reaction.hideActionViewDetail();
 }
 
+/**
+ * @summary Composer
+ * @param {Object} props Provided props
+ * @param {Function} onData Call this with props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });
   const items = [];
@@ -74,7 +95,17 @@ function composer(props, onData) {
   });
 }
 
+/**
+ * @name ActionViewContainer
+ * @param {React.Component} Comp wrapped component
+ * @returns {React.Component} returns a React component
+ */
 export default function ActionViewContainer(Comp) {
+  /**
+   * @name CompositeComponent
+   * @param {Object} props Component props
+   * @returns {React.Component} Wrapped Toolbar component
+   */
   function CompositeComponent(props) {
     return (
       <AdminContextProvider>

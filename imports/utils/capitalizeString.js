@@ -6,9 +6,11 @@
  * @param {Object} options options for capitalization
  * @param {Object} options.titleCase capitalize first letter of all words
  * @summary Capitalizes letters of a string
- * @return {String} original string, transformed with capitalizations
+ * @returns {String} original string, transformed with capitalizations
  */
 export default function capitalizeString(string, options) {
+  if (!string) return null;
+
   if (options && options.titleCase) {
     const str = string.toLowerCase().split(" ");
     for (let i = 0; i < str.length; i++) { // eslint-disable-line

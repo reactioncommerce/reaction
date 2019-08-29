@@ -10,7 +10,7 @@ import _ from "lodash";
  * @memberof Catalog
  * @param {Object} variant - A top level product variant object.
  * @param {Object[]} variants - Array of product variant option objects.
- * @return {number} Variant quantity
+ * @returns {number} Variant quantity
  */
 export default function getProductQuantity(variant, variants = []) {
   const options = variants.filter((option) => option.ancestors[1] === variant._id);
@@ -26,7 +26,7 @@ export default function getProductQuantity(variant, variants = []) {
  * @summary If all the product variants have a quantity of 0 return `true`.
  * @memberof Catalog
  * @param {Object[]} variants - Array with top-level variants
- * @return {Boolean} true if quantity is zero.
+ * @returns {Boolean} true if quantity is zero.
  */
 function isSoldOut(variants) {
   const results = variants.map((variant) => {
@@ -41,7 +41,7 @@ function isSoldOut(variants) {
  * @summary If at least one of the product variants quantity is less than the low inventory threshold return `true`.
  * @memberof Catalog
  * @param {Object[]} variants - Array of child variants
- * @return {boolean} low quantity or not
+ * @returns {boolean} low quantity or not
  */
 function isLowQuantity(variants) {
   const threshold = variants && variants.length && variants[0].lowInventoryWarningThreshold;

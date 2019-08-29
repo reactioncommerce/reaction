@@ -10,7 +10,7 @@ import { decodeNavigationTreeOpaqueId } from "@reactioncommerce/reaction-graphql
  * @param {String} args.input._id ID of the navigation tree to publish changes
  * @param {String} [args.input.clientMutationId] An optional string identifying the mutation call
  * @param {Object} context An object containing the per-request state
- * @return {Promise<Object>} PublishNavigationTreePayload
+ * @returns {Promise<Object>} PublishNavigationTreePayload
  */
 export default async function publishNavigationChanges(parentResult, { input }, context) {
   const {

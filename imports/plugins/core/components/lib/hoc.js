@@ -1,8 +1,8 @@
-import _ from "lodash";
+/* eslint-disable node/no-missing-require, node/no-unpublished-require */
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Accounts, Groups } from "/lib/collections";
+import { Accounts } from "/lib/collections";
 import { lifecycle } from "recompose";
 import { composeWithTracker } from "./composer";
 
@@ -20,7 +20,7 @@ if (Meteor.isClient) {
  * @method
  * @summary A wrapper to reactively inject the current user into a component
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with a "currentUser" prop
+ * @returns {Function} the new wrapped component with a "currentUser" prop
  * @memberof Components/Helpers
  */
 export function withCurrentUser(component) {
@@ -35,7 +35,7 @@ export function withCurrentUser(component) {
  * @method
  * @summary A wrapper to reactively inject the moment package into a component
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with a "moment" prop
+ * @returns {Function} the new wrapped component with a "moment" prop
  * @memberof Components/Helpers
  */
 export function withMoment(component) {
@@ -60,7 +60,7 @@ export function withMoment(component) {
  * @method
  * @summary A wrapper to reactively inject the moment package into a component
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with a "moment" prop
+ * @returns {Function} the new wrapped component with a "moment" prop
  * @memberof Components/Helpers
  */
 export function withMomentTimezone(component) {
@@ -85,7 +85,7 @@ export function withMomentTimezone(component) {
  * @summary A wrapper to reactively inject the current account into a component.
  * This assumes you have signed up and are not an anonymous user.
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with a "currentAccount" prop
+ * @returns {Function} the new wrapped component with a "currentAccount" prop
  * @memberof Components/Helpers
  */
 export function withCurrentAccount(component) {
@@ -117,7 +117,7 @@ export function withCurrentAccount(component) {
  * @summary A wrapper to reactively inject the current user's admin status.
  * Sets a boolean 'isAdmin' prop on the wrapped component.
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with an "isAdmin" prop
+ * @returns {Function} the new wrapped component with an "isAdmin" prop
  * @memberof Components/Helpers
  */
 export function withIsAdmin(component) {
@@ -127,51 +127,12 @@ export function withIsAdmin(component) {
 }
 
 /**
- * @name withPermissions
- * @method
- * @summary A wrapper to reactively inject a user's permission based on group or roles
- * Group access is given to users at that group level and above
- * @param  {Array|String} roles String or array of strings of permissions to check. default: roles=["guest", "anonymous"]
- * @param  {String} group Slug title of a group to check against. Group option supercedes roles option. default: group="customer".
- * @return {Function} the new wrapped component with a "hasPermissions" prop
- * @memberof Components/Helpers
- */
-export function withPermissions({ roles = ["guest", "anonymous"], group }) {
-  return composeWithTracker((props, onData) => {
-    let hasPermissions = Reaction.hasPermission(roles);
-
-    if (!group) {
-      return onData(null, { hasPermissions });
-    }
-
-    // if group is passed, use group access instead
-    const grpSub = Meteor.subscribe("Groups");
-
-    if (grpSub.ready()) {
-      const grp = Groups.findOne({ slug: group });
-
-      if (grp && grp.permissions) {
-        const user = Meteor.user();
-        const permissions = user.roles[Reaction.getShopId()] || [];
-        // checks that userPermissions includes all elements from groupPermissions
-        hasPermissions = _.difference(grp.permissions, permissions).length === 0;
-      }
-
-      onData(null, { hasPermissions });
-    }
-
-    return null;
-  });
-}
-
-
-/**
  * @name withIsOwner
  * @method
  * @summary A wrapper to reactively inject the current user's owner status.
  * Sets a boolean 'isOwner' prop on the wrapped component.
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with an "isOwner" prop
+ * @returns {Function} the new wrapped component with an "isOwner" prop
  * @memberof Components/Helpers
  */
 export function withIsOwner(component) {
@@ -185,7 +146,7 @@ export function withIsOwner(component) {
  * @method
  * @summary A wrapper to dynamically import & inject react-transition-group's <CSSTransition /> into a component
  * @param {Function|React.Component} component - the component to wrap
- * @return {Object} the new wrapped component with a "CSSTransition" prop
+ * @returns {Object} the new wrapped component with a "CSSTransition" prop
  * @memberof Components/Helpers
  */
 export function withCSSTransition(component) {
@@ -220,7 +181,7 @@ export function withCSSTransition(component) {
  * @summary A wrapper that reactively injects an extended version of react-animate-height's <AnimateHeight />
  *  into a component.
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with a "AnimateHeight" prop
+ * @returns {Function} the new wrapped component with a "AnimateHeight" prop
  * @memberof Components/Helpers
  */
 export function withAnimateHeight(component) {

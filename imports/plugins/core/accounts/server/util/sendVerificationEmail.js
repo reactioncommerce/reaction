@@ -16,7 +16,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  *                 This address must be in the user's emails list.
  *                 Defaults to the first unverified email in the list.
  * @param {String} [input.bodyTemplate] Template name for rendering the email body
- * @return {Job} - returns a sendEmail Job instance
+ * @returns {Job} - returns a sendEmail Job instance
  */
 export default async function sendVerificationEmail({
   bodyTemplate = "accounts/verifyEmail",

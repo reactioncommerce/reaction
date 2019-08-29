@@ -14,7 +14,7 @@ const DEFAULT_LIMIT = 20;
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
  * @param {Boolean} [options.includeHasNextPage] Whether to return the `pageInfo.hasNextPage`.
  *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
- * @return {Promise<Object>} `{ hasNextPage, hasPreviousPage }`
+ * @returns {Promise<Object>} `{ hasNextPage, hasPreviousPage }`
  */
 export default async function applyPaginationToMongoCursor(cursor, { first, last } = {}, {
   includeHasNextPage = true,
@@ -26,8 +26,10 @@ export default async function applyPaginationToMongoCursor(cursor, { first, last
   const limit = first || last || DEFAULT_LIMIT;
 
   let skip = 0;
+
   let hasNextPage = null;
   let hasPreviousPage = null;
+
   if (last) {
     // Get the new count after applying before/after
     const totalCount = await cursor.clone().count();

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import OrderTable from "../containers/orderTableContainer";
+import OrderTable from "../components/orderTable";
 import OrderFilter from "./orderFilter";
 
 /**

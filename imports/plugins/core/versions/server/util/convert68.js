@@ -99,7 +99,7 @@ async function simpleInventoryForProductConfigurations(context, input) {
  * @private
  * @param {Object} context App context
  * @param {Object} input Input
- * @return {Object[]} Array of result objects
+ * @returns {Object[]} Array of result objects
  */
 async function getInventoryResults(context, input) {
   const { productConfigurations, shopId } = input;

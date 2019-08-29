@@ -6,7 +6,7 @@ class Metadata extends Component {
   /**
    * Handle form submit
    * @param  {Event} event Event object
-   * @return {void} no return value
+   * @returns {void} no return value
    */
   handleSubmit = (event) => {
     event.preventDefault();
@@ -32,7 +32,7 @@ class Metadata extends Component {
 
   /**
    * Render user readable metadata
-   * @return {JSX} metadata
+   * @returns {JSX} metadata
    */
   renderMetadata() {
     if (this.props.metafields) {
@@ -49,7 +49,7 @@ class Metadata extends Component {
 
   /**
    * Render a metadata form
-   * @return {JSX} metadata forms for each row of metadata
+   * @returns {JSX} metadata forms for each row of metadata
    */
   renderMetadataForm() {
     if (this.props.metafields) {
@@ -82,7 +82,7 @@ class Metadata extends Component {
 
   /**
    * render
-   * @return {JSX} component
+   * @returns {JSX} component
    */
   render() {
     // Admin editable metadata

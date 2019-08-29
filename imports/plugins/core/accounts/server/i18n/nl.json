@@ -19,7 +19,6 @@
           "createGroupError": "Fout bij het maken van een groep",
           "updateGroupError": "Fout bij het bijwerken van de groep",
           "changeShopOwnerWarn": "U gaat op de hoogte van de Winkel eigenaar. De huidige eigenaar wordt vervangen",
-          "changeMktOwnerWarn": "Je staat op het punt om de Marketplace-eigenaar te veranderen. De huidige eigenaar wordt vervangen",
           "removeUserWarn": "U bent op het punt een gebruiker te verwijderen van een groep. De gebruiker zal de bijbehorende machtigingen verliezen",
           "accountsSettingsLabel": "Rekeningen",
           "accountsSettingsTitle": "Rekeningen",

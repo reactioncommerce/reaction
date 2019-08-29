@@ -9,7 +9,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} context - GraphQL execution context
  * @param {Object} address - address
  * @param {String} [accountUserId] - `account.userId` used by admin to edit users
- * @return {Promise<Object>} with updated address
+ * @returns {Promise<Object>} with updated address
  */
 export default async function addressBookAdd(context, address, accountUserId) {
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;

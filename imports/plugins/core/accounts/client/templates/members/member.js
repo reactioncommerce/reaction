@@ -136,7 +136,7 @@ Template.memberSettings.helpers({
 
   /**
    * showAvalaraTaxSettings
-   * @return {Boolean} True if avalara is enabled. Defaults to false if not found
+   * @returns {Boolean} True if avalara is enabled. Defaults to false if not found
    * @ignore
    */
   showAvalaraTaxSettings() {

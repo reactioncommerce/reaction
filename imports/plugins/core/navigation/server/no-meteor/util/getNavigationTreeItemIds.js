@@ -2,7 +2,7 @@
  * @name getNavigationTreeItemIds
  * @summary Recursively returns the _ids of all items in a navigation tree
  * @param {Array} items Navigation tree's items
- * @return {Array} Array of _ids
+ * @returns {Array} Array of _ids
  */
 export default function getNavigationTreeItemIds(items) {
   let itemIds = [];

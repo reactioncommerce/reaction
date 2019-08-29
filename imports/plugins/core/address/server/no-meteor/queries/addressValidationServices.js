@@ -5,7 +5,7 @@ import { addressValidationServices as addressValidationServicesObject } from "..
  * @name addressValidationServices
  * @method
  * @summary Returns all registered address validation services
- * @return {Promise<Object[]>} Promise that resolves with an object with results
+ * @returns {Promise<Object[]>} Promise that resolves with an object with results
  */
 export default async function addressValidationServices() {
   // No permissions check necessary

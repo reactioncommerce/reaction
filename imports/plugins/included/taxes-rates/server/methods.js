@@ -17,7 +17,7 @@ const methods = {
    * @method
    * @memberof TaxesRates/Methods
    * @param  {String} taxId tax taxId to delete
-   * @return {String} returns update/insert result
+   * @returns {String} returns update/insert result
    */
   "taxes/deleteRate"(taxId) {
     check(taxId, String);
@@ -36,7 +36,7 @@ const methods = {
    * @method
    * @memberof TaxesRates/Methods
    * @param  {Object} doc A Taxes document to be inserted
-   * @return {String} Insert result
+   * @returns {String} Insert result
    */
   "taxes/addRate"(doc) {
     check(doc, Object); // actual schema validation happens during insert below
@@ -56,7 +56,7 @@ const methods = {
    * @method
    * @memberof TaxesRates/Methods
    * @param  {Object} details An object with _id and modifier props
-   * @return {String} Update result
+   * @returns {String} Update result
    */
   "taxes/editRate"(details) {
     check(details, {

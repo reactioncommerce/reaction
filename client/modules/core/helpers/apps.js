@@ -17,7 +17,7 @@ import { Packages, Shops } from "/lib/collections";
 /**
  * @method Apps
  * @param {optionHash} optionHash Option hash
- * @return {Object[]} returns an array of filtered, structure reactionApps
+ * @returns {Object[]} returns an array of filtered, structure reactionApps
  */
 export function Apps(optionHash) {
   const { getUserId } = Reaction;
@@ -156,7 +156,7 @@ export function Apps(optionHash) {
  * @example {{#each reactionApps provides="settings" name=packageName container=container}}
  * @example {{#each reactionApps provides="userAccountDropdown" enabled=true}}
  * @param {optionHash} optionHash Option hash
- * @return {Object[]} returns an array of filtered, structure reactionApps
+ * @returns {Object[]} returns an array of filtered, structure reactionApps
  * ```[{
  *   enabled: true
  *   label: "Stripe"

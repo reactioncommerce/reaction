@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import Log from './logger';
+import Log from './logger.mjs';
 
 /**
  * Synchronously check if a file or directory exists
  * @param {String} searchPath - path to file or directory
- * @return {Boolean} - returns true if file or directory exists
+ * @returns {Boolean} - returns true if file or directory exists
  */
 export function exists(searchPath) {
   try {
@@ -19,7 +19,7 @@ export function exists(searchPath) {
 /**
  * Synchronously check if a file or directory is empty or doesn't exist
  * @param {String} searchPath - path to file or directory
- * @return {Boolean} returns true if file or directory is empty or missing
+ * @returns {Boolean} returns true if file or directory is empty or missing
  */
 export function isEmptyOrMissing(searchPath) {
   let stat;
@@ -40,7 +40,7 @@ export function isEmptyOrMissing(searchPath) {
 /**
  * Get an array of directory names in a given path
  * @param {String} dir - path to a directory
- * @return {Array} returns an array of directory names
+ * @returns {Array} returns an array of directory names
  */
 export function getDirectories(dir) {
   try {

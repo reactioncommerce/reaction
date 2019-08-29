@@ -8,7 +8,7 @@ import { slugify } from "transliteration";
  * @memberof Helpers
  * @locus Server
  * @param  {String} slugString - string to slugify
- * @return {String} slugified string
+ * @returns {String} slugified string
  */
 export default function getSlug(slugString) {
   return (typeof slugString === "string" && slugify(slugString)) || "";

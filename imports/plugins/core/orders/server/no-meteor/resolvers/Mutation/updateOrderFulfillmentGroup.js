@@ -14,7 +14,7 @@ import { decodeOrderOpaqueId, decodeOrderFulfillmentGroupOpaqueId } from "@react
  * @param {String} [args.input.trackingUrl] - Set this as the current order fulfillment group shipment tracking URL
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} UpdateOrderFulfillmentGroupPayload
+ * @returns {Promise<Object>} UpdateOrderFulfillmentGroupPayload
  */
 export default async function updateOrderFulfillmentGroup(parentResult, { input }, context) {
   const {

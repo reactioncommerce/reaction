@@ -87,7 +87,7 @@ function getSingleCartItem(options = {}) {
  * @memberof Fixtures
  * @param  {String} productId ID of Product
  * @param  {String} variantId ID of Product Variant
- * @return {Object}           Inserted cart object
+ * @returns {Object}           Inserted cart object
  */
 export function createCart(productId, variantId) {
   const product = Products.findOne(productId);
@@ -145,6 +145,10 @@ export function createCart(productId, variantId) {
   return insertedCart;
 }
 
+/**
+ * @description exports cart fixtures
+ * @returns {undefined} undefined
+ */
 export default function () {
   /**
    * @name Cart

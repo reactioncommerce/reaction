@@ -9,7 +9,7 @@ import { i18next } from "/client/api";
 class TextField extends Component {
   /**
    * Getter: value
-   * @return {String} value for text input
+   * @returns {String} value for text input
    */
   get value() {
     // if the props.value is not a number
@@ -22,7 +22,7 @@ class TextField extends Component {
 
   /**
    * Getter: isValid
-   * @return {Boolean|undefined} true/false if field is valid from props.isValid or props.validation[this.props.name].isValid
+   * @returns {Boolean|undefined} true/false if field is valid from props.isValid or props.validation[this.props.name].isValid
    */
   get isValid() {
     const { isValid } = this.props;
@@ -73,7 +73,7 @@ class TextField extends Component {
    * onValueChange
    * @summary set the state when the value of the input is changed
    * @param  {Event} event Event object
-   * @return {void}
+   * @returns {void}
    */
   onChange = (event) => {
     if (this.props.onChange) {
@@ -85,7 +85,7 @@ class TextField extends Component {
    * onBlur
    * @summary set the state when the value of the input is changed
    * @param  {Event} event Event object
-   * @return {void}
+   * @returns {void}
    */
   onBlur = (event) => {
     if (this.props.onBlur) {
@@ -97,7 +97,7 @@ class TextField extends Component {
    * onFocus
    * @summary set the state when the input is focused
    * @param  {Event} event Event object
-   * @return {void}
+   * @returns {void}
    */
   onFocus = (event) => {
     if (this.props.onFocus) {
@@ -109,7 +109,7 @@ class TextField extends Component {
    * onKeyDown
    * @summary set the state when the value of the input is changed
    * @param  {Event} event Event object
-   * @return {void}
+   * @returns {void}
    */
   onKeyDown = (event) => {
     if (this.props.onKeyDown) {
@@ -123,7 +123,7 @@ class TextField extends Component {
 
   /**
    * Render a multiline input (textarea)
-   * @return {JSX} jsx
+   * @returns {JSX} jsx
    */
   renderMultilineInput() {
     const placeholder = i18next.t(this.props.i18nKeyPlaceholder, {
@@ -149,7 +149,7 @@ class TextField extends Component {
 
   /**
    * Render a singleline input
-   * @return {JSX} jsx
+   * @returns {JSX} jsx
    */
   renderSingleLineInput() {
     const inputClassName = classnames({
@@ -183,7 +183,7 @@ class TextField extends Component {
 
   /**
    * Render either a multiline (textarea) or singleline (input)
-   * @return {JSX} jsx template
+   * @returns {JSX} jsx template
    */
   renderField() {
     if (this.props.multiline === true) {
@@ -195,7 +195,7 @@ class TextField extends Component {
 
   /**
    * Render the label for the text field if one is provided in props
-   * @return {ReactNode|null} react node or null
+   * @returns {ReactNode|null} react node or null
    */
   renderLabel() {
     if (this.props.label || this.props.i18nKeyLabel) {
@@ -211,7 +211,7 @@ class TextField extends Component {
 
   /**
    * Render help text or validation message
-   * @return {ReactNode|null} react node or null
+   * @returns {ReactNode|null} react node or null
    */
   renderHelpText() {
     const helpMode = this.isHelpMode;
@@ -247,7 +247,7 @@ class TextField extends Component {
 
   /**
    * Render Component
-   * @return {JSX} component
+   * @returns {JSX} component
    */
   render() {
     const classes = classnames({

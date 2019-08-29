@@ -314,11 +314,10 @@ registerSchema("StorefrontUrls", StorefrontUrls);
  * @property {String} unitsOfMeasure.$.label default value: `Ounces`
  * @property {Boolean} unitsOfMeasure.$.default default value: `false`
  * @property {Metafield[]} metafields optional
- * @property {String[]} defaultSellerRoles default values: `["owner", "admin", "seller", "guest", "manage-users", "orders", "account/profile", "product", "createProduct", "tag", "index", "cart/completed"]`
+ * @property {String[]} defaultSellerRoles default values: `["owner", "admin", "seller", "guest", "manage-users", "orders", "account/profile", "product", "createProduct", "product/admin", tag", "index", "cart/completed"]`
  * @property {Layout[]} layout optional
  * @property {ShopTheme} theme optional
  * @property {BrandAsset[]} brandAssets optional
- * @property {String} appVersion optional
  * @property {Date} createdAt optional
  * @property {Date} updatedAt optional
  * @property {Object[]} paymentMethods blackbox, default value: `[]`
@@ -496,6 +495,7 @@ export const Shop = new SimpleSchema({
       "account/profile",
       "product",
       "createProduct",
+      "product/admin",
       "tag",
       "index",
       "cart/completed"
@@ -525,10 +525,6 @@ export const Shop = new SimpleSchema({
   },
   "brandAssets.$": {
     type: BrandAsset
-  },
-  "appVersion": {
-    type: String,
-    optional: true
   },
   "createdAt": {
     type: Date,
@@ -573,6 +569,12 @@ export const Shop = new SimpleSchema({
     type: StorefrontUrls,
     optional: true,
     defaultValue: {}
+  },
+  "allowCustomUserLocale": {
+    type: Boolean,
+    defaultValue: true,
+    optional: true,
+    label: "Allow custom user locale"
   }
 });
 

@@ -19,7 +19,6 @@
           "createGroupError": "حدث خطأ أثناء إنشاء المجموعة",
           "updateGroupError": "حدث خطأ أثناء تحديث المجموعة",
           "changeShopOwnerWarn": "أنت على وشك تغيير مالك المحل. سيتم استبدال المالك الحالي",
-          "changeMktOwnerWarn": "أنت على وشك تغيير مالك ماركتبليس. سيتم استبدال المالك الحالي",
           "removeUserWarn": "أنت على وشك إزالة مجموعة مستخدم من مجموعة. سيخسر المستخدم الأذونات المقترنة",
           "accountsSettingsLabel": "الحسابات",
           "accountsSettingsTitle": "الحسابات",

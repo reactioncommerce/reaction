@@ -3,13 +3,13 @@
  * @method
  * @memberof GraphQL/ResolverUtilities
  * @summary Adjusts a MongoDB filter based on GraphQL `before` and `after` params
- * @param {Object} args
+ * @param {Object} args object of arguments passed
  * @param {Object} [args.after] A document that all results should be filtered to be after.
  * @param {Object} [args.baseFilter] The MongoDB filter object to extend.
  * @param {Object} [args.before] A document that all results should be filtered to be before.
  * @param {String} [args.sortBy] The name of the field we are sorting by. Default _id
  * @param {String} [args.sortOrder] The sort order, "asc" or "desc". Default "asc"
- * @return {Object} The potentially-modified filter object
+ * @returns {Object} The potentially-modified filter object
  */
 export default function applyBeforeAfterToFilter({
   after,
