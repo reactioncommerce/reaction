@@ -3,7 +3,7 @@
   "i18n": "ar",
   "ns": "discount-codes",
   "translation": {
-    "reaction-discounts": {
+    "discount-codes": {
       "checkoutPayment": {
         "applyDiscount": "تطبيق",
         "discountError": "عذرا، هناك خطأ تطبيق الخصم."

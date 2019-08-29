@@ -3,7 +3,7 @@
   "i18n": "cs",
   "ns": "discount-codes",
   "translation": {
-    "reaction-discounts": {
+    "discount-codes": {
       "checkoutPayment": {
         "applyDiscount": "Aplikovat",
         "discountError": "Je nám líto, došlo k chybě při použití slevu."

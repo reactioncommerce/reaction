@@ -3,7 +3,7 @@
   "i18n": "ru",
   "ns": "discount-codes",
   "translation": {
-    "reaction-discounts": {
+    "discount-codes": {
       "checkoutPayment": {
         "applyDiscount": "Подать заявление",
         "discountError": "К сожалению, произошла ошибка при применении скидки."

@@ -3,7 +3,7 @@
   "i18n": "nl",
   "ns": "discount-codes",
   "translation": {
-    "reaction-discounts": {
+    "discount-codes": {
       "checkoutPayment": {
         "applyDiscount": "Solliciteren",
         "discountError": "Sorry, was er een fout toe te passen korting."

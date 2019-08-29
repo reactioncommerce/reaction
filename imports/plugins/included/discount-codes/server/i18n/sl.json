@@ -3,7 +3,7 @@
   "i18n": "sl",
   "ns": "discount-codes",
   "translation": {
-    "reaction-discounts": {
+    "discount-codes": {
       "checkoutPayment": {
         "applyDiscount": "Uporabi",
         "discountError": "Žal je prišlo do napake uporabo popust."

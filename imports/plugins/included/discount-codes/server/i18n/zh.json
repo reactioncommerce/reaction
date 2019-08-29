@@ -3,7 +3,7 @@
   "i18n": "zh",
   "ns": "discount-codes",
   "translation": {
-    "reaction-discounts": {
+    "discount-codes": {
       "checkoutPayment": {
         "applyDiscount": "申请",
         "discountError": "抱歉，申请折扣的错误。"

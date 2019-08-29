@@ -3,7 +3,7 @@
   "i18n": "it",
   "ns": "discount-codes",
   "translation": {
-    "reaction-discounts": {
+    "discount-codes": {
       "checkoutPayment": {
         "applyDiscount": "Applicare",
         "discountError": "Spiacente, c'è stato un errore di applicazione di sconto."

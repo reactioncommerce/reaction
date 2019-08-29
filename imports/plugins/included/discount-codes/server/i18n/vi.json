@@ -3,7 +3,7 @@
   "i18n": "vi",
   "ns": "discount-codes",
   "translation": {
-    "reaction-discounts": {
+    "discount-codes": {
       "checkoutPayment": {
         "applyDiscount": "Ứng dụng",
         "discountError": "Xin lỗi, có lỗi khi áp dụng giảm giá."
