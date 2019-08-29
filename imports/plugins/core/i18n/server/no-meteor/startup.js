@@ -1,5 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
+import { addTranslationRoutes } from "./translations";
 
 /**
  * @summary Called on startup
@@ -9,12 +10,17 @@ import Random from "@reactioncommerce/random";
  */
 export default async function startup(context) {
   const {
+    app,
     appEvents,
     collections: {
       Assets,
       Translations
     }
   } = context;
+
+  if (app.expressApp) {
+    addTranslationRoutes(app.expressApp);
+  }
 
   appEvents.on("afterShopCreate", async ({ shop }) => {
     const { _id: shopId } = shop;
