@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import mutateNewOrderItemBeforeCreate from "./mutateNewOrderItemBeforeCreate";
 import mutateNewVariantBeforeCreate from "./mutateNewVariantBeforeCreate";
 import publishProductToCatalog from "./publishProductToCatalog";
@@ -18,6 +19,7 @@ export default async function register(app) {
     label: "Taxes",
     name: "reaction-taxes",
     icon: "fa fa-university",
+    i18n,
     cart: {
       transforms: [
         {
