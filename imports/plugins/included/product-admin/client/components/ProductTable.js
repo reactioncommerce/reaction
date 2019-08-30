@@ -19,12 +19,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1)
   },
   helpText: {
-    marginLeft: "20px",
-    letterSpacing: "0.28px",
-    fontWeight: theme.typography.fontWeightRegular
-  },
-  cardHeaderTitle: {
-    letterSpacing: "0.3px"
+    marginLeft: "20px"
   },
   cardContainer: {
     alignItems: "center"
@@ -225,7 +220,7 @@ function ProductTable({ onCreateProduct }) {
                     <ImportIcon className={classes.leftIcon}/>
                     {i18next.t("admin.importCard.import")}
                   </Button>
-                  <Typography variant="h5" display="inline" className={classes.helpText}>
+                  <Typography variant="caption" display="inline" className={classes.helpText}>
                     {i18next.t("admin.importCard.importHelpText")}
                   </Typography>
                 </Grid>
