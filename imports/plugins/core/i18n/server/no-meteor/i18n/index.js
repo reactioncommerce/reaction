@@ -1,5 +1,3 @@
-import { loadTranslations } from "/imports/plugins/core/core/server/startup/i18n";
-
 import ar from "./ar.json";
 import bg from "./bg.json";
 import de from "./de.json";
@@ -28,5 +26,6 @@ import zh from "./zh.json";
 // imports for easier handling by
 // automated translation software
 //
-// loadTranslations([en]);
-loadTranslations([ar, bg, de, el, en, es, fr, he, hr, it, my, nb, nl, pl, pt, ro, ru, sl, sv, tr, vi, zh]);
+export default {
+  translations: [ar, bg, de, el, en, es, fr, he, hr, it, my, nb, nl, pl, pt, ro, ru, sl, sv, tr, vi, zh]
+};

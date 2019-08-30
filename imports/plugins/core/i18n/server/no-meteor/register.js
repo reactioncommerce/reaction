@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import { registerPluginHandler } from "./registration";
 import startup from "./startup";
 
@@ -11,6 +12,7 @@ export default async function register(app) {
     label: "i18n",
     name: "reaction-i18n",
     icon: "fa fa-language",
+    i18n,
     collections: {
       Translations: {
         name: "Translations",
