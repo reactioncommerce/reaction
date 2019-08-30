@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import setDiscountsOnCart from "./util/setDiscountsOnCart";
 
 /**
@@ -10,6 +11,7 @@ export default async function register(app) {
     label: "Discounts",
     name: "reaction-discounts",
     icon: "fa fa-gift",
+    i18n,
     collections: {
       Discounts: {
         name: "Discounts",
