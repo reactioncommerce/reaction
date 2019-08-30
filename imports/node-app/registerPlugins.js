@@ -18,6 +18,7 @@ import registerNotificationsPlugin from "/imports/plugins/included/notifications
 import registerOrdersPlugin from "/imports/plugins/core/orders/server/no-meteor/register";
 import registerPaymentsPlugin from "/imports/plugins/core/payments/server/no-meteor/register";
 import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
+import registerProductAdminPlugin from "/imports/plugins/included/product-admin/server/no-meteor/register";
 import registerSettingsPlugin from "/imports/plugins/core/settings/server/register";
 import registerShippingPlugin from "/imports/plugins/core/shipping/server/no-meteor/register";
 import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
@@ -73,6 +74,7 @@ export default async function registerPlugins(app) {
    * Catalog
    */
   await registerProductPlugin(app); // REQUIRED
+  await registerProductAdminPlugin(app); // REQUIRED
   await registerCatalogPlugin(app); // REQUIRED
   await registerTagsPlugin(app); // REQUIRED
   await registerCheckoutPlugin(app); // REQUIRED
