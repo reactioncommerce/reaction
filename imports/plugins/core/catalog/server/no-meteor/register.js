@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import mutations from "./mutations";
 import queries from "./queries";
 import resolvers from "./resolvers";
@@ -14,6 +15,7 @@ export default async function register(app) {
     label: "Catalog",
     name: "reaction-catalog",
     icon: "fa fa-book",
+    i18n,
     collections: {
       Catalog: {
         name: "Catalog",
