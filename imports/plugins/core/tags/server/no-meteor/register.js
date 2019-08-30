@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import mutations from "./mutations";
 import queries from "./queries";
 import resolvers from "./resolvers";
@@ -13,6 +14,7 @@ export default async function register(app) {
     label: "Tags",
     name: "reaction-tags",
     icon: "fa fa-tag",
+    i18n,
     collections: {
       Tags: {
         name: "Tags",
