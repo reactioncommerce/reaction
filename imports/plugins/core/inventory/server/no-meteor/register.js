@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import queries from "./queries";
 import schemas from "./schemas";
 import publishProductToCatalog from "./utils/publishProductToCatalog";
@@ -15,6 +16,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Inventory",
     name: "reaction-inventory",
+    i18n,
     functionsByType: {
       publishProductToCatalog: [publishProductToCatalog],
       startup: [startup],
