@@ -5,7 +5,6 @@ import register from "../no-meteor/register";
 import startNodeApp from "./startNodeApp";
 import "./browser-policy";
 import CollectionSecurity from "./collection-security";
-import { importAllTranslations } from "./i18n";
 import RateLimiters from "./rate-limits";
 
 const { REACTION_METEOR_APP_COMMAND_START_TIME } = process.env;
@@ -24,8 +23,6 @@ export default function startup() {
   }
 
   Reaction.whenAppInstanceReady(register);
-
-  importAllTranslations();
 
   CollectionSecurity();
   RateLimiters();

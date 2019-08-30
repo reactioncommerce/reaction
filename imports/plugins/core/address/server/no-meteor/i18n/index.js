@@ -6,5 +6,5 @@ import en from "./en.json";
 // automated translation software
 //
 export default {
-  translations: [en]
+  translations: [...en]
 };

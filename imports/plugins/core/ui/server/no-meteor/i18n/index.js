@@ -29,5 +29,30 @@ import zh from "./zh.json";
 // automated translation software
 //
 export default {
-  translations: [ar, bg, cs, de, el, en, es, fr, he, hr, hu, it, my, nb, nl, pl, pt, ro, ru, sl, sv, tr, vi, zh]
+  translations: [
+    ...ar,
+    ...bg,
+    ...cs,
+    ...de,
+    ...el,
+    ...en,
+    ...es,
+    ...fr,
+    ...he,
+    ...hr,
+    ...hu,
+    ...it,
+    ...my,
+    ...nb,
+    ...nl,
+    ...pl,
+    ...pt,
+    ...ro,
+    ...ru,
+    ...sl,
+    ...sv,
+    ...tr,
+    ...vi,
+    ...zh
+  ]
 };

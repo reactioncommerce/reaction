@@ -13,7 +13,6 @@ class LocalizationSettings extends Component {
     languages: PropTypes.array,
     onEnableAllCurrencies: PropTypes.func,
     onEnableAllLanguages: PropTypes.func,
-    onReloadTranslations: PropTypes.func,
     onUpdateCurrencyConfiguration: PropTypes.func,
     onUpdateLanguageConfiguration: PropTypes.func,
     onUpdateLocalization: PropTypes.func,
@@ -128,12 +127,6 @@ class LocalizationSettings extends Component {
     }
   }
 
-  handleReloadTranslations = (event) => {
-    if (typeof this.props.onReloadTranslations === "function") {
-      this.props.onReloadTranslations(event.altKey);
-    }
-  }
-
   renderListControls(name) {
     return (
       <Components.CardToolbar>
@@ -150,16 +143,6 @@ class LocalizationSettings extends Component {
           value={name}
           onClick={this.handleAllOff}
         />
-        {name === "language" && "|"}
-        {name === "language" &&
-          <Components.FlatButton
-            i18nKeyTooltip="admin.i18nSettings.reloadTranslations"
-            tooltip="Reload translations"
-            tooltipAttachment="middle left"
-            icon="fa fa-refresh"
-            onClick={this.handleReloadTranslations}
-          />
-        }
       </Components.CardToolbar>
     );
   }
