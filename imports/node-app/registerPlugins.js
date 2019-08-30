@@ -34,6 +34,7 @@ import registerTaxesPlugin from "/imports/plugins/core/taxes/server/no-meteor/re
 import registerTaxesRatesPlugin from "/imports/plugins/included/taxes-rates/server/no-meteor/register";
 import registerTemplatesPlugin from "/imports/plugins/core/templates/server/no-meteor/register";
 import registerTestAddressValidationPlugin from "/imports/plugins/included/address-validation-test/server/register";
+import registerUIPlugin from "/imports/plugins/core/ui/server/no-meteor/register";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
@@ -53,6 +54,7 @@ export default async function registerPlugins(app) {
   await registerI18nPlugin(app); // REQUIRED
   await registerAddressPlugin(app); // REQUIRED
   await registerDashboardPlugin(app); // REQUIRED
+  await registerUIPlugin(app); // REQUIRED
   await registerSystemInfoPlugin(app); // OPTIONAL
 
   /**
