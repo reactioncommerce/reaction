@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import i18n from "./i18n";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 
@@ -19,6 +20,7 @@ export default async function register(app) {
     label: "Sitemap Generator",
     name: "reaction-sitemap-generator",
     icon: "fa fa-vine",
+    i18n,
     collections: {
       Sitemaps: {
         name: "Sitemaps",
