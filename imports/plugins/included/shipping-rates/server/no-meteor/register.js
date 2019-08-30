@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import getFulfillmentMethodsWithQuotes from "./getFulfillmentMethodsWithQuotes";
 import resolvers from "./resolvers";
 import mutations from "./mutations";
@@ -14,6 +15,7 @@ export default async function register(app) {
     label: "Shipping Rates",
     name: "reaction-shipping-rates",
     icon: "fa fa-truck-o",
+    i18n,
     collections: {
       FlatRateFulfillmentRestrictions: {
         name: "FlatRateFulfillmentRestrictions",
