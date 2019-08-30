@@ -30,6 +30,11 @@
               "ofText": "za",
               "rowsText": "vrstice"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Kliknite, da odstranite sliko",
+            "addedImage": "To je nova podoba. Objavi, da shranite spremembe.",
+            "removedImage": "Slika je bila izbrisana. Objavi, da shranite spremembe."
           }
         }
       }

@@ -30,6 +30,11 @@
               "ofText": "de",
               "rowsText": "Linhas"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Clique para remover a imagem",
+            "addedImage": "Esta é uma nova imagem. Publique para salvar as alterações.",
+            "removedImage": "A imagem foi excluída. Publique para salvar as alterações."
           }
         }
       }

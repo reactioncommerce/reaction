@@ -30,6 +30,11 @@
               "ofText": "di",
               "rowsText": "righe"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Fare clic per rimuovere l'immagine",
+            "addedImage": "Questa è una nuova immagine. Pubblica per salvare le modifiche.",
+            "removedImage": "L'immagine è stata cancellata. Pubblica per salvare le modifiche."
           }
         }
       }

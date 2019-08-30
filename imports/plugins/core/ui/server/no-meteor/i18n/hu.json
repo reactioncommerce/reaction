@@ -30,6 +30,11 @@
               "ofText": "nak,-nek",
               "rowsText": "sorok"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Kattintson a kép eltávolítása",
+            "addedImage": "Ez egy új képet. Adja változások mentéséhez.",
+            "removedImage": "Képet törölték. Adja változások mentéséhez."
           }
         }
       }

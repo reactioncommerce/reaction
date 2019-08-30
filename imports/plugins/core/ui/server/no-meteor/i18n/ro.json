@@ -30,6 +30,11 @@
               "ofText": "de",
               "rowsText": "rânduri"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Faceți clic pentru a elimina imaginea",
+            "addedImage": "Aceasta este o imagine nouă. Publicați pentru a salva modificările.",
+            "removedImage": "Imaginea a fost ștearsă. Publicați pentru a salva modificările."
           }
         }
       }

@@ -30,6 +30,11 @@
               "ofText": "de",
               "rowsText": "Filas"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Haga clic para eliminar la imagen",
+            "addedImage": "Esta es una nueva imagen. Publicar para guardar los cambios.",
+            "removedImage": "Se ha eliminado la imagen. Publicar para guardar los cambios."
           }
         }
       }

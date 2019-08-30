@@ -19,6 +19,11 @@
               "ofText": "of",
               "rowsText": "rows"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Click to remove image",
+            "addedImage": "This is a new image. Publish to save changes.",
+            "removedImage": "Image has been deleted. Publish to save changes."
           }
         }
       }

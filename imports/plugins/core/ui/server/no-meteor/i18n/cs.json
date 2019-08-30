@@ -30,6 +30,11 @@
               "ofText": "z",
               "rowsText": "Řádky"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Klepnutím odeberete obrázek",
+            "addedImage": "Toto je nový obrázek. Publikujte, chcete-li uložit změny.",
+            "removedImage": "Obrázek byl smazán. Publikujte, chcete-li uložit změny."
           }
         }
       }

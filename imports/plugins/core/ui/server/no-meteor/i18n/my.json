@@ -30,6 +30,11 @@
               "ofText": "၏",
               "rowsText": "အတန်း"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "image ကိုဖယ်ရှားပစ်ရန်ကလစ်နှိပ်ပါ",
+            "addedImage": "ဒါကအသစ်တခုပုံရိပ်ဖြစ်ပါတယ်။ အပြောင်းအလဲများကိုကယ်ဖို့ Publish ။",
+            "removedImage": "Image ကိုဖျက်ထားသည်။ အပြောင်းအလဲများကိုကယ်ဖို့ Publish ။"
           }
         }
       }

@@ -72,7 +72,7 @@ class MediaItem extends Component {
         <Components.IconButton
           icon="fa"
           status="danger"
-          i18nKeyTooltip="admin.mediaGallery.removedImage"
+          i18nKeyTooltip="reactionUI.components.mediaGallery.removedImage"
           tooltip="Image has been deleted. Publish to save changes."
           kind="mediaGalleryStatus"
         />
@@ -83,7 +83,7 @@ class MediaItem extends Component {
       <Components.IconButton
         icon="fa"
         status="info"
-        i18nKeyTooltip="admin.mediaGallery.addedImage"
+        i18nKeyTooltip="reactionUI.components.mediaGallery.addedImage"
         tooltip="This is a new image. Publish to save changes."
         kind="mediaGalleryStatus"
       />
@@ -104,7 +104,7 @@ class MediaItem extends Component {
         <Components.IconButton
           icon="fa fa-times"
           onClick={this.handleRemoveMedia}
-          i18nKeyTooltip="admin.mediaGallery.deleteImage"
+          i18nKeyTooltip="reactionUI.components.mediaGallery.deleteImage"
           tooltip="Click to remove image"
         />
       );

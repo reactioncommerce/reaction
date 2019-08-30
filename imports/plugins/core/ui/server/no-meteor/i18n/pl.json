@@ -30,6 +30,11 @@
               "ofText": "z",
               "rowsText": "wydziwianie"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Kliknij, aby usunąć obraz",
+            "addedImage": "To jest nowy wizerunek. Opublikuj, aby zapisać zmiany.",
+            "removedImage": "Obraz został usunięty. Opublikuj, aby zapisać zmiany."
           }
         }
       }

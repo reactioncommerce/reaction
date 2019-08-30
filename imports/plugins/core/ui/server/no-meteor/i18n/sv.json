@@ -30,6 +30,11 @@
               "ofText": "av",
               "rowsText": "rader"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Klicka för att ta bort bilden",
+            "addedImage": "Det här är en ny bild. Publicera för att spara ändringar.",
+            "removedImage": "Bilden har raderats. Publicera för att spara ändringar."
           }
         }
       }

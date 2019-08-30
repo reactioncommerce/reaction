@@ -30,6 +30,11 @@
               "ofText": "Của",
               "rowsText": "Hàng"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Nhấp để xóa hình ảnh",
+            "addedImage": "Đây là hình ảnh mới. Xuất bản để lưu thay đổi.",
+            "removedImage": "Hình ảnh đã bị xóa. Xuất bản để lưu thay đổi."
           }
         }
       }

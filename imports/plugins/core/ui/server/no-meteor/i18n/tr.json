@@ -30,6 +30,11 @@
               "ofText": "arasında",
               "rowsText": "satırlar"
             }
+          },
+          "mediaGallery": {
+            "deleteImage": "Resmi kaldırmak için tıklayın",
+            "addedImage": "Bu yeni bir görüntü. Değişiklikleri kaydetmek için yayınla.",
+            "removedImage": "Resim silindi. Değişiklikleri kaydetmek için yayınla."
           }
         }
       }
