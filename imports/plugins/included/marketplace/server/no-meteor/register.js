@@ -1,4 +1,5 @@
 /* eslint camelcase: 0 */
+import i18n from "./i18n";
 import schemas from "./schemas";
 import stripeCapturePayment from "./util/stripeCapturePayment";
 import stripeCreateAuthorizedPayment from "./util/stripeCreateAuthorizedPayment";
@@ -15,6 +16,7 @@ export default async function register(app) {
     label: "Marketplace",
     name: "reaction-marketplace",
     icon: "fa fa-globe",
+    i18n,
     collections: {
       SellerShops: {
         name: "SellerShops"
