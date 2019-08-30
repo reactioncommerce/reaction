@@ -2,6 +2,7 @@ import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-met
 import registerAddressPlugin from "/imports/plugins/core/address/server/no-meteor/register";
 import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/register";
 import registerCatalogPlugin from "/imports/plugins/core/catalog/server/no-meteor/register";
+import registerCheckoutPlugin from "/imports/plugins/core/checkout/server/no-meteor/register";
 import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/register";
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
@@ -70,6 +71,7 @@ export default async function registerPlugins(app) {
   await registerProductPlugin(app); // REQUIRED
   await registerCatalogPlugin(app); // REQUIRED
   await registerTagsPlugin(app); // REQUIRED
+  await registerCheckoutPlugin(app); // REQUIRED
 
   /**
    * Pricing
