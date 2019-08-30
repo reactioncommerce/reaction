@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import mutations from "./mutations";
 import queries from "./queries";
 import resolvers from "./resolvers";
@@ -19,6 +20,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Simple Inventory",
     name: "reaction-simple-inventory",
+    i18n,
     collections: {
       SimpleInventory: {
         name: "SimpleInventory",
