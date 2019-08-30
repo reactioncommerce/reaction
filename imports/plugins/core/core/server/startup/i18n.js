@@ -4,7 +4,6 @@ import util from "util";
 import Logger from "@reactioncommerce/logger";
 import { Assets, Translations } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { mergeResource } from "/imports/plugins/core/i18n/server/no-meteor/translations";
 
 const fs = {
   readdir: util.promisify(fsModule.readdir),
@@ -58,8 +57,6 @@ export function loadTranslation(source) {
       .find({ type: "i18n", name: i18n, ns })
       .upsert()
       .update({ $set: { content: json } });
-
-    content.forEach(mergeResource);
 
     Logger.debug("Translation assets bulk update prepared for ", ns);
   } catch (error) {

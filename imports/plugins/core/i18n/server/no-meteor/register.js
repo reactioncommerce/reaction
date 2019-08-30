@@ -1,3 +1,4 @@
+import { registerPluginHandler } from "./registration";
 import startup from "./startup";
 
 /**
@@ -21,6 +22,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
+      registerPluginHandler: [registerPluginHandler],
       startup: [startup]
     },
     settings: {
