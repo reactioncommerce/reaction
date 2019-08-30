@@ -1,5 +1,3 @@
-import { loadTranslations } from "/imports/plugins/core/core/server/startup/i18n";
-
 import en from "./en.json";
 
 //
@@ -7,4 +5,6 @@ import en from "./en.json";
 // imports for easier handling by
 // automated translation software
 //
-loadTranslations([en]);
+export default {
+  translations: [en]
+};

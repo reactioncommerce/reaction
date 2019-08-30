@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import queries from "./queries";
 import { registerPluginHandler } from "./registration";
 import resolvers from "./resolvers";
@@ -12,6 +13,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Address",
     name: "reaction-address",
+    i18n,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler]
     },
