@@ -138,7 +138,7 @@ class ProductGrid extends Component {
   }
 
   renderFilteredCount() {
-    const { selectedProductIds, totalProductCount, classes } = this.props;
+    const { selectedProductIds, totalProductCount } = this.props;
     const selectedCount = selectedProductIds.length;
     const filterByProductIds = Session.get("filterByProductIds");
     const totalCount = i18next.t("admin.productTable.bulkActions.totalCount", { count: totalProductCount });
@@ -148,7 +148,7 @@ class ProductGrid extends Component {
       return (
         <CardHeader
           title={i18next.t("admin.productTable.bulkActions.filteredProducts")}
-          subheader={ selected }
+          subheader={selected}
         />
       );
     }
