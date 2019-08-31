@@ -1,5 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import setUpFileCollections from "./setUpFileCollections";
+import saveRemoteImages from "./jobs/saveRemoteImages";
+import saveTempImages from "./jobs/saveTempImages";
 
 /**
  * @summary Called on startup
@@ -15,7 +17,8 @@ export default function startup(context) {
   const {
     downloadManager,
     Media,
-    stores,
+    remoteUrlWorker,
+    fileWorker,
     tempStore
   } = setUpFileCollections({
     absoluteUrlPrefix: rootUrl,
@@ -25,13 +28,8 @@ export default function startup(context) {
     mongodb: app.mongodb
   });
 
-  // This isn't probably the best solution, but for now this is how
-  // we'll make these things available to the Meteor code that does
-  // the rest of the files configuration.
-  context.files = {
-    stores,
-    tempStore
-  };
+  saveRemoteImages(remoteUrlWorker);
+  saveTempImages(fileWorker);
 
   // Make the Media collection available to resolvers
   collections.Media = Media;
@@ -39,5 +37,6 @@ export default function startup(context) {
   // Wire up a file download route
   if (app.expressApp) {
     app.expressApp.use("/assets/files", downloadManager.connectHandler);
+    app.expressApp.use("/assets/uploads", tempStore.connectHandler);
   }
 }

@@ -1,12 +1,16 @@
 import Random from "@reactioncommerce/random";
+import fetch from "node-fetch";
 import sharp from "sharp";
 import {
   FileDownloadManager,
   FileRecord,
   MongoFileCollection,
-  TempFileStore
+  TempFileStore,
+  RemoteUrlWorker,
+  TempFileStoreWorker
 } from "@reactioncommerce/file-collections";
 import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
+import createSaveImageJob from "./util/createSaveImageJob";
 
 /**
  * @returns {undefined}
@@ -147,9 +151,42 @@ export default function setUpFileCollections({
     }
   });
 
+  const onNewRemoteFileRecord = (doc, collection) => {
+    const { name } = collection;
+    createSaveImageJob(doc, name, true);
+  };
+
+  const onNewTempFileRecord = (doc, collection) => {
+    const { name } = collection;
+    createSaveImageJob(doc, name, false);
+  };
+
+  /**
+   * @name remoteUrlWorker
+   * @type RemoteUrlWorker
+   * @memberof Files
+   * @summary Start a worker to watch for inserted remote URLs and stream them to all stores
+   * @see https://github.com/reactioncommerce/reaction-file-collections
+   */
+  const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [Media], onNewFileRecord: onNewRemoteFileRecord });
+  remoteUrlWorker.start();
+
+  /**
+   * @name fileWorker
+   * @type TempFileStoreWorker
+   * @memberof Files
+   * @summary Start a worker to watch for finished uploads, store them permanently,
+   * and then remove the temporary file
+   * @see https://github.com/reactioncommerce/reaction-file-collections
+   */
+  const fileWorker = new TempFileStoreWorker({ fileCollections: [Media], onNewFileRecord: onNewTempFileRecord });
+  fileWorker.start();
+
   return {
     downloadManager,
+    fileWorker,
     Media,
+    remoteUrlWorker,
     stores,
     tempStore
   };
