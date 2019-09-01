@@ -18,7 +18,6 @@ const wrapComponent = (Comp) => (
       placement: PropTypes.string,
       productId: PropTypes.string,
       shopId: PropTypes.string,
-      userId: PropTypes.string,
       variantId: PropTypes.string
     }
 
@@ -222,7 +221,6 @@ function composer(props, onData) {
   onData(null, {
     editable: Reaction.hasPermission(props.permission || ["createProduct", "product/admin", "product/update"]),
     media: sortMedia(media),
-    userId: Reaction.getUserId(),
     shopId: Reaction.getShopId(),
     productId,
     variantId

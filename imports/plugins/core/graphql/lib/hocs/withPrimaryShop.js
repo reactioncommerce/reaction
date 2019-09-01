@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
-import getPrimaryShop from "../queries/getPrimaryShop";
+import getShop from "../queries/getShop";
 import getPrimaryShopId from "../queries/getPrimaryShopId";
 
 
@@ -36,7 +36,7 @@ export default (Component) => (
             }
 
             return (
-              <Query query={getPrimaryShop} variables={{ id: props.shopId }}>
+              <Query query={getShop} variables={{ id: props.shopId }}>
                 {({ loading: shopLoading, data: shopData }) => {
                   if (shopLoading) return null;
 

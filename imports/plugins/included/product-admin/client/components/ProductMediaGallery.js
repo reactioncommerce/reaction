@@ -23,7 +23,6 @@ function ProductMediaGallery(props) {
     onSetMediaPriority,
     productId,
     shopId,
-    userId,
     variantId
   } = props;
 
@@ -34,7 +33,6 @@ function ProductMediaGallery(props) {
     const getFileMetadata = () => {
       count += 1;
       return {
-        ownerId: userId,
         productId,
         variantId,
         shopId,
@@ -108,7 +106,6 @@ ProductMediaGallery.propTypes = {
   onSetMediaPriority: PropTypes.func,
   productId: PropTypes.string,
   shopId: PropTypes.string,
-  userId: PropTypes.string,
   variantId: PropTypes.string
 };
 
