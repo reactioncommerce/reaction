@@ -26,7 +26,7 @@ class ShopBrandMediaManager extends Component {
         <div className="rui gallery-thumbnails">
           {this.renderBrandImages()}
         </div>
-        <Components.MediaUploader metadata={metadata} />
+        <Components.MediaUploader canUploadMultiple metadata={metadata} />
       </div>
     );
   }
