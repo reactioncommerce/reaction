@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { Media } from "/imports/plugins/core/files/client";
-import { i18next, Logger } from "/client/api";
+import { i18next } from "/client/api";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
@@ -38,7 +37,15 @@ class ShopBrandImageOption extends Component {
       showCancelButton: true,
       confirmButtonText: "Remove"
     }, (shouldRemove) => {
-      if (shouldRemove) Media.remove(media._id).catch((error) => { Logger.error(error); });
+      if (shouldRemove) {
+        Meteor.call("media/remove", media._id, (error) => {
+          if (error) {
+            Alerts.toast(error.reason, "warning", {
+              autoHide: 10000
+            });
+          }
+        });
+      }
     });
   };
 

@@ -1,8 +1,9 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "@reactioncommerce/reaction-error";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "@reactioncommerce/reaction-error";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { MediaRecords } from "/lib/collections";
 
 /**
@@ -46,19 +47,20 @@ export async function insertMedia(fileRecord) {
 export async function removeMedia(fileRecordId) {
   check(fileRecordId, String);
 
-  const result = MediaRecords.update({
-    _id: fileRecordId
-  }, {
-    $set: {
-      "metadata.workflow": "archived"
-    }
-  });
+  const mediaRecord = await MediaRecords.findOne({ _id: fileRecordId });
+  if (!mediaRecord) throw new ReactionError("not-found", `Media record with ID ${fileRecordId} not found`);
+
+  const authUserId = Reaction.getUserId();
+
+  const context = await getGraphQLContextInMeteorMethod(authUserId);
+  const { collections: { Media } } = context;
+
+  const result = await Media.remove(fileRecordId);
 
   const success = (result === 1);
 
   if (success) {
-    const mediaRecord = MediaRecords.findOne({ _id: fileRecordId });
-    appEvents.emit("afterMediaUpdate", { createdBy: Reaction.getUserId(), mediaRecord });
+    appEvents.emit("afterMediaRemove", { removedBy: authUserId, mediaRecord });
   }
 
   return success;
