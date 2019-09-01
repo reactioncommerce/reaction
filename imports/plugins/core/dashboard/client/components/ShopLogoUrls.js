@@ -13,8 +13,9 @@ import Grid from "@material-ui/core/Grid";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import { Components } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
-import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
+import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 
 const PaddedField = styled(Field)`
   margin-bottom: 30px;
@@ -40,6 +41,7 @@ const updateShopMutation = gql`
 
 class ShopLogoUrls extends Component {
   static propTypes = {
+    refetchShop: PropTypes.func,
     shop: PropTypes.shape({
       shopLogoUrls: PropTypes.shape({
         primaryShopLogoUrl: PropTypes.string
@@ -75,18 +77,17 @@ class ShopLogoUrls extends Component {
   }
 
   render() {
-    const { shop } = this.props;
+    const { refetchShop, shop } = this.props;
+    if (!shop) return null;
+
     const { shopLogoUrls } = shop;
     const { primaryShopLogoUrl } = shopLogoUrls || {};
 
     return (
       <Card>
         <CardHeader
-          subheader={i18next.t(
-            "shopSettings.shopLogoUrls.description",
-            "Use these fields to provide URL's for static image files to use as store logos. These URL's will override any logos uploaded."
-          )}
-          title={i18next.t("shopSettings.shopLogoUrls.title", "Shop Logo Urls")}
+          subheader={i18next.t("shopSettings.shopLogo.description")}
+          title={i18next.t("shopSettings.shopLogo.title")}
         />
         <Mutation mutation={updateShopMutation}>
           {(mutationFunc) => (
@@ -102,18 +103,13 @@ class ShopLogoUrls extends Component {
                 <CardContent>
                   <PaddedField
                     name="primaryShopLogoUrl"
-                    label={i18next.t("shopSettings.shopLogoUrls.primaryShopLogoUrlTitle", "Primary Shop Logo")}
+                    label={i18next.t("shopSettings.shopLogo.primaryShopLogoUrlTitle")}
                     labelFor="primaryShopLogoUrlInput"
                   >
                     <TextInput
                       id="primaryShopLogoUrlInput"
                       name="primaryShopLogoUrl"
-                      placeholder={
-                        i18next.t(
-                          "shopSettings.shopLogoUrls.primaryShopLogoUrlDescription",
-                          "This is the primary shop logo, which is used wherever you see a logo throughout the UI"
-                        )
-                      }
+                      placeholder={i18next.t("shopSettings.shopLogo.primaryShopLogoUrlDescription")}
                       value={primaryShopLogoUrl || ""}
                     />
                     <ErrorsBlock names={["primaryShopLogoUrl"]} />
@@ -132,9 +128,12 @@ class ShopLogoUrls extends Component {
             </Fragment>
           )}
         </Mutation>
+        <CardContent>
+          <Components.ShopBrandMediaManager afterSetBrandImage={refetchShop} shop={shop} />
+        </CardContent>
       </Card>
     );
   }
 }
 
-export default withPrimaryShop(ShopLogoUrls);
+export default withShop(ShopLogoUrls);

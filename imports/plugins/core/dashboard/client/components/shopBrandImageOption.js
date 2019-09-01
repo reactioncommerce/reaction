@@ -8,12 +8,13 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 class ShopBrandImageOption extends Component {
   static propTypes = {
+    afterSetBrandImage: PropTypes.func,
     isSelected: PropTypes.bool,
     media: PropTypes.object.isRequired
   };
 
   handleClick = () => {
-    const { isSelected, media } = this.props;
+    const { afterSetBrandImage, isSelected, media } = this.props;
 
     if (isSelected) return;
 
@@ -23,6 +24,8 @@ class ShopBrandImageOption extends Component {
       if (error || result !== 1) {
         return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsFailed"), "error");
       }
+
+      if (afterSetBrandImage) afterSetBrandImage();
 
       return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
     });

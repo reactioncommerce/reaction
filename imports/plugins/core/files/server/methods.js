@@ -22,16 +22,19 @@ import { MediaRecords } from "/lib/collections";
 export async function insertMedia(fileRecord) {
   check(fileRecord, Object);
 
+  const authUserId = Reaction.getUserId();
+
   const doc = {
     ...fileRecord,
     metadata: {
       ...fileRecord.metadata,
+      ownerId: authUserId,
       workflow: "published"
     }
   };
   const mediaRecordId = await MediaRecords.insert(doc);
 
-  appEvents.emit("afterMediaInsert", { createdBy: Reaction.getUserId(), mediaRecord: doc });
+  appEvents.emit("afterMediaInsert", { createdBy: authUserId, mediaRecord: doc });
 
   return mediaRecordId;
 }
