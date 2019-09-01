@@ -66,7 +66,7 @@ const wrapComponent = (Comp) => (
         imageHeight: 150
       }, (isConfirm) => {
         if (isConfirm) {
-          Meteor.call("media/remove", mediaId, (error) => {
+          Meteor.call("media/archive", mediaId, (error) => {
             if (error) {
               Alerts.toast(error.reason, "warning", {
                 autoHide: 10000

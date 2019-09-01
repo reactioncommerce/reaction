@@ -70,6 +70,37 @@ export async function removeMedia(fileRecordId) {
 }
 
 /**
+ * @name media/archive
+ * @method
+ * @memberof Media/Methods
+ * @summary Unpublish a media record by updating it's workflow. This is needed only for
+ *   product media, because we can't delete the actual files until the removal is
+ *   published to Catalog, since docs in Catalog are still using the media until then.
+ * @param {String} fileRecordId - _id of file record to be archived.
+ * @returns {Boolean} was media successfully archived
+ */
+export async function archiveMedia(fileRecordId) {
+  check(fileRecordId, String);
+
+  const result = MediaRecords.update({
+    _id: fileRecordId
+  }, {
+    $set: {
+      "metadata.workflow": "archived"
+    }
+  });
+
+  const success = (result === 1);
+
+  if (success) {
+    const mediaRecord = MediaRecords.findOne({ _id: fileRecordId });
+    appEvents.emit("afterMediaUpdate", { createdBy: Reaction.getUserId(), mediaRecord });
+  }
+
+  return success;
+}
+
+/**
  * @name media/updatePriorities
  * @method
  * @memberof Media/Methods
@@ -160,6 +191,7 @@ export function updateMediaPriority(mediaId, priority) {
 }
 
 Meteor.methods({
+  "media/archive": archiveMedia,
   "media/insert": insertMedia,
   "media/updatePriorities": updateMediaPriorities,
   "media/updatePriority": updateMediaPriority,
