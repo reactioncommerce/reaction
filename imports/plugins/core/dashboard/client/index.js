@@ -5,9 +5,6 @@ import { faStore } from "@fortawesome/free-solid-svg-icons";
 import { registerOperatorRoute } from "/imports/client/ui";
 import OperatorLanding from "/imports/plugins/core/dashboard/client/components/OperatorLanding";
 
-import "./templates/import/import.html";
-import "./templates/import/import.js";
-
 import "./templates/packages/grid/grid.html";
 import "./templates/packages/grid/grid.js";
 import "./templates/packages/grid/package.html";
