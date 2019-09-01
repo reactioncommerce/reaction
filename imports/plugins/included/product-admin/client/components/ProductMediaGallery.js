@@ -36,7 +36,7 @@ function ProductMediaGallery(props) {
 
     return (
       <div className="rui media-gallery">
-        <Table padding="dense">
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell>{i18next.t("admin.productTable.header.order")}</TableCell>
@@ -83,7 +83,7 @@ function ProductMediaGallery(props) {
 
 
   return (
-    <Table padding="dense">
+    <Table>
       <TableHead>
         <TableRow>
           <TableCell>{i18next.t("admin.productTable.header.order")}</TableCell>
