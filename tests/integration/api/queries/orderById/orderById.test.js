@@ -1,7 +1,7 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
 
-const orderId = "cmVhY3Rpb24vc2hvcDoxMjM=";
+const orderId = "integration-test-order-id"; 
 const fakeShopId = "integration-test-shop-id";
 const shopName = "Test Shop";
 
