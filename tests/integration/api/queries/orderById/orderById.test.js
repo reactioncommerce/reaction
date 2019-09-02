@@ -31,7 +31,7 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
 
-  query = query(orderByIdQuery);
+  query = testApp.query(orderByIdQuery);
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await testApp.collections.Orders.insertOne(order);
