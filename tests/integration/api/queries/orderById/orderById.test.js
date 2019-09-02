@@ -1,14 +1,15 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
 
-const orderId = "cmVhY3Rpb24vc2hvcDoxMjM=";
-const fakeShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
+
+const orderId = "integ-test-order-id";
+const shopId = "integ-test-shop-id";
 const shopName = "Test Shop";
 
 
 const order = Factory.Order.makeOne({
   _id: orderId,
-  shopId: fakeShopId
+  shopId: shopId
 });
 
 const orderByIdQuery = `query ($id: ID!, $shopId: ID!, $token: String) {
@@ -27,21 +28,14 @@ beforeAll(async () => {
 
   query = testApp.query(orderByIdQuery);
 
-  await testApp.insertPrimaryShop({ _id: fakeShopId, name: shopName });
+  await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
   await testApp.collections.Orders.insertOne(order);
 });
 
 afterAll(() => testApp.stop());
 
-function makeContext() {
-  return { accountId: "unit-test-account-id", userHasPermission: () => true };
-}
-
-test("getOrderQuery shop admin", async () => {
-  const shopId = "unit-test-shop-id";
-  const orderId2 = "unit-test-order-id";
-  const context = makeContext();
-  const qq = await query(context, { _id: orderId2 }, shopId, null);
-  expect(qq).toMatchObject({ _id: "unit-test-order-id", shopId });
-  expect(qq.accountId).toBeUndefined();
+test("get order successful", async () => {
+  const result = await query({ id: orderId, shopId: shopId });
+  // expect(result).toMatchObject({ _id: "integ-test-order-id", shopId });
+  expect(result.accountId).toBeUndefined();
 });
