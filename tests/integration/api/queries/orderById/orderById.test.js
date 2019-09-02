@@ -1,26 +1,20 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
 
-const orderId = "123"
-const internalShopId = "456";
+const orderId = "cmVhY3Rpb24vc2hvcDoxMjM=";
+const fakeShopId = "integration-test-shop-id";
 const shopName = "Test Shop";
+
 
 const order = Factory.Order.makeOne({
   _id: orderId,
-  shop: [
-    {
-      _id: internalShopId,
-      name: shopName
-    }
-  ],  
+  shopId: fakeShopId
 });
 
-const orderByIdQuery = `query ($id: ID!, $shopId: ID!) {
-  orderById(id: $id, shopId: $shopId) {
-    _id
+const orderByIdQuery = `query ($id: ID!, $shopId: ID!, $token: String) {
+  orderById(id: $id, shopId: $shopId, token: $token) {
     shop {
       name
-      shopId
     }
   }
 }`;
@@ -33,24 +27,14 @@ beforeAll(async () => {
 
   query = testApp.query(orderByIdQuery);
 
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.insertPrimaryShop({ _id: fakeShopId, name: shopName });
   await testApp.collections.Orders.insertOne(order);
 });
 
 afterAll(() => testApp.stop());
 
-test("get order successful", async () => {
-  let result = await query({ id: orderId, shopId: internalShopId });
-  expect(result._id).toBe(orderId);
-  expect(result.shop.name).toBe(shopName);
-  expect(result.shop.shopId).toBe(internalShopId);
-});
 
-test("get order error", async () => {
-  try {
-    let result = await query({ id: orderId, shopId: "" });
-  } catch (error) {
-    expect(error).toBe(ReactionError);
-    return;
-  }
+test("get order successful", async () => {
+  const result = await query({ id: orderId, shopId: fakeShopId, token: null });
+  expect(result.shop.name).toBe(shopName);
 });
