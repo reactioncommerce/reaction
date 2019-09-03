@@ -17,7 +17,7 @@ Migrations.add({
     await Cart.updateMany({}, {
       $set: {
         "shipping.$[].shipmentMethod.fulfillmentTypes": ["shipping"],
-        "shipping.$[].shipmentQuotes.$[].method.fulfillmentTypes": ["shipping"],
+        "shipping.$[].shipmentQuotes.$[].method.fulfillmentTypes": ["shipping"]
       }
     });
   },
