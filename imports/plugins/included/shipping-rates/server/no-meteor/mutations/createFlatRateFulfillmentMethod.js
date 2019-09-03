@@ -30,6 +30,7 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
   const shippingRecord = await Shipping.findOne({ "provider.name": "flatRates", shopId });
   if (!shippingRecord) {
     await Shipping.insertOne({
+      _id: Random.id(),
       name: "Default Shipping Provider",
       shopId,
       provider: {
