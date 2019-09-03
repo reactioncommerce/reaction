@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import setUserPermissions from "/imports/plugins/core/accounts/server/util/setUserPermissions";
+import ensureRoles from "/imports/plugins/core/accounts/server/no-meteor/util/ensureRoles";
 
 const inputSchema = new SimpleSchema({
   accountId: String,
@@ -21,13 +21,14 @@ const inputSchema = new SimpleSchema({
 export default async function removeAccountFromGroup(context, input) {
   inputSchema.validate(input);
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
-  const { Accounts, Groups } = collections;
+  const { Accounts, Groups, users } = collections;
   const {
     accountId: providedAccountId,
     groupId
   } = input;
 
   const account = await Accounts.findOne({ _id: providedAccountId });
+  const accountUser = await users.findOne({ _id: account.userId });
   const { shopId } = await Groups.findOne({ _id: groupId }) || {};
   const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
 
@@ -38,8 +39,17 @@ export default async function removeAccountFromGroup(context, input) {
   }
 
   if (!account) throw new ReactionError("not-found", "No account found");
+  if (!accountUser) throw new ReactionError("not-found", "No user found");
 
-  setUserPermissions(account, defaultCustomerGroupForShop.permissions, shopId);
+  await ensureRoles(context, defaultCustomerGroupForShop.permissions);
+  await users.updateOne({
+    _id: account.userId
+  }, {
+    $set: {
+      [`roles.${shopId}`]: defaultCustomerGroupForShop.permissions
+    }
+  });
+
   const { value: updatedAccount } = await Accounts.findOneAndUpdate({
     _id: providedAccountId,
     groups: groupId
