@@ -32,7 +32,7 @@ export default async function updateAccountAddressBookEntry(context, input) {
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (!context.isInternalCall && typeof accountUserId === "string" && userIdFromContext !== accountId) {
+  if (!context.isInternalCall && userIdFromContext !== accountId) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }
 
