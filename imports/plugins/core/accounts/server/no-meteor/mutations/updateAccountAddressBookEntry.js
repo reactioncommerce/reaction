@@ -41,7 +41,7 @@ export default async function updateAccountAddressBookEntry(context, input) {
   if (!oldAddress) throw new ReactionError("not-found", `No existing address found with ID ${address._id}`);
 
   // If type is provided, set updated address to be default for `type`
-  if (typeof type === "string") {
+  if (type) {
     Object.assign(address, { [type]: true });
   }
 
@@ -49,7 +49,7 @@ export default async function updateAccountAddressBookEntry(context, input) {
   account.profile.addressBook.forEach((addr) => {
     if (addr._id === address._id) {
       Object.assign(addr, address);
-    } else if (typeof type === "string") {
+    } else if (type) {
       Object.assign(addr, { [type]: false });
     }
   });
