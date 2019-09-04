@@ -7,10 +7,15 @@ import { Reaction, i18next } from "/client/api";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
+import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import { getDefaultUserInviteGroup, getUserByEmail } from "../helpers/accountsHelper";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+
+const iconComponents = {
+  iconDismiss: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
+};
 
 const inviteShopMember = gql`
   mutation inviteShopMember($input: InviteShopMemberInput!) {
@@ -63,9 +68,6 @@ class AdminInviteForm extends Component {
   });
 
   sendInvitation = async (options, mutation) => {
-    const { mutationFunc, loading, error } = mutation;
-
-    // return null;
     const [
       opaqueGroupId,
       opaqueShopId
@@ -74,7 +76,7 @@ class AdminInviteForm extends Component {
       { namespace: "Shop", id: options.shopId }
     ]);
 
-    await mutationFunc({
+    await mutation({
       variables: {
         input: {
           email: options.email,
@@ -84,33 +86,6 @@ class AdminInviteForm extends Component {
         }
       }
     });
-
-    // TODO: add error messages
-    // if (error) {
-    //   let messageKey;
-    //   // switching to use of package i18n keys (groupsInvite. namespace)
-    //   if (error.reason === "Unable to send invitation email.") {
-    //     messageKey = "admin.groupsInvite.unableToSendInvitationEmail";
-    //   } else if (error.reason === "cannot directly invite owner") {
-    //     messageKey = "admin.groupsInvite.inviteOwnerError";
-    //   } else if (error.reason === "cannot invite to group") {
-    //     messageKey = "admin.groupsInvite.cannotInvite";
-    //   } else if (error.reason === "Need to set a username or email") {
-    //     messageKey = "admin.groupsInvite.NeedToSetUsernameOrEmail";
-    //   } else {
-    //     messageKey = "admin.groupsInvite.errorSendingInvite";
-    //   }
-
-    //   const { alertId } = this.state;
-    //   const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
-
-    //   ReactionAlerts.add(error.reason, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
-    // }
-
-    // if (result) {
-    //   this.setState({ name: "", email: "" });
-    //   Alerts.toast(i18next.t("accountsUI.info.invitationSent"), "success");
-    // }
   }
 
   handleSubmit(event, mutation) {
@@ -202,7 +177,7 @@ class AdminInviteForm extends Component {
         <Components.Alerts placement={this.state.alertId} id={this.state.alertId} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
           <Mutation mutation={inviteShopMember}>
-            {(mutationFunc, { loading, error }) => (
+            {(mutationFunc, { error }) => (
               <form className="">
                 <div className="form-group">
                   <Components.TextField
@@ -234,13 +209,23 @@ class AdminInviteForm extends Component {
                     <Components.Button
                       status="primary"
                       buttonType="submit"
-                      onClick={() => this.handleSubmit(event, { mutationFunc, loading, error })}
+                      onClick={() => this.handleSubmit(event, mutationFunc)}
                       bezelStyle="solid"
                       i18nKeyLabel="accountsUI.info.sendInvitation"
                       label="Send Invitation"
                     />
                   </div>
                 </div>
+                {error &&
+                  <div>
+                    <InlineAlert
+                      components={iconComponents}
+                      isDismissable
+                      alertType="error"
+                      message={error.message}
+                    />
+                  </div>
+                }
               </form>
             )}
           </Mutation>
