@@ -28,7 +28,9 @@ export default async function removeAccountFromGroup(context, input) {
     groupId
   } = input;
 
-  const { shopId } = await Groups.findOne({ _id: groupId }) || {};
+  const group = await Groups.findOne({ _id: groupId });
+  if (!group) throw new ReactionError("not-found", "Group not found");
+  const { shopId } = group;
 
   // we are limiting group method actions to only users with admin roles
   // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
@@ -45,7 +47,8 @@ export default async function removeAccountFromGroup(context, input) {
 
   // get default roles for a customer, which is the group
   // this user will belong to after being removed from previous group
-  const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
+  const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId });
+  if (!defaultCustomerGroupForShop) throw new ReactionError("not-found", "Default customer group not found");
 
   await ensureRoles(context, defaultCustomerGroupForShop.permissions);
   await users.updateOne({
