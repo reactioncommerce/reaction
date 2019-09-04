@@ -6,6 +6,7 @@ const inputSchema = new SimpleSchema({
   accountId: String,
   groupId: String
 });
+
 /**
  * @name accounts/removeAccountFromGroup
  * @memberof Mutations/Accounts
@@ -14,7 +15,7 @@ const inputSchema = new SimpleSchema({
  * (NB: At this time, a user only belongs to only one group per shop)
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
- * @param {String} input.accountId - optional decoded ID of account on which entry should be updated, for admin
+ * @param {String} input.accountId - decoded ID of account on which entry should be updated, for admin
  * @param {String} input.groupId - decoded ID of the group to remove account from
  * @returns {Promise<Object>} with modified group
  */
