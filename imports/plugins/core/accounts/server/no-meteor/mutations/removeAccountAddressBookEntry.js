@@ -55,7 +55,7 @@ export default async function removeAccountAddressBookEntry(context, input) {
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
-    updatedBy: accountId
+    updatedBy: userIdFromContext
   });
 
   // If the address remove was successful, then return the removed address
