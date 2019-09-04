@@ -70,61 +70,61 @@ describe("Account Meteor method ", function () {
     });
   }
 
-  describe("accounts/inviteShopMember", function () {
-    let createUserSpy;
-    let groupId;
-    let group;
+  describe("addressBookRemove", function () {
+    it("should allow user to remove address", function () {
+      const address = fakeAccount.profile.addressBook[0];
+      expect(fakeAccount.profile.addressBook.length).to.equal(1);
 
-    function callDescribed(accountAttributes = {}) {
-      const options = Object.assign({
-        shopId,
-        groupId,
-        email: fakeUser.emails[0].address,
-        name: fakeAccount.profile.addressBook[0].fullName
-      }, accountAttributes);
+      Meteor.call("accounts/addressBookRemove", address._id);
 
-      return Meteor.call("accounts/inviteShopMember", options);
-    }
-
-    function stubPermissioning(settings) {
-      const { hasPermission, canInviteToGroup } = settings;
-
-      sandbox.stub(Reaction, "hasPermission", () => hasPermission);
-      sandbox
-        .stub(Reaction, "canInviteToGroup", () => canInviteToGroup)
-        .withArgs({ group, user: fakeUser });
-    }
-
-    beforeEach(function () {
-      createUserSpy = sandbox.spy(MeteorAccounts, "createUser");
-
-      groupId = Random.id();
-      group = Factory.create("group");
-      sandbox.stub(Groups, "findOne", () => group).withArgs({ _id: groupId });
+      const account = Accounts.findOne({ _id: fakeAccount._id });
+      expect(account.profile.addressBook.length).to.equal(0);
     });
 
-    it("requires reaction-accounts permission", function () {
-      stubPermissioning({ hasPermission: false });
-      sandbox.stub(Logger, "error") // since we expect this, let's keep the output clean
-        .withArgs(sinon.match(/reaction-accounts permissions/));
+    // TODO: I don't believe this test does what it says it does
+    // I am pretty sure the user acting is the same user who is being acted upon
+    it("should allow Admin to remove other user address", function () {
+      const address = fakeAccount.profile.addressBook[0];
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      expect(fakeAccount.profile.addressBook.length).to.equal(1);
 
-      expect(callDescribed).to.throw(ReactionError, /Access denied/);
-      expect(createUserSpy).to.not.have.been.called;
+      Meteor.call("accounts/addressBookRemove", address._id, fakeAccount.userId);
+
+      const account = Accounts.findOne({ _id: fakeAccount._id });
+      expect(account.profile.addressBook.length).to.equal(0);
     });
 
-    it("ensures the user has invite permission for this group/shop", function () {
-      stubPermissioning({ hasPermission: true, canInviteToGroup: false });
+    it("should throw error if wrong arguments were passed", function () {
+      const updateAccountSpy = sandbox.spy(Accounts, "update");
 
-      expect(callDescribed).to.throw(ReactionError, /Cannot invite/);
-      expect(createUserSpy).to.not.have.been.called;
+      expect(() => Meteor.call("accounts/addressBookRemove", 123456))
+        .to.throw(Match.Error, /Expected string, got number/);
+
+      expect(() => Meteor.call("accounts/addressBookRemove", {}))
+        .to.throw(Match.Error, /Expected string, got object/);
+
+      expect(() => Meteor.call("accounts/addressBookRemove", null))
+        .to.throw(Match.Error, /Expected string, got null/);
+
+      expect(() => Meteor.call("accounts/addressBookRemove"))
+        .to.throw(Match.Error, /Expected string, got undefined/);
+
+      expect(() => Meteor.call("accounts/addressBookRemove", "asdad", 123))
+        .to.throw(Match.Error, /Match.Optional/);
+
+      // https://github.com/aldeed/meteor-simple-schema/issues/522
+      expect(function () {
+        return Meteor.call(
+          "accounts/addressBookRemove",
+          () => { expect(true).to.be.true; }
+        );
+      }).to.not.throw();
+      expect(updateAccountSpy).to.not.have.been.called;
     });
 
-    it("prevents inviting the owner of a shop (only a member)", function () {
-      group.slug = "owner";
-      stubPermissioning({ hasPermission: true, canInviteToGroup: true });
-
-      expect(callDescribed).to.throw(ReactionError, /invite owner/);
-      expect(createUserSpy).to.not.have.been.called;
+    it("should throw an error if address does not exist to remove", function () {
+      expect(() => Meteor.call("accounts/addressBookRemove", "asdasdasd"))
+        .to.throw(ReactionError, /Address Not Found/);
     });
   });
 
