@@ -177,7 +177,7 @@ function ProductTable({ onCreateProduct }) {
         </Grid>
       ) : null }
       <Grid item sm={12} style={{ display: displayCard }}>
-        <Card>
+        <Card raised>
           <CardHeader
             className={classes.cardHeaderTitle}
             action={
