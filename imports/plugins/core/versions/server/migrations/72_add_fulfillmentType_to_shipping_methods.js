@@ -17,8 +17,10 @@ Migrations.add({
     await Cart.updateMany({}, {
       $set: {
         "shipping.$[].shipmentMethod.fulfillmentTypes": ["shipping"],
-        "shipping.$[].shipmentQuotes.$[].method.fulfillmentTypes": ["shipping"]
+        "shipping.$[groupWithShipmentQuotes].shipmentQuotes.$[].method.fulfillmentTypes": ["shipping"]
       }
+    }, {
+      arrayFilters: [{ "groupWithShipmentQuotes.shipmentQuotes": { $exists: true } }]
     });
   },
   async down() {
