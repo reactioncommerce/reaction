@@ -37,8 +37,10 @@ Migrations.add({
     await Cart.updateMany({}, {
       $unset: {
         "shipping.$[].shipmentMethod.fulfillmentTypes": "",
-        "shipping.$[].shipmentQuotes.$[].method.fulfillmentTypes": ""
+        "shipping.$[groupWithShipmentQuotes].shipmentQuotes.$[].method.fulfillmentTypes": ""
       }
+    }, {
+      arrayFilters: [{ "groupWithShipmentQuotes.shipmentQuotes": { $exists: true } }]
     });
   }
 });
