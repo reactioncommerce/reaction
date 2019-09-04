@@ -76,5 +76,5 @@ export default async function removeAccountFromGroup(context, input) {
     updatedFields: ["groups"]
   });
 
-  return defaultCustomerGroupForShop;
+  return group;
 }
