@@ -8,16 +8,22 @@ const shopName = "Test Shop";
 
 const orderId = "integ-test-order-id";
 const opaqueOrderId = "cmVhY3Rpb24vb3JkZXI6aW50ZWctdGVzdC1vcmRlci1pZA=="; // reaction/order:integ-test-order-id
-const mockOrdersAccount = Factory.Accounts.makeOne();
+
+const accountId = "integ-test-account-id";
+const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDppbnRlZy10ZXN0LWFjY291bnQtaWQ="; // reaction/account:integ-test-account-id
+
+const mockOrdersAccount = Factory.Accounts.makeOne({
+  _id: accountId
+});
+
 const order = Factory.Order.makeOne({
   _id: orderId,
   shopId: shopId,
   accountId: mockOrdersAccount._id
 });
 
-
 const orderIdAnom = "integ-test-order-id-anom";
-const opaqueOrderIdAnom = "cmVhY3Rpb24vb3JkZXI6aW50ZWctdGVzdC1vcmRlci1pZC1hbm9t" // reaction/order:integ-test-order-id-anom
+const opaqueOrderIdAnom = "cmVhY3Rpb24vb3JkZXI6aW50ZWctdGVzdC1vcmRlci1pZC1hbm9t"; // reaction/order:integ-test-order-id-anom
 const tokenInfo = getAnonymousAccessToken();
 
 const orderAnom = Factory.Order.makeOne({
@@ -25,7 +31,6 @@ const orderAnom = Factory.Order.makeOne({
   shopId: shopId,
   anonymousAccessTokens: [{ createdAt: tokenInfo.createdAt, hashedToken: tokenInfo.hashedToken }]
 });
-
 
 const orderByIdQuery = `query ($id: ID!, $shopId: ID!, $token: String) {
   orderById(id: $id, shopId: $shopId, token: $token) {
@@ -53,17 +58,22 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
+beforeEach(async () => {
+  await testApp.collections.Orders.deleteMany({});
+});
+
 test("get account order success", async () => {
   await testApp.collections.Orders.insertOne(order);
   await testApp.setLoggedInUser(mockOrdersAccount);
   const result = await query({ id: opaqueOrderId, shopId: opaqueShopId, token: null });
-  expect(result.account._id).toBe(mockOrdersAccount._id);
+  expect(result.orderById.account._id).toBe(opaqueAccountId);
+  expect(result.orderById.shop._id).toBe(opaqueShopId);
+  expect(result.orderById.shop.name).toBe(shopName);
 });
 
 test("get anonymous order success", async () => {
   await testApp.collections.Orders.insertOne(orderAnom);
-  const result = await query({ id: opaqueOrderId, shopId: opaqueShopId, token: tokenInfo.token });
-  expect(result.shop.id).toBe(opaqueShopId);
-  expect(result.account._id).toBeUndefined();
+  const result = await query({ id: opaqueOrderIdAnom, shopId: opaqueShopId, token: tokenInfo.token });
+  expect(result.orderById.shop._id).toBe(opaqueShopId);
+  expect(result.orderById.shop.name).toBe(shopName);
 });
-
