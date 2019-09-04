@@ -1,7 +1,6 @@
 /* eslint-disable require-jsdoc */
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
@@ -13,7 +12,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
+import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 describe("Account Meteor method ", function () {
@@ -70,74 +69,6 @@ describe("Account Meteor method ", function () {
       return originals[method].apply(this, args);
     });
   }
-
-  describe("addressBookUpdate", function () {
-    it("should allow user to edit addresses", function () {
-      sandbox.stub(Reaction, "hasAdminAccess", () => true);
-      const updateAccountSpy = sandbox.spy(Accounts, "update");
-
-      // we put new faker address over current address to test all fields
-      // at once, but keep current address._id
-      const address = Object.assign({}, fakeAccount.profile.addressBook[0], getAddress());
-      Meteor.call("accounts/addressBookUpdate", address);
-      expect(updateAccountSpy).to.have.been.called;
-    });
-
-    it("should allow Admin to edit other user address", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Reaction, "hasAdminAccess", () => true);
-
-      // we put new faker address over current address to test all fields
-      // at once, but keep current address._id
-      const address = Object.assign({}, fakeAccount.profile.addressBook[0], getAddress());
-      Meteor.call("accounts/addressBookUpdate", address, fakeAccount.userId);
-
-      // comparing two addresses to equality
-      const account = Accounts.findOne({ _id: fakeAccount._id });
-      const newAddress = account.profile.addressBook[0];
-      expect(_.isEqual(address, newAddress)).to.be.true;
-    });
-
-    it("should update fields to exactly the same what we need", function () {
-      // we put new faker address over current address to test all fields
-      // at once, but keep current address._id
-      const address = Object.assign({}, fakeAccount.profile.addressBook[0], getAddress());
-      Meteor.call("accounts/addressBookUpdate", address);
-
-      // comparing two addresses to equality
-      const account = Accounts.findOne({ _id: fakeAccount._id });
-      const newAddress = account.profile.addressBook[0];
-      expect(_.isEqual(address, newAddress)).to.be.true;
-    });
-
-    it("should throw error if wrong arguments were passed", function () {
-      const updateAccountSpy = sandbox.spy(Accounts, "update");
-
-      expect(() => Meteor.call("accounts/addressBookUpdate", 123456))
-        .to.throw(Error, /must be an object/);
-
-      expect(() => Meteor.call("accounts/addressBookUpdate", null))
-        .to.throw(Error, /must be an object/);
-
-      expect(() => Meteor.call("accounts/addressBookUpdate"))
-        .to.throw(Error, /must be an object/);
-
-      expect(() => Meteor.call("accounts/addressBookUpdate", "asdad", 123))
-        .to.throw(Error, /must be an object/);
-
-      expect(() => Meteor.call("accounts/addressBookUpdate", {}))
-        .to.throw(Error, /Full name is required/);
-
-      // https://github.com/aldeed/meteor-simple-schema/issues/522
-      expect(function () {
-        return Meteor.call(
-          "accounts/addressBookUpdate",
-          () => { expect(true).to.be.true; }
-        );
-      }).to.not.throw();
-      expect(updateAccountSpy).to.not.have.been.called;
-    });
-  });
 
   describe("addressBookRemove", function () {
     it("should allow user to remove address", function () {
