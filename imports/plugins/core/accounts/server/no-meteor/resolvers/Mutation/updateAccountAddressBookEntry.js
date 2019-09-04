@@ -16,11 +16,17 @@ import { xformAddressInput } from "@reactioncommerce/reaction-graphql-xforms/add
  * @param {Object} context - an object containing the per-request state
  * @returns {Object} UpdateAccountAddressBookEntryPayload
  */
-export default function updateAccountAddressBookEntry(_, { input }, context) {
+export default async function updateAccountAddressBookEntry(_, { input }, context) {
   const { accountId, addressId, clientMutationId, type, updates } = input;
-  const dbAccountId = decodeAccountOpaqueId(accountId);
+  const decodedAccountId = decodeAccountOpaqueId(accountId);
   const address = xformAddressInput({ ...updates, _id: addressId });
-  const updatedAddress = context.callMeteorMethod("accounts/addressBookUpdate", address, dbAccountId, type);
+
+  const updatedAddress = await context.mutations.updateAccountAddressBookEntry(context, {
+    address,
+    accountId: decodedAccountId,
+    type
+  });
+
   return {
     address: updatedAddress,
     clientMutationId
