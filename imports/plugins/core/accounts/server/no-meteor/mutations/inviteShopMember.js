@@ -30,7 +30,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections, user: userFromContext, userHasPermission, userId: userIdFromContext } = context;
+  const { collections, user: userFromContext, userHasPermission, userId: userIdFromContext } = context;
   const { Accounts, Groups, Shops, users } = collections;
   const {
     email,
@@ -86,7 +86,7 @@ export default async function inviteShopMember(context, input) {
   const isEmailVerified = matchingEmail && matchingEmail.verified;
 
   // set variables to pass to email templates
-  const inviteeName = getCurrentUserName(contextUserAccount);
+  const invitedByName = getCurrentUserName(contextUserAccount);
   let dataForEmail;
   let userId;
   let templateName;
@@ -110,14 +110,14 @@ export default async function inviteShopMember(context, input) {
     const url = Reaction.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, inviteeName, name, url });
+    dataForEmail = getDataForEmail({ shop: primaryShop, invitedByName, name, url });
 
     // Get email template and subject
     templateName = "accounts/inviteShopMember";
   } else {
-    // TODO: this entire section uses meteor
-    // TODO: this entire section uses meteor
-    // TODO: this entire section uses meteor
+    // TODO: below this entire section uses meteor
+    // TODO: below this entire section uses meteor
+    // TODO: below this entire section uses meteor
 
     // There could be an existing user with an invite still pending (not activated).
     // We create a new account only if there's no pending invite.
@@ -138,17 +138,17 @@ export default async function inviteShopMember(context, input) {
       "services.password.reset": { token, email, when: new Date() },
       name
     };
-    Meteor.users.update(userId, { $set: tokenUpdate }); // TODO: something with this since it's meteor
+    Meteor.users.update(userId, { $set: tokenUpdate });
+
+    // TODO: above this entire section uses meteor
+    // TODO: above this entire section uses meteor
+    // TODO: above this entire section uses meteor
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, inviteeName, name, token });
+    dataForEmail = getDataForEmail({ shop: primaryShop, invitedByName, name, token });
 
     // Get email template and subject
     templateName = "accounts/inviteNewShopMember";
-
-    // TODO: this entire section uses meteor
-    // TODO: this entire section uses meteor
-    // TODO: this entire section uses meteor
   }
 
   dataForEmail.groupName = _.startCase(group.name);
