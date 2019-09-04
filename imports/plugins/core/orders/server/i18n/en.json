@@ -60,7 +60,20 @@
         },
         "refundTo": "Refund to",
         "restockInventory": "Restock inventory?",
-        "updateFulfillmentGroupStatus": "Update group status"
+        "updateFulfillmentGroupStatusMessage": "Do you want to update this fulfillment group status to {{groupStatus}}",
+        "updateFulfillmentGroupStatusTitle": "Update group status"
+      },
+      "status": {
+        "new": "New ",
+        "coreOrderWorkflow/created": "Created ",
+        "coreOrderWorkflow/processing": "Processing ",
+        "coreOrderWorkflow/completed": "Completed ",
+        "coreOrderWorkflow/canceled": "Canceled ",
+        "coreOrderWorkflow/picked": "Picked ",
+        "coreOrderWorkflow/packed": "Packed ",
+        "coreOrderWorkflow/labeled": "Labeled ",
+        "coreOrderWorkflow/shipped": "Shipped ",
+        "multipleStatuses": "Multiple statuses"
       },
       "orderCard": {
         "orderSummary": {
