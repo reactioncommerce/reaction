@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, { difference } from "lodash";
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -30,7 +30,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
-  const { collections, userHasPermission, userId: userIdFromContext } = context;
+  const { appEvents, collections, user: userFromContext, userHasPermission, userId: userIdFromContext } = context;
   const { Accounts, Groups, Shops, users } = collections;
   const {
     email,
@@ -55,14 +55,31 @@ export default async function inviteShopMember(context, input) {
   if (!shop) throw new ReactionError("not-found", "No shop found");
 
   const group = await Groups.findOne({ _id: groupId });
+  if (!group) throw new ReactionError("not-found", "No gr found");
+
   // we don't allow direct invitation of "owners", throw an error if that is the group
-  if (group.slug === "owner") {
+  const ownerGroup = await Groups.findOne({ name: "owner" });
+  if (group._id === ownerGroup._id) {
     throw new ReactionError("bad-request", "Cannot directly invite owner");
   }
 
-  // get currentUser to pass name to invite email
-  const currentUserAccount = await Accounts.findOne({ _id: userIdFromContext });
-  const currentUserName = getCurrentUserName(currentUserAccount); // TODO: make sure this works as it should
+  // An account can add another account to a group as long as the person adding
+  // has all permissions granted by that group.
+  // We can't use `userHasPermission` here because we want to make sure they
+  // have ALL the permissions rather than ANY.
+  // Accounts in the "Owner" group are able to add any user to any group,
+  // regardless of other permissions.
+  const contextUserAccount = await Accounts.findOne({ _id: userIdFromContext._id });
+  const isOwnerAccount = !!ownerGroup && contextUserAccount.groups.includes(ownerGroup._id);
+
+  const { permissions: groupPermissions = [] } = group;
+
+  if (!context.isInternalCall && !isOwnerAccount && difference(groupPermissions, userFromContext.roles[shopId] || []).length > 0) {
+    throw new ReactionError("access-denied", "Access Denied");
+  }
+
+  // get currentUserName from contextUserAccount to pass name to invite email
+  const currentUserName = getCurrentUserName(contextUserAccount); // TODO: make sure this works as it should
 
   // check to see if invited user has an account
   const invitedUser = await users.findOne({ "emails.address": email });
