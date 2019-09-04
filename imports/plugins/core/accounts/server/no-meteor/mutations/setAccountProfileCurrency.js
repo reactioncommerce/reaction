@@ -3,7 +3,10 @@ import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
   currencyCode: String,
-  accountId: String
+  accountId: {
+    type: String,
+    optional: true
+  }
 });
 
 /**
