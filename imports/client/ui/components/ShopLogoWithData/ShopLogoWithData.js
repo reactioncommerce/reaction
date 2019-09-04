@@ -34,6 +34,9 @@ const styles = (theme) => ({
   },
   logo: {
     marginRight: theme.spacing(2)
+  },
+  logoName: {
+    color: theme.palette.colors.black15
   }
 });
 
@@ -69,9 +72,9 @@ function ShopLogoWithData({ className, classes, shopId, shouldShowShopName, link
                 />
                 {shouldShowShopName &&
                   <Typography
-                    color="textSecondary"
                     variant="h3"
                     component="span"
+                    className={classes.logoName}
                   >
                     {shop.name}
                   </Typography>
