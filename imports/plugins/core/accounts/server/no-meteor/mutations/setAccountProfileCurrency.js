@@ -39,7 +39,13 @@ export default async function setAccountProfileCurrency(context, input) {
     throw new ReactionError("invalid-argument", `The shop for this account does not define any currency with code "${currencyCode}"`);
   }
 
-  const { value: updatedAccount } = await Accounts.findOneAndUpdate({ _id: accountId }, { $set: { "profile.currency": currencyCode } });
+  const { value: updatedAccount } = await Accounts.findOneAndUpdate({
+    _id: accountId
+  }, {
+    $set: { "profile.currency": currencyCode }
+  }, {
+    returnOriginal: false
+  });
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
