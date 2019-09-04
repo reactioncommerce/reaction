@@ -161,5 +161,5 @@ export default async function inviteShopMember(context, input) {
     to: email
   });
 
-  return Accounts.findOne({ userId });
+  return Accounts.findOne({ _id: userId });
 }
