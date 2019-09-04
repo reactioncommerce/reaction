@@ -1,7 +1,7 @@
 # v2.2.1
 Reaction v2.2.1 adds a bug fix and contains no breaking changes since v2.2.0
 
-This release is being coordinated with reaction-platform and is designed to work with v2.2.1 of example-storefront and reaction-hydra.
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.2.1` of `example-storefront` and `reaction-hydra`.
 
 ## Fixes
 
