@@ -152,7 +152,11 @@ export const ShippingMethod = new SimpleSchema({
   "settings": {
     type: ShippoShippingMethod,
     optional: true
-  }
+  },
+  "fulfillmentTypes": {
+    type: Array
+  },
+  "fulfillmentTypes.$": String
 });
 
 registerSchema("ShippingMethod", ShippingMethod);
