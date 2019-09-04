@@ -69,7 +69,7 @@ export default async function inviteShopMember(context, input) {
   // have ALL the permissions rather than ANY.
   // Accounts in the "Owner" group are able to add any user to any group,
   // regardless of other permissions.
-  const contextUserAccount = await Accounts.findOne({ _id: userIdFromContext._id });
+  const contextUserAccount = await Accounts.findOne({ _id: userIdFromContext });
   const isOwnerAccount = !!ownerGroup && contextUserAccount.groups.includes(ownerGroup._id);
 
   const { permissions: groupPermissions = [] } = group;
@@ -77,9 +77,6 @@ export default async function inviteShopMember(context, input) {
   if (!context.isInternalCall && !isOwnerAccount && difference(groupPermissions, userFromContext.roles[shopId] || []).length > 0) {
     throw new ReactionError("access-denied", "Access Denied");
   }
-
-  // get currentUserName from contextUserAccount to pass name to invite email
-  const currentUserName = getCurrentUserName(contextUserAccount); // TODO: make sure this works as it should
 
   // check to see if invited user has an account
   const invitedUser = await users.findOne({ "emails.address": email });
@@ -89,6 +86,7 @@ export default async function inviteShopMember(context, input) {
   const isEmailVerified = matchingEmail && matchingEmail.verified;
 
   // set variables to pass to email templates
+  const inviteeName = getCurrentUserName(contextUserAccount);
   let dataForEmail;
   let userId;
   let templateName;
@@ -112,16 +110,20 @@ export default async function inviteShopMember(context, input) {
     const url = Reaction.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, url });
+    dataForEmail = getDataForEmail({ shop: primaryShop, inviteeName, name, url });
 
     // Get email template and subject
     templateName = "accounts/inviteShopMember";
-  } else { // TODO: this whole else section uses meteor
+  } else {
+    // TODO: this entire section uses meteor
+    // TODO: this entire section uses meteor
+    // TODO: this entire section uses meteor
+
     // There could be an existing user with an invite still pending (not activated).
     // We create a new account only if there's no pending invite.
     if (!invitedUser) {
       // The user does not already exist, we need to create a new account
-      userId = MeteorAccounts.createUser({ // TODO: something with this since it's meteor
+      userId = MeteorAccounts.createUser({
         profile: { invited: true },
         email,
         name,
@@ -139,10 +141,14 @@ export default async function inviteShopMember(context, input) {
     Meteor.users.update(userId, { $set: tokenUpdate }); // TODO: something with this since it's meteor
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token });
+    dataForEmail = getDataForEmail({ shop: primaryShop, inviteeName, name, token });
 
     // Get email template and subject
     templateName = "accounts/inviteNewShopMember";
+
+    // TODO: this entire section uses meteor
+    // TODO: this entire section uses meteor
+    // TODO: this entire section uses meteor
   }
 
   dataForEmail.groupName = _.startCase(group.name);
