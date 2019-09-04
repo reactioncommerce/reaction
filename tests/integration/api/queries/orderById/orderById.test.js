@@ -15,7 +15,7 @@ const order = Factory.Order.makeOne({
   accountId: mockOrdersAccount._id
 });
 
-/*
+
 const orderIdAnom = "integ-test-order-id-anom";
 const opaqueOrderIdAnom = "cmVhY3Rpb24vb3JkZXI6aW50ZWctdGVzdC1vcmRlci1pZC1hbm9t" // reaction/order:integ-test-order-id-anom
 const tokenInfo = getAnonymousAccessToken();
@@ -25,7 +25,7 @@ const orderAnom = Factory.Order.makeOne({
   shopId: shopId,
   anonymousAccessTokens: [{ createdAt: tokenInfo.createdAt, hashedToken: tokenInfo.hashedToken }]
 });
-*/
+
 
 const orderByIdQuery = `query ($id: ID!, $shopId: ID!, $token: String) {
   orderById(id: $id, shopId: $shopId, token: $token) {
@@ -57,14 +57,13 @@ test("get account order success", async () => {
   await testApp.collections.Orders.insertOne(order);
   await testApp.setLoggedInUser(mockOrdersAccount);
   const result = await query({ id: opaqueOrderId, shopId: opaqueShopId, token: null });
-  expect(result.account.id).toBe(mockOrdersAccount._id);
+  expect(result.account._id).toBe(mockOrdersAccount._id);
 });
 
-/*
 test("get anonymous order success", async () => {
   await testApp.collections.Orders.insertOne(orderAnom);
   const result = await query({ id: opaqueOrderId, shopId: opaqueShopId, token: tokenInfo.token });
-  expect(result.shop.shopId).toBe(opaqueShopId);
-  expect(result.accountId).toBeUndefined;
+  expect(result.shop.id).toBe(opaqueShopId);
+  expect(result.account._id).toBeUndefined();
 });
-*/
+
