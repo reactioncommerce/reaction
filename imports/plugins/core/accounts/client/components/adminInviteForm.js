@@ -177,7 +177,7 @@ class AdminInviteForm extends Component {
         <Components.Alerts placement={this.state.alertId} id={this.state.alertId} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
           <Mutation mutation={inviteShopMember}>
-            {(mutationFunc, { error }) => (
+            {(mutationFunc, { data, error }) => (
               <form className="">
                 <div className="form-group">
                   <Components.TextField
@@ -216,6 +216,16 @@ class AdminInviteForm extends Component {
                     />
                   </div>
                 </div>
+                {data &&
+                  <div>
+                    <InlineAlert
+                      components={iconComponents}
+                      isDismissable
+                      alertType="success"
+                      message={i18next.t("accountsUI.info.invitationSent")}
+                    />
+                  </div>
+                }
                 {error &&
                   <div>
                     <InlineAlert
