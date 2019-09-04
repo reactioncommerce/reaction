@@ -31,7 +31,7 @@ export default async function setAccountProfileCurrency(context, input) {
   const account = await Accounts.findOne({ _id: accountId }, { fields: { shopId: 1 } });
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (userIdFromContext !== providedAccountId) {
+  if (!context.isInternalCall && userIdFromContext !== providedAccountId) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }
 
