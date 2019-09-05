@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -68,7 +67,6 @@ export default function getDataForEmail(context, options) {
         link: "https://www.twitter.com"
       }
     },
-    user: Meteor.user(), // Account Data
     currentUserName,
     invitedUserName: name,
     url: url || getEmailUrl(token)
