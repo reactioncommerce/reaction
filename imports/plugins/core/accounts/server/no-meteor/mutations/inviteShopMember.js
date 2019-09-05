@@ -87,7 +87,7 @@ export default async function inviteShopMember(context, input) {
     const url = Reaction.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail(context, { shop: primaryShop, invitedByName, name, url });
+    dataForEmail = getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, url });
 
     // Get email template and subject
     templateName = "accounts/inviteShopMember";
@@ -115,7 +115,7 @@ export default async function inviteShopMember(context, input) {
     await users.updateOne({ _id: userId }, { $set: tokenUpdate }); // TODO: not sure if this is working
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail(context, { shop: primaryShop, invitedByName, name, token });
+    dataForEmail = getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, token });
 
     // Get email template and subject
     templateName = "accounts/inviteNewShopMember";
