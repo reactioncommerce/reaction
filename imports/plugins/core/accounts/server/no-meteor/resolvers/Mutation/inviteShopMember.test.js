@@ -6,9 +6,7 @@ import inviteShopMember from "./inviteShopMember";
 mockContext.mutations.inviteShopMember = jest.fn().mockName("mutations.inviteShopMember");
 
 test("correctly passes through to internal mutation function", async () => {
-  const email = "test@email.com";
   const groupId = encodeGroupOpaqueId("g1");
-  const name = "Test name";
   const shopId = encodeShopOpaqueId("s1");
 
   const account = { name: "test name", addressBook: null, currency: null, preferences: null };
