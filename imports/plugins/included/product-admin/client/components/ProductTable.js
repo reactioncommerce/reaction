@@ -135,17 +135,6 @@ function ProductTable({ onCreateProduct }) {
 
   return (
     <Grid container spacing={3}>
-      {noProductsFoundError ? (
-        <Grid item sm={12}>
-          <InlineAlert
-            alertType="error"
-            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
-            isDismissable
-            message={i18next.t("admin.noProductsFoundText")}
-            title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
-          />
-        </Grid>
-      ) : null}
       <FilterByFileCard
         isFilterByFileVisible={isFilterByFileVisible}
         files={files}
@@ -160,7 +149,18 @@ function ProductTable({ onCreateProduct }) {
         setVisibility={setTagSelectorVisible}
         selectedProductIds={selectedProductIds}
       />
-      {(!isFiltered && !isTagSelectorVisible) && (
+      {noProductsFoundError ? (
+        <Grid item sm={12}>
+          <InlineAlert
+            alertType="error"
+            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
+            isDismissable
+            message={i18next.t("admin.noProductsFoundText")}
+            title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
+          />
+        </Grid>
+      ) : null}
+      {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
         <Grid item sm={12} >
           <Button
             color="primary"

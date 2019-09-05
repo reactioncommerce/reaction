@@ -69,7 +69,7 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
   const apolloClient = useApolloClient();
   const [selectedTags, setSelectedTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState({});
+  const [response, setResponse] = useState({ isInvalid: false });
   const classes = useStyles();
 
   /**
@@ -95,10 +95,17 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
    *
    * @param {Object} option The selected action option
    * @param {Integer} index The index of the selected action option
-   * @returns {undefined}
+   * @returns {Object} A response
    */
   async function handleTagsAction(option) {
     const tagIds = selectedTags && selectedTags.map(({ value }) => (value));
+
+    // Prevent user from executing action if he/she has not
+    // yet selected at least one tag
+    if (!tagIds.length) {
+      return setResponse({ isInvalid: true });
+    }
+
     let mutationName;
     const tags = selectedTags && selectedTags.map((tag) => `\u201c${tag.label}\u201d `).join(", ").replace("'", "\u2019");
     let data; let loading; let error;
@@ -153,7 +160,8 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
     setVisibility(false);
     setSelectedTags([]);
 
-    setResponse({
+    return setResponse({
+      isInvalid: false,
       error,
       tags,
       foundAndNotUpdated,
@@ -166,7 +174,7 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
     <Grid item sm={12} >
       {response && Notifications(response)}
       {isVisible &&
-        <MuiCard classes={{ root: classes.root }} raised>
+        <MuiCard classes={{ root: classes.root }}>
           <CardHeader
             className={classes.cardHeaderTitle}
             action={
@@ -174,7 +182,7 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
                 <CloseIcon />
               </IconButton>
             }
-            title={i18next.t("admin.addRemoveTagsCard.title")}
+            title={i18next.t("admin.addRemoveTags.title")}
           />
           <CardContent>
             <Grid container spacing={1} className={classes.cardContainer}>
@@ -194,7 +202,6 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
           <CardActions className={classes.cardActions}>
             <SplitButton
               color="primary"
-              disabled={selectedTags && !selectedTags.length}
               options={ACTION_OPTIONS}
               onClick={handleTagsAction}
               isWaiting={isLoading}
