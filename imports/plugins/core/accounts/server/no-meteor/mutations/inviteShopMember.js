@@ -2,7 +2,6 @@ import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCurrentUserName from "/imports/plugins/core/accounts/server/no-meteor/util/getCurrentUserName";
 import getDataForEmail from "/imports/plugins/core/accounts/server/util/getDataForEmail";
 
@@ -43,7 +42,7 @@ export default async function inviteShopMember(context, input) {
 
   // we always use primary shop data, so retrieve this shop first with `Reaction` helper,
   // and only query the `Shops` collection if shopId !== primaryShop._id
-  const primaryShop = Reaction.getPrimaryShop();
+  const primaryShop = await Shops.findOne({ shopType: "primary" });
   if (!primaryShop) throw new ReactionError("not-found", "No primary shop found");
 
   let shop = primaryShop;
@@ -84,7 +83,7 @@ export default async function inviteShopMember(context, input) {
     if (!invitedAccount) throw new ReactionError("not-found", "User found but matching account not found");
 
     // do not send token, as no password reset is needed
-    const url = Reaction.absoluteUrl();
+    const url = context.getAbsoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
     dataForEmail = getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, url });
