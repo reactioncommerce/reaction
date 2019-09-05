@@ -54,14 +54,6 @@ class NavBar extends Component {
     );
   }
 
-  renderCurrency() {
-    return (
-      <div className="currencies">
-        <Components.CurrencyDropdown />
-      </div>
-    );
-  }
-
   renderBrand() {
     const { brandMedia, shop } = this.props;
 
@@ -130,7 +122,6 @@ class NavBar extends Component {
         <Components.Brand />
         {this.renderNotificationIcon()}
         {this.renderLanguage()}
-        {this.renderCurrency()}
       </Components.TagNav>
     );
   }
