@@ -37,7 +37,7 @@ export default async function inviteShopMember(context, input) {
     shopId
   } = input;
 
-  if (!userHasPermission(["reaction-accounts"], shopId)) {
+  if (!userHasPermission(["reaction-accounts", "account/invite"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
