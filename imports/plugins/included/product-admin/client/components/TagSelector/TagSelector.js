@@ -4,8 +4,7 @@ import { i18next } from "/client/api";
 import CloseIcon from "mdi-material-ui/Close";
 import Select from "@reactioncommerce/catalyst/Select";
 import SplitButton from "@reactioncommerce/catalyst/SplitButton";
-import classNames from "classnames";
-import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/react-hooks";
 import {
   Grid,
   Card as MuiCard,
@@ -17,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { getTags } from "./helpers";
 import { ADD_TAGS_TO_PRODUCTS, REMOVE_TAGS_FROM_PRODUCTS } from "./mutations";
-
+import Notifications from "./Notifications";
 
 const ACTION_OPTIONS = [{
   label: "Add tags to products",
@@ -30,7 +29,8 @@ const ACTION_OPTIONS = [{
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    overflow: "visible"
+    overflow: "visible",
+    marginTop: theme.spacing(4)
   },
   cardContainer: {
     alignItems: "center"
@@ -67,14 +67,10 @@ const useStyles = makeStyles((theme) => ({
  */
 function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
   const apolloClient = useApolloClient();
-  const [selectedTagIds, setSelectedTagIds] = useState([]);
-  const [addTagsToProducts, { data: addTagsResult, loading: addTagsLoading }] = useMutation(ADD_TAGS_TO_PRODUCTS);
-  const [removeTagsFromProducts, { data: removeTagsResult, loading: removeTagsLoading }] = useMutation(REMOVE_TAGS_FROM_PRODUCTS);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [response, setResponse] = useState({});
   const classes = useStyles();
-  const cardClasses = classNames({
-    [classes.hidden]: true,
-    [classes.visible]: isVisible
-  });
 
   /**
    * @summary Loads tags based on user input
@@ -92,8 +88,7 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
    * @returns {undefined}
    */
   function handleOnSelection(tags) {
-    const tagIds = tags && tags.map(({ value }) => (value));
-    setSelectedTagIds(tagIds);
+    setSelectedTags(tags);
   }
 
   /**
@@ -103,69 +98,110 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
    * @returns {undefined}
    */
   async function handleTagsAction(option) {
+    const tagIds = selectedTags && selectedTags.map(({ value }) => (value));
+    let mutationName;
+    const tags = selectedTags && selectedTags.map((tag) => `\u201c${tag.label}\u201d `).join(", ").replace("'", "\u2019");
+    let data; let loading; let error;
+    setResponse({});
+    setIsLoading(true);
     switch (option.type) {
       case "ADD":
-        addTagsToProducts({
+        mutationName = "addTagsToProducts";
+
+        ({ data, loading, error } = await apolloClient.mutate({
+          mutation: ADD_TAGS_TO_PRODUCTS,
           variables: {
             input: {
               productIds: selectedProductIds,
-              tagIds: selectedTagIds
-            }
+              tagIds
+            },
+            fetchPolicy: "no-cache"
           }
-        });
+        }));
+
+        setIsLoading(loading);
+
         break;
       case "REMOVE":
-        removeTagsFromProducts({
+        mutationName = "removeTagsFromProducts";
+
+        ({ data, loading, error } = await apolloClient.mutate({
+          mutation: REMOVE_TAGS_FROM_PRODUCTS,
           variables: {
             input: {
               productIds: selectedProductIds,
-              tagIds: selectedTagIds
-            }
+              tagIds
+            },
+            fetchPolicy: "no-cache"
           }
-        });
+        }));
+
+        setIsLoading(loading);
 
         break;
       default:
         break;
     }
+
+    let updatedCount; let foundCount; let foundAndNotUpdated = 0;
+    if (data && data && data[mutationName]) {
+      ({ updatedCount } = data[mutationName]);
+      ({ foundCount } = data[mutationName]);
+      foundAndNotUpdated = foundCount - updatedCount;
+    }
+
+    setVisibility(false);
+    setSelectedTags([]);
+
+    setResponse({
+      error,
+      tags,
+      foundAndNotUpdated,
+      operationType: option.type,
+      updatedCount
+    });
   }
 
   return (
-    <Grid item sm={12} className={cardClasses}>
-      <MuiCard classes={{ root: classes.root }} raised>
-        <CardHeader
-          className={classes.cardHeaderTitle}
-          action={
-            <IconButton aria-label="close" onClick={() => setVisibility(false)}>
-              <CloseIcon />
-            </IconButton>
-          }
-          title={i18next.t("admin.addRemoveTagsCard.title")}
-        />
-        <CardContent>
-          <Grid container spacing={1} className={classes.cardContainer}>
-            <Grid item sm={12}>
-              <Select
-                cacheOptions
-                defaultOptions
-                isAsync
-                isMulti
-                loadOptions={loadOptions}
-                onSelection={handleOnSelection}
-                placeholder="Enter one or more tags"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <CardActions className={classes.cardActions}>
-          <SplitButton
-            color="primary"
-            options={ACTION_OPTIONS}
-            onClick={handleTagsAction}
-            isWaiting={addTagsLoading || removeTagsLoading}
+    <Grid item sm={12} >
+      {response && Notifications(response)}
+      {isVisible &&
+        <MuiCard classes={{ root: classes.root }} raised>
+          <CardHeader
+            className={classes.cardHeaderTitle}
+            action={
+              <IconButton aria-label="close" onClick={() => setVisibility(false)}>
+                <CloseIcon />
+              </IconButton>
+            }
+            title={i18next.t("admin.addRemoveTagsCard.title")}
           />
-        </CardActions>
-      </MuiCard>
+          <CardContent>
+            <Grid container spacing={1} className={classes.cardContainer}>
+              <Grid item sm={12}>
+                <Select
+                  cacheOptions
+                  defaultOptions
+                  isAsync
+                  isMulti
+                  loadOptions={loadOptions}
+                  onSelection={handleOnSelection}
+                  placeholder="Enter one or more tags"
+                />
+              </Grid>
+            </Grid>
+          </CardContent>
+          <CardActions className={classes.cardActions}>
+            <SplitButton
+              color="primary"
+              disabled={selectedTags && !selectedTags.length}
+              options={ACTION_OPTIONS}
+              onClick={handleTagsAction}
+              isWaiting={isLoading}
+            />
+          </CardActions>
+        </MuiCard>
+      }
     </Grid>
   );
 }

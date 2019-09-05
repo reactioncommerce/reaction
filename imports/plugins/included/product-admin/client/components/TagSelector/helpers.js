@@ -30,4 +30,3 @@ export async function getTags(apolloClient, query) {
 
   return options;
 }
-
