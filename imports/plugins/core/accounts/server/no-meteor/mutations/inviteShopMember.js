@@ -110,7 +110,7 @@ export default async function inviteShopMember(context, input) {
     const url = Reaction.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, invitedByName, name, url });
+    dataForEmail = getDataForEmail(context, { shop: primaryShop, invitedByName, name, url });
 
     // Get email template and subject
     templateName = "accounts/inviteShopMember";

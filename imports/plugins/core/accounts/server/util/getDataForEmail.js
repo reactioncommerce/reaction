@@ -15,11 +15,12 @@ MeteorAccounts.urls.enrollAccount = function (token) {
  * @memberof Accounts/Methods
  * @method
  * @private
+ * @param {Object} context - GraphQL execution context
  * @param  {Object} options - shop, currentUserName, token, name
  * @returns {Object} data - primaryShop, shop, contactEmail, homepage,
  * legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
-export default function getDataForEmail(options) {
+export default function getDataForEmail(context, options) {
   const { shop, currentUserName, token, name, url } = options;
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
   const copyrightDate = new Date().getFullYear();
