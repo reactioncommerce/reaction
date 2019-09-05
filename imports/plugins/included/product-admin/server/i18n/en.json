@@ -30,6 +30,8 @@
             "inputPlaceholder": "Select one or more tag(s)",
             "productsTagged": "{{count}} product(s) tagged",
             "productsUntagged": "{{count}} product(s) untagged.",
+            "invalidSelectionTitle": "Invalid selection",
+            "invalidSelection": "Please select one or more tags",
             "addConfirmation": "Tag(s): {{tags}} added to {{count}} product(s).",
             "removeConfirmation": "Tag(s): {{tags}} were(was) removed from {{count}} product(s).",
             "title": "Add/Remove tags",
