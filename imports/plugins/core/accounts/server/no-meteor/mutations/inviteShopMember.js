@@ -2,8 +2,6 @@ import _, { difference } from "lodash";
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Meteor } from "meteor/meteor";
-import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCurrentUserName from "/imports/plugins/core/accounts/server/no-meteor/util/getCurrentUserName";
 import getDataForEmail from "/imports/plugins/core/accounts/server/util/getDataForEmail";
@@ -115,15 +113,11 @@ export default async function inviteShopMember(context, input) {
     // Get email template and subject
     templateName = "accounts/inviteShopMember";
   } else {
-    // TODO: below this entire section uses meteor
-    // TODO: below this entire section uses meteor
-    // TODO: below this entire section uses meteor
-
     // There could be an existing user with an invite still pending (not activated).
     // We create a new account only if there's no pending invite.
     if (!invitedUser) {
       // The user does not already exist, we need to create a new account
-      userId = MeteorAccounts.createUser({
+      userId = await context.createUser({
         profile: { invited: true },
         email,
         name,
@@ -138,14 +132,11 @@ export default async function inviteShopMember(context, input) {
       "services.password.reset": { token, email, when: new Date() },
       name
     };
-    Meteor.users.update(userId, { $set: tokenUpdate });
 
-    // TODO: above this entire section uses meteor
-    // TODO: above this entire section uses meteor
-    // TODO: above this entire section uses meteor
+    await users.updateOne({ _id: userId }, { $set: tokenUpdate });
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, invitedByName, name, token });
+    dataForEmail = getDataForEmail(context, { shop: primaryShop, invitedByName, name, token });
 
     // Get email template and subject
     templateName = "accounts/inviteNewShopMember";
