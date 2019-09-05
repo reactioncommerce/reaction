@@ -57,7 +57,8 @@ export default function inviteShopOwner(options, shopData) {
   const currentUser = Meteor.user();
   const currentUserName = getCurrentUserName(currentUser);
   // uses primaryShop's data (name, address etc) in email copy sent to new merchant
-  const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token });
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  const dataForEmail = getDataForEmail(context, { shop: primaryShop, currentUserName, name, token });
 
   // 1) this should only be for new users, right?
   // 2) this doesn't happen automatically on new user creation?
@@ -68,7 +69,6 @@ export default function inviteShopOwner(options, shopData) {
     }
   });
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: primaryShop,
