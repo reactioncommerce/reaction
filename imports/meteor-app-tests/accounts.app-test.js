@@ -70,64 +70,6 @@ describe("Account Meteor method ", function () {
     });
   }
 
-  describe("addressBookRemove", function () {
-    it("should allow user to remove address", function () {
-      const address = fakeAccount.profile.addressBook[0];
-      expect(fakeAccount.profile.addressBook.length).to.equal(1);
-
-      Meteor.call("accounts/addressBookRemove", address._id);
-
-      const account = Accounts.findOne({ _id: fakeAccount._id });
-      expect(account.profile.addressBook.length).to.equal(0);
-    });
-
-    // TODO: I don't believe this test does what it says it does
-    // I am pretty sure the user acting is the same user who is being acted upon
-    it("should allow Admin to remove other user address", function () {
-      const address = fakeAccount.profile.addressBook[0];
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      expect(fakeAccount.profile.addressBook.length).to.equal(1);
-
-      Meteor.call("accounts/addressBookRemove", address._id, fakeAccount.userId);
-
-      const account = Accounts.findOne({ _id: fakeAccount._id });
-      expect(account.profile.addressBook.length).to.equal(0);
-    });
-
-    it("should throw error if wrong arguments were passed", function () {
-      const updateAccountSpy = sandbox.spy(Accounts, "update");
-
-      expect(() => Meteor.call("accounts/addressBookRemove", 123456))
-        .to.throw(Match.Error, /Expected string, got number/);
-
-      expect(() => Meteor.call("accounts/addressBookRemove", {}))
-        .to.throw(Match.Error, /Expected string, got object/);
-
-      expect(() => Meteor.call("accounts/addressBookRemove", null))
-        .to.throw(Match.Error, /Expected string, got null/);
-
-      expect(() => Meteor.call("accounts/addressBookRemove"))
-        .to.throw(Match.Error, /Expected string, got undefined/);
-
-      expect(() => Meteor.call("accounts/addressBookRemove", "asdad", 123))
-        .to.throw(Match.Error, /Match.Optional/);
-
-      // https://github.com/aldeed/meteor-simple-schema/issues/522
-      expect(function () {
-        return Meteor.call(
-          "accounts/addressBookRemove",
-          () => { expect(true).to.be.true; }
-        );
-      }).to.not.throw();
-      expect(updateAccountSpy).to.not.have.been.called;
-    });
-
-    it("should throw an error if address does not exist to remove", function () {
-      expect(() => Meteor.call("accounts/addressBookRemove", "asdasdasd"))
-        .to.throw(ReactionError, /Address Not Found/);
-    });
-  });
-
   describe("accounts/inviteShopMember", function () {
     let createUserSpy;
     let groupId;
