@@ -2,23 +2,14 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
-import { Grid, Button, makeStyles } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import { useDropzone } from "react-dropzone";
 import { i18next } from "/client/api";
 import { Session } from "meteor/session";
-import classNames from "classnames";
+import CloseIcon from "mdi-material-ui/Close";
 import withCreateProduct from "../hocs/withCreateProduct";
 import FilterByFileCard from "./FilterByFileCard";
 import TagSelector from "./TagSelector";
-
-const useStyles = makeStyles({
-  hidden: {
-    display: "none"
-  },
-  visible: {
-    display: "block"
-  }
-});
 
 /**
  * ProductTable component
@@ -117,10 +108,6 @@ function ProductTable({ onCreateProduct }) {
     setFilteredProductIdsCount(count);
   };
 
-  const iconComponents = {
-    iconDismiss: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
-  };
-
   // eslint-disable-next-line react/no-multi-comp
   const renderMissedFilterItems = () => {
     if (!Session.get("filterByProductIds")) {
@@ -133,7 +120,7 @@ function ProductTable({ onCreateProduct }) {
         <Grid item sm={12}>
           <InlineAlert
             isDismissable
-            components={iconComponents}
+            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
             alertType="error"
             title={i18next.t("admin.productListIdsNotFound", { missing, all: filterProductIds }) || "Product Ids not found"}
             message={i18next.t("admin.missingFilteredProducts", { count: missing })}
@@ -144,26 +131,21 @@ function ProductTable({ onCreateProduct }) {
     return null;
   };
 
-  const classes = useStyles();
-  const createProductBtnClasses = classNames({
-    [classes.visible]: !isFiltered,
-    [classes.hidden]: isFiltered
-  });
   const selectedProductIds = Session.get("productGrid/selectedProducts");
 
   return (
     <Grid container spacing={3}>
-      { noProductsFoundError ? (
+      {noProductsFoundError ? (
         <Grid item sm={12}>
           <InlineAlert
             alertType="error"
-            components={iconComponents}
+            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
             isDismissable
             message={i18next.t("admin.noProductsFoundText")}
             title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
           />
         </Grid>
-      ) : null }
+      ) : null}
       <FilterByFileCard
         isFilterByFileVisible={isFilterByFileVisible}
         files={files}
@@ -178,27 +160,29 @@ function ProductTable({ onCreateProduct }) {
         setVisibility={setTagSelectorVisible}
         selectedProductIds={selectedProductIds}
       />
-      <Grid item sm={12} className={createProductBtnClasses}>
-        <Button
-          color="primary"
-          onClick={onCreateProduct}
-          variant="contained"
-        >
-          {i18next.t("admin.createProduct") || "Create product"}
-        </Button>
-      </Grid>
-      { isFiltered ? (
+      {(!isFiltered && !isTagSelectorVisible) && (
+        <Grid item sm={12} >
+          <Button
+            color="primary"
+            onClick={onCreateProduct}
+            variant="contained"
+          >
+            {i18next.t("admin.createProduct") || "Create product"}
+          </Button>
+        </Grid>
+      )}
+      {isFiltered ? (
         <Grid item sm={12}>
           <InlineAlert
             isDismissable
             isAutoClosing
-            components={iconComponents}
+            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
             alertType="information"
             title={i18next.t("admin.productListFiltered") || "Product list filtered"}
             message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
           />
         </Grid>
-      ) : null }
+      ) : null}
       {renderMissedFilterItems()}
       <Grid item sm={12}>
         <Components.ProductsAdmin
