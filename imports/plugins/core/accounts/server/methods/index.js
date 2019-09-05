@@ -1,4 +1,3 @@
-import addressBookRemove from "./addressBookRemove";
 import addUserPermissions from "./addUserPermissions";
 import createFallbackLoginToken from "./createFallbackLoginToken";
 import getUserId from "./getUserId";
@@ -28,7 +27,6 @@ import verifyAccount from "./verifyAccount";
 */
 
 export default {
-  "accounts/addressBookRemove": addressBookRemove,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
   "accounts/inviteShopOwner": inviteShopOwner,

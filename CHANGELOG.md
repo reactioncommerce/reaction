@@ -1,3 +1,16 @@
+# v2.2.1
+Reaction v2.2.1 adds a bug fix and contains no breaking changes since v2.2.0
+
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.2.1` of `example-storefront` and `reaction-hydra`.
+
+## Fixes
+
+* fix: Checkout hangs on shipping methods step (#5516) and adds a migration to avoid breaking previous installations. The issue was caused by attempting to add a fulfillment method to a cart that included the prop `fulfillmentTypes`, which was not part of the `ShippingMethod` schema, which caused a validation error. This issue was resolved by adding the `fulfillmentTypes` prop to the `ShippingMethod` schema.
+
+## Contributors
+
+Thanks to @alex-haproff for contributing to this release! 🎉
+
 # v2.2.0
 
 Reaction v2.2.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.1.0.
