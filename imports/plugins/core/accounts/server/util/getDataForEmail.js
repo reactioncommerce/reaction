@@ -1,13 +1,6 @@
 import _ from "lodash";
-import { Accounts as MeteorAccounts } from "meteor/accounts-base";
-import { Shops } from "/lib/collections";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 export const ENROLL_URI_BASE = "account/enroll";
-
-MeteorAccounts.urls.enrollAccount = function (token) {
-  return Reaction.absoluteUrl(`${ENROLL_URI_BASE}/${token}`);
-};
 
 /**
  * @name getDataForEmail
@@ -19,9 +12,11 @@ MeteorAccounts.urls.enrollAccount = function (token) {
  * @returns {Object} data - primaryShop, shop, contactEmail, homepage,
  * legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
-export default function getDataForEmail(context, options) {
+export default async function getDataForEmail(context, options) {
+  const { collections } = context;
+  const { Shops } = collections;
   const { shop, currentUserName, token, name, url } = options;
-  const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
+  const primaryShop = await Shops.findOne({ shopType: "primary" });
   const copyrightDate = new Date().getFullYear();
 
   /**
@@ -30,16 +25,16 @@ export default function getDataForEmail(context, options) {
    */
   function getEmailUrl(userToken) {
     if (userToken) {
-      return MeteorAccounts.urls.enrollAccount(userToken);
+      return context.getAbsoluteUrl(`${ENROLL_URI_BASE}/${userToken}`);
     }
-    return Reaction.absoluteUrl();
+    return context.getAbsoluteUrl();
   }
 
   return {
     primaryShop, // Primary shop data - may or may not be the same as shop
     shop, // Shop Data
     contactEmail: _.get(shop, "emails[0].address"),
-    homepage: Reaction.absoluteUrl(),
+    homepage: context.getAbsoluteUrl(),
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -53,17 +48,17 @@ export default function getDataForEmail(context, options) {
       display: true,
       facebook: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/facebook-icon.png`,
+        icon: `${context.getAbsoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
+        icon: `${context.getAbsoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
+        icon: `${context.getAbsoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },
