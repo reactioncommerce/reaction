@@ -96,7 +96,7 @@ export default async function inviteShopMember(context, input) {
   // if the user already has an account, send in informative email instead of an invite email
   if (invitedUser && isEmailVerified) {
     // make sure user has an `Account` - this should always be the case
-    const invitedAccount = await Accounts.findOne({ _id: userId });
+    const invitedAccount = await Accounts.findOne({ userId });
     if (!invitedAccount) throw new ReactionError("not-found", "User found but matching account not found");
 
     await context.mutations.addAccountToGroup({ ...context, isInternalCall: true }, {
