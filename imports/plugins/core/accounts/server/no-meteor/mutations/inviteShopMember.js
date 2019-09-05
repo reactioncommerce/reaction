@@ -1,4 +1,4 @@
-import _, { difference } from "lodash";
+import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -28,7 +28,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
-  const { collections, user: userFromContext, userHasPermission, userId: userIdFromContext } = context;
+  const { collections, user: userFromContext, userHasPermission } = context;
   const { Accounts, Groups, Shops, users } = collections;
   const {
     email,
@@ -56,24 +56,8 @@ export default async function inviteShopMember(context, input) {
   if (!group) throw new ReactionError("not-found", "No gr found");
 
   // we don't allow direct invitation of "owners", throw an error if that is the group
-  const ownerGroup = await Groups.findOne({ name: "owner" });
-  if (group._id === ownerGroup._id) {
+  if (group.name === "owner") {
     throw new ReactionError("bad-request", "Cannot directly invite owner");
-  }
-
-  // An account can add another account to a group as long as the person adding
-  // has all permissions granted by that group.
-  // We can't use `userHasPermission` here because we want to make sure they
-  // have ALL the permissions rather than ANY.
-  // Accounts in the "Owner" group are able to add any user to any group,
-  // regardless of other permissions.
-  const contextUserAccount = await Accounts.findOne({ _id: userIdFromContext });
-  const isOwnerAccount = !!ownerGroup && contextUserAccount.groups.includes(ownerGroup._id);
-
-  const { permissions: groupPermissions = [] } = group;
-
-  if (!context.isInternalCall && !isOwnerAccount && difference(groupPermissions, userFromContext.roles[shopId] || []).length > 0) {
-    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // check to see if invited user has an account
@@ -84,7 +68,7 @@ export default async function inviteShopMember(context, input) {
   const isEmailVerified = matchingEmail && matchingEmail.verified;
 
   // set variables to pass to email templates
-  const invitedByName = getCurrentUserName(contextUserAccount);
+  const invitedByName = getCurrentUserName(userFromContext);
   let dataForEmail;
   let userId;
   let templateName;
@@ -98,11 +82,6 @@ export default async function inviteShopMember(context, input) {
     // make sure user has an `Account` - this should always be the case
     const invitedAccount = await Accounts.findOne({ userId });
     if (!invitedAccount) throw new ReactionError("not-found", "User found but matching account not found");
-
-    await context.mutations.addAccountToGroup({ ...context, isInternalCall: true }, {
-      accountId: invitedAccount._id,
-      groupId
-    });
 
     // do not send token, as no password reset is needed
     const url = Reaction.absoluteUrl();
@@ -133,7 +112,7 @@ export default async function inviteShopMember(context, input) {
       name
     };
 
-    await users.updateOne({ _id: userId }, { $set: tokenUpdate });
+    await users.updateOne({ _id: userId }, { $set: tokenUpdate }); // TODO: not sure if this is working
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
     dataForEmail = getDataForEmail(context, { shop: primaryShop, invitedByName, name, token });
@@ -141,6 +120,12 @@ export default async function inviteShopMember(context, input) {
     // Get email template and subject
     templateName = "accounts/inviteNewShopMember";
   }
+
+  // add new / existing user to invited group
+  await context.mutations.addAccountToGroup(context, {
+    accountId: userId,
+    groupId
+  });
 
   dataForEmail.groupName = _.startCase(group.name);
 
