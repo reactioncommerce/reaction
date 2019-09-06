@@ -4,7 +4,13 @@ import { Query } from "react-apollo";
 import getShop from "../queries/getShop";
 import getPrimaryShopId from "../queries/getPrimaryShopId";
 
-
+/**
+ * @summary withPrimaryShop HOC
+ * @deprecated So that we can eventually add back a shop switcher, you should use `withShop`
+ *   instead of `withPrimaryShop`, passing in a `shopId` prop.
+ * @param {React.Component} Component React component to wrap
+ * @return {React.Component} Wrapped component
+ */
 export default (Component) => (
   class PrimaryShop extends React.Component {
     static propTypes = {
