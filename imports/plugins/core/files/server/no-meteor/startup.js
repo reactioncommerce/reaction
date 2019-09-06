@@ -1,7 +1,15 @@
+import { Meteor } from "meteor/meteor";
 import Logger from "@reactioncommerce/logger";
 import setUpFileCollections from "./setUpFileCollections";
-import saveRemoteImages from "./jobs/saveRemoteImages";
-import saveTempImages from "./jobs/saveTempImages";
+
+// This is temporary. createSaveImageJob still imports jobs, which doesn't
+// work outside of a Meteor environment.
+let saveRemoteImages = () => {};
+let saveTempImages = () => {};
+if (!Meteor.isFakeMeteor) {
+  saveRemoteImages = require("./jobs/saveRemoteImages").default;
+  saveTempImages = require("./jobs/saveTempImages").default;
+}
 
 /**
  * @summary Called on startup

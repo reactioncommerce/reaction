@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import Random from "@reactioncommerce/random";
 import fetch from "node-fetch";
 import sharp from "sharp";
@@ -10,7 +11,13 @@ import {
   TempFileStoreWorker
 } from "@reactioncommerce/file-collections";
 import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
-import createSaveImageJob from "./util/createSaveImageJob";
+
+// This is temporary. createSaveImageJob still imports jobs, which doesn't
+// work outside of a Meteor environment.
+let createSaveImageJob = () => {};
+if (!Meteor.isFakeMeteor) {
+  createSaveImageJob = require("./util/createSaveImageJob").default;
+}
 
 /**
  * @returns {undefined}
