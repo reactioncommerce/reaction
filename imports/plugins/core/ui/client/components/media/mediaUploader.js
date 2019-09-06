@@ -1,11 +1,11 @@
-import { FileRecord } from "@reactioncommerce/file-collections";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-import { registerComponent } from "@reactioncommerce/reaction-components";
 import { useDropzone } from "react-dropzone";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { FileRecord } from "@reactioncommerce/file-collections";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next, Logger } from "/client/api";
 
 /**
