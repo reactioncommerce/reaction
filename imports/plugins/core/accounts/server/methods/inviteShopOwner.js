@@ -6,7 +6,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
-import getDataForEmail from "../util/getDataForEmail";
+import getDataForEmail from "../no-meteor/util/getDataForEmail";
 
 /**
  * @name accounts/inviteShopOwner
