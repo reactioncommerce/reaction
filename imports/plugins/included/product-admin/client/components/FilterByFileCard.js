@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     display: "block"
   },
   helpText: {
-    marginLeft: "20px",
-    letterSpacing: "0.28px",
+    marginLeft: "20",
+    letterSpacing: "0.28",
     fontWeight: theme.typography.fontWeightRegular
   },
   leftIcon: {
@@ -71,13 +71,13 @@ export default function FilterByFileCard(props) {
           className={classes.cardHeaderTitle}
           action={
             <IconButton aria-label="close" onClick={() => setFilterByFileVisible(false)}>
-              <CloseIcon/>
+              <CloseIcon />
             </IconButton>
           }
           title={i18next.t("admin.importCard.title")}
         />
         <CardContent>
-          { files.length > 0 ? (
+          {files.length > 0 ? (
             <Grid container spacing={1} className={classes.cardContainer}>
               <Grid item sm={12}>
                 {
@@ -111,7 +111,7 @@ export default function FilterByFileCard(props) {
                   color="primary"
                 >
                   <input {...getInputProps()} />
-                  <ImportIcon className={classes.leftIcon}/>
+                  <ImportIcon className={classes.leftIcon} />
                   {i18next.t("admin.importCard.import")}
                 </Button>
                 <Typography variant="h5" display="inline" className={classes.helpText}>
