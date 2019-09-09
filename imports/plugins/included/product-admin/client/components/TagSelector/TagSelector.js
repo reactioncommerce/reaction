@@ -36,9 +36,6 @@ const useStyles = makeStyles((theme) => ({
   cardContainer: {
     alignItems: "center"
   },
-  cardHeaderTitle: {
-    letterSpacing: "0.3px"
-  },
   cardActions: {
     padding: theme.spacing(2),
     justifyContent: "flex-end"
@@ -48,17 +45,6 @@ const useStyles = makeStyles((theme) => ({
   },
   visible: {
     display: "block"
-  },
-  helpText: {
-    marginLeft: "20px",
-    letterSpacing: "0.28px",
-    fontWeight: theme.typography.fontWeightRegular
-  },
-  leftIcon: {
-    marginRight: theme.spacing(1)
-  },
-  leftChip: {
-    marginRight: theme.spacing(1)
   }
 }));
 
@@ -178,7 +164,6 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
       {isVisible &&
         <MuiCard classes={{ root: classes.cardRoot }}>
           <CardHeader
-            className={classes.cardHeaderTitle}
             action={
               <IconButton aria-label="close" onClick={() => setVisibility(false)}>
                 <CloseIcon />
