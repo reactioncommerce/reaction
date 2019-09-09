@@ -118,6 +118,11 @@ export default async function register(app) {
       meta: { noAdminControls: true },
       name: ENROLL_URI_BASE,
       label: "Account Enroll"
+    }, {
+      route: "account/invite",
+      label: "Account Invite",
+      permission: "accountInvite",
+      name: "account/invite"
     }],
     layout: [{
       layout: "coreLayout",

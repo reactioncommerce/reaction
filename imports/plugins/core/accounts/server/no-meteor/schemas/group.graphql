@@ -210,7 +210,7 @@ extend type Mutation {
   createGroup(input: CreateGroupInput!): CreateGroupPayload
 
   "Remove an account from a group"
-  removeAccountFromGroup(input: RemoveAccountFromGroupInput!): RemoveAccountFromGroupPayload
+  removeAccountFromGroup(input: RemoveAccountFromGroupInput!): RemoveAccountFromGroupPayload @deprecated(reason: "Use `addAccountToGroup`.")
 
   "Remove an existing permission group"
   removeGroup(input: RemoveGroupInput!): RemoveGroupPayload
