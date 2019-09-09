@@ -2,7 +2,6 @@ import addUserPermissions from "./addUserPermissions";
 import createFallbackLoginToken from "./createFallbackLoginToken";
 import getUserId from "./getUserId";
 import groupMethods from "./group";
-import inviteShopMember from "./inviteShopMember";
 import inviteShopOwner from "./inviteShopOwner";
 import removeEmailAddress from "./removeEmailAddress";
 import removeUserPermissions from "./removeUserPermissions";
@@ -30,7 +29,6 @@ import verifyAccount from "./verifyAccount";
 export default {
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
-  "accounts/inviteShopMember": inviteShopMember,
   "accounts/inviteShopOwner": inviteShopOwner,
   "accounts/removeEmailAddress": removeEmailAddress,
   "accounts/removeUserPermissions": removeUserPermissions,

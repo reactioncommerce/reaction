@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { Accounts, Shops } from "/lib/collections";
@@ -29,8 +28,6 @@ export default function sendWelcomeEmail(shopId, userId, token) {
   const shop = Shops.findOne({ _id: shopId });
 
   const copyrightDate = new Date().getFullYear();
-  const authUserId = Reaction.getUserId();
-  const user = authUserId ? Meteor.users.findOne({ _id: authUserId }) : null;
   const dataForEmail = {
     // Shop Data
     shop,
@@ -61,15 +58,14 @@ export default function sendWelcomeEmail(shopId, userId, token) {
         icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
-    },
-    user
+    }
   };
 
   dataForEmail.verificationUrl = MeteorAccounts.urls.verifyEmail(token);
 
   const userEmail = account.emails[0].address;
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(authUserId));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
   Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: shop,
