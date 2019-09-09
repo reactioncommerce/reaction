@@ -1,8 +1,8 @@
 const mockContext = {
   accountId: "FAKE_ACCOUNT_ID",
   appEvents: {
-    emit() {},
-    on() {}
+    emit() { },
+    on() { }
   },
   collections: {},
   getAbsoluteUrl: jest.fn().mockName("getAbsoluteUrl").mockImplementation((path) => {
@@ -33,8 +33,8 @@ export function mockCollection(collectionName) {
       throw new Error("update mongo method is deprecated, use updateOne or updateMany");
     },
     bulkWrite: jest.fn().mockName(`${collectionName}.bulkWrite`).mockReturnValue(Promise.resolve({
-      nMatched: 2,
-      nModified: 2,
+      nMatched: 1,
+      nModified: 1,
       result: {
         writeErrors: []
       }
