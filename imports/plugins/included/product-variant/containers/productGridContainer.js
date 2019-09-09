@@ -60,8 +60,10 @@ const wrapComponent = (Comp) => (
 
     handlePublishProducts = async (productIds, mutation) => {
       // we need to encode the productIds here to pass them to GraphQL
-      const promises = productIds.map((productId) => getOpaqueIds([{ namespace: "Product", id: productId }]));
-      const [opaqueProductIds] = await Promise.all(promises);
+      const productIdObjects = productIds.map((productId) => (
+        { namespace: "Product", id: productId }
+      ));
+      const [opaqueProductIds] = await getOpaqueIds(productIdObjects);
 
       await mutation({
         variables: {
