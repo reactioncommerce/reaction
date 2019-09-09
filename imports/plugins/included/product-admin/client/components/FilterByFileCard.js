@@ -20,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
   cardContainer: {
     alignItems: "center"
   },
-  cardHeaderTitle: {
-    letterSpacing: "0.3px"
-  },
   hidden: {
     display: "none"
   },
@@ -67,7 +64,6 @@ export default function FilterByFileCard(props) {
     <Grid item sm={12} className={cardClasses}>
       <MuiCard>
         <CardHeader
-          className={classes.cardHeaderTitle}
           action={
             <IconButton aria-label="close" onClick={() => setFilterByFileVisible(false)}>
               <CloseIcon />

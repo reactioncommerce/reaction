@@ -29,12 +29,12 @@
           "addRemoveTags": {
             "inputPlaceholder": "Select one or more tag(s)",
             "invalidSelection": "Please select one or more tags",
-            "addConfirmation": "Tags: {{tags}} added to {{count}} product.",
+            "addConfirmation": "Tags: {{tags}} added to {{count}} products.",
             "removeConfirmation": "Tags: {{tags}} removed from {{count}} products.",
             "tagsInputPlaceholder": "Enter one or more tags",
             "title": "Add/Remove tags",
-            "addFoundAndNotUpdated": "{{count}} products were already tagged with the provided tags. No update performed.",
-            "removeFoundAndNotUpdated": "{{count}} products were not tagged with the provided tags. No update performed."
+            "addFoundAndNotUpdated": "{{count}} products were already tagged with the provided tags. No change made.",
+            "removeFoundAndNotUpdated": "{{count}} products were not tagged with the provided tags. No change made."
           },
           "productTable": {
             "header": {

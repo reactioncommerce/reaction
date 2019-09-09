@@ -149,7 +149,7 @@ function ProductTable({ onCreateProduct }) {
         setVisibility={setTagSelectorVisible}
         selectedProductIds={selectedProductIds}
       />
-      {noProductsFoundError ? (
+      {noProductsFoundError && (
         <Grid item sm={12}>
           <InlineAlert
             alertType="error"
@@ -159,7 +159,7 @@ function ProductTable({ onCreateProduct }) {
             title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
           />
         </Grid>
-      ) : null}
+      )}
       {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
         <Grid item sm={12} >
           <Button
