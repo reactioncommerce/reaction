@@ -1,8 +1,11 @@
 import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import mockContext from "/imports/test-utils/helpers/mockContext";
 import inviteShopMember from "./inviteShopMember";
 
-test("correctly passes through to accounts/inviteShopMember method", () => {
+mockContext.mutations.inviteShopMember = jest.fn().mockName("mutations.inviteShopMember");
+
+test("correctly passes through to internal mutation function", async () => {
   const groupId = encodeGroupOpaqueId("g1");
   const shopId = encodeShopOpaqueId("s1");
 
@@ -10,13 +13,9 @@ test("correctly passes through to accounts/inviteShopMember method", () => {
 
   const fakeResult = { _id: "1", ...account };
 
-  const mockMethod = jest.fn().mockName("accounts/inviteShopMember method");
-  mockMethod.mockReturnValueOnce(fakeResult);
-  const context = {
-    callMeteorMethod: mockMethod
-  };
+  mockContext.mutations.inviteShopMember.mockReturnValueOnce(Promise.resolve(fakeResult));
 
-  const result = inviteShopMember(null, {
+  const result = await inviteShopMember(null, {
     input: {
       email: "test@email.com",
       groupId,
@@ -24,9 +23,9 @@ test("correctly passes through to accounts/inviteShopMember method", () => {
       shopId,
       clientMutationId: "clientMutationId"
     }
-  }, context);
+  }, mockContext);
 
-  expect(mockMethod).toHaveBeenCalledWith("accounts/inviteShopMember", {
+  expect(mockContext.mutations.inviteShopMember).toHaveBeenCalledWith(mockContext, {
     email: "test@email.com",
     groupId: "g1",
     name: "test name",
