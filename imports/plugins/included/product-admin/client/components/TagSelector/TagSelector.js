@@ -194,7 +194,7 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
                   isMulti
                   loadOptions={loadOptions}
                   onSelection={handleOnSelection}
-                  placeholder="Enter one or more tags"
+                  placeholder={i18next.t("admin.addRemoveTags.tagsInputPlaceholder")}
                 />
               </Grid>
             </Grid>
