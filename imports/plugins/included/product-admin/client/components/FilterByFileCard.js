@@ -30,8 +30,7 @@ const useStyles = makeStyles((theme) => ({
     display: "block"
   },
   helpText: {
-    marginLeft: "20",
-    letterSpacing: "0.28",
+    marginLeft: theme.spacing(2),
     fontWeight: theme.typography.fontWeightRegular
   },
   leftIcon: {
@@ -66,7 +65,7 @@ export default function FilterByFileCard(props) {
 
   return (
     <Grid item sm={12} className={cardClasses}>
-      <MuiCard raised>
+      <MuiCard>
         <CardHeader
           className={classes.cardHeaderTitle}
           action={
