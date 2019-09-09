@@ -3,7 +3,7 @@ import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCurrentUserName from "/imports/plugins/core/accounts/server/no-meteor/util/getCurrentUserName";
-import getDataForEmail from "/imports/plugins/core/accounts/server/util/getDataForEmail";
+import getDataForEmail from "/imports/plugins/core/accounts/server/no-meteor/util/getDataForEmail";
 
 const inputSchema = new SimpleSchema({
   email: String,
@@ -55,7 +55,7 @@ export default async function inviteShopMember(context, input) {
   if (!group) throw new ReactionError("not-found", "No gr found");
 
   // we don't allow direct invitation of "owners", throw an error if that is the group
-  if (group.name === "owner") {
+  if (group.slug === "owner") {
     throw new ReactionError("bad-request", "Cannot directly invite owner");
   }
 
@@ -79,14 +79,14 @@ export default async function inviteShopMember(context, input) {
   // if the user already has an account, send in informative email instead of an invite email
   if (invitedUser && isEmailVerified) {
     // make sure user has an `Account` - this should always be the case
-    const invitedAccount = await Accounts.findOne({ userId });
+    const invitedAccount = await Accounts.findOne({ userId }, { projection: { _id: 1 } });
     if (!invitedAccount) throw new ReactionError("not-found", "User found but matching account not found");
 
     // do not send token, as no password reset is needed
     const url = context.getAbsoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, url });
+    dataForEmail = await getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, url });
 
     // Get email template and subject
     templateName = "accounts/inviteShopMember";
@@ -114,7 +114,7 @@ export default async function inviteShopMember(context, input) {
     await users.updateOne({ _id: userId }, { $set: tokenUpdate }); // TODO: not sure if this is working
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, token });
+    dataForEmail = await getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, token });
 
     // Get email template and subject
     templateName = "accounts/inviteNewShopMember";
@@ -136,5 +136,5 @@ export default async function inviteShopMember(context, input) {
     to: email
   });
 
-  return Accounts.findOne({ _id: userId });
+  return Accounts.findOne({ userId });
 }

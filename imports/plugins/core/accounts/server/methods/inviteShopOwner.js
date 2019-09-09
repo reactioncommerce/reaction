@@ -6,7 +6,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
-import getDataForEmail from "../util/getDataForEmail";
+import getDataForEmail from "../no-meteor/util/getDataForEmail";
 
 /**
  * @name accounts/inviteShopOwner
@@ -58,7 +58,7 @@ export default function inviteShopOwner(options, shopData) {
   const currentUserName = getCurrentUserName(currentUser);
   // uses primaryShop's data (name, address etc) in email copy sent to new merchant
   const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
-  const dataForEmail = getDataForEmail(context, { shop: primaryShop, currentUserName, name, token });
+  const dataForEmail = Promise.await(getDataForEmail(context, { shop: primaryShop, currentUserName, name, token }));
 
   // 1) this should only be for new users, right?
   // 2) this doesn't happen automatically on new user creation?
