@@ -28,8 +28,9 @@ const ACTION_OPTIONS = [{
 }];
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  cardRoot: {
     overflow: "visible",
+    padding: theme.spacing(2),
     marginTop: theme.spacing(4)
   },
   cardContainer: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: "0.3px"
   },
   cardActions: {
+    padding: theme.spacing(2),
     justifyContent: "flex-end"
   },
   hidden: {
@@ -174,7 +176,7 @@ function TagSelector({ isVisible, selectedProductIds, setVisibility }) {
     <Grid item sm={12} >
       {response && Notifications(response)}
       {isVisible &&
-        <MuiCard classes={{ root: classes.root }}>
+        <MuiCard classes={{ root: classes.cardRoot }}>
           <CardHeader
             className={classes.cardHeaderTitle}
             action={

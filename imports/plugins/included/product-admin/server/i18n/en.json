@@ -7,7 +7,7 @@
         "admin": {
           "createProduct": "Create product",
           "productListFiltered": "Product list filtered",
-          "showingFilteredProducts": "Showing {{count}} found product from imported file(s).",
+          "showingFilteredProducts": "{{count}} products found from imported file.",
           "showingFilteredProducts_plural": "Showing {{count}} found products from imported file(s).",
           "productListIdsNotFound": "{{missing}} of {{all}} products not found",
           "missingFilteredProducts": "{{count}} product ID could not be found in the catalog.",
@@ -28,17 +28,13 @@
           },
           "addRemoveTags": {
             "inputPlaceholder": "Select one or more tag(s)",
-            "productsTagged": "{{count}} product(s) tagged",
-            "productsUntagged": "{{count}} product(s) untagged.",
-            "invalidSelectionTitle": "Invalid selection",
             "invalidSelection": "Please select one or more tags",
-            "addConfirmation": "Tag(s): {{tags}} added to {{count}} product(s).",
-            "removeConfirmation": "Tag(s): {{tags}} were(was) removed from {{count}} product(s).",
+            "addConfirmation": "Tags: {{tags}} added to {{count}} product.",
+            "removeConfirmation": "Tags: {{tags}} removed from {{count}} products.",
             "tagsInputPlaceholder": "Enter one or more tags",
             "title": "Add/Remove tags",
-            "noUpdateNecessary": "No update necessary",
-            "addFoundAndNotUpdated": "{{count}} product(s) were(was) not updated, the selected products are already tagged with the provided tags.",
-            "removeFoundAndNotUpdated": "{{count}} product(s) were(was) not updated, the selected products are not tagged with the provided tags."
+            "addFoundAndNotUpdated": "{{count}} products were already tagged with the provided tags. No update performed.",
+            "removeFoundAndNotUpdated": "{{count}} products were not tagged with the provided tags. No update performed."
           },
           "productTable": {
             "header": {

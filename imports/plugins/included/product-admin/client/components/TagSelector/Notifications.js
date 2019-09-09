@@ -37,7 +37,6 @@ function Notifications(props) {
           isAutoClosing
           components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
           alertType="error"
-          title={i18next.t("admin.addRemoveTags.invalidSelectionTitle")}
           message={i18next.t("admin.addRemoveTags.invalidSelection")}
         />
       )}
@@ -47,11 +46,6 @@ function Notifications(props) {
           isDismissable
           components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
           alertType="success"
-          title={i18next.t(
-            "admin.addRemoveTags.productsTagged",
-            { count: updatedCount }
-          )
-          }
           message={i18next.t(
             "admin.addRemoveTags.addConfirmation",
             { tags, count: updatedCount }
@@ -64,8 +58,6 @@ function Notifications(props) {
           isAutoClosing
           components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
           alertType="information"
-          title={i18next.t("admin.addRemoveTags.noUpdateNecessary")
-          }
           message={i18next.t(
             "admin.addRemoveTags.addFoundAndNotUpdated",
             { count: foundAndNotUpdated }
@@ -78,11 +70,6 @@ function Notifications(props) {
           isDismissable
           components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
           alertType="success"
-          title={i18next.t(
-            "admin.addRemoveTags.productsUntagged",
-            { count: updatedCount }
-          )
-          }
           message={i18next.t(
             "admin.addRemoveTags.removeConfirmation",
             { tags, count: updatedCount }
@@ -95,8 +82,6 @@ function Notifications(props) {
           isAutoClosing
           components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
           alertType="information"
-          title={i18next.t("admin.addRemoveTags.noUpdateNecessary")
-          }
           message={i18next.t(
             "admin.addRemoveTags.removeFoundAndNotUpdated",
             { count: foundAndNotUpdated }
