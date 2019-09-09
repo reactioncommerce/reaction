@@ -34,6 +34,7 @@
             "invalidSelection": "Please select one or more tags",
             "addConfirmation": "Tag(s): {{tags}} added to {{count}} product(s).",
             "removeConfirmation": "Tag(s): {{tags}} were(was) removed from {{count}} product(s).",
+            "tagsInputPlaceholder": "Enter one or more tags",
             "title": "Add/Remove tags",
             "noUpdateNecessary": "No update necessary",
             "addFoundAndNotUpdated": "{{count}} product(s) were(was) not updated, the selected products are already tagged with the provided tags.",

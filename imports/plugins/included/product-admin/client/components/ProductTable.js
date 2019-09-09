@@ -171,7 +171,7 @@ function ProductTable({ onCreateProduct }) {
           </Button>
         </Grid>
       )}
-      {isFiltered ? (
+      {isFiltered && (
         <Grid item sm={12}>
           <InlineAlert
             isAutoClosing
@@ -183,7 +183,7 @@ function ProductTable({ onCreateProduct }) {
             message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
           />
         </Grid>
-      ) : null}
+      )}
       {renderMissedFilterItems()}
       <Grid item sm={12}>
         <Components.ProductsAdmin
