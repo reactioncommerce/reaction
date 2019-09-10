@@ -11,9 +11,7 @@ import { formatApolloErrors } from "apollo-server-errors";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 import { setCollections } from "/imports/collections/rawCollections";
-import meteorFileCollectionStartup from "/imports/plugins/core/files/server/fileCollections";
 import packageJson from "/package.json";
 
 // For Meteor app tests
@@ -30,9 +28,6 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
   const mongodb = MongoInternals.NpmModules.mongodb.module;
 
   const app = new ReactionNodeApp({
-    addCallMeteorMethod(context) {
-      context.callMeteorMethod = (name, ...args) => runMeteorMethodWithContext(context, name, args);
-    },
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
@@ -70,8 +65,6 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
   }
 
   setCollections(app.context.collections);
-
-  meteorFileCollectionStartup(app.context);
 
   // bind the specified paths to the Express server running GraphQL
   WebApp.connectHandlers.use(app.expressApp);

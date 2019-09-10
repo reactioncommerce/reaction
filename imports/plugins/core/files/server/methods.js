@@ -1,8 +1,9 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "@reactioncommerce/reaction-error";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "@reactioncommerce/reaction-error";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { MediaRecords } from "/lib/collections";
 
 /**
@@ -21,16 +22,19 @@ import { MediaRecords } from "/lib/collections";
 export async function insertMedia(fileRecord) {
   check(fileRecord, Object);
 
+  const authUserId = Reaction.getUserId();
+
   const doc = {
     ...fileRecord,
     metadata: {
       ...fileRecord.metadata,
+      ownerId: authUserId,
       workflow: "published"
     }
   };
   const mediaRecordId = await MediaRecords.insert(doc);
 
-  appEvents.emit("afterMediaInsert", { createdBy: Reaction.getUserId(), mediaRecord: doc });
+  appEvents.emit("afterMediaInsert", { createdBy: authUserId, mediaRecord: doc });
 
   return mediaRecordId;
 }
@@ -44,6 +48,38 @@ export async function insertMedia(fileRecord) {
  * @returns {Boolean} was media successfully removed
  */
 export async function removeMedia(fileRecordId) {
+  check(fileRecordId, String);
+
+  const mediaRecord = await MediaRecords.findOne({ _id: fileRecordId });
+  if (!mediaRecord) throw new ReactionError("not-found", `Media record with ID ${fileRecordId} not found`);
+
+  const authUserId = Reaction.getUserId();
+
+  const context = await getGraphQLContextInMeteorMethod(authUserId);
+  const { collections: { Media } } = context;
+
+  const result = await Media.remove(fileRecordId);
+
+  const success = (result === 1);
+
+  if (success) {
+    appEvents.emit("afterMediaRemove", { removedBy: authUserId, mediaRecord });
+  }
+
+  return success;
+}
+
+/**
+ * @name media/archive
+ * @method
+ * @memberof Media/Methods
+ * @summary Unpublish a media record by updating it's workflow. This is needed only for
+ *   product media, because we can't delete the actual files until the removal is
+ *   published to Catalog, since docs in Catalog are still using the media until then.
+ * @param {String} fileRecordId - _id of file record to be archived.
+ * @returns {Boolean} was media successfully archived
+ */
+export async function archiveMedia(fileRecordId) {
   check(fileRecordId, String);
 
   const result = MediaRecords.update({
@@ -155,6 +191,7 @@ export function updateMediaPriority(mediaId, priority) {
 }
 
 Meteor.methods({
+  "media/archive": archiveMedia,
   "media/insert": insertMedia,
   "media/updatePriorities": updateMediaPriorities,
   "media/updatePriority": updateMediaPriority,

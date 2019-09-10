@@ -70,64 +70,6 @@ describe("Account Meteor method ", function () {
     });
   }
 
-  describe("accounts/inviteShopMember", function () {
-    let createUserSpy;
-    let groupId;
-    let group;
-
-    function callDescribed(accountAttributes = {}) {
-      const options = Object.assign({
-        shopId,
-        groupId,
-        email: fakeUser.emails[0].address,
-        name: fakeAccount.profile.addressBook[0].fullName
-      }, accountAttributes);
-
-      return Meteor.call("accounts/inviteShopMember", options);
-    }
-
-    function stubPermissioning(settings) {
-      const { hasPermission, canInviteToGroup } = settings;
-
-      sandbox.stub(Reaction, "hasPermission", () => hasPermission);
-      sandbox
-        .stub(Reaction, "canInviteToGroup", () => canInviteToGroup)
-        .withArgs({ group, user: fakeUser });
-    }
-
-    beforeEach(function () {
-      createUserSpy = sandbox.spy(MeteorAccounts, "createUser");
-
-      groupId = Random.id();
-      group = Factory.create("group");
-      sandbox.stub(Groups, "findOne", () => group).withArgs({ _id: groupId });
-    });
-
-    it("requires reaction-accounts permission", function () {
-      stubPermissioning({ hasPermission: false });
-      sandbox.stub(Logger, "error") // since we expect this, let's keep the output clean
-        .withArgs(sinon.match(/reaction-accounts permissions/));
-
-      expect(callDescribed).to.throw(ReactionError, /Access denied/);
-      expect(createUserSpy).to.not.have.been.called;
-    });
-
-    it("ensures the user has invite permission for this group/shop", function () {
-      stubPermissioning({ hasPermission: true, canInviteToGroup: false });
-
-      expect(callDescribed).to.throw(ReactionError, /Cannot invite/);
-      expect(createUserSpy).to.not.have.been.called;
-    });
-
-    it("prevents inviting the owner of a shop (only a member)", function () {
-      group.slug = "owner";
-      stubPermissioning({ hasPermission: true, canInviteToGroup: true });
-
-      expect(callDescribed).to.throw(ReactionError, /invite owner/);
-      expect(createUserSpy).to.not.have.been.called;
-    });
-  });
-
   describe("accounts/inviteShopOwner", function () {
     let createUserSpy;
     let groupId;

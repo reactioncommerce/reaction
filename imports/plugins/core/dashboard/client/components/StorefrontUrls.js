@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import { Form } from "reacto-form";
 import { Mutation } from "react-apollo";
+import { compose } from "recompose";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -16,7 +17,8 @@ import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
-import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
+import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
+import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 
 const PaddedField = styled(Field)`
   margin-bottom: 30px;
@@ -97,6 +99,9 @@ class StorefrontUrls extends Component {
 
   render() {
     const { classes, shop } = this.props;
+
+    if (!shop) return null; // Data may not have loaded yet
+
     const { storefrontUrls } = shop;
     const { storefrontHomeUrl, storefrontLoginUrl, storefrontOrderUrl, storefrontOrdersUrl, storefrontAccountProfileUrl } = storefrontUrls || {};
 
@@ -221,4 +226,8 @@ class StorefrontUrls extends Component {
   }
 }
 
-export default withPrimaryShop(withStyles(styles, { name: "RuiStorefrontUrls" })(StorefrontUrls));
+export default compose(
+  withPrimaryShopId,
+  withShop,
+  withStyles(styles, { name: "RuiStorefrontUrls" })
+)(StorefrontUrls);

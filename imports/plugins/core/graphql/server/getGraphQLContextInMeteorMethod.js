@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import buildContext from "/imports/node-app/core/util/buildContext";
 import collections from "/imports/collections/rawCollections";
 
@@ -49,10 +48,6 @@ export default async function getGraphQLContextInMeteorMethod(userId) {
   const request = { user };
 
   await buildContext(meteorContext, request);
-
-  // Since getGraphQLContextInMeteorMethod is to be called within a Meteor method with Meteor running,
-  // we can pass through callMeteorMethod to Meteor.apply.
-  meteorContext.callMeteorMethod = (methodName, ...args) => Meteor.apply(methodName, args);
 
   return meteorContext;
 }

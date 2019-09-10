@@ -21,9 +21,6 @@
           {{/autoForm}}
         </div>
         <div class="panel-body">
-          {{> React ShopBrandMediaManager}}
-        </div>
-        <div class="panel-body">
           {{#autoForm collection=Collections.Shops doc=shop id="shopEditForm" type="update"}}
             {{> afQuickField name='name' placeholder="Shop Name"}}
             {{> afQuickField name='slug' placeholder="Shop Slug"}}
@@ -70,26 +67,6 @@
       </div>
     </div>
 
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="panel-title">
-          <a
-            href="#plugin-versions"
-            aria-controls="plugin-versions"
-            aria-expanded="true"
-            role="button"
-            data-toggle="collapse"
-            data-parent="#shopSettingsAccordian">Plugin Versions</a>
-        </div>
-      </div>
-      <div id="plugin-versions" class="panel-collapse collapse" role="tabpanel">
-        <div class="panel-body">
-          {{> React component=PluginVersions versionedPackages=versionedPackages}}
-        </div>
-      </div>
-    </div>
-
     {{#each reactionApps provides='shopSettings'}}
       <div class="panel panel-default">
         <div class="panel-heading panel-heading-flex">
@@ -119,15 +96,7 @@
     {{/each}}
   </div>
 
-  <div style="margin-bottom: 20px">
-    {{> React component=ShopLogoUrls}}
-  </div>
-
-  <div style="margin-bottom: 20px">
-    {{> React component=StorefrontUrls}}
-  </div>
-
-  <div>
+  <div class="shopSettingsBlockArea">
     {{> React component=Blocks region="ShopSettings" blockProps=shopSettingsBlockProps}}
   </div>
 </template>
