@@ -25,5 +25,6 @@ export default {
   SplitOrderItemPayload: {
     newItemId: (node) => encodeOrderItemOpaqueId(node.newItemId)
   },
+  ...getConnectionTypeResolvers("Order"),
   ...getConnectionTypeResolvers("OrdersByAccountId")
 };
