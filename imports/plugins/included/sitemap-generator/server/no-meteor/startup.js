@@ -6,10 +6,11 @@ import generateSitemaps from "../lib/generate-sitemaps";
 
 /**
  * @name generateSitemapsJob
- * @summary Initializes and processes a job that regenerates XML sitemaps
+ * @summary called on startup
+ * @param {Object} context Startup context
  * @returns {undefined}
  */
-export default function generateSitemapsJob() {
+export default function startup(context) {
   const jobId = "sitemaps/generate";
 
   // Hook that schedules job
@@ -41,7 +42,7 @@ export default function generateSitemapsJob() {
       Logger.debug(`Processing ${jobId} job`);
 
       const { notifyUserId = "" } = job.data;
-      generateSitemaps({ notifyUserId });
+      generateSitemaps(context, { notifyUserId });
 
       const doneMessage = `${jobId} job done`;
       Logger.debug(doneMessage);
