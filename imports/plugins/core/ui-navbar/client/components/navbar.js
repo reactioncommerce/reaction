@@ -46,14 +46,6 @@ class NavBar extends Component {
     this.setState({ searchModalOpen: false });
   }
 
-  renderLanguage() {
-    return (
-      <div className="languages">
-        <Components.LanguageDropdown />
-      </div>
-    );
-  }
-
   renderBrand() {
     const { brandMedia, shop } = this.props;
 
@@ -121,7 +113,6 @@ class NavBar extends Component {
       >
         <Components.Brand />
         {this.renderNotificationIcon()}
-        {this.renderLanguage()}
       </Components.TagNav>
     );
   }
@@ -136,7 +127,6 @@ class NavBar extends Component {
         </header>
         {this.props.visibility.search && this.renderSearchButton()}
         {this.props.visibility.notifications && this.renderNotificationIcon()}
-        {this.props.visibility.languages && this.renderLanguage()}
         {this.props.visibility.currency && this.renderCurrency()}
         {this.props.visibility.mainDropdown && this.renderMainDropdown()}
       </div>

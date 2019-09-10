@@ -23,9 +23,6 @@ Tracker.autorun(() => {
 // Primary shop subscription
 Subscriptions.PrimaryShop = Subscriptions.Manager.subscribe("PrimaryShop");
 
-// Additional shop subscriptions
-Subscriptions.MerchantShops = Subscriptions.Manager.subscribe("MerchantShops");
-
 // This Packages subscription is used for the Active shop's packages
 Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
 

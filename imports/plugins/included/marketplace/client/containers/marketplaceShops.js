@@ -9,19 +9,16 @@ const onWorkflowChange = (shopId, value) => {
 };
 
 const composer = (props, onData) => {
-  // Subscribe to merchant shops and get all shops (excluding the primary shop) if subscription is ready
-  if (Meteor.subscribe("MerchantShops").ready()) {
-    const shops = Shops.find({
-      _id: {
-        $nin: [Reaction.getPrimaryShopId()]
-      }
-    }).fetch();
+  const shops = Shops.find({
+    _id: {
+      $nin: [Reaction.getPrimaryShopId()]
+    }
+  }).fetch();
 
-    onData(null, {
-      shops,
-      onWorkflowChange
-    });
-  }
+  onData(null, {
+    shops,
+    onWorkflowChange
+  });
 };
 
 registerComponent("MarketplaceShops", MarketplaceShops, composeWithTracker(composer));

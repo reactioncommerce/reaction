@@ -17,21 +17,18 @@ Meteor.startup(() => {
   // or missing shop data throughout the app.
   // TODO: Revisit subscriptions manager usage and waiting for shops to exist client side before rendering.
   const primaryShopSub = Meteor.subscribe("PrimaryShop");
-  const merchantShopSub = Meteor.subscribe("MerchantShops");
   const packageSub = Meteor.subscribe("Packages");
 
   // initialize client routing
   Tracker.autorun((computation) => {
     // All of these are reactive
     const primaryShopSubIsReady = primaryShopSub.ready();
-    const merchantShopSubIsReady = merchantShopSub.ready();
     const packageSubIsReady = packageSub.ready();
     const primaryShopId = Reaction.getPrimaryShopId();
     const hasShops = !!Shops.findOne();
 
     if (
       primaryShopSubIsReady &&
-      merchantShopSubIsReady &&
       packageSubIsReady &&
       primaryShopId &&
       hasShops

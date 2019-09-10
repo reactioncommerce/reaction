@@ -66,7 +66,7 @@ export default {
    */
   init() {
     // Listen for the primary shop subscription and set accordingly
-    Tracker.autorun(() => {
+    return Tracker.autorun(() => {
       let shop;
       if (this.Subscriptions.PrimaryShop.ready()) {
         // There should only ever be one "primary" shop
@@ -83,26 +83,16 @@ export default {
           if (!Countries.findOne()) {
             createCountryCollection(shop.locales.countries);
           }
-        }
-      }
-    });
 
-    // Listen for active shop change
-    return Tracker.autorun(() => { // eslint-disable-line consistent-return
-      if (this.Subscriptions.MerchantShops.ready()) {
-        // if we don't have an active shopId, try to retrieve it from the userPreferences object
-        // and set the shop from the storedShopId
-        if (!this.shopId) {
-          const shop = this.getCurrentShop();
+          // if we don't have an active shopId, try to retrieve it from the userPreferences object
+          // and set the shop from the storedShopId
+          if (!this.shopId) {
+            const currentShop = this.getCurrentShop();
 
-          if (shop) {
-            // Only set shopId if it hasn't been set yet
-            if (!this.shopId) {
-              this.shopId = shop._id;
-              this.shopName = shop.name;
+            if (currentShop) {
+              this.shopId = currentShop._id;
+              this.shopName = currentShop.name;
             }
-
-            return this;
           }
         }
       }
