@@ -301,21 +301,6 @@ Importer.template = function (templateInfo, shopId) {
 };
 
 /**
- * @name translation
- * @method
- * @memberof Importer
- * @summary Store a translation in the import buffer.
- * @param {Object} key A key to look up the translation
- * @param {Object} translation The translation data to be updated
- * @param {String} shopId The package data to be updated
- * @returns {Object} updated translation buffer
- */
-Importer.translation = function (key, translation, shopId) {
-  const modifiedKey = Object.assign(key, { ns: translation.ns });
-  return this.object(Collections.Translations, modifiedKey, { ...translation, shopId });
-};
-
-/**
  * @name shop
  * @method
  * @memberof Importer
@@ -472,7 +457,6 @@ Importer.process = function (json, keys, callback, cbArgs) {
   }
 };
 
-Importer.indication("i18n", Collections.Translations, 0.2);
 Importer.indication("hashtags", Collections.Products, 0.5);
 Importer.indication("barcode", Collections.Products, 0.5);
 Importer.indication("price", Collections.Products, 0.5);

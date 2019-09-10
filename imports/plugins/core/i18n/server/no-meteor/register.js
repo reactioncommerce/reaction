@@ -13,16 +13,6 @@ export default async function register(app) {
     name: "reaction-i18n",
     icon: "fa fa-language",
     i18n,
-    collections: {
-      Translations: {
-        name: "Translations",
-        indexes: [
-          // Create indexes. We set specific names for backwards compatibility
-          // with indexes created by the aldeed:schema-index Meteor package.
-          [{ shopId: 1, i18n: 1 }]
-        ]
-      }
-    },
     functionsByType: {
       registerPluginHandler: [registerPluginHandler],
       startup: [startup]

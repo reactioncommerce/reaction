@@ -6,6 +6,7 @@ import rawCollections from "/imports/collections/rawCollections";
 const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
 
 const Inventory = db.collection("Inventory");
+const Translations = db.collection("Translations");
 
 /**
  * @private
@@ -40,8 +41,7 @@ Migrations.add({
       Orders,
       Packages,
       Products,
-      Shops,
-      Translations
+      Shops
     } = rawCollections;
 
     Accounts.dropIndex("c2_sessions", handleError);

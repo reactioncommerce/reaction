@@ -13,6 +13,5 @@ import "./collections/shipping";
 import "./collections/shops";
 import "./collections/tags";
 import "./collections/themes";
-import "./collections/translations";
 import "./counts";
 import "./email";
