@@ -63,7 +63,7 @@ const wrapComponent = (Comp) => (
       const productIdObjects = productIds.map((productId) => (
         { namespace: "Product", id: productId }
       ));
-      const [opaqueProductIds] = await getOpaqueIds(productIdObjects);
+      const opaqueProductIds = await getOpaqueIds(productIdObjects);
 
       await mutation({
         variables: {
