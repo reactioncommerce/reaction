@@ -26,6 +26,7 @@ export default async function brandAssets(shop, args, context) {
       original: context.getAbsoluteUrl(fileRecord.url({ store: "image" })),
       small: context.getAbsoluteUrl(fileRecord.url({ store: "small" })),
       thumbnail: context.getAbsoluteUrl(fileRecord.url({ store: "thumbnail" }))
-    }
+    },
+    navbarBrandImageId: brandAsset.mediaId
   };
 }

@@ -26,9 +26,12 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = (theme) => ({
   leftChip: {
+    marginBottom: theme.spacing(2),
     marginRight: theme.spacing(1)
   },
   toolbar: {
+    marginBottom: theme.spacing(2),
+    minHeight: "65px",
     paddingLeft: 0,
     paddingRight: 0,
     [theme.breakpoints.up("sm")]: {
@@ -50,16 +53,7 @@ const styles = (theme) => ({
   },
   actionDropdownTrigger: {
     border: `1px solid ${theme.palette.colors.coolGrey}`,
-    fontSize: theme.typography.fontSize,
-    letterSpacing: "0.3px",
-    fontWeight: theme.typography.fontWeightSemiBold,
-    color: theme.palette.colors.coolGrey500,
-    lineHeight: 1.5
-  },
-  actionDropdownMenuList: {
-    border: `1px solid ${theme.palette.colors.black10}`,
-    fontSize: theme.typography.fontSize,
-    letterSpacing: "0.3px"
+    color: theme.palette.colors.coolGrey500
   },
   actionDropdownMenuItem: {
     fontSize: theme.typography.fontSize,
@@ -258,7 +252,16 @@ class ProductGrid extends Component {
     if (isFiltered) {
       return (
         <div>
-          {files.map((file, idx) => <Chip label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
+          {files.map((file, idx) => (
+            <Chip
+              variant="default"
+              color="primary"
+              label={file.name}
+              key={idx}
+              className={classes.leftChip}
+              onDelete={() => handleDelete(file.name)}
+            />
+          ))}
         </div>
       );
     }
@@ -289,7 +292,7 @@ class ProductGrid extends Component {
           open={Boolean(bulkActionMenuAnchorEl)}
           onClose={this.handleCloseBulkActions}
           className={classes.actionDropdownContainer}
-          MenuListProps={{ disablePadding: true, className: classes.actionDropdownMenuList }}
+          MenuListProps={{ disablePadding: true }}
         >
           <MenuItem
             disabled

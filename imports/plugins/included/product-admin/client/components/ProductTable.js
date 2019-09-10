@@ -154,7 +154,7 @@ function ProductTable({ onCreateProduct }) {
             isDismissable
             components={iconComponents}
             alertType="error"
-            title={i18next.t("admin.productListIdsNotFound", { missing, all: filterProductIds }) || "Product Ids not found"}
+            title={i18next.t("admin.productListIdsNotFound", { missing, all: filterProductIds }) || "Product Is not found"}
             message={i18next.t("admin.missingFilteredProducts", { count: missing })}
           />
         </Grid>
@@ -191,7 +191,16 @@ function ProductTable({ onCreateProduct }) {
             { files.length > 0 ? (
               <Grid container spacing={1} className={classes.cardContainer}>
                 <Grid item sm={12}>
-                  {files.map((file, idx) => <Chip label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
+                  {files.map((file, idx) => (
+                    <Chip
+                      variant="default"
+                      color="primary"
+                      label={file.name}
+                      key={idx}
+                      className={classes.leftChip}
+                      onDelete={() => handleDelete(file.name)}
+                    />
+                  ))}
                 </Grid>
                 <Grid item sm={12}>
                   <Button
@@ -237,6 +246,7 @@ function ProductTable({ onCreateProduct }) {
       { isFiltered ? (
         <Grid item sm={12}>
           <InlineAlert
+            isAutoClosing
             isDismissable
             components={iconComponents}
             alertType="information"
