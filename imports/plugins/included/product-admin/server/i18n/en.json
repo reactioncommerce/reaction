@@ -6,13 +6,10 @@
       "reaction-product-admin": {
         "admin": {
           "createProduct": "Create product",
-          "productListFiltered": "Product list filtered",
           "showingFilteredProducts": "{{count}} products found from imported file.",
           "showingFilteredProducts_plural": "Showing {{count}} found products from imported file(s).",
-          "productListIdsNotFound": "{{missing}} of {{all}} products not found",
           "missingFilteredProducts": "{{count}} product ID could not be found in the catalog.",
           "missingFilteredProducts_plural": "{{count}} product IDs could not be found in the catalog.",
-          "noProductsFoundTitle": "No products found",
           "noProductsFoundText": "No product IDs could be found in the catalog.",
           "productAdmin": {
             "details": "Details",
