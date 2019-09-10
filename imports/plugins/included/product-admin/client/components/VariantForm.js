@@ -301,7 +301,7 @@ class VariantForm extends Component {
 
   render() {
     const { classes, variant } = this.props;
-    const currency = findCurrency(null, true);
+    const currency = findCurrency();
 
     return (
       <div>

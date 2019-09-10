@@ -1,34 +1,13 @@
 import i18next from "i18next";
 import { values } from "lodash";
 import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
-import { Logger, Reaction } from "/client/api";
 
 /**
  * @file **Internationalization**
  * Methods and template helpers for i18n, translations, right-to-left (RTL) and currency exchange support
  * @namespace i18n
  */
-
-/**
- * @name getBrowserLanguage
- * @method
- * @memberof i18n
- * @summary Detects device default language
- * @returns {String} language code
- */
-export function getBrowserLanguage() {
-  if (typeof navigator.languages !== "undefined") {
-    if (navigator.languages[0].indexOf("-") >= 0) {
-      return navigator.languages[0].split("-")[0];
-    } else if (navigator.languages[0].indexOf("_") >= 0) {
-      return navigator.languages[0].split("_")[0];
-    }
-    return navigator.languages[0];
-  }
-  return navigator.language || navigator.browserLanguage;
-}
 
 /**
  * @name getLabelsFor
@@ -80,40 +59,5 @@ export function getValidationErrorMessages() {
 // set language and autorun on change of language
 // initialize i18n and load data resources for the current language and fallback "EN"
 export const i18nextDep = new Tracker.Dependency();
-export const localeDep = new Tracker.Dependency();
-
-Meteor.startup(() => {
-  Tracker.autorun((trackerInstance) => {
-    let merchantShopsReadyOrSkipped = false;
-
-    // Choose shopSubscription based on marketplace settings
-    if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
-      merchantShopsReadyOrSkipped = Reaction.Subscriptions.MerchantShops.ready();
-    } else {
-      merchantShopsReadyOrSkipped = true;
-    }
-
-    // setting local and active packageNamespaces
-    // packageNamespaces are used to determine i18n namespace
-    if (Reaction.Subscriptions.PrimaryShop.ready() && merchantShopsReadyOrSkipped) {
-      // use i18n detected language to getLocale info and set it client side
-      Meteor.call("shop/getLocale", (error, result) => {
-        if (error || !result) {
-          Logger.error(error, "Unable to get shop locale");
-          return;
-        }
-
-        const locale = result;
-        locale.language = getBrowserLanguage();
-
-        Reaction.Locale.set(locale);
-        localeDep.changed();
-
-        // Stop the tracker
-        trackerInstance.stop();
-      });
-    }
-  });
-});
 
 export default i18next;

@@ -6,10 +6,11 @@ import { Accounts } from "/lib/collections";
 import { lifecycle } from "recompose";
 import { composeWithTracker } from "./composer";
 
+let i18next;
 let Reaction;
 
 if (Meteor.isClient) {
-  ({ Reaction } = require("/client/api"));
+  ({ i18next, Reaction } = require("/client/api"));
 } else {
   Reaction = require("/imports/plugins/core/core/server/Reaction").default;
 }
@@ -43,7 +44,7 @@ export function withMoment(component) {
     componentDidMount() {
       import("moment")
         .then(({ default: moment }) => {
-          moment.locale(Reaction.Locale.get().language);
+          moment.locale(i18next.language);
           this.setState({ moment });
           return null;
         })

@@ -23,7 +23,7 @@ function VariantDetailForm(props) {
     hasChildVariants,
     variant
   } = props;
-  const currency = findCurrency(null, true);
+  const currency = findCurrency();
 
   return (
     <Card>

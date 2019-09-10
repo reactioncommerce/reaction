@@ -14,8 +14,7 @@ const {
   Shipping,
   Shops,
   Tags,
-  Templates,
-  Translations
+  Templates
 } = Collections;
 
 /**

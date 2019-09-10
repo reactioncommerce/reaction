@@ -9,7 +9,6 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { Roles } from "meteor/alanning:roles";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
-import { localeDep } from "/client/modules/i18n";
 import { Packages, Shops } from "/lib/collections";
 import { Router } from "/client/modules/router";
 import { DomainsMixin } from "./domains";
@@ -60,33 +59,12 @@ export default {
   marketplace: { _ready: false },
 
   /**
-   * @summary Current locale
-   * @memberof Core/Client
-   * @type {ReactiveVar}
-   */
-  Locale: new ReactiveVar({}),
-
-  /**
    * @summary Initialization code
    * @memberof Core/Client
    * @method
    * @returns {Tracker} tracker
    */
   init() {
-    Tracker.autorun(() => {
-      // marketplaceSettings come over on the PrimaryShopPackages subscription
-      if (this.Subscriptions.PrimaryShopPackages.ready()) {
-        if (!this.marketplace._ready) {
-          const marketplacePkgSettings = this.getMarketplaceSettings();
-          if (marketplacePkgSettings && marketplacePkgSettings.public) {
-            this.marketplace._ready = true;
-            this.marketplace = marketplacePkgSettings.public;
-            this.marketplace.enabled = true;
-          }
-        }
-      }
-    });
-
     // Listen for the primary shop subscription and set accordingly
     Tracker.autorun(() => {
       let shop;
@@ -99,34 +77,11 @@ export default {
         if (shop) {
           this._primaryShopId.set(shop._id);
 
-          // We'll initialize locale and currency for the primary shop unless
-          // marketplace settings exist and merchantLocale is set to true
-          if (this.marketplace.merchantLocale !== true) {
-            // initialize local client Countries collection
-            if (!Countries.findOne()) {
-              createCountryCollection(shop.locales.countries);
-            }
+          // We'll initialize locale and currency for the primary shop
 
-            const locale = this.Locale.get() || {};
-
-            // fix for https://github.com/reactioncommerce/reaction/issues/248
-            // we need to keep an eye for rates changes
-            if (typeof locale.locale === "object" &&
-                 typeof locale.currency === "object" &&
-                 typeof locale.locale.currency === "string") {
-              const localeCurrency = locale.locale.currency.split(",")[0];
-              if (typeof shop.currencies[localeCurrency] === "object") {
-                if (typeof shop.currencies[localeCurrency].rate === "number") {
-                  locale.currency.rate = shop.currencies[localeCurrency].rate;
-                  localeDep.changed();
-                }
-              }
-            }
-            // we are looking for a shopCurrency changes here
-            if (typeof locale.shopCurrency === "object") {
-              locale.shopCurrency = shop.currencies[shop.currency];
-              localeDep.changed();
-            }
+          // initialize local client Countries collection
+          if (!Countries.findOne()) {
+            createCountryCollection(shop.locales.countries);
           }
         }
       }
@@ -147,35 +102,6 @@ export default {
               this.shopName = shop.name;
             }
 
-            // We only use the active shop to setup locale if marketplace settings
-            // are enabled and merchantLocale is set to true
-            if (this.marketplace.merchantLocale === true) {
-              // initialize local client Countries collection
-              if (!Countries.findOne()) {
-                createCountryCollection(shop.locales.countries);
-              }
-
-              const locale = this.Locale.get() || {};
-
-              // fix for https://github.com/reactioncommerce/reaction/issues/248
-              // we need to keep an eye for rates changes
-              if (typeof locale.locale === "object" &&
-              typeof locale.currency === "object" &&
-              typeof locale.locale.currency === "string") {
-                const localeCurrency = locale.locale.currency.split(",")[0];
-                if (typeof shop.currencies[localeCurrency] === "object") {
-                  if (typeof shop.currencies[localeCurrency].rate === "number") {
-                    locale.currency.rate = shop.currencies[localeCurrency].rate;
-                    localeDep.changed();
-                  }
-                }
-              }
-              // we are looking for a shopCurrency changes here
-              if (typeof locale.shopCurrency === "object") {
-                locale.shopCurrency = shop.currencies[shop.currency];
-                localeDep.changed();
-              }
-            }
             return this;
           }
         }
@@ -246,23 +172,6 @@ export default {
         return true;
       }
 
-      // global roles check
-      // TODO: Review this commented out code
-      /*
-
-      const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
-      // we're looking for seller permissions.
-      if (sellerShopPermissions) {
-        // loop through shops roles and check permissions
-        for (const key in sellerShopPermissions) {
-          if (key) {
-            const shop = sellerShopPermissions[key];
-            if (Roles.userIsInRole(userId, permissions, shop)) {
-              return true;
-            }
-          }
-        }
-      }*/
       // no specific permissions found returning false
       return false;
     }
@@ -471,20 +380,6 @@ export default {
       shopId: this.getPrimaryShopId()
     }) || {};
     return settings.settings || {};
-  },
-
-  /**
-   * @name getPrimaryShopCurrency
-   * @method
-   * @memberof Core/Client
-   * @returns {String} primary shop currency abbreviation
-   */
-  getPrimaryShopCurrency() {
-    const shop = Shops.findOne({
-      _id: this.getPrimaryShopId()
-    });
-
-    return (shop && shop.currency) || "USD";
   },
 
   /**

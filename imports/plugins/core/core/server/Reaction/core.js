@@ -309,23 +309,6 @@ export default {
   },
 
   /**
-   * @name getPrimaryShopCurrency
-   * @method
-   * @memberof Core
-   * @summary Get primary shop currency string
-   * @returns {String} Get shop currency or "USD"
-   */
-  getPrimaryShopCurrency() {
-    const primaryShop = this.getPrimaryShop();
-
-    if (primaryShop && primaryShop.currency) {
-      return primaryShop.currency;
-    }
-
-    return "USD";
-  },
-
-  /**
    * @summary **DEPRECATED** This method has been deprecated in favor of using getShopId
    * and getPrimaryShopId. To be removed.
    * @deprecated
