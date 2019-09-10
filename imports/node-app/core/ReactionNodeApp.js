@@ -9,20 +9,6 @@ import createApolloServer from "./createApolloServer";
 import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
 import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
 
-/**
- * @summary A default addCallMeteorMethod function. Adds `callMeteorMethod`
- *   function to the context (mutates it)
- * @param {Object} context The application context
- * @returns {undefined}
- */
-function defaultAddCallMethod(context) {
-  context.callMeteorMethod = (name) => {
-    console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
-      " works outside of Meteor. If you are relying on a side effect or return value from this method, you may notice unexpected behavior.");
-    return null;
-  };
-}
-
 export default class ReactionNodeApp {
   constructor(options = {}) {
     this.options = { ...options };
@@ -200,7 +186,7 @@ export default class ReactionNodeApp {
    * @returns {undefined}
    */
   initServer() {
-    const { addCallMeteorMethod, debug, httpServer } = this.options;
+    const { debug, httpServer } = this.options;
     const { resolvers, schemas } = this.graphQL;
 
     const {
@@ -208,7 +194,6 @@ export default class ReactionNodeApp {
       expressApp,
       path
     } = createApolloServer({
-      addCallMeteorMethod: addCallMeteorMethod || defaultAddCallMethod,
       context: this.context,
       debug: debug || false,
       resolvers,
