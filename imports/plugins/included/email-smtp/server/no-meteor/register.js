@@ -1,3 +1,6 @@
+import mutations from "./mutations";
+import resolvers from "./resolvers";
+import schemas from "./schemas";
 import startup from "./startup";
 
 /**
@@ -13,6 +16,11 @@ export default async function register(app) {
     functionsByType: {
       startup: [startup]
     },
+    graphQL: {
+      resolvers,
+      schemas
+    },
+    mutations,
     registry: [
       {
         provides: ["emailProviderConfig"],
