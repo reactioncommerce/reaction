@@ -117,12 +117,11 @@ function ProductTable({ onCreateProduct }) {
     if (isFiltered && filteredProductIdsCount < filterProductIds) {
       const missing = filterProductIds - filteredProductIdsCount;
       return (
-        <Grid item sm={12}>
+        <Grid item sm={12} >
           <InlineAlert
             isDismissable
             components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
             alertType="error"
-            title={i18next.t("admin.productListIdsNotFound", { missing, all: filterProductIds }) || "Product Ids not found"}
             message={i18next.t("admin.missingFilteredProducts", { count: missing })}
           />
         </Grid>
@@ -149,36 +148,36 @@ function ProductTable({ onCreateProduct }) {
         setVisibility={setTagSelectorVisible}
         selectedProductIds={selectedProductIds}
       />
-      <Grid item sm={12}>
-        {noProductsFoundError && (
-          <InlineAlert
-            alertType="error"
-            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
-            isDismissable
-            message={i18next.t("admin.noProductsFoundText")}
-            title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
-          />
-        )}
-        {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
-          <Button
-            color="primary"
-            onClick={onCreateProduct}
-            variant="contained"
-          >
-            {i18next.t("admin.createProduct") || "Create product"}
-          </Button>
-        )}
-        {isFiltered && (
-          <InlineAlert
-            isDismissable
-            isAutoClosing
-            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
-            alertType="information"
-            title={i18next.t("admin.productListFiltered") || "Product list filtered"}
-            message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
-          />
-        )}
-      </Grid>
+      {isFiltered && (
+        <Grid item sm={12} >
+          {noProductsFoundError && (
+            <InlineAlert
+              alertType="error"
+              components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
+              isDismissable
+              message={i18next.t("admin.noProductsFoundText")}
+            />
+          )}
+          {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
+            <Button
+              color="primary"
+              onClick={onCreateProduct}
+              variant="contained"
+            >
+              {i18next.t("admin.createProduct") || "Create product"}
+            </Button>
+          )}
+          {isFiltered && (
+            <InlineAlert
+              isDismissable
+              isAutoClosing
+              components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
+              alertType="information"
+              message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
+            />
+          )}
+        </Grid>
+      )}
       {renderMissedFilterItems()}
       <Grid item sm={12}>
         <Components.ProductsAdmin
