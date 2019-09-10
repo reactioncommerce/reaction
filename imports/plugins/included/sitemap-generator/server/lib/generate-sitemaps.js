@@ -4,7 +4,6 @@ import { Products, Shops, Tags } from "/lib/collections";
 import collections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
-import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { Sitemaps } from "../../lib/collections/sitemaps";
 
 const DEFAULT_URLS_PER_SITEMAP = 1000;
@@ -12,13 +11,14 @@ const DEFAULT_URLS_PER_SITEMAP = 1000;
 /**
  * @name generateSitemaps
  * @summary Generates & stores sitemap documents for one or more shops, without Meteor method context
+ * @param {Object} context An object with request-specific state
  * @param {Object} options - Options
  * @param {Array} [options.shopIds] - _id of shops to generate sitemaps for. Defaults to primary shop _id
  * @param {String} [options.notifyUserId] - Optional user _id to notify via notifications UI
  * @param {Number} [options.urlsPerSitemap] - Max # of URLs per sitemap
  * @returns {undefined}
  */
-export default function generateSitemaps({ shopIds = [], notifyUserId = "", urlsPerSitemap = DEFAULT_URLS_PER_SITEMAP }) {
+export default function generateSitemaps(context, { shopIds = [], notifyUserId = "", urlsPerSitemap = DEFAULT_URLS_PER_SITEMAP }) {
   Logger.debug("Generating sitemaps");
   const timeStart = new Date();
 
@@ -29,7 +29,7 @@ export default function generateSitemaps({ shopIds = [], notifyUserId = "", urls
 
   // Generate sitemaps for each shop
   shopIds.forEach((shopId) => {
-    generateSitemapsForShop(shopId, urlsPerSitemap);
+    generateSitemapsForShop(context, shopId, urlsPerSitemap);
   });
 
   // Notify user, if manually generated
@@ -52,11 +52,12 @@ export default function generateSitemaps({ shopIds = [], notifyUserId = "", urls
  * @private
  * @summary Creates and stores the sitemaps for a single shop, if any need to be regenerated,
  * meaning a product/tag has been updated, or a new custom URL is provided via the onGenerateSitemap hook
+ * @param {Object} context An object with request-specific state
  * @param {String} shopId - _id of shop to generate sitemaps for
  * @param {Number} urlsPerSitemap - Max # of URLs per sitemap
  * @returns {undefined}
  */
-function generateSitemapsForShop(shopId, urlsPerSitemap) {
+function generateSitemapsForShop(context, shopId, urlsPerSitemap) {
   const shop = Shops.findOne({ _id: shopId }, { fields: { _id: 1 } });
   if (!shop) {
     throw new Meteor.Error("not-found", `Shop ${shopId} not found`);
@@ -68,7 +69,6 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
 
   // Generate sitemaps for basic pages
   // Allow custom shops to add arbitrary URLs to the sitemap
-  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
   const customFuncs = context.getFunctionsOfType("getPageSitemapItems");
   const customPageItemResults = Promise.await(Promise.all(customFuncs.map((customFunc) => customFunc())));
   const pageSitemapItems = customPageItemResults.reduce((list, customItems) => list.concat(customItems), [
