@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
+import startup from "./startup";
 
 // This is temporary. Mutations still import jobs, which don't
 // work outside of a Meteor environment.
@@ -26,6 +27,9 @@ export default async function register(app) {
           [{ shopId: 1, handle: 1 }]
         ]
       }
+    },
+    functionsByType: {
+      startup: [startup]
     },
     graphQL: {
       resolvers,
