@@ -1,3 +1,4 @@
+import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 import executeBulkOperation from "../utils/executeBulkOperation";
 
 /**
@@ -11,8 +12,9 @@ import executeBulkOperation from "../utils/executeBulkOperation";
  * @return {Object} Object with information of results of bulk the operation
  */
 export default async function removeTagsFromProducts(context, input) {
-  const { productIds, tagIds } = input;
+  const { productIds, tagIds: opaqueTagIds } = input;
   const { collections: { Products } } = context;
+  const tagIds = opaqueTagIds.map(decodeTagOpaqueId);
   const totalProducts = productIds.length;
 
   // Generate update statements
