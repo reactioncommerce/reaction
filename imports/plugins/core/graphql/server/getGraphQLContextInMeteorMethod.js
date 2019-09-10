@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import buildContext from "/imports/node-app/core/util/buildContext";
 import collections from "/imports/collections/rawCollections";
 
