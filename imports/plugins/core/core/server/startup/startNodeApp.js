@@ -13,7 +13,6 @@ import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 import { setCollections } from "/imports/collections/rawCollections";
-import meteorFileCollectionStartup from "/imports/plugins/core/files/server/fileCollections";
 import packageJson from "/package.json";
 
 // For Meteor app tests
@@ -70,8 +69,6 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
   }
 
   setCollections(app.context.collections);
-
-  meteorFileCollectionStartup(app.context);
 
   // bind the specified paths to the Express server running GraphQL
   WebApp.connectHandlers.use(app.expressApp);

@@ -7,6 +7,9 @@
         "components": {
           "navbar": "Navigation Bar",
           "button": "Button",
+          "mediaUploader": {
+            "dropFiles": "Drag image or click to upload"
+          },
           "sortableTable": {
             "filterPlaceholder": "Filter Data",
             "tableText": {
