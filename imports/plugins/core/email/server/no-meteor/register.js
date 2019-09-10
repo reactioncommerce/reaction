@@ -1,5 +1,5 @@
-import i18n from "./i18n";
 import { Meteor } from "meteor/meteor";
+import i18n from "./i18n";
 
 // This is temporary. Mutations still import jobs, which don't
 // work outside of a Meteor environment.
