@@ -40,33 +40,45 @@ class LocalizationSettings extends Component {
   }
 
   handleUpdateCurrencyConfiguration = (event, isChecked, name) => {
-    const currencyIndex = this.state.currencies.findIndex((currency) => currency.name === name);
-
     this.setState((state) => {
-      const newStateCurrencies = state.currencies;
-      newStateCurrencies[currencyIndex].enabled = isChecked;
+      // Ensure we do not mutate the state/prop object
+      const newStateCurrencies = state.currencies.map((currency) => {
+        if (currency.name === name) return Object.assign({}, currency, { enabled: isChecked });
+        return currency;
+      });
       return { currencies: newStateCurrencies };
     }, () => {
       // Delaying to allow animation before sending data to server
       // If animation is not delayed, it twitches when actual update happens
       setTimeout(() => {
-        this.props.onUpdateCurrencyConfiguration(event, isChecked, name);
+        this.props.onUpdateCurrencyConfiguration(event, isChecked, name, (error) => {
+          if (error) {
+            // Error has already been shown in UI but we need to revert the state change
+            this.setState({ currencies: this.props.currencies });
+          }
+        });
       }, 200);
     });
   }
 
-  handleUpdateLangaugeConfiguration = (event, isChecked, name) => {
-    const languageIndex = this.state.languages.findIndex((language) => language.value === name);
-
+  handleUpdateLanguageConfiguration = (event, isChecked, name) => {
     this.setState((state) => {
-      const newStateLanguages = state.languages;
-      newStateLanguages[languageIndex].enabled = isChecked;
+      // Ensure we do not mutate the state/prop object
+      const newStateLanguages = state.languages.map((language) => {
+        if (language.value === name) return Object.assign({}, language, { enabled: isChecked });
+        return language;
+      });
       return { languages: newStateLanguages };
     }, () => {
       // Delaying to allow animation before sending data to server
       // If animation is not delayed, it twitches when actual update happens
       setTimeout(() => {
-        this.props.onUpdateLanguageConfiguration(event, isChecked, name);
+        this.props.onUpdateLanguageConfiguration(event, isChecked, name, (error) => {
+          if (error) {
+            // Error has already been shown in UI but we need to revert the state change
+            this.setState({ languages: this.props.languages });
+          }
+        });
       }, 200);
     });
   }
@@ -92,7 +104,7 @@ class LocalizationSettings extends Component {
         label={language.label}
         switchOn={language.enabled}
         switchName={language.value}
-        onSwitchChange={this.handleUpdateLangaugeConfiguration}
+        onSwitchChange={this.handleUpdateLanguageConfiguration}
       />
     ));
   }

@@ -8,20 +8,36 @@ import { Shops } from "/lib/collections";
 import { convertWeight, convertLength } from "/lib/api";
 import LocalizationSettings from "../components/localizationSettings";
 
+/**
+ * @summary Use this as a Meteor.call callback to show a toast alert
+ *   with the error reason/message.
+ * @param {Error|null} [error] Error
+ * @return {undefined}
+ */
+function methodAlertCallback(error) {
+  if (error) Alerts.toast(error.reason || error.message || "There was an unknown error", "error");
+}
+
 const wrapComponent = (Comp) => (
   class LocalizationSettingsContainer extends Component {
     static propTypes = LocalizationSettings.propTypes
 
-    handleUpdateLanguageConfiguration = (event, isChecked, name) => {
+    handleUpdateLanguageConfiguration = (event, isChecked, name, callback) => {
       const language = this.props.languages.find((lang) => lang.value === name);
 
       if (language) {
-        Meteor.call("shop/updateLanguageConfiguration", language.value, isChecked);
+        Meteor.call("shop/updateLanguageConfiguration", language.value, isChecked, (error) => {
+          methodAlertCallback(error);
+          if (callback) callback(error);
+        });
       }
     }
 
-    handleUpdateCurrencyConfiguration = (event, isChecked, name) => {
-      Meteor.call("shop/updateCurrencyConfiguration", name, isChecked);
+    handleUpdateCurrencyConfiguration = (event, isChecked, name, callback) => {
+      Meteor.call("shop/updateCurrencyConfiguration", name, isChecked, (error) => {
+        methodAlertCallback(error);
+        if (callback) callback(error);
+      });
     }
 
     handleSubmit = (doc) => {
@@ -35,7 +51,7 @@ const wrapComponent = (Comp) => (
           length: convertLength(shop.baseUOL, doc.baseUOL, shop.defaultParcelSize.length),
           width: convertLength(shop.baseUOL, doc.baseUOL, shop.defaultParcelSize.width)
         };
-        Meteor.call("shop/updateDefaultParcelSize", parcelSize);
+        Meteor.call("shop/updateDefaultParcelSize", parcelSize, methodAlertCallback);
       }
       Shops.update({
         _id: doc._id
@@ -52,11 +68,11 @@ const wrapComponent = (Comp) => (
     }
 
     handleEnableAllLanguages = (isEnabled) => {
-      Meteor.call("shop/updateLanguageConfiguration", "all", isEnabled);
+      Meteor.call("shop/updateLanguageConfiguration", "all", isEnabled, methodAlertCallback);
     }
 
     handleEnableAllCurrencies = (isEnabled) => {
-      Meteor.call("shop/updateCurrencyConfiguration", "all", isEnabled);
+      Meteor.call("shop/updateCurrencyConfiguration", "all", isEnabled, methodAlertCallback);
     }
 
     render() {
