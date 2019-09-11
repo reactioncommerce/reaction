@@ -123,7 +123,7 @@ Meteor.startup(() => {
     i18nName: "i18n", // --> appends $.i18n = i18next
     handleName: "localize", // --> appends $(selector).localize(opts);
     selectorAttr: "data-i18n", // selector for translating elements
-    targetAttr: "data-i18n-target", // element attribute to grab target element to translate (if diffrent then itself)
+    targetAttr: "data-i18n-target", // element attribute to grab target element to translate (if different then itself)
     parseDefaultValueFromContent: true // parses default values from content ele.val or ele.text
   });
 
