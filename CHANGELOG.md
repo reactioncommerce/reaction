@@ -1,3 +1,45 @@
+# v2.3.0
+
+Reaction v2.3.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.2.1.
+
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.3.0` of `example-storefront` and `reaction-hydra`.
+
+## Notable changes
+
+### [WIP]
+
+## Feature
+
+### [WIP]
+
+## Fixes
+
+### [WIP]
+
+## Chores
+
+### [WIP]
+
+## Refactors
+
+### [WIP]
+
+## Style
+
+### [WIP]
+
+## Tests
+
+### [WIP]
+
+## Breaking Changes
+
+### [WIP]
+
+## Contributors
+
+### [WIP] 🎉
+
 # v2.2.1
 Reaction v2.2.1 adds a bug fix and contains no breaking changes since v2.2.0
 
