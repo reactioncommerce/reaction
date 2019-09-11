@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
@@ -66,8 +66,15 @@ class PublishControls extends Component {
       <PrimaryAppBar>
         {this.renderChangesNotification()}
         <Mutation mutation={publishProductsToCatalog}>
-          {(mutationFunc, { data, error }) => (
-            <Fragment>
+          {(mutationFunc, { data, error }) => {
+            if (error) {
+              Alerts.toast(error.message, "error");
+            }
+            if (data) {
+              Alerts.toast(i18next.t("admin.catalogProductPublishSuccess"), "success");
+            }
+
+            return (
               <Button
                 color="primary"
                 variant="contained"
@@ -77,16 +84,8 @@ class PublishControls extends Component {
               >
                 {i18next.t("productDetailEdit.publish")}
               </Button>
-              <span>
-                { error &&
-                  Alerts.toast(error.message, "error")
-                }
-                { data &&
-                  Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success")
-                }
-              </span>
-            </Fragment>
-          )}
+            );
+          }}
         </Mutation>
       </PrimaryAppBar>
     );
