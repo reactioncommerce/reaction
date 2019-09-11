@@ -148,6 +148,17 @@ function ProductTable({ onCreateProduct }) {
         setVisibility={setTagSelectorVisible}
         selectedProductIds={selectedProductIds}
       />
+      {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
+        <Grid item sm={12} >
+          <Button
+            color="primary"
+            onClick={onCreateProduct}
+            variant="contained"
+          >
+            {i18next.t("admin.createProduct") || "Create product"}
+          </Button>
+        </Grid>
+      )}
       {isFiltered && (
         <Grid item sm={12} >
           {noProductsFoundError && (
@@ -157,15 +168,6 @@ function ProductTable({ onCreateProduct }) {
               isDismissable
               message={i18next.t("admin.noProductsFoundText")}
             />
-          )}
-          {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
-            <Button
-              color="primary"
-              onClick={onCreateProduct}
-              variant="contained"
-            >
-              {i18next.t("admin.createProduct") || "Create product"}
-            </Button>
           )}
           {isFiltered && (
             <InlineAlert
