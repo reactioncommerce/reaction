@@ -169,15 +169,13 @@ function ProductTable({ onCreateProduct }) {
               message={i18next.t("admin.noProductsFoundText")}
             />
           )}
-          {isFiltered && (
-            <InlineAlert
-              isDismissable
-              isAutoClosing
-              components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
-              alertType="information"
-              message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
-            />
-          )}
+          <InlineAlert
+            isDismissable
+            isAutoClosing
+            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
+            alertType="information"
+            message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
+          />
         </Grid>
       )}
       {renderMissedFilterItems()}
