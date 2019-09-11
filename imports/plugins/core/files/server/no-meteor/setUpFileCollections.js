@@ -1,12 +1,24 @@
+import { Meteor } from "meteor/meteor";
 import Random from "@reactioncommerce/random";
+import fetch from "node-fetch";
 import sharp from "sharp";
 import {
   FileDownloadManager,
   FileRecord,
   MongoFileCollection,
-  TempFileStore
+  TempFileStore,
+  RemoteUrlWorker,
+  TempFileStoreWorker
 } from "@reactioncommerce/file-collections";
 import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
+import config from "./config";
+
+// This is temporary. createSaveImageJob still imports jobs, which doesn't
+// work outside of a Meteor environment.
+let createSaveImageJob = () => {};
+if (!Meteor.isFakeMeteor) {
+  createSaveImageJob = require("./util/createSaveImageJob").default;
+}
 
 /**
  * @returns {undefined}
@@ -100,7 +112,7 @@ export default function setUpFileCollections({
    * @memberof Files
    * @summary Defines the temporary store where chunked uploads from browsers go
    * initially, until the chunks are eventually combined into one complete file
-   * which the worker will then store to the permanant stores.
+   * which the worker will then store to the permanent stores.
    * @see {@link https://github.com/reactioncommerce/reaction-file-collections}
    */
   const tempStore = new TempFileStore({
@@ -147,9 +159,50 @@ export default function setUpFileCollections({
     }
   });
 
+  const onNewRemoteFileRecord = (doc, collection) => {
+    const { name } = collection;
+    createSaveImageJob(doc, name, true);
+  };
+
+  const onNewTempFileRecord = (doc, collection) => {
+    const { name } = collection;
+    createSaveImageJob(doc, name, false);
+  };
+
+  let fileWorker;
+  let remoteUrlWorker;
+
+  // These workers use `.watch` API, which requires a replica set and proper read/write concern support.
+  // Currently our in-memory Mongo server used for Jest integrations tests does not meet these needs,
+  // so we skip this code if we're testing.
+  if (!["jesttest", "test"].includes(config.NODE_ENV)) {
+    /**
+     * @name remoteUrlWorker
+     * @type RemoteUrlWorker
+     * @memberof Files
+     * @summary Start a worker to watch for inserted remote URLs and stream them to all stores
+     * @see https://github.com/reactioncommerce/reaction-file-collections
+     */
+    remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [Media], onNewFileRecord: onNewRemoteFileRecord });
+    remoteUrlWorker.start();
+
+    /**
+     * @name fileWorker
+     * @type TempFileStoreWorker
+     * @memberof Files
+     * @summary Start a worker to watch for finished uploads, store them permanently,
+     * and then remove the temporary file
+     * @see https://github.com/reactioncommerce/reaction-file-collections
+     */
+    fileWorker = new TempFileStoreWorker({ fileCollections: [Media], onNewFileRecord: onNewTempFileRecord });
+    fileWorker.start();
+  }
+
   return {
     downloadManager,
+    fileWorker,
     Media,
+    remoteUrlWorker,
     stores,
     tempStore
   };

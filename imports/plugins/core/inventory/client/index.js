@@ -11,5 +11,5 @@ registerBlock({
     withInventoryShopSettings,
     withUpdateInventoryShopSettings
   ],
-  priority: 1
+  priority: 10
 });

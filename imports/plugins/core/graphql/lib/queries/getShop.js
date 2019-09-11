@@ -1,9 +1,12 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query getPrimaryShop($id: ID!) {
+  query getShop($id: ID!) {
     shop(id: $id) {
       _id
+      brandAssets {
+        navbarBrandImageId
+      }
       language
       name
       shopLogoUrls {

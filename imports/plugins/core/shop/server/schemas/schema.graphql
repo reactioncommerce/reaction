@@ -2,11 +2,14 @@
 type ShopBrandAssets {
   "URLs for the navigation bar brand logo image"
   navbarBrandImage: ImageSizes
+
+  "Internal navigation bar brand logo image ID"
+  navbarBrandImageId: String
 }
 
-"Shop logo urls"
+"Shop logo URLs"
 type ShopLogoUrls {
-  "Primary shop logo"
+  "The primary logo URL for this shop. Setting this overrides any uploaded logo."
   primaryShopLogoUrl: String
 }
 

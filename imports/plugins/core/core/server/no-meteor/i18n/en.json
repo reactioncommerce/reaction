@@ -126,15 +126,24 @@
         "localization": "Localization",
         "options": "Options",
         "paymentMethods": "Payment methods",
+        "pluginVersions": {
+          "title": "Plugin Versions"
+        },
         "externalServices": "External services",
         "shopBrandAssetsSaved": "Shop brand assets saved",
         "shopBrandAssetsFailed": "Shop brand assets failed",
         "shopLocalizationSettingsSaved": "Shop localization settings saved.",
         "shopLocalizationSettingsFailed": "Shop localization settings update failed.",
+        "shopLogo": {
+          "description": "Upload logo files or provide URLs for remote image files to use as store logos. Remote URLs will override uploaded logos.",
+          "title": "Shop Logos",
+          "primaryShopLogoUrlTitle": "Primary logo URL",
+          "primaryShopLogoUrlDescription": "This is the URL for this shop's primary logo, which is used wherever you see a logo throughout the UI"
+        },
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
         "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed.",
         "storefrontUrls": {
-          "description": "Use these fields to provide your storefronts URL's to various pages to use for links inside of emails.",
+          "description": "Use these fields to provide your storefronts URLs to various pages to use for links inside of emails.",
           "storefrontHomeUrlTitle": "Homepage URL",
           "storefrontHomeUrlDescription": "URL of your shops homepage",
           "storefrontOrderUrlTitle": "Single Order page URL",
