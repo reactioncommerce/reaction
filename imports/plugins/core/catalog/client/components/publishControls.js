@@ -59,33 +59,28 @@ class PublishControls extends Component {
     return null;
   }
 
+  renderOnCompletedAlert = () => Alerts.toast(i18next.t("admin.catalogProductPublishSuccess"), "success");
+
+  renderOnErrorAlert = (error) => Alerts.toast(error.message, "error");
+
   render() {
     const { documentIds, onPublishClick } = this.props;
 
     return (
       <PrimaryAppBar>
         {this.renderChangesNotification()}
-        <Mutation mutation={publishProductsToCatalog}>
-          {(mutationFunc, { data, error }) => {
-            if (error) {
-              Alerts.toast(error.message, "error");
-            }
-            if (data) {
-              Alerts.toast(i18next.t("admin.catalogProductPublishSuccess"), "success");
-            }
-
-            return (
-              <Button
-                color="primary"
-                variant="contained"
-                disabled={Array.isArray(documentIds) && documentIds.length === 0}
-                label="Publish"
-                onClick={() => onPublishClick(mutationFunc)}
-              >
-                {i18next.t("productDetailEdit.publish")}
-              </Button>
-            );
-          }}
+        <Mutation mutation={publishProductsToCatalog} onCompleted={() => this.renderOnCompletedAlert()} onError={(error) => this.renderOnErrorAlert(error)}>
+          {(mutationFunc) => (
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={Array.isArray(documentIds) && documentIds.length === 0}
+              label="Publish"
+              onClick={() => onPublishClick(mutationFunc)}
+            >
+              {i18next.t("productDetailEdit.publish")}
+            </Button>
+          )}
         </Mutation>
       </PrimaryAppBar>
     );
