@@ -12,8 +12,6 @@ Reaction Admin users can now add and remove tags from products in bulk. After se
 
 This feature uses several new components from the [**Catalyst Design System**](https://catalyst.reactioncommerce.com/), including [**SplitButton**](https://catalyst.reactioncommerce.com/#/Components/Actions/SplitButton), [**Chip**](https://catalyst.reactioncommerce.com/#/Components/Content/Chip) and [**MultiSelect**](https://catalyst.reactioncommerce.com/#/Components/Inputs/Select). Several dependencies, including [`react-select`](https://github.com/JedWatson/react-select), [`react-dropzone`](https://github.com/react-dropzone/react-dropzone) and [`material-ui/core`](https://material-ui.com/) were upgraded to their latest versions.
 
-`file-collections` has been updated to its latest version, which supports uploading without Meteor. All related code has been updated to remove Meteor.
-
 ### Image uploading without Meteor
 
 `file-collections` has been updated to its latest version, which supports uploading without Meteor. All related code has been updated to remove Meteor.
