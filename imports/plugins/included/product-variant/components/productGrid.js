@@ -84,6 +84,7 @@ const styles = (theme) => ({
   }
 });
 
+// TODO: refactor to function
 class ProductGrid extends Component {
   static propTypes = {
     classes: PropTypes.object,
@@ -93,6 +94,7 @@ class ProductGrid extends Component {
     onArchiveProducts: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangeRowsPerPage: PropTypes.func,
+    onDisplayTagSelector: PropTypes.func,
     onDuplicateProducts: PropTypes.func,
     onPublishProducts: PropTypes.func,
     onSelectAllProducts: PropTypes.func,
@@ -208,9 +210,14 @@ class ProductGrid extends Component {
     );
   }
 
+  handleDisplayTagSelector = () => {
+    this.handleCloseBulkActions();
+    this.props.onDisplayTagSelector(true);
+  }
+
   handleShowFilterByFile = () => {
     this.handleCloseBulkActions();
-    this.props.onShowFilterByFile();
+    this.props.onShowFilterByFile(true);
   }
 
   handleShowBulkActions = (event) => {
@@ -274,6 +281,7 @@ class ProductGrid extends Component {
     const { bulkActionMenuAnchorEl } = this.state;
     const count = selectedProductIds.length;
     const isEnabled = Array.isArray(selectedProductIds) && selectedProductIds.length;
+
     return (
       <Toolbar disableGutters={true} className={classes.toolbar}>
         <Button
@@ -300,6 +308,15 @@ class ProductGrid extends Component {
             className={classes.actionDropdownMenuItem}
           >
             Actions
+          </MenuItem>
+
+          <MenuItem
+            onClick={this.handleDisplayTagSelector}
+            variant="default"
+            disabled={!isEnabled}
+            className={classes.actionDropdownMenuItem}
+          >
+            {i18next.t("admin.productTable.bulkActions.addRemoveTags")}
           </MenuItem>
 
           <MenuItem

@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import getCreditOffDiscount from "./util/getCreditOffDiscount";
 import getItemPriceDiscount from "./util/getItemPriceDiscount";
 import getPercentageOffDiscount from "./util/getPercentageOffDiscount";
@@ -14,6 +15,7 @@ export default async function register(app) {
     label: "Codes",
     name: "discount-codes",
     icon: "fa fa-gift",
+    i18n,
     functionsByType: {
       "discounts/codes/credit": [getCreditOffDiscount],
       "discounts/codes/discount": [getPercentageOffDiscount],

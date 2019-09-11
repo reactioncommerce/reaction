@@ -1,0 +1,43 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Thema's",
+          "themesTitle": "Thema's",
+          "themesDescription": "Thema's en UI-componenten"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Thema bewerken",
+        "duplicateTheme": "Duplicate Theme",
+        "duplicateThemeError": "Kon niet dupliceren thema",
+        "publishThemeError": "`Kon thema {{themeName}} niet publiceren",
+        "components": {
+          "navbar": "Navigatiebalk",
+          "button": "Knop",
+          "sortableTable": {
+            "filterPlaceholder": "Filter data",
+            "tableText": {
+              "noDataMessage": "geen resultaten gevonden",
+              "previousText": "Vorig",
+              "nextText": "Volgende",
+              "loadingText": "Laden ...",
+              "noDataText": "geen resultaten gevonden",
+              "pageText": "Pagina",
+              "ofText": "van",
+              "rowsText": "rijen"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "Klik om de afbeelding te verwijderen",
+            "addedImage": "Dit is een nieuwe afbeelding. Publiceer om wijzigingen op te slaan.",
+            "removedImage": "Afbeelding is verwijderd. Publiceer om wijzigingen op te slaan."
+          }
+        }
+      }
+    }
+  }
+}]

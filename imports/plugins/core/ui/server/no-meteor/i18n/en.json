@@ -1,0 +1,35 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "reactionUI": {
+        "components": {
+          "navbar": "Navigation Bar",
+          "button": "Button",
+          "mediaUploader": {
+            "dropFiles": "Drag image or click to upload"
+          },
+          "sortableTable": {
+            "filterPlaceholder": "Filter Data",
+            "tableText": {
+              "noDataMessage": "No results found",
+              "previousText": "Previous",
+              "nextText": "Next",
+              "loadingText": "Loading...",
+              "noDataText": "No results found",
+              "pageText": "Page",
+              "ofText": "of",
+              "rowsText": "rows"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "Click to remove image",
+            "addedImage": "This is a new image. Publish to save changes.",
+            "removedImage": "Image has been deleted. Publish to save changes."
+          }
+        }
+      }
+    }
+  }
+}]

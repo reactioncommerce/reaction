@@ -2,7 +2,9 @@ import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-met
 import registerAddressPlugin from "/imports/plugins/core/address/server/no-meteor/register";
 import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/register";
 import registerCatalogPlugin from "/imports/plugins/core/catalog/server/no-meteor/register";
+import registerCheckoutPlugin from "/imports/plugins/core/checkout/server/no-meteor/register";
 import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/register";
+import registerDashboardPlugin from "/imports/plugins/core/dashboard/server/no-meteor/register";
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
 import registerEmailTemplatesPlugin from "/imports/plugins/included/email-templates/server/register";
@@ -16,6 +18,8 @@ import registerNotificationsPlugin from "/imports/plugins/included/notifications
 import registerOrdersPlugin from "/imports/plugins/core/orders/server/no-meteor/register";
 import registerPaymentsPlugin from "/imports/plugins/core/payments/server/no-meteor/register";
 import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
+import registerProductVariantPlugin from "/imports/plugins/included/product-variant/server/no-meteor/register";
+import registerProductAdminPlugin from "/imports/plugins/included/product-admin/server/no-meteor/register";
 import registerSettingsPlugin from "/imports/plugins/core/settings/server/register";
 import registerShippingPlugin from "/imports/plugins/core/shipping/server/no-meteor/register";
 import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
@@ -32,6 +36,7 @@ import registerTaxesPlugin from "/imports/plugins/core/taxes/server/no-meteor/re
 import registerTaxesRatesPlugin from "/imports/plugins/included/taxes-rates/server/no-meteor/register";
 import registerTemplatesPlugin from "/imports/plugins/core/templates/server/no-meteor/register";
 import registerTestAddressValidationPlugin from "/imports/plugins/included/address-validation-test/server/register";
+import registerUIPlugin from "/imports/plugins/core/ui/server/no-meteor/register";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
@@ -50,6 +55,8 @@ export default async function registerPlugins(app) {
   await registerSettingsPlugin(app); // REQUIRED
   await registerI18nPlugin(app); // REQUIRED
   await registerAddressPlugin(app); // REQUIRED
+  await registerDashboardPlugin(app); // REQUIRED
+  await registerUIPlugin(app); // REQUIRED
   await registerSystemInfoPlugin(app); // OPTIONAL
 
   /**
@@ -68,8 +75,11 @@ export default async function registerPlugins(app) {
    * Catalog
    */
   await registerProductPlugin(app); // REQUIRED
+  await registerProductVariantPlugin(app); // REQUIRED
+  await registerProductAdminPlugin(app); // REQUIRED
   await registerCatalogPlugin(app); // REQUIRED
   await registerTagsPlugin(app); // REQUIRED
+  await registerCheckoutPlugin(app); // REQUIRED
 
   /**
    * Pricing

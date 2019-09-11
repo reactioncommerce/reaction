@@ -3,15 +3,15 @@ import addTagsToProducts from "./addTagsToProducts";
 
 const mockInput = {
   input: {
-    productIds: ["BCTMZ6HTxFSppJESk", "XWTMZ6HTxFSppJESo"],
-    tagIds: ["cseCBSSrJ3t8HQSNP", "YCeCBSSrJ3t8HQSxx"]
+    productIds: ["BCTMZ6HTxFSppJESk"],
+    tagIds: ["cmVhY3Rpb24vdGFnOmNzZUNCU1NySjN0OEhRU05Q"]
   }
 };
 
 const expectedResults = {
-  foundCount: 2,
+  foundCount: 1,
   notFoundCount: 0,
-  updatedCount: 2,
+  updatedCount: 1,
   writeErrors: []
 };
 
