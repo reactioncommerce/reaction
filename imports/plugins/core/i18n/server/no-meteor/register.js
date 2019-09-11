@@ -1,3 +1,5 @@
+import i18n from "./i18n";
+import { registerPluginHandler } from "./registration";
 import startup from "./startup";
 
 /**
@@ -10,17 +12,9 @@ export default async function register(app) {
     label: "i18n",
     name: "reaction-i18n",
     icon: "fa fa-language",
-    collections: {
-      Translations: {
-        name: "Translations",
-        indexes: [
-          // Create indexes. We set specific names for backwards compatibility
-          // with indexes created by the aldeed:schema-index Meteor package.
-          [{ shopId: 1, i18n: 1 }]
-        ]
-      }
-    },
+    i18n,
     functionsByType: {
+      registerPluginHandler: [registerPluginHandler],
       startup: [startup]
     },
     settings: {

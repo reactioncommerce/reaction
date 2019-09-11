@@ -1,0 +1,37 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "paiements Stripe"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Vous n'avez pas de clé API Stripe ?",
+          "stripeSettingsGetItHere": "Obtenez-en une ici",
+          "stripeClientIdWarning": "L'ID client est un champ PUBLIC. Assurez-vous d'utiliser le client_id trouvé sur la page de configuration Stripe Connect.",
+          "stripeClientIdLink": "Paramètres de connexion Stripe"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect n'est pas activé pour cette application. Veuillez contacter l'administrateur.",
+          "shopEmailNotConfigured": "Configurez d'abord l'e-mail de votre boutique.",
+          "shopAddressNotConfigured": "Configurez l'adresse de votre boutique d'abord",
+          "applicationFeeDescription": "Ce nombre représente un pourcentage de frais que la marketplace (cette boutique) prend pour tout objet qui est vendu par un marchand. Cette taxe s'applique uniquement si Stripe Connect est configuré et activé sur la marketplace et les boutiques des marchands, et si Stripe est la passerelle de paiement utilisée pour effectuer le paiement.",
+          "moreDetails": "Pour plus de détails, consultez le",
+          "docsLink": "Stripe Connect Docs"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Vous serez redirigé automatiquement dans quelques secondes. Dans le cas contraire, cliquez ici."
+        }
+      }
+    }
+  }
+}]

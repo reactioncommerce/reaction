@@ -8,20 +8,36 @@ import { Shops } from "/lib/collections";
 import { convertWeight, convertLength } from "/lib/api";
 import LocalizationSettings from "../components/localizationSettings";
 
+/**
+ * @summary Use this as a Meteor.call callback to show a toast alert
+ *   with the error reason/message.
+ * @param {Error|null} [error] Error
+ * @return {undefined}
+ */
+function methodAlertCallback(error) {
+  if (error) Alerts.toast(error.reason || error.message || "There was an unknown error", "error");
+}
+
 const wrapComponent = (Comp) => (
   class LocalizationSettingsContainer extends Component {
     static propTypes = LocalizationSettings.propTypes
 
-    handleUpdateLanguageConfiguration = (event, isChecked, name) => {
+    handleUpdateLanguageConfiguration = (event, isChecked, name, callback) => {
       const language = this.props.languages.find((lang) => lang.value === name);
 
       if (language) {
-        Meteor.call("shop/updateLanguageConfiguration", language.value, isChecked);
+        Meteor.call("shop/updateLanguageConfiguration", language.value, isChecked, (error) => {
+          methodAlertCallback(error);
+          if (callback) callback(error);
+        });
       }
     }
 
-    handleUpdateCurrencyConfiguration = (event, isChecked, name) => {
-      Meteor.call("shop/updateCurrencyConfiguration", name, isChecked);
+    handleUpdateCurrencyConfiguration = (event, isChecked, name, callback) => {
+      Meteor.call("shop/updateCurrencyConfiguration", name, isChecked, (error) => {
+        methodAlertCallback(error);
+        if (callback) callback(error);
+      });
     }
 
     handleSubmit = (doc) => {
@@ -35,7 +51,7 @@ const wrapComponent = (Comp) => (
           length: convertLength(shop.baseUOL, doc.baseUOL, shop.defaultParcelSize.length),
           width: convertLength(shop.baseUOL, doc.baseUOL, shop.defaultParcelSize.width)
         };
-        Meteor.call("shop/updateDefaultParcelSize", parcelSize);
+        Meteor.call("shop/updateDefaultParcelSize", parcelSize, methodAlertCallback);
       }
       Shops.update({
         _id: doc._id
@@ -52,35 +68,11 @@ const wrapComponent = (Comp) => (
     }
 
     handleEnableAllLanguages = (isEnabled) => {
-      Meteor.call("shop/updateLanguageConfiguration", "all", isEnabled);
+      Meteor.call("shop/updateLanguageConfiguration", "all", isEnabled, methodAlertCallback);
     }
 
     handleEnableAllCurrencies = (isEnabled) => {
-      Meteor.call("shop/updateCurrencyConfiguration", "all", isEnabled);
-    }
-
-    handleTranslationReload = (flushAll) => {
-      if (flushAll === true) {
-        Alerts.toast(i18next.t("admin.i18nSettings.reloadAllStarted", { defaultValue: "Reloading translations for all shops." }), "info");
-
-        Meteor.call("i18n/flushTranslations", (error) => {
-          if (!error) {
-            Alerts.toast(i18next.t("admin.i18nSettings.reloadAllSuccess", { defaultValue: "Translations have been reloaded for all shops." }), "success");
-          } else {
-            Alerts.toast(i18next.t("admin.i18nSettings.reloadAllFail", { defaultValue: "Translations could not be reloaded for all shops." }), "error");
-          }
-        });
-      } else {
-        Alerts.toast(i18next.t("admin.i18nSettings.reloadStarted", { defaultValue: "Reloading translations for the current shop." }), "info");
-
-        Meteor.call("i18n/flushTranslations", (error) => {
-          if (!error) {
-            Alerts.toast(i18next.t("admin.i18nSettings.reloadSuccess", { defaultValue: "Translations have been reloaded for the current shop." }), "success");
-          } else {
-            Alerts.toast(i18next.t("admin.i18nSettings.reloadFail", { defaultValue: "Translations could not be reloaded for the current shop." }), "error");
-          }
-        });
-      }
+      Meteor.call("shop/updateCurrencyConfiguration", "all", isEnabled, methodAlertCallback);
     }
 
     render() {
@@ -92,7 +84,6 @@ const wrapComponent = (Comp) => (
           onUpdateCurrencyConfiguration={this.handleUpdateCurrencyConfiguration}
           onUpdateLanguageConfiguration={this.handleUpdateLanguageConfiguration}
           onUpdateLocalization={this.handleSubmit}
-          onReloadTranslations={this.handleTranslationReload}
         />
       );
     }

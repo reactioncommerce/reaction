@@ -1,0 +1,43 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "themes",
+          "themesTitle": "themes",
+          "themesDescription": "themes နှင့် UI ကို Components"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Edit ကိုအဓိကအကြောင်းအရာ",
+        "duplicateTheme": "အဓိကအကြောင်းအရာ Duplicate",
+        "duplicateThemeError": "ဆောင်ပုဒ်ပွားလို့မရပါ",
+        "publishThemeError": "`ဆောင်ပုဒ်ထုတ်ဝေရန်လို့မရပါ {{themeName}}",
+        "components": {
+          "navbar": "navigation ဘား",
+          "button": "ကြယ်သီး",
+          "sortableTable": {
+            "filterPlaceholder": "filter မှာ Data",
+            "tableText": {
+              "noDataMessage": "ရလဒ်များမတွေ့",
+              "previousText": "လွန်ခဲ့သော",
+              "nextText": "နောက်တစ်ခု",
+              "loadingText": "Loading ...",
+              "noDataText": "ရလဒ်များမတွေ့",
+              "pageText": "စာမျက်နှာ",
+              "ofText": "၏",
+              "rowsText": "အတန်း"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "image ကိုဖယ်ရှားပစ်ရန်ကလစ်နှိပ်ပါ",
+            "addedImage": "ဒါကအသစ်တခုပုံရိပ်ဖြစ်ပါတယ်။ အပြောင်းအလဲများကိုကယ်ဖို့ Publish ။",
+            "removedImage": "Image ကိုဖျက်ထားသည်။ အပြောင်းအလဲများကိုကယ်ဖို့ Publish ။"
+          }
+        }
+      }
+    }
+  }
+}]

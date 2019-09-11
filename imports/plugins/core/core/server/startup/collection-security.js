@@ -14,8 +14,7 @@ const {
   Shipping,
   Shops,
   Tags,
-  Templates,
-  Translations
+  Templates
 } = Collections;
 
 /**
@@ -118,7 +117,7 @@ export default function () {
    */
 
   Security.permit(["insert", "update", "remove"])
-    .collections([Accounts, Products, Tags, Translations, Shipping, Orders, Packages, Templates, Jobs])
+    .collections([Accounts, Products, Tags, Shipping, Orders, Packages, Templates, Jobs])
     .ifHasRoleForActiveShop({ role: "admin" })
     .ifShopIdMatches()
     .exceptProps(["shopId"])

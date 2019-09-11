@@ -1,3 +1,5 @@
+import i18n from "./i18n";
+
 /**
  * @summary Import and call this function to add this plugin to your API.
  * @param {ReactionNodeApp} app The ReactionNodeApp instance
@@ -8,6 +10,7 @@ export default async function register(app) {
     label: "Templates",
     name: "reaction-templates",
     icon: "fa fa-columns",
+    i18n,
     collections: {
       Templates: {
         name: "Templates",

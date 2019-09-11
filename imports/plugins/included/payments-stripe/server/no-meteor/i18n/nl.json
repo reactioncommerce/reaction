@@ -1,0 +1,37 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe betalingen"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Heb je geen Stripe API Client ID?",
+          "stripeSettingsGetItHere": "Krijg het hier",
+          "stripeClientIdWarning": "De Client ID is een PUBLIC veld. Zorg ervoor dat u de client_id gebruikt die wordt gevonden op de pagina Stripinstellingen.",
+          "stripeClientIdLink": "Streepverbindingsinstellingen"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect is niet ingeschakeld voor deze toepassing. Neem contact op met de beheerder.",
+          "shopEmailNotConfigured": "Configureer eerst uw winkel e-mail.",
+          "shopAddressNotConfigured": "Configureer eerst uw winkeladres",
+          "applicationFeeDescription": "Dit nummer vertegenwoordigt een percentage vergoeding dat de markt (deze winkel) kost voor elk item dat door een winkel voor deze markt wordt verkocht. Deze vergoeding is alleen van toepassing indien Stripe Connect is ingesteld en ingeschakeld op zowel de markt als de winkels en als Stripe de betalingsaanbieder is die gebruikt werd om de kassa uit te voeren.",
+          "moreDetails": "Voor meer details, zie de",
+          "docsLink": "Stripe Connect Docs"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Zet automatisch een paar seconden omverwijzen of klik hier."
+        }
+      }
+    }
+  }
+}]

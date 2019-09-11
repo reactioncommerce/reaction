@@ -1,0 +1,37 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "плащания Stripe"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Не трябва Stripe API Client ID а?",
+          "stripeSettingsGetItHere": "Вземете го от тук",
+          "stripeClientIdWarning": "Клиентският идентификационен номер е поле PUBLIC. Моля, уверете се, че използвате идентификационния номер на клиента, който сте намерили на страницата за настройки на връзката \"Stripe Connect\".",
+          "stripeClientIdLink": "Настройки за свързване на лентата"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect не е разрешено за това приложение. Моля, свържете се с администратора.",
+          "shopEmailNotConfigured": "Моля, първо конфигурирайте имейла си за магазина.",
+          "shopAddressNotConfigured": "Моля, първо конфигурирайте вашия адрес на магазина",
+          "applicationFeeDescription": "Този номер представлява процентна такса, която пазарът (този магазин) взема за всеки продукт, който се продава от търговски магазин за този пазар. Тази такса се прилага само ако Stripe Connect е инсталирана и активирана както на пазара, така и на търговските магазини и ако Stripe е доставчикът на плащания, използван за извършване на поръчката.",
+          "moreDetails": "За повече подробности вижте",
+          "docsLink": "Свържете документите на лентата"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Ще се пренасочи автоматично след няколко секунди или щракнете тук."
+        }
+      }
+    }
+  }
+}]

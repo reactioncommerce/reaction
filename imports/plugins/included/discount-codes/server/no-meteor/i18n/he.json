@@ -1,0 +1,40 @@
+[{
+  "language": "Hebrew",
+  "i18n": "he",
+  "ns": "discount-codes",
+  "translation": {
+    "discount-codes": {
+      "checkoutPayment": {
+        "applyDiscount": "יישם",
+        "discountError": "מצטערים, התגלתה שגיאה ביישום ההנחה."
+      },
+      "discounts": {
+        "enterItHere": "יש לך קוד? הזן אותו כאן.",
+        "discountLabel": "קוד הנחה",
+        "submitted": "ההנחה נשמרה ויושמה",
+        "applied": "יושם",
+        "code": "קוד",
+        "codeIsExpired": "פג תוקף הקוד",
+        "codeIsInvalid": "הקוד אינו תקף"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "קודים"
+        },
+        "settings": {
+          "codesLabel": "קודים",
+          "noCustomDiscountCodesFound": "לא נמצאו קודי הנחה."
+        },
+        "discountGrid": {
+          "code": "קוד",
+          "calculation": {
+            "method": "חישוב"
+          },
+          "conditions": {
+            "redemptionLimit": "מגבלה"
+          }
+        }
+      }
+    }
+  }
+}]

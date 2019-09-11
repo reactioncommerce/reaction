@@ -1,0 +1,37 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "plačila Stripe"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Še nimate Stripe API ID odjemalca je?",
+          "stripeSettingsGetItHere": "Dobite ga tukaj",
+          "stripeClientIdWarning": "ID stranke je polje JAVNO. Prepričajte se, da uporabljate odjemalca_id, najdeno na strani nastavitev Stripe Connect.",
+          "stripeClientIdLink": "Nastavitve povezave Stripe Connect"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect za to aplikacijo ni omogočen. Obrnite se na skrbnika.",
+          "shopEmailNotConfigured": "Najprej nastavite e-poštno sporočilo o trgovini.",
+          "shopAddressNotConfigured": "Najprej konfigurirajte naslov vaše trgovine",
+          "applicationFeeDescription": "Ta številka predstavlja odstotno pristojbino, ki jo trg (ta trgovina) prevzame za vsak predmet, ki ga prodaja trgovska trgovina za ta trg. Ta pristojbina se uporablja samo, če je Stripe Connect nastavljen in omogočen na trgu in trgovskih prodajalnah in če je Stripe ponudnik plačil uporabil za izvedbo izplačila.",
+          "moreDetails": "Za več podrobnosti glejte",
+          "docsLink": "Stripe Connect Docs"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Ali se bo samodejno preusmerilo v nekaj sekundah ali kliknite tukaj."
+        }
+      }
+    }
+  }
+}]
