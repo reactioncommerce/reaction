@@ -1,0 +1,43 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "tematică",
+          "themesTitle": "tematică",
+          "themesDescription": "Teme și componente UI"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Tema de editare",
+        "duplicateTheme": "Tema dublură",
+        "duplicateThemeError": "Nu a putut fi duplicat temă",
+        "publishThemeError": "`Nu am putut publica tema {{themeName}}",
+        "components": {
+          "navbar": "Bară de navigare",
+          "button": "Buton",
+          "sortableTable": {
+            "filterPlaceholder": "Filtrați datele",
+            "tableText": {
+              "noDataMessage": "Nici un rezultat gasit",
+              "previousText": "Anterior",
+              "nextText": "Următorul",
+              "loadingText": "Loading ...",
+              "noDataText": "Nici un rezultat gasit",
+              "pageText": "Pagină",
+              "ofText": "de",
+              "rowsText": "rânduri"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "Faceți clic pentru a elimina imaginea",
+            "addedImage": "Aceasta este o imagine nouă. Publicați pentru a salva modificările.",
+            "removedImage": "Imaginea a fost ștearsă. Publicați pentru a salva modificările."
+          }
+        }
+      }
+    }
+  }
+}]

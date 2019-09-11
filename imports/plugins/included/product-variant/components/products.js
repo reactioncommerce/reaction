@@ -22,6 +22,7 @@ class Products extends Component {
     isProductsSubscriptionReady: PropTypes.bool,
     isReady: PropTypes.bool,
     loadProducts: PropTypes.func,
+    onDisplayTagSelector: PropTypes.func,
     onShowFilterByFile: PropTypes.func,
     products: PropTypes.array,
     setFilteredProductIdsCount: PropTypes.func,
@@ -66,6 +67,7 @@ class Products extends Component {
     return (
       <Components.ProductGrid
         onShowFilterByFile={this.props.onShowFilterByFile}
+        onDisplayTagSelector={this.props.onDisplayTagSelector}
         setFilteredProductIdsCount={this.props.setFilteredProductIdsCount}
         productsByKey={productsByKey || {}}
         productIds={getIds({ tags: products })}

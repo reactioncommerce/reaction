@@ -1,0 +1,41 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "discount-codes",
+  "translation": {
+    "discount-codes": {
+      "checkoutPayment": {
+        "applyDiscount": "Apply",
+        "discountError": "ဝမ်းနည်းပါတယ်, လျှော့စျေးလျှောက်ထားမှားယွင်းမှုတစ်ခုရှိ၏။"
+      },
+      "discounts": {
+        "enterItHere": "တစ်ဦး code ကိုရှိပါသလား? ဒီမှာထည့်ပါ။",
+        "discountLabel": "လျှော့စျေး Code ကို",
+        "submitted": "လျှော့စျေးကယ်တင်ခြင်းသို့ ရောက်. လျှောက်ထား",
+        "applied": "အသုံးချ",
+        "code": "ကုဒ်",
+        "codeIsExpired": "Code ကိုသက်တမ်းကုန်သည်",
+        "codeIsInvalid": "Code ကိုမမှန်ကန်",
+        "multiShopError": "လျှော့စျေး multi-ဆိုင်လှည်းသို့မဟုတ်အမိန့်လျှောက်ထားရနိုင်မှာမဟုတ်ဘူး"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "codes"
+        },
+        "settings": {
+          "codesLabel": "codes",
+          "noCustomDiscountCodesFound": "မျှမတွေ့လျှော့စျေးတဲ့ကုဒ်။"
+        },
+        "discountGrid": {
+          "code": "ကုဒ်",
+          "calculation": {
+            "method": "ရေတွက်ခြင်း"
+          },
+          "conditions": {
+            "redemptionLimit": "ကန့်သတ်"
+          }
+        }
+      }
+    }
+  }
+}]

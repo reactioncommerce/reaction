@@ -1,20 +1,16 @@
 import { formatMoney } from "accounting-js";
 import { Reaction } from "/client/api";
 import { Shops, Accounts } from "/lib/collections";
-import { currencyDep } from "./main";
+import CurrencyDefinitions from "/imports/utils/CurrencyDefinitions";
 
 /**
  * @name findCurrency
- * @summary Private function for returning user currency
- * @private
- * @param {Object}  defaultCurrency    The default currency
- * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
+ * @summary Return user currency
  * @returns {Object}  user currency or shop currency if none is found
  */
-export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
-  const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
+export function findCurrency() {
+  const shop = Shops.findOne({ _id: Reaction.getPrimaryShopId() }, {
     fields: {
-      currencies: 1,
       currency: 1
     }
   });
@@ -23,21 +19,14 @@ export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const user = Accounts.findOne({
     _id: Reaction.getUserId()
   });
-  const profileCurrency = user && user.profile && user.profile.currency;
-  if (typeof shop === "object" && shop.currencies && profileCurrency) {
-    let userCurrency = {};
-    if (shop.currencies[profileCurrency]) {
-      if (useDefaultShopCurrency) {
-        userCurrency = shop.currencies[shop.currency];
-        userCurrency.exchangeRate = 1;
-      } else {
-        userCurrency = shop.currencies[profileCurrency];
-        userCurrency.exchangeRate = shop.currencies[profileCurrency].rate;
-      }
-    }
-    return userCurrency;
-  }
-  return shop.currencies[shopCurrency];
+  const profileCurrencyCode = user && user.profile && user.profile.currency;
+  let currency = CurrencyDefinitions[profileCurrencyCode || shopCurrency];
+  if (!currency) throw new Error(`Currency definition not found for ${profileCurrencyCode || shopCurrency}`);
+
+  // Clone before mutating
+  currency = Object.assign({}, currency, { exchangeRate: currency.rate || 1 });
+
+  return currency;
 }
 
 /**
@@ -50,20 +39,11 @@ export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
  * @returns {String} returns locale formatted and exchange rate converted values
  */
 export function formatPriceString(formatPrice) {
-  currencyDep.depend();
-  const locale = Reaction.Locale.get();
-
-  if (typeof locale !== "object" || typeof locale.currency !== "object") {
-    // locale not yet loaded, so we don"t need to return anything.
-    return false;
-  }
-
   if (typeof formatPrice !== "string" && typeof formatPrice !== "number") {
     return false;
   }
 
-  // get user currency instead of locale currency
-  const userCurrency = findCurrency(locale.currency, true);
+  const currency = findCurrency();
 
   const currentPrice = formatPrice.toString();
   const prices = currentPrice.indexOf(" - ") >= 0 ?
@@ -73,7 +53,7 @@ export function formatPriceString(formatPrice) {
   const price1 = prices[0].replace(/,/g, "");
   const price2 = prices[1].replace(/,/g, "");
 
-  return getDisplayPrice(Number(price1), Number(price2), userCurrency);
+  return getDisplayPrice(Number(price1), Number(price2), currency);
 }
 
 /**

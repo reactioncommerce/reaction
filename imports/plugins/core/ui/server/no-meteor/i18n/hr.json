@@ -1,0 +1,43 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Teme",
+          "themesTitle": "Teme",
+          "themesDescription": "Teme i UI komponente"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Uredi Tema",
+        "duplicateTheme": "Dvostruki Tema",
+        "duplicateThemeError": "Ne može se udvostručiti temu",
+        "publishThemeError": "'Ne može se objaviti temu {{themeName}}",
+        "components": {
+          "navbar": "Nalazite se ovdje",
+          "button": "Dugme",
+          "sortableTable": {
+            "filterPlaceholder": "Filtriranje podataka",
+            "tableText": {
+              "noDataMessage": "nisu pronađeni rezultati",
+              "previousText": "Prethodna",
+              "nextText": "Sljedeće",
+              "loadingText": "Učitavanje ...",
+              "noDataText": "nisu pronađeni rezultati",
+              "pageText": "Stranica",
+              "ofText": "od",
+              "rowsText": "redovi"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "Kliknite da biste uklonili sliku",
+            "addedImage": "Ovo je nova slika. Objavi za spremanje promjena.",
+            "removedImage": "Slika je izbrisana. Objavi za spremanje promjena."
+          }
+        }
+      }
+    }
+  }
+}]

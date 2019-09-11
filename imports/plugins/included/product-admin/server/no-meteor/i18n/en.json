@@ -1,0 +1,91 @@
+[
+  {
+    "i18n": "en",
+    "ns": "reaction-product-admin",
+    "translation": {
+      "reaction-product-admin": {
+        "admin": {
+          "createProduct": "Create product",
+          "showingFilteredProducts": "{{count}} products found from imported file.",
+          "showingFilteredProducts_plural": "Showing {{count}} found products from imported file(s).",
+          "missingFilteredProducts": "{{count}} product ID could not be found in the catalog.",
+          "missingFilteredProducts_plural": "{{count}} product IDs could not be found in the catalog.",
+          "noProductsFoundText": "No product IDs could be found in the catalog.",
+          "productAdmin": {
+            "details": "Details",
+            "metadata": "Metadata",
+            "metafields": "Meta fields",
+            "mediaGallery": "Media Gallery"
+          },
+          "importCard": {
+            "title": "Filter products by file",
+            "filterProducts": "Filter products",
+            "import": "Import",
+            "importHelpText": "Import .csv files with the product IDs in the first column."
+          },
+          "addRemoveTags": {
+            "inputPlaceholder": "Select one or more tag(s)",
+            "invalidSelection": "Please select one or more tags",
+            "addConfirmation": "Tags: {{tags}} added to {{count}} products.",
+            "removeConfirmation": "Tags: {{tags}} removed from {{count}} products.",
+            "tagsInputPlaceholder": "Enter one or more tags",
+            "title": "Add/Remove tags",
+            "addFoundAndNotUpdated": "{{count}} products were already tagged with the provided tags. No change made.",
+            "removeFoundAndNotUpdated": "{{count}} products were not tagged with the provided tags. No change made."
+          },
+          "productTable": {
+            "header": {
+              "order": "Order",
+              "price": "Price",
+              "qty": "Qty",
+              "title": "Title",
+              "visible": "Visible"
+            },
+            "bulkActions": {
+              "actions": "Actions",
+              "addRemoveTags": "Add/Remove tags",
+              "allProducts": "All products",
+              "archive": "Archive",
+              "archiveMessage": "Archive products removes them from both admin and customer views.",
+              "archiveTitle_plural": "Archive {{count}} products?",
+              "archiveTitle": "Archive {{count}} product?",
+              "duplicate": "Duplicate",
+              "duplicateMessage": "Duplicate selected products and their variants.",
+              "duplicateTitle_plural": "Duplicate {{count}} products?",
+              "duplicateTitle": "Duplicate {{count}} product?",
+              "filterByFile": "Filter by file",
+              "filteredProducts": "Filtered products",
+              "makeHidden": "Make Hidden",
+              "makeHiddenMessage": "Hide selected products from your storefront. These changes will need to be published to take effect.",
+              "makeHiddenTitle_plural": "Hide {{count}} products?",
+              "makeHiddenTitle": "Hide {{count}} product?",
+              "makeVisible": "Make Visible",
+              "makeVisibleMessage": "Show selected products in your storefront. These changes will need to be published to take effect.",
+              "makeVisibleTitle_plural": "Make {{count}} product visible?",
+              "makeVisibleTitle": "Make {{count}} product visible?",
+              "publish": "Publish",
+              "publishMessage": "Publish pending changes of selected products to your storefront.",
+              "publishTitle_plural": "Publish {{count}} products?",
+              "publishTitle": "Publish {{count}} product?",
+              "restore": "Restore",
+              "restoreTitle_plural": "Restore {{count}} products?",
+              "restoreTitle": "Restore {{count}} product?",
+              "selectedCount": "{{count}} selected",
+              "totalCount_plural": "{{count}} products",
+              "totalCount": "{{count}} product"
+            }
+          },
+          "products": "Products",
+          "settings": {
+            "productSettingsLabel": "Product Settings",
+            "productDetailsLabel": "Product Details"
+          }
+        },
+        "productDetailEdit": {
+          "template": "Template",
+          "templateSelectPlaceholder": "Select a template"
+        }
+      }
+    }
+  }
+]

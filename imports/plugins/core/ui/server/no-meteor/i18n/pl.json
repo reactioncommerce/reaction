@@ -1,0 +1,43 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Motywy",
+          "themesTitle": "Motywy",
+          "themesDescription": "Motywy i komponenty UI"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Edit Theme",
+        "duplicateTheme": "duplikat Theme",
+        "duplicateThemeError": "Nie udało się powielić tematu",
+        "publishThemeError": "`Nie można opublikować tematu {{themeName}}",
+        "components": {
+          "navbar": "Pasek nawigacyjny",
+          "button": "Przycisk",
+          "sortableTable": {
+            "filterPlaceholder": "Filtruj dane",
+            "tableText": {
+              "noDataMessage": "Nie znaleziono wyników",
+              "previousText": "Poprzedni",
+              "nextText": "Następny",
+              "loadingText": "Ładowanie ...",
+              "noDataText": "Nie znaleziono wyników",
+              "pageText": "Strona",
+              "ofText": "z",
+              "rowsText": "wydziwianie"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "Kliknij, aby usunąć obraz",
+            "addedImage": "To jest nowy wizerunek. Opublikuj, aby zapisać zmiany.",
+            "removedImage": "Obraz został usunięty. Opublikuj, aby zapisać zmiany."
+          }
+        }
+      }
+    }
+  }
+}]

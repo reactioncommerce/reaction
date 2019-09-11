@@ -1,0 +1,43 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Témata",
+          "themesTitle": "Témata",
+          "themesDescription": "Témata a UI komponenty"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Upravit téma",
+        "duplicateTheme": "duplicitní téma",
+        "duplicateThemeError": "Nemohl duplicitní téma",
+        "publishThemeError": "`Nelze zveřejnit téma {{themeName}}",
+        "components": {
+          "navbar": "navigační lišta",
+          "button": "Tlačítko",
+          "sortableTable": {
+            "filterPlaceholder": "Filtrování dat",
+            "tableText": {
+              "noDataMessage": "Nebyly nalezeny žádné výsledky",
+              "previousText": "Předchozí",
+              "nextText": "Další",
+              "loadingText": "Loading ...",
+              "noDataText": "Nebyly nalezeny žádné výsledky",
+              "pageText": "Strana",
+              "ofText": "z",
+              "rowsText": "Řádky"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "Klepnutím odeberete obrázek",
+            "addedImage": "Toto je nový obrázek. Publikujte, chcete-li uložit změny.",
+            "removedImage": "Obrázek byl smazán. Publikujte, chcete-li uložit změny."
+          }
+        }
+      }
+    }
+  }
+}]

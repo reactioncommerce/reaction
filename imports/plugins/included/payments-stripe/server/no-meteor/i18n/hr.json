@@ -1,0 +1,37 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "plaćanja trakom"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Nemate ID klijenta pruga API?",
+          "stripeSettingsGetItHere": "Nabavite ga ovdje",
+          "stripeClientIdWarning": "ID klijenta je polje JAVNE. Provjerite upotrebljavate client_id koji se nalazi na stranici postavki Stripe Connect.",
+          "stripeClientIdLink": "Postavke povezivanja trake"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect nije omogućen za ovu aplikaciju. Obratite se administratoru.",
+          "shopEmailNotConfigured": "Prvo konfigurirajte svoju trgovinu e-poštom.",
+          "shopAddressNotConfigured": "Prvo konfigurirajte svoju trgovinu",
+          "applicationFeeDescription": "Taj broj predstavlja postotak naknade koju tržnica (ova trgovina) traži za bilo koju stavku koju prodaje trgovačka trgovina za ovo tržište. Ova se naknada primjenjuje samo ako je Stripe Connect postavljen i omogućen na tržnici i trgovačkim trgovinama, a ako je Stripe davatelj usluga plaćanja koji se koristi za izvršavanje naplate.",
+          "moreDetails": "Za više detalja pogledajte",
+          "docsLink": "Dokumenti vezani uz Stripe Connect"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Hoće li automatski preusmjeriti za nekoliko sekundi ili kliknite ovdje."
+        }
+      }
+    }
+  }
+}]
