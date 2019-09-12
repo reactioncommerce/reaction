@@ -1,0 +1,41 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Accounts",
+          "accountsTitle": "Accounts",
+          "accountsDescription": "Account Settings",
+          "manageGroups": "Manage Groups"
+        },
+        "settings": {
+          "continue": "Continue",
+          "cancel": "Cancel",
+          "changeOwner": "Change Owner",
+          "removeUser": "Remove User",
+          "createGroupSuccess": "Group created successfully",
+          "updateGroupSuccess": "Group updated successfully",
+          "createGroupError": "Error creating group",
+          "updateGroupError": "Error updating group",
+          "changeShopOwnerWarn": "You are about to change the Shop owner",
+          "removeUserWarn": "You are about to remove a user from a group. The user will lose associated permissions",
+          "accountsSettingsLabel": "Accounts",
+          "accountsSettingsTitle": "Accounts",
+          "accountsSettingsDescription": "Account Settings"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "example@localhost",
+          "inviteOwnerError": "You cannot directly invite a user as Owner. Owner role can only be transferred to existing admin",
+          "groupRequired": "A group is required to invite an admin",
+          "cannotInvite": "You cannot invite to group",
+          "unableToSendInvitationEmail": "Unable to send invitation email",
+          "errorSendingInvite": "An error occured while sending invite",
+          "NeedToSetUsernameOrEmail": "Need to set a username or email"
+        }
+      }
+    }
+  }
+}]

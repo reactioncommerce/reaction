@@ -1,0 +1,43 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "主题",
+          "themesTitle": "主题",
+          "themesDescription": "主题和UI组件"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "编辑主题",
+        "duplicateTheme": "重复的主题",
+        "duplicateThemeError": "无法复制主题",
+        "publishThemeError": "`无法发布主题{{themeName}}",
+        "components": {
+          "navbar": "导航栏",
+          "button": "按键",
+          "sortableTable": {
+            "filterPlaceholder": "过滤数据",
+            "tableText": {
+              "noDataMessage": "未找到结果",
+              "previousText": "上一页",
+              "nextText": "下一个",
+              "loadingText": "加载中...",
+              "noDataText": "未找到结果",
+              "pageText": "页",
+              "ofText": "的",
+              "rowsText": "行"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "点击删除图片",
+            "addedImage": "这是一个新的形象。发布以保存更改。",
+            "removedImage": "图片已被删除。发布以保存更改。"
+          }
+        }
+      }
+    }
+  }
+}]

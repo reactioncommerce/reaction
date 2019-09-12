@@ -2,34 +2,14 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
-import { Grid, Button, Card, CardHeader, CardContent, IconButton, Typography, makeStyles } from "@material-ui/core";
-import CloseIcon from "mdi-material-ui/Close";
-import ImportIcon from "mdi-material-ui/Download";
+import { Grid, Button } from "@material-ui/core";
 import { useDropzone } from "react-dropzone";
 import { i18next } from "/client/api";
 import { Session } from "meteor/session";
-import Chip from "@reactioncommerce/catalyst/Chip";
+import CloseIcon from "mdi-material-ui/Close";
 import withCreateProduct from "../hocs/withCreateProduct";
-
-const useStyles = makeStyles((theme) => ({
-  leftIcon: {
-    marginRight: theme.spacing(1)
-  },
-  leftChip: {
-    marginRight: theme.spacing(1)
-  },
-  helpText: {
-    marginLeft: "20px",
-    letterSpacing: "0.28px",
-    fontWeight: theme.typography.fontWeightRegular
-  },
-  cardHeaderTitle: {
-    letterSpacing: "0.3px"
-  },
-  cardContainer: {
-    alignItems: "center"
-  }
-}));
+import FilterByFileCard from "./FilterByFileCard";
+import TagSelector from "./TagSelector";
 
 /**
  * ProductTable component
@@ -37,9 +17,11 @@ const useStyles = makeStyles((theme) => ({
  * @returns {Node} React node
  */
 function ProductTable({ onCreateProduct }) {
+  // Filter by file state
   const [files, setFiles] = useState([]);
   const [isFiltered, setFiltered] = useState(false);
-  const [isClosed, setClosed] = useState(true);
+  const [isFilterByFileVisible, setFilterByFileVisible] = useState(false);
+  const [isTagSelectorVisible, setTagSelectorVisible] = useState(false);
   const [filteredProductIdsCount, setFilteredProductIdsCount] = useState(0);
   const [noProductsFoundError, setNoProductsFoundError] = useState(false);
 
@@ -77,7 +59,7 @@ function ProductTable({ onCreateProduct }) {
               return;
             });
             Session.set("filterByProductIds", productIds);
-            setClosed(true);
+            setFilterByFileVisible(false);
             setFiltered(true);
           });
       };
@@ -105,24 +87,14 @@ function ProductTable({ onCreateProduct }) {
     disableClick: true
   });
 
-  const classes = useStyles();
+  const handleShowFilterByFile = (isVisible) => {
+    if (isTagSelectorVisible) setTagSelectorVisible(false);
+    setFilterByFileVisible(isVisible);
+  };
 
-  let displayCard;
-  let displayButton;
-  if (isClosed === true) {
-    displayCard = "none";
-    if (isFiltered === true) {
-      displayButton = "none";
-    } else {
-      displayButton = "block";
-    }
-  } else {
-    displayCard = "block";
-    displayButton = "none";
-  }
-
-  const closeCard = () => {
-    setClosed(false);
+  const handleDisplayTagSelector = (isVisible) => {
+    if (isFilterByFileVisible) setFilterByFileVisible(false);
+    setTagSelectorVisible(isVisible);
   };
 
   const setFilteredCount = (count) => {
@@ -136,10 +108,6 @@ function ProductTable({ onCreateProduct }) {
     setFilteredProductIdsCount(count);
   };
 
-  const iconComponents = {
-    iconDismiss: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
-  };
-
   // eslint-disable-next-line react/no-multi-comp
   const renderMissedFilterItems = () => {
     if (!Session.get("filterByProductIds")) {
@@ -149,12 +117,11 @@ function ProductTable({ onCreateProduct }) {
     if (isFiltered && filteredProductIdsCount < filterProductIds) {
       const missing = filterProductIds - filteredProductIdsCount;
       return (
-        <Grid item sm={12}>
+        <Grid item sm={12} >
           <InlineAlert
             isDismissable
-            components={iconComponents}
+            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
             alertType="error"
-            title={i18next.t("admin.productListIdsNotFound", { missing, all: filterProductIds }) || "Product Ids not found"}
             message={i18next.t("admin.missingFilteredProducts", { count: missing })}
           />
         </Grid>
@@ -163,92 +130,59 @@ function ProductTable({ onCreateProduct }) {
     return null;
   };
 
+  const selectedProductIds = Session.get("productGrid/selectedProducts");
+
   return (
     <Grid container spacing={3}>
-      { noProductsFoundError ? (
-        <Grid item sm={12}>
-          <InlineAlert
-            isDismissable
-            components={iconComponents}
-            alertType="error"
-            title={i18next.t("admin.noProductsFoundTitle") || "No Product Ids found"}
-            message={i18next.t("admin.noProductsFoundText")}
-          />
+      <FilterByFileCard
+        isFilterByFileVisible={isFilterByFileVisible}
+        files={files}
+        getInputProps={getInputProps}
+        getRootProps={getRootProps}
+        importFiles={importFiles}
+        handleDelete={handleDelete}
+        setFilterByFileVisible={setFilterByFileVisible}
+      />
+      <TagSelector
+        isVisible={isTagSelectorVisible}
+        setVisibility={setTagSelectorVisible}
+        selectedProductIds={selectedProductIds}
+      />
+      {isFiltered && (
+        <Grid item sm={12} >
+          {noProductsFoundError && (
+            <InlineAlert
+              alertType="error"
+              components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
+              isDismissable
+              message={i18next.t("admin.noProductsFoundText")}
+            />
+          )}
+          {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
+            <Button
+              color="primary"
+              onClick={onCreateProduct}
+              variant="contained"
+            >
+              {i18next.t("admin.createProduct") || "Create product"}
+            </Button>
+          )}
+          {isFiltered && (
+            <InlineAlert
+              isDismissable
+              isAutoClosing
+              components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
+              alertType="information"
+              message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
+            />
+          )}
         </Grid>
-      ) : null }
-      <Grid item sm={12} style={{ display: displayCard }}>
-        <Card raised>
-          <CardHeader
-            className={classes.cardHeaderTitle}
-            action={
-              <IconButton aria-label="close" onClick={() => setClosed(true)}>
-                <CloseIcon/>
-              </IconButton>
-            }
-            title={i18next.t("admin.importCard.title")}
-          />
-          <CardContent>
-            { files.length > 0 ? (
-              <Grid container spacing={1} className={classes.cardContainer}>
-                <Grid item sm={12}>
-                  {files.map((file, idx) => <Chip label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
-                </Grid>
-                <Grid item sm={12}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ float: "right" }}
-                    onClick={() => importFiles(files)}
-                  >
-                    {i18next.t("admin.importCard.button")}
-                  </Button>
-                </Grid>
-              </Grid>
-            ) : (
-              <Grid container spacing={1} className={classes.cardContainer}>
-                <Grid item sm={12}>
-                  <Button
-                    {...getRootProps({ className: "dropzone" })}
-                    variant="contained"
-                    color="primary"
-                  >
-                    <input {...getInputProps()} />
-                    <ImportIcon className={classes.leftIcon}/>
-                    {i18next.t("admin.importCard.import")}
-                  </Button>
-                  <Typography variant="h5" display="inline" className={classes.helpText}>
-                    {i18next.t("admin.importCard.importHelpText")}
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item sm={12} style={{ display: displayButton }}>
-        <Button
-          color="primary"
-          onClick={onCreateProduct}
-          variant="contained"
-        >
-          {i18next.t("admin.createProduct") || "Create product"}
-        </Button>
-      </Grid>
-      { isFiltered ? (
-        <Grid item sm={12}>
-          <InlineAlert
-            isDismissable
-            components={iconComponents}
-            alertType="information"
-            title={i18next.t("admin.productListFiltered") || "Product list filtered"}
-            message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
-          />
-        </Grid>
-      ) : null }
+      )}
       {renderMissedFilterItems()}
       <Grid item sm={12}>
         <Components.ProductsAdmin
-          onShowFilterByFile={() => closeCard()}
+          onShowFilterByFile={(isVisible) => handleShowFilterByFile(isVisible)}
+          onDisplayTagSelector={(isVisible) => handleDisplayTagSelector(isVisible)}
           setFilteredProductIdsCount={setFilteredCount}
           files={files}
           handleDelete={handleDelete}

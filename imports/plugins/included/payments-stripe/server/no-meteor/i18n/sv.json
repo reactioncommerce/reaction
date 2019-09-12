@@ -1,0 +1,37 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe betalningar"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Inte ha en Stripe API-klient-ID?",
+          "stripeSettingsGetItHere": "Få det här",
+          "stripeClientIdWarning": "Klient-id är ett offentligt fält. Se till att du använder client_id som finns på sidan Stripe Connect-inställningar.",
+          "stripeClientIdLink": "Stripe Connect-inställningar"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect är inte aktiverat för den här applikationen. Vänligen kontakta administratören.",
+          "shopEmailNotConfigured": "Konfigurera din butiks e-post först.",
+          "shopAddressNotConfigured": "Vänligen konfigurera din butiksadress först",
+          "applicationFeeDescription": "Detta nummer representerar en procentsatsavgift som marknadsplatsen (den här butiken) tar för varje föremål som säljs av en handelshandlare för denna marknad. Denna avgift gäller endast om Stripe Connect är inställd och aktiverad på både marknadsplatsen och butikerna och om Stripe är betalningsleverantör som används för att utföra kassan.",
+          "moreDetails": "För mer information, se",
+          "docsLink": "Stripe Connect Docs"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Kommer automatiskt omdirigera om några sekunder eller klicka här."
+        }
+      }
+    }
+  }
+}]

@@ -1,4 +1,4 @@
-import appEvents from "/imports/node-app/core/util/appEvents";
+import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { FileRecord } from "@reactioncommerce/file-collections";
 
@@ -12,7 +12,7 @@ import { FileRecord } from "@reactioncommerce/file-collections";
  * @returns {Promise<Object>} SetTagHeroMediaPayload
  */
 export default async function setTagHeroMedia(context, input) {
-  const { collections, userHasPermission } = context;
+  const { appEvents, collections, userHasPermission } = context;
   const { Media, MediaRecords, Tags } = collections;
   const { shopId, tagId, fileRecord } = input;
 
@@ -26,17 +26,18 @@ export default async function setTagHeroMedia(context, input) {
   if (fileRecord) {
     const doc = {
       ...fileRecord,
+      _id: Random.id(),
       metadata: {
         ...fileRecord.metadata,
         workflow: "published"
       }
     };
 
-    const mediaRecordId = await MediaRecords.insert(doc);
+    const { insertedId } = await MediaRecords.insertOne(doc);
 
-    // Because we don't have access to the URL of the file, we have to take
-    // do our best to get he URL as it will be once the file is finished being processed.
-    heroMediaUrl = `${FileRecord.downloadEndpointPrefix}/${Media.name}/${mediaRecordId}/large/${fileRecord.original.name}`;
+    // Because we don't have access to the URL of the file, we have to
+    // do our best to get the URL as it will be once the file is finished being processed.
+    heroMediaUrl = `${FileRecord.downloadEndpointPrefix}/${Media.name}/${insertedId}/large/${fileRecord.original.name}`;
   }
 
   const { result } = await Tags.updateOne({

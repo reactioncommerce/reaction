@@ -15,13 +15,6 @@ class TestApp {
     const { extraSchemas = [], functionsByType } = options;
 
     this.reactionNodeApp = new ReactionNodeApp({
-      addCallMeteorMethod(context) {
-        context.callMeteorMethod = (name) => {
-          console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
-            " works outside of Meteor. If you are relying on a side effect or return value from this method, you may notice unexpected behavior.");
-          return null;
-        };
-      },
       // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
       // error logging in the test output.
       // debug: true,

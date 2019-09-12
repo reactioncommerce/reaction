@@ -1,5 +1,4 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Cart as CartSchema } from "/imports/collections/schemas";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import addCartItemsUtil from "../util/addCartItems";
 
@@ -18,7 +17,7 @@ import addCartItemsUtil from "../util/addCartItems";
  */
 export default async function addCartItems(context, input, options = {}) {
   const { cartId, items, token } = input;
-  const { appEvents, collections, accountId = null, userId = null } = context;
+  const { collections, accountId = null } = context;
   const { Cart } = collections;
 
   let selector;
@@ -45,28 +44,13 @@ export default async function addCartItems(context, input, options = {}) {
     updatedItemList
   } = await addCartItemsUtil(context, cart.items, items, { skipPriceCheck: options.skipPriceCheck });
 
-  const updatedAt = new Date();
-
-  const modifier = {
-    $set: {
-      items: updatedItemList,
-      updatedAt
-    }
-  };
-  CartSchema.validate(modifier, { modifier: true });
-
-  const { matchedCount } = await Cart.updateOne({ _id: cart._id }, modifier);
-  if (matchedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
-
   const updatedCart = {
     ...cart,
     items: updatedItemList,
-    updatedAt
+    updatedAt: new Date()
   };
-  await appEvents.emit("afterCartUpdate", {
-    cart: updatedCart,
-    updatedBy: userId
-  });
 
-  return { cart: updatedCart, incorrectPriceFailures, minOrderQuantityFailures };
+  const savedCart = await context.mutations.saveCart(context, updatedCart);
+
+  return { cart: savedCart, incorrectPriceFailures, minOrderQuantityFailures };
 }

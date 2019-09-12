@@ -48,7 +48,7 @@ function ProductMediaItem(props) {
           margin="dense"
           variant="outlined"
           type="numeric"
-          value={priority}
+          value={priority === null ? "" : priority}
           onKeyDown={(event) => {
             if (event.keyCode === 13) {
               onSetMediaPriority(source, priority);
@@ -108,7 +108,7 @@ const stateHandler = withStateHandlers(({ source }) => ({
   setPriority: () => (value) => {
     const intValue = parseInt(value, 10);
     return {
-      priority: isInteger(intValue) ? intValue : ""
+      priority: isInteger(intValue) ? intValue : null
     };
   }
 });

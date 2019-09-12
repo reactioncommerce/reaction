@@ -134,7 +134,11 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
       fulfillmentTypes: ["shipping"]
     },
     handlingPrice: {
-      amount: option.handling || 0,
+      amount: option.handlingPrice || 0,
+      currencyCode: cart.currencyCode
+    },
+    shippingPrice: {
+      amount: option.shippingPrice || 0,
       currencyCode: cart.currencyCode
     },
     price: {

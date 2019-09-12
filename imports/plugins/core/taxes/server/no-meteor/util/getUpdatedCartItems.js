@@ -1,16 +1,13 @@
-import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
-
 /**
  * @summary Returns `cart.items` with tax-related props updated on them
  * @param {Object} context App context
  * @param {Object} cart The cart
+ * @param {Object[]} commonOrders Array of CommonOrder objects corresponding to the cart groups
  * @returns {Object[]} Updated items array
  */
-export default async function getUpdatedCartItems(context, cart) {
-  const taxResultsByGroup = await Promise.all((cart.shipping || []).map(async (group) => {
-    const order = await xformCartGroupToCommonOrder(cart, group, context);
-    return context.mutations.getFulfillmentGroupTaxes(context, { order, forceZeroes: false });
-  }));
+export default async function getUpdatedCartItems(context, cart, commonOrders) {
+  const taxResultsByGroup = await Promise.all(commonOrders.map(async (order) =>
+    context.mutations.getFulfillmentGroupTaxes(context, { order, forceZeroes: false })));
 
   // Add tax properties to all items in the cart, if taxes were able to be calculated
   const cartItems = (cart.items || []).map((item) => {

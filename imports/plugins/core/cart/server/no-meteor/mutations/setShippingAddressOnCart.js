@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { Address as AddressSchema } from "/imports/collections/schemas";
 import getCartById from "../util/getCartById";
 
@@ -45,24 +44,13 @@ export default async function setShippingAddressOnCart(context, input) {
 
   if (!didModify) return { cart };
 
-  const { appEvents, collections, userId } = context;
-  const { Cart } = collections;
+  const updatedCart = {
+    ...cart,
+    shipping: updatedFulfillmentGroups,
+    updatedAt: new Date()
+  };
 
-  const updatedAt = new Date();
-  const { matchedCount } = await Cart.updateOne({ _id: cartId }, {
-    $set: {
-      shipping: updatedFulfillmentGroups,
-      updatedAt
-    }
-  });
-  if (matchedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
+  const savedCart = await context.mutations.saveCart(context, updatedCart);
 
-  const updatedCart = { ...cart, shipping: updatedFulfillmentGroups, updatedAt };
-
-  await appEvents.emit("afterCartUpdate", {
-    cart: updatedCart,
-    updatedBy: userId
-  });
-
-  return { cart: updatedCart };
+  return { cart: savedCart };
 }

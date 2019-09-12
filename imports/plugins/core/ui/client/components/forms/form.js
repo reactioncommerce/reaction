@@ -218,7 +218,6 @@ class Form extends Component {
             onChange={this.handleMultiSelectChange}
             options={field.options}
             value={this.valueForField(field.name)}
-            simpleValue={false}
           />
         );
         break;

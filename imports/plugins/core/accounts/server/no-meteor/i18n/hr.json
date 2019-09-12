@@ -1,0 +1,40 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Računi",
+          "accountsTitle": "Računi",
+          "accountsDescription": "Postavke računa"
+        },
+        "settings": {
+          "continue": "Nastaviti",
+          "cancel": "Prekini",
+          "changeOwner": "Promijeni vlasnika",
+          "removeUser": "Uklanjanje korisnika",
+          "createGroupSuccess": "Grupa je uspješno izrađena",
+          "updateGroupSuccess": "Grupa je uspješno ažurirana",
+          "createGroupError": "Pogreška pri izradi grupe",
+          "updateGroupError": "Pogreška prilikom ažuriranja grupe",
+          "changeShopOwnerWarn": "Namjeravate promijeniti vlasnika trgovine. Sadašnji vlasnik bit će zamijenjen",
+          "removeUserWarn": "Upravo ćete ukloniti korisnika iz grupe. Korisnik će izgubiti pridružene dozvole",
+          "accountsSettingsLabel": "Računi",
+          "accountsSettingsTitle": "Računi",
+          "accountsSettingsDescription": "Postavke računa"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Ne možete izravno pozvati korisnika kao vlasnika. Promicanje postojećeg administratora",
+          "groupRequired": "Grupa je dužna pozvati administratora",
+          "cannotInvite": "Ne možete pozvati u grupu",
+          "unableToSendInvitationEmail": "Nije moguće poslati e-poruku s pozivnicom",
+          "errorSendingInvite": "Došlo je do pogreške prilikom slanja pozivnice",
+          "NeedToSetUsernameOrEmail": "Morate postaviti korisničko ime ili Email"
+        }
+      }
+    }
+  }
+}]

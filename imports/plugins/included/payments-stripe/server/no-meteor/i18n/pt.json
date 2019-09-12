@@ -1,0 +1,37 @@
+[{
+  "language": "Portuguese",
+  "i18n": "pt",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "pagamentos Stripe"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Não temos uma listra API ID do cliente?",
+          "stripeSettingsGetItHere": "Venha aqui",
+          "stripeClientIdWarning": "O ID do cliente é um campo PÚBLICO. Certifique-se de que está usando o cliente_id encontrado na página de configurações Stripe Connect.",
+          "stripeClientIdLink": "Configurações de conexão Stripe"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect não está habilitado para esta aplicação. Entre em contato com o adminstrator.",
+          "shopEmailNotConfigured": "Por favor configure primeiro o e-mail da sua loja.",
+          "shopAddressNotConfigured": "Configure o endereço da sua loja primeiro",
+          "applicationFeeDescription": "Este número representa uma taxa percentual que o mercado (esta loja) leva para qualquer item vendido por uma loja comercial para este mercado. Esta taxa aplica-se apenas se a Stripe Connect for configurada e habilitada no mercado e nas lojas comerciais e se a Stripe for o provedor de pagamento usado para realizar o checkout.",
+          "moreDetails": "Para mais detalhes, veja o",
+          "docsLink": "Stripe Connect Docs"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Redirecionará automaticamente em alguns segundos ou clique aqui."
+        }
+      }
+    }
+  }
+}]

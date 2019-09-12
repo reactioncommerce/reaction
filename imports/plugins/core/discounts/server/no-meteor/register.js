@@ -1,4 +1,5 @@
-import startup from "./startup";
+import i18n from "./i18n";
+import setDiscountsOnCart from "./util/setDiscountsOnCart";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -10,6 +11,7 @@ export default async function register(app) {
     label: "Discounts",
     name: "reaction-discounts",
     icon: "fa fa-gift",
+    i18n,
     collections: {
       Discounts: {
         name: "Discounts",
@@ -20,8 +22,14 @@ export default async function register(app) {
         ]
       }
     },
-    functionsByType: {
-      startup: [startup]
+    cart: {
+      transforms: [
+        {
+          name: "setDiscountsOnCart",
+          fn: setDiscountsOnCart,
+          priority: 10
+        }
+      ]
     }
   });
 }

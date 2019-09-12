@@ -18,7 +18,7 @@ input StorefrontUrlsInput {
 
 "Shop Logo URLs to provide for the updateShop mutation"
 input ShopLogoUrlsInput {
-  "Primary Shop logo"
+  "The primary logo URL for this shop. Setting this overrides any uploaded logo."
   primaryShopLogoUrl: String
 }
 
@@ -48,5 +48,8 @@ type UpdateShopPayload {
 
 extend type Mutation {
   "Given shop data, update the Shops collection with this data"
-  updateShop(input: UpdateShopInput!): UpdateShopPayload!
+  updateShop(
+    "Mutation input"
+    input: UpdateShopInput!
+  ): UpdateShopPayload!
 }

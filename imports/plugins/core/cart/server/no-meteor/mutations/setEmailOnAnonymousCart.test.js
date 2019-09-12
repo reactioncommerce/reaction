@@ -8,6 +8,12 @@ const email = "email@address.com";
 const token = "TOKEN";
 const hashedToken = "+YED6SF/CZIIVp0pXBsnbxghNIY2wmjIVLsqCG4AN80=";
 
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
+
 test("sets the email address on an anonymous cart", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
 
@@ -17,16 +23,12 @@ test("sets the email address on an anonymous cart", async () => {
     token
   });
 
-  expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
+  expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({
     _id: "cartId",
     anonymousAccessToken: hashedToken
-  }, {
-    $set: { email }
   });
 
-  expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({ _id: "cartId" });
-
   expect(result).toEqual({
-    cart: dbCart
+    cart: { ...dbCart, email, updatedAt: jasmine.any(Date) }
   });
 });

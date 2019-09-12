@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import mutations from "./mutations";
 import queries from "./queries";
 import { registerPluginHandler } from "./registration";
@@ -14,6 +15,7 @@ export default async function register(app) {
     label: "Payments",
     name: "reaction-payments",
     icon: "fa fa-credit-card",
+    i18n,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler]
     },

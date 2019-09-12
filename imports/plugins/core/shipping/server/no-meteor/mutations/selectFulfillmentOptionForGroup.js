@@ -28,8 +28,6 @@ export default async function selectFulfillmentOptionForGroup(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { cartId, cartToken, fulfillmentGroupId, fulfillmentMethodId } = cleanedInput;
-  const { appEvents, collections, userId } = context;
-  const { Cart } = collections;
 
   const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 
@@ -40,22 +38,19 @@ export default async function selectFulfillmentOptionForGroup(context, input) {
   const option = (fulfillmentGroup.shipmentQuotes || []).find((quote) => quote.method._id === fulfillmentMethodId);
   if (!option) throw new ReactionError("not-found", `Fulfillment option with method ID ${fulfillmentMethodId} not found in cart with ID ${cartId}`);
 
-  const { matchedCount } = await Cart.updateOne({
-    "_id": cartId,
-    "shipping._id": fulfillmentGroupId
-  }, {
-    $set: {
-      "shipping.$.shipmentMethod": option.method
-    }
-  });
-  if (matchedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
+  const updatedCart = {
+    ...cart,
+    shipping: cart.shipping.map((group) => {
+      if (group._id === fulfillmentGroupId) {
+        return { ...group, shipmentMethod: option.method };
+      }
 
-  await appEvents.emit("afterCartUpdate", {
-    cart,
-    updatedBy: userId
-  });
+      return group;
+    }),
+    updatedAt: new Date()
+  };
 
-  const updatedCart = await Cart.findOne({ _id: cartId });
+  const savedCart = await context.mutations.saveCart(context, updatedCart);
 
-  return { cart: updatedCart };
+  return { cart: savedCart };
 }

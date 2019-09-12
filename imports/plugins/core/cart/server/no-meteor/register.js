@@ -1,5 +1,6 @@
 import mutations from "./mutations";
 import queries from "./queries";
+import { registerPluginHandler } from "./registration";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 import startup from "./startup";
@@ -42,6 +43,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
+      registerPluginHandler: [registerPluginHandler],
       startup: [startup]
     },
     graphQL: {

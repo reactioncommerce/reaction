@@ -106,7 +106,19 @@ type Account implements Node {
   _id: ID!
 
   "A list of physical or mailing addresses associated with this account"
-  addressBook(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt): AddressConnection
+  addressBook(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+  ): AddressConnection
 
   "The date and time at which this account was created"
   createdAt: DateTime!
@@ -121,7 +133,25 @@ type Account implements Node {
   firstName: String
 
   "A paged list of the permission groups in which this account is listed"
-  groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
+  groups(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: GroupSortByField = createdAt
+  ): GroupConnection
 
   "The last name of the person this account represents, if known"
   lastName: String
@@ -249,38 +279,98 @@ extend type Shop {
   Returns a list of administrators for this shop, as a Relay-compatible connection.
   "Administrators" means all linked accounts that have the "admin" role for this shop.
   """
-  administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
+  administrators(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, accounts are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: AccountSortByField = createdAt
+  ): AccountConnection
 }
 
 extend type Mutation {
   "Add a new address to the `addressBook` field for an account"
-  addAccountAddressBookEntry(input: AddAccountAddressBookEntryInput!): AddAccountAddressBookEntryPayload
+  addAccountAddressBookEntry(
+    "Mutation input"
+    input: AddAccountAddressBookEntryInput!
+  ): AddAccountAddressBookEntryPayload
 
   "Add an email address to an account"
-  addAccountEmailRecord(input: AddAccountEmailRecordInput!): AddAccountEmailRecordPayload
+  addAccountEmailRecord(
+    "Mutation input"
+    input: AddAccountEmailRecordInput!
+  ): AddAccountEmailRecordPayload
 
   "Remove an address from the `addressBook` field for an account"
-  removeAccountAddressBookEntry(input: RemoveAccountAddressBookEntryInput!): RemoveAccountAddressBookEntryPayload
+  removeAccountAddressBookEntry(
+    "Mutation input"
+    input: RemoveAccountAddressBookEntryInput!
+  ): RemoveAccountAddressBookEntryPayload
 
   "Remove an email address from an account"
-  removeAccountEmailRecord(input: RemoveAccountEmailRecordInput!): RemoveAccountEmailRecordPayload
+  removeAccountEmailRecord(
+    "Mutation input"
+    input: RemoveAccountEmailRecordInput!
+  ): RemoveAccountEmailRecordPayload
 
   "Set the preferred currency for an account"
-  setAccountProfileCurrency(input: SetAccountProfileCurrencyInput!): SetAccountProfileCurrencyPayload
+  setAccountProfileCurrency(
+    "Mutation input"
+    input: SetAccountProfileCurrencyInput!
+  ): SetAccountProfileCurrencyPayload
 
   "Remove an address that exists in the `addressBook` field for an account"
-  updateAccountAddressBookEntry(input: UpdateAccountAddressBookEntryInput!): UpdateAccountAddressBookEntryPayload
+  updateAccountAddressBookEntry(
+    "Mutation input"
+    input: UpdateAccountAddressBookEntryInput!
+  ): UpdateAccountAddressBookEntryPayload
 }
 
 extend type Query {
   "Returns the account with the provided ID"
-  account(id: ID!): Account
+  account(
+    "The account ID"
+    id: ID!
+  ): Account
 
   """
   Returns a list of administrators for the shop with ID `shopId`, as a Relay-compatible connection.
   "Administrators" means all linked accounts that have the "admin" role for this shop.
   """
-  administrators(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
+  administrators(
+    "Return accounts that are administrators in this shop"
+    shopId: ID!,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, accounts are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: AccountSortByField = createdAt
+  ): AccountConnection
 
   "Returns the account for the authenticated user"
   viewer: Account

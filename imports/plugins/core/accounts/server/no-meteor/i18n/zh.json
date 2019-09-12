@@ -1,0 +1,40 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "帐户",
+          "accountsTitle": "帐户",
+          "accountsDescription": "帐号设定"
+        },
+        "settings": {
+          "continue": "继续",
+          "cancel": "取消",
+          "changeOwner": "更改所有者",
+          "removeUser": "删除用户",
+          "createGroupSuccess": "组创建成功",
+          "updateGroupSuccess": "组更新成功",
+          "createGroupError": "创建组时出错",
+          "updateGroupError": "更新组时出错",
+          "changeShopOwnerWarn": "您即将改变店主。当前所有者将被替换",
+          "removeUserWarn": "您即将删除用户群组。用户将丢失相关权限",
+          "accountsSettingsLabel": "帐户",
+          "accountsSettingsTitle": "帐户",
+          "accountsSettingsDescription": "帐号设定"
+        },
+        "groupsInvite": {
+          "name": "约翰·史密斯",
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "您不能直接邀请用户作为所有者。推广现有的管理员",
+          "groupRequired": "需要一个组来邀请管理员",
+          "cannotInvite": "您无法邀请加入群组",
+          "unableToSendInvitationEmail": "无法发送邀请电子邮件",
+          "errorSendingInvite": "发送邀请时发生错误",
+          "NeedToSetUsernameOrEmail": "需要设置一个用户名或者邮箱地址。"
+        }
+      }
+    }
+  }
+}]

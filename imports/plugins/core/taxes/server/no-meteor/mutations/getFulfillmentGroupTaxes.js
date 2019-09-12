@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { CommonOrder } from "/imports/plugins/core/orders/server/no-meteor/simpleSchemas";
 import { getTaxServicesForShop } from "../registration";
 import { TaxServiceResult } from "../../../lib/simpleSchemas";
 
@@ -17,13 +16,6 @@ import { TaxServiceResult } from "../../../lib/simpleSchemas";
  *   and `taxes` properties on each array item.
  */
 export default async function getFulfillmentGroupTaxes(context, { order, forceZeroes }) {
-  try {
-    CommonOrder.validate(order);
-  } catch (error) {
-    Logger.error("Invalid order input provided to getFulfillmentGroupTaxes", error);
-    throw new ReactionError("internal-error", "Error while calculating taxes");
-  }
-
   const { items, shopId } = order;
 
   const { primaryTaxService, fallbackTaxService } = await getTaxServicesForShop(context, shopId);

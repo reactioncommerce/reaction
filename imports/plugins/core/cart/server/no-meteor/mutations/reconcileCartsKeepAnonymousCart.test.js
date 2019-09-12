@@ -5,29 +5,26 @@ import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart";
 const { Cart } = mockContext.collections;
 const accountId = "accountId";
 const accountCart = { _id: "ACCOUNT_CART", accountId };
-const accountCartSelector = { accountId };
 const anonymousCartSelector = { _id: "123" };
 const items = [Factory.CartItem.makeOne()];
+
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
 
 test("overwrites account cart items, deletes anonymous cart, and returns updated account cart", async () => {
   const result = await reconcileCartsKeepAnonymousCart({
     accountCart,
-    accountCartSelector,
     anonymousCart: {
       items
     },
     anonymousCartSelector,
-    Cart
+    context: mockContext
   });
 
   expect(Cart.deleteOne).toHaveBeenCalledWith(anonymousCartSelector);
-
-  expect(Cart.updateOne).toHaveBeenCalledWith(accountCartSelector, {
-    $set: {
-      items,
-      updatedAt: jasmine.any(Date)
-    }
-  });
 
   expect(result).toEqual({
     ...accountCart,
@@ -41,28 +38,11 @@ test("throws if deleteOne fails", async () => {
 
   const promise = reconcileCartsKeepAnonymousCart({
     accountCart,
-    accountCartSelector,
     anonymousCart: {
       items
     },
     anonymousCartSelector,
-    Cart
-  });
-
-  return expect(promise).rejects.toThrowErrorMatchingSnapshot();
-});
-
-test("throws if updateOne fails", async () => {
-  Cart.updateOne.mockReturnValueOnce(Promise.resolve({ modifiedCount: 0 }));
-
-  const promise = reconcileCartsKeepAnonymousCart({
-    accountCart,
-    accountCartSelector,
-    anonymousCart: {
-      items
-    },
-    anonymousCartSelector,
-    Cart
+    context: mockContext
   });
 
   return expect(promise).rejects.toThrowErrorMatchingSnapshot();

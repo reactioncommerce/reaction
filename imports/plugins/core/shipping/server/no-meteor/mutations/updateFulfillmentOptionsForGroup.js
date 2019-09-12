@@ -2,7 +2,6 @@ import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
-
 import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
@@ -66,16 +65,11 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { cartId, cartToken, fulfillmentGroupId } = cleanedInput;
-  const { appEvents, collections, userId } = context;
-  const { Cart } = collections;
 
   const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 
   const fulfillmentGroup = (cart.shipping || []).find((group) => group._id === fulfillmentGroupId);
   if (!fulfillmentGroup) throw new ReactionError("not-found", `Fulfillment group with ID ${fulfillmentGroupId} not found in cart with ID ${cartId}`);
-
-  // Map the items onto the fulfillment groups
-  fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
   const commonOrder = await xformCartGroupToCommonOrder(cart, fulfillmentGroup, context);
 
@@ -85,24 +79,21 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 
   if (!isEqual(shipmentQuotes, fulfillmentGroup.shipmentQuotes) || !isEqual(shipmentQuotesQueryStatus, fulfillmentGroup.shipmentQuotesQueryStatus)) {
-    const { matchedCount } = await Cart.updateOne({
-      "_id": cartId,
-      "shipping._id": fulfillmentGroupId
-    }, {
-      $set: {
-        "shipping.$.shipmentQuotes": shipmentQuotes,
-        "shipping.$.shipmentQuotesQueryStatus": shipmentQuotesQueryStatus
-      }
-    });
-    if (matchedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
+    const updatedCart = {
+      ...cart,
+      shipping: cart.shipping.map((group) => {
+        if (group._id === fulfillmentGroupId) {
+          return { ...group, shipmentQuotes, shipmentQuotesQueryStatus };
+        }
 
-    const updatedCart = await Cart.findOne({ _id: cartId });
-    await appEvents.emit("afterCartUpdate", {
-      cart: updatedCart,
-      updatedBy: userId
-    });
+        return group;
+      }),
+      updatedAt: new Date()
+    };
 
-    return { cart: updatedCart };
+    const savedCart = await context.mutations.saveCart(context, updatedCart);
+
+    return { cart: savedCart };
   }
 
   return { cart };

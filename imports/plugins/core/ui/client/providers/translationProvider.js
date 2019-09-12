@@ -1,8 +1,7 @@
-import { Session } from "meteor/session";
 import React, { Component, Children } from "react"; // eslint-disable-line
 import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { i18nextDep } from "/client/api";
+import { i18next, i18nextDep } from "/client/api";
 
 class TranslationProvider extends Component {
   getChildContext() {
@@ -35,7 +34,7 @@ function composer(props, onData) {
 
   onData(null, {
     translations: {
-      language: Session.get("language")
+      language: i18next.language
     }
   });
 }

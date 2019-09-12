@@ -567,14 +567,14 @@ class TagDataTable extends Component {
                   disabled={!hasPreviousPage}
                 >
                   <ChevronLeftIcon />
-                  {i18next.t("admin.routing.tableText.previousText")}
+                  {i18next.t("admin.tags.tableText.previousText")}
                 </Button>
                 <Button
                   size="small"
                   onClick={loadNextPage}
                   disabled={!hasNextPage}
                 >
-                  {i18next.t("admin.routing.tableText.nextText")}
+                  {i18next.t("admin.tags.tableText.nextText")}
                   <ChevronRightIcon />
                 </Button>
               </PaginationContainer>

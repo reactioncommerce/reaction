@@ -62,6 +62,90 @@ const itemTaxes = [
   }
 ];
 
+const commonOrders = [
+  {
+    billingAddress: null,
+    fulfillmentPrices: {
+      handling: null,
+      shipping: null,
+      total: null
+    },
+    fulfillmentType: "shipping",
+    items: [
+      {
+        _id: "1",
+        attributes: [],
+        isTaxable: true,
+        price: {
+          amount: 10.99
+        },
+        productId: "productId1",
+        productVendor: "productVendor",
+        quantity: 1,
+        shopId: "shopId1",
+        subtotal: {
+          amount: 10.99
+        },
+        taxCode: "123",
+        title: "Title",
+        variantId: "variantId1",
+        variantTitle: "Variant Title"
+      }
+    ],
+    orderId: null,
+    originAddress: null,
+    shippingAddress: {
+      fullName: "mockFullName",
+      firstName: "mockFirstName",
+      lastName: "mockLastName",
+      address1: "mockAddress1",
+      address2: "mockAddress2",
+      city: "mockCity",
+      company: "mockCompany",
+      phone: "mockPhone",
+      region: "mockRegion",
+      postal: "mockPostal",
+      country: "mockCountry",
+      isCommercial: false,
+      isBillingDefault: false,
+      isShippingDefault: false,
+      failedValidation: false,
+      metafields: [
+        {
+          key: "mockKey",
+          namespace: "mockNamespace",
+          scope: "mockScope",
+          value: "mockValue",
+          valueType: "mockValueType",
+          description: "mockDescription"
+        }
+      ]
+    },
+    shopId: "shopId1",
+    sourceType: "cart",
+    totals: {
+      groupDiscountTotal: {
+        amount: 0
+      },
+      groupItemTotal: {
+        amount: 10.99
+      },
+      groupTotal: {
+        amount: 10.99
+      },
+      orderDiscountTotal: {
+        amount: 0
+      },
+      orderItemTotal: {
+        amount: 10.99
+      },
+      orderTotal: {
+        amount: 10.99
+      }
+    }
+  }
+];
+
 if (!mockContext.mutations) mockContext.mutations = {};
 mockContext.mutations.getFulfillmentGroupTaxes = jest.fn().mockName("getFulfillmentGroupTaxes");
 
@@ -80,7 +164,7 @@ test("mutates group.items and group.taxSummary", async () => {
     taxSummary
   }));
 
-  const { cartItems, taxSummary: taxSummaryResult } = await getUpdatedCartItems(mockContext, cart);
+  const { cartItems, taxSummary: taxSummaryResult } = await getUpdatedCartItems(mockContext, cart, commonOrders);
 
   expect(cartItems[0].tax).toBe(0.5);
   expect(cartItems[0].taxableAmount).toBe(10.99);
@@ -116,7 +200,7 @@ test("customFields are properly saved", async () => {
     }
   }));
 
-  const { cartItems, taxSummary: taxSummaryResult } = await getUpdatedCartItems(mockContext, cart);
+  const { cartItems, taxSummary: taxSummaryResult } = await getUpdatedCartItems(mockContext, cart, commonOrders);
 
   expect(cartItems[0].taxes[0].customFields).toEqual({ foo: "bar3" });
   expect(cartItems[0].customTaxFields).toEqual({ foo: "bar2" });

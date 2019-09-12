@@ -152,7 +152,11 @@ export const ShippingMethod = new SimpleSchema({
   "settings": {
     type: ShippoShippingMethod,
     optional: true
-  }
+  },
+  "fulfillmentTypes": {
+    type: Array
+  },
+  "fulfillmentTypes.$": String
 });
 
 registerSchema("ShippingMethod", ShippingMethod);
@@ -169,12 +173,20 @@ export const ShipmentQuote = new SimpleSchema({
   carrier: {
     type: String
   },
+  handlingPrice: {
+    type: Number,
+    optional: true
+  },
   method: {
     type: ShippingMethod
   },
   rate: {
     type: Number,
     defaultValue: 0.00
+  },
+  shippingPrice: {
+    type: Number,
+    optional: true
   },
   shopId: {
     type: String,

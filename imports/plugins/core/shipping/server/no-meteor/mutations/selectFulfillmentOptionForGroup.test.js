@@ -1,4 +1,3 @@
-import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import selectFulfillmentOptionForGroup from "./selectFulfillmentOptionForGroup";
 
@@ -17,26 +16,36 @@ jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promis
   }]
 })));
 
-const fakeCart = Factory.Cart.makeOne();
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
 
 test("selects an existing shipping method", async () => {
-  mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(fakeCart));
-
   const result = await selectFulfillmentOptionForGroup(mockContext, {
     cartId: "cartId",
     fulfillmentGroupId: "group1",
     fulfillmentMethodId: "valid-method"
   });
-  expect(result).toEqual({ cart: fakeCart });
-
-  expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    "_id": "cartId",
-    "shipping._id": "group1"
-  }, {
-    $set: {
-      "shipping.$.shipmentMethod": {
-        _id: "valid-method"
-      }
+  expect(result).toEqual({
+    cart: {
+      _id: "cartId",
+      shipping: [{
+        _id: "group1",
+        itemIds: ["123"],
+        shipmentQuotes: [{
+          rate: 0,
+          method: {
+            _id: "valid-method"
+          }
+        }],
+        type: "shipping",
+        shipmentMethod: {
+          _id: "valid-method"
+        }
+      }],
+      updatedAt: jasmine.any(Date)
     }
   });
 });

@@ -1,0 +1,40 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Rekeningen",
+          "accountsTitle": "Rekeningen",
+          "accountsDescription": "Account instellingen"
+        },
+        "settings": {
+          "continue": "Voortzetten",
+          "cancel": "Annuleren",
+          "changeOwner": "Wijzig eigenaar",
+          "removeUser": "Verwijder gebruiker",
+          "createGroupSuccess": "Groep is succesvol opgericht",
+          "updateGroupSuccess": "Groep is succesvol bijgewerkt",
+          "createGroupError": "Fout bij het maken van een groep",
+          "updateGroupError": "Fout bij het bijwerken van de groep",
+          "changeShopOwnerWarn": "U gaat op de hoogte van de Winkel eigenaar. De huidige eigenaar wordt vervangen",
+          "removeUserWarn": "U bent op het punt een gebruiker te verwijderen van een groep. De gebruiker zal de bijbehorende machtigingen verliezen",
+          "accountsSettingsLabel": "Rekeningen",
+          "accountsSettingsTitle": "Rekeningen",
+          "accountsSettingsDescription": "Account instellingen"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "U kunt geen gebruiker als eigenaar uitnodigen. Bevorder een bestaande admin",
+          "groupRequired": "Een groep is verplicht een admin uit te nodigen",
+          "cannotInvite": "U kunt geen groep uitnodigen",
+          "unableToSendInvitationEmail": "Kan uitnodigings-e-mail niet verzenden",
+          "errorSendingInvite": "Er is een fout opgetreden tijdens het verzenden van uitnodiging",
+          "NeedToSetUsernameOrEmail": "Gebruikersnaam of e-mail is vereist"
+        }
+      }
+    }
+  }
+}]

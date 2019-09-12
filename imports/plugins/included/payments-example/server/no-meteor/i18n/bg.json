@@ -1,0 +1,27 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "example-paymentmethod",
+  "translation": {
+    "example-paymentmethod": {
+      "admin": {
+        "shortcut": {
+          "examplePaymentProviderLabel": "Пример плащане",
+          "examplePaymentProviderTitle": "Пример плащане"
+        },
+        "dashboard": {
+          "examplePaymentProviderLabel": "Пример плащане",
+          "examplePaymentProviderTitle": "Пример плащане",
+          "examplePaymentProviderDescription": "Пример Начин на плащане"
+        },
+        "paymentSettings": {
+          "examplePaymentLabel": "Пример Provider",
+          "examplePaymentSettingsLabel": "Пример плащане",
+          "exampleCredentials": "Това е настройка за пример начина на плащане.",
+          "apiClientId": "API Client ID",
+          "supportedMethodsLabel": "Методи, поддържани от доставчика на плащания"
+        }
+      }
+    }
+  }
+}]

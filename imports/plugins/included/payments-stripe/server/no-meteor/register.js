@@ -1,5 +1,6 @@
 /* eslint camelcase: 0 */
 import { STRIPE_PACKAGE_NAME } from "../../lib/constants";
+import i18n from "./i18n";
 import schemas from "./schemas";
 import stripeCapturePayment from "./util/stripeCapturePayment";
 import stripeCreateAuthorizedPayment from "./util/stripeCreateAuthorizedPayment";
@@ -16,6 +17,7 @@ export default async function register(app) {
     label: "Stripe",
     name: STRIPE_PACKAGE_NAME,
     icon: "fa fa-cc-stripe",
+    i18n,
     graphQL: {
       schemas
     },

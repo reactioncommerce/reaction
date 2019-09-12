@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
-import withPrimaryShop from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShop";
+import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
+import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 import OrderPrint from "../components/OrderPrint";
 import orderByReferenceId from "../graphql/queries/orderByReferenceId";
 
@@ -14,6 +15,8 @@ import orderByReferenceId from "../graphql/queries/orderByReferenceId";
  */
 function OrderContainer(props) {
   const { match: { params }, shop } = props;
+
+  if (!shop) return null; // Data may not have loaded yet
 
   const variables = {
     id: params._id,
@@ -55,6 +58,7 @@ OrderContainer.propTypes = {
 };
 
 export default compose(
-  withPrimaryShop,
+  withPrimaryShopId,
+  withShop,
   withRouter
 )(OrderContainer);

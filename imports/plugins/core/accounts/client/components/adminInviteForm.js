@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
@@ -8,7 +7,26 @@ import { Reaction, i18next } from "/client/api";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
+import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import { getDefaultUserInviteGroup, getUserByEmail } from "../helpers/accountsHelper";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+
+const iconComponents = {
+  iconDismiss: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
+};
+
+const inviteShopMember = gql`
+  mutation inviteShopMember($input: InviteShopMemberInput!) {
+    inviteShopMember(input: $input) {
+      clientMutationId
+      account {
+        _id
+      }
+    }
+  }
+`;
 
 class AdminInviteForm extends Component {
   static propTypes = {
@@ -29,7 +47,6 @@ class AdminInviteForm extends Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // eslint-disable-next-line camelcase
@@ -50,35 +67,28 @@ class AdminInviteForm extends Component {
     alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
   });
 
-  sendInvitation = (options) => Meteor.call("accounts/inviteShopMember", options, (error, result) => {
-    if (error) {
-      let messageKey;
-      // switching to use of package i18n keys (groupsInvite. namespace)
-      if (error.reason === "Unable to send invitation email.") {
-        messageKey = "admin.groupsInvite.unableToSendInvitationEmail";
-      } else if (error.reason === "cannot directly invite owner") {
-        messageKey = "admin.groupsInvite.inviteOwnerError";
-      } else if (error.reason === "cannot invite to group") {
-        messageKey = "admin.groupsInvite.cannotInvite";
-      } else if (error.reason === "Need to set a username or email") {
-        messageKey = "admin.groupsInvite.NeedToSetUsernameOrEmail";
-      } else {
-        messageKey = "admin.groupsInvite.errorSendingInvite";
+  sendInvitation = async (options, mutation) => {
+    const [
+      opaqueGroupId,
+      opaqueShopId
+    ] = await getOpaqueIds([
+      { namespace: "Group", id: options.groupId },
+      { namespace: "Shop", id: options.shopId }
+    ]);
+
+    await mutation({
+      variables: {
+        input: {
+          email: options.email,
+          groupId: opaqueGroupId,
+          name: options.name,
+          shopId: opaqueShopId
+        }
       }
+    });
+  }
 
-      const { alertId } = this.state;
-      const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
-
-      ReactionAlerts.add(error.reason, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
-    }
-
-    if (result) {
-      this.setState({ name: "", email: "" });
-      Alerts.toast(i18next.t("accountsUI.info.invitationSent"), "success");
-    }
-  });
-
-  handleSubmit(event) {
+  handleSubmit(event, mutation) {
     event.preventDefault();
     const { name, email, group, alertId } = this.state;
     const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
@@ -114,12 +124,12 @@ class AdminInviteForm extends Component {
         cancelButtonText: i18next.t("app.cancel")
       }, (isConfirm) => {
         if (isConfirm) {
-          this.sendInvitation(options);
+          this.sendInvitation(options, mutation);
         }
       });
     }
 
-    return this.sendInvitation(options);
+    return this.sendInvitation(options, mutation);
   }
 
   renderDropDownButton() {
@@ -166,45 +176,69 @@ class AdminInviteForm extends Component {
       <div className="admin-invite-form">
         <Components.Alerts placement={this.state.alertId} id={this.state.alertId} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
-          <form className="">
-            <div className="form-group">
-              <Components.TextField
-                i18nKeyLabel="accountsUI.name"
-                label="Name"
-                name="name"
-                id="member-form-name"
-                type="text"
-                i18nKeyPlaceholder="admin.groupsInvite.name"
-                value={this.state.name}
-                onChange={this.onChange}
-              />
-            </div>
-            <div className="form-group">
-              <Components.TextField
-                i18nKeyLabel="accountsUI.email"
-                label="Email"
-                name="email"
-                id="member-form-email"
-                type="text"
-                i18nKeyPlaceholder="admin.groupsInvite.email"
-                value={this.state.email}
-                onChange={this.onChange}
-              />
-            </div>
-            <div className="form-group action-select">
-              {this.renderDropDownButton()}
-              <div className="form-btns add-admin justify">
-                <Components.Button
-                  status="primary"
-                  buttonType="submit"
-                  onClick={this.handleSubmit}
-                  bezelStyle="solid"
-                  i18nKeyLabel="accountsUI.info.sendInvitation"
-                  label="Send Invitation"
-                />
-              </div>
-            </div>
-          </form>
+          <Mutation mutation={inviteShopMember}>
+            {(mutationFunc, { data, error }) => (
+              <form className="">
+                <div className="form-group">
+                  <Components.TextField
+                    i18nKeyLabel="accountsUI.name"
+                    label="Name"
+                    name="name"
+                    id="member-form-name"
+                    type="text"
+                    i18nKeyPlaceholder="admin.groupsInvite.name"
+                    value={this.state.name}
+                    onChange={this.onChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <Components.TextField
+                    i18nKeyLabel="accountsUI.email"
+                    label="Email"
+                    name="email"
+                    id="member-form-email"
+                    type="text"
+                    i18nKeyPlaceholder="admin.groupsInvite.email"
+                    value={this.state.email}
+                    onChange={this.onChange}
+                  />
+                </div>
+                <div className="form-group action-select">
+                  {this.renderDropDownButton()}
+                  <div className="form-btns add-admin justify">
+                    <Components.Button
+                      status="primary"
+                      buttonType="submit"
+                      onClick={() => this.handleSubmit(event, mutationFunc)}
+                      bezelStyle="solid"
+                      i18nKeyLabel="accountsUI.info.sendInvitation"
+                      label="Send Invitation"
+                    />
+                  </div>
+                </div>
+                {data &&
+                  <div>
+                    <InlineAlert
+                      components={iconComponents}
+                      isDismissable
+                      alertType="success"
+                      message={i18next.t("accountsUI.info.invitationSent")}
+                    />
+                  </div>
+                }
+                {error &&
+                  <div>
+                    <InlineAlert
+                      components={iconComponents}
+                      isDismissable
+                      alertType="error"
+                      message={error.message}
+                    />
+                  </div>
+                }
+              </form>
+            )}
+          </Mutation>
         </div>
       </div>
     );

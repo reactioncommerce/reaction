@@ -5,8 +5,6 @@ import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { registerOperatorRoute } from "/imports/client/ui";
 import Localization from "./containers/localizationSettings";
 
-export { default as CurrencyDropdown } from "./containers/currencyDropdown";
-export { default as LanguageDropdown } from "./containers/languageDropdown";
 export { default as LocalizationSettings } from "./containers/localizationSettings";
 
 registerOperatorRoute({

@@ -16,15 +16,18 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} context - an object containing the per-request state
  * @returns {Object} InviteShopMemberPayload
  */
-export default function inviteShopMember(_, { input }, context) {
+export default async function inviteShopMember(_, { input }, context) {
   const { email, groupId, name, shopId, clientMutationId = null } = input;
-  const options = {
+  const decodedGroupId = decodeGroupOpaqueId(groupId);
+  const decodedShopId = decodeShopOpaqueId(shopId);
+
+  const account = await context.mutations.inviteShopMember(context, {
     email,
-    groupId: decodeGroupOpaqueId(groupId),
+    groupId: decodedGroupId,
     name,
-    shopId: decodeShopOpaqueId(shopId)
-  };
-  const account = context.callMeteorMethod("accounts/inviteShopMember", options);
+    shopId: decodedShopId
+  });
+
   return {
     account,
     clientMutationId

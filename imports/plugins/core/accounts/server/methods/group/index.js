@@ -1,6 +1,4 @@
-import addUser from "./addUser";
 import createGroup from "./createGroup";
-import removeUser from "./removeUser";
 import updateGroup from "./updateGroup";
 
 /**
@@ -11,8 +9,6 @@ import updateGroup from "./updateGroup";
 */
 
 export default {
-  "group/addUser": addUser,
   "group/createGroup": createGroup,
-  "group/removeUser": removeUser,
   "group/updateGroup": updateGroup
 };

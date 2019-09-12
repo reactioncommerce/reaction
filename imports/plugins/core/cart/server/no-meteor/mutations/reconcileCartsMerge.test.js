@@ -40,6 +40,12 @@ const accountCartSelector = { accountId };
 const anonymousCartSelector = { _id: "123" };
 const items = [Factory.CartItem.makeOne()];
 
+beforeAll(() => {
+  if (!mockContext.mutations.saveCart) {
+    mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
+  }
+});
+
 test("merges anonymous cart items into account cart items, deletes anonymous cart, and returns updated account cart", async () => {
   const updatedItems = [
     {
@@ -80,13 +86,6 @@ test("merges anonymous cart items into account cart items, deletes anonymous car
 
   expect(Cart.deleteOne).toHaveBeenCalledWith(anonymousCartSelector);
 
-  expect(Cart.updateOne).toHaveBeenCalledWith(accountCartSelector, {
-    $set: {
-      items: updatedItems,
-      updatedAt: jasmine.any(Date)
-    }
-  });
-
   expect(result).toEqual({
     ...accountCart,
     items: updatedItems,
@@ -96,22 +95,6 @@ test("merges anonymous cart items into account cart items, deletes anonymous car
 
 test("throws if deleteOne fails", async () => {
   Cart.deleteOne.mockReturnValueOnce(Promise.resolve({ deletedCount: 0 }));
-
-  const promise = reconcileCartsMerge({
-    accountCart,
-    accountCartSelector,
-    anonymousCart: {
-      items
-    },
-    anonymousCartSelector,
-    context: mockContext
-  });
-
-  return expect(promise).rejects.toThrowErrorMatchingSnapshot();
-});
-
-test("throws if updateOne fails", async () => {
-  Cart.updateOne.mockReturnValueOnce(Promise.resolve({ modifiedCount: 0 }));
 
   const promise = reconcileCartsMerge({
     accountCart,

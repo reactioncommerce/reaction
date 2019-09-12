@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { i18next } from "/client/api";
@@ -24,11 +26,35 @@ import Typography from "@material-ui/core/Typography";
 import Chip from "@reactioncommerce/catalyst/Chip";
 import withStyles from "@material-ui/core/styles/withStyles";
 
+const publishProductsToCatalog = gql`
+  mutation ($productIds: [ID]!) {
+    publishProductsToCatalog(productIds: $productIds) {
+      product {
+        productId
+        title
+        isDeleted
+        supportedFulfillmentTypes
+        variants {
+          _id
+          title
+          options {
+            _id
+            title
+          }
+        }
+      }
+    }
+  }
+`;
+
 const styles = (theme) => ({
   leftChip: {
+    marginBottom: theme.spacing(2),
     marginRight: theme.spacing(1)
   },
   toolbar: {
+    marginBottom: theme.spacing(2),
+    minHeight: "65px",
     paddingLeft: 0,
     paddingRight: 0,
     [theme.breakpoints.up("sm")]: {
@@ -50,16 +76,7 @@ const styles = (theme) => ({
   },
   actionDropdownTrigger: {
     border: `1px solid ${theme.palette.colors.coolGrey}`,
-    fontSize: theme.typography.fontSize,
-    letterSpacing: "0.3px",
-    fontWeight: theme.typography.fontWeightSemiBold,
-    color: theme.palette.colors.coolGrey500,
-    lineHeight: 1.5
-  },
-  actionDropdownMenuList: {
-    border: `1px solid ${theme.palette.colors.black10}`,
-    fontSize: theme.typography.fontSize,
-    letterSpacing: "0.3px"
+    color: theme.palette.colors.coolGrey500
   },
   actionDropdownMenuItem: {
     fontSize: theme.typography.fontSize,
@@ -247,8 +264,8 @@ class ProductGrid extends Component {
     this.handleCloseBulkActions();
   }
 
-  handleBulkActionPublish = () => {
-    this.props.onPublishProducts(this.props.selectedProductIds);
+  handleBulkActionPublish = (mutation) => {
+    this.props.onPublishProducts(this.props.selectedProductIds, mutation);
     this.handleCloseBulkActions();
   }
 
@@ -258,7 +275,16 @@ class ProductGrid extends Component {
     if (isFiltered) {
       return (
         <div>
-          {files.map((file, idx) => <Chip label={file.name} key={idx} className={classes.leftChip} onDelete={() => handleDelete(file.name)} />)}
+          {files.map((file, idx) => (
+            <Chip
+              variant="default"
+              color="primary"
+              label={file.name}
+              key={idx}
+              className={classes.leftChip}
+              onDelete={() => handleDelete(file.name)}
+            />
+          ))}
         </div>
       );
     }
@@ -289,7 +315,7 @@ class ProductGrid extends Component {
           open={Boolean(bulkActionMenuAnchorEl)}
           onClose={this.handleCloseBulkActions}
           className={classes.actionDropdownContainer}
-          MenuListProps={{ disablePadding: true, className: classes.actionDropdownMenuList }}
+          MenuListProps={{ disablePadding: true }}
         >
           <MenuItem
             disabled
@@ -307,21 +333,35 @@ class ProductGrid extends Component {
             {i18next.t("admin.productTable.bulkActions.filterByFile")}
           </MenuItem>
 
-          <ConfirmDialog
-            title={i18next.t("admin.productTable.bulkActions.publishTitle", { count })}
-            message={i18next.t("admin.productTable.bulkActions.publishMessage")}
-            onConfirm={this.handleBulkActionPublish}
-          >
-            {({ openDialog }) => (
-              <MenuItem
-                className={classes.actionDropdownMenuItem}
-                onClick={openDialog}
-                disabled={!isEnabled}
-              >
-                {i18next.t("admin.productTable.bulkActions.publish")}
-              </MenuItem>
+          <Mutation mutation={publishProductsToCatalog}>
+            {(mutationFunc, { data, error }) => (
+              <Fragment>
+                <ConfirmDialog
+                  title={i18next.t("admin.productTable.bulkActions.publishTitle", { count })}
+                  message={i18next.t("admin.productTable.bulkActions.publishMessage")}
+                  onConfirm={() => this.handleBulkActionPublish(mutationFunc)}
+                >
+                  {({ openDialog }) => (
+                    <MenuItem
+                      className={classes.actionDropdownMenuItem}
+                      onClick={openDialog}
+                      disabled={!isEnabled}
+                    >
+                      {i18next.t("admin.productTable.bulkActions.publish")}
+                    </MenuItem>
+                  )}
+                </ConfirmDialog>
+                <span>
+                  { error &&
+                    Alerts.toast(error.message, "error")
+                  }
+                  { data &&
+                    Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success")
+                  }
+                </span>
+              </Fragment>
             )}
-          </ConfirmDialog>
+          </Mutation>
 
           <ConfirmDialog
             title={i18next.t("admin.productTable.bulkActions.makeVisibleTitle", { count })}

@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import mutations from "./mutations";
 import queries from "./queries";
 import { registerPluginHandler } from "./registration";
@@ -17,6 +18,7 @@ export default async function register(app) {
     label: "Accounts",
     name: "reaction-accounts",
     icon: "fa fa-users",
+    i18n,
     addRolesToGroups: [{
       groups: ["guest", "customer"],
       roles: [
@@ -116,6 +118,11 @@ export default async function register(app) {
       meta: { noAdminControls: true },
       name: ENROLL_URI_BASE,
       label: "Account Enroll"
+    }, {
+      route: "account/invite",
+      label: "Account Invite",
+      permission: "accountInvite",
+      name: "account/invite"
     }],
     layout: [{
       layout: "coreLayout",
