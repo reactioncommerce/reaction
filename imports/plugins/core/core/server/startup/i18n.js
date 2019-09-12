@@ -3,7 +3,7 @@
  * Delete this when there is a 3.0.0 release.
  */
 import Logger from "@reactioncommerce/logger";
-import mergeResource from "/imports/plugins/core/i18n/server/no-meteor/translations";
+import { mergeResource } from "/imports/plugins/core/i18n/server/no-meteor/translations";
 
 /**
  * @summary Load an array of translation arrays
