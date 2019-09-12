@@ -1,10 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { i18next } from "/client/api";
 import PrimaryAppBar from "/imports/client/ui/components/PrimaryAppBar/PrimaryAppBar";
+
+const publishProductsToCatalog = gql`
+  mutation ($productIds: [ID]!) {
+    publishProductsToCatalog(productIds: $productIds) {
+      product {
+        productId
+        title
+        isDeleted
+        supportedFulfillmentTypes
+        variants {
+          _id
+          title
+          options {
+            _id
+            title
+          }
+        }
+      }
+    }
+  }
+`;
 
 const styles = (theme) => ({
   label: {
@@ -36,21 +59,29 @@ class PublishControls extends Component {
     return null;
   }
 
+  renderOnCompletedAlert = () => Alerts.toast(i18next.t("admin.catalogProductPublishSuccess"), "success");
+
+  renderOnErrorAlert = (error) => Alerts.toast(error.message, "error");
+
   render() {
     const { documentIds, onPublishClick } = this.props;
 
     return (
       <PrimaryAppBar>
         {this.renderChangesNotification()}
-        <Button
-          color="primary"
-          variant="contained"
-          disabled={Array.isArray(documentIds) && documentIds.length === 0}
-          label="Publish"
-          onClick={onPublishClick}
-        >
-          {i18next.t("productDetailEdit.publish")}
-        </Button>
+        <Mutation mutation={publishProductsToCatalog} onCompleted={() => this.renderOnCompletedAlert()} onError={(error) => this.renderOnErrorAlert(error)}>
+          {(mutationFunc) => (
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={Array.isArray(documentIds) && documentIds.length === 0}
+              label="Publish"
+              onClick={() => onPublishClick(mutationFunc)}
+            >
+              {i18next.t("productDetailEdit.publish")}
+            </Button>
+          )}
+        </Mutation>
       </PrimaryAppBar>
     );
   }

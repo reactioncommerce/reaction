@@ -98,13 +98,25 @@ extend type Query {
   Get the SimpleInventory info for a product configuration. Returns `null` if `updateSimpleInventory`
   has never been called for this product configuration.
   """
-  simpleInventory(shopId: ID!, productConfiguration: ProductConfigurationInput!): SimpleInventoryInfo
+  simpleInventory(
+    "ID of the shop that owns the product"
+    shopId: ID!,
+
+    "The product configuration for which you want inventory info"
+    productConfiguration: ProductConfigurationInput!
+  ): SimpleInventoryInfo
 }
 
 extend type Mutation {
   "Force recalculation of the system-managed `inventoryReserved` field based on current order statuses"
-  recalculateReservedSimpleInventory(input: RecalculateReservedSimpleInventoryInput!): RecalculateReservedSimpleInventoryPayload!
+  recalculateReservedSimpleInventory(
+    "Mutation input"
+    input: RecalculateReservedSimpleInventoryInput!
+  ): RecalculateReservedSimpleInventoryPayload!
 
   "Update the SimpleInventory info for a product configuration"
-  updateSimpleInventory(input: UpdateSimpleInventoryInput!): UpdateSimpleInventoryPayload!
+  updateSimpleInventory(
+    "Mutation input"
+    input: UpdateSimpleInventoryInput!
+  ): UpdateSimpleInventoryPayload!
 }

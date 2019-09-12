@@ -79,17 +79,36 @@ input DestinationRestrictionsInput {
 extend type Query {
   "Get the full list of flat rate fulfillment method restrictions."
   getFlatRateFulfillmentRestrictions(
-    shopId: ID!
+    "Shop to get restrictions for"
+    shopId: ID!,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
     before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
     first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
     sortOrder: SortOrder = desc,
+
+    "By default, restrictions are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
     sortBy: FlatRateFulfillmentRestrictionSortByField = createdAt
   ): FlatRateFulfillmentRestrictionConnection!
 
   "Get a single flat rate fulfillment method restriction."
-  getFlatRateFulfillmentRestriction(restrictionId: ID!, shopId: ID!): FlatRateFulfillmentRestriction
+  getFlatRateFulfillmentRestriction(
+    "The restriction ID"
+    restrictionId: ID!,
+
+    "Shop that owns the restriction"
+    shopId: ID!
+  ): FlatRateFulfillmentRestriction
 }
 
 """
@@ -154,7 +173,10 @@ type FlatRateFulfillmentRestriction implements Node {
 ####
 extend type Mutation {
   "Create a flat rate fulfillment method restriction."
-  createFlatRateFulfillmentRestriction(input: CreateFlatRateFulfillmentRestrictionInput!): CreateFlatRateFulfillmentRestrictionPayload!
+  createFlatRateFulfillmentRestriction(
+    "Mutation input"
+    input: CreateFlatRateFulfillmentRestrictionInput!
+  ): CreateFlatRateFulfillmentRestrictionPayload!
 }
 
 # Inputs
@@ -204,7 +226,10 @@ type CreateFlatRateFulfillmentRestrictionPayload {
 ####
 extend type Mutation {
   "Delete a flat rate fulfillment method restriction"
-  deleteFlatRateFulfillmentRestriction(input: DeleteFlatRateFulfillmentRestrictionInput!): DeleteFlatRateFulfillmentRestrictionPayload!
+  deleteFlatRateFulfillmentRestriction(
+    "Mutation input"
+    input: DeleteFlatRateFulfillmentRestrictionInput!
+  ): DeleteFlatRateFulfillmentRestrictionPayload!
 }
 
 # Inputs
@@ -236,7 +261,10 @@ type DeleteFlatRateFulfillmentRestrictionPayload {
 ####
 extend type Mutation {
   "Update a flat rate fulfillment method restriction"
-  updateFlatRateFulfillmentRestriction(input: UpdateFlatRateFulfillmentRestrictionInput!): UpdateFlatRateFulfillmentRestrictionPayload!
+  updateFlatRateFulfillmentRestriction(
+    "Mutation input"
+    input: UpdateFlatRateFulfillmentRestrictionInput!
+  ): UpdateFlatRateFulfillmentRestrictionPayload!
 }
 
 # Inputs

@@ -424,8 +424,10 @@
       ".reaction/graphql-linter/rules/*.js"
     ],
     "rules": [
+      "arguments-have-descriptions",
       "defined-types-are-used",
       "deprecations-have-a-reason",
+      "descriptions-are-capitalized",
       "enum-values-have-descriptions",
       "enum-values-sorted-alphabetically",
       "fields-have-descriptions",
@@ -436,8 +438,7 @@
       "relay-page-info-spec",
       "type-fields-sorted-alphabetically",
       "types-are-capitalized",
-      "types-have-descriptions",
-      "descriptions-are-capitalized"
+      "types-have-descriptions"
     ]
   }
 }

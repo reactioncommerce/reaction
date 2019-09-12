@@ -199,30 +199,87 @@ type RemoveGroupPayload {
 
 extend type Shop {
   "Returns a list of groups for this shop, as a Relay-compatible connection."
-  groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
+  groups(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: GroupSortByField = createdAt
+  ): GroupConnection
 }
 
 extend type Mutation {
   "Add an account to a group"
-  addAccountToGroup(input: AddAccountToGroupInput!): AddAccountToGroupPayload
+  addAccountToGroup(
+    "Mutation input"
+    input: AddAccountToGroupInput!
+  ): AddAccountToGroupPayload
 
   "Create a new permission group"
-  createGroup(input: CreateGroupInput!): CreateGroupPayload
+  createGroup(
+    "Mutation input"
+    input: CreateGroupInput!
+  ): CreateGroupPayload
 
   "Remove an account from a group"
-  removeAccountFromGroup(input: RemoveAccountFromGroupInput!): RemoveAccountFromGroupPayload @deprecated(reason: "Use `addAccountToGroup`.")
+  removeAccountFromGroup(
+    "Mutation input"
+    input: RemoveAccountFromGroupInput!
+  ): RemoveAccountFromGroupPayload @deprecated(reason: "Use `addAccountToGroup`.")
 
   "Remove an existing permission group"
-  removeGroup(input: RemoveGroupInput!): RemoveGroupPayload
+  removeGroup(
+    "Mutation input"
+    input: RemoveGroupInput!
+  ): RemoveGroupPayload
 
   "Update an existing permission group"
-  updateGroup(input: UpdateGroupInput!): UpdateGroupPayload
+  updateGroup(
+    "Mutation input"
+    input: UpdateGroupInput!
+  ): UpdateGroupPayload
 }
 
 extend type Query {
   "Returns a single group by ID."
-  group(id: ID!): Group
+  group(
+    "The group ID"
+    id: ID!
+  ): Group
 
   "Returns a list of groups for the shop with ID `shopId`, as a Relay-compatible connection."
-  groups(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
+  groups(
+    "Return groups for this shop"
+    shopId: ID!,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: GroupSortByField = createdAt
+  ): GroupConnection
 }

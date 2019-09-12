@@ -46,7 +46,13 @@ type Shop implements Node {
   currency: Currency
 
   "The default navigation tree for this shop"
-  defaultNavigationTree(language: String!, shouldIncludeSecondary: Boolean = false): NavigationTree
+  defaultNavigationTree(
+    "Navigation tree language"
+    language: String!,
+
+    "Whether to include secondary navigation items"
+    shouldIncludeSecondary: Boolean = false
+  ): NavigationTree
 
   "The ID of the shop's default navigation tree"
   defaultNavigationTreeId: String
@@ -74,10 +80,19 @@ type Shop implements Node {
     "Set to true if you want soft deleted tags to be included in the response"
     shouldIncludeDeleted: Boolean = false,
 
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
     before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
     first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
     sortOrder: SortOrder = asc,
 
     "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
@@ -93,8 +108,14 @@ extend type Query {
   primaryShopId: ID
 
   "Returns a shop by ID"
-  shop(id: ID!): Shop
+  shop(
+    "The shop ID"
+    id: ID!
+  ): Shop
 
   "Returns a shop by slug"
-  shopBySlug(slug: String!): Shop
+  shopBySlug(
+    "The shop slug"
+    slug: String!
+  ): Shop
 }

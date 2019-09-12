@@ -16,10 +16,19 @@ extend type Query {
     "The ID of the shop to load navigation items for"
     shopId: ID!
 
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
     before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
     first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
     sortOrder: SortOrder = desc,
 
     "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
@@ -168,19 +177,34 @@ type NavigationTreeItem {
 
 extend type Mutation {
   "Create a new navigation item"
-  createNavigationItem(input: CreateNavigationItemInput!): CreateNavigationItemPayload
+  createNavigationItem(
+    "Mutation input"
+    input: CreateNavigationItemInput!
+  ): CreateNavigationItemPayload
 
   "Delete a navigation item"
-  deleteNavigationItem(input: DeleteNavigationItemInput!): DeleteNavigationItemPayload
+  deleteNavigationItem(
+    "Mutation input"
+    input: DeleteNavigationItemInput!
+  ): DeleteNavigationItemPayload
 
   "Publish the draft structure for a navigation tree and the draft changes for all of its navigation items. Sets hasUnpublishedChanges to false on tree and its items"
-  publishNavigationChanges(input: PublishNavigationChangesInput!): PublishNavigationChangesPayload
+  publishNavigationChanges(
+    "Mutation input"
+    input: PublishNavigationChangesInput!
+  ): PublishNavigationChangesPayload
 
   "Update an existing navigation item's draft data. Sets hasUnpublishedChanges to true"
-  updateNavigationItem(input: UpdateNavigationItemInput!): UpdateNavigationItemPayload
+  updateNavigationItem(
+    "Mutation input"
+    input: UpdateNavigationItemInput!
+  ): UpdateNavigationItemPayload
 
   "Update an existing navigation tree's draft items. Sets hasUnpublishedChanges to true"
-  updateNavigationTree(input: UpdateNavigationTreeInput!): UpdateNavigationTreePayload
+  updateNavigationTree(
+    "Mutation input"
+    input: UpdateNavigationTreeInput!
+  ): UpdateNavigationTreePayload
 }
 
 "Input for the `createNavigationItem` mutation"

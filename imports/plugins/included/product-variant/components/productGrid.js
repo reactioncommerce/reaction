@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { i18next } from "/client/api";
@@ -23,6 +25,27 @@ import ConfirmDialog from "@reactioncommerce/catalyst/ConfirmDialog";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@reactioncommerce/catalyst/Chip";
 import withStyles from "@material-ui/core/styles/withStyles";
+
+const publishProductsToCatalog = gql`
+  mutation ($productIds: [ID]!) {
+    publishProductsToCatalog(productIds: $productIds) {
+      product {
+        productId
+        title
+        isDeleted
+        supportedFulfillmentTypes
+        variants {
+          _id
+          title
+          options {
+            _id
+            title
+          }
+        }
+      }
+    }
+  }
+`;
 
 const styles = (theme) => ({
   leftChip: {
@@ -84,7 +107,6 @@ const styles = (theme) => ({
   }
 });
 
-// TODO: refactor to function
 class ProductGrid extends Component {
   static propTypes = {
     classes: PropTypes.object,
@@ -94,7 +116,6 @@ class ProductGrid extends Component {
     onArchiveProducts: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangeRowsPerPage: PropTypes.func,
-    onDisplayTagSelector: PropTypes.func,
     onDuplicateProducts: PropTypes.func,
     onPublishProducts: PropTypes.func,
     onSelectAllProducts: PropTypes.func,
@@ -210,14 +231,9 @@ class ProductGrid extends Component {
     );
   }
 
-  handleDisplayTagSelector = () => {
-    this.handleCloseBulkActions();
-    this.props.onDisplayTagSelector(true);
-  }
-
   handleShowFilterByFile = () => {
     this.handleCloseBulkActions();
-    this.props.onShowFilterByFile(true);
+    this.props.onShowFilterByFile();
   }
 
   handleShowBulkActions = (event) => {
@@ -248,8 +264,8 @@ class ProductGrid extends Component {
     this.handleCloseBulkActions();
   }
 
-  handleBulkActionPublish = () => {
-    this.props.onPublishProducts(this.props.selectedProductIds);
+  handleBulkActionPublish = (mutation) => {
+    this.props.onPublishProducts(this.props.selectedProductIds, mutation);
     this.handleCloseBulkActions();
   }
 
@@ -281,7 +297,6 @@ class ProductGrid extends Component {
     const { bulkActionMenuAnchorEl } = this.state;
     const count = selectedProductIds.length;
     const isEnabled = Array.isArray(selectedProductIds) && selectedProductIds.length;
-
     return (
       <Toolbar disableGutters={true} className={classes.toolbar}>
         <Button
@@ -311,15 +326,6 @@ class ProductGrid extends Component {
           </MenuItem>
 
           <MenuItem
-            onClick={this.handleDisplayTagSelector}
-            variant="default"
-            disabled={!isEnabled}
-            className={classes.actionDropdownMenuItem}
-          >
-            {i18next.t("admin.productTable.bulkActions.addRemoveTags")}
-          </MenuItem>
-
-          <MenuItem
             onClick={this.handleShowFilterByFile}
             variant="default"
             className={classes.actionDropdownMenuItem}
@@ -327,21 +333,35 @@ class ProductGrid extends Component {
             {i18next.t("admin.productTable.bulkActions.filterByFile")}
           </MenuItem>
 
-          <ConfirmDialog
-            title={i18next.t("admin.productTable.bulkActions.publishTitle", { count })}
-            message={i18next.t("admin.productTable.bulkActions.publishMessage")}
-            onConfirm={this.handleBulkActionPublish}
-          >
-            {({ openDialog }) => (
-              <MenuItem
-                className={classes.actionDropdownMenuItem}
-                onClick={openDialog}
-                disabled={!isEnabled}
-              >
-                {i18next.t("admin.productTable.bulkActions.publish")}
-              </MenuItem>
+          <Mutation mutation={publishProductsToCatalog}>
+            {(mutationFunc, { data, error }) => (
+              <Fragment>
+                <ConfirmDialog
+                  title={i18next.t("admin.productTable.bulkActions.publishTitle", { count })}
+                  message={i18next.t("admin.productTable.bulkActions.publishMessage")}
+                  onConfirm={() => this.handleBulkActionPublish(mutationFunc)}
+                >
+                  {({ openDialog }) => (
+                    <MenuItem
+                      className={classes.actionDropdownMenuItem}
+                      onClick={openDialog}
+                      disabled={!isEnabled}
+                    >
+                      {i18next.t("admin.productTable.bulkActions.publish")}
+                    </MenuItem>
+                  )}
+                </ConfirmDialog>
+                <span>
+                  { error &&
+                    Alerts.toast(error.message, "error")
+                  }
+                  { data &&
+                    Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success")
+                  }
+                </span>
+              </Fragment>
             )}
-          </ConfirmDialog>
+          </Mutation>
 
           <ConfirmDialog
             title={i18next.t("admin.productTable.bulkActions.makeVisibleTitle", { count })}
