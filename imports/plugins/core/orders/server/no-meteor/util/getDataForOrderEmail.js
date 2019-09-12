@@ -154,6 +154,13 @@ export default async function getDataForOrderEmail(context, { order }) {
     orderUrl = orderUrl.replace(":token", encodeURIComponent(token));
   }
 
+  const isInAdvance = isInAdvancePayment(order);
+  let bankDetails = null;
+  if (isInAdvance) {
+    const paymentShopId = getPaymentShopId(order)
+    bankDetails = await getBankDetails(context, paymentShopId)
+  }
+
   // Merge data into single object to pass to email template
   return {
     // Shop Data
@@ -163,9 +170,8 @@ export default async function getDataForOrderEmail(context, { order }) {
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
-      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      address: `${_.get(shop, "addressBook[0].address1")}`,
       city: _.get(shop, "addressBook[0].city"),
-      region: _.get(shop, "addressBook[0].region"),
       postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
@@ -195,7 +201,11 @@ export default async function getDataForOrderEmail(context, { order }) {
       address: billingAddressForEmail,
       payments: (order.payments || []).map((payment) => ({
         displayName: payment.displayName,
-        displayAmount: formatMoney(payment.amount * userCurrencyExchangeRate, userCurrency)
+        displayAmount: formatMoney(payment.amount * userCurrencyExchangeRate, userCurrency),
+        inAdvance: {
+          active: isInAdvance,
+          bankDetails,
+        }
       })),
       subtotal: formatMoney(subtotal * userCurrencyExchangeRate, userCurrency),
       shipping: formatMoney(shippingCost * userCurrencyExchangeRate, userCurrency),
@@ -220,4 +230,39 @@ export default async function getDataForOrderEmail(context, { order }) {
       tracking
     }
   };
+}
+
+async function getBankDetails(context, shopId) {
+  const {
+    collections: { Shops }
+  } = context;
+  const shop = await Shops.findOne({ _id: shopId }, { metafields: 1, addressBook: 1 });
+  const metafields = shop.metafields;
+  const addressBook = shop.addressBook;
+  const bankDetails = metafields
+    .filter((metafield) => ["bankName", "iban", "bic"].includes(metafield.key))
+    .reduce((acc, metafield) => {
+      acc[metafield.key] = metafield.value;
+      return acc;
+    }, {});
+  
+  const locationDetails = {
+    company: addressBook[0].company,
+    address1: addressBook[0].address1,
+    region: addressBook[0].region,
+    postal: addressBook[0].postal,
+    city: addressBook[0].city,
+    country: addressBook[0].country,
+  }
+
+  return { ...bankDetails, ... locationDetails };
+}
+
+function getPaymentShopId(order) {
+  return order.shipping[0].items[0].shopId;
+}
+
+function isInAdvancePayment(order) {
+  // string set in reaction-plugin-payment-in-advance
+  return order.payments[0].name === "in_advance";
 }
