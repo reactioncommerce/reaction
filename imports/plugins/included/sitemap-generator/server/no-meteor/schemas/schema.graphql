@@ -1,6 +1,9 @@
 extend type Mutation {
   "Generate sitemap documents"
-  generateSitemaps(input: GenerateSitemapsInput): GenerateSitemapsPayload!
+  generateSitemaps(
+    "Mutation input"
+    input: GenerateSitemapsInput
+  ): GenerateSitemapsPayload!
 }
 
 "Input for the `generateSitemaps` mutation"
@@ -20,7 +23,13 @@ type GenerateSitemapsPayload {
 
 extend type Query {
   "Returns Sitemap object for a shop based on the handle param"
-  sitemap(handle: String!, shopUrl: String!): Sitemap
+  sitemap(
+    "The sitemap handle"
+    handle: String!,
+
+    "Shop URL"
+    shopUrl: String!
+  ): Sitemap
 }
 
 "Generated sitemap XML for a single shop"
@@ -28,7 +37,7 @@ type Sitemap {
   "Date created"
   createdAt: Date!
 
-  "The Sitemap handle, as set in Sitemaps collection"
+  "The sitemap handle"
   handle: String!
 
   "The shop ID"

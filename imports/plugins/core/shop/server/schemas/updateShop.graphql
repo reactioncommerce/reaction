@@ -48,5 +48,8 @@ type UpdateShopPayload {
 
 extend type Mutation {
   "Given shop data, update the Shops collection with this data"
-  updateShop(input: UpdateShopInput!): UpdateShopPayload!
+  updateShop(
+    "Mutation input"
+    input: UpdateShopInput!
+  ): UpdateShopPayload!
 }

@@ -32,7 +32,10 @@ extend type Query {
   Returns app settings for a specific shop. Plugins extend the ShopSettings type to support
   whatever settings they need.
   """
-  shopSettings(shopId: ID!): ShopSettings!
+  shopSettings(
+    "The shop to get app settings for"
+    shopId: ID!
+  ): ShopSettings!
 }
 
 ##
@@ -44,7 +47,10 @@ extend type Mutation {
   Returns app settings that are not shop specific. Plugins extend the GlobalSettings type to support
   whatever settings they need.
   """
-  updateGlobalSettings(input: UpdateGlobalSettingsInput!): UpdateGlobalSettingsPayload!
+  updateGlobalSettings(
+    "Mutation input"
+    input: UpdateGlobalSettingsInput!
+  ): UpdateGlobalSettingsPayload!
 }
 
 "Input for the `updateGlobalSettings` mutation"
@@ -84,7 +90,10 @@ extend type Mutation {
   Returns app settings for a specific shop. Plugins extend the ShopSettings type to support
   whatever settings they need.
   """
-  updateShopSettings(input: UpdateShopSettingsInput!): UpdateShopSettingsPayload!
+  updateShopSettings(
+    "Mutation input"
+    input: UpdateShopSettingsInput!
+  ): UpdateShopSettingsPayload!
 }
 
 "Input for the `updateShopSettings` mutation"
