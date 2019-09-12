@@ -11,6 +11,7 @@ type ProductPricingInfo {
 
   "Pricing converted to specified currency"
   currencyExchangePricing(
+    "Code for the currency in which you want to see pricing info"
     currencyCode: String!
   ): CurrencyExchangeProductPricingInfo
 

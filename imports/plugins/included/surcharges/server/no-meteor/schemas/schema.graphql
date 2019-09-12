@@ -18,7 +18,13 @@ type AppliedSurcharge implements Node {
   fulfillmentGroupId: ID
 
   "The message to explain the surchage to customers, translated (if available) based on shop language"
-  message(language: String!): String
+  message(
+    """
+    The language in which you want the message. If no translation is available for this language,
+    it will be in the default language of the related shop.
+    """
+    language: String!
+  ): String
 
   "The surchargeId from the surchages collection (for reference)"
   surchargeDefinitionId: ID!
@@ -39,7 +45,13 @@ type Surcharge implements Node {
   destination: SurchargeDestinationRestrictions
 
   "Message translated into provided / default language."
-  message(language: String!): String!
+  message(
+    """
+    The language in which you want the message. If no translation is available for this language,
+    it will be in the default language of the related shop.
+    """
+    language: String!
+  ): String!
 
   "Messages provided with content and all languages"
   messagesByLanguage: [SurchargeMessagesByLanguage]
@@ -280,17 +292,36 @@ input UpdateSurchargeInput {
 extend type Query {
   "Get the full list of surcharges."
   surcharges(
+    "ID of shop to get surcharges for"
     shopId: ID!,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
     before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
     first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
     sortOrder: SortOrder = desc,
+
+    "By default, surcharges are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
     sortBy: SurchargeSortByField = createdAt
   ): SurchargeConnection!
 
   "Get a single surcharge definition by its ID"
-  surchargeById(shopId: ID!, surchargeId: ID!): Surcharge
+  surchargeById(
+    "ID of shop that owns the surcharge definition"
+    shopId: ID!,
+
+    "The surcharge ID"
+    surchargeId: ID!
+  ): Surcharge
 }
 
 
@@ -299,13 +330,22 @@ extend type Query {
 ####
 extend type Mutation {
   "Create a surcharge"
-  createSurcharge(input: CreateSurchargeInput!): CreateSurchargePayload!
+  createSurcharge(
+    "Mutation input"
+    input: CreateSurchargeInput!
+  ): CreateSurchargePayload!
 
   "Delete a flat rate fulfillment restriction"
-  deleteSurcharge(input: DeleteSurchargeInput!): DeleteSurchargePayload!
+  deleteSurcharge(
+    "Mutation input"
+    input: DeleteSurchargeInput!
+  ): DeleteSurchargePayload!
 
   "Update a flat rate fulfillment surcharge"
-  updateSurcharge(input: UpdateSurchargeInput!): UpdateSurchargePayload!
+  updateSurcharge(
+    "Mutation input"
+    input: UpdateSurchargeInput!
+  ): UpdateSurchargePayload!
 }
 
 

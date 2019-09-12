@@ -1,7 +1,11 @@
 extend type Query {
   "SystemInformation object"
-  systemInformation(shopId: ID!): SystemInformation!
+  systemInformation(
+    "Shop ID to use for shop-specific system information"
+    shopId: ID!
+  ): SystemInformation!
 }
+
 "Represents Reaction Plugin"
 type Plugin {
   "Name of plugin"
@@ -9,6 +13,7 @@ type Plugin {
   "Version of plugin"
   version: String
 }
+
 "Represents Mongo Database information"
 type DatabaseInformation {
   "Version of database"

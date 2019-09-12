@@ -186,10 +186,16 @@ type Checkout {
 
 extend type Mutation {
   "Select a fulfillment option from the `availableFulfillmentOptions` list for a fulfillment group"
-  selectFulfillmentOptionForGroup(input: SelectFulfillmentOptionForGroupInput!): SelectFulfillmentOptionForGroupPayload!
+  selectFulfillmentOptionForGroup(
+    "Mutation input"
+    input: SelectFulfillmentOptionForGroupInput!
+  ): SelectFulfillmentOptionForGroupPayload!
 
   "Set the shipping address for all fulfillment groups"
-  setShippingAddressOnCart(input: SetShippingAddressOnCartInput!): SetShippingAddressOnCartPayload!
+  setShippingAddressOnCart(
+    "Mutation input"
+    input: SetShippingAddressOnCartInput!
+  ): SetShippingAddressOnCartPayload!
 
   """
   Clients should call this as necessary during checkout to update the `availableFulfillmentOptions`
@@ -198,5 +204,8 @@ extend type Mutation {
   option for each group will have its prices recalculated one last time. If the prices do not match,
   order creation will fail.
   """
-  updateFulfillmentOptionsForGroup(input: UpdateFulfillmentOptionsForGroupInput!): UpdateFulfillmentOptionsForGroupPayload!
+  updateFulfillmentOptionsForGroup(
+    "Mutation input"
+    input: UpdateFulfillmentOptionsForGroupInput!
+  ): UpdateFulfillmentOptionsForGroupPayload!
 }
