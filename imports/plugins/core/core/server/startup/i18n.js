@@ -2,6 +2,7 @@
  * Deprecated. This file is here for custom plugin backward compatibility.
  * Delete this when there is a 3.0.0 release.
  */
+import Logger from "@reactioncommerce/logger";
 import mergeResource from "/imports/plugins/core/i18n/server/no-meteor/translations";
 
 /**
@@ -11,6 +12,9 @@ import mergeResource from "/imports/plugins/core/i18n/server/no-meteor/translati
  * @return {undefined}
  */
 export function loadTranslations(translations) {
+  Logger.warn("Calling loadTranslations to load translations is deprecated. " +
+    "This function will be removed in the next major release. Pass an 'i18n' object " +
+    "with your 'registerPlugin' call instead. Look at any built-in plugin for an example.");
   if (!Array.isArray(translations)) throw new Error("loadTranslations expects first argument to be an array");
 
   translations.forEach((trns) => {
