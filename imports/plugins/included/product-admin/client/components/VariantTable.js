@@ -74,7 +74,7 @@ function VariantTable(props) {
         }
         title={title || "Options"}
       />
-      <Table padding="dense">
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell>{i18next.t("admin.productTable.header.order")}</TableCell>

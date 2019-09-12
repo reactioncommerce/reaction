@@ -26,7 +26,7 @@ const resolverValidationOptions = {
  * @returns {ExpressApp} The express app
  */
 export default function createApolloServer(options = {}) {
-  const { addCallMeteorMethod, context: contextFromOptions, resolvers } = options;
+  const { context: contextFromOptions, resolvers } = options;
   const path = options.path || DEFAULT_GRAPHQL_PATH;
 
   // We support passing in either a typeDefs string or an already executable schema,
@@ -52,8 +52,6 @@ export default function createApolloServer(options = {}) {
 
       // meteorTokenMiddleware will have already set req.user if there is one
       await buildContext(context, req);
-
-      addCallMeteorMethod(context);
 
       await createDataLoaders(context);
 

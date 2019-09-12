@@ -1,16 +1,36 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Blocks } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
+import Logger from "/client/modules/logger";
 import { Packages, Shops } from "/lib/collections";
-import { Media } from "/imports/plugins/core/files/client";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import SitemapSettingsContainer from "/imports/plugins/included/sitemap-generator/client/containers/sitemap-settings-container";
-import PluginVersions from "../../../components/PluginVersions";
-import ShopLogoUrls from "../../../components/ShopLogoUrls";
-import StorefrontUrls from "../../../components/StorefrontUrls";
-import ShopBrandMediaManager from "./ShopBrandMediaManager";
 
+Template.shopSettings.onCreated(function onCreated() {
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    opaqueShopId: null
+  });
+
+  this.autorun(() => {
+    const shopId = Reaction.getShopId();
+    if (!shopId) return;
+
+    getOpaqueIds([
+      { namespace: "Shop", id: shopId }
+    ])
+      .then(([opaqueShopId]) => {
+        this.state.set("opaqueShopId", opaqueShopId);
+        return null;
+      })
+      .catch((error) => {
+        Logger.error(error);
+      });
+  });
+});
 
 /**
  * shopSettings helpers
@@ -28,34 +48,6 @@ Template.shopSettings.helpers({
       return "hidden";
     }
     return "";
-  },
-  ShopBrandMediaManager() {
-    const shopId = Reaction.getShopId();
-
-    const shop = Shops.findOne({
-      "_id": shopId,
-      "brandAssets.type": "navbarBrandImage"
-    });
-
-    let selectedMediaId;
-    if (shop && Array.isArray(shop.brandAssets)) {
-      selectedMediaId = shop.brandAssets[0].mediaId;
-    }
-
-    const userId = Reaction.getUserId();
-    const metadata = { type: "brandAsset", ownerId: userId, shopId };
-
-    const brandMediaList = Media.findLocal({
-      "metadata.shopId": Reaction.getShopId(),
-      "metadata.type": "brandAsset"
-    });
-
-    return {
-      component: ShopBrandMediaManager,
-      brandMediaList,
-      metadata,
-      selectedMediaId
-    };
   },
   shop() {
     return Shops.findOne({
@@ -87,6 +79,20 @@ Template.shopSettings.helpers({
 
     // If marketplace is disabled, every shop can switch apps
     return true;
+  },
+  Blocks() {
+    return Blocks;
+  },
+  shopSettingsBlockProps() {
+    const shopId = Reaction.getShopId();
+    const opaqueShopId = Template.instance().state.get("opaqueShopId");
+    const versionedPackages = Packages.find({ version: { $exists: true }, shopId }).fetch();
+
+    return {
+      internalShopId: shopId,
+      shopId: opaqueShopId,
+      versionedPackages
+    };
   }
 });
 
@@ -169,32 +175,5 @@ Template.optionsShopSettings.helpers({
 
   SitemapSettingsContainer() {
     return SitemapSettingsContainer;
-  }
-});
-
-Template.shopSettings.helpers({
-  Blocks() {
-    return Blocks;
-  },
-
-  shopSettingsBlockProps() {
-    return { shopId: Reaction.getShopId() };
-  },
-
-  versionedPackages() {
-    const versionedPackages = Packages.find({ version: { $exists: true }, shopId: Reaction.getShopId() });
-    return versionedPackages;
-  },
-
-  PluginVersions() {
-    return PluginVersions;
-  },
-
-  ShopLogoUrls() {
-    return ShopLogoUrls;
-  },
-
-  StorefrontUrls() {
-    return StorefrontUrls;
   }
 });

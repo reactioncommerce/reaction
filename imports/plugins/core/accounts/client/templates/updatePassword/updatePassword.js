@@ -69,8 +69,8 @@ Template.loginFormChangePassword.events({
     const password = passwordInput.val().trim();
 
     // We only check if it exists, just incase we"ve change the password strength and want the
-    // user to have an oppurtinity to update to a stronger password
-    const validatedOldPassword = LoginFormValidation.password(password, { validationLevel: "exists" });
+    // user to have an opportunity to update to a stronger password
+    const validatedOldPassword = LoginFormValidation.password(oldPassword, { validationLevel: "exists" });
     const validatedPassword = LoginFormValidation.password(password);
 
     const templateInstance = Template.instance();

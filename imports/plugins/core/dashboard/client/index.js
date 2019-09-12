@@ -2,11 +2,16 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStore } from "@fortawesome/free-solid-svg-icons";
 
+import { registerBlock } from "/imports/plugins/core/components/lib";
 import { registerOperatorRoute } from "/imports/client/ui";
 import OperatorLanding from "/imports/plugins/core/dashboard/client/components/OperatorLanding";
 
-import "./templates/import/import.html";
-import "./templates/import/import.js";
+import PluginVersions from "./components/PluginVersions";
+import ShopLogoUrls from "./components/ShopLogoUrls";
+import StorefrontUrls from "./components/StorefrontUrls";
+
+import "./components/shopBrandImageOption";
+import "./components/ShopBrandMediaManager";
 
 import "./templates/packages/grid/grid.html";
 import "./templates/packages/grid/grid.js";
@@ -42,4 +47,25 @@ registerOperatorRoute({
   // eslint-disable-next-line react/display-name
   SidebarIconComponent: (props) => <FontAwesomeIcon icon={faStore} {...props} />,
   sidebarI18nLabel: "admin.settings.shopSettingsLabel"
+});
+
+registerBlock({
+  region: "ShopSettings",
+  name: "PluginVersions",
+  component: PluginVersions,
+  priority: 1
+});
+
+registerBlock({
+  region: "ShopSettings",
+  name: "ShopLogoUrls",
+  component: ShopLogoUrls,
+  priority: 2
+});
+
+registerBlock({
+  region: "ShopSettings",
+  name: "StorefrontUrls",
+  component: StorefrontUrls,
+  priority: 3
 });
