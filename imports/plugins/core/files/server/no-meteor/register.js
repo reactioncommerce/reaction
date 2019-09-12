@@ -1,4 +1,7 @@
 import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia";
+import mutations from "./mutations";
+import resolvers from "./resolvers";
+import schemas from "./schemas";
 import startup from "./startup";
 
 /**
@@ -30,6 +33,11 @@ export default async function register(app) {
     functionsByType: {
       startup: [startup],
       xformCatalogProductMedia: [xformFileCollectionsProductMedia]
+    },
+    mutations,
+    graphQL: {
+      resolvers,
+      schemas
     }
   });
 }

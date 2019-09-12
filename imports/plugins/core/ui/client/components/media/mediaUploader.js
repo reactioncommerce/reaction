@@ -1,29 +1,23 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
+import gql from "graphql-tag";
 import { useDropzone } from "react-dropzone";
+import { useMutation } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { FileRecord } from "@reactioncommerce/file-collections";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next, Logger } from "/client/api";
 
-/**
- * @summary media/insert method wrapped in Promise
- * @param {Object} doc The FileRecord.document
- * @return {Promise<Object>} Method call result
- */
-function mediaInsertPromise(doc) {
-  return new Promise((resolve, reject) => {
-    Meteor.call("media/insert", doc, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
+const createMediaRecordMutation = gql`
+  mutation CreateMediaRecord($input: CreateMediaRecordInput!) {
+    createMediaRecord(input: $input) {
+      mediaRecord {
+        _id
       }
-    });
-  });
-}
+    }
+  }
+`;
 
 /**
  * MediaUploader
@@ -31,9 +25,10 @@ function mediaInsertPromise(doc) {
  * @returns {Node} React component
  */
 function MediaUploader(props) {
-  const { canUploadMultiple, metadata, onError, onFiles } = props;
+  const { canUploadMultiple, metadata, onError, onFiles, shopId } = props;
 
   const [isUploading, setIsUploading] = useState(false);
+  const [createMediaRecord] = useMutation(createMediaRecordMutation, { ignoreResults: true });
 
   const uploadFiles = (acceptedFiles) => {
     const filesArray = Array.from(acceptedFiles);
@@ -54,7 +49,14 @@ function MediaUploader(props) {
       await fileRecord.upload({});
 
       // We insert only AFTER the server has confirmed that all chunks were uploaded
-      return mediaInsertPromise(fileRecord.document);
+      return createMediaRecord({
+        variables: {
+          input: {
+            mediaRecord: fileRecord.document,
+            shopId
+          }
+        }
+      });
     });
 
     Promise.all(promises)
@@ -101,7 +103,8 @@ MediaUploader.propTypes = {
   canUploadMultiple: PropTypes.bool,
   metadata: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
   onError: PropTypes.func,
-  onFiles: PropTypes.func
+  onFiles: PropTypes.func,
+  shopId: PropTypes.string
 };
 
 MediaUploader.defaultProps = {

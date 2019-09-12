@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
@@ -7,6 +7,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import withProductMedia from "../hocs/withProductMedia";
 import ProductMediaItem from "./ProductMediaItem";
 
@@ -21,10 +22,33 @@ function ProductMediaGallery(props) {
     media,
     onRemoveMedia,
     onSetMediaPriority,
-    productId,
-    shopId,
-    variantId
+    productId, // internal (for now)
+    shopId, // internal (for now)
+    variantId // internal (for now)
   } = props;
+
+  const [opaqueProductId, setOpaqueProductId] = useState(null);
+  const [opaqueShopId, setOpaqueShopId] = useState(null);
+  const [opaqueVariantId, setOpaqueVariantId] = useState(null);
+
+  useEffect(() => {
+    const getIDs = async () => {
+      const [
+        opaqueProductIdResult,
+        opaqueShopIdResult,
+        opaqueVariantIdResult
+      ] = await getOpaqueIds([
+        { namespace: "Product", id: productId },
+        { namespace: "Shop", id: shopId },
+        { namespace: "Product", id: variantId }
+      ]);
+
+      setOpaqueProductId(opaqueProductIdResult);
+      setOpaqueShopId(opaqueShopIdResult);
+      setOpaqueVariantId(opaqueVariantIdResult);
+    };
+    getIDs();
+  }, [productId, shopId, variantId]);
 
   if (editable) {
     let count = (Array.isArray(media) && media.length) || 0;
@@ -33,11 +57,9 @@ function ProductMediaGallery(props) {
     const getFileMetadata = () => {
       count += 1;
       return {
-        productId,
-        variantId,
-        shopId,
-        priority: count,
-        toGrid: 1 // we need number
+        productId: opaqueProductId,
+        variantId: opaqueVariantId,
+        priority: count
       };
     };
 
@@ -74,6 +96,7 @@ function ProductMediaGallery(props) {
                   canUploadMultiple
                   metadata={getFileMetadata}
                   onError={onUploadError}
+                  shopId={opaqueShopId}
                 />
               </TableCell>
             </TableRow>
