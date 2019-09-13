@@ -148,6 +148,17 @@ function ProductTable({ onCreateProduct }) {
         setVisibility={setTagSelectorVisible}
         selectedProductIds={selectedProductIds}
       />
+      {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
+        <Grid item sm={12} >
+          <Button
+            color="primary"
+            onClick={onCreateProduct}
+            variant="contained"
+          >
+            {i18next.t("admin.createProduct") || "Create product"}
+          </Button>
+        </Grid>
+      )}
       {isFiltered && (
         <Grid item sm={12} >
           {noProductsFoundError && (
@@ -158,24 +169,13 @@ function ProductTable({ onCreateProduct }) {
               message={i18next.t("admin.noProductsFoundText")}
             />
           )}
-          {(!isFiltered && !isTagSelectorVisible && !isFilterByFileVisible) && (
-            <Button
-              color="primary"
-              onClick={onCreateProduct}
-              variant="contained"
-            >
-              {i18next.t("admin.createProduct") || "Create product"}
-            </Button>
-          )}
-          {isFiltered && (
-            <InlineAlert
-              isDismissable
-              isAutoClosing
-              components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
-              alertType="information"
-              message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
-            />
-          )}
+          <InlineAlert
+            isDismissable
+            isAutoClosing
+            components={{ iconDismiss: <CloseIcon style={{ fontSize: 14 }} /> }}
+            alertType="information"
+            message={i18next.t("admin.showingFilteredProducts", { count: filteredProductIdsCount })}
+          />
         </Grid>
       )}
       {renderMissedFilterItems()}
