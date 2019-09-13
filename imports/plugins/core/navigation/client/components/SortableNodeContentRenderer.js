@@ -1,5 +1,5 @@
 // Based on theme: https://github.com/frontend-collective/react-sortable-tree-theme-file-explorer
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import {
@@ -88,6 +88,11 @@ function isDescendant(older, younger) {
   );
 }
 
+/**
+ * SortableNodeContentRenderer
+ * @param {Object} props Component props
+ * @returns {React.Component} A react component
+ */
 function SortableNodeContentRenderer(props) {
   const {
     // ReactSortableTreeProps
