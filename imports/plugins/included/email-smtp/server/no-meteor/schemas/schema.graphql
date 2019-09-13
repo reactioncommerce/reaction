@@ -1,6 +1,9 @@
 extend type Mutation {
   "Use this mutation to verify the SMTP email settings"
-  verifySMTPEmailSettings(input: VerifySMTPEmailSettingsInput!): VerifySMTPEmailSettingsInputPayload!
+  verifySMTPEmailSettings(
+    "Mutation input"
+    input: VerifySMTPEmailSettingsInput!
+    ): VerifySMTPEmailSettingsInputPayload!
 }
 
 "Input for an `VerifySMTPEmailSettingsInput`"
