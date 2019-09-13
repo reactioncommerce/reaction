@@ -12,7 +12,7 @@ input VerifySMTPEmailSettingsInput {
   password: String!
 
   "The port to send email via"
-  port: String
+  port: Int
 
   "The SMTP email service"
   service: String!

@@ -12,7 +12,7 @@ const inputSchema = new SimpleSchema({
   },
   password: String,
   port: {
-    type: String,
+    type: Number,
     optional: true
   },
   service: String,
