@@ -26,7 +26,7 @@ function DetailDrawerButton(props) {
 
 DetailDrawerButton.propTypes = {
   children: PropTypes.node,
-  component: PropTypes.func
+  component: PropTypes.object
 };
 
 DetailDrawerButton.defaultProps = {

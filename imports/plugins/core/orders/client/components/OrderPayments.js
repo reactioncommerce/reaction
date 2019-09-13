@@ -125,7 +125,7 @@ function OrderPayments(props) {
           <Grid item xs={6} md={6}>
             <Grid container alignItems="center" spacing={2}>
               <Grid item>
-                <Typography variant="h4" inline={true}>
+                <Typography variant="h4" display="inline">
                   Payments
                 </Typography>
               </Grid>
