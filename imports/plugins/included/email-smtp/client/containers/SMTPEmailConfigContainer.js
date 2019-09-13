@@ -1,12 +1,24 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { compose, withProps } from "recompose";
 import getServiceConfig from "nodemailer-wellknown";
+import { withApollo } from "react-apollo";
+import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import actions from "../actions";
 import SMTPEmailConfig from "../components/SMTPEmailConfig";
+import gql from "graphql-tag";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+
+const verifySMTPEmailSettings = gql`
+  mutation verifySMTPEmailSettings($input: VerifySMTPEmailSettingsInput!) {
+    verifySMTPEmailSettings(input: $input) {
+      clientMutationId
+      verified
+    }
+  }
+`;
 
 const wrapComponent = (Comp) => (
   class SMTPEmailConfigContainer extends Component {
@@ -26,7 +38,7 @@ const wrapComponent = (Comp) => (
     constructor(props) {
       super(props);
       this.state = {
-        status: null,
+        status: "error",
         error: null
       };
     }
@@ -54,21 +66,31 @@ const wrapComponent = (Comp) => (
 
     // checking email settings
     // and updating status
-    checkEmailStatus() {
-      const { settings } = this.props;
+    checkEmailStatus = async () => {
+      const { client, settings } = this.props;
       const { service, host, port, user, password } = settings;
 
-      if (service && host && port && user && password) {
-        Meteor.call("email/verifySettings", (error) => {
-          if (!this._isMounted) return;
-          if (error) {
-            this.setState({ status: "error" });
-          } else {
-            this.setState({ status: "valid" });
+      if (host && password && port && service && user) {
+        const shopId = Reaction.getPrimaryShopId();
+        const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: shopId }]);
+
+        const { data } = await client.mutate({
+          mutation: verifySMTPEmailSettings,
+          variables: {
+            input: {
+              host,
+              password,
+              port,
+              service,
+              shopId: opaqueShopId,
+              user
+            }
           }
         });
-      } else {
-        this.setState({ status: "error" });
+
+        if (data) {
+          this.setState({ status: "valid" });
+        }
       }
     }
 
@@ -104,11 +126,13 @@ const handlers = { saveSettings: actions.settings.saveSettings };
 registerComponent("SMTPEmailConfig", SMTPEmailConfig, [
   composeWithTracker(composer),
   withProps(handlers),
+  withApollo,
   wrapComponent
 ]);
 
 export default compose(
   composeWithTracker(composer),
   withProps(handlers),
+  withApollo,
   wrapComponent
 )(SMTPEmailConfig);
