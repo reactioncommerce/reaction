@@ -289,6 +289,50 @@ worker.start();
 
 Keep in mind that a worker can run in a separate service from your main app, and you may wish to do it this way for scalability. However, there is not yet support for running multiple workers. (They will all try to work the same file record.) This could be solved easily enough if you are interested in submitting a pull request to add record locking.
 
+### Use a custom queue for uploads and remote URL saving
+
+`TempFileStoreWorker` and `RemoteUrlWorker` both use a very simple internal queue for working files that need to be transformed and saved. If you need a queue that performs better at scale, you can provide your own by passing in an `onNewFileRecord` function to either constructor. This function will be called for each file that needs to be saved, rather than using the internal queue. You can then add the file record to your queue and later the queue worker can call `worker.addDocumentByCollectionName(doc, collectionName)` to continue the process of transforming and saving the file.
+
+```js
+const tempStoreWorker = new TempFileStoreWorker({
+  fileCollections: [Images],
+  onNewFileRecord(doc, collection) {
+    const { name } = collection;
+    /**
+     * addToSaveFileQueue is an example function that would differ
+     * depending on what job queue you use.
+     */
+    addToSaveFileQueue({ doc, name, type: "temp" });
+  }
+});
+
+const remoteUrlWorker = new RemoteUrlWorker({
+  fetch,
+  fileCollections: [Images],
+  onNewFileRecord(doc, collection) {
+    const { name } = collection;
+    /**
+     * addToSaveFileQueue is an example function that would differ
+     * depending on what job queue you use.
+     */
+    addToSaveFileQueue({ doc, name, type: "remote" });
+  }
+});
+
+/**
+ * This function would be registered somehow as a queue worker, depending on
+ * what job queue you use.
+ */
+function saveFileQueueWorker(jobData, done) {
+  const { doc, name, type } = jobData;
+  if (type === "temp") {
+    tempStoreWorker.addDocumentByCollectionName(doc, name).then(done).catch(done);
+  } else {
+    remoteUrlWorker.addDocumentByCollectionName(doc, name).then(done).catch(done);
+  }
+}
+```
+
 ## Browser Setup
 
 There is much less setup necessary in browser code. First define the same FileCollection that you defined in server code:
