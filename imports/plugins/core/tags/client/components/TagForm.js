@@ -86,9 +86,9 @@ class TagForm extends Component {
   }
 
   static defaultProps = {
-    onCancel() {},
-    onCreate() {},
-    onUpdate() {},
+    onCancel() { },
+    onCreate() { },
+    onUpdate() { },
     tag: {}
   }
 
@@ -311,7 +311,6 @@ class TagForm extends Component {
         <HeroUploadButton>
           <Button
             variant="outlined"
-            actionType="secondary"
             color="secondary"
             size="small"
             onClick={this.handleDropzoneClick}

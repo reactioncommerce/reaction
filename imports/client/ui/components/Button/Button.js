@@ -6,7 +6,7 @@ import MuiButton from "@material-ui/core/Button";
 
 const styles = (theme) => ({
   buttonProgress: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing(1)
   },
   containedPrimary: {
     "color": theme.palette.primary.contrastText,
@@ -85,7 +85,6 @@ Button.defaultProps = {
   disableRipple: false,
   fullWidth: false,
   href: null,
-  mini: false,
   size: "medium",
   variant: "text"
 };
