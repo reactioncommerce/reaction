@@ -25,6 +25,7 @@ export default async function sendVerificationEmail({
 }) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne({ _id: userId });
+  const account = Meteor.users.findOne({ _id: userId });
 
   if (!user) throw new ReactionError("not-found", `User ${userId} not found`);
 
@@ -96,11 +97,14 @@ export default async function sendVerificationEmail({
     userEmailAddress: address
   };
 
+  const language = account && account.profile && account.profile.language;
+
   const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   return Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShopId: Reaction.getShopId(),
     templateName: bodyTemplate,
+    language,
     to: address
   }));
 }
