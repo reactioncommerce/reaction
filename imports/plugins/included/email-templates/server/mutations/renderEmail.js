@@ -11,7 +11,8 @@ import getTemplateConfig from "../util/getTemplateConfig";
  * @param {String} templateName Template name
  * @returns {Object} An object with rendered content in properties `html` and `subject`
  */
-export default async function renderEmail(context, { data, shopId, templateName }) {
+export default async function renderEmail(context, { data, templateName }) {
+  const { shopId } = data;
   const { template, subject } = await getTemplateConfig(context, shopId, templateName);
 
   const renderSubject = Handlebars.compile(subject);
