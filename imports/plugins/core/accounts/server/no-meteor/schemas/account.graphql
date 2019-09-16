@@ -55,6 +55,15 @@ input RemoveAccountAddressBookEntryInput {
   clientMutationId: String
 }
 
+"Describes which email should be sent a password reset link"
+input ResetAccountPasswordInput {
+  "The email address of the account to send reset email to"
+  email: String!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+}
+
 "Describes an account profile currency change"
 input SetAccountProfileCurrencyInput {
   "The account ID, which defaults to the viewer account"
@@ -238,6 +247,15 @@ type AddAccountEmailRecordPayload {
   emailRecord: EmailRecord
 }
 
+"The response from the `resetAccountPassword` mutation"
+type ResetAccountPasswordPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The email address of the account to send reset email to"
+  email: String!
+}
+
 "The response from the `removeAccountAddressBookEntry` mutation"
 type RemoveAccountAddressBookEntryPayload {
   "The removed address"
@@ -324,6 +342,12 @@ extend type Mutation {
     "Mutation input"
     input: RemoveAccountEmailRecordInput!
   ): RemoveAccountEmailRecordPayload
+
+  "Send a reset password email to an email address from an account"
+  resetAccountPassword(
+    "Mutation input"
+    input: ResetAccountPasswordInput!
+  ): ResetAccountPasswordPayload
 
   "Set the preferred currency for an account"
   setAccountProfileCurrency(
