@@ -56,7 +56,7 @@ export default async function splitOrderItem(context, input) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  const { billingAddress, cartId, currencyCode } = order;
+  const { accountId, billingAddress, cartId, currencyCode } = order;
 
   // Find and split the item
   let foundItem = false;
@@ -107,6 +107,7 @@ export default async function splitOrderItem(context, input) {
 
     // Update group shipping, tax, totals, etc.
     const { groupSurcharges } = await updateGroupTotals(context, {
+      accountId,
       billingAddress,
       cartId,
       currencyCode,

@@ -4,6 +4,7 @@ import xformOrderGroupToCommonOrder from "./xformOrderGroupToCommonOrder";
 /**
  * @summary Sets `shipmentMethod` object for a fulfillment group
  * @param {Object} context An object containing the per-request state
+ * @param {String} [accountId] ID of account that is placing or already did place the order
  * @param {Object} [billingAddress] The primary billing address for the order, if known
  * @param {String|null} [cartId] ID of the cart from which the order is being placed, if applicable
  * @param {String} currencyCode Currency code for all money values
@@ -14,6 +15,7 @@ import xformOrderGroupToCommonOrder from "./xformOrderGroupToCommonOrder";
  * @returns {undefined}
  */
 export default async function addShipmentMethodToGroup(context, {
+  accountId,
   billingAddress,
   cartId,
   currencyCode,
@@ -25,6 +27,7 @@ export default async function addShipmentMethodToGroup(context, {
   const { collections, queries } = context;
 
   const commonOrder = await xformOrderGroupToCommonOrder({
+    accountId,
     billingAddress,
     cartId,
     collections,

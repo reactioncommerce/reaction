@@ -9,7 +9,16 @@ import { toFixed } from "accounting-js";
  * @param {String} orderId The order ID
  * @returns {Object} Valid CommonOrder for the given order group
  */
-export default async function xformOrderGroupToCommonOrder({ billingAddress = null, cartId, collections, currencyCode, group, orderId, discountTotal }) {
+export default async function xformOrderGroupToCommonOrder({
+  accountId = null,
+  billingAddress = null,
+  cartId,
+  collections,
+  currencyCode,
+  group,
+  orderId,
+  discountTotal
+}) {
   // ** If you add any data here, be sure to add the same data to the matching xformCartGroupToCommonOrder xform
   const items = group.items.map((item) => ({
     _id: item._id,
@@ -94,6 +103,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
   };
 
   return {
+    accountId,
     billingAddress,
     cartId,
     currencyCode,
