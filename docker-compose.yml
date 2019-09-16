@@ -24,13 +24,14 @@ services:
     command: bash -c "time meteor npm install --no-audit && node ./.reaction/waitForMongo.js && node --experimental-modules ./.reaction/scripts/run.mjs"
     depends_on:
       - mongo
+      - sqs
     env_file:
       - ./.env
     environment:
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_SESSION_TOKEN
-      - AWS_REGION
+      - AWS_SQS_ENDPOINT=http://sqs:9324
+      - AWS_REGION=-
+      - AWS_ACCESS_KEY_ID=-
+      - AWS_SECRET_ACCESS_KEY=-
     networks:
       default:
       api:
@@ -53,6 +54,15 @@ services:
       - "27017:27017"
     volumes:
       - mongo-db:/data/db
+
+  sqs:
+    image: softwaremill/elasticmq
+    networks:
+      default:
+    ports:
+      - "9324:9324"
+    volumes:
+      - ./elasticmq.conf:/opt/elasticmq.conf
 
 volumes:
   mongo-db:
