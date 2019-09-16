@@ -131,11 +131,11 @@ class ProductGrid extends Component {
   }
 
   static defaultProps = {
-    onArchiveProducts() {},
-    onDuplicateProducts() {},
-    onPublishProducts() {},
-    onSelectAllProducts() {},
-    onSetProductVisibility() {},
+    onArchiveProducts() { },
+    onDuplicateProducts() { },
+    onPublishProducts() { },
+    onSelectAllProducts() { },
+    onSetProductVisibility() { },
     productMediaById: {}
   };
 
@@ -186,7 +186,7 @@ class ProductGrid extends Component {
             {i18next.t("admin.productTable.bulkActions.filteredProducts")}
           </Typography>
           <Typography variant="h5" display="inline" className={classes.filterCountText}>
-            { selected }
+            {selected}
           </Typography>
         </div>
       );
@@ -231,9 +231,14 @@ class ProductGrid extends Component {
     );
   }
 
+  handleDisplayTagSelector = () => {
+    this.handleCloseBulkActions();
+    this.props.onDisplayTagSelector(true);
+  }
+
   handleShowFilterByFile = () => {
     this.handleCloseBulkActions();
-    this.props.onShowFilterByFile();
+    this.props.onShowFilterByFile(true);
   }
 
   handleShowBulkActions = (event) => {
@@ -324,6 +329,14 @@ class ProductGrid extends Component {
           >
             Actions
           </MenuItem>
+          <MenuItem
+            onClick={this.handleDisplayTagSelector}
+            variant="default"
+            disabled={!isEnabled}
+            className={classes.actionDropdownMenuItem}
+          >
+            {i18next.t("admin.productTable.bulkActions.addRemoveTags")}
+          </MenuItem>
 
           <MenuItem
             onClick={this.handleShowFilterByFile}
@@ -352,10 +365,10 @@ class ProductGrid extends Component {
                   )}
                 </ConfirmDialog>
                 <span>
-                  { error &&
+                  {error &&
                     Alerts.toast(error.message, "error")
                   }
-                  { data &&
+                  {data &&
                     Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success")
                   }
                 </span>
