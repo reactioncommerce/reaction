@@ -1,5 +1,4 @@
 import Log from "@reactioncommerce/logger";
-import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import Core from "./core";
 import { Fixture, Importer } from "./importer";
 import getSlug from "./getSlug";
@@ -12,26 +11,6 @@ export default {
   ...Core,
   ...accountUtils,
   Collections,
-
-  /**
-   * @deprecated Reaction.Email should no longer be used
-   */
-  Email: {
-    /**
-     * @summary Backwards compatible email sending function
-     * @deprecated Call `context.mutations.sendEmail` directly instead
-     * @param {Object} options See `sendEmail`
-     * @returns {undefined}
-     */
-    send(options) {
-      const context = Promise.await(getGraphQLContextInMeteorMethod(accountUtils.getUserId()));
-
-      if (!options.fromShopId) options.fromShopId = Core.getShopId();
-
-      return Promise.await(context.mutations.sendEmail(context, options));
-    }
-  },
-
   Fixture,
   getSlug,
   Importer,
