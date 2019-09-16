@@ -247,7 +247,7 @@ type AddAccountEmailRecordPayload {
   emailRecord: EmailRecord
 }
 
-"The response from the `sendSendResetAccountPasswordEmail` mutation"
+"The response from the `sendResetAccountPasswordEmail` mutation"
 type SendResetAccountPasswordEmailPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -344,7 +344,7 @@ extend type Mutation {
   ): RemoveAccountEmailRecordPayload
 
   "Send a reset password email to an email address from an account"
-  SendResetAccountPasswordEmail(
+  sendResetAccountPasswordEmail(
     "Mutation input"
     input: SendResetAccountPasswordEmailInput!
   ): SendResetAccountPasswordEmailPayload
