@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { useDropzone } from "react-dropzone";
-import Button from "@material-ui/core/Button";
+import Button from "@reactioncommerce/catalyst/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { FileRecord } from "@reactioncommerce/file-collections";
 import { registerComponent } from "@reactioncommerce/reaction-components";
@@ -92,7 +92,7 @@ function MediaUploader(props) {
   return (
     <div {...getRootProps({ className: "dropzone" })}>
       <input {...getInputProps()} />
-      {isUploading ? <LinearProgress /> : <Button fullWidth size="large">{i18next.t("reactionUI.components.mediaUploader.dropFiles")}</Button>}
+      {isUploading ? <LinearProgress /> : <Button fullWidth size="large" variant="outlined">{i18next.t("reactionUI.components.mediaUploader.dropFiles")}</Button>}
     </div>
   );
 }
