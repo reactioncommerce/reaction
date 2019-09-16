@@ -229,23 +229,6 @@ type MetaFields {
   valueType: String
 }
 
-type ShippingParcel {
-  "Type of containers to use for shipping"
-  containers: String
-
-  "Height of package"
-  height: Int
-
-  "Length of package"
-  length: Int
-
-  "Weight of package"
-  weight: Int
-
-  "Width of package"
-  width: Int
-}
-
 type Workflow {
   "Current workflow status of product"
   status: String!
