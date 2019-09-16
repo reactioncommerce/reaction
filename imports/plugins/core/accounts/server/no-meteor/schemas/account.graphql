@@ -57,11 +57,11 @@ input RemoveAccountAddressBookEntryInput {
 
 "Describes which email should be sent a password reset link"
 input SendResetAccountPasswordEmailInput {
-  "The email address of the account to send reset email to"
-  email: String!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The email address of the account to send reset email to"
+  email: String!
 }
 
 "Describes an account profile currency change"
