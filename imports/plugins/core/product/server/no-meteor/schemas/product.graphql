@@ -238,6 +238,15 @@ type Workflow {
 }
 
 "Response payload cloning variants on product"
+type CreateProductVariantPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The ID of the variant which was created"
+  variantId: ID!
+}
+
+"Response payload cloning variants on product"
 type CloneProductVariantsPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -246,14 +255,31 @@ type CloneProductVariantsPayload  {
   product: Product
 }
 
+"Input for the `createProductVariant` mutation"
+input CreateProductVariantInput  {
+  "ID of product variant belongs to"
+  parentId: ID!
+}
+
+"Input for the `cloneProductVariants` mutation"
+input CloneProductVariantsInput  {
+  "ID of product variant belongs to"
+  productId: ID!
+
+  "Array of variant IDs to clone"
+  variantIds: [ID]!
+}
 
 extend type Mutation {
   "Publish products to the Catalog collection by product ID"
-  cloneProductVariants(
-    "ID of product variant belongs to"
-    productId: ID!
+  createProductVariant(
+    "Mutation input"
+    input: CreateProductVariantInput!
+  ): CreateProductVariantPayload!
 
-    "Array of variant IDs to clone"
-    variantIds: [ID]!
+  "Publish products to the Catalog collection by product ID"
+  cloneProductVariants(
+    "Mutation input"
+    input: CloneProductVariantsInput!
   ): CloneProductVariantsPayload!
 }
