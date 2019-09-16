@@ -1,0 +1,276 @@
+"Types of products allowed by our schemas"
+enum ProductType {
+  "A `simple` parent product"
+  simple
+
+  "A child product"
+  variant
+}
+
+"A Reaction product"
+type Product {
+  "Product ID"
+  _id: ID!
+
+  "Ancestors of this product"
+  ancestors: [ID]!
+
+   "The date and time at which this product was created"
+  createdAt: DateTime!
+
+  "Hash to compare with publishedProductHash"
+  currentProductHash: String
+
+  "Product description"
+  description: String
+
+  "Message to post to Facebook when using social sharing"
+  facebookMsg: String
+
+  "Message to post to Google Plus when using social sharing"
+  googleplusMsg: String
+
+  "Slug of product as it appears in url"
+  handle: String!
+
+  "Hashtags"
+  # TODO: add description here
+  hashtags: [String]
+
+  "Is product deleted?"
+  isDeleted: Boolean!
+
+  "Is product visible"
+  isVisible: Boolean!
+
+  "Metadescription"
+  # TODO: add better description
+  metaDescription: String
+
+  "Descriptive metafields to attach to a product"
+  metafields: [MetaFields]
+
+  "Country of origin for this product"
+  originCountry: String
+
+  "Title to show on product page"
+  pageTitle: String
+
+  "Parcel information for product shipment"
+  parcel: ShippingParcel
+
+  "Message to post to Pinterest when using social sharing"
+  pinterestMsg: String
+
+  "Type of product"
+  productType: String
+
+  "The date and time at which this product was published"
+  publishedAt: DateTime
+
+  "Hash to compare with currentProductHash"
+  publishedProductHash: String
+
+  "ID of shop this product was created for"
+  shopId: ID!
+
+  "Should this product appear in sitemap"
+  shouldAppearInSitemap: Boolean
+
+  "Supported fulfillment types for this product"
+  supportedFulfillmentTypes: [String]!
+
+  "Product page template"
+  template: String
+
+  "Product title"
+  title: String!
+
+  "Message to post to Twitter when using social sharing"
+  twitterMsg: String
+
+  "Product type"
+  # TODO: how is this different than "productType"?
+  type: ProductType!
+
+  "The date and time at which this product was updated"
+  updatedAt: DateTime
+
+  "The vendor of this product"
+  vendor: String
+
+  "Product workflow"
+  workflow: Workflow
+}
+
+"A Reaction product variant or option"
+type ProductVariant {
+  "Variant ID"
+  _id: ID!
+
+  "Ancestors of this variant"
+  # TODO: is this required?
+  ancestors: [ID]!
+
+  "Attribute label"
+  # TODO: why is this on variant but not product?
+  attributeLabel: String
+
+  "Product barcode number"
+  # TODO: why is this on variant but not product?
+  barcode: String
+
+  "The date and time at which this product was created"
+  createdAt: DateTime!
+
+  "Event log"
+  # TODO: what is this?
+  eventLog: Event
+
+  "Height of variant"
+  # Why is this here and not on the parcel data like on the product?
+  height: Int
+
+  "Variant position number in list"
+  index: Int
+
+  "Is product deleted?"
+  isDeleted: Boolean!
+
+  "Is product visible"
+  isVisible: Boolean!
+
+  "Length of variant"
+  # Why is this here and not on the parcel data like on the product?
+  length: Int
+
+  "Descriptive metafields to attach to a product"
+  metafields: [MetaFields]
+
+  "Minimum order quantity for this variant"
+  minOrderQuantity: Int
+
+  "Option title to be shown when `short` version of name is in UI"
+  optionTitle: String
+
+  "Country of origin for this product"
+  originCountry: String
+
+  "ID of shop this product was created for"
+  shopId: ID!
+
+  "SKU of variant"
+  sku: String
+
+  "Variant title, shown when `long` version of name is in UI"
+  title: String!
+
+  "Product type"
+  type: ProductType!
+
+  "The date and time at which this product was updated"
+  updatedAt: DateTime
+
+  "Weight of variant"
+  # Why is this here and not on the parcel data like on the product?
+  weight: Int
+
+  "Width of variant"
+  # Why is this here and not on the parcel data like on the product?
+  Width: Int
+
+  "Product workflow"
+  workflow: Workflow
+}
+
+type Event {
+  "The date and time at which this event was created"
+  createdAt: DateTime!
+
+  "Event description"
+  description: String
+
+  "Event title"
+  title: String!
+
+  "What triggered the event"
+  trigger: String
+
+  "Event type"
+  type: String!
+
+  "User who triggered event"
+  userId: ID
+}
+
+type MetaFields {
+  "Description"
+  # TODO: better description
+  description: String
+
+  "key"
+  # TODO: better description
+  key: String
+
+  "namespace"
+  # TODO: better description
+  namespace: String
+
+  "scope"
+  # TODO: better description
+  scope: String
+
+  "value"
+  # TODO: better description
+  value: String
+
+  "valueType"
+  # TODO: better description
+  valueType: String
+}
+
+type ShippingParcel {
+  "Type of containers to use for shipping"
+  containers: String
+
+  "Height of package"
+  height: Int
+
+  "Length of package"
+  length: Int
+
+  "Weight of package"
+  weight: Int
+
+  "Width of package"
+  width: Int
+}
+
+type Workflow {
+  "Current workflow status of product"
+  status: String!
+
+  "Array of all workflows product has been in"
+  workflow: [String]
+}
+
+"Response payload cloning variants on product"
+type CloneProductVariantsPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The product which the cloned variants were added to"
+  product: Product
+}
+
+
+extend type Mutation {
+  "Publish products to the Catalog collection by product ID"
+  cloneProductVariants(
+    "ID of product variant belongs to"
+    productId: ID!
+
+    "Array of variant IDs to clone"
+    variantIds: [ID]!
+  ): CloneProductVariantsPayload!
+}
