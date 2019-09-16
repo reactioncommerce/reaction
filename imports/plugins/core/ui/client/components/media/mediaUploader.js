@@ -92,7 +92,11 @@ function MediaUploader(props) {
   return (
     <div {...getRootProps({ className: "dropzone" })}>
       <input {...getInputProps()} />
-      {isUploading ? <LinearProgress /> : <Button fullWidth size="large" variant="outlined">{i18next.t("reactionUI.components.mediaUploader.dropFiles")}</Button>}
+      {isUploading ?
+        <LinearProgress />
+        :
+        <Button fullWidth size="large" variant="outlined">{i18next.t("reactionUI.components.mediaUploader.dropFiles")}</Button>
+      }
     </div>
   );
 }
