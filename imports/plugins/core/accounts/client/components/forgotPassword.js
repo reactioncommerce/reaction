@@ -8,9 +8,9 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
 
-const resetAccountPassword = gql`
-  mutation resetAccountPassword($input: ResetAccountPasswordInput!) {
-    resetAccountPassword(input: $input) {
+const sendResetAccountPasswordEmail = gql`
+  mutation sendResetAccountPasswordEmail($input: SendResetAccountPasswordEmailInput!) {
+    sendResetAccountPasswordEmail(input: $input) {
       clientMutationId
       email
     }
@@ -102,7 +102,7 @@ class Forgot extends Component {
           </h2>
         </div>
 
-        <Mutation mutation={resetAccountPassword}>
+        <Mutation mutation={sendResetAccountPasswordEmail}>
           {(mutationFunc, { data, error, loading }) => (
             <form name="loginForm" onSubmit={() => this.handleSubmit(event, mutationFunc)} noValidate>
               {this.renderFormMessages()}

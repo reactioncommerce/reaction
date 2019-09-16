@@ -24,7 +24,7 @@ async function sendResetEmail(context, account, email) {
   const user = await users.findOne({ _id: account.userId });
 
   if (!user) {
-    Logger.error("resetAccountPassword - User not found");
+    Logger.error("sendResetAccountPasswordEmail - User not found");
     throw new ReactionError("not-found", "User not found");
   }
 
@@ -102,14 +102,14 @@ async function sendResetEmail(context, account, email) {
 }
 
 /**
- * @name accounts/resetAccountPassword
+ * @name accounts/sendResetAccountPasswordEmail
  * @summary Checks to see if a user exists for a given email, and sends a password password if user exists
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} input.email - email of account to reset
  * @return {Promise<Object>} with email address if found
  */
-export default async function resetAccountPassword(context, input) {
+export default async function sendResetAccountPasswordEmail(context, input) {
   inputSchema.validate(input);
   const { collections } = context;
   const { Accounts } = collections;
@@ -120,7 +120,7 @@ export default async function resetAccountPassword(context, input) {
   const account = await Accounts.findOne({ "emails.address": email });
 
   if (!account) {
-    Logger.error("resetAccountPassword - Account not found");
+    Logger.error("sendResetAccountPasswordEmail - Account not found");
     throw new ReactionError("not-found", "Account not found");
   }
 

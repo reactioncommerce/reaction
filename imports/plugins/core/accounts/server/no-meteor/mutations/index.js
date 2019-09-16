@@ -3,7 +3,7 @@ import addAccountToGroup from "./addAccountToGroup";
 import inviteShopMember from "./inviteShopMember";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry";
 import removeAccountFromGroup from "./removeAccountFromGroup";
-import resetAccountPassword from "./resetAccountPassword";
+import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail";
 import setAccountProfileCurrency from "./setAccountProfileCurrency";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
 
@@ -13,7 +13,7 @@ export default {
   inviteShopMember,
   removeAccountAddressBookEntry,
   removeAccountFromGroup,
-  resetAccountPassword,
+  sendResetAccountPasswordEmail,
   setAccountProfileCurrency,
   updateAccountAddressBookEntry
 };
