@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
+import { i18next } from "/client/api";
+
+const resetAccountPassword = gql`
+  mutation resetAccountPassword($input: ResetAccountPasswordInput!) {
+    resetAccountPassword(input: $input) {
+      clientMutationId
+      email
+    }
+  }
+`;
 
 class Forgot extends Component {
   static propTypes = {
@@ -34,9 +47,9 @@ class Forgot extends Component {
     });
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = (event, mutation) => {
     if (this.props.onFormSubmit) {
-      this.props.onFormSubmit(event, this.state.email);
+      this.props.onFormSubmit(event, this.state.email, mutation);
     }
   }
 
@@ -52,23 +65,8 @@ class Forgot extends Component {
     return null;
   }
 
-  renderEmailErrors() {
-    if (this.props.onError(this.props.messages.errors && this.props.messages.errors.email)) {
-      return (
-        <span className="help-block">
-          <Translation
-            defaultValue={this.props.messages.errors.email.reason}
-            i18nKey={this.props.messages.errors.email.i18nKeyReason}
-          />
-        </span>
-      );
-    }
-
-    return null;
-  }
-
-  renderSpinnerOnWait() {
-    if (this.props.isLoading === true) {
+  renderSpinnerOnWait(loading) {
+    if (loading === true) {
       return (
         <div style={{ textAlign: "center" }}>
           <i className="fa fa-spinner fa-spin" />
@@ -104,42 +102,52 @@ class Forgot extends Component {
           </h2>
         </div>
 
-        <form name="loginForm" onSubmit={this.handleSubmit} noValidate>
-
-          {this.renderFormMessages()}
-
-          <div className={emailClasses}>
-            <TextField
-              i18nKeyLabel="accountsUI.emailAddress"
-              label="Email"
-              name="email"
-              type="email"
-              id={`email-${this.props.uniqueId}`}
-              value={this.state.email}
-              onChange={this.handleFieldChange}
-            />
-            {this.renderEmailErrors()}
-          </div>
-
-          <div className="form-group">
-            {this.renderSpinnerOnWait()}
-          </div>
-
-          <div className="form-group">
-            <Components.Button
-              tagName="span"
-              className={{
-                "btn": false,
-                "btn-default": false
-              }}
-              label="Sign In"
-              i18nKeyLabel="accountsUI.signIn"
-              data-event-category="accounts"
-              onClick={this.props.onSignInClick}
-            />
-          </div>
-
-        </form>
+        <Mutation mutation={resetAccountPassword}>
+          {(mutationFunc, { data, error, loading }) => (
+            <form name="loginForm" onSubmit={() => this.handleSubmit(event, mutationFunc)} noValidate>
+              {this.renderFormMessages()}
+              <div className={emailClasses}>
+                <TextField
+                  i18nKeyLabel="accountsUI.emailAddress"
+                  label="Email"
+                  name="email"
+                  type="email"
+                  id={`email-${this.props.uniqueId}`}
+                  value={this.state.email}
+                  onChange={this.handleFieldChange}
+                />
+                {error &&
+                  <InlineAlert
+                    alertType="error"
+                    message={error.message}
+                  />
+                }
+                {data &&
+                  <InlineAlert
+                    alertType="success"
+                    message={i18next.t("accountsUI.info.passwordResetSend")}
+                  />
+                }
+              </div>
+              <div className="form-group">
+                {this.renderSpinnerOnWait(loading)}
+              </div>
+              <div className="form-group">
+                <Components.Button
+                  tagName="span"
+                  className={{
+                    "btn": false,
+                    "btn-default": false
+                  }}
+                  label="Sign In"
+                  i18nKeyLabel="accountsUI.signIn"
+                  data-event-category="accounts"
+                  onClick={this.props.onSignInClick}
+                />
+              </div>
+            </form>
+          )}
+        </Mutation>
       </div>
     );
   }
