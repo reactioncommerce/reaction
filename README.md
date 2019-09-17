@@ -53,7 +53,7 @@ We love your pull requests! Check our our [`Good First Issue`](https://github.co
 ### Pull Request guidelines
 Pull requests should pass all automated tests, style, and security checks.
 
-Your code should pass all [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction). Run `docker-compose run --rm reaction reaction test` to run the test suites locally. If you're adding functionality to Reaction, you should add tests for the added functionality
+Your code should pass all [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction). Run `docker-compose run --rm reaction npm run test` to run the test suites in containers. If you're adding functionality to Reaction, you should add tests for the added functionality.
 
 
 We require that all code contributed to Reaction follows [Reaction's ESLint rules](https://github.com/reactioncommerce/reaction-eslint-config). You can run `docker-compose run --rm reaction npm run lint` to run ESLint against your code locally.
