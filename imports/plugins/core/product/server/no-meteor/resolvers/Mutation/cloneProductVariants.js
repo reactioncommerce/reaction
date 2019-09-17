@@ -1,4 +1,5 @@
 import { decodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
+import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
  *
@@ -15,17 +16,19 @@ import { decodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 export default async function cloneProductVariants(_, { input }, context) {
   const {
     clientMutationId,
+    shopId,
     variantIds
   } = input;
 
   const decodedVariantIds = variantIds.map((variantId) => decodeProductOpaqueId(variantId));
 
   const clonedVariants = await context.mutations.cloneProductVariants(context, {
+    shopId: decodeShopOpaqueId(shopId),
     variantIds: decodedVariantIds
   });
 
   return {
     clientMutationId,
-    variants: clonedVariants
+    variantIds: clonedVariants
   };
 }

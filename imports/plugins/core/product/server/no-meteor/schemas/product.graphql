@@ -292,10 +292,16 @@ input CreateProductVariantInput  {
 input CloneProductsInput  {
   "Array of IDs of products to clone"
   productIds: [ID]!
+
+  "ID of shop product will belong to"
+  shopId: ID!
 }
 
 "Input for the `cloneProductVariants` mutation"
 input CloneProductVariantsInput  {
+  "ID of shop product will belong to"
+  shopId: ID!
+
   "Array of IDs of variants to clone"
   variantIds: [ID]!
 }
