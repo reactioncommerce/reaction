@@ -65,9 +65,13 @@ export default async function createProductVariant(context, input) {
 
   const isOption = ancestors.length > 1;
 
-  await createProduct(context, newVariant, { product, parentVariant, isOption });
+  const createdVariant = await createProduct(context, newVariant, { product, parentVariant, isOption });
+
+  if (!createdVariant) {
+    throw new ReactionError("server-error", "Unable to create product variant");
+  }
 
   Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
-  return newVariantId;
+  return createdVariant._id;
 }
