@@ -50,7 +50,7 @@ export default async function createProduct(context, props = null, info = {}) {
     }
   }
 
-  const productId = await Products.insert(newProductOrVariant);
+  const { insertedId } = await Products.insertOne(newProductOrVariant);
 
-  return Products.findOne({ _id: productId });
+  return insertedId;
 }

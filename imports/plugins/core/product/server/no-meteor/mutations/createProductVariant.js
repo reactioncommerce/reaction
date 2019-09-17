@@ -15,7 +15,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - Input arguments for the bulk operation
  * @param {String} input.parentId - the product or variant ID which we create new variant on
- * @return {Object} created variant
+ * @return {String} created variantId
  */
 export default async function createProductVariant(context, input) {
   inputSchema.validate(input);
@@ -65,13 +65,13 @@ export default async function createProductVariant(context, input) {
 
   const isOption = ancestors.length > 1;
 
-  const createdVariant = await createProduct(context, newVariant, { product, parentVariant, isOption });
+  const createdVariantId = await createProduct(context, newVariant, { product, parentVariant, isOption });
 
-  if (!createdVariant) {
+  if (!createdVariantId) {
     throw new ReactionError("server-error", "Unable to create product variant");
   }
 
-  Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
+  Logger.debug(`products/createVariant: created variant: ${createdVariantId} for ${parentId}`);
 
-  return createdVariant._id;
+  return createdVariantId;
 }
