@@ -263,8 +263,8 @@ type CloneProductsPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Array of newly cloned products"
-  products: [Product]
+  "Array of newly cloned product IDs"
+  productIds: [ID]!
 }
 
 "Response payload of `cloneProductVariants` mutation"
@@ -272,8 +272,8 @@ type CloneProductVariantsPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Array of newly cloned product variants"
-  productVariants: [ProductVariant]
+  "Array of newly cloned product variant IDs"
+  variantIds: [ID]!
 }
 
 "Input for the `createProduct` mutation"
@@ -296,9 +296,6 @@ input CloneProductsInput  {
 
 "Input for the `cloneProductVariants` mutation"
 input CloneProductVariantsInput  {
-  "ID of product variant belongs to"
-  productId: ID!
-
   "Array of IDs of variants to clone"
   variantIds: [ID]!
 }

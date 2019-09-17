@@ -15,14 +15,15 @@ const inputSchema = new SimpleSchema({
    * child variants (options)
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - Input arguments for the bulk operation
- * @param {String} input.productId - the product ID the variant belongs to
- * @param {String} input.variantIds - the IDs of the variant to clone
- * @return {Array} list with cloned variants _ids
+ * @param {String} input.variantIds - an array of decoded variant IDs to clone
+ * @return {Array} list with cloned variant Ids
  */
 export default async function cloneProductVariants(context, input) {
   inputSchema.validate(input);
   const { productId, variantIds } = input;
   const { collections } = context;
+
+  return ["1", "2"];
 }
 
 

@@ -1,26 +1,31 @@
+import { decodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
+
 /**
  *
  * @method cloneProductVariants
- * @summary Takes an array of productsIds and tagsIds
- * and performs a bulk operation to add an array of tag ids to an
- * array of products
+ * @summary Takes an array of product variant IDs and clones variants
  * @param {Object} _ - unused
  * @param {Object} args - The input arguments
  * @param {Object} args.input - mutation input object
  * @param {String} args.input.clientMutationId - The mutation id
- * @param {String[]} args.input.productIds - an array of Product IDs
- * @param {String[]} args.input.tagIds - an array of Tag IDs
+ * @param {String[]} args.input.variantIds - an array of variant IDs to clone
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} Returns an object with information about the results
- * of the bulk operation
+ * @return {Promise<Object>} cloneProductVariants payload
  */
 export default async function cloneProductVariants(_, { input }, context) {
-  const { clientMutationId } = input;
+  const {
+    clientMutationId,
+    variantIds
+  } = input;
 
-  const results = await context.mutations.cloneProductVariants(context, input);
+  const decodedVariantIds = variantIds.map((variantId) => decodeProductOpaqueId(variantId));
+
+  const clonedVariants = await context.mutations.cloneProductVariants(context, {
+    variantIds: decodedVariantIds
+  });
 
   return {
     clientMutationId,
-    ...results
+    variants: clonedVariants
   };
 }
