@@ -21,6 +21,7 @@ const inputSchema = new SimpleSchema({
    * child variants (options)
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - Input arguments for the bulk operation
+ * @param {String} input.shopId - shop these variants belong to
  * @param {String} input.variantIds - an array of decoded variant IDs to clone
  * @return {Array} list with cloned variant Ids
  */
@@ -65,7 +66,7 @@ export default async function cloneProductVariants(context, input) {
     // make sure that top level variant will be cloned first
     const sortedVariants = _.sortBy(existingVariants, (sortedVariant) => sortedVariant.ancestors.length);
 
-    return Promise.all(sortedVariants.map(async (sortedVariant) => {
+    await Promise.all(sortedVariants.map(async (sortedVariant) => {
       const originalVariantId = sortedVariant._id;
       let type = "child";
       const clonedVariantObject = {};
@@ -115,10 +116,10 @@ export default async function cloneProductVariants(context, input) {
       }
 
       Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clonedVariantObject._id} from ${variantId}`);
-      return clonedVariantId;
     }));
+
+    return variantNewId;
   }));
 
-  // Return array of newVariantIds that was pushed to in each clone
-  return newVariantIds.flat();
+  return newVariantIds;
 }
