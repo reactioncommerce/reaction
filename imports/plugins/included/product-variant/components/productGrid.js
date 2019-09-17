@@ -116,6 +116,7 @@ class ProductGrid extends Component {
     onArchiveProducts: PropTypes.func,
     onChangePage: PropTypes.func,
     onChangeRowsPerPage: PropTypes.func,
+    onDisplayTagSelector: PropTypes.func,
     onDuplicateProducts: PropTypes.func,
     onPublishProducts: PropTypes.func,
     onSelectAllProducts: PropTypes.func,
