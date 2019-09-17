@@ -34,7 +34,7 @@ type Product {
   handle: String!
 
   "Hashtags"
-  # TODO: add description here
+  # TODO: add better description
   hashtags: [String]
 
   "Is product deleted?"
@@ -90,6 +90,7 @@ type Product {
   twitterMsg: String
 
   "Product type"
+  # TODO: add better description
   # TODO: how is this different than "productType"?
   type: ProductType!
 
@@ -109,26 +110,22 @@ type ProductVariant {
   _id: ID!
 
   "Ancestors of this variant"
-  # TODO: is this required?
   ancestors: [ID]!
 
   "Attribute label"
-  # TODO: why is this on variant but not product?
   attributeLabel: String
 
   "Product barcode number"
-  # TODO: why is this on variant but not product?
   barcode: String
 
   "The date and time at which this product was created"
   createdAt: DateTime!
 
   "Event log"
-  # TODO: what is this?
   eventLog: Event
 
   "Height of variant"
-  # Why is this here and not on the parcel data like on the product?
+  # TODO: Why is this here and not on the parcel data like on the product?
   height: Int
 
   "Variant position number in list"
@@ -141,7 +138,7 @@ type ProductVariant {
   isVisible: Boolean!
 
   "Length of variant"
-  # Why is this here and not on the parcel data like on the product?
+  # TODO: Why is this here and not on the parcel data like on the product?
   length: Int
 
   "Descriptive metafields to attach to a product"
@@ -172,11 +169,11 @@ type ProductVariant {
   updatedAt: DateTime
 
   "Weight of variant"
-  # Why is this here and not on the parcel data like on the product?
+  # TODO: Why is this here and not on the parcel data like on the product?
   weight: Int
 
   "Width of variant"
-  # Why is this here and not on the parcel data like on the product?
+  # TODO: Why is this here and not on the parcel data like on the product?
   Width: Int
 
   "Product workflow"
@@ -205,27 +202,27 @@ type Event {
 
 type MetaFields {
   "Description"
-  # TODO: better description
+  # TODO: add better description
   description: String
 
   "key"
-  # TODO: better description
+  # TODO: add better description
   key: String
 
   "namespace"
-  # TODO: better description
+  # TODO: add better description
   namespace: String
 
   "scope"
-  # TODO: better description
+  # TODO: add better description
   scope: String
 
   "value"
-  # TODO: better description
+  # TODO: add better description
   value: String
 
   "valueType"
-  # TODO: better description
+  # TODO: add better description
   valueType: String
 }
 
@@ -255,13 +252,22 @@ type CreateProductVariantPayload  {
   variantId: ID!
 }
 
+"Response payload of `cloneProducts` mutation"
+type CloneProductsPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Array of newly cloned products"
+  products: [Product]
+}
+
 "Response payload of `cloneProductVariants` mutation"
 type CloneProductVariantsPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "The product which the cloned variants were added to"
-  product: Product
+  "Array of newly cloned product variants"
+  productVariants: [ProductVariant]
 }
 
 "Input for the `createProduct` mutation"
@@ -276,12 +282,18 @@ input CreateProductVariantInput  {
   parentId: ID!
 }
 
+"Input for the `cloneProducts` mutation"
+input CloneProductsInput  {
+  "Array of IDs of products to clone"
+  productIds: [ID]!
+}
+
 "Input for the `cloneProductVariants` mutation"
 input CloneProductVariantsInput  {
   "ID of product variant belongs to"
   productId: ID!
 
-  "Array of variant IDs to clone"
+  "Array of IDs of variants to clone"
   variantIds: [ID]!
 }
 
@@ -297,6 +309,12 @@ extend type Mutation {
     "Mutation input"
     input: CreateProductVariantInput!
   ): CreateProductVariantPayload!
+
+  "Clone an existing product"
+  cloneProducts(
+    "Mutation input"
+    input: CloneProductsInput!
+  ): CloneProductsPayload!
 
   "Clone an existing product variant"
   cloneProductVariants(
