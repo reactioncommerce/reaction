@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createProduct from "../utils/createProduct";
+import createProductOrVariant from "../utils/createProductOrVariant";
 import isAncestorDeleted from "../utils/isAncestorDeleted";
 
 const inputSchema = new SimpleSchema({
@@ -65,7 +65,7 @@ export default async function createProductVariant(context, input) {
 
   const isOption = ancestors.length > 1;
 
-  const createdVariantId = await createProduct(context, newVariant, { product, parentVariant, isOption });
+  const createdVariantId = await createProductOrVariant(context, newVariant, { product, parentVariant, isOption });
 
   if (!createdVariantId) {
     throw new ReactionError("server-error", "Unable to create product variant");

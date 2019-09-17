@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createProductFunc from "../utils/createProduct";
+import createProductOrVariant from "../utils/createProductOrVariant";
 
 const inputSchema = new SimpleSchema({
   shopId: String
@@ -34,7 +34,7 @@ export default async function createProduct(context, input) {
   };
 
   // Create a product
-  const createdProductId = await createProductFunc(context, newProduct);
+  const createdProductId = await createProductOrVariant(context, newProduct);
 
   // Get full product document to create variant
   const createdProduct = await Products.findOne({ _id: createdProductId });
@@ -45,7 +45,7 @@ export default async function createProduct(context, input) {
 
   // Create a product variant
   const newVariantId = Random.id();
-  const createdVariantId = await createProductFunc(context, {
+  const createdVariantId = await createProductOrVariant(context, {
     _id: newVariantId,
     ancestors: [createdProductId],
     shopId,
