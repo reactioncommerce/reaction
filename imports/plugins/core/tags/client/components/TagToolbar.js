@@ -16,14 +16,13 @@ function TagToolbar(props) {
     <PrimaryAppBar title={title}>
       {(canBeDeleted) &&
         <Button
-          actionType="secondary"
           isTextOnly={true}
           onClick={onDelete}
         >
           {i18next.t("admin.tags.form.delete")}
         </Button>
       }
-      <Button variant="outlined" actionType="secondary" onClick={onCancel}>
+      <Button variant="outlined" onClick={onCancel}>
         {i18next.t("admin.tags.form.cancel")}
       </Button>
       <Button variant="contained" color="primary" onClick={onSave}>

@@ -197,29 +197,6 @@ jobs:
           command: |
             npm run lint:gql
 
-  test-app:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          name: Restoring Meteor cache
-          key: reaction-v2-meteor
-      - run:
-          name: Link Restored Meteor
-          command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
-      - restore_cache:
-          # Fall back to less specific caches
-          keys:
-            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v2-node-modules-{{ .Branch }}
-            - reaction-v2-node-modules-master
-      - run:
-          name: Load App Plugins
-          command: node --experimental-modules ./.reaction/scripts/build.mjs
-      - run:
-          name: Run Meteor Integration Tests
-          command: .circleci/tests.sh
-
   test-unit:
     <<: *defaults
     steps:
@@ -298,9 +275,6 @@ workflows:
     jobs:
       - build
       - dockerfile-lint
-      - test-app:
-          requires:
-            - build
       - test-unit:
           requires:
             - build
@@ -322,7 +296,6 @@ workflows:
       - deploy-docs:
           requires:
             - test-unit
-            - test-app
             - docker-build
           filters:
             branches:

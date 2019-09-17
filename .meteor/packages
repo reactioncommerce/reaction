@@ -58,11 +58,4 @@ percolate:migrations
 gadicc:blaze-react-component
 orionsoft:graphql-compiler
 
-# Testing packages
-dburles:factory
-meteortesting:mocha
-practicalmeteor:chai
-practicalmeteor:sinon
-johanbrook:publication-collector
-
 # Custom Packages
