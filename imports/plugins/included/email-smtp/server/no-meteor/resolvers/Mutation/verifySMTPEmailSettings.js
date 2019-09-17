@@ -25,7 +25,7 @@ export default async function verifySMTPEmailSettings(_, { input }, context) {
     user
   } = input;
 
-  const verified = await context.mutations.verifySMTPEmailSettings(context, {
+  const isVerified = await context.mutations.verifySMTPEmailSettings(context, {
     host,
     password,
     port,
@@ -36,6 +36,6 @@ export default async function verifySMTPEmailSettings(_, { input }, context) {
 
   return {
     clientMutationId,
-    verified
+    isVerified
   };
 }

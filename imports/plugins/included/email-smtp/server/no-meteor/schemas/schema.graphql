@@ -33,5 +33,5 @@ type VerifySMTPEmailSettingsInputPayload {
   clientMutationId: String
 
   "Are the settings OK"
-  verified: Boolean
+  isVerified: Boolean!
 }
