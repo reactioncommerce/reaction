@@ -142,8 +142,10 @@ export default class ReactionNodeApp {
     });
   }
 
-  disconnectFromMongo() {
-    return this.mongoClient.close();
+  async disconnectFromMongo() {
+    if (this.mongoClient) {
+      await this.mongoClient.close();
+    }
   }
 
   /**
