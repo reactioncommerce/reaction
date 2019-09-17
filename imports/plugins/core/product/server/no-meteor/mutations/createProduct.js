@@ -9,11 +9,11 @@ const inputSchema = new SimpleSchema({
 
 /**
  * @method createProduct
- * @summary creates an empty product, and an empty variant
+ * @summary creates an empty product, with an empty variant
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input arguments for the operation
  * @param {String} input.shopId - the shop to create the product for
- * @return {Object} created productId
+ * @return {String} created productId
  */
 export default async function createProduct(context, input) {
   inputSchema.validate(input);
@@ -21,7 +21,7 @@ export default async function createProduct(context, input) {
   const { Products } = collections;
   const { shopId } = input;
 
-  // See that user has permission to create product
+  // Check that user has permission to create product
   if (!userHasPermission(["createProduct", "product/admin", "product/create"], shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
@@ -35,6 +35,8 @@ export default async function createProduct(context, input) {
 
   // Create a product
   const createdProductId = await createProductFunc(context, newProduct);
+
+  // Get full product document to create variant
   const createdProduct = await Products.findOne({ _id: createdProductId });
 
   if (!createdProduct) {

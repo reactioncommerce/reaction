@@ -1,9 +1,9 @@
 "Types of products allowed by our schemas"
 enum ProductType {
-  "A `simple` parent product"
+  "A `simple` product, which is always the top level product"
   simple
 
-  "A child product"
+  "A `variant` product, which is a `variant` or `option`"
   variant
 }
 

@@ -13,6 +13,11 @@ export default async function createProduct(context, props = null, info = {}) {
   const { collections } = context;
   const { Products } = collections;
 
+  // Make sure _id was passed as a prop
+  if (!props._id) {
+    throw new ReactionError("server-error", "ID required");
+  }
+
   // Make sure shopId was passed as a prop
   if (!props.shopId) {
     throw new ReactionError("server-error", "Shop ID required");

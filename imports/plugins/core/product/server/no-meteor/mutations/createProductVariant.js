@@ -12,7 +12,7 @@ const inputSchema = new SimpleSchema({
 /**
  * @method createProductVariant
  * @summary creates an empty variant on the product supplied
- * @param {Object} context -  an object containing the per-request state
+ * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input arguments for the bulk operation
  * @param {String} input.parentId - the product or variant ID which we create new variant on
  * @return {String} created variantId
