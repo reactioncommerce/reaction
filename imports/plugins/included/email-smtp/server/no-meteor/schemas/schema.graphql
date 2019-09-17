@@ -32,6 +32,6 @@ type VerifySMTPEmailSettingsInputPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Are the settings OK"
+  "True if the SMTP connection was made and authentication was successful."
   isVerified: Boolean!
 }
