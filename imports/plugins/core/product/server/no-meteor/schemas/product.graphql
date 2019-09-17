@@ -174,12 +174,14 @@ type ProductVariant {
 
   "Width of variant"
   # TODO: Why is this here and not on the parcel data like on the product?
-  Width: Int
+  width: Int
 
   "Product workflow"
   workflow: Workflow
 }
 
+"Event description"
+# TODO: add better description
 type Event {
   "The date and time at which this event was created"
   createdAt: DateTime!
@@ -200,32 +202,36 @@ type Event {
   userId: ID
 }
 
+"Metafields description"
+# TODO: add better description
 type MetaFields {
   "Description"
   # TODO: add better description
   description: String
 
-  "key"
+  "Key"
   # TODO: add better description
   key: String
 
-  "namespace"
+  "Namespace"
   # TODO: add better description
   namespace: String
 
-  "scope"
+  "Scope"
   # TODO: add better description
   scope: String
 
-  "value"
+  "Value"
   # TODO: add better description
   value: String
 
-  "valueType"
+  "ValueType"
   # TODO: add better description
   valueType: String
 }
 
+"Workflow description"
+# TODO: add better description
 type Workflow {
   "Current workflow status of product"
   status: String!
