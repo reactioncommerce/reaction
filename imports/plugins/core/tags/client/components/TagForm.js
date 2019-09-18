@@ -584,7 +584,7 @@ class TagForm extends Component {
                   }
 
                   <CardActions disableSpacing>
-                    <Button color="secondary" onClick={this.handleSubmitForm}>
+                    <Button variant="contained" color="primary" onClick={this.handleSubmitForm}>
                       {i18next.t("admin.tags.form.save")}
                     </Button>
                   </CardActions>
