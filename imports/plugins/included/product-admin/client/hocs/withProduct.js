@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
 import _ from "lodash";
-import { compose, withState } from "recompose";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { withRouter } from "react-router";
+import { compose, withState } from "recompose";
+import { useMutation } from "@apollo/react-hooks";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Media } from "/imports/plugins/core/files/client";
 import { Meteor } from "meteor/meteor";
 import { Reaction, formatPriceString, i18next } from "/client/api";
@@ -11,27 +13,17 @@ import { getPrimaryMediaForItem, ReactionProduct, Catalog } from "/lib/api";
 import { Tags, Templates } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { getVariantIds } from "/lib/selectors/variants";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 
-/**
- * Create a new variant from a supplied product
- * @param {Object} product Product object
- * @returns {Promise} A promise that resolves to the new variant id
- */
-export function handleCreateVariant(product) {
-  return new Promise((resolve, reject) => {
-    Meteor.call("products/createVariant", product._id, (error, result) => {
-      if (error) {
-        Alerts.alert({
-          text: i18next.t("productDetailEdit.addVariantFail", { title: product.title }),
-          confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-        });
-        reject(error);
-      } else {
-        resolve({ newVariantId: result });
-      }
-    });
-  });
+const CREATE_VARIANT = gql`
+mutation createProductVariant($input: CreateProductVariantInput!) {
+  createProductVariant(input: $input) {
+    variant {
+      _id
+    }
+  }
 }
+`;
 
 /**
  * Metafield to remove
@@ -119,20 +111,30 @@ const wrapComponent = (Comp) => {
    * @param {Object} props Component props
    * @returns {Node} React component
    */
-  function withProduct(props) {
+  function WithProduct(props) {
     const { history } = props;
+    const [createProductVariant] = useMutation(CREATE_VARIANT);
 
     return (
       <Comp
-        // newMetafield={newMetafield}
         onArchiveProduct={async (product, redirectUrl) => {
           await handleArchiveProduct(product);
           history.push(redirectUrl);
         }}
         onCloneProduct={handleCloneProduct}
         onCreateVariant={async (product) => {
-          const { newVariantId } = await handleCreateVariant(product);
-          history.push(`/operator/products/${product._id}/${newVariantId}`);
+          const [opaqueProductId] = await getOpaqueIds([{ namespace: "Product", id: product._id }]);
+          const { data, error } = await createProductVariant({ variables: { input: { parentId: opaqueProductId } } });
+          if (data) {
+            const { createProductVariant: { variant } } = data;
+            history.push(`/operator/products/${product._id}/${variant._id}`);
+          }
+          if (error) {
+            Alerts.alert({
+              text: i18next.t("productDetailEdit.addVariantFail", { title: product.title }),
+              confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+            });
+          }
         }}
         onProductFieldSave={handleProductFieldSave}
         onProductVariantFieldSave={handleProductVariantFieldSave}
@@ -143,7 +145,7 @@ const wrapComponent = (Comp) => {
     );
   }
 
-  withProduct.propTypes = {
+  WithProduct.propTypes = {
     history: PropTypes.object,
     newMetafield: PropTypes.shape({
       key: PropTypes.string.isRequired,
@@ -152,7 +154,7 @@ const wrapComponent = (Comp) => {
     setNewMetaField: PropTypes.func
   };
 
-  return withProduct;
+  return WithProduct;
 };
 
 /**

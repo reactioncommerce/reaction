@@ -356,66 +356,6 @@ Meteor.methods({
   },
 
   /**
-   * @name products/createVariant
-   * @memberof Methods/Products
-   * @method
-   * @summary initializes empty variant template
-   * @param {String} parentId - the product _id or top level variant _id where
-   * we create variant
-   * @returns {String} new variantId
-   */
-  "products/createVariant"(parentId) {
-    check(parentId, String);
-
-    // Check first if Product exists and then if user has the rights
-    const parent = Products.findOne({ _id: parentId });
-    if (!parent) {
-      throw new ReactionError("not-found", "Parent not found");
-    }
-
-    let product;
-    let parentVariant;
-    if (parent.type === "variant") {
-      product = Products.findOne({ _id: parent.ancestors[0] });
-      parentVariant = parent;
-    } else {
-      product = parent;
-      parentVariant = null;
-    }
-
-    const userId = Reaction.getUserId();
-    if (!Reaction.hasPermission(["createProduct", "product/admin", "product/create"], userId, product.shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    // Verify that the parent variant and any ancestors are not deleted.
-    // Child variants cannot be added if a parent product is marked as `{ isDeleted: true }`
-    if (ReactionProduct.isAncestorDeleted(product, true)) {
-      throw new ReactionError("server-error", "Unable to create product variant");
-    }
-
-    // get parent ancestors to build new ancestors array
-    const { ancestors } = parent;
-    Array.isArray(ancestors) && ancestors.push(parentId);
-
-    const newVariantId = Random.id();
-    const newVariant = {
-      _id: newVariantId,
-      ancestors,
-      shopId: product.shopId,
-      type: "variant"
-    };
-
-    const isOption = ancestors.length > 1;
-
-    createProduct(newVariant, { product, parentVariant, isOption });
-
-    Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
-
-    return newVariantId;
-  },
-
-  /**
    * @name products/deleteVariant
    * @memberof Methods/Products
    * @method
