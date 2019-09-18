@@ -4,7 +4,6 @@ import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
 import { i18nextDep, i18next, Reaction, Logger } from "/client/api";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";
 import MainDropdown from "../components/mainDropdown";
 
@@ -74,17 +73,6 @@ function handleChange(event, value) {
       // activeShopId as the last shop visited. If an admin user logs out, the app will stay on that shop
       // for any new user who uses the same browser, temporarily, until the app is refreshed. This fixes that issue.
       Reaction.setShopId(Reaction.getPrimaryShopId());
-    });
-  } else if (value.name === "createProduct") {
-    Meteor.call("products/createProduct", (error, productId) => {
-      if (error) {
-        throw new ReactionError("create-product-error", error);
-      } else if (productId) {
-        // go to new product
-        Reaction.Router.go("product", {
-          handle: productId
-        });
-      }
     });
   } else if (value.name !== "account/profile") {
     Reaction.showActionView(value);
