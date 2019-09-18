@@ -27,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
     display: "block"
   },
   helpText: {
-    marginLeft: theme.spacing(2),
-    fontWeight: theme.typography.fontWeightRegular
+    marginLeft: theme.spacing(2)
   },
   leftIcon: {
     marginRight: theme.spacing(1)
@@ -109,7 +108,7 @@ export default function FilterByFileCard(props) {
                   <ImportIcon className={classes.leftIcon} />
                   {i18next.t("admin.importCard.import")}
                 </Button>
-                <Typography variant="h5" display="inline" className={classes.helpText}>
+                <Typography variant="caption" display="inline" className={classes.helpText}>
                   {i18next.t("admin.importCard.importHelpText")}
                 </Typography>
               </Grid>

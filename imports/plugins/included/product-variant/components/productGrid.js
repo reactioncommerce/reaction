@@ -9,6 +9,7 @@ import { i18next } from "/client/api";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import Checkbox from "@material-ui/core/Checkbox";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -54,25 +55,13 @@ const styles = (theme) => ({
   },
   toolbar: {
     marginBottom: theme.spacing(2),
-    minHeight: "65px",
+    minHeight: theme.spacing(5),
     paddingLeft: 0,
     paddingRight: 0,
     [theme.breakpoints.up("sm")]: {
       paddingLeft: 0,
       paddingRight: 0
     }
-  },
-  filterCountContainer: {
-    paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(3)
-  },
-  filterCountText: {
-    paddingLeft: theme.spacing(2),
-    fontWeight: theme.typography.fontWeightRegular,
-    letterSpacing: "0.5px"
-  },
-  productsTitle: {
-    letterSpacing: "0.3px"
   },
   actionDropdownTrigger: {
     border: `1px solid ${theme.palette.colors.coolGrey}`,
@@ -182,26 +171,18 @@ class ProductGrid extends Component {
 
     if (filterByProductIds) {
       return (
-        <div className={classes.filterCountContainer}>
-          <Typography variant="h4" display="inline" className={classes.productsTitle}>
-            {i18next.t("admin.productTable.bulkActions.filteredProducts")}
-          </Typography>
-          <Typography variant="h5" display="inline" className={classes.filterCountText}>
-            {selected}
-          </Typography>
-        </div>
+        <CardHeader
+          title={i18next.t("admin.productTable.bulkActions.filteredProducts")}
+          subheader={ selected }
+        />
       );
     }
 
     return (
-      <div className={classes.filterCountContainer}>
-        <Typography variant="h4" display="inline" className={classes.productsTitle}>
-          {i18next.t("admin.productTable.bulkActions.allProducts")}
-        </Typography>
-        <Typography variant="h5" display="inline" className={classes.filterCountText}>
-          {(selectedCount > 0) ? selected : totalCount}
-        </Typography>
-      </div>
+      <CardHeader
+        title={i18next.t("admin.productTable.bulkActions.allProducts")}
+        subheader={(selectedCount > 0) ? selected : totalCount}
+      />
     );
   }
 
