@@ -72,12 +72,6 @@ export default async function verifySMTPEmailSettings(context, input) {
 
   const transporter = nodemailer.createTransport(config);
 
-  // const verified = await transporter.verify()
-  //   .then((result) => result)
-  //   .catch((error) => { throw new ReactionError(error.responseCode, error.response); });
-
-  // return verified;
-
   let isVerified;
   try {
     isVerified = await transporter.verify();
