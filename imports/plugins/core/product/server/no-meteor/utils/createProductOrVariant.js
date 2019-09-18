@@ -23,8 +23,17 @@ export default async function createProduct(context, props = null, info = {}) {
     throw new ReactionError("server-error", "Shop ID required");
   }
 
+  // Add all fields that simpleSchema added by default
   const newProductOrVariant = {
+    ancestors: [],
+    handle: "",
+    isDeleted: false,
+    isVisible: false,
+    shouldAppearInSitemap: true,
+    supportedFulfillmentTypes: ["shipping"],
+    title: "",
     type: "simple",
+    workflow: {},
     ...(props || {})
   };
 
