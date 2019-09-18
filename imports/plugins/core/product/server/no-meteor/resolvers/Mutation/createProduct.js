@@ -18,12 +18,12 @@ export default async function createProduct(_, { input }, context) {
     shopId
   } = input;
 
-  const productId = await context.mutations.createProduct(context, {
+  const product = await context.mutations.createProduct(context, {
     shopId: decodeShopOpaqueId(shopId)
   });
 
   return {
     clientMutationId,
-    productId
+    product
   };
 }

@@ -18,12 +18,12 @@ export default async function createProductVariant(_, { input }, context) {
     parentId
   } = input;
 
-  const variantId = await context.mutations.createProductVariant(context, {
+  const variant = await context.mutations.createProductVariant(context, {
     parentId: decodeProductOpaqueId(parentId)
   });
 
   return {
     clientMutationId,
-    variantId
+    variant
   };
 }

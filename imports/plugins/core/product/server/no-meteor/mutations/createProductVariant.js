@@ -73,5 +73,11 @@ export default async function createProductVariant(context, input) {
 
   Logger.debug(`products/createVariant: created variant: ${createdVariantId} for ${parentId}`);
 
-  return createdVariantId;
+  const createdVariant = await Products.findOne({ _id: createdVariantId });
+
+  if (!createdVariant) {
+    throw new ReactionError("server-error", "Unable to retrieve newly created product variant");
+  }
+
+  return createdVariant;
 }

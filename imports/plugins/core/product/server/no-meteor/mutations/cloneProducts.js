@@ -74,7 +74,7 @@ export default async function cloneProducts(context, input) {
   }
 
 
-  const newProductIds = await Promise.all(productIds.map(async (productId) => {
+  const newProducts = await Promise.all(productIds.map(async (productId) => {
     const product = await Products.findOne({ _id: productId });
 
     // cloning product
@@ -139,8 +139,10 @@ export default async function cloneProducts(context, input) {
       await copyMedia(context, productNewId, variant._id, variantNewId);
     }));
 
-    return productNewId;
+    const newFinalProduct = await Products.findOne({ _id: productNewId });
+
+    return newFinalProduct;
   }));
 
-  return newProductIds;
+  return newProducts;
 }

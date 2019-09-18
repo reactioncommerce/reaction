@@ -56,5 +56,5 @@ export default async function createProduct(context, input) {
     throw new ReactionError("server-error", "Unable to create product variant");
   }
 
-  return createdProductId;
+  return createdProduct;
 }

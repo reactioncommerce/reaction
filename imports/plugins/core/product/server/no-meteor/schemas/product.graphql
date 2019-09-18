@@ -246,7 +246,7 @@ type CreateProductPayload  {
   clientMutationId: String
 
   "The ID of the product which was created"
-  productId: ID!
+  product: Product!
 }
 
 "Response payload of `createProductVariant` mutation"
@@ -255,7 +255,7 @@ type CreateProductVariantPayload  {
   clientMutationId: String
 
   "The ID of the variant which was created"
-  variantId: ID!
+  variant: ProductVariant!
 }
 
 "Response payload of `cloneProducts` mutation"
@@ -264,7 +264,7 @@ type CloneProductsPayload  {
   clientMutationId: String
 
   "Array of newly cloned product IDs"
-  productIds: [ID]!
+  products: [Product]!
 }
 
 "Response payload of `cloneProductVariants` mutation"
@@ -273,7 +273,7 @@ type CloneProductVariantsPayload  {
   clientMutationId: String
 
   "Array of newly cloned product variant IDs"
-  variantIds: [ID]!
+  variants: [ProductVariant]!
 }
 
 "Input for the `createProduct` mutation"

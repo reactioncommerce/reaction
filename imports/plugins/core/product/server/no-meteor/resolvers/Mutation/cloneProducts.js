@@ -29,6 +29,6 @@ export default async function cloneProducts(_, { input }, context) {
 
   return {
     clientMutationId,
-    productIds: clonedProducts
+    products: clonedProducts
   };
 }

@@ -29,6 +29,6 @@ export default async function cloneProductVariants(_, { input }, context) {
 
   return {
     clientMutationId,
-    variantIds: clonedVariants
+    variants: clonedVariants
   };
 }

@@ -39,7 +39,7 @@ export default async function cloneProductVariants(context, input) {
   const count = await Products.find({ _id: { $in: variantIds }, type: "variant", shopId }).count();
   if (count !== variantIds.length) throw new ReactionError("not-found", "One or more variants do not exist");
 
-  const newVariantIds = await Promise.all(variantIds.map(async (variantId) => {
+  const newVariants = await Promise.all(variantIds.map(async (variantId) => {
     const existingVariant = await Products.findOne({ _id: variantId });
     const productId = existingVariant.ancestors[0];
 
@@ -118,8 +118,10 @@ export default async function cloneProductVariants(context, input) {
       Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clonedVariantObject._id} from ${variantId}`);
     }));
 
-    return variantNewId;
+    const newFinalProduct = await Products.findOne({ _id: variantNewId });
+
+    return newFinalProduct;
   }));
 
-  return newVariantIds;
+  return newVariants;
 }
