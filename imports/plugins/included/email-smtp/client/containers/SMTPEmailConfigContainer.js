@@ -15,7 +15,7 @@ const verifySMTPEmailSettings = gql`
   mutation verifySMTPEmailSettings($input: VerifySMTPEmailSettingsInput!) {
     verifySMTPEmailSettings(input: $input) {
       clientMutationId
-      verified
+      isVerified
     }
   }
 `;

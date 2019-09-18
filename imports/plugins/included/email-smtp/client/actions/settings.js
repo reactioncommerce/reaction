@@ -9,7 +9,7 @@ const verifySMTPEmailSettings = gql`
   mutation verifySMTPEmailSettings($input: VerifySMTPEmailSettingsInput!) {
     verifySMTPEmailSettings(input: $input) {
       clientMutationId
-      verified
+      isVerified
     }
   }
 `;
@@ -64,35 +64,44 @@ export default {
     const shopId = Reaction.getPrimaryShopId();
     const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: shopId }]);
 
-    // check if the settings work first
-    await client.mutate({
-      mutation: verifySMTPEmailSettings,
-      variables: {
-        input: {
-          host: settings.host,
-          password: settings.password,
-          port: settings.port,
-          service: settings.service,
-          shopId: opaqueShopId,
-          user: settings.user
+    let shouldSave = true;
+    try {
+      await client.mutate({
+        mutation: verifySMTPEmailSettings,
+        variables: {
+          input: {
+            host: settings.host,
+            password: settings.password,
+            port: settings.port,
+            service: settings.service,
+            shopId: opaqueShopId,
+            user: settings.user
+          }
         }
-      }
-    })
-      .then(() => {
-        // eslint-disable-next-line promise/no-callback-in-promise
+      });
+    } catch (error) {
+      shouldSave = false;
+    }
+
+    if (!shouldSave) {
+      try {
+        await Alert({
+          title: i18next.t("mail.alerts.connectionFailed"),
+          text: i18next.t("mail.alerts.saveAnyway"),
+          type: "warning",
+          showCancelButton: true,
+          cancelButtonText: i18next.t("app.cancel"),
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: i18next.t("app.save")
+        });
+      } catch (error) {
         callback();
-        return save();
-      })
-      // eslint-disable-next-line promise/no-nesting
-      .catch(() => Alert({
-        title: i18next.t("mail.alerts.connectionFailed"),
-        text: i18next.t("mail.alerts.saveAnyway"),
-        type: "warning",
-        showCancelButton: true,
-        cancelButtonText: i18next.t("app.cancel"),
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: i18next.t("app.save")
-      }).then(() => save()).catch(() => true));
+        return error;
+      }
+    }
+
+    callback();
+    await save();
 
     return true;
   }
