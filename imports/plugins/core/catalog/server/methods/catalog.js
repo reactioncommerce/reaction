@@ -627,31 +627,6 @@ Meteor.methods({
   },
 
   /**
-   * @name products/createProduct
-   * @memberof Methods/Products
-   * @method
-   * @summary when we create a new product, we create it with an empty variant.
-   * @returns {String} The new product ID
-   */
-  "products/createProduct"() {
-    // Ensure user has createProduct permission for active shop
-    if (!Reaction.hasPermission(["createProduct", "product/admin", "product/create"])) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    // Create a product
-    const newSimpleProduct = createProduct();
-
-    // Create a product variant
-    createProduct({
-      ancestors: [newSimpleProduct._id],
-      type: "variant" // needed for multi-schema
-    }, { product: newSimpleProduct, parentVariant: null, isOption: false });
-
-    return newSimpleProduct._id;
-  },
-
-  /**
    * @name products/archiveProduct
    * @memberof Methods/Products
    * @method
