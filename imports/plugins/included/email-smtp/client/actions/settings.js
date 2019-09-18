@@ -20,7 +20,7 @@ export default {
    * @param {Object} settings - object of mail provider settings
    * @param {Object} client - apollo client
    * @param {Function} callback - optional callback
-   * @returns {Boolean} returns true if all fields provided and update method called
+   * @returns {Boolean} returns true if all fields provided and update method is called
    */
   async saveSettings(settings, client, callback) {
     const { service, host, port, user, password } = settings;
