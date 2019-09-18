@@ -7,7 +7,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import { Grid, Button } from "@material-ui/core";
 import { useDropzone } from "react-dropzone";
-import { i18next, Reaction, Router } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import { Session } from "meteor/session";
 import CloseIcon from "mdi-material-ui/Close";

@@ -71,7 +71,7 @@ export default async function createProductVariant(context, input) {
     throw new ReactionError("server-error", "Unable to create product variant");
   }
 
-  Logger.debug(`products/createVariant: created variant: ${createdVariantId} for ${parentId}`);
+  Logger.debug(`createProductVariant: created variant: ${createdVariantId} for ${parentId}`);
 
   const createdVariant = await Products.findOne({ _id: createdVariantId });
 
