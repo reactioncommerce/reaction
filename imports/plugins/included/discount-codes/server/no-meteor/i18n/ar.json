@@ -1,0 +1,41 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "discount-codes",
+  "translation": {
+    "discount-codes": {
+      "checkoutPayment": {
+        "applyDiscount": "تطبيق",
+        "discountError": "عذرا، هناك خطأ تطبيق الخصم."
+      },
+      "discounts": {
+        "enterItHere": "هل لديك مدونة؟ ادخله هنا.",
+        "discountLabel": "الرقم التسلسلي للخصم",
+        "submitted": "خصم حفظ وتطبيق",
+        "applied": "تطبيقي",
+        "code": "رمز",
+        "codeIsExpired": "انتهت صلاحية الرمز",
+        "codeIsInvalid": "كود غير صالح",
+        "multiShopError": "لا يمكن تطبيق تخفيضات على سلة تسوق متعددة أو أمر"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "رموز"
+        },
+        "settings": {
+          "codesLabel": "رموز",
+          "noCustomDiscountCodesFound": "لم يتم العثور على رموز الخصم."
+        },
+        "discountGrid": {
+          "code": "رمز",
+          "calculation": {
+            "method": "عملية حسابية"
+          },
+          "conditions": {
+            "redemptionLimit": "حد"
+          }
+        }
+      }
+    }
+  }
+}]

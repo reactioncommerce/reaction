@@ -52,10 +52,49 @@ type RoleEdge implements NodeEdge {
 
 extend type Shop {
   "Returns a list of roles for this shop, as a Relay-compatible connection."
-  roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
+  roles(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, roles are sorted alphabetically by name. Set this to sort by one of the other allowed fields"
+    sortBy: RoleSortByField = name
+  ): RoleConnection
 }
 
 extend type Query {
   "Returns a paged list of all roles associated with a shop"
-  roles(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
+  roles(
+    "Return valid roles for this shop"
+    shopId: ID!,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, roles are sorted alphabetically by name. Set this to sort by one of the other allowed fields"
+    sortBy: RoleSortByField = name
+  ): RoleConnection
 }

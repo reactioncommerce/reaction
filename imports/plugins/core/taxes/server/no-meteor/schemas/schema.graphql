@@ -1,9 +1,15 @@
 extend type Query {
   "List all tax codes supported by the current active tax service for the shop"
-  taxCodes(shopId: ID!): [TaxCode]!
+  taxCodes(
+    "The shop to use for getting the list of active tax services"
+    shopId: ID!
+  ): [TaxCode]!
 
   "Get a full list of all tax services for the shop"
-  taxServices(shopId: ID!): [TaxService]!
+  taxServices(
+    "The shop to use for getting the list of all tax services"
+    shopId: ID!
+  ): [TaxService]!
 }
 
 "A tax code that may be used on a product to indicate proper taxation category"

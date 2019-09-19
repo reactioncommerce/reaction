@@ -1,0 +1,43 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "المواضيع",
+          "themesTitle": "المواضيع",
+          "themesDescription": "المواضيع ومكونات واجهة المستخدم"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "تحرير الموضوع",
+        "duplicateTheme": "موضوع مكرر",
+        "duplicateThemeError": "لا يمكن تكرار موضوع",
+        "publishThemeError": "`لا يمكن نشر موضوع {{themeName}}",
+        "components": {
+          "navbar": "شريط التنقل",
+          "button": "زر",
+          "sortableTable": {
+            "filterPlaceholder": "تصفية البيانات",
+            "tableText": {
+              "noDataMessage": "لا توجد نتائج",
+              "previousText": "سابق",
+              "nextText": "التالى",
+              "loadingText": "تحميل ...",
+              "noDataText": "لا توجد نتائج",
+              "pageText": "صفحة",
+              "ofText": "من",
+              "rowsText": "الصفوف"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "انقر لإزالة الصورة",
+            "addedImage": "هذه صورة جديدة. نشر لحفظ التغييرات.",
+            "removedImage": "تم حذف الصورة. نشر لحفظ التغييرات."
+          }
+        }
+      }
+    }
+  }
+}]

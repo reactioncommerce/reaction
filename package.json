@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -74,14 +74,15 @@
     "graphql-tools": "4.0.3",
     "graphql.js": "0.4.20",
     "hoist-non-react-statics": "^2.3.1",
-    "i18next": "10.3.0",
-    "i18next-browser-languagedetector": "^2.2.4",
-    "i18next-localstorage-cache": "^1.1.1",
-    "i18next-sprintf-postprocessor": "^0.2.2",
+    "i18next": "17.0.13",
+    "i18next-browser-languagedetector": "3.0.3",
+    "i18next-fetch-backend": "2.2.0",
+    "i18next-multiload-backend-adapter": "0.1.1",
+    "i18next-sprintf-postprocessor": "0.2.2",
     "immutability-helper": "^2.9.1",
     "immutable": "^3.8.2",
     "install": "^0.12.2",
-    "jquery-i18next": "^1.2.1",
+    "jquery-i18next": "1.2.1",
     "later": "^1.2.0",
     "libphonenumber-js": "1.4.2",
     "lodash": "^4.17.13",
@@ -163,6 +164,7 @@
     "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "7.0.0",
     "@reactioncommerce/eslint-config": "2.1.0",
+    "@shelf/jest-mongodb": "^1.1.0",
     "apollo-server-testing": "2.8.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
@@ -221,11 +223,11 @@
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
-    "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
-    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",
-    "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --no-cache /tests/integration/",
-    "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --no-cache --watch /tests/integration/",
-    "test:file": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --no-cache --watch",
+    "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
+    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",
+    "test:integration": "NODE_ENV=jesttest JEST_MONGO=1 BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --runInBand /tests/integration/",
+    "test:integration:watch": "NODE_ENV=jesttest JEST_MONGO=1 BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --runInBand --watch /tests/integration/",
+    "test:file": "NODE_ENV=jesttest JEST_MONGO=1 REACTION_LOG_LEVEL=ERROR jest --runInBand --watch",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md",
     "version": "echo $npm_package_version"
   },
@@ -378,14 +380,6 @@
       }
     }
   },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/imports/test-utils/setupJestTests.js"
-    ],
-    "modulePathIgnorePatterns": [
-      "node_modules"
-    ]
-  },
   "eslintConfig": {
     "extends": "@reactioncommerce",
     "globals": {
@@ -423,8 +417,10 @@
       ".reaction/graphql-linter/rules/*.js"
     ],
     "rules": [
+      "arguments-have-descriptions",
       "defined-types-are-used",
       "deprecations-have-a-reason",
+      "descriptions-are-capitalized",
       "enum-values-have-descriptions",
       "enum-values-sorted-alphabetically",
       "fields-have-descriptions",
@@ -435,8 +431,7 @@
       "relay-page-info-spec",
       "type-fields-sorted-alphabetically",
       "types-are-capitalized",
-      "types-have-descriptions",
-      "descriptions-are-capitalized"
+      "types-have-descriptions"
     ]
   }
 }

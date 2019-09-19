@@ -1,0 +1,43 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "θέματα",
+          "themesTitle": "θέματα",
+          "themesDescription": "Θέματα και UI Components"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Επεξεργασία θέματος",
+        "duplicateTheme": "διπλότυπο Θέμα",
+        "duplicateThemeError": "Δεν θα μπορούσε να επαναλάβει το θέμα",
+        "publishThemeError": "`Δεν ήταν δυνατή η δημοσίευση θέμα {{themeName}}",
+        "components": {
+          "navbar": "Μπάρα πλοήγησης",
+          "button": "Κουμπί",
+          "sortableTable": {
+            "filterPlaceholder": "Φιλτράρετε δεδομένα",
+            "tableText": {
+              "noDataMessage": "Δεν βρέθηκαν αποτελέσματα",
+              "previousText": "Προηγούμενος",
+              "nextText": "Επόμενος",
+              "loadingText": "Φόρτωση ...",
+              "noDataText": "Δεν βρέθηκαν αποτελέσματα",
+              "pageText": "Σελίδα",
+              "ofText": "του",
+              "rowsText": "Σειρές"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "Κάντε κλικ για να αφαιρέσετε την εικόνα",
+            "addedImage": "Αυτή είναι μια νέα εικόνα. Δημοσιεύστε για να αποθηκεύσετε τις αλλαγές.",
+            "removedImage": "Η εικόνα έχει διαγραφεί. Δημοσιεύστε για να αποθηκεύσετε τις αλλαγές."
+          }
+        }
+      }
+    }
+  }
+}]

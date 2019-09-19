@@ -30,5 +30,8 @@ extend type Mutation {
   Given a person's email address and name, invite them to create an account for a certain shop,
   and put them in the provided permission group
   """
-  inviteShopMember(input: InviteShopMemberInput!): InviteShopMemberPayload
+  inviteShopMember(
+    "Mutation input"
+    input: InviteShopMemberInput!
+  ): InviteShopMemberPayload
 }

@@ -1,10 +1,7 @@
-import i18next, { getBrowserLanguage, i18nextDep, localeDep, currencyDep } from "./main";
+import i18next, { i18nextDep } from "./main";
 
 export * from "./currency";
 export {
   i18next,
-  getBrowserLanguage,
-  i18nextDep,
-  localeDep,
-  currencyDep
+  i18nextDep
 };

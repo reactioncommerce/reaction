@@ -29,7 +29,25 @@ type Cart implements Node {
   expiresAt: DateTime
 
   "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
-  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: CartItemsSortByField = addedAt): CartItemConnection
+  items(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = desc,
+
+    "By default, items are sorted by when they were added to the cart, newest first. Set this to sort by one of the other allowed fields"
+    sortBy: CartItemsSortByField = addedAt
+  ): CartItemConnection
 
   """
   If you integrate with third-party systems that require you to send the same ID for order
@@ -158,7 +176,25 @@ type CartItem implements Node {
   productSlug: String
 
   "The list of tags that have been applied to this product"
-  productTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
+  productTags(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, tags are sorted by ID. Set this to sort by one of the other allowed fields"
+    sortBy: TagSortByField = _id
+  ): TagConnection
 
   "The type of product, used to display cart items differently"
   productType: String
@@ -206,13 +242,28 @@ enum CartReconciliationMode {
 
 extend type Query {
   "Finds a cart by the cart ID and anonymous cart token."
-  anonymousCartByCartId(cartId: ID!, token: String!): Cart
+  anonymousCartByCartId(
+    "The cart ID. Must be an anonymous cart (that is, one with no linked account)."
+    cartId: ID!,
+
+    """
+    A valid anonymous cart access token for this cart. This is returned when you create
+    an anonymous cart and should be stored securely in storefront client storage.
+    """
+    token: String!
+  ): Cart
 
   # Access control should ensure that only authenticated users can find their own
   # cart. Additionally, administrative roles can find carts.
   # Shop ID is necessary if shops have separate carts but share the same account pool
   "Find a cart for a given account ID."
-  accountCartByAccountId(accountId: ID!, shopId: ID!): Cart
+  accountCartByAccountId(
+    "Account that owns the cart"
+    accountId: ID!,
+
+    "Shop that owns the cart"
+    shopId: ID!
+  ): Cart
 }
 
 ####################
@@ -493,20 +544,38 @@ type SetEmailOnAnonymousCartPayload {
 
 extend type Mutation {
   "Add item(s) to a cart"
-  addCartItems(input: AddCartItemsInput!): AddCartItemsPayload!
+  addCartItems(
+    "Mutation input"
+    input: AddCartItemsInput!
+  ): AddCartItemsPayload!
 
   "Create a new cart"
-  createCart(input: CreateCartInput!): CreateCartPayload!
+  createCart(
+    "Mutation input"
+    input: CreateCartInput!
+  ): CreateCartPayload!
 
   "Reconcile an anonymous cart with the current account cart for the same shop"
-  reconcileCarts(input: ReconcileCartsInput!): ReconcileCartsPayload!
+  reconcileCarts(
+    "Mutation input"
+    input: ReconcileCartsInput!
+  ): ReconcileCartsPayload!
 
   "Remove item(s) from a cart"
-  removeCartItems(input: RemoveCartItemsInput!): RemoveCartItemsPayload!
+  removeCartItems(
+    "Mutation input"
+    input: RemoveCartItemsInput!
+  ): RemoveCartItemsPayload!
 
   "Set the email address for an anonymous cart"
-  setEmailOnAnonymousCart(input: SetEmailOnAnonymousCartInput!): SetEmailOnAnonymousCartPayload!
+  setEmailOnAnonymousCart(
+    "Mutation input"
+    input: SetEmailOnAnonymousCartInput!
+  ): SetEmailOnAnonymousCartPayload!
 
   "Update cart item(s) quantity. Use absolute quantity. If updating to 0, the item will be removed."
-  updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsQuantityPayload!
+  updateCartItemsQuantity(
+    "Mutation input"
+    input: UpdateCartItemsQuantityInput!
+  ): UpdateCartItemsQuantityPayload!
 }

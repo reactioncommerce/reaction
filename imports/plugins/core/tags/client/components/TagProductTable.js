@@ -97,14 +97,14 @@ class TagProductTable extends Component {
                   onClick={loadPreviousPage}
                 >
                   <ChevronLeftIcon />
-                  {i18next.t("admin.routing.tableText.previousText")}
+                  {i18next.t("admin.tags.tableText.previousText")}
                 </Button>
                 <Button
                   color="primary"
                   disabled={!hasNextPage}
                   onClick={loadNextPage}
                 >
-                  {i18next.t("admin.routing.tableText.nextText")}
+                  {i18next.t("admin.tags.tableText.nextText")}
                   <ChevronRightIcon />
                 </Button>
               </ExpansionPanelActions>

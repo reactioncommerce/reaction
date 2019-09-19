@@ -86,7 +86,6 @@ export function mockCollection(collectionName) {
   "Tags",
   "Templates",
   "Themes",
-  "Translations",
   "users"
 ].forEach((collectionName) => {
   mockContext.collections[collectionName] = mockCollection(collectionName);

@@ -4,10 +4,10 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { compose } from "recompose";
-import { i18next } from "/client/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Media } from "/imports/plugins/core/files/client";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
 
@@ -58,12 +58,16 @@ const wrapComponent = (Comp) => (
       Session.set("productGrid/selectedProducts", selectedProductIds);
     }
 
-    handlePublishProducts = (productIds) => {
-      Meteor.call("catalog/publish/products", productIds, (error, result) => {
-        if (result) {
-          Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
-        } else if (error) {
-          Alerts.toast(error.message, "error");
+    handlePublishProducts = async (productIds, mutation) => {
+      // we need to encode the productIds here to pass them to GraphQL
+      const productIdObjects = productIds.map((productId) => (
+        { namespace: "Product", id: productId }
+      ));
+      const opaqueProductIds = await getOpaqueIds(productIdObjects);
+
+      await mutation({
+        variables: {
+          productIds: opaqueProductIds
         }
       });
     }

@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import exampleCapturePayment from "./util/exampleCapturePayment";
 import exampleCreateAuthorizedPayment from "./util/exampleCreateAuthorizedPayment";
 import exampleCreateRefund from "./util/exampleCreateRefund";
@@ -15,6 +16,7 @@ export default async function register(app) {
     label: "ExamplePayment",
     name: "example-paymentmethod",
     icon: "fa fa-credit-card-alt",
+    i18n,
     graphQL: {
       schemas
     },

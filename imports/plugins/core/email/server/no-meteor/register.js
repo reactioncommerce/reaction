@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import i18n from "./i18n";
 
 // This is temporary. Mutations still import jobs, which don't
 // work outside of a Meteor environment.
@@ -19,6 +20,7 @@ export default async function register(app) {
     label: "Email",
     name: "reaction-email",
     icon: "fa fa-envelope-o",
+    i18n,
     collections: {
       Emails: {
         name: "Emails",

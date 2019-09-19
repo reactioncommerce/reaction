@@ -56,7 +56,7 @@ function OrderHeader(props) {
       <Grid item xs={12}>
         <Grid container alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h3" className={classes.extraEmphasisText} inline={true}>
+            <Typography variant="h3" className={classes.extraEmphasisText} display="inline">
               {i18next.t("order.order", "Order")} - {referenceId}
             </Typography>
           </Grid>
@@ -80,7 +80,7 @@ function OrderHeader(props) {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="body1" inline={true}>{i18next.t("order.placed", "Placed")} {orderDate}</Typography>
+        <Typography variant="body1" display="inline">{i18next.t("order.placed", "Placed")} {orderDate}</Typography>
       </Grid>
     </Grid>
   );

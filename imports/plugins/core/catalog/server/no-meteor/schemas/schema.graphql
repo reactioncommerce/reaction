@@ -163,7 +163,25 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   tagIds: [ID]
 
   "The list of tags that have been applied to this product"
-  tags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
+  tags(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, tags are sorted by ID. Set this to sort by one of the other allowed fields"
+    sortBy: TagSortByField = _id
+  ): TagConnection
 
   "Product title"
   title: String
@@ -389,21 +407,26 @@ extend type Query {
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
+
     "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
     before: ConnectionCursor,
+
     "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
     first: ConnectionLimitInt,
+
     "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt,
+
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
     offset: Int,
+
     "Return results sorted in this order"
     sortOrder: SortOrder = desc,
 
     "Provide a Currency code if sortBy is minPrice"
     sortByPriceCurrencyCode: String
 
-    "By default, items are sorted by newest products. Set this to sort by one of the other allowed fields"
+    "By default, items are sorted by when they were last updated, most recently updated first. Set this to sort by one of the other allowed fields"
     sortBy: CatalogItemSortByField = updatedAt
   ): CatalogItemConnection
 

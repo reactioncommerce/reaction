@@ -4,13 +4,22 @@
 
 extend type Mutation {
   "Create a flat rate fulfillment method"
-  createFlatRateFulfillmentMethod(input: CreateFlatRateFulfillmentMethodInput!): CreateFlatRateFulfillmentMethodPayload!
+  createFlatRateFulfillmentMethod(
+    "Mutation input"
+    input: CreateFlatRateFulfillmentMethodInput!
+  ): CreateFlatRateFulfillmentMethodPayload!
 
   "Update a flat rate fulfillment method"
-  updateFlatRateFulfillmentMethod(input: UpdateFlatRateFulfillmentMethodInput!): UpdateFlatRateFulfillmentMethodPayload!
+  updateFlatRateFulfillmentMethod(
+    "Mutation input"
+    input: UpdateFlatRateFulfillmentMethodInput!
+  ): UpdateFlatRateFulfillmentMethodPayload!
 
   "Delete a flat rate fulfillment method"
-  deleteFlatRateFulfillmentMethod(input: DeleteFlatRateFulfillmentMethodInput!): DeleteFlatRateFulfillmentMethodPayload!
+  deleteFlatRateFulfillmentMethod(
+    "Mutation input"
+    input: DeleteFlatRateFulfillmentMethodInput!
+  ): DeleteFlatRateFulfillmentMethodPayload!
 }
 
 "Defines a fulfillment method that has a fixed price. This type is provided by the `flat-rate` fulfillment plugin."

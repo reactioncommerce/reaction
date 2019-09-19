@@ -189,7 +189,7 @@ function OrderRefunds(props) {
                                 const paymentAmountAvailableForRefundDisplay = formatMoney(paymentAmountAvailableForRefund, order.currencyCode);
 
                                 return (
-                                  <Grid item xs={12}>
+                                  <Grid item xs={12} key={payment._id}>
                                     <Grid container>
                                       <Grid item xs={6}>
                                         <Typography variant="body1">
@@ -204,9 +204,9 @@ function OrderRefunds(props) {
                                                 {i18next.t("order.availableToRefund")}: {paymentAmountAvailableForRefundDisplay}
                                               </Typography>
                                               {paymentPreviousRefundTotal && paymentPreviousRefundTotal > 0 &&
-                                          <Typography variant="body2">
-                                            {i18next.t("order.previouslyRefunded")}: {paymentPreviousRefundTotalDisplay}
-                                          </Typography>
+                                                <Typography variant="body2">
+                                                  {i18next.t("order.previouslyRefunded")}: {paymentPreviousRefundTotalDisplay}
+                                                </Typography>
                                               }
                                             </Fragment>
                                             :

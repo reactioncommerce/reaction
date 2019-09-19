@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 import startup from "./startup";
@@ -12,6 +13,7 @@ export default async function register(app) {
     label: "Core",
     name: "core",
     icon: "fa fa-th",
+    i18n,
     collections: {
       Assets: {
         name: "Assets"

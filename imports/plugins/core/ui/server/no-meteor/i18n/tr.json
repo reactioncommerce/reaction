@@ -1,0 +1,43 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-ui": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Temalar",
+          "themesTitle": "Temalar",
+          "themesDescription": "Temalar ve UI Bileşenleri"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Düzenleme Tema",
+        "duplicateTheme": "yinelenen Tema",
+        "duplicateThemeError": "tema yinelenen olamazdı",
+        "publishThemeError": "`Tema {{themeName}} yayınlamak Could not",
+        "components": {
+          "navbar": "Gezinti çubuğu",
+          "button": "düğme",
+          "sortableTable": {
+            "filterPlaceholder": "Verileri Filtreleme",
+            "tableText": {
+              "noDataMessage": "Sonuç bulunamadı",
+              "previousText": "Önceki",
+              "nextText": "Sonraki",
+              "loadingText": "Yükleniyor ...",
+              "noDataText": "Sonuç bulunamadı",
+              "pageText": "Sayfa",
+              "ofText": "arasında",
+              "rowsText": "satırlar"
+            }
+          },
+          "mediaGallery": {
+            "deleteImage": "Resmi kaldırmak için tıklayın",
+            "addedImage": "Bu yeni bir görüntü. Değişiklikleri kaydetmek için yayınla.",
+            "removedImage": "Resim silindi. Değişiklikleri kaydetmek için yayınla."
+          }
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,37 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "المدفوعات شريط"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "لم يكن لديك معرف العميل الشريط API؟",
+          "stripeSettingsGetItHere": "أحضره هنا",
+          "stripeClientIdWarning": "الرقم التعريفي للعميل هو حقل عام. يرجى التأكد من أنك تستخدم customer_id الموجود في صفحة إعدادات الاتصال بالشريط.",
+          "stripeClientIdLink": "إعدادات اتصال الشريط"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "لم يتم تمكين الشريط اتصال لهذا التطبيق. يرجى الاتصال المشرف.",
+          "shopEmailNotConfigured": "يرجى تهيئة البريد الإلكتروني للمتجر أولا.",
+          "shopAddressNotConfigured": "يرجى تكوين عنوان المحل أولا",
+          "applicationFeeDescription": "يمثل هذا الرقم رسم النسبة المئوية التي يأخذها السوق (هذا المحل) لأي بند يباع من قبل متجر التاجر لهذا السوق. ولا ينطبق هذا الرسم إلا إذا تم إعداد شريط الاتصال وتمكينه في كل من السوق ومحلات التاجر وإذا كان الشريط هو مزود الدفع المستخدم لتنفيذ عملية الدفع.",
+          "moreDetails": "لمزيد من التفاصيل، راجع",
+          "docsLink": "شريط الاتصال محرر المستندات"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "سوف السيارات إعادة توجيه في بضع ثوان أو انقر هنا."
+        }
+      }
+    }
+  }
+}]

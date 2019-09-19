@@ -173,7 +173,7 @@ class OrderCardFulfillmentGroups extends Component {
                   <Grid item xs={6} md={6}>
                     <Grid container alignItems="center" spacing={2}>
                       <Grid item>
-                        <Typography variant="h4" inline={true}>
+                        <Typography variant="h4" display="inline">
                           {i18next.t("order.fulfillmentGroupHeader", `Fulfillment group ${currentGroupCount} of ${totalGroupsCount}`)}
                         </Typography>
                       </Grid>
@@ -232,7 +232,7 @@ class OrderCardFulfillmentGroups extends Component {
                         <Typography paragraph variant="h4">
                           {i18next.t("order.trackingNumber", "Tracking number")}
                         </Typography>
-                        <OrderCardFulfillmentGroupTrackingNumber orderId={order._id} fulfillmentGroup={fulfillmentGroup} {...this.props}/>
+                        <OrderCardFulfillmentGroupTrackingNumber orderId={order._id} fulfillmentGroup={fulfillmentGroup} {...this.props} />
                       </Grid>
                     </Grid>
                   </Grid>

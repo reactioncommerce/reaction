@@ -4,7 +4,13 @@ extend type Query {
   validation service is active for the shop, this will return as if the address is valid even
   though no check actually occurred.
   """
-  addressValidation(address: AddressInput!, shopId: ID!): AddressValidationResults!
+  addressValidation(
+    "Address to validate"
+    address: AddressInput!,
+
+    "Shop to use for determining what validation service to use"
+    shopId: ID!
+  ): AddressValidationResults!
 
   "Get a full list of all registered address validation services"
   addressValidationServices: [AddressValidationService]!

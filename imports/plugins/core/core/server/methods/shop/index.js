@@ -1,6 +1,5 @@
 import createShop from "./createShop";
 import createTag from "./createTag";
-import getLocale from "./getLocale";
 import locateAddress from "./locateAddress";
 import togglePackage from "./togglePackage";
 import updateBrandAssets from "./updateBrandAssets";
@@ -20,7 +19,6 @@ import updateShopExternalServices from "./updateShopExternalServices";
 export default {
   "shop/createShop": createShop,
   "shop/createTag": createTag,
-  "shop/getLocale": getLocale,
   "shop/locateAddress": locateAddress,
   "shop/togglePackage": togglePackage,
   "shop/updateBrandAssets": updateBrandAssets,
