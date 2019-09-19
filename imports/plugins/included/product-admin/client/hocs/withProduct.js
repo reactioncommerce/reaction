@@ -57,15 +57,6 @@ export async function handleArchiveProduct(product) {
 }
 
 /**
- * Clone a product with all variants, options and media in tact
- * @param {Object} product Product object
- * @returns {undefined} No return
- */
-export function handleCloneProduct(product) {
-  ReactionProduct.cloneProduct(product);
-}
-
-/**
  * Save a product field
  * @param {String} productId Product ID
  * @param {String} fieldName Field name to save
