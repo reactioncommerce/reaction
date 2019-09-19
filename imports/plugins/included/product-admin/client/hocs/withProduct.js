@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 import { compose, withState } from "recompose";
 import { useMutation } from "@apollo/react-hooks";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Media } from "/imports/plugins/core/files/client";
 import { Meteor } from "meteor/meteor";
 import { Reaction, formatPriceString, i18next } from "/client/api";
@@ -124,16 +125,17 @@ const wrapComponent = (Comp) => {
         onCloneProduct={handleCloneProduct}
         onCreateVariant={async (product) => {
           const [opaqueProductId] = await getOpaqueIds([{ namespace: "Product", id: product._id }]);
-          const { data, error } = await createProductVariant({ variables: { input: { parentId: opaqueProductId } } });
-          if (data) {
-            const { createProductVariant: { variant } } = data;
-            history.push(`/operator/products/${product._id}/${variant._id}`);
-          }
-          if (error) {
-            Alerts.alert({
-              text: i18next.t("productDetailEdit.addVariantFail", { title: product.title }),
-              confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-            });
+
+          try {
+            await createProductVariant({ variables: { input: { parentId: opaqueProductId } } });
+            // Because of the way GraphQL and meteor interact when creating a new variant,
+            // we can't immediately redirect a user to the new variant as GraphQL is too quick
+            // and the meteor subscription isn't yet updated. Once this page has been updated
+            // to use GraphQL for data fetching, add a redirect to the new variant when it's created
+            Alerts.toast(i18next.t("productDetailEdit.addVariant"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.addVariantFail", { err: error }), "error");
+            throw new ReactionError("server-error", "Unable to create variant");
           }
         }}
         onProductFieldSave={handleProductFieldSave}

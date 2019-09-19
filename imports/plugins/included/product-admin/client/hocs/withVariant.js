@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
-import { withRouter } from "react-router";
 import { compose } from "recompose";
 import { useMutation } from "@apollo/react-hooks";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Catalog, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import { Countries } from "/client/collections";
@@ -33,8 +33,6 @@ const wrapComponent = (Comp) => {
     const [createProductVariant] = useMutation(CREATE_VARIANT);
 
     const {
-      history,
-      productId,
       parentVariant,
       variant
     } = props;
@@ -45,17 +43,17 @@ const wrapComponent = (Comp) => {
       <Comp
         onCreateOption={async () => {
           const [opaqueProductId] = await getOpaqueIds([{ namespace: "Product", id: variantOrParent._id }]);
-          const { data, error } = await createProductVariant({ variables: { input: { parentId: opaqueProductId } } });
-          if (data) {
-            const { createProductVariant: { variant: option } } = data;
-            history.push(`/operator/products/${productId}/${variantOrParent._id}/${option._id}`);
-            window && window.scrollTo(0, 0);
-          }
-          if (error) {
-            Alerts.alert({
-              text: i18next.t("productDetailEdit.addVariantFail", { title: variant.title }),
-              confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-            });
+
+          try {
+            await createProductVariant({ variables: { input: { parentId: opaqueProductId } } });
+            // Because of the way GraphQL and meteor interact when creating a new variant,
+            // we can't immediately redirect a user to the new variant as GraphQL is too quick
+            // and the meteor subscription isn't yet updated. Once this page has been updated
+            // to use GraphQL for data fetching, add a redirect to the new variant when it's created
+            Alerts.toast(i18next.t("productDetailEdit.addVariant"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.addVariantFail", { err: error }), "error");
+            throw new ReactionError("server-error", "Unable to create variant");
           }
         }}
         {...props}
@@ -64,7 +62,6 @@ const wrapComponent = (Comp) => {
   }
 
   WithVariant.propTypes = {
-    history: PropTypes.object,
     parentVariant: PropTypes.object,
     productId: PropTypes.string,
     variant: PropTypes.object
@@ -187,7 +184,6 @@ function composer(props, onData) {
 }
 
 export default compose(
-  withRouter,
   composeWithTracker(composer),
   wrapComponent
 );
