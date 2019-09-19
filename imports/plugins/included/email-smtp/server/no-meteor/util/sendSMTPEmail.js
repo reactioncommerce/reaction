@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import nodemailer from "@reactioncommerce/nodemailer";
 import getMailConfig from "./getMailConfig";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name sendSMTPEmail
@@ -12,7 +13,9 @@ import getMailConfig from "./getMailConfig";
  * @return {undefined} Calls one of the callbacks with a return
  */
 export default async function sendSMTPEmail(context, { job, sendEmailCompleted, sendEmailFailed }) {
-  const config = await getMailConfig(context);
+  const shopId = Reaction.getShopId();
+
+  const config = await getMailConfig(context, shopId);
   if (config.direct) {
     sendEmailFailed(job, "SMTP mail settings not configured");
     return;
