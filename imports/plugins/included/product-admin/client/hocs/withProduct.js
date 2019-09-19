@@ -16,6 +16,16 @@ import { Countries } from "/client/collections";
 import { getVariantIds } from "/lib/selectors/variants";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 
+const CLONE_PRODUCTS = gql`
+  mutation cloneProducts($input: CloneProductsInput!) {
+    cloneProducts(input: $input) {
+      products {
+        _id
+      }
+    }
+  }
+`;
+
 const CREATE_VARIANT = gql`
 mutation createProductVariant($input: CreateProductVariantInput!) {
   createProductVariant(input: $input) {
@@ -105,6 +115,7 @@ const wrapComponent = (Comp) => {
    */
   function WithProduct(props) {
     const { history } = props;
+    const [cloneProducts] = useMutation(CLONE_PRODUCTS);
     const [createProductVariant] = useMutation(CREATE_VARIANT);
 
     return (
@@ -113,7 +124,18 @@ const wrapComponent = (Comp) => {
           await handleArchiveProduct(product);
           history.push(redirectUrl);
         }}
-        onCloneProduct={handleCloneProduct}
+        onCloneProduct={async (product) => {
+          const opaqueProductIds = await getOpaqueIds([{ namespace: "Product", id: product }]);
+          const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+          try {
+            await cloneProducts({ variables: { input: { shopId: opaqueShopId, productIds: opaqueProductIds } } });
+            Alerts.toast(i18next.t("productDetailEdit.cloneProductSuccess"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.cloneProductFail", { err: error }), "error");
+            throw new ReactionError("server-error", "Unable to clone product");
+          }
+        }}
         onCreateVariant={async (product) => {
           const [opaqueProductId] = await getOpaqueIds([{ namespace: "Product", id: product._id }]);
 

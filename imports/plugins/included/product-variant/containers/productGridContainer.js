@@ -99,39 +99,14 @@ const wrapComponent = (Comp) => (
       ReactionProduct.archiveProduct(productIds);
     }
 
-    handleDuplicateProducts = async (productIds, mutation) => {
-      // // we need to encode the productIds here to pass them to GraphQL
-      // const productnamespacedIdObjects = productIds.map((productId) => (
-      //   { namespace: "Product", id: productId }
-      // ));
-      // const opaqueProductIds = await getOpaqueIds(productnamespacedIdObjects);
-
-      // await mutation({
-      //   variables: {
-      //     shopId: opaqueShopId,
-      //     productIds: opaqueProductIds
-      //   }
-      // });
-
-
-
-      // ReactionProduct.cloneProduct(productIds);
-      console.log("we doing this?", productIds);
-
-
-      const { client, shopId } = this.props;
-      console.log("shopId", shopId);
-
-      // const title = i18next.t("productDetailEdit.thisVariant");
+    handleDuplicateProducts = async (productIds) => {
+      const { client } = this.props;
       const namespacedProductIdObjects = productIds.map((productId) => ({ namespace: "Product", id: productId }));
-      const opaqueProductIds = productIds;
-      // const opaqueProductIds = await getOpaqueIds(namespacedProductIdObjects);
+      const opaqueProductIds = await getOpaqueIds(namespacedProductIdObjects);
       const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
-      console.log("opaqueIds, shop, products", opaqueShopId, opaqueProductIds);
-
 
       try {
-        const awaited = await client.mutate({
+        await client.mutate({
           mutation: cloneProducts,
           variables: {
             input: {
@@ -141,33 +116,10 @@ const wrapComponent = (Comp) => (
           }
         });
 
-        console.log("awaited", awaited);
-
-
-        if (productIds.length === 1) {
-          Alerts.add(i18next.t("productDetail.clonedAlert", { product: productIds }), "success", {
-            placement: "productGridItem",
-            id: productIds[0],
-            autoHide: true,
-            dismissable: false
-          });
-        } else {
-          Alerts.add(
-            i18next.t("productDetail.clonedAlert_plural", {
-              product: i18next.t("productDetail.theSelectedProducts"),
-              count: 0
-            }),
-            "success",
-            {
-              placement: "productGridItem",
-              id: productIds[0],
-              autoHide: true,
-              dismissable: false
-            }
-          );
-        }
+        Alerts.toast(i18next.t("productDetailEdit.cloneProductSuccess"), "success");
       } catch (error) {
-        Alerts.toast(i18next.t("productDetailEdit.cloneVariantFail"), "error");
+        Alerts.toast(i18next.t("productDetailEdit.cloneProductFail", { err: error }), "error");
+        throw new ReactionError("server-error", "Unable to clone product");
       }
     }
 

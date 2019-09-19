@@ -256,6 +256,8 @@
         "addVariantOption": "Add option",
         "addVariantFail": "Unable to create variant. {{err}}",
         "addVariant": "Variant added",
+        "cloneProductSuccess": "Product(s) cloned successfully.",
+        "cloneProductFail": "Unable to clone product. {{err}}",
         "cloneVariantFail": "Unable to clone variant for {{title}}.",
         "removeVariant": "Remove",
         "removeVariantConfirm": "Are you sure you want to delete {{title}}",

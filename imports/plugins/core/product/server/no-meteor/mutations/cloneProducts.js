@@ -132,7 +132,7 @@ export default async function cloneProducts(context, input) {
 
       const { insertedId: variantInsertedId } = await Products.insertOne(newVariant, { validate: false });
       if (!variantInsertedId) {
-        Logger.error(`products/cloneVariant: cloning of variant ${variant._id} failed`);
+        Logger.error(`cloneProducts: cloning of variant ${variant._id} failed`);
         throw new ReactionError("server-error", `Cloning of variant ${variant._id} failed`);
       }
 
