@@ -1,110 +1,91 @@
-"Types of products allowed by our schemas"
-enum ProductType {
-  "A `simple` product, which is always the top level product"
-  simple
-
-  "A `variant` product, which is a `variant` or `option`"
-  variant
-}
-
 "A Reaction product"
 type Product {
   "Product ID"
   _id: ID!
 
-  "Ancestors of this product"
-  ancestors: [ID]!
-
    "The date and time at which this product was created"
   createdAt: DateTime!
 
-  "Hash to compare with publishedProductHash"
+  "Hash to compare with publishedProductHash, for use to see it published and unpublished products are the same"
   currentProductHash: String
 
-  "Product description"
+  "The full product description, which may have newline characters in it"
   description: String
 
-  "Message to post to Facebook when using social sharing"
-  facebookMsg: String
-
-  "Message to post to Google Plus when using social sharing"
-  googleplusMsg: String
-
-  "Slug of product as it appears in url"
-  handle: String!
-
-  "Hashtags"
-  # TODO: add better description
-  hashtags: [String]
-
-  "Is product deleted?"
+  "True if this product has been deleted. Typically, deleted products are not returned in queries."
   isDeleted: Boolean!
 
-  "Is product visible"
+  "True if this product should be shown to shoppers. Typically, non-visible products are not returned in queries."
   isVisible: Boolean!
 
-  "Metadescription"
-  # TODO: add better description
+  "The product description to use for page `description` meta element in HTML"
   metaDescription: String
 
-  "Descriptive metafields to attach to a product"
-  metafields: [MetaFields]
+  "Arbitrary additional metadata about this product"
+  metafields: [MetaField]
 
-  "Country of origin for this product"
+  "The country of origin"
   originCountry: String
 
-  "Title to show on product page"
+  "Subtitle"
   pageTitle: String
 
-  "Parcel information for product shipment"
-  parcel: ShippingParcel
-
-  "Message to post to Pinterest when using social sharing"
-  pinterestMsg: String
-
-  "Type of product"
+  "An arbitrary product type value, such as from an external system"
   productType: String
 
   "The date and time at which this product was published"
   publishedAt: DateTime
 
-  "Hash to compare with currentProductHash"
+  "Hash to compare with currentProductHash, for use to see it published and unpublished products are the same"
   publishedProductHash: String
 
-  "ID of shop this product was created for"
-  shopId: ID!
+  "The shop to which this product belongs"
+  shop: Shop!
 
-  "Should this product appear in sitemap"
-  shouldAppearInSitemap: Boolean
+  "A URL-safe and human-readable string that uniquely identifies this product"
+  slug: String
 
-  "Supported fulfillment types for this product"
-  supportedFulfillmentTypes: [String]!
+  "Holds metadata specific to a specific social network service"
+  socialMetadata: [SocialMetadata]
 
-  "Product page template"
-  template: String
+  "When a shopper purchases this product, what types of fulfillment can they choose from?"
+  supportedFulfillmentTypes: [FulfillmentType]!
+
+  "The list of tag IDs that have been applied to this product"
+  tagIds: [ID]
+
+  "The list of tags that have been applied to this product"
+  tags(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, tags are sorted by ID. Set this to sort by one of the other allowed fields"
+    sortBy: TagSortByField = _id
+  ): TagConnection
 
   "Product title"
-  title: String!
+  title: String
 
-  "Message to post to Twitter when using social sharing"
-  twitterMsg: String
-
-  "Product type"
-  # TODO: add better description
-  # TODO: how is this different than "productType"?
-  type: ProductType!
-
-  "The date and time at which this product was updated"
+  "The date and time at which this product was last updated, which is when the related product was most recently published"
   updatedAt: DateTime
 
-  "Variants of this top-level product"
+  "A flat list of all variants for this product"
   variants: [ProductVariant]!
 
-  "The vendor of this product"
+  "The product vendor or manufacturer, for display"
   vendor: String
-
-  "Product workflow"
-  workflow: Workflow
 }
 
 "A Reaction product variant or option"
@@ -112,26 +93,22 @@ type ProductVariant {
   "Variant ID"
   _id: ID!
 
-  "Ancestors of this variant"
-  ancestors: [ID]!
-
-  "Attribute label"
+  """
+  The attribute label describes the category of variant, for example, "Color" or "Size".
+  In most cases this will be the same for all variants at the same level.
+  """
   attributeLabel: String
 
-  "Product barcode number"
+  "The product variant barcode value, if it has one"
   barcode: String
 
-  "The date and time at which this product was created"
-  createdAt: DateTime!
+  "The date and time at which this CatalogProductVariant was created, which is when the related product was first published"
+  createdAt: DateTime
 
-  "Event log"
-  eventLog: Event
+  "The height of the product variant, if it has physical dimensions"
+  height: Float
 
-  "Height of variant"
-  # TODO: Why is this here and not on the parcel data like on the product?
-  height: Int
-
-  "Variant position number in list"
+  "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
   index: Int
 
   "Is product deleted?"
@@ -140,110 +117,46 @@ type ProductVariant {
   "Is product visible"
   isVisible: Boolean!
 
-  "Length of variant"
-  # TODO: Why is this here and not on the parcel data like on the product?
-  length: Int
+  "The length of the product, if it has physical dimensions"
+  length: Float
 
-  "Descriptive metafields to attach to a product"
-  metafields: [MetaFields]
+  "Arbitrary additional metadata about this product"
+  metafields: [Metafield]!
 
-  "Minimum order quantity for this variant"
+  "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
 
-  "Option title to be shown when `short` version of name is in UI"
+  "A short title to use for product detail select lists"
   optionTitle: String
 
-  "Variants (options) of this variant"
-  options: [ProductVariant]
+  "Child variants, if any"
+  options: [CatalogProductVariant]!
 
-  "Country of origin for this product"
+  "The country of origin"
   originCountry: String
 
-  "ID of shop this product was created for"
-  shopId: ID!
+  "The shop to which this product variant belongs"
+  shop: Shop!
 
   "SKU of variant"
   sku: String
 
-  "Variant title, shown when `long` version of name is in UI"
-  title: String!
+  """
+  The full variant title for use on cart, checkout, and order summaries and on invoices.
+  This fully describes the configured variant. For example, if this is an option with
+  `optionTitle` "Large", its parent variant has `optionTitle` "Red", and the product
+  `title` is "Fancy T-Shirt", then this `title` will be something like "Fancy T-Shirt - Red - Large".
+  """
+  title: String
 
-  "Product type"
-  type: ProductType!
-
-  "The date and time at which this product was updated"
+  "The date and time at which this CatalogProduct was last updated, which is when the related product was most recently published"
   updatedAt: DateTime
 
-  "Weight of variant"
-  # TODO: Why is this here and not on the parcel data like on the product?
-  weight: Int
+  "The weight of the product on Earth, if it has physical dimensions"
+  weight: Float
 
-  "Width of variant"
-  # TODO: Why is this here and not on the parcel data like on the product?
-  width: Int
-
-  "Product workflow"
-  workflow: Workflow
-}
-
-"Event description"
-# TODO: add better description
-type Event {
-  "The date and time at which this event was created"
-  createdAt: DateTime!
-
-  "Event description"
-  description: String
-
-  "Event title"
-  title: String!
-
-  "What triggered the event"
-  trigger: String
-
-  "Event type"
-  type: String!
-
-  "User who triggered event"
-  userId: ID
-}
-
-"Metafields description"
-# TODO: add better description
-type MetaFields {
-  "Description"
-  # TODO: add better description
-  description: String
-
-  "Key"
-  # TODO: add better description
-  key: String
-
-  "Namespace"
-  # TODO: add better description
-  namespace: String
-
-  "Scope"
-  # TODO: add better description
-  scope: String
-
-  "Value"
-  # TODO: add better description
-  value: String
-
-  "ValueType"
-  # TODO: add better description
-  valueType: String
-}
-
-"Workflow description"
-# TODO: add better description
-type Workflow {
-  "Current workflow status of product"
-  status: String!
-
-  "Array of all workflows product has been in"
-  workflow: [String]
+  "The width of the product, if it has physical dimensions"
+  width: Float
 }
 
 "Response payload of `createProduct` mutation"
