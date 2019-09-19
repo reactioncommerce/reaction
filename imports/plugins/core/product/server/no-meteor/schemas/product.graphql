@@ -97,6 +97,9 @@ type Product {
   "The date and time at which this product was updated"
   updatedAt: DateTime
 
+  "Variants of this top-level product"
+  variants: [ProductVariant]!
+
   "The vendor of this product"
   vendor: String
 
@@ -149,6 +152,9 @@ type ProductVariant {
 
   "Option title to be shown when `short` version of name is in UI"
   optionTitle: String
+
+  "Variants (options) of this variant"
+  options: [ProductVariant]
 
   "Country of origin for this product"
   originCountry: String
