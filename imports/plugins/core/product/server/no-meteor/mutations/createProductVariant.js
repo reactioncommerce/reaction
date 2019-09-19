@@ -19,9 +19,9 @@ const inputSchema = new SimpleSchema({
  */
 export default async function createProductVariant(context, input) {
   inputSchema.validate(input);
-  const { parentId } = input;
   const { collections, userHasPermission } = context;
   const { Products } = collections;
+  const { parentId } = input;
 
   // See that parent product exists
   const parentProduct = await Products.findOne({ _id: parentId });
