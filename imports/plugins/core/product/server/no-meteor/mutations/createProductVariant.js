@@ -6,7 +6,8 @@ import createProductOrVariant from "../utils/createProductOrVariant";
 import isAncestorDeleted from "../utils/isAncestorDeleted";
 
 const inputSchema = new SimpleSchema({
-  productId: String
+  productId: String,
+  shopId: String
 });
 
 /**
