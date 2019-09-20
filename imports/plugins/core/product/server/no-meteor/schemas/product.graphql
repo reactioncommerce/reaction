@@ -22,7 +22,7 @@ type Product {
   metaDescription: String
 
   "Arbitrary additional metadata about this product"
-  metafields: [MetaField]
+  metafields: [Metafield]
 
   "The country of origin"
   originCountry: String
