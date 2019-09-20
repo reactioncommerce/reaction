@@ -204,7 +204,10 @@ input CreateProductInput  {
 "Input for the `createProductVariant` mutation"
 input CreateProductVariantInput  {
   "ID of product variant belongs to"
-  parentId: ID!
+  productId: ID!
+
+  "ID of shop product will belong to"
+  shopId: ID!
 }
 
 "Input for the `cloneProducts` mutation"
