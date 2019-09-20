@@ -155,10 +155,12 @@ export default async function getDataForOrderEmail(context, { order }) {
   }
 
   const isInAdvance = isInAdvancePayment(order);
+  const isInSantanderManual = isInSantanderManualPayment(order);
+
   let bankDetails = null;
-  if (isInAdvance) {
-    const paymentShopId = getPaymentShopId(order)
-    bankDetails = await getBankDetails(context, paymentShopId)
+  if (isInAdvance || isInSantanderManual) {
+    const paymentShopId = getPaymentShopId(order);
+    bankDetails = await getBankDetails(context, paymentShopId);
   }
 
   // Merge data into single object to pass to email template
@@ -202,10 +204,9 @@ export default async function getDataForOrderEmail(context, { order }) {
       payments: (order.payments || []).map((payment) => ({
         displayName: payment.displayName,
         displayAmount: formatMoney(payment.amount * userCurrencyExchangeRate, userCurrency),
-        inAdvance: {
-          active: isInAdvance,
-          bankDetails,
-        }
+        isInAdvance,
+        isInSantanderManual,
+        bankDetails
       })),
       subtotal: formatMoney(subtotal * userCurrencyExchangeRate, userCurrency),
       shipping: formatMoney(shippingCost * userCurrencyExchangeRate, userCurrency),
@@ -218,6 +219,10 @@ export default async function getDataForOrderEmail(context, { order }) {
       ),
       adjustedTotal: formatMoney(
         (amount - refundTotal) * userCurrencyExchangeRate,
+        userCurrency
+      ),
+      santanderMin: formatMoney(
+        (subtotal / 48) * userCurrencyExchangeRate,
         userCurrency
       )
     },
@@ -245,7 +250,7 @@ async function getBankDetails(context, shopId) {
       acc[metafield.key] = metafield.value;
       return acc;
     }, {});
-  
+
   const locationDetails = {
     company: addressBook[0].company,
     address1: addressBook[0].address1,
@@ -265,4 +270,9 @@ function getPaymentShopId(order) {
 function isInAdvancePayment(order) {
   // string set in reaction-plugin-payment-in-advance
   return order.payments[0].name === "in_advance";
+}
+
+function isInSantanderManualPayment(order) {
+  // string set in reaction-plugin-payment-in-advance
+  return order.payments[0].name === "santander_manual";
 }
