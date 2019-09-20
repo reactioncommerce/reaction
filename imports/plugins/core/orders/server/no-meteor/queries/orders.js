@@ -9,15 +9,19 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
  * @param {String} params.accountId - Account ID to search orders for
- * @param {String} params.orderStatus - Workflow status to limit search results
- * @param {String} params.shopIds - Shop IDs for the shops that owns the orders
+ * @param {Object}  params.filters - Filters to apply to a list of orders
+ * @param {Array.<String>} params.shopIds - Shop IDs for the shops that owns the orders
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
-export default async function orders(context, { filter, orderStatus, shopIds } = {}) {
+export default async function orders(context, { filters, shopIds } = {}) {
   const { collections, shopsUserHasPermissionFor, userHasPermission } = context;
   const { Orders } = collections;
 
-  let query = {};
+  const query = {};
+  let fulfillmentStatusFilter = {};
+  let paymentStatusFilter = {};
+  let searchFieldFilter = {};
+  let statusFilter = {};
 
   // If an admin wants all orders for an account, we force it to be limited to the
   // shops for which they're allowed to see orders.
@@ -34,15 +38,39 @@ export default async function orders(context, { filter, orderStatus, shopIds } =
     query.shopId = { $in: shopIdsUserHasPermissionFor };
   }
 
-  // Use `filter` to filter out results on the server
-  if (filter) {
-    const regexMatch = { $regex: escapeRegExp(filter), $options: "i" };
-    query = {
+  // Add fulfillment status if provided
+  if (filters.fulfillmentStatus) {
+    const prefix = filters.fulfillmentStatus === "new" ? "" : "coreOrderWorkflow/";
+    fulfillmentStatusFilter = {
+      "shipping.workflow.status": `${prefix}${filters.fulfillmentStatus}`
+    };
+  }
+
+  // Add payment status filters if provided
+  if (filters.paymentStatus) {
+    paymentStatusFilter = {
+      "payments.status": filters.paymentStatus
+    };
+  }
+
+  // Add order status filter if provided
+  if (filters.status) {
+    const prefix = filters.fulfillmentStatus === "new" ? "" : "coreOrderWorkflow/";
+    statusFilter = {
+      "workflow.status": { $eq: `${prefix}${filters.status}` }
+    };
+  }
+
+  // Use `filters` to filters out results on the server
+  if (filters.searchField) {
+    const { searchField } = filters;
+    const regexMatch = { $regex: escapeRegExp(searchField), $options: "i" };
+    searchFieldFilter = {
       $or: [
         // Exact matches
-        { _id: filter }, // exact match the order id
-        { referenceId: filter }, // exact match the reference id
-        { email: filter }, // exact match the email
+        { _id: searchField }, // exact match the order id
+        { referenceId: searchField }, // exact match the reference id
+        { email: searchField }, // exact match the email
 
         // Regex match names as they include the whole name in one field
         { "payments.address.fullName": regexMatch },
@@ -51,14 +79,13 @@ export default async function orders(context, { filter, orderStatus, shopIds } =
     };
   }
 
-  // If orderStatus array is provided, only return orders with statuses in Array
-  // Otherwise, return all orders
-  if (Array.isArray(orderStatus) && orderStatus.length > 0) {
-    query = {
-      "workflow.status": { $in: orderStatus },
-      ...query
-    };
-  }
+  // Build the final query
+  query.$and = [{
+    ...fulfillmentStatusFilter,
+    ...paymentStatusFilter,
+    ...searchFieldFilter,
+    ...statusFilter
+  }];
 
   return Orders.find(query);
 }
