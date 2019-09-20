@@ -12,16 +12,27 @@ test("throws if permission check fails", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(false);
 
   await expect(createProductVariant(mockContext, {
-    parentId: "PRODUCT_ID"
+    productId: "PRODUCT_ID",
+    shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["createProduct", "product/admin", "product/create"], "SHOP_ID");
 });
 
-test("throws if the parentId isn't supplied", async () => {
+test("throws if the productId isn't supplied", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
 
   await expect(createProductVariant(mockContext, {
-    parentId: undefined
+    productId: undefined,
+    shopId: "SHOP_ID"
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if the shopId isn't supplied", async () => {
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  await expect(createProductVariant(mockContext, {
+    productId: "PRODUCT_ID",
+    shopId: undefined
   })).rejects.toThrowErrorMatchingSnapshot();
 });
