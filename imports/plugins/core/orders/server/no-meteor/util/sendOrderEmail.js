@@ -56,5 +56,5 @@ async function getLanguageForOrder(context, { ordererPreferredLanguage, accountI
   }
 
   const account = await Accounts.findOne({ _id: accountId }, { "profile.language": 1 });
-  return (account && account.profile && account.profile.language) || language;
+  return (account && account.profile && account.profile.language) || ordererPreferredLanguage;
 }
