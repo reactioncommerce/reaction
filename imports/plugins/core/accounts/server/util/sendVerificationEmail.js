@@ -25,7 +25,7 @@ export default async function sendVerificationEmail({
 }) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne({ _id: userId });
-  const account = Meteor.users.findOne({ _id: userId });
+  const account = Accounts.findOne({  userId });
 
   if (!user) throw new ReactionError("not-found", `User ${userId} not found`);
 

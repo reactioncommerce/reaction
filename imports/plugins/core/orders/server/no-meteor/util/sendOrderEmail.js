@@ -48,11 +48,11 @@ export default async function sendOrderEmail(context, order, action) {
  * @param {Object} order - The order document
  * @returns {String} i18n language code
  */
-async function getLanguageForOrder(context, { language, accountId }) {
+async function getLanguageForOrder(context, { ordererPreferredLanguage, accountId }) {
   const { collections: { Accounts } } = context;
   // if order is anonymous return order language
   if (!accountId) {
-    return language;
+    return ordererPreferredLanguage;
   }
 
   const account = await Accounts.findOne({ _id: accountId }, { "profile.language": 1 });

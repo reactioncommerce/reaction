@@ -310,7 +310,7 @@ type SetAccountProfileCurrencyPayload {
 "The response from the `setAccountProfileLanguage` mutation"
 type SetAccountProfileLanguagePayload {
   "The updated account"
-  account: Account
+  account: Account!
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -383,7 +383,7 @@ extend type Mutation {
   setAccountProfileLanguage(
     "Mutation input"
     input: SetAccountProfileLanguageInput!
-  ): SetAccountProfileLanguagePayload
+  ): SetAccountProfileLanguagePayload!
 
   "Remove an address that exists in the `addressBook` field for an account"
   updateAccountAddressBookEntry(
