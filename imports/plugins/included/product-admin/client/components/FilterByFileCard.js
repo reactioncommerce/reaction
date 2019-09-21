@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { i18next } from "/client/api";
 import {
   Grid,
+  Grow,
   Button,
   Card as MuiCard,
   CardHeader,
@@ -61,61 +62,63 @@ export default function FilterByFileCard(props) {
 
   return (
     <Grid item sm={12} className={cardClasses}>
-      <MuiCard>
-        <CardHeader
-          action={
-            <IconButton aria-label="close" onClick={() => setFilterByFileVisible(false)}>
-              <CloseIcon />
-            </IconButton>
-          }
-          title={i18next.t("admin.importCard.title")}
-        />
-        <CardContent>
-          {files.length > 0 ? (
-            <Grid container spacing={1} className={classes.cardContainer}>
-              <Grid item sm={12}>
-                {
-                  files.map((file, index) => (
-                    <Chip
-                      label={file.name}
-                      key={index}
-                      className={classes.leftChip}
-                      onDelete={() => handleDelete(file.name)}
-                    />
-                  ))
-                }
+      <Grow timeout={180} in={isFilterByFileVisible} mountOnEnter unmountOnExit style={{ transformOrigin: "center top" }}>
+        <MuiCard>
+          <CardHeader
+            action={
+              <IconButton aria-label="close" onClick={() => setFilterByFileVisible(false)}>
+                <CloseIcon />
+              </IconButton>
+            }
+            title={i18next.t("admin.importCard.title")}
+          />
+          <CardContent>
+            {files.length > 0 ? (
+              <Grid container spacing={1} className={classes.cardContainer}>
+                <Grid item sm={12}>
+                  {
+                    files.map((file, index) => (
+                      <Chip
+                        label={file.name}
+                        key={index}
+                        className={classes.leftChip}
+                        onDelete={() => handleDelete(file.name)}
+                      />
+                    ))
+                  }
+                </Grid>
+                <Grid item sm={12}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ float: "right" }}
+                    onClick={() => importFiles(files)}
+                  >
+                    {i18next.t("admin.importCard.filterProducts")}
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item sm={12}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ float: "right" }}
-                  onClick={() => importFiles(files)}
-                >
-                  {i18next.t("admin.importCard.filterProducts")}
-                </Button>
+            ) : (
+              <Grid container spacing={1} className={classes.cardContainer}>
+                <Grid item sm={12}>
+                  <Button
+                    {...getRootProps({ className: "dropzone" })}
+                    variant="contained"
+                    color="primary"
+                  >
+                    <input {...getInputProps()} />
+                    <ImportIcon className={classes.leftIcon} />
+                    {i18next.t("admin.importCard.import")}
+                  </Button>
+                  <Typography variant="caption" display="inline" className={classes.helpText}>
+                    {i18next.t("admin.importCard.importHelpText")}
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
-          ) : (
-            <Grid container spacing={1} className={classes.cardContainer}>
-              <Grid item sm={12}>
-                <Button
-                  {...getRootProps({ className: "dropzone" })}
-                  variant="contained"
-                  color="primary"
-                >
-                  <input {...getInputProps()} />
-                  <ImportIcon className={classes.leftIcon} />
-                  {i18next.t("admin.importCard.import")}
-                </Button>
-                <Typography variant="caption" display="inline" className={classes.helpText}>
-                  {i18next.t("admin.importCard.importHelpText")}
-                </Typography>
-              </Grid>
-            </Grid>
-          )}
-        </CardContent>
-      </MuiCard>
+            )}
+          </CardContent>
+        </MuiCard>
+      </Grow>
     </Grid>
   );
 }
