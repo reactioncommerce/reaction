@@ -984,40 +984,40 @@ type UpdateOrderFulfillmentGroupPayload {
   order: Order!
 }
 
-"Order status"
-enum OrderStatus {
-  "A new order that needs processing"
-  new
-  
-  "An order that is being processed"
-  processing
-
-  "A completed order"
-  completed
-
-  "Canceled order"
-  canceled
-}
-
-"Order payment status"
-enum OrderPaymentStatus {
-  "A payment intent has been created"
-  created
-
-  "Payments that have been successfully processed"
-  completed
-}
-
 "Available order fulfillment statuses"
 enum OrderFulfillmentStatus {
+  "An order that has been completed"
+  completed
+
   "Newly created order that needs processing"
   new
 
   "An order that is currently being processed"
   processing
+}
 
-  "An order that has been completed"
+"Order payment status"
+enum OrderPaymentStatus {
+  "Payments that have been successfully processed"
   completed
+
+  "A payment intent has been created"
+  created
+}
+
+"Order status"
+enum OrderStatus {
+  "Canceled order"
+  canceled
+
+  "A completed order"
+  completed
+
+  "A new order that needs processing"
+  new
+  
+  "An order that is being processed"
+  processing
 }
 
 "Input type for filters to by applied to an Orders list"
