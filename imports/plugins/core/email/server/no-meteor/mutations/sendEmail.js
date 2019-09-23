@@ -1,4 +1,4 @@
-import { Job, Jobs } from "/imports/utils/jobs";
+import { Job, Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 import getShopLogo from "../util/getShopLogo";
 
 /**
@@ -71,7 +71,8 @@ export default async function sendEmail(context, options) {
       data: {
         ...defaultData,
         ...(options.data || {})
-      }
+      },
+      shopId: fromShopId
     });
     jobData.html = html;
     jobData.subject = subject;

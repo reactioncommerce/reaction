@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Jobs } from "/imports/utils/jobs";
+import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 
 /**
  * @param {Object} context App context

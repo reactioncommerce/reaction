@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
-import { Jobs } from "/imports/utils/jobs";
+import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -23,7 +23,8 @@ export default function retryFailed(jobId) {
   Logger.debug(`emails/retryFailed - restarting email job "${jobId}"`);
 
   // Get email job to retry
-  const job = Jobs.getJob(jobId);
+  const job = Promise.await(Jobs.getJob(jobId));
+
   // If this job was never completed, restart it and set it to "ready"
   if (job._doc.status !== "completed") {
     job.restart();
@@ -36,11 +37,11 @@ export default function retryFailed(jobId) {
   }
 
   // Set the job status to ready to trigger the Jobs observer to trigger sendEmail
-  Jobs.update({ _id: emailJobId }, {
+  Promise.await(Jobs.update({ _id: emailJobId }, {
     $set: {
       status: "ready"
     }
-  });
+  }));
 
   return true;
 }
