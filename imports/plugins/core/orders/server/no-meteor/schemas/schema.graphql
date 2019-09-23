@@ -1031,6 +1031,7 @@ input CreatedAtInput {
 
 "Input type for an order date range"
 input OrderDateRangeInput {
+  "The order's create date"
   createdAt: CreatedAtInput 
 }
 
