@@ -8,11 +8,6 @@ import * as Collections from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import sendWelcomeEmail from "/imports/plugins/core/accounts/server/util/sendWelcomeEmail";
-import sendVerificationEmail from "./util/sendVerificationEmail";
-
-appEvents.on("afterAddUnverifiedEmailToUser", ({ email, userId }) => {
-  sendVerificationEmail({ email, userId });
-});
 
 Meteor.startup(() => {
   /**

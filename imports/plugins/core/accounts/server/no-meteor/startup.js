@@ -9,6 +9,7 @@ import {
   defaultShopManagerRoles,
   defaultVisitorRoles
 } from "./util/defaultRoles";
+import sendVerificationEmail from "./util/sendVerificationEmail";
 
 /**
  * @summary Called on startup
@@ -25,6 +26,10 @@ export default async function startup(context) {
       users
     }
   } = context;
+
+  appEvents.on("afterAddUnverifiedEmailToUser", ({ email, userId }) => {
+    sendVerificationEmail(context, { email, userId });
+  });
 
   appEvents.on("afterShopCreate", async (payload) => {
     const { shop } = payload;
