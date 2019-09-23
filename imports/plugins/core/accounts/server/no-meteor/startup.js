@@ -27,8 +27,8 @@ export default async function startup(context) {
     }
   } = context;
 
-  appEvents.on("afterAddUnverifiedEmailToUser", ({ email, userId }) => {
-    sendVerificationEmail(context, { email, userId });
+  appEvents.on("afterAddUnverifiedEmailToUser", ({ email, shopId, userId }) => {
+    sendVerificationEmail(context, { email, shopId, userId });
   });
 
   appEvents.on("afterShopCreate", async (payload) => {

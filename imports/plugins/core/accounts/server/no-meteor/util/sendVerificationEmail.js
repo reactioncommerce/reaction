@@ -1,7 +1,6 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -16,7 +15,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} [input.bodyTemplate] Template name for rendering the email body
  * @returns {Job} - returns a sendEmail Job instance
  */
-export default async function sendVerificationEmail(context, { bodyTemplate = "accounts/verifyEmail", email, userId }) {
+export default async function sendVerificationEmail(context, { bodyTemplate = "accounts/verifyEmail", email, shopId, userId }) {
   const { collections } = context;
   const { Accounts, Shops, users } = collections;
 
@@ -60,10 +59,10 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
     }
   });
 
-  const shop = await Shops.findOne({ _id: account.shopId });
+  const shop = await Shops.findOne({ _id: shopId });
 
   const shopName = shop.name;
-  const url = MeteorAccounts.urls.verifyEmail(token);
+  const url = `${context.getAbsoluteUrl()}#/verify-email/${token}`;
   const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
