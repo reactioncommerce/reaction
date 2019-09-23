@@ -1,4 +1,4 @@
-import { Jobs } from "/imports/utils/jobs";
+import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 
 /**
  * @method saveTempImages
@@ -27,12 +27,14 @@ export default function saveTempImages(fileWorker) {
   });
 
   // Observer that triggers processing of job when ready
-  Jobs.find({
-    type: "saveImage/local",
-    status: "ready"
-  }).observe({
-    added() {
-      return saveImagesJob.trigger();
-    }
+  Jobs.events.on("ready", () => {
+    Jobs.find({
+      type: "saveImage/local",
+      status: "ready"
+    }).observe({
+      added() {
+        return saveImagesJob.trigger();
+      }
+    });
   });
 }
