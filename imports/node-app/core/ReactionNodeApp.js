@@ -268,10 +268,13 @@ export default class ReactionNodeApp {
     // (1) Connect to MongoDB database
     await this.connectToMongo({ mongoUrl });
 
-    // (2) Run service startup functions
+    // (2) Init the server here. Some startup may need `app.expressApp`
+    this.initServer();
+
+    // (3) Run service startup functions
     await this.runServiceStartup();
 
-    // (3) Start the Express GraphQL server
+    // (4) Start the Express GraphQL server
     await this.startServer({ port });
   }
 
