@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import sendVerificationEmail from "./util/sendVerificationEmail";
+import sendVerificationEmail from "../util/sendVerificationEmail";
 
 const inputSchema = new SimpleSchema({
   accountId: String,
@@ -29,7 +29,7 @@ export default async function removeAccountEmailRecord(context, input) {
   const account = await Accounts.findOne({ "_id": accountId, "emails.address": email });
   if (!account) throw new ReactionError("not-found", "Account not Found");
 
-  const user = await users.findOne({ _id: account.userId });
+  const user = await users.findOne({ "_id": account.userId, "emails.address": email });
   if (!user) throw new ReactionError("not-found", "User not Found");
 
   if (!context.isInternalCall && userIdFromContext !== accountId) {
@@ -38,7 +38,7 @@ export default async function removeAccountEmailRecord(context, input) {
 
   // Remove email from user
   // This is the same as `MeteorAccounts.removeEmail(userId, email)
-  const { value: updatedUser } = await users.update(
+  const { value: updatedUser } = await users.findOneAndUpdate(
     { _id: user._id },
     {
       $pull: { emails: { address: email } }
