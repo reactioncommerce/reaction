@@ -18,10 +18,27 @@ export default async function orders(context, { filters, shopIds } = {}) {
   const { Orders } = collections;
 
   const query = {};
+  let dateRangeFilter = {};
   let fulfillmentStatusFilter = {};
   let paymentStatusFilter = {};
   let searchFieldFilter = {};
   let statusFilter = {};
+
+
+  // Add a date range filter if provided, the filter will be
+  // applied to the createdAt database field.
+  if (filters.dateRange && filters.dateRange.createdAt) {
+    const { createdAt } = filters.dateRange;
+    // Both fields are optional
+    const gteProp = createdAt.gte ? { $gte: createdAt.gte } : {};
+    const ltProp = createdAt.lt ? { $lt: createdAt.lt } : {};
+    dateRangeFilter = {
+      createdAt: {
+        ...gteProp,
+        ...ltProp
+      }
+    };
+  }
 
   // If an admin wants all orders for an account, we force it to be limited to the
   // shops for which they're allowed to see orders.
@@ -81,6 +98,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
 
   // Build the final query
   query.$and = [{
+    ...dateRangeFilter,
     ...fulfillmentStatusFilter,
     ...paymentStatusFilter,
     ...searchFieldFilter,

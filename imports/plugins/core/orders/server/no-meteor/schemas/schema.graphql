@@ -1020,8 +1020,25 @@ enum OrderStatus {
   processing
 }
 
+"Input for the createdAt database field"
+input CreatedAtInput {
+  "Start date, inclusive"
+  gte: DateTime
+
+  "End date, not inclusive"
+  lt: DateTime
+}
+
+"Input type for an order date range"
+input OrderDateRangeInput {
+  createdAt: CreatedAtInput 
+}
+
 "Input type for filters to by applied to an Orders list"
 input OrderFilterInput {
+  "A date range to filter by"
+  dateRange: OrderDateRangeInput
+
   "An order's fulfillment status"
   fulfillmentStatus: OrderFulfillmentStatus
 
