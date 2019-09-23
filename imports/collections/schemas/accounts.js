@@ -73,6 +73,11 @@ export const Profile = new SimpleSchema({
     optional: true,
     mockValue: null
   },
+  "language": {
+    label: "User language",
+    type: String,
+    optional: true
+  },
   "preferences": {
     label: "User preferences",
     type: Object,

@@ -61,6 +61,8 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
 
   const shop = await Shops.findOne({ _id: shopId });
 
+  if (!shop) throw new ReactionError("not-found", "Shop not found");
+
   const shopName = shop.name;
   const url = `${context.getAbsoluteUrl()}#/verify-email/${token}`;
   const copyrightDate = new Date().getFullYear();
@@ -101,10 +103,13 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
     userEmailAddress: address
   };
 
+  const language = (account.profile && account.profile.language) || shop.language;
+
   return context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: shop,
     templateName: bodyTemplate,
+    language,
     to: address
   });
 }

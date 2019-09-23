@@ -6,6 +6,7 @@ import removeAccountEmailRecord from "./removeAccountEmailRecord";
 import removeAccountFromGroup from "./removeAccountFromGroup";
 import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail";
 import setAccountProfileCurrency from "./setAccountProfileCurrency";
+import setAccountProfileLanguage from "./setAccountProfileLanguage";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
 
 export default {
@@ -17,5 +18,6 @@ export default {
   removeAccountFromGroup,
   sendResetAccountPasswordEmail,
   setAccountProfileCurrency,
+  setAccountProfileLanguage,
   updateAccountAddressBookEntry
 };
