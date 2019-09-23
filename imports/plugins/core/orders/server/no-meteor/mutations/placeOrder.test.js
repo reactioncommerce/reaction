@@ -59,6 +59,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     cartId: null,
     currencyCode: "USD",
     email: "valid@email.address",
+    ordererPreferredLanguage: "en",
     fulfillmentGroups: Factory.orderFulfillmentGroupInputSchema.makeMany(1, {
       items: Factory.orderItemInputSchema.makeMany(1, {
         quantity: 1,
@@ -88,6 +89,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     customFields: {},
     discounts: [],
     email: orderInput.email,
+    ordererPreferredLanguage: "en",
     payments: [],
     referenceId: jasmine.any(String),
     shipping: [

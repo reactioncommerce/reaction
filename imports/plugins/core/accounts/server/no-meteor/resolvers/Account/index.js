@@ -11,6 +11,7 @@ export default {
   emailRecords: (account) => account.emails,
   firstName: (account) => account.profile.firstName,
   lastName: (account) => account.profile.lastName,
+  language: (account) => account.profile.language,
   name: (account) => account.profile.name,
   preferences: (account) => get(account, "profile.preferences"),
   primaryEmailAddress: (account) => {

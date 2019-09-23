@@ -231,6 +231,10 @@ export const orderInputSchema = new SimpleSchema({
     minCount: 1
   },
   "fulfillmentGroups.$": orderFulfillmentGroupInputSchema,
+  "ordererPreferredLanguage": {
+    type: String,
+    optional: true
+  },
   "shopId": String
 });
 
