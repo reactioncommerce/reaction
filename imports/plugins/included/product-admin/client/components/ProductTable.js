@@ -144,7 +144,7 @@ function ProductTable({ history }) {
     return null;
   };
 
-  const doMutation = async () => {
+  const createProductMutation = async () => {
     const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
 
     const { data } = await createProduct({ variables: { input: { shopId: opaqueShopId } } });
@@ -179,7 +179,7 @@ function ProductTable({ history }) {
             <Grid item sm={12}>
               <Button
                 color="primary"
-                onClick={doMutation}
+                onClick={createProductMutation}
                 variant="contained"
               >
                 {i18next.t("admin.createProduct") || "Create product"}
