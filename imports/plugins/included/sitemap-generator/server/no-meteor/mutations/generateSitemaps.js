@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Job, Jobs } from "/imports/utils/jobs";
+import { Job, Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 
 /**
  * @name sitemap/generateSitemaps
@@ -18,5 +18,5 @@ export default async function generateSitemaps(context) {
     throw new ReactionError("access-denied", "User does not have permissions to generate sitemaps");
   }
 
-  new Job(Jobs, "sitemaps/generate", { notifyUserId: userId }).save({ cancelRepeats: true });
+  new Job(Jobs, "sitemaps/generate", { notifyUserId: userId, shopId }).save({ cancelRepeats: true });
 }

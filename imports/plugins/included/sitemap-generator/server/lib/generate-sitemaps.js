@@ -1,40 +1,34 @@
 import { Meteor } from "meteor/meteor";
 import Logger from "@reactioncommerce/logger";
-import { Products, Shops, Tags } from "/lib/collections";
-import collections from "/imports/collections/rawCollections";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
-import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import { Sitemaps } from "../../lib/collections/sitemaps";
 
 const DEFAULT_URLS_PER_SITEMAP = 1000;
 
 /**
  * @name generateSitemaps
  * @summary Generates & stores sitemap documents for one or more shops, without Meteor method context
+ * @param {Object} context App context
  * @param {Object} options - Options
  * @param {Array} [options.shopIds] - _id of shops to generate sitemaps for. Defaults to primary shop _id
  * @param {String} [options.notifyUserId] - Optional user _id to notify via notifications UI
  * @param {Number} [options.urlsPerSitemap] - Max # of URLs per sitemap
  * @returns {undefined}
  */
-export default function generateSitemaps({ shopIds = [], notifyUserId = "", urlsPerSitemap = DEFAULT_URLS_PER_SITEMAP }) {
+export default async function generateSitemaps(context, { shopIds = [], notifyUserId = "", urlsPerSitemap = DEFAULT_URLS_PER_SITEMAP }) {
   Logger.debug("Generating sitemaps");
   const timeStart = new Date();
 
   // Add primary shop _id if none provided
   if (shopIds.length === 0) {
-    shopIds.push(Reaction.getPrimaryShopId());
+    throw new Error("generateSitemaps requires shopIds list");
   }
 
   // Generate sitemaps for each shop
-  shopIds.forEach((shopId) => {
-    generateSitemapsForShop(shopId, urlsPerSitemap);
-  });
+  await Promise.all(shopIds.map((shopId) => generateSitemapsForShop(context, shopId, urlsPerSitemap)));
 
   // Notify user, if manually generated
   if (notifyUserId) {
-    createNotification(collections, {
+    await createNotification(context.collections, {
       accountId: notifyUserId,
       type: "sitemapGenerated",
       message: "Sitemap refresh is complete",
@@ -52,25 +46,27 @@ export default function generateSitemaps({ shopIds = [], notifyUserId = "", urls
  * @private
  * @summary Creates and stores the sitemaps for a single shop, if any need to be regenerated,
  * meaning a product/tag has been updated, or a new custom URL is provided via the onGenerateSitemap hook
+ * @param {Object} context App context
  * @param {String} shopId - _id of shop to generate sitemaps for
  * @param {Number} urlsPerSitemap - Max # of URLs per sitemap
  * @returns {undefined}
  */
-function generateSitemapsForShop(shopId, urlsPerSitemap) {
-  const shop = Shops.findOne({ _id: shopId }, { fields: { _id: 1 } });
+async function generateSitemapsForShop(context, shopId, urlsPerSitemap) {
+  const { collections: { Products, Shops, Sitemaps, Tags } } = context;
+
+  const shop = await Shops.findOne({ _id: shopId }, { projection: { _id: 1 } });
   if (!shop) {
     throw new Meteor.Error("not-found", `Shop ${shopId} not found`);
   }
 
-  const sitemapIndex = Sitemaps.findOne({ shopId, handle: "sitemap.xml" });
+  const sitemapIndex = await Sitemaps.findOne({ shopId, handle: "sitemap.xml" });
   const hasNoSitemap = typeof sitemapIndex === "undefined";
   const sitemapIndexItems = [];
 
   // Generate sitemaps for basic pages
   // Allow custom shops to add arbitrary URLs to the sitemap
-  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
   const customFuncs = context.getFunctionsOfType("getPageSitemapItems");
-  const customPageItemResults = Promise.await(Promise.all(customFuncs.map((customFunc) => customFunc())));
+  const customPageItemResults = await Promise.all(customFuncs.map((customFunc) => customFunc()));
   const pageSitemapItems = customPageItemResults.reduce((list, customItems) => list.concat(customItems), [
     {
       url: "BASE_URL",
@@ -78,7 +74,7 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
     }
   ]);
 
-  const pageSitemaps = rebuildPaginatedSitemaps(shopId, {
+  const pageSitemaps = await rebuildPaginatedSitemaps(context, shopId, {
     typeHandle: "pages",
     items: pageSitemapItems,
     urlsPerSitemap
@@ -87,11 +83,11 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
 
   // Regenerate tag sitemaps, if a tag has been created or updated since last generation
   const selector = { updatedAt: { $gt: sitemapIndex && sitemapIndex.createdAt } };
-  const options = { fields: { _id: 1 } };
-  const shouldRegenTagSitemaps = hasNoSitemap || !!Tags.findOne(selector, options);
+  const options = { projection: { _id: 1 } };
+  const shouldRegenTagSitemaps = hasNoSitemap || !!(await Tags.findOne(selector, options));
   if (shouldRegenTagSitemaps) {
-    const tagSitemapItems = getTagSitemapItems(shopId);
-    const tagSitemaps = rebuildPaginatedSitemaps(shopId, {
+    const tagSitemapItems = await getTagSitemapItems(shopId);
+    const tagSitemaps = await rebuildPaginatedSitemaps(context, shopId, {
       typeHandle: "tags",
       items: tagSitemapItems,
       urlsPerSitemap
@@ -99,26 +95,26 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
     sitemapIndexItems.push(...tagSitemaps);
   } else {
     // Load existing tag sitemaps for index
-    sitemapIndexItems.push(...getExistingSitemapsForIndex(shopId, "tags"));
+    sitemapIndexItems.push(...await getExistingSitemapsForIndex(context, shopId, "tags"));
   }
 
   // Do the same for products
-  const shouldRegenProductSitemaps = hasNoSitemap || !!Products.findOne(selector, options);
+  const shouldRegenProductSitemaps = hasNoSitemap || !!(await Products.findOne(selector, options));
   if (shouldRegenProductSitemaps) {
-    const productSitemapItems = getProductSitemapItems(shopId);
-    const productSitemaps = rebuildPaginatedSitemaps(shopId, {
+    const productSitemapItems = await getProductSitemapItems(context, shopId);
+    const productSitemaps = await rebuildPaginatedSitemaps(context, shopId, {
       typeHandle: "products",
       items: productSitemapItems,
       urlsPerSitemap
     });
     sitemapIndexItems.push(...productSitemaps);
   } else {
-    sitemapIndexItems.push(...getExistingSitemapsForIndex(shopId, "products"));
+    sitemapIndexItems.push(...await getExistingSitemapsForIndex(context, shopId, "products"));
   }
 
   // Regenerate sitemap index
-  Sitemaps.remove({ shopId, handle: "sitemap.xml" });
-  Sitemaps.insert({
+  await Sitemaps.deleteOne({ shopId, handle: "sitemap.xml" });
+  await Sitemaps.insertOne({
     shopId,
     xml: generateIndexXML(sitemapIndexItems),
     handle: "sitemap.xml",
@@ -131,6 +127,7 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
  * @summary Deletes old sitemaps for type, builds new paginated sitemaps, saves to collection, and returns items to add
  *  to sitemap index
  * @private
+ * @param {Object} context App context
  * @param {String} shopId - _id of shop sitemaps are for
  * @param {Object} options - Options
  * @param {String} options.typeHandle - type of sitemap, i.e. "pages", "tags", "products"
@@ -140,9 +137,11 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
  * @param {Number} options.urlsPerSitemap - Max # of URLs per sitemap
  * @returns {Object[]} - Array of items to add to sitemap index
  */
-function rebuildPaginatedSitemaps(shopId, { typeHandle, items, urlsPerSitemap }) {
+async function rebuildPaginatedSitemaps(context, shopId, { typeHandle, items, urlsPerSitemap }) {
+  const { collections: { Sitemaps } } = context;
+
   // Remove old sitemaps for type
-  Sitemaps.remove({ shopId, handle: { $regex: new RegExp(`^sitemap-${typeHandle}`) } });
+  await Sitemaps.deleteMany({ shopId, handle: { $regex: new RegExp(`^sitemap-${typeHandle}`) } });
 
   const sitemapIndexItems = [];
 
@@ -151,7 +150,8 @@ function rebuildPaginatedSitemaps(shopId, { typeHandle, items, urlsPerSitemap })
     const endIndex = startIndex + urlsPerSitemap;
     const sitemapPageItems = items.slice(startIndex, endIndex);
 
-    Sitemaps.insert({
+    // eslint-disable-next-line no-await-in-loop
+    await Sitemaps.insertOne({
       shopId,
       xml: generateSitemapXML(sitemapPageItems),
       handle: `sitemap-${typeHandle}-${currentPage}.xml`,
@@ -171,15 +171,20 @@ function rebuildPaginatedSitemaps(shopId, { typeHandle, items, urlsPerSitemap })
  * @name getTagSitemapItems
  * @private
  * @summary Loads visible tags and returns an array of items to add to the tags sitemap
+ * @param {Object} context App context
  * @param {String} shopId - _id of shop to load tags from
  * @returns {Object[]} - Array of objects w/ url & lastModDate properties
  */
-function getTagSitemapItems(shopId) {
-  return Tags.find({
+async function getTagSitemapItems(context, shopId) {
+  const { collections: { Tags } } = context;
+
+  const tags = await Tags.find({
     shopId,
     isVisible: true,
     isDeleted: false
-  }, { fields: { slug: 1, updatedAt: 1 } }).map((tag) => {
+  }, { projection: { slug: 1, updatedAt: 1 } }).toArray();
+
+  return tags.map((tag) => {
     const { slug, updatedAt } = tag;
     return {
       url: `BASE_URL/tag/${slug}`,
@@ -192,17 +197,22 @@ function getTagSitemapItems(shopId) {
  * @name getProductSitemapItems
  * @private
  * @summary Loads visible products and returns an array of items to add to the products sitemap
+ * @param {Object} context App context
  * @param {String} shopId - _id of shop to load products from
  * @returns {Object[]} - Array of objects w/ url & lastModDate properties
  */
-function getProductSitemapItems(shopId) {
-  return Products.find({
+async function getProductSitemapItems(context, shopId) {
+  const { collections: { Products } } = context;
+
+  const products = await Products.find({
     shopId,
     type: "simple",
     isVisible: true,
     isDeleted: false,
     shouldAppearInSitemap: true
-  }, { fields: { handle: 1, updatedAt: 1 } }).map((product) => {
+  }, { projection: { handle: 1, updatedAt: 1 } }).toArray();
+
+  return products.map((product) => {
     const { handle, updatedAt } = product;
     return {
       url: `BASE_URL/product/${handle}`,
@@ -215,15 +225,20 @@ function getProductSitemapItems(shopId) {
  * @name getExistingSitemapsForIndex
  * @private
  * @summary Loads existing sitemaps by type and returns an array of items for the sitemap index
+ * @param {Object} context App context
  * @param {String} shopId - _id of shop sitemaps are for
  * @param {String} typeHandle - type of sitemaps to load, i.e. "products", "pages", or "tags"
  * @returns {Object[]} - Array of objects w/ url & lastModDate properties
  */
-function getExistingSitemapsForIndex(shopId, typeHandle) {
-  return Sitemaps.find({
+async function getExistingSitemapsForIndex(context, shopId, typeHandle) {
+  const { collections: { Sitemaps } } = context;
+
+  const sitemaps = await Sitemaps.find({
     shopId,
     handle: { $regex: new RegExp(`^sitemap-${typeHandle}`) }
-  }, { fields: { handle: 1, createdAt: 1 } }).map((sitemap) => {
+  }, { projection: { handle: 1, createdAt: 1 } }).toArray();
+
+  return sitemaps.map((sitemap) => {
     const { handle, createdAt } = sitemap;
     return {
       url: `BASE_URL/${handle}`,

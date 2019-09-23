@@ -1,14 +1,8 @@
-import { Meteor } from "meteor/meteor";
 import i18n from "./i18n";
+import mutations from "./mutations";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
-
-// This is temporary. Mutations still import jobs, which don't
-// work outside of a Meteor environment.
-let mutations = {};
-if (!Meteor.isFakeMeteor) {
-  mutations = require("./mutations").default;
-}
+import startup from "./startup";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -28,6 +22,9 @@ export default async function register(app) {
           [{ shopId: 1, handle: 1 }]
         ]
       }
+    },
+    functionsByType: {
+      startup: [startup]
     },
     graphQL: {
       resolvers,
