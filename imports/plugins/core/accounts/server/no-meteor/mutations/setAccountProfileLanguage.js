@@ -21,17 +21,23 @@ const inputSchema = new SimpleSchema({
  */
 export default async function setAccountProfileLanguage(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
+  const {
+    accountId: accountIdFromContext,
+    appEvents,
+    collections,
+    userHasPermission,
+    userId: userIdFromContext
+  } = context;
   const { Accounts, Shops } = collections;
   const { language, accountId: providedAccountId } = input;
-  const accountId = providedAccountId || userIdFromContext;
+  const accountId = providedAccountId || accountIdFromContext;
 
   if (!accountId) throw new ReactionError("access-denied", "You must be logged in to set profile language");
 
   const account = Accounts.findOne({ _id: accountId }, { fields: { shopId: 1 } });
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (!context.isInternalCall && userIdFromContext !== providedAccountId) {
+  if (!context.isInternalCall && accountIdFromContext !== accountId) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }
 
@@ -49,7 +55,7 @@ export default async function setAccountProfileLanguage(context, input) {
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
-    updatedBy: accountId,
+    updatedBy: userIdFromContext,
     updatedFields: ["profile.language"]
   });
 
