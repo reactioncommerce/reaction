@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function xformCartGroupToCommonOrder(cart, group, context) {
   const { collections } = context;
-  const { currencyCode } = cart;
+  const { accountId, currencyCode } = cart;
 
   let items = group.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
   items = items.filter((item) => !!item); // remove nulls
@@ -131,6 +131,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
 
 
   return {
+    accountId,
     billingAddress: null,
     cartId: cart._id,
     currencyCode: cart.currencyCode,

@@ -116,6 +116,10 @@ const CommonOrderTotals = new SimpleSchema({
  *   caring whether it is for a Cart or an Order.
  */
 export const CommonOrder = new SimpleSchema({
+  accountId: {
+    type: String,
+    optional: true
+  },
   billingAddress: {
     type: Address,
     optional: true
