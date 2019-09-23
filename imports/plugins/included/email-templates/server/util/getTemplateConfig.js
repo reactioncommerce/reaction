@@ -26,7 +26,7 @@ export default async function getTemplateConfig(context, shopId, templateName) {
     shopId,
     type: "email"
   });
-  if (!templateDoc) throw new Error(`No email template found for language ${language}`);
+  if (!templateDoc) throw new Error(`No email template ${templateName} found for language ${language}`);
 
   return templateDoc;
 }
