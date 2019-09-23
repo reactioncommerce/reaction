@@ -76,6 +76,18 @@ input SetAccountProfileCurrencyInput {
   currencyCode: String!
 }
 
+"Describes an account profile language change"
+input SetAccountProfileLanguageInput {
+ "The account ID, which defaults to the viewer account"
+ accountId: ID
+
+ "An optional string identifying the mutation call, which will be returned in the response payload"
+ clientMutationId: String
+
+ "The i18n language code value"
+ language: String!
+}
+
 "Defines a new Email and the account to which it should be added"
 input AddAccountEmailRecordInput {
   "The account ID, which defaults to the viewer account"
@@ -161,6 +173,9 @@ type Account implements Node {
     "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
     sortBy: GroupSortByField = createdAt
   ): GroupConnection
+
+  "The preferred language used by this account"
+  language: String
 
   "The last name of the person this account represents, if known"
   lastName: String
@@ -292,6 +307,15 @@ type SetAccountProfileCurrencyPayload {
   clientMutationId: String
 }
 
+"The response from the `setAccountProfileLanguage` mutation"
+type SetAccountProfileLanguagePayload {
+  "The updated account"
+  account: Account!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 extend type Shop {
   """
   Returns a list of administrators for this shop, as a Relay-compatible connection.
@@ -354,6 +378,12 @@ extend type Mutation {
     "Mutation input"
     input: SetAccountProfileCurrencyInput!
   ): SetAccountProfileCurrencyPayload
+
+  "Set the preferred language for an account"
+  setAccountProfileLanguage(
+    "Mutation input"
+    input: SetAccountProfileLanguageInput!
+  ): SetAccountProfileLanguagePayload!
 
   "Remove an address that exists in the `addressBook` field for an account"
   updateAccountAddressBookEntry(
