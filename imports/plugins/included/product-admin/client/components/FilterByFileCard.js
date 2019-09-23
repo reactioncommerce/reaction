@@ -62,7 +62,13 @@ export default function FilterByFileCard(props) {
 
   return (
     <Grid item sm={12} className={cardClasses}>
-      <Grow timeout={180} in={isFilterByFileVisible} mountOnEnter unmountOnExit style={{ transformOrigin: "center top" }}>
+      <Grow
+        in={isFilterByFileVisible}
+        mountOnEnter
+        style={{ transformOrigin: "center top" }}
+        timeout={180}
+        unmountOnExit
+      >
         <MuiCard>
           <CardHeader
             action={
