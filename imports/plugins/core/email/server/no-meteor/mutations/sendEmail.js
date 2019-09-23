@@ -17,7 +17,7 @@ import getShopLogo from "../util/getShopLogo";
   });
  * @param {Object} context App context
  * @param  {Object} options - object containing to/from/subject/html String keys
- * @param  {String} options.language  
+ * @param  {String} options.language
  * @return {Boolean} returns job object
  */
 export default async function sendEmail(context, options) {
@@ -64,7 +64,10 @@ export default async function sendEmail(context, options) {
     const defaultData = {
       emailLogo,
       shop: fromShop,
-      shopId: fromShopId
+      shopId: fromShopId,
+      nettoFontCss: context.getAbsoluteUrl("custom/gswebfonts.css"),
+      shopLogo: context.getAbsoluteUrl("custom/shop-logo.png"),
+      absoluteUrl: context.getAbsoluteUrl("/")
     };
 
     const { html, subject } = await context.mutations.renderEmail(context, {
@@ -82,5 +85,6 @@ export default async function sendEmail(context, options) {
     .retry({
       retries: 5,
       wait: 3 * 60000
-    }).save();
+    })
+    .save();
 }
