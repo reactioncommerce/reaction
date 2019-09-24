@@ -31,7 +31,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
     const { createdAt } = filters.dateRange;
     // Both fields are optional
     const gteProp = createdAt.gte ? { $gte: createdAt.gte } : {};
-    const ltProp = createdAt.lt ? { $lt: createdAt.lt } : {};
+    const ltProp = createdAt.lt ? { $lte: createdAt.lt } : {};
     dateRangeFilter = {
       createdAt: {
         ...gteProp,
