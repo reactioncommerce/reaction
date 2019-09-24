@@ -85,17 +85,17 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
       display: true,
       facebook: {
         display: true,
-        icon: `${context.getAbsoluteUrl()}resources/email-templates/facebook-icon.png`,
+        icon: context.getAbsoluteUrl("resources/email-templates/facebook-icon.png"),
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: `${context.getAbsoluteUrl()}resources/email-templates/google-plus-icon.png`,
+        icon: context.getAbsoluteUrl("resources/email-templates/google-plus-icon.png"),
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: `${context.getAbsoluteUrl()}resources/email-templates/twitter-icon.png`,
+        icon: context.getAbsoluteUrl("resources/email-templates/twitter-icon.png"),
         link: "https://www.twitter.com"
       }
     },
