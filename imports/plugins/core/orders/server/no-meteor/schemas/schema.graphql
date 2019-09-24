@@ -1025,20 +1025,14 @@ input CreatedAtInput {
   "Start date, inclusive"
   gte: DateTime
 
-  "End date, not inclusive"
-  lt: DateTime
-}
-
-"Input type for an order date range"
-input OrderDateRangeInput {
-  "The order's create date"
-  createdAt: CreatedAtInput 
+  "End date, inclusive"
+  lte: DateTime
 }
 
 "Input type for filters to by applied to an Orders list"
 input OrderFilterInput {
-  "A date range to filter by"
-  dateRange: OrderDateRangeInput
+  "A createdAt date range to filter by"
+  createdAt: CreatedAtInput
 
   "An order's fulfillment status"
   fulfillmentStatus: OrderFulfillmentStatus

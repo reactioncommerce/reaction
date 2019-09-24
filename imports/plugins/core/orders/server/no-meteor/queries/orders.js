@@ -18,21 +18,20 @@ export default async function orders(context, { filters, shopIds } = {}) {
   const { Orders } = collections;
 
   const query = {};
-  let dateRangeFilter = {};
+  let createdAtFilter = {};
   let fulfillmentStatusFilter = {};
   let paymentStatusFilter = {};
   let searchFieldFilter = {};
   let statusFilter = {};
 
-
   // Add a date range filter if provided, the filter will be
   // applied to the createdAt database field.
-  if (filters.dateRange && filters.dateRange.createdAt) {
-    const { createdAt } = filters.dateRange;
+  if (filters.createdAt) {
+    const { createdAt } = filters;
     // Both fields are optional
     const gteProp = createdAt.gte ? { $gte: createdAt.gte } : {};
     const ltProp = createdAt.lt ? { $lte: createdAt.lt } : {};
-    dateRangeFilter = {
+    createdAtFilter = {
       createdAt: {
         ...gteProp,
         ...ltProp
@@ -98,7 +97,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
 
   // Build the final query
   query.$and = [{
-    ...dateRangeFilter,
+    ...createdAtFilter,
     ...fulfillmentStatusFilter,
     ...paymentStatusFilter,
     ...searchFieldFilter,
