@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
+import generateVerificationTokenObject from "/imports/plugins/core/accounts/server/no-meteor/util/generateVerificationTokenObject";
 
 /**
  * @method sendVerificationEmail
@@ -49,9 +49,7 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
     throw new ReactionError("not-found", msg);
   }
 
-  const token = Random.secret();
-  const when = new Date();
-  const tokenObj = { token, address, when };
+  const tokenObj = generateVerificationTokenObject({ address });
 
   await users.update({ _id: userId }, {
     $push: {
@@ -64,7 +62,7 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
   if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const shopName = shop.name;
-  const url = `${context.getAbsoluteUrl()}#/verify-email/${token}`;
+  const url = context.getAbsoluteUrl(`#/verify-email/${tokenObj.token}`);
   const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
