@@ -1,3 +1,4 @@
+import { registerPluginHandler } from "./registration";
 import startup from "./startup";
 
 /**
@@ -10,6 +11,7 @@ export default async function register(app) {
     label: "Job Queue",
     name: "reaction-job-queue",
     functionsByType: {
+      registerPluginHandler: [registerPluginHandler],
       startup: [startup]
     },
     collections: {

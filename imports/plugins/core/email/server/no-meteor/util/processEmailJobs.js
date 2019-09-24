@@ -62,7 +62,7 @@ export default function processEmailJobs(context) {
     workTimeout: 2 * 60 * 1000, // fail if it takes longer than 2mins
     payload: 20
   }, async (jobs, callback) => {
-    Logger.debug(`sendEmail processJobs function called with ${jobs.length} jobs`);
+    Logger.debug({ jobCount: jobs.length }, "sendEmail: started");
 
     const promises = jobs.map(async (job) => {
       const { from, to, subject, html, ...optionalEmailFields } = job.data;
@@ -94,6 +94,7 @@ export default function processEmailJobs(context) {
 
     await Promise.all(promises);
 
-    return callback();
+    callback();
+    Logger.debug("sendEmail: finished");
   });
 }

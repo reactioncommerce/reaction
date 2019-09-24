@@ -26,6 +26,11 @@ export default async function register(app) {
     functionsByType: {
       startup: [startup]
     },
+    backgroundJobs: {
+      cleanup: [
+        { type: "sitemaps/generate", purgeAfterDays: 3 }
+      ]
+    },
     graphQL: {
       resolvers,
       schemas

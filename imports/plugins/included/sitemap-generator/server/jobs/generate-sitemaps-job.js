@@ -45,19 +45,23 @@ export default function generateSitemapsJob(context) {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 180 * 1000
   }, async (job, callback) => {
-    Logger.debug(`Processing ${jobType} job`);
+    Logger.debug(`${jobType}: started`);
 
     const { notifyUserId = "", shopId } = job.data;
-    await generateSitemaps(context, { notifyUserId, shopIds: [shopId] });
 
-    const doneMessage = `${jobType} job done`;
-    Logger.debug(doneMessage);
-    job.done(doneMessage, { repeatId: true });
+    try {
+      await generateSitemaps(context, { notifyUserId, shopIds: [shopId] });
+      job.done(`${jobType} job done`, { repeatId: true });
+    } catch (error) {
+      job.fail(`Failed to generate sitemap. Error: ${error}`);
+    }
+
     callback();
+    Logger.debug(`${jobType}: finished`);
   });
 
   // Observer that triggers processing of job when ready
-  Jobs.events.on("ready", () => {
+  Jobs.whenReady(() => {
     Jobs.find({
       type: jobType,
       status: "ready"

@@ -127,7 +127,28 @@ export default function createJobCollectionClass({ Job, later }) {
 
     setCollection(collection) {
       this.collection = collection;
-      this.events.emit("ready");
+
+      if (this.whenReadyCallbacks) {
+        for (const callback of this.whenReadyCallbacks) {
+          callback();
+        }
+        this.whenReadyCallbacks = [];
+      }
+    }
+
+    /**
+     * @param {Function} callback A function that is called either immediately,
+     *   if a collection is already set, or later right after the collection is
+     *   set.
+     * @return {undefined}
+     */
+    whenReady(callback) {
+      if (this.collection) {
+        callback();
+      } else {
+        if (!this.whenReadyCallbacks) this.whenReadyCallbacks = [];
+        this.whenReadyCallbacks.push(callback);
+      }
     }
 
     find(...findParams) {

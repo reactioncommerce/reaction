@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 
 /**
@@ -13,21 +14,24 @@ export default function saveTempImages(fileWorker) {
     concurrency: 1, // Only run one at a time
     prefetch: 0 // Don't prefetch
   }, async (job, callback) => {
+    Logger.debug("saveImage/local: started");
+
     const { data } = job;
     const { doc } = data;
     try {
       const { collectionName } = data;
       await fileWorker.addDocumentByCollectionName(doc, collectionName);
       job.done(`Finished converting temporary image from ${doc._id}`);
-      callback();
     } catch (error) {
       job.fail(`Failed to convert temporary image from ${doc._id}. Error: ${error}`);
-      callback();
     }
+
+    callback();
+    Logger.debug("saveImage/local: finished");
   });
 
   // Observer that triggers processing of job when ready
-  Jobs.events.on("ready", () => {
+  Jobs.whenReady(() => {
     Jobs.find({
       type: "saveImage/local",
       status: "ready"

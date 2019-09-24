@@ -1,5 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Jobs } from "./jobs";
+import removeOldJobs from "./removeOldJobs";
+import { jobCleanupRequests } from "./registration";
 
 /**
  * @name startup
@@ -14,6 +16,9 @@ export default async function startup(context) {
   if (process.env.VERBOSE_JOBS) {
     Jobs.setLogStream(process.stdout);
   }
+
+  // Register cleanup jobs for various job types, as requested by other plugins
+  jobCleanupRequests.forEach(removeOldJobs);
 
   Jobs.startJobServer(() => {
     Logger.debug("JobServer started");
