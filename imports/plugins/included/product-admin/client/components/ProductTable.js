@@ -236,7 +236,7 @@ function ProductTable({ history }) {
 }
 
 ProductTable.propTypes = {
-  history: PropTypes.func
+  history: PropTypes.object
 };
 
 export default withRouter(ProductTable);
