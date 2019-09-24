@@ -1,3 +1,4 @@
+import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
@@ -8,6 +9,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} parentResult - unused
  * @param {String} args.input.additionals - various account related data
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
+ * @param {String} [args.input.groupId] - group to add account to
  * @param {String} args.input.shopId - shop to create account for
  * @param {String} [args.input.tokenObj] - token information for account verification
  * @param {String} args.input.user - Meteor user to create account based on
@@ -15,12 +17,14 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @returns {Object} createAccountPayload
  */
 export default async function createAccount(parentResult, { input }, context) {
-  const { additionals, shopId: opaqueShopId, tokenObj, user, clientMutationId = null } = input;
+  const { additionals, groupId: opaqueGroupId, shopId: opaqueShopId, tokenObj, user, clientMutationId = null } = input;
 
+  const groupId = decodeGroupOpaqueId(opaqueGroupId);
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
   const account = await context.mutations.createAccount(context, {
     additionals,
+    groupId,
     shopId,
     tokenObj,
     user

@@ -88,6 +88,9 @@ Meteor.startup(() => {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
+    console.log(" ----- user first check", user);
+    console.log(" ----- options", options);
+
     const groupToAddUser = options.groupId;
     const roles = {};
     const additionals = {
@@ -96,20 +99,16 @@ Meteor.startup(() => {
     };
     if (!user.emails) user.emails = [];
 
-    // TODO: EK - groups are only on `Accounts`, not on user, so everything following this can probably be moved into the new mutation
-
     // init default user roles
     // we won't create users unless we have a shop.
     const shopId = Reaction.getShopId(); // current shop; not primary shop
     if (shopId) {
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
+        // TODO: look into getting rid of this guest account
         const group = Collections.Groups.findOne({ slug: "guest", shopId });
         // if no group permissions retrieved from DB, use the default Reaction set
         roles[shopId] = (group && group.permissions) || Reaction.defaultVisitorRoles;
-        if (group) {
-          additionals.groups = [group._id];
-        }
       } else {
         let group;
         if (groupToAddUser) {
@@ -119,9 +118,6 @@ Meteor.startup(() => {
         }
         // if no group or customer permissions retrieved from DB, use the default Reaction customer set
         roles[shopId] = (group && group.permissions) || Reaction.defaultCustomerRoles;
-        if (group) {
-          additionals.groups = [group._id];
-        }
       }
     }
 
@@ -140,26 +136,12 @@ Meteor.startup(() => {
         }
         if (serviceObj.name) {
           user.username = serviceObj.name;
-          additionals.profile.name = serviceObj.name;
         }
-        // TODO: For now we have here instagram, twitter and google avatar cases
-        // need to make complete list
-        if (serviceObj.picture) {
-          additionals.profile.picture = user.services[service].picture;
-        } else if (serviceObj.profile_image_url_https) {
-          additionals.profile.picture = user.services[service].dprofile_image_url_https;
-        } else if (serviceObj.profile_picture) {
-          additionals.profile.picture = user.services[service].profile_picture;
-        }
-        // Correctly map Instagram profile data to Meteor user / Accounts
+
+        // Correctly map Instagram profile data to Meteor user
         if (userServices.instagram) {
           user.username = serviceObj.username;
           user.name = serviceObj.full_name;
-          additionals.name = serviceObj.full_name;
-          additionals.profile.picture = serviceObj.profile_picture;
-          additionals.profile.bio = serviceObj.bio;
-          additionals.profile.name = serviceObj.full_name;
-          additionals.profile.username = serviceObj.username;
         }
       }
     }
@@ -171,12 +153,12 @@ Meteor.startup(() => {
       emailIsVerified = true;
     }
 
-    // send a welcome email to new users,
+    // create a tokenObj and send a welcome email to new users,
     // but skip the first default admin user and anonymous users
     // (default admins already get a verification email)
     let tokenObj;
     if (shopId && !emailIsVerified && user.emails[0]) {
-      // TODO: EK - remove these lines and uncomment `generateVerificationTOkenObject` once #5577 is merged
+      // TODO: EK - remove these lines and uncomment `generateVerificationTokenObject` once #5577 is merged
       const token = Random.secret();
       const when = new Date();
       tokenObj = {
@@ -184,24 +166,30 @@ Meteor.startup(() => {
         token,
         when
       };
-
       // const tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
-      _.set(user, "services.email.verificationTokens", [tokenObj]);
     }
 
     // Get GraphQL context to pass to mutation
-    // This is the only place in the app that still uses `getGraphQLContextInMeteorMethod`
+    // This is the only place in the app that still
+    // uses `getGraphQLContextInMeteorMethod`
     // Prioritize removing if possible
     const context = Promise.await(getGraphQLContextInMeteorMethod(null));
 
-    // TODO: EK - Groups will need to be figured out inside this new context
-    // roles are on users, groups are on accounts
+    console.log(" ----- ----- user", user);
+
+
     Promise.await(context.mutations.createAccount(context, {
       additionals,
+      groupId: groupToAddUser,
       shopId,
       tokenObj,
       user
     }));
+
+    // set verification token on user
+    if (tokenObj) {
+      _.set(user, "services.email.verificationTokens", [tokenObj]);
+    }
 
     // assign default user roles
     user.roles = roles;
