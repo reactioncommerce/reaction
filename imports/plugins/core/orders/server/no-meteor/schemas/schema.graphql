@@ -13,11 +13,8 @@ extend type Query {
 
   "Get all orders for a single account, optionally limited to certain shop IDs and certain orderStatus"
   orders(
-    "A filter string"
-    filter: String
-
-    "Limit to orders with one of these statuses"
-    orderStatus: [String]
+    "Filters to apply to a list of orders"
+    filters: OrderFilterInput
 
     "Provide a list of shop IDs from which you want to get orders from"
     shopIds: [ID]
@@ -985,4 +982,67 @@ type UpdateOrderFulfillmentGroupPayload {
 
   "The updated order"
   order: Order!
+}
+
+"Available order fulfillment statuses"
+enum OrderFulfillmentStatus {
+  "An order that has been completed"
+  completed
+
+  "Newly created order that needs processing"
+  new
+
+  "An order that is currently being processed"
+  processing
+}
+
+"Order payment status"
+enum OrderPaymentStatus {
+  "Payments that have been successfully processed"
+  completed
+
+  "A payment intent has been created"
+  created
+}
+
+"Order status"
+enum OrderStatus {
+  "Canceled order"
+  canceled
+
+  "A completed order"
+  completed
+
+  "A new order that needs processing"
+  new
+  
+  "An order that is being processed"
+  processing
+}
+
+"Input for the createdAt database field"
+input CreatedAtInput {
+  "Start date, inclusive"
+  gte: DateTime
+
+  "End date, inclusive"
+  lte: DateTime
+}
+
+"Input type for filters to by applied to an Orders list"
+input OrderFilterInput {
+  "A createdAt date range to filter by"
+  createdAt: CreatedAtInput
+
+  "An order's fulfillment status"
+  fulfillmentStatus: OrderFulfillmentStatus
+
+  "An order's payment status"
+  paymentStatus: OrderPaymentStatus
+
+  "Keywords typed by the user in the search input field"
+  searchField: String
+
+  "The order's status to filter by"
+  status: OrderStatus
 }
