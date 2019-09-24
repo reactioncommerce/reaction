@@ -9,7 +9,7 @@ import { Grid, Button } from "@material-ui/core";
 import { useDropzone } from "react-dropzone";
 import { i18next, Reaction } from "/client/api";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
-import decodeOpaqueId from "/imports/utils/decodeOpaqueId.js"
+import decodeOpaqueId from "/imports/utils/decodeOpaqueId.js";
 import { Session } from "meteor/session";
 import CloseIcon from "mdi-material-ui/Close";
 import FilterByFileCard from "./FilterByFileCard";
