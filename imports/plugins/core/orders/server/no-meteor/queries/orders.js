@@ -30,11 +30,11 @@ export default async function orders(context, { filters, shopIds } = {}) {
     const { createdAt } = filters;
     // Both fields are optional
     const gteProp = createdAt.gte ? { $gte: createdAt.gte } : {};
-    const ltProp = createdAt.lt ? { $lte: createdAt.lt } : {};
+    const lteProp = createdAt.lte ? { $lte: createdAt.lte } : {};
     createdAtFilter = {
       createdAt: {
         ...gteProp,
-        ...ltProp
+        ...lteProp
       }
     };
   }
