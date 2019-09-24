@@ -25,6 +25,21 @@ input AddAccountAddressBookEntryInput {
   clientMutationId: String
 }
 
+"Defines the account which should be created"
+input CreateAccountInput {
+  "Various additional information to add to the account"
+  additionals: String! # TODO: EK - update this to Object with all additionals
+
+  "An object of token data used to send account verification emails"
+  tokenObj: VerificationTokenObject
+
+  "The ID of the shop this account will belong to"
+  shopId: ID!
+
+  "The user object to create a new account from"
+  user: String! # TODO: EK - update this to Object with all user data
+}
+
 "Describes changes that should be applied to one of the addresses for an account"
 input UpdateAccountAddressBookEntryInput {
   "The account ID"
@@ -110,6 +125,38 @@ input RemoveAccountEmailRecordInput {
 
   "The email address to remove"
   email: Email!
+}
+
+"Defines a verification token object used to verify an email address on an account"
+input Additionals {
+  name: options && options.name,
+      profile: Object.assign({}, options && options.profile)
+  "Email address to create token for. Either `address` or `email` are required."
+  address: Email
+
+  "Email address to create token for. Either `address` or `email` are required."
+  email: Email
+
+  "The token used to verify an email address"
+  token: String!
+
+  "The datetime this token object was create"
+  when: DateTime!
+}
+
+"Defines a verification token object used to verify an email address on an account"
+input VerificationTokenObject {
+  "Email address to create token for. Either `address` or `email` are required."
+  address: Email
+
+  "Email address to create token for. Either `address` or `email` are required."
+  email: Email
+
+  "The token used to verify an email address"
+  token: String!
+
+  "The datetime this token object was create"
+  when: DateTime!
 }
 
 "Per-account tax exemption settings used by the Avalara plugin"
@@ -262,6 +309,15 @@ type AddAccountEmailRecordPayload {
   emailRecord: EmailRecord
 }
 
+"The response from the `createAccount` mutation"
+type CreateAccountPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The added account"
+  account: Account
+}
+
 "The response from the `sendResetAccountPasswordEmail` mutation"
 type SendResetAccountPasswordEmailPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -354,6 +410,12 @@ extend type Mutation {
     "Mutation input"
     input: AddAccountEmailRecordInput!
   ): AddAccountEmailRecordPayload
+
+  "Create an account based off a user"
+  createAccount(
+    "Mutation input"
+    input: CreateAccountInput!
+  ): CreateAccountPayload
 
   "Remove an address from the `addressBook` field for an account"
   removeAccountAddressBookEntry(

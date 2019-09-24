@@ -7,7 +7,8 @@ import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import sendWelcomeEmail from "/imports/plugins/core/accounts/server/util/sendWelcomeEmail";
+// import generateVerificationTokenObject from "/imports/plugins/core/accounts/server/no-meteor/util/generateVerificationTokenObject";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import sendVerificationEmail from "./util/sendVerificationEmail";
 
 appEvents.on("afterAddUnverifiedEmailToUser", ({ email, userId }) => {
@@ -95,6 +96,8 @@ Meteor.startup(() => {
     };
     if (!user.emails) user.emails = [];
 
+    // TODO: EK - groups are only on `Accounts`, not on user, so everything following this can probably be moved into the new mutation
+
     // init default user roles
     // we won't create users unless we have a shop.
     const shopId = Reaction.getShopId(); // current shop; not primary shop
@@ -168,31 +171,37 @@ Meteor.startup(() => {
       emailIsVerified = true;
     }
 
-    // clone before adding roles
-    const account = Object.assign({ shopId }, user, additionals);
-    account.userId = user._id;
-    Collections.Accounts.insert(account);
-
-    const insertedAccount = Collections.Accounts.findOne({ userId: user._id });
-    Promise.await(appEvents.emit("afterAccountCreate", {
-      account: insertedAccount,
-      createdBy: user._id
-    }));
-
     // send a welcome email to new users,
     // but skip the first default admin user and anonymous users
     // (default admins already get a verification email)
+    let tokenObj;
     if (shopId && !emailIsVerified && user.emails[0]) {
+      // TODO: EK - remove these lines and uncomment `generateVerificationTOkenObject` once #5577 is merged
       const token = Random.secret();
-      sendWelcomeEmail(shopId, user._id, token);
       const when = new Date();
-      const tokenObj = {
+      tokenObj = {
         address: user.emails[0].address,
         token,
         when
       };
+
+      // const tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
       _.set(user, "services.email.verificationTokens", [tokenObj]);
     }
+
+    // Get GraphQL context to pass to mutation
+    // This is the only place in the app that still uses `getGraphQLContextInMeteorMethod`
+    // Prioritize removing if possible
+    const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+
+    // TODO: EK - Groups will need to be figured out inside this new context
+    // roles are on users, groups are on accounts
+    Promise.await(context.mutations.createAccount(context, {
+      additionals,
+      shopId,
+      tokenObj,
+      user
+    }));
 
     // assign default user roles
     user.roles = roles;
