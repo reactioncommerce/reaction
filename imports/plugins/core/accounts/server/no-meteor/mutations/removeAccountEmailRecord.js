@@ -32,7 +32,7 @@ export default async function removeAccountEmailRecord(context, input) {
   const user = await users.findOne({ "_id": account.userId, "emails.address": email });
   if (!user) throw new ReactionError("not-found", "User not Found");
 
-  if (!context.isInternalCall && userIdFromContext !== accountId) {
+  if (!context.isInternalCall && userIdFromContext !== account.userId) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }
 
