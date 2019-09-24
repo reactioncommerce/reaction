@@ -71,7 +71,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
 
   // Add order status filter if provided
   if (filters && filters.status) {
-    const prefix = filters.fulfillmentStatus === "new" ? "" : "coreOrderWorkflow/";
+    const prefix = filters.status === "new" ? "" : "coreOrderWorkflow/";
     statusFilter = {
       "workflow.status": { $eq: `${prefix}${filters.status}` }
     };
