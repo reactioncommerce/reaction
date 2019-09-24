@@ -26,7 +26,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
 
   // Add a date range filter if provided, the filter will be
   // applied to the createdAt database field.
-  if (filters.createdAt) {
+  if (filters && filters.createdAt) {
     const { createdAt } = filters;
     // Both fields are optional
     const gteProp = createdAt.gte ? { $gte: createdAt.gte } : {};
@@ -55,7 +55,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
   }
 
   // Add fulfillment status if provided
-  if (filters.fulfillmentStatus) {
+  if (filters && filters.fulfillmentStatus) {
     const prefix = filters.fulfillmentStatus === "new" ? "" : "coreOrderWorkflow/";
     fulfillmentStatusFilter = {
       "shipping.workflow.status": `${prefix}${filters.fulfillmentStatus}`
@@ -63,14 +63,14 @@ export default async function orders(context, { filters, shopIds } = {}) {
   }
 
   // Add payment status filters if provided
-  if (filters.paymentStatus) {
+  if (filters && filters.paymentStatus) {
     paymentStatusFilter = {
       "payments.status": filters.paymentStatus
     };
   }
 
   // Add order status filter if provided
-  if (filters.status) {
+  if (filters && filters.status) {
     const prefix = filters.fulfillmentStatus === "new" ? "" : "coreOrderWorkflow/";
     statusFilter = {
       "workflow.status": { $eq: `${prefix}${filters.status}` }
@@ -78,7 +78,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
   }
 
   // Use `filters` to filters out results on the server
-  if (filters.searchField) {
+  if (filters && filters.searchField) {
     const { searchField } = filters;
     const regexMatch = { $regex: escapeRegExp(searchField), $options: "i" };
     searchFieldFilter = {
