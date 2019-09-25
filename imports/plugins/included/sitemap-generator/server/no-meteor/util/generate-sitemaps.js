@@ -1,12 +1,26 @@
-import { Meteor } from "meteor/meteor";
+import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
 
 const DEFAULT_URLS_PER_SITEMAP = 1000;
 
 /**
+ * @name SitemapsSchema
+ * @memberof Schemas
+ * @summary Schema for Sitemaps collection
+ * @type {SimpleSchema}
+ */
+export const SitemapsSchema = new SimpleSchema({
+  shopId: String,
+  handle: String,
+  xml: String,
+  createdAt: Date
+});
+
+/**
  * @name generateSitemaps
- * @summary Generates & stores sitemap documents for one or more shops, without Meteor method context
+ * @summary Generates & stores sitemap documents for one or more shops
  * @param {Object} context App context
  * @param {Object} options - Options
  * @param {Array} [options.shopIds] - _id of shops to generate sitemaps for. Defaults to primary shop _id
@@ -56,7 +70,7 @@ async function generateSitemapsForShop(context, shopId, urlsPerSitemap) {
 
   const shop = await Shops.findOne({ _id: shopId }, { projection: { _id: 1 } });
   if (!shop) {
-    throw new Meteor.Error("not-found", `Shop ${shopId} not found`);
+    throw new ReactionError("not-found", `Shop ${shopId} not found`);
   }
 
   const sitemapIndex = await Sitemaps.findOne({ shopId, handle: "sitemap.xml" });
@@ -113,13 +127,16 @@ async function generateSitemapsForShop(context, shopId, urlsPerSitemap) {
   }
 
   // Regenerate sitemap index
-  await Sitemaps.deleteOne({ shopId, handle: "sitemap.xml" });
-  await Sitemaps.insertOne({
+  const newDoc = {
     shopId,
     xml: generateIndexXML(sitemapIndexItems),
     handle: "sitemap.xml",
     createdAt: new Date()
-  });
+  };
+
+  SitemapsSchema.validate(newDoc);
+
+  await Sitemaps.replaceOne({ shopId, handle: "sitemap.xml" }, newDoc, { upsert: true });
 }
 
 /**
@@ -150,13 +167,17 @@ async function rebuildPaginatedSitemaps(context, shopId, { typeHandle, items, ur
     const endIndex = startIndex + urlsPerSitemap;
     const sitemapPageItems = items.slice(startIndex, endIndex);
 
-    // eslint-disable-next-line no-await-in-loop
-    await Sitemaps.insertOne({
+    const newDoc = {
       shopId,
       xml: generateSitemapXML(sitemapPageItems),
       handle: `sitemap-${typeHandle}-${currentPage}.xml`,
       createdAt: new Date()
-    });
+    };
+
+    SitemapsSchema.validate(newDoc);
+
+    // eslint-disable-next-line no-await-in-loop
+    await Sitemaps.insertOne(newDoc);
 
     sitemapIndexItems.push({
       url: `BASE_URL/sitemap-${typeHandle}-${currentPage}.xml`,

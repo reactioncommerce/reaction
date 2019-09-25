@@ -1,5 +1,5 @@
-import generateSitemapsJob from "../jobs/generate-sitemaps-job";
-import getSitemapRouteHandler from "../middleware/handle-sitemap-routes";
+import generateSitemapsJob from "./jobs/generate-sitemaps-job";
+import getSitemapRouteHandler from "./middleware/handle-sitemap-routes";
 
 /**
  * @summary Called on startup

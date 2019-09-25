@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
-import generateSitemaps from "../lib/generate-sitemaps";
+import generateSitemaps from "../util/generate-sitemaps";
 import updateSitemapTaskForShop from "./updateSitemapTaskForShop";
 
 const jobType = "sitemaps/generate";

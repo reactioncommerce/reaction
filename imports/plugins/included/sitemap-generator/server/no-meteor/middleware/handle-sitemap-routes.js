@@ -1,4 +1,4 @@
-import getSitemapXML from "../lib/get-sitemap-xml";
+import getSitemapXML from "../util/get-sitemap-xml";
 
 /**
  * @name getSitemapRouteHandler

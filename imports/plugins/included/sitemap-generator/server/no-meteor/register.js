@@ -1,9 +1,9 @@
-import updateSitemapTaskForShop from "../jobs/updateSitemapTaskForShop";
 import i18n from "./i18n";
 import mutations from "./mutations";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 import startup from "./startup";
+import updateSitemapTaskForShop from "./jobs/updateSitemapTaskForShop";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
