@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
-import { Job, Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
+import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 import generateSitemaps from "../lib/generate-sitemaps";
+import updateSitemapTaskForShop from "./updateSitemapTaskForShop";
 
 const jobType = "sitemaps/generate";
 
@@ -11,57 +12,30 @@ const jobType = "sitemaps/generate";
  * @returns {undefined}
  */
 export default function generateSitemapsJob(context) {
-  const { appEvents, collections: { Packages, Shops } } = context;
+  const { collections: { Shops } } = context;
 
-  // Hook that schedules job
-  appEvents.on("afterCoreInit", async () => {
-    const shops = await Shops.find({}, { projection: { _id: 1 } }).toArray();
+  Jobs.whenReady(async () => {
+    // Register the worker function
+    const sitemapGenerationJob = Jobs.processJobs(jobType, {
+      pollInterval: 60 * 60 * 1000, // backup polling, see observer below
+      workTimeout: 180 * 1000
+    }, async (job, callback) => {
+      Logger.debug(`${jobType}: started`);
 
-    // Add one sitemap job per shop
-    shops.forEach(async (shop) => {
-      const corePkg = await Packages.findOne({ name: "core", shopId: shop._id });
-      const sitemaps = corePkg && corePkg.settings && corePkg.settings.sitemaps;
-      const refreshPeriod = (sitemaps && sitemaps.refreshPeriod) || "every 24 hours";
+      const { notifyUserId = "", shopId } = job.data;
 
-      Logger.debug(`Adding ${jobType} to JobControl. Refresh ${refreshPeriod}`);
+      try {
+        await generateSitemaps(context, { notifyUserId, shopIds: [shopId] });
+        job.done(`${jobType} job done`, { repeatId: true });
+      } catch (error) {
+        job.fail(`Failed to generate sitemap. Error: ${error}`);
+      }
 
-      new Job(Jobs, jobType, { shopId: shop._id })
-        .retry({
-          retries: 5,
-          wait: 60000,
-          backoff: "exponential"
-        })
-        .repeat({
-          schedule: Jobs.later.parse.text(refreshPeriod)
-        })
-        .save({
-          cancelRepeats: true
-        });
+      callback();
+      Logger.debug(`${jobType}: finished`);
     });
-  });
 
-  // Function that processes job
-  const sitemapGenerationJob = Jobs.processJobs(jobType, {
-    pollInterval: 60 * 60 * 1000, // backup polling, see observer below
-    workTimeout: 180 * 1000
-  }, async (job, callback) => {
-    Logger.debug(`${jobType}: started`);
-
-    const { notifyUserId = "", shopId } = job.data;
-
-    try {
-      await generateSitemaps(context, { notifyUserId, shopIds: [shopId] });
-      job.done(`${jobType} job done`, { repeatId: true });
-    } catch (error) {
-      job.fail(`Failed to generate sitemap. Error: ${error}`);
-    }
-
-    callback();
-    Logger.debug(`${jobType}: finished`);
-  });
-
-  // Observer that triggers processing of job when ready
-  Jobs.whenReady(() => {
+    // Watch database for jobs of this type that are ready, and call the worker function
     Jobs.find({
       type: jobType,
       status: "ready"
@@ -70,5 +44,10 @@ export default function generateSitemapsJob(context) {
         return sitemapGenerationJob.trigger();
       }
     });
+
+    // Add one sitemap job per shop
+    const shops = await Shops.find({}, { projection: { _id: 1, name: 1 } }).toArray();
+    const promises = shops.map((shop) => updateSitemapTaskForShop(context, shop._id));
+    await Promise.all(promises);
   });
 }

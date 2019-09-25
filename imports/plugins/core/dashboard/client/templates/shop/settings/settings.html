@@ -96,9 +96,11 @@
     {{/each}}
   </div>
 
+  {{#if shopSettingsBlockProps.shopId}}
   <div class="shopSettingsBlockArea">
     {{> React component=Blocks region="ShopSettings" blockProps=shopSettingsBlockProps}}
   </div>
+  {{/if}}
 </template>
 
 <template name="optionsShopSettings">
@@ -107,11 +109,6 @@
     doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
       {{> afQuickField name='settings.google.clientId'}}
       {{> afQuickField name='settings.google.apiKey'}}
-      {{#if isPackageEnabled "reaction-sitemap-generator"}}
-        <div>
-          {{> React component=SitemapSettingsContainer packageData=packageData}}
-        </div>
-      {{/if}}
       {{> shopSettingsSubmitButton}}
     {{/autoForm}}
   </div>

@@ -1,3 +1,4 @@
+import updateSitemapTaskForShop from "../jobs/updateSitemapTaskForShop";
 import i18n from "./i18n";
 import mutations from "./mutations";
 import resolvers from "./resolvers";
@@ -35,6 +36,18 @@ export default async function register(app) {
       resolvers,
       schemas
     },
-    mutations
+    mutations,
+    shopSettingsConfig: {
+      sitemapRefreshPeriod: {
+        afterUpdate(context, { shopId }) {
+          updateSitemapTaskForShop(context, shopId);
+        },
+        defaultValue: "every 24 hours",
+        rolesThatCanEdit: ["admin"],
+        simpleSchema: {
+          type: String
+        }
+      }
+    }
   });
 }
