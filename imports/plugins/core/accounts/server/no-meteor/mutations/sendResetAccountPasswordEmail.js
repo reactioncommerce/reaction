@@ -93,9 +93,13 @@ async function sendResetEmail(context, account, email) {
     user
   };
 
+  // get account profile language for email
+  const language = account.profile && account.profile.language;
+
   return context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: shop,
+    language,
     templateName: "accounts/resetPassword",
     to: email
   });

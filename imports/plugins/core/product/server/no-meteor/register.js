@@ -22,7 +22,9 @@ export default async function register(app) {
           [{ handle: 1 }, { name: "c2_handle" }],
           [{ hashtags: 1 }, { name: "c2_hashtags" }],
           [{ shopId: 1 }, { name: "c2_shopId" }],
-          [{ "workflow.status": 1 }, { name: "c2_workflow.status" }]
+          [{ "workflow.status": 1 }, { name: "c2_workflow.status" }],
+          // Use _id as second sort to force full stability
+          [{ updatedAt: 1, _id: 1 }]
         ]
       }
     },

@@ -1,3 +1,50 @@
+# v2.4.0
+
+Reaction v2.4.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.3.0.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.4.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### Translations have been moved out of Meteor
+
+i18n translations have been moved outside of the Meteor context. This provides a standard route, `/locales/resources.json`, where all translations live, and allows for real-time updates to translations without needing to flush the cache.
+
+### Meteor app-tests have
+
+As part of our move away from Meteor, all Meteor app-tests have been removed. This speeds up both local testing, and testing on CI.
+
+## Feature
+
+- feat: Translations without Meteor ([#5514](http://github.com/reactioncommerce/reaction/pull/5514))
+
+## Fixes
+
+- fix: restore Add/Remove menu item in products page ([#5564](http://github.com/reactioncommerce/reaction/pull/5564))
+- fix: use catalyst button for mediauploader ([#5563](http://github.com/reactioncommerce/reaction/pull/5563))
+- fix: restore loadTranslations fn ([#5546](http://github.com/reactioncommerce/reaction/pull/5546))
+
+## Refactors
+
+- refactor: remove Reaction.Email ([#5559](http://github.com/reactioncommerce/reaction/pull/5559))
+- refactor: remove all code releated to inviting a shop owner ([#5553](http://github.com/reactioncommerce/reaction/pull/5553))
+- refactor: Fix proptype warning with ReactSortableTree ([#5552](http://github.com/reactioncommerce/reaction/pull/5552))
+- refactor: remove `catalog/publish/products` meteor method, use `publi#5541hProductsToCatalog` GQL Mutation instead ([#](http:#5541//github.com/reactioncommerce/reaction/pull/))
+
+## Tests
+
+- tests: Faster Jest integration tests ([#5549](http://github.com/reactioncommerce/reaction/pull/5549))
+
+## Docs
+
+- docs: Fix test command in README.md ([#5565](http://github.com/reactioncommerce/reaction/pull/5565))
+- docs: Add missing GraphQL argument descriptions ([#5547](http://github.com/reactioncommerce/reaction/pull/5547))
+
+## Chores
+
+- chore: remove meteor app-tests ([#5560](http://github.com/reactioncommerce/reaction/pull/5560))
+- chore: fix various prop type validation errors ([#5550](http://github.com/reactioncommerce/reaction/pull/5550))
+
 # v2.3.0
 
 Reaction v2.3.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.2.1.

@@ -25,7 +25,9 @@ export default async function register(app) {
       SimpleInventory: {
         name: "SimpleInventory",
         indexes: [
-          [{ "productConfiguration.productVariantId": 1, "shopId": 1 }, { unique: true }]
+          [{ "productConfiguration.productVariantId": 1, "shopId": 1 }, { unique: true }],
+          // Use _id as second sort to force full stability
+          [{ updatedAt: 1, _id: 1 }]
         ]
       }
     },
