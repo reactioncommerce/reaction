@@ -1,16 +1,28 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import Alert from "sweetalert2";
-import { i18next } from "/client/api";
+import { i18next, Reaction } from "/client/api";
+import gql from "graphql-tag";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+
+const verifySMTPEmailSettings = gql`
+  mutation verifySMTPEmailSettings($input: VerifySMTPEmailSettingsInput!) {
+    verifySMTPEmailSettings(input: $input) {
+      clientMutationId
+      isVerified
+    }
+  }
+`;
 
 export default {
   /**
    * Save email settings
    * @param {Object} settings - object of mail provider settings
+   * @param {Object} client - apollo client
    * @param {Function} callback - optional callback
-   * @returns {Boolean} returns true if all fields provided and update method called
+   * @returns {Boolean} returns true if all fields provided and update method is called
    */
-  saveSettings(settings, callback) {
+  async saveSettings(settings, client, callback) {
     const { service, host, port, user, password } = settings;
 
     if (!service) {
@@ -45,22 +57,35 @@ export default {
             "error"
           );
         }
-        return Alert({
-          title: i18next.t("app.success"),
-          text: i18next.t("mail.alerts.saveSuccess"),
-          type: "success",
-          timer: 1700
-        }).catch(() => null);
+        return Alerts.toast(i18next.t("app.success"), "success");
       });
     };
 
-    // check if the settings work first
-    Meteor.call("email/verifySettings", settings, (error) => {
-      callback();
-      // if the connection fails
-      if (error) {
-        // eslint-disable-next-line promise/no-promise-in-callback
-        Alert({
+    const shopId = Reaction.getPrimaryShopId();
+    const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: shopId }]);
+
+    let shouldSave = true;
+    try {
+      await client.mutate({
+        mutation: verifySMTPEmailSettings,
+        variables: {
+          input: {
+            host: settings.host,
+            password: settings.password,
+            port: settings.port,
+            service: settings.service,
+            shopId: opaqueShopId,
+            user: settings.user
+          }
+        }
+      });
+    } catch (error) {
+      shouldSave = false;
+    }
+
+    if (!shouldSave) {
+      try {
+        await Alert({
           title: i18next.t("mail.alerts.connectionFailed"),
           text: i18next.t("mail.alerts.saveAnyway"),
           type: "warning",
@@ -68,11 +93,15 @@ export default {
           cancelButtonText: i18next.t("app.cancel"),
           confirmButtonColor: "#DD6B55",
           confirmButtonText: i18next.t("app.save")
-        }).then(() => save()).catch(() => true);
-      } else {
-        save();
+        });
+      } catch (error) {
+        callback();
+        return error;
       }
-    });
+    }
+
+    callback();
+    await save();
 
     return true;
   }
