@@ -130,6 +130,7 @@ input RemoveAccountEmailRecordInput {
   email: Email!
 }
 
+"Defines profile data from `user` to add to `account`"
 input ProfileInput {
   "Was this user invited by an admin"
   invited: Boolean
@@ -320,11 +321,11 @@ type AddAccountEmailRecordPayload {
 
 "The response from the `createAccount` mutation"
 type CreateAccountPayload {
+  "The added account"
+  account: AccountConnection
+
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
-
-  "The added account"
-  account: Account
 }
 
 "The response from the `sendResetAccountPasswordEmail` mutation"
