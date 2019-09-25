@@ -88,9 +88,6 @@ Meteor.startup(() => {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
-    console.log(" ----- user first check", user);
-    console.log(" ----- options", options);
-
     const groupToAddUser = options.groupId;
     const roles = {};
     const additionals = {
@@ -174,9 +171,6 @@ Meteor.startup(() => {
     // uses `getGraphQLContextInMeteorMethod`
     // Prioritize removing if possible
     const context = Promise.await(getGraphQLContextInMeteorMethod(null));
-
-    console.log(" ----- ----- user", user);
-
 
     Promise.await(context.mutations.createAccount(context, {
       additionals,

@@ -40,7 +40,7 @@ input CreateAccountInput {
   tokenObj: VerificationTokenObjectInput
 
   "The user object to create a new account from"
-  user: String! # TODO: EK - update this to Object with all user data
+  user: UserInput!
 }
 
 "Describes changes that should be applied to one of the addresses for an account"
@@ -135,8 +135,17 @@ input ProfileInput {
   invited: Boolean
 }
 
-"Defines a verification token object used to verify an email address on an account"
+"Defines additional user data to attach to a new account"
 input AdditionalsInput {
+  "Email address to create token for. Either `address` or `email` are required."
+  name: String
+
+  "Email address to create token for. Either `address` or `email` are required."
+  profile: ProfileInput
+}
+
+"Defines a user object to create an account from"
+input UserInput {
   "Email address to create token for. Either `address` or `email` are required."
   name: String
 
