@@ -1,5 +1,3 @@
-import Logger from "@reactioncommerce/logger";
-import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 import generateSitemaps from "../util/generate-sitemaps";
 import updateSitemapTaskForShop from "./updateSitemapTaskForShop";
 
@@ -11,17 +9,13 @@ const jobType = "sitemaps/generate";
  * @param {Object} context App context
  * @returns {undefined}
  */
-export default function generateSitemapsJob(context) {
+export default async function generateSitemapsJob(context) {
   const { collections: { Shops } } = context;
 
-  Jobs.whenReady(async () => {
-    // Register the worker function
-    const sitemapGenerationJob = Jobs.processJobs(jobType, {
-      pollInterval: 60 * 60 * 1000, // backup polling, see observer below
-      workTimeout: 180 * 1000
-    }, async (job, callback) => {
-      Logger.debug(`${jobType}: started`);
-
+  await context.backgroundJobs.addWorker({
+    type: jobType,
+    workTimeout: 180 * 1000,
+    async worker(job) {
       const { notifyUserId = "", shopId } = job.data;
 
       try {
@@ -30,24 +24,11 @@ export default function generateSitemapsJob(context) {
       } catch (error) {
         job.fail(`Failed to generate sitemap. Error: ${error}`);
       }
-
-      callback();
-      Logger.debug(`${jobType}: finished`);
-    });
-
-    // Watch database for jobs of this type that are ready, and call the worker function
-    Jobs.find({
-      type: jobType,
-      status: "ready"
-    }).observe({
-      added() {
-        return sitemapGenerationJob.trigger();
-      }
-    });
-
-    // Add one sitemap job per shop
-    const shops = await Shops.find({}, { projection: { _id: 1, name: 1 } }).toArray();
-    const promises = shops.map((shop) => updateSitemapTaskForShop(context, shop._id));
-    await Promise.all(promises);
+    }
   });
+
+  // Add one sitemap job per shop
+  const shops = await Shops.find({}, { projection: { _id: 1, name: 1 } }).toArray();
+  const promises = shops.map((shop) => updateSitemapTaskForShop(context, shop._id));
+  await Promise.all(promises);
 }

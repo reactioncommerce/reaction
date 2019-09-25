@@ -1,12 +1,11 @@
 import Logger from "@reactioncommerce/logger";
-import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 
 /**
  * @param {Object} context App context
  * @returns {undefined}
  */
 export default function processEmailJobs(context) {
-  const { appEvents, collections } = context;
+  const { appEvents, backgroundJobs, collections } = context;
   const { Emails } = collections;
 
   /**
@@ -53,18 +52,11 @@ export default function processEmailJobs(context) {
     return job.fail(message);
   }
 
-  /**
-   * The `sendEmail` mutation adds jobs to the "sendEmail" queue, and this
-   * code processes any remaining jobs every few seconds.
-   */
-  Jobs.processJobs("sendEmail", {
+  backgroundJobs.addWorker({
+    type: "sendEmail",
     pollInterval: 15 * 1000, // poll every 15 seconds
     workTimeout: 2 * 60 * 1000, // fail if it takes longer than 2mins
-    payload: 20
-  }, async (jobs, callback) => {
-    Logger.debug({ jobCount: jobs.length }, "sendEmail: started");
-
-    const promises = jobs.map(async (job) => {
+    async worker(job) {
       const { from, to, subject, html, ...optionalEmailFields } = job.data;
 
       if (!from || !to || !subject || !html) {
@@ -90,11 +82,6 @@ export default function processEmailJobs(context) {
       });
 
       await appEvents.emit("sendEmail", { job, sendEmailCompleted, sendEmailFailed });
-    });
-
-    await Promise.all(promises);
-
-    callback();
-    Logger.debug("sendEmail: finished");
+    }
   });
 }

@@ -326,5 +326,14 @@ export default class ReactionNodeApp {
     }
 
     this._registerFunctionsByType(plugin.functionsByType, plugin.name);
+
+    if (plugin.contextAdditions) {
+      Object.keys(plugin.contextAdditions).forEach((key) => {
+        if ({}.hasOwnProperty.call(this.context, key)) {
+          throw new Error(`Plugin ${plugin.name} is trying to add ${key} key to context but it's already there`);
+        }
+        this.context[key] = plugin.contextAdditions[key];
+      });
+    }
   }
 }

@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Job, Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
+import { Job, Jobs } from "./jobs";
 
 const jobRetryOptions = {
   retries: 5,

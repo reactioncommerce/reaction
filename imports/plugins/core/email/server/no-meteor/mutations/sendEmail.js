@@ -1,4 +1,3 @@
-import { Job, Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 import getShopLogo from "../util/getShopLogo";
 
 /**
@@ -20,7 +19,7 @@ import getShopLogo from "../util/getShopLogo";
  * @returns {Boolean} returns job object
  */
 export default async function sendEmail(context, options) {
-  const { collections } = context;
+  const { backgroundJobs, collections } = context;
   const { Shops } = collections;
 
   const { to } = options;
@@ -78,9 +77,12 @@ export default async function sendEmail(context, options) {
     jobData.subject = subject;
   }
 
-  return new Job(Jobs, "sendEmail", jobData)
-    .retry({
+  return backgroundJobs.scheduleJob({
+    type: "sendEmail",
+    data: jobData,
+    retry: {
       retries: 5,
       wait: 3 * 60000
-    }).save();
+    }
+  });
 }

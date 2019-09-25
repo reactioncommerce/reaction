@@ -1,3 +1,4 @@
+import { addWorker, cancelJobs, getJob, scheduleJob } from "./api";
 import { registerPluginHandler } from "./registration";
 import startup from "./startup";
 
@@ -22,6 +23,14 @@ export default async function register(app) {
           [{ type: 1, status: 1 }],
           [{ priority: 1, retryUntil: 1, after: 1 }]
         ]
+      }
+    },
+    contextAdditions: {
+      backgroundJobs: {
+        addWorker,
+        cancelJobs,
+        getJob,
+        scheduleJob
       }
     }
   });

@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import { Job, Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 
 const jobType = "sitemaps/generate";
 
@@ -14,16 +13,22 @@ export default async function updateSitemapTaskForShop(context, shopId) {
 
   Logger.debug(`Adding ${jobType} job for shop ${shopId}. Refresh ${sitemapRefreshPeriod}`);
 
-  new Job(Jobs, jobType, { shopId })
-    .retry({
+  // First cancel existing job for this shop. We can't use `cancelRepeats` option
+  // on `scheduleJob` because that cancels all of that type, whereas we want to
+  // cancel only those with the same type AND the same shopId.
+  await context.backgroundJobs.cancelJobs({
+    type: jobType,
+    data: { shopId }
+  });
+
+  await context.backgroundJobs.scheduleJob({
+    type: jobType,
+    data: { shopId },
+    retry: {
       retries: 5,
       wait: 60000,
       backoff: "exponential"
-    })
-    .repeat({
-      schedule: Jobs.later.parse.text(sitemapRefreshPeriod)
-    })
-    .save({
-      cancelRepeats: true
-    });
+    },
+    schedule: sitemapRefreshPeriod
+  });
 }

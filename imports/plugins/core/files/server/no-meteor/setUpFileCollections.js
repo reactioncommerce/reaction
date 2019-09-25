@@ -18,6 +18,7 @@ import createSaveImageJob from "./util/createSaveImageJob";
  */
 export default function setUpFileCollections({
   absoluteUrlPrefix,
+  context,
   db,
   Logger,
   MediaRecords,
@@ -154,12 +155,12 @@ export default function setUpFileCollections({
 
   const onNewRemoteFileRecord = (doc, collection) => {
     const { name } = collection;
-    createSaveImageJob(doc, name, true);
+    createSaveImageJob(context, doc, name, true);
   };
 
   const onNewTempFileRecord = (doc, collection) => {
     const { name } = collection;
-    createSaveImageJob(doc, name, false);
+    createSaveImageJob(context, doc, name, false);
   };
 
   let fileWorker;

@@ -1,5 +1,4 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Job, Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
 
 /**
  * @name sitemap/generateSitemaps
@@ -7,7 +6,7 @@ import { Job, Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/
  * @method
  * @summary Regenerates sitemap files for primary shop
  * @param {Object} context - GraphQL execution context
- * @returns {Undefined} triggers sitemap generation job
+ * @returns {undefined} schedules immediate sitemap generation job
  */
 export default async function generateSitemaps(context) {
   const { userHasPermission, userId } = context;
@@ -18,5 +17,15 @@ export default async function generateSitemaps(context) {
     throw new ReactionError("access-denied", "User does not have permissions to generate sitemaps");
   }
 
-  new Job(Jobs, "sitemaps/generate", { notifyUserId: userId, shopId }).save({ cancelRepeats: true });
+  const jobOptions = {
+    type: "sitemaps/generate",
+    data: { notifyUserId: userId, shopId }
+  };
+
+  // First cancel any existing job with same data. We can't use `cancelRepeats` option
+  // on `scheduleJob` because that cancels all of that type, whereas we want to
+  // cancel only those with the same type AND the same shopId and notify ID.
+  await context.backgroundJobs.cancelJobs(jobOptions);
+
+  await context.backgroundJobs.scheduleJob(jobOptions);
 }

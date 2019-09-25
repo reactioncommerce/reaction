@@ -1,44 +1,22 @@
-import Logger from "@reactioncommerce/logger";
-import { Jobs } from "/imports/plugins/included/job-queue/server/no-meteor/jobs";
-
 /**
  * @method saveRemoteImages
- * @summary Processes the Jobs to convert an remote image
+ * @summary Processes the Jobs to convert a remote image
+ * @param {Object} context App context
  * @param {Object} remoteUrlWorker - The created instance of RemoteUrlWorker
  * @return {undefined}
  */
-export default function saveRemoteImages(remoteUrlWorker) {
-  const saveImagesJob = Jobs.processJobs("saveImage/remote", {
-    pollInterval: 60 * 60 * 1000, // Retry failed images after an hour
+export default function saveRemoteImages(context, remoteUrlWorker) {
+  context.backgroundJobs.addWorker({
+    type: "saveImage/remote",
     workTimeout: 10 * 60 * 1000, // No image import should last more than 10 minutes
-    concurrency: 1, // Only run one at a time
-    prefetch: 0 // Don't prefetch
-  }, async (job, callback) => {
-    Logger.debug("saveImage/remote: started");
-
-    const { data } = job;
-    const { doc } = data;
-    try {
-      const { collectionName } = data;
-      await remoteUrlWorker.addDocumentByCollectionName(doc, collectionName);
-      job.done(`Finished converting remote image from ${doc._id}`);
-    } catch (error) {
-      job.fail(`Failed to convert remote image from ${doc._id}. Error: ${error}`);
-    }
-
-    callback();
-    Logger.debug("saveImage/remote: finished");
-  });
-
-  // Observer that triggers processing of job when ready
-  Jobs.whenReady(() => {
-    Jobs.find({
-      type: "saveImage/remote",
-      status: "ready"
-    }).observe({
-      added() {
-        return saveImagesJob.trigger();
+    async worker(job) {
+      const { collectionName, doc } = job.data;
+      try {
+        await remoteUrlWorker.addDocumentByCollectionName(doc, collectionName);
+        job.done(`Finished converting remote image from ${doc._id}`);
+      } catch (error) {
+        job.fail(`Failed to convert remote image from ${doc._id}. Error: ${error}`);
       }
-    });
+    }
   });
 }

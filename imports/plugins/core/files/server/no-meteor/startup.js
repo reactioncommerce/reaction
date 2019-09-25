@@ -22,14 +22,15 @@ export default function startup(context) {
     tempStore
   } = setUpFileCollections({
     absoluteUrlPrefix: rootUrl,
+    context,
     db: app.db,
     Logger,
     MediaRecords,
     mongodb: app.mongodb
   });
 
-  saveRemoteImages(remoteUrlWorker);
-  saveTempImages(fileWorker);
+  saveRemoteImages(context, remoteUrlWorker);
+  saveTempImages(context, fileWorker);
 
   // Make the Media collection available to resolvers
   collections.Media = Media;
