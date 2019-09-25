@@ -14,7 +14,8 @@ import {
 } from "./util";
 
 /**
- *
+ * @summary Factory that creates the `Job` class
+ * @return {Class} Job
  */
 export default function createJobClass() {
   class JobQueue {

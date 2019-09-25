@@ -1,6 +1,5 @@
-/**
- *
- */
+/* eslint-disable require-jsdoc */
+
 export function __range__(left, right, inclusive) {
   const range = [];
   const ascending = left < right;
@@ -20,9 +19,6 @@ export function __range__(left, right, inclusive) {
   return range;
 }
 
-/**
- *
- */
 export function optionsHelp(opts, cb) {
   let options = opts;
   let callback = cb;
@@ -45,18 +41,13 @@ export function optionsHelp(opts, cb) {
   return [options, callback];
 }
 
-/**
- *
- */
 export function splitLongArray(arr, max) {
   if (!(arr instanceof Array) || !(max > 0)) { throw new Error("splitLongArray: bad params"); }
   return __range__(0, Math.ceil(arr.length / max), false).map((index) => arr.slice((index * max), ((index + 1) * max)));
 }
 
-/**
- * @summary This function soaks up num callbacks, by default returning the disjunction of Boolean results
- *   or returning on first error.... Reduce function causes different reduce behavior, such as concatenation
- */
+// This function soaks up num callbacks, by default returning the disjunction of Boolean results
+// or returning on first error.... Reduce function causes different reduce behavior, such as concatenation
 export function reduceCallbacks(cb, num, reduce = (itemA, itemB) => itemA || itemB, init = false) {
   if (!cb) {
     return null;
@@ -89,9 +80,6 @@ export function reduceCallbacks(cb, num, reduce = (itemA, itemB) => itemA || ite
   };
 }
 
-/**
- *
- */
 export function concatReduce(itemA, itemB) {
   let arrayA = itemA;
 
@@ -122,9 +110,6 @@ export const isNonEmptyStringOrArrayOfNonEmptyStrings = (sa) =>
     })()).length === sa.length))
   ;
 
-/**
- *
- */
 export function _setImmediate(func, ...args) {
   if (typeof setImmediate === "function") {
     return setImmediate(func, ...Array.from(args));

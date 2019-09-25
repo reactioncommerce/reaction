@@ -30,7 +30,8 @@ const methodNames = [
 ];
 
 /**
- *
+ * @summary Factory that creates the `JobCollection` classes
+ * @return {Class} `JobCollection` class
  */
 export default function createJobCollectionClass({ Job, later }) {
   const _validNumGTEZero = (value) => typeof value === "number" && (value >= 0.0);
