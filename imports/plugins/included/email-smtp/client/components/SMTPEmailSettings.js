@@ -25,14 +25,14 @@ class SMTPEmailSettings extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { saveSettings, providers } = this.props;
+    const { client, saveSettings, providers } = this.props;
     const { settings } = this.state;
     let newSettings = settings;
     if (settings.service !== "custom") {
       newSettings = Object.assign({}, settings, providers[settings.service]);
     }
     this.setState({ isSaving: true });
-    saveSettings(newSettings, () => this.setState({ isSaving: false }));
+    saveSettings(newSettings, client, () => this.setState({ isSaving: false }));
   }
 
   handleSelect(service) {
@@ -121,6 +121,7 @@ class SMTPEmailSettings extends Component {
 }
 
 SMTPEmailSettings.propTypes = {
+  client: PropTypes.object.isRequired,
   providers: PropTypes.object.isRequired,
   saveSettings: PropTypes.func.isRequired,
   settings: PropTypes.shape({
