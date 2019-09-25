@@ -42,10 +42,13 @@ const wrapComponent = (Comp) => {
     return (
       <Comp
         onCreateOption={async () => {
-          const [opaqueProductId] = await getOpaqueIds([{ namespace: "Product", id: variantOrParent._id }]);
+          const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+            { namespace: "Product", id: variantOrParent._id },
+            { namespace: "Shop", id: variantOrParent.shopId }
+          ]);
 
           try {
-            await createProductVariant({ variables: { input: { parentId: opaqueProductId } } });
+            await createProductVariant({ variables: { input: { productId: opaqueProductId, shopId: opaqueShopId } } });
             // Because of the way GraphQL and meteor interact when creating a new variant,
             // we can't immediately redirect a user to the new variant as GraphQL is too quick
             // and the meteor subscription isn't yet updated. Once this page has been updated
