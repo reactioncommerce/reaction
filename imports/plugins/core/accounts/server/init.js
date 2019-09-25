@@ -172,6 +172,8 @@ Meteor.startup(() => {
     // Prioritize removing if possible
     const context = Promise.await(getGraphQLContextInMeteorMethod(null));
 
+    context.isInternalCall = true;
+
     Promise.await(context.mutations.createAccount(context, {
       additionals,
       groupId: groupToAddUser,
@@ -179,6 +181,8 @@ Meteor.startup(() => {
       tokenObj,
       user
     }));
+
+    delete context.isInternalCall;
 
     // set verification token on user
     if (tokenObj) {

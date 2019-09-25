@@ -49,10 +49,9 @@ export default async function createAccount(context, input) {
     user
   } = input;
 
-  // TODO: EK - Verify if this is this needed, or is it ok that anyone can create an account?
-  // if (!userHasPermission(["reaction-accounts", "account/invite"], shopId)) {
-  //   throw new ReactionError("access-denied", "Access denied");
-  // }
+  if (!context.isInternalCall && !userHasPermission(["reaction-accounts", "account/invite"], shopId)) {
+    throw new ReactionError("access-denied", "Access denied");
+  }
 
   // Create initial account object from user and additionals
   const account = Object.assign({ shopId }, user, additionals);
