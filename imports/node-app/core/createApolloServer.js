@@ -86,7 +86,7 @@ export default function createApolloServer(options = {}) {
   );
 
   // Redirect for graphql-alpha route
-  app.get("/graphql-alpha", (req, res) => {
+  app.all("/graphql-alpha", (req, res) => {
     // Redirect to path once graphql-alpha is received
     res.redirect(path);
   });
