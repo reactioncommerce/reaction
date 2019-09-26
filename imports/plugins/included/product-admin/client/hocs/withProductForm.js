@@ -116,7 +116,7 @@ const wrapComponent = (Comp) => {
       }
 
       this.setState({
-        newMetaField: {
+        newMetafield: {
           key: "",
           value: ""
         }
