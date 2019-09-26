@@ -422,7 +422,7 @@ export default function createJobClass() {
     }
 
     // Like the above, but takes an array of ids, returns array of jobs
-    static getJobs(root, ids, ...rest) {
+    static async getJobs(root, ids, ...rest) {
       const adjustedLength = Math.max(rest.length, 1);
       let options = rest.slice(0, adjustedLength - 1);
       let cb = rest[adjustedLength - 1];
@@ -433,20 +433,22 @@ export default function createJobClass() {
       const chunksOfIds = splitLongArray(ids, 32);
       const myCb = reduceCallbacks(cb, chunksOfIds.length, concatReduce, []);
       for (const chunkOfIds of Array.from(chunksOfIds)) {
-        retVal = retVal.concat(methodCall(root, "getJob", [chunkOfIds, options], myCb, (doc) => {
+        /* eslint-disable-next-line no-await-in-loop */
+        const result = await methodCall(root, "getJob", [chunkOfIds, options], myCb, (doc) => {
           if (doc) {
             return (Array.from(doc).map((jobDoc) => new Job(root, jobDoc.type, jobDoc.data, jobDoc)));
           }
 
           return null;
-        }));
+        });
+        retVal = retVal.concat(result);
       }
       return retVal;
     }
 
     // Pause this job, only Ready and Waiting jobs can be paused
     // Calling this toggles the paused state. Unpaused jobs go to waiting
-    static pauseJobs(root, ids, ...rest) {
+    static async pauseJobs(root, ids, ...rest) {
       const adjustedLength = Math.max(rest.length, 1);
       let options = rest.slice(0, adjustedLength - 1);
       let cb = rest[adjustedLength - 1];
@@ -456,14 +458,15 @@ export default function createJobClass() {
       const chunksOfIds = splitLongArray(ids, 256);
       const myCb = reduceCallbacks(cb, chunksOfIds.length);
       for (const chunkOfIds of Array.from(chunksOfIds)) {
-        retVal = methodCall(root, "jobPause", [chunkOfIds, options], myCb) || retVal;
+        /* eslint-disable-next-line no-await-in-loop */
+        retVal = await methodCall(root, "jobPause", [chunkOfIds, options], myCb) || retVal;
       }
       return retVal;
     }
 
     // Resume this job, only Paused jobs can be resumed
     // Calling this toggles the paused state. Unpaused jobs go to waiting
-    static resumeJobs(root, ids, ...rest) {
+    static async resumeJobs(root, ids, ...rest) {
       const adjustedLength = Math.max(rest.length, 1);
       let options = rest.slice(0, adjustedLength - 1);
       let cb = rest[adjustedLength - 1];
@@ -473,14 +476,15 @@ export default function createJobClass() {
       const chunksOfIds = splitLongArray(ids, 256);
       const myCb = reduceCallbacks(cb, chunksOfIds.length);
       for (const chunkOfIds of Array.from(chunksOfIds)) {
-        retVal = methodCall(root, "jobResume", [chunkOfIds, options], myCb) || retVal;
+        /* eslint-disable-next-line no-await-in-loop */
+        retVal = await methodCall(root, "jobResume", [chunkOfIds, options], myCb) || retVal;
       }
       return retVal;
     }
 
     // Move waiting jobs to the ready state, jobs with dependencies will not
     // be made ready unless force is used.
-    static readyJobs(root, ids, ...rest) {
+    static async readyJobs(root, ids, ...rest) {
       const adjustedLength = Math.max(rest.length, 1);
       let options = rest.slice(0, adjustedLength - 1);
       let cb = rest[adjustedLength - 1];
@@ -492,13 +496,14 @@ export default function createJobClass() {
       if (!(chunksOfIds.length > 0)) { chunksOfIds = [[]]; }
       const myCb = reduceCallbacks(cb, chunksOfIds.length);
       for (const chunkOfIds of Array.from(chunksOfIds)) {
-        retVal = methodCall(root, "jobReady", [chunkOfIds, options], myCb) || retVal;
+        /* eslint-disable-next-line no-await-in-loop */
+        retVal = await methodCall(root, "jobReady", [chunkOfIds, options], myCb) || retVal;
       }
       return retVal;
     }
 
     // Cancel this job if it is running or able to run (waiting, ready)
-    static cancelJobs(root, ids, ...rest) {
+    static async cancelJobs(root, ids, ...rest) {
       const adjustedLength = Math.max(rest.length, 1);
       let options = rest.slice(0, adjustedLength - 1);
       let cb = rest[adjustedLength - 1];
@@ -509,13 +514,14 @@ export default function createJobClass() {
       const chunksOfIds = splitLongArray(ids, 256);
       const myCb = reduceCallbacks(cb, chunksOfIds.length);
       for (const chunkOfIds of Array.from(chunksOfIds)) {
-        retVal = methodCall(root, "jobCancel", [chunkOfIds, options], myCb) || retVal;
+        /* eslint-disable-next-line no-await-in-loop */
+        retVal = await methodCall(root, "jobCancel", [chunkOfIds, options], myCb) || retVal;
       }
       return retVal;
     }
 
     // Restart a failed or cancelled job
-    static restartJobs(root, ids, ...rest) {
+    static async restartJobs(root, ids, ...rest) {
       const adjustedLength = Math.max(rest.length, 1);
       let options = rest.slice(0, adjustedLength - 1);
       let cb = rest[adjustedLength - 1];
@@ -527,13 +533,14 @@ export default function createJobClass() {
       const chunksOfIds = splitLongArray(ids, 256);
       const myCb = reduceCallbacks(cb, chunksOfIds.length);
       for (const chunkOfIds of Array.from(chunksOfIds)) {
-        retVal = methodCall(root, "jobRestart", [chunkOfIds, options], myCb) || retVal;
+        /* eslint-disable-next-line no-await-in-loop */
+        retVal = await methodCall(root, "jobRestart", [chunkOfIds, options], myCb) || retVal;
       }
       return retVal;
     }
 
     // Remove a job that is not able to run (completed, cancelled, failed) from the queue
-    static removeJobs(root, ids, ...rest) {
+    static async removeJobs(root, ids, ...rest) {
       const adjustedLength = Math.max(rest.length, 1);
       let options = rest.slice(0, adjustedLength - 1);
       let cb = rest[adjustedLength - 1];
@@ -543,7 +550,8 @@ export default function createJobClass() {
       const chunksOfIds = splitLongArray(ids, 256);
       const myCb = reduceCallbacks(cb, chunksOfIds.length);
       for (const chunkOfIds of Array.from(chunksOfIds)) {
-        retVal = methodCall(root, "jobRemove", [chunkOfIds, options], myCb) || retVal;
+        /* eslint-disable-next-line no-await-in-loop */
+        retVal = await methodCall(root, "jobRemove", [chunkOfIds, options], myCb) || retVal;
       }
       return retVal;
     }
