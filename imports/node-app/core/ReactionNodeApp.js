@@ -309,7 +309,10 @@ export default class ReactionNodeApp {
       }
     }
 
-    // (3) Disconnect from MongoDB database
+    // (3) Stop app events since the handlers will not have database access after this point
+    appEvents.stop();
+
+    // (4) Disconnect from MongoDB database
     await this.disconnectFromMongo();
   }
 
