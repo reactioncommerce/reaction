@@ -1,0 +1,67 @@
+{
+  "name": "@reactioncommerce/api-utils",
+  "description": "Utility functions for the Reaction API",
+  "version": "0.0.0-development",
+  "main": "index.js",
+  "type": "module",
+  "homepage": "https://github.com/reactioncommerce/api-utils",
+  "url": "https://github.com/reactioncommerce/api-utils",
+  "email": "engineering@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/api-utils.git"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "engineering@reactioncommerce.com",
+    "url": "https://reactioncommerce.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/api-utils/issues"
+  },
+  "exports": {
+    "./": "./lib/"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "accounting-js": "^1.1.1",
+    "graphql-fields": "^2.0.3",
+    "lodash": "^4.17.15",
+    "transliteration": "^2.1.7"
+  },
+  "devDependencies": {
+    "@reactioncommerce/eslint-config": "^2.1.0",
+    "babel-eslint": "^10.0.3",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "eslint": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "jest": "^24.9.0",
+    "semantic-release": "^15.13.24"
+  },
+  "scripts": {
+    "build": "echo 'No build step necessary'",
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch lib",
+    "test:file": "jest --no-cache --watch --coverage=false"
+  },
+  "babel": {
+    "plugins": [
+      "transform-es2015-modules-commonjs"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "@reactioncommerce"
+  },
+  "prettier": {
+    "arrowParens": "always"
+  }
+}
