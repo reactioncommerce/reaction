@@ -4,7 +4,7 @@ import { registerBlock } from "@reactioncommerce/reaction-components";
 import { registerOperatorRoute } from "/imports/client/ui";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
 import OrderCardSummary from "./components/OrderCardSummary";
-import Orders from "./containers/orderDashboardContainer";
+import Orders from "./components/OrdersTable";
 import Order from "./containers/OrderContainer";
 import OrderPrint from "./containers/OrderPrintContainer";
 import "../lib/extendShopSchema";
