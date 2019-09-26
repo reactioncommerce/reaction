@@ -29,7 +29,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Catalog.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 const accountInternalId = "123";

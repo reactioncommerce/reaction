@@ -37,7 +37,7 @@ beforeAll(async () => {
   query = testApp.query(tagsQuery);
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(mockTags.map((tag) => testApp.collections.Tags.insert(tag)));
+  await Promise.all(mockTags.map((tag) => testApp.collections.Tags.insertOne(tag)));
 });
 
 afterAll(() => testApp.stop());
