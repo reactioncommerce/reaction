@@ -30,6 +30,8 @@ async function hashRelatedProduct(media, collections) {
  * @returns {undefined}
  */
 export default async function startup(context) {
+  console.log(" --------------------- context.collections.", context.collections);
+
   const { appEvents, collections } = context;
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
