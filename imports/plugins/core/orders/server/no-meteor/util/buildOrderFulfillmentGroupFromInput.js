@@ -5,6 +5,7 @@ import updateGroupTotals from "./updateGroupTotals";
 /**
  * @summary Builds an order fulfillment group from fulfillment group input.
  * @param {Object} context an object containing the per-request state
+ * @param {String} [accountId] ID of account placing the order
  * @param {Object[]} [additionalItems] Additional already-created order items to push into the group
  *   items array before calculating shipping, tax, surcharges, and totals.
  * @param {Object} [billingAddress] The primary billing address for the order, if known
@@ -16,6 +17,7 @@ import updateGroupTotals from "./updateGroupTotals";
  * @returns {Promise<Object>} The fulfillment group
  */
 export default async function buildOrderFulfillmentGroupFromInput(context, {
+  accountId,
   additionalItems,
   billingAddress,
   cartId,
@@ -56,6 +58,7 @@ export default async function buildOrderFulfillmentGroupFromInput(context, {
     taxableAmount,
     taxTotal
   } = await updateGroupTotals(context, {
+    accountId,
     billingAddress,
     cartId,
     currencyCode,

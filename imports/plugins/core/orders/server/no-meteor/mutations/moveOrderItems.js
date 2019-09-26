@@ -37,7 +37,14 @@ export default async function moveOrderItems(context, input) {
     toFulfillmentGroupId
   } = input;
 
-  const { accountId, appEvents, collections, isInternalCall, userHasPermission, userId } = context;
+  const {
+    accountId: authAccountId,
+    appEvents,
+    collections,
+    isInternalCall,
+    userHasPermission,
+    userId
+  } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
@@ -49,7 +56,7 @@ export default async function moveOrderItems(context, input) {
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (
     !isInternalCall &&
-    (!accountId || accountId !== order.accountId) &&
+    (!authAccountId || authAccountId !== order.accountId) &&
     !userHasPermission(["orders", "order/fulfillment"], order.shopId)
   ) {
     throw new ReactionError("access-denied", "Access Denied");
@@ -57,7 +64,7 @@ export default async function moveOrderItems(context, input) {
 
   // Is the account calling this mutation also the account that placed the order?
   // We need this check in a couple places below, so we'll get it here.
-  const accountIsOrderer = (order.accountId && accountId === order.accountId);
+  const accountIsOrderer = (order.accountId && authAccountId === order.accountId);
 
   // The orderer may only move items while the order status is still "new"
   if (accountIsOrderer && !orderStatusesThatOrdererCanMove.includes(order.workflow.status)) {
@@ -90,7 +97,7 @@ export default async function moveOrderItems(context, input) {
     throw new ReactionError("not-found", "Some order items not found");
   }
 
-  const { billingAddress, cartId, currencyCode } = order;
+  const { accountId, billingAddress, cartId, currencyCode } = order;
 
   // Find and move the items
   const orderSurcharges = [];
@@ -121,6 +128,7 @@ export default async function moveOrderItems(context, input) {
 
     // Update group shipping, tax, totals, etc.
     const { groupSurcharges } = await updateGroupTotals(context, {
+      accountId,
       billingAddress,
       cartId,
       currencyCode,

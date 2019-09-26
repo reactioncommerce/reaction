@@ -55,6 +55,15 @@ input RemoveAccountAddressBookEntryInput {
   clientMutationId: String
 }
 
+"Describes which email should be sent a password reset link"
+input SendResetAccountPasswordEmailInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The email address of the account to send reset email to"
+  email: String!
+}
+
 "Describes an account profile currency change"
 input SetAccountProfileCurrencyInput {
   "The account ID, which defaults to the viewer account"
@@ -65,6 +74,18 @@ input SetAccountProfileCurrencyInput {
 
   "The currency code"
   currencyCode: String!
+}
+
+"Describes an account profile language change"
+input SetAccountProfileLanguageInput {
+ "The account ID, which defaults to the viewer account"
+ accountId: ID
+
+ "An optional string identifying the mutation call, which will be returned in the response payload"
+ clientMutationId: String
+
+ "The i18n language code value"
+ language: String!
 }
 
 "Defines a new Email and the account to which it should be added"
@@ -153,6 +174,9 @@ type Account implements Node {
     sortBy: GroupSortByField = createdAt
   ): GroupConnection
 
+  "The preferred language used by this account"
+  language: String
+
   "The last name of the person this account represents, if known"
   lastName: String
 
@@ -238,6 +262,15 @@ type AddAccountEmailRecordPayload {
   emailRecord: EmailRecord
 }
 
+"The response from the `sendResetAccountPasswordEmail` mutation"
+type SendResetAccountPasswordEmailPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The email address of the account to send reset email to"
+  email: String!
+}
+
 "The response from the `removeAccountAddressBookEntry` mutation"
 type RemoveAccountAddressBookEntryPayload {
   "The removed address"
@@ -269,6 +302,15 @@ type UpdateAccountAddressBookEntryPayload {
 type SetAccountProfileCurrencyPayload {
   "The updated account"
   account: Account
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"The response from the `setAccountProfileLanguage` mutation"
+type SetAccountProfileLanguagePayload {
+  "The updated account"
+  account: Account!
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -325,11 +367,23 @@ extend type Mutation {
     input: RemoveAccountEmailRecordInput!
   ): RemoveAccountEmailRecordPayload
 
+  "Send a reset password email to an email address from an account"
+  sendResetAccountPasswordEmail(
+    "Mutation input"
+    input: SendResetAccountPasswordEmailInput!
+  ): SendResetAccountPasswordEmailPayload
+
   "Set the preferred currency for an account"
   setAccountProfileCurrency(
     "Mutation input"
     input: SetAccountProfileCurrencyInput!
   ): SetAccountProfileCurrencyPayload
+
+  "Set the preferred language for an account"
+  setAccountProfileLanguage(
+    "Mutation input"
+    input: SetAccountProfileLanguageInput!
+  ): SetAccountProfileLanguagePayload!
 
   "Remove an address that exists in the `addressBook` field for an account"
   updateAccountAddressBookEntry(

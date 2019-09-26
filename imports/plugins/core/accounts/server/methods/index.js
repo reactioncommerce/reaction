@@ -4,7 +4,6 @@ import getUserId from "./getUserId";
 import groupMethods from "./group";
 import removeEmailAddress from "./removeEmailAddress";
 import removeUserPermissions from "./removeUserPermissions";
-import sendResetPasswordEmail from "./sendResetPasswordEmail";
 import setActiveShopId from "./setActiveShopId";
 import setUserPermissions from "./setUserPermissions";
 import updateEmailAddress from "./updateEmailAddress";
@@ -30,7 +29,6 @@ export default {
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
   "accounts/removeEmailAddress": removeEmailAddress,
   "accounts/removeUserPermissions": removeUserPermissions,
-  "accounts/sendResetPasswordEmail": sendResetPasswordEmail,
   "accounts/setActiveShopId": setActiveShopId,
   "accounts/setUserPermissions": setUserPermissions,
   "accounts/updateEmailAddress": updateEmailAddress,

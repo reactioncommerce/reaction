@@ -3,7 +3,9 @@ import addAccountToGroup from "./addAccountToGroup";
 import inviteShopMember from "./inviteShopMember";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry";
 import removeAccountFromGroup from "./removeAccountFromGroup";
+import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail";
 import setAccountProfileCurrency from "./setAccountProfileCurrency";
+import setAccountProfileLanguage from "./setAccountProfileLanguage";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
 
 export default {
@@ -12,6 +14,8 @@ export default {
   inviteShopMember,
   removeAccountAddressBookEntry,
   removeAccountFromGroup,
+  sendResetAccountPasswordEmail,
   setAccountProfileCurrency,
+  setAccountProfileLanguage,
   updateAccountAddressBookEntry
 };

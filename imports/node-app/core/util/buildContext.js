@@ -44,5 +44,10 @@ export default async function buildContext(context, request = {}) {
   context.rootUrl = getRootUrl(request);
   context.getAbsoluteUrl = (path) => getAbsoluteUrl(context.rootUrl, path);
 
-  context.requestHeaders = request.headers;
+  // Make some request headers available to resolvers on context, but remove any
+  // with potentially sensitive information in them.
+  context.requestHeaders = { ...request.headers };
+  delete context.requestHeaders.authorization;
+  delete context.requestHeaders.cookie;
+  delete context.requestHeaders["meteor-login-token"];
 }

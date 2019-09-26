@@ -21,9 +21,10 @@ Accounts.urls.resetPassword = function reset(token) {
  * @param {String} [optionalEmail] Address to send the email to.
  *                 This address must be in the user's `emails` list.
  *                 Defaults to the first email in the list.
+ * @param {String} language - user prefered language i18n
  * @returns {Job} - returns a sendEmail Job instance
  */
-async function sendResetEmail(userId, optionalEmail) {
+async function sendResetEmail(userId, optionalEmail, language) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
@@ -104,6 +105,7 @@ async function sendResetEmail(userId, optionalEmail) {
     data: dataForEmail,
     fromShop: shop,
     templateName: "accounts/resetPassword",
+    language,
     to: email
   }));
 }
@@ -130,9 +132,11 @@ export default function sendResetPasswordEmail(options) {
     throw new ReactionError("not-found", "User not found");
   }
 
+  const language = user.profile && user.profile.language;
+
   const emails = _.map(user.emails || [], "address");
 
   const caseInsensitiveEmail = _.find(emails, (email) => email.toLowerCase() === options.email.toLowerCase());
 
-  sendResetEmail(user._id, caseInsensitiveEmail);
+  sendResetEmail(user._id, caseInsensitiveEmail, language);
 }

@@ -488,6 +488,10 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "notes.$": Notes,
+  "ordererPreferredLanguage": {
+    type: String,
+    optional: true
+  },
   "payments": {
     type: Array,
     optional: true

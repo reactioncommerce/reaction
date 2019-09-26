@@ -1,0 +1,37 @@
+extend type Mutation {
+  "Use this mutation to verify the SMTP email settings"
+  verifySMTPEmailSettings(
+    "Mutation input"
+    input: VerifySMTPEmailSettingsInput!
+    ): VerifySMTPEmailSettingsInputPayload!
+}
+
+"Input for an `VerifySMTPEmailSettingsInput`"
+input VerifySMTPEmailSettingsInput {
+  "The host of the SMTP email service"
+  host: String
+
+  "The password of the SMTP email service user"
+  password: String!
+
+  "The port to send email via"
+  port: Int
+
+  "The SMTP email service"
+  service: String!
+
+  "The ID of the shop this setting belongs to"
+  shopId: ID!
+
+  "The username of the SMTP email service user"
+  user: String!
+}
+
+"Response payload for the verifySMTPEmailSettings mutation"
+type VerifySMTPEmailSettingsInputPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "True if the SMTP connection was made and authentication was successful."
+  isVerified: Boolean!
+}
