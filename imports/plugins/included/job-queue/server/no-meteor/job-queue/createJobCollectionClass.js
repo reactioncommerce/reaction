@@ -855,6 +855,8 @@ export default function createJobCollectionClass({ Job, later }) {
 
     // eslint-disable-next-line camelcase
     async _DDPMethod_jobReady(ids, options = {}) {
+      if (this.stopped) return false;
+
       let logResult;
 
       // Don"t simulate jobReady. It has a strong chance of causing issues with

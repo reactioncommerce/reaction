@@ -111,7 +111,7 @@ export default function createJobClass() {
           const options = { maxJobs: numJobsToGet };
           if (this.workTimeout) { options.workTimeout = this.workTimeout; }
           // eslint-disable-next-line no-use-before-define
-          return Job.getWork(this.root, this.type, options, (err, jobs) => {
+          Job.getWork(this.root, this.type, options, (err, jobs) => {
             this._getWorkOutstanding = false;
             if (err) {
               this.errorCallback(new Error(`Received error from getWork(): ${err}`));
@@ -131,6 +131,8 @@ export default function createJobClass() {
             } else {
               this.errorCallback(new Error("Nonarray response from server from getWork()"));
             }
+          }).catch((error) => {
+            this.errorCallback(new Error(`Caught unhandled rejection from getWork(): ${error}`));
           });
         }
       }
@@ -162,6 +164,7 @@ export default function createJobClass() {
         }
         job._taskId = `Task_${this._taskNumber += 1}`;
         this._workers[job._taskId] = job;
+
         const next = () => {
           delete this._workers[job._taskId];
           if (this._stoppingTasks && (this.running() === 0) && (this.length() === 0)) {
@@ -171,7 +174,29 @@ export default function createJobClass() {
           return _setImmediate(this._getWork.bind(this));
         };
         const cb = this._only_once(next);
-        return this.worker(job, cb);
+
+        // Worker may or may not be async so we'll wrap to be sure we can call .catch on it
+        const runWorker = async () => {
+          await this.worker(job, cb);
+        };
+
+        runWorker.catch((error) => {
+          try {
+            // `job` may actually be an array of jobs
+            let count = 0;
+            const arrayOfJobs = Array.isArray(job) ? job : [job];
+            arrayOfJobs.forEach((singleJob) => {
+              singleJob.fail(`Uncaught error in worker: ${error.message}`, () => {
+                count += 1;
+                if (count === arrayOfJobs.length) {
+                  cb(); // eslint-disable-line
+                }
+              });
+            });
+          } catch (yetAnotherError) {
+            throw yetAnotherError;
+          }
+        });
       }
       return null;
     }
@@ -673,7 +698,7 @@ export default function createJobClass() {
       }
     }
 
-    // Adds a run dependancy on one or more existing jobs to this job
+    // Adds a run dependency on one or more existing jobs to this job
     // Calling with a falsy value resets the dependencies to []
     depends(jobOrArray) {
       let jobs = jobOrArray;
