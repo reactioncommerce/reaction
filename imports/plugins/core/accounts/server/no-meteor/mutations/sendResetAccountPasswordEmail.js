@@ -1,8 +1,8 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
+import generateVerificationTokenObject from "../util/generateVerificationTokenObject";
 
 const inputSchema = new SimpleSchema({
   email: String
@@ -35,9 +35,7 @@ async function sendResetEmail(context, account, email) {
   }
 
   // Create token for password reset
-  const token = Random.secret();
-  const when = new Date();
-  const tokenObj = { token, email, when };
+  const tokenObj = generateVerificationTokenObject({ email });
 
   const { value: updatedAccount } = await users.findOneAndUpdate({ _id: account.userId }, {
     $set: {
@@ -89,7 +87,7 @@ async function sendResetEmail(context, account, email) {
       }
     },
     // Account Data
-    passwordResetUrl: `${context.getAbsoluteUrl()}reset-password/${token}`,
+    passwordResetUrl: context.getAbsoluteUrl(`reset-password/${tokenObj.token}`),
     user
   };
 

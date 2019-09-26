@@ -14,11 +14,12 @@ import appEvents from "/imports/node-app/core/util/appEvents";
 export default function updateEmailAddress(email) {
   check(email, String);
   const userId = Reaction.getUserId();
+  const shopId = Reaction.getShopId();
 
   // Add email to user account
   MeteorAccounts.addEmail(userId, email);
 
-  appEvents.emit("afterAddUnverifiedEmailToUser", { email, userId });
+  appEvents.emit("afterAddUnverifiedEmailToUser", { email, shopId, userId });
 
   return true;
 }

@@ -1,11 +1,11 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import generateVerificationTokenObject from "/imports/plugins/core/accounts/server/no-meteor/util/generateVerificationTokenObject";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -47,9 +47,7 @@ async function sendResetEmail(userId, optionalEmail, language) {
   }
 
   // Create token for password reset
-  const token = Random.secret();
-  const when = new Date();
-  const tokenObj = { token, email, when };
+  const tokenObj = generateVerificationTokenObject({ email });
 
   Meteor.users.update(userId, {
     $set: {
@@ -96,7 +94,7 @@ async function sendResetEmail(userId, optionalEmail, language) {
       }
     },
     // Account Data
-    passwordResetUrl: Accounts.urls.resetPassword(token),
+    passwordResetUrl: Accounts.urls.resetPassword(tokenObj.token),
     user
   };
 

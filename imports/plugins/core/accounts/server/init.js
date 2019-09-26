@@ -1,6 +1,5 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
@@ -8,11 +7,7 @@ import * as Collections from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import sendWelcomeEmail from "/imports/plugins/core/accounts/server/util/sendWelcomeEmail";
-import sendVerificationEmail from "./util/sendVerificationEmail";
-
-appEvents.on("afterAddUnverifiedEmailToUser", ({ email, userId }) => {
-  sendVerificationEmail({ email, userId });
-});
+import generateVerificationTokenObject from "/imports/plugins/core/accounts/server/no-meteor/util/generateVerificationTokenObject";
 
 Meteor.startup(() => {
   /**
@@ -183,14 +178,10 @@ Meteor.startup(() => {
     // but skip the first default admin user and anonymous users
     // (default admins already get a verification email)
     if (shopId && !emailIsVerified && user.emails[0]) {
-      const token = Random.secret();
-      sendWelcomeEmail(shopId, user._id, token);
-      const when = new Date();
-      const tokenObj = {
-        address: user.emails[0].address,
-        token,
-        when
-      };
+      const tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
+
+      sendWelcomeEmail(shopId, user._id, tokenObj.token);
+
       _.set(user, "services.email.verificationTokens", [tokenObj]);
     }
 
