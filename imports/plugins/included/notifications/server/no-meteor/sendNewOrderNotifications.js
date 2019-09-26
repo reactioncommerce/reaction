@@ -10,7 +10,7 @@ import getShopPrefix from "./getShopPrefix";
  * @returns {undefined}
  */
 async function sendNotificationToAdmin(collections, adminUserId, shopId) {
-  const account = await collections.Accounts.findOne({ userId: adminUserId }, { fields: { _id: 1 } });
+  const account = await collections.Accounts.findOne({ userId: adminUserId }, { projection: { _id: 1 } });
   if (!account) {
     throw new Error(`No account found for admin user ID ${adminUserId}`);
   }
