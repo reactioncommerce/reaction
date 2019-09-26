@@ -64,4 +64,4 @@ workflows:
             - lint
           filters:
             branches:
-              only: master
+              only: trunk
