@@ -79,22 +79,25 @@ export function getJob(id) {
  */
 export function cancelJobs(filter) {
   return new Promise((resolve, reject) => {
-    try {
-      Jobs.whenReady(async () => {
+    Jobs.whenReady(() => {
+      /**
+       * @summary Inner function to cancel jobs so that we can be sure to
+       *   catch promise rejections
+       * @return {Promise<undefined>} Nothing
+       */
+      async function doCancel() {
         const existingJobs = await Jobs.find({
           ...filter,
           status: {
-            $in: this.jobStatusCancellable
+            $in: Jobs.jobStatusCancellable
           }
         }).toArray();
 
         await Promise.all(existingJobs.map((doc) => Jobs._DDPMethod_jobCancel(doc._id, {})));
+      }
 
-        resolve();
-      });
-    } catch (error) {
-      reject(error);
-    }
+      doCancel().then(resolve).catch(reject);
+    });
   });
 }
 
