@@ -203,6 +203,9 @@ export default function createJobCollectionClass({ Job, later }) {
           }
 
           const changeStream = this.collection.watch({ fullDocument: "updateLookup" });
+          changeStream.on("error", (error) => {
+            if (callbacks.error) callbacks.error(error);
+          });
           changeStream.on("change", (changeInfo) => {
             const { fullDocument, operationType, updateDescription } = changeInfo;
 
@@ -1162,9 +1165,7 @@ export default function createJobCollectionClass({ Job, later }) {
     // eslint-disable-next-line camelcase
     async _DDPMethod_jobProgress(id, runId, completed, total) {
       // Notify the worker to stop running if we are shutting down
-      if (this.stopped) {
-        return null;
-      }
+      if (this.stopped) return null;
 
       const progress = {
         completed,
