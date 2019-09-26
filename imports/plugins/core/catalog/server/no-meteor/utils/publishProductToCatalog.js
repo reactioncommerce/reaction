@@ -19,13 +19,6 @@ export default async function publishProductToCatalog(product, context) {
   // Convert Product schema object to Catalog schema object
   const catalogProduct = await createCatalogProduct(product, context);
 
-  // Check to see if product has variants
-  // If not, do not publish the product to the Catalog
-  if (!catalogProduct.variants || (catalogProduct.variants && catalogProduct.variants.length === 0)) {
-    Logger.info("Cannot publish to catalog: product has no visible variants");
-    return false;
-  }
-
   const modifier = {
     $set: {
       product: catalogProduct,
