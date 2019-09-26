@@ -1,7 +1,10 @@
 module.exports = {
   mongodbMemoryServerOptions: {
     instance: {
-      dbName: "jest"
+      dbName: "jest",
+      storageEngine: "wiredTiger",
+      oplogSize: 8,
+      replSet: "rs0"
     },
     binary: {
       version: "3.6.14",
