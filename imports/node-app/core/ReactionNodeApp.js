@@ -8,6 +8,7 @@ import collectionIndex from "/imports/utils/collectionIndex";
 import createApolloServer from "./createApolloServer";
 import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
 import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
+import initReplicaSet from "./util/initReplicaSet";
 
 export default class ReactionNodeApp {
   constructor(options = {}) {
@@ -265,6 +266,14 @@ export default class ReactionNodeApp {
    * @returns {Promise<undefined>} Nothing
    */
   async start({ mongoUrl, port } = {}) {
+    if (this.options.shouldInitReplicaSet) {
+      try {
+        await initReplicaSet(mongoUrl);
+      } catch (error) {
+        Logger.warn(`Failed to initialize a MongoDB replica set. This may result in errors or some things not working. Error: ${error.message}`);
+      }
+    }
+
     // (1) Connect to MongoDB database
     await this.connectToMongo({ mongoUrl });
 
@@ -284,11 +293,24 @@ export default class ReactionNodeApp {
    * @returns {Promise<undefined>} Nothing
    */
   async stop() {
-    // (1) Disconnect from MongoDB database
-    await this.disconnectFromMongo();
-
-    // (2) Stop the Express GraphQL server
+    // (1) Stop the Express GraphQL server
     await this.stopServer();
+
+    // (2) Run all "shutdown" functions registered by plugins
+    const shutdownFunctionsRegisteredByPlugins = this.functionsByType.shutdown;
+    if (Array.isArray(shutdownFunctionsRegisteredByPlugins)) {
+      // We are intentionally running these in series, in the order in which they were registered
+      for (const shutdownFunctionInfo of shutdownFunctionsRegisteredByPlugins) {
+        Logger.info(`Running shutdown function "${shutdownFunctionInfo.func.name}" for plugin "${shutdownFunctionInfo.pluginName}"...`);
+        const startTime = Date.now();
+        await shutdownFunctionInfo.func(this.context); // eslint-disable-line no-await-in-loop
+        const elapsedMs = Date.now() - startTime;
+        Logger.info(`Shutdown function "${shutdownFunctionInfo.func.name}" for plugin "${shutdownFunctionInfo.pluginName}" finished in ${elapsedMs}ms`);
+      }
+    }
+
+    // (3) Disconnect from MongoDB database
+    await this.disconnectFromMongo();
   }
 
   /**
