@@ -1,5 +1,6 @@
 import { addWorker, cancelJobs, getJob, scheduleJob } from "./api";
 import { registerPluginHandler } from "./registration";
+import shutdown from "./shutdown";
 import startup from "./startup";
 
 /**
@@ -13,6 +14,7 @@ export default async function register(app) {
     name: "reaction-job-queue",
     functionsByType: {
       registerPluginHandler: [registerPluginHandler],
+      shutdown: [shutdown],
       startup: [startup]
     },
     collections: {

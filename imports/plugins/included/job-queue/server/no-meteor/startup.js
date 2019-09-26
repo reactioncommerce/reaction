@@ -21,7 +21,7 @@ export default async function startup(context) {
   jobCleanupRequests.forEach(removeOldJobs);
 
   Jobs.startJobServer(() => {
-    Logger.debug("JobServer started");
+    Logger.debug("Background job system started");
     appEvents.emit("jobServerStart");
   });
 }
