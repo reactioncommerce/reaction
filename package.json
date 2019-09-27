@@ -3,7 +3,6 @@
   "description": "Error handling for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
-  "type": "module",
   "homepage": "https://github.com/reactioncommerce/reaction-error",
   "url": "https://github.com/reactioncommerce/reaction-error",
   "email": "engineering@reactioncommerce.com",
@@ -19,9 +18,6 @@
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction-error/issues"
-  },
-  "exports": {
-    "./": "./lib/"
   },
   "sideEffects": false,
   "dependencies": {},
@@ -43,11 +39,6 @@
     "build": "echo 'No build step necessary'",
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint ."
-  },
-  "babel": {
-    "plugins": [
-      "transform-es2015-modules-commonjs"
-    ]
   },
   "eslintConfig": {
     "extends": "@reactioncommerce"
