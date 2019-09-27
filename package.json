@@ -59,7 +59,18 @@
     ]
   },
   "eslintConfig": {
-    "extends": "@reactioncommerce"
+    "extends": "@reactioncommerce",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "impliedStrict": true
+      }
+    },
+    "env": {
+      "es6": true,
+      "jasmine": true
+    }
   },
   "prettier": {
     "arrowParens": "always"
