@@ -180,7 +180,7 @@ export default function createJobClass() {
           await this.worker(job, cb);
         };
 
-        runWorker.catch((error) => {
+        runWorker().catch((error) => {
           try {
             // `job` may actually be an array of jobs
             let count = 0;
