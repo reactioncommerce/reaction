@@ -1,3 +1,7 @@
+/* node-app imports */
+import registerSystemInfoPlugin from "./plugins/system-info/index.js";
+
+/* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
 import registerAddressPlugin from "/imports/plugins/core/address/server/no-meteor/register";
 import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/register";
@@ -30,7 +34,6 @@ import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-ge
 import registerSMTPEmailPlugin from "/imports/plugins/included/email-smtp/server/no-meteor/register";
 import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
 import registerSurchargesPlugin from "/imports/plugins/included/surcharges/server/no-meteor/register";
-import registerSystemInfoPlugin from "/imports/plugins/core/system-info/server/no-meteor/register";
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
 import registerTaxesPlugin from "/imports/plugins/core/taxes/server/no-meteor/register";
 import registerTaxesRatesPlugin from "/imports/plugins/included/taxes-rates/server/no-meteor/register";

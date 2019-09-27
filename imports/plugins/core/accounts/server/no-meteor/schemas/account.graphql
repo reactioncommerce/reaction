@@ -109,7 +109,7 @@ input SetAccountProfileLanguageInput {
 "Defines a new Email and the account to which it should be added"
 input AddAccountEmailRecordInput {
   "The account ID, which defaults to the viewer account"
-  accountId: ID
+  accountId: ID!
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String

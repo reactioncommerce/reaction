@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if password isn't supplied 1`] = `"Password is required"`;
+
+exports[`throws if permission check fails 1`] = `"Access denied"`;
+
+exports[`throws if service isn't supplied 1`] = `"Service is required"`;
+
+exports[`throws if user isn't supplied 1`] = `"User is required"`;

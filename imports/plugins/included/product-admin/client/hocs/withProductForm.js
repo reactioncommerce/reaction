@@ -116,17 +116,15 @@ const wrapComponent = (Comp) => {
       }
 
       this.setState({
-        newMetaField: {
+        newMetafield: {
           key: "",
           value: ""
         }
       });
     }
 
-    handleMetaRemove = (event, metafield, index) => {
-      if (this.props.onMetaRemove) {
-        this.props.onMetaRemove(this.product._id, metafield, index);
-      }
+    handleMetaRemove = (event, metafield) => {
+      Meteor.call("products/removeMetaFields", this.product._id, metafield);
     }
 
     get product() {

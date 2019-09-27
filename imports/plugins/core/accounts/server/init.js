@@ -1,19 +1,12 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
-import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-// import generateVerificationTokenObject from "/imports/plugins/core/accounts/server/no-meteor/util/generateVerificationTokenObject";
+import generateVerificationTokenObject from "/imports/plugins/core/accounts/server/no-meteor/util/generateVerificationTokenObject";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import sendVerificationEmail from "./util/sendVerificationEmail";
-
-appEvents.on("afterAddUnverifiedEmailToUser", ({ email, userId }) => {
-  sendVerificationEmail({ email, userId });
-});
 
 Meteor.startup(() => {
   /**
@@ -155,15 +148,7 @@ Meteor.startup(() => {
     // (default admins already get a verification email)
     let tokenObj;
     if (shopId && !emailIsVerified && user.emails[0]) {
-      // TODO: EK - remove these lines and uncomment `generateVerificationTokenObject` once #5577 is merged
-      const token = Random.secret();
-      const when = new Date();
-      tokenObj = {
-        address: user.emails[0].address,
-        token,
-        when
-      };
-      // const tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
+      const tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
     }
 
     // Get GraphQL context to pass to mutation
