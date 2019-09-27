@@ -24,7 +24,7 @@ test("correctly passes through to internal mutation function", async () => {
     }
   }, mockContext);
 
-  expect(mockContext.mutations.createAccount).toHaveBeenCalledWith(mockContext, { additionals: {}, shopId: "SHOP_ID", tokenObj: {}, user: {} });
+  expect(mockContext.mutations.createAccount).toHaveBeenCalledWith(mockContext, { additionals: {}, groupId: null, shopId: "SHOP_ID", tokenObj: {}, user: {} });
 
   expect(result).toEqual({
     account: fakeResult,
