@@ -99,6 +99,7 @@ export default async function inviteShopMember(context, input) {
         profile: { invited: true },
         email,
         name,
+        shopId: shop._id,
         groupId
       });
     }

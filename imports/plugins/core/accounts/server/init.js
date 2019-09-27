@@ -91,7 +91,7 @@ Meteor.startup(() => {
 
     // init default user roles
     // we won't create users unless we have a shop.
-    const shopId = options && options.shopId; // current shop; not primary shop
+    const shopId = (options && options.shopId); // current shop; not primary shop
     if (shopId) {
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
@@ -148,7 +148,7 @@ Meteor.startup(() => {
     // (default admins already get a verification email)
     let tokenObj;
     if (shopId && !emailIsVerified && user.emails[0]) {
-      const tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
+      tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
     }
 
     // Get GraphQL context to pass to mutation
