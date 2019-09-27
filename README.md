@@ -25,7 +25,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 
 ## Releases
 
-This NPM package is published automatically on every push to the `master` branch. Be sure to use proper Git commit messages so that the version will be bumped properly and release notes can be automatically generated.
+This NPM package is published automatically on every push to the `trunk` branch. Be sure to use proper Git commit messages so that the version will be bumped properly and release notes can be automatically generated.
 
 - Refer to https://github.com/semantic-release/semantic-release#commit-message-format
 - To avoid triggering a release, such as for a README-only change, include `[skip release]` in your commit message.
