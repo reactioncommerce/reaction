@@ -1,9 +1,15 @@
-import React, { useMemo, useCallback } from "react";
+import React, { Fragment, useMemo, useCallback } from "react";
 import DataTable, { useDataTable } from "@reactioncommerce/catalyst/DataTable";
 import { useApolloClient } from "@apollo/react-hooks";
 import primaryShopIdQuery from "imports/plugins/core/graphql/lib/queries/getPrimaryShopId";
 import { Card, CardHeader, CardContent, makeStyles } from "@material-ui/core";
+import moment from "moment";
 import ordersQuery from "../graphql/queries/orders";
+import { i18next } from "/client/api";
+
+/* eslint-disable react/prop-types */
+/* eslint-disable react/no-multi-comp */
+/* eslint-disable react/display-name */
 
 const useStyles = makeStyles({
   card: {
@@ -15,36 +21,59 @@ const useStyles = makeStyles({
  * @name OrdersTable
  * @returns {React.Component} A React component
  */
-export default function OrdersTable() {
+function OrdersTable() {
   const apolloClient = useApolloClient();
   // Create and memoize the column data
   const columns = useMemo(() => [
     {
-      Header: "ID",
+      Header: () => i18next.t("admin.table.headers.id"),
       accessor: "referenceId"
     },
     {
-      Header: "Email",
-      accessor: "email"
+      Header: () => i18next.t("admin.table.headers.status"),
+      accessor: "status",
+      Cell: ({ row }) => <Fragment>{i18next.t(`admin.table.orderStatus.${row.values.status}`)}</Fragment>
     },
     {
-      Header: "Status",
-      accessor: "status"
+      Header: () => i18next.t("admin.table.headers.date"),
+      accessor: "createdAt",
+      Cell: ({ row }) => <Fragment>{moment && moment(row.values.createdAt).format("MMMM Do YYYY")}</Fragment>
+    },
+    {
+      Header: () => i18next.t("admin.table.headers.payment"),
+      accessor: "payments[0].status",
+      Cell: ({ row }) => <Fragment>{i18next.t(`admin.table.paymentStatus.${row.values["payments[0].status"]}`)}</Fragment>
+    },
+    {
+      Header: () => i18next.t("admin.table.headers.fulfillment"),
+      accessor: "fulfillmentGroups[0].status",
+      Cell: ({ row }) => <Fragment>{i18next.t(`admin.table.fulfillmentStatus.${row.values["fulfillmentGroups[0].status"]}`)}</Fragment>
+    },
+    {
+      Header: () => i18next.t("admin.table.headers.customer"),
+      accessor: "payments[0].billingAddress.fullName"
+    },
+    {
+      Header: () => i18next.t("admin.table.headers.total"),
+      accessor: "payments[0].amount.displayAmount"
     }
   ], []);
 
-  const onFetchData = useCallback(async ({ globalFilter, setData, pageIndex, pageSize }) => {
-    // Get data from an API.
+  const onFetchData = useCallback(async ({ globalFilter, pageIndex, pageSize }) => {
     const { data: shopData } = await apolloClient.query({
       query: primaryShopIdQuery
     });
 
-    const { loading, data, error } = await apolloClient.query({
+    // TODO: Add loading and error handling
+    const { data } = await apolloClient.query({
       query: ordersQuery,
       variables: {
         shopIds: [shopData.primaryShopId],
         first: pageSize,
-        offset: pageIndex * pageSize
+        offset: pageIndex * pageSize,
+        filters: {
+          searchField: globalFilter
+        }
       }
     });
 
@@ -65,7 +94,7 @@ export default function OrdersTable() {
 
   return (
     <Card className={classes.card}>
-      <CardHeader title="Orders" />
+      <CardHeader title={i18next.t("admin.dashboard.ordersTitle")} />
       <CardContent>
         <DataTable
           {...dataTableProps}
@@ -75,3 +104,5 @@ export default function OrdersTable() {
     </Card>
   );
 }
+
+export default OrdersTable;
