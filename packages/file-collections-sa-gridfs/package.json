@@ -51,7 +51,8 @@
       ]
     ],
     "ignore": [
-      "__snapshots__"
+      "__snapshots__",
+      "**/*.test.js"
     ],
     "sourceMaps": true,
     "retainLines": true

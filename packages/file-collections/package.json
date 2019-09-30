@@ -41,7 +41,8 @@
       "@babel/plugin-proposal-throw-expressions"
     ],
     "ignore": [
-      "__snapshots__"
+      "__snapshots__",
+      "**/*.test.js"
     ],
     "presets": [
       [
