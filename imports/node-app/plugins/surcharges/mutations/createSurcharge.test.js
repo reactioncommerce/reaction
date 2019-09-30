@@ -1,4 +1,5 @@
-import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockContext"; // TODO: EK - update to come from new packages
+import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import createSurchargeMutation from "./createSurcharge.js";
 
 

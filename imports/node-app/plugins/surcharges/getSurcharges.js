@@ -1,5 +1,5 @@
 import Random from "@reactioncommerce/random";
-import extendCommonOrder from "/imports/plugins/core/shipping/server/no-meteor/util/extendCommonOrder"; // TODO: EK - update to come from new package
+import extendCommonOrder from "/imports/plugins/core/shipping/server/no-meteor/util/extendCommonOrder"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5633)
 import { surchargeCheck } from "./util/surchargeCheck.js";
 
 

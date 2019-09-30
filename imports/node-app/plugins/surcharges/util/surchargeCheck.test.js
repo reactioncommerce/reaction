@@ -1,5 +1,6 @@
+import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import { surchargeCheck } from "./surchargeCheck.js";
-import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockContext"; // TODO: EK - update to come from new packages
 
 // Create mock context with Surcharges collection
 mockContext.collections.Surcharges = mockCollection("Surcharges");

@@ -1,5 +1,5 @@
-import operators from "/imports/utils/operators"; // TODO: EK - update to come from new package
-import propertyTypes from "/imports/utils/propertyTypes"; // TODO: EK - update to come from new package
+import operators from "@reactioncommerce/api-utils/operators.js";
+import propertyTypes from "@reactioncommerce/api-utils/propertyTypes.js";
 
 /**
  * @summary Filter surcharges based on surcharge restriction data

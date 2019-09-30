@@ -1,4 +1,4 @@
-import mockContext from "/imports/test-utils/helpers/mockContext"; // TODO: EK - update to new repo
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import selectFulfillmentOptionForGroup from "./selectFulfillmentOptionForGroup.js";
 
 jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
