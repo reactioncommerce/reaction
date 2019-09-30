@@ -31,8 +31,7 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: npm run build
-      # - run: npx semantic-release
+      - run: npx semantic-release
 
   lint:
     docker:

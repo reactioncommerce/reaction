@@ -56,5 +56,8 @@
   },
   "prettier": {
     "arrowParens": "always"
+  },
+  "release": {
+    "branch": "trunk"
   }
 }
