@@ -1,11 +1,11 @@
 /* node-app imports */
+import registerAddressPlugin from "./plugins/address/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
 
 /* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
-import registerAddressPlugin from "/imports/plugins/core/address/server/no-meteor/register";
 import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/register";
 import registerCatalogPlugin from "/imports/plugins/core/catalog/server/no-meteor/register";
 import registerCheckoutPlugin from "/imports/plugins/core/checkout/server/no-meteor/register";

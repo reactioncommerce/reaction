@@ -1,0 +1,12 @@
+mutation createProductVariant($input: CreateProductVariantInput!) {
+  createProductVariant(input: $input) {
+    variant {
+      isDeleted
+      isVisible
+      shop {
+        _id
+      }
+      title
+    }
+  }
+}
