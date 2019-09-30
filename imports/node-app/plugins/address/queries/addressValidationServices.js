@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { addressValidationServices as addressValidationServicesObject } from "../registration";
+import { addressValidationServices as addressValidationServicesObject } from "../registration.js";
 
 /**
  * @name addressValidationServices

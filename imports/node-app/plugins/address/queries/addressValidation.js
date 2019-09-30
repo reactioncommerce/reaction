@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getAddressValidationService } from "../registration";
+import { getAddressValidationService } from "../registration.js";
 
 /**
  * @name addressValidation
