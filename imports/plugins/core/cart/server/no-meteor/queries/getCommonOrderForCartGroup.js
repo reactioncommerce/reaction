@@ -3,16 +3,13 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
-  amount: {
-    type: Number,
-    exclusiveMin: true,
-    min: 0
+  cart: {
+    type: Object,
+    blackbox: true
   },
-  orderId: String,
-  paymentId: String,
-  reason: {
-    type: String,
-    optional: true
+  fulfillmentGroup: {
+    type: Object,
+    blackbox: true
   }
 });
 
@@ -25,34 +22,30 @@ const inputSchema = new SimpleSchema({
  *    a CommonOrder style object
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - request parameters
- * @param {String} input.cartId - Cart ID
- * @param {String} input.fulfillmentGroupId - ID of fulfillmentGroup to convert
+ * @param {String} input.cart - cart object
+ * @param {String} input.fulfillmentGroup - fulfillmentGroup object
  * @returns {Promise<Object>|undefined} - A CommonOrder document
  */
 export default async function getCommonOrderForCartGroup(context, input = {}) {
   inputSchema.validate(input);
   const { collections } = context;
-  const { Cart } = collections;
 
   const {
-    cartId,
-    fulfillmentGroupId
+    cart,
+    fulfillmentGroup
   } = input;
 
-  if (!cartId) {
-    throw new ReactionError("invalid-param", "You must provide a cartId");
+  if (!cart) {
+    throw new ReactionError("invalid-param", "You must provide a cart");
   }
 
-  if (!fulfillmentGroupId) {
-    throw new ReactionError("invalid-param", "You must provide a fulfillmentGroupId");
+  if (!fulfillmentGroup) {
+    throw new ReactionError("invalid-param", "You must provide a group");
   }
-
-  const cart = await Cart.findOne({ _id: cartId });
-  const group = cart.groups.find((grp) => grp._id === fulfillmentGroupId);
 
   const { accountId, currencyCode } = cart;
 
-  let items = group.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
+  let items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
   items = items.filter((item) => !!item); // remove nulls
 
   // Get productId's from items, and then use ID's to get full Catalog product
@@ -106,7 +99,7 @@ export default async function getCommonOrderForCartGroup(context, input = {}) {
     };
   }));
 
-  const { address, shipmentMethod, shopId, type: fulfillmentType } = group;
+  const { address, shipmentMethod, shopId, type: fulfillmentType } = fulfillmentGroup;
   const shop = await collections.Shops.findOne({ _id: shopId });
 
   let fulfillmentPrices = {

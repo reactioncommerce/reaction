@@ -28,7 +28,7 @@ export default async function transformAndValidateCart(context, cart) {
   async function getCommonOrders({ shouldRebuild = false } = {}) {
     if (!commonOrders || shouldRebuild) {
       commonOrders = await Promise.all(cart.shipping.map((group) =>
-        context.queries.getCommonOrderForCartGroup(context, { cartId: cart._id, fulfillmentGroupId: group._id })));
+        context.queries.getCommonOrderForCartGroup(context, { cart, fulfillmentGroup: group })));
     }
     return commonOrders;
   }
