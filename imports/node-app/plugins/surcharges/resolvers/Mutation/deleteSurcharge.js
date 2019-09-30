@@ -1,6 +1,6 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
-import deleteSurchargeMutation from "../../mutations/deleteSurcharge";
+import { decodeSurchargeOpaqueId } from "../../xforms/surcharge.js";
+import deleteSurchargeMutation from "../../mutations/deleteSurcharge.js";
 
 /**
  * @name Mutation/deleteSurcharge

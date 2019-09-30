@@ -1,8 +1,8 @@
 import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
-import AppliedSurcharge from "./AppliedSurcharge";
-import Surcharge from "./Surcharge";
-import Mutation from "./Mutation";
-import Query from "./Query";
+import AppliedSurcharge from "./AppliedSurcharge/index.js";
+import Surcharge from "./Surcharge/index.js";
+import Mutation from "./Mutation/index.js";
+import Query from "./Query/index.js";
 
 export default {
   ...getConnectionTypeResolvers("Surcharge"),

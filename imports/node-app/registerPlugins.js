@@ -1,4 +1,5 @@
 /* node-app imports */
+import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 
 /* meteor-app imports */
@@ -33,7 +34,6 @@ import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricin
 import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";
 import registerSMTPEmailPlugin from "/imports/plugins/included/email-smtp/server/no-meteor/register";
 import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
-import registerSurchargesPlugin from "/imports/plugins/included/surcharges/server/no-meteor/register";
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
 import registerTaxesPlugin from "/imports/plugins/core/taxes/server/no-meteor/register";
 import registerTaxesRatesPlugin from "/imports/plugins/included/taxes-rates/server/no-meteor/register";

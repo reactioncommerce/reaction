@@ -1,5 +1,5 @@
-import operators from "/imports/utils/operators";
-import propertyTypes from "/imports/utils/propertyTypes";
+import operators from "/imports/utils/operators"; // TODO: EK - update to come from new package
+import propertyTypes from "/imports/utils/propertyTypes"; // TODO: EK - update to come from new package
 
 /**
  * @summary Filter surcharges based on surcharge restriction data

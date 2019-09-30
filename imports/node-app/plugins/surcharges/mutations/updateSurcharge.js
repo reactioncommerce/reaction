@@ -1,25 +1,26 @@
 import SimpleSchema from "simpl-schema";
-import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import surchargeSchema from "../util/surchargeSchema";
+import surchargeSchema from "../util/surchargeSchema.js";
 
 const inputSchema = new SimpleSchema({
+  shopId: String,
   surcharge: surchargeSchema,
-  shopId: String
+  surchargeId: String
 });
 
+
 /**
- * @method createSurchargeMutation
- * @summary Creates a surcharge
+ * @method updateSurchargeMutation
+ * @summary updates a surcharge
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
- * @returns {Promise<Object>} An object with a `surcharge` property containing the created surcharge
+ * @returns {Promise<Object>} An object with a `surcharge` property containing the updated surcharge
  */
-export default async function createSurchargeMutation(context, input) {
+export default async function updateSurchargeMutation(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
-  const { surcharge, shopId } = cleanedInput;
+  const { surcharge, surchargeId, shopId } = cleanedInput;
   const { collections, userHasPermission } = context;
   const { Surcharges } = collections;
 
@@ -27,14 +28,16 @@ export default async function createSurchargeMutation(context, input) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  surcharge._id = Random.id();
-
-  const { insertedCount } = await Surcharges.insertOne({
-    shopId,
-    createdAt: new Date(),
-    ...surcharge
+  const { matchedCount } = await Surcharges.updateOne({
+    _id: surchargeId,
+    shopId
+  }, {
+    $set: {
+      updatedAt: new Date(),
+      ...surcharge
+    }
   });
-  if (insertedCount === 0) throw new ReactionError("server-error", "Unable to create surcharge");
+  if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
   return { surcharge };
 }

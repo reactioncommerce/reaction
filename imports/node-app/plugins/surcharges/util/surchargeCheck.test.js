@@ -1,5 +1,5 @@
-import { surchargeCheck } from "./surchargeCheck";
-import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockContext";
+import { surchargeCheck } from "./surchargeCheck.js";
+import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockContext"; // TODO: EK - update to come from new packages
 
 // Create mock context with Surcharges collection
 mockContext.collections.Surcharges = mockCollection("Surcharges");

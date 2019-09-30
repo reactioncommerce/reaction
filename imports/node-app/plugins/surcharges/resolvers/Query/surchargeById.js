@@ -1,5 +1,5 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
+import { decodeSurchargeOpaqueId } from "../../xforms/surcharge.js";
 
 /**
  * @name Query/surchargeById

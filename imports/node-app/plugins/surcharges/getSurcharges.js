@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
-import extendCommonOrder from "/imports/plugins/core/shipping/server/no-meteor/util/extendCommonOrder";
-import { surchargeCheck } from "./util/surchargeCheck";
+import extendCommonOrder from "/imports/plugins/core/shipping/server/no-meteor/util/extendCommonOrder"; // TODO: EK - update to come from new package
+import { surchargeCheck } from "./util/surchargeCheck.js";
 
 
 /**

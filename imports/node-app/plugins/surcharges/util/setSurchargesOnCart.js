@@ -1,4 +1,4 @@
-import getSurcharges from "../getSurcharges";
+import getSurcharges from "../getSurcharges.js";
 
 /**
  * @summary Cart transformation function that sets surcharges on cart

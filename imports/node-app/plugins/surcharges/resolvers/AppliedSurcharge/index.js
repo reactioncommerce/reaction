@@ -1,6 +1,6 @@
-import { encodeSurchargeOpaqueId } from "../../xforms/surcharge";
-import xformSurchargeAmount from "../../xforms/xformSurchargeAmount";
-import getSurchargeMessageForLanguage from "../../util/getSurchargeMessageForLanguage";
+import { encodeSurchargeOpaqueId } from "../../xforms/surcharge.js";
+import xformSurchargeAmount from "../../xforms/xformSurchargeAmount.js";
+import getSurchargeMessageForLanguage from "../../util/getSurchargeMessageForLanguage.js";
 
 export default {
   _id: (node) => encodeSurchargeOpaqueId(node._id),

@@ -1,5 +1,5 @@
-import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockContext";
-import updateSurchargeMutation from "./updateSurcharge";
+import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockContext"; // TODO: EK - update to come from new packages
+import updateSurchargeMutation from "./updateSurcharge.js";
 
 
 // Create mock context with Surcharges collection
