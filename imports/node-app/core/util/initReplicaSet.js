@@ -90,17 +90,17 @@ export default async function initReplicaSet(mongoUrl) {
   } catch (error) {
     // Ignore NotYetInitialized and AlreadyInitialized because they are expected cases
     if (error.codeName !== "NotYetInitialized" && error.codeName !== "AlreadyInitialized") {
-      throw new Error(`Error checking replica set config: ${error.message} (${error.codeName})`);
+      throw new Error(`Error checking replica set config: ${error.message}${error.codeName ? ` (${error.codeName})` : ""}`);
     }
   }
 
   try {
     await db.admin().command({ replSetInitiate: replSetConfiguration });
   } catch (error) {
-    if (error.codeName !== "AlreadyInitialized") {
+    if (error.codeName === "AlreadyInitialized") {
       await db.admin().command({ replSetReconfig: replSetConfiguration, force: true });
     } else {
-      throw new Error(`Error checking replica set config: ${error.message} (${error.codeName})`);
+      throw new Error(`Error initializing replica set: ${error.message}${error.codeName ? ` (${error.codeName})` : ""}`);
     }
   }
 
