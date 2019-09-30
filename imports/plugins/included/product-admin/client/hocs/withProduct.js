@@ -1,9 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
 import _ from "lodash";
-import { compose, withState } from "recompose";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { withRouter } from "react-router";
+import { compose, withState } from "recompose";
+import { useMutation } from "@apollo/react-hooks";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Media } from "/imports/plugins/core/files/client";
 import { Meteor } from "meteor/meteor";
 import { Reaction, formatPriceString, i18next } from "/client/api";
@@ -11,27 +14,27 @@ import { getPrimaryMediaForItem, ReactionProduct, Catalog } from "/lib/api";
 import { Tags, Templates } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { getVariantIds } from "/lib/selectors/variants";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 
-/**
- * Create a new variant from a supplied product
- * @param {Object} product Product object
- * @returns {Promise} A promise that resolves to the new variant id
- */
-export function handleCreateVariant(product) {
-  return new Promise((resolve, reject) => {
-    Meteor.call("products/createVariant", product._id, (error, result) => {
-      if (error) {
-        Alerts.alert({
-          text: i18next.t("productDetailEdit.addVariantFail", { title: product.title }),
-          confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-        });
-        reject(error);
-      } else {
-        resolve({ newVariantId: result });
+const CLONE_PRODUCTS = gql`
+  mutation cloneProducts($input: CloneProductsInput!) {
+    cloneProducts(input: $input) {
+      products {
+        _id
       }
-    });
-  });
+    }
+  }
+`;
+
+const CREATE_VARIANT = gql`
+mutation createProductVariant($input: CreateProductVariantInput!) {
+  createProductVariant(input: $input) {
+    variant {
+      _id
+    }
+  }
 }
+`;
 
 /**
  * Metafield to remove
@@ -61,15 +64,6 @@ export function handleProductRestore(product) {
  */
 export async function handleArchiveProduct(product) {
   await ReactionProduct.archiveProduct(product);
-}
-
-/**
- * Clone a product with all variants, options and media in tact
- * @param {Object} product Product object
- * @returns {undefined} No return
- */
-export function handleCloneProduct(product) {
-  ReactionProduct.cloneProduct(product);
 }
 
 /**
@@ -119,20 +113,46 @@ const wrapComponent = (Comp) => {
    * @param {Object} props Component props
    * @returns {Node} React component
    */
-  function withProduct(props) {
+  function WithProduct(props) {
     const { history } = props;
+    const [cloneProducts] = useMutation(CLONE_PRODUCTS);
+    const [createProductVariant] = useMutation(CREATE_VARIANT);
 
     return (
       <Comp
-        // newMetafield={newMetafield}
         onArchiveProduct={async (product, redirectUrl) => {
           await handleArchiveProduct(product);
           history.push(redirectUrl);
         }}
-        onCloneProduct={handleCloneProduct}
+        onCloneProduct={async (product) => {
+          const opaqueProductIds = await getOpaqueIds([{ namespace: "Product", id: product }]);
+          const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+          try {
+            await cloneProducts({ variables: { input: { shopId: opaqueShopId, productIds: opaqueProductIds } } });
+            Alerts.toast(i18next.t("productDetailEdit.cloneProductSuccess"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.cloneProductFail", { err: error }), "error");
+            throw new ReactionError("server-error", "Unable to clone product");
+          }
+        }}
         onCreateVariant={async (product) => {
-          const { newVariantId } = await handleCreateVariant(product);
-          history.push(`/operator/products/${product._id}/${newVariantId}`);
+          const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+            { namespace: "Product", id: product._id },
+            { namespace: "Shop", id: product.shopId }
+          ]);
+
+          try {
+            await createProductVariant({ variables: { input: { productId: opaqueProductId, shopId: opaqueShopId } } });
+            // Because of the way GraphQL and meteor interact when creating a new variant,
+            // we can't immediately redirect a user to the new variant as GraphQL is too quick
+            // and the meteor subscription isn't yet updated. Once this page has been updated
+            // to use GraphQL for data fetching, add a redirect to the new variant when it's created
+            Alerts.toast(i18next.t("productDetailEdit.addVariant"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.addVariantFail", { err: error }), "error");
+            throw new ReactionError("server-error", "Unable to create variant");
+          }
         }}
         onProductFieldSave={handleProductFieldSave}
         onProductVariantFieldSave={handleProductVariantFieldSave}
@@ -143,7 +163,7 @@ const wrapComponent = (Comp) => {
     );
   }
 
-  withProduct.propTypes = {
+  WithProduct.propTypes = {
     history: PropTypes.object,
     newMetafield: PropTypes.shape({
       key: PropTypes.string.isRequired,
@@ -152,7 +172,7 @@ const wrapComponent = (Comp) => {
     setNewMetaField: PropTypes.func
   };
 
-  return withProduct;
+  return WithProduct;
 };
 
 /**
