@@ -3,6 +3,7 @@ import { xformOrderItems } from "@reactioncommerce/reaction-graphql-xforms/order
 import formatMoney from "/imports/utils/formatMoney";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
 import { addAnonymousOrderToken } from "./anonymousToken";
+import * as R from "ramda";
 
 /**
  * @name formatDateForEmail
@@ -156,11 +157,18 @@ export default async function getDataForOrderEmail(context, { order }) {
 
   const isInAdvance = isInAdvancePayment(order);
   const isInSantanderManual = isInSantanderManualPayment(order);
+  const isCashpresso = isCashpressoPayment(order);
 
   let bankDetails = null;
   if (isInAdvance || isInSantanderManual) {
     const paymentShopId = getPaymentShopId(order);
     bankDetails = await getBankDetails(context, paymentShopId);
+  }
+
+  if (isCashpresso) {
+    bankDetails = { 
+      url: getCashpressoUrl(order) 
+    }
   }
 
   // Merge data into single object to pass to email template
@@ -206,6 +214,7 @@ export default async function getDataForOrderEmail(context, { order }) {
         displayAmount: formatMoney(payment.amount * userCurrencyExchangeRate, userCurrency),
         isInAdvance,
         isInSantanderManual,
+        isCashpresso,
         bankDetails
       })),
       subtotal: formatMoney(subtotal * userCurrencyExchangeRate, userCurrency),
@@ -263,6 +272,10 @@ async function getBankDetails(context, shopId) {
   return { ...bankDetails, ... locationDetails };
 }
 
+function getCashpressoUrl(order) {
+  return R.path(['payments', 0, 'data', 'cashpresso', 'url'])(order);
+}
+
 function getPaymentShopId(order) {
   return order.shipping[0].items[0].shopId;
 }
@@ -275,4 +288,9 @@ function isInAdvancePayment(order) {
 function isInSantanderManualPayment(order) {
   // string set in reaction-plugin-payment-in-advance
   return order.payments[0].name === "santander_manual";
+}
+
+function isCashpressoPayment(order) {
+  // string set in reaction-plugin-payment-in-advance
+  return order.payments[0].name === "cashpresso_instalment";
 }
