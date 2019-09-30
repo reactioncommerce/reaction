@@ -3,10 +3,10 @@ type Product {
   "Product ID"
   _id: ID!
 
-   "The date and time at which this product was created"
+  "The date and time at which this product was created"
   createdAt: DateTime!
 
-  "Hash to compare with publishedProductHash, for use to see it published and unpublished products are the same"
+  "Hash to compare with publishedProductHash, to see if this product has changed since it was last published"
   currentProductHash: String
 
   "The full product description, which may have newline characters in it"
@@ -33,10 +33,10 @@ type Product {
   "An arbitrary product type value, such as from an external system"
   productType: String
 
-  "The date and time at which this product was published"
+  "The date and time at which this product was last published. If `null`, it has never been published."
   publishedAt: DateTime
 
-  "Hash to compare with currentProductHash, for use to see it published and unpublished products are the same"
+  "Hash to compare with currentProductHash, to see if this product has changed since it was last published"
   publishedProductHash: String
 
   "The shop to which this product belongs"
@@ -67,7 +67,7 @@ type Product {
 
     "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt,
-    
+
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
     offset: Int,
 
@@ -81,10 +81,10 @@ type Product {
   "Product title"
   title: String
 
-  "The date and time at which this product was last updated, which is when the related product was most recently published"
+  "The date and time at which this product was last updated"
   updatedAt: DateTime
 
-  "A flat list of all variants for this product"
+  "A list of all variants for this product"
   variants: [ProductVariant]!
 
   "The product vendor or manufacturer, for display"
@@ -105,7 +105,7 @@ type ProductVariant {
   "The product variant barcode value, if it has one"
   barcode: String
 
-  "The date and time at which this CatalogProductVariant was created, which is when the related product was first published"
+  "The date and time at which this variant was created"
   createdAt: DateTime
 
   "The height of the product variant, if it has physical dimensions"
@@ -114,10 +114,10 @@ type ProductVariant {
   "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
   index: Int
 
-  "Is product deleted?"
+  "True if this variant was deleted. Deleted variants are not published to the catalog."
   isDeleted: Boolean!
 
-  "Is product visible"
+  "True if this variant is visible. Hidden variants are not published to the catalog."
   isVisible: Boolean!
 
   "The length of the product, if it has physical dimensions"
@@ -152,7 +152,7 @@ type ProductVariant {
   """
   title: String
 
-  "The date and time at which this CatalogProduct was last updated, which is when the related product was most recently published"
+  "The date and time at which this product was last updated"
   updatedAt: DateTime
 
   "The weight of the product on Earth, if it has physical dimensions"
@@ -167,7 +167,7 @@ type CreateProductPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "The ID of the product which was created"
+  "The created product"
   product: Product!
 }
 
@@ -176,7 +176,7 @@ type CreateProductVariantPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "The ID of the variant which was created"
+  "The created product variant"
   variant: ProductVariant!
 }
 
@@ -185,7 +185,7 @@ type CloneProductsPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Array of newly cloned product IDs"
+  "Array of newly cloned products"
   products: [Product]!
 }
 
@@ -194,7 +194,7 @@ type CloneProductVariantsPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Array of newly cloned product variant IDs"
+  "Array of newly cloned product variants"
   variants: [ProductVariant]!
 }
 
@@ -209,7 +209,7 @@ input CreateProductVariantInput  {
   "ID of product variant belongs to"
   productId: ID!
 
-  "ID of shop product will belong to"
+  "ID of shop product variant will belong to"
   shopId: ID!
 }
 
@@ -218,13 +218,13 @@ input CloneProductsInput  {
   "Array of IDs of products to clone"
   productIds: [ID]!
 
-  "ID of shop product will belong to"
+  "ID of shop that owns all products you are cloning"
   shopId: ID!
 }
 
 "Input for the `cloneProductVariants` mutation"
 input CloneProductVariantsInput  {
-  "ID of shop product will belong to"
+  "ID of shop that owns all product variants you want to clone"
   shopId: ID!
 
   "Array of IDs of variants to clone"
