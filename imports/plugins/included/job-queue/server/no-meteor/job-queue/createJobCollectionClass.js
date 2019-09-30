@@ -169,62 +169,6 @@ export default function createJobCollectionClass({ Job, later }) {
         map: async (fn) => {
           const items = await this.collection.find(...findParams).toArray();
           return items.map(fn);
-        },
-        /**
-         * @summary This is a pretty bad approximation of Meteor's `observe` method,
-         * but we just need to keep backward compatibility here, and as far
-         * as I'm aware, the only way this is used for jobs is by passing
-         * in `type` and `status` to `find`.
-         * @param {Object} callbacks Callbacks
-         * @return {undefined}
-         */
-        observe: (callbacks) => {
-          if (!this.collection) {
-            throw new Error("JobCollection.find.observe called before collection was attached. Wait for 'ready' event to be emitted before calling this.");
-          }
-
-          // Since we have only partial backwards compatibility here, throw
-          // some errors if we get something unexpected. Hopefully rare.
-          for (const key in callbacks) {
-            if ({}.hasOwnProperty.call(callbacks, key)) {
-              if (key !== "added") {
-                throw new Error("JobCollection.find.observe supports only the 'added' callback");
-              }
-            }
-          }
-
-          const query = findParams[0];
-          for (const key in query) {
-            if ({}.hasOwnProperty.call(query, key)) {
-              if (key !== "type" && key !== "status") {
-                throw new Error("JobCollection.find.observe supports only 'type' and 'status' fields in the query");
-              }
-            }
-          }
-
-          const changeStream = this.collection.watch({ fullDocument: "updateLookup" });
-          changeStream.on("error", (error) => {
-            if (callbacks.error) callbacks.error(error);
-          });
-          changeStream.on("change", (changeInfo) => {
-            const { fullDocument, operationType, updateDescription } = changeInfo;
-
-            const { updatedFields } = updateDescription || {};
-            const queryFieldsWereChanged = operationType === "insert" ||
-              (updatedFields && (updatedFields.type || updatedFields.status));
-
-            if (
-              ["insert", "update"].includes(operationType) &&
-              (!query.type || query.type === fullDocument.type) &&
-              (!query.status || query.status === fullDocument.status) &&
-              queryFieldsWereChanged
-            ) {
-              // A document has been inserted and it matches the query,
-              // or a document has been updated such that it now matches
-              // the query.
-              if (callbacks.added) callbacks.added(fullDocument);
-            }
-          });
         }
       };
     }

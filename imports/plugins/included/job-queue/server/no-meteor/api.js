@@ -4,7 +4,7 @@ import { Job, Jobs } from "./jobs";
 /**
  * @summary Add a worker for a background job type
  * @param {Object} options Worker options
- * @param {Number} [options.pollInterval] How frequently to poll for work. Default 1 hour.
+ * @param {Number} [options.pollInterval] How frequently to poll for work. Default 5 minutes.
  * @param {String} options.type The job type to work.
  * @param {Function} options.worker The worker function. This is passed a single argument,
  *   the job instance. You must call job.done() when done or call job.fail(msg) if there is an error.
@@ -14,7 +14,7 @@ import { Job, Jobs } from "./jobs";
  */
 export function addWorker(options) {
   const {
-    pollInterval = 60 * 60 * 1000, // default 1 hour
+    pollInterval = 5 * 60 * 1000, // default 5 minutes
     type,
     worker,
     workTimeout = 60 * 1000 // default 1 minute
@@ -40,11 +40,6 @@ export function addWorker(options) {
           return callback();
         });
 
-        Jobs.find({ type, status: "ready" }).observe({
-          added() {
-            return jobWorker.trigger();
-          }
-        });
         resolve(jobWorker);
       } catch (error) {
         reject(error);

@@ -54,15 +54,6 @@ export default function removeOldJobs({
       return callback();
     });
 
-    Jobs.find({
-      type: jobType,
-      status: "ready"
-    }).observe({
-      added() {
-        return removeStaleJobs.trigger();
-      }
-    });
-
     new Job(Jobs, jobType, {})
       .retry(jobRetryOptions)
       .repeat({
