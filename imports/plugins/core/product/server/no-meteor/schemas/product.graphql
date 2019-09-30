@@ -133,7 +133,7 @@ type ProductVariant {
   optionTitle: String
 
   "Child variants, if any"
-  options: [CatalogProductVariant]!
+  options: [ProductVariant]!
 
   "The country of origin"
   originCountry: String
