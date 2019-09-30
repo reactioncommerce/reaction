@@ -41,19 +41,20 @@
       "@babel/plugin-proposal-throw-expressions"
     ],
     "ignore": [
-      "**/*.test.js",
       "__snapshots__"
     ],
     "presets": [
-      "@babel/preset-env"
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "8"
+          }
+        }
+      ]
     ],
     "sourceMaps": true,
     "retainLines": true
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.(js|jsx)?$": "babel-jest"
-    }
   },
   "eslintConfig": {
     "extends": "@reactioncommerce"
@@ -88,6 +89,7 @@
     "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0"
   },

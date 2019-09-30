@@ -7,16 +7,13 @@
   "eslintConfig": {
     "extends": "@reactioncommerce"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.(js|jsx)?$": "babel-jest"
-    }
-  },
   "scripts": {
     "lint": "eslint .",
-    "bootstrap": "lerna run build && lerna bootstrap",
+    "build": "lerna run build",
+    "bootstrap": "lerna bootstrap && lerna run build",
+    "clean": "lerna clean --yes",
     "start": "cd example-apps/meteor-blaze-app && npm i && npm start",
-    "test": "jest --debug",
+    "test": "jest --no-cache",
     "test:watch": "jest --watch"
   },
   "devDependencies": {
