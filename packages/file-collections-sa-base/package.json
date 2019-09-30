@@ -17,6 +17,12 @@
     "LICENSE",
     "README.md"
   ],
+  "eslintConfig": {
+    "extends": "@reactioncommerce",
+    "rules": {
+      "node/no-unsupported-features/es-syntax": "off"
+    }
+  },
   "babel": {
     "plugins": [
       [
@@ -56,9 +62,6 @@
     ],
     "sourceMaps": true,
     "retainLines": true
-  },
-  "eslintConfig": {
-    "extends": "@reactioncommerce"
   },
   "main": "./dist/index.js",
   "scripts": {

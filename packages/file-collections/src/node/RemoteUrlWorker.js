@@ -5,9 +5,9 @@ import debug from "./debug";
 /**
  * From https://stackoverflow.com/a/41791149/1669674
  *
- * @param items An array of items.
- * @param fn A function that accepts an item from the array and returns a promise.
- * @returns {Promise}
+ * @param {Array} items An array of items.
+ * @param {Function} fn A function that accepts an item from the array and returns a promise.
+ * @returns {Promise} reduced items
  */
 function forEachPromise(items, fn) {
   return items.reduce(
@@ -50,7 +50,7 @@ export default class RemoteUrlWorker extends EventEmitter {
     this.isProcessing = false;
     if (this.observedEntries.length) {
       debug(`There are ${this.observedEntries.length} more docs in the queue, starting new execution`);
-      return this.processObserved(collection, stores);
+      this.processObserved(collection, stores);
     }
     debug("processObserved queue finished");
   }

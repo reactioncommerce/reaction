@@ -1,3 +1,4 @@
+/* eslint-disable node/no-missing-import */
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import { FileRecord, MeteorFileCollection } from "@reactioncommerce/file-collections";

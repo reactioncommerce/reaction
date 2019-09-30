@@ -4,6 +4,12 @@
   "scripts": {
     "start": "DEBUG=reaction-file-collections meteor run"
   },
+  "eslintConfig": {
+    "extends": "@reactioncommerce",
+    "rules": {
+      "node/no-unsupported-features/es-syntax": "off"
+    }
+  },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@reactioncommerce/file-collections": "../../packages/file-collections",

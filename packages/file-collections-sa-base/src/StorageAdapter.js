@@ -4,6 +4,12 @@ import debug from "./debug";
 
 const existingStoreNames = {};
 
+/**
+ * @param {FileStream} stream filestram
+ * @param {String} storeName store name
+ * @param {Number} id id of file
+ * @return {void} null
+ */
 function logEventsForStream(stream, storeName, id) {
   ["close", "end", "finish", "stored"].forEach((evt) => {
     stream.on(evt, () => {
@@ -187,6 +193,7 @@ export default class StorageAdapter extends EventEmitter {
           writeStream.emit("stored");
           this.emit("stored", fileRecord);
           fileRecord.emit("stored", store);
+          return;
         })
         .catch((error) => {
           debug("saveCopyInfo error", error);

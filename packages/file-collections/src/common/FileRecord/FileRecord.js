@@ -1,9 +1,13 @@
-/* global File, Blob */
+/* global File, Blob */ // eslint-disable-line no-redeclare
 
 import { EventEmitter } from "events";
 import tus from "tus-js-client";
 import getUrlForFileRecord from "./url";
 
+/**
+ * @param {String} name name of file
+ * @returns {String} extension string or ''
+ */
 function getFileExtensionFromFileName(name) {
   // Seekout the last '.' if found
   const found = name.lastIndexOf(".");
@@ -13,6 +17,10 @@ function getFileExtensionFromFileName(name) {
   return (found > 0 ? name.slice(found + 1).toLowerCase() : "");
 }
 
+/**
+ * @param {String} url url to split
+ * @returns {String} string after last slash of URL
+ */
 function getFileNameFromUrl(url) {
   const result = url.split("?")[0];
   // strip off beginning path or url
@@ -21,6 +29,11 @@ function getFileNameFromUrl(url) {
   return result;
 }
 
+/**
+ * @param {String} name name of file
+ * @param {String} ext extention of file
+ * @returns {Strong} contat of name and ext
+ */
 function setFileExtension(name, ext) {
   if (!name || !name.length) return name;
   const currentExt = getFileExtensionFromFileName(name);
@@ -28,6 +41,11 @@ function setFileExtension(name, ext) {
   return `${name}.${ext}`;
 }
 
+/**
+ * @param {String} value value of getter
+ * @param {Object} options options object
+ * @returns {Object} settings object
+ */
 function parseGetterSetterArgs(value, options) {
   if (!options && ((typeof value === "object" && value !== null) || typeof value === "undefined")) {
     return { isGetting: true, resolvedOptions: value || {} };
@@ -35,6 +53,13 @@ function parseGetterSetterArgs(value, options) {
   return { isGetting: false, resolvedOptions: options || {} };
 }
 
+/**
+ * @param {String} storeName name of store
+ * @param {Object} document files object
+ * @param {String} property index of document object
+ * @param {String} value value to add to document
+ * @returns {void} null
+ */
 function setInfoForStore(storeName, document, property, value) {
   if (!document) return;
 
@@ -350,7 +375,7 @@ export default class FileRecord extends EventEmitter {
       this.collection.remove(this._id)
         .then((result) => {
           this.detachCollection();
-          resolve(result);
+          return resolve(result);
         })
         .catch(reject);
     });
@@ -390,10 +415,12 @@ export default class FileRecord extends EventEmitter {
     const name = store ? this.infoForCopy(store).name : this.infoForOriginal().name;
     if (!name) return undefined;
 
-    if (isGetting) return getFileExtensionFromFileName(name);
-
-    const newName = setFileExtension(name, value);
-    return setInfoForStore(store, this.document, "name", newName);
+    if (isGetting) {
+      getFileExtensionFromFileName(name);
+    } else {
+      const newName = setFileExtension(name, value);
+      setInfoForStore(store, this.document, "name", newName);
+    }
   }
 
   size(value, options) {

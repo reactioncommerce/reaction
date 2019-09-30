@@ -2,9 +2,6 @@ import util from "util"; // Built-in Node package
 import FileCollection from "../common/FileCollection";
 
 /**
- * @class MeteorFileCollection
- * @extends FileCollection
- *
  * A type of FileCollection that uses a Meteor Mongo.Collection as its
  * backing storage and uses Meteor DDP to get browser-initiated ops
  */
@@ -14,7 +11,7 @@ export default class MeteorFileCollection extends FileCollection {
    * @param {String} name The name you want to use to refer to the FileCollection.
    *   Be sure to use the same name in Node and browser code so that they can
    *   communicate over DDP.
-   * @param {Object} options
+   * @param {Object} options options
    * @param {Function} options.allowInsert A function that should return `true` if
    *   an insert should be allowed. Receives args (userId, doc)
    * @param {Function} options.allowUpdate A function that should return `true` if
@@ -114,6 +111,7 @@ export default class MeteorFileCollection extends FileCollection {
    * @method _update
    * @param {String} id A FileRecord ID
    * @param {Object} modifier An object to be used as the update modifier.
+   * @param {Object} options options
    * @returns {Promise<Object>} A Promise that resolves with the updated object.
    */
   async _update(id, modifier, options) {
@@ -124,7 +122,7 @@ export default class MeteorFileCollection extends FileCollection {
   /**
    * @method _remove
    * @param {String} id A FileRecord ID
-   * @param {Object} [options]
+   * @param {Object} [options] options
    * @returns {Promise<Number>} A Promise that resolves with 1 if success.
    */
   async _remove(id, options) {

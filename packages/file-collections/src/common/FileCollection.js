@@ -5,9 +5,6 @@ import FileRecord from "./FileRecord";
 const isNode = (typeof process !== "undefined") && process.release && (process.release.name === "node");
 
 /**
- * @class FileCollection
- * @extends EventEmitter
- *
  * A generic FileCollection class. This must be extended to add specific
  * handling for a certain type of backing storage.
  */
@@ -16,7 +13,7 @@ export default class FileCollection extends EventEmitter {
    * @constructor FileCollection
    * @param {String} name The name you want to use to refer to the FileCollection.
    *   Be sure to use the same name in Node and browser code.
-   * @param {Object} options
+   * @param {Object} options options for collection
    * @param {Function} options.allowGet A function that returns `true` if a GET request for a file should be allowed
    * @param {StorageAdapter[]} options.stores An array of instances of classes that extend StorageAdapter
    * @param {TempFileStore} options.tempStore A temporary store to support chunked file uploads from browsers.
@@ -57,7 +54,7 @@ export default class FileCollection extends EventEmitter {
   /**
    * @method getStoreSuccessHandler
    * @private
-   * @param {String} storeName
+   * @param {String} storeName name of the store
    * @return {Function} A function to use as the handler for a "stored" event emitted by a StorageAdapter instance
    *
    * Whenever a store emits "stored" and the passed FileRecord instance is linked with this FileCollection,
@@ -75,7 +72,7 @@ export default class FileCollection extends EventEmitter {
   /**
    * @method getStoreErrorHandler
    * @private
-   * @param {String} storeName
+   * @param {String} storeName name of the store
    * @return {Function} A function to use as the handler for a "error" event emitted by a StorageAdapter instance
    *
    * Whenever a store emits "error" and the passed FileRecord instance is linked with this FileCollection,
@@ -93,8 +90,8 @@ export default class FileCollection extends EventEmitter {
 
   /**
    * @method insert
-   * @param {FileRecord} fileRecord
-   * @param {Object} options
+   * @param {FileRecord} fileRecord fileRecord object
+   * @param {Object} options options for insert
    * @param {Boolean} [options.raw] True to get back the raw inserted document rather than a FileRecord
    * @returns {Promise<FileRecord|Object>} The inserted FileRecord or a plain object if `raw` option was `true`
    *
@@ -121,7 +118,7 @@ export default class FileCollection extends EventEmitter {
    * @method update
    * @param {String} id FileRecord ID
    * @param {Object} doc Updated document, modifier, or whatever _update expects
-   * @param {Object} options
+   * @param {Object} options options for update
    * @param {Boolean} [options.raw] True to get back the raw updated document rather than a FileRecord
    * @returns {Promise<FileRecord|Object>} The updated FileRecord or a plain object if `raw` option was `true`
    *
@@ -142,7 +139,7 @@ export default class FileCollection extends EventEmitter {
   /**
    * @method remove
    * @param {String|FileRecord} id FileRecord ID or a FileRecord instance
-   * @param {Object} options
+   * @param {Object} options options for remove
    * @returns {Promise<Boolean>} True if removed
    *
    * The actual behavior depends on how the specific class implements the _remove
@@ -179,7 +176,7 @@ export default class FileCollection extends EventEmitter {
   /**
    * @method findOne
    * @param {Object|String} selector FileRecord ID or query selector of some sort
-   * @param {Object} options
+   * @param {Object} options options for _findOne
    * @param {Boolean} [options.raw] True to get back the raw document rather than a FileRecord
    * @returns {Promise<FileRecord|Object>} The document or FileRecord instance
    *
@@ -198,7 +195,7 @@ export default class FileCollection extends EventEmitter {
   /**
    * @method find
    * @param {Object} selector A selector understood by the specific subclass
-   * @param {Object} options
+   * @param {Object} options options for _find
    * @param {Boolean} [options.raw] True to get back the raw document rather than a FileRecord
    * @returns {Promise<FileRecord[]|any>} An array of FileRecords, or whatever _find returns if raw option is `true`
    *
@@ -216,7 +213,9 @@ export default class FileCollection extends EventEmitter {
 
   /**
    * @method findOneLocal
-   *
+   * @param {Object} selector A selector understood by the specific subclass
+   * @param {Object} options options for _find
+   * @returns {FileRecord} File record found
    * Similar to findOne, except that it calls _findOneLocal and
    * synchronously return a FileRecord or raw document.
    */
@@ -228,7 +227,9 @@ export default class FileCollection extends EventEmitter {
 
   /**
    * @method findLocal
-   *
+   * @param {Object} selector A selector understood by the specific subclass
+   * @param {Object} options options for _find
+   * @returns {FileRecord} File record found
    * Similar to find, except that it calls _findLocal and
    * synchronously returns an array of FileRecords or the result.
    */
@@ -240,7 +241,7 @@ export default class FileCollection extends EventEmitter {
 
   /**
    * @method shouldAllowGet
-   * @param {FileRecord} fileRecord
+   * @param {FileRecord} fileRecord file record to be found
    * @param {Request} req An incoming request
    * @param {String} storeName The store from which a file in this collection is being requested.
    * @returns {Promise<Boolean>} Returns whatever the allowGet function passed as a constructor option
@@ -252,7 +253,7 @@ export default class FileCollection extends EventEmitter {
 
   /**
    * @method getStore
-   * @param {String} storeName
+   * @param {String} storeName name of store
    * @returns {StorageAdapter} Returns a store instance from its name
    */
   getStore(storeName) {

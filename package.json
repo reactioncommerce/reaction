@@ -5,7 +5,10 @@
   "author": "Reaction Commerce (https://reactioncommerce.com/)",
   "license": "MIT",
   "eslintConfig": {
-    "extends": "@reactioncommerce"
+    "extends": "@reactioncommerce",
+    "rules": {
+      "node/no-unsupported-features/es-syntax": "off"
+    }
   },
   "scripts": {
     "lint": "eslint .",
@@ -13,7 +16,7 @@
     "bootstrap": "lerna bootstrap && lerna run build",
     "clean": "lerna clean --yes",
     "start": "cd example-apps/meteor-blaze-app && npm i && npm start",
-    "test": "jest --no-cache",
+    "test": "jest",
     "test:watch": "jest --watch"
   },
   "devDependencies": {

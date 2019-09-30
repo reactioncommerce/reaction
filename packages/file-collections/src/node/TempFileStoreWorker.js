@@ -5,9 +5,9 @@ import debug from "./debug";
 /**
  * From https://stackoverflow.com/a/41791149/1669674
  *
- * @param items An array of items.
- * @param fn A function that accepts an item from the array and returns a promise.
- * @returns {Promise}
+ * @param {Array} items An array of items.
+ * @param {Function} fn A function that accepts an item from the array and returns a promise.
+ * @returns {Promise} reduce promise
  */
 function forEachPromise(items, fn) {
   return items.reduce(

@@ -1,3 +1,4 @@
+/* eslint-disable node/no-missing-import */
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
@@ -14,6 +15,12 @@ const uploadInfo = new ReactiveVar({
   percentage: 0
 });
 
+/**
+ *
+ * @param {Object} file file to be uploaded/inserted
+ *
+ * @returns {void} null
+ */
 function uploadAndInsertBrowserFile(file) {
   // Convert it to a FileRecord
   const fileRecord = FileRecord.fromFile(file);
@@ -32,7 +39,7 @@ function uploadAndInsertBrowserFile(file) {
     })
     .then(() => {
       console.log("FileRecord saved to database"); // eslint-disable-line no-console
-      uploadInfo.set({ ...uploadInfo.get(), isUploading: false });
+      return uploadInfo.set({ ...uploadInfo.get(), isUploading: false });
     })
     .catch((error) => {
       console.error(error); // eslint-disable-line no-console
@@ -77,9 +84,9 @@ Template.uploadedImage.helpers({
 Template.images.events({
   // "dropped .imageArea": getHandler(true),
   // "dropped .imageDropArea": getHandler(true),
-  "change .images": (e) => {
+  "change .images": (element) => {
     // Get the selected file from the input element
-    const [file] = e.target.files;
+    const [file] = element.target.files;
 
     uploadAndInsertBrowserFile(file);
   },

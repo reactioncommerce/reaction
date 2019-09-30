@@ -58,7 +58,10 @@
     "retainLines": true
   },
   "eslintConfig": {
-    "extends": "@reactioncommerce"
+    "extends": "@reactioncommerce",
+    "rules": {
+      "node/no-unsupported-features/es-syntax": "off"
+    }
   },
   "main": "./dist/index.js",
   "scripts": {

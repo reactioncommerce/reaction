@@ -1,5 +1,10 @@
 import queryString from "query-string";
 
+/**
+ * @param {FileRecord} fileRecord object to get rl for
+ * @param {Object} param1 settings for url builder
+ * @returns {String} url of fileRecord
+ */
 export default function getUrlForFileRecord(fileRecord, {
   absolute = false,
   absoluteUrlPrefix,

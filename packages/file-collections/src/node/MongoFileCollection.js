@@ -1,16 +1,13 @@
 import FileCollection from "../common/FileCollection";
 
 /**
- * @class MongoFileCollection
- * @extends FileCollection
- *
  * A type of FileCollection that uses a Mongo Collection as its backing storage
  */
 export default class MongoFileCollection extends FileCollection {
   /**
    * @constructor MongoFileCollection
    * @param {String} name The name you want to use to refer to the FileCollection
-   * @param {Object} options
+   * @param {Object} options options
    * @param {Collection} options.collection The collection to use. Call db.collection(name) from the
    *   Mongo NPM package to get this reference.
    *
@@ -44,6 +41,7 @@ export default class MongoFileCollection extends FileCollection {
    * @method _update
    * @param {String} id A FileRecord ID
    * @param {Object} modifier An object to be used as the update modifier.
+   * @param {Object} options options for update
    * @returns {Promise<Object>} A Promise that resolves with the updated object.
    */
   async _update(id, modifier, options) {
@@ -54,7 +52,7 @@ export default class MongoFileCollection extends FileCollection {
   /**
    * @method _remove
    * @param {String} id A FileRecord ID
-   * @param {Object} [options]
+   * @param {Object} [options] options for remove
    * @returns {Promise<Number>} A Promise that resolves with 1 if success.
    */
   async _remove(id, options) {

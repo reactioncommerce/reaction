@@ -1,3 +1,4 @@
+/* eslint-disable node/no-missing-import */
 import { Meteor } from "meteor/meteor";
 import { Mongo, MongoInternals } from "meteor/mongo";
 import { Random } from "meteor/random";
@@ -21,6 +22,10 @@ process.on("unhandledRejection", (err) => {
 
 // lazy loading sharp package
 let sharp;
+
+/**
+ * @returns {void} null
+ */
 async function lazyLoadSharp() {
   if (sharp) return;
   const mod = await import("sharp");

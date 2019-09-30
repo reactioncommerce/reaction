@@ -4,6 +4,10 @@ import path from "path"; // Built-in Node package
 import tus from "tus-node-server";
 import debug from "./debug";
 
+/**
+ * @param {Object} req Request to add meta data to
+ * @returns {void} null
+ */
 function addUploadMetadataToRequest(req) {
   const metadataObj = {};
   (req.headers["upload-metadata"] || "").split(",").forEach((piece) => {
