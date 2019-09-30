@@ -1,5 +1,5 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import selectFulfillmentOptionForGroup from "./selectFulfillmentOptionForGroup";
+import mockContext from "/imports/test-utils/helpers/mockContext"; // TODO: EK - update to new repo
+import selectFulfillmentOptionForGroup from "./selectFulfillmentOptionForGroup.js";
 
 jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
   _id: "cartId",

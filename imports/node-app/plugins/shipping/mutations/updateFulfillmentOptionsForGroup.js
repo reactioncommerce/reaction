@@ -1,8 +1,8 @@
 import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
-import getCartById from "../util/getCartById";
+import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder.js"; // TODO: EK - get from other package
+import getCartById from "../util/getCartById.js";
 
 const inputSchema = new SimpleSchema({
   cartId: String,

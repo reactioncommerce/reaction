@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getCartById from "../util/getCartById";
+import getCartById from "../util/getCartById.js";
 
 const inputSchema = new SimpleSchema({
   cartId: String,

@@ -1,5 +1,5 @@
-import FulfillmentMethod from "./FulfillmentMethod";
-import Mutation from "./Mutation";
+import FulfillmentMethod from "./FulfillmentMethod/index.js";
+import Mutation from "./Mutation/index.js";
 
 /**
  * Fulfillment related GraphQL resolvers

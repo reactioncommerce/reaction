@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import extendCommonOrder from "../util/extendCommonOrder";
+import extendCommonOrder from "../util/extendCommonOrder.js";
 
 /**
  * @name getFulfillmentMethodsWithQuotes
