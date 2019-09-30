@@ -35,6 +35,7 @@
     "@reactioncommerce/logger": "1.1.1",
     "@reactioncommerce/nodemailer": "5.0.5",
     "@reactioncommerce/random": "1.0.1",
+    "@reactioncommerce/reaction-error": "^1.0.1",
     "@reactioncommerce/schemas": "1.1.0",
     "accounting-js": "^1.1.1",
     "apollo-cache-inmemory": "1.6.2",
@@ -261,7 +262,6 @@
             "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-            "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
             "underscore": "lodash"
           }
         }
@@ -313,7 +313,6 @@
                 "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-                "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
                 "meteor": "./imports/node-app/mockmeteor",
                 "underscore": "lodash"
               }
@@ -370,7 +369,6 @@
                 "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-                "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
                 "meteor": "./imports/test-utils/__mocks__/meteor",
                 "underscore": "lodash"
               }
