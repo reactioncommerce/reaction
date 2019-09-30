@@ -26,8 +26,7 @@ const inputSchema = new SimpleSchema({
 /**
  * @name accounts/createAccount
  * @memberof Mutations/Accounts
- * @summary Invite new admin users (not consumers) to secure access in the dashboard to permissions
- * as specified in packages/roles
+ * @summary Create a new account
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} input.additionals - various account related data
