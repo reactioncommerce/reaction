@@ -76,6 +76,15 @@ enum CartItemsSortByField {
   addedAt
 }
 
+"The source of data used to create the CommonOrder"
+enum CommonOrderSource {
+  "A cart"
+  cart
+
+  "An order"
+  order
+}
+
 """
 Wraps a list of `CartItem`s, providing pagination cursors and information.
 
@@ -221,6 +230,127 @@ type CartItem implements Node {
   variantTitle: String
 }
 
+type CommonOrder {
+  "Account that owns the cart"
+  accountId: ID!
+
+  "The billing address for this CommonOrder"
+  billingAddress: Address
+
+  "The cart ID."
+  cartId: ID!,
+
+  "Code for the currency this cart uses"
+  currencyCode: String!
+
+  "The fulfillment method ID from the cart"
+  fulfillmentMethodId: ID!
+
+  "Prices for handling, shipping, and total for this fulfillment method"
+  fulfillmentPrices: FulfillmentPrices
+
+  "Fulfillment method type"
+  fulfillmentType: FulfillmentType
+
+  "Items in this group"
+  items: [CommonOrderItem]
+
+  "The order ID"
+  orderId: ID
+
+  "Address of shop, or where shipment originates"
+  originAddress: Address
+
+  "Shipping address for this CommonOrder"
+  shippingAddress: Address
+
+  "The shop ID"
+  shopId: ID
+
+  "The source of the data used to create this CommonOrder"
+  sourceType: CommonOrderSource,
+
+  totals: CommonOrderTotals
+}
+
+type CommonOrderItem {
+  "The cart item ID"
+  _id: ID!
+
+  """
+  FUTURE. Additional attributes of the chosen item. For example, if this item is for a product, socks, where "blue" and "small"
+  options were chosen for some configurable attributes, then "color:blue" and "size:small" will be indicated here.
+  """
+  attributes: [CartItemAttribute]
+
+  "Is this item taxable?"
+  isTaxable: Boolean
+
+  "Packing information such as item weight, height, length, and depth. Used for calculating shipping rates."
+  parcel: ShippingParcel
+
+  "The current price of the item"
+  price: Money!
+
+  "Product ID this item was created from"
+  productId: ID
+
+  "The product vendor"
+  productVendor: String
+
+  "The quantity of this item that has been added to the cart. This must be a positive integer. Remove this `CartItem` from it's associated cart if you want `0` of this item."
+  quantity: Int!
+
+  "The shop id"
+  shopId: ID
+
+  "The current price of the item multiplied by the quantity"
+  subtotal: Money!
+
+  "Taxcode to apply to this item"
+  taxCode: String!
+
+  "A title for use in cart/orders that conveys the selected product's title + chosen options"
+  title: String!
+
+  "Variant ID this item was created from"
+  variantId: ID
+
+  "The selected variant title"
+  variantTitle: String
+}
+
+type CommonOrderTotals {
+  "Discount total for the group"
+  groupDiscountTotal: Money
+
+  "Item total for the group"
+  groupItemTotal: Money
+
+  "Group total"
+  groupTotal: Money
+
+  "Discount total for the order"
+  orderDiscountTotal: Money
+
+  "Item total for the order"
+  orderItemTotal: Money
+
+  "Total price for the order"
+  orderTotal: Money
+}
+
+type FulfillmentPrices {
+  "Handling price for the fulfillment method"
+  handling: Money
+
+  "Shipping price for the fulfillment method"
+  shipping: Money
+
+  "Total price for the fulfillment method"
+  total: Money
+}
+
 "Supported cart reconciliation modes"
 enum CartReconciliationMode {
   "Delete the anonymous cart and use the account cart."
@@ -264,6 +394,15 @@ extend type Query {
     "Shop that owns the cart"
     shopId: ID!
   ): Cart
+
+  "Get a `CommonOrder` style object for a cart group"
+  getCommonOrderForCartGroup(
+    "The cart ID."
+    cartId: ID!
+
+    "The fulfillment group ID."
+    fulfillmentGroupId: ID!
+  ): CommonOrder
 }
 
 ####################
