@@ -1,15 +1,55 @@
 import { toFixed } from "accounting-js";
+import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
+const inputSchema = new SimpleSchema({
+  amount: {
+    type: Number,
+    exclusiveMin: true,
+    min: 0
+  },
+  orderId: String,
+  paymentId: String,
+  reason: {
+    type: String,
+    optional: true
+  }
+});
 
 /**
- * @param {Object} cart A cart
- * @param {Object} group The cart fulfillment group
- * @param {Object} context App context
- * @returns {Object} Valid CommonOrder from a cart group
+ * @name getCommonOrderForCartGroup
+ * @method
+ * @memberof Cart/NoMeteorQueries
+ * @summary Query the Cart collection for a cart and fulfillment group
+ *    with the provided cartId and fulfillmentGroupId, and return
+ *    a CommonOrder style object
+ * @param {Object} context - an object containing the per-request state
+ * @param {Object} input - request parameters
+ * @param {String} input.cartId - Cart ID
+ * @param {String} input.fulfillmentGroupId - ID of fulfillmentGroup to convert
+ * @returns {Promise<Object>|undefined} - A CommonOrder document
  */
-export default async function xformCartGroupToCommonOrder(cart, group, context) {
+export default async function getCommonOrderForCartGroup(context, input = {}) {
+  inputSchema.validate(input);
   const { collections } = context;
+  const { Cart } = collections;
+
+  const {
+    cartId,
+    fulfillmentGroupId
+  } = input;
+
+  if (!cartId) {
+    throw new ReactionError("invalid-param", "You must provide a cartId");
+  }
+
+  if (!fulfillmentGroupId) {
+    throw new ReactionError("invalid-param", "You must provide a fulfillmentGroupId");
+  }
+
+  const cart = await Cart.findOne({ _id: cartId });
+  const group = cart.groups.find((grp) => grp._id === fulfillmentGroupId);
+
   const { accountId, currencyCode } = cart;
 
   let items = group.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));

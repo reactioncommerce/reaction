@@ -1,7 +1,6 @@
 import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder.js"; // TODO: EK - get from other package
 import getCartById from "../util/getCartById.js";
 
 const inputSchema = new SimpleSchema({
@@ -71,7 +70,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   const fulfillmentGroup = (cart.shipping || []).find((group) => group._id === fulfillmentGroupId);
   if (!fulfillmentGroup) throw new ReactionError("not-found", `Fulfillment group with ID ${fulfillmentGroupId} not found in cart with ID ${cartId}`);
 
-  const commonOrder = await xformCartGroupToCommonOrder(cart, fulfillmentGroup, context);
+  const commonOrder = context.queries.getCommonOrderForCartGroup(context, { cartId: cart._id, fulfillmentGroupId: fulfillmentGroup._id });
 
   // In the future we want to do this async and subscribe to the results
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(commonOrder, context);
