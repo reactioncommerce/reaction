@@ -83,6 +83,12 @@ export default function createApolloServer(options = {}) {
     tokenMiddleware(contextFromOptions)
   );
 
+  // Redirect for graphql-alpha route
+  app.all("/graphql-alpha", (req, res) => {
+    // Redirect to path once graphql-alpha is received
+    res.redirect(path);
+  });
+
   apolloServer.applyMiddleware({ app, cors: true, path });
 
   return {

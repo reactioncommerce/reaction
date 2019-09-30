@@ -2,8 +2,6 @@ import "./templates/layout/alerts/alerts.html";
 import "./templates/layout/alerts/alerts.js";
 import "./templates/layout/alerts/inlineAlerts.js";
 import "./templates/layout/alerts/reactionAlerts.js";
-import "./templates/layout/createContentMenu/createContentMenu.html";
-import "./templates/layout/createContentMenu/createContentMenu.js";
 import "./templates/layout/header/brand.html";
 import "./templates/layout/header/button.html";
 import "./templates/layout/header/tags.html";

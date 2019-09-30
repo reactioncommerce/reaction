@@ -1,0 +1,13 @@
+mutation createProduct($input: CreateProductInput!) {
+  createProduct(input: $input) {
+    product {
+      isDeleted
+      isVisible
+      shop {
+        _id
+      }
+      supportedFulfillmentTypes
+      title
+    }
+  }
+}
