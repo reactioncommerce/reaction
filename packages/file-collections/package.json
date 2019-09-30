@@ -46,10 +46,6 @@
       "@babel/plugin-proposal-numeric-separator",
       "@babel/plugin-proposal-throw-expressions"
     ],
-    "ignore": [
-      "__snapshots__",
-      "**/*.test.js"
-    ],
     "presets": [
       [
         "@babel/env",
@@ -66,7 +62,7 @@
   "browser": "./dist/browser/index.js",
   "main": "./dist/node/index.js",
   "scripts": {
-    "build": "rm -rf dist/** && babel src --out-dir dist",
+    "build": "rm -rf dist/** && babel src --out-dir dist --ignore \"**/*.test.js\"",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

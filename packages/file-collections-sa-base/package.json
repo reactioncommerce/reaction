@@ -56,16 +56,12 @@
         }
       ]
     ],
-    "ignore": [
-      "__snapshots__",
-      "*.test.js"
-    ],
     "sourceMaps": true,
     "retainLines": true
   },
   "main": "./dist/index.js",
   "scripts": {
-    "build": "rm -rf dist/** && babel src --out-dir dist --ignore *.test.js,__snapshots__",
+    "build": "rm -rf dist/** && babel src --out-dir dist --ignore \"**/*.test.js\"",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
