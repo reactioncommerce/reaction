@@ -3,7 +3,8 @@ import DataTable, { useDataTable } from "@reactioncommerce/catalyst/DataTable";
 import { useApolloClient } from "@apollo/react-hooks";
 import primaryShopIdQuery from "imports/plugins/core/graphql/lib/queries/getPrimaryShopId";
 import { Card, CardHeader, CardContent, makeStyles } from "@material-ui/core";
-import moment from "moment";
+import OrderDateCell from "./OrderDateCell";
+import OrderIdCell from "./OrderIdCell";
 import ordersQuery from "../graphql/queries/orders";
 import { i18next } from "/client/api";
 
@@ -26,35 +27,31 @@ function OrdersTable() {
   // Create and memoize the column data
   const columns = useMemo(() => [
     {
-      Header: () => i18next.t("admin.table.headers.id"),
-      accessor: "referenceId"
+      Header: "Order ID",
+      accessor: "referenceId",
+      Cell: ({ row }) => <OrderIdCell row={row} />
     },
     {
-      Header: () => i18next.t("admin.table.headers.status"),
-      accessor: "status",
-      Cell: ({ row }) => <Fragment>{i18next.t(`admin.table.orderStatus.${row.values.status}`)}</Fragment>
-    },
-    {
-      Header: () => i18next.t("admin.table.headers.date"),
+      Header: "Date",
       accessor: "createdAt",
-      Cell: ({ row }) => <Fragment>{moment && moment(row.values.createdAt).format("MMMM Do YYYY")}</Fragment>
+      Cell: ({ row }) => <OrderDateCell row={row} />
     },
     {
-      Header: () => i18next.t("admin.table.headers.payment"),
+      Header: "Payment",
       accessor: "payments[0].status",
       Cell: ({ row }) => <Fragment>{i18next.t(`admin.table.paymentStatus.${row.values["payments[0].status"]}`)}</Fragment>
     },
     {
-      Header: () => i18next.t("admin.table.headers.fulfillment"),
+      Header: "Fulfillment",
       accessor: "fulfillmentGroups[0].status",
       Cell: ({ row }) => <Fragment>{i18next.t(`admin.table.fulfillmentStatus.${row.values["fulfillmentGroups[0].status"]}`)}</Fragment>
     },
     {
-      Header: () => i18next.t("admin.table.headers.customer"),
+      Header: "Customer",
       accessor: "payments[0].billingAddress.fullName"
     },
     {
-      Header: () => i18next.t("admin.table.headers.total"),
+      Header: "Total",
       accessor: "payments[0].amount.displayAmount"
     }
   ], []);
@@ -94,10 +91,11 @@ function OrdersTable() {
 
   return (
     <Card className={classes.card}>
-      <CardHeader title={i18next.t("admin.dashboard.ordersTitle")} />
+      <CardHeader title={i18next.t("admin.dashboard.ordersTitle", "Orders")} />
       <CardContent>
         <DataTable
           {...dataTableProps}
+          placeholder={"Filter orders"}
           isFilterable
         />
       </CardContent>
