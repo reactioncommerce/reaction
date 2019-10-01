@@ -1,4 +1,4 @@
-import validateInventoryPluginResults from "./validateInventoryPluginResults";
+import validateInventoryPluginResults from "./validateInventoryPluginResults.js";
 
 test("returns correct errors when payload is not valid", () => {
   const errors = validateInventoryPluginResults([

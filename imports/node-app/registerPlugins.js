@@ -4,6 +4,7 @@ import registerSettingsPlugin from "./core-services/settings/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerInventoryPlugin from "./plugins/inventory/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
 
@@ -21,7 +22,6 @@ import registerEmailTemplatesPlugin from "/imports/plugins/included/email-templa
 import registerExamplePaymentsPlugin from "/imports/plugins/included/payments-example/server/no-meteor/register";
 import registerFilesPlugin from "/imports/plugins/core/files/server/no-meteor/register";
 import registerI18nPlugin from "/imports/plugins/core/i18n/server/no-meteor/register";
-import registerInventoryPlugin from "/imports/plugins/core/inventory/server/no-meteor/register";
 import registerJobQueuePlugin from "/imports/plugins/included/job-queue/server/no-meteor/register";
 import registerMarketplacePlugin from "/imports/plugins/included/marketplace/server/no-meteor/register";
 import registerNavigationPlugin from "/imports/plugins/core/navigation/server/no-meteor/register";

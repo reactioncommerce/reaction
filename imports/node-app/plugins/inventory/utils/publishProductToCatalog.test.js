@@ -1,6 +1,6 @@
-import publishProductToCatalog from "./publishProductToCatalog";
-import Factory from "/imports/test-utils/helpers/factory";
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import publishProductToCatalog from "./publishProductToCatalog.js";
+import Factory from "/imports/test-utils/helpers/factory.js"; // TODO: EK - update to api-utils
+import mockContext from "/imports/test-utils/helpers/mockContext.js"; // TODO: EK - update to api-utils
 
 const productId = "TOP_PRODUCT_ID";
 

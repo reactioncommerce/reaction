@@ -1,4 +1,4 @@
-import validateProductConfiguration from "./validateProductConfiguration";
+import validateProductConfiguration from "./validateProductConfiguration.js";
 
 test("returns correct errors when payload is not valid", () => {
   const errors = validateProductConfiguration({});

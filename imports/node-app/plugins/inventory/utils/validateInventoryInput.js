@@ -1,4 +1,4 @@
-import validateProductConfiguration from "./validateProductConfiguration";
+import validateProductConfiguration from "./validateProductConfiguration.js";
 
 const ALL_FIELDS = [
   "canBackorder",

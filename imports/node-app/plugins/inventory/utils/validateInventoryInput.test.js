@@ -1,4 +1,4 @@
-import validateInventoryInput from "./validateInventoryInput";
+import validateInventoryInput from "./validateInventoryInput.js";
 
 test("returns correct errors when payload is not valid", () => {
   const errors = validateInventoryInput({

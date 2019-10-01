@@ -1,5 +1,5 @@
-import validateInventoryInput from "../utils/validateInventoryInput";
-import validateInventoryPluginResult from "../utils/validateInventoryPluginResults";
+import validateInventoryInput from "../utils/validateInventoryInput.js";
+import validateInventoryPluginResult from "../utils/validateInventoryPluginResults.js";
 
 const ALL_FIELDS = [
   "canBackorder",
