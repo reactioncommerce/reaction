@@ -5,10 +5,9 @@ import createNotification from "./createNotification";
  * @summary Sends a new order notification to an admin
  * @param {Object} collections Map of MongoDB collections
  * @param {String} adminUserId User ID (not account ID)
- * @param {String} shopId The ID of the shop this person is admin for
  * @returns {undefined}
  */
-async function sendNotificationToAdmin(collections, adminUserId, shopId) {
+async function sendNotificationToAdmin(collections, adminUserId) {
   const account = await collections.Accounts.findOne({ userId: adminUserId }, { projection: { _id: 1 } });
   if (!account) {
     throw new Error(`No account found for admin user ID ${adminUserId}`);
