@@ -6,7 +6,7 @@ import {
 } from "./user";
 
 const testId = "12345";
-const testOpaqueId = "cmVhY3Rpb24vdGFnOjEyMzQ1";
+const testOpaqueId = "cmVhY3Rpb24vdXNlcjoxMjM0NQ==";
 
 test("encodeUserOpaqueId returns an opaque, base64-encoded, User-namespaced ID", () => {
   expect(encodeUserOpaqueId(testId)).toBe(testOpaqueId);
