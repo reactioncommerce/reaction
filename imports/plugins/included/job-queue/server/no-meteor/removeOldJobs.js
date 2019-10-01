@@ -20,7 +20,7 @@ export default function removeOldJobs({
   const purgeAfterMs = purgeAfterDays * 24 * 60 * 60 * 1000;
 
   Jobs.whenReady(() => {
-    const removeStaleJobs = Jobs.processJobs(jobType, {
+    Jobs.processJobs(jobType, {
       pollInterval: 60 * 60 * 1000, // backup polling, see observer below
       workTimeout: 60 * 1000
     }, async (job, callback) => {
