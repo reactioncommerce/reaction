@@ -6,7 +6,7 @@ import registerSettingsPlugin from "./core-services/settings/index.js";
 import registerAddressPlugin from "./plugins/address/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
-import registerUIPlugin from "/plugins/ui/index.js";
+import registerUIPlugin from "./plugins/ui/index.js";
 
 /* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
