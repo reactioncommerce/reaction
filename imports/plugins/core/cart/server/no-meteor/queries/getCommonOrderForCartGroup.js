@@ -30,16 +30,17 @@ export default async function getCommonOrderForCartGroup(context, input = {}) {
     fulfillmentGroupId
   } = input;
 
-  if (!cartId) {
-    throw new ReactionError("invalid-param", "You must provide a cart ID");
-  }
-
-  if (!fulfillmentGroupId) {
-    throw new ReactionError("invalid-param", "You must provide a fulfillment group ID");
-  }
-
   const cart = await Cart.findOne({ _id: cartId });
+
+  if (!cart) {
+    throw new ReactionError("not-found", "Cart not found");
+  }
+
   const group = cart.shipping.find((grp) => grp._id === fulfillmentGroupId);
+
+  if (!group) {
+    throw new ReactionError("not-found", "Group not found");
+  }
 
   return xformCartGroupToCommonOrder(cart, group, context);
 }
