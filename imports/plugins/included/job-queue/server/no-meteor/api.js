@@ -24,7 +24,9 @@ export function addWorker(options) {
     Jobs.whenReady(() => {
       try {
         const jobWorker = Jobs.processJobs(type, {
-          pollInterval, // backup polling, see observer below
+          concurrency: 3,
+          prefetch: 20,
+          pollInterval,
           workTimeout
         }, async (job, callback) => {
           Logger.debug(`${type}: started`);

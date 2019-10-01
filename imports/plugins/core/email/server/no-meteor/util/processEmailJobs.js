@@ -54,7 +54,7 @@ export default function processEmailJobs(context) {
 
   backgroundJobs.addWorker({
     type: "sendEmail",
-    pollInterval: 15 * 1000, // poll every 15 seconds
+    pollInterval: 5 * 1000, // poll every 5 seconds
     workTimeout: 2 * 60 * 1000, // fail if it takes longer than 2mins
     async worker(job) {
       const { from, to, subject, html, ...optionalEmailFields } = job.data;

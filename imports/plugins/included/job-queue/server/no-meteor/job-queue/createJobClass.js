@@ -276,7 +276,7 @@ export default function createJobClass() {
       if (this.paused) return this;
 
       // eslint-disable-next-line no-use-before-define
-      if (!(this.pollInterval >= Job.forever)) {
+      if (this.pollInterval < Job.forever) {
         clearInterval(this._interval);
         this._interval = null;
       }
@@ -290,7 +290,7 @@ export default function createJobClass() {
       this.paused = false;
       _setImmediate(this._getWork.bind(this));
       // eslint-disable-next-line no-use-before-define
-      if (!(this.pollInterval >= Job.forever)) {
+      if (this.pollInterval < Job.forever) {
         this._interval = setInterval(this._getWork.bind(this), this.pollInterval);
       }
       for (let wk = 1, end = this.concurrency, asc = end >= 1; asc ? wk <= end : wk >= end; asc ? wk += 1 : wk -= 1) {

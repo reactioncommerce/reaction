@@ -25,14 +25,8 @@ export default function retryFailed(jobId) {
   // Get email job to retry
   const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
   const job = Promise.await(context.backgroundJobs.getJob(jobId));
-
-  if (job._doc.status === "completed") {
-    job.rerun();
-  } else {
-    // If this job was never completed, restart it and set it to "ready"
-    job.restart();
-    job.ready();
-  }
+  Promise.await(job.restart());
+  Promise.await(job.ready());
 
   return true;
 }
