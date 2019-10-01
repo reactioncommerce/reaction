@@ -4,7 +4,7 @@ import {
   addShopSettingDefaults,
   rolesThatCanEditGlobalSetting,
   rolesThatCanEditShopSetting
-} from "../util/settingsConfig";
+} from "../util/settingsConfig.js";
 
 /**
  * @summary Updates app settings for a shop or global app settings.
