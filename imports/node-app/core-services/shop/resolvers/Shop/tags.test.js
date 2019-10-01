@@ -1,4 +1,4 @@
-import tagsResolver from "./tags";
+import tagsResolver from "./tags.js";
 import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123

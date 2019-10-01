@@ -1,4 +1,8 @@
 /* node-app imports */
+/* core-services */
+import registerShopPlugin from "./core-services/address/index.js";
+
+/* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
@@ -28,7 +32,6 @@ import registerProductAdminPlugin from "/imports/plugins/included/product-admin/
 import registerSettingsPlugin from "/imports/plugins/core/settings/server/register";
 import registerShippingPlugin from "/imports/plugins/core/shipping/server/no-meteor/register";
 import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
-import registerShopPlugin from "/imports/plugins/core/shop/server/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
 import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";

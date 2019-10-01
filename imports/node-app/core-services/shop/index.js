@@ -1,8 +1,8 @@
-import mutations from "./mutations";
-import queries from "./queries";
-import resolvers from "./resolvers";
-import schemas from "./schemas";
-import createDataLoaders from "./utils/createDataLoaders";
+import mutations from "./mutations/index.js";
+import queries from "./queries/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import createDataLoaders from "./utils/createDataLoaders.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.

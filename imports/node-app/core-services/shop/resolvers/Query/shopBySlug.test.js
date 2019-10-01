@@ -1,4 +1,4 @@
-import shopBySlug from "./shopBySlug";
+import shopBySlug from "./shopBySlug.js";
 
 const fakeShopId = "W64ZQe9RUMuAoKrli";
 const fakeShopSlug = "reaction";

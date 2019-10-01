@@ -1,4 +1,4 @@
-import primaryShop from "./primaryShop";
+import primaryShop from "./primaryShop.js";
 
 const fakeShopId = "W64ZQe9RUMuAoKrli";
 

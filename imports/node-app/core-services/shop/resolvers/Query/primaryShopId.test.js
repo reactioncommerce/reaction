@@ -1,4 +1,4 @@
-import primaryShopId from "./primaryShopId";
+import primaryShopId from "./primaryShopId.js";
 
 const fakeShopId = "W64ZQe9RUMuAoKrli";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==";

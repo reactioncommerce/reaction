@@ -1,5 +1,5 @@
-import convertToDataloaderResult from "../../../../../node-app/core/util/convertToDataloaderResult";
-import createDataLoaders from "./createDataLoaders";
+import convertToDataloaderResult from "../../../core/util/convertToDataloaderResult.js";
+import createDataLoaders from "./createDataLoaders.js";
 
 const context = {
   collections: {

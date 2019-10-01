@@ -1,4 +1,4 @@
-import queries from "./";
+import queries from "./index.js";
 
 const context = {
   dataLoaders: {
