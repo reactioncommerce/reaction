@@ -5,7 +5,7 @@ import {
   rolesThatCanEditGlobalSetting,
   rolesThatCanEditShopSetting,
   runAfterUpdateHooks
-} from "../util/settingsConfig";
+} from "../util/settingsConfig.js";
 
 /**
  * @summary Updates app settings for a shop or global app settings.

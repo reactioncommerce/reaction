@@ -1,4 +1,4 @@
-import { addGlobalSettingDefaults, addShopSettingDefaults } from "../util/settingsConfig";
+import { addGlobalSettingDefaults, addShopSettingDefaults } from "../util/settingsConfig.js";
 
 /**
  * @summary Returns app settings for a shop or global app settings.
