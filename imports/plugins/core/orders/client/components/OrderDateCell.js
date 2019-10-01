@@ -12,17 +12,23 @@ export default function OrderDateCell({ row }) {
 
   // Determine what date or time to display.
   const now = moment();
-  const startDateTime = moment(row.values.createdAt);
-  const duration = moment.duration(now.diff(startDateTime));
+  const orderCreatedAt = moment(row.values.createdAt);
+  const duration = moment.duration(now.diff(orderCreatedAt));
   const durationHours = duration.asHours();
 
+  let dateTimeFormat = "MM-DD HH:mm A";
+  // Show year for orders placed outside the current year.
+  if (orderCreatedAt.year() !== now.year()) {
+    dateTimeFormat = "YYYY-MM-DD HH:mm A";
+  }
+
   // Render order date by default
-  let dateOrTime = moment(startDateTime).format("YYYY-MM-DD HH:mm");
+  let dateOrTime = moment(orderCreatedAt).format(dateTimeFormat);
   if (durationHours < 1) {
     dateOrTime = `${Math.round(duration.asMinutes())} minutes ago`;
   }
 
-  if (durationHours > 1 && durationHours < 24) {
+  if (durationHours > 1 && durationHours < 8) {
     dateOrTime = `${Math.round(durationHours)} hours ago`;
   }
 
