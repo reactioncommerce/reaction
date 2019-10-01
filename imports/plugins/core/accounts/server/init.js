@@ -81,7 +81,6 @@ Meteor.startup(() => {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
-    const groupToAddUser = options.groupId;
     const roles = {};
     const additionals = {
       name: options && options.name,
@@ -100,12 +99,7 @@ Meteor.startup(() => {
         // if no group permissions retrieved from DB, use the default Reaction set
         roles[shopId] = (group && group.permissions) || Reaction.defaultVisitorRoles;
       } else {
-        let group;
-        if (groupToAddUser) {
-          group = Collections.Groups.findOne({ _id: groupToAddUser, shopId });
-        } else {
-          group = Collections.Groups.findOne({ slug: "customer", shopId });
-        }
+        const group = Collections.Groups.findOne({ slug: "customer", shopId });
         // if no group or customer permissions retrieved from DB, use the default Reaction customer set
         roles[shopId] = (group && group.permissions) || Reaction.defaultCustomerRoles;
       }
@@ -126,12 +120,26 @@ Meteor.startup(() => {
         }
         if (serviceObj.name) {
           user.username = serviceObj.name;
+          additionals.profile.name = serviceObj.name;
         }
-
-        // Correctly map Instagram profile data to Meteor user
+        // TODO: For now we have here instagram, twitter and google avatar cases
+        // need to make complete list
+        if (serviceObj.picture) {
+          additionals.profile.picture = user.services[service].picture;
+        } else if (serviceObj.profile_image_url_https) {
+          additionals.profile.picture = user.services[service].dprofile_image_url_https;
+        } else if (serviceObj.profile_picture) {
+          additionals.profile.picture = user.services[service].profile_picture;
+        }
+        // Correctly map Instagram profile data to Meteor user / Accounts
         if (userServices.instagram) {
           user.username = serviceObj.username;
           user.name = serviceObj.full_name;
+          additionals.name = serviceObj.full_name;
+          additionals.profile.picture = serviceObj.profile_picture;
+          additionals.profile.bio = serviceObj.bio;
+          additionals.profile.name = serviceObj.full_name;
+          additionals.profile.username = serviceObj.username;
         }
       }
     }
@@ -157,12 +165,14 @@ Meteor.startup(() => {
     // Prioritize removing if possible
     const context = Promise.await(getGraphQLContextInMeteorMethod(null));
 
-    Promise.await(context.mutations.createAccount({...context, isInternalCall: true }, {
-      additionals,
-      groupId: groupToAddUser,
+    Promise.await(context.mutations.createAccount({ ...context, isInternalCall: true }, {
+      bio: (additionals && additionals.profile && additionals.profile.bio) || null,
+      name: (additionals && additionals.profile && additionals.profile.name) || null,
+      picture: (additionals && additionals.profile && additionals.profile.picture) || null,
       shopId,
-      tokenObj,
-      user
+      username: (additionals && additionals.profile && additionals.profile.username) || null,
+      user,
+      verificationToken: tokenObj && tokenObj.token
     }));
 
     // set verification token on user

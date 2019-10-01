@@ -3,23 +3,30 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import sendWelcomeEmail from "../util/sendWelcomeEmail";
 
 const inputSchema = new SimpleSchema({
-  additionals: {
-    type: Object,
-    blackbox: true
+  bio: {
+    type: String,
+    optional: true
   },
-  groupId: {
+  name: {
+    type: String,
+    optional: true
+  },
+  picture: {
     type: String,
     optional: true
   },
   shopId: String,
-  tokenObj: {
-    type: Object,
-    optional: true,
-    blackbox: true
+  username: {
+    type: String,
+    optional: true
   },
   user: {
     type: Object,
     blackbox: true
+  },
+  verificationToken: {
+    type: String,
+    optional: true
   }
 });
 
@@ -29,11 +36,13 @@ const inputSchema = new SimpleSchema({
  * @summary Create a new account
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
- * @param {String} input.additionals - various account related data
- * @param {String} [input.groupId] - group to add account to
+ * @param {String} [input.bio] - bio to display on profile
+ * @param {String} [input.name] - name to display on profile
+ * @param {String} [input.picture] - picture to display on profile
  * @param {String} input.shopId - shop to create account for
- * @param {String} [input.tokenObj] - token information for account verification
- * @param {String} input.user - Meteor user to create account based on
+ * @param {String} [input.username] - username to display on profile
+ * @param {String} input.user - user to create account from
+ * @param {String} [input.verificationToken] - token for account verification
  * @return {Promise<Object>} with boolean of found new account === true || false
  */
 export default async function createAccount(context, input) {
@@ -41,19 +50,23 @@ export default async function createAccount(context, input) {
   const { appEvents, collections, userHasPermission } = context;
   const { Accounts, Groups } = collections;
   const {
-    additionals,
-    groupId,
+    bio,
+    name,
+    picture,
     shopId,
-    tokenObj,
-    user
+    username,
+    user,
+    verificationToken
   } = input;
 
   if (!context.isInternalCall && !userHasPermission(["reaction-accounts", "account/invite"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
-  // Create initial account object from user and additionals
-  const account = Object.assign({ shopId }, user, additionals);
+  const profile = { bio, name, picture, username };
+
+  // Create initial account object from user and profile
+  const account = Object.assign({ shopId }, user, profile);
   account.userId = user._id;
 
   // if we don't have user.services we're an anonymous user
@@ -64,43 +77,9 @@ export default async function createAccount(context, input) {
       account.groups = [group._id];
     }
   } else {
-    let group;
-    if (groupId) {
-      group = await Groups.findOne({ _id: groupId, shopId });
-    } else {
-      group = await Groups.findOne({ slug: "customer", shopId });
-    }
+    const group = await Groups.findOne({ slug: "customer", shopId });
     if (group) {
       account.groups = [group._id];
-    }
-  }
-
-  // also add services with email defined to user.emails[]
-  const userServices = user.services;
-  for (const service in userServices) {
-    if ({}.hasOwnProperty.call(userServices, service)) {
-      const serviceObj = userServices[service];
-
-      if (serviceObj.name) {
-        account.profile.name = serviceObj.name;
-      }
-      // TODO: For now we have here instagram, twitter and google avatar cases
-      // need to make complete list
-      if (serviceObj.picture) {
-        account.profile.picture = user.services[service].picture;
-      } else if (serviceObj.profile_image_url_https) {
-        account.profile.picture = user.services[service].dprofile_image_url_https;
-      } else if (serviceObj.profile_picture) {
-        account.profile.picture = user.services[service].profile_picture;
-      }
-      // Correctly map Instagram profile data to Meteor user / Accounts
-      if (userServices.instagram) {
-        account.name = serviceObj.full_name;
-        account.profile.picture = serviceObj.profile_picture;
-        account.profile.bio = serviceObj.bio;
-        account.profile.name = serviceObj.full_name;
-        account.profile.username = serviceObj.username;
-      }
     }
   }
 
@@ -109,8 +88,8 @@ export default async function createAccount(context, input) {
 
   await Accounts.insertOne(account);
 
-  if (tokenObj) {
-    await sendWelcomeEmail(context, { shopId, token: tokenObj.token, userId: account.userId });
+  if (verificationToken) {
+    await sendWelcomeEmail(context, { shopId, token: verificationToken, userId: account.userId });
   }
 
   await appEvents.emit("afterAccountCreate", {

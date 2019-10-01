@@ -27,20 +27,26 @@ input AddAccountAddressBookEntryInput {
 
 "Defines the account which should be created"
 input CreateAccountInput {
-  "Various additional information to add to the account"
-  additionals: AdditionalsInput!
+  "Bio to display on profile"
+  bio: String
 
-  "The ID of the group to add this account to"
-  groupId: ID
+  "Name to display on profile"
+  name: String
+
+  "URL of picture to diplay on profile"
+  picture: String
 
   "The ID of the shop this account will belong to"
   shopId: ID!
 
-  "An object of token data used to send account verification emails"
-  tokenObj: VerificationTokenObjectInput
-
   "The user object to create a new account from"
   user: UserInput!
+
+  "Username on service used to create account"
+  username: String
+
+  "Token used to send account verification emails"
+  verificationToken: String
 }
 
 "Describes changes that should be applied to one of the addresses for an account"
