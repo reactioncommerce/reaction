@@ -2,8 +2,8 @@ import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getCurrentUserName from "/imports/plugins/core/accounts/server/no-meteor/util/getCurrentUserName";
-import getDataForEmail from "/imports/plugins/core/accounts/server/no-meteor/util/getDataForEmail";
+import getCurrentUserName from "../util/getCurrentUserName";
+import getDataForEmail from "../util/getDataForEmail";
 
 const inputSchema = new SimpleSchema({
   email: String,

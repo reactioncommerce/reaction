@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import ensureRoles from "/imports/plugins/core/accounts/server/no-meteor/util/ensureRoles";
+import ensureRoles from "../util/ensureRoles";
 
 const inputSchema = new SimpleSchema({
   accountId: String,

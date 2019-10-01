@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "./hashLoginToken";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import tokenExpiration from "./tokenExpiration";
 
 /**

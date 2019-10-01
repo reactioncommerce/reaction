@@ -1,5 +1,5 @@
+import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Logger } from "./logger";
 import expandAuthToken from "./expandAuthToken";
 
 /**

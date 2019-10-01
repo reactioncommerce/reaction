@@ -5,6 +5,10 @@ import { registerPluginHandler } from "./registration";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 import startup from "./startup";
+import tokenMiddleware from "./util/tokenMiddleware";
+import { getHasPermissionFunctionForUser } from "./util/hasPermission";
+import { getShopsUserHasPermissionForFunctionForUser } from "./util/shopsUserHasPermissionFor";
+import accountByUserId from "./util/accountByUserId";
 
 const ENROLL_URI_BASE = "account/enroll";
 
@@ -50,6 +54,11 @@ export default async function register(app) {
         name: "users"
       }
     },
+    auth: {
+      accountByUserId,
+      getHasPermissionFunctionForUser,
+      getShopsUserHasPermissionForFunctionForUser
+    },
     functionsByType: {
       registerPluginHandler: [registerPluginHandler],
       startup: [startup]
@@ -60,6 +69,13 @@ export default async function register(app) {
     },
     mutations,
     queries,
+    expressMiddleware: [
+      {
+        route: "graphql",
+        stage: "authenticate",
+        fn: tokenMiddleware
+      }
+    ],
     settings: {},
     registry: [{
       route: "/dashboard/accounts",

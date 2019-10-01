@@ -1,7 +1,7 @@
 import qs from "querystring";
 import fetch from "node-fetch";
+import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Logger } from "./logger";
 
 /**
  * Given an Authorization Bearer token it returns a JSON object with user

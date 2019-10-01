@@ -5,9 +5,11 @@ import mongodb, { MongoClient } from "mongodb";
 import Logger from "@reactioncommerce/logger";
 import appEvents from "./util/appEvents";
 import collectionIndex from "/imports/utils/collectionIndex";
+import getAbsoluteUrl from "./util/getAbsoluteUrl";
 import createApolloServer from "./createApolloServer";
-import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
-import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
+import config from "./config.js";
+
+const { ROOT_URL } = config;
 
 export default class ReactionNodeApp {
   constructor(options = {}) {
@@ -19,6 +21,7 @@ export default class ReactionNodeApp {
       ...(options.context || {}),
       app: this,
       appEvents,
+      auth: {},
       collections: this.collections,
       getFunctionsOfType: (type) => (this.functionsByType[type] || []).map(({ func }) => func),
       // In a large production app, you may want to use an external pub-sub system.
@@ -44,10 +47,12 @@ export default class ReactionNodeApp {
       }
     }
 
-    this.context.rootUrl = getRootUrl();
+    this.rootUrl = ROOT_URL.endsWith("/") ? ROOT_URL : `${ROOT_URL}/`;
+    this.context.rootUrl = this.rootUrl;
     this.context.getAbsoluteUrl = (path) => getAbsoluteUrl(this.context.rootUrl, path);
 
     this.registeredPlugins = {};
+    this.expressMiddleware = [];
 
     this.mongodb = options.mongodb || mongodb;
   }
@@ -198,6 +203,7 @@ export default class ReactionNodeApp {
     } = createApolloServer({
       context: this.context,
       debug: debug || false,
+      expressMiddleware: this.expressMiddleware,
       resolvers,
       schemas
     });
@@ -322,6 +328,19 @@ export default class ReactionNodeApp {
       merge(this.context.queries, plugin.queries);
     }
 
+    if (plugin.auth) {
+      Object.keys(plugin.auth).forEach((key) => {
+        if (this.context.auth[key]) {
+          throw new Error(`Plugin "${plugin.name} tried to register auth function "${key}" but another plugin already registered this type of function`);
+        }
+        this.context.auth[key] = plugin.auth[key];
+      });
+    }
+
     this._registerFunctionsByType(plugin.functionsByType, plugin.name);
+
+    if (Array.isArray(plugin.expressMiddleware)) {
+      this.expressMiddleware.push(...plugin.expressMiddleware.map((def) => ({ ...def, pluginName: plugin.name })));
+    }
   }
 }
