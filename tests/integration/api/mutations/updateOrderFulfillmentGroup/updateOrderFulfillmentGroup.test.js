@@ -38,7 +38,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Catalog.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("user with orders role can update an order fulfillment group", async () => {

@@ -21,7 +21,7 @@ const inputSchema = new SimpleSchema({
 
 /**
  * @method createRefund
- * @summary Use this mutation to create a refund on an orderpayment
+ * @summary Use this mutation to create a refund on an order payment
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
  * @param {Object} input.amount - amount to refund

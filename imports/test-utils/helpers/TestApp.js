@@ -55,7 +55,8 @@ class TestApp {
       functionsByType,
       graphQL: {
         schemas: extraSchemas
-      }
+      },
+      shouldInitReplicaSet: true
     });
 
     this.collections = this.reactionNodeApp.collections;

@@ -76,7 +76,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  testApp.stop();
+  await testApp.stop();
 });
 
 beforeEach(async () => {

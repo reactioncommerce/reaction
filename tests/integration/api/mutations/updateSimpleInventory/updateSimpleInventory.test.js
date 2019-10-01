@@ -99,7 +99,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Products.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("throws access-denied when updating simpleInventory if not an admin", async () => {
