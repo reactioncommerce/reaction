@@ -7,7 +7,6 @@ import { Reaction, i18next } from "/client/api";
 import Logger from "/client/modules/logger";
 import { Packages, Shops } from "/lib/collections";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
-import SitemapSettingsContainer from "/imports/plugins/included/sitemap-generator/client/containers/sitemap-settings-container";
 
 Template.shopSettings.onCreated(function onCreated() {
   this.state = new ReactiveDict();
@@ -171,9 +170,5 @@ Template.optionsShopSettings.helpers({
 
   isPackageEnabled(name) {
     return Reaction.isPackageEnabled(name);
-  },
-
-  SitemapSettingsContainer() {
-    return SitemapSettingsContainer;
   }
 });

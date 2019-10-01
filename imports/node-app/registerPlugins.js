@@ -16,11 +16,13 @@ import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/regi
 import registerDashboardPlugin from "/imports/plugins/core/dashboard/server/no-meteor/register";
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
+import registerEmailPlugin from "/imports/plugins/core/email/server/no-meteor/register";
 import registerEmailTemplatesPlugin from "/imports/plugins/included/email-templates/server/register";
 import registerExamplePaymentsPlugin from "/imports/plugins/included/payments-example/server/no-meteor/register";
 import registerFilesPlugin from "/imports/plugins/core/files/server/no-meteor/register";
 import registerI18nPlugin from "/imports/plugins/core/i18n/server/no-meteor/register";
 import registerInventoryPlugin from "/imports/plugins/core/inventory/server/no-meteor/register";
+import registerJobQueuePlugin from "/imports/plugins/included/job-queue/server/no-meteor/register";
 import registerMarketplacePlugin from "/imports/plugins/included/marketplace/server/no-meteor/register";
 import registerNavigationPlugin from "/imports/plugins/core/navigation/server/no-meteor/register";
 import registerNotificationsPlugin from "/imports/plugins/included/notifications/server/no-meteor/register";
@@ -55,11 +57,13 @@ export default async function registerPlugins(app) {
    * CORE
    * (Core plugin needs Media collection, so files plugin must be first)
    */
+  await registerJobQueuePlugin(app); // REQUIRED
   await registerFilesPlugin(app); // REQUIRED
   await registerCorePlugin(app); // REQUIRED
   await registerShopPlugin(app); // REQUIRED
   await registerSettingsPlugin(app); // REQUIRED
   await registerI18nPlugin(app); // REQUIRED
+  await registerEmailPlugin(app); // REQUIRED
   await registerAddressPlugin(app); // REQUIRED
   await registerDashboardPlugin(app); // REQUIRED
   await registerUIPlugin(app); // REQUIRED
