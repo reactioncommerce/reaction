@@ -3,7 +3,8 @@ import {
   addGlobalSettingDefaults,
   addShopSettingDefaults,
   rolesThatCanEditGlobalSetting,
-  rolesThatCanEditShopSetting
+  rolesThatCanEditShopSetting,
+  runAfterUpdateHooks
 } from "../util/settingsConfig";
 
 /**
@@ -17,8 +18,13 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
   const { collections, userHasPermission } = context;
   const { AppSettings } = collections;
 
+  const updateKeys = Object.keys(settingsUpdates);
+  if (updateKeys.length === 0) {
+    throw new ReactionError("invalid-param", "You must request at least one update");
+  }
+
   // Look up roles that are allowed to set each setting. Throw if not allowed.
-  Object.getOwnPropertyNames(settingsUpdates).forEach((field) => {
+  updateKeys.forEach((field) => {
     const allowedRoles = shopId ? rolesThatCanEditShopSetting(field) : rolesThatCanEditGlobalSetting(field);
     if (allowedRoles.length === 0 || !userHasPermission(allowedRoles, shopId)) {
       throw new ReactionError("access-denied", `You are not allowed to edit the "${field}" setting`);
@@ -35,6 +41,9 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
       upsert: true
     }
   );
+
+  // We don't want to await these and delay sending a response back
+  runAfterUpdateHooks(context, settingsUpdates, shopId);
 
   return shopId ? addShopSettingDefaults(updatedDoc || {}) : addGlobalSettingDefaults(updatedDoc || {});
 }

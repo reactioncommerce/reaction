@@ -62,7 +62,27 @@ export function rolesThatCanEditShopSetting(field) {
   return config.rolesThatCanEdit || [];
 }
 
+/**
+ * @summary Run all afterUpdate hooks that were registered for each updated setting
+ * @param {Object} context App context
+ * @param {Object} updates Object with setting name as key and new setting value as value
+ * @param {String} [shopId] Shop ID. Pass `null` for global settings.
+ * @return {undefined}
+ */
+export function runAfterUpdateHooks(context, updates, shopId) {
+  Object.keys(updates).forEach((field) => {
+    const config = shopId ? shopSettingsConfig[field] : globalSettingsSchema[field];
+    if (!config || !config.afterUpdate) return;
+
+    config.afterUpdate(context, { shopId, value: updates[field] });
+  });
+}
+
 const configSchema = new SimpleSchema({
+  "afterUpdate": {
+    type: Function,
+    optional: true
+  },
   "defaultValue": {
     type: SimpleSchema.oneOf(String, Number, Date, Boolean),
     optional: true

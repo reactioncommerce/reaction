@@ -12,7 +12,9 @@ import getMailConfig from "./getMailConfig";
  * @returns {undefined} Calls one of the callbacks with a return
  */
 export default async function sendSMTPEmail(context, { job, sendEmailCompleted, sendEmailFailed }) {
-  const config = await getMailConfig(context);
+  const { to, shopId, ...otherEmailFields } = job.data;
+
+  const config = await getMailConfig(context, shopId);
   if (config.direct) {
     sendEmailFailed(job, "SMTP mail settings not configured");
     return;
@@ -20,10 +22,9 @@ export default async function sendSMTPEmail(context, { job, sendEmailCompleted, 
 
   Logger.debug(config, "Sending SMTP email with config");
 
-  const { from, to, subject, html, ...optionalEmailFields } = job.data;
   const transport = nodemailer.createTransport(config);
 
-  transport.sendMail({ from, to, subject, html, ...optionalEmailFields }, (error) => {
+  transport.sendMail({ to, shopId, ...otherEmailFields }, (error) => {
     if (error) {
       sendEmailFailed(job, `Email job failed: ${error.toString()}`);
     } else {
