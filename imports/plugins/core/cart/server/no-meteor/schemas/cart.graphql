@@ -230,6 +230,7 @@ type CartItem implements Node {
   variantTitle: String
 }
 
+"A normalized order object used by `cart` and `order`"
 type CommonOrder {
   "Account that owns the cart"
   accountId: ID!
@@ -270,9 +271,11 @@ type CommonOrder {
   "The source of the data used to create this CommonOrder"
   sourceType: CommonOrderSource,
 
+  "Total pricing information for the CommonOrder"
   totals: CommonOrderTotals
 }
 
+"A single item in a CommonOrder. The item contains information about an intended purchase."
 type CommonOrderItem {
   "The cart item ID"
   _id: ID!
@@ -320,6 +323,7 @@ type CommonOrderItem {
   variantTitle: String
 }
 
+"Pricing information for the CommonOrder"
 type CommonOrderTotals {
   "Discount total for the group"
   groupDiscountTotal: Money
@@ -340,6 +344,7 @@ type CommonOrderTotals {
   orderTotal: Money
 }
 
+"Pricing information for a fulfillment group"
 type FulfillmentPrices {
   "Handling price for the fulfillment method"
   handling: Money

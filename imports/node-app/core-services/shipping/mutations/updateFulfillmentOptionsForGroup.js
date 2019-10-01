@@ -70,7 +70,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   const fulfillmentGroup = (cart.shipping || []).find((group) => group._id === fulfillmentGroupId);
   if (!fulfillmentGroup) throw new ReactionError("not-found", `Fulfillment group with ID ${fulfillmentGroupId} not found in cart with ID ${cartId}`);
 
-  const commonOrder = await context.queries.getCommonOrderForCartGroup(context, { cart, fulfillmentGroup });
+  const commonOrder = await context.queries.getCommonOrderForCartGroup(context, { cartId: cart._id, fulfillmentGroupId: fulfillmentGroup._id });
 
   // In the future we want to do this async and subscribe to the results
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(commonOrder, context);

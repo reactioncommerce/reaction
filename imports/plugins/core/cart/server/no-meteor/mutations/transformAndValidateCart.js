@@ -2,6 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import forEachPromise from "/imports/utils/forEachPromise";
 import updateCartFulfillmentGroups from "../util/updateCartFulfillmentGroups";
+import xformCartGroupToCommonOrder from "../util/xformCartGroupToCommonOrder";
 import { cartTransforms } from "../registration";
 
 const logCtx = { name: "cart", file: "transformAndValidateCart" };
@@ -28,7 +29,7 @@ export default async function transformAndValidateCart(context, cart) {
   async function getCommonOrders({ shouldRebuild = false } = {}) {
     if (!commonOrders || shouldRebuild) {
       commonOrders = await Promise.all(cart.shipping.map((group) =>
-        context.queries.getCommonOrderForCartGroup(context, { cart, fulfillmentGroup: group })));
+        xformCartGroupToCommonOrder(cart, group, context)));
     }
     return commonOrders;
   }
