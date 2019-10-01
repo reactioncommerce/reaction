@@ -30,6 +30,9 @@ export default async function register(app) {
           [{ shopId: 1 }, { name: "c2_shopId" }],
           [{ "shipping.items.productId": 1 }],
           [{ "shipping.items.variantId": 1 }],
+          [{ "payments.address.fullName": 1 }],
+          [{ "shipping.address.fullName": 1 }],
+          [{ "payments.address.phone": 1 }],
           [{ "workflow.status": 1 }, { name: "c2_workflow.status" }]
         ]
       }
