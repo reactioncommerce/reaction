@@ -1,0 +1,9 @@
+extend type ShopSettings {
+  "This setting controls how often the sitemaps for the shop will be rebuilt"
+  sitemapRefreshPeriod: String!
+}
+
+extend input ShopSettingsUpdates {
+  "This setting controls how often the sitemaps for the shop will be rebuilt"
+  sitemapRefreshPeriod: String
+}

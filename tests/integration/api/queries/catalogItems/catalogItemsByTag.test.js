@@ -73,7 +73,7 @@ afterAll(async () => {
   await testApp.collections.Tags.deleteOne({ _id: mockTagWithNoProducts._id });
   await Promise.all(mockCatalogItemsWithFeatured.map((mockItem) => testApp.collections.Catalog.deleteOne({ _id: mockItem._id })));
   await Promise.all(mockCatalogItemsWithoutFeatured.map((mockItem) => testApp.collections.Catalog.deleteOne({ _id: mockItem._id })));
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("get all items for on tag without sort", async () => {

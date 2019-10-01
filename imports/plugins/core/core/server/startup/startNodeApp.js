@@ -39,9 +39,6 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
       queries: {},
       rootUrl: ROOT_URL
     },
-    graphQL: {
-      graphiql: Meteor.isDevelopment
-    },
     httpServer: WebApp.httpServer,
     mongodb
   });

@@ -33,6 +33,4 @@ test("plugin with remote graphQL should delegate properly", async () => {
   expect(res).toHaveProperty("unitTestRemoteGraphql", 43.43);
 });
 
-afterAll(() => {
-  testApp.stop();
-});
+afterAll(() => testApp.stop());

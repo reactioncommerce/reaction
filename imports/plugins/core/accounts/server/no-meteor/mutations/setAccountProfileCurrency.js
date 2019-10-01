@@ -28,7 +28,7 @@ export default async function setAccountProfileCurrency(context, input) {
   const accountId = providedAccountId || userIdFromContext;
   if (!accountId) throw new ReactionError("access-denied", "You must be logged in to set profile currency");
 
-  const account = await Accounts.findOne({ _id: accountId }, { fields: { shopId: 1 } });
+  const account = await Accounts.findOne({ _id: accountId }, { projection: { shopId: 1 } });
   if (!account) throw new ReactionError("not-found", "No account found");
 
   if (!context.isInternalCall && userIdFromContext !== providedAccountId) {
@@ -36,7 +36,7 @@ export default async function setAccountProfileCurrency(context, input) {
   }
 
   // Make sure this currency code is in the related shop currencies list
-  const shop = await Shops.findOne({ _id: account.shopId }, { fields: { currencies: 1 } });
+  const shop = await Shops.findOne({ _id: account.shopId }, { projection: { currencies: 1 } });
 
   if (!shop || !shop.currencies || !shop.currencies[currencyCode]) {
     throw new ReactionError("invalid-argument", `The shop for this account does not define any currency with code "${currencyCode}"`);

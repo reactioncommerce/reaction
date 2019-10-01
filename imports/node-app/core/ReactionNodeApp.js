@@ -7,6 +7,7 @@ import appEvents from "./util/appEvents";
 import collectionIndex from "/imports/utils/collectionIndex";
 import getAbsoluteUrl from "./util/getAbsoluteUrl";
 import createApolloServer from "./createApolloServer";
+import initReplicaSet from "./util/initReplicaSet";
 import config from "./config.js";
 
 const { ROOT_URL } = config;
@@ -271,13 +272,24 @@ export default class ReactionNodeApp {
    * @returns {Promise<undefined>} Nothing
    */
   async start({ mongoUrl, port } = {}) {
+    if (this.options.shouldInitReplicaSet) {
+      try {
+        await initReplicaSet(mongoUrl);
+      } catch (error) {
+        Logger.warn(`Failed to initialize a MongoDB replica set. This may result in errors or some things not working. Error: ${error.message}`);
+      }
+    }
+
     // (1) Connect to MongoDB database
     await this.connectToMongo({ mongoUrl });
 
-    // (2) Run service startup functions
+    // (2) Init the server here. Some startup may need `app.expressApp`
+    this.initServer();
+
+    // (3) Run service startup functions
     await this.runServiceStartup();
 
-    // (3) Start the Express GraphQL server
+    // (4) Start the Express GraphQL server
     await this.startServer({ port });
   }
 
@@ -287,11 +299,27 @@ export default class ReactionNodeApp {
    * @returns {Promise<undefined>} Nothing
    */
   async stop() {
-    // (1) Disconnect from MongoDB database
-    await this.disconnectFromMongo();
-
-    // (2) Stop the Express GraphQL server
+    // (1) Stop the Express GraphQL server
     await this.stopServer();
+
+    // (2) Run all "shutdown" functions registered by plugins
+    const shutdownFunctionsRegisteredByPlugins = this.functionsByType.shutdown;
+    if (Array.isArray(shutdownFunctionsRegisteredByPlugins)) {
+      // We are intentionally running these in series, in the order in which they were registered
+      for (const shutdownFunctionInfo of shutdownFunctionsRegisteredByPlugins) {
+        Logger.info(`Running shutdown function "${shutdownFunctionInfo.func.name}" for plugin "${shutdownFunctionInfo.pluginName}"...`);
+        const startTime = Date.now();
+        await shutdownFunctionInfo.func(this.context); // eslint-disable-line no-await-in-loop
+        const elapsedMs = Date.now() - startTime;
+        Logger.info(`Shutdown function "${shutdownFunctionInfo.func.name}" for plugin "${shutdownFunctionInfo.pluginName}" finished in ${elapsedMs}ms`);
+      }
+    }
+
+    // (3) Stop app events since the handlers will not have database access after this point
+    appEvents.stop();
+
+    // (4) Disconnect from MongoDB database
+    await this.disconnectFromMongo();
   }
 
   /**
@@ -341,6 +369,15 @@ export default class ReactionNodeApp {
 
     if (Array.isArray(plugin.expressMiddleware)) {
       this.expressMiddleware.push(...plugin.expressMiddleware.map((def) => ({ ...def, pluginName: plugin.name })));
+    }
+
+    if (plugin.contextAdditions) {
+      Object.keys(plugin.contextAdditions).forEach((key) => {
+        if ({}.hasOwnProperty.call(this.context, key)) {
+          throw new Error(`Plugin ${plugin.name} is trying to add ${key} key to context but it's already there`);
+        }
+        this.context[key] = plugin.contextAdditions[key];
+      });
     }
   }
 }

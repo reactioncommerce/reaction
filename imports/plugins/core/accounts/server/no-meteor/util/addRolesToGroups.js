@@ -89,7 +89,7 @@ async function addRolesToGroupAndUsers(context, { _id, shopId, name }, roles) {
   Logger.debug(`Number of updates needed: ${numQueriesNeeded}`);
 
   const accountOptions = {
-    fields: { _id: 1 },
+    projection: { _id: 1 },
     sort: { _id: 1 },
     limit: maxAccountsPerUpdate
   };

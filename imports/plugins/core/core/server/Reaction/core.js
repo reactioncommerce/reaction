@@ -512,28 +512,6 @@ export default {
   },
 
   /**
-   * @name getShopPrefix
-   * @method
-   * @memberof Core
-   * @summary Get shop prefix for URL
-   * @returns {String} String in the format of "/shop/slug"
-   */
-  getShopPrefix() {
-    const shopName = this.getShopName();
-    const lowerCaseShopName = shopName.toLowerCase();
-    const slug = this.getSlug(lowerCaseShopName);
-    const marketplace = Packages.findOne({
-      name: "reaction-marketplace",
-      shopId: this.getPrimaryShopId()
-    });
-
-    if (marketplace && marketplace.settings && marketplace.settings.public) {
-      return `${marketplace.settings.public.shopPrefix}/${slug}`;
-    }
-    return `/${slug}`;
-  },
-
-  /**
    * @name getShopEmail
    * @method
    * @memberof Core

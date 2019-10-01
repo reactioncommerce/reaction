@@ -33,9 +33,18 @@ async function synchronousPromiseLoop(name, funcs, args) {
 
 class AppEvents {
   handlers = {};
+  stopped = false;
+
+  resume() {
+    this.stopped = false;
+  }
+
+  stop() {
+    this.stopped = true;
+  }
 
   async emit(name, ...args) {
-    if (!this.handlers[name]) return;
+    if (this.stopped || !this.handlers[name]) return;
 
     // Can't use forEach or map because we want each func to wait
     // until the previous func promise resolves

@@ -34,7 +34,7 @@ export default async function setAccountProfileLanguage(context, input) {
 
   if (!accountId) throw new ReactionError("access-denied", "You must be logged in to set profile language");
 
-  const account = Accounts.findOne({ _id: accountId }, { fields: { shopId: 1 } });
+  const account = await Accounts.findOne({ _id: accountId }, { projection: { shopId: 1 } });
   if (!account) throw new ReactionError("not-found", "No account found");
 
   if (!context.isInternalCall && accountIdFromContext !== accountId) {
@@ -42,7 +42,7 @@ export default async function setAccountProfileLanguage(context, input) {
   }
 
   // Make sure this language is in the related shop languages list
-  const shop = await Shops.findOne({ _id: account.shopId }, { languages: 1 });
+  const shop = await Shops.findOne({ _id: account.shopId }, { projection: { languages: 1 } });
   if (!shop || !shop.languages || !isLanguageEnabled(shop.languages, language)) {
     throw new ReactionError("invalid-argument", `Shop does not define any enabled language with code "${language}"`);
   }
