@@ -26,10 +26,12 @@ jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promis
 const fakeCart = Factory.Cart.makeOne();
 const fakeQuote = Factory.ShipmentQuote.makeOne();
 const mockGetFulfillmentMethodsWithQuotes = jest.fn().mockName("getFulfillmentMethodsWithQuotes");
+const mockGetCommonOrderForCartGroup = jest.fn().mockName("getCommonOrderForCartGroup");
 
 beforeAll(() => {
   mockContext.queries = {
-    getFulfillmentMethodsWithQuotes: mockGetFulfillmentMethodsWithQuotes
+    getFulfillmentMethodsWithQuotes: mockGetFulfillmentMethodsWithQuotes,
+    getCommonOrderForCartGroup: mockGetCommonOrderForCartGroup
   };
   if (!mockContext.mutations.saveCart) {
     mockContext.mutations.saveCart = jest.fn().mockName("context.mutations.saveCart").mockImplementation(async (_, cart) => cart);
