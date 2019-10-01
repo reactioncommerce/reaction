@@ -8,7 +8,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} [email] email address to create token for
  * @returns {undefined}
  */
-export default async function generateVerificationTokenObject({ address, email }) {
+export default function generateVerificationTokenObject({ address, email }) {
   if (!address && !email) throw new ReactionError("error-occurred", "Address or email required");
 
   const tokenObj = {

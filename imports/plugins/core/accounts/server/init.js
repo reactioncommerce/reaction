@@ -167,11 +167,12 @@ Meteor.startup(() => {
 
     Promise.await(context.mutations.createAccount({ ...context, isInternalCall: true }, {
       bio: (additionals && additionals.profile && additionals.profile.bio) || null,
+      emails: user.emails,
       name: (additionals && additionals.profile && additionals.profile.name) || null,
       picture: (additionals && additionals.profile && additionals.profile.picture) || null,
       shopId,
       username: (additionals && additionals.profile && additionals.profile.username) || null,
-      user,
+      userId: user._id,
       verificationToken: tokenObj && tokenObj.token
     }));
 

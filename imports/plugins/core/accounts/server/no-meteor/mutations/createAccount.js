@@ -1,30 +1,34 @@
 import SimpleSchema from "simpl-schema";
+import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import sendWelcomeEmail from "../util/sendWelcomeEmail";
 
 const inputSchema = new SimpleSchema({
-  bio: {
+  "bio": {
     type: String,
     optional: true
   },
-  name: {
-    type: String,
-    optional: true
-  },
-  picture: {
-    type: String,
-    optional: true
-  },
-  shopId: String,
-  username: {
-    type: String,
-    optional: true
-  },
-  user: {
+  "emails": Array,
+  "emails.$": {
     type: Object,
-    blackbox: true
+    blackbox: true,
+    optional: true
   },
-  verificationToken: {
+  "name": {
+    type: String,
+    optional: true
+  },
+  "picture": {
+    type: String,
+    optional: true
+  },
+  "shopId": String,
+  "username": {
+    type: String,
+    optional: true
+  },
+  "userId": String,
+  "verificationToken": {
     type: String,
     optional: true
   }
@@ -37,11 +41,12 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} [input.bio] - bio to display on profile
+ * @param {Array} [input.emails] - email array to attach to this user
  * @param {String} [input.name] - name to display on profile
  * @param {String} [input.picture] - picture to display on profile
  * @param {String} input.shopId - shop to create account for
  * @param {String} [input.username] - username to display on profile
- * @param {String} input.user - user to create account from
+ * @param {String} input.userId - userId account was created from
  * @param {String} [input.verificationToken] - token for account verification
  * @return {Promise<Object>} with boolean of found new account === true || false
  */
@@ -51,11 +56,12 @@ export default async function createAccount(context, input) {
   const { Accounts, Groups } = collections;
   const {
     bio,
+    emails,
     name,
     picture,
     shopId,
     username,
-    user,
+    userId,
     verificationToken
   } = input;
 
@@ -63,28 +69,17 @@ export default async function createAccount(context, input) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
-  const profile = { bio, name, picture, username };
+  const profile = { bio, emails, name, picture, userId, username };
 
   // Create initial account object from user and profile
-  const account = Object.assign({ shopId }, user, profile);
-  account.userId = user._id;
+  const account = Object.assign({ shopId }, profile);
+  account._id = userId || Random.id();
+  account.userId = userId;
 
-  // if we don't have user.services we're an anonymous user
-  if (!user.services) {
-    // TODO: look into getting rid of this guest account
-    const group = await Groups.findOne({ slug: "guest", shopId });
-    if (group) {
-      account.groups = [group._id];
-    }
-  } else {
-    const group = await Groups.findOne({ slug: "customer", shopId });
-    if (group) {
-      account.groups = [group._id];
-    }
+  const group = await Groups.findOne({ slug: "customer", shopId });
+  if (group) {
+    account.groups = [group._id];
   }
-
-  // remove `services` from the account before creating
-  delete account.services;
 
   await Accounts.insertOne(account);
 
@@ -94,7 +89,7 @@ export default async function createAccount(context, input) {
 
   await appEvents.emit("afterAccountCreate", {
     account,
-    createdBy: user._id
+    createdBy: userId
   });
 
   return account;

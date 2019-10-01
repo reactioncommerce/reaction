@@ -30,6 +30,8 @@ input CreateAccountInput {
   "Bio to display on profile"
   bio: String
 
+  emails: [EmailRecordInput]!
+
   "Name to display on profile"
   name: String
 
@@ -39,8 +41,8 @@ input CreateAccountInput {
   "The ID of the shop this account will belong to"
   shopId: ID!
 
-  "The user object to create a new account from"
-  user: UserInput!
+  "The userID account was created from create a new account from"
+  userId: ID!
 
   "Username on service used to create account"
   username: String
@@ -140,15 +142,6 @@ input RemoveAccountEmailRecordInput {
 input ProfileInput {
   "Was this user invited by an admin"
   invited: Boolean
-}
-
-"Defines a user object to create an account from"
-input UserInput {
-  "Email address to create token for. Either `address` or `email` are required."
-  name: String
-
-  "Email address to create token for. Either `address` or `email` are required."
-  profile: ProfileInput
 }
 
 "Per-account tax exemption settings used by the Avalara plugin"
