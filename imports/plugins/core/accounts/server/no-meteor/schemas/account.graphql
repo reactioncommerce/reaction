@@ -142,15 +142,6 @@ input ProfileInput {
   invited: Boolean
 }
 
-"Defines additional user data to attach to a new account"
-input AdditionalsInput {
-  "Email address to create token for. Either `address` or `email` are required."
-  name: String
-
-  "Email address to create token for. Either `address` or `email` are required."
-  profile: ProfileInput
-}
-
 "Defines a user object to create an account from"
 input UserInput {
   "Email address to create token for. Either `address` or `email` are required."
@@ -158,21 +149,6 @@ input UserInput {
 
   "Email address to create token for. Either `address` or `email` are required."
   profile: ProfileInput
-}
-
-"Defines a verification token object used to verify an email address on an account"
-input VerificationTokenObjectInput {
-  "Email address to create token for. Either `address` or `email` are required."
-  address: Email
-
-  "Email address to create token for. Either `address` or `email` are required."
-  email: Email
-
-  "The token used to verify an email address"
-  token: String!
-
-  "The datetime this token object was create"
-  when: DateTime!
 }
 
 "Per-account tax exemption settings used by the Avalara plugin"
