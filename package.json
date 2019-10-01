@@ -225,7 +225,7 @@
     "test:app:watch": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
     "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",
-    "test:integration": "NODE_ENV=jesttest JEST_MONGO=1 BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --runInBand /tests/integration/",
+    "test:integration": "NODE_ENV=jesttest JEST_MONGO=1 BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --runInBand --detectOpenHandles /tests/integration/",
     "test:integration:watch": "NODE_ENV=jesttest JEST_MONGO=1 BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --runInBand --watch /tests/integration/",
     "test:file": "NODE_ENV=jesttest JEST_MONGO=1 REACTION_LOG_LEVEL=ERROR jest --runInBand --watch",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md",
