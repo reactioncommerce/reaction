@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import createNotification from "./createNotification";
-import getShopPrefix from "./getShopPrefix";
 
 /**
  * @summary Sends a new order notification to an admin
@@ -15,11 +14,10 @@ async function sendNotificationToAdmin(collections, adminUserId, shopId) {
     throw new Error(`No account found for admin user ID ${adminUserId}`);
   }
 
-  const prefix = await getShopPrefix(collections, shopId);
   return createNotification(collections, {
     accountId: account._id,
     type: "forAdmin",
-    url: `${prefix}/dashboard/orders`
+    url: "/operator/orders"
   });
 }
 
@@ -32,11 +30,18 @@ async function sendNotificationToAdmin(collections, adminUserId, shopId) {
 export default async function sendNewOrderNotifications(collections, order) {
   // Send notification to user who made the order
   if (order.accountId) {
-    const prefix = await getShopPrefix(collections, order.shopId);
+    const shop = await collections.Shops.findOne({
+      _id: order.shopId
+    }, {
+      projection: {
+        slug: 1
+      }
+    });
+
     createNotification(collections, {
       accountId: order.accountId,
       type: "newOrder",
-      url: `${prefix}/notifications`
+      url: `${shop.slug ? `/${shop.slug}` : ""}/notifications`
     }).catch((error) => {
       Logger.error("Error in createNotification within sendNewOrderNotifications", error);
     });
