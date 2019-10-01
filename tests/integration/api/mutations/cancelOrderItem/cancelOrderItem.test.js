@@ -8,10 +8,11 @@ jest.setTimeout(300000);
 let testApp;
 let cancelOrderItem;
 let catalogItem;
+let shopId;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  await testApp.insertPrimaryShop();
+  shopId = await testApp.insertPrimaryShop();
 
   catalogItem = Factory.Catalog.makeOne({
     isDeleted: false,
@@ -54,6 +55,7 @@ test("user who placed an order can cancel an order item", async () => {
         items: [orderItem]
       })
     ],
+    shopId,
     workflow: {
       status: "new",
       workflow: ["new"]
