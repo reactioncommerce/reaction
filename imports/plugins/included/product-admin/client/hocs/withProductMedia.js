@@ -54,30 +54,6 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    handleRemoveMedia = (media) => {
-      const imageUrl = media.url({ store: "medium" });
-      const mediaId = media._id;
-
-      Alerts.alert({
-        title: "Remove Media?",
-        type: "warning",
-        showCancelButton: true,
-        imageUrl,
-        imageHeight: 150
-      }, (isConfirm) => {
-        if (isConfirm) {
-          Meteor.call("media/archive", mediaId, (error) => {
-            if (error) {
-              Alerts.toast(error.reason, "warning", {
-                autoHide: 10000
-              });
-            }
-          });
-        }
-        // show media as removed (since it will not disappear until changes are published
-      });
-    };
-
     get media() {
       return this.state.media;
     }
@@ -150,7 +126,6 @@ const wrapComponent = (Comp) => (
                 onMouseLeaveMedia={this.handleMouseLeaveMedia}
                 onMoveMedia={this.handleMoveMedia}
                 onSetMediaPriority={this.handleSetMediaPriority}
-                onRemoveMedia={this.handleRemoveMedia}
                 {...this.props}
                 media={this.media}
                 mediaGalleryHeight={height}

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+import gql from "graphql-tag";
 import PropTypes from "prop-types";
+import Logger from "/client/modules/logger";
 import { i18next } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
+import { useMutation } from "@apollo/react-hooks";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,6 +13,16 @@ import TableRow from "@material-ui/core/TableRow";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import withProductMedia from "../hocs/withProductMedia";
 import ProductMediaItem from "./ProductMediaItem";
+
+const archiveMediaRecordMutation = gql`
+  mutation ArchiveMediaRecord($input: ArchiveMediaRecordInput!) {
+    archiveMediaRecord(input: $input) {
+      mediaRecord {
+        _id
+      }
+    }
+  }
+`;
 
 /**
  * ProductMediaGallery
@@ -20,7 +33,6 @@ function ProductMediaGallery(props) {
   const {
     editable,
     media,
-    onRemoveMedia,
     onSetMediaPriority,
     productId, // internal (for now)
     shopId, // internal (for now)
@@ -30,6 +42,44 @@ function ProductMediaGallery(props) {
   const [opaqueProductId, setOpaqueProductId] = useState(null);
   const [opaqueShopId, setOpaqueShopId] = useState(null);
   const [opaqueVariantId, setOpaqueVariantId] = useState(null);
+
+  const [archiveMediaRecord] = useMutation(archiveMediaRecordMutation, { ignoreResults: true });
+
+  const handleRemoveMedia = (mediaToRemove) => {
+    const imageUrl = mediaToRemove.url({ store: "medium" });
+    const mediaRecordId = mediaToRemove._id;
+
+    Alerts.alert({
+      title: "Remove Media?",
+      type: "warning",
+      showCancelButton: true,
+      imageUrl,
+      imageHeight: 150
+    }, async (isConfirm) => {
+      if (isConfirm) {
+        const [
+          opaqueMediaRecordId
+        ] = await getOpaqueIds([
+          { namespace: "MediaRecord", id: mediaRecordId }
+        ]);
+
+        archiveMediaRecord({
+          variables: {
+            input: {
+              mediaRecordId: opaqueMediaRecordId,
+              shopId: opaqueShopId
+            }
+          },
+          onError(error) {
+            Logger.error(error);
+            Alerts.toast("Unable to remove media", "error", {
+              autoHide: 10000
+            });
+          }
+        });
+      }
+    });
+  };
 
   useEffect(() => {
     const getIDs = async () => {
@@ -83,8 +133,8 @@ function ProductMediaGallery(props) {
                 <ProductMediaItem
                   editable={editable}
                   key={mediaItem._id}
+                  onRemoveMedia={handleRemoveMedia}
                   onSetMediaPriority={onSetMediaPriority}
-                  onRemoveMedia={onRemoveMedia}
                   size="small"
                   source={mediaItem}
                 />
@@ -125,16 +175,10 @@ function ProductMediaGallery(props) {
 ProductMediaGallery.propTypes = {
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   media: PropTypes.arrayOf(PropTypes.object),
-  onRemoveMedia: PropTypes.func,
   onSetMediaPriority: PropTypes.func,
   productId: PropTypes.string,
   shopId: PropTypes.string,
   variantId: PropTypes.string
 };
-
-ProductMediaGallery.defaultProps = {
-  onRemoveMedia() {}
-};
-
 
 export default withProductMedia(ProductMediaGallery);
