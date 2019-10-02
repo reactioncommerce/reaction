@@ -1,8 +1,15 @@
 /* node-app imports */
+/* core-services */
+import registerSettingsPlugin from "./core-services/settings/index.js";
+import registerShippingPlugin from "./core-services/shipping/index.js";
+
+/* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
+import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
-import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
+import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
 
 /* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
@@ -28,19 +35,15 @@ import registerPaymentsPlugin from "/imports/plugins/core/payments/server/no-met
 import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
 import registerProductVariantPlugin from "/imports/plugins/included/product-variant/server/no-meteor/register";
 import registerProductAdminPlugin from "/imports/plugins/included/product-admin/server/no-meteor/register";
-import registerSettingsPlugin from "/imports/plugins/core/settings/server/register";
-import registerShippingPlugin from "/imports/plugins/core/shipping/server/no-meteor/register";
 import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
 import registerShopPlugin from "/imports/plugins/core/shop/server/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
 import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";
 import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
-import registerSurchargesPlugin from "/imports/plugins/included/surcharges/server/no-meteor/register";
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
 import registerTaxesPlugin from "/imports/plugins/core/taxes/server/no-meteor/register";
 import registerTaxesRatesPlugin from "/imports/plugins/included/taxes-rates/server/no-meteor/register";
-import registerTestAddressValidationPlugin from "/imports/plugins/included/address-validation-test/server/register";
 import registerUIPlugin from "/imports/plugins/core/ui/server/no-meteor/register";
 
 /**
