@@ -113,7 +113,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Catalog.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("user with orders role can add an order fulfillment group with new items", async () => {

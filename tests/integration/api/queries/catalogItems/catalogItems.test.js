@@ -24,8 +24,8 @@ beforeAll(async () => {
   query = testApp.query(CatalogProductItemsFullQuery);
   paginatedQuery = testApp.query(CatalogProductItemsFullQueryPaginated);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId, slug: `slug${_id}` })));
-  await Promise.all(mockCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.insert(mockCatalogItem)));
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insertOne({ _id, shopId: internalShopId, slug: `slug${_id}` })));
+  await Promise.all(mockCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.insertOne(mockCatalogItem)));
 });
 
 afterAll(async () => {
@@ -33,7 +33,7 @@ afterAll(async () => {
   await testApp.collections.Tags.deleteMany({ _id: { $in: internalTagIds } });
   await testApp.collections.Catalog.deleteOne({ _id: internalCatalogItemIds[0] });
   await testApp.collections.Catalog.deleteOne({ _id: internalCatalogItemIds[1] });
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("get all items for shop", async () => {

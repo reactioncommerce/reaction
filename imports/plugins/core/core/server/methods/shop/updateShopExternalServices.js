@@ -3,7 +3,6 @@ import { Reaction } from "/lib/api";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Job, Jobs } from "/imports/utils/jobs";
 
 /**
  * @name shop/updateShopExternalServices
@@ -32,26 +31,5 @@ export default function updateShopExternalServices(details) {
   }
   this.unblock();
 
-  // we should run new job on every form change, even if not all of them will
-  // change currencyRate job
-  const refreshPeriod = modifier.$set["settings.openexchangerates.refreshPeriod"];
-  const fetchCurrencyRatesJob = new Job(Jobs, "shop/fetchCurrencyRates", {})
-    .priority("normal")
-    .retry({
-      retries: 5,
-      wait: 60000,
-      backoff: "exponential" // delay by twice as long for each subsequent retry
-    })
-    .repeat({
-      // wait: refreshPeriod * 60 * 1000
-      schedule: Jobs.later.parse.text(refreshPeriod)
-    })
-    .save({
-      // Cancel any jobs of the same type,
-      // but only if this job repeats forever.
-      cancelRepeats: true
-    });
-
   Packages.update(_id, modifier);
-  return fetchCurrencyRatesJob;
 }

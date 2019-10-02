@@ -30,6 +30,12 @@ export default async function register(app) {
     functionsByType: {
       startup: [startup],
       xformCatalogProductMedia: [xformFileCollectionsProductMedia]
+    },
+    backgroundJobs: {
+      cleanup: [
+        { type: "saveImage/local", purgeAfterDays: 7 },
+        { type: "saveImage/remote", purgeAfterDays: 7 }
+      ]
     }
   });
 }

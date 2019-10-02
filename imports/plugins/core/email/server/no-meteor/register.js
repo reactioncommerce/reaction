@@ -1,14 +1,6 @@
-import { Meteor } from "meteor/meteor";
 import i18n from "./i18n";
-
-// This is temporary. Mutations still import jobs, which don't
-// work outside of a Meteor environment.
-let mutations = {};
-let startup = () => {};
-if (!Meteor.isFakeMeteor) {
-  mutations = require("./mutations").default;
-  startup = require("./startup").default;
-}
+import mutations from "./mutations";
+import startup from "./startup";
 
 /**
  * @summary Import and call this function to add this plugin to your API.

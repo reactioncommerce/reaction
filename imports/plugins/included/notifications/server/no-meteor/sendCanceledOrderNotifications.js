@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import createNotification from "./createNotification";
-import getShopPrefix from "./getShopPrefix";
 
 /**
  * @summary Given a canceled order, sends appropriate notifications to all interested parties.
@@ -11,11 +10,18 @@ import getShopPrefix from "./getShopPrefix";
 export default async function sendCanceledOrderNotifications(collections, order) {
   // Send notification to user who made the order
   if (order.accountId) {
-    const prefix = await getShopPrefix(collections, order.shopId);
+    const shop = await collections.Shops.findOne({
+      _id: order.shopId
+    }, {
+      projection: {
+        slug: 1
+      }
+    });
+
     createNotification(collections, {
       accountId: order.accountId,
       type: "orderCanceled",
-      url: `${prefix}/notifications`
+      url: `${shop.slug ? `/${shop.slug}` : ""}/notifications`
     }).catch((error) => {
       Logger.error("Error in createNotification within sendCanceledOrderNotifications", error);
     });
