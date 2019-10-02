@@ -6,7 +6,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * accounts / users collections for account verification purposes
  * @param {Object} [address] email address to create token for
  * @param {String} [email] email address to create token for
- * @returns {undefined}
+ * @returns {Object} Token object
  */
 export default function generateVerificationTokenObject({ address, email }) {
   if (!address && !email) throw new ReactionError("error-occurred", "Address or email required");
