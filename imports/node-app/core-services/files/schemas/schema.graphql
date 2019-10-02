@@ -186,14 +186,26 @@ type UpdateMediaRecordPriorityPayload {
 
 extend type Mutation {
   "Archive a MediaRecord to hide it without deleting the backing file data"
-  archiveMediaRecord(input: ArchiveMediaRecordInput!): ArchiveMediaRecordPayload!
+  archiveMediaRecord(
+    "Mutation input"
+    input: ArchiveMediaRecordInput!
+  ): ArchiveMediaRecordPayload!
 
   "Create the MediaRecord for file data after you upload it"
-  createMediaRecord(input: CreateMediaRecordInput!): CreateMediaRecordPayload!
+  createMediaRecord(
+    "Mutation input"
+    input: CreateMediaRecordInput!
+  ): CreateMediaRecordPayload!
 
   "Delete a MediaRecord to delete both the record and the backing file data"
-  deleteMediaRecord(input: DeleteMediaRecordInput!): DeleteMediaRecordPayload!
+  deleteMediaRecord(
+    "Mutation input"
+    input: DeleteMediaRecordInput!
+  ): DeleteMediaRecordPayload!
 
   "Update the priority metadata for a MediaRecord. Used for sorting product and variant media in the catalog."
-  updateMediaRecordPriority(input: UpdateMediaRecordPriorityInput!): UpdateMediaRecordPriorityPayload!
+  updateMediaRecordPriority(
+    "Mutation input"
+    input: UpdateMediaRecordPriorityInput!
+  ): UpdateMediaRecordPriorityPayload!
 }
