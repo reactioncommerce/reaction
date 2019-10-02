@@ -19,7 +19,7 @@ export default async function createMediaRecord(context, input) {
   } = context;
   const { mediaRecord, shopId } = input;
 
-  if (!userHasPermission(["createProduct", "product/admin", "product/update"], shopId)) {
+  if (!userHasPermission(["media/create"], shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

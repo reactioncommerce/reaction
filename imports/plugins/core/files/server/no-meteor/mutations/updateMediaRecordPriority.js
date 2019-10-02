@@ -15,7 +15,7 @@ export default async function updateMediaRecordPriority(context, input) {
   } = context;
   const { mediaRecordId, priority, shopId } = input;
 
-  if (!userHasPermission(["createProduct", "product/admin", "product/update"], shopId)) {
+  if (!userHasPermission(["media/update"], shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
