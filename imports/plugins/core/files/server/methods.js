@@ -11,34 +11,6 @@ import { MediaRecords } from "/lib/collections";
  */
 
 /**
- * @name media/insert
- * @method
- * @memberof Media/Methods
- * @summary Insert a new media record.
- * @param {Object} fileRecord - document from file collection upload.
- * @returns {String} - _id of the new inserted media record.
- */
-export async function insertMedia(fileRecord) {
-  check(fileRecord, Object);
-
-  const authUserId = Reaction.getUserId();
-
-  const doc = {
-    ...fileRecord,
-    metadata: {
-      ...fileRecord.metadata,
-      ownerId: authUserId,
-      workflow: "published"
-    }
-  };
-  const mediaRecordId = await MediaRecords.insert(doc);
-
-  appEvents.emit("afterMediaInsert", { createdBy: authUserId, mediaRecord: doc });
-
-  return mediaRecordId;
-}
-
-/**
  * @name media/updatePriorities
  * @method
  * @memberof Media/Methods
@@ -129,7 +101,6 @@ export function updateMediaPriority(mediaId, priority) {
 }
 
 Meteor.methods({
-  "media/insert": insertMedia,
   "media/updatePriorities": updateMediaPriorities,
   "media/updatePriority": updateMediaPriority
 });
