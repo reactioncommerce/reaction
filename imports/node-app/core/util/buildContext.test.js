@@ -1,4 +1,4 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import buildContext from "./buildContext";
 
 const fakeUser = {
@@ -21,6 +21,7 @@ test("properly mutates the context object without user", async () => {
     queries: {
       primaryShopId: jasmine.any(Function)
     },
+    requestHeaders: {},
     rootUrl: "http://localhost:3000/",
     shopId: "PRIMARY_SHOP_ID",
     shopsUserHasPermissionFor: jasmine.any(Function),
@@ -50,6 +51,7 @@ test("properly mutates the context object with user", async () => {
     queries: {
       primaryShopId: jasmine.any(Function)
     },
+    requestHeaders: {},
     shopId: "PRIMARY_SHOP_ID",
     shopsUserHasPermissionFor: jasmine.any(Function),
     user: fakeUser,

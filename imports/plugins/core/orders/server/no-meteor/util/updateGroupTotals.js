@@ -9,6 +9,7 @@ import getSurchargesForGroup from "./getSurchargesForGroup";
  *   something else relevant about the group may have changed. All shipping, tax,
  *   and surcharge values will be recalculated and invoice totals updated.
  * @param {Object} context App context
+ * @param {String} [accountId] ID of account that is placing or already did place the order
  * @param {Object} [billingAddress] The primary billing address for the order, if known
  * @param {String} [cartId] ID of the cart from which the order is being placed, if applicable
  * @param {String} currencyCode Currency code for all money values
@@ -20,6 +21,7 @@ import getSurchargesForGroup from "./getSurchargesForGroup";
  * @returns {Promise<Object>} Object with surcharge and tax info on it
  */
 export default async function updateGroupTotals(context, {
+  accountId,
   billingAddress = null,
   cartId = null,
   currencyCode,
@@ -31,6 +33,7 @@ export default async function updateGroupTotals(context, {
 }) {
   // Apply shipment method
   await addShipmentMethodToGroup(context, {
+    accountId,
     billingAddress,
     cartId,
     currencyCode,
@@ -44,6 +47,7 @@ export default async function updateGroupTotals(context, {
     groupSurcharges,
     groupSurchargeTotal
   } = await getSurchargesForGroup(context, {
+    accountId,
     billingAddress,
     cartId,
     currencyCode,
@@ -55,6 +59,7 @@ export default async function updateGroupTotals(context, {
 
   // Calculate and set taxes. Mutates group object in addition to returning the totals.
   const { taxTotal, taxableAmount } = await addTaxesToGroup(context, {
+    accountId,
     billingAddress,
     cartId,
     currencyCode,

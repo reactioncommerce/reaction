@@ -86,9 +86,9 @@ class TagForm extends Component {
   }
 
   static defaultProps = {
-    onCancel() {},
-    onCreate() {},
-    onUpdate() {},
+    onCancel() { },
+    onCreate() { },
+    onUpdate() { },
     tag: {}
   }
 
@@ -311,7 +311,6 @@ class TagForm extends Component {
         <HeroUploadButton>
           <Button
             variant="outlined"
-            actionType="secondary"
             color="secondary"
             size="small"
             onClick={this.handleDropzoneClick}
@@ -585,7 +584,7 @@ class TagForm extends Component {
                   }
 
                   <CardActions disableSpacing>
-                    <Button color="secondary" onClick={this.handleSubmitForm}>
+                    <Button variant="contained" color="primary" onClick={this.handleSubmitForm}>
                       {i18next.t("admin.tags.form.save")}
                     </Button>
                   </CardActions>

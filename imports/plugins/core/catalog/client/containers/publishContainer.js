@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { i18next } from "/client/api";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
 import PublishControls from "../components/publishControls";
 
@@ -10,22 +9,26 @@ import PublishControls from "../components/publishControls";
  * PublishContainer is a container component connected to Meteor data source.
  */
 class PublishContainer extends Component {
-  publishToCatalog(collection, documentIds) {
-    Meteor.call(`catalog/publish/${collection}`, documentIds, (error, result) => {
-      if (result) {
-        Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
-      } else if (error) {
-        Alerts.toast(error.message, "error");
+  async publishToCatalog(productIds, mutation) {
+    // we need to encode the productIds here to pass them to GraphQL
+    const productIdObjects = productIds.map((productId) => (
+      { namespace: "Product", id: productId }
+    ));
+    const opaqueProductIds = await getOpaqueIds(productIdObjects);
+
+    await mutation({
+      variables: {
+        productIds: opaqueProductIds
       }
     });
   }
 
-  handlePublishClick = () => {
+  handlePublishClick = (mutation) => {
     const productIds = this.props.documents
       .filter((doc) => doc.type === "simple")
       .map((doc) => doc._id);
 
-    this.publishToCatalog("products", productIds);
+    this.publishToCatalog(productIds, mutation);
   }
 
   handlePublishActions = (event, action) => {

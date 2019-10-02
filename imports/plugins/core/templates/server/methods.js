@@ -3,7 +3,7 @@ import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Templates } from "/lib/collections";
-import { EmailTemplates } from "./no-meteor/simpleSchemas";
+import { EmailTemplates } from "./simpleSchemas";
 
 /**
  * @file Methods for Templates. Run these methods using `Meteor.call()`.

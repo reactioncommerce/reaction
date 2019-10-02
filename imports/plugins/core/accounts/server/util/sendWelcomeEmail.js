@@ -64,12 +64,14 @@ export default function sendWelcomeEmail(shopId, userId, token) {
   dataForEmail.verificationUrl = MeteorAccounts.urls.verifyEmail(token);
 
   const userEmail = account.emails[0].address;
+  const language = account && account.profile && account.profile.language;
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(null));
   Promise.await(context.mutations.sendEmail(context, {
     data: dataForEmail,
     fromShop: shop,
     templateName: "accounts/sendWelcomeEmail",
+    language,
     to: userEmail
   }));
 

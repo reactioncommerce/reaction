@@ -1,7 +1,7 @@
 import nodeContentRenderer from "./SortableNodeContentRenderer";
 import treeNodeRenderer from "./SortableTreeNodeRenderer";
 
-module.exports = {
+export default {
   nodeContentRenderer,
   treeNodeRenderer,
   scaffoldBlockPxWidth: 65,

@@ -1,13 +1,9 @@
-import { Meteor } from "meteor/meteor";
+import i18n from "./i18n";
+import mutations from "./mutations";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
-
-// This is temporary. Mutations still import jobs, which don't
-// work outside of a Meteor environment.
-let mutations = {};
-if (!Meteor.isFakeMeteor) {
-  mutations = require("./mutations").default;
-}
+import startup from "./startup";
+import updateSitemapTaskForShop from "./jobs/updateSitemapTaskForShop";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -19,6 +15,7 @@ export default async function register(app) {
     label: "Sitemap Generator",
     name: "reaction-sitemap-generator",
     icon: "fa fa-vine",
+    i18n,
     collections: {
       Sitemaps: {
         name: "Sitemaps",
@@ -27,10 +24,30 @@ export default async function register(app) {
         ]
       }
     },
+    functionsByType: {
+      startup: [startup]
+    },
+    backgroundJobs: {
+      cleanup: [
+        { type: "sitemaps/generate", purgeAfterDays: 3 }
+      ]
+    },
     graphQL: {
       resolvers,
       schemas
     },
-    mutations
+    mutations,
+    shopSettingsConfig: {
+      sitemapRefreshPeriod: {
+        afterUpdate(context, { shopId }) {
+          updateSitemapTaskForShop(context, shopId);
+        },
+        defaultValue: "every 24 hours",
+        rolesThatCanEdit: ["admin"],
+        simpleSchema: {
+          type: String
+        }
+      }
+    }
   });
 }

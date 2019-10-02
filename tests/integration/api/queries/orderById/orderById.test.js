@@ -2,6 +2,8 @@ import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
 import { getAnonymousAccessToken } from "/imports/plugins/core/orders/server/no-meteor/util/anonymousToken";
 
+jest.setTimeout(300000);
+
 const mockShopId = "integ-test-shop-id";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDppbnRlZy10ZXN0LXNob3AtaWQ="; // reaction/order:integ-test-shop-id
 const shopName = "Test Shop";
@@ -63,7 +65,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await testApp.clearLoggedInUser();
-  await testApp.collections.Orders.remove({});
+  await testApp.collections.Orders.deleteMany({});
 });
 
 afterAll(() => testApp.stop());

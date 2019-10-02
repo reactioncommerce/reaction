@@ -309,23 +309,6 @@ export default {
   },
 
   /**
-   * @name getPrimaryShopCurrency
-   * @method
-   * @memberof Core
-   * @summary Get primary shop currency string
-   * @returns {String} Get shop currency or "USD"
-   */
-  getPrimaryShopCurrency() {
-    const primaryShop = this.getPrimaryShop();
-
-    if (primaryShop && primaryShop.currency) {
-      return primaryShop.currency;
-    }
-
-    return "USD";
-  },
-
-  /**
    * @summary **DEPRECATED** This method has been deprecated in favor of using getShopId
    * and getPrimaryShopId. To be removed.
    * @deprecated
@@ -526,28 +509,6 @@ export default {
       return shop.name;
     }
     return "";
-  },
-
-  /**
-   * @name getShopPrefix
-   * @method
-   * @memberof Core
-   * @summary Get shop prefix for URL
-   * @returns {String} String in the format of "/shop/slug"
-   */
-  getShopPrefix() {
-    const shopName = this.getShopName();
-    const lowerCaseShopName = shopName.toLowerCase();
-    const slug = this.getSlug(lowerCaseShopName);
-    const marketplace = Packages.findOne({
-      name: "reaction-marketplace",
-      shopId: this.getPrimaryShopId()
-    });
-
-    if (marketplace && marketplace.settings && marketplace.settings.public) {
-      return `${marketplace.settings.public.shopPrefix}/${slug}`;
-    }
-    return `/${slug}`;
   },
 
   /**

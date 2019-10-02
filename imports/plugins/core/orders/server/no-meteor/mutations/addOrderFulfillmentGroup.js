@@ -59,7 +59,7 @@ export default async function addOrderFulfillmentGroup(context, input) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  const { billingAddress, cartId, currencyCode } = order;
+  const { accountId, billingAddress, cartId, currencyCode } = order;
 
   // If there are moveItemIds, find and pull them from their current groups
   let updatedGroups;
@@ -94,6 +94,7 @@ export default async function addOrderFulfillmentGroup(context, input) {
 
       // Update group shipping, tax, totals, etc.
       const { groupSurcharges } = await updateGroupTotals(context, {
+        accountId,
         billingAddress,
         cartId,
         currencyCode,
@@ -124,6 +125,7 @@ export default async function addOrderFulfillmentGroup(context, input) {
 
   // Now build the new group we are adding
   const { group: newGroup, groupSurcharges } = await buildOrderFulfillmentGroupFromInput(context, {
+    accountId,
     // If we are moving any items from existing groups to this new group, push those into
     // the newGroup items array.
     additionalItems: movingItems,

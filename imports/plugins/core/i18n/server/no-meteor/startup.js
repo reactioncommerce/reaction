@@ -1,5 +1,4 @@
-import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
+import { addTranslationRoutes } from "./translations";
 
 /**
  * @summary Called on startup
@@ -8,31 +7,7 @@ import Random from "@reactioncommerce/random";
  * @returns {undefined}
  */
 export default async function startup(context) {
-  const {
-    appEvents,
-    collections: {
-      Assets,
-      Translations
-    }
-  } = context;
+  const { app } = context;
 
-  appEvents.on("afterShopCreate", async ({ shop }) => {
-    const { _id: shopId } = shop;
-
-    // Insert Translations documents for this shop
-    const assets = await Assets.find({ type: "i18n" }).toArray();
-    const translations = assets.map((assetDoc) => {
-      const assetContent = JSON.parse(assetDoc.content);
-
-      return {
-        _id: Random.id(),
-        ...assetContent[0],
-        shopId
-      };
-    });
-
-    await Translations.insertMany(translations);
-
-    Logger.debug(`Created translation documents for shop ${shopId}`);
-  });
+  if (app.expressApp) addTranslationRoutes(app.expressApp);
 }

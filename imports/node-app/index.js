@@ -1,22 +1,21 @@
 import express from "express";
 import Logger from "@reactioncommerce/logger";
+import packageJson from "/package.json";
 import ReactionNodeApp from "./core/ReactionNodeApp";
 import registerPlugins from "./registerPlugins";
 import "./extendSchemas";
 
-const { MONGO_URL, PORT = 3030, ROOT_URL } = process.env;
+const { MONGO_URL, NODE_ENV, PORT = 3030, ROOT_URL } = process.env;
 if (!MONGO_URL) throw new Error("You must set MONGO_URL");
 if (!ROOT_URL) throw new Error("You must set ROOT_URL");
 
 const app = new ReactionNodeApp({
-  debug: true,
+  debug: NODE_ENV !== "production",
   context: {
+    appVersion: packageJson.version,
     mutations: {},
     queries: {},
     rootUrl: ROOT_URL
-  },
-  graphQL: {
-    graphiql: true
   }
 });
 

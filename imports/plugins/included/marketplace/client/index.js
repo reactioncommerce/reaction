@@ -22,7 +22,5 @@ import "./templates/settings/merchant-settings.js";
 import "./templates/settings/stripe.html";
 import "./templates/settings/stripe.js";
 
-export { default as InviteOwner } from "./components/inviteOwner";
-
 export * from "./components";
 export * from "./containers";

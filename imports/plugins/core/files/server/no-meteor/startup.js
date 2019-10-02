@@ -1,15 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import Logger from "@reactioncommerce/logger";
 import setUpFileCollections from "./setUpFileCollections";
-
-// This is temporary. createSaveImageJob still imports jobs, which doesn't
-// work outside of a Meteor environment.
-let saveRemoteImages = () => {};
-let saveTempImages = () => {};
-if (!Meteor.isFakeMeteor) {
-  saveRemoteImages = require("./jobs/saveRemoteImages").default;
-  saveTempImages = require("./jobs/saveTempImages").default;
-}
+import saveRemoteImages from "./jobs/saveRemoteImages";
+import saveTempImages from "./jobs/saveTempImages";
 
 /**
  * @summary Called on startup
@@ -30,14 +22,15 @@ export default function startup(context) {
     tempStore
   } = setUpFileCollections({
     absoluteUrlPrefix: rootUrl,
+    context,
     db: app.db,
     Logger,
     MediaRecords,
     mongodb: app.mongodb
   });
 
-  saveRemoteImages(remoteUrlWorker);
-  saveTempImages(fileWorker);
+  saveRemoteImages(context, remoteUrlWorker);
+  saveTempImages(context, fileWorker);
 
   // Make the Media collection available to resolvers
   collections.Media = Media;

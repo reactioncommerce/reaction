@@ -1,0 +1,243 @@
+extend type Query {
+  """
+  Get a list of errors and suggested properly formatted addresses for an address. If no address
+  validation service is active for the shop, this will return as if the address is valid even
+  though no check actually occurred.
+  """
+  addressValidation(
+    "Address to validate"
+    address: AddressInput!,
+
+    "Shop to use for determining what validation service to use"
+    shopId: ID!
+  ): AddressValidationResults!
+
+  "Get a full list of all registered address validation services"
+  addressValidationServices: [AddressValidationService]!
+}
+
+"A single registered address validation service"
+type AddressValidationService {
+  "Human-readable name to show operators"
+  displayName: String!
+
+  "Unique name to serve as a key identifying this service"
+  name: String!
+
+  "An optional list of all country codes that this address service supports. Null means all countries."
+  supportedCountryCodes: [String]
+}
+
+"A list of the possible types of `Address`"
+enum AddressType {
+  "Address can be used for payment transactions and invoicing"
+  billing
+
+  "Address can be used as a mailing address for sending physical items"
+  shipping
+}
+
+"The details of an `Address` to be created or updated"
+input AddressInput {
+  "The street address / first line"
+  address1: String!
+
+  "Optional second line"
+  address2: String
+
+  """
+  Optionally, a name for this address (e.g. "Home") to easily identify it in the future
+  """
+  addressName: String
+
+  "City"
+  city: String!
+
+  "Optional company name, if it's a business address"
+  company: String
+
+  "Country"
+  country: String!
+
+  """
+  The first name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  firstName: String
+
+  "The full name of a person at this address"
+  fullName: String!
+
+  "Is this the default address for billing purposes?"
+  isBillingDefault: Boolean
+
+  "Is this a commercial address?"
+  isCommercial: Boolean
+
+  "Is this the default address to use when selecting a shipping address at checkout?"
+  isShippingDefault: Boolean
+
+  """
+  The last name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  lastName: String
+
+  "Arbitrary additional metadata about this address"
+  metafields: [MetafieldInput]
+
+  "A phone number for someone at this address"
+  phone: String!
+
+  "Postal code"
+  postal: String!
+
+  "Region. For example, a U.S. state"
+  region: String!
+}
+
+"Represents a physical or mailing address somewhere on Earth"
+type Address {
+  "The address ID"
+  _id: ID
+
+  "The street address / first line"
+  address1: String!
+
+  "Optional second line"
+  address2: String
+
+  "City"
+  city: String!
+
+  "Optional company name, if it's a business address"
+  company: String
+
+  "Country"
+  country: String!
+
+  """
+  The first name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  firstName: String
+
+  "The full name of a person at this address"
+  fullName: String!
+
+  "Is this the default address for billing purposes?"
+  isBillingDefault: Boolean
+
+  "Is this a commercial address?"
+  isCommercial: Boolean!
+
+  "Is this the default address to use when selecting a shipping address at checkout?"
+  isShippingDefault: Boolean
+
+  """
+  The last name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  lastName: String
+
+  "Arbitrary additional metadata about this address"
+  metafields: [Metafield]
+
+  "A phone number for someone at this address"
+  phone: String!
+
+  "Postal code"
+  postal: String!
+
+  "Region. For example, a U.S. state"
+  region: String!
+}
+
+"""
+Wraps a list of `Addresses`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type AddressConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [AddressEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Address]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+"A connection edge in which each node is an `Address` object"
+type AddressEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The address"
+  node: Address
+}
+
+"Details about an error that was the result of validating an address that is invalid"
+type AddressValidationError {
+  "A longer, detailed error message suitable for showing in the user interface"
+  details: String
+
+  "An identifier of the source of this error. These are not currently standardized. As long as your client understands it, any string is fine."
+  source: String
+
+  "A short error message suitable for showing in the user interface"
+  summary: String!
+
+  "The error type. These are not currently standardized. As long as your client understands it, any string is fine."
+  type: String!
+}
+
+"An address suggestion returned from an address validation service"
+type SuggestedAddress {
+  "The street address / first line"
+  address1: String!
+
+  "Optional second line"
+  address2: String
+
+  "City"
+  city: String!
+
+  "Country"
+  country: String!
+
+  "Postal code"
+  postal: String!
+
+  "Region. For example, a U.S. state"
+  region: String!
+}
+
+"The response from `Query.addressValidation`"
+type AddressValidationResults {
+  """
+  A list of suggested addresses. If the address is valid as is OR the address input is invalid OR
+  the shop is not configured to validate addresses, then this will be empty.
+  """
+  suggestedAddresses: [SuggestedAddress]!
+
+  """
+  This may have information about the ways in which the provided address input is incomplete or invalid.
+  Show these errors in the address review user interface.
+  """
+  validationErrors: [AddressValidationError]!
+}

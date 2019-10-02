@@ -176,25 +176,48 @@ type TagProductConnection {
 extend type Query {
   "Returns a list of product in a tag"
   productsByTagId(
-    shopId: ID!
-    tagId: ID!
-    after: ConnectionCursor
-    before: ConnectionCursor
-    first: ConnectionLimitInt
+    "Shop that owns the tag"
+    shopId: ID!,
+
+    "The tag ID"
+    tagId: ID!,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt
   ): TagProductConnection!
 }
 
 extend type Mutation {
   "Adds a new tag"
-  addTag(input: AddTagInput!): AddTagPayload!
+  addTag(
+    "Mutation input"
+    input: AddTagInput!
+  ): AddTagPayload!
 
   "Removes an existing tag"
-  removeTag(input: RemoveTagInput!): RemoveTagPayload!
+  removeTag(
+    "Mutation input"
+    input: RemoveTagInput!
+  ): RemoveTagPayload!
 
   "Add an image to the tag"
-  setTagHeroMedia(input: SetTagHeroMediaInput!): SetTagHeroMediaPayload!
+  setTagHeroMedia(
+    "Mutation input"
+    input: SetTagHeroMediaInput!
+  ): SetTagHeroMediaPayload!
 
   "Updates an existing tag"
-  updateTag(input: UpdateTagInput!): UpdateTagPayload!
+  updateTag(
+    "Mutation input"
+    input: UpdateTagInput!
+  ): UpdateTagPayload!
 }

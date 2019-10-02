@@ -1,3 +1,4 @@
+import i18n from "./i18n";
 import mutations from "./mutations";
 import queries from "./queries";
 import resolvers from "./resolvers";
@@ -19,11 +20,14 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Simple Inventory",
     name: "reaction-simple-inventory",
+    i18n,
     collections: {
       SimpleInventory: {
         name: "SimpleInventory",
         indexes: [
-          [{ "productConfiguration.productVariantId": 1, "shopId": 1 }, { unique: true }]
+          [{ "productConfiguration.productVariantId": 1, "shopId": 1 }, { unique: true }],
+          // Use _id as second sort to force full stability
+          [{ updatedAt: 1, _id: 1 }]
         ]
       }
     },

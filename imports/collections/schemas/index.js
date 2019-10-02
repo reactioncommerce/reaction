@@ -36,5 +36,4 @@ export * from "./groups";
 export * from "./social";
 export * from "./tags";
 export * from "./templates";
-export * from "./translations";
 export * from "./workflow";

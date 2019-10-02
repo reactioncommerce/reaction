@@ -3,29 +3,41 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Meteor } from "meteor/meteor";
 import { i18next, Reaction } from "/client/api";
 import { Accounts } from "/lib/collections";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import UpdateEmail from "../components/updateEmail";
 
 const handlers = {
-  handleUpdateEmail({ newEmail, oldEmail }, callback) {
+  handleUpdateEmail({ accountId, newEmail, mutation, oldEmail }, callback) {
     Meteor.call("accounts/validation/email", newEmail, false, (result, error) => {
       if (error.error) {
         Alerts.toast(i18next.t("accountsUI.error.invalidEmail", { err: error.reason }), "error");
         return callback();
       }
 
-      Meteor.call("accounts/updateEmailAddress", newEmail, (err) => {
+      Meteor.call("accounts/updateEmailAddress", newEmail, async (err) => {
         if (err) {
           Alerts.toast(i18next.t("accountsUI.error.emailAlreadyExists", { err: err.message }), "error");
           return callback();
         }
 
-        // Email changed, remove original email
-        Meteor.call("accounts/removeEmailAddress", oldEmail, () => {
-          Alerts.toast(i18next.t("accountsUI.info.emailUpdated"), "success");
-          return callback();
+        const { data, error: mutationError } = await mutation({
+          variables: {
+            input: {
+              accountId,
+              email: oldEmail
+            }
+          }
         });
 
-        return null;
+        if (data) {
+          Alerts.toast(i18next.t("accountsUI.info.emailUpdated"), "success");
+        }
+
+        if (mutationError) {
+          Alerts.toast(i18next.t("accountsUI.error.emailAlreadyExists", { err: mutationError.message }), "error");
+        }
+
+        return callback();
       });
 
       return null;
@@ -33,10 +45,11 @@ const handlers = {
   }
 };
 
-const composer = (props, onData) => {
-  const user = Accounts.findOne(Reaction.getUserId());
-  const email = user.emails.length > 0 ? user.emails[0].address : "";
-  onData(null, { email });
+const composer = async (props, onData) => {
+  const account = Accounts.findOne(Reaction.getUserId());
+  const [opaqueAccountId] = await getOpaqueIds([{ namespace: "Account", id: account._id }]);
+  const email = account.emails.length > 0 ? account.emails[0].address : "";
+  onData(null, { accountId: opaqueAccountId, email });
 };
 
 registerComponent("UpdateEmail", UpdateEmail, [

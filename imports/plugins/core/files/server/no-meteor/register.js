@@ -38,6 +38,12 @@ export default async function register(app) {
     graphQL: {
       resolvers,
       schemas
+    },
+    backgroundJobs: {
+      cleanup: [
+        { type: "saveImage/local", purgeAfterDays: 7 },
+        { type: "saveImage/remote", purgeAfterDays: 7 }
+      ]
     }
   });
 }

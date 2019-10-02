@@ -1,0 +1,37 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-stripe": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe ödemeleri"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Bir şerit API İstemci Kimliği yok mu?",
+          "stripeSettingsGetItHere": "Burada Get it",
+          "stripeClientIdWarning": "Müşteri Kimliği, KAMU alanıdır. Lütfen Stripe Connect ayarları sayfasındaki client_id dosyasını kullandığınızdan emin olun.",
+          "stripeClientIdLink": "Şerit Bağlantı Ayarları"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Bu uygulama için Şerit Bağlantı etkinleştirilmemiştir. Lütfen yönetici ile iletişime geçin.",
+          "shopEmailNotConfigured": "Lütfen dükkanınızın e-postasını önce yapılandırın.",
+          "shopAddressNotConfigured": "Lütfen önce alışveriş adresinizi yapılandırın",
+          "applicationFeeDescription": "Bu sayı, pazarın (bu mağazanın) bu pazar için bir tüccar dükkanı tarafından satılan her öğenin aldığı bir yüzdelik ücreti temsil etmektedir. Bu ücret sadece Stripe Connect'in hem pazarda hem de tüccar dükkanlarında kurulması ve etkinleştirilmesi durumunda ve Şerit ödeme yapmak için kullanılan ödeme sağlayıcısı ise geçerlidir.",
+          "moreDetails": "Daha fazla bilgi için bkz.",
+          "docsLink": "Stripe Connect Dokümanlar"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Otomatik birkaç saniye içinde yönlendirecektir veya buraya tıklayın."
+        }
+      }
+    }
+  }
+}]

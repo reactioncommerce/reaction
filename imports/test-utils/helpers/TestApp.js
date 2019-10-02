@@ -1,4 +1,3 @@
-import MongoDBMemoryServer from "mongodb-memory-server";
 import { gql } from "apollo-server";
 import { createTestClient } from "apollo-server-testing";
 import Logger from "@reactioncommerce/logger";
@@ -56,7 +55,8 @@ class TestApp {
       functionsByType,
       graphQL: {
         schemas: extraSchemas
-      }
+      },
+      shouldInitReplicaSet: true
     });
 
     this.collections = this.reactionNodeApp.collections;
@@ -167,16 +167,6 @@ class TestApp {
     return this.reactionNodeApp.runServiceStartup();
   }
 
-  async startMongo() {
-    this.mongoServer = new MongoDBMemoryServer();
-    const mongoUrl = await this.mongoServer.getConnectionString();
-    return mongoUrl;
-  }
-
-  stopMongo() {
-    this.mongoServer.stop();
-  }
-
   async start() {
     try {
       await registerPlugins(this.reactionNodeApp);
@@ -186,7 +176,12 @@ class TestApp {
       throw error;
     }
 
-    const mongoUrl = await this.startMongo();
+    // These globals are made available by @shelf/jest-mongodb package
+    const dbName = global.__MONGO_DB_NAME__;
+    let mongoUrl = global.__MONGO_URI__;
+
+    // Change the default DB name to a unique one so that each test file is sandboxed
+    mongoUrl = mongoUrl.replace(dbName, Random.id());
 
     // We intentionally do not pass `port` option, which prevents
     // it from starting the actual server. We will use
@@ -203,7 +198,6 @@ class TestApp {
 
   async stop() {
     await this.reactionNodeApp.stop();
-    this.stopMongo();
   }
 }
 

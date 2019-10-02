@@ -1,7 +1,6 @@
 import { Security } from "meteor/ongoworks:security";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
-import { Jobs } from "/imports/utils/jobs";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 const {
@@ -14,8 +13,7 @@ const {
   Shipping,
   Shops,
   Tags,
-  Templates,
-  Translations
+  Templates
 } = Collections;
 
 /**
@@ -118,7 +116,7 @@ export default function () {
    */
 
   Security.permit(["insert", "update", "remove"])
-    .collections([Accounts, Products, Tags, Translations, Shipping, Orders, Packages, Templates, Jobs])
+    .collections([Accounts, Products, Tags, Shipping, Orders, Packages, Templates])
     .ifHasRoleForActiveShop({ role: "admin" })
     .ifShopIdMatches()
     .exceptProps(["shopId"])

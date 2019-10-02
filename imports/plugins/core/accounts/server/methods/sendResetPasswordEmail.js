@@ -1,11 +1,11 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import generateVerificationTokenObject from "/imports/plugins/core/accounts/server/no-meteor/util/generateVerificationTokenObject";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -21,9 +21,10 @@ Accounts.urls.resetPassword = function reset(token) {
  * @param {String} [optionalEmail] Address to send the email to.
  *                 This address must be in the user's `emails` list.
  *                 Defaults to the first email in the list.
+ * @param {String} language - user prefered language i18n
  * @returns {Job} - returns a sendEmail Job instance
  */
-async function sendResetEmail(userId, optionalEmail) {
+async function sendResetEmail(userId, optionalEmail, language) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
@@ -46,9 +47,7 @@ async function sendResetEmail(userId, optionalEmail) {
   }
 
   // Create token for password reset
-  const token = Random.secret();
-  const when = new Date();
-  const tokenObj = { token, email, when };
+  const tokenObj = generateVerificationTokenObject({ email });
 
   Meteor.users.update(userId, {
     $set: {
@@ -95,7 +94,7 @@ async function sendResetEmail(userId, optionalEmail) {
       }
     },
     // Account Data
-    passwordResetUrl: Accounts.urls.resetPassword(token),
+    passwordResetUrl: Accounts.urls.resetPassword(tokenObj.token),
     user
   };
 
@@ -104,6 +103,7 @@ async function sendResetEmail(userId, optionalEmail) {
     data: dataForEmail,
     fromShop: shop,
     templateName: "accounts/resetPassword",
+    language,
     to: email
   }));
 }
@@ -130,9 +130,11 @@ export default function sendResetPasswordEmail(options) {
     throw new ReactionError("not-found", "User not found");
   }
 
+  const language = user.profile && user.profile.language;
+
   const emails = _.map(user.emails || [], "address");
 
   const caseInsensitiveEmail = _.find(emails, (email) => email.toLowerCase() === options.email.toLowerCase());
 
-  sendResetEmail(user._id, caseInsensitiveEmail);
+  sendResetEmail(user._id, caseInsensitiveEmail, language);
 }

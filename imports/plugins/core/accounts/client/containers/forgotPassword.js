@@ -2,8 +2,6 @@ import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
-import { i18next } from "/client/api";
 import ForgotPassword from "../components/forgotPassword";
 import { LoginFormValidation } from "/lib/api";
 
@@ -27,7 +25,7 @@ class ForgotPasswordContainer extends Component {
     this.hasError = this.hasError.bind(this);
   }
 
-  handleFormSubmit = (event, email) => {
+  handleFormSubmit = async (event, email, mutation) => {
     event.preventDefault();
 
     this.setState({
@@ -55,25 +53,11 @@ class ForgotPasswordContainer extends Component {
       return;
     }
 
-    Meteor.call("accounts/sendResetPasswordEmail", { email: emailAddress }, (error) => {
-      // Show some message confirming result
-      if (error) {
-        this.setState({
-          isLoading: false,
-          formMessages: {
-            alerts: [error]
-          }
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          isDisabled: true,
-          formMessages: {
-            info: [{
-              reason: i18next.t("accountsUI.info.passwordResetSend") || "Password reset mail sent."
-            }]
-          }
-        });
+    await mutation({
+      variables: {
+        input: {
+          email: emailAddress
+        }
       }
     });
   }

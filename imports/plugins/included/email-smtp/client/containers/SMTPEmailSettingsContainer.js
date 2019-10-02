@@ -1,4 +1,5 @@
 import { compose, withProps } from "recompose";
+import { withApollo } from "react-apollo";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
@@ -25,10 +26,12 @@ const handlers = { saveSettings: actions.settings.saveSettings };
 
 registerComponent("SMTPEmailSettings", SMTPEmailSettings, [
   composeWithTracker(composer),
-  withProps(handlers)
+  withProps(handlers),
+  withApollo
 ]);
 
 export default compose(
   composeWithTracker(composer),
-  withProps(handlers)
+  withProps(handlers),
+  withApollo
 )(SMTPEmailSettings);

@@ -1,35 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
 import { compose } from "recompose";
+import { useMutation } from "@apollo/react-hooks";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { withRouter } from "react-router";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Catalog, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { Reaction, formatPriceString, i18next } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 import { getVariantIds } from "/lib/selectors/variants";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 
-/**
- * Create a new option from a supplied variant
- * @param {Object} variant Variant object
- * @returns {Promise} A promise that resolves to and object of shape `{ newVariantId }`
- */
-export function handleCreateOption(variant) {
-  return new Promise((resolve, reject) => {
-    Meteor.call("products/createVariant", variant._id, (error, result) => {
-      if (error) {
-        Alerts.alert({
-          text: i18next.t("productDetailEdit.addVariantFail", { title: variant.title }),
-          confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-        });
-        reject(error);
-      }
-      resolve({ newVariantId: result });
-    });
-  });
+const CREATE_VARIANT = gql`
+mutation createProductVariant($input: CreateProductVariantInput!) {
+  createProductVariant(input: $input) {
+    variant {
+      _id
+    }
+  }
 }
+`;
 
 const wrapComponent = (Comp) => {
   /**
@@ -37,10 +29,10 @@ const wrapComponent = (Comp) => {
    * @param {Object} props Component props
    * @returns {Node} React component
    */
-  function withVariant(props) {
+  function WithVariant(props) {
+    const [createProductVariant] = useMutation(CREATE_VARIANT);
+
     const {
-      history,
-      productId,
       parentVariant,
       variant
     } = props;
@@ -50,23 +42,35 @@ const wrapComponent = (Comp) => {
     return (
       <Comp
         onCreateOption={async () => {
-          const { newVariantId } = await handleCreateOption(variantOrParent);
-          history.push(`/operator/products/${productId}/${variantOrParent._id}/${newVariantId}`);
-          window && window.scrollTo(0, 0);
+          const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+            { namespace: "Product", id: variantOrParent._id },
+            { namespace: "Shop", id: variantOrParent.shopId }
+          ]);
+
+          try {
+            await createProductVariant({ variables: { input: { productId: opaqueProductId, shopId: opaqueShopId } } });
+            // Because of the way GraphQL and meteor interact when creating a new variant,
+            // we can't immediately redirect a user to the new variant as GraphQL is too quick
+            // and the meteor subscription isn't yet updated. Once this page has been updated
+            // to use GraphQL for data fetching, add a redirect to the new variant when it's created
+            Alerts.toast(i18next.t("productDetailEdit.addVariant"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.addVariantFail", { err: error }), "error");
+            throw new ReactionError("server-error", "Unable to create variant");
+          }
         }}
         {...props}
       />
     );
   }
 
-  withVariant.propTypes = {
-    history: PropTypes.object,
+  WithVariant.propTypes = {
     parentVariant: PropTypes.object,
     productId: PropTypes.string,
     variant: PropTypes.object
   };
 
-  return withVariant;
+  return WithVariant;
 };
 
 /**
@@ -183,7 +187,6 @@ function composer(props, onData) {
 }
 
 export default compose(
-  withRouter,
   composeWithTracker(composer),
   wrapComponent
 );

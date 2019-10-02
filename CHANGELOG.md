@@ -1,3 +1,101 @@
+# v2.4.0
+
+Reaction v2.4.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.3.0.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.4.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### Translations have been moved out of Meteor
+
+i18n translations have been moved outside of the Meteor context. This provides a standard route, `/locales/resources.json`, where all translations live, and allows for real-time updates to translations without needing to flush the cache.
+
+### Meteor app-tests have
+
+As part of our move away from Meteor, all Meteor app-tests have been removed. This speeds up both local testing, and testing on CI.
+
+## Feature
+
+- feat: Translations without Meteor ([#5514](http://github.com/reactioncommerce/reaction/pull/5514))
+
+## Fixes
+
+- fix: restore Add/Remove menu item in products page ([#5564](http://github.com/reactioncommerce/reaction/pull/5564))
+- fix: use catalyst button for mediauploader ([#5563](http://github.com/reactioncommerce/reaction/pull/5563))
+- fix: restore loadTranslations fn ([#5546](http://github.com/reactioncommerce/reaction/pull/5546))
+
+## Refactors
+
+- refactor: remove Reaction.Email ([#5559](http://github.com/reactioncommerce/reaction/pull/5559))
+- refactor: remove all code releated to inviting a shop owner ([#5553](http://github.com/reactioncommerce/reaction/pull/5553))
+- refactor: Fix proptype warning with ReactSortableTree ([#5552](http://github.com/reactioncommerce/reaction/pull/5552))
+- refactor: remove `catalog/publish/products` meteor method, use `publi#5541hProductsToCatalog` GQL Mutation instead ([#](http:#5541//github.com/reactioncommerce/reaction/pull/))
+
+## Tests
+
+- tests: Faster Jest integration tests ([#5549](http://github.com/reactioncommerce/reaction/pull/5549))
+
+## Docs
+
+- docs: Fix test command in README.md ([#5565](http://github.com/reactioncommerce/reaction/pull/5565))
+- docs: Add missing GraphQL argument descriptions ([#5547](http://github.com/reactioncommerce/reaction/pull/5547))
+
+## Chores
+
+- chore: remove meteor app-tests ([#5560](http://github.com/reactioncommerce/reaction/pull/5560))
+- chore: fix various prop type validation errors ([#5550](http://github.com/reactioncommerce/reaction/pull/5550))
+
+# v2.3.0
+
+Reaction v2.3.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.2.1.
+
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.3.0` of `example-storefront` and `reaction-hydra`.
+
+## Notable changes
+
+### Bulk add and remove Tags from Products
+
+Reaction Admin users can now add and remove tags from products in bulk. After selecting multiple products in the product table or filtering products with a CSV file, users can specify tags they'd like to add or remove from those products.
+
+This feature uses several new components from the [**Catalyst Design System**](https://catalyst.reactioncommerce.com/), including [**SplitButton**](https://catalyst.reactioncommerce.com/#/Components/Actions/SplitButton), [**Chip**](https://catalyst.reactioncommerce.com/#/Components/Content/Chip) and [**MultiSelect**](https://catalyst.reactioncommerce.com/#/Components/Inputs/Select). Several dependencies, including [`react-select`](https://github.com/JedWatson/react-select), [`react-dropzone`](https://github.com/react-dropzone/react-dropzone) and [`material-ui/core`](https://material-ui.com/) were upgraded to their latest versions.
+
+### Image uploading without Meteor
+
+`file-collections` has been updated to its latest version, which supports uploading without Meteor. All related code has been updated to remove Meteor.
+
+### Remove `context.callMeteorMethod`
+
+All GraphQL mutations which still used Meteor methods via the `context.callMeteorMethod` function - `inviteShopMember`, `addressBookRemove`, `removeAccountFromGroup`, `setAccountProfileCurrency`, `updateAccountAddressBookEntry` -  have been updated to fully use GraphQL. In turn `context.callMeteorMethod` is no longer used, and has been removed from the codebase.
+
+## Feature
+
+- feat: manage product tags in bulk ([#5485](https://github.com/reactioncommerce/reaction/pull/5485))
+- feat: Add Orders GraphQL query ([#5483](https://github.com/reactioncommerce/reaction/pull/5483))
+- feat: Image uploading without Meteor ([#5515](https://github.com/reactioncommerce/reaction/pull/5515))
+
+## Fixes
+
+- fix: info inline alert should autoclose ([#5502](https://github.com/reactioncommerce/reaction/pull/5502))
+- fix: Perform old password validation ([#5527](https://github.com/reactioncommerce/reaction/pull/5527))
+
+## Refactors
+
+- refactor: use moments calendar format to display time alongside date ([#5523](https://github.com/reactioncommerce/reaction/pull/5523))
+- refactor: remove context.callMeteorMethod ([#5524](https://github.com/reactioncommerce/reaction/pull/5524))
+- refactor: remove inviteShopMember meteor method and rewrite with GraphQL ([#5520](https://github.com/reactioncommerce/reaction/pull/5520))
+- refactor: remove addressBookRemove meteor method and rewrite with GraphQL ([#5492](https://github.com/reactioncommerce/reaction/pull/5492))
+- refactor: remove removeAccountFromGroup meteor method and rewrite with GraphQL ([#5493](https://github.com/reactioncommerce/reaction/pull/5493))
+- refactor: add setAccountProfileCurrency GraphQL mutation ([#5488](https://github.com/reactioncommerce/reaction/pull/5488))
+- refactor: rewrite updateAccountAddressBookEntry to not call through to Meteor method ([#5484](https://github.com/reactioncommerce/reaction/pull/5484))
+
+## Tests
+
+- tests: Add Integration Test for orderById GraphQL query ([#5511](https://github.com/reactioncommerce/reaction/pull/5511))
+
+## Contributors
+
+Thanks to @trojanh for contributing to this release! 🎉
+
 # v2.2.1
 Reaction v2.2.1 adds a bug fix and contains no breaking changes since v2.2.0
 
