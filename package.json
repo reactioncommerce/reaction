@@ -256,6 +256,7 @@
             "./"
           ],
           "alias": {
+            "@reactioncommerce/api-utils": "./imports/utils",
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
             "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
@@ -307,6 +308,7 @@
                 "./"
               ],
               "alias": {
+                "@reactioncommerce/api-utils": "./imports/utils",
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
                 "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
@@ -363,6 +365,7 @@
                 "./"
               ],
               "alias": {
+                "@reactioncommerce/api-utils": "./imports/utils",
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
                 "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
