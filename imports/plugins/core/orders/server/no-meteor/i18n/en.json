@@ -170,9 +170,10 @@
               "created": "Created"
             },
             "fulfillmentStatus": {
-              "completed": "Completed",
+              "coreOrderWorkflow/completed": "Completed",
+              "coreOrderWorkflow/created": "Created",
               "new": "New",
-              "processing": "Processing"
+              "coreOrderWorkflow/processing": "Processing"
             },
             "data": {
               "status": {
