@@ -1,4 +1,4 @@
-import sendSMTPEmail from "./util/sendSMTPEmail";
+import sendSMTPEmail from "./util/sendSMTPEmail.js";
 
 /**
  * @name startup
