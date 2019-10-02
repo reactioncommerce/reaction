@@ -1,4 +1,4 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import buildContext from "./buildContext";
 
 const fakeUser = {
