@@ -37,8 +37,5 @@ test("user can add an email to their own account", async () => {
     return;
   }
 
-  console.log(email);
-  console.log(result);
-
   expect(result.addAccountEmailRecord.emailRecord).toEqual(email);
 });
