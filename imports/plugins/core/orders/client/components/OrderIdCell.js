@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "/client/api";
 import Chip from "@reactioncommerce/catalyst/Chip";
-import { makeStyles } from "@material-ui/core";
+import { Link, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -20,9 +20,12 @@ export default function OrderIdCell({ row }) {
 
   return (
     <Fragment>
-      {row.values.referenceId}
+      <Link href={`/operator/orders/${row.values.referenceId}`}>
+        {row.values.referenceId}
+      </Link>
       <Chip
         className={classes.chip}
+        size="small"
         variant="outlined"
         label={i18next.t(`admin.table.orderStatus.${row.original.status}`)}
       />
