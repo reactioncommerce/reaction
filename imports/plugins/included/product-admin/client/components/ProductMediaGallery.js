@@ -24,6 +24,16 @@ const archiveMediaRecordMutation = gql`
   }
 `;
 
+const updateMediaRecordPriorityMutation = gql`
+mutation UpdateMediaRecordPriorityMutation($input: UpdateMediaRecordPriorityInput!) {
+  updateMediaRecordPriority(input: $input) {
+    mediaRecord {
+      _id
+    }
+  }
+}
+`;
+
 /**
  * ProductMediaGallery
  * @param {Object} props Component props
@@ -33,7 +43,6 @@ function ProductMediaGallery(props) {
   const {
     editable,
     media,
-    onSetMediaPriority,
     productId, // internal (for now)
     shopId, // internal (for now)
     variantId // internal (for now)
@@ -44,6 +53,7 @@ function ProductMediaGallery(props) {
   const [opaqueVariantId, setOpaqueVariantId] = useState(null);
 
   const [archiveMediaRecord] = useMutation(archiveMediaRecordMutation, { ignoreResults: true });
+  const [updateMediaRecordPriority] = useMutation(updateMediaRecordPriorityMutation, { ignoreResults: true });
 
   const handleRemoveMedia = (mediaToRemove) => {
     const imageUrl = mediaToRemove.url({ store: "medium" });
@@ -76,6 +86,30 @@ function ProductMediaGallery(props) {
               autoHide: 10000
             });
           }
+        });
+      }
+    });
+  };
+
+  const handleSetMediaPriority = async (mediaRecord, priority) => {
+    const [
+      opaqueMediaRecordId
+    ] = await getOpaqueIds([
+      { namespace: "MediaRecord", id: mediaRecord._id }
+    ]);
+
+    updateMediaRecordPriority({
+      variables: {
+        input: {
+          mediaRecordId: opaqueMediaRecordId,
+          priority,
+          shopId: opaqueShopId
+        }
+      },
+      onError(error) {
+        Logger.error(error);
+        Alerts.toast("Unable to update media priority", "error", {
+          autoHide: 10000
         });
       }
     });
@@ -134,7 +168,7 @@ function ProductMediaGallery(props) {
                   editable={editable}
                   key={mediaItem._id}
                   onRemoveMedia={handleRemoveMedia}
-                  onSetMediaPriority={onSetMediaPriority}
+                  onSetMediaPriority={handleSetMediaPriority}
                   size="small"
                   source={mediaItem}
                 />

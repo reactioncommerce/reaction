@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
-import update from "immutability-helper";
 import { compose } from "recompose";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import _ from "lodash";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 
@@ -30,32 +28,8 @@ const wrapComponent = (Comp) => (
           width: -1,
           height: -1
         },
-        featuredMedia: null,
-        media: null
+        featuredMedia: null
       };
-    }
-
-    static getDerivedStateFromProps(props) {
-      return {
-        media: props.media
-      };
-    }
-
-    handleSetMediaPriority = (media, priority) => {
-      Meteor.call("media/updatePriority", media._id, priority, (error) => {
-        if (error) {
-          // Go back to using media prop instead of media state so that it doesn't appear successful
-          this.setState({ media: this.props.media });
-
-          Alerts.toast(error.reason, "warning", {
-            autoHide: 10000
-          });
-        }
-      });
-    }
-
-    get media() {
-      return this.state.media;
     }
 
     handleMouseEnterMedia = (event, media) => {
@@ -78,36 +52,6 @@ const wrapComponent = (Comp) => (
       }
     };
 
-    handleMoveMedia = (dragIndex, hoverIndex) => {
-      const mediaList = this.media;
-      const media = mediaList[dragIndex];
-
-      // Apply new sort order to variant list
-      const newMediaOrder = update(mediaList, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, media]
-        ]
-      });
-
-      // Set local state so the component doesn't have to wait for a round-trip
-      // to the server to get the updated list of variants
-      this.setState({ media: newMediaOrder });
-
-      // Save the updated positions
-      const sortedMediaIDs = newMediaOrder.map(({ _id }) => _id);
-      Meteor.call("media/updatePriorities", sortedMediaIDs, (error) => {
-        if (error) {
-          // Go back to using media prop instead of media state so that it doesn't appear successful
-          this.setState({ media: this.props.media });
-
-          Alerts.toast(error.reason, "warning", {
-            autoHide: 10000
-          });
-        }
-      });
-    };
-
     render() {
       const { width, height } = this.state.dimensions;
 
@@ -124,10 +68,7 @@ const wrapComponent = (Comp) => (
                 featuredMedia={this.state.featuredMedia}
                 onMouseEnterMedia={this.handleMouseEnterMedia}
                 onMouseLeaveMedia={this.handleMouseLeaveMedia}
-                onMoveMedia={this.handleMoveMedia}
-                onSetMediaPriority={this.handleSetMediaPriority}
                 {...this.props}
-                media={this.media}
                 mediaGalleryHeight={height}
                 mediaGalleryWidth={width}
               />
