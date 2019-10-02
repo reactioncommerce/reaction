@@ -1,0 +1,27 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "example-paymentmethod",
+  "translation": {
+    "example-paymentmethod": {
+      "admin": {
+        "shortcut": {
+          "examplePaymentProviderLabel": "exempel Betalning",
+          "examplePaymentProviderTitle": "exempel Betalning"
+        },
+        "dashboard": {
+          "examplePaymentProviderLabel": "exempel Betalning",
+          "examplePaymentProviderTitle": "exempel Betalning",
+          "examplePaymentProviderDescription": "Exempel betalningsmetod"
+        },
+        "paymentSettings": {
+          "examplePaymentLabel": "exempel Provider",
+          "examplePaymentSettingsLabel": "exempel Betalning",
+          "exampleCredentials": "Detta är ett exempel betalningsmetod inställning.",
+          "apiClientId": "API-klient-ID",
+          "supportedMethodsLabel": "Betalningsleverantörens stödda metoder"
+        }
+      }
+    }
+  }
+}]

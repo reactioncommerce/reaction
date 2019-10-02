@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if shop not found 1`] = `"Shop not found"`;
+
+exports[`throws if userHasPermission returns false 1`] = `"Access denied"`;

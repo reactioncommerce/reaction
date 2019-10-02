@@ -1,0 +1,35 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "Плащания",
+          "paymentsTitle": "Плащания"
+        },
+        "dashboard": {
+          "paymentsLabel": "Плащания",
+          "paymentsTitle": "Плащания",
+          "paymentsDescription": "конфигурация Плащания"
+        },
+        "settings": {
+          "paymentSettingsLabel": "Настройки на плащане"
+        },
+        "paymentSettings": {
+          "paymentMethod": "Default Provider"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Добави плащане, за да завършите поръчка",
+        "processingError": "Имаше проблем с плащането.",
+        "completeYourOrder": "Завършете поръчката",
+        "noPaymentMethods": "Не са начините на плащане са конфигурирани.",
+        "contactAdmin": "Моля, свържете се с администратора на магазина.",
+        "configureNow": "Конфигуриране на предприятието.",
+        "failedToPlaceOrder": "Не може да се постави цел."
+      }
+    }
+  }
+}]

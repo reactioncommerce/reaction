@@ -1,0 +1,254 @@
+extend type Query {
+  """
+  Get a list of all payment methods available during a checkout. This may filter by auth,
+  active/inactive, IP/region, shop, etc. To get the full list, use the `paymentMethods`
+  query with proper authorization.
+  """
+  availablePaymentMethods(
+    "ID of the shop for which the order will be placed"
+    shopId: ID!
+  ): [PaymentMethod]!
+
+  "Get a full list of all payment methods"
+  paymentMethods(
+    "The shop to get payment methods for"
+    shopId: ID!
+  ): [PaymentMethod]!
+}
+
+extend type Mutation {
+  "Approve one or more payments for an order"
+  approveOrderPayments(
+    "Mutation input"
+    input: ApproveOrderPaymentsInput!
+  ): ApproveOrderPaymentsPayload!
+
+  "Capture one or more payments for an order"
+  captureOrderPayments(
+    "Mutation input"
+    input: CaptureOrderPaymentsInput!
+  ): CaptureOrderPaymentsPayload!
+
+  "Enable a payment method for a shop"
+  enablePaymentMethodForShop(
+    "Mutation input"
+    input: EnablePaymentMethodForShopInput!
+  ): EnablePaymentMethodForShopPayload!
+}
+
+"""
+Information about a payment made
+"""
+type Payment implements Node {
+  "The Payment ID"
+  _id: ID!
+
+  """
+  The amount that will be applied to this payment method. If there are multiple payment methods applied to the
+  cart, this may be less than the cart total.
+  """
+  amount: Money!
+
+  "The billing address for this payment, if one was collected"
+  billingAddress: Address
+
+  """
+  If status is "error" due to a capture error, this code describes the error in a machine-readable way.
+  """
+  captureErrorCode: String
+
+  """
+  If status is "error" due to a capture error, this code describes the error in a human-readable way.
+  """
+  captureErrorMessage: String
+
+  "For card payments, the brand of the card. Useful for showing card icons for common brands."
+  cardBrand: String
+
+  "The date and time at which this payment was created"
+  createdAt: DateTime!
+
+  """
+  The shopper-provided data needed to complete the payment using this method.
+  For example, a billing address, store credit code, stored credit card ID, etc.
+  """
+  data: PaymentData
+
+  "Use this identifier when showing this payment in a user interface"
+  displayName: String!
+
+  "Has the payment authorization been canceled?"
+  isAuthorizationCanceled: Boolean!
+
+  "Has the payment been captured? If false, it is just an authorization."
+  isCaptured: Boolean!
+
+  "The payment method"
+  method: PaymentMethod!
+
+  "The payment mode"
+  mode: String
+
+  "The payment processor"
+  processor: String
+
+  "Refunds that have been applied to this payment."
+  refunds: [Refund]
+
+  "Risk level of payment"
+  riskLevel: RiskLevel
+
+  "The current status of this payment"
+  status: PaymentStatus!
+
+  "The payment transaction ID"
+  transactionId: String
+}
+
+"Valid payment statuses"
+enum PaymentStatus {
+  "A shop operator adjusted the payment amount after the order was placed"
+  adjustments
+
+  "A shop operator has approved this payment"
+  approved
+
+  "A shop operator has canceled this payment before it was captured"
+  canceled
+
+  "A shop operator has captured this payment"
+  completed
+
+  "Upon placing an order, the status of all payments for that order begins at 'created'"
+  created
+
+  "There was an error capturing the payment"
+  error
+
+  "A shop operator has refunded some but not all of this payment"
+  partialRefund
+
+  "A shop operator has refunded all of this payment"
+  refunded
+}
+
+"Valid payment risk levels"
+enum RiskLevel {
+  "An elevated risk level for a payment"
+  elevated
+
+  "The highest risk level for a payment"
+  highest
+
+  "A normal risk level for a payment"
+  normal
+}
+
+# Use `extend union` to define a payment plugin's PaymentData type
+"Data identifying a payment for an order"
+union PaymentData = FakeData
+
+# Use `extend enum` to add a plugin's payment method name
+"The name of a payment method, which is how payment methods are keyed"
+enum PaymentMethodName {
+  "No payment method"
+  none
+}
+
+# Use `extend union` to define a payment plugin's PaymentMethodData type
+"Any extra data needed by the payment method"
+union PaymentMethodData = FakeData
+
+"Describes a payment method"
+type PaymentMethod {
+  "If this is `false`, the payment method does not support refunding. Use this to hide refund UI."
+  canRefund: Boolean!
+
+  "Data for this method. The data format differs for each method"
+  data: PaymentMethodData
+
+  "Human-readable display name"
+  displayName: String!
+
+  "Whether the payment method is enabled on a given shop"
+  isEnabled: Boolean!
+
+  "The payment method name. Any valid name that has been registered by a payment plugin. e.g., saved_card"
+  # TODO: this being a string is temporary until extend works for enums, at which point we'll use PaymentMethodName
+  name: String!
+
+  "Name of the plugin that added the payment method"
+  pluginName: String!
+}
+
+"Input for the `enablePaymentMethodForShop` mutation"
+input EnablePaymentMethodForShopInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "True to enable it or false to disable it"
+  isEnabled: Boolean!
+
+  "The name of the payment method to enable or disable"
+  paymentMethodName: String!
+
+  "The ID of the shop for which this payment method should be enabled or disabled"
+  shopId: ID!
+}
+
+"Response payload for the `enablePaymentMethodForShop` mutation"
+type EnablePaymentMethodForShopPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The full list of payment methods for the shop"
+  paymentMethods: [PaymentMethod]!
+}
+
+"Input for the `approveOrderPayments` mutation"
+input ApproveOrderPaymentsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order ID"
+  orderId: ID!
+
+  "The IDs of one or more payments to approve for this order"
+  paymentIds: [ID]!
+
+  "The ID of the shop that owns this order"
+  shopId: ID!
+}
+
+"Response from the `approveOrderPayments` mutation"
+type ApproveOrderPaymentsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
+}
+
+"Input for the `captureOrderPayments` mutation"
+input CaptureOrderPaymentsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order ID"
+  orderId: ID!
+
+  "The IDs of one or more payments to capture for this order"
+  paymentIds: [ID]!
+
+  "The ID of the shop that owns this order"
+  shopId: ID!
+}
+
+"Response from the `captureOrderPayments` mutation"
+type CaptureOrderPaymentsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
+}
