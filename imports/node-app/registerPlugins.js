@@ -2,6 +2,7 @@
 import registerAddressPlugin from "./plugins/address/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
+import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
 
 /* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
@@ -34,7 +35,6 @@ import registerShopPlugin from "/imports/plugins/core/shop/server/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
 import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";
-import registerSMTPEmailPlugin from "/imports/plugins/included/email-smtp/server/no-meteor/register";
 import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
 import registerSurchargesPlugin from "/imports/plugins/included/surcharges/server/no-meteor/register";
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
