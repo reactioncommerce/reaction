@@ -30,6 +30,7 @@ input CreateAccountInput {
   "Bio to display on profile"
   bio: String
 
+  "Email record to create account with"
   emails: [EmailRecordInput]!
 
   "Name to display on profile"
@@ -136,12 +137,6 @@ input RemoveAccountEmailRecordInput {
 
   "The email address to remove"
   email: Email!
-}
-
-"Defines profile data from `user` to add to `account`"
-input ProfileInput {
-  "Was this user invited by an admin"
-  invited: Boolean
 }
 
 "Per-account tax exemption settings used by the Avalara plugin"
