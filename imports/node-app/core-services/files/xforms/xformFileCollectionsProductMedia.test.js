@@ -1,4 +1,4 @@
-import xformFileCollectionsProductMedia from "./xformFileCollectionsProductMedia";
+import xformFileCollectionsProductMedia from "./xformFileCollectionsProductMedia.js";
 
 const ROOT_URL = "https://example.com";
 const context = {

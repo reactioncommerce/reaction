@@ -10,8 +10,8 @@ import {
   TempFileStoreWorker
 } from "@reactioncommerce/file-collections";
 import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
-import config from "./config";
-import createSaveImageJob from "./util/createSaveImageJob";
+import config from "./config.js";
+import createSaveImageJob from "./util/createSaveImageJob.js";
 
 /**
  * @returns {undefined}

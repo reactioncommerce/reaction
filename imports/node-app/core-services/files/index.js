@@ -1,8 +1,8 @@
-import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia";
-import mutations from "./mutations";
-import resolvers from "./resolvers";
-import schemas from "./schemas";
-import startup from "./startup";
+import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia.js";
+import mutations from "./mutations/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.

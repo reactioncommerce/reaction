@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { MediaRecord } from "../simpleSchemas";
+import { MediaRecord } from "../simpleSchemas.js";
 
 /**
  * @summary Create a MediaRecord. It's expected that you've

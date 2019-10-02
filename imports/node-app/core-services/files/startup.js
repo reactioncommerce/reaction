@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
-import setUpFileCollections from "./setUpFileCollections";
-import saveRemoteImages from "./jobs/saveRemoteImages";
-import saveTempImages from "./jobs/saveTempImages";
+import setUpFileCollections from "./setUpFileCollections.js";
+import saveRemoteImages from "./jobs/saveRemoteImages.js";
+import saveTempImages from "./jobs/saveTempImages.js";
 
 /**
  * @summary Called on startup

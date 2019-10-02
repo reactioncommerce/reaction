@@ -1,5 +1,5 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { decodeMediaRecordOpaqueId } from "../../xforms/id";
+import { decodeMediaRecordOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/archiveMediaRecord
