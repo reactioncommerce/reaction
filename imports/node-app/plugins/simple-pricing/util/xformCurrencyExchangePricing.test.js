@@ -1,4 +1,4 @@
-import xformCurrencyExchangePricing from "./xformCurrencyExchangePricing";
+import xformCurrencyExchangePricing from "./xformCurrencyExchangePricing.js";
 
 const testShop = {
   currency: "USD",

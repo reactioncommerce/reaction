@@ -1,11 +1,11 @@
-import queries from "./queries";
-import resolvers from "./resolvers";
-import schemas from "./schemas";
-import startup from "./startup";
-import getMinPriceSortByFieldPath from "./util/getMinPriceSortByFieldPath";
-import mutateNewProductBeforeCreate from "./util/mutateNewProductBeforeCreate";
-import mutateNewVariantBeforeCreate from "./util/mutateNewVariantBeforeCreate";
-import publishProductToCatalog from "./util/publishProductToCatalog";
+import queries from "./queries/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import startup from "./startup.js";
+import getMinPriceSortByFieldPath from "./util/getMinPriceSortByFieldPath.js";
+import mutateNewProductBeforeCreate from "./util/mutateNewProductBeforeCreate.js";
+import mutateNewVariantBeforeCreate from "./util/mutateNewVariantBeforeCreate.js";
+import publishProductToCatalog from "./util/publishProductToCatalog.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.

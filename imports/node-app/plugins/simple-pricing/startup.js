@@ -1,6 +1,6 @@
-import collectionIndex from "/imports/utils/collectionIndex";
-import getProductPriceRange from "./util/getProductPriceRange";
-import getVariantPriceRange from "./util/getVariantPriceRange";
+import collectionIndex from "@reactioncommerce/api-utils/collectionIndex";
+import getProductPriceRange from "./util/getProductPriceRange.js";
+import getVariantPriceRange from "./util/getVariantPriceRange.js";
 
 const fieldsThatChangeAncestorPricing = ["isDeleted", "isVisible", "price"];
 

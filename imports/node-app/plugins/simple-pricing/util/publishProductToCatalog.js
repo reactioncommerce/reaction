@@ -1,4 +1,4 @@
-import getPriceRange from "./getPriceRange";
+import getPriceRange from "./getPriceRange.js";
 
 /**
  * @summary Get the pricing object

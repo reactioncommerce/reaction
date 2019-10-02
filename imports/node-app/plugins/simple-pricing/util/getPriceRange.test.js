@@ -1,4 +1,4 @@
-import getPriceRange from "./getPriceRange";
+import getPriceRange from "./getPriceRange.js";
 
 const mockZeroPrice = [0];
 const mockSinglePrice = [5.99];

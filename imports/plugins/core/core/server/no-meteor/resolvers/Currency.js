@@ -1,5 +1,5 @@
-import { encodeCurrencyOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/currency";
+import encodeOpaqueId from "@reactioncommerce/api-utils/graphql/encodeOpaqueId.js";
 
 export default {
-  _id: (node) => encodeCurrencyOpaqueId(node._id)
+  _id: (node) => encodeOpaqueId("reaction/currency", node._id)
 };

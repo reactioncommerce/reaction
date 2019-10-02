@@ -5,6 +5,7 @@ import registerShippingPlugin from "./core-services/shipping/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerSimplePricingPlugin from "./plugins/simple-pricing/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
@@ -38,7 +39,6 @@ import registerProductAdminPlugin from "/imports/plugins/included/product-admin/
 import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
 import registerShopPlugin from "/imports/plugins/core/shop/server/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
-import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";
 import registerSMTPEmailPlugin from "/imports/plugins/included/email-smtp/server/no-meteor/register";
 import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
