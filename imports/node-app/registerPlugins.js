@@ -6,6 +6,7 @@ import registerShippingPlugin from "./core-services/shipping/index.js";
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
 import registerSimplePricingPlugin from "./plugins/simple-pricing/index.js";
+import registerSimpleSchemaPlugin from "./plugins/simple-schema/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
@@ -57,6 +58,7 @@ export default async function registerPlugins(app) {
    * CORE
    * (Core plugin needs Media collection, so files plugin must be first)
    */
+  await registerSimpleSchemaPlugin(app); // REQUIRED
   await registerJobQueuePlugin(app); // REQUIRED
   await registerFilesPlugin(app); // REQUIRED
   await registerCorePlugin(app); // REQUIRED

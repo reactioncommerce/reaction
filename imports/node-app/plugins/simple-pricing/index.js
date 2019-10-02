@@ -6,6 +6,7 @@ import getMinPriceSortByFieldPath from "./util/getMinPriceSortByFieldPath.js";
 import mutateNewProductBeforeCreate from "./util/mutateNewProductBeforeCreate.js";
 import mutateNewVariantBeforeCreate from "./util/mutateNewVariantBeforeCreate.js";
 import publishProductToCatalog from "./util/publishProductToCatalog.js";
+import { PriceRange } from "./simpleSchemas.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -32,6 +33,9 @@ export default async function register(app) {
     catalog: {
       publishedProductFields: ["price"],
       publishedProductVariantFields: ["price"]
+    },
+    simpleSchemas: {
+      PriceRange
     }
   });
 }
