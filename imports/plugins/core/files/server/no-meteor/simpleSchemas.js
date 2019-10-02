@@ -27,6 +27,10 @@ const MediaRecordMetadata = new SimpleSchema({
     type: SimpleSchema.Integer,
     optional: true
   },
+  type: {
+    type: String,
+    optional: true
+  },
   variantId: {
     type: String,
     optional: true

@@ -3,7 +3,6 @@ import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { MediaRecords } from "/lib/collections";
 
 /**
@@ -37,36 +36,6 @@ export async function insertMedia(fileRecord) {
   appEvents.emit("afterMediaInsert", { createdBy: authUserId, mediaRecord: doc });
 
   return mediaRecordId;
-}
-
-/**
- * @name media/remove
- * @method
- * @memberof Media/Methods
- * @summary Unpublish a media record by updating it's workflow
- * @param {String} fileRecordId - _id of file record to be deleted.
- * @returns {Boolean} was media successfully removed
- */
-export async function removeMedia(fileRecordId) {
-  check(fileRecordId, String);
-
-  const mediaRecord = await MediaRecords.findOne({ _id: fileRecordId });
-  if (!mediaRecord) throw new ReactionError("not-found", `Media record with ID ${fileRecordId} not found`);
-
-  const authUserId = Reaction.getUserId();
-
-  const context = await getGraphQLContextInMeteorMethod(authUserId);
-  const { collections: { Media } } = context;
-
-  const result = await Media.remove(fileRecordId);
-
-  const success = (result === 1);
-
-  if (success) {
-    appEvents.emit("afterMediaRemove", { removedBy: authUserId, mediaRecord });
-  }
-
-  return success;
 }
 
 /**
@@ -162,6 +131,5 @@ export function updateMediaPriority(mediaId, priority) {
 Meteor.methods({
   "media/insert": insertMedia,
   "media/updatePriorities": updateMediaPriorities,
-  "media/updatePriority": updateMediaPriority,
-  "media/remove": removeMedia
+  "media/updatePriority": updateMediaPriority
 });

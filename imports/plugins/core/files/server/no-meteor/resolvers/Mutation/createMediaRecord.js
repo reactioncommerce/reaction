@@ -23,7 +23,7 @@ export default async function createMediaRecord(parentResult, { input }, context
   const mediaRecord = await context.mutations.createMediaRecord(context, {
     mediaRecord: {
       metadata: {
-        priority: mediaRecordInput.metadata.priority,
+        ...mediaRecordInput.metadata,
         productId: decodeProductOpaqueId(mediaRecordInput.metadata.productId),
         variantId: decodeProductOpaqueId(mediaRecordInput.metadata.variantId)
       },

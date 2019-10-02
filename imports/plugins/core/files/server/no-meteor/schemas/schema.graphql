@@ -36,6 +36,9 @@ type MediaRecordMetadata {
   "Is product grid media"
   toGrid: Int!
 
+  "A string that identifies where this media will be used, for filtering"
+  type: String
+
   "ID of the related product variant, if the media is for a product variant"
   variantId: String
 }
@@ -80,6 +83,9 @@ input MediaRecordMetadataInput {
 
   "ID of the related product, if the media is for a product"
   productId: ID
+
+  "A string that identifies where this media will be used, for filtering"
+  type: String
 
   "ID of the related product variant, if the media is for a product variant"
   variantId: ID
