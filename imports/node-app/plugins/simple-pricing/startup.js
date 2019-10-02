@@ -1,7 +1,6 @@
 import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
 import getProductPriceRange from "./util/getProductPriceRange.js";
 import getVariantPriceRange from "./util/getVariantPriceRange.js";
-import { extendSchemas } from "./simpleSchemas.js";
 
 const fieldsThatChangeAncestorPricing = ["isDeleted", "isVisible", "price"];
 
@@ -12,10 +11,8 @@ const fieldsThatChangeAncestorPricing = ["isDeleted", "isVisible", "price"];
  * @returns {undefined} - void, no return.
  */
 export default async function startup(context) {
-  const { appEvents, collections, simpleSchemas } = context;
+  const { appEvents, collections } = context;
   const { Catalog, Products, Shops } = collections;
-
-  extendSchemas(simpleSchemas);
 
   // Add an index to support built-in minPrice sorting for the primary shop's
   // default currency code only.

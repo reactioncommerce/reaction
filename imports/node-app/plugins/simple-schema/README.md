@@ -23,10 +23,10 @@ export default async function register(app) {
 }
 ```
 
-And on the other side, if you have a plugin that wants to extend some of the schemas provided by other plugins, do it in a startup function:
+And on the other side, if you have a plugin that wants to extend some of the schemas provided by other plugins, do it in a `preStartup` function:
 
 ```js
-export default async function startup(context) {
+export default function preStartup(context) {
   context.simpleSchemas.Product.extend({
     price: PriceRange
   });

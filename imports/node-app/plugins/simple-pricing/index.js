@@ -1,3 +1,4 @@
+import preStartup from "./preStartup.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
@@ -22,6 +23,7 @@ export default async function register(app) {
       getMinPriceSortByFieldPath: [getMinPriceSortByFieldPath],
       mutateNewProductBeforeCreate: [mutateNewProductBeforeCreate],
       mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
+      preStartup: [preStartup],
       publishProductToCatalog: [publishProductToCatalog],
       startup: [startup]
     },
