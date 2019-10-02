@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "/client/api";
+import { withRouter } from "react-router";
 import Chip from "@reactioncommerce/catalyst/Chip";
 import { Link, makeStyles } from "@material-ui/core";
 
@@ -13,14 +14,19 @@ const useStyles = makeStyles((theme) => ({
 /**
  * @name OrderIdCell
  * @param {Object} row A react-table row object
+ * @param {Object} history Router history API
  * @return {React.Component} A date component
  */
-export default function OrderIdCell({ row }) {
+function OrderIdCell({ row, history }) {
   const classes = useStyles();
+
+  const handleClick = () => {
+    history.push(`/operator/orders/${row.values.referenceId}`);
+  };
 
   return (
     <Fragment>
-      <Link href={`/operator/orders/${row.values.referenceId}`}>
+      <Link onClick={handleClick}>
         {row.values.referenceId}
       </Link>
       <Chip
@@ -34,5 +40,10 @@ export default function OrderIdCell({ row }) {
 }
 
 OrderIdCell.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }),
   row: PropTypes.object.isRequired
 };
+
+export default withRouter(OrderIdCell);
