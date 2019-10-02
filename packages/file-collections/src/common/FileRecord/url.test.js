@@ -1,5 +1,8 @@
 import FileRecord from "./FileRecord";
 
+/**
+ * @returns {FileRecord} mock file record
+ */
 function getFileRecord() {
   return new FileRecord({
     _id: "123",
@@ -35,6 +38,11 @@ test("defaults", () => {
   expect(fileRecord.url({ store: "fakeStore" })).toBe("/files/FakeCollection/123/fakeStore/some_name.jpg");
 });
 
+/**
+ * @param {String} prefix prefix to test
+ * @param {String} expected expected result
+ * @returns {void} null
+ */
 function runGlobalPrefixTest(prefix, expected = "/foo/FakeCollection/123/fakeStore/some_name.jpg") {
   const fileRecord = getFileRecord();
   fileRecord.collectionName = "FakeCollection";
@@ -116,9 +124,9 @@ test("merges download param with arbitrary query string params", () => {
   expect(fileRecord.url({
     download: true,
     query: {
-      a: 1,
+      alt: 1,
       foo: "bar"
     },
     store: "fakeStore"
-  })).toBe("/files/FakeCollection/123/fakeStore/some_name.jpg?a=1&download=1&foo=bar");
+  })).toBe("/files/FakeCollection/123/fakeStore/some_name.jpg?alt=1&download=1&foo=bar");
 });

@@ -9,6 +9,10 @@ import writeHeadersToResponse from "./writeHeadersToResponse";
 const matchFix = "<[a-zA-Z0-9-_.~%':|\\+]+>";
 const routePath = new Path(`/:collectionName${matchFix}/:fileId${matchFix}/:storeName${matchFix}/:filename${matchFix}`);
 
+/**
+ * @param {Object} param0 options for file downloader
+ * @returns {void} null
+ */
 export default function getFileDownloadHandler({
   getFileInfo,
   getReadStream,

@@ -1,9 +1,6 @@
 import FileCollection from "../common/FileCollection";
 
 /**
- * @class MeteorFileCollection
- * @extends FileCollection
- *
  * A type of FileCollection that uses a Meteor Mongo.Collection as its
  * backing storage and uses Meteor DDP to send browser ops to the server.
  */
@@ -13,7 +10,7 @@ export default class MeteorFileCollection extends FileCollection {
    * @param {String} name The name you want to use to refer to the FileCollection.
    *   Be sure to use the same name in Node and browser code so that they can
    *   communicate over DDP.
-   * @param {Object} options
+   * @param {Object} options options for collection
    * @param {Mongo.Collection} options.collection The collection to use
    * @param {DDPConnection} options.DDP The DDP connection to use
    *
@@ -105,7 +102,7 @@ export default class MeteorFileCollection extends FileCollection {
 
   /**
    * @method _findOneLocal
-   * @param {Object|String} id A FileRecord ID or MongoDB selector
+   * @param {Object|String} selector A FileRecord ID or MongoDB selector
    * @param {Object} options Options object to be passed through to Meteor's findOne
    * @returns {Object|undefined} The document or undefined
    */
