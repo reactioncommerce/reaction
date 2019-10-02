@@ -24,6 +24,22 @@ function OrderIdCell({ row, history }) {
     history.push(`/operator/orders/${row.values.referenceId}`);
   };
 
+  let chipColor;
+  switch (row.original.status) {
+    case "new":
+      chipColor = "success";
+      break;
+    case "coreOrderWorkflow/processing":
+      chipColor = "info";
+      break;
+    case "coreOrderWorkflow/canceled":
+      chipColor = "danger";
+      break;
+    default:
+      chipColor = "info";
+      break;
+  }
+
   return (
     <Fragment>
       <Link onClick={handleClick}>
@@ -31,8 +47,8 @@ function OrderIdCell({ row, history }) {
       </Link>
       <Chip
         className={classes.chip}
+        color={chipColor}
         size="small"
-        variant="outlined"
         label={i18next.t(`admin.table.orderStatus.${row.original.status}`)}
       />
     </Fragment>

@@ -1,4 +1,5 @@
 import React, { Fragment, useMemo, useCallback } from "react";
+import PropTypes from "prop-types";
 import DataTable, { useDataTable } from "@reactioncommerce/catalyst/DataTable";
 import { useApolloClient } from "@apollo/react-hooks";
 import primaryShopIdQuery from "imports/plugins/core/graphql/lib/queries/getPrimaryShopId";
@@ -6,6 +7,7 @@ import { Card, CardHeader, CardContent, makeStyles } from "@material-ui/core";
 import OrderDateCell from "./OrderDateCell";
 import OrderIdCell from "./OrderIdCell";
 import ordersQuery from "../graphql/queries/orders";
+import { withRouter } from "react-router";
 import { i18next } from "/client/api";
 
 /* eslint-disable react/prop-types */
@@ -20,9 +22,10 @@ const useStyles = makeStyles({
 
 /**
  * @name OrdersTable
+ * @param {Object} history Browser history API
  * @returns {React.Component} A React component
  */
-function OrdersTable() {
+function OrdersTable({ history }) {
   const apolloClient = useApolloClient();
   // Create and memoize the column data
   const columns = useMemo(() => [
@@ -81,10 +84,16 @@ function OrdersTable() {
     };
   }, [apolloClient]);
 
+  // Row click callback
+  const onRowClick = useCallback(async ({ row }) => {
+    history.push(`/operator/orders/${row.values.referenceId}`);
+  }, [history]);
+
   const dataTableProps = useDataTable({
     columns,
+    getRowID: (row) => row.referenceId,
     onFetchData,
-    getRowID: (row) => row.referenceId
+    onRowClick
   });
 
   const classes = useStyles();
@@ -103,4 +112,10 @@ function OrdersTable() {
   );
 }
 
-export default OrdersTable;
+OrdersTable.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  })
+};
+
+export default withRouter(OrdersTable);

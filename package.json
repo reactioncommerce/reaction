@@ -25,7 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.7.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^4.3.2",
-    "@reactioncommerce/catalyst": "~1.10.0",
+    "@reactioncommerce/catalyst": "~1.12.0",
     "@reactioncommerce/components": "^0.67.2",
     "@reactioncommerce/components-context": "1.2.0",
     "@reactioncommerce/data-factory": "^1.0.0",

@@ -160,10 +160,10 @@
               "placeholder": "Search orders"
             },
             "orderStatus": {
-              "canceled": "Canceled",
-              "completed": "Completed",
+              "coreOrderWorkflow/canceled": "Canceled",
+              "coreOrderWorkflow/completed": "Completed",
               "new": "New",
-              "processing": "Processing"
+              "coreOrderWorkflow/processing": "Processing"
             },
             "paymentStatus": {
               "completed": "Completed",
@@ -172,6 +172,7 @@
             "fulfillmentStatus": {
               "coreOrderWorkflow/completed": "Completed",
               "coreOrderWorkflow/created": "Created",
+              "coreOrderWorkflow/canceled": "Canceled",
               "new": "New",
               "coreOrderWorkflow/processing": "Processing"
             },
