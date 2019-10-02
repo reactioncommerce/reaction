@@ -1,5 +1,5 @@
 import verifySMTPEmailSettings from "./verifySMTPEmailSettings.js";
-import mockContext from "/imports/test-utils/helpers/mockContext.js";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 
 beforeEach(() => {
   jest.resetAllMocks();
