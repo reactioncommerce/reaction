@@ -23,10 +23,6 @@ const MediaRecordMetadata = new SimpleSchema({
     optional: true
   },
   shopId: String,
-  toGrid: {
-    type: SimpleSchema.Integer,
-    optional: true
-  },
   type: {
     type: String,
     optional: true

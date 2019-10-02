@@ -9,11 +9,10 @@
 export default function xformFileCollectionsProductMedia(mediaItem, context) {
   if (!(mediaItem && mediaItem.URLs)) return null;
 
-  const { priority, toGrid, productId, variantId, URLs: { large, medium, original, small, thumbnail } } = mediaItem;
+  const { priority, productId, variantId, URLs: { large, medium, original, small, thumbnail } } = mediaItem;
 
   return {
     priority,
-    toGrid,
     productId,
     variantId,
     URLs: {

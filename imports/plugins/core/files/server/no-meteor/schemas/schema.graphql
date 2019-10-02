@@ -33,9 +33,6 @@ type MediaRecordMetadata {
   "ID of the shop that owns the media"
   shopId: String!
 
-  "Is product grid media"
-  toGrid: Int!
-
   "A string that identifies where this media will be used, for filtering"
   type: String
 

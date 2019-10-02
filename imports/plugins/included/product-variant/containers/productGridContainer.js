@@ -172,7 +172,6 @@ function composer(props, onData) {
   (props.products || []).forEach((product) => {
     const primaryMedia = Media.findOneLocal({
       "metadata.productId": product._id,
-      "metadata.toGrid": 1,
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     }, {
       sort: { "metadata.priority": 1, "uploadedAt": 1 }

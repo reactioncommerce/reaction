@@ -120,7 +120,6 @@ const mockProduct = {
   media: [
     {
       metadata: {
-        toGrid: 1,
         priority: 1,
         productId: internalProductId,
         variantId: null
@@ -181,7 +180,6 @@ const mockCatalogProduct = {
     },
     priority: 1,
     productId: "999",
-    toGrid: 1,
     variantId: "874"
   }],
   metaDescription: "metaDescription",
@@ -212,7 +210,6 @@ const mockCatalogProduct = {
     },
     priority: 1,
     productId: "999",
-    toGrid: 1,
     variantId: "874"
   },
   productId: "999",
@@ -273,7 +270,6 @@ const mockCatalogProduct = {
         },
         priority: 1,
         productId: "999",
-        toGrid: 1,
         variantId: "874"
       }],
       metafields: [{
@@ -297,7 +293,6 @@ const mockCatalogProduct = {
         },
         priority: 1,
         productId: "999",
-        toGrid: 1,
         variantId: "874"
       },
       shopId: "123",
@@ -330,7 +325,6 @@ const mockGeCatalogProductMedia = jest
   .mockReturnValue(Promise.resolve([
     {
       priority: 1,
-      toGrid: 1,
       productId: internalProductId,
       variantId: internalVariantIds[1],
       URLs: {
