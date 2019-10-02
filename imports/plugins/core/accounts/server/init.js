@@ -178,11 +178,18 @@ Meteor.startup(() => {
     // but skip the first default admin user and anonymous users
     // (default admins already get a verification email)
     if (shopId && !emailIsVerified && user.emails[0]) {
-      const tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
+      try {
+        const tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
 
-      sendWelcomeEmail(shopId, user._id, tokenObj.token);
+        sendWelcomeEmail(shopId, user._id, tokenObj.token);
 
-      _.set(user, "services.email.verificationTokens", [tokenObj]);
+        _.set(user, "services.email.verificationTokens", [tokenObj]);
+      } catch (error) {
+        // If there is an error here, we want to be sure to not throw because
+        // throwing will prevent the user from being created, and we've already
+        // created the matching account.
+        Logger.error(error);
+      }
     }
 
     // assign default user roles

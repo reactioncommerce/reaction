@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import nodemailer from "@reactioncommerce/nodemailer";
 import getServiceConfig from "nodemailer-wellknown";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getMailConfig from "../util/getMailConfig";
+import getMailConfig from "../util/getMailConfig.js";
 
 const inputSchema = new SimpleSchema({
   host: {
