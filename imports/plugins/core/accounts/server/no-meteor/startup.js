@@ -51,9 +51,14 @@ export default async function startup(context) {
     // sample data import that happens on startup. Give the global owner user
     // access to the primary shop.
     if (!userId && shopType === "primary") {
-      const ownerUser = await users.findOne({ "roles.__global_roles__": "owner" });
+      let ownerUser = await users.findOne({ "roles.__global_roles__": "owner" });
       if (!ownerUser) {
-        throw new Error("Primary shop created, but no global owner user exists. This may be a timing issue. Try restarting the app.");
+        const defaultAdminUserId = await createDefaultAdminUser(context);
+        ownerUser = await users.findOne({ _id: defaultAdminUserId });
+
+        if (!ownerUser) {
+          throw new Error("Primary shop created, but no global owner user exists. This may be a timing issue. Try restarting the app.");
+        }
       }
       userId = ownerUser._id;
     }
@@ -99,8 +104,6 @@ export default async function startup(context) {
 
   // timing is important, packages are rqd for initial permissions configuration.
   if (!Meteor.isAppTest) {
-    await createDefaultAdminUser(context);
-
     await addPluginRolesToGroups(context);
   }
 }
