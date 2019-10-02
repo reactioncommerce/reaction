@@ -1,6 +1,6 @@
 /* node-app imports */
 /* core-services */
-import registerShopPlugin from "./core-services/address/index.js";
+import registerShopPlugin from "./core-services/shop/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
