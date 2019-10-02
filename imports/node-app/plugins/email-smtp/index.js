@@ -1,6 +1,6 @@
-import mutations from "./mutations.js";
-import resolvers from "./resolvers.js";
-import schemas from "./schemas.js";
+import mutations from "./mutations/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 
 /**

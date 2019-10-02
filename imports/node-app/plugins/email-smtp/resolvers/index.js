@@ -1,4 +1,4 @@
-import Mutation from "./Mutation.js";
+import Mutation from "./Mutation/index.js";
 
 export default {
   Mutation
