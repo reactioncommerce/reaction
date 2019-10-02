@@ -5,12 +5,13 @@ import registerShippingPlugin from "./core-services/shipping/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerShippingRatesPlugin from "./plugins/shipping-rates/index.js";
 import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
-import registerUIPlugin from "./plugins/ui/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
+import registerUIPlugin from "./plugins/ui/index.js";
 
 /* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
@@ -36,7 +37,6 @@ import registerPaymentsPlugin from "/imports/plugins/core/payments/server/no-met
 import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
 import registerProductVariantPlugin from "/imports/plugins/included/product-variant/server/no-meteor/register";
 import registerProductAdminPlugin from "/imports/plugins/included/product-admin/server/no-meteor/register";
-import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
 import registerShopPlugin from "/imports/plugins/core/shop/server/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
 import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
