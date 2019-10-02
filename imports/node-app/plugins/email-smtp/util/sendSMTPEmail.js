@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import nodemailer from "@reactioncommerce/nodemailer";
-import getMailConfig from "./getMailConfig";
+import getMailConfig from "./getMailConfig.js";
 
 /**
  * @name sendSMTPEmail
