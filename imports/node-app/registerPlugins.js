@@ -8,6 +8,7 @@ import registerAddressPlugin from "./plugins/address/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
+import registerUIPlugin from "./plugins/ui/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
 
 /* meteor-app imports */
@@ -44,7 +45,6 @@ import registerStripePaymentsPlugin from "/imports/plugins/included/payments-str
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
 import registerTaxesPlugin from "/imports/plugins/core/taxes/server/no-meteor/register";
 import registerTaxesRatesPlugin from "/imports/plugins/included/taxes-rates/server/no-meteor/register";
-import registerUIPlugin from "/imports/plugins/core/ui/server/no-meteor/register";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
