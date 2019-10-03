@@ -23,6 +23,7 @@
     "@reactioncommerce/eslint-config": "^1.0.1",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
+    "babel-plugin-add-module-exports": "^1.0.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
     "eslint": "^4.19.1",
@@ -31,7 +32,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "rimraf": "^2.6.2",
-    "semantic-release": "^15.1.4",
+    "semantic-release": "^15.13.25",
     "watch": "^1.0.2"
   },
   "dependencies": {
@@ -43,6 +44,14 @@
     "presets": [
       "env",
       "stage-2"
+    ],
+    "plugins": [
+      [
+        "add-module-exports",
+        {
+          "addDefaultProperty": true
+        }
+      ]
     ],
     "sourceMaps": true
   },
