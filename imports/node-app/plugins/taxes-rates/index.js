@@ -1,5 +1,5 @@
-import calculateOrderTaxes from "./util/calculateOrderTaxes";
-import getTaxCodes from "./util/getTaxCodes";
+import calculateOrderTaxes from "./util/calculateOrderTaxes.js";
+import getTaxCodes from "./util/getTaxCodes.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -10,7 +10,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Custom Rates",
     name: "reaction-taxes-rates",
-    icon: "fa fa-university",
     collections: {
       Taxes: {
         name: "Taxes",
