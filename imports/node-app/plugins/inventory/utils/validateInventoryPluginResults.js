@@ -1,5 +1,5 @@
-import validateInventoryInfo from "./validateInventoryInfo";
-import validateProductConfiguration from "./validateProductConfiguration";
+import validateInventoryInfo from "./validateInventoryInfo.js";
+import validateProductConfiguration from "./validateProductConfiguration.js";
 
 /**
  * @summary Validate an array of objects according to this schema:

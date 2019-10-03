@@ -1,6 +1,6 @@
-import publishProductToCatalog from "./publishProductToCatalog";
-import Factory from "/imports/test-utils/helpers/factory";
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import Factory from "/imports/test-utils/helpers/factory.js"; // TODO: research how to add `factory.js` to `api-utils` (https://github.com/reactioncommerce/reaction/issues/5646)
+import publishProductToCatalog from "./publishProductToCatalog.js";
 
 const productId = "TOP_PRODUCT_ID";
 
