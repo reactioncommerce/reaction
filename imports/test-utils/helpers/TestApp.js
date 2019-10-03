@@ -7,7 +7,6 @@ import buildContext from "/imports/node-app/core/util/buildContext";
 import Factory from "/imports/test-utils/helpers/factory";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import registerPlugins from "/imports/node-app/registerPlugins";
-import "/imports/node-app/extendSchemas";
 import createDataLoaders from "/imports/node-app/core/util/createDataLoaders";
 
 class TestApp {
