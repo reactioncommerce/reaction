@@ -1,5 +1,5 @@
 import SimpleSchema from "simpl-schema";
-import { ProductConfigurationSchema } from "../simpleSchemas";
+import { ProductConfigurationSchema } from "../simpleSchemas.js";
 
 export const inputSchema = new SimpleSchema({
   productConfiguration: ProductConfigurationSchema,
