@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import accounting from "accounting-js";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import sendOrderEmail from "../util/sendOrderEmail";
 
 const inputSchema = new SimpleSchema({

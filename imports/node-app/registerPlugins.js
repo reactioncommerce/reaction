@@ -6,6 +6,7 @@ import registerFilesPlugin from "./core-services/files/index.js";
 import registerI18nPlugin from "./core-services/i18n/index.js";
 import registerInventoryPlugin from "./core-services/inventory/index.js";
 import registerSettingsPlugin from "./core-services/settings/index.js";
+import registerPaymentsPlugin from "./core-services/payments/index.js";
 import registerShippingPlugin from "./core-services/shipping/index.js";
 import registerShopPlugin from "./core-services/shop/index.js";
 import registerTagsPlugin from "./core-services/tags/index.js";
@@ -15,6 +16,8 @@ import registerTaxesPlugin from "./core-services/taxes/index.js";
 import registerAddressPlugin from "./plugins/address/index.js";
 import registerDashboardPlugin from "./plugins/dashboard/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
+import registerExamplePaymentsPlugin from "./plugins/payments-example/index.js";
+import registerNavigationPlugin from "./plugins/navigation/index.js";
 import registerNotificationsPlugin from "./plugins/notifications/index.js";
 import registerProductAdminPlugin from "./plugins/product-admin/index.js";
 import registerShippingRatesPlugin from "./plugins/shipping-rates/index.js";
@@ -23,6 +26,7 @@ import registerSimplePricingPlugin from "./plugins/simple-pricing/index.js";
 import registerSimpleSchemaPlugin from "./plugins/simple-schema/index.js";
 import registerSitemapGeneratorPlugin from "./plugins/sitemap-generator/index.js";
 import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
+import registerStripePaymentsPlugin from "./plugins/payments-stripe/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTaxesRatesPlugin from "./plugins/taxes-rates/index.js";
@@ -37,15 +41,11 @@ import registerCheckoutPlugin from "/imports/plugins/core/checkout/server/no-met
 import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/register";
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
-import registerExamplePaymentsPlugin from "/imports/plugins/included/payments-example/server/no-meteor/register";
 import registerJobQueuePlugin from "/imports/plugins/included/job-queue/server/no-meteor/register";
 import registerMarketplacePlugin from "/imports/plugins/included/marketplace/server/no-meteor/register";
-import registerNavigationPlugin from "/imports/plugins/core/navigation/server/no-meteor/register";
 import registerOrdersPlugin from "/imports/plugins/core/orders/server/no-meteor/register";
-import registerPaymentsPlugin from "/imports/plugins/core/payments/server/no-meteor/register";
 import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
 import registerProductVariantPlugin from "/imports/plugins/included/product-variant/server/no-meteor/register";
-import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
