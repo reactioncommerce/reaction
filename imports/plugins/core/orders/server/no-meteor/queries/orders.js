@@ -90,7 +90,10 @@ export default async function orders(context, { filters, shopIds } = {}) {
 
         // Regex match names as they include the whole name in one field
         { "payments.address.fullName": regexMatch },
-        { "shipping.address.fullName": regexMatch }
+        { "shipping.address.fullName": regexMatch },
+
+        // Regex match for payer phone number
+        { "payments.address.phone": regexMatch }
       ]
     };
   }
