@@ -252,3 +252,18 @@ export const paymentInputSchema = new SimpleSchema({
   },
   method: String
 });
+
+/**
+ * @summary Extend schemas from other plugins
+ * @param {Object} schemas Schema map from context
+ * @return {undefined}
+ */
+export function extendSchemas(schemas) {
+  schemas.Shop.extend({
+    orderStatusLabels: {
+      type: Object,
+      blackbox: true,
+      optional: true
+    }
+  });
+}

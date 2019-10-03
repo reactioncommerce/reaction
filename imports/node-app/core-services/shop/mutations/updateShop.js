@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { ShopLogoUrls, StorefrontUrls } from "/imports/collections/schemas";
+import { ShopLogoUrls, StorefrontUrls } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String,

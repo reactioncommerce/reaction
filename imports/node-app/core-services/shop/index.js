@@ -3,6 +3,7 @@ import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import createDataLoaders from "./utils/createDataLoaders.js";
+import { Shop } from "./simpleSchemas.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -22,6 +23,9 @@ export default async function register(app) {
     mutations,
     functionsByType: {
       createDataLoaders: [createDataLoaders]
+    },
+    simpleSchemas: {
+      Shop
     }
   });
 }
