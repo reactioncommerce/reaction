@@ -8,7 +8,7 @@ import accounting from "accounting-js";
  * @param {Number} amount - The rate as a number
  * @returns {Object} The Rate object in GraphQL schema
  */
-export function getRateObjectForRate(amount) {
+export default function getRateObjectForRate(amount) {
   if (!amount && amount !== 0) return null;
 
   const percent = amount * 100;
