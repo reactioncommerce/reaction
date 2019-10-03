@@ -72,3 +72,5 @@ import "./70_remove_shop_app_version";
 import "./71_add_allow_custom_user_locale";
 import "./72_add_fulfillmentType_to_shipping_methods";
 import "./73_remove_translations_data";
+import "./74_remove_media_to_grid";
+import "./75_update_media_permissions";

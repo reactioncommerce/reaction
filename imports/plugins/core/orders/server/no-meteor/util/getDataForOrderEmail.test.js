@@ -37,7 +37,6 @@ test("returns expected data structure (base case)", async () => {
         media: [
           {
             priority: 1,
-            toGrid: 1,
             productId: "mockProductId",
             variantId: "mockVariantId",
             URLs: {
@@ -215,7 +214,6 @@ test("storefrontUrls is optional", async () => {
         media: [
           {
             priority: 1,
-            toGrid: 1,
             productId: "mockProductId",
             variantId: "mockVariantId",
             URLs: {
@@ -258,7 +256,6 @@ test("storefrontUrls does not use :token", async () => {
         media: [
           {
             priority: 1,
-            toGrid: 1,
             productId: "mockProductId",
             variantId: "mockVariantId",
             URLs: {

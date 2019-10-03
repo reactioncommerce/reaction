@@ -4,6 +4,15 @@ import queries from "./queries";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 import startup from "./startup";
+import {
+  ImageInfo,
+  ImageSizes,
+  SocialMetadata,
+  VariantBaseSchema,
+  CatalogVariantSchema,
+  CatalogProduct,
+  Catalog
+} from "/imports/collections/schemas/catalog.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -43,6 +52,15 @@ export default async function register(app) {
     queries,
     settings: {
       name: "Catalog"
+    },
+    simpleSchemas: {
+      ImageInfo,
+      ImageSizes,
+      SocialMetadata,
+      CatalogProductOption: VariantBaseSchema,
+      CatalogProductVariant: CatalogVariantSchema,
+      CatalogProduct,
+      Catalog
     }
   });
 }

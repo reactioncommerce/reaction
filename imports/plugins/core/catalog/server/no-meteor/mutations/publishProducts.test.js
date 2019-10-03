@@ -134,7 +134,6 @@ const mockProduct = {
   media: [
     {
       metadata: {
-        toGrid: 1,
         priority: 1,
         productId: internalProductId,
         variantId: null
@@ -276,7 +275,6 @@ const expectedItemsResponse = {
           productId: opaqueProductId,
           media: [
             {
-              toGrid: 1,
               priority: 1,
               productId: opaqueProductId,
               variantId: null,
@@ -290,7 +288,6 @@ const expectedItemsResponse = {
             }
           ],
           primaryImage: {
-            toGrid: 1,
             priority: 1,
             productId: opaqueProductId,
             variantId: null,

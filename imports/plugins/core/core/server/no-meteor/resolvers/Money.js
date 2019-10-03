@@ -1,7 +1,7 @@
-import { getXformedCurrencyByCode } from "@reactioncommerce/reaction-graphql-xforms/currency";
-import formatMoney from "/imports/utils/formatMoney";
+import getCurrencyDefinitionByCode from "@reactioncommerce/api-utils/getCurrencyDefinitionByCode.js";
+import formatMoney from "@reactioncommerce/api-utils/formatMoney.js";
 
 export default {
-  currency: (node) => getXformedCurrencyByCode(node.currencyCode),
+  currency: (node) => getCurrencyDefinitionByCode(node.currencyCode),
   displayAmount: (node) => formatMoney(node.amount, node.currencyCode)
 };
