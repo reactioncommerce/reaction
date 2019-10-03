@@ -1,0 +1,11 @@
+mutation ( $cartId: ID!, $items: [CartItemInput]!, $token: String ) {
+  addCartItems( input: {cartId: $cartId, items: $items, token: $token} ){
+    cart {
+      items {
+        totalCount
+      }
+    }
+    # incorrectPriceFailures
+    # minOrderQuantityFailures
+  }
+}

@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`error messaging cartId not found 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "NOT_FOUND",
+      "exception": Object {
+        "details": Object {},
+        "error": "not-found",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cart not found",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Cart not found",
+    "path": Array [
+      "addCartItems",
+    ],
+  },
+]
+`;
+
+exports[`error messaging cartId not found with anonymous token 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "NOT_FOUND",
+      "exception": Object {
+        "details": Object {},
+        "error": "not-found",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cart not found",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Cart not found",
+    "path": Array [
+      "addCartItems",
+    ],
+  },
+]
+`;
+
+exports[`error messaging expect fail when cartId not opaque 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "ID namespace must be reaction/cart",
+    "path": Array [
+      "addCartItems",
+    ],
+  },
+]
+`;
