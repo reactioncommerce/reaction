@@ -1,5 +1,5 @@
 import Handlebars from "handlebars";
-import getTemplateConfig from "../util/getTemplateConfig";
+import getTemplateConfig from "../util/getTemplateConfig.js";
 
 /**
  * @summary Renders an email given some name and data.

@@ -82,10 +82,8 @@ Meteor.startup(() => {
    */
   Accounts.onCreateUser((options, user) => {
     const roles = {};
-    const additionals = {
-      name: options && options.name,
-      profile: Object.assign({}, options && options.profile)
-    };
+    const profile = { ...((options && options.profile) || {}) };
+    if (!user.name) user.name = options && options.name;
     if (!user.emails) user.emails = [];
 
     // init default user roles
@@ -120,29 +118,29 @@ Meteor.startup(() => {
         }
         if (serviceObj.name) {
           user.username = serviceObj.name;
-          additionals.profile.name = serviceObj.name;
+          profile.name = serviceObj.name;
         }
         // TODO: For now we have here instagram, twitter and google avatar cases
         // need to make complete list
         if (serviceObj.picture) {
-          additionals.profile.picture = user.services[service].picture;
+          profile.picture = user.services[service].picture;
         } else if (serviceObj.profile_image_url_https) {
-          additionals.profile.picture = user.services[service].dprofile_image_url_https;
+          profile.picture = user.services[service].dprofile_image_url_https;
         } else if (serviceObj.profile_picture) {
-          additionals.profile.picture = user.services[service].profile_picture;
+          profile.picture = user.services[service].profile_picture;
         }
         // Correctly map Instagram profile data to Meteor user / Accounts
         if (userServices.instagram) {
           user.username = serviceObj.username;
           user.name = serviceObj.full_name;
-          additionals.name = serviceObj.full_name;
-          additionals.profile.picture = serviceObj.profile_picture;
-          additionals.profile.bio = serviceObj.bio;
-          additionals.profile.name = serviceObj.full_name;
-          additionals.profile.username = serviceObj.username;
+          profile.picture = serviceObj.profile_picture;
+          profile.bio = serviceObj.bio;
+          profile.name = serviceObj.full_name;
         }
       }
     }
+
+    if (user.username) profile.username = user.username;
 
     // Automatically verify "localhost" email addresses
     let emailIsVerified = false;
@@ -166,12 +164,10 @@ Meteor.startup(() => {
     const context = Promise.await(getGraphQLContextInMeteorMethod(null));
 
     Promise.await(context.mutations.createAccount({ ...context, isInternalCall: true }, {
-      bio: (additionals && additionals.profile && additionals.profile.bio) || null,
       emails: user.emails,
-      name: (additionals && additionals.profile && additionals.profile.name) || null,
-      picture: (additionals && additionals.profile && additionals.profile.picture) || null,
+      name: user.name,
+      profile,
       shopId,
-      username: (additionals && additionals.profile && additionals.profile.username) || null,
       userId: user._id,
       verificationToken: tokenObj && tokenObj.token
     }));
