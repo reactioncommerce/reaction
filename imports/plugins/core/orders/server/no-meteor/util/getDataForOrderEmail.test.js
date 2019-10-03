@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { restore, rewire$getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+import { restore, rewire$getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import getDataForOrderEmail from "./getDataForOrderEmail";
 
 beforeAll(() => {
