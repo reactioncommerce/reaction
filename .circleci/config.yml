@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:8
+      - image: node:10
 
     dependencies:
       pre:
@@ -55,4 +55,4 @@ workflows:
             - build
           filters:
             branches:
-              only: master
+              only: trunk
