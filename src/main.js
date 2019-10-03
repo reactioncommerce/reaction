@@ -49,8 +49,10 @@ const Logger = Bunyan.createLogger({
   streams
 });
 
-// export bunyan so users can create their own loggers from scratch if needed
-export { default as bunyan } from "bunyan";
-export { default as bunyanFormat } from "bunyan-format";
+// Export bunyan so users can create their own loggers from scratch if needed.
+// In order to be compatible with Node ES modules, we can't have named CommonJS
+// exports, so we set these as properties of the default export instead.
+Logger.bunyan = Bunyan;
+Logger.bunyanFormat = BunyanFormat;
 
 export default Logger;
