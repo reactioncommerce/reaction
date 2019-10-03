@@ -1,5 +1,4 @@
 import saveSettings from "./saveSettings";
-import verifySettings from "./verifySettings";
 
 /**
  * @file Methods for sending emails, retrying failed emails and verifying email configuration.
@@ -10,6 +9,5 @@ import verifySettings from "./verifySettings";
 */
 
 export default {
-  "email/saveSettings": saveSettings,
-  "email/verifySettings": verifySettings
+  "email/saveSettings": saveSettings
 };

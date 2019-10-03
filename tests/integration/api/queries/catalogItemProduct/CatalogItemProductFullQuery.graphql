@@ -49,7 +49,6 @@ query ($slugOrId: String!) {
         displayPrice
       }
       media {
-        toGrid
         priority
         productId
         variantId
@@ -62,7 +61,6 @@ query ($slugOrId: String!) {
         }
       }
       primaryImage {
-        toGrid
         priority
         productId
         variantId

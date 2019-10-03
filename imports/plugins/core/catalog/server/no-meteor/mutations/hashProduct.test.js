@@ -56,7 +56,6 @@ const mockProduct = {
   media: [
     {
       metadata: {
-        toGrid: 1,
         priority: 1,
         productId: internalProductId,
         variantId: null
@@ -95,7 +94,6 @@ const mockGetCatalogProductMedia = jest
   .mockReturnValue(Promise.resolve([
     {
       priority: 1,
-      toGrid: 1,
       productId: internalProductId,
       variantId: internalVariantIds[1],
       URLs: {

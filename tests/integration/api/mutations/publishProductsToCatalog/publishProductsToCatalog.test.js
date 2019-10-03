@@ -89,11 +89,11 @@ beforeAll(async () => {
   await testApp.start();
   mutate = testApp.mutate(PublishProductToCatalogMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId, slug: `slug${_id}` })));
-  await testApp.collections.Products.insert(mockProduct);
-  await testApp.collections.Products.insert(mockVariant);
-  await testApp.collections.Products.insert(mockOptionOne);
-  await testApp.collections.Products.insert(mockOptionTwo);
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insertOne({ _id, shopId: internalShopId, slug: `slug${_id}` })));
+  await testApp.collections.Products.insertOne(mockProduct);
+  await testApp.collections.Products.insertOne(mockVariant);
+  await testApp.collections.Products.insertOne(mockOptionOne);
+  await testApp.collections.Products.insertOne(mockOptionTwo);
 
   await testApp.setLoggedInUser({
     _id: "123",
@@ -108,7 +108,7 @@ afterAll(async () => {
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[2] });
   await testApp.clearLoggedInUser();
-  testApp.stop();
+  await testApp.stop();
 });
 
 // publish new product to catalog

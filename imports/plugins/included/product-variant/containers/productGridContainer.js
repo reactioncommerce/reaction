@@ -1,19 +1,34 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
 import _ from "lodash";
+import { withApollo } from "react-apollo";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { compose } from "recompose";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Session } from "meteor/session";
+import { i18next, Reaction } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
 
+const cloneProducts = gql`
+  mutation cloneProducts($input: CloneProductsInput!) {
+    cloneProducts(input: $input) {
+      products {
+        _id
+      }
+    }
+  }
+`;
+
 const wrapComponent = (Comp) => (
   class ProductGridContainer extends Component {
     static propTypes = {
+      client: PropTypes.object,
       isSearch: PropTypes.bool,
       productIds: PropTypes.arrayOf(PropTypes.string),
       products: PropTypes.array,
@@ -60,10 +75,10 @@ const wrapComponent = (Comp) => (
 
     handlePublishProducts = async (productIds, mutation) => {
       // we need to encode the productIds here to pass them to GraphQL
-      const productIdObjects = productIds.map((productId) => (
+      const productnamespacedIdObjects = productIds.map((productId) => (
         { namespace: "Product", id: productId }
       ));
-      const opaqueProductIds = await getOpaqueIds(productIdObjects);
+      const opaqueProductIds = await getOpaqueIds(productnamespacedIdObjects);
 
       await mutation({
         variables: {
@@ -84,9 +99,30 @@ const wrapComponent = (Comp) => (
       ReactionProduct.archiveProduct(productIds);
     }
 
-    handleDuplicateProducts = (productIds) => {
-      ReactionProduct.cloneProduct(productIds);
+    handleDuplicateProducts = async (productIds) => {
+      const { client } = this.props;
+      const namespacedProductIdObjects = productIds.map((productId) => ({ namespace: "Product", id: productId }));
+      const opaqueProductIds = await getOpaqueIds(namespacedProductIdObjects);
+      const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+      try {
+        await client.mutate({
+          mutation: cloneProducts,
+          variables: {
+            input: {
+              shopId: opaqueShopId,
+              productIds: opaqueProductIds
+            }
+          }
+        });
+
+        Alerts.toast(i18next.t("productDetailEdit.cloneProductSuccess"), "success");
+      } catch (error) {
+        Alerts.toast(i18next.t("productDetailEdit.cloneProductFail", { err: error }), "error");
+        throw new ReactionError("server-error", "Unable to clone product");
+      }
     }
+
 
     handlePageChange = (event, page) => {
       Session.set("products/page", page);
@@ -136,7 +172,6 @@ function composer(props, onData) {
   (props.products || []).forEach((product) => {
     const primaryMedia = Media.findOneLocal({
       "metadata.productId": product._id,
-      "metadata.toGrid": 1,
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     }, {
       sort: { "metadata.priority": 1, "uploadedAt": 1 }
@@ -175,11 +210,13 @@ function composer(props, onData) {
 }
 
 registerComponent("ProductGrid", ProductGrid, [
+  withApollo,
   composeWithTracker(composer),
   wrapComponent
 ]);
 
 export default compose(
+  withApollo,
   composeWithTracker(composer),
   wrapComponent
 )(ProductGrid);

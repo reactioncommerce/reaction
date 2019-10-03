@@ -96,25 +96,19 @@
     {{/each}}
   </div>
 
+  {{#if shopSettingsBlockProps.shopId}}
   <div class="shopSettingsBlockArea">
     {{> React component=Blocks region="ShopSettings" blockProps=shopSettingsBlockProps}}
   </div>
+  {{/if}}
 </template>
 
 <template name="optionsShopSettings">
   <div class="optionsShopSettings">
     {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
     doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
-      {{> afQuickField name='settings.openexchangerates.appId'}}
-      {{> afQuickField name='settings.openexchangerates.refreshPeriod' placeholder="every 1 hour"}}
       {{> afQuickField name='settings.google.clientId'}}
       {{> afQuickField name='settings.google.apiKey'}}
-      {{> afQuickField name='settings.cart.cleanupDurationDays' placeholder="older than 3 days"}}
-      {{#if isPackageEnabled "reaction-sitemap-generator"}}
-        <div>
-          {{> React component=SitemapSettingsContainer packageData=packageData}}
-        </div>
-      {{/if}}
       {{> shopSettingsSubmitButton}}
     {{/autoForm}}
   </div>

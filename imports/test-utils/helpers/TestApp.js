@@ -20,7 +20,7 @@ class TestApp {
       // debug: true,
       context: {
         createUser: async (userInfo) => {
-          const { email, name, username } = userInfo;
+          const { email, name, shopId, username } = userInfo;
 
           const user = {
             _id: Random.id(),
@@ -41,6 +41,7 @@ class TestApp {
                 loginTokens: []
               }
             },
+            shopId,
             username
           };
 
@@ -55,7 +56,8 @@ class TestApp {
       functionsByType,
       graphQL: {
         schemas: extraSchemas
-      }
+      },
+      shouldInitReplicaSet: true
     });
 
     this.collections = this.reactionNodeApp.collections;

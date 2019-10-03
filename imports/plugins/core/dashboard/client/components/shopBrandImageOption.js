@@ -1,21 +1,40 @@
-import React, { Component } from "react";
+import React from "react";
+import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
+import { useMutation } from "@apollo/react-hooks";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { i18next } from "/client/api";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Logger from "/client/modules/logger";
+import { i18next } from "/client/api";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 
-class ShopBrandImageOption extends Component {
-  static propTypes = {
-    afterSetBrandImage: PropTypes.func,
-    isSelected: PropTypes.bool,
-    media: PropTypes.object.isRequired
-  };
+const deleteMediaRecordMutation = gql`
+  mutation DeleteMediaRecord($input: DeleteMediaRecordInput!) {
+    deleteMediaRecord(input: $input) {
+      mediaRecord {
+        _id
+      }
+    }
+  }
+`;
 
-  handleClick = () => {
-    const { afterSetBrandImage, isSelected, media } = this.props;
+/**
+ * ShopBrandImageOption
+ * @param {Object} props Component props
+ * @returns {Node} React component
+ */
+function ShopBrandImageOption(props) {
+  const {
+    afterSetBrandImage,
+    isSelected,
+    media
+  } = props;
 
+  const [deleteMediaRecord] = useMutation(deleteMediaRecordMutation, { ignoreResults: true });
+
+  const handleClick = () => {
     if (isSelected) return;
 
     const asset = { mediaId: media._id, type: "navbarBrandImage" };
@@ -31,19 +50,37 @@ class ShopBrandImageOption extends Component {
     });
   };
 
-  handleRemoveClick = () => {
-    const { media } = this.props;
+  const handleRemoveMedia = (mediaToRemove) => {
+    const imageUrl = mediaToRemove.url({ store: "medium" });
+    const mediaRecordId = mediaToRemove._id;
 
     Alerts.alert({
-      title: "Remove this brand image?",
-      type: "warning",
+      confirmButtonText: "Remove",
+      imageHeight: 150,
+      imageUrl,
       showCancelButton: true,
-      confirmButtonText: "Remove"
-    }, (shouldRemove) => {
-      if (shouldRemove) {
-        Meteor.call("media/remove", media._id, (error) => {
-          if (error) {
-            Alerts.toast(error.reason, "warning", {
+      title: "Remove this brand image?",
+      type: "warning"
+    }, async (isConfirm) => {
+      if (isConfirm) {
+        const [
+          opaqueMediaRecordId,
+          opaqueShopId
+        ] = await getOpaqueIds([
+          { namespace: "MediaRecord", id: mediaRecordId },
+          { namespace: "Shop", id: mediaToRemove.metadata.shopId }
+        ]);
+
+        deleteMediaRecord({
+          variables: {
+            input: {
+              mediaRecordId: opaqueMediaRecordId,
+              shopId: opaqueShopId
+            }
+          },
+          onError(error) {
+            Logger.error(error);
+            Alerts.toast("Unable to remove media", "error", {
               autoHide: 10000
             });
           }
@@ -52,33 +89,34 @@ class ShopBrandImageOption extends Component {
     });
   };
 
-  render() {
-    const { isSelected, media } = this.props;
+  return (
+    <div>
+      <Components.MediaItem
+        editable
+        onClick={handleClick}
+        onRemoveMedia={handleRemoveMedia}
+        size="small"
+        source={media}
+      />
 
-    return (
-      <div>
-        <Components.MediaItem
-          editable
-          onClick={this.handleClick}
-          onRemoveMedia={this.handleRemoveClick}
-          size="small"
-          source={media}
-        />
-
-        <FormControlLabel
-          control={
-            <Radio
-              checked={isSelected}
-              onClick={this.handleClick}
-            />
-          }
-          label="Use as shop logo"
-        />
-      </div>
-
-    );
-  }
+      <FormControlLabel
+        control={
+          <Radio
+            checked={isSelected}
+            onClick={handleClick}
+          />
+        }
+        label="Use as shop logo"
+      />
+    </div>
+  );
 }
+
+ShopBrandImageOption.propTypes = {
+  afterSetBrandImage: PropTypes.func,
+  isSelected: PropTypes.bool,
+  media: PropTypes.object.isRequired
+};
 
 registerComponent("ShopBrandImageOption", ShopBrandImageOption);
 

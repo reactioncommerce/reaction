@@ -368,7 +368,6 @@ export const mockInternalCatalogProducts = [
     productId: internalProductIds[0],
     media: [
       {
-        toGrid: 1,
         priority: 1,
         productId: internalProductIds[0],
         variantId: null,
@@ -382,7 +381,6 @@ export const mockInternalCatalogProducts = [
       }
     ],
     primaryImage: {
-      toGrid: 1,
       priority: 1,
       productId: internalProductIds[0],
       variantId: null,
@@ -458,7 +456,6 @@ export const mockInternalCatalogProducts = [
     productId: internalProductIds[1],
     media: [
       {
-        toGrid: 1,
         priority: 1,
         productId: internalProductIds[1],
         variantId: null,
@@ -472,7 +469,6 @@ export const mockInternalCatalogProducts = [
       }
     ],
     primaryImage: {
-      toGrid: 1,
       priority: 1,
       productId: internalProductIds[1],
       variantId: null,
@@ -564,7 +560,6 @@ export const mockExternalCatalogProducts = [
       productId: opaqueProductIds[0],
       media: [
         {
-          toGrid: 1,
           priority: 1,
           productId: opaqueProductIds[0],
           variantId: null,
@@ -578,7 +573,6 @@ export const mockExternalCatalogProducts = [
         }
       ],
       primaryImage: {
-        toGrid: 1,
         priority: 1,
         productId: opaqueProductIds[0],
         variantId: null,
@@ -669,7 +663,6 @@ export const mockExternalCatalogProducts = [
       productId: opaqueProductIds[1],
       media: [
         {
-          toGrid: 1,
           priority: 1,
           productId: opaqueProductIds[1],
           variantId: null,
@@ -683,7 +676,6 @@ export const mockExternalCatalogProducts = [
         }
       ],
       primaryImage: {
-        toGrid: 1,
         priority: 1,
         productId: opaqueProductIds[1],
         variantId: null,

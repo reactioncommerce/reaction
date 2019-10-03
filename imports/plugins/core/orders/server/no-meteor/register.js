@@ -1,5 +1,6 @@
 import i18n from "./i18n";
 import mutations from "./mutations";
+import preStartup from "./preStartup.js";
 import queries from "./queries";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
@@ -39,6 +40,7 @@ export default async function register(app) {
     },
     functionsByType: {
       getDataForOrderEmail: [getDataForOrderEmail],
+      preStartup: [preStartup],
       startup: [startup]
     },
     graphQL: {

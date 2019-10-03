@@ -11,7 +11,6 @@ export default async function getCatalogProductMedia(productId, collections) {
   const mediaArray = await Media.find(
     {
       "metadata.productId": productId,
-      "metadata.toGrid": 1,
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     },
     {
@@ -23,11 +22,10 @@ export default async function getCatalogProductMedia(productId, collections) {
   const catalogProductMedia = mediaArray
     .map((media) => {
       const { metadata } = media;
-      const { toGrid, priority, productId: prodId, variantId } = metadata || {};
+      const { priority, productId: prodId, variantId } = metadata || {};
 
       return {
         priority,
-        toGrid,
         productId: prodId,
         variantId,
         URLs: {

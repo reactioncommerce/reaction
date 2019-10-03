@@ -10,7 +10,6 @@ const mockProductId = "999";
 const mockMediaArray = [
   {
     metadata: {
-      toGrid: 1,
       priority: 2,
       productId: "444",
       variantId: "245"
@@ -19,7 +18,6 @@ const mockMediaArray = [
   },
   {
     metadata: {
-      toGrid: 1,
       priority: 1,
       productId: "999",
       variantId: "345"
@@ -30,7 +28,6 @@ const mockMediaArray = [
 const mockCatalogProductMediaArray = [
   {
     priority: 1,
-    toGrid: 1,
     productId: "999",
     variantId: "345",
     URLs: {
@@ -43,7 +40,6 @@ const mockCatalogProductMediaArray = [
   },
   {
     priority: 2,
-    toGrid: 1,
     productId: "444",
     variantId: "245",
     URLs: {

@@ -1,18 +1,12 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
-import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import sendWelcomeEmail from "/imports/plugins/core/accounts/server/util/sendWelcomeEmail";
-import sendVerificationEmail from "./util/sendVerificationEmail";
-
-appEvents.on("afterAddUnverifiedEmailToUser", ({ email, userId }) => {
-  sendVerificationEmail({ email, userId });
-});
+import generateVerificationTokenObject from "/imports/plugins/core/accounts/server/no-meteor/util/generateVerificationTokenObject";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 
 Meteor.startup(() => {
   /**
@@ -87,38 +81,25 @@ Meteor.startup(() => {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
-    const groupToAddUser = options.groupId;
     const roles = {};
-    const additionals = {
-      name: options && options.name,
-      profile: Object.assign({}, options && options.profile)
-    };
+    const profile = { ...((options && options.profile) || {}) };
+    if (!user.name) user.name = options && options.name;
     if (!user.emails) user.emails = [];
 
     // init default user roles
     // we won't create users unless we have a shop.
-    const shopId = Reaction.getShopId(); // current shop; not primary shop
+    const shopId = (options && options.shopId) || Reaction.getShopId(); // current shop; not primary shop
     if (shopId) {
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
+        // TODO: look into getting rid of this guest account
         const group = Collections.Groups.findOne({ slug: "guest", shopId });
         // if no group permissions retrieved from DB, use the default Reaction set
         roles[shopId] = (group && group.permissions) || Reaction.defaultVisitorRoles;
-        if (group) {
-          additionals.groups = [group._id];
-        }
       } else {
-        let group;
-        if (groupToAddUser) {
-          group = Collections.Groups.findOne({ _id: groupToAddUser, shopId });
-        } else {
-          group = Collections.Groups.findOne({ slug: "customer", shopId });
-        }
+        const group = Collections.Groups.findOne({ slug: "customer", shopId });
         // if no group or customer permissions retrieved from DB, use the default Reaction customer set
         roles[shopId] = (group && group.permissions) || Reaction.defaultCustomerRoles;
-        if (group) {
-          additionals.groups = [group._id];
-        }
       }
     }
 
@@ -137,29 +118,29 @@ Meteor.startup(() => {
         }
         if (serviceObj.name) {
           user.username = serviceObj.name;
-          additionals.profile.name = serviceObj.name;
+          profile.name = serviceObj.name;
         }
         // TODO: For now we have here instagram, twitter and google avatar cases
         // need to make complete list
         if (serviceObj.picture) {
-          additionals.profile.picture = user.services[service].picture;
+          profile.picture = user.services[service].picture;
         } else if (serviceObj.profile_image_url_https) {
-          additionals.profile.picture = user.services[service].dprofile_image_url_https;
+          profile.picture = user.services[service].dprofile_image_url_https;
         } else if (serviceObj.profile_picture) {
-          additionals.profile.picture = user.services[service].profile_picture;
+          profile.picture = user.services[service].profile_picture;
         }
         // Correctly map Instagram profile data to Meteor user / Accounts
         if (userServices.instagram) {
           user.username = serviceObj.username;
           user.name = serviceObj.full_name;
-          additionals.name = serviceObj.full_name;
-          additionals.profile.picture = serviceObj.profile_picture;
-          additionals.profile.bio = serviceObj.bio;
-          additionals.profile.name = serviceObj.full_name;
-          additionals.profile.username = serviceObj.username;
+          profile.picture = serviceObj.profile_picture;
+          profile.bio = serviceObj.bio;
+          profile.name = serviceObj.full_name;
         }
       }
     }
+
+    if (user.username) profile.username = user.username;
 
     // Automatically verify "localhost" email addresses
     let emailIsVerified = false;
@@ -168,29 +149,31 @@ Meteor.startup(() => {
       emailIsVerified = true;
     }
 
-    // clone before adding roles
-    const account = Object.assign({ shopId }, user, additionals);
-    account.userId = user._id;
-    Collections.Accounts.insert(account);
-
-    const insertedAccount = Collections.Accounts.findOne({ userId: user._id });
-    Promise.await(appEvents.emit("afterAccountCreate", {
-      account: insertedAccount,
-      createdBy: user._id
-    }));
-
-    // send a welcome email to new users,
+    // create a tokenObj and send a welcome email to new users,
     // but skip the first default admin user and anonymous users
     // (default admins already get a verification email)
+    let tokenObj;
     if (shopId && !emailIsVerified && user.emails[0]) {
-      const token = Random.secret();
-      sendWelcomeEmail(shopId, user._id, token);
-      const when = new Date();
-      const tokenObj = {
-        address: user.emails[0].address,
-        token,
-        when
-      };
+      tokenObj = generateVerificationTokenObject({ address: user.emails[0].address });
+    }
+
+    // Get GraphQL context to pass to mutation
+    // This is the only place in the app that still
+    // uses `getGraphQLContextInMeteorMethod`
+    // Prioritize removing if possible
+    const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+
+    Promise.await(context.mutations.createAccount({ ...context, isInternalCall: true }, {
+      emails: user.emails,
+      name: user.name,
+      profile,
+      shopId,
+      userId: user._id,
+      verificationToken: tokenObj && tokenObj.token
+    }));
+
+    // set verification token on user
+    if (tokenObj) {
       _.set(user, "services.email.verificationTokens", [tokenObj]);
     }
 

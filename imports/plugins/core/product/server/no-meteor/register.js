@@ -1,6 +1,11 @@
 import mutations from "./mutations";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
+import {
+  Product,
+  ProductVariant,
+  VariantMedia
+} from "/imports/collections/schemas/products.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -32,6 +37,11 @@ export default async function register(app) {
       resolvers,
       schemas
     },
-    mutations
+    mutations,
+    simpleSchemas: {
+      Product,
+      ProductVariant,
+      VariantMedia
+    }
   });
 }
