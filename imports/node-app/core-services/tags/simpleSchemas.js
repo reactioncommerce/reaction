@@ -1,28 +1,6 @@
 import SimpleSchema from "simpl-schema";
 
 /**
- * @name createdAtAutoValue
- * @memberof Schemas
- * @method
- * @summary Helper method used for schema injection autoValue
- * @example autoValue: createdAtAutoValue
- * @returns {Date} Date representing now if it's an insert
- */
-export function createdAtAutoValue() {
-  // We don't want to unset or overwrite a createdAt in a nested
-  // document, for example, in a product being added to cart items
-  if (this.closestSubschemaFieldName) return;
-
-  /* eslint-disable consistent-return */
-  // This function returns different `types`, therefore
-  // consistent-return needs to be disabled
-  if (this.isInsert) return new Date();
-  if (this.isUpsert) return { $setOnInsert: new Date() };
-  return this.unset();
-  /* eslint-enable consistent-return */
-}
-
-/**
  * @name Metafield
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -126,14 +104,10 @@ export const Tag = new SimpleSchema({
     label: "Tag shopId"
   },
   "createdAt": {
-    type: Date,
-    autoValue: createdAtAutoValue
+    type: Date
   },
   "updatedAt": {
-    type: Date,
-    autoValue() {
-      return new Date();
-    }
+    type: Date
   },
   "heroMediaUrl": {
     type: String,
