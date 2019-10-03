@@ -74,7 +74,7 @@
     "graphql-tag": "2.9.2",
     "graphql-tools": "4.0.3",
     "graphql.js": "0.4.20",
-    "handlebars": "~4.1.2",
+    "handlebars": "~4.4.0",
     "hoist-non-react-statics": "^2.3.1",
     "i18next": "17.0.13",
     "i18next-browser-languagedetector": "3.0.3",
