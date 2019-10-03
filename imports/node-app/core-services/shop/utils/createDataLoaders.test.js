@@ -1,4 +1,4 @@
-import convertToDataloaderResult from "../../../core/util/convertToDataloaderResult.js";
+import convertToDataloaderResult from "@reactioncommerce/api-utils/graphql/convertToDataloaderResult.js";
 import createDataLoaders from "./createDataLoaders.js";
 
 const context = {
