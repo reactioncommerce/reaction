@@ -1,7 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
 
 const DEFAULT_URLS_PER_SITEMAP = 1000;
 
@@ -42,7 +41,7 @@ export default async function generateSitemaps(context, { shopIds = [], notifyUs
 
   // Notify user, if manually generated
   if (notifyUserId) {
-    await createNotification(context.collections, {
+    await context.mutations.createNotification(context, {
       accountId: notifyUserId,
       type: "sitemapGenerated",
       message: "Sitemap refresh is complete",

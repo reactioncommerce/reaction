@@ -1,4 +1,6 @@
-import startup from "./startup";
+import mutations from "./mutations/index.js";
+import startup from "./startup.js";
+import { Notification } from "./simpleSchemas.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -9,7 +11,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Notifications",
     name: "reaction-notification",
-    icon: "fa fa-bell",
     collections: {
       Notifications: {
         name: "Notifications"
@@ -17,6 +18,10 @@ export default async function register(app) {
     },
     functionsByType: {
       startup: [startup]
+    },
+    mutations,
+    simpleSchemas: {
+      Notification
     },
     registry: [{
       label: "Notifications",
