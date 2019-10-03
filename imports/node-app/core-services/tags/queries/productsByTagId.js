@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import arrayJoinPlusRemainingQuery from "/imports/utils/arrayJoinPlusRemainingQuery";
+import arrayJoinPlusRemainingQuery from "@reactioncommerce/api-utils/arrayJoinPlusRemainingQuery.js";
 
 /**
  * @name queries.productsByTagId

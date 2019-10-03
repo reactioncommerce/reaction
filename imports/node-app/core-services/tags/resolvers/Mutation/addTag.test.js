@@ -1,13 +1,12 @@
-
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
-import removeTag from "./removeTag";
+import addTag from "./addTag.js";
 
 beforeEach(() => {
   jest.resetAllMocks();
 });
 
-test("calls Mutation.removeTag and returns the RemoveTagPayload on success", async () => {
+test("calls Mutation.addTag and returns the AddTagPayload on success", async () => {
   const shopId = encodeShopOpaqueId("s1");
   const tagId = encodeTagOpaqueId("t1");
   const tag = {
@@ -21,14 +20,13 @@ test("calls Mutation.removeTag and returns the RemoveTagPayload on success", asy
 
   const context = {
     mutations: {
-      removeTag: mockMutation
+      addTag: mockMutation
     }
   };
 
-  const result = await removeTag(null, {
+  const result = await addTag(null, {
     input: {
-      shopId,
-      tagId,
+      ...tag,
       clientMutationId: "clientMutationId"
     }
   }, context);

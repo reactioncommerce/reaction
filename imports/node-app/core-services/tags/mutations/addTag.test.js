@@ -1,5 +1,5 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import addTag from "./addTag";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import addTag from "./addTag.js";
 
 beforeEach(() => {
   jest.resetAllMocks();

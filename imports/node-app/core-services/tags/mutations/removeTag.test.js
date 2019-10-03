@@ -1,5 +1,5 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import removeTag from "./removeTag";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import removeTag from "./removeTag.js";
 
 const testShopId = "1234";
 const testTagId = "5678";
