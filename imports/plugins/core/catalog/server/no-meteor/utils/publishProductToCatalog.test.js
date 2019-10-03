@@ -161,7 +161,6 @@ const updatedMockProduct = {
   media: [
     {
       metadata: {
-        toGrid: 1,
         priority: 1,
         productId: internalProductId,
         variantId: null
@@ -212,7 +211,6 @@ const mockGeCatalogProductMedia = jest
   .mockReturnValue(Promise.resolve([
     {
       priority: 1,
-      toGrid: 1,
       productId: internalProductId,
       variantId: internalVariantIds[1],
       URLs: {

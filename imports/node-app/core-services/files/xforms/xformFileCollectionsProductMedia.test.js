@@ -1,4 +1,4 @@
-import xformFileCollectionsProductMedia from "./xformFileCollectionsProductMedia";
+import xformFileCollectionsProductMedia from "./xformFileCollectionsProductMedia.js";
 
 const ROOT_URL = "https://example.com";
 const context = {
@@ -8,7 +8,6 @@ const context = {
 test("catalogProduct works in base case", () => {
   const expected = {
     priority: "unit-test-priority",
-    toGrid: "unit-test-to-grid",
     productId: "unit-test-product-id",
     variantId: "unit-test-variant-id",
     URLs: {
@@ -22,7 +21,6 @@ test("catalogProduct works in base case", () => {
   const result = xformFileCollectionsProductMedia(
     {
       priority: "unit-test-priority",
-      toGrid: "unit-test-to-grid",
       productId: "unit-test-product-id",
       variantId: "unit-test-variant-id",
       URLs: {

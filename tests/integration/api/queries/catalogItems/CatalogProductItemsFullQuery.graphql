@@ -65,7 +65,6 @@ query (
             displayPrice
           }
           media {
-            toGrid
             priority
             productId
             variantId
@@ -78,7 +77,6 @@ query (
             }
           }
           primaryImage {
-            toGrid
             priority
             productId
             variantId

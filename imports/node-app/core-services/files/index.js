@@ -1,5 +1,8 @@
-import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia";
-import startup from "./startup";
+import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia.js";
+import mutations from "./mutations/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -10,7 +13,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "File Collections",
     name: "reaction-file-collections",
-    icon: "fa fa-files-o",
     collections: {
       MediaRecords: {
         name: "cfs.Media.filerecord",
@@ -31,11 +33,36 @@ export default async function register(app) {
       startup: [startup],
       xformCatalogProductMedia: [xformFileCollectionsProductMedia]
     },
+    mutations,
+    graphQL: {
+      resolvers,
+      schemas
+    },
     backgroundJobs: {
       cleanup: [
         { type: "saveImage/local", purgeAfterDays: 7 },
         { type: "saveImage/remote", purgeAfterDays: 7 }
       ]
-    }
+    },
+    registry: [
+      {
+        route: "media/create",
+        label: "Create Media",
+        permission: "mediaCreate",
+        name: "media/create"
+      },
+      {
+        route: "media/update",
+        label: "Update Media",
+        permission: "mediaUpdate",
+        name: "media/update"
+      },
+      {
+        route: "media/delete",
+        label: "Delete Media",
+        permission: "mediaDelete",
+        name: "media/delete"
+      }
+    ]
   });
 }
