@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import DataTable, { useDataTable } from "@reactioncommerce/catalyst/DataTable";
 import { useApolloClient } from "@apollo/react-hooks";
 import primaryShopIdQuery from "imports/plugins/core/graphql/lib/queries/getPrimaryShopId";
-import { Card, CardHeader, CardContent, makeStyles } from "@material-ui/core";
+import { Box, Card, CardHeader, CardContent, makeStyles } from "@material-ui/core";
 import OrderDateCell from "./OrderDateCell";
 import OrderIdCell from "./OrderIdCell";
 import ordersQuery from "../graphql/queries/orders";
@@ -54,7 +54,8 @@ function OrdersTable({ history }) {
       accessor: "payments[0].billingAddress.fullName"
     },
     {
-      Header: "Total",
+      Header: () => <Box textAlign="right">{i18next.t("admin.table.headers.total")}</Box>,
+      Cell: ({ cell }) => <Box textAlign="right">{cell.value}</Box>,
       accessor: "payments[0].amount.displayAmount"
     }
   ], []);
