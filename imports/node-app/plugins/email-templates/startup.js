@@ -1,4 +1,4 @@
-import seedEmailTemplatesForShop from "./util/seedEmailTemplatesForShop";
+import seedEmailTemplatesForShop from "./util/seedEmailTemplatesForShop.js";
 
 /**
  * @name startup

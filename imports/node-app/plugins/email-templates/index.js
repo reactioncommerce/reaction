@@ -1,5 +1,5 @@
-import mutations from "./mutations";
-import startup from "./startup";
+import mutations from "./mutations/index.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
