@@ -6,12 +6,15 @@ import registerShopPlugin from "./core-services/shop/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerShippingRatesPlugin from "./plugins/shipping-rates/index.js";
+import registerSimplePricingPlugin from "./plugins/simple-pricing/index.js";
+import registerSimpleSchemaPlugin from "./plugins/simple-schema/index.js";
 import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
-import registerUIPlugin from "./plugins/ui/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
+import registerUIPlugin from "./plugins/ui/index.js";
 
 /* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
@@ -37,9 +40,7 @@ import registerPaymentsPlugin from "/imports/plugins/core/payments/server/no-met
 import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
 import registerProductVariantPlugin from "/imports/plugins/included/product-variant/server/no-meteor/register";
 import registerProductAdminPlugin from "/imports/plugins/included/product-admin/server/no-meteor/register";
-import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
-import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";
 import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
@@ -57,6 +58,7 @@ export default async function registerPlugins(app) {
    * CORE
    * (Core plugin needs Media collection, so files plugin must be first)
    */
+  await registerSimpleSchemaPlugin(app); // REQUIRED
   await registerJobQueuePlugin(app); // REQUIRED
   await registerFilesPlugin(app); // REQUIRED
   await registerCorePlugin(app); // REQUIRED

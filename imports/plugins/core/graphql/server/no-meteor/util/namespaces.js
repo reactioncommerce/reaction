@@ -20,5 +20,6 @@ export default {
   Refund: "reaction/refund",
   Role: "reaction/role",
   Shop: "reaction/shop",
-  Tag: "reaction/tag"
+  Tag: "reaction/tag",
+  User: "reaction/user"
 };
