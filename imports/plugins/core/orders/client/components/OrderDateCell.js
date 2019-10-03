@@ -14,10 +14,10 @@ export default function OrderDateCell({ row }) {
   const duration = moment.duration(now.diff(orderCreatedAt));
   const durationHours = duration.asHours();
 
-  let dateTimeFormat = "MM-DD HH:mm A";
+  let dateTimeFormat = "M/D [at] HH:mma";
   // Show year for orders placed outside the current year.
   if (orderCreatedAt.year() !== now.year()) {
-    dateTimeFormat = "YYYY-MM-DD HH:mm A";
+    dateTimeFormat = "M/D/YYYY [at] HH:mma";
   }
 
   // Render order date by default
