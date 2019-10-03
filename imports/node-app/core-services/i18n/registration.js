@@ -1,4 +1,4 @@
-import { mergeResource } from "./translations";
+import { mergeResource } from "./translations.js";
 
 /**
  * @summary Will be called for every plugin

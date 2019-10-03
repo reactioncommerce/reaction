@@ -1,4 +1,4 @@
-import getShopLogo from "../util/getShopLogo";
+import getShopLogo from "../util/getShopLogo.js";
 
 /**
  * @method send
