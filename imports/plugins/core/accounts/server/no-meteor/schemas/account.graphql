@@ -25,6 +25,33 @@ input AddAccountAddressBookEntryInput {
   clientMutationId: String
 }
 
+"Defines the account which should be created"
+input CreateAccountInput {
+  "Bio to display on profile"
+  bio: String
+
+  "Email record to create account with"
+  emails: [EmailRecordInput]!
+
+  "Name to display on profile"
+  name: String
+
+  "URL of picture to diplay on profile"
+  picture: String
+
+  "The ID of the shop this account will belong to"
+  shopId: ID!
+
+  "The userID account was created from create a new account from"
+  userId: ID!
+
+  "Username on service used to create account"
+  username: String
+
+  "Token used to send account verification emails"
+  verificationToken: String
+}
+
 "Describes changes that should be applied to one of the addresses for an account"
 input UpdateAccountAddressBookEntryInput {
   "The account ID"
@@ -262,6 +289,15 @@ type AddAccountEmailRecordPayload {
   emailRecord: EmailRecord
 }
 
+"The response from the `createAccount` mutation"
+type CreateAccountPayload {
+  "The added account"
+  account: Account
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 "The response from the `sendResetAccountPasswordEmail` mutation"
 type SendResetAccountPasswordEmailPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -354,6 +390,12 @@ extend type Mutation {
     "Mutation input"
     input: AddAccountEmailRecordInput!
   ): AddAccountEmailRecordPayload
+
+  "Create an account based off a user"
+  createAccount(
+    "Mutation input"
+    input: CreateAccountInput!
+  ): CreateAccountPayload
 
   "Remove an address from the `addressBook` field for an account"
   removeAccountAddressBookEntry(
