@@ -1,6 +1,6 @@
 import { toFixed } from "accounting-js";
 import Logger from "@reactioncommerce/logger";
-import getDisplayPrice from "./getDisplayPrice";
+import getDisplayPrice from "./getDisplayPrice.js";
 
 /**
  * @name xformCurrencyExchangePricing

@@ -1,4 +1,4 @@
-import getVariantPriceRange from "./getVariantPriceRange";
+import getVariantPriceRange from "./getVariantPriceRange.js";
 
 const internalCatalogProductId = "999";
 const internalVariantIds = ["875", "874", "873"];
