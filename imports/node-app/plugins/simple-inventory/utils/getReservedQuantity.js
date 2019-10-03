@@ -1,4 +1,4 @@
-import orderIsApproved from "./orderIsApproved";
+import orderIsApproved from "./orderIsApproved.js";
 
 /**
  *

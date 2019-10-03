@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
-import { inputSchema } from "../utils/defaults";
-import getMongoUpdateModifier from "../utils/getMongoUpdateModifier";
+import { inputSchema } from "../utils/defaults.js";
+import getMongoUpdateModifier from "../utils/getMongoUpdateModifier.js";
 
 const logCtx = { name: "simple-inventory", file: "updateSimpleInventoryBulk" };
 

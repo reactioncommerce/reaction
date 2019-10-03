@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { SimpleInventoryCollectionSchema } from "../simpleSchemas";
-import { updateFields, defaultValues } from "./defaults";
+import { SimpleInventoryCollectionSchema } from "../simpleSchemas.js";
+import { updateFields, defaultValues } from "./defaults.js";
 
 /**
  * @summary returns object with $set & $setOnInsert to be used in mongo update call. The values are validated with the collection schema before returning
