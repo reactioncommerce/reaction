@@ -1,16 +1,18 @@
 import Logger from "@reactioncommerce/logger";
-import createNotification from "./createNotification";
 
 /**
  * @summary Given a canceled order, sends appropriate notifications to all interested parties.
- * @param {Object} collections Map of MongoDB collections
+ * @param {Object} context App context
+ * @param {Object} context.collections Map of MongoDB collections
  * @param {Object} order The order doc
  * @returns {undefined}
  */
-export default async function sendCanceledOrderNotifications(collections, order) {
+export default async function sendCanceledOrderNotifications(context, order) {
+  const { collections: { Shops } } = context;
+
   // Send notification to user who made the order
   if (order.accountId) {
-    const shop = await collections.Shops.findOne({
+    const shop = await Shops.findOne({
       _id: order.shopId
     }, {
       projection: {
@@ -18,7 +20,7 @@ export default async function sendCanceledOrderNotifications(collections, order)
       }
     });
 
-    createNotification(collections, {
+    context.mutations.createNotification(context, {
       accountId: order.accountId,
       type: "orderCanceled",
       url: `${shop.slug ? `/${shop.slug}` : ""}/notifications`

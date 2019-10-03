@@ -1,7 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import { Notification as NotificationSchema } from "/imports/collections/schemas";
-import appEvents from "/imports/node-app/core/util/appEvents";
+import { Notification as NotificationSchema } from "../simpleSchemas.js";
 
 const messageForType = {
   orderCanceled: "Your order was canceled.",
@@ -15,7 +14,7 @@ const messageForType = {
 /**
  * @method
  * @summary Create a notification to an account
- * @param {Object} collections - Map of MongoDB collections
+ * @param {Object} context - App context
  * @param {String} input.accountId - The account to notify
  * @param {String} input.details - details of the Notification
  * @param {String} input.type - The type of Notification
@@ -23,7 +22,9 @@ const messageForType = {
  * @param {String} [input.message] - Message to send, if not already defined in messageForType
  * @returns {undefined}
  */
-export default async function createNotification(collections, { accountId, details, type, url, userId, message = "" }) {
+export default async function createNotification(context, { accountId, details, type, url, userId, message = "" }) {
+  const { appEvents, collections: { Notifications } } = context;
+
   const doc = {
     _id: Random.id(),
     details,
@@ -37,7 +38,7 @@ export default async function createNotification(collections, { accountId, detai
   };
 
   NotificationSchema.validate(doc);
-  await collections.Notifications.insertOne(doc);
+  await Notifications.insertOne(doc);
 
   // Email or SMS plugins can watch for this event to send
   appEvents.emit("afterNotificationCreate", { createdBy: userId, notification: doc }).catch((error) => {
