@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { paymentMethods } from "../registration";
+import { paymentMethods } from "../registration.js";
 
 /**
  * @name availablePaymentMethods

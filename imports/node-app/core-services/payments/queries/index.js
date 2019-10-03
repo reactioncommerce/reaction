@@ -1,5 +1,5 @@
-import availablePaymentMethods from "./availablePaymentMethods";
-import paymentMethods from "./paymentMethods";
+import availablePaymentMethods from "./availablePaymentMethods.js";
+import paymentMethods from "./paymentMethods.js";
 
 export default {
   availablePaymentMethods,

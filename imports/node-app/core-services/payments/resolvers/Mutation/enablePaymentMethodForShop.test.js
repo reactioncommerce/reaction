@@ -1,4 +1,4 @@
-import enablePaymentMethodForShop from "./enablePaymentMethodForShop";
+import enablePaymentMethodForShop from "./enablePaymentMethodForShop.js";
 
 const internalShopId = "555";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDo1NTU=";

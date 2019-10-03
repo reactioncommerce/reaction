@@ -1,7 +1,7 @@
-import Mutation from "./Mutation";
-import Payment from "./Payment";
-import PaymentMethod from "./PaymentMethod";
-import Query from "./Query";
+import Mutation from "./Mutation/index.js";
+import Payment from "./Payment/index.js";
+import PaymentMethod from "./PaymentMethod/index.js";
+import Query from "./Query/index.js";
 
 export default {
   Mutation,

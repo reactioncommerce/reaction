@@ -1,9 +1,9 @@
-import i18n from "./i18n";
-import mutations from "./mutations";
-import queries from "./queries";
-import { registerPluginHandler } from "./registration";
-import resolvers from "./resolvers";
-import schemas from "./schemas";
+import i18n from "./i18n/index.js";
+import mutations from "./mutations/index.js";
+import queries from "./queries/index.js";
+import { registerPluginHandler } from "./registration.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
