@@ -1,6 +1,6 @@
 /* eslint-disable id-length */
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import updateTag from "./updateTag";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import updateTag from "./updateTag.js";
 
 const testShopId = "1234";
 const testTagId = "5678";

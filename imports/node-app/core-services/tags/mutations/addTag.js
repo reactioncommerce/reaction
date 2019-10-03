@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Tag as TagSchema } from "/imports/collections/schemas";
-import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
+import getSlug from "@reactioncommerce/api-utils/getSlug.js";
+import { Tag as TagSchema } from "../simpleSchemas.js"; // TODO: update schemas
 
 /**
  * @name Mutation.addTag

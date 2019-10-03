@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
-import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
+import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 
 const inputSchema = new SimpleSchema({
   "slug": String,
