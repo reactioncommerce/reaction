@@ -1,5 +1,5 @@
-import generateSitemaps from "../util/generate-sitemaps";
-import updateSitemapTaskForShop from "./updateSitemapTaskForShop";
+import generateSitemaps from "../util/generate-sitemaps.js";
+import updateSitemapTaskForShop from "./updateSitemapTaskForShop.js";
 
 const jobType = "sitemaps/generate";
 
