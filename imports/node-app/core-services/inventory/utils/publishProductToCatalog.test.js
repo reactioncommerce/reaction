@@ -15,12 +15,17 @@ function getCatalogProduct() {
     isDeleted: false,
     isVisible: true,
     productId,
+    isBackorder: undefined,
+    isLowQuantity: undefined,
+    isSoldOut: undefined,
     variants: Factory.CatalogVariantSchema.makeMany(1, {
       isDeleted: false,
+      isSoldOut: undefined,
       isVisible: true,
       variantId: "TOP_VARIANT_1",
       options: Factory.VariantBaseSchema.makeMany(2, {
         isDeleted: false,
+        isSoldOut: undefined,
         isVisible: true,
         variantId: (index) => `OPTION_VARIANT_${index + 1}`
       })
