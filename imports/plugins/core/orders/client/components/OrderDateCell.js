@@ -8,8 +8,6 @@ import moment from "moment";
  * @return {React.Component} A date component
  */
 export default function OrderDateCell({ row }) {
-  if (!moment) return null;
-
   // Determine what date or time to display.
   const now = moment();
   const orderCreatedAt = moment(row.values.createdAt);
