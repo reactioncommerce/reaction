@@ -1,8 +1,10 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
 import { encodeCartOpaqueId, encodeCartItemsOpaqueIds } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import { createFactoryForSchema } from "@reactioncommerce/data-factory";
 import AddCartItemsMutation from "./AddCartItemsMutation.graphql";
 import Logger from "@reactioncommerce/logger";
+import SimpleSchema from "simpl-schema";
 
 let testApp;
 let addCartItems;
@@ -10,12 +12,37 @@ let fakeCart;
 let fakeCartItem;
 let shopId;
 let originalError;
+let cartItemInputSchemaFactory;
+
+
 
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
   addCartItems = testApp.mutate(AddCartItemsMutation);
+  cartItemInputSchemaFactory = createFactoryForSchema(
+    new SimpleSchema({
+      "metafields": {
+        type: Array,
+        optional: true
+      },
+      "metafields.$": {
+        type: Object,
+        blackbox: true
+      },
+      "productConfiguration": Object,
+      "productConfiguration.productId": String,
+      "productConfiguration.productVariantId": String,
+      "quantity": SimpleSchema.Integer,
+      "price": Object,
+      "price.currencyCode": String,
+      "price.amount": {
+        type: Number,
+        optional: true
+      }
+    })
+  );
 });
 afterAll(async () => {
   await testApp.collections.Cart.deleteMany({});
