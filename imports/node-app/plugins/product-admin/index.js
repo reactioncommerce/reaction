@@ -1,4 +1,4 @@
-import i18n from "./i18n";
+import i18n from "./i18n/index.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -9,7 +9,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Product Admin",
     name: "reaction-product-admin",
-    icon: "fa fa-box",
     i18n,
     registry: [
       // `ProductAdmin` is a role that currently clones the `createProduct` role
