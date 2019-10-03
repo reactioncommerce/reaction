@@ -3,6 +3,7 @@
 import registerEmailPlugin from "./core-services/email/index.js";
 import registerFilesPlugin from "./core-services/files/index.js";
 import registerI18nPlugin from "./core-services/i18n/index.js";
+import registerProductPlugin from "./core-services/product/index.js";
 import registerSettingsPlugin from "./core-services/settings/index.js";
 import registerShippingPlugin from "./core-services/shipping/index.js";
 import registerShopPlugin from "./core-services/shop/index.js";
@@ -40,7 +41,6 @@ import registerMarketplacePlugin from "/imports/plugins/included/marketplace/ser
 import registerNavigationPlugin from "/imports/plugins/core/navigation/server/no-meteor/register";
 import registerOrdersPlugin from "/imports/plugins/core/orders/server/no-meteor/register";
 import registerPaymentsPlugin from "/imports/plugins/core/payments/server/no-meteor/register";
-import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
 import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";
 import registerStripePaymentsPlugin from "/imports/plugins/included/payments-stripe/server/no-meteor/register";
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";

@@ -1,11 +1,11 @@
-import mutations from "./mutations";
-import resolvers from "./resolvers";
-import schemas from "./schemas";
+import mutations from "./mutations/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
 import {
   Product,
   ProductVariant,
   VariantMedia
-} from "/imports/collections/schemas/products.js";
+} from "./simpleSchemas.js"; // TODO: update simpleschemas
 
 /**
  * @summary Import and call this function to add this plugin to your API.

@@ -2,8 +2,8 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createProductOrVariant from "../utils/createProductOrVariant";
-import isAncestorDeleted from "../utils/isAncestorDeleted";
+import createProductOrVariant from "../utils/createProductOrVariant.js";
+import isAncestorDeleted from "../utils/isAncestorDeleted.js";
 
 const inputSchema = new SimpleSchema({
   productId: String,

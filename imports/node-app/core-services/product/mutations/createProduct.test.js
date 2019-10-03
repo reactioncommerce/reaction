@@ -1,5 +1,5 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import createProduct from "./createProduct";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import createProduct from "./createProduct.js";
 
 mockContext.mutations.createProduct = jest.fn().mockName("mutations.createProduct");
 

@@ -3,7 +3,7 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import copyMedia from "../utils/copyMedia";
+import copyMedia from "../utils/copyMedia.js";
 
 const inputSchema = new SimpleSchema({
   "shopId": String,
