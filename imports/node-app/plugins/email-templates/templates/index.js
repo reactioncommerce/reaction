@@ -1,15 +1,15 @@
-import coreDefaultTemplate from "./coreDefault";
-import inviteNewShopMemberTemplate from "./accounts/inviteNewShopMember";
-import inviteShopMemberTemplate from "./accounts/inviteShopMember";
-import inviteShopOwnerTemplate from "./accounts/inviteShopOwner";
-import resetPasswordTemplate from "./accounts/resetPassword";
-import welcomeEmailTemplate from "./accounts/sendWelcomeEmail";
-import verifyUpdatedEmailTemplate from "./accounts/verifyUpdatedEmail";
-import verifyEmailTemplate from "./accounts/verifyEmail";
-import coreOrderNewTemplate from "./orders/new";
-import orderShippedTemplate from "./orders/shipped";
-import orderRefundedTemplate from "./orders/refunded";
-import orderItemRefundTemplate from "./orders/itemRefund";
+import coreDefaultTemplate from "./coreDefault.js";
+import inviteNewShopMemberTemplate from "./accounts/inviteNewShopMember.js";
+import inviteShopMemberTemplate from "./accounts/inviteShopMember.js";
+import inviteShopOwnerTemplate from "./accounts/inviteShopOwner.js";
+import resetPasswordTemplate from "./accounts/resetPassword.js";
+import welcomeEmailTemplate from "./accounts/sendWelcomeEmail.js";
+import verifyUpdatedEmailTemplate from "./accounts/verifyUpdatedEmail.js";
+import verifyEmailTemplate from "./accounts/verifyEmail.js";
+import coreOrderNewTemplate from "./orders/new.js";
+import orderShippedTemplate from "./orders/shipped.js";
+import orderRefundedTemplate from "./orders/refunded.js";
+import orderItemRefundTemplate from "./orders/itemRefund.js";
 
 export default [
   /*

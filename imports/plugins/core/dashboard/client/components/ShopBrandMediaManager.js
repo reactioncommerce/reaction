@@ -14,7 +14,7 @@ function ShopBrandMediaManager(props) {
   if (!shop) return null;
 
   const selectedMediaId = shop.brandAssets && shop.brandAssets.navbarBrandImageId;
-  const metadata = { type: "brandAsset", shopId: shop.internalId };
+  const metadata = { type: "brandAsset" };
 
   return (
     <div>
@@ -28,7 +28,7 @@ function ShopBrandMediaManager(props) {
           />
         ))}
       </div>
-      <Components.MediaUploader canUploadMultiple metadata={metadata} />
+      <Components.MediaUploader canUploadMultiple metadata={metadata} shopId={shop._id} />
     </div>
   );
 }

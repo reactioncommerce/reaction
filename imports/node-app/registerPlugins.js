@@ -1,11 +1,13 @@
 /* node-app imports */
 /* core-services */
+import registerFilesPlugin from "./core-services/files/index.js";
 import registerSettingsPlugin from "./core-services/settings/index.js";
 import registerShippingPlugin from "./core-services/shipping/index.js";
 import registerShopPlugin from "./core-services/shop/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerShippingRatesPlugin from "./plugins/shipping-rates/index.js";
 import registerSimplePricingPlugin from "./plugins/simple-pricing/index.js";
 import registerSimpleSchemaPlugin from "./plugins/simple-schema/index.js";
@@ -26,9 +28,7 @@ import registerDashboardPlugin from "/imports/plugins/core/dashboard/server/no-m
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
 import registerEmailPlugin from "/imports/plugins/core/email/server/no-meteor/register";
-import registerEmailTemplatesPlugin from "/imports/plugins/included/email-templates/server/register";
 import registerExamplePaymentsPlugin from "/imports/plugins/included/payments-example/server/no-meteor/register";
-import registerFilesPlugin from "/imports/plugins/core/files/server/no-meteor/register";
 import registerI18nPlugin from "/imports/plugins/core/i18n/server/no-meteor/register";
 import registerInventoryPlugin from "/imports/plugins/core/inventory/server/no-meteor/register";
 import registerJobQueuePlugin from "/imports/plugins/included/job-queue/server/no-meteor/register";

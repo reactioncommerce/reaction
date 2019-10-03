@@ -10,7 +10,7 @@ import getCatalogProductMedia from "./getCatalogProductMedia";
  * @returns {Object} The transformed variant
  */
 export function xformVariant(variant, variantMedia) {
-  const primaryImage = variantMedia.find(({ toGrid }) => toGrid === 1) || null;
+  const primaryImage = variantMedia[0] || null;
 
   return {
     _id: variant._id,
@@ -48,7 +48,7 @@ export function xformVariant(variant, variantMedia) {
 export async function xformProduct({ context, product, variants }) {
   const { collections } = context;
   const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
-  const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
+  const primaryImage = catalogProductMedia[0] || null;
 
   const topVariants = [];
   const options = new Map();

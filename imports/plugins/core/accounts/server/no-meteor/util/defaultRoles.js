@@ -16,31 +16,18 @@ export const defaultVisitorRoles = [
   "tag"
 ];
 
-export const defaultOwnerRoles = [
-  "account/profile",
-  "admin",
-  "cart/checkout",
-  "cart/completed",
+export const defaultShopManagerRoles = [
+  ...defaultCustomerRoles,
   "createProduct",
   "dashboard",
-  "guest",
-  "index",
-  "owner",
-  "product",
+  "media/create",
+  "media/update",
+  "media/delete",
   "product/admin",
-  "shopSettings",
-  "tag"
+  "shopSettings"
 ];
 
-export const defaultShopManagerRoles = [
-  "account/profile",
-  "cart/completed",
-  "createProduct",
-  "dashboard",
-  "guest",
-  "index",
-  "product",
-  "product/admin",
-  "shopSettings",
-  "tag"
+export const defaultOwnerRoles = [
+  ...defaultShopManagerRoles,
+  "owner"
 ];

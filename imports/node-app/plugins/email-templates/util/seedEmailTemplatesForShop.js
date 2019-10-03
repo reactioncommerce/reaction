@@ -1,5 +1,5 @@
-import templateDefinitions from "../templates";
-import seedEmailTemplate from "./seedEmailTemplate";
+import templateDefinitions from "../templates/index.js";
+import seedEmailTemplate from "./seedEmailTemplate.js";
 
 /**
  * @summary Creates shop-owned email template records from the default templates

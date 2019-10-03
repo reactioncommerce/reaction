@@ -123,7 +123,6 @@ const mockProduct = {
   media: [
     {
       metadata: {
-        toGrid: 1,
         priority: 1,
         productId: internalProductId,
         variantId: null
