@@ -1,5 +1,5 @@
-import { rewire as rewire$getVariantPriceRange, restore as restore$getVariantPriceRange } from "./getVariantPriceRange";
-import getProductPriceRange from "./getProductPriceRange";
+import { rewire as rewire$getVariantPriceRange, restore as restore$getVariantPriceRange } from "./getVariantPriceRange.js";
+import getProductPriceRange from "./getProductPriceRange.js";
 
 const mockGetVariantPriceRange = jest.fn().mockName("getVariantPriceRange");
 

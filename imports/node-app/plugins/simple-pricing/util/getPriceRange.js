@@ -1,4 +1,4 @@
-import getDisplayPrice from "./getDisplayPrice";
+import getDisplayPrice from "./getDisplayPrice.js";
 
 /**
  *

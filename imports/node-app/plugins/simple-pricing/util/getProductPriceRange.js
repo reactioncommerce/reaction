@@ -1,5 +1,5 @@
-import getPriceRange from "./getPriceRange";
-import getVariantPriceRange from "./getVariantPriceRange";
+import getPriceRange from "./getPriceRange.js";
+import getVariantPriceRange from "./getVariantPriceRange.js";
 
 /**
  *
