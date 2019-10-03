@@ -3,12 +3,20 @@ import InboxIcon from "mdi-material-ui/Inbox";
 import { registerBlock } from "@reactioncommerce/reaction-components";
 import { registerOperatorRoute } from "/imports/client/ui";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
+import { Shop } from "/imports/collections/schemas";
 import OrderCardSummary from "./components/OrderCardSummary";
 import Orders from "./containers/orderDashboardContainer";
 import Order from "./containers/OrderContainer";
 import OrderPrint from "./containers/OrderPrintContainer";
-import "../lib/extendShopSchema";
 import "./helpers";
+
+Shop.extend({
+  orderStatusLabels: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  }
+});
 
 // Register order related routes
 /*

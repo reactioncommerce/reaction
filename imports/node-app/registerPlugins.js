@@ -1,19 +1,26 @@
 /* node-app imports */
 /* core-services */
+import registerFilesPlugin from "./core-services/files/index.js";
 import registerSettingsPlugin from "./core-services/settings/index.js";
 import registerPaymentsPlugin from "./core-services/payments/index.js";
 import registerShippingPlugin from "./core-services/shipping/index.js";
+import registerShopPlugin from "./core-services/shop/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerExamplePaymentsPlugin from "./plugins/payments-example/index.js";
-import registerStripePaymentsPlugin from "./plugins/payments-stripe/index.js";
+import registerShippingRatesPlugin from "./plugins/shipping-rates/index.js";
+import registerSimpleInventoryPlugin from "./plugins/simple-inventory/index.js";
+import registerSimplePricingPlugin from "./plugins/simple-pricing/index.js";
+import registerSimpleSchemaPlugin from "./plugins/simple-schema/index.js";
 import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
+import registerStripePaymentsPlugin from "./plugins/payments-stripe/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
-import registerUIPlugin from "./plugins/ui/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
+import registerUIPlugin from "./plugins/ui/index.js";
 
 /* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
@@ -25,8 +32,6 @@ import registerDashboardPlugin from "/imports/plugins/core/dashboard/server/no-m
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
 import registerEmailPlugin from "/imports/plugins/core/email/server/no-meteor/register";
-import registerEmailTemplatesPlugin from "/imports/plugins/included/email-templates/server/register";
-import registerFilesPlugin from "/imports/plugins/core/files/server/no-meteor/register";
 import registerI18nPlugin from "/imports/plugins/core/i18n/server/no-meteor/register";
 import registerInventoryPlugin from "/imports/plugins/core/inventory/server/no-meteor/register";
 import registerJobQueuePlugin from "/imports/plugins/included/job-queue/server/no-meteor/register";
@@ -37,10 +42,6 @@ import registerOrdersPlugin from "/imports/plugins/core/orders/server/no-meteor/
 import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
 import registerProductVariantPlugin from "/imports/plugins/included/product-variant/server/no-meteor/register";
 import registerProductAdminPlugin from "/imports/plugins/included/product-admin/server/no-meteor/register";
-import registerShippingRatesPlugin from "/imports/plugins/included/shipping-rates/server/no-meteor/register";
-import registerShopPlugin from "/imports/plugins/core/shop/server/register";
-import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
-import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 import registerSitemapGeneratorPlugin from "/imports/plugins/included/sitemap-generator/server/no-meteor/register";
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
 import registerTaxesPlugin from "/imports/plugins/core/taxes/server/no-meteor/register";
@@ -57,6 +58,7 @@ export default async function registerPlugins(app) {
    * CORE
    * (Core plugin needs Media collection, so files plugin must be first)
    */
+  await registerSimpleSchemaPlugin(app); // REQUIRED
   await registerJobQueuePlugin(app); // REQUIRED
   await registerFilesPlugin(app); // REQUIRED
   await registerCorePlugin(app); // REQUIRED
