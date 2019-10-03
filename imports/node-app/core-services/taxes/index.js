@@ -1,13 +1,14 @@
-import i18n from "./i18n";
-import mutateNewOrderItemBeforeCreate from "./mutateNewOrderItemBeforeCreate";
-import mutateNewVariantBeforeCreate from "./mutateNewVariantBeforeCreate";
-import publishProductToCatalog from "./publishProductToCatalog";
-import { registerPluginHandler } from "./registration";
-import mutations from "./mutations";
-import queries from "./queries";
-import resolvers from "./resolvers";
-import schemas from "./schemas";
-import setTaxesOnCart from "./util/setTaxesOnCart";
+import i18n from "./i18n/index.js";
+import mutateNewOrderItemBeforeCreate from "./mutateNewOrderItemBeforeCreate.js";
+import mutateNewVariantBeforeCreate from "./mutateNewVariantBeforeCreate.js";
+import publishProductToCatalog from "./publishProductToCatalog.js";
+import { registerPluginHandler } from "./registration.js";
+import mutations from "./mutations/index.js";
+import preStartup from "./preStartup.js";
+import queries from "./queries/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import setTaxesOnCart from "./util/setTaxesOnCart.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -35,6 +36,7 @@ export default async function register(app) {
     functionsByType: {
       mutateNewOrderItemBeforeCreate: [mutateNewOrderItemBeforeCreate],
       mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
+      preStartup: [preStartup],
       publishProductToCatalog: [publishProductToCatalog],
       registerPluginHandler: [registerPluginHandler]
     },

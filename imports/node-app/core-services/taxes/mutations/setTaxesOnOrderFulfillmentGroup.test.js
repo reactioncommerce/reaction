@@ -1,7 +1,7 @@
 import Factory from "/imports/test-utils/helpers/factory";
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/no-meteor/util/xformOrderGroupToCommonOrder";
-import setTaxesOnOrderFulfillmentGroup from "./setTaxesOnOrderFulfillmentGroup";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import xformOrderGroupToCommonOrder from "../test-util/xformOrderGroupToCommonOrder.js";
+import setTaxesOnOrderFulfillmentGroup from "./setTaxesOnOrderFulfillmentGroup.js";
 
 const address = Factory.Address.makeOne({ _id: undefined });
 

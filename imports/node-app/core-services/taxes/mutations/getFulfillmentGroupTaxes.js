@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getTaxServicesForShop } from "../registration";
-import { TaxServiceResult } from "../../../lib/simpleSchemas";
+import { getTaxServicesForShop } from "../registration.js";
+import { TaxServiceResult } from "../simpleSchemas.js";
 
 /**
  * @summary Returns all taxes that apply to a provided order, delegating to a more specific

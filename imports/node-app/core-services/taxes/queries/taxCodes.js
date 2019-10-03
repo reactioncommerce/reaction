@@ -1,9 +1,9 @@
 import { sortBy } from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { taxServices as registeredTaxServices } from "../registration";
+import { getTaxServicesForShop } from "../registration.js";
 
 /**
- * @name taxServices
+ * @name taxCodes
  * @method
  * @memberof Taxes/NoMeteorQueries
  * @summary get list of all registered tax services for a shop
@@ -11,16 +11,14 @@ import { taxServices as registeredTaxServices } from "../registration";
  * @param {String} shopId - shop ID for which to get tax services
  * @returns {Array<Object>} Array of tax services
  */
-export default function taxServices(context, shopId) {
+export default async function taxCodes(context, shopId) {
   if (!context.userHasPermission(["owner", "admin"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
-  const list = Object.values(registeredTaxServices).map((service) => ({
-    displayName: service.displayName,
-    name: service.name,
-    pluginName: service.pluginName
-  }));
+  const { primaryTaxService } = await getTaxServicesForShop(context, shopId);
+  if (!primaryTaxService) return [];
 
-  return sortBy(list, "displayName");
+  const list = await primaryTaxService.functions.getTaxCodes({ context, shopId });
+  return sortBy(list, "label");
 }

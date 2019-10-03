@@ -1,4 +1,4 @@
-import getUpdatedCartItems from "./getUpdatedCartItems";
+import getUpdatedCartItems from "./getUpdatedCartItems.js";
 
 /**
  * @summary Cart transformation function that sets tax-related props on cart

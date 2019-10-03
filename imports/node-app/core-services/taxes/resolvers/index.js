@@ -1,6 +1,6 @@
-import graphqlGroupXform from "../util/graphqlGroupXform";
-import graphqlItemXform from "../util/graphqlItemXform";
-import Query from "./Query";
+import graphqlGroupXform from "../util/graphqlGroupXform.js";
+import graphqlItemXform from "../util/graphqlItemXform.js";
+import Query from "./Query/index.js";
 
 export default {
   Cart: graphqlGroupXform,

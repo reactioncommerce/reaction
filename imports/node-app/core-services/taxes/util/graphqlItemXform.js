@@ -1,4 +1,4 @@
-import { xformRateToRateObject } from "@reactioncommerce/reaction-graphql-xforms/core";
+import getRateObjectForRate from "@reactioncommerce/api-utils/getRateObjectForRate.js";
 
 export default {
   tax(orderItem) {
@@ -36,7 +36,7 @@ export default {
         currencyCode,
         amount: calculatedTax.taxableAmount
       },
-      taxRate: xformRateToRateObject(calculatedTax.taxRate)
+      taxRate: getRateObjectForRate(calculatedTax.taxRate)
     }));
   }
 };

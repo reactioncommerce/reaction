@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import { registerPluginHandler, getTaxServicesForShop } from "./registration";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import { registerPluginHandler, getTaxServicesForShop } from "./registration.js";
 
 const fakeShopId = "FAKE_SHOP_ID";
 const fakePackage = {
