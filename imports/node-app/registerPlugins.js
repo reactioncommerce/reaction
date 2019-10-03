@@ -9,6 +9,7 @@ import registerShopPlugin from "./core-services/shop/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerDashboardPlugin from "./plugins/dashboard/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerNotificationsPlugin from "./plugins/notifications/index.js";
 import registerProductAdminPlugin from "./plugins/product-admin/index.js";
@@ -30,7 +31,6 @@ import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/regi
 import registerCatalogPlugin from "/imports/plugins/core/catalog/server/no-meteor/register";
 import registerCheckoutPlugin from "/imports/plugins/core/checkout/server/no-meteor/register";
 import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/register";
-import registerDashboardPlugin from "/imports/plugins/core/dashboard/server/no-meteor/register";
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
 import registerExamplePaymentsPlugin from "/imports/plugins/included/payments-example/server/no-meteor/register";
