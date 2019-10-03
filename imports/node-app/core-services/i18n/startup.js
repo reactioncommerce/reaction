@@ -1,4 +1,4 @@
-import { addTranslationRoutes } from "./translations";
+import { addTranslationRoutes } from "./translations.js";
 
 /**
  * @summary Called on startup

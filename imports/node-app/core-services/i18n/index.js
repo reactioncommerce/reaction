@@ -1,6 +1,6 @@
-import i18n from "./i18n";
-import { registerPluginHandler } from "./registration";
-import startup from "./startup";
+import i18n from "./i18n/index.js";
+import { registerPluginHandler } from "./registration.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
