@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import getStripeInstanceForShop from "./getStripeInstanceForShop";
+import getStripeInstanceForShop from "./getStripeInstanceForShop.js";
 
 /**
  * @name stripeListRefunds

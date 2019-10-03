@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
-import { STRIPE_PACKAGE_NAME } from "../../../lib/constants";
-import getStripeInstanceForShop from "../util/getStripeInstanceForShop";
+import { STRIPE_PACKAGE_NAME } from "./constants.js";
+import getStripeInstanceForShop from "./getStripeInstanceForShop.js";
 
 const METHOD = "credit";
 const PAYMENT_METHOD_NAME = "stripe_card";

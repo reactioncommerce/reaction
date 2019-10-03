@@ -1,10 +1,10 @@
-import i18n from "./i18n";
-import exampleCapturePayment from "./util/exampleCapturePayment";
-import exampleCreateAuthorizedPayment from "./util/exampleCreateAuthorizedPayment";
-import exampleCreateRefund from "./util/exampleCreateRefund";
-import exampleListRefunds from "./util/exampleListRefunds";
-import schemas from "./schemas";
-import startup from "./startup";
+import i18n from "./i18n/index.js";
+import schemas from "./schemas/index.js";
+import startup from "./startup/index.js";
+import exampleCapturePayment from "./util/exampleCapturePayment.js";
+import exampleCreateAuthorizedPayment from "./util/exampleCreateAuthorizedPayment.js";
+import exampleCreateRefund from "./util/exampleCreateRefund.js";
+import exampleListRefunds from "./util/exampleListRefunds.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.

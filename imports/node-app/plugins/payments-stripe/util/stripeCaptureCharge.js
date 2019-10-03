@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
-import formatForStripe from "./formatForStripe";
-import getStripeInstanceForShop from "./getStripeInstanceForShop";
+import formatForStripe from "./formatForStripe.js";
+import getStripeInstanceForShop from "./getStripeInstanceForShop.js";
 
 /**
  * @summary Capture the results of a previous charge

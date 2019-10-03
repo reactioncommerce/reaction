@@ -1,7 +1,7 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "@reactioncommerce/logger";
-import getStripeInstance from "./getStripeInstance";
-import getStripePackageForShop from "./getStripePackageForShop";
+import getStripeInstance from "./getStripeInstance.js";
+import getStripePackageForShop from "./getStripePackageForShop.js";
 
 
 /**

@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import nock from "nock";
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import stripeCreateRefund from "./stripeCreateRefund";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import stripeCreateRefund from "./stripeCreateRefund.js";
 
 jest.mock("./getStripeInstanceForShop", () => jest.fn().mockImplementation(() => require("stripe")("STRIPE_API_KEY")));
 

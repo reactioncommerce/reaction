@@ -1,4 +1,4 @@
-import { STRIPE_PACKAGE_NAME } from "../../../lib/constants";
+import { STRIPE_PACKAGE_NAME } from "./constants.js";
 
 /**
  * @summary Given a shop ID, gets the Stripe package data for that shop.
