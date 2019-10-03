@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import refunds from "./refunds";
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire$getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import { rewire$getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 
 beforeAll(() => {
   rewire$getPaymentMethodConfigByName(() => ({

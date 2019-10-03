@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { xformOrderItems } from "@reactioncommerce/reaction-graphql-xforms/order";
 import formatMoney from "/imports/utils/formatMoney";
-import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import { addAnonymousOrderToken } from "./anonymousToken";
 
 /**

@@ -3,7 +3,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { StripePackageConfig } from "../../lib/collections/schemas";
-import { STRIPE_PACKAGE_NAME } from "../../lib/constants";
+import { STRIPE_PACKAGE_NAME } from "../util/constants";
 
 /**
  * @summary get Stripe Package record

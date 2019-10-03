@@ -7,7 +7,7 @@ import { getAnonymousAccessToken } from "../util/anonymousToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
-import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import buildOrderFulfillmentGroupFromInput from "../util/buildOrderFulfillmentGroupFromInput";
 import verifyPaymentsMatchOrderTotal from "../../util/verifyPaymentsMatchOrderTotal";
 import { orderInputSchema, paymentInputSchema } from "../simpleSchemas";
