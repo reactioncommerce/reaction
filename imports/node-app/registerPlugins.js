@@ -2,6 +2,7 @@
 /* core-services */
 import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerFilesPlugin from "./core-services/files/index.js";
+import registerInventoryPlugin from "./core-services/inventory/index.js";
 import registerSettingsPlugin from "./core-services/settings/index.js";
 import registerShippingPlugin from "./core-services/shipping/index.js";
 import registerShopPlugin from "./core-services/shop/index.js";
@@ -10,7 +11,6 @@ import registerTaxesPlugin from "./core-services/taxes/index.js";
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
-import registerInventoryPlugin from "./plugins/inventory/index.js";
 import registerShippingRatesPlugin from "./plugins/shipping-rates/index.js";
 import registerSimpleInventoryPlugin from "./plugins/simple-inventory/index.js";
 import registerSimplePricingPlugin from "./plugins/simple-pricing/index.js";

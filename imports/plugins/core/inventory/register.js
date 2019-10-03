@@ -6,6 +6,6 @@
  * temporary bridge.
  */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import register from "/imports/node-app/plugins/inventory/index.js";
+import register from "/imports/node-app/core-services/inventory/index.js";
 
 Reaction.whenAppInstanceReady(register);
