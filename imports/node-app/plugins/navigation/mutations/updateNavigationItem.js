@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { NavigationItemData } from "/imports/collections/schemas";
+import { NavigationItemData } from "../simpleSchemas.js";
 
 /**
  * @method updateNavigationItem

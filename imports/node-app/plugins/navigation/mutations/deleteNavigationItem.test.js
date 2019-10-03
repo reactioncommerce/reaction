@@ -1,5 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import { NavigationItem as NavigationItemSchema } from "/imports/collections/schemas"; // TODO: add schemas to context
+import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
 import deleteNavigationItemMutation from "./deleteNavigationItem.js";
 
 const mockNavigationItem = {

@@ -1,7 +1,7 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { NavigationTree as NavigationTreeSchema } from "/imports/collections/schemas"; // TODO: add schemas to context
 import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds.js";
 import setDefaultsForNavigationTreeItems from "../util/setDefaultsForNavigationTreeItems.js";
+import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
 
 /**
  * @method updateNavigationTree
