@@ -1,5 +1,6 @@
 /* node-app imports */
 /* core-services */
+import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerFilesPlugin from "./core-services/files/index.js";
 import registerSettingsPlugin from "./core-services/settings/index.js";
 import registerShippingPlugin from "./core-services/shipping/index.js";
@@ -22,7 +23,6 @@ import registerUIPlugin from "./plugins/ui/index.js";
 /* meteor-app imports */
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
 import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/register";
-import registerCatalogPlugin from "/imports/plugins/core/catalog/server/no-meteor/register";
 import registerCheckoutPlugin from "/imports/plugins/core/checkout/server/no-meteor/register";
 import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/register";
 import registerDashboardPlugin from "/imports/plugins/core/dashboard/server/no-meteor/register";
