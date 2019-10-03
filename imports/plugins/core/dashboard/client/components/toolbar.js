@@ -19,7 +19,6 @@ class PublishControls extends Component {
     documents: PropTypes.arrayOf(PropTypes.object),
     hasCreateProductAccess: PropTypes.bool,
     isEnabled: PropTypes.bool,
-    onAddProduct: PropTypes.func,
     onShopSelectChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     packageButtons: PropTypes.arrayOf(PropTypes.object),
@@ -113,21 +112,6 @@ class PublishControls extends Component {
     );
   }
 
-  renderAddButton() {
-    if (this.props.hasCreateProductAccess) {
-      return (
-        <FlatButton
-          i18nKeyTooltip="app.shortcut.addProductLabel"
-          icon={"fa fa-plus"}
-          tooltip={"Add Product"}
-          onClick={this.props.onAddProduct}
-        />
-      );
-    }
-
-    return null;
-  }
-
   renderPackageButons() {
     if (Array.isArray(this.props.packageButtons)) {
       return this.props.packageButtons.map((packageButton, index) => (
@@ -161,7 +145,6 @@ class PublishControls extends Component {
           {this.renderShopSelect()}
         </Components.ToolbarGroup>
         <Components.ToolbarGroup lastChild={true}>
-          {this.renderAddButton()}
           {this.renderPackageButons()}
           {this.renderCustomControls()}
         </Components.ToolbarGroup>

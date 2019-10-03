@@ -1,3 +1,37 @@
+# v2.6.0
+
+Reaction v2.6.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.6.0.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.6.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### Packages have begun to migrate from `no-meteor` folders to `node-app`
+
+As part of de-meteorization of the Reaction API, We have started the migration of moving all server side code in `no-meteor` folders to their respective `node-app` folders.
+
+## Feature
+
+- feat: add product and productVariant related GraphQL mutations ([#5562](https://github.com/reactioncommerce/reaction/pull/5562))
+
+## Fixes
+
+- fix: product medatafield UI issues ([#5584](https://github.com/reactioncommerce/reaction/pull/5584))
+
+## Refactors
+
+- refactor: move email-smtp from server/no-meteor to node-app ([#5641](https://github.com/reactioncommerce/reaction/pull/5641))
+- refactor: move ui from server/no-meteor to node-app ([#5637](https://github.com/reactioncommerce/reaction/pull/5637))
+- refactor: move address-validation-test from server/no-meteor to node-app ([#5638](https://github.com/reactioncommerce/reaction/pull/5638))
+- refactor: move `shipping` and `surcharges` from server/no-meteor to node-app ([#5632](https://github.com/reactioncommerce/reaction/pull/5632))
+- refactor: move `settings` from server/no-meteor to node-app ([#5634](https://github.com/reactioncommerce/reaction/pull/5634))
+- refactor: ackground jobs rewrite: no Meteor dependencies! ([#5580](https://github.com/reactioncommerce/reaction/pull/5580))
+- refactor: move `address` from server/no-meteor to node-app ([#5587](https://github.com/reactioncommerce/reaction/pull/5587))
+- refactor: move `template` from server/no-meteor to node-app ([#5586](https://github.com/reactioncommerce/reaction/pull/5586))
+- refactor: use `reaction-error` external package instead of internal alias ([#5631](https://github.com/reactioncommerce/reaction/pull/5631))
+- refactor: move system-information from server/no-meteor to node-app ([#5585](https://github.com/reactioncommerce/reaction/pull/5585))
+- refactor: rewrite removeAccountEmail without meteor ([#5577](https://github.com/reactioncommerce/reaction/pull/5577))
+
 # v2.5.0
 
 Reaction v2.5.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.4.0.

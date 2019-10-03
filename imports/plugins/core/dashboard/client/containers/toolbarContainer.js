@@ -1,29 +1,8 @@
 import React from "react";
-import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
-
-const handleAddProduct = () => {
-  Meteor.call("products/createProduct", (error, productId) => {
-    if (Meteor.isClient) {
-      if (error) {
-        throw new ReactionError("create-product-error", error);
-      }
-
-      if (productId) {
-        Session.set("productGrid/selectedProducts", [productId]);
-        // go to new product
-        Reaction.Router.go("product", {
-          handle: productId
-        });
-      }
-    }
-  });
-};
 
 /**
  * @summary Handler that fires when the shop selector is changed
@@ -87,7 +66,6 @@ function composer(props, onData) {
     shops,
 
     // Callbacks
-    onAddProduct: handleAddProduct,
     onShopSelectChange: handleShopSelectChange
   });
 }

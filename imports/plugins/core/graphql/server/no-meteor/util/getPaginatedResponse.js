@@ -49,7 +49,7 @@ async function getPaginatedResponse(mongoCursor, args, {
     const doc = await collection.findOne({
       _id: before || after
     }, {
-      fields: {
+      projection: {
         [sortBy]: 1
       }
     });

@@ -20,7 +20,7 @@ export default async function ensureRoles(context, roles = []) {
   const promises = roles.map(async (role) => {
     const trimmedRole = role.trim();
     if (!allRoles.includes(trimmedRole)) {
-      await Roles.insert({
+      await Roles.insertOne({
         _id: Random.id(),
         name: trimmedRole
       });

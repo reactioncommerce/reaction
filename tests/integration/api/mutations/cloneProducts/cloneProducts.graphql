@@ -1,0 +1,19 @@
+mutation cloneProducts($input: CloneProductsInput!) {
+  cloneProducts(input: $input) {
+    products {
+      isDeleted
+      isVisible
+      shop {
+        _id
+      }
+      supportedFulfillmentTypes
+      title
+      variants {
+        options {
+          title
+        }
+        title
+      }
+    }
+  }
+}
