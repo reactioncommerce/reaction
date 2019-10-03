@@ -1,4 +1,4 @@
-import processEmailJobs from "./util/processEmailJobs";
+import processEmailJobs from "./util/processEmailJobs.js";
 
 /**
  * @summary Called on startup
