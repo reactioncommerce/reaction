@@ -1,5 +1,7 @@
-import { decodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
+
+const decodeProductOpaqueId = decodeOpaqueIdForNamespace("reaction/product");
+const decodeShopOpaqueId = decodeOpaqueIdForNamespace("reaction/shop");
 
 /**
  * @name Mutation/recalculateReservedSimpleInventory

@@ -1,4 +1,4 @@
-import inventoryForProductConfigurations from "./inventoryForProductConfigurations";
+import inventoryForProductConfigurations from "./inventoryForProductConfigurations.js";
 
 const context = {
   dataLoaders: {

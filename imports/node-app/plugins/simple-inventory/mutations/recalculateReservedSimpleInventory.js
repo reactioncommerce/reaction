@@ -1,10 +1,15 @@
+import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { inputSchema } from "../utils/defaults";
-import getModifier from "../utils/getMongoUpdateModifier";
+import { ProductConfigurationSchema, SimpleInventoryCollectionSchema } from "../simpleSchemas.js";
+import getReservedQuantity from "../utils/getReservedQuantity.js";
+
+const inputSchema = new SimpleSchema({
+  productConfiguration: ProductConfigurationSchema,
+  shopId: String
+});
 
 /**
- * @summary Updates SimpleInventory data for a product configuration. Pass only
- *   those arguments you want to update.
+ * @summary Force recalculation of the system-managed `inventoryReserved` field based on current order statuses.
  * @param {Object} context App context
  * @param {Object} input Input
  * @param {Object} input.productConfiguration Product configuration object
@@ -14,18 +19,14 @@ import getModifier from "../utils/getMongoUpdateModifier";
  * @param {Boolean} input.isEnabled Whether the SimpleInventory plugin should manage inventory for this product configuration
  * @param {Number} input.lowInventoryWarningThreshold The "low quantity" flag will be applied to this product configuration
  *   when the available quantity is at or below this threshold.
- * @param {Object} [options] Other options
- * @param {Boolean} [options.returnUpdatedDoc=true] Set to `false` as a performance optimization
- *   if you don't need the updated document returned.
- * @returns {Object|null} Updated inventory values, or `null` if `returnUpdatedDoc` is `false`
+ * @returns {Object} Updated inventory values
  */
-export default async function updateSimpleInventory(context, input, options = {}) {
+export default async function recalculateReservedSimpleInventory(context, input) {
   inputSchema.validate(input);
 
   const { appEvents, collections, isInternalCall, userHasPermission, userId } = context;
   const { Products, SimpleInventory } = collections;
   const { productConfiguration, shopId } = input;
-  const { returnUpdatedDoc = true } = options;
 
   if (!isInternalCall) {
     // Verify that the product exists. For internal calls, we assume we can skip this
@@ -48,39 +49,31 @@ export default async function updateSimpleInventory(context, input, options = {}
     }
   }
 
-  const modifier = getModifier(input);
-  const { upsertedCount } = await SimpleInventory.updateOne(
+  const inventoryReserved = await getReservedQuantity(context, productConfiguration);
+
+  const modifier = {
+    $set: {
+      inventoryReserved,
+      updatedAt: new Date()
+    }
+  };
+
+  SimpleInventoryCollectionSchema.validate(modifier, { modifier: true });
+
+  const { value: updatedDoc } = await SimpleInventory.findOneAndUpdate(
     {
       "productConfiguration.productVariantId": productConfiguration.productVariantId,
       shopId
     },
     modifier,
     {
-      upsert: true
+      returnOriginal: false
     }
   );
 
-  // If we inserted, set the "reserved" quantity to what it should be. We could have
-  // put this in the $setOnInsert but then we'd have to do the Orders lookup for
-  // calculating reserved every time, even when only an update happens. It's better
-  // to wait until here when we know whether we inserted.
-  if (upsertedCount === 1) {
-    await context.mutations.recalculateReservedSimpleInventory(context, {
-      productConfiguration,
-      shopId
-    });
-  } else {
-    // Only emit event if not upserting, as `recalculateReservedSimpleInventory` already emits it.
-    await appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
-  }
+  if (!updatedDoc) throw new ReactionError("not-tracked", "Inventory not tracked for this product");
 
-  let updatedDoc = null;
-  if (returnUpdatedDoc) {
-    updatedDoc = await SimpleInventory.findOne({
-      "productConfiguration.productVariantId": productConfiguration.productVariantId,
-      shopId
-    });
-  }
+  await appEvents.emit("afterInventoryUpdate", { productConfiguration, updatedBy: userId });
 
   return updatedDoc;
 }

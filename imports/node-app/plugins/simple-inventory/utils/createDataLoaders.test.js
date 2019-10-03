@@ -1,4 +1,4 @@
-import createDataLoaders from "./createDataLoaders";
+import createDataLoaders from "./createDataLoaders.js";
 
 const context = {
   collections: {

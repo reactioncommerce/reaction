@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import orderIsApproved from "./utils/orderIsApproved";
+import orderIsApproved from "./utils/orderIsApproved.js";
 
 /**
  * @summary Get all order items
