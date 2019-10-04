@@ -58,6 +58,12 @@
   "eslintConfig": {
     "extends": "@reactioncommerce"
   },
+  "prettier": {
+    "arrowParens": "always"
+  },
+  "release": {
+    "branch": "trunk"
+  },
   "publishConfig": {
     "access": "public"
   }
