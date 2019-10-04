@@ -172,7 +172,7 @@ export const Workflow = new SimpleSchema({
  * @property {String} valueType optional
  * @property {String} description optional
  */
-export const Metafield = new SimpleSchema({
+const Metafield = new SimpleSchema({
   key: {
     type: String,
     max: 30,

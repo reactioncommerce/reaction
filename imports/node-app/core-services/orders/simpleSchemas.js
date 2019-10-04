@@ -1173,7 +1173,7 @@ export const Order = new SimpleSchema({
  * @param {Object} schemas Schema map from context
  * @return {undefined}
  */
-export function extendSchemas(schemas) {
+export function extendOrdersSchemas(schemas) {
   schemas.Shop.extend({
     orderStatusLabels: {
       type: Object,
