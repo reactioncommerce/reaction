@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import getStripeInstance from "./getStripeInstance";
+import getStripeInstance from "./getStripeInstance.js";
 
 const PACKAGE_NAME = "reaction-marketplace";
 
@@ -43,7 +43,7 @@ export default async function getStripeInstanceForShop(context, shopId) {
     throw new ReactionError("server-error", "Stripe is not configured properly. Please set an API Key.");
   }
 
-  const stripe = getStripeInstance(stripeApiKey);
+  const stripe = getStripeInstance(context, stripeApiKey);
 
   const applicationFee = primaryStripePkg.settings.applicationFee || 0;
 

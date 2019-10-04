@@ -1,7 +1,7 @@
 import stripeNpm from "stripe";
 import Logger from "@reactioncommerce/logger";
-import getStripeApi from "./getStripeApi";
-import formatForStripe from "./formatForStripe";
+import getStripeApi from "./getStripeApi.js";
+import formatForStripe from "./formatForStripe.js";
 
 /**
  * @name stripeCreateRefund

@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import nock from "nock";
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import stripeCapturePayment from "./stripeCapturePayment";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import stripeCapturePayment from "./stripeCapturePayment.js";
 
 jest.mock("./getStripeApi", () => jest.fn().mockImplementation(() => "STRIPE_API_KEY"));
 
