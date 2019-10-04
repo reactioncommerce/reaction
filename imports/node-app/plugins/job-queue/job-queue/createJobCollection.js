@@ -1,5 +1,5 @@
-import createJobClass from "./createJobClass";
-import createJobCollectionClass from "./createJobCollectionClass";
+import createJobClass from "./createJobClass.js";
+import createJobCollectionClass from "./createJobCollectionClass.js";
 
 /**
  * @summary Factory that creates the `Job` and `JobCollection` classes
