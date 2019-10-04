@@ -6,8 +6,8 @@
 
 import { EventEmitter } from "events";
 import Random from "@reactioncommerce/random";
-import { registerMethod } from "./methodCall";
-import { isValidObjectId } from "./util";
+import { registerMethod } from "./methodCall.js";
+import { isValidObjectId } from "./util.js";
 
 const methodPrefix = "_DDPMethod_";
 const methodNames = [

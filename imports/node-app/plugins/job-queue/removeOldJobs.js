@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Job, Jobs } from "./jobs";
+import { Job, Jobs } from "./jobs.js";
 
 const jobRetryOptions = {
   retries: 5,

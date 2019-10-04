@@ -1,7 +1,7 @@
-import { addWorker, cancelJobs, getJob, scheduleJob } from "./api";
-import { registerPluginHandler } from "./registration";
-import shutdown from "./shutdown";
-import startup from "./startup";
+import { addWorker, cancelJobs, getJob, scheduleJob } from "./api.js";
+import { registerPluginHandler } from "./registration.js";
+import shutdown from "./shutdown.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.

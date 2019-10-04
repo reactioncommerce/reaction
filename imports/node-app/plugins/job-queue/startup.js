@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
-import { Jobs } from "./jobs";
-import removeOldJobs from "./removeOldJobs";
-import { jobCleanupRequests } from "./registration";
+import { Jobs } from "./jobs.js";
+import removeOldJobs from "./removeOldJobs.js";
+import { jobCleanupRequests } from "./registration.js";
 
 /**
  * @name startup
