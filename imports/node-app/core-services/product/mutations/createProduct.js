@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createProductOrVariant from "../utils/createProductOrVariant";
+import createProductOrVariant from "../utils/createProductOrVariant.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String

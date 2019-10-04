@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import getSlug from "/imports/utils/getSlug";
+import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 
 /**
  * @function createProduct

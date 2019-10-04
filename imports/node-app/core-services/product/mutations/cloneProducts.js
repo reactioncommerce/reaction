@@ -4,10 +4,10 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getSlug from "/imports/utils/getSlug";
-import copyMedia from "../utils/copyMedia";
-import createHandle from "../utils/createHandle";
-import createTitle from "../utils/createTitle";
+import getSlug from "@reactioncommerce/api-utils/getSlug.js";
+import copyMedia from "../utils/copyMedia.js";
+import createHandle from "../utils/createHandle.js";
+import createTitle from "../utils/createTitle.js";
 
 const inputSchema = new SimpleSchema({
   "productIds": Array,

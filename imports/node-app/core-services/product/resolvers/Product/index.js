@@ -1,9 +1,9 @@
 import { resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
 import { encodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
-import getVariants from "../../utils/getVariants";
-import socialMetadata from "./socialMetadata";
-import tagIds from "./tagIds";
-import tags from "./tags";
+import getVariants from "../../utils/getVariants.js";
+import socialMetadata from "./socialMetadata.js";
+import tagIds from "./tagIds.js";
+import tags from "./tags.js";
 
 export default {
   _id: (node) => encodeProductOpaqueId(node._id),

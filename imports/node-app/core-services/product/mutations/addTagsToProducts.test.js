@@ -1,5 +1,5 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import removeTagsFromProducts from "./removeTagsFromProducts";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import addTagsToProducts from "./addTagsToProducts.js";
 
 const mockInput = {
   input: {
@@ -15,9 +15,9 @@ const expectedResults = {
   writeErrors: []
 };
 
-test("Testing removeTagsFromProducts, returns info on the results of the bulk write", async () => {
+test("Testing addTagsToProducts, returns info on the results of the bulk write", async () => {
   const { input } = mockInput;
-  const results = await removeTagsFromProducts(mockContext, input);
+  const results = await addTagsToProducts(mockContext, input);
 
   expect(mockContext.collections.Products.bulkWrite).toHaveBeenCalled();
   expect(results).toEqual(expectedResults);
