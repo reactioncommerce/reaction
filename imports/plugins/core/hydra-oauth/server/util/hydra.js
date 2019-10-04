@@ -18,23 +18,22 @@ if (process.env.MOCK_TLS_TERMINATION) {
  * @param  {String} challenge To fetch information about the login/consent
  * @returns {Object|String} API res
  */
-const get = async (flow, challenge) => {
-  try {
-    const res = await fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/requests/${flow}?${flow}_challenge=${challenge}`);
+function get(flow, challenge) {
+  return fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/requests/${flow}?${flow}_challenge=${challenge}`).then((res) => {
     if (res.status < 200 || res.status > 302) {
-      const json = await res.json();
-      Logger.error(`An error occurred while making GET ${flow}-${challenge} HTTP request to Hydra: `, json.error_description);
-      return Promise.reject(new Error(json.error_description));
+      Logger.error(`An error occurred while making GET ${flow}-${challenge} HTTP request to Hydra: `);
+      throw new Error(res.json());
     }
     return res.json();
-  } catch (err) {
-    Logger.error(
-      `An error occurred while making GET ${HYDRA_ADMIN_URL}/oauth2/auth/requests/${flow}?${flow}_challenge=${challenge} HTTP request to Hydra: `,
-      err
-    );
-    throw (err);
-  }
-};
+  })
+    .catch((err) => {
+      Logger.error(
+        `An error occurred while making GET ${HYDRA_ADMIN_URL}/oauth2/auth/requests/${flow}?${flow}_challenge=${challenge} HTTP request to Hydra: `,
+        err
+      );
+      throw (err);
+    });
+}
 
 /**
  * @name put
@@ -46,27 +45,26 @@ const get = async (flow, challenge) => {
  * @param  {String} body Request body
  * @returns {Object|String} API res
  */
-const put = async (flow, action, challenge, body) => {
-  try {
-    const res = await fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/requests/${flow}/${action}?${flow}_challenge=${challenge}`, {
-      method: "PUT",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        ...mockTlsTermination
-      }
-    });
+function put(flow, action, challenge, body) {
+  return fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/requests/${flow}/${action}?${flow}_challenge=${challenge}`, {
+    method: "PUT",
+    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+      ...mockTlsTermination
+    }
+  }).then((res) => {
     if (res.status < 200 || res.status > 302) {
-      const json = await res.json();
-      Logger.error(`An error occurred while making PUT ${flow}-${challenge} request to Hydra: `, json.error_description);
-      return Promise.reject(new Error(json.error_description));
+      Logger.error(`An error occurred while making PUT ${flow}-${challenge} request to Hydra: `);
+      throw new Error(res.json());
     }
     return res.json();
-  } catch (err) {
-    Logger.error(`An error occurred while making PUT  ${flow}-${challenge} request to Hydra`, err);
-    throw (err);
-  }
-};
+  })
+    .catch((err) => {
+      Logger.error(`An error occurred while making PUT  ${flow}-${challenge} request to Hydra`, err);
+      throw (err);
+    });
+}
 
 /**
  * @name deleteUserSession
