@@ -1,5 +1,5 @@
-import i18n from "./i18n";
-import setDiscountsOnCart from "./util/setDiscountsOnCart";
+import i18n from "./i18n/index.js";
+import setDiscountsOnCart from "./util/setDiscountsOnCart.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -10,7 +10,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Discounts",
     name: "reaction-discounts",
-    icon: "fa fa-gift",
     i18n,
     collections: {
       Discounts: {

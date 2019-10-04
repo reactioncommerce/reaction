@@ -1,4 +1,4 @@
-import getDiscountsTotalForCart from "./getDiscountsTotalForCart";
+import getDiscountsTotalForCart from "./getDiscountsTotalForCart.js";
 
 /**
  * @summary Cart transformation function that sets `discount` on cart
