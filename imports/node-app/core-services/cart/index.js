@@ -1,8 +1,8 @@
 import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
-import { registerPluginHandler } from "./registration/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
+import { registerPluginHandler } from "./registration.js";
 import { Cart, CartItem } from "./simpleSchemas.js";
 import startup from "./startup.js";
 
