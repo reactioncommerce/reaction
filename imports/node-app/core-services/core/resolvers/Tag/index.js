@@ -1,6 +1,6 @@
-import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
-import heroMediaUrl from "./heroMediaUrl";
-import subTags from "./subTags";
+import { encodeTagOpaqueId } from "../../xforms/id.js";
+import heroMediaUrl from "./heroMediaUrl.js";
+import subTags from "./subTags.js";
 
 export default {
   _id: (tag) => encodeTagOpaqueId(tag._id),

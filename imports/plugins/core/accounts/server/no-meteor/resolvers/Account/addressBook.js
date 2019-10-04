@@ -1,5 +1,5 @@
 import { get } from "lodash";
-import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xforms/connection";
+import xformArrayToConnection from "@reactioncommerce/api-utils/graphql/xformArrayToConnection.js";
 
 /**
  * @name Account/addressBook

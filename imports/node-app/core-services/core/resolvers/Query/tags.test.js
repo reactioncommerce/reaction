@@ -1,5 +1,5 @@
-import tagsResolver from "./tags";
-import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
+import tagsResolver from "./tags.js";
+import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import Factory from "/imports/test-utils/helpers/factory";
 
 const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123

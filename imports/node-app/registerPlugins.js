@@ -1,6 +1,7 @@
 /* node-app imports */
 /* core-services */
 import registerCatalogPlugin from "./core-services/catalog/index.js";
+import registerCorePlugin from "./core-services/core/index.js";
 import registerEmailPlugin from "./core-services/email/index.js";
 import registerFilesPlugin from "./core-services/files/index.js";
 import registerI18nPlugin from "./core-services/i18n/index.js";
@@ -40,7 +41,6 @@ import registerUIPlugin from "./plugins/ui/index.js";
 import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
 import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/register";
 import registerCheckoutPlugin from "/imports/plugins/core/checkout/server/no-meteor/register";
-import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/register";
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
 import registerJobQueuePlugin from "/imports/plugins/included/job-queue/server/no-meteor/register";

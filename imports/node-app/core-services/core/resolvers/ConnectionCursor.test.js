@@ -1,5 +1,5 @@
 import { Kind } from "graphql/language";
-import ConnectionCursor from "./ConnectionCursor";
+import ConnectionCursor from "./ConnectionCursor.js";
 
 test("has a description", () => {
   expect(ConnectionCursor.description).toMatchSnapshot();

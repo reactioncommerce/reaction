@@ -1,4 +1,4 @@
-import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
+import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
 import NavigationItem from "./NavigationItem/index.js";
 import NavigationTree from "./NavigationTree/index.js";
 import ShopSettings from "./ShopSettings/index.js";

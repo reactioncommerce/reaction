@@ -1,5 +1,6 @@
-import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/reaction-graphql-utils";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
+import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * Arguments passed by the client for a tags query

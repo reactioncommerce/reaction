@@ -1,5 +1,5 @@
 import { Kind } from "graphql/language";
-import ConnectionLimitInt from "./ConnectionLimitInt";
+import ConnectionLimitInt from "./ConnectionLimitInt.js";
 
 test("has a description", () => {
   expect(ConnectionLimitInt.description).toMatchSnapshot();

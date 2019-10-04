@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import layouts from "./layouts";
+import layouts from "./layouts.js";
 
 /**
  * @param {Object} context App context

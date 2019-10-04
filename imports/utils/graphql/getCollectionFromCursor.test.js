@@ -1,5 +1,5 @@
+import getFakeMongoCursor from "../tests/getFakeMongoCursor.js";
 import getCollectionFromCursor from "./getCollectionFromCursor.js";
-import getFakeMongoCursor from "./test-utils/getFakeMongoCursor.js";
 
 const mockCursor = getFakeMongoCursor("Accounts", []);
 

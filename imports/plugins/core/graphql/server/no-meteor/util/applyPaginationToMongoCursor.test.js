@@ -1,5 +1,5 @@
+import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor";
-import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 let mockCursor;
 beforeEach(() => {
