@@ -1,6 +1,6 @@
 import stripeNpm from "stripe";
 import Logger from "@reactioncommerce/logger";
-import getStripeApi from "./getStripeApi";
+import getStripeApi from "./getStripeApi.js";
 
 /**
  * @name stripeListRefunds
