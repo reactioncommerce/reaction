@@ -112,7 +112,8 @@ export default async function archiveProducts(context, input) {
       },
       {
         $set: {
-          "metadata.isDeleted": true
+          "metadata.isDeleted": true,
+          "metadata.workflow": "archived"
         }
       }
     );
