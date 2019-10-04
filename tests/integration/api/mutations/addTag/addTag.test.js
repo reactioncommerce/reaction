@@ -29,7 +29,7 @@ afterAll(async () => {
   await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
 });
-beforeEach(async() => {
+beforeEach(async () => {
   tagInput = {
     displayTitle: "Tag: Display Title",
     heroMediaUrl: "mediaurluri",
@@ -37,7 +37,8 @@ beforeEach(async() => {
     metafields: [],
     name: "Tag: Name",
     shopId: encodeShopOpaqueId(shopId),
-    slug: "Tag: Slug" };
+    slug: "Tag: Slug"
+  };
 });
 
 const accountInternalId = "123";
@@ -55,10 +56,9 @@ describe("unauthorized user", () => {
   });
   test("cannot create tag", async () => {
     expect.assertions(1);
-    let result;
-    try{
-      result = await addTag(tagInput);
-    } catch(error) {
+    try {
+      await addTag(tagInput);
+    } catch (error) {
       expect(error).toMatchSnapshot();
     }
   });
@@ -69,72 +69,71 @@ describe("authorized user", () => {
   });
   afterAll(async () => {
     await testApp.clearLoggedInUser();
-  })
+  });
   afterEach(async () => {
     await testApp.collections.Tags.deleteMany({});
-  })
-  test("can create tag with slug converted at save", async() => {
+  });
+  test("can create tag with slug converted at save", async () => {
     let result;
-    try{
+    try {
       result = await addTag(tagInput);
-    } catch(error) {
+    } catch (error) {
       expect(error).toBeUndefined();
     }
 
-    //slug is converted when saving slug.
+    // slug is converted when saving slug.
     tagInput.slug = "tag-slug";
     tagInput.heroMediaUrl = `https://shop.fake.site/${tagInput.heroMediaUrl}`;
     delete tagInput.shopId;
 
-    //check that the return tag has the correct information.
+    // check that the return tag has the correct information.
     expect(result.addTag.tag).toEqual(expect.objectContaining(tagInput));
   });
-  test("can create tag with slug from name at save", async() => {
+  test("can create tag with slug from name at save", async () => {
     let result;
     delete tagInput.slug;
-    try{
+    try {
       result = await addTag(tagInput);
-    } catch(error) {
+    } catch (error) {
       expect(error).toBeUndefined();
     }
 
-    //slug is converted when saving slug.
+    // slug is converted when saving slug.
     tagInput.slug = "tag-name";
     tagInput.heroMediaUrl = `https://shop.fake.site/${tagInput.heroMediaUrl}`;
     delete tagInput.shopId;
 
-    //check that the return tag has the correct information.
+    // check that the return tag has the correct information.
     expect(result.addTag.tag).toEqual(expect.objectContaining(tagInput));
   });
-  test("can create tag with invalid slug(empty string defaults to name) at save", async() => {
+  test("can create tag with invalid slug(empty string defaults to name) at save", async () => {
     let result;
     tagInput.slug = "";
-    try{
+    try {
       result = await addTag(tagInput);
-    } catch(error) {
+    } catch (error) {
       expect(error).toBeUndefined();
     }
 
-    //slug is converted when saving slug.
+    // slug is converted when saving slug.
     tagInput.slug = "tag-name";
     tagInput.heroMediaUrl = `https://shop.fake.site/${tagInput.heroMediaUrl}`;
     delete tagInput.shopId;
 
-    //check that the return tag has the correct information.
+    // check that the return tag has the correct information.
     expect(result.addTag.tag).toEqual(expect.objectContaining(tagInput));
   });
-  test("cannot create tag with existing slug", async() => {
-    let result;
-    let logLevel = Logger.level();
-    let duplicateTagSlug = Factory.Tag.makeOne({
+  test("cannot create tag with existing slug", async () => {
+    const logLevel = Logger.level();
+    const duplicateTagSlug = Factory.Tag.makeOne({
       slug: "tag-slug"
     });
     await testApp.collections.Tags.insertOne(duplicateTagSlug);
     Logger.level("FATAL");
     expect.assertions(1);
-    try{
-      result = await addTag(tagInput);
-    } catch(error) {
+    try {
+      await addTag(tagInput);
+    } catch (error) {
       expect(error).toMatchSnapshot();
     }
     Logger.level(logLevel);
