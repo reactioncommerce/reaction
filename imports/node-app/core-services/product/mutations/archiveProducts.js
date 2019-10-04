@@ -118,5 +118,7 @@ export default async function archiveProducts(context, input) {
     );
   }
 
-  return archivedProducts;
+  // Return only originally supplied product(s),
+  // not variants and options also archived
+  return archivedProducts.filter((archivedProduct) => productIds.includes(archivedProduct._id));
 }

@@ -48,24 +48,11 @@ const expectedArchivedProduct = {
   products: [
     {
       isDeleted: true,
-      isVisible: false,
+      isVisible: true,
       shop: {
         _id: opaqueShopId
       },
-      supportedFulfillmentTypes: [
-        "shipping"
-      ],
-      title: "Fake Product-copy",
-      variants: [{
-        isDeleted: true,
-        options: [
-          {
-            isDeleted: true,
-            title: "Fake Product Option One"
-          }
-        ],
-        title: "Fake Product Variant"
-      }]
+      title: "Fake Product"
     }]
 };
 

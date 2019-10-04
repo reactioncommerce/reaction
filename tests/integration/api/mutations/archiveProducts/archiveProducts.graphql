@@ -6,14 +6,7 @@ mutation archiveProducts($input: ArchiveProductsInput!) {
       shop {
         _id
       }
-      supportedFulfillmentTypes
       title
-      variants {
-        options {
-          title
-        }
-        title
-      }
     }
   }
 }
