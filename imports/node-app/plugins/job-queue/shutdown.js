@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Jobs } from "./jobs";
+import { Jobs } from "./jobs.js";
 
 /**
  * @name shutdown
