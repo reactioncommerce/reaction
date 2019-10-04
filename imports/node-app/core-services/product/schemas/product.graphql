@@ -162,6 +162,15 @@ type ProductVariant {
   width: Float
 }
 
+"Response payload of `archiveProducts` mutation"
+type ArchiveProductsPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Array of newly archived products"
+  products: [Product]!
+}
+
 "Response payload of `createProduct` mutation"
 type CreateProductPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -198,6 +207,15 @@ type CloneProductVariantsPayload  {
   variants: [ProductVariant]!
 }
 
+"Input for the `archiveProducts` mutation"
+input ArchiveProductsInput  {
+  "Array of IDs of products to archive"
+  productIds: [ID]!
+
+  "ID of shop that owns all products you are archiving"
+  shopId: ID!
+}
+
 "Input for the `createProduct` mutation"
 input CreateProductInput  {
   "ID of shop product will belong to"
@@ -232,6 +250,12 @@ input CloneProductVariantsInput  {
 }
 
 extend type Mutation {
+  "Archive products"
+  archiveProducts(
+    "Mutation input"
+    input: ArchiveProductsInput!
+  ): ArchiveProductsPayload!
+
   "Create a new product"
   createProduct(
     "Mutation input"
