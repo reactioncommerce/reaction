@@ -1,5 +1,5 @@
 import Random from "@reactioncommerce/random";
-import getStripeInstanceForShop from "./getStripeInstanceForShop";
+import getStripeInstanceForShop from "./getStripeInstanceForShop.js";
 
 const METHOD = "credit";
 const PACKAGE_NAME = "reaction-marketplace";

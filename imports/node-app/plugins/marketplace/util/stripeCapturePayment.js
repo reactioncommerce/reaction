@@ -1,8 +1,8 @@
 import accounting from "accounting-js";
-import stripeCaptureCharge from "./stripeCaptureCharge";
-import stripeCreateRefund from "./stripeCreateRefund";
-import formatForStripe from "./formatForStripe";
-import unformatFromStripe from "./unformatFromStripe";
+import stripeCaptureCharge from "./stripeCaptureCharge.js";
+import stripeCreateRefund from "./stripeCreateRefund.js";
+import formatForStripe from "./formatForStripe.js";
+import unformatFromStripe from "./unformatFromStripe.js";
 
 /**
  * @name stripeCapturePayment

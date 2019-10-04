@@ -1,7 +1,7 @@
 import stripeNpm from "stripe";
 import Logger from "@reactioncommerce/logger";
-import formatForStripe from "./formatForStripe";
-import getStripeApi from "./getStripeApi";
+import formatForStripe from "./formatForStripe.js";
+import getStripeApi from "./getStripeApi.js";
 
 /**
  * @summary Capture the results of a previous charge

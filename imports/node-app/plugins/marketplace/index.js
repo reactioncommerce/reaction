@@ -1,10 +1,10 @@
 /* eslint camelcase: 0 */
-import i18n from "./i18n";
-import schemas from "./schemas";
-import stripeCapturePayment from "./util/stripeCapturePayment";
-import stripeCreateAuthorizedPayment from "./util/stripeCreateAuthorizedPayment";
-import stripeCreateRefund from "./util/stripeCreateRefund";
-import stripeListRefunds from "./util/stripeListRefunds";
+import i18n from "./i18n/index.js";
+import schemas from "./schemas/index.js";
+import stripeCapturePayment from "./util/stripeCapturePayment.js";
+import stripeCreateAuthorizedPayment from "./util/stripeCreateAuthorizedPayment.js";
+import stripeCreateRefund from "./util/stripeCreateRefund.js";
+import stripeListRefunds from "./util/stripeListRefunds.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -15,7 +15,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Marketplace",
     name: "reaction-marketplace",
-    icon: "fa fa-globe",
     i18n,
     collections: {
       SellerShops: {

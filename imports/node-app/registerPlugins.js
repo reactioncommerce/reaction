@@ -18,6 +18,7 @@ import registerAddressPlugin from "./plugins/address/index.js";
 import registerDashboardPlugin from "./plugins/dashboard/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerExamplePaymentsPlugin from "./plugins/payments-example/index.js";
+import registerMarketplacePlugin from "./plugins/marketplace/index.js";
 import registerNavigationPlugin from "./plugins/navigation/index.js";
 import registerNotificationsPlugin from "./plugins/notifications/index.js";
 import registerProductAdminPlugin from "./plugins/product-admin/index.js";
@@ -44,7 +45,6 @@ import registerCorePlugin from "/imports/plugins/core/core/server/no-meteor/regi
 import registerDiscountCodesPlugin from "/imports/plugins/included/discount-codes/server/no-meteor/register";
 import registerDiscountsPlugin from "/imports/plugins/core/discounts/server/no-meteor/register";
 import registerJobQueuePlugin from "/imports/plugins/included/job-queue/server/no-meteor/register";
-import registerMarketplacePlugin from "/imports/plugins/included/marketplace/server/no-meteor/register";
 import registerOrdersPlugin from "/imports/plugins/core/orders/server/no-meteor/register";
 
 /**
