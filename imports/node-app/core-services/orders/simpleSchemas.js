@@ -731,7 +731,7 @@ const OrderItemAttribute = new SimpleSchema({
  * @property {Workflow} workflow optional
  *
  */
-const OrderItem = new SimpleSchema({
+export const OrderItem = new SimpleSchema({
   "_id": String,
   "addedAt": Date,
   "attributes": {
@@ -869,7 +869,7 @@ const SelectedFulfillmentOption = new SimpleSchema({
  * @property {String} type Fulfillment type
  * @property {Object} workflow Current status and past statuses for this fulfillment
  */
-const OrderFulfillmentGroup = new SimpleSchema({
+export const OrderFulfillmentGroup = new SimpleSchema({
   "_id": String,
   "address": {
     type: Address,
@@ -982,7 +982,7 @@ const CurrencyExchangeRate = new SimpleSchema({
  * @property {Invoice} invoice A summary of the totals that make up the full charge amount. Created when the payment is added to an order.
  * @property {String} shopId The ID of the shop that is being paid. This might be a merchant shop in a marketplace setup.
  */
-const Payment = new SimpleSchema({
+export const Payment = new SimpleSchema({
   "_id": {
     type: String,
     label: "Payment Id"

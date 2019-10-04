@@ -4,12 +4,11 @@ import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { getAnonymousAccessToken } from "../util/anonymousToken.js";
-import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas"; // TODO: move schemas
 import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import appEvents from "../../../core/util/appEvents";
 import verifyPaymentsMatchOrderTotal from "../../util/verifyPaymentsMatchOrderTotal.js";
 import buildOrderFulfillmentGroupFromInput from "../util/buildOrderFulfillmentGroupFromInput.js";
-import { orderInputSchema, paymentInputSchema } from "../simpleSchemas";
+import { Order as OrderSchema, orderInputSchema, Payment as PaymentSchema, paymentInputSchema } from "../simpleSchemas";
 
 const inputSchema = new SimpleSchema({
   "order": orderInputSchema,

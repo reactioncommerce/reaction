@@ -1,9 +1,9 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Random from "@reactioncommerce/random";
-import { Order as OrderSchema } from "/imports/collections/schemas"; // TODO: update schemas
 import updateGroupStatusFromItemStatus from "../util/updateGroupStatusFromItemStatus.js";
 import updateGroupTotals from "../util/updateGroupTotals.js";
+import { Order as OrderSchema } from "../simpleSchemas.js";
 
 /**
  * @name inputSchema

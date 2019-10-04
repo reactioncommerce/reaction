@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Order as OrderSchema } from "/imports/collections/schemas"; // TODO: update schema
+import { Order as OrderSchema } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   customFields: {
