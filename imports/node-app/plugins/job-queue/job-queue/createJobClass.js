@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import methodCall from "./methodCall";
+import methodCall from "./methodCall.js";
 import {
   _setImmediate,
   concatReduce,
@@ -11,7 +11,7 @@ import {
   optionsHelp,
   reduceCallbacks,
   splitLongArray
-} from "./util";
+} from "./util.js";
 
 /**
  * @summary Factory that creates the `Job` class

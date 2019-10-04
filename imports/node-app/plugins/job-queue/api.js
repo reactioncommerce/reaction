@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Job, Jobs } from "./jobs";
+import { Job, Jobs } from "./jobs.js";
 
 /**
  * @summary Add a worker for a background job type
