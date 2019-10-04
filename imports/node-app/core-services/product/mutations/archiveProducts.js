@@ -32,7 +32,7 @@ export default async function archiveProducts(context, input) {
   }
 
   // Check to make sure all products are on the same shop
-  const count = await Products.find({ _id: { $in: productIds }, type: "simple", shopId }).count();
+  const count = await Products.find({ _id: { $in: productIds }, shopId }).count();
   if (count !== productIds.length) throw new ReactionError("not-found", "One or more products do not exist");
 
   // Find all products that aren't deleted, and all their variants variants
@@ -93,18 +93,22 @@ export default async function archiveProducts(context, input) {
     return archivedProduct;
   }));
 
-  console.log(" ----- archivedProducts", archivedProducts);
-
   if (archivedProducts && archivedProducts.length) {
     // Flag associated MediaRecords as deleted.
-    await MediaRecords.update(
+    await MediaRecords.updateMany(
       {
-        "metadata.productId": {
-          $in: productIdsToArchive
-        },
-        "metadata.variantId": {
-          $in: productIdsToArchive
-        }
+        $or: [
+          {
+            "metadata.productId": {
+              $in: productIdsToArchive
+            }
+          },
+          {
+            "metadata.variantId": {
+              $in: productIdsToArchive
+            }
+          }
+        ]
       },
       {
         $set: {

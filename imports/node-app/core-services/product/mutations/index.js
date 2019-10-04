@@ -8,6 +8,7 @@ import removeTagsFromProducts from "./removeTagsFromProducts.js";
 
 export default {
   addTagsToProducts,
+  archiveProducts,
   cloneProducts,
   cloneProductVariants,
   createProduct,
