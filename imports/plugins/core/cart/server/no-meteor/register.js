@@ -1,3 +1,4 @@
+import { Cart, CartItem } from "/imports/collections/schemas";
 import mutations from "./mutations";
 import queries from "./queries";
 import { registerPluginHandler } from "./registration";
@@ -51,6 +52,10 @@ export default async function register(app) {
       schemas
     },
     mutations,
-    queries
+    queries,
+    simpleSchemas: {
+      Cart,
+      CartItem
+    }
   });
 }

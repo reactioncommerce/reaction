@@ -2,7 +2,7 @@ import { Migrations } from "meteor/percolate:migrations";
 import Logger from "@reactioncommerce/logger";
 import { Products } from "/lib/collections";
 import collections from "/imports/collections/rawCollections";
-import publishProductsToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductsToCatalog";
+import publishProductsToCatalog from "/imports/node-app/core-services/catalog/utils/publishProductsToCatalog.js";
 
 Migrations.add({
   version: 24,

@@ -563,6 +563,7 @@ export const mockExternalCatalogProducts = [
           priority: 1,
           productId: opaqueProductIds[0],
           variantId: null,
+          toGrid: 1,
           URLs: {
             thumbnail: "/thumbnail",
             small: "/small",
@@ -576,6 +577,7 @@ export const mockExternalCatalogProducts = [
         priority: 1,
         productId: opaqueProductIds[0],
         variantId: null,
+        toGrid: 1,
         URLs: {
           thumbnail: "/thumbnail",
           small: "/small",
@@ -666,6 +668,7 @@ export const mockExternalCatalogProducts = [
           priority: 1,
           productId: opaqueProductIds[1],
           variantId: null,
+          toGrid: 1,
           URLs: {
             thumbnail: "/thumbnail",
             small: "/small",
@@ -679,6 +682,7 @@ export const mockExternalCatalogProducts = [
         priority: 1,
         productId: opaqueProductIds[1],
         variantId: null,
+        toGrid: 1,
         URLs: {
           thumbnail: "/thumbnail",
           small: "/small",

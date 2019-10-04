@@ -1,4 +1,4 @@
-import { xformRateToRateObject } from "@reactioncommerce/reaction-graphql-xforms/core";
+import getRateObjectForRate from "@reactioncommerce/api-utils/getRateObjectForRate.js";
 
 /**
  * @name OrderFulfillmentGroup/summary
@@ -14,7 +14,7 @@ export default function summary(fulfillmentGroup) {
 
   return {
     discountTotal: { amount: discounts, currencyCode },
-    effectiveTaxRate: xformRateToRateObject(effectiveTaxRate),
+    effectiveTaxRate: getRateObjectForRate(effectiveTaxRate),
     fulfillmentTotal: { amount: shipping, currencyCode },
     itemTotal: { amount: subtotal, currencyCode },
     surchargeTotal: { amount: surcharges, currencyCode },
