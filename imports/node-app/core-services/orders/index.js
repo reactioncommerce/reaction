@@ -1,3 +1,4 @@
+import { OrderFulfillmentGroup, OrderItem } from "/imports/collections/schemas"; // TODO: update schemas
 import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
 import preStartup from "./preStartup.js";
@@ -49,6 +50,10 @@ export default async function register(app) {
     },
     mutations,
     queries,
+    simpleSchemas: {
+      OrderFulfillmentGroup,
+      OrderItem
+    },
     settings: {
       name: "Orders"
     },

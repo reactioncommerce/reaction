@@ -5,7 +5,6 @@ import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { getAnonymousAccessToken } from "../util/anonymousToken.js";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas"; // TODO: move schemas
-import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import appEvents from "../../../core/util/appEvents";
 import verifyPaymentsMatchOrderTotal from "../../util/verifyPaymentsMatchOrderTotal.js";
@@ -191,7 +190,7 @@ export default async function placeOrder(context, input) {
   let discounts = [];
   let discountTotal = 0;
   if (cart) {
-    const discountsResult = await getDiscountsTotalForCart(context, cart);
+    const discountsResult = await context.queries.getDiscountsTotalForCart(context, cart);
     ({ discounts } = discountsResult);
     discountTotal = discountsResult.total;
   }

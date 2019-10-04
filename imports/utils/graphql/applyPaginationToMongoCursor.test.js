@@ -1,5 +1,5 @@
+import getFakeMongoCursor from "../tests/getFakeMongoCursor.js";
 import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor.js";
-import getFakeMongoCursor from "./test-utils/getFakeMongoCursor.js";
 
 let mockCursor;
 beforeEach(() => {

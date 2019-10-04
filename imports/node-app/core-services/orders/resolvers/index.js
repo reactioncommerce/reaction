@@ -1,4 +1,4 @@
-import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
+import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
 import { encodeOrderFulfillmentGroupOpaqueId, encodeOrderItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
 import Mutation from "./Mutation/index.js";
 import Order from "./Order/index.js";

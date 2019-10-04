@@ -1,5 +1,5 @@
+import getFakeMongoCursor from "../tests/getFakeMongoCursor.js";
 import getPaginatedResponse from "./getPaginatedResponse.js";
-import getFakeMongoCursor from "./test-utils/getFakeMongoCursor.js";
 import {
   restore as restore$applyBeforeAfterToFilter,
   rewire as rewire$applyBeforeAfterToFilter

@@ -1,6 +1,6 @@
 import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
+import getPaginatedResponse from "./graphql/getPaginatedResponse.js";
 import arrayJoinQuery from "./arrayJoinQuery";
 
 const DEFAULT_LIMIT = 20;
