@@ -1,6 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
-import { getPaymentMethodConfigByName } from "../registration.js";
 
 const inputSchema = new SimpleSchema({
   orderId: String,
@@ -53,7 +52,7 @@ export default async function captureOrderPayments(context, input = {}) {
   const capturePromises = orderPaymentsToCapture.map(async (payment) => {
     let result = { saved: false };
     try {
-      result = await getPaymentMethodConfigByName(payment.name).functions.capturePayment(context, payment);
+      result = await context.queries.getPaymentMethodConfigByName(payment.name).functions.capturePayment(context, payment);
     } catch (error) {
       result.error = error;
       result.errorCode = "uncaught_plugin_error";

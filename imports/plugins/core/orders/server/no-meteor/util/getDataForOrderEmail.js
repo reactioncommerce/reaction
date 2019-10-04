@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { xformOrderItems } from "@reactioncommerce/reaction-graphql-xforms/order";
 import formatMoney from "/imports/utils/formatMoney";
-import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import { addAnonymousOrderToken } from "./anonymousToken";
 
 /**
@@ -78,7 +77,7 @@ export default async function getDataForOrderEmail(context, { order }) {
 
   if (Array.isArray(order.payments)) {
     const promises = order.payments.map(async (payment) => {
-      const shopRefunds = await getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment);
+      const shopRefunds = await context.queries.getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment);
       const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({ ...shopRefund, paymentId: payment._id }));
       refunds.push(...shopRefundsWithPaymentId);
     });

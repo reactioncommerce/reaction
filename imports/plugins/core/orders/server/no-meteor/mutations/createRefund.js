@@ -2,7 +2,6 @@ import SimpleSchema from "simpl-schema";
 import accounting from "accounting-js";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import sendOrderEmail from "../util/sendOrderEmail";
 
 const inputSchema = new SimpleSchema({
@@ -60,7 +59,7 @@ export default async function createRefund(context, input) {
 
   // Verify that payment method will accept refunds
   const { name } = payment;
-  const { canRefund, functions } = getPaymentMethodConfigByName(name);
+  const { canRefund, functions } = context.queries.getPaymentMethodConfigByName(name);
   if (!canRefund) throw new ReactionError("invalid", "Refunding not supported");
 
   // Find total of any previous refunds, and determine how much balance is left
