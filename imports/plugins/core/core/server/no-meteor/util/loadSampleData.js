@@ -2,12 +2,6 @@
 /* TODO: revisit `url.parse` throughout Reaction */
 import url from "url";
 import Logger from "@reactioncommerce/logger";
-import {
-  Product as ProductSchema,
-  ProductVariant as ProductVariantSchema,
-  Shop as ShopSchema,
-  Tag as TagSchema
-} from "/imports/collections/schemas";
 import config from "/imports/node-app/core/config";
 import sampleData from "./sampleData";
 
@@ -28,7 +22,13 @@ export default async function loadSampleData(context) {
       Shops,
       Tags
     },
-    rootUrl
+    rootUrl,
+    simpleSchemas: {
+      Product: ProductSchema,
+      ProductVariant: ProductVariantSchema,
+      Shop: ShopSchema,
+      Tag: TagSchema
+    }
   } = context;
 
   // Only import sample data if all of the relevant collections are empty
