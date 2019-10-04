@@ -15,6 +15,16 @@ import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
 
+const archiveProducts = gql`
+  mutation cloneProducts($input: ArchiveProductsInput!) {
+    archiveProducts(input: $input) {
+      products {
+        _id
+      }
+    }
+  }
+`;
+
 const cloneProducts = gql`
   mutation cloneProducts($input: CloneProductsInput!) {
     cloneProducts(input: $input) {
@@ -95,8 +105,28 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    handleArchiveProducts = (productIds) => {
-      ReactionProduct.archiveProduct(productIds);
+    handleArchiveProducts = async (productIds) => {
+      const { client } = this.props;
+      const namespacedProductIdObjects = productIds.map((productId) => ({ namespace: "Product", id: productId }));
+      const opaqueProductIds = await getOpaqueIds(namespacedProductIdObjects);
+      const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+      try {
+        await client.mutate({
+          mutation: archiveProducts,
+          variables: {
+            input: {
+              shopId: opaqueShopId,
+              productIds: opaqueProductIds
+            }
+          }
+        });
+
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductsSuccess"), "success");
+      } catch (error) {
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductsFail", { err: error }), "error");
+        throw new ReactionError("server-error", "Unable to archive product");
+      }
     }
 
     handleDuplicateProducts = async (productIds) => {

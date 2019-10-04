@@ -4,7 +4,7 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { MediaRecords, Products, Tags } from "/lib/collections";
+import { Products, Tags } from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents"; // TODO this can't rely on appEvents after API is split out
 import rawCollections from "/imports/collections/rawCollections";
 import hashProduct from "../utils/hashProduct";

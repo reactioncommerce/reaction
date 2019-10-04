@@ -16,6 +16,16 @@ import { Countries } from "/client/collections";
 import { getVariantIds } from "/lib/selectors/variants";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 
+const ARCHIVE_PRODUCTS = gql`
+  mutation archiveProducts($input: ArchiveProductsInput!) {
+    archiveProducts(input: $input) {
+      products {
+        _id
+      }
+    }
+  }
+`;
+
 const CLONE_PRODUCTS = gql`
   mutation cloneProducts($input: CloneProductsInput!) {
     cloneProducts(input: $input) {
@@ -55,15 +65,6 @@ export function handleMetaRemove(productId, metafield) {
  */
 export function handleProductRestore(product) {
   Meteor.call("products/updateProductField", product._id, "isDeleted", false);
-}
-
-/**
- * Archive (soft delete) product
- * @param {Object} product Product object
- * @returns {undefined} No return
- */
-export async function handleArchiveProduct(product) {
-  await ReactionProduct.archiveProduct(product);
 }
 
 /**
@@ -115,14 +116,24 @@ const wrapComponent = (Comp) => {
    */
   function WithProduct(props) {
     const { history } = props;
+    const [archiveProducts] = useMutation(ARCHIVE_PRODUCTS);
     const [cloneProducts] = useMutation(CLONE_PRODUCTS);
     const [createProductVariant] = useMutation(CREATE_VARIANT);
 
     return (
       <Comp
         onArchiveProduct={async (product, redirectUrl) => {
-          await handleArchiveProduct(product);
-          history.push(redirectUrl);
+          const opaqueProductIds = await getOpaqueIds([{ namespace: "Product", id: product._id }]);
+          const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+          try {
+            await archiveProducts({ variables: { input: { shopId: opaqueShopId, productIds: opaqueProductIds } } });
+            Alerts.toast(i18next.t("productDetailEdit.archiveProductsSuccess"), "success");
+            history.push(redirectUrl);
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.archiveProductsFail", { err: error }), "error");
+            throw new ReactionError("server-error", "Unable to archive product");
+          }
         }}
         onCloneProduct={async (product) => {
           const opaqueProductIds = await getOpaqueIds([{ namespace: "Product", id: product }]);

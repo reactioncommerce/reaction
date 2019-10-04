@@ -1,10 +1,26 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
+import { withApollo } from "react-apollo";
+import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
+import { i18next, Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import PublishContainer from "/imports/plugins/core/catalog/client/containers/publishContainer";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+
+const archiveProducts = gql`
+  mutation cloneProducts($input: ArchiveProductsInput!) {
+    archiveProducts(input: $input) {
+      products {
+        _id
+      }
+    }
+  }
+`;
 
 class ProductPublishContainer extends Component {
   handleMetaRemove = (productId, metafield) => {
@@ -33,9 +49,29 @@ class ProductPublishContainer extends Component {
       Meteor.call("products/updateProductField", variant._id, "isVisible", isProductVisible));
   }
 
-  handlePublishActions = (event, action, documentIds) => {
+  handlePublishActions = async (event, action, productIds) => {
     if (action === "archive") {
-      ReactionProduct.archiveProduct(documentIds);
+      const { client } = this.props;
+      const namespacedProductIdObjects = productIds.map((productId) => ({ namespace: "Product", id: productId }));
+      const opaqueProductIds = await getOpaqueIds(namespacedProductIdObjects);
+      const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+      try {
+        await client.mutate({
+          mutation: archiveProducts,
+          variables: {
+            input: {
+              shopId: opaqueShopId,
+              productIds: opaqueProductIds
+            }
+          }
+        });
+
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductsSuccess"), "success");
+      } catch (error) {
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductsFail", { err: error }), "error");
+        throw new ReactionError("server-error", "Unable to archive product");
+      }
     }
   }
 
@@ -76,7 +112,13 @@ ProductPublishContainer.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.object)
 };
 
-registerComponent("ProductPublish", ProductPublishContainer, composeWithTracker(composer));
+registerComponent("ProductPublish", ProductPublishContainer, [
+  withApollo,
+  composeWithTracker(composer)
+]);
 
 // Decorate component and export
-export default composeWithTracker(composer)(ProductPublishContainer);
+export default compose(
+  withApollo,
+  composeWithTracker(composer),
+)(ProductPublishContainer);
