@@ -1,6 +1,5 @@
 import addAccountAddressBookEntry from "./addAccountAddressBookEntry";
 import addAccountToGroup from "./addAccountToGroup";
-import createAccount from "./createAccount";
 import inviteShopMember from "./inviteShopMember";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry";
 import removeAccountEmailRecord from "./removeAccountEmailRecord";
@@ -13,7 +12,6 @@ import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
 export default {
   addAccountAddressBookEntry,
   addAccountToGroup,
-  createAccount,
   inviteShopMember,
   removeAccountAddressBookEntry,
   removeAccountEmailRecord,

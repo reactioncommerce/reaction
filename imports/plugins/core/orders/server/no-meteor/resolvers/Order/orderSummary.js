@@ -1,4 +1,4 @@
-import { xformRateToRateObject } from "@reactioncommerce/reaction-graphql-xforms/core";
+import getRateObjectForRate from "@reactioncommerce/api-utils/getRateObjectForRate.js";
 
 /**
  * @name Order/orderSummary
@@ -49,7 +49,7 @@ export default async function orderSummary(context, order) {
       amount: totalDiscountsAmount,
       currencyCode
     },
-    effectiveTaxRate: xformRateToRateObject(effectiveTaxRate),
+    effectiveTaxRate: getRateObjectForRate(effectiveTaxRate),
     fulfillmentTotal: {
       amount: totalShippingAmount,
       currencyCode
