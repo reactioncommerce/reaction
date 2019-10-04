@@ -52,6 +52,7 @@ query ($slugOrId: String!) {
         priority
         productId
         variantId
+        toGrid
         URLs {
           thumbnail
           small
@@ -64,6 +65,7 @@ query ($slugOrId: String!) {
         priority
         productId
         variantId
+        toGrid
         URLs {
           thumbnail
           small
