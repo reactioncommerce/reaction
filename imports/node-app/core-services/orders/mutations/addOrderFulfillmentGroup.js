@@ -1,7 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Order as OrderSchema } from "/imports/collections/schemas"; // TODO: move simpleSchemas
-import { orderFulfillmentGroupInputSchema, orderItemInputSchema } from "../simpleSchemas.js";
+import { Order as OrderSchema, orderFulfillmentGroupInputSchema, orderItemInputSchema } from "../simpleSchemas.js";
 import buildOrderFulfillmentGroupFromInput from "../util/buildOrderFulfillmentGroupFromInput.js";
 import updateGroupStatusFromItemStatus from "../util/updateGroupStatusFromItemStatus.js";
 import updateGroupTotals from "../util/updateGroupTotals.js";

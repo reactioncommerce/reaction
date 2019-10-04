@@ -1,4 +1,4 @@
-import Factory from "/imports/test-utils/helpers/factory";
+import Factory from "/imports/test-utils/helpers/factory"; // TODO: research how to add `factory.js` to `api-utils` (https://github.com/reactioncommerce/reaction/issues/5646)
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import {
   restore as restore$buildOrderFulfillmentGroupFromInput,
