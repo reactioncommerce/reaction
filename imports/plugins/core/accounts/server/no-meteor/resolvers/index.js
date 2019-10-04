@@ -1,4 +1,4 @@
-import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
+import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
 import Account from "./Account";
 import AddAccountAddressBookEntryPayload from "./AddAccountAddressBookEntryPayload";
 import Group from "./Group";

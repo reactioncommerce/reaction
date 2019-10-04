@@ -1,4 +1,4 @@
-import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
  * Arguments passed by the client for a tags query

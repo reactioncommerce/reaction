@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
-import layouts from "./util/layouts";
-import loadSampleData from "./util/loadSampleData";
-import upsertPackages from "./util/upsertPackages";
+import layouts from "./util/layouts.js";
+import loadSampleData from "./util/loadSampleData.js";
+import upsertPackages from "./util/upsertPackages.js";
 
 /**
  * @summary Called on startup

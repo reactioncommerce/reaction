@@ -1,12 +1,12 @@
-import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
+import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
 import { GraphQLDate, GraphQLDateTime } from "graphql-iso-date";
-import Address from "./Address";
-import ConnectionCursor from "./ConnectionCursor";
-import ConnectionLimitInt from "./ConnectionLimitInt";
-import Currency from "./Currency";
-import Money from "./Money";
-import Query from "./Query";
-import Tag from "./Tag";
+import Address from "./Address.js";
+import ConnectionCursor from "./ConnectionCursor.js";
+import ConnectionLimitInt from "./ConnectionLimitInt.js";
+import Currency from "./Currency.js";
+import Money from "./Money.js";
+import Query from "./Query/index.js";
+import Tag from "./Tag/index.js";
 
 export default {
   Address,

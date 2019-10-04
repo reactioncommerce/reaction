@@ -1,5 +1,5 @@
 import { orderBy } from "lodash";
-import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xforms/connection";
+import xformArrayToConnection from "@reactioncommerce/api-utils/graphql/xformArrayToConnection.js";
 import { xformCartItems } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**

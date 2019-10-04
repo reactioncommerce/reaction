@@ -2,8 +2,8 @@
 /* TODO: revisit `url.parse` throughout Reaction */
 import url from "url";
 import Logger from "@reactioncommerce/logger";
-import config from "/imports/node-app/core/config";
-import sampleData from "./sampleData";
+import config from "../config.js";
+import sampleData from "./sampleData.js";
 
 /**
  * @summary Loads sample dataset if collections are empty

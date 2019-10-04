@@ -1,7 +1,7 @@
-import i18n from "./i18n";
-import resolvers from "./resolvers";
-import schemas from "./schemas";
-import startup from "./startup";
+import i18n from "./i18n/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -12,7 +12,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Core",
     name: "core",
-    icon: "fa fa-th",
     i18n,
     collections: {
       Assets: {
