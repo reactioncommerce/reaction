@@ -1,9 +1,9 @@
-import i18n from "./i18n";
-import getCreditOffDiscount from "./util/getCreditOffDiscount";
-import getItemPriceDiscount from "./util/getItemPriceDiscount";
-import getPercentageOffDiscount from "./util/getPercentageOffDiscount";
-import getShippingDiscount from "./util/getShippingDiscount";
-import startup from "./startup";
+import i18n from "./i18n/index.js";
+import getCreditOffDiscount from "./util/getCreditOffDiscount.js";
+import getItemPriceDiscount from "./util/getItemPriceDiscount.js";
+import getPercentageOffDiscount from "./util/getPercentageOffDiscount.js";
+import getShippingDiscount from "./util/getShippingDiscount.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -14,7 +14,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Codes",
     name: "discount-codes",
-    icon: "fa fa-gift",
     i18n,
     functionsByType: {
       "discounts/codes/credit": [getCreditOffDiscount],

@@ -1,4 +1,5 @@
 import i18n from "./i18n/index.js";
+import queries from "./queries/index.js";
 import setDiscountsOnCart from "./util/setDiscountsOnCart.js";
 
 /**
@@ -21,6 +22,7 @@ export default async function register(app) {
         ]
       }
     },
+    queries,
     cart: {
       transforms: [
         {
