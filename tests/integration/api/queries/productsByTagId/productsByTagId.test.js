@@ -47,7 +47,7 @@ afterAll(async () => {
   await testApp.collections.Tags.deleteOne({ _id: mockTagWithFeatured._id });
   await Promise.all(mockProductsWithTagAndFeaturedProducts.map((mockProduct) => testApp.collections.Products.deleteOne({ _id: mockProduct._id })));
   await testApp.clearLoggedInUser();
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("get all 77 products with a certain tag", async () => {

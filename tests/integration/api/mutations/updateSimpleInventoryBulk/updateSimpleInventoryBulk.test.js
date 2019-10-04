@@ -74,7 +74,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Products.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("when all options are sold out and canBackorder, isBackorder is true in Catalog", async () => {

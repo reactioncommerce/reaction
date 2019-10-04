@@ -6,6 +6,6 @@
  * temporary bridge.
  */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import register from "./server/register";
+import register from "/imports/node-app/plugins/address-validation-test/index.js";
 
 Reaction.whenAppInstanceReady(register);

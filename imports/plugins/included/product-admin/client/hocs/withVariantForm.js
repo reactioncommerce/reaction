@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
 import _ from "lodash";
+import { withApollo } from "react-apollo";
 import { compose } from "recompose";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
@@ -13,9 +15,20 @@ import { ProductVariant } from "/lib/collections/schemas";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import withTaxCodes from "/imports/plugins/core/taxes/client/hoc/withTaxCodes";
 
+const cloneProductVariants = gql`
+  mutation cloneProductVariants($input: CloneProductVariantsInput!) {
+    cloneProductVariants(input: $input) {
+      variants {
+        _id
+      }
+    }
+  }
+`;
+
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {
     static propTypes = {
+      client: PropTypes.object,
       history: PropTypes.object,
       variant: PropTypes.object
     }
@@ -40,11 +53,19 @@ const wrapComponent = (Comp) => (
       const nextVariant = nextProps.variant || {};
       const currentVariant = this.props.variant || {};
 
+      if (!nextProps.variant) {
+        return;
+      }
+
+      if (typeof nextProps.variant.isVisible === "boolean") {
+        return;
+      }
+
       if (_.isEqual(nextVariant, currentVariant) === false) {
         this.setState({
-          inventoryManagement: nextProps.variant.inventoryManagement,
-          inventoryPolicy: nextProps.variant.inventoryPolicy,
-          isTaxable: nextProps.variant.isTaxable,
+          inventoryManagement: nextProps.variant && nextProps.variant.inventoryManagement,
+          inventoryPolicy: nextProps.variant && nextProps.variant.inventoryPolicy,
+          isTaxable: nextProps.variant && nextProps.variant.isTaxable,
           variant: nextProps.variant
         });
       }
@@ -55,7 +76,7 @@ const wrapComponent = (Comp) => (
     }
 
     get variant() {
-      return this.state.variant || this.props.variant || {};
+      return this.state.variant || this.props.variant || null;
     }
 
     runVariantValidation(variant) {
@@ -121,20 +142,24 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    cloneVariant = (productId, variantId) => {
+    cloneVariant = async (productId, variantId) => {
+      const { client, shopId } = this.props;
       const title = i18next.t("productDetailEdit.thisVariant");
-      if (!productId) {
-        return;
-      }
+      const [opaqueVariantId] = await getOpaqueIds([{ namespace: "Product", id: variantId }]);
 
-      Meteor.call("products/cloneVariant", productId, variantId, (error) => {
-        if (error) {
-          Alerts.alert({
-            text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
-            confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-          });
-        }
-      });
+      try {
+        await client.mutate({
+          mutation: cloneProductVariants,
+          variables: {
+            input: {
+              shopId,
+              variantIds: [opaqueVariantId]
+            }
+          }
+        });
+      } catch (error) {
+        Alerts.toast(i18next.t("productDetailEdit.cloneVariantFail", { title }), "error");
+      }
     }
 
     handleVariantFieldSave = (variantId, fieldName, value, variant) => {
@@ -321,6 +346,7 @@ const composer = async (props, onData) => {
 };
 
 export default compose(
+  withApollo,
   withRouter,
   composeWithTracker(composer),
   withTaxCodes,

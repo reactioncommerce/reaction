@@ -12,7 +12,6 @@ import VariantDetail from "./layouts/VariantDetail";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
 
 // HOCs
-import withCreateProduct from "./hocs/withCreateProduct";
 import withProduct from "./hocs/withProduct";
 import withVariant from "./hocs/withVariant";
 
@@ -54,7 +53,6 @@ registerOperatorRoute({
   layoutComponent: ContentViewExtraWideLayout,
   path: "/products",
   mainComponent: ProductTable,
-  hocs: [withCreateProduct],
   // eslint-disable-next-line react/display-name, react/no-multi-comp
   SidebarIconComponent: (props) => <CubeIcon {...props} />,
   sidebarI18nLabel: "admin.products"

@@ -2,8 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { Jobs } from "/imports/utils/jobs";
-
+import { Jobs } from "/lib/collections";
 
 /**
  * Email Job Logs
