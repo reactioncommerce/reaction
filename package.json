@@ -61,6 +61,7 @@
     "cuid": "^2.1.5",
     "dataloader": "^1.4.0",
     "deep-equal": "^1.0.1",
+    "ejson": "^2.2.0",
     "envalid": "^4.2.1",
     "eslint-plugin-node": "^9.1.0",
     "express": "4.16.2",
