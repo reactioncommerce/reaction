@@ -25,6 +25,16 @@ const cloneProducts = gql`
   }
 `;
 
+const updateProductField = gql`
+  mutation updateProductField($input: UpdateProductFieldInput!) {
+    updateProductField(input: $input) {
+      product {
+        _id
+      }
+    }
+  }
+`;
+
 const wrapComponent = (Comp) => (
   class ProductGridContainer extends Component {
     static propTypes = {
@@ -87,11 +97,32 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    handleToggleProductVisibility = (productIds, isVisible) => {
+    handleToggleProductVisibility = async (productIds, isVisible) => {
+      const { client } = this.props;
+      const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
       if (Array.isArray(productIds)) {
-        for (const productId of productIds) {
-          Meteor.call("products/updateProductField", productId, "isVisible", isVisible);
-        }
+        await Promise.all(productIds.map(async (productId) => {
+          const [opaqueProductId] = await getOpaqueIds([{ namespace: "Product", id: productId }]);
+
+          try {
+            await client.mutate({
+              mutation: updateProductField,
+              variables: {
+                input: {
+                  field: "isVisible",
+                  shopId: opaqueShopId,
+                  productId: opaqueProductId,
+                  value: isVisible
+                }
+              }
+            });
+
+            Alerts.toast(i18next.t("productDetailEdit.updateProductFieldSuccess"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
+          }
+        }));
       }
     }
 
