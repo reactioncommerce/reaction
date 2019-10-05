@@ -19,7 +19,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} input - Input arguments for the bulk operation
  * @param {String} input.productIds - an array of decoded product IDs to archive
  * @param {String} input.shopId - shop these products belong to
- * @return {Array} list with archived product Ids
+ * @return {Array} array with archived products
  */
 export default async function archiveProducts(context, input) {
   inputSchema.validate(input);

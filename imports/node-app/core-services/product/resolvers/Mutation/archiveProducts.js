@@ -11,7 +11,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 * @param {String} args.input.productIds - an array of decoded product IDs to archive
 * @param {String} args.input.shopId - shop these products belong to
 * @param {Object} context - an object containing the per-request state
-* @return {Array} list with archived product Ids
+* @return {Array} array with archived products
 */
 export default async function archiveProducts(_, { input }, context) {
   const {
