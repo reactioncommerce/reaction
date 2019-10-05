@@ -1,14 +1,18 @@
-import { EJSON } from "ejson";
+import EJSON from "ejson";
 import SimpleSchema from "simpl-schema";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import createHandle from "../utils/createHandle.js";
 
 const inputSchema = new SimpleSchema({
-  field: String,
-  productId: String,
-  shopId: String,
-  value: String
+  "field": String,
+  "productId": String,
+  "shopId": String,
+  "value": SimpleSchema.oneOf(String, Object, Array, Boolean, Number),
+  "value.$": {
+    type: SimpleSchema.oneOf(String, Object, Boolean, Number),
+    optional: true
+  }
 });
 
 /**

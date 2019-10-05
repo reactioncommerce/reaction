@@ -246,7 +246,7 @@ input UpdateProductFieldInput  {
   field: String!
 
   "ID of product to update"
-  productIds: [ID]!
+  productId: ID!
 
   "ID of shop that owns the product to update"
   shopId: ID!
