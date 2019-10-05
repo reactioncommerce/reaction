@@ -258,6 +258,8 @@
         "addVariant": "Variant added",
         "archiveProductsFail": "Unable to archive product(s). {{err}}",
         "archiveProductsSuccess": "Product(s) archived successfully.",
+        "archiveProductVariantsFail": "Unable to archive variant(s). {{err}}",
+        "archiveProductVariantsSuccess": "Variant(s) archived successfully.",
         "cloneProductSuccess": "Product(s) cloned successfully.",
         "cloneProductFail": "Unable to clone product. {{err}}",
         "cloneVariantFail": "Unable to clone variant for {{title}}.",

@@ -16,10 +16,10 @@ import { ProductVariant } from "/lib/collections/schemas";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import withTaxCodes from "/imports/plugins/core/taxes/client/hoc/withTaxCodes";
 
-const archiveProducts = gql`
-  mutation archiveProducts($input: ArchiveProductsInput!) {
-    archiveProducts(input: $input) {
-      products {
+const archiveProductVariants = gql`
+  mutation archiveProductVariants($input: ArchiveProductVariantsInput!) {
+    archiveProductVariants(input: $input) {
+      variants {
         _id
       }
     }
@@ -151,19 +151,19 @@ const wrapComponent = (Comp) => (
 
       try {
         await client.mutate({
-          mutation: archiveProducts,
+          mutation: archiveProductVariants,
           variables: {
             input: {
               shopId: opaqueShopId,
-              productIds: opaqueVariantId
+              variantIds: opaqueVariantId
             }
           }
         });
 
-        Alerts.toast(i18next.t("productDetailEdit.archiveProductsSuccess"), "success");
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductVariantsSuccess"), "success");
         redirectUrl && this.props.history.replace(redirectUrl);
       } catch (error) {
-        Alerts.toast(i18next.t("productDetailEdit.archiveProductsFail", { err: error }), "error");
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductVariantsFail", { err: error }), "error");
         throw new ReactionError("server-error", "Unable to archive product");
       }
     }
