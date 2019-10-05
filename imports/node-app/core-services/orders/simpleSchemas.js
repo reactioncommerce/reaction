@@ -49,7 +49,7 @@ const Metafield = new SimpleSchema({
 });
 
 /**
- * @name Address
+ * @name OrderAddress
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id
@@ -70,7 +70,7 @@ const Metafield = new SimpleSchema({
  * @property {Boolean} failedValidation
  * @property {Metafield[]} metafields
  */
-const Address = new SimpleSchema({
+export const OrderAddress = new SimpleSchema({
   "_id": {
     type: String,
     optional: true
@@ -370,7 +370,7 @@ export const CommonOrder = new SimpleSchema({
     optional: true
   },
   billingAddress: {
-    type: Address,
+    type: OrderAddress,
     optional: true
   },
   cartId: {
@@ -393,11 +393,11 @@ export const CommonOrder = new SimpleSchema({
     optional: true
   },
   originAddress: {
-    type: Address,
+    type: OrderAddress,
     optional: true
   },
   shippingAddress: {
-    type: Address,
+    type: OrderAddress,
     optional: true
   },
   shopId: String,
@@ -455,7 +455,7 @@ export const orderInputSchema = new SimpleSchema({
   // some tax services require it to calculate taxes for digital items. Thus
   // it should be provided here in order to be added to the CommonOrder if possible.
   "billingAddress": {
-    type: Address,
+    type: OrderAddress,
     optional: true
   },
   "cartId": {
@@ -491,7 +491,7 @@ export const paymentInputSchema = new SimpleSchema({
   amount: Number,
   // Optionally override the order.billingAddress for each payment
   billingAddress: {
-    type: Address,
+    type: OrderAddress,
     optional: true
   },
   data: {
@@ -586,7 +586,7 @@ const History = new SimpleSchema({
 });
 
 /**
- * @name Invoice
+ * @name OrderInvoice
  * @type {SimpleSchema}
  * @memberof Schemas
  * @property {Number} discounts Total of all discounts (a positive number, but subtracted from the grand total)
@@ -598,7 +598,7 @@ const History = new SimpleSchema({
  * @property {Number} taxes Total tax
  * @property {Number} total Grand total
  */
-const Invoice = new SimpleSchema({
+export const OrderInvoice = new SimpleSchema({
   currencyCode: String,
   discounts: {
     type: Number,
@@ -872,14 +872,14 @@ const SelectedFulfillmentOption = new SimpleSchema({
 export const OrderFulfillmentGroup = new SimpleSchema({
   "_id": String,
   "address": {
-    type: Address,
+    type: OrderAddress,
     optional: true
   },
   "customsLabelUrl": {
     type: String,
     optional: true
   },
-  "invoice": Invoice,
+  "invoice": OrderInvoice,
   "items": {
     type: Array,
     minCount: 1
@@ -988,7 +988,7 @@ export const Payment = new SimpleSchema({
     label: "Payment Id"
   },
   "address": {
-    type: Address,
+    type: OrderAddress,
     optional: true
   },
   "amount": Number,
@@ -1083,7 +1083,7 @@ export const Order = new SimpleSchema({
   // some tax services require it to calculate taxes for digital items. Thus
   // it should be provided here in order to be added to the CommonOrder if possible.
   "billingAddress": {
-    type: Address,
+    type: OrderAddress,
     optional: true
   },
   "cartId": {

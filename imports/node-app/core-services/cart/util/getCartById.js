@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "../../../core/util/hashLoginToken.js";
+import hashToken from "@reactioncommerce/api-utils/hashToken";
 
 /**
  * @summary Gets a cart from the db by ID. If there is an account for the request, verifies that the
@@ -18,7 +18,7 @@ export default async function getCartById(context, cartId, { cartToken, throwIfN
   const selector = { _id: cartId };
 
   if (cartToken) {
-    selector.anonymousAccessToken = hashLoginToken(cartToken);
+    selector.anonymousAccessToken = hashToken(cartToken);
   }
 
   const cart = await Cart.findOne(selector);

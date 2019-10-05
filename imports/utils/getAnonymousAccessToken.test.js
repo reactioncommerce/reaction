@@ -1,4 +1,4 @@
-import { getAnonymousAccessToken } from "./anonymousToken.js";
+import getAnonymousAccessToken from "./getAnonymousAccessToken.js";
 
 test("getAnonymousAccessToken basic structure", () => {
   const token = getAnonymousAccessToken();

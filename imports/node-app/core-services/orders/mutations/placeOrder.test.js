@@ -22,7 +22,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     name: "METHOD1"
   };
   const catalogProduct = Factory.CatalogProduct.makeOne();
-  const catalogProductVariant = Factory.CatalogVariantSchema.makeOne();
+  const catalogProductVariant = Factory.CatalogProductVariant.makeOne();
 
   mockContext.queries.findProductAndVariant = jest.fn().mockName("findProductAndVariant");
   mockContext.queries.findProductAndVariant.mockReturnValueOnce({

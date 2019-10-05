@@ -1,4 +1,4 @@
-import verifyPaymentsMatchOrderTotal from "./verifyPaymentsMatchOrderTotal";
+import verifyPaymentsMatchOrderTotal from "./verifyPaymentsMatchOrderTotal.js";
 
 test("throws if does not match", () => {
   const payments = [

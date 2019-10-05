@@ -160,7 +160,7 @@ export const SocialMetadata = new SimpleSchema({
 });
 
 /**
- * @name VariantBaseSchema
+ * @name CatalogProductOption
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id required
@@ -184,7 +184,7 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Number} weight optional, default value: `0`
  * @property {Number} width optional, default value: `0`
  */
-export const VariantBaseSchema = new SimpleSchema({
+export const CatalogProductOption = new SimpleSchema({
   "_id": {
     type: String,
     label: "Catalog product variant Id"
@@ -294,20 +294,20 @@ export const VariantBaseSchema = new SimpleSchema({
 });
 
 /**
- * @name CatalogVariantSchema
+ * @name CatalogProductVariant
  * @memberof Schemas
  * @type {SimpleSchema}
- * @extends VariantBaseSchema
- * @property {VariantBaseSchema[]} options optional
+ * @extends CatalogProductOption
+ * @property {CatalogProductOption[]} options optional
  */
-export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
+export const CatalogProductVariant = CatalogProductOption.clone().extend({
   "options": {
     type: Array,
     label: "Variant Options",
     optional: true
   },
   "options.$": {
-    type: VariantBaseSchema
+    type: CatalogProductOption
   }
 });
 
@@ -501,7 +501,7 @@ export const CatalogProduct = new SimpleSchema({
     optional: true
   },
   "variants.$": {
-    type: CatalogVariantSchema
+    type: CatalogProductVariant
   },
   "vendor": {
     type: String,
