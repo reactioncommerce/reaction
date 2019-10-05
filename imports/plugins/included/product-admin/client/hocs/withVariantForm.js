@@ -17,7 +17,7 @@ import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import withTaxCodes from "/imports/plugins/core/taxes/client/hoc/withTaxCodes";
 
 const archiveProducts = gql`
-  mutation cloneProducts($input: ArchiveProductsInput!) {
+  mutation archiveProducts($input: ArchiveProductsInput!) {
     archiveProducts(input: $input) {
       products {
         _id

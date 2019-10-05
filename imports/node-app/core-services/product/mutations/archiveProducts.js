@@ -76,16 +76,14 @@ export default async function archiveProducts(context, input) {
     if (archivedProduct.type === "variant") {
       appEvents.emit("afterVariantSoftDelete", {
         variant: {
-          ...archivedProduct,
-          isDeleted: true
+          ...archivedProduct
         },
         deletedBy: userId
       });
     } else {
       appEvents.emit("afterProductSoftDelete", {
         product: {
-          ...archivedProduct,
-          isDeleted: true
+          ...archivedProduct
         },
         deletedBy: userId
       });

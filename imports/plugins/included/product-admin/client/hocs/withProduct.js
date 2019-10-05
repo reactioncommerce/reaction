@@ -6,7 +6,6 @@ import { withRouter } from "react-router";
 import { compose, withState } from "recompose";
 import { useMutation } from "@apollo/react-hooks";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { Media } from "/imports/plugins/core/files/client";
 import { Meteor } from "meteor/meteor";
 import { Reaction, formatPriceString, i18next } from "/client/api";
@@ -132,7 +131,6 @@ const wrapComponent = (Comp) => {
             history.push(redirectUrl);
           } catch (error) {
             Alerts.toast(i18next.t("productDetailEdit.archiveProductsFail", { err: error }), "error");
-            throw new ReactionError("server-error", "Unable to archive product");
           }
         }}
         onCloneProduct={async (product) => {
@@ -144,7 +142,6 @@ const wrapComponent = (Comp) => {
             Alerts.toast(i18next.t("productDetailEdit.cloneProductSuccess"), "success");
           } catch (error) {
             Alerts.toast(i18next.t("productDetailEdit.cloneProductFail", { err: error }), "error");
-            throw new ReactionError("server-error", "Unable to clone product");
           }
         }}
         onCreateVariant={async (product) => {
@@ -162,7 +159,6 @@ const wrapComponent = (Comp) => {
             Alerts.toast(i18next.t("productDetailEdit.addVariant"), "success");
           } catch (error) {
             Alerts.toast(i18next.t("productDetailEdit.addVariantFail", { err: error }), "error");
-            throw new ReactionError("server-error", "Unable to create variant");
           }
         }}
         onProductFieldSave={handleProductFieldSave}

@@ -13,7 +13,7 @@ import PublishContainer from "/imports/plugins/core/catalog/client/containers/pu
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 
 const archiveProducts = gql`
-  mutation cloneProducts($input: ArchiveProductsInput!) {
+  mutation archiveProducts($input: ArchiveProductsInput!) {
     archiveProducts(input: $input) {
       products {
         _id

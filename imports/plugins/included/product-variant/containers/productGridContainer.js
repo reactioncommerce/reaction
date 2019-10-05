@@ -16,7 +16,7 @@ import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
 
 const archiveProducts = gql`
-  mutation cloneProducts($input: ArchiveProductsInput!) {
+  mutation archiveProducts($input: ArchiveProductsInput!) {
     archiveProducts(input: $input) {
       products {
         _id
