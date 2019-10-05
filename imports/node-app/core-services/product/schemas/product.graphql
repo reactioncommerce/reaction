@@ -227,11 +227,11 @@ input ArchiveProductsInput  {
 
 "Input for the `archiveProducts` mutation"
 input ArchiveProductVariantsInput  {
-  "Array of IDs of variants to archive"
-  variantIds: [ID]!
-
   "ID of shop that owns all variants you are archiving"
   shopId: ID!
+
+  "Array of IDs of variants to archive"
+  variantIds: [ID]!
 }
 
 "Input for the `createProduct` mutation"
