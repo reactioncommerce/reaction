@@ -146,7 +146,7 @@ class DetailForm extends Component {
 
   handleSelectChange = (value, field) => {
     if (this.props.onProductFieldSave) {
-      this.props.onProductFieldSave(this.product._id, field, value);
+      this.props.onProductFieldSave(this.props.product, field, value);
     }
   }
 
@@ -159,7 +159,7 @@ class DetailForm extends Component {
     }
 
     if (this.props.onProductFieldSave) {
-      this.props.onProductFieldSave(this.product._id, "shouldAppearInSitemap", isChecked);
+      this.props.onProductFieldSave(this.props.product, "shouldAppearInSitemap", isChecked);
     }
 
     const { isVisible, isDeleted } = this.product;
@@ -187,7 +187,7 @@ class DetailForm extends Component {
 
   handleFieldBlur = (event, value, field) => {
     if (this.props.onProductFieldSave) {
-      this.props.onProductFieldSave(this.product._id, field, value);
+      this.props.onProductFieldSave(this.props.product, field, value);
     }
   }
 

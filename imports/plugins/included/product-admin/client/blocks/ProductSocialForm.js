@@ -146,7 +146,7 @@ class ProductAdmin extends Component {
 
   handleSelectChange = (value, field) => {
     if (this.props.onProductFieldSave) {
-      this.props.onProductFieldSave(this.product._id, field, value);
+      this.props.onProductFieldSave(this.props.product, field, value);
     }
   }
 
@@ -159,7 +159,7 @@ class ProductAdmin extends Component {
     }
 
     if (this.props.onProductFieldSave) {
-      this.props.onProductFieldSave(this.product._id, "shouldAppearInSitemap", isChecked);
+      this.props.onProductFieldSave(this.props.product, "shouldAppearInSitemap", isChecked);
     }
 
     const { isVisible, isDeleted } = this.product;
@@ -187,7 +187,7 @@ class ProductAdmin extends Component {
 
   handleToggleVisibility = () => {
     if (this.props.onProductFieldSave) {
-      this.props.onProductFieldSave(this.product._id, "isVisible", !this.product.isVisible);
+      this.props.onProductFieldSave(this.props.product, "isVisible", !this.product.isVisible);
     }
   }
 
@@ -208,19 +208,19 @@ class ProductAdmin extends Component {
 
   handleFieldBlur = (event, value, field) => {
     if (this.props.onProductFieldSave) {
-      this.props.onProductFieldSave(this.product._id, field, value);
+      this.props.onProductFieldSave(this.props.product, field, value);
     }
   }
 
   handleMetaSave = (event, metafield, index) => {
     if (this.props.onMetaSave) {
-      this.props.onMetaSave(this.product._id, metafield, index);
+      this.props.onMetaSave(this.props.product, metafield, index);
     }
   }
 
   handleMetaRemove = (event, metafield, index) => {
     if (this.props.onMetaRemove) {
-      this.props.onMetaRemove(this.product._id, metafield, index);
+      this.props.onMetaRemove(this.props.product, metafield, index);
     }
   }
 

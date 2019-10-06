@@ -67,37 +67,6 @@ export async function handleArchiveProduct(product) {
   await ReactionProduct.archiveProduct(product);
 }
 
-/**
- * Save a product field
- * @param {String} productId Product ID
- * @param {String} fieldName Field name to save
- * @param {Any} value Value for that field
- * @returns {undefined} No return
- */
-export function handleProductFieldSave(productId, fieldName, value) {
-  Meteor.call("products/updateProductField", productId, fieldName, value, (error) => {
-    if (error) {
-      Alerts.toast(error.message, "error");
-      this.forceUpdate();
-    }
-  });
-}
-
-/**
- * Handle save of a product variant field
- * @param {String} variantId Variant id
- * @param {String} fieldName Field name
- * @param {Any} value Any value supported by the variant schema
- * @returns {undefined} No return
- */
-export function handleProductVariantFieldSave(variantId, fieldName, value) {
-  Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
-    if (error) {
-      Alerts.toast(error.message, "error");
-    }
-  });
-}
-
 const wrapComponent = (Comp) => {
   /**
    * withProduct HOC
@@ -146,8 +115,64 @@ const wrapComponent = (Comp) => {
             throw new ReactionError("server-error", "Unable to create variant");
           }
         }}
-        onProductFieldSave={handleProductFieldSave}
-        onProductVariantFieldSave={handleProductVariantFieldSave}
+        onProductFieldSave={async (product, fieldName, value) => {
+          // Check to see if field has been updated.
+          // `onProductFieldSave` runs on onChange AND onBlur,
+          // so there isn't always an update to a value when run with `onBlur`,
+          // and this mutation might not need to run
+          if (product[fieldName] !== value) {
+            const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+              { namespace: "Product", id: product._id },
+              { namespace: "Shop", id: Reaction.getShopId() }
+            ]);
+
+            try {
+              await updateProductField({
+                variables: {
+                  input: {
+                    field: fieldName,
+                    shopId: opaqueShopId,
+                    productId: opaqueProductId,
+                    value
+                  }
+                }
+              });
+
+              Alerts.toast(i18next.t("productDetailEdit.updateProductFieldSuccess"), "success");
+            } catch (error) {
+              Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
+            }
+          }
+        }}
+        onProductVariantFieldSave={async (variant, fieldName, value) => {
+          // Check to see if field has been updated.
+          // `onProductFieldSave` runs onChange AND onBlur,
+          // so there isn't always an update to a value when run with `onBlur`,
+          // and this mutation might not need to run
+          if (variant[fieldName] !== value) {
+            const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+              { namespace: "Product", id: variant._id },
+              { namespace: "Shop", id: Reaction.getShopId() }
+            ]);
+
+            try {
+              await updateProductField({
+                variables: {
+                  input: {
+                    field: fieldName,
+                    shopId: opaqueShopId,
+                    productId: opaqueProductId,
+                    value
+                  }
+                }
+              });
+
+              Alerts.toast(i18next.t("productDetailEdit.updateProductFieldSuccess"), "success");
+            } catch (error) {
+              Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
+            }
+          }
+        }}
         onRestoreProduct={async (product) => {
           const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
             { namespace: "Product", id: product._id },
@@ -170,7 +195,7 @@ const wrapComponent = (Comp) => {
           } catch (error) {
             Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
           }
-        }
+        }}
         onToggleProductVisibility={async (product) => {
           const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
             { namespace: "Product", id: product._id },

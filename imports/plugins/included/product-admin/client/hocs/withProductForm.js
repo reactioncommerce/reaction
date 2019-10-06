@@ -47,7 +47,7 @@ const wrapComponent = (Comp) => {
 
     handleSelectChange = (value, field) => {
       if (this.props.onProductFieldSave) {
-        this.props.onProductFieldSave(this.product._id, field, value);
+        this.props.onProductFieldSave(this.props.product, field, value);
       }
     }
 
@@ -60,7 +60,7 @@ const wrapComponent = (Comp) => {
       }
 
       if (this.props.onProductFieldSave) {
-        this.props.onProductFieldSave(this.product._id, "shouldAppearInSitemap", isChecked);
+        this.props.onProductFieldSave(this.props.product, "shouldAppearInSitemap", isChecked);
       }
 
       const { isVisible, isDeleted } = this.product;
@@ -88,7 +88,7 @@ const wrapComponent = (Comp) => {
 
     handleFieldBlur = (event, value, field) => {
       if (this.props.onProductFieldSave) {
-        this.props.onProductFieldSave(this.product._id, field, value);
+        this.props.onProductFieldSave(this.props.product, field, value);
       }
     }
 
@@ -110,9 +110,9 @@ const wrapComponent = (Comp) => {
     handleMetaSave = (event, metafield, index) => {
       // update existing metafield
       if (index >= 0) {
-        Meteor.call("products/updateMetaFields", this.product._id, metafield, index);
+        Meteor.call("products/updateMetaFields", this.props.product, metafield, index);
       } else if (metafield.key && metafield.value) {
-        Meteor.call("products/updateMetaFields", this.product._id, metafield);
+        Meteor.call("products/updateMetaFields", this.props.product, metafield);
       }
 
       this.setState({
@@ -124,7 +124,7 @@ const wrapComponent = (Comp) => {
     }
 
     handleMetaRemove = (event, metafield) => {
-      Meteor.call("products/removeMetaFields", this.product._id, metafield);
+      Meteor.call("products/removeMetaFields", this.props.product, metafield);
     }
 
     get product() {
