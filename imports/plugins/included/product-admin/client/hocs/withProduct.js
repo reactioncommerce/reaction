@@ -107,16 +107,6 @@ export function handleProductVariantFieldSave(variantId, fieldName, value) {
   });
 }
 
-
-/**
- * Toggle product visibility
- * @param {String} product Product
- * @returns {undefined} No return
- */
-function handleToggleProductVisibility(product) {
-  Meteor.call("products/updateProductField", product._id, "isVisible", !product.isVisible);
-}
-
 const wrapComponent = (Comp) => {
   /**
    * withProduct HOC
