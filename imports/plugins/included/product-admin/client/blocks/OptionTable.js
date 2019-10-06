@@ -23,7 +23,7 @@ function OptionTable(props) {
       items={childVariants}
       onCreate={onCreateOption}
       onChangeField={(item, field, value) => {
-        onProductVariantFieldSave(item._id, field, value);
+        onProductVariantFieldSave(item, field, value);
       }}
     />
   );

@@ -20,7 +20,7 @@ function VariantTable(props) {
       items={props.variants}
       onCreate={() => { onCreateVariant(product); }}
       onChangeField={(item, field, value) => {
-        onProductVariantFieldSave(item._id, field, value);
+        onProductVariantFieldSave(item, field, value);
       }}
     />
   );
