@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import _ from "lodash";
 import { withApollo } from "react-apollo";
-import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { compose } from "recompose";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";

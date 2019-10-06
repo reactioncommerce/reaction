@@ -36,6 +36,16 @@ mutation createProductVariant($input: CreateProductVariantInput!) {
 }
 `;
 
+const UPDATE_PRODUCT_FIELD = gql`
+  mutation updateProductField($input: UpdateProductFieldInput!) {
+    updateProductField(input: $input) {
+      product {
+        _id
+      }
+    }
+  }
+`;
+
 /**
  * Metafield to remove
  * @param {String} productId Product ID
@@ -117,6 +127,7 @@ const wrapComponent = (Comp) => {
     const { history } = props;
     const [cloneProducts] = useMutation(CLONE_PRODUCTS);
     const [createProductVariant] = useMutation(CREATE_VARIANT);
+    const [updateProductField] = useMutation(UPDATE_PRODUCT_FIELD);
 
     return (
       <Comp
@@ -157,7 +168,29 @@ const wrapComponent = (Comp) => {
         onProductFieldSave={handleProductFieldSave}
         onProductVariantFieldSave={handleProductVariantFieldSave}
         onRestoreProduct={handleProductRestore}
-        onToggleProductVisibility={handleToggleProductVisibility}
+        onToggleProductVisibility={async (product) => {
+          const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+            { namespace: "Product", id: product._id },
+            { namespace: "Shop", id: product.shopId }
+          ]);
+
+          try {
+            await updateProductField({
+              variables: {
+                input: {
+                  field: "isVisible",
+                  shopId: opaqueShopId,
+                  productId: opaqueProductId,
+                  value: !product.isVisible
+                }
+              }
+            });
+
+            Alerts.toast(i18next.t("productDetailEdit.updateProductFieldSuccess"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
+          }
+        }}
         {...props}
       />
     );
