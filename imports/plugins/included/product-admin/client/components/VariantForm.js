@@ -101,7 +101,7 @@ class VariantForm extends Component {
 
   handleFieldBlur = (event, value, field) => {
     if (this.props.onVariantFieldSave) {
-      this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
+      this.props.onVariantFieldSave(this.props.variant, field, value, this.state.variant);
     }
   }
 
@@ -113,7 +113,7 @@ class VariantForm extends Component {
       }
     }), () => {
       if (this.props.onVariantFieldSave) {
-        this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
+        this.props.onVariantFieldSave(this.props.variant, field, value, this.state.variant);
       }
     });
   }
@@ -126,7 +126,7 @@ class VariantForm extends Component {
       }
     }), () => {
       if (this.props.onVariantFieldSave) {
-        this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
+        this.props.onVariantFieldSave(this.props.variant, field, value, this.state.variant);
       }
     });
   }

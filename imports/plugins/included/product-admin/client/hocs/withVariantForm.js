@@ -25,6 +25,16 @@ const cloneProductVariants = gql`
   }
 `;
 
+const updateProductField = gql`
+  mutation updateProductField($input: UpdateProductFieldInput!) {
+    updateProductField(input: $input) {
+      product {
+        _id
+      }
+    }
+  }
+`;
+
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {
     static propTypes = {
@@ -162,8 +172,8 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    handleVariantFieldSave = (variantId, fieldName, value, variant) => {
-      const validationStatus = this.runVariantValidation(variant);
+    handleVariantFieldSave = async (variant, fieldName, value, variantState) => {
+      const validationStatus = this.runVariantValidation(variantState);
       if (!validationStatus) return;
 
       // validationStatus has a `isFieldValid` method, but it incorrectly returns
@@ -175,19 +185,35 @@ const wrapComponent = (Comp) => (
         return;
       }
 
-      Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
-        if (error) {
-          Alerts.toast(error.message, "error");
-        }
+      // Check to see if field has been updated.
+      // `onProductFieldSave` runs onChange AND onBlur,
+      // so there isn't always an update to a value when run with `onBlur`,
+      // and this mutation might not need to run
+      if (variant[fieldName] !== value) {
+        const { client } = this.props;
+        const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+          { namespace: "Product", id: variant._id },
+          { namespace: "Shop", id: Reaction.getShopId() }
+        ]);
 
-        if (fieldName === "inventoryPolicy") {
-          this.updateInventoryPolicyIfChildVariants(variant);
-        }
+        try {
+          await client.mutate({
+            mutation: updateProductField,
+            variables: {
+              input: {
+                field: fieldName,
+                shopId: opaqueShopId,
+                productId: opaqueProductId,
+                value
+              }
+            }
+          });
 
-        if (fieldName === "lowInventoryWarningThreshold") {
-          this.updateLowInventoryThresholdIfChildVariants(variant);
+          Alerts.toast(i18next.t("productDetailEdit.updateProductFieldSuccess"), "success");
+        } catch (error) {
+          Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
         }
-      });
+      }
     }
 
     handleCardExpand = (cardName) => {
@@ -208,7 +234,7 @@ const wrapComponent = (Comp) => (
     }
 
     handleFieldBlur = (event, value, field) => {
-      this.handleVariantFieldSave(this.variant._id, field, value, this.state.variant);
+      this.handleVariantFieldSave(this.props.variant, field, value, this.state.variant);
     }
 
     handleSelectChange = (value, field) => {
@@ -218,7 +244,7 @@ const wrapComponent = (Comp) => (
           [field]: value
         }
       }), () => {
-        this.handleVariantFieldSave(this.variant._id, field, value, this.state.variant);
+        this.handleVariantFieldSave(this.props.variant, field, value, this.state.variant);
       });
     }
 
@@ -229,7 +255,7 @@ const wrapComponent = (Comp) => (
           [field]: value
         }
       }), () => {
-        this.handleVariantFieldSave(this.variant._id, field, value, this.state.variant);
+        this.handleVariantFieldSave(this.props.variant, field, value, this.state.variant);
       });
     }
 
@@ -254,56 +280,6 @@ const wrapComponent = (Comp) => (
       }));
 
       this.handleFieldBlur(event, inverseValue, field);
-    }
-
-    /**
-     * @summary update parent inventory policy if variant has children
-     * @param {Object} variant product or variant document
-     * @returns {undefined} return nothing
-     * @private
-     */
-    updateInventoryPolicyIfChildVariants = (variant) => {
-      // Get all siblings, including current variant
-      const options = ReactionProduct.getSiblings(variant);
-      // Get parent
-      const parent = ReactionProduct.getVariantParent(variant);
-
-      // If this is not a top-level variant, update top-level inventory policy as well
-      if (parent && options && options.length) {
-        // Check to see if every variant option inventory policy is true
-        const inventoryPolicy = options.every((option) => option.inventoryPolicy === true);
-
-        // If all inventory policies on children are true, update parent to be true
-        if (inventoryPolicy === true) {
-          return Meteor.call("products/updateProductField", parent._id, "inventoryPolicy", true, (error) => {
-            if (error) {
-              Alerts.toast(error.message, "error");
-            }
-          });
-        }
-        // If any child has a false inventoryPolicy, update parent to be false
-        return Meteor.call("products/updateProductField", parent._id, "inventoryPolicy", false, (error) => {
-          if (error) {
-            Alerts.toast(error.message, "error");
-          }
-        });
-      }
-
-      return null;
-    }
-
-    updateLowInventoryThresholdIfChildVariants = (variant) => {
-      // Check to see if this variant has options attached to it
-      const variantOptions = ReactionProduct.getVariants(variant._id);
-
-      if (variantOptions && variantOptions.length !== 0) {
-        variantOptions.forEach((option) =>
-          Meteor.call("products/updateProductField", option._id, "lowInventoryWarningThreshold", variant.lowInventoryWarningThreshold, (error) => {
-            if (error) {
-              Alerts.toast(error.message, "error");
-            }
-          }));
-      }
     }
 
     render() {
