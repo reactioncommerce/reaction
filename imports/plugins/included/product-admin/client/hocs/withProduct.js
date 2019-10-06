@@ -59,15 +59,6 @@ export function handleMetaRemove(productId, metafield) {
 }
 
 /**
- * Restore an archived product
- * @param {Object} product Product object
- * @returns {undefined} No return
- */
-export function handleProductRestore(product) {
-  Meteor.call("products/updateProductField", product._id, "isDeleted", false);
-}
-
-/**
  * Archive (soft delete) product
  * @param {Object} product Product object
  * @returns {undefined} No return
@@ -157,7 +148,29 @@ const wrapComponent = (Comp) => {
         }}
         onProductFieldSave={handleProductFieldSave}
         onProductVariantFieldSave={handleProductVariantFieldSave}
-        onRestoreProduct={handleProductRestore}
+        onRestoreProduct={async (product) => {
+          const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+            { namespace: "Product", id: product._id },
+            { namespace: "Shop", id: product.shopId }
+          ]);
+
+          try {
+            await updateProductField({
+              variables: {
+                input: {
+                  field: "isDeleted",
+                  shopId: opaqueShopId,
+                  productId: opaqueProductId,
+                  value: false
+                }
+              }
+            });
+
+            Alerts.toast(i18next.t("productDetailEdit.updateProductFieldSuccess"), "success");
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
+          }
+        }
         onToggleProductVisibility={async (product) => {
           const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
             { namespace: "Product", id: product._id },
