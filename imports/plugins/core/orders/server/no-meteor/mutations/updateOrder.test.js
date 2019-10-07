@@ -1,6 +1,6 @@
-import updateOrder from "./updateOrder";
-import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import Factory from "/imports/test-utils/helpers/factory";
+import updateOrder from "./updateOrder";
 
 beforeEach(() => {
   jest.resetAllMocks();
