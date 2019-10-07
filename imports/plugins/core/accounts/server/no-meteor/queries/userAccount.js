@@ -13,11 +13,6 @@ export default async function userAccountQuery(context, id) {
   const { collections, userHasPermission, userId } = context;
   const { Accounts } = collections;
 
-  const accounts = await Accounts.find({}).toArray();
-
-  console.log("ID", id);
-  console.log("Accounts", accounts.map((acc) => acc._id));
-
   const userAccount = await Accounts.findOne({ _id: id });
   if (!userAccount) throw new ReactionError("not-found", "No account found");
 
