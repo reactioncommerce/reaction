@@ -49,7 +49,7 @@ beforeAll(async () => {
     product: Factory.CatalogProduct.makeOne({
       isDeleted: false,
       isVisible: true,
-      variants: Factory.CatalogVariantSchema.makeMany(1)
+      variants: Factory.CatalogProductVariant.makeMany(1)
     })
   });
   await testApp.collections.Catalog.insertOne(catalogItem);
@@ -95,7 +95,7 @@ test("user who placed an order can move an order item", async () => {
   });
 
   const group1 = Factory.OrderFulfillmentGroup.makeOne({
-    invoice: Factory.Invoice.makeOne({
+    invoice: Factory.OrderInvoice.makeOne({
       currencyCode: "USD",
       // Need to ensure 0 discount to avoid creating negative totals
       discounts: 0
@@ -109,7 +109,7 @@ test("user who placed an order can move an order item", async () => {
   });
 
   const group2 = Factory.OrderFulfillmentGroup.makeOne({
-    invoice: Factory.Invoice.makeOne({
+    invoice: Factory.OrderInvoice.makeOne({
       currencyCode: "USD",
       // Need to ensure 0 discount to avoid creating negative totals
       discounts: 0

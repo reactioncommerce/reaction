@@ -2,10 +2,10 @@ import { gql } from "apollo-server";
 import { createTestClient } from "apollo-server-testing";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
+import hashToken from "@reactioncommerce/api-utils/hashToken";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import buildContext from "/imports/node-app/core/util/buildContext";
 import Factory from "/imports/test-utils/helpers/factory";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import registerPlugins from "/imports/node-app/registerPlugins";
 import createDataLoaders from "/imports/node-app/core/util/createDataLoaders";
 
@@ -98,7 +98,7 @@ class TestApp {
     const { users } = this.reactionNodeApp.collections;
 
     const loginToken = Random.id();
-    const hashedToken = hashLoginToken(loginToken);
+    const hashedToken = hashToken(loginToken);
 
     const existing = await users.findOne({ _id: user._id });
     if (!existing) {

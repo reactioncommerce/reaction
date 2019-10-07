@@ -1,6 +1,6 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
-import { getAnonymousAccessToken } from "/imports/plugins/core/orders/server/no-meteor/util/anonymousToken";
+import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 
 jest.setTimeout(300000);
 
@@ -15,7 +15,7 @@ const opaqueOrderId = "cmVhY3Rpb24vb3JkZXI6aW50ZWctdGVzdC1vcmRlci1pZA=="; // rea
 const accountId = "integ-test-account-id";
 const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDppbnRlZy10ZXN0LWFjY291bnQtaWQ="; // reaction/account:integ-test-account-id
 
-const mockOrdersAccount = Factory.Accounts.makeOne({
+const mockOrdersAccount = Factory.Account.makeOne({
   _id: accountId
 });
 
