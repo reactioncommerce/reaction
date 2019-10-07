@@ -3,7 +3,6 @@ import { createTestClient } from "apollo-server-testing";
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import hashToken from "@reactioncommerce/api-utils/hashToken";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import buildContext from "/imports/node-app/core/util/buildContext";
 import Factory from "/imports/test-utils/helpers/factory";
