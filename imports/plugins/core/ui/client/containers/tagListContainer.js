@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import gql from "graphql-tag";
 import _ from "lodash";
 import update from "immutability-helper";
+import { withApollo } from "react-apollo";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
@@ -10,6 +12,17 @@ import TagList from "../components/tags/tagList";
 import { Tags } from "/lib/collections";
 import { getTagIds } from "/lib/selectors/tags";
 import getTagSuggestions from "/imports/plugins/core/ui-tagnav/client/util/getTagSuggestions";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+
+const updateProductField = gql`
+  mutation updateProductField($input: UpdateProductFieldInput!) {
+    updateProductField(input: $input) {
+      product {
+        _id
+      }
+    }
+  }
+`;
 
 const wrapComponent = (Comp) => (
   class TagListContainer extends Component {
@@ -35,13 +48,30 @@ const wrapComponent = (Comp) => (
         suggestions: []
       };
 
-      this.debounceUpdateTagOrder = _.debounce(() => {
-        Meteor.call(
-          "products/updateProductField",
-          this.props.product._id,
-          "hashtags",
-          this.state.tagIds
-        );
+      this.debounceUpdateTagOrder = _.debounce(async () => {
+        console.log("is this debouncing?");
+
+        const { client } = this.props;
+        const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+          { namespace: "Product", id: props.product._id },
+          { namespace: "Shop", id: Reaction.getShopId() }
+        ]);
+
+        try {
+          await client.mutate({
+            mutation: updateProductField,
+            variables: {
+              input: {
+                field: "hashtags",
+                shopId: opaqueShopId,
+                productId: opaqueProductId,
+                value: this.state.tagIds
+              }
+            }
+          });
+        } catch (error) {
+          Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
+        }
       }, 500);
     }
 
@@ -263,11 +293,13 @@ function composer(props, onData) {
 }
 
 registerComponent("TagList", TagList, [
+  withApollo,
   composeWithTracker(composer),
   wrapComponent
 ]);
 
 export default compose(
+  withApollo,
   composeWithTracker(composer),
   wrapComponent
 )(TagList);

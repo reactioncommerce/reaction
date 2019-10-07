@@ -21,7 +21,6 @@ const updateProductField = gql`
   }
 `;
 
-
 class ProductPublishContainer extends Component {
   handleMetaRemove = (productId, metafield) => {
     Meteor.call("products/removeMetaFields", productId, metafield);
