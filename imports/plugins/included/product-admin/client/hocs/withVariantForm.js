@@ -141,7 +141,7 @@ const wrapComponent = (Comp) => (
                   field: "isDeleted",
                   shopId: opaqueShopId,
                   productId: opaqueProductId,
-                  value: !variant.isVisible
+                  value: !variant.isDeleted
                 }
               }
             });
