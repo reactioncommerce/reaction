@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import generateVerificationTokenObject from "./generateVerificationTokenObject";
+import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
 
 /**
  * @method sendVerificationEmail
