@@ -220,8 +220,30 @@ const wrapComponent = (Comp) => (
       Reaction.state.set("edit/focus", cardName);
     }
 
-    handleVariantVisibilityToggle = (variant) => {
-      Meteor.call("products/updateProductField", variant._id, "isVisible", !variant.isVisible);
+    handleVariantVisibilityToggle = async (variant) => {
+      const { client } = this.props;
+      const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+        { namespace: "Product", id: variant._id },
+        { namespace: "Shop", id: Reaction.getShopId() }
+      ]);
+
+      try {
+        await client.mutate({
+          mutation: updateProductField,
+          variables: {
+            input: {
+              field: "isVisible",
+              shopId: opaqueShopId,
+              productId: opaqueProductId,
+              value: !variant.isVisible
+            }
+          }
+        });
+
+        Alerts.toast(i18next.t("productDetailEdit.updateProductFieldSuccess"), "success");
+      } catch (error) {
+        Alerts.toast(i18next.t("productDetailEdit.updateProductFieldFail", { err: error }), "error");
+      }
     }
 
     handleFieldChange = (event, value, field) => {
