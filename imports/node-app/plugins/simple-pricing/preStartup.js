@@ -1,4 +1,4 @@
-import { extendSchemas } from "./simpleSchemas.js";
+import { extendSimplePricingSchemas } from "./simpleSchemas.js";
 
 /**
  * @method preStartup
@@ -7,5 +7,5 @@ import { extendSchemas } from "./simpleSchemas.js";
  * @returns {undefined} - void, no return.
  */
 export default async function preStartup(context) {
-  extendSchemas(context.simpleSchemas);
+  extendSimplePricingSchemas(context.simpleSchemas);
 }

@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "../../../core/util/hashLoginToken.js";
+import hashToken from "@reactioncommerce/api-utils/hashToken";
 
 /**
  * @name anonymousCartByCartId
@@ -22,6 +22,6 @@ export default async function anonymousCartByCartId(context, { cartId, token } =
 
   return Cart.findOne({
     _id: cartId,
-    anonymousAccessToken: hashLoginToken(token)
+    anonymousAccessToken: hashToken(token)
   });
 }

@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "../../../core/util/hashLoginToken";
+import hashToken from "@reactioncommerce/api-utils/hashToken";
 import addCartItemsUtil from "../util/addCartItems.js";
 
 /**
@@ -30,7 +30,7 @@ export default async function addCartItems(context, input, options = {}) {
       throw new ReactionError("not-found", "Cart not found");
     }
 
-    selector = { _id: cartId, anonymousAccessToken: hashLoginToken(token) };
+    selector = { _id: cartId, anonymousAccessToken: hashToken(token) };
   }
 
   const cart = await Cart.findOne(selector);

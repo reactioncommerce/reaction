@@ -18,12 +18,12 @@ function getCatalogProduct() {
     isBackorder: undefined,
     isLowQuantity: undefined,
     isSoldOut: undefined,
-    variants: Factory.CatalogVariantSchema.makeMany(1, {
+    variants: Factory.CatalogProductVariant.makeMany(1, {
       isDeleted: false,
       isSoldOut: undefined,
       isVisible: true,
       variantId: "TOP_VARIANT_1",
-      options: Factory.VariantBaseSchema.makeMany(2, {
+      options: Factory.CatalogProductOption.makeMany(2, {
         isDeleted: false,
         isSoldOut: undefined,
         isVisible: true,

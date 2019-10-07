@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "../../../core/util/hashLoginToken";
+import hashToken from "@reactioncommerce/api-utils/hashToken";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart.js";
 import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart.js";
 import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart.js";
@@ -30,7 +30,7 @@ export default async function reconcileCarts(context, input) {
   if (!anonymousCartToken) throw new ReactionError("invalid-param", "anonymousCartToken is required");
 
   const accountCartSelector = { accountId };
-  const anonymousCartSelector = { _id: anonymousCartId, anonymousAccessToken: hashLoginToken(anonymousCartToken) };
+  const anonymousCartSelector = { _id: anonymousCartId, anonymousAccessToken: hashToken(anonymousCartToken) };
 
   const carts = await Cart.find({
     $or: [accountCartSelector, anonymousCartSelector]

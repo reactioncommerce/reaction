@@ -1,6 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
+import hashToken from "@reactioncommerce/api-utils/hashToken";
 import { Accounts, Cart } from "/lib/collections";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 // Do this migration in batches of 200 to avoid memory issues
 const LIMIT = 200;
@@ -57,7 +57,7 @@ function convertCartUp(cart) {
 
   const account = cart.userId ? Accounts.findOne({ userId: cart.userId }) : null;
   const accountId = (account && account._id) || null;
-  const anonymousAccessToken = cart.sessionId ? hashLoginToken(cart.sessionId) : null;
+  const anonymousAccessToken = cart.sessionId ? hashToken(cart.sessionId) : null;
 
   Cart.update({ _id: cart._id }, {
     $set: {
