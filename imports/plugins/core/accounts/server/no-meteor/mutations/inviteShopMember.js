@@ -52,7 +52,7 @@ export default async function inviteShopMember(context, input) {
   if (!shop) throw new ReactionError("not-found", "No shop found");
 
   const group = await Groups.findOne({ _id: groupId });
-  if (!group) throw new ReactionError("not-found", "No gr found");
+  if (!group) throw new ReactionError("not-found", "No group found");
 
   // we don't allow direct invitation of "owners", throw an error if that is the group
   if (group.slug === "owner") {
@@ -99,7 +99,7 @@ export default async function inviteShopMember(context, input) {
         profile: { invited: true },
         email,
         name,
-        groupId
+        shopId: shop._id
       });
     }
 

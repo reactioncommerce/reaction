@@ -176,6 +176,18 @@ export default class ReactionNodeApp {
       packageInfoArray.forEach(registerPluginHandlerFunc);
     });
 
+    const preStartupFunctionsRegisteredByPlugins = this.functionsByType.preStartup;
+    if (Array.isArray(preStartupFunctionsRegisteredByPlugins)) {
+      // We are intentionally running these in series, in the order in which they were registered
+      for (const preStartupFunctionInfo of preStartupFunctionsRegisteredByPlugins) {
+        Logger.info(`Running pre-startup function "${preStartupFunctionInfo.func.name}" for plugin "${preStartupFunctionInfo.pluginName}"...`);
+        const startTime = Date.now();
+        await preStartupFunctionInfo.func(this.context); // eslint-disable-line no-await-in-loop
+        const elapsedMs = Date.now() - startTime;
+        Logger.info(`pre-startup function "${preStartupFunctionInfo.func.name}" for plugin "${preStartupFunctionInfo.pluginName}" finished in ${elapsedMs}ms`);
+      }
+    }
+
     const startupFunctionsRegisteredByPlugins = this.functionsByType.startup;
     if (Array.isArray(startupFunctionsRegisteredByPlugins)) {
       // We are intentionally running these in series, in the order in which they were registered

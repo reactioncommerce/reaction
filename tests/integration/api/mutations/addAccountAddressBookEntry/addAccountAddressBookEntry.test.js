@@ -24,7 +24,7 @@ const accountOpaqueId = "cmVhY3Rpb24vYWNjb3VudDoxMjM=";
 test("user can add an address to their own address book", async () => {
   await testApp.setLoggedInUser({ _id: accountInternalId });
 
-  const address = Factory.Address.makeOne();
+  const address = Factory.AccountProfileAddress.makeOne();
 
   // These props are set by the server and not allowed on AddressInput
   delete address._id;

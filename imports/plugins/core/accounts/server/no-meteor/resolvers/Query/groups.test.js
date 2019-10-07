@@ -1,5 +1,5 @@
+import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import groups from "./groups";
-import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 jest.mock("graphql-fields", () => jest.fn().mockName("graphqlFields"));
 

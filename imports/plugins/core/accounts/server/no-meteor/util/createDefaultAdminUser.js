@@ -10,7 +10,7 @@ import { defaultOwnerRoles } from "./defaultRoles";
  */
 export default async function createDefaultAdminUser(context) {
   const { collections, createUser } = context;
-  const { users } = collections;
+  const { Shops, users } = collections;
 
   // Check whether a non-shop-specific "owner" user already exists
   const ownerUser = await users.findOne({ "roles.__global_roles__": "owner" });
@@ -46,11 +46,18 @@ export default async function createDefaultAdminUser(context) {
     Logger.info("Using defaults to create admin user");
   }
 
+  const shop = await Shops.findOne({ shopType: "primary" });
+
+  if (!shop) {
+    throw new Error("not-found", "Shop not found");
+  }
+
   // defaults use either env or generated values
   const userInput = {
     email: REACTION_EMAIL || defaultEmail,
     name: REACTION_USER || defaultName,
     password: REACTION_AUTH || defaultPassword,
+    shopId: shop._id,
     username: REACTION_USER_NAME || defaultUsername
   };
 

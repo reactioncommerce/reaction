@@ -15,7 +15,7 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
-  mockOrdersAccount = Factory.Accounts.makeOne({
+  mockOrdersAccount = Factory.Account.makeOne({
     roles: {
       [shopId]: ["orders"]
     }
@@ -27,7 +27,7 @@ beforeAll(async () => {
     product: Factory.CatalogProduct.makeOne({
       isDeleted: false,
       isVisible: true,
-      variants: Factory.CatalogVariantSchema.makeMany(1)
+      variants: Factory.CatalogProductVariant.makeMany(1)
     })
   });
   await testApp.collections.Catalog.insertOne(catalogItem);

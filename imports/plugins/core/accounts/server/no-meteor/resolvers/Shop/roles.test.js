@@ -1,5 +1,5 @@
+import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import rolesResolver from "./roles";
-import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 
