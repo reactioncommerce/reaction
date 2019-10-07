@@ -9,7 +9,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Dashboard",
     name: "reaction-dashboard",
-    icon: "fa fa-th",
     i18n,
     settings: {
       name: "Dashboard"

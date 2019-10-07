@@ -10,7 +10,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Email Templates",
     name: "reaction-email-templates",
-    icon: "fa fa-envelope-o",
     functionsByType: {
       startup: [startup]
     },

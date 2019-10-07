@@ -25,7 +25,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Catalog",
     name: "reaction-catalog",
-    icon: "fa fa-book",
     i18n,
     collections: {
       Catalog: {
