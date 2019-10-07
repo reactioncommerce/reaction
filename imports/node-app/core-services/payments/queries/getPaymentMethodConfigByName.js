@@ -1,4 +1,4 @@
-const paymentMethods = {};
+import { paymentMethods } from "../registration.js";
 
 /**
  * @name getPaymentMethodConfigByName
