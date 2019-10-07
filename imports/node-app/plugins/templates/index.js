@@ -9,7 +9,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Templates",
     name: "reaction-templates",
-    icon: "fa fa-columns",
     i18n,
     collections: {
       Templates: {

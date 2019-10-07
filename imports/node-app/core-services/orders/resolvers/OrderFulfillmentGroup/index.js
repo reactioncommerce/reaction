@@ -1,8 +1,8 @@
+import resolveShopFromShopId from "@reactioncommerce/api-utils/graphql/resolveShopFromShopId.js";
 import {
   encodeOrderFulfillmentGroupOpaqueId,
   xformOrderFulfillmentGroupSelectedOption
 } from "@reactioncommerce/reaction-graphql-xforms/order";
-import { resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
 import fulfillmentGroupDisplayStatus from "./fulfillmentGroupDisplayStatus.js";
 import items from "./items.js";
 import summary from "./summary.js";

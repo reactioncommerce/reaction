@@ -14,7 +14,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Sitemap Generator",
     name: "reaction-sitemap-generator",
-    icon: "fa fa-vine",
     i18n,
     collections: {
       Sitemaps: {

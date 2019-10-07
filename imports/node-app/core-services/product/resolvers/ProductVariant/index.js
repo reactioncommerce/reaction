@@ -1,4 +1,4 @@
-import { resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
+import resolveShopFromShopId from "@reactioncommerce/api-utils/graphql/resolveShopFromShopId.js";
 import { encodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
 import getVariants from "../../utils/getVariants.js";
 

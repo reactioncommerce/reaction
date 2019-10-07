@@ -17,7 +17,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Orders",
     name: "reaction-orders",
-    icon: "fa fa-sun-o",
     i18n,
     collections: {
       Orders: {

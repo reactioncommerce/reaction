@@ -14,7 +14,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Shipping Rates",
     name: "reaction-shipping-rates",
-    icon: "fa fa-truck-o",
     i18n,
     collections: {
       FlatRateFulfillmentRestrictions: {

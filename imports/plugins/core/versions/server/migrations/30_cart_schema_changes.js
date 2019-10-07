@@ -1,5 +1,5 @@
 import { Migrations } from "meteor/percolate:migrations";
-import hashToken from "@reactioncommerce/api-utils/hashToken";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import { Accounts, Cart } from "/lib/collections";
 
 // Do this migration in batches of 200 to avoid memory issues

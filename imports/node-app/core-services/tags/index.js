@@ -14,7 +14,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Tags",
     name: "reaction-tags",
-    icon: "fa fa-tag",
     i18n,
     collections: {
       Tags: {

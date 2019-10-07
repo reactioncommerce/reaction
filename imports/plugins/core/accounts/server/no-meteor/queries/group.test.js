@@ -1,4 +1,4 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import groupQuery from "./group";
 
 const fakeShopId = "FAKE_SHOP_ID";

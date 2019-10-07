@@ -1,5 +1,4 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import { getOrderQuery } from "../util/getOrderQuery.js";
 
 /**
@@ -30,7 +29,7 @@ export default async function refunds(context, { orderId, shopId, token } = {}) 
 
   if (Array.isArray(order.payments)) {
     const shopRefundsWithPaymentPromises = order.payments.map((payment) =>
-      getPaymentMethodConfigByName(payment.name)
+      context.queries.getPaymentMethodConfigByName(payment.name)
         .functions.listRefunds(context, payment)
         .then((shopRefunds) => ({ shopRefunds, payment })));
 
