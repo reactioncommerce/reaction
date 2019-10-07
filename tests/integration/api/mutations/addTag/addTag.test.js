@@ -41,9 +41,9 @@ beforeEach(async () => {
   };
 });
 
-const accountInternalId = "123";
 
 describe("unauthorized user", () => {
+  const accountInternalId = "123";
   let logLevel;
   beforeAll(async () => {
     await testApp.setLoggedInUser({ _id: accountInternalId });
@@ -84,7 +84,6 @@ describe("authorized user", () => {
     // slug is converted when saving slug.
     tagInput.slug = "tag-slug";
     tagInput.heroMediaUrl = `https://shop.fake.site/${tagInput.heroMediaUrl}`;
-    delete tagInput.shopId;
 
     // check that the return tag has the correct information.
     expect(result.addTag.tag).toEqual(expect.objectContaining(tagInput));
@@ -93,16 +92,15 @@ describe("authorized user", () => {
     let result;
     delete tagInput.slug;
     try {
+      let savedTag = await testApp.collections.Tags.findOne({ slug: "tag-name" });
+      expect(savedTag).toBeNull();
       result = await addTag(tagInput);
+      savedTag = await testApp.collections.Tags.findOne({ slug: "tag-name" });
+      expect(savedTag).not.toBeNull();
+      expect(savedTag.slug).toEqual("tag-name");
     } catch (error) {
       expect(error).toBeUndefined();
     }
-
-    // slug is converted when saving slug.
-    tagInput.slug = "tag-name";
-    tagInput.heroMediaUrl = `https://shop.fake.site/${tagInput.heroMediaUrl}`;
-    delete tagInput.shopId;
-
     // check that the return tag has the correct information.
     expect(result.addTag.tag).toEqual(expect.objectContaining(tagInput));
   });
