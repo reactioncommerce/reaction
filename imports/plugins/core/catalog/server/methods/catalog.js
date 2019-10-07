@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
-import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
