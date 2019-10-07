@@ -49,8 +49,6 @@ const wrapComponent = (Comp) => (
       };
 
       this.debounceUpdateTagOrder = _.debounce(async () => {
-        console.log("is this debouncing?");
-
         const { client } = this.props;
         const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
           { namespace: "Product", id: props.product._id },
