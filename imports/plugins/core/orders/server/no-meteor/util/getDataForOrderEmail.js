@@ -5,6 +5,14 @@ import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/ser
 import { addAnonymousOrderToken } from "./anonymousToken";
 import * as R from "ramda";
 
+const PaymentStatus = {
+  created: "created",
+  completed: "completed",
+  canceled: "canceled",
+  failed: "failed"
+};
+
+
 /**
  * @name formatDateForEmail
  * @method
@@ -215,7 +223,11 @@ export default async function getDataForOrderEmail(context, { order }) {
         isInAdvance,
         isInSantanderManual,
         isCashpresso,
-        bankDetails
+        bankDetails,
+        isCreated: payment.status === PaymentStatus.created,
+        isFailed: payment.status === PaymentStatus.failed,
+        isCompleted: payment.status === PaymentStatus.completed,
+        isCanceled: payment.status === PaymentStatus.canceled
       })),
       subtotal: formatMoney(subtotal * userCurrencyExchangeRate, userCurrency),
       shipping: formatMoney(shippingCost * userCurrencyExchangeRate, userCurrency),
