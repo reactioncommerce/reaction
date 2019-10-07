@@ -26,4 +26,13 @@ export default function shopsUserHasPermissionFor(user, permission) {
   return shopIds;
 }
 
-export const getShopsUserHasPermissionForFunctionForUser = curryN(2, shopsUserHasPermissionFor);
+const shopsUserHasPermissionForCurried = curryN(2, shopsUserHasPermissionFor);
+
+/**
+ * @summary Get a `shopsUserHasPermissionFor` function bound to the current user context
+ * @param {Object} context App context
+ * @return {Function} shopsUserHasPermissionFor function for `context.user`
+ */
+export function getHasPermissionFunctionForUser(context) {
+  return shopsUserHasPermissionForCurried(context.user);
+}

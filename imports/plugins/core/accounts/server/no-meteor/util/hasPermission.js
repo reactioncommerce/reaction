@@ -42,4 +42,13 @@ export default function hasPermission(user, permissions, roleGroup) {
   return false;
 }
 
-export const getHasPermissionFunctionForUser = curryN(2, hasPermission);
+const hasPermissionCurried = curryN(2, hasPermission);
+
+/**
+ * @summary Get a `hasPermission` function bound to the current user context
+ * @param {Object} context App context
+ * @return {Function} hasPermission function for `context.user`
+ */
+export function getHasPermissionFunctionForUser(context) {
+  return hasPermissionCurried(context.user);
+}
