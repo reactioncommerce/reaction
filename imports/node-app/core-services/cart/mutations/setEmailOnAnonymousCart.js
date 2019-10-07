@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "../../../core/util/hashLoginToken";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -29,7 +29,7 @@ export default async function setEmailOnAnonymousCart(context, input) {
 
   const cart = await Cart.findOne({
     _id: cartId,
-    anonymousAccessToken: hashLoginToken(token)
+    anonymousAccessToken: hashToken(token)
   });
   if (!cart) throw new ReactionError("not-found", "Cart not found");
 

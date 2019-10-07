@@ -1,5 +1,5 @@
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 /**
  * @name getOrderQuery
@@ -26,7 +26,7 @@ export function getOrderQuery(context, selector, shopId, token) {
     newSelector.accountId = contextAccountId;
   } else if (token) {
     // If you have an anonymous access token for this order, OK to see it
-    newSelector["anonymousAccessTokens.hashedToken"] = hashLoginToken(token);
+    newSelector["anonymousAccessTokens.hashedToken"] = hashToken(token);
   } else {
     throw new ReactionError("access-denied", "Access Denied");
   }

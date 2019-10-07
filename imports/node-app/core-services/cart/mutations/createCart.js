@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "@reactioncommerce/logger";
-import hashLoginToken from "../../../core/util/hashLoginToken";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import addCartItems from "../util/addCartItems.js";
 
 /**
@@ -62,7 +62,7 @@ export default async function createCart(context, input) {
   const newCart = {
     _id: Random.id(),
     accountId,
-    anonymousAccessToken: anonymousAccessToken && hashLoginToken(anonymousAccessToken),
+    anonymousAccessToken: anonymousAccessToken && hashToken(anonymousAccessToken),
     currencyCode: cartCurrencyCode,
     createdAt,
     items: updatedItemList,
