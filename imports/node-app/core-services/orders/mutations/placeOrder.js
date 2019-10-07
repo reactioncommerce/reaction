@@ -3,11 +3,10 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getAnonymousAccessToken } from "../util/anonymousToken.js";
+import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
-import appEvents from "../../../core/util/appEvents";
-import verifyPaymentsMatchOrderTotal from "../../util/verifyPaymentsMatchOrderTotal.js";
 import buildOrderFulfillmentGroupFromInput from "../util/buildOrderFulfillmentGroupFromInput.js";
+import verifyPaymentsMatchOrderTotal from "../util/verifyPaymentsMatchOrderTotal.js";
 import { Order as OrderSchema, orderInputSchema, Payment as PaymentSchema, paymentInputSchema } from "../simpleSchemas";
 
 const inputSchema = new SimpleSchema({
@@ -171,7 +170,7 @@ export default async function placeOrder(context, input) {
     ordererPreferredLanguage,
     shopId
   } = orderInput;
-  const { accountId, account, collections, getFunctionsOfType, userId } = context;
+  const { accountId, account, appEvents, collections, getFunctionsOfType, userId } = context;
   const { Orders, Cart } = collections;
 
   let cart;

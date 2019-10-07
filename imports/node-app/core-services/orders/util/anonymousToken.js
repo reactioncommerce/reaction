@@ -1,23 +1,4 @@
-import Random from "@reactioncommerce/random";
-import hashLoginToken from "../../../core/util/hashLoginToken";
-
-/**
- * Generate a new secret token for the purpose of controlled access to
- * anonymous-user-specific data.
- *
- * @returns {Object} token object with associated token properties
- * @returns {Date} token.createdAt creation date, could potentially be useful for implementing expiration, but these do not currently expire.
- * @returns {String} token.hashedToken used to locate this token in the database
- * @returns {String} token.token raw token for use in URLs, email, etc. Do not store in the DB.
- */
-export function getAnonymousAccessToken() {
-  const token = Random.secret();
-  return {
-    createdAt: new Date(),
-    hashedToken: hashLoginToken(token),
-    token
-  };
-}
+import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 
 /**
  * Create a new anonymous access token and add it to an order

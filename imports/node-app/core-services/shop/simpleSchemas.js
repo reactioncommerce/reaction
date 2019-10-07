@@ -172,7 +172,7 @@ export const Workflow = new SimpleSchema({
  * @property {String} valueType optional
  * @property {String} description optional
  */
-export const Metafield = new SimpleSchema({
+const Metafield = new SimpleSchema({
   key: {
     type: String,
     max: 30,
@@ -202,7 +202,7 @@ export const Metafield = new SimpleSchema({
 });
 
 /**
- * @name Address
+ * @name ShopAddress
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id
@@ -223,7 +223,7 @@ export const Metafield = new SimpleSchema({
  * @property {Boolean} failedValidation
  * @property {Metafield[]} metafields
  */
-export const Address = new SimpleSchema({
+export const ShopAddress = new SimpleSchema({
   "_id": {
     type: String,
     optional: true
@@ -686,7 +686,7 @@ export const Shop = new SimpleSchema({
     optional: true
   },
   "addressBook.$": {
-    type: Address
+    type: ShopAddress
   },
   "domains": {
     type: Array,

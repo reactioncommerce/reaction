@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import Factory from "/imports/test-utils/helpers/factory"; // TODO: research how to add `factory.js` to `api-utils` (https://github.com/reactioncommerce/reaction/issues/5646)
-import createRefund from "./createRefund,js";
+import createRefund from "./createRefund.js";
 
 beforeEach(() => {
   jest.resetAllMocks();

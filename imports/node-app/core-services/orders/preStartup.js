@@ -1,4 +1,4 @@
-import { extendSchemas } from "./simpleSchemas.js";
+import { extendOrdersSchemas } from "./simpleSchemas.js";
 
 /**
  * @summary Called before startup
@@ -7,5 +7,5 @@ import { extendSchemas } from "./simpleSchemas.js";
  * @returns {undefined}
  */
 export default function preStartup(context) {
-  extendSchemas(context.simpleSchemas);
+  extendOrdersSchemas(context.simpleSchemas);
 }

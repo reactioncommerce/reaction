@@ -20,7 +20,7 @@ const mockShipmentMethod = {
   rate: 3.99
 };
 
-const mockInvoice = Factory.Invoice.makeOne({
+const mockInvoice = Factory.OrderInvoice.makeOne({
   currencyCode: "USD",
   // Need to ensure 0 discount to avoid creating negative totals
   discounts: 0
@@ -48,7 +48,7 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
-  mockOrdersAccount = Factory.Accounts.makeOne({
+  mockOrdersAccount = Factory.Account.makeOne({
     roles: {
       [shopId]: ["orders"]
     }
@@ -60,7 +60,7 @@ beforeAll(async () => {
     product: Factory.CatalogProduct.makeOne({
       isDeleted: false,
       isVisible: true,
-      variants: Factory.CatalogVariantSchema.makeMany(1)
+      variants: Factory.CatalogProductVariant.makeMany(1)
     })
   });
   await testApp.collections.Catalog.insertOne(catalogItem);
