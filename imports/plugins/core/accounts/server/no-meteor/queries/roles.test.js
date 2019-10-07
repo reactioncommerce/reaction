@@ -1,4 +1,4 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import rolesQuery from "./roles";
 
 beforeEach(() => {

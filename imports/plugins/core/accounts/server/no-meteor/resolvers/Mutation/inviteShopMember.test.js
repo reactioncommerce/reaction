@@ -1,6 +1,6 @@
 import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import inviteShopMember from "./inviteShopMember";
 
 mockContext.mutations.inviteShopMember = jest.fn().mockName("mutations.inviteShopMember");

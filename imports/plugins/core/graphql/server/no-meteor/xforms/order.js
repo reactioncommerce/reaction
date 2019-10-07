@@ -1,5 +1,5 @@
+import namespaces from "@reactioncommerce/api-utils/graphql/namespaces.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { xformCatalogProductMedia } from "./catalogProduct";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 

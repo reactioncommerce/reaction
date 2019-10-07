@@ -11,7 +11,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "i18n",
     name: "reaction-i18n",
-    icon: "fa fa-language",
     i18n,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler],

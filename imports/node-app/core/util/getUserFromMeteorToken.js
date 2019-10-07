@@ -1,6 +1,6 @@
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "./hashLoginToken";
-import tokenExpiration from "./tokenExpiration";
+import tokenExpiration from "./tokenExpiration.js";
 
 /**
  * Given a login token and the current context, returns the user document
@@ -21,7 +21,7 @@ async function getUserFromMeteorToken(loginToken, context) {
   const { collections } = context;
   const { users } = collections;
 
-  const hashedToken = hashLoginToken(loginToken);
+  const hashedToken = hashToken(loginToken);
 
   // search for user from the database with hashedToken
   // note: no need for a fiber aware findOne

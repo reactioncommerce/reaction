@@ -6,14 +6,14 @@ import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 import {
+  Catalog,
+  CatalogProduct,
+  CatalogProductOption,
+  CatalogProductVariant,
   ImageInfo,
   ImageSizes,
   ShippingParcel,
-  SocialMetadata,
-  VariantBaseSchema,
-  CatalogVariantSchema,
-  CatalogProduct,
-  Catalog
+  SocialMetadata
 } from "./simpleSchemas.js";
 
 /**
@@ -25,7 +25,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Catalog",
     name: "reaction-catalog",
-    icon: "fa fa-book",
     i18n,
     collections: {
       Catalog: {
@@ -61,8 +60,8 @@ export default async function register(app) {
       ImageSizes,
       ShippingParcel,
       SocialMetadata,
-      CatalogProductOption: VariantBaseSchema,
-      CatalogProductVariant: CatalogVariantSchema,
+      CatalogProductOption,
+      CatalogProductVariant,
       CatalogProduct,
       Catalog
     }

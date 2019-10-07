@@ -3,7 +3,7 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import xformOrderGroupToCommonOrder from "../test-util/xformOrderGroupToCommonOrder.js";
 import setTaxesOnOrderFulfillmentGroup from "./setTaxesOnOrderFulfillmentGroup.js";
 
-const address = Factory.Address.makeOne({ _id: undefined });
+const address = Factory.OrderAddress.makeOne({ _id: undefined });
 
 const group = {
   address,
