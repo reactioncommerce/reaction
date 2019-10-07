@@ -125,20 +125,38 @@ const wrapComponent = (Comp) => (
         title: i18next.t("productDetailEdit.restoreVariantConfirm", { title }),
         showCancelButton: true,
         confirmButtonText: "Restore"
-      }, (isConfirm) => {
+      }, async (isConfirm) => {
         if (isConfirm) {
-          const id = variant._id;
-          Meteor.call("products/updateProductField", id, "isDeleted", false, (error) => {
-            if (error) {
-              Alerts.alert({
-                text: i18next.t("productDetailEdit.restoreVariantFail", { title }),
-                confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-              });
-            }
+          const { client } = this.props;
+          const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+            { namespace: "Product", id: variant._id },
+            { namespace: "Shop", id: Reaction.getShopId() }
+          ]);
+
+          try {
+            await client.mutate({
+              mutation: updateProductField,
+              variables: {
+                input: {
+                  field: "isDeleted",
+                  shopId: opaqueShopId,
+                  productId: opaqueProductId,
+                  value: !variant.isVisible
+                }
+              }
+            });
+
+            Alerts.toast(i18next.t("productDetailEdit.restoreVariantSuccess"), "success");
+
             this.setState({
               isDeleted: !this.state.isDeleted
             });
-          });
+          } catch (error) {
+            Alerts.alert({
+              text: i18next.t("productDetailEdit.restoreVariantFail", { title }),
+              confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+            });
+          }
         }
       });
     }
