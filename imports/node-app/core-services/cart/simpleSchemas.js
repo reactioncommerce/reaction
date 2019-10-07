@@ -323,7 +323,7 @@ const ShippingMethod = new SimpleSchema({
  * @property {ShippingMethod} method ShippingMethod
  * @property {Number} rate default value: `0.00`
  */
-const ShipmentQuote = new SimpleSchema({
+export const ShipmentQuote = new SimpleSchema({
   carrier: {
     type: String
   },

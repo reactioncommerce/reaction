@@ -2,7 +2,7 @@ import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import getUpdatedCartItems from "./getUpdatedCartItems.js";
 
-const address = Factory.Address.makeOne({ _id: undefined });
+const address = Factory.CartAddress.makeOne({ _id: undefined });
 
 const group = {
   address,

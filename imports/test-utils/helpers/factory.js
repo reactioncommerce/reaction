@@ -9,8 +9,10 @@ import {
 
 import {
   Cart,
+  CartAddress,
   CartInvoice,
-  CartItem
+  CartItem,
+  ShipmentQuote
 } from "/imports/node-app/core-services/cart/simpleSchemas.js";
 
 import {
@@ -18,11 +20,18 @@ import {
 } from "/imports/node-app/core-services/inventory/simpleSchemas.js";
 
 import {
+  CommonOrder,
+  CommonOrderItem,
   extendOrdersSchemas,
   Order,
+  OrderAddress,
+  OrderFulfillmentGroup,
+  orderFulfillmentGroupInputSchema,
+  orderInputSchema,
   OrderInvoice,
   OrderItem,
-  OrderFulfillmentGroup
+  orderItemInputSchema,
+  Payment
 } from "/imports/node-app/core-services/orders/simpleSchemas.js";
 
 import {
@@ -56,19 +65,28 @@ const schemasToAddToFactory = {
   Account,
   AccountProfileAddress,
   Cart,
+  CartAddress,
   CartInvoice,
   CartItem,
   Catalog,
   CatalogProduct,
   CatalogProductOption,
   CatalogProductVariant,
+  CommonOrder,
+  CommonOrderItem,
   Group,
   Order,
+  OrderAddress,
   OrderFulfillmentGroup,
+  orderFulfillmentGroupInputSchema,
+  orderInputSchema,
   OrderInvoice,
   OrderItem,
+  orderItemInputSchema,
+  Payment,
   Product,
   ProductVariant,
+  ShipmentQuote,
   Shop,
   Tag
 };
