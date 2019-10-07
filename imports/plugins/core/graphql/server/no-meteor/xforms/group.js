@@ -1,4 +1,4 @@
-import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import namespaces from "@reactioncommerce/api-utils/graphql/namespaces.js";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
 export const assocGroupInternalId = assocInternalId(namespaces.Group);

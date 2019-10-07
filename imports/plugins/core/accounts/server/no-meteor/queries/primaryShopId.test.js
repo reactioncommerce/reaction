@@ -1,5 +1,5 @@
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import primaryShopId from "./primaryShopId";
-import mockContext from "/imports/test-utils/helpers/mockContext";
 
 test("calls Shops.findOne with hostname query and returns result", async () => {
   mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve({ _id: "CORRECT_SHOP_ID_BY_DOMAIN" }));

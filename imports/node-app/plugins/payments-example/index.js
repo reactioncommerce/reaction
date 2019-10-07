@@ -15,7 +15,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "ExamplePayment",
     name: "example-paymentmethod",
-    icon: "fa fa-credit-card-alt",
     i18n,
     graphQL: {
       schemas

@@ -1,5 +1,5 @@
 import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import removeAccountEmailRecord from "./removeAccountEmailRecord";
 
 mockContext.mutations.removeAccountEmailRecord = jest.fn().mockName("mutations.removeAccountEmailRecord");

@@ -1,4 +1,4 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import shopAdministratorsQuery from "./shopAdministrators";
 
 const fakeShopId = "FAKE_SHOP_ID_ADMIN_QUERY";

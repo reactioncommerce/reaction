@@ -17,7 +17,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Accounts",
     name: "reaction-accounts",
-    icon: "fa fa-users",
     i18n,
     addRolesToGroups: [{
       groups: ["guest", "customer"],
