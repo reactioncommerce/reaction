@@ -75,9 +75,6 @@ export default async function updateProductField(context, input) {
 
   if (!updatedProduct) throw new ReactionError("server-error", "Product not updated");
 
-  // hash product to provide comparison between product and catalog
-  await context.mutations.hashProduct(updatedProduct._id, context.collections, false);
-
   if (updatedProduct.type === "variant") {
     appEvents.emit("afterVariantUpdate", { productId, field, value });
   } else {
