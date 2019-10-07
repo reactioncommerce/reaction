@@ -1,4 +1,5 @@
 import Factory from "/imports/test-utils/helpers/factory";
+import PluginFactory from "../test-util/factory.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import getFulfillmentGroupTaxes from "./getFulfillmentGroupTaxes.js";
 import { rewire$getTaxServicesForShop, restore as restoreRegistration } from "../registration";
@@ -208,7 +209,7 @@ test("minimal result from primary tax service", async () => {
     taxes
   };
 
-  const mockResult = Factory.TaxServiceResult.makeOne({
+  const mockResult = PluginFactory.TaxServiceResult.makeOne({
     itemTaxes: [itemTax],
     taxSummary
   });
@@ -264,7 +265,7 @@ test("null result from primary tax service, minimal result from fallback tax ser
     taxes
   };
 
-  const mockResult = Factory.TaxServiceResult.makeOne({
+  const mockResult = PluginFactory.TaxServiceResult.makeOne({
     itemTaxes: [itemTax],
     taxSummary
   });
@@ -327,7 +328,7 @@ test("throws if the result doesn't match the schema", async () => {
     taxes
   };
 
-  const mockResult = Factory.TaxServiceResult.makeOne({
+  const mockResult = PluginFactory.TaxServiceResult.makeOne({
     itemTaxes: [itemTax],
     taxSummary
   });

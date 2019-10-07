@@ -19,17 +19,17 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
 
-  mockNonAdminAccount = Factory.Accounts.makeOne({
+  mockNonAdminAccount = Factory.Account.makeOne({
     _id: internalNonAdminAccountId
   });
   await testApp.createUserAndAccount(mockNonAdminAccount);
 
-  mockAdminAccount = Factory.Accounts.makeOne({
+  mockAdminAccount = Factory.Account.makeOne({
     _id: internalAdminAccountId
   });
   await testApp.createUserAndAccount(mockAdminAccount, ["reaction-accounts"]);
 
-  mockOtherAccount = Factory.Accounts.makeOne({
+  mockOtherAccount = Factory.Account.makeOne({
     _id: internalOtherAccountId
   });
   await testApp.createUserAndAccount(mockOtherAccount);

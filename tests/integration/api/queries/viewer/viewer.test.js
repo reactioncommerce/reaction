@@ -23,7 +23,7 @@ test("unauthenticated", async () => {
 });
 
 test("authenticated", async () => {
-  const mockAccount = Factory.Accounts.makeOne({
+  const mockAccount = Factory.Account.makeOne({
     _id: "123"
   });
 

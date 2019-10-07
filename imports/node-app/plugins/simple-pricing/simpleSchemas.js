@@ -37,7 +37,7 @@ const variantSchemaExtension = {
  * @param {Object} schemas SimpleSchema map from context
  * @return {undefined}
  */
-export function extendSchemas(schemas) {
+export function extendSimplePricingSchemas(schemas) {
   const {
     CatalogProduct,
     CatalogProductOption,
