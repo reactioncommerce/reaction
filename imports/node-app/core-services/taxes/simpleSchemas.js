@@ -111,7 +111,7 @@ const variantSchemaExtension = {
  * @param {Object} schemas SimpleSchema map
  * @returns {undefined}
  */
-export function extendSchemas(schemas) {
+export function extendTaxesSchemas(schemas) {
   const {
     Cart,
     CartItem,

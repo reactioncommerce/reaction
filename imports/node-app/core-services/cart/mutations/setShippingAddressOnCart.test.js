@@ -11,7 +11,7 @@ jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promis
   }]
 })));
 
-const address = Factory.Address.makeOne({ _id: undefined });
+const address = Factory.CartAddress.makeOne({ _id: undefined });
 
 beforeAll(() => {
   if (!mockContext.mutations.saveCart) {

@@ -1,7 +1,7 @@
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "@reactioncommerce/logger";
-import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import addCartItems from "../util/addCartItems.js";
 
 /**

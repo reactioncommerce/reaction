@@ -1,6 +1,6 @@
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart.js";
 import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart.js";
 import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart.js";

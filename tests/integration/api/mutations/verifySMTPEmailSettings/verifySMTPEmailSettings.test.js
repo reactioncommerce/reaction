@@ -24,7 +24,7 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
-  mockAdminAccount = Factory.Accounts.makeOne({
+  mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
     roles: {
       [shopId]: ["admin", "shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
