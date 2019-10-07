@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashToken from "@reactioncommerce/api-utils/hashToken";
 import { Accounts, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 

@@ -14,7 +14,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Shop",
     name: "reaction-shop",
-    icon: "fa fa-th",
     graphQL: {
       resolvers,
       schemas

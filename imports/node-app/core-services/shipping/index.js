@@ -13,7 +13,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Shipping",
     name: "reaction-shipping",
-    icon: "fa fa-truck",
     i18n,
     graphQL: {
       resolvers,

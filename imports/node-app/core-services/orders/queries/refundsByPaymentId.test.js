@@ -1,23 +1,20 @@
 /* eslint camelcase: 0 */
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import { rewire$getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import refundsByPaymentId from "./refundsByPaymentId.js";
 
-beforeAll(() => {
-  rewire$getPaymentMethodConfigByName(() => ({
-    functions: {
-      listRefunds: () => [{
-        _id: "refundId",
-        type: "refund",
-        amount: 19.99,
-        currency: "usd"
-      }]
-    }
-  }));
-});
+mockContext.queries.getPaymentMethodConfigByName = jest.fn().mockName("getPaymentMethodConfigByName").mockImplementation(() => ({
+  functions: {
+    listRefunds: async () => [{
+      _id: "refundId",
+      type: "refund",
+      amount: 19.99,
+      currency: "usd"
+    }]
+  }
+}));
 
 beforeEach(() => {
-  jest.resetAllMocks();
+  jest.clearAllMocks();
 });
 
 const order = {

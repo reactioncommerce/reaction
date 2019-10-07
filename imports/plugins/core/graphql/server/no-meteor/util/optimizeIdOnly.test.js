@@ -1,4 +1,4 @@
-import optimizeIdOnly from "./optimizeIdOnly";
+import optimizeIdOnly from "./optimizeIdOnly.js";
 
 jest.mock("graphql-fields", () => jest.fn().mockName("graphqlFields"));
 

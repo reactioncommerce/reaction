@@ -1,5 +1,5 @@
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashToken from "@reactioncommerce/api-utils/hashToken";
 
 /**
  * @summary Gets a cart from the db by ID. If there is an account for the request, verifies that the
