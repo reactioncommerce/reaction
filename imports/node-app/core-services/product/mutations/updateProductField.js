@@ -75,11 +75,8 @@ export default async function updateProductField(context, input) {
 
   if (!updatedProduct) throw new ReactionError("server-error", "Product not updated");
 
-  // TODO: Add hashProduct function here
-  // hashProduct(product._id, rawCollections, false)
-  // .catch((error) => {
-  //   Logger.error(`Error updating currentProductHash for product with ID ${product._id}`, error);
-  // });
+  // hash product to provide comparison between product and catalog
+  await context.mutations.hashProduct(updatedProduct._id, context.collections, false);
 
   if (updatedProduct.type === "variant") {
     appEvents.emit("afterVariantUpdate", { productId, field, value });
