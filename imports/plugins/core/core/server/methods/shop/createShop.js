@@ -145,7 +145,7 @@ export default function createShop(shopAdminUserId, partialShopData) {
   // we should have created new shop, or erred
   Logger.info("Created shop: ", newShopId);
 
-  Promise.await(appEvents.emit("afterShopCreate", { createdBy: userId, shop: newShop }));
+  Promise.await(appEvents.emit("afterShopCreate", { createdBy: userId, shop: newShop, shopAdminUserId: shopAdminUserId || userId }));
 
   // Add this shop to the merchant
   Shops.update({ _id: primaryShopId }, {

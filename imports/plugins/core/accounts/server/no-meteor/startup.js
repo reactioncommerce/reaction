@@ -32,7 +32,7 @@ export default async function startup(context) {
   });
 
   appEvents.on("afterShopCreate", async (payload) => {
-    const { shop } = payload;
+    const { shop, shopAdminUserId } = payload;
     let { createdBy: userId } = payload;
     const { _id: newShopId, shopType } = shop;
 
@@ -64,10 +64,10 @@ export default async function startup(context) {
     }
 
     // If a user created the shop, give the user owner access to it
-    if (userId) {
+    if (shopAdminUserId) {
       // Add users to roles
       await users.updateOne({
-        _id: userId
+        _id: shopAdminUserId
       }, {
         $addToSet: {
           [`roles.${newShopId}`]: {
@@ -77,7 +77,7 @@ export default async function startup(context) {
       });
 
       // Set the active shopId for this user
-      await Accounts.updateOne({ userId }, {
+      await Accounts.updateOne({ shopAdminUserId }, {
         $set: {
           "profile.preferences.reaction.activeShopId": newShopId,
           "shopId": newShopId
@@ -87,7 +87,7 @@ export default async function startup(context) {
         }
       });
 
-      const updatedAccount = await Accounts.findOne({ userId });
+      const updatedAccount = await Accounts.findOne({ shopAdminUserId });
       Promise.await(appEvents.emit("afterAccountUpdate", {
         account: updatedAccount,
         updatedBy: userId,
