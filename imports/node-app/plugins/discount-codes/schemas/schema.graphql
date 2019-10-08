@@ -32,8 +32,8 @@ input RemoveDiscountCodeFromCartInput {
   "Cart to add discount to"
   cartId: ID!
 
-  "Discount code to add to cart"
-  discountCodeId: ID!
+  "ID of the discount you want to remove from the cart"
+  discountId: ID!
 
   "Shop cart belongs to"
   shopId: ID!

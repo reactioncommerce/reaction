@@ -4,7 +4,7 @@ import getCart from "../util/getCart.js";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
-  discountCodeId: String,
+  discountId: String,
   shopId: String,
   token: {
     type: String,
@@ -18,7 +18,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - an object of all mutation arguments that were sent by the client
  * @param {Object} input.cartId - Cart to remove discount from
- * @param {Object} input.discountCodeId - Discount code to remove from cart
+ * @param {Object} input.discountId - Discount code to remove from cart
  * @param {String} input.shopId - Shop cart belongs to
  * @param {String} [input.token] - Cart token, if anonymous
  * @returns {Promise<Object>} An object with the updated cart with the removed discount
@@ -26,7 +26,7 @@ const inputSchema = new SimpleSchema({
 export default async function removeDiscountCodeFromCart(context, input) {
   inputSchema.validate(input);
 
-  const { cartId, discountCodeId, shopId, token } = input;
+  const { cartId, discountId, shopId, token } = input;
   const { collections, userHasPermission } = context;
   const { Cart } = collections;
 
@@ -49,9 +49,9 @@ export default async function removeDiscountCodeFromCart(context, input) {
   // Instead of directly updating cart, we remove the discount billing
   // object from the existing cart, then pass to `saveCart`
   // to re-run cart through all transforms and validations.
-  const updatedCartBilling = cart.billing.filter((doc) => doc._id !== discountCodeId);
-  if (cart.billing.length !== updatedCartBilling.length) {
-    throw new ReactionError("not-found", "Discount Code not found");
+  const updatedCartBilling = cart.billing.filter((doc) => doc._id !== discountId);
+  if (cart.billing.length === updatedCartBilling.length) {
+    throw new ReactionError("not-found", "No applied discount found with that ID");
   }
   cart.billing = updatedCartBilling;
 

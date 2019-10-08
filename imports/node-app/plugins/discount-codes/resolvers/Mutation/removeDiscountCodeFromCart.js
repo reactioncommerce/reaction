@@ -10,7 +10,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} parentResult - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client
  * @param {Object} args.input.cartId - Cart to remove discount from
- * @param {Object} args.input.discountCodeId - Discount code Id to remove from cart
+ * @param {Object} args.input.discountId - Discount code Id to remove from cart
  * @param {String} args.input.shopId - Shop cart belongs to
  * @param {String} [args.input.token] - Cart token, if anonymous
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
@@ -21,14 +21,14 @@ export default async function removeDiscountCodeFromCart(parentResult, { input }
   const {
     clientMutationId = null,
     cartId,
-    discountCodeId,
+    discountId,
     shopId,
     token
   } = input;
 
   const updatedCartWithRemovedDiscountCode = await context.mutations.removeDiscountCodeFromCart(context, {
     cartId: decodeCartOpaqueId(cartId),
-    discountCodeId: decodeDiscountOpaqueId(discountCodeId),
+    discountId: decodeDiscountOpaqueId(discountId),
     shopId: decodeShopOpaqueId(shopId),
     token
   });
