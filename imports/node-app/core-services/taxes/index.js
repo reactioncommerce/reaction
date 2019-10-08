@@ -19,7 +19,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Taxes",
     name: "reaction-taxes",
-    icon: "fa fa-university",
     i18n,
     cart: {
       transforms: [

@@ -1,5 +1,5 @@
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashToken from "@reactioncommerce/api-utils/hashToken";
 import tokenExpiration from "./tokenExpiration.js";
 
 /**

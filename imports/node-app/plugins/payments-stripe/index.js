@@ -16,7 +16,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Stripe",
     name: STRIPE_PACKAGE_NAME,
-    icon: "fa fa-cc-stripe",
     i18n,
     graphQL: {
       schemas

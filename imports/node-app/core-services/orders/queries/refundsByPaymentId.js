@@ -1,5 +1,4 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getPaymentMethodConfigByName } from "/imports/node-app/core-services/payments/registration.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import { getOrderQuery } from "../util/getOrderQuery.js";
 
 /**
@@ -39,7 +38,7 @@ export default async function refundsByPaymentId(context, { orderId, paymentId, 
     throw new ReactionError("not-found", "Payment not found");
   }
 
-  const shopRefunds = await getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment);
+  const shopRefunds = await context.queries.getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment);
   const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({
     ...shopRefund,
     paymentId: payment._id,

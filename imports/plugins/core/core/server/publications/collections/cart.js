@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import hashToken from "@reactioncommerce/api-utils/hashToken";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import { Accounts, Cart, MediaRecords } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
