@@ -81,14 +81,14 @@ test("get account order success", async () => {
 test("get account order failure", async () => {
   await testApp.collections.Orders.insertOne(order);
   await testApp.setLoggedInUser(mockOrdersAccount);
-  const result = await query({ orderReferenceId: 'does-not-exist', shopId: opaqueShopId, token: null });
+  const result = await query({ orderReferenceId: "does-not-exist", shopId: opaqueShopId, token: null });
   expect(result.orderByReferenceId).toBeNull();
 });
 
 test("get invalid params error", async () => {
   await testApp.collections.Orders.insertOne(orderAnon);
   try {
-    const result = await query({ orderReferenceId: orderReferenceIdAnon });
+    await query({ orderReferenceId: orderReferenceIdAnon });
   } catch (error) {
     expect(error[0].message).toBe("Variable \"$shopId\" of required type \"ID!\" was not provided.");
   }
