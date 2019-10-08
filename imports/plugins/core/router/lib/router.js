@@ -15,7 +15,6 @@ import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
 import Hooks from "./hooks";
 import { addRoutePrefixToPackageRoutes, getEnabledPackageRoutes } from "./utils";
-import { Reaction } from "/lib/api";
 
 const IDENTITY_PROVIDER_PLUGIN_NAME = "reaction-hydra-oauth";
 // Using a ternary operator here to avoid a mutable export - open to suggestions for a better way to do this
@@ -341,20 +340,6 @@ Router.isActiveClassName = (routeName) => {
 };
 
 /**
- * check if user has route permissions
- * @param  {Object} route - route context
- * @returns {Boolean} returns `true` if user is allowed to see route, `false` otherwise
- * @private
- */
-function hasRoutePermission(route) {
-  const routeName = route.name;
-
-  return routeName === "index" ||
-    routeName === "not-found" ||
-    Router.Reaction.hasPermission(route.permissions, Reaction.getUserId());
-}
-
-/**
  * selectLayout
  * @param {Object} layout - element of shops.layout array
  * @param {Object} setLayout - layout
@@ -484,20 +469,10 @@ function ReactionLayout(options = {}) {
     theme: layoutTheme,
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
-      const { route } = Router.current();
-      const { permissions } = options;
       const structure = {
         ...layoutStructure
       };
 
-      // If the current route is unauthorized, and is not the "not-found" route,
-      // then override the template to use the default unauthorized template
-      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found" && !Meteor.user()) {
-        if (!Router.Reaction.hasPermission(route.permissions, Reaction.getUserId())) {
-          structure.template = "unauthorized";
-        }
-        return false;
-      }
       try {
         // Try to create a React component if defined
         return React.createElement(getComponent(layoutName), {
