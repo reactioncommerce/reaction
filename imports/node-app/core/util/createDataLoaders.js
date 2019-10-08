@@ -1,4 +1,3 @@
-
 import DataLoader from "dataloader";
 import convertToDataloaderResult from "./convertToDataloaderResult";
 

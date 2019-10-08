@@ -6,7 +6,6 @@ import { withRouter } from "react-router";
 import { compose, withState } from "recompose";
 import { useMutation } from "@apollo/react-hooks";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { Media } from "/imports/plugins/core/files/client";
 import { Meteor } from "meteor/meteor";
 import { Reaction, formatPriceString, i18next } from "/client/api";
@@ -15,6 +14,16 @@ import { Tags, Templates } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { getVariantIds } from "/lib/selectors/variants";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+
+const ARCHIVE_PRODUCTS = gql`
+  mutation archiveProducts($input: ArchiveProductsInput!) {
+    archiveProducts(input: $input) {
+      products {
+        _id
+      }
+    }
+  }
+`;
 
 const CLONE_PRODUCTS = gql`
   mutation cloneProducts($input: CloneProductsInput!) {
@@ -58,15 +67,6 @@ export function handleMetaRemove(productId, metafield) {
   Meteor.call("products/removeMetaFields", productId, metafield);
 }
 
-/**
- * Archive (soft delete) product
- * @param {Object} product Product object
- * @returns {undefined} No return
- */
-export async function handleArchiveProduct(product) {
-  await ReactionProduct.archiveProduct(product);
-}
-
 const wrapComponent = (Comp) => {
   /**
    * withProduct HOC
@@ -75,6 +75,7 @@ const wrapComponent = (Comp) => {
    */
   function WithProduct(props) {
     const { history } = props;
+    const [archiveProducts] = useMutation(ARCHIVE_PRODUCTS);
     const [cloneProducts] = useMutation(CLONE_PRODUCTS);
     const [createProductVariant] = useMutation(CREATE_VARIANT);
     const [updateProductField] = useMutation(UPDATE_PRODUCT_FIELD);
@@ -82,8 +83,16 @@ const wrapComponent = (Comp) => {
     return (
       <Comp
         onArchiveProduct={async (product, redirectUrl) => {
-          await handleArchiveProduct(product);
-          history.push(redirectUrl);
+          const opaqueProductIds = await getOpaqueIds([{ namespace: "Product", id: product._id }]);
+          const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+          try {
+            await archiveProducts({ variables: { input: { shopId: opaqueShopId, productIds: opaqueProductIds } } });
+            Alerts.toast(i18next.t("productDetailEdit.archiveProductsSuccess"), "success");
+            history.push(redirectUrl);
+          } catch (error) {
+            Alerts.toast(i18next.t("productDetailEdit.archiveProductsFail", { err: error }), "error");
+          }
         }}
         onCloneProduct={async (product) => {
           const opaqueProductIds = await getOpaqueIds([{ namespace: "Product", id: product }]);
@@ -94,7 +103,6 @@ const wrapComponent = (Comp) => {
             Alerts.toast(i18next.t("productDetailEdit.cloneProductSuccess"), "success");
           } catch (error) {
             Alerts.toast(i18next.t("productDetailEdit.cloneProductFail", { err: error }), "error");
-            throw new ReactionError("server-error", "Unable to clone product");
           }
         }}
         onCreateVariant={async (product) => {
@@ -112,7 +120,6 @@ const wrapComponent = (Comp) => {
             Alerts.toast(i18next.t("productDetailEdit.addVariant"), "success");
           } catch (error) {
             Alerts.toast(i18next.t("productDetailEdit.addVariantFail", { err: error }), "error");
-            throw new ReactionError("server-error", "Unable to create variant");
           }
         }}
         onProductFieldSave={async (product, fieldName, value) => {

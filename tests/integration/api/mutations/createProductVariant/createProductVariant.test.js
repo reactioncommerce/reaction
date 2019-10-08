@@ -50,7 +50,7 @@ afterAll(async () => {
   await testApp.collections.Shops.deleteOne({ _id: internalShopId });
   await testApp.collections.Products.deleteOne({ _id: internalProductId });
   await testApp.clearLoggedInUser();
-  testApp.stop();
+  await testApp.stop();
 });
 
 // create a new product

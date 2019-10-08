@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { registerComponent, Components } from "@reactioncommerce/reaction-components";
+import { registerComponent, Components, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { Meteor } from "meteor/meteor";
@@ -35,28 +35,28 @@ const styles = (theme) => ({
  * to operator 2.0
  * @returns {Node} React component
  */
-function CoreLayout({ classes, location }) {
-  let content = <Components.Login />;
+function CoreLayout({ classes, isAdmin, isLoading, isLoggedIn, location, storefrontHomeUrl }) {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const isAdmin = Reaction.hasDashboardAccessForAnyShop();
+  if (isLoading || isLoggingOut) return null;
+
+  let content = <Components.Login />;
 
   // If we're not on /account or /account/login for hydra, and the user is signed in,
   // then we will redirect or show a logout button
-  if (location.pathname.startsWith("/account") === false) {
+  if (!location.pathname.startsWith("/account") && !location.pathname.startsWith("/reset")) {
     // If the current user is an admin then redirect to /operator
-    if (isAdmin) {
+    if (!location.pathname.startsWith("/operator") && isAdmin) {
       window.location.replace("/operator");
       return null;
     }
 
     // If the user is logged in, which makes them no longer anonymous
     // But they aren't an admin, then give them a logout button.
-    if (!Reaction.hasPermission(["anonymous"]) && !location.pathname.startsWith("/reset")) {
+    if (isLoggedIn && !isAdmin) {
       // If the user is logged in but not a admin redirect to the storefront.
-      const { storefrontUrls } = Reaction.getCurrentShop();
-
-      if (storefrontUrls && storefrontUrls.storefrontHomeUrl && storefrontUrls.storefrontHomeUrl.length) {
-        window.location.href = storefrontUrls.storefrontHomeUrl;
+      if (storefrontHomeUrl && storefrontHomeUrl.length) {
+        window.location.href = storefrontHomeUrl;
         return null;
       }
 
@@ -64,7 +64,17 @@ function CoreLayout({ classes, location }) {
 
       content = (
         <div className={classes.logoutButton}>
-          <Button color="primary" onClick={() => Meteor.logout()} variant="contained">
+          <Button
+            color="primary"
+            onClick={() => {
+              setIsLoggingOut(true);
+              Meteor.logout((error) => {
+                if (error) Logger.error(error);
+                setIsLoggingOut(false);
+              });
+            }}
+            variant="contained"
+          >
             Logout
           </Button>
         </div>
@@ -88,11 +98,35 @@ function CoreLayout({ classes, location }) {
 
 CoreLayout.propTypes = {
   classes: PropTypes.object,
-  location: PropTypes.object
+  isAdmin: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  isLoggedIn: PropTypes.bool,
+  location: PropTypes.object,
+  storefrontHomeUrl: PropTypes.string
 };
 
-const componentWithStyles = withStyles(styles, { name: "RuiCoreLayout" })(CoreLayout);
+const StyledCoreLayout = withStyles(styles, { name: "RuiCoreLayout" })(CoreLayout);
 
-registerComponent("coreLayout", componentWithStyles);
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
+function composer(props, onData) {
+  const isAdmin = Reaction.hasDashboardAccessForAnyShop();
+  const shop = Reaction.getCurrentShop();
+  const isLoading = (isAdmin !== true && isAdmin !== false) || !shop;
+  const isLoggedIn = !!Reaction.getUserId();
 
-export default componentWithStyles;
+  onData(null, {
+    isAdmin,
+    isLoading,
+    isLoggedIn,
+    storefrontHomeUrl: (shop && shop.storefrontUrls && shop.storefrontUrls.storefrontHomeUrl) || null
+  });
+}
+
+registerComponent("coreLayout", StyledCoreLayout, composeWithTracker(composer));
+
+export default composeWithTracker(composer)(StyledCoreLayout);

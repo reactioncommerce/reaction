@@ -1,5 +1,6 @@
 /* node-app imports */
 /* core-services */
+import registerAccountsPlugin from "./core-services/account/index.js";
 import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerCartPlugin from "./core-services/cart/index.js";
 import registerCorePlugin from "./core-services/core/index.js";
@@ -43,9 +44,6 @@ import registerTaxesRatesPlugin from "./plugins/taxes-rates/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
 import registerUIPlugin from "./plugins/ui/index.js";
-
-/* meteor-app imports */
-import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,

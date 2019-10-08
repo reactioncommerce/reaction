@@ -39,7 +39,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("test if email config data is verified by nodemailer", async () => {

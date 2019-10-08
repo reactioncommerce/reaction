@@ -3,6 +3,9 @@ import getCreditOffDiscount from "./util/getCreditOffDiscount.js";
 import getItemPriceDiscount from "./util/getItemPriceDiscount.js";
 import getPercentageOffDiscount from "./util/getPercentageOffDiscount.js";
 import getShippingDiscount from "./util/getShippingDiscount.js";
+import mutations from "./mutations/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 
 /**
@@ -22,6 +25,11 @@ export default async function register(app) {
       "discounts/codes/shipping": [getShippingDiscount],
       "startup": [startup]
     },
+    graphQL: {
+      resolvers,
+      schemas
+    },
+    mutations,
     registry: [
       {
         label: "Codes",
@@ -30,6 +38,11 @@ export default async function register(app) {
       }, {
         provides: ["paymentMethod"],
         template: "discountCodesCheckout"
+      }, {
+        route: "discounts/apply",
+        label: "Apply Discounts",
+        permission: "applyDiscounts",
+        name: "discounts/apply"
       }
     ]
   });

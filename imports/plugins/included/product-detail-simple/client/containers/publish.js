@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { compose } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { i18next, Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
@@ -15,6 +16,16 @@ const updateProductField = gql`
   mutation updateProductField($input: UpdateProductFieldInput!) {
     updateProductField(input: $input) {
       product {
+        _id
+      }
+    }
+  }
+`;
+
+const archiveProducts = gql`
+  mutation archiveProducts($input: ArchiveProductsInput!) {
+    archiveProducts(input: $input) {
+      products {
         _id
       }
     }
@@ -110,9 +121,29 @@ class ProductPublishContainer extends Component {
     }
   }
 
-  handlePublishActions = (event, action, documentIds) => {
+  handlePublishActions = async (event, action, productIds) => {
     if (action === "archive") {
-      ReactionProduct.archiveProduct(documentIds);
+      const { client } = this.props;
+      const namespacedProductIdObjects = productIds.map((productId) => ({ namespace: "Product", id: productId }));
+      const opaqueProductIds = await getOpaqueIds(namespacedProductIdObjects);
+      const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+      try {
+        await client.mutate({
+          mutation: archiveProducts,
+          variables: {
+            input: {
+              shopId: opaqueShopId,
+              productIds: opaqueProductIds
+            }
+          }
+        });
+
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductsSuccess"), "success");
+      } catch (error) {
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductsFail", { err: error }), "error");
+        throw new ReactionError("server-error", "Unable to archive product");
+      }
     }
   }
 
@@ -161,5 +192,5 @@ registerComponent("ProductPublish", ProductPublishContainer, [
 // Decorate component and export
 export default compose(
   withApollo,
-  composeWithTracker(composer)
-);
+  composeWithTracker(composer),
+)(ProductPublishContainer);

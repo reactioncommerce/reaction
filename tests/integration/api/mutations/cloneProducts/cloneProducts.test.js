@@ -90,7 +90,7 @@ afterAll(async () => {
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
   await testApp.clearLoggedInUser();
-  testApp.stop();
+  await testApp.stop();
 });
 
 // create a new product

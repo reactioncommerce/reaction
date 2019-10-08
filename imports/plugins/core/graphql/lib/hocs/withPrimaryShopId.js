@@ -26,7 +26,7 @@ export default (Component) => (
               isLoadingPrimaryShopId: loading
             };
 
-            if (loading === false) {
+            if (!loading && data) {
               const { primaryShopId } = data;
               props.shopId = primaryShopId;
             }
