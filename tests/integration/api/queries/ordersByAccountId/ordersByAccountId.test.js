@@ -15,6 +15,12 @@ const mockAccount = Factory.Account.makeOne({
 const ordersByAccountIdQuery = `query ($accountId: ID!, $orderStatus: [String]) {
   ordersByAccountId(accountId: $accountId, orderStatus: $orderStatus) {
     totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
     nodes {
       _id
       account {
@@ -31,9 +37,17 @@ const ordersByAccountIdQuery = `query ($accountId: ID!, $orderStatus: [String]) 
         content
       }
       referenceId
+      shop {
+        _id
+      }
       status
-      updatedAt
+      summary {
+        total {
+          amount
+        }
+      }
       totalItemQuantity
+      updatedAt
     }
   }
 }`;
