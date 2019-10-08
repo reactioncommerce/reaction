@@ -44,18 +44,18 @@ input RemoveDiscountCodeFromCartInput {
 
 "Response from the `applyDiscountCodeToCart` mutation"
 type ApplyDiscountCodeToCartPayload {
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-
   "The updated cart with discount code applied"
   cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
 }
 
 "Response from the `removeDiscountCodeFromCart` mutation"
 type RemoveDiscountCodeFromCartPayload {
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-
   "The updated cart with discount code removed"
   cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
 }
