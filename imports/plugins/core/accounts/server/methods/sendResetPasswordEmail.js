@@ -1,18 +1,13 @@
 import _ from "lodash";
-import Logger from "@reactioncommerce/logger";
 import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
+import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import { Shops } from "/lib/collections";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
-import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
-import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import ReactionError from "@reactioncommerce/reaction-error";
 
 Accounts.urls.resetPassword = function reset(token) {
   return Meteor.absoluteUrl(`reset-password/${token}`);

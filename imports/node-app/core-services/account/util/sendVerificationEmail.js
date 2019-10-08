@@ -1,7 +1,4 @@
 import _ from "lodash";
-import Logger from "@reactioncommerce/logger";
-import ReactionError from "@reactioncommerce/reaction-error";
-import _ from "lodash";
 import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
