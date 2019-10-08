@@ -1,5 +1,5 @@
 import TestApp from "/imports/test-utils/helpers/TestApp";
-import CloneProductsMutation from "./cloneProducts.graphql";
+import ArchiveProductsMutation from "./archiveProducts.graphql";
 
 jest.setTimeout(300000);
 
@@ -44,26 +44,15 @@ const mockOptionOne = {
   type: "variant"
 };
 
-const expectedClonedProduct = {
+const expectedArchivedProduct = {
   products: [
     {
-      isDeleted: false,
-      isVisible: false,
+      isDeleted: true,
+      isVisible: true,
       shop: {
         _id: opaqueShopId
       },
-      supportedFulfillmentTypes: [
-        "shipping"
-      ],
-      title: "Fake Product-copy",
-      variants: [{
-        options: [
-          {
-            title: "Fake Product Option One"
-          }
-        ],
-        title: "Fake Product Variant"
-      }]
+      title: "Fake Product"
     }]
 };
 
@@ -72,7 +61,7 @@ let mutate;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  mutate = testApp.mutate(CloneProductsMutation);
+  mutate = testApp.mutate(ArchiveProductsMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await testApp.collections.Products.insertOne(mockProduct);
   await testApp.collections.Products.insertOne(mockVariant);
@@ -93,8 +82,8 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-// create a new product
-test("expect a product and all variants and options to be cloned using `[productIds]` as input", async () => {
+// archive a product and its' variants and options
+test("expect a product and all variants and options to be archived using `[productIds]` as input", async () => {
   let result;
   try {
     result = await mutate({ input: { productIds: [opaqueProductId], shopId: opaqueShopId } });
@@ -102,5 +91,5 @@ test("expect a product and all variants and options to be cloned using `[product
     expect(error).toBeUndefined();
     return;
   }
-  expect(result).toEqual({ cloneProducts: expectedClonedProduct });
+  expect(result).toEqual({ archiveProducts: expectedArchivedProduct });
 });
