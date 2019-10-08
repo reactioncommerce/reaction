@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { defaultOwnerRoles } from "./defaultRoles.js";
+import createUser from "./createUser.js";
 
 /**
  * @summary Creates the default admin user on startup
@@ -9,7 +10,7 @@ import { defaultOwnerRoles } from "./defaultRoles.js";
  *   there is no primary shop.
  */
 export default async function createDefaultAdminUser(context) {
-  const { collections, createUser } = context;
+  const { collections } = context;
   const { Shops, users } = collections;
 
   // Check whether a non-shop-specific "owner" user already exists

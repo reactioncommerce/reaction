@@ -2,6 +2,7 @@ import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
+import createUser from "../util/createUser.js";
 import getCurrentUserName from "../util/getCurrentUserName.js";
 import getDataForEmail from "../util/getDataForEmail.js";
 
@@ -95,7 +96,7 @@ export default async function inviteShopMember(context, input) {
     // We create a new account only if there's no pending invite.
     if (!invitedUser) {
       // The user does not already exist, we need to create a new account
-      userId = await context.createUser({
+      userId = await createUser({
         profile: { invited: true },
         email,
         name,
