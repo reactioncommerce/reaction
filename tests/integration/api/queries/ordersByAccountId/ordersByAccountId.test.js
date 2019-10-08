@@ -17,12 +17,22 @@ const ordersByAccountIdQuery = `query ($accountId: ID!, $orderStatus: [String]) 
     totalCount
     nodes {
       _id
-      email
-      referenceId
-      createdAt
       account {
         _id
       }
+      cartId
+      createdAt
+      email
+      fulfillmentGroups {
+        status
+      }
+      notes {
+        content
+      }
+      referenceId
+      status
+      updatedAt
+      totalItemQuantity
     }
   }
 }`;
@@ -30,7 +40,9 @@ const ordersByAccountIdQuery = `query ($accountId: ID!, $orderStatus: [String]) 
 const order = Factory.Order.makeOne({
   _id: orderId,
   shopId,
-  status: "new",
+  workflow: {
+    status: "new"
+  },
   accountId: mockAccount._id
 });
 
@@ -38,7 +50,9 @@ const orders = Factory.Order.makeMany(10, {
   _id: (iterator) => (iterator + 500).toString(),
   referenceId: (iterator) => (iterator + 123).toString(),
   shopId,
-  status: "new",
+  workflow: {
+    status: "new"
+  },
   accountId: mockAccount._id
 });
 
