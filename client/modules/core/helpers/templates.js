@@ -1,12 +1,10 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
-import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
 import { ReactiveVar } from "meteor/reactive-var";
-import { Roles } from "meteor/alanning:roles";
 import ReactionError from "@reactioncommerce/reaction-error";
 import ReactComponentOrBlazeTemplate from "/imports/plugins/core/components/lib/ReactComponentOrBlazeTemplate";
-import { i18next, Reaction } from "/client/api";
+import { i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { toCamelCase } from "/lib/api";
