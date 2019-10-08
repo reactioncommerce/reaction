@@ -203,8 +203,17 @@ type UpdateProductFieldPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Update product"
+  "Updated product"
   product: Product!
+}
+
+"Response payload of `updateProductVariantField` mutation"
+type UpdateProductVariantFieldPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Updated variant"
+  variant: ProductVariant!
 }
 
 "Input for the `createProduct` mutation"
@@ -255,6 +264,21 @@ input UpdateProductFieldInput  {
   value: String! # TODO: what do we do here, this can be anything
 }
 
+"Input for the `updateProductVariantField` mutation"
+input UpdateProductVariantFieldInput  {
+  "Variant field to update"
+  field: String!
+
+  "ID of shop that owns the variant to update"
+  shopId: ID!
+
+  "Value to update the field with"
+  value: String! # TODO: what do we do here, this can be anything
+
+  "ID of variant to update"
+  variantId: ID!
+}
+
 extend type Mutation {
   "Create a new product"
   createProduct(
@@ -285,4 +309,10 @@ extend type Mutation {
     "Mutation input"
     input: UpdateProductFieldInput!
   ): UpdateProductFieldPayload!
+
+  "Update a field on an existing product variant"
+  updateProductVariantField(
+    "Mutation input"
+    input: UpdateProductVariantFieldInput!
+  ): UpdateProductVariantFieldPayload!
 }

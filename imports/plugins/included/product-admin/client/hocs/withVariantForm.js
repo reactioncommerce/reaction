@@ -25,10 +25,10 @@ const cloneProductVariants = gql`
   }
 `;
 
-const updateProductField = gql`
-  mutation updateProductField($input: UpdateProductFieldInput!) {
-    updateProductField(input: $input) {
-      product {
+const updateProductVariantField = gql`
+  mutation updateProductVariantField($input: UpdateProductVariantFieldInput!) {
+    updateProductVariantField(input: $input) {
+      variant {
         _id
       }
     }
@@ -128,20 +128,20 @@ const wrapComponent = (Comp) => (
       }, async (isConfirm) => {
         if (isConfirm) {
           const { client } = this.props;
-          const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+          const [opaqueVariantId, opaqueShopId] = await getOpaqueIds([
             { namespace: "Product", id: variant._id },
             { namespace: "Shop", id: Reaction.getShopId() }
           ]);
 
           try {
             await client.mutate({
-              mutation: updateProductField,
+              mutation: updateProductVariantField,
               variables: {
                 input: {
                   field: "isDeleted",
                   shopId: opaqueShopId,
-                  productId: opaqueProductId,
-                  value: !variant.isDeleted
+                  value: !variant.isDeleted,
+                  variantId: opaqueVariantId
                 }
               }
             });
@@ -203,26 +203,29 @@ const wrapComponent = (Comp) => (
         return;
       }
 
+      console.log("it's a variant!", variant);
+
+
       // Check to see if field has been updated.
       // `onProductFieldSave` runs onChange AND onBlur,
       // so there isn't always an update to a value when run with `onBlur`,
       // and this mutation might not need to run
       if (variant[fieldName] !== value) {
         const { client } = this.props;
-        const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+        const [opaqueVariantId, opaqueShopId] = await getOpaqueIds([
           { namespace: "Product", id: variant._id },
           { namespace: "Shop", id: Reaction.getShopId() }
         ]);
 
         try {
           await client.mutate({
-            mutation: updateProductField,
+            mutation: updateProductVariantField,
             variables: {
               input: {
                 field: fieldName,
                 shopId: opaqueShopId,
-                productId: opaqueProductId,
-                value
+                value,
+                variantId: opaqueVariantId
               }
             }
           });
@@ -240,20 +243,20 @@ const wrapComponent = (Comp) => (
 
     handleVariantVisibilityToggle = async (variant) => {
       const { client } = this.props;
-      const [opaqueProductId, opaqueShopId] = await getOpaqueIds([
+      const [opaqueVariantId, opaqueShopId] = await getOpaqueIds([
         { namespace: "Product", id: variant._id },
         { namespace: "Shop", id: Reaction.getShopId() }
       ]);
 
       try {
         await client.mutate({
-          mutation: updateProductField,
+          mutation: updateProductVariantField,
           variables: {
             input: {
               field: "isVisible",
               shopId: opaqueShopId,
-              productId: opaqueProductId,
-              value: !variant.isVisible
+              value: !variant.isVisible,
+              variantId: opaqueVariantId
             }
           }
         });
