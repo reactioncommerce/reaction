@@ -65,27 +65,6 @@ Template.registerHelper("Collections", () => Collections);
 Template.registerHelper("Schemas", () => Schemas);
 
 /**
- * @method currentUser
- * @memberof BlazeTemplateHelpers
- * @summary overrides Meteor Package.blaze currentUser method
- * @returns {Boolean} returns true/null if user has registered
- */
-Template.registerHelper("currentUser", () => {
-  if (typeof Reaction === "object") {
-    const shopId = Reaction.getShopId();
-    const user = Accounts.user();
-    if (!shopId || typeof user !== "object") return null;
-    // shoppers should always be guests
-    const isGuest = Roles.userIsInRole(user, "guest", shopId);
-    // but if a user has never logged in then they are anonymous
-    const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
-
-    return isGuest && !isAnonymous ? user : null;
-  }
-  return null;
-});
-
-/**
  * @method monthOptions
  * @memberof BlazeTemplateHelpers
  * @summary Get monthOptionsVar ReactiveVar

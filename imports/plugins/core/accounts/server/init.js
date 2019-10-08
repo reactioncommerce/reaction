@@ -1,5 +1,4 @@
 import _ from "lodash";
-import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
@@ -44,28 +43,6 @@ Meteor.startup(() => {
     }
 
     return attempt.allowed;
-  });
-
-  /**
-   * Reaction Accounts handlers
-   * creates a login type "anonymous"
-   * default for all unauthenticated visitors
-   */
-  Accounts.registerLoginHandler((options) => {
-    if (!options.anonymous) return {};
-
-    const stampedToken = Accounts._generateStampedLoginToken();
-    const userId = Accounts.insertUserDoc({
-      services: {
-        anonymous: true
-      },
-      token: stampedToken.token
-    });
-    const loginHandler = {
-      type: "anonymous",
-      userId
-    };
-    return loginHandler;
   });
 
   /**
@@ -181,25 +158,5 @@ Meteor.startup(() => {
     user.roles = roles;
 
     return user;
-  });
-
-  /**
-   * Accounts.onLogin event
-   * @param {Object} options - user account creation options
-   */
-  Accounts.onLogin((options) => {
-    // The first time an "anonymous" user logs in for real, remove their "anonymous" role.
-    // Anonymous users don't have profile access or ability to see order history, etc.
-    if (options.type !== "anonymous" && options.type !== "resume") {
-      const userId = options.user._id;
-
-      Meteor.users.update({ _id: userId }, {
-        $pullAll: {
-          [`roles.${Reaction.getShopId()}`]: ["anonymous"]
-        }
-      });
-
-      Logger.debug(`removed anonymous role from user: ${userId}`);
-    }
   });
 });
