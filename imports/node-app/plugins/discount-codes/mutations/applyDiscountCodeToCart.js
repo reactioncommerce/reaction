@@ -31,13 +31,6 @@ export default async function applyDiscountCodeToCart(context, input) {
   const { collections, userHasPermission, userId } = context;
   const { Cart, Discounts } = collections;
 
-  // TODO: figure out the correct permission check here
-  // Should it be `discounts`, or `cart`?
-  // How do we determine this check if the user is the cart owner?
-  if (!userHasPermission(["admin", "owner", "discounts"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
-
   let userCount = 0;
   let orderCount = 0;
   let cart = await getCart(context, shopId, cartId, { cartToken: token, throwIfNotFound: false });
@@ -51,29 +44,12 @@ export default async function applyDiscountCodeToCart(context, input) {
       throw new ReactionError("not-found", "Cart not found");
     }
 
-    // TODO: figure out the correct permission check here
-    // Should it be `discounts`, or `cart`?
-    if (!userHasPermission(["owner", "admin", "discounts"], shopId)) {
+    if (!userHasPermission(["owner", "admin", "discounts/apply"], shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
   }
 
   const objectToApplyDiscount = cart;
-
-  // check to ensure discounts can only apply to single shop carts
-  // TODO: Remove this check after implementation of shop-by-shop discounts
-  // loop through all items and filter down to unique shops (in order to get participating shops in the order/cart)
-  const uniqueShopObj = objectToApplyDiscount.items.reduce((shopObj, item) => {
-    if (!shopObj[item.shopId]) {
-      shopObj[item.shopId] = true;
-    }
-    return shopObj;
-  }, {});
-  const participatingShops = Object.keys(uniqueShopObj);
-
-  if (participatingShops.length > 1) {
-    throw new ReactionError("not-implemented", "discounts.multiShopError", "Discounts cannot be applied to a multi-shop cart or order");
-  }
 
   const discount = await Discounts.findOne({ code: discountCode });
   if (!discount) throw new ReactionError("not-found", `No discount found for code ${discountCode}`);
@@ -98,7 +74,7 @@ export default async function applyDiscountCodeToCart(context, input) {
 
   // validate basic limit handling
   if (accountLimitExceeded === true || discountLimitExceeded === true) {
-    return { i18nKeyLabel: "Code is expired", i18nKey: "discounts.codeIsExpired" };
+    throw new ReactionError("error-occurred", "Code is expired");
   }
 
   if (!cart.billing) {

@@ -1,5 +1,5 @@
 import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { decodePaymentOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/payment";
+import { decodeDiscountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/discount";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
@@ -28,7 +28,7 @@ export default async function removeDiscountCodeFromCart(parentResult, { input }
 
   const updatedCartWithRemovedDiscountCode = await context.mutations.removeDiscountCodeFromCart(context, {
     cartId: decodeCartOpaqueId(cartId),
-    discountCodeId: decodePaymentOpaqueId(discountCodeId),
+    discountCodeId: decodeDiscountOpaqueId(discountCodeId),
     shopId: decodeShopOpaqueId(shopId),
     token
   });

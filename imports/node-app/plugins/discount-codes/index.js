@@ -38,6 +38,11 @@ export default async function register(app) {
       }, {
         provides: ["paymentMethod"],
         template: "discountCodesCheckout"
+      }, {
+        route: "discounts/apply",
+        label: "Apply Discounts",
+        permission: "applyDiscounts",
+        name: "discounts/apply"
       }
     ]
   });

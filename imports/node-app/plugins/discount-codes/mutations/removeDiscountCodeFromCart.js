@@ -30,28 +30,19 @@ export default async function removeDiscountCodeFromCart(context, input) {
   const { collections, userHasPermission } = context;
   const { Cart } = collections;
 
-  // TODO: figure out the correct permission check here
-  // Should it be `discounts`, or `cart`?
-  // How do we determine this check if the user is the cart owner?
-  if (!userHasPermission(["admin", "owner", "discounts"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
-
   let cart = await getCart(context, shopId, cartId, { cartToken: token, throwIfNotFound: false });
 
   // If we didn't find a cart, it means it belongs to another user,
   // not the currently logged in user.
   // Check to make sure current user has admin permission.
   if (!cart) {
-    cart = await Cart.findOne({ _id: cartId });
-    if (!cart) {
-      throw new ReactionError("not-found", "Cart not found");
+    if (!userHasPermission(["owner", "admin", "discounts/apply"], shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
     }
 
-    // TODO: figure out the correct permission check here
-    // Should it be `discounts`, or `cart`?
-    if (!userHasPermission(["owner", "admin", "discounts"], shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
+    cart = await Cart.findOne({ _id: cartId, shopId });
+    if (!cart) {
+      throw new ReactionError("not-found", "Cart not found");
     }
   }
 
@@ -59,6 +50,9 @@ export default async function removeDiscountCodeFromCart(context, input) {
   // object from the existing cart, then pass to `saveCart`
   // to re-run cart through all transforms and validations.
   const updatedCartBilling = cart.billing.filter((doc) => doc._id !== discountCodeId);
+  if (cart.billing.length !== updatedCartBilling.length) {
+    throw new ReactionError("not-found", "Discount Code not found");
+  }
   cart.billing = updatedCartBilling;
 
   const savedCart = await context.mutations.saveCart(context, cart);
