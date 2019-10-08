@@ -22,6 +22,7 @@ const ordersByAccountIdQuery = `query ($accountId: ID!, $orderStatus: [String]) 
       }
       cartId
       createdAt
+      displayStatus(language: "en")
       email
       fulfillmentGroups {
         status
