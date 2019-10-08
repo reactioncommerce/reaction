@@ -10,12 +10,7 @@ if (!ROOT_URL) throw new Error("You must set ROOT_URL");
 
 const app = new ReactionNodeApp({
   debug: NODE_ENV !== "production",
-  context: {
-    appVersion: packageJson.version,
-    mutations: {},
-    queries: {},
-    rootUrl: ROOT_URL
-  }
+  version: packageJson.version
 });
 
 registerPlugins(app)

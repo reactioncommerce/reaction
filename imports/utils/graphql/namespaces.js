@@ -7,6 +7,7 @@ export default {
   Cart: "reaction/cart",
   CartItem: "reaction/cartItem",
   Currency: "reaction/currency",
+  Discount: "reaction/discount",
   FulfillmentGroup: "reaction/fulfillmentGroup",
   FulfillmentMethod: "reaction/fulfillmentMethod",
   Group: "reaction/group",

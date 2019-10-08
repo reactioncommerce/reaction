@@ -38,7 +38,7 @@ import {
   Account,
   AccountProfileAddress,
   Group
-} from "/imports/plugins/core/accounts/server/no-meteor/simpleSchemas.js";
+} from "/imports/node-app/core-services/account/simpleSchemas.js";
 
 import {
   Product,

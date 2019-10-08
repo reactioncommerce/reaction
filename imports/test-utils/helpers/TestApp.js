@@ -17,46 +17,13 @@ class TestApp {
       // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
       // error logging in the test output.
       // debug: true,
-      context: {
-        createUser: async (userInfo) => {
-          const { email, name, shopId, username } = userInfo;
-
-          const user = {
-            _id: Random.id(),
-            createdAt: new Date(),
-            emails: [
-              {
-                address: email,
-                verified: true,
-                provides: "default"
-              }
-            ],
-            name,
-            services: {
-              password: {
-                bcrypt: Random.id(29)
-              },
-              resume: {
-                loginTokens: []
-              }
-            },
-            shopId,
-            username
-          };
-
-          await this.reactionNodeApp.collections.users.insertOne(user);
-
-          await this.reactionNodeApp.collections.Accounts.insertOne({ ...user, userId: user._id });
-        },
-        mutations: {},
-        queries: {},
-        rootUrl: "https://shop.fake.site/"
-      },
       functionsByType,
       graphQL: {
         schemas: extraSchemas
       },
-      shouldInitReplicaSet: true
+      rootUrl: "https://shop.fake.site/",
+      shouldInitReplicaSet: true,
+      version: "0.0.0-test"
     });
 
     this.collections = this.reactionNodeApp.collections;
