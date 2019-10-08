@@ -4,7 +4,7 @@ import { merge } from "lodash";
 import mongodb, { MongoClient } from "mongodb";
 import Logger from "@reactioncommerce/logger";
 import appEvents from "./util/appEvents";
-import collectionIndex from "/imports/utils/collectionIndex";
+import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
 import getAbsoluteUrl from "./util/getAbsoluteUrl";
 import createApolloServer from "./createApolloServer";
 import initReplicaSet from "./util/initReplicaSet";
