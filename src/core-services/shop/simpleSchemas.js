@@ -660,7 +660,7 @@ export const Shop = new SimpleSchema({
   "shopType": {
     type: String,
     // Default value is merchant because we seed the first created shop with "primary"
-    // In a marketplace, there should only be one "primary" shop
+    // There should only be one "primary" shop.
     defaultValue: "merchant" // "primary", "merchant", "affiliate",
   },
   "active": {
