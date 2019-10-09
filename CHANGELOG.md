@@ -23,7 +23,7 @@ As part of de-meteorization of the Reaction API, We have continued the migration
 - refactor: simpleSchema updates for mockContext ([#5685](https://github.com/reactioncommerce/reaction/pull/5685))
 - refactor: move getPaymentMethodConfigByName to context ([#5684](https://github.com/reactioncommerce/reaction/pull/5684))
 - refactor: create `archiveProducts` GQL mutation to replace meteor methods ([#5680](https://github.com/reactioncommerce/reaction/pull/5680))
-- refactor: move jobs-queue from server/no-meteor to node-app ([#5678(https://github.com/reactioncommerce/reaction/pull/5678))
+- refactor: move jobs-queue from server/no-meteor to node-app ([#5678](https://github.com/reactioncommerce/reaction/pull/5678))
 - refactor: move cart from server/no-meteor to node-app ([#5675](https://github.com/reactioncommerce/reaction/pull/5675))
 - refactor: move checkout from server/no-meteor to node-app ([#5674](https://github.com/reactioncommerce/reaction/pull/5674))
 - refactor: move core plugin to Node app ([#5673](https://github.com/reactioncommerce/reaction/pull/5673))
