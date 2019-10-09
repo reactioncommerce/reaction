@@ -38,3 +38,11 @@ test("get shop by slug failure", async () => {
   const result = await shopBySlagQuery({ slug: "does-not-exist" });
   expect(result.shopBySlug).toBeNull();
 });
+
+test("get invalid params error", async () => {
+  try {
+    await shopBySlagQuery({});
+  } catch (error) {
+    expect(error[0].message).toBe("Variable \"$slug\" of required type \"String!\" was not provided.");
+  }
+});
