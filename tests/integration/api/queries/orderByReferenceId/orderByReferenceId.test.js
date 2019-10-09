@@ -61,10 +61,16 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await testApp.clearLoggedInUser();
-  await testApp.collections.Orders.remove({});
+  await testApp.collections.Orders.deleteMany({});
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Orders.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Users.deleteMany({});
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.stop();
+});
 
 test("get account order success", async () => {
   // Set up initial data state
