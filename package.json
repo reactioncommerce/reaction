@@ -28,6 +28,7 @@
   "sideEffects": false,
   "dependencies": {
     "@reactioncommerce/logger": "^1.1.2",
+    "@reactioncommerce/random": "^1.0.1",
     "@reactioncommerce/reaction-error": "^1.0.1",
     "accounting-js": "^1.1.1",
     "graphql-fields": "^2.0.3",
