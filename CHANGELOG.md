@@ -1,3 +1,46 @@
+# v2.7.0
+
+Reaction v2.7.0 adds performance enhancements and fixes bugs.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.7.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### More packages have continued to migrate from `no-meteor` folders to `node-app`
+
+As part of de-meteorization of the Reaction API, We have continued the migration of moving all server side code in `no-meteor` folders to their respective `node-app` folders.
+
+## Fixes
+
+- fix: pass correct userId when creating a shop ([#5694](https://github.com/reactioncommerce/reaction/pull/5694))
+- fix: filter products by file on Windows ([#5700](https://github.com/reactioncommerce/reaction/pull/5700))
+
+## Refactors
+
+- refactor: Move accounts plugin to Node app and better split accounts from users/IDP ([#5693](https://github.com/reactioncommerce/reaction/pull/5693))
+- refactor: clean-up tasks related to removing `appEvents` from all meteor code ([#5692](https://github.com/reactioncommerce/reaction/pull/5692))
+- refactor: clean-up tasks related to moving files to the node-app ([#5688](https://github.com/reactioncommerce/reaction/pull/5688))
+- refactor: simpleSchema updates for mockContext ([#5685](https://github.com/reactioncommerce/reaction/pull/5685))
+- refactor: move getPaymentMethodConfigByName to context ([#5684](https://github.com/reactioncommerce/reaction/pull/5684))
+- refactor: create `archiveProducts` GQL mutation to replace meteor methods ([#5680](https://github.com/reactioncommerce/reaction/pull/5680))
+- refactor: move jobs-queue from server/no-meteor to node-app ([#5678(https://github.com/reactioncommerce/reaction/pull/5678))
+- refactor: move cart from server/no-meteor to node-app ([#5675](https://github.com/reactioncommerce/reaction/pull/5675))
+- refactor: move checkout from server/no-meteor to node-app ([#5674](https://github.com/reactioncommerce/reaction/pull/5674))
+- refactor: move core plugin to Node app ([#5673](https://github.com/reactioncommerce/reaction/pull/5673))
+- refactor: move discounts plugins to Node app ([#5672](https://github.com/reactioncommerce/reaction/pull/5672))
+- refactor: move marketplace to Node app ([#5671](https://github.com/reactioncommerce/reaction/pull/5671))
+- refactor: move orders from server/no-meteor to node-app ([#5670](https://github.com/reactioncommerce/reaction/pull/5670))
+- refactor: move catalog from server/no-meteor to node-app ([#5658](https://github.com/reactioncommerce/reaction/pull/5658))
+- refactor: move navigation from server/no-meteor to node-app ([#5656](https://github.com/reactioncommerce/reaction/pull/5656))
+- refactor: move email from server/no-meteor to node-app ([#5655](https://github.com/reactioncommerce/reaction/pull/5655))
+- refactor: move i18n from server/no-meteor to node-app ([#5654](https://github.com/reactioncommerce/reaction/pull/5654))
+- refactor: move product and product-variant from server/no-meteor to node-app ([#5669](https://github.com/reactioncommerce/reaction/pull/5669))
+- refactor: move sitemap-generator from server/no-meteor to node-app ([#5667](https://github.com/reactioncommerce/reaction/pull/5667))
+- refactor: move Tags from server/no-meteor to node-app ([#5665](https://github.com/reactioncommerce/reaction/pull/5665))
+- refactor: move dashboard from server/no-meteor to node-app ([#5663](https://github.com/reactioncommerce/reaction/pull/5663))
+- refactor: move product-admin plugin to Node app ([#5659](https://github.com/reactioncommerce/reaction/pull/5659))
+- refactor: move notifications plugin to Node app ([#5661](https://github.com/reactioncommerce/reaction/pull/5661))
+
 # v2.6.0
 
 Reaction v2.6.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.6.0.
