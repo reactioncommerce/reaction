@@ -18,7 +18,7 @@ export default async function shopAdministratorsQuery(context, id) {
   const users = await Users.find({
     [`roles.${id}`]: "admin"
   }, {
-    fields: { _id: 1 }
+    projection: { _id: 1 }
   }).toArray();
   const userIds = users.map(({ _id }) => _id);
 
