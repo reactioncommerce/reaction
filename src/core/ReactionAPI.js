@@ -254,6 +254,18 @@ export default class ReactionAPI {
       packageInfoArray.forEach(registerPluginHandlerFunc);
     });
 
+    // Reaction 3.0.0 removes the old migrations system, which tracked a single
+    // database version in a single document in a Migrations collection. We
+    // require that you have run all 2.x migrations before upgrading to 3.0.0+.
+    // If no migration control record is found, we assume that it's a new
+    // database or you have intentionally removed it after running all necessary
+    // 2.x migrations.
+    const migrationsControl = await this.db.collection("Migrations").findOne({ _id: "control" });
+    if (migrationsControl && migrationsControl.version < 76) {
+      throw new Error(`Detected a migration version (${migrationsControl.version}) for the previous migration system, which is less than 76.` +
+        " This likely means that you have not run all 2.x migrations. You must complete the upgrade to at least 2.7.0 before upgrading to 3.0.0 or higher.");
+    }
+
     const preStartupFunctionsRegisteredByPlugins = this.functionsByType.preStartup;
     if (Array.isArray(preStartupFunctionsRegisteredByPlugins)) {
       // We are intentionally running these in series, in the order in which they were registered
