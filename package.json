@@ -36,7 +36,6 @@
     "dataloader": "~1.4.0",
     "diehard": "~1.5.2",
     "envalid": "~5.0.0",
-    "express": "~4.17.1",
     "faker": "~4.1.0",
     "graphql": "~14.5.8",
     "graphql-iso-date": "~3.6.1",
