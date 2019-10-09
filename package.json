@@ -21,7 +21,9 @@
     "url": "https://github.com/reactioncommerce/api-utils/issues"
   },
   "exports": {
-    "./": "./lib/"
+    "./": "./lib/",
+    "./graphql/": "./lib/graphql/",
+    "./tests/": "./lib/tests/"
   },
   "sideEffects": false,
   "dependencies": {
