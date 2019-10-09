@@ -33,7 +33,7 @@ services:
       - "3000:3000"
     volumes:
       - .:/usr/local/src/app:cached
-      - reaction_api_node_modules:/usr/local/src/app/node_modules # do not link node_modules in, and persist it between dc up runs
+      - api_node_modules:/usr/local/src/app/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
     image: mongo:4.2.0
@@ -44,8 +44,8 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongo-db:/data/db
+      - mongo-db4:/data/db
 
 volumes:
-  mongo-db:
-  reaction_api_node_modules:
+  mongo-db4:
+  api_node_modules:
