@@ -36,7 +36,7 @@ services:
       - reaction_api_node_modules:/usr/local/src/app/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
-    image: mongo:3.6.3
+    image: mongo:4.2.0
     command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
     networks:
       default:

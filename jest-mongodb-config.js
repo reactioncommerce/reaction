@@ -7,7 +7,7 @@ module.exports = {
       replSet: "rs0"
     },
     binary: {
-      version: "3.6.14",
+      version: "4.2.0",
       skipMD5: true
     },
     autoStart: false
