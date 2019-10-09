@@ -1,4 +1,4 @@
-import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { decodeTagOpaqueId } from "../../../xforms/tag.js";
 import executeBulkOperation from "../utils/executeBulkOperation.js";
 
 /**

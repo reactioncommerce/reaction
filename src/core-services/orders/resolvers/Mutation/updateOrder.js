@@ -1,4 +1,4 @@
-import { decodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
+import { decodeOrderOpaqueId } from "../../../../xforms/order.js";
 
 /**
  * @name Mutation/updateOrder

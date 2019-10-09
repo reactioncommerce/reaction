@@ -1,4 +1,8 @@
-import { curryN } from "ramda";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url); // eslint-disable-line
+
+const { curryN } = require("ramda");
 
 const GLOBAL_GROUP = "__global_roles__";
 

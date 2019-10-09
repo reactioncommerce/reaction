@@ -1,4 +1,4 @@
-import { toFixed } from "accounting-js";
+import accounting from "accounting-js";
 import Logger from "@reactioncommerce/logger";
 import getDisplayPrice from "./getDisplayPrice.js";
 
@@ -36,15 +36,15 @@ export default async function xformCurrencyExchangePricing(pricing, currencyCode
   }
 
   const { compareAtPrice, price, minPrice, maxPrice } = pricing;
-  const priceConverted = price && Number(toFixed(price * rate, 2));
-  const minPriceConverted = minPrice && Number(toFixed(minPrice * rate, 2));
-  const maxPriceConverted = maxPrice && Number(toFixed(maxPrice * rate, 2));
+  const priceConverted = price && Number(accounting.toFixed(price * rate, 2));
+  const minPriceConverted = minPrice && Number(accounting.toFixed(minPrice * rate, 2));
+  const maxPriceConverted = maxPrice && Number(accounting.toFixed(maxPrice * rate, 2));
   const displayPrice = getDisplayPrice(minPriceConverted, maxPriceConverted, currencyInfo);
   let compareAtPriceConverted = null;
 
   if (typeof compareAtPrice === "number" && compareAtPrice > 0) {
     compareAtPriceConverted = {
-      amount: Number(toFixed(compareAtPrice * rate, 2)),
+      amount: Number(accounting.toFixed(compareAtPrice * rate, 2)),
       currencyCode
     };
   }

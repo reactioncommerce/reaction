@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import _ from "lodash";
 import xformArrayToConnection from "@reactioncommerce/api-utils/graphql/xformArrayToConnection.js";
 
 /**
@@ -11,7 +11,7 @@ import xformArrayToConnection from "@reactioncommerce/api-utils/graphql/xformArr
  * @returns {Promise<Object>} A connection object
  */
 export default async function addressBook(account, connectionArgs) {
-  const addressList = get(account, "profile.addressBook");
+  const addressList = _.get(account, "profile.addressBook");
   if (!Array.isArray(addressList)) return null;
 
   return xformArrayToConnection(connectionArgs, addressList);

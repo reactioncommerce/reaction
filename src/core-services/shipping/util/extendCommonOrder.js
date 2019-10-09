@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { tagsByIds, mergeProductAndVariants } from "./helpers";
+import { tagsByIds, mergeProductAndVariants } from "./helpers.js";
 
 /**
  * @name extendCommonOrder

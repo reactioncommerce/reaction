@@ -1,4 +1,4 @@
-import { decodeNavigationItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/navigationItem";
+import { decodeNavigationItemOpaqueId } from "../../../../xforms/navigationItem.js";
 
 /**
  * @name Mutation.updateNavigationItem

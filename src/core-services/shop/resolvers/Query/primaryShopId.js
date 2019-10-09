@@ -1,4 +1,4 @@
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Query/primaryShopId

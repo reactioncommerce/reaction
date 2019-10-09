@@ -1,4 +1,4 @@
-import { uniq } from "lodash";
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getNavigationTreeItemIds from "../util/getNavigationTreeItemIds.js";
 
@@ -27,7 +27,7 @@ export default async function publishNavigationChanges(context, _id) {
 
   // Get the _ids of all items in the tree, recursively
   const { draftItems } = navigationTree;
-  const draftItemIds = uniq(getNavigationTreeItemIds(draftItems));
+  const draftItemIds = _.uniq(getNavigationTreeItemIds(draftItems));
 
   // Publish changes to all items in the tree
   draftItemIds.forEach(async (draftItemId) => {

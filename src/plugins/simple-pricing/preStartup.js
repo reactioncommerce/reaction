@@ -6,6 +6,6 @@ import { extendSimplePricingSchemas } from "./simpleSchemas.js";
  * @param {Object} context - App context.
  * @returns {undefined} - void, no return.
  */
-export default async function preStartup(context) {
+export default function preStartup(context) {
   extendSimplePricingSchemas(context.simpleSchemas);
 }

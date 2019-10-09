@@ -1,5 +1,5 @@
-import { encodeNavigationTreeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/navigationTree";
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeNavigationTreeOpaqueId } from "../../../../xforms/navigationTree.js";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import xformNavigationTreeItem from "../../xforms/xformNavigationTreeItem.js";
 
 export default {

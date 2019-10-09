@@ -1,4 +1,4 @@
-import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
+import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "../../../xforms/id.js";
 
 const namespace = "reaction/surcharge";
 

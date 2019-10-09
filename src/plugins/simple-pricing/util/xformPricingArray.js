@@ -1,4 +1,8 @@
-import { assoc, compose, map, toPairs } from "ramda";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+
+const { assoc, compose, map, toPairs } = require("ramda");
 
 // add `currencyCode` keys to each pricing info object
 const xformPricingEntry = ([k, v]) => compose(assoc("currencyCode", k))(v);

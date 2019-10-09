@@ -1,5 +1,5 @@
-import { encodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import { encodeSurchargeOpaqueId } from "../../xforms/surcharge.js";
 import xformSurchargeAmount from "../../xforms/xformSurchargeAmount.js";
 import getSurchargeMessageForLanguage from "../../util/getSurchargeMessageForLanguage.js";

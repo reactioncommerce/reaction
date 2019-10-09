@@ -1,6 +1,6 @@
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeOrderOpaqueId, encodeOrderItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
+import { encodeOrderOpaqueId, encodeOrderItemOpaqueId } from "../../../xforms/order.js";
 import SplitOrderItemMutation from "./SplitOrderItemMutation.graphql";
 
 jest.setTimeout(300000);

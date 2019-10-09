@@ -1,5 +1,5 @@
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { encodeAccountOpaqueId } from "../../../xforms/account.js";
+import { encodeGroupOpaqueId } from "../../../xforms/group.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 import GroupFullQuery from "./GroupFullQuery.graphql";

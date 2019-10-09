@@ -1,5 +1,5 @@
-import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeGroupOpaqueId } from "../../../xforms/group.js";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import inviteShopMember from "./inviteShopMember.js";
 

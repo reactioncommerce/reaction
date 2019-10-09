@@ -1,4 +1,4 @@
-import isEqual from "lodash/isEqual";
+import _ from "lodash";
 
 /**
  * @summary Returns an object with inventory information for one or more
@@ -32,7 +32,7 @@ export default async function inventoryForProductConfigurations(context, input) 
   return productConfigurations.map((productConfiguration) => {
     const inventoryDoc = inventoryDocs.find((doc) => {
       if (!doc) return false;
-      return isEqual(productConfiguration, doc.productConfiguration);
+      return _.isEqual(productConfiguration, doc.productConfiguration);
     });
     if (!inventoryDoc || !inventoryDoc.isEnabled) {
       return {

@@ -1,4 +1,4 @@
-import merge from "lodash/merge";
+import _ from "lodash";
 
 const GET_MULTI_RESOURCES_PATH = "/locales/resources.json";
 const GET_NAMESPACES_PATH = "/locales/namespaces.json";
@@ -21,7 +21,7 @@ let namespaces;
  * @return {undefined}
  */
 export function mergeResource(translation) {
-  merge(resources, {
+  _.merge(resources, {
     [translation.i18n]: translation.translation
   });
 

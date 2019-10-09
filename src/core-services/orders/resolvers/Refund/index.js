@@ -1,5 +1,5 @@
-import { encodePaymentOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/payment";
-import { encodeRefundOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/refund";
+import { encodePaymentOpaqueId } from "../../../../xforms/payment.js";
+import { encodeRefundOpaqueId } from "../../../../xforms/refund.js";
 import amount from "./amount.js";
 import createdAt from "./createdAt.js";
 

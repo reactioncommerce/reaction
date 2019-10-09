@@ -1,7 +1,7 @@
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeAccountOpaqueId } from "../../../xforms/account.js";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import AdministratorsFullQuery from "./AdministratorsFullQuery.graphql";
 
 jest.setTimeout(300000);

@@ -4,7 +4,7 @@ import preStartup from "./preStartup.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
-import { Order, OrderFulfillmentGroup, OrderItem } from "./simpleSchemas";
+import { Order, OrderFulfillmentGroup, OrderItem } from "./simpleSchemas.js";
 import startup from "./startup.js";
 import getDataForOrderEmail from "./util/getDataForOrderEmail.js";
 

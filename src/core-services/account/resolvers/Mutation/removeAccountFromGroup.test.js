@@ -1,5 +1,5 @@
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { encodeAccountOpaqueId } from "../../../xforms/account.js";
+import { encodeGroupOpaqueId } from "../../../xforms/group.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import removeAccountFromGroup from "./removeAccountFromGroup.js";
 

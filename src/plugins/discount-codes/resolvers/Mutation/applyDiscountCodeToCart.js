@@ -1,5 +1,5 @@
-import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeCartOpaqueId } from "../../../../xforms/cart.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Mutation/applyDiscountCodeToCart

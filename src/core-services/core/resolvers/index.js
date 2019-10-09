@@ -1,8 +1,5 @@
 import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
-import { GraphQLDate, GraphQLDateTime } from "graphql-iso-date";
 import Address from "./Address.js";
-import ConnectionCursor from "./ConnectionCursor.js";
-import ConnectionLimitInt from "./ConnectionLimitInt.js";
 import Currency from "./Currency.js";
 import Money from "./Money.js";
 import Query from "./Query/index.js";
@@ -10,36 +7,9 @@ import Tag from "./Tag/index.js";
 
 export default {
   Address,
-  ConnectionCursor,
-  ConnectionLimitInt,
   Currency,
-  Date: GraphQLDate,
-  DateTime: GraphQLDateTime,
   Money,
-  Mutation: {
-    echo: (_, { str }) => `${str}`
-  },
-  Query: {
-    ping: () => "pong",
-    ...Query
-  },
-  Subscription: {
-    tick: {
-      subscribe: (_, __, context) => {
-        let tickValue = 0;
-        let intervalId = setInterval(() => {
-          tickValue += 1;
-          context.pubSub.publish("tick", { tick: tickValue });
-          if (tickValue === 10) {
-            clearInterval(intervalId);
-            intervalId = null;
-          }
-        }, 1000);
-
-        return context.pubSub.asyncIterator("tick");
-      }
-    }
-  },
+  Query,
   Tag,
   ...getConnectionTypeResolvers("Address"),
   ...getConnectionTypeResolvers("Tag")

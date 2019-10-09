@@ -1,6 +1,6 @@
-import { decodeCartOpaqueId, decodeCartItemsOpaqueIds } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeCartOpaqueId, decodeCartItemsOpaqueIds } from "../../../../xforms/cart.js";
+import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Mutation/placeOrder

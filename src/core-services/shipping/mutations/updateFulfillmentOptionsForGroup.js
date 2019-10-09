@@ -1,4 +1,4 @@
-import { isEqual } from "lodash";
+import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCartById from "../util/getCartById.js";
@@ -77,7 +77,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 
-  if (!isEqual(shipmentQuotes, fulfillmentGroup.shipmentQuotes) || !isEqual(shipmentQuotesQueryStatus, fulfillmentGroup.shipmentQuotesQueryStatus)) {
+  if (!_.isEqual(shipmentQuotes, fulfillmentGroup.shipmentQuotes) || !_.isEqual(shipmentQuotesQueryStatus, fulfillmentGroup.shipmentQuotesQueryStatus)) {
     const updatedCart = {
       ...cart,
       shipping: cart.shipping.map((group) => {

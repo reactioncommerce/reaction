@@ -1,4 +1,4 @@
-import escapeRegExp from "lodash/escapeRegExp";
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -80,7 +80,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
   // Use `filters` to filters out results on the server
   if (filters && filters.searchField) {
     const { searchField } = filters;
-    const regexMatch = { $regex: escapeRegExp(searchField), $options: "i" };
+    const regexMatch = { $regex: _.escapeRegExp(searchField), $options: "i" };
     searchFieldFilter = {
       $or: [
         // Exact matches

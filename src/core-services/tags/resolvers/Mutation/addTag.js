@@ -1,4 +1,4 @@
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Mutation.addTag

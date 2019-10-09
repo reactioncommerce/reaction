@@ -1,5 +1,5 @@
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { encodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { encodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
 import { encodeFulfillmentRestrictionOpaqueId } from "../../xforms/flatRateFulfillmentRestriction.js";
 
 export default {

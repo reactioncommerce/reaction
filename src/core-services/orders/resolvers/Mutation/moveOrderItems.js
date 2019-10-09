@@ -2,7 +2,7 @@ import {
   decodeOrderFulfillmentGroupOpaqueId,
   decodeOrderItemOpaqueId,
   decodeOrderOpaqueId
-} from "@reactioncommerce/reaction-graphql-xforms/order";
+} from "../../../../xforms/order.js";
 
 /**
  * @name Mutation/moveOrderItems

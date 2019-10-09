@@ -1,4 +1,4 @@
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
+import { encodeAccountOpaqueId } from "../../../xforms/account.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import removeAccountEmailRecord from "./removeAccountEmailRecord.js";
 

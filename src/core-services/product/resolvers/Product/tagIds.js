@@ -1,4 +1,4 @@
-import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { encodeTagOpaqueId } from "../../../../xforms/tag.js";
 
 /**
  * @name Product/tagIds

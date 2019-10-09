@@ -1,4 +1,4 @@
-import { sortBy } from "lodash";
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { getTaxServicesForShop } from "../registration.js";
 
@@ -20,5 +20,5 @@ export default async function taxCodes(context, shopId) {
   if (!primaryTaxService) return [];
 
   const list = await primaryTaxService.functions.getTaxCodes({ context, shopId });
-  return sortBy(list, "label");
+  return _.sortBy(list, "label");
 }

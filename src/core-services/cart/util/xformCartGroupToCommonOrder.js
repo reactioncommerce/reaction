@@ -1,4 +1,4 @@
-import { toFixed } from "accounting-js";
+import accounting from "accounting-js";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 
@@ -56,7 +56,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       quantity: item.quantity,
       shopId: item.shopId,
       subtotal: {
-        amount: +toFixed(itemPrice * item.quantity, 3),
+        amount: +accounting.toFixed(itemPrice * item.quantity, 3),
         currencyCode
       },
       taxCode: item.taxCode,
@@ -87,7 +87,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
         currencyCode
       },
       total: {
-        amount: +toFixed((shipmentMethod.handling || 0) + shipmentMethod.rate, 3),
+        amount: +accounting.toFixed((shipmentMethod.handling || 0) + shipmentMethod.rate, 3),
         currencyCode
       }
     };
@@ -98,7 +98,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
   // TODO: In the future, we should update this with a discounts update
   // Discounts are stored as the sum of all discounts, per cart. This will need to be updated when we refactor discounts to go by group.
   const discountTotal = cart.discount || 0;
-  const groupItemTotal = +toFixed(items.reduce((sum, item) => (sum + item.subtotal.amount), 0), 3);
+  const groupItemTotal = +accounting.toFixed(items.reduce((sum, item) => (sum + item.subtotal.amount), 0), 3);
   // orderItemTotal will need to be updated to be the actual total when we eventually have more than one group available
   const orderItemTotal = groupItemTotal;
 
@@ -112,7 +112,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       currencyCode: cart.currencyCode
     },
     groupTotal: {
-      amount: +toFixed(groupItemTotal - discountTotal, 3),
+      amount: +accounting.toFixed(groupItemTotal - discountTotal, 3),
       currencyCode: cart.currencyCode
     },
     orderDiscountTotal: {
@@ -124,7 +124,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       currencyCode: cart.currencyCode
     },
     orderTotal: {
-      amount: +toFixed(orderItemTotal - discountTotal, 3),
+      amount: +accounting.toFixed(orderItemTotal - discountTotal, 3),
       currencyCode: cart.currencyCode
     }
   };

@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
-import { toFixed } from "accounting-js";
+import accounting from "accounting-js";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputItemSchema = new SimpleSchema({
@@ -132,7 +132,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       shopId: catalogProduct.shopId,
       // Subtotal will be kept updated by event handler watching for catalog changes.
       subtotal: {
-        amount: +toFixed(variantPriceInfo.price * quantity, 3),
+        amount: +accounting.toFixed(variantPriceInfo.price * quantity, 3),
         currencyCode: price.currencyCode
       },
       taxCode: chosenVariant.taxCode,
@@ -165,7 +165,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       // testable code.
       const updatedQuantity = currentCartItem.quantity + cartItem.quantity;
       // Recalculate subtotal with new quantity number
-      const updatedSubtotalAmount = +toFixed(updatedQuantity * cartItem.price.amount, 3);
+      const updatedSubtotalAmount = +accounting.toFixed(updatedQuantity * cartItem.price.amount, 3);
       updatedItemList[currentMatchingItemIndex] = {
         ...currentCartItem,
         ...cartItem,

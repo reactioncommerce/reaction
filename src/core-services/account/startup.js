@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import addPluginRolesToGroups from "./util/addPluginRolesToGroups.js";
 import createDefaultAdminUser from "./util/createDefaultAdminUser.js";
 import createGroups from "./util/createGroups.js";
@@ -103,7 +102,7 @@ export default async function startup(context) {
   await ensureRoles(context, defaultVisitorRoles);
 
   // timing is important, packages are rqd for initial permissions configuration.
-  if (!Meteor.isAppTest) {
+  if (process.env.NODE_ENV !== "jesttest") {
     await addPluginRolesToGroups(context);
   }
 }

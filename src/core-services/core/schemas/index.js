@@ -1,19 +1,17 @@
-import address from "./address.graphql";
-import base from "./base.graphql";
-import currency from "./currency.graphql";
-import email from "./email.graphql";
-import metafield from "./metafield.graphql";
-import node from "./node.graphql";
-import shop from "./shop.graphql";
-import tag from "./tag.graphql";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+
+const address = require("./address.graphql");
+const email = require("./email.graphql");
+const metafield = require("./metafield.graphql");
+const shop = require("./shop.graphql");
+const tag = require("./tag.graphql");
 
 export default [
   address,
-  base,
-  currency,
   email,
   metafield,
-  node,
   shop,
   tag
 ];

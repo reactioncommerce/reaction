@@ -1,5 +1,5 @@
-import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Query/accountCartByAccountId

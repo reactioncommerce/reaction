@@ -1,4 +1,4 @@
-import { xformTotalItemQuantity } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import { xformTotalItemQuantity } from "../../../../xforms/cart.js";
 
 /**
  * @name Cart/totalItemQuantity

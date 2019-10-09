@@ -1,4 +1,4 @@
-import { decodeNavigationTreeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/navigationTree";
+import { decodeNavigationTreeOpaqueId } from "../../../../xforms/navigationTree.js";
 
 /**
  * @name Query.navigationTreeById

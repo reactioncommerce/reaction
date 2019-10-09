@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import _ from "lodash";
 
 export const addressValidationServices = {};
 
@@ -30,7 +30,7 @@ export async function getEnabledAddressValidationServicesForShop(context, shopId
   const plugin = await context.collections.Packages.findOne({ name: "reaction-address", shopId });
   if (!plugin) return [];
 
-  return get(plugin, "settings.addressValidation.enabledServices", []);
+  return _.get(plugin, "settings.addressValidation.enabledServices", []);
 }
 
 /**

@@ -1,4 +1,4 @@
-import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import { decodeCartOpaqueId } from "../../../../xforms/cart.js";
 
 /**
  * @name Mutation/setEmailOnAnonymousCart

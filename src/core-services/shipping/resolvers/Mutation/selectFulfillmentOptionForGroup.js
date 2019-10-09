@@ -1,5 +1,5 @@
-import { decodeCartOpaqueId, decodeFulfillmentGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
+import { decodeCartOpaqueId, decodeFulfillmentGroupOpaqueId } from "../../../../xforms/cart.js";
+import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
 import selectFulfillmentOptionForGroupMutation from "../../mutations/selectFulfillmentOptionForGroup.js";
 
 /**

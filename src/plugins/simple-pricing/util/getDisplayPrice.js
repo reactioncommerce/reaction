@@ -1,4 +1,4 @@
-import { formatMoney } from "accounting-js";
+import accounting from "accounting-js";
 
 /**
  * @name getDisplayPrice
@@ -14,7 +14,7 @@ export default function getDisplayPrice(minPrice, maxPrice, currencyInfo = { sym
 
   if (minPrice === maxPrice) {
     // Display 1 price (min = max)
-    displayPrice = formatMoney(minPrice, currencyInfo);
+    displayPrice = accounting.formatMoney(minPrice, currencyInfo);
   } else {
     // Display range
     let minFormatted;
@@ -24,12 +24,12 @@ export default function getDisplayPrice(minPrice, maxPrice, currencyInfo = { sym
       const modifiedCurrencyInfo = Object.assign({}, currencyInfo, {
         symbol: ""
       });
-      minFormatted = formatMoney(minPrice, modifiedCurrencyInfo).trim();
+      minFormatted = accounting.formatMoney(minPrice, modifiedCurrencyInfo).trim();
     } else {
-      minFormatted = formatMoney(minPrice, currencyInfo);
+      minFormatted = accounting.formatMoney(minPrice, currencyInfo);
     }
 
-    const maxFormatted = formatMoney(maxPrice, currencyInfo);
+    const maxFormatted = accounting.formatMoney(maxPrice, currencyInfo);
     displayPrice = `${minFormatted} - ${maxFormatted}`;
   }
 

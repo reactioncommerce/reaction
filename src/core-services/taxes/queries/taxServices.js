@@ -1,4 +1,4 @@
-import { sortBy } from "lodash";
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { taxServices as registeredTaxServices } from "../registration.js";
 
@@ -22,5 +22,5 @@ export default function taxServices(context, shopId) {
     pluginName: service.pluginName
   }));
 
-  return sortBy(list, "displayName");
+  return _.sortBy(list, "displayName");
 }

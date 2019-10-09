@@ -1,5 +1,5 @@
-import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeGroupOpaqueId } from "../../../../xforms/group.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Mutation/inviteShopMember

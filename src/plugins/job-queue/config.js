@@ -1,4 +1,6 @@
-import envalid, { bool, str } from "envalid";
+import envalid from "envalid";
+
+const { bool, str } = envalid;
 
 export default envalid.cleanEnv(process.env, {
   // This is necessary to override the envalid default

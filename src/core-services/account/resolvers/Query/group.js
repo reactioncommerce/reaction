@@ -1,4 +1,4 @@
-import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { decodeGroupOpaqueId } from "../../../../xforms/group.js";
 
 /**
  * @name Query/group

@@ -1,6 +1,6 @@
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeAccountOpaqueId } from "../../../xforms/account.js";
+import { encodeGroupOpaqueId } from "../../../xforms/group.js";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 import AddAccountToGroupMutation from "./AddAccountToGroupMutation.graphql";

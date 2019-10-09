@@ -1,4 +1,4 @@
-import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "../../../../xforms/cart.js";
 
 /**
  * @name Mutation/removeCartItems

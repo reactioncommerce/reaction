@@ -1,5 +1,5 @@
-import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
+import { decodeGroupOpaqueId } from "../../../../xforms/group.js";
 
 /**
  * @name Mutation/addAccountToGroup

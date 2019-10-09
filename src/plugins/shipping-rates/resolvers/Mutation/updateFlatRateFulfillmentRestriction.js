@@ -1,5 +1,5 @@
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
 import { decodeFulfillmentRestrictionOpaqueId } from "../../xforms/flatRateFulfillmentRestriction.js";
 import updateFlatRateFulfillmentRestrictionMutation from "../../mutations/updateFlatRateFulfillmentRestriction.js";
 

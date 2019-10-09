@@ -1,6 +1,6 @@
-import { decodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
-import { decodePaymentOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/payment";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeOrderOpaqueId } from "../../../../xforms/order.js";
+import { decodePaymentOpaqueId } from "../../../../xforms/payment.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Mutation/approveOrderPayments

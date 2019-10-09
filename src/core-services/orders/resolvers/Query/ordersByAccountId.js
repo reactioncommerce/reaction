@@ -1,7 +1,7 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
-import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Query/ordersByAccountId

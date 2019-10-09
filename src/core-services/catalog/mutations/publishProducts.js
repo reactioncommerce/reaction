@@ -1,4 +1,4 @@
-import { uniq } from "lodash";
+import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import publishProductsToCatalog from "../utils/publishProductsToCatalog.js";
@@ -28,7 +28,7 @@ export default async function publishProducts(context, productIds) {
   }
 
   if (!isInternalCall) {
-    const uniqueShopIds = uniq(products.map((product) => product.shopId));
+    const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
     uniqueShopIds.forEach((shopId) => {
       if (!userHasPermission(["createProduct", "product/admin", "product/publish"], shopId)) {
         throw new ReactionError("access-denied", "Access Denied");

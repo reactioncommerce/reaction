@@ -4,7 +4,7 @@ import {
   encodeOrderFulfillmentGroupOpaqueId,
   encodeOrderItemOpaqueId,
   encodeOrderOpaqueId
-} from "@reactioncommerce/reaction-graphql-xforms/order";
+} from "../../../xforms/order.js";
 import MoveOrderItemsMutation from "./MoveOrderItemsMutation.graphql";
 
 jest.setTimeout(300000);

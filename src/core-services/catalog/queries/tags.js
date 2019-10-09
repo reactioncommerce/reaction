@@ -1,4 +1,4 @@
-import escapeRegExp from "lodash/escapeRegExp";
+import _ from "lodash";
 
 /**
  * @name tags
@@ -24,7 +24,7 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
 
   // Use `filter` to filter out results on the server
   if (filter) {
-    query.name = { $regex: escapeRegExp(filter), $options: "i" };
+    query.name = { $regex: _.escapeRegExp(filter), $options: "i" };
   }
 
   if (context.userHasPermission(["owner", "admin"], shopId)) {

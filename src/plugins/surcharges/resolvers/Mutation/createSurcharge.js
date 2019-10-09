@@ -1,5 +1,5 @@
-import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 import createSurchargeMutation from "../../mutations/createSurcharge.js";
 
 /**

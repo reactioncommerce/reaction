@@ -1,4 +1,4 @@
-import { decodeOpaqueIdForNamespace, encodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
+import { decodeOpaqueIdForNamespace, encodeOpaqueId } from "../../../xforms/id.js";
 
 const NAMESPACE = "reaction/mediaRecord";
 

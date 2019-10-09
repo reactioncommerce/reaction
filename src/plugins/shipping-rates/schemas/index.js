@@ -1,4 +1,8 @@
-import schema from "./schema.graphql";
-import restrictions from "./restrictions.graphql";
+import { createRequire } from "module";
 
-export default [restrictions, schema];
+const require = createRequire(import.meta.url);
+
+const schema = require("./schema.graphql");
+const restrictions = require("./restrictions.graphql");
+
+export default [schema, restrictions];

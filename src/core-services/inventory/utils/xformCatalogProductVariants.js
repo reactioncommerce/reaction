@@ -1,4 +1,4 @@
-import has from "lodash/has";
+import _ from "lodash";
 
 const inventoryVariantFields = [
   "canBackorder",
@@ -27,7 +27,7 @@ const inventoryVariantFields = [
 export default async function xformCatalogProductVariants(context, catalogProductVariants, info) {
   const { catalogProduct, fields } = info;
 
-  const anyInventoryFieldWasRequested = inventoryVariantFields.some((field) => has(fields, field));
+  const anyInventoryFieldWasRequested = inventoryVariantFields.some((field) => _.has(fields, field));
   if (!anyInventoryFieldWasRequested) return;
 
   const productConfigurations = [];

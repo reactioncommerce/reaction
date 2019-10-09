@@ -1,6 +1,10 @@
+import { createRequire } from "module";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { FileRecord } from "@reactioncommerce/file-collections";
+
+const require = createRequire(import.meta.url);
+
+const { FileRecord } = require("@reactioncommerce/file-collections");
 
 /**
  * @name tag/setTagHeroMedia

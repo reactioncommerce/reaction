@@ -1,17 +1,21 @@
+import { createRequire } from "module";
 import Random from "@reactioncommerce/random";
 import fetch from "node-fetch";
 import sharp from "sharp";
-import {
+import config from "./config.js";
+import createSaveImageJob from "./util/createSaveImageJob.js";
+
+const require = createRequire(import.meta.url);
+
+const {
   FileDownloadManager,
   FileRecord,
   MongoFileCollection,
   TempFileStore,
   RemoteUrlWorker,
   TempFileStoreWorker
-} from "@reactioncommerce/file-collections";
-import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
-import config from "./config.js";
-import createSaveImageJob from "./util/createSaveImageJob.js";
+} = require("@reactioncommerce/file-collections");
+const GridFSStore = require("@reactioncommerce/file-collections-sa-gridfs").default;
 
 /**
  * @returns {undefined}

@@ -1,5 +1,5 @@
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeTagOpaqueId } from "../../../../xforms/tag.js";
 
 /**
  * @name Mutation.setTagHeroMedia

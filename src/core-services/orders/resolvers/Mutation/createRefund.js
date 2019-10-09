@@ -1,5 +1,5 @@
-import { decodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
-import { decodePaymentOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/payment";
+import { decodeOrderOpaqueId } from "../../../../xforms/order.js";
+import { decodePaymentOpaqueId } from "../../../../xforms/payment.js";
 
 /**
  * @name Mutation/createRefund

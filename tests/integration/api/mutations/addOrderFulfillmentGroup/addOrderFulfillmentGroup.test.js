@@ -1,10 +1,10 @@
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 import Random from "@reactioncommerce/random";
-import { encodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
-import { encodeOrderItemOpaqueId, encodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
-import { encodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeFulfillmentMethodOpaqueId } from "../../../xforms/fulfillment.js";
+import { encodeOrderItemOpaqueId, encodeOrderOpaqueId } from "../../../xforms/order.js";
+import { encodeProductOpaqueId } from "../../../xforms/product.js";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import AddOrderFulfillmentGroupMutation from "./AddOrderFulfillmentGroupMutation.graphql";
 
 jest.setTimeout(300000);

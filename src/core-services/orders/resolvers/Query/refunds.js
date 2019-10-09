@@ -1,5 +1,5 @@
-import { decodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeOrderOpaqueId } from "../../../../xforms/order.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Query.refunds

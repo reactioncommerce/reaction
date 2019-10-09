@@ -1,4 +1,4 @@
-import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import { xformCartCheckout } from "../../../../xforms/cart.js";
 
 /**
  * @name Cart/checkout

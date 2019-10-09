@@ -1,4 +1,4 @@
-import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { encodeTagOpaqueId } from "../../../xforms/tag.js";
 import { tagProductsQueryString } from "/imports/plugins/core/tags/lib/queries";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";

@@ -1,4 +1,4 @@
-import { encodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
+import { encodeProductOpaqueId } from "../../../xforms/product.js";
 
 export default {
   productId: (node) => encodeProductOpaqueId(node.productId),

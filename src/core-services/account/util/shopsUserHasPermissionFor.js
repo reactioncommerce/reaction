@@ -1,4 +1,8 @@
-import { curryN } from "ramda";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url); // eslint-disable-line
+
+const { curryN } = require("ramda");
 
 /**
  * @name shopsUserHasPermissionFor
@@ -33,6 +37,6 @@ const shopsUserHasPermissionForCurried = curryN(2, shopsUserHasPermissionFor);
  * @param {Object} context App context
  * @return {Function} shopsUserHasPermissionFor function for `context.user`
  */
-export function getHasPermissionFunctionForUser(context) {
+export function getShopsUserHasPermissionForFunctionForUser(context) {
   return shopsUserHasPermissionForCurried(context.user);
 }

@@ -1,4 +1,4 @@
-import { xformOrderPayment } from "@reactioncommerce/reaction-graphql-xforms/order";
+import { xformOrderPayment } from "../../../../xforms/order.js";
 
 /**
  * @name Order/payments

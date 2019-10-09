@@ -1,6 +1,6 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { encodeAccountOpaqueId } from "../../../xforms/account.js";
+import { encodeGroupOpaqueId } from "../../../xforms/group.js";
 import addAccountToGroup from "./addAccountToGroup.js";
 
 mockContext.mutations.addAccountToGroup = jest.fn().mockName("mutations.addAccountToGroup");

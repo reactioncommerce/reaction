@@ -1,7 +1,7 @@
-import { decodeCartItemsOpaqueIds } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
-import { decodeOrderOpaqueId, decodeOrderItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeCartItemsOpaqueIds } from "../../../../xforms/cart.js";
+import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
+import { decodeOrderOpaqueId, decodeOrderItemOpaqueId } from "../../../../xforms/order.js";
+import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
 
 /**
  * @name Mutation/addOrderFulfillmentGroup

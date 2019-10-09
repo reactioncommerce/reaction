@@ -1,6 +1,6 @@
 import getCurrencyDefinitionByCode from "@reactioncommerce/api-utils/getCurrencyDefinitionByCode.js";
-import { encodeNavigationTreeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/navigationTree";
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeNavigationTreeOpaqueId } from "../../../../xforms/navigationTree.js";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import brandAssets from "./brandAssets.js";
 import defaultNavigationTree from "./defaultNavigationTree.js";
 import tags from "./tags.js";

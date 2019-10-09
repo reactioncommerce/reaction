@@ -1,6 +1,6 @@
-import { orderBy } from "lodash";
+import _ from "lodash";
 import xformArrayToConnection from "@reactioncommerce/api-utils/graphql/xformArrayToConnection.js";
-import { xformCartItems } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import { xformCartItems } from "../../../../xforms/cart.js";
 
 /**
  * @summary Sorts the provided cart items according to the connectionArgs.
@@ -14,12 +14,12 @@ function sortCartItems(cartItems, connectionArgs) {
   let sortedItems;
   switch (sortBy) {
     case "addedAt":
-      sortedItems = orderBy(cartItems, ["addedAt", "_id"], [sortOrder, sortOrder]);
+      sortedItems = _.orderBy(cartItems, ["addedAt", "_id"], [sortOrder, sortOrder]);
       break;
 
     // sort alpha by _id
     default:
-      sortedItems = orderBy(cartItems, ["_id"], [sortOrder]);
+      sortedItems = _.orderBy(cartItems, ["_id"], [sortOrder]);
       break;
   }
 

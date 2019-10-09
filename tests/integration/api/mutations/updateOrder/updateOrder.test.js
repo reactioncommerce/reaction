@@ -1,6 +1,6 @@
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
+import { encodeOrderOpaqueId } from "../../../xforms/order.js";
 import UpdateOrderMutation from "./UpdateOrderMutation.graphql";
 
 jest.setTimeout(300000);

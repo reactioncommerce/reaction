@@ -1,4 +1,4 @@
-import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
+import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
 
 /**
  * @name Mutation/setAccountProfileCurrency

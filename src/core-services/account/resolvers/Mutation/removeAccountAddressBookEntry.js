@@ -1,5 +1,5 @@
-import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { decodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/address";
+import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
+import { decodeAddressOpaqueId } from "../../../../xforms/address.js";
 
 /**
  * @name Mutation/removeAccountAddressBookEntry

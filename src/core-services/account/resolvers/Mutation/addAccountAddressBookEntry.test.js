@@ -1,4 +1,4 @@
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
+import { encodeAccountOpaqueId } from "../../../xforms/account.js";
 import addAccountAddressBookEntry from "./addAccountAddressBookEntry.js";
 
 test("correctly passes through to mutations.addressBookAdd", async () => {

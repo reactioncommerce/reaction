@@ -1,4 +1,8 @@
-import product from "./product.graphql";
-import schema from "./schema.graphql";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+
+const product = require("./product.graphql");
+const schema = require("./schema.graphql");
 
 export default [product, schema];

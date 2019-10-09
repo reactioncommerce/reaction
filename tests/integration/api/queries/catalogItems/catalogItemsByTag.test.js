@@ -1,7 +1,7 @@
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
-import { decodeCatalogProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
+import { encodeTagOpaqueId } from "../../../xforms/tag.js";
+import { decodeCatalogProductOpaqueId } from "/src/xforms/catalogProduct";
 import CatalogItemQuery from "./CatalogItemQuery.graphql";
 
 const internalShopId = "123";

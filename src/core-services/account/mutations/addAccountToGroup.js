@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { difference } from "lodash";
+import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import ensureRoles from "../util/ensureRoles.js";
 
@@ -48,7 +48,7 @@ export default async function addAccountToGroup(context, input) {
   const contextUserAccount = await Accounts.findOne({ _id: user._id });
   const isOwnerAccount = !!ownerGroup && contextUserAccount.groups.includes(ownerGroup._id);
 
-  if (!context.isInternalCall && !isOwnerAccount && difference(groupPermissions, user.roles[shopId] || []).length > 0) {
+  if (!context.isInternalCall && !isOwnerAccount && _.difference(groupPermissions, user.roles[shopId] || []).length > 0) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

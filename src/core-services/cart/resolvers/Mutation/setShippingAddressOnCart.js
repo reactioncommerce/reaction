@@ -1,5 +1,5 @@
-import { decodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/address";
-import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import { decodeAddressOpaqueId } from "../../../../xforms/address.js";
+import { decodeCartOpaqueId } from "../../../../xforms/cart.js";
 
 /**
  * @name Mutation/setShippingAddressOnCart

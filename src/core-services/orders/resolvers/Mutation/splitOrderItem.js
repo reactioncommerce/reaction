@@ -1,4 +1,4 @@
-import { decodeOrderOpaqueId, decodeOrderItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
+import { decodeOrderOpaqueId, decodeOrderItemOpaqueId } from "../../../../xforms/order.js";
 
 /**
  * @name Mutation/splitOrderItem

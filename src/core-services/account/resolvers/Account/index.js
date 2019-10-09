@@ -1,7 +1,7 @@
-import { get } from "lodash";
-import resolveShopFromShopId from "@reactioncommerce/api-utils/graphql/resolveShopFromShopId.js";
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
+import _ from "lodash";
 import getCurrencyDefinitionByCode from "@reactioncommerce/api-utils/getCurrencyDefinitionByCode.js";
+import resolveShopFromShopId from "@reactioncommerce/api-utils/graphql/resolveShopFromShopId.js";
+import { encodeAccountOpaqueId } from "../../../../xforms/account.js";
 import addressBook from "./addressBook.js";
 
 export default {
@@ -13,7 +13,7 @@ export default {
   lastName: (account) => account.profile.lastName,
   language: (account) => account.profile.language,
   name: (account) => account.profile.name,
-  preferences: (account) => get(account, "profile.preferences"),
+  preferences: (account) => _.get(account, "profile.preferences"),
   primaryEmailAddress: (account) => {
     const primaryRecord = (account.emails || []).find((record) => record.provides === "default");
     return (primaryRecord && primaryRecord.address) || null;

@@ -1,5 +1,9 @@
-import account from "./account.graphql";
-import group from "./group.graphql";
-import role from "./role.graphql";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+
+const account = require("./account.graphql");
+const group = require("./group.graphql");
+const role = require("./role.graphql");
 
 export default [account, group, role];

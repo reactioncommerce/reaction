@@ -1,6 +1,6 @@
 
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { encodeTagOpaqueId } from "../../../xforms/tag.js";
 import removeTag from "./removeTag.js";
 
 beforeEach(() => {
