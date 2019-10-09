@@ -31,6 +31,7 @@
     "@reactioncommerce/random": "^1.0.1",
     "@reactioncommerce/reaction-error": "^1.0.1",
     "accounting-js": "^1.1.1",
+    "graphql": "^14.5.8",
     "graphql-fields": "^2.0.3",
     "graphql-relay": "^0.6.0",
     "lodash": "^4.17.15",
