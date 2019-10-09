@@ -354,22 +354,40 @@ export default class ReactionAPI {
       }
 
       try {
+        this.httpServer.on("error", (error) => {
+          throw error;
+        });
+
         // To also listen for WebSocket connections for GraphQL
         // subs, this needs to be `this.httpServer.listen`
         // rather than `this.expressApp.listen`.
-        this.server = this.httpServer.listen(String(port), () => {
-          resolve();
-        });
+        this.httpServer.listen({ port }, resolve);
       } catch (error) {
-        reject(error);
+        if (error.code === "EADDRINUSE") {
+          this.retryStartServer(port);
+        } else {
+          reject(error);
+        }
       }
     });
   }
 
+  async retryStartServer(port) {
+    Logger.error(`Port ${port} is in use. Stop whatever is listening on that port. Retrying in 5 seconds...`);
+    setTimeout(() => {
+      const stopStart = async () => {
+        await this.stopServer();
+        await this.startServer({ port });
+      };
+
+      stopStart.catch((error) => { throw error; });
+    }, 5000);
+  }
+
   async stopServer() {
-    if (!this.server) return null;
+    if (!this.httpServer || !this.httpServer.listening) return null;
     return new Promise((resolve, reject) => {
-      this.server.close((error) => {
+      this.httpServer.close((error) => {
         if (error) {
           reject(error);
         } else {
@@ -408,10 +426,16 @@ export default class ReactionAPI {
       Logger.info("Stopping Reaction API...");
 
       /* eslint-disable promise/no-callback-in-promise */
-      this.stop().then(done).catch((error) => {
-        Logger.error(error);
-        done();
-      });
+      this.stop()
+        .then(() => {
+          Logger.info("Reaction API stopped");
+          done();
+          return null;
+        })
+        .catch((error) => {
+          Logger.error(error);
+          done();
+        });
     });
 
     listenForDeath();
