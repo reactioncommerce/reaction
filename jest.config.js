@@ -60,6 +60,9 @@ const jestConfig = {
   // A set of global variables that need to be available in all test environments
   // globals: {},
 
+  // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
+  // maxWorkers: "50%",
+
   // An array of directory names to be searched recursively up from the requiring module's location
   // moduleDirectories: [
   //   "node_modules"
@@ -79,7 +82,7 @@ const jestConfig = {
   // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  modulePathIgnorePatterns: ["node_modules"],
+  // modulePathIgnorePatterns: [],
 
   // Activates notifications for test results
   // notify: false,
@@ -123,13 +126,13 @@ const jestConfig = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ["<rootDir>/imports/test-utils/setupJestTests.js"],
+  setupFilesAfterEnv: ["<rootDir>/tests/util/setupJestTests.js"],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "jsdom"
+  testEnvironment: "node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -164,7 +167,9 @@ const jestConfig = {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  // transform: null,
+  transform: {
+    ".js": "jest-esm-transformer",
+  }
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
@@ -187,7 +192,7 @@ const jestConfig = {
 // See https://github.com/shelfio/jest-mongodb
 // Setting JEST_MONGO is just our way of telling this file that we're running
 // integration tests as opposed to unit tests, which don't need MongoDB running.
-if (process.env.JEST_MONGO) {
+if (process.env.JEST_MONGO === "1") {
   delete jestConfig.testEnvironment;
   jestConfig.preset = "@shelf/jest-mongodb";
 }

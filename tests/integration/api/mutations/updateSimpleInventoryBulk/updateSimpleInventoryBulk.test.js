@@ -1,6 +1,6 @@
 import waitForExpect from "wait-for-expect";
-import Factory from "/imports/test-utils/helpers/factory";
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import Factory from "/tests/util/factory.js";
+import TestApp from "/tests/util/TestApp.js";
 import updateSimpleInventoryBulk from "/imports/node-app/plugins/simple-inventory/mutations/updateSimpleInventoryBulk.js";
 import catalogItemQuery from "./catalogItemQuery.graphql";
 

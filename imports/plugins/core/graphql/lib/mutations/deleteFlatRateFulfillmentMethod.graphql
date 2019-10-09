@@ -1,7 +1,0 @@
-deleteFlatRateFulfillmentMethod($input: DeleteFlatRateFulfillmentMethodInput!) {
-  deleteFlatRateFulfillmentMethod(input: $input) {
-    method {
-      name
-    }
-  }
-}

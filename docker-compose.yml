@@ -1,4 +1,4 @@
-# This docker-compose file is used to run the reaction app in docker for development
+# This docker-compose file is used to run the Reaction API in Docker for development.
 # The local files are mounted into the created container.
 # Usage: docker-compose up [-d]
 
@@ -17,26 +17,23 @@ networks:
 
 services:
 
-  reaction:
-    build:
-      context: .
-      target: meteor-dev
-    command: bash -c "time meteor npm install --no-audit && node ./.reaction/waitForMongo.js && node --experimental-modules ./.reaction/scripts/run.mjs"
+  api:
+    image: reactioncommerce/node-dev:12.10.0-v1
     depends_on:
       - mongo
     env_file:
       - ./.env
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/reaction
     networks:
       default:
       api:
       auth:
     ports:
       - "3000:3000"
-      - "9229:9229"
     volumes:
-      - .:/opt/reaction/src:cached
-      - reaction_meteor_local:/opt/reaction/src/.meteor/local
-      - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
+      - .:/usr/local/src/app:cached
+      - reaction_api_node_modules:/usr/local/src/app/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
     image: mongo:3.6.3
@@ -51,5 +48,4 @@ services:
 
 volumes:
   mongo-db:
-  reaction_node_modules:
-  reaction_meteor_local:
+  reaction_api_node_modules:

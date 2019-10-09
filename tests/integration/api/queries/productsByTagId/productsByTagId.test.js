@@ -1,7 +1,7 @@
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 import { tagProductsQueryString } from "/imports/plugins/core/tags/lib/queries";
-import Factory from "/imports/test-utils/helpers/factory";
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import Factory from "/tests/util/factory.js";
+import TestApp from "/tests/util/TestApp.js";
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";

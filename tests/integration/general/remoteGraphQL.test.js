@@ -5,7 +5,7 @@ import {
 } from "graphql-tools";
 import fetch from "node-fetch";
 import nock from "nock";
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import TestApp from "/tests/util/TestApp.js";
 
 // This is used in URLs for testing,
 // but we never actually start a service on this port.

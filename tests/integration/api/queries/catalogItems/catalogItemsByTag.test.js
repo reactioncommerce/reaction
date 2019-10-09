@@ -1,5 +1,5 @@
-import Factory from "/imports/test-utils/helpers/factory";
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import Factory from "/tests/util/factory.js";
+import TestApp from "/tests/util/TestApp.js";
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 import { decodeCatalogProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
 import CatalogItemQuery from "./CatalogItemQuery.graphql";

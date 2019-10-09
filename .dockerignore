@@ -1,4 +1,3 @@
-.meteor/local
 .build
 .build.*
 .npm
@@ -6,15 +5,12 @@
 
 # This is necessary so plugins can use git repos as npm deps.
 # Leave this here unless you understand the implications.
-# See this issue for details: 
+# See this issue for details:
 # https://github.com/reactioncommerce/reaction/pull/5118
 !.git/modules/imports/plugins/custom
 
 .build.log
 Dockerfile
-Dockerfile-devserver
 .reaction/docker/reaction.*
 docs
 node_modules
-packages/*/.npm
-packages/*/lib/bower

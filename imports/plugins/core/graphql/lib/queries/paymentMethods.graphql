@@ -1,9 +1,0 @@
-getPaymentMethods($shopId: ID!) {
-  paymentMethods(shopId: $shopId) {
-    canRefund
-    displayName
-    isEnabled
-    name
-    pluginName
-  }
-}

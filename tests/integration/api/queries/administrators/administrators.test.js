@@ -1,5 +1,5 @@
-import Factory from "/imports/test-utils/helpers/factory";
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import Factory from "/tests/util/factory.js";
+import TestApp from "/tests/util/TestApp.js";
 import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import AdministratorsFullQuery from "./AdministratorsFullQuery.graphql";

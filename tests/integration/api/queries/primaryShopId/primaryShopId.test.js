@@ -1,5 +1,5 @@
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import TestApp from "/tests/util/TestApp.js";
 
 jest.setTimeout(300000);
 

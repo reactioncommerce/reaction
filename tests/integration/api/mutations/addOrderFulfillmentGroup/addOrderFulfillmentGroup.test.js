@@ -1,5 +1,5 @@
-import Factory from "/imports/test-utils/helpers/factory";
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import Factory from "/tests/util/factory.js";
+import TestApp from "/tests/util/TestApp.js";
 import Random from "@reactioncommerce/random";
 import { encodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
 import { encodeOrderItemOpaqueId, encodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";

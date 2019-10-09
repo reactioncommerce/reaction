@@ -1,4 +1,4 @@
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import TestApp from "/tests/util/TestApp.js";
 import { internalShopId, shopName } from "../../../../mocks/mockShop";
 import { internalTagIds } from "../../../../mocks/mockTags";
 import { mockCatalogItems, mockExternalCatalogProductNodes } from "../../../../mocks/mockCatalogItems";

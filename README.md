@@ -20,6 +20,45 @@ Check out the full list of Reaction [features](https://www.reactioncommerce.com/
 
 Follow the documentation to install Reaction with [Reaction Platform](https://docs.reactioncommerce.com/docs/installation-reaction-platform) for all supported operating systems.
 
+## Start App in Docker Container (Recommended)
+
+```sh
+bin/setup # do this after initial clone and after every pull or checkout
+docker-compose up -d # starts a MongoDB container and a Reaction API container
+docker-compose logs -f api # view Reaction API container logs
+```
+
+To stop the API and the MongoDB server, enter `docker-compose down`.
+
+## Start App Without Docker (Not Recommended)
+
+```sh
+nvm use
+# nvm install if prompted
+npm i -g npm
+npm install
+bin/setup # do this after initial clone and after every pull or checkout
+npm run start:dev
+```
+
+`CTRL+C` to stop.
+
+# Build and Test a Production Image
+
+Build:
+
+```sh
+docker build . -t test-api
+```
+
+Run:
+
+```sh
+dc up -d mongo
+docker run -e NODE_ENV=production -e MONGO_URL=mongodb://mongo:27017/reaction -e ROOT_URL=http://localhost:3000 -p 3000:3000 --network streams.reaction.localhost -it test-api
+```
+
+Use an external GraphQL client to test http://localhost:3000/graphql-beta. GraphQL Playground isn't served on GET requests because it's in production mode.
 
 # Get involved
 
@@ -72,7 +111,7 @@ Signed-off-by: Jane Doe <jane.doe@example.com>
 
 You can sign-off your commit automatically with Git by using `git commit -s` if you have your `user.name` and `user.email` set as part of your Git configuration.
 
-We ask that you use your real full name (please no anonymous contributions or pseudonyms) and a real email address. By signing-off your commit you are certifying that you have the right to submit it under the [GNU GPLv3 Licensed](./LICENSE.md). 
+We ask that you use your real full name (please no anonymous contributions or pseudonyms) and a real email address. By signing-off your commit you are certifying that you have the right to submit it under the [GNU GPLv3 Licensed](./LICENSE.md).
 
 We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO sign-offs of every commit.
 

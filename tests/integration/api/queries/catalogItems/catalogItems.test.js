@@ -1,4 +1,4 @@
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import TestApp from "/tests/util/TestApp.js";
 // temp mocks
 import { internalShopId, opaqueShopId, shopName } from "../../../../mocks/mockShop";
 import { internalTagIds, opaqueTagIds } from "../../../../mocks/mockTags";

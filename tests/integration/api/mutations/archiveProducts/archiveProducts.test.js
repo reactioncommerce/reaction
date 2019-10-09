@@ -1,4 +1,4 @@
-import TestApp from "/imports/test-utils/helpers/TestApp";
+import TestApp from "/tests/util/TestApp.js";
 import ArchiveProductsMutation from "./archiveProducts.graphql";
 
 jest.setTimeout(300000);

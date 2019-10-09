@@ -1,7 +1,0 @@
-updateFlatRateFulfillmentMethod($input: UpdateFlatRateFulfillmentMethodInput!) {
-  updateFlatRateFulfillmentMethod(input: $input) {
-    method {
-      name
-    }
-  }
-}
