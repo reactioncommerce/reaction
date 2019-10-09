@@ -27,6 +27,7 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-jest": "^22.4.3",
+    "babel-plugin-add-module-exports": "^1.0.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
     "eslint": "^4.19.1",
@@ -37,7 +38,7 @@
     "eslint-plugin-react": "^7.7.0",
     "jest": "^22.4.3",
     "rimraf": "^2.6.2",
-    "semantic-release": "^15.1.7",
+    "semantic-release": "^15.13.25",
     "watch": "^1.0.2"
   },
   "babel": {
@@ -45,10 +46,27 @@
       "env",
       "stage-2"
     ],
+    "plugins": [
+      [
+        "add-module-exports",
+        {
+          "addDefaultProperty": true
+        }
+      ]
+    ],
     "sourceMaps": true
+  },
+  "jest": {
+    "testURL": "http://localhost"
   },
   "eslintConfig": {
     "extends": "@reactioncommerce"
+  },
+  "prettier": {
+    "arrowParens": "always"
+  },
+  "release": {
+    "branch": "trunk"
   },
   "publishConfig": {
     "access": "public"

@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:8
+      - image: node:12
 
     dependencies:
       pre:
@@ -29,7 +29,7 @@ jobs:
 
   deploy:
     docker:
-      - image: node:8
+      - image: node:12
 
     steps:
       - checkout
