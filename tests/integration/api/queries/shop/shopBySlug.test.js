@@ -5,13 +5,16 @@ jest.setTimeout(300000);
 
 let shopBySlagQuery;
 let shopId;
+const shopName = "Slug Integration Test";
 let testApp;
+let opaqueShopId;
 const shopSlug = "integ-test-shop-slug";
 
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop({ slug: shopSlug });
+  shopId = await testApp.insertPrimaryShop({ slug: shopSlug, name: shopName });
+  opaqueShopId = encodeShopOpaqueId(shopId);
   shopBySlagQuery = testApp.query(`query ($slug: String!) {
     shopBySlug(slug: $slug) {
       _id
@@ -25,9 +28,13 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("get shop, no auth necessary", async () => {
-  const opaqueShopId = encodeShopOpaqueId(shopId);
+test("get shop by slug success", async () => {
   const result = await shopBySlagQuery({ slug: shopSlug });
-  expect(result.shopBySlug.name).toBe("Primary Shop");
+  expect(result.shopBySlug.name).toBe(shopName);
   expect(result.shopBySlug._id).toBe(opaqueShopId);
+});
+
+test("get shop by slug failure", async () => {
+  const result = await shopBySlagQuery({ slug: "does-not-exist" });
+  expect(result.shopBySlug).toBeNull();
 });
