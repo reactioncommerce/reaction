@@ -1,28 +1,100 @@
 import { createServer } from "http";
-import { PubSub } from "apollo-server";
-import { merge } from "lodash";
-import mongodb, { MongoClient } from "mongodb";
+import { createRequire } from "module";
+import diehard from "diehard";
+import express from "express";
+import _ from "lodash";
+import mongodb from "mongodb";
+import SimpleSchema from "simpl-schema";
 import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
 import Logger from "@reactioncommerce/logger";
-import appEvents from "./util/appEvents";
-import getAbsoluteUrl from "./util/getAbsoluteUrl";
-import createApolloServer from "./createApolloServer";
-import initReplicaSet from "./util/initReplicaSet";
+import appEvents from "./util/appEvents.js";
+import getAbsoluteUrl from "./util/getAbsoluteUrl.js";
+import initReplicaSet from "./util/initReplicaSet.js";
 import config from "./config.js";
+import createApolloServer from "./createApolloServer.js";
+import coreResolvers from "./graphql/resolvers/index.js";
 
-const { ROOT_URL } = config;
+const require = createRequire(import.meta.url); // eslint-disable-line
+const { PubSub } = require("apollo-server");
+const coreGraphQLSchema = require("./graphql/schema.graphql");
 
-export default class ReactionNodeApp {
+const {
+  REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED,
+  MONGO_URL,
+  PORT,
+  REACTION_LOG_LEVEL,
+  REACTION_SHOULD_INIT_REPLICA_SET,
+  ROOT_URL
+} = config;
+
+const debugLevels = ["DEBUG", "TRACE"];
+
+const { MongoClient } = mongodb;
+
+const optionsSchema = new SimpleSchema({
+  "httpServer": {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  "mongodb": {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  "serveStaticPaths": {
+    type: Array,
+    optional: true
+  },
+  "serveStaticPaths.$": String,
+  "version": {
+    type: String,
+    optional: true
+  }
+});
+
+const connectOptionsSchema = new SimpleSchema({
+  mongoUrl: {
+    type: String,
+    optional: true
+  }
+});
+
+const startServerOptionsSchema = new SimpleSchema({
+  port: {
+    type: SimpleSchema.Integer,
+    optional: true
+  }
+});
+
+const startOptionsSchema = new SimpleSchema({
+  mongoUrl: {
+    type: String,
+    optional: true
+  },
+  port: {
+    type: SimpleSchema.Integer,
+    optional: true
+  },
+  shouldInitReplicaSet: {
+    type: Boolean,
+    optional: true
+  }
+});
+
+const listenForDeath = _.once(diehard.listen.bind(diehard));
+
+export default class ReactionAPI {
   constructor(options = {}) {
+    optionsSchema.validate(options);
+
     this.options = { ...options };
-    this.collections = {
-      ...(options.additionalCollections || {})
-    };
+
+    this.collections = {};
 
     this.version = options.version || null;
 
     this.context = {
-      ...(options.context || {}),
       app: this,
       appEvents,
       appVersion: this.version,
@@ -40,19 +112,10 @@ export default class ReactionNodeApp {
     this.functionsByType = {};
     this.graphQL = {
       resolvers: {},
-      schemas: []
+      schemas: [coreGraphQLSchema]
     };
 
-    this._registerFunctionsByType(options.functionsByType, "__APP__");
-
-    if (options.graphQL) {
-      if (options.graphQL.resolvers) {
-        merge(this.graphQL.resolvers, options.graphQL.resolvers);
-      }
-      if (options.graphQL.schemas) {
-        this.graphQL.schemas.push(...options.graphQL.schemas);
-      }
-    }
+    _.merge(this.graphQL.resolvers, coreResolvers);
 
     // Passing in `rootUrl` option is mostly for tests. Recommend using ROOT_URL env variable.
     const resolvedRootUrl = options.rootUrl || ROOT_URL;
@@ -134,16 +197,22 @@ export default class ReactionNodeApp {
    *   calls `this.setMongoDatabase` with the database instance, and then
    *   resolves the Promise.
    * @param {Object} options Options object
-   * @param {String} options.mongoUrl MongoDB connection URL
+   * @param {String} [options.mongoUrl] MongoDB connection URL. Default is MONGO_URL env.
    * @returns {Promise<undefined>} Nothing
    */
-  async connectToMongo({ mongoUrl } = {}) {
+  async connectToMongo(options = {}) {
+    connectOptionsSchema.validate(options);
+
+    const { mongoUrl = MONGO_URL } = options;
     const lastSlash = mongoUrl.lastIndexOf("/");
     const dbUrl = mongoUrl.slice(0, lastSlash);
     const dbName = mongoUrl.slice(lastSlash + 1);
 
     return new Promise((resolve, reject) => {
-      MongoClient.connect(dbUrl, { useNewUrlParser: true }, (error, client) => {
+      MongoClient.connect(dbUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      }, (error, client) => {
         if (error) {
           reject(error);
           return;
@@ -215,7 +284,7 @@ export default class ReactionNodeApp {
    * @returns {undefined}
    */
   initServer() {
-    const { debug, httpServer } = this.options;
+    const { httpServer, serveStaticPaths } = this.options;
     const { resolvers, schemas } = this.graphQL;
 
     const {
@@ -224,7 +293,7 @@ export default class ReactionNodeApp {
       path
     } = createApolloServer({
       context: this.context,
-      debug: debug || false,
+      debug: debugLevels.includes(REACTION_LOG_LEVEL),
       expressMiddleware: this.expressMiddleware,
       resolvers,
       schemas
@@ -234,8 +303,21 @@ export default class ReactionNodeApp {
     this.expressApp = expressApp;
     this.graphQLPath = path;
 
+    this.graphQLServerUrl = getAbsoluteUrl(this.rootUrl, path);
+
     // HTTP server for GraphQL subscription websocket handlers
     this.httpServer = httpServer || createServer(this.expressApp);
+
+    if (REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
+      apolloServer.installSubscriptionHandlers(this.httpServer);
+    }
+
+    this.graphQLServerSubscriptionUrl = getAbsoluteUrl(this.rootUrl.replace("http", "ws"), apolloServer.subscriptionsPath);
+
+    // Serve files in the /public folder statically
+    for (const staticPath of serveStaticPaths) {
+      this.expressApp.use(express.static(staticPath));
+    }
   }
 
   /**
@@ -246,7 +328,11 @@ export default class ReactionNodeApp {
    *   the server will be created but will not listen.
    * @returns {Promise<undefined>} Nothing
    */
-  async startServer({ port } = {}) {
+  async startServer(options = {}) {
+    startServerOptionsSchema.validate(options);
+
+    const { port } = options;
+
     if (!this.httpServer) this.initServer();
 
     return new Promise((resolve, reject) => {
@@ -287,13 +373,38 @@ export default class ReactionNodeApp {
    *   Apollo server and the Express app as necessary, and then starts
    *   the server listening on `port` if `port` is provided.
    * @param {Object} options Options object
-   * @param {String} options.mongoUrl MongoDB connection URL
+   * @param {String} [options.mongoUrl] MongoDB connection URL. If not provided,
+   *   the MONGO_URL environment variable is used.
    * @param {Number} [options.port] Port to listen on. If not provided,
-   *   the server will be created but will not listen.
+   *   the PORT environment variable is used, which defaults to 3000.
+   *   If set to `null`, the server will be created but will not listen.
+   * @param {Number} [options.shouldInitReplicaSet] Automatically initialize a
+   *   replica set for the MongoDB instance. Set this to `true` when running
+   *   the app for development or tests.
    * @returns {Promise<undefined>} Nothing
    */
-  async start({ mongoUrl, port } = {}) {
-    if (this.options.shouldInitReplicaSet) {
+  async start(options = {}) {
+    startOptionsSchema.validate(options);
+
+    const {
+      mongoUrl = MONGO_URL,
+      port = PORT,
+      shouldInitReplicaSet = REACTION_SHOULD_INIT_REPLICA_SET
+    } = options;
+
+    diehard.register((done) => {
+      Logger.info("Stopping Reaction API...");
+
+      /* eslint-disable promise/no-callback-in-promise */
+      this.stop().then(done).catch((error) => {
+        Logger.error(error);
+        done();
+      });
+    });
+
+    listenForDeath();
+
+    if (shouldInitReplicaSet) {
       try {
         await initReplicaSet(mongoUrl);
       } catch (error) {
@@ -362,7 +473,7 @@ export default class ReactionNodeApp {
 
     if (plugin.graphQL) {
       if (plugin.graphQL.resolvers) {
-        merge(this.graphQL.resolvers, plugin.graphQL.resolvers);
+        _.merge(this.graphQL.resolvers, plugin.graphQL.resolvers);
       }
       if (plugin.graphQL.schemas) {
         this.graphQL.schemas.push(...plugin.graphQL.schemas);
@@ -370,11 +481,11 @@ export default class ReactionNodeApp {
     }
 
     if (plugin.mutations) {
-      merge(this.context.mutations, plugin.mutations);
+      _.merge(this.context.mutations, plugin.mutations);
     }
 
     if (plugin.queries) {
-      merge(this.context.queries, plugin.queries);
+      _.merge(this.context.queries, plugin.queries);
     }
 
     if (plugin.auth) {

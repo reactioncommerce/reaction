@@ -1,6 +1,8 @@
 import { URL } from "url";
-import { MongoClient } from "mongodb";
+import mongodb from "mongodb";
 import Logger from "@reactioncommerce/logger";
+
+const { MongoClient } = mongodb;
 
 /**
  * @summary Sleep for some milliseconds
@@ -28,7 +30,10 @@ async function connect(parsedUrl) {
   dbParsedUrl.pathname = "";
   const dbUrl = dbParsedUrl.toString();
 
-  const client = await MongoClient.connect(dbUrl, { useNewUrlParser: true });
+  const client = await MongoClient.connect(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
   return {
     client,
@@ -100,7 +105,7 @@ export default async function initReplicaSet(mongoUrl) {
     if (error.codeName === "AlreadyInitialized") {
       await db.admin().command({ replSetReconfig: replSetConfiguration, force: true });
     } else {
-      throw new Error(`Error initializing replica set: ${error.message}${error.codeName ? ` (${error.codeName})` : ""}`);
+      throw new Error(`Error initializing replica set: ${error.message} (${error.codeName})`);
     }
   }
 

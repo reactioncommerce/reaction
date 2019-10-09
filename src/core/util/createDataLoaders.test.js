@@ -1,5 +1,5 @@
 import DataLoader from "dataloader";
-import createDataLoaders, { } from "./createDataLoaders";
+import createDataLoaders, { } from "./createDataLoaders.js";
 
 const usersDataLoaderFactory = (context, createDataloader) => ({
   Users: createDataloader(() => { /* dataloader implementation here */ })

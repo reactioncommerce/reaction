@@ -1,36 +1,24 @@
-import express from "express";
 import Logger from "@reactioncommerce/logger";
-import packageJson from "/package.json";
-import ReactionNodeApp from "./core/ReactionNodeApp";
-import registerPlugins from "./registerPlugins";
+import packageJson from "../package.json";
+import ReactionAPI from "./core/ReactionAPI.js";
+import registerPlugins from "./registerPlugins.js";
 
-const { MONGO_URL, NODE_ENV, PORT = 3030, ROOT_URL } = process.env;
-if (!MONGO_URL) throw new Error("You must set MONGO_URL");
-if (!ROOT_URL) throw new Error("You must set ROOT_URL");
-
-const app = new ReactionNodeApp({
-  debug: NODE_ENV !== "production",
+const app = new ReactionAPI({
+  serveStaticPaths: ["public"],
   version: packageJson.version
 });
 
-registerPlugins(app)
-  .then(() => app.start({ mongoUrl: MONGO_URL, port: PORT }))
-  .then(() => {
-    Logger.info(`GraphQL listening at ${ROOT_URL}${app.apolloServer.graphqlPath}`);
+/**
+ * @summary Registers Reaction API plugins and then starts the app
+ * @return {Promise<undefined>} undefined
+ */
+async function runApp() {
+  await registerPlugins(app);
 
-    // Serve files in the /public folder statically
-    app.expressApp.use(express.static("public"));
+  await app.start();
 
-    app.apolloServer.installSubscriptionHandlers(app.httpServer);
+  Logger.info(`GraphQL listening at ${app.graphQLServerUrl}`);
+  Logger.info(`GraphQL subscriptions ready at ${app.graphQLServerSubscriptionUrl}`);
+}
 
-    Logger.info(`GraphQL subscriptions ready at ${ROOT_URL.replace("http", "ws")}${app.apolloServer.subscriptionsPath}`);
-    return null;
-  })
-  .catch((error) => {
-    Logger.error(error);
-  });
-
-// Shut down gracefully
-process.on("SIGINT", async () => {
-  await app.stop();
-});
+runApp().catch(Logger.error.bind(Logger));

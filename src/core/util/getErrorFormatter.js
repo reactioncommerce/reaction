@@ -1,5 +1,5 @@
 import cuid from "cuid";
-import { Logger } from "./logger";
+import { Logger } from "./logger.js"; // using Logger indirectly so that the unit tests can mock it
 
 /**
  * @name getErrorFormatter

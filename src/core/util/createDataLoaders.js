@@ -1,5 +1,6 @@
+
 import DataLoader from "dataloader";
-import convertToDataloaderResult from "./convertToDataloaderResult";
+import convertToDataloaderResult from "./convertToDataloaderResult.js";
 
 export const dataLoaderFactory = (dlFunc) => new DataLoader(dlFunc, { cache: false });
 

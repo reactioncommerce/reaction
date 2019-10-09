@@ -1,4 +1,4 @@
-import getAbsoluteUrl from "./getAbsoluteUrl";
+import getAbsoluteUrl from "./getAbsoluteUrl.js";
 
 test("returns the correct URL when given an empty path", () => {
   const rootUrl = "http://localhost:3000/";

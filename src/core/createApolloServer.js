@@ -1,12 +1,15 @@
+import { createRequire } from "module";
 import cors from "cors";
 import express from "express";
 import bodyParser from "body-parser";
-import { makeExecutableSchema, mergeSchemas } from "apollo-server";
-import { ApolloServer } from "apollo-server-express";
-import config from "./config";
-import buildContext from "./util/buildContext";
-import getErrorFormatter from "./util/getErrorFormatter";
-import createDataLoaders from "./util/createDataLoaders";
+import config from "./config.js";
+import buildContext from "./util/buildContext.js";
+import getErrorFormatter from "./util/getErrorFormatter.js";
+import createDataLoaders from "./util/createDataLoaders.js";
+
+const require = createRequire(import.meta.url);
+const { makeExecutableSchema, mergeSchemas } = require("apollo-server");
+const { ApolloServer } = require("apollo-server-express");
 
 const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
 
@@ -33,6 +36,10 @@ export default function createApolloServer(options = {}) {
   const schemas = options.schemas || [];
   const schemasToMerge = schemas.filter((td) => typeof td !== "string");
   const typeDefs = schemas.filter((td) => typeof td === "string");
+
+  if (typeDefs.length === 0 && schemasToMerge.length === 0) {
+    throw new Error("No type definitions (schemas) provided for GraphQL");
+  }
 
   // Create a custom Express server so that we can add our own middleware and HTTP routes
   const app = express();

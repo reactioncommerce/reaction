@@ -1,5 +1,5 @@
-import { restore, rewire$Logger } from "./logger";
-import getErrorFormatter from "./getErrorFormatter";
+import { restore, rewire$Logger } from "./logger.js";
+import getErrorFormatter from "./getErrorFormatter.js";
 
 const LoggerMock = {
   error: jest.fn().mockName("Logger.error")
