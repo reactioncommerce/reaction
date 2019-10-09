@@ -67,7 +67,7 @@ beforeEach(async () => {
 afterAll(async () => {
   await testApp.collections.Orders.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Users.deleteMany({});
+  await testApp.collections.users.deleteMany({});
   await testApp.collections.Accounts.deleteMany({});
   await testApp.stop();
 });
