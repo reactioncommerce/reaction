@@ -36,6 +36,7 @@
   "devDependencies": {
     "@reactioncommerce/eslint-config": "^2.1.0",
     "babel-eslint": "^10.0.3",
+    "babel-plugin-rewire-exports": "^2.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "eslint": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
@@ -49,7 +50,6 @@
     "semantic-release": "^15.13.24"
   },
   "scripts": {
-    "build": "echo 'No build step necessary'",
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint .",
     "test": "jest",
@@ -58,6 +58,7 @@
   },
   "babel": {
     "plugins": [
+      "rewire-exports",
       "transform-es2015-modules-commonjs"
     ]
   },
@@ -77,5 +78,11 @@
   },
   "prettier": {
     "arrowParens": "always"
+  },
+  "release": {
+    "branch": "trunk"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
