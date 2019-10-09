@@ -28,9 +28,12 @@
   "sideEffects": false,
   "dependencies": {
     "@reactioncommerce/logger": "^1.1.2",
+    "@reactioncommerce/reaction-error": "^1.0.1",
     "accounting-js": "^1.1.1",
     "graphql-fields": "^2.0.3",
+    "graphql-relay": "^0.6.0",
     "lodash": "^4.17.15",
+    "ramda": "^0.26.1",
     "transliteration": "^2.1.7"
   },
   "devDependencies": {
