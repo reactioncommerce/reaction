@@ -51,7 +51,7 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
 
   const tokenObj = generateVerificationTokenObject({ address });
 
-  await users.update({ _id: userId }, {
+  await users.updateOne({ _id: userId }, {
     $push: {
       "services.email.verificationTokens": tokenObj
     }

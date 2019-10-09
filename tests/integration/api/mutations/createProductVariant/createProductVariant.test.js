@@ -38,7 +38,7 @@ beforeAll(async () => {
   await testApp.start();
   mutate = testApp.mutate(CreateProductVariantMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await testApp.collections.Products.insert(mockProduct);
+  await testApp.collections.Products.insertOne(mockProduct);
 
   await testApp.setLoggedInUser({
     _id: "123",
