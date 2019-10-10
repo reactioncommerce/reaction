@@ -1,6 +1,4 @@
-import { decodeOrderOpaqueId } from "../../../../xforms/order.js";
-import { decodePaymentOpaqueId } from "../../../../xforms/payment.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeOrderOpaqueId, decodePaymentOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/captureOrderPayments

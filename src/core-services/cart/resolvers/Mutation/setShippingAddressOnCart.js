@@ -1,5 +1,4 @@
-import { decodeAddressOpaqueId } from "../../../../xforms/address.js";
-import { decodeCartOpaqueId } from "../../../../xforms/cart.js";
+import { decodeAddressOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/setShippingAddressOnCart

@@ -1,5 +1,4 @@
-import { encodeAccountOpaqueId } from "../../../xforms/account.js";
-import { encodeGroupOpaqueId } from "../../../xforms/group.js";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
@@ -14,10 +13,10 @@ jest.setTimeout(300000);
 function groupMongoSchemaToGraphQL(mongoGroup) {
   const doc = {
     ...mongoGroup,
-    _id: encodeGroupOpaqueId(mongoGroup._id),
+    _id: encodeOpaqueId("reaction/group", mongoGroup._id),
     createdAt: mongoGroup.createdAt.toISOString(),
     createdBy: {
-      _id: encodeAccountOpaqueId(mongoGroup.createdBy)
+      _id: encodeOpaqueId("reaction/account", mongoGroup.createdBy)
     },
     updatedAt: mongoGroup.updatedAt.toISOString()
   };

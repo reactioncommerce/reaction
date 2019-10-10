@@ -1,4 +1,4 @@
-import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "../../../../xforms/cart.js";
+import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/updateCartItemsQuantity

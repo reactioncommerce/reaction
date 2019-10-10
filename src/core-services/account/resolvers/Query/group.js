@@ -1,4 +1,4 @@
-import { decodeGroupOpaqueId } from "../../../../xforms/group.js";
+import { decodeGroupOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query/group

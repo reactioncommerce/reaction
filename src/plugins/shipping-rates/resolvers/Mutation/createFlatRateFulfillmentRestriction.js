@@ -1,5 +1,4 @@
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
-import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
+import { decodeFulfillmentMethodOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 import createFlatRateFulfillmentRestrictionMutation from "../../mutations/createFlatRateFulfillmentRestriction.js";
 
 /**

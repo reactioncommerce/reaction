@@ -1,7 +1,10 @@
-import { decodeCartItemsOpaqueIds } from "../../../../xforms/cart.js";
-import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
-import { decodeOrderOpaqueId, decodeOrderItemOpaqueId } from "../../../../xforms/order.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import {
+  decodeFulfillmentMethodOpaqueId,
+  decodeOrderItemOpaqueId,
+  decodeOrderItemsOpaqueIds,
+  decodeOrderOpaqueId,
+  decodeShopOpaqueId
+} from "../../xforms/id.js";
 
 /**
  * @name Mutation/addOrderFulfillmentGroup
@@ -29,7 +32,7 @@ export default async function addOrderFulfillmentGroup(parentResult, { input }, 
   const { newFulfillmentGroupId, order } = await context.mutations.addOrderFulfillmentGroup(context, {
     fulfillmentGroup: {
       ...fulfillmentGroup,
-      items: fulfillmentGroup.items ? decodeCartItemsOpaqueIds(fulfillmentGroup.items) : null,
+      items: fulfillmentGroup.items ? decodeOrderItemsOpaqueIds(fulfillmentGroup.items) : null,
       selectedFulfillmentMethodId: decodeFulfillmentMethodOpaqueId(fulfillmentGroup.selectedFulfillmentMethodId),
       shopId: decodeShopOpaqueId(fulfillmentGroup.shopId)
     },

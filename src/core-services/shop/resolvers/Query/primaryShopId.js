@@ -1,4 +1,4 @@
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { encodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query/primaryShopId

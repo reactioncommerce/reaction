@@ -1,9 +1,8 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import Random from "@reactioncommerce/random";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import Random from "@reactioncommerce/random";
-import { encodeFulfillmentMethodOpaqueId } from "../../../xforms/fulfillment.js";
 import { encodeOrderItemOpaqueId, encodeOrderOpaqueId } from "../../../xforms/order.js";
-import { encodeProductOpaqueId } from "../../../xforms/product.js";
 import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import AddOrderFulfillmentGroupMutation from "./AddOrderFulfillmentGroupMutation.graphql";
 
@@ -166,12 +165,12 @@ test("user with orders role can add an order fulfillment group with new items", 
         items: [{
           price: variant2Price,
           productConfiguration: {
-            productId: encodeProductOpaqueId(catalogItem2.product.productId),
-            productVariantId: encodeProductOpaqueId(catalogItem2.product.variants[0].variantId)
+            productId: encodeOpaqueId("reaction/product", catalogItem2.product.productId),
+            productVariantId: encodeOpaqueId("reaction/product", catalogItem2.product.variants[0].variantId)
           },
           quantity: 5
         }],
-        selectedFulfillmentMethodId: encodeFulfillmentMethodOpaqueId(fulfillmentMethodId),
+        selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
         shopId: encodeShopOpaqueId(shopId),
         type: "shipping"
       },
@@ -194,8 +193,8 @@ test("user with orders role can add an order fulfillment group with new items", 
                 amount: orderItem.price.amount
               },
               productConfiguration: {
-                productId: encodeProductOpaqueId(catalogItem.product.productId),
-                productVariantId: encodeProductOpaqueId(catalogItem.product.variants[0].variantId)
+                productId: encodeOpaqueId("reaction/product", catalogItem.product.productId),
+                productVariantId: encodeOpaqueId("reaction/product", catalogItem.product.variants[0].variantId)
               },
               quantity: 2,
               status: "STATUS"
@@ -215,8 +214,8 @@ test("user with orders role can add an order fulfillment group with new items", 
                 amount: variant2Price
               },
               productConfiguration: {
-                productId: encodeProductOpaqueId(catalogItem2.product.productId),
-                productVariantId: encodeProductOpaqueId(catalogItem2.product.variants[0].variantId)
+                productId: encodeOpaqueId("reaction/product", catalogItem2.product.productId),
+                productVariantId: encodeOpaqueId("reaction/product", catalogItem2.product.variants[0].variantId)
               },
               quantity: 5,
               status: "new"
@@ -301,7 +300,7 @@ test("user with orders role can add an order fulfillment group with moved items"
         data: {
           shippingAddress
         },
-        selectedFulfillmentMethodId: encodeFulfillmentMethodOpaqueId(fulfillmentMethodId),
+        selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
         shopId: encodeShopOpaqueId(shopId),
         type: "shipping"
       },
@@ -325,8 +324,8 @@ test("user with orders role can add an order fulfillment group with moved items"
                 amount: orderItemToStay.price.amount
               },
               productConfiguration: {
-                productId: encodeProductOpaqueId(catalogItem.product.productId),
-                productVariantId: encodeProductOpaqueId(catalogItem.product.variants[0].variantId)
+                productId: encodeOpaqueId("reaction/product", catalogItem.product.productId),
+                productVariantId: encodeOpaqueId("reaction/product", catalogItem.product.variants[0].variantId)
               },
               quantity: 2,
               status: "STATUS"
@@ -346,8 +345,8 @@ test("user with orders role can add an order fulfillment group with moved items"
                 amount: variant2Price
               },
               productConfiguration: {
-                productId: encodeProductOpaqueId(catalogItem2.product.productId),
-                productVariantId: encodeProductOpaqueId(catalogItem2.product.variants[0].variantId)
+                productId: encodeOpaqueId("reaction/product", catalogItem2.product.productId),
+                productVariantId: encodeOpaqueId("reaction/product", catalogItem2.product.variants[0].variantId)
               },
               quantity: 10,
               status: "STATUS"

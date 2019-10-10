@@ -1,6 +1,9 @@
-import { decodeCartOpaqueId, decodeCartItemsOpaqueIds } from "../../../../xforms/cart.js";
-import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import {
+  decodeCartOpaqueId,
+  decodeFulfillmentMethodOpaqueId,
+  decodeOrderItemsOpaqueIds,
+  decodeShopOpaqueId
+} from "../../xforms/id.js";
 
 /**
  * @name Mutation/placeOrder
@@ -24,7 +27,7 @@ export default async function placeOrder(parentResult, { input }, context) {
 
   const transformedFulfillmentGroups = fulfillmentGroups.map((group) => ({
     ...group,
-    items: decodeCartItemsOpaqueIds(group.items),
+    items: decodeOrderItemsOpaqueIds(group.items),
     selectedFulfillmentMethodId: decodeFulfillmentMethodOpaqueId(group.selectedFulfillmentMethodId),
     shopId: decodeShopOpaqueId(group.shopId)
   }));

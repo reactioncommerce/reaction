@@ -1,5 +1,4 @@
-import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
-import { xformAddressInput } from "../../../../xforms/address.js";
+import { assocAddressInternalId, decodeAccountOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/updateAccountAddressBookEntry
@@ -19,7 +18,7 @@ import { xformAddressInput } from "../../../../xforms/address.js";
 export default async function updateAccountAddressBookEntry(_, { input }, context) {
   const { accountId, addressId, clientMutationId, type, updates } = input;
   const decodedAccountId = decodeAccountOpaqueId(accountId);
-  const address = xformAddressInput({ ...updates, _id: addressId });
+  const address = assocAddressInternalId({ ...updates, _id: addressId });
 
   const updatedAddress = await context.mutations.updateAccountAddressBookEntry(context, {
     address,

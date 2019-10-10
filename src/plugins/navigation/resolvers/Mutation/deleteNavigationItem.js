@@ -1,4 +1,4 @@
-import { decodeNavigationItemOpaqueId } from "../../../../xforms/navigationItem.js";
+import { decodeNavigationItemOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation.deleteNavigationItem

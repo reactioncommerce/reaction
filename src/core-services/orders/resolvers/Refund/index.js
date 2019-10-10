@@ -1,5 +1,4 @@
-import { encodePaymentOpaqueId } from "../../../../xforms/payment.js";
-import { encodeRefundOpaqueId } from "../../../../xforms/refund.js";
+import { encodePaymentOpaqueId, encodeRefundOpaqueId } from "../../xforms/id.js";
 import amount from "./amount.js";
 import createdAt from "./createdAt.js";
 

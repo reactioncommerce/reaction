@@ -1,4 +1,4 @@
-import { decodeOrderOpaqueId, decodeOrderItemOpaqueId } from "../../../../xforms/order.js";
+import { decodeOrderItemOpaqueId, decodeOrderOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/cancelOrderItem

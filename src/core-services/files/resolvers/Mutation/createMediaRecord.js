@@ -1,5 +1,4 @@
-import { decodeProductOpaqueId } from "../../../../xforms/product.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/createMediaRecord

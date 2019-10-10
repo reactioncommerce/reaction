@@ -1,4 +1,4 @@
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query.systemInformation

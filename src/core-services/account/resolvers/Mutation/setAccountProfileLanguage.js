@@ -1,4 +1,4 @@
-import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
+import { decodeAccountOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation.setAccountProfileLanguage

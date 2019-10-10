@@ -1,5 +1,4 @@
-import { encodeAccountOpaqueId } from "../../../xforms/account.js";
-import { encodeGroupOpaqueId } from "../../../xforms/group.js";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
@@ -69,10 +68,10 @@ beforeAll(async () => {
   });
   await testApp.collections.Groups.insertOne(customerGroup);
 
-  accountOpaqueId = encodeAccountOpaqueId(mockOtherAccount._id);
-  customerGroupOpaqueId = encodeGroupOpaqueId(customerGroup._id);
+  accountOpaqueId = encodeOpaqueId("reaction/account", mockOtherAccount._id);
+  customerGroupOpaqueId = encodeOpaqueId("reaction/group", customerGroup._id);
   shopOpaqueId = encodeShopOpaqueId(shopId);
-  shopManagerGroupOpaqueId = encodeGroupOpaqueId(shopManagerGroup._id);
+  shopManagerGroupOpaqueId = encodeOpaqueId("reaction/group", shopManagerGroup._id);
 
   addAccountToGroup = testApp.mutate(AddAccountToGroupMutation);
 });

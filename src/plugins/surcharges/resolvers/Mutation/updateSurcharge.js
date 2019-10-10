@@ -1,6 +1,4 @@
-import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
-import { decodeSurchargeOpaqueId } from "../../xforms/surcharge.js";
+import { decodeFulfillmentMethodOpaqueId, decodeShopOpaqueId, decodeSurchargeOpaqueId } from "../../xforms/id.js";
 import updateSurchargeMutation from "../../mutations/updateSurcharge.js";
 
 /**

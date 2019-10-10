@@ -1,5 +1,4 @@
-import { decodeCartOpaqueId, decodeFulfillmentGroupOpaqueId } from "../../../../xforms/cart.js";
-import { decodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
+import { decodeCartOpaqueId, decodeFulfillmentGroupOpaqueId, decodeFulfillmentMethodOpaqueId } from "../../xforms/id.js";
 import selectFulfillmentOptionForGroupMutation from "../../mutations/selectFulfillmentOptionForGroup.js";
 
 /**

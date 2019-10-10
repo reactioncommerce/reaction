@@ -1,5 +1,4 @@
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
-import { decodeTagOpaqueId } from "../../../../xforms/tag.js";
+import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation.setTagHeroMedia

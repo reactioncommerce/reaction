@@ -1,6 +1,8 @@
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
-import { encodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
-import { encodeFulfillmentRestrictionOpaqueId } from "../../xforms/flatRateFulfillmentRestriction.js";
+import {
+  encodeFulfillmentMethodOpaqueId,
+  encodeFulfillmentRestrictionOpaqueId,
+  encodeShopOpaqueId
+} from "../../xforms/id.js";
 
 export default {
   _id: (node) => encodeFulfillmentRestrictionOpaqueId(node._id),

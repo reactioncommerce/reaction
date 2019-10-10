@@ -2,7 +2,7 @@ import {
   decodeOrderFulfillmentGroupOpaqueId,
   decodeOrderItemOpaqueId,
   decodeOrderOpaqueId
-} from "../../../../xforms/order.js";
+} from "../../xforms/id.js";
 
 /**
  * @name Mutation/moveOrderItems

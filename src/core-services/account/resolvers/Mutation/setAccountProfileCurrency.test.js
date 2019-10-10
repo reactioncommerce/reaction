@@ -1,5 +1,5 @@
-import { encodeAccountOpaqueId } from "../../../xforms/account.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import { encodeAccountOpaqueId } from "../../xforms/id.js";
 import setAccountProfileCurrency from "./setAccountProfileCurrency.js";
 
 mockContext.mutations.setAccountProfileCurrency = jest.fn().mockName("mutations.setAccountProfileCurrency");

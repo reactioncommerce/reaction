@@ -1,4 +1,4 @@
-import { encodeAccountOpaqueId } from "../../../xforms/account.js";
+import { encodeAccountOpaqueId } from "../../xforms/id.js";
 import { encodeAddressOpaqueId } from "../../../../xforms/address.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry.js";

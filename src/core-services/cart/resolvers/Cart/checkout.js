@@ -1,4 +1,4 @@
-import { xformCartCheckout } from "../../../../xforms/cart.js";
+import xformCartCheckout from "../../xforms/xformCartCheckout.js";
 
 /**
  * @name Cart/checkout

@@ -1,7 +1,7 @@
 import _ from "lodash";
 import getCurrencyDefinitionByCode from "@reactioncommerce/api-utils/getCurrencyDefinitionByCode.js";
 import resolveShopFromShopId from "@reactioncommerce/api-utils/graphql/resolveShopFromShopId.js";
-import { encodeAccountOpaqueId } from "../../../../xforms/account.js";
+import { encodeAccountOpaqueId } from "../../xforms/id.js";
 import addressBook from "./addressBook.js";
 
 export default {

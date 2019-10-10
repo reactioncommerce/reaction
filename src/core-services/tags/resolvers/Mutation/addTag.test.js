@@ -1,5 +1,4 @@
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
-import { encodeTagOpaqueId } from "../../../xforms/tag.js";
+import { encodeShopOpaqueId, encodeTagOpaqueId } from "../../xforms/id.js";
 import addTag from "./addTag.js";
 
 beforeEach(() => {
