@@ -30,8 +30,6 @@ export default async function createNavigationItem(context, navigationItem) {
     }
   }
 
-  const shopId = await context.queries.primaryShopId(collections);
-
   const newNavigationItem = {
     ...navigationItem,
     _id: Random.id(),
