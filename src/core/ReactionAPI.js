@@ -361,7 +361,10 @@ export default class ReactionAPI {
         // To also listen for WebSocket connections for GraphQL
         // subs, this needs to be `this.httpServer.listen`
         // rather than `this.expressApp.listen`.
-        this.httpServer.listen({ port }, resolve);
+        this.httpServer.listen({ port }, () => {
+          this.serverPort = port;
+          resolve();
+        });
       } catch (error) {
         if (error.code === "EADDRINUSE") {
           this.retryStartServer(port);

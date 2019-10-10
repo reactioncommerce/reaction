@@ -17,8 +17,8 @@ async function runApp() {
 
   await app.start();
 
-  Logger.info(`GraphQL listening at ${app.graphQLServerUrl}`);
-  Logger.info(`GraphQL subscriptions ready at ${app.graphQLServerSubscriptionUrl}`);
+  Logger.info(`GraphQL listening at ${app.graphQLServerUrl} (port ${app.serverPort || "unknown"})`);
+  Logger.info(`GraphQL subscriptions ready at ${app.graphQLServerSubscriptionUrl} (port ${app.serverPort || "unknown"})`);
 }
 
 runApp().catch(Logger.error.bind(Logger));
