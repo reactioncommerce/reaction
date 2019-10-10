@@ -10,6 +10,10 @@ This release is being coordinated with [Reaction Platform](https://github.com/re
 
 As part of de-meteorization of the Reaction API, We have continued the migration of moving all server side code in `no-meteor` folders to their respective `node-app` folders.
 
+### Potential Breaking Changes for Custom Plugins
+
+There might be breaking changes in custom plugins due to the movement of core packages to the `node-app` folders. Custom plugins will need to update their imports paths to reflect the new location of packages.
+
 ## Fixes
 
 - fix: pass correct userId when creating a shop ([#5694](https://github.com/reactioncommerce/reaction/pull/5694))
