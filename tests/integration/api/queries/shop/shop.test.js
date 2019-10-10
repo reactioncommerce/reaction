@@ -1,4 +1,4 @@
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import TestApp from "/tests/util/TestApp.js";
 
 jest.setTimeout(300000);
@@ -30,7 +30,7 @@ beforeAll(async () => {
 afterAll(() => testApp.stop());
 
 test("get shop, no auth necessary", async () => {
-  const opaqueShopId = encodeShopOpaqueId(shopId);
+  const opaqueShopId = encodeOpaqueId("reaction/shop", shopId);
   const result = await shopQuery({ id: opaqueShopId });
   expect(result).toEqual({
     shop: {

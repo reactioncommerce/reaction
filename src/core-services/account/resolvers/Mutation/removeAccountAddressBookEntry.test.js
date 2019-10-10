@@ -1,6 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import { encodeAccountOpaqueId } from "../../xforms/id.js";
-import { encodeAddressOpaqueId } from "../../../../xforms/address.js";
+import { encodeAccountOpaqueId, encodeAddressOpaqueId } from "../../xforms/id.js";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry.js";
 
 mockContext.mutations.removeAccountAddressBookEntry = jest.fn().mockName("mutations.removeAccountAddressBookEntry");

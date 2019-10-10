@@ -1,14 +1,10 @@
 import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
 import Address from "./Address.js";
-import Currency from "./Currency.js";
-import Money from "./Money.js";
 import Query from "./Query/index.js";
 import Tag from "./Tag/index.js";
 
 export default {
   Address,
-  Currency,
-  Money,
   Query,
   Tag,
   ...getConnectionTypeResolvers("Address"),

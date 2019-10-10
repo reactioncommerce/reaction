@@ -1,6 +1,6 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeOrderOpaqueId, encodeOrderItemOpaqueId } from "../../../xforms/order.js";
 import SplitOrderItemMutation from "./SplitOrderItemMutation.graphql";
 
 jest.setTimeout(300000);
@@ -114,9 +114,9 @@ test("user with orders permission can split an order item", async () => {
   let result;
   try {
     result = await splitOrderItem({
-      itemId: encodeOrderItemOpaqueId(orderItem._id),
+      itemId: encodeOpaqueId("reaction/orderItem", orderItem._id),
       newItemQuantity: 2,
-      orderId: encodeOrderOpaqueId(order._id)
+      orderId: encodeOpaqueId("reaction/order", order._id)
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -127,8 +127,8 @@ test("user with orders permission can split an order item", async () => {
 
   const group = result.splitOrderItem.order.fulfillmentGroups[0];
   const items = group.items.nodes;
-  const existingItem = items.find((item) => item._id === encodeOrderItemOpaqueId(orderItem._id));
-  const newItem = items.find((item) => item._id !== encodeOrderItemOpaqueId(orderItem._id));
+  const existingItem = items.find((item) => item._id === encodeOpaqueId("reaction/orderItem", orderItem._id));
+  const newItem = items.find((item) => item._id !== encodeOpaqueId("reaction/orderItem", orderItem._id));
 
   expect(existingItem.quantity).toBe(1);
   expect(newItem.quantity).toBe(2);

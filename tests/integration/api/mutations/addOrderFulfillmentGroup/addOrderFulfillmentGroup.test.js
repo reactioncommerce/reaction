@@ -2,8 +2,6 @@ import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Random from "@reactioncommerce/random";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeOrderItemOpaqueId, encodeOrderOpaqueId } from "../../../xforms/order.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import AddOrderFulfillmentGroupMutation from "./AddOrderFulfillmentGroupMutation.graphql";
 
 jest.setTimeout(300000);
@@ -171,10 +169,10 @@ test("user with orders role can add an order fulfillment group with new items", 
           quantity: 5
         }],
         selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
-        shopId: encodeShopOpaqueId(shopId),
+        shopId: encodeOpaqueId("reaction/shop", shopId),
         type: "shipping"
       },
-      orderId: encodeOrderOpaqueId(order._id)
+      orderId: encodeOpaqueId("reaction/order", order._id)
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -201,7 +199,7 @@ test("user with orders role can add an order fulfillment group with new items", 
             }
           ]
         },
-        shop: { _id: encodeShopOpaqueId(shopId) },
+        shop: { _id: encodeOpaqueId("reaction/shop", shopId) },
         status: "new",
         totalItemQuantity: 1,
         type: "shipping"
@@ -222,7 +220,7 @@ test("user with orders role can add an order fulfillment group with new items", 
             }
           ]
         },
-        shop: { _id: encodeShopOpaqueId(shopId) },
+        shop: { _id: encodeOpaqueId("reaction/shop", shopId) },
         status: "new",
         totalItemQuantity: 5,
         type: "shipping"
@@ -301,11 +299,11 @@ test("user with orders role can add an order fulfillment group with moved items"
           shippingAddress
         },
         selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
-        shopId: encodeShopOpaqueId(shopId),
+        shopId: encodeOpaqueId("reaction/shop", shopId),
         type: "shipping"
       },
-      moveItemIds: [encodeOrderItemOpaqueId(orderItemToMove._id)],
-      orderId: encodeOrderOpaqueId(order._id)
+      moveItemIds: [encodeOpaqueId("reaction/orderItem", orderItemToMove._id)],
+      orderId: encodeOpaqueId("reaction/order", order._id)
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -332,7 +330,7 @@ test("user with orders role can add an order fulfillment group with moved items"
             }
           ]
         },
-        shop: { _id: encodeShopOpaqueId(shopId) },
+        shop: { _id: encodeOpaqueId("reaction/shop", shopId) },
         status: "new",
         totalItemQuantity: 2,
         type: "shipping"
@@ -353,7 +351,7 @@ test("user with orders role can add an order fulfillment group with moved items"
             }
           ]
         },
-        shop: { _id: encodeShopOpaqueId(shopId) },
+        shop: { _id: encodeOpaqueId("reaction/shop", shopId) },
         status: "new",
         totalItemQuantity: 10,
         type: "shipping"

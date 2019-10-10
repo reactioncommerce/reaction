@@ -1,6 +1,6 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeOrderOpaqueId, encodeOrderFulfillmentGroupOpaqueId } from "../../../xforms/order.js";
 import UpdateOrderFulfillmentGroupMutation from "./UpdateOrderFulfillmentGroupMutation.graphql";
 
 jest.setTimeout(300000);
@@ -72,8 +72,8 @@ test("user with orders role can update an order fulfillment group", async () => 
   let result;
   try {
     result = await updateOrderFulfillmentGroup({
-      orderFulfillmentGroupId: encodeOrderFulfillmentGroupOpaqueId(group._id),
-      orderId: encodeOrderOpaqueId(order._id),
+      orderFulfillmentGroupId: encodeOpaqueId("reaction/orderFulfillmentGroup", group._id),
+      orderId: encodeOpaqueId("reaction/order", order._id),
       status: "NEW_STATUS",
       tracking: "TRACK_REF",
       trackingUrl: "http://track.me/TRACK_REF"

@@ -1,5 +1,4 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 import AddAccountToGroupMutation from "./AddAccountToGroupMutation.graphql";
@@ -70,7 +69,7 @@ beforeAll(async () => {
 
   accountOpaqueId = encodeOpaqueId("reaction/account", mockOtherAccount._id);
   customerGroupOpaqueId = encodeOpaqueId("reaction/group", customerGroup._id);
-  shopOpaqueId = encodeShopOpaqueId(shopId);
+  shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
   shopManagerGroupOpaqueId = encodeOpaqueId("reaction/group", shopManagerGroup._id);
 
   addAccountToGroup = testApp.mutate(AddAccountToGroupMutation);

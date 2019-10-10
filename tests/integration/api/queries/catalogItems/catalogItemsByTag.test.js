@@ -1,8 +1,10 @@
+import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeTagOpaqueId } from "../../../xforms/tag.js";
-import { decodeCatalogProductOpaqueId } from "/src/xforms/catalogProduct";
 import CatalogItemQuery from "./CatalogItemQuery.graphql";
+
+const decodeCatalogProductOpaqueId = decodeOpaqueIdForNamespace("reaction/catalogProduct");
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
@@ -79,7 +81,7 @@ afterAll(async () => {
 test("get all items for on tag without sort", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)] });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)] });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -93,7 +95,7 @@ test("get all items for on tag without sort", async () => {
 test("get items for a tag sorted by featured - in order of featuredProductIds", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)], sortBy: "featured" });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)], sortBy: "featured" });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -111,7 +113,7 @@ test("get items for a tag sorted by featured - in order of featuredProductIds", 
 test("get items for a tag sorted by featured - return 20 items by default if no first or last are provided", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)], sortBy: "featured" });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)], sortBy: "featured" });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -122,7 +124,7 @@ test("get items for a tag sorted by featured - return 20 items by default if no 
 test("get items for a tag sorted by featured - return number of items specified by first", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)], sortBy: "featured", first: 12 });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)], sortBy: "featured", first: 12 });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -133,7 +135,7 @@ test("get items for a tag sorted by featured - return number of items specified 
 test("get items for a tag sorted by featured - return number of items specified by last", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)], sortBy: "featured", last: 13 });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)], sortBy: "featured", last: 13 });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -144,7 +146,7 @@ test("get items for a tag sorted by featured - return number of items specified 
 test("get items for a tag sorted by featured - with correct pagination counts", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)], sortBy: "featured" });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)], sortBy: "featured" });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -157,7 +159,7 @@ test("get items for a tag sorted by featured - with correct pagination counts", 
 test("get all items for a tag sorted by featured, even without any featuredProductIds", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithoutFeatured._id)] });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithoutFeatured._id)] });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -171,7 +173,7 @@ test("get all items for a tag sorted by featured, even without any featuredProdu
 test("get no items for a tag that does not exist", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId("12455623")] });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", "12455623")] });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -182,7 +184,7 @@ test("get no items for a tag that does not exist", async () => {
 test("get empty array of items for a tag sorted by featured, that doesn't have any products", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithNoProducts._id)] });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithNoProducts._id)] });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -196,7 +198,7 @@ test("get empty array of items for a tag sorted by featured, that doesn't have a
 test("get correct start and end cursors for a sort query", async () => {
   let result;
   try {
-    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)], sortBy: "featured" });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)], sortBy: "featured" });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
@@ -214,19 +216,19 @@ test("paginate forwards, using cursors from a previous query", async () => {
   try {
     defaultQuery = await query({
       shopId: opaqueShopId,
-      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)],
       sortBy: "featured",
       first: 30
     });
     firstQuery = await query({
       shopId: opaqueShopId,
-      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)],
       sortBy: "featured",
       first: 20
     });
     secondQuery = await query({
       shopId: opaqueShopId,
-      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)],
       sortBy: "featured",
       after: firstQuery.catalogItems.pageInfo.endCursor,
       first: 20
@@ -262,19 +264,19 @@ test("paginate forwards, by pages of 15, using cursors from a previous query", a
   try {
     defaultQuery = await query({
       shopId: opaqueShopId,
-      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)],
       sortBy: "featured",
       first: 30
     });
     firstQuery = await query({
       shopId: opaqueShopId,
-      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)],
       sortBy: "featured",
       first: 15
     });
     secondQuery = await query({
       shopId: opaqueShopId,
-      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      tagIds: [encodeOpaqueId("reaction/tag", mockTagWithFeatured._id)],
       sortBy: "featured",
       after: firstQuery.catalogItems.pageInfo.endCursor,
       first: 15

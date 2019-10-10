@@ -1,8 +1,8 @@
 import { createRequire } from "module";
 import ConnectionCursor from "./ConnectionCursor.js";
 import ConnectionLimitInt from "./ConnectionLimitInt.js";
-// import Currency from "./Currency.js";
-// import Money from "./Money.js";
+import Currency from "./Currency.js";
+import Money from "./Money.js";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
 const { GraphQLDate, GraphQLDateTime } = require("graphql-iso-date");
@@ -10,10 +10,10 @@ const { GraphQLDate, GraphQLDateTime } = require("graphql-iso-date");
 export default {
   ConnectionCursor,
   ConnectionLimitInt,
-  // Currency,
+  Currency,
   Date: GraphQLDate,
   DateTime: GraphQLDateTime,
-  // Money,
+  Money,
   Mutation: {
     echo: (_, { str }) => `${str}`
   },

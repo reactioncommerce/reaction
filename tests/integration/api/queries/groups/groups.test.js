@@ -1,5 +1,4 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 import GroupsFullQuery from "./GroupsFullQuery.graphql";
@@ -35,7 +34,7 @@ beforeAll(async () => {
   await testApp.start();
 
   const shopId = await testApp.insertPrimaryShop();
-  opaqueShopId = encodeShopOpaqueId(shopId);
+  opaqueShopId = encodeOpaqueId("reaction/shop", shopId);
 
   mockAdminAccount = Factory.Account.makeOne({
     roles: {

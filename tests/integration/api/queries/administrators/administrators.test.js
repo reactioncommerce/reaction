@@ -1,7 +1,6 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import AdministratorsFullQuery from "./AdministratorsFullQuery.graphql";
 
 jest.setTimeout(300000);
@@ -62,7 +61,7 @@ beforeAll(async () => {
   await testApp.start();
 
   const shopId = await testApp.insertPrimaryShop();
-  opaqueShopId = encodeShopOpaqueId(shopId);
+  opaqueShopId = encodeOpaqueId("reaction/shop", shopId);
 
   mockAdminOneAccount = Factory.Account.makeOne({
     roles: {

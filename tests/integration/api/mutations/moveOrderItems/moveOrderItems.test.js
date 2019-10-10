@@ -1,10 +1,6 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import {
-  encodeOrderFulfillmentGroupOpaqueId,
-  encodeOrderItemOpaqueId,
-  encodeOrderOpaqueId
-} from "../../../xforms/order.js";
 import MoveOrderItemsMutation from "./MoveOrderItemsMutation.graphql";
 
 jest.setTimeout(300000);
@@ -132,15 +128,15 @@ test("user who placed an order can move an order item", async () => {
   });
   await testApp.collections.Orders.insertOne(order);
 
-  const group1OpaqueId = encodeOrderFulfillmentGroupOpaqueId(group1._id);
-  const group2OpaqueId = encodeOrderFulfillmentGroupOpaqueId(group2._id);
+  const group1OpaqueId = encodeOpaqueId("reaction/orderFulfillmentGroup", group1._id);
+  const group2OpaqueId = encodeOpaqueId("reaction/orderFulfillmentGroup", group2._id);
 
   let result;
   try {
     result = await moveOrderItems({
       fromFulfillmentGroupId: group1OpaqueId,
-      itemIds: [encodeOrderItemOpaqueId(group1Items[0]._id), encodeOrderItemOpaqueId(group1Items[1]._id)],
-      orderId: encodeOrderOpaqueId(order._id),
+      itemIds: [encodeOpaqueId("reaction/orderItem", group1Items[0]._id), encodeOpaqueId("reaction/orderItem", group1Items[1]._id)],
+      orderId: encodeOpaqueId("reaction/order", order._id),
       toFulfillmentGroupId: group2OpaqueId
     });
   } catch (error) {

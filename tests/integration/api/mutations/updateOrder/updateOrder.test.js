@@ -1,6 +1,6 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeOrderOpaqueId } from "../../../xforms/order.js";
 import UpdateOrderMutation from "./UpdateOrderMutation.graphql";
 
 jest.setTimeout(300000);
@@ -73,7 +73,7 @@ test("user with orders role can update an order", async () => {
   try {
     result = await updateOrder({
       email: "new@email.com",
-      orderId: encodeOrderOpaqueId(order._id),
+      orderId: encodeOpaqueId("reaction/order", order._id),
       status: "NEW_STATUS"
     });
   } catch (error) {
