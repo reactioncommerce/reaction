@@ -8,74 +8,96 @@ defaults: &defaults
     - DOCKER_REPOSITORY: "reactioncommerce/reaction"
     - DOCKER_NAMESPACE: "reactioncommerce"
     - DOCKER_NAME: "reaction"
-    - GLOBAL_CACHE_VERSION: "v2"
   working_directory: ~/reaction-app
   docker:
-    - image: circleci/node:12-stretch
+    - image: circleci/node:12-alpine
 
 jobs:
-  docker-build:
+  install-dependencies:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v3-node-modules-{{ .Branch }}
+      - run:
+          name: Install NPM dependencies
+          command: npm ci
+      - save_cache:
+          key: reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - save_cache:
+          key: reaction-v3-node-modules-{{ .Branch }}
+          paths:
+            - node_modules
+
+  dockerfile-lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Lint Dockerfiles
+          command: npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 lint-dockerfiles
+
+  eslint:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v3-node-modules-{{ .Branch }}
+      - run:
+          name: Lint JavaScript
+          command: npm run lint
+
+  graphql-lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v3-node-modules-{{ .Branch }}
+      - run:
+          name: Lint GraphQL schemas
+          command: npm run lint:gql
+
+  test-unit:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v3-node-modules-{{ .Branch }}
+      - run:
+          name: Run Unit Tests
+          command: npm run test:unit
+
+  test-integration:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v3-node-modules-{{ .Branch }}
+      - run:
+          name: Run Integration Tests
+          command: npm run test:integration
+
+  docker-build-push:
     <<: *defaults
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - attach_workspace:
-          at: docker-cache
       - run:
-          name: Discover Docker Tags
-          command: |
-            mkdir -p docker-cache
-            .circleci/bin/docker-tags "$CIRCLE_SHA1" "$CIRCLE_BRANCH" | sed 's/\//-/g' \
-              > docker-cache/docker-tags.txt
-      - run:
-          name: Docker build
-          command: |
-            docker build \
-              --build-arg TOOL_NODE_FLAGS="--max-old-space-size=4096" \
-              -t "$DOCKER_REPOSITORY:$CIRCLE_SHA1" .
-            mkdir -p docker-cache
-            docker save \
-              -o docker-cache/docker-image.tar \
-              "$DOCKER_REPOSITORY:$CIRCLE_SHA1"
-          no_output_timeout: 30m
-      - persist_to_workspace:
-          root: docker-cache
-          paths:
-            - docker-image.tar
-            - docker-tags.txt
-
-  docker-push:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - attach_workspace:
-          at: docker-cache
-      - run:
-          name: Load Docker Image
-          command: |
-            docker load < docker-cache/docker-image.tar
-      - run:
-          name: Tag Docker Image
-          command: |
-            cat docker-cache/docker-tags.txt \
-              | xargs -t -I % \
-                docker tag \
-                  "$DOCKER_REPOSITORY:$CIRCLE_SHA1" \
-                  "$DOCKER_REPOSITORY:%"
-      - run:
-          name: Docker Push
-          command: |
-            if [ -z "$CIRCLE_PR_USERNAME" ]; then \
-              docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-              docker push "$DOCKER_REPOSITORY:$CIRCLE_SHA1"
-              cat docker-cache/docker-tags.txt \
-                | xargs -t -I % \
-                  docker push "$DOCKER_REPOSITORY:%"
-            else
-              echo "No deploy for forks"
-            fi
+          name: Build and push production Docker image
+          command: npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 docker-build-tag-push "$DOCKER_REPOSITORY" .
 
   deploy-docs:
     <<: *defaults
@@ -105,91 +127,34 @@ jobs:
               exit 1;
             fi
 
-  eslint:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v2-node-modules-{{ .Branch }}
-            - reaction-v2-node-modules-master
-      - run:
-          name: Run Lint
-          command: npm run lint
-
-  graphql-lint:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v2-node-modules-{{ .Branch }}
-            - reaction-v2-node-modules-master
-      - run:
-          name: Lint GraphQL schemas
-          command: npm run lint:gql
-
-  test-unit:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v2-node-modules-{{ .Branch }}
-            - reaction-v2-node-modules-master
-      - run:
-          name: Run Unit Tests
-          command: npm run test:unit
-
-  test-integration:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v2-node-modules-{{ .Branch }}
-            - reaction-v2-node-modules-master
-      - run:
-          name: Run Integration Tests
-          command: npm run test:integration
-
-  dockerfile-lint:
-    <<: *defaults
-    docker:
-      - image: hadolint/hadolint:v1.6.6-6-g254b4ff
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Dockerfile Lint
-          command: hadolint Dockerfile
-
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - dockerfile-lint
-      - eslint
-      - graphql-lint
-      - test-unit
-      - test-integration
-      - docker-build:
-          context: reaction-build-read
+      - install-dependencies
+      - dockerfile-lint:
+          requires:
+            - install-dependencies
+      - eslint:
+          requires:
+            - install-dependencies
+      - graphql-lint:
+          requires:
+            - install-dependencies
+      - test-unit:
+          requires:
+            - install-dependencies
+      - test-integration:
+          requires:
+            - install-dependencies
+      - docker-build-push:
+          context: reaction-publish-docker
           requires:
             - dockerfile-lint
             - eslint
             - graphql-lint
             - test-unit
             - test-integration
-      - docker-push:
-          context: reaction-publish-docker
-          requires:
-            - docker-build
       - deploy-docs:
           requires:
             - dockerfile-lint
