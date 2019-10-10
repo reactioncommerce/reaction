@@ -39,7 +39,10 @@
     "express": "~4.17.1",
     "faker": "~4.1.0",
     "graphql": "~14.5.8",
+    "graphql-fields": "^2.0.3",
     "graphql-iso-date": "~3.6.1",
+    "graphql-tools": "^4.0.5",
+    "handlebars": "^4.4.3",
     "later": "^1.2.0",
     "lodash": "~4.17.15",
     "mongodb": "~3.2.7",
@@ -105,9 +108,10 @@
       "jasmine": true
     },
     "rules": {
-      "jsx-a11y/label-has-for": "off",
+      "node/no-missing-import": "off",
       "node/no-missing-require": "off",
       "node/no-unsupported-features/es-syntax": "off",
+      "node/no-unpublished-import": "off",
       "node/no-unpublished-require": "off"
     }
   },
