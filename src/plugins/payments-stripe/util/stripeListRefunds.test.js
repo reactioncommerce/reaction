@@ -3,6 +3,7 @@ import nock from "nock";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import stripeListRefunds from "./stripeListRefunds.js";
 
+// eslint-disable-next-line no-undef
 jest.mock("./getStripeInstanceForShop", () => jest.fn().mockImplementation(() => require("stripe")("STRIPE_API_KEY")));
 
 test("should call StripeApi.methods.listRefunds with the proper parameters and return a properly" +
