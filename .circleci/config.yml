@@ -37,6 +37,8 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Lint Dockerfiles
           command: npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 lint-dockerfiles
