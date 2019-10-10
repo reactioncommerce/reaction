@@ -9,75 +9,11 @@ defaults: &defaults
     - DOCKER_NAMESPACE: "reactioncommerce"
     - DOCKER_NAME: "reaction"
     - GLOBAL_CACHE_VERSION: "v2"
-    - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
   working_directory: ~/reaction-app
   docker:
-    - image: circleci/node:8-stretch
+    - image: circleci/node:12-stretch
 
 jobs:
-  build:
-    <<: *defaults
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - restore_cache:
-          name: Restoring Meteor cache
-          key: reaction-v2-meteor
-      - run:
-          name: Install Meteor
-          command: |
-            if [[ -f ~/.meteor/meteor ]]; then \
-              printf "\nMeteor already installed. Creating symlink.\n"
-              sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor;
-            else
-              printf "\Installing Meteor\n"
-              curl https://install.meteor.com | /bin/sh
-            fi
-      - save_cache:
-          name: Saving Meteor to cache
-          key: reaction-v2-meteor-{{ epoch }}
-          paths:
-            - ~/.meteor
-      - run:
-          name: Meteor NPM Install
-          command: meteor npm install
-      - run:
-          name: Build dist bundle
-          command: meteor build --directory ../build/
-      - run:
-          name: Check .js file size
-          command: |
-            maxSize=2967000
-            size=$( wc -c ../build/bundle/programs/web.browser/*.js | awk '{$1=$1};1' | cut -d " " -f 1 )
-            if [[ $size -gt $maxSize ]]; then
-              echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
-              exit 3
-            else
-              echo "The js file size is" $size
-            fi
-      - run:
-          name: Check .css file size
-          command: |
-            maxSize=24888
-            size=$( wc -c ../build/bundle/programs/web.browser/*.css | awk '{$1=$1};1' | cut -d " " -f 1 )
-            if [[ $size -gt $maxSize ]]; then
-              echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
-              exit 3
-            else
-              echo "The css file size is" $size
-            fi
-      # Store node_modules dependency cache.
-      # Saved with package.json checksum and timestamped branch name keys.
-      - save_cache:
-          key: reaction-v2-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-      - save_cache:
-          key: reaction-v2-node-modules-{{ .Branch }}-{{ epoch }}
-          paths:
-            - node_modules
-
   docker-build:
     <<: *defaults
     steps:
@@ -180,8 +116,7 @@ jobs:
             - reaction-v2-node-modules-master
       - run:
           name: Run Lint
-          command: |
-            npm run lint -- --quiet
+          command: npm run lint
 
   graphql-lint:
     <<: *defaults
@@ -194,8 +129,7 @@ jobs:
             - reaction-v2-node-modules-master
       - run:
           name: Lint GraphQL schemas
-          command: |
-            npm run lint:gql
+          command: npm run lint:gql
 
   test-unit:
     <<: *defaults
@@ -223,39 +157,6 @@ jobs:
           name: Run Integration Tests
           command: npm run test:integration
 
-  test-e2e:
-    <<: *defaults
-    docker:
-      - image: reactioncommerce/reaction-automation-client:latest
-    steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Run Tests
-          command: |
-            docker run -t -e URL=${STAGING_URL} reactioncommerce/reaction-automation-client:latest npm run-script chrome
-
-  test-metrics:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          name: California
-          command: |
-            .circleci/bin/calibre-deploy.sh ${STAGING_URL} California
-      - run:
-          name: North Virginia
-          command: |
-            .circleci/bin/calibre-deploy.sh ${STAGING_URL} NorthVirginia
-      - run:
-          name: London
-          command: |
-            .circleci/bin/calibre-deploy.sh ${STAGING_URL} London
-      - run:
-          name: Frankfurt
-          command: |
-            .circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
-
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -266,37 +167,36 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Dockerfile Lint
-          command: |
-            hadolint Dockerfile
+          command: hadolint Dockerfile
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
       - dockerfile-lint
-      - test-unit:
-          requires:
-            - build
-      - test-integration:
-          requires:
-            - build
-      - eslint:
-          requires:
-            - build
-      - graphql-lint:
-          requires:
-            - build
+      - eslint
+      - graphql-lint
+      - test-unit
+      - test-integration
       - docker-build:
           context: reaction-build-read
+          requires:
+            - dockerfile-lint
+            - eslint
+            - graphql-lint
+            - test-unit
+            - test-integration
       - docker-push:
           context: reaction-publish-docker
           requires:
             - docker-build
       - deploy-docs:
           requires:
+            - dockerfile-lint
+            - eslint
+            - graphql-lint
             - test-unit
-            - docker-build
+            - test-integration
           filters:
             branches:
               only: /^master$/
