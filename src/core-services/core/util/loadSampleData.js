@@ -1,6 +1,3 @@
-/* eslint-disable node/no-deprecated-api */
-/* TODO: revisit `url.parse` throughout Reaction */
-import url from "url";
 import Logger from "@reactioncommerce/logger";
 import config from "../config.js";
 import sampleData from "./sampleData.js";
@@ -44,7 +41,7 @@ export default async function loadSampleData(context) {
       throw new Error("More than one primary shop in the sample dataset");
     }
 
-    const currentDomain = rootUrl && url.parse(rootUrl).host;
+    const currentDomain = rootUrl && new URL(rootUrl).host;
 
     const shopInsertPromises = sampleData.shops.map(async (shop) => {
       // add the current domain to the shop if it doesn't already exist

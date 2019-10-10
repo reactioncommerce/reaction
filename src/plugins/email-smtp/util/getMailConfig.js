@@ -1,6 +1,3 @@
-/* eslint-disable node/no-deprecated-api */
-/* TODO: revisit `url.parse` throughout Reaction */
-import url from "url";
 import Logger from "@reactioncommerce/logger";
 import getServiceConfig from "nodemailer-wellknown";
 
@@ -12,7 +9,7 @@ import getServiceConfig from "nodemailer-wellknown";
  */
 function getConfigFromMailUrl({ logger, mailUrl }) {
   // parse the url
-  const parsedUrl = url.parse(mailUrl);
+  const parsedUrl = new URL(mailUrl);
   const credentials = parsedUrl.auth && parsedUrl.auth.split(":");
   parsedUrl.port = Number(parsedUrl.port);
 

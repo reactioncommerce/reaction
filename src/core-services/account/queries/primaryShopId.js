@@ -1,7 +1,3 @@
-/* eslint-disable node/no-deprecated-api */
-/* TODO: revisit `url.parse` throughout Reaction */
-import url from "url";
-
 /**
  * @name primaryShopId
  * @method
@@ -18,7 +14,7 @@ export default async function primaryShopId(collections) {
   const { ROOT_URL } = process.env;
   if (typeof ROOT_URL !== "string") return null;
 
-  const domain = url.parse(ROOT_URL).hostname;
+  const domain = new URL(ROOT_URL).hostname;
   const options = { projection: { _id: 1 } };
 
   let shop = await Shops.findOne({ domains: domain }, options);
