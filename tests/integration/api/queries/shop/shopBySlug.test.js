@@ -3,7 +3,7 @@ import TestApp from "/imports/test-utils/helpers/TestApp";
 
 jest.setTimeout(300000);
 
-let shopBySlagQuery;
+let shopBySlugQuery;
 let shopId;
 const shopName = "Slug Integration Test";
 let testApp;
@@ -15,7 +15,7 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop({ slug: shopSlug, name: shopName });
   opaqueShopId = encodeShopOpaqueId(shopId);
-  shopBySlagQuery = testApp.query(`query ($slug: String!) {
+  shopBySlugQuery = testApp.query(`query ($slug: String!) {
     shopBySlug(slug: $slug) {
       _id
       name
@@ -29,19 +29,19 @@ afterAll(async () => {
 });
 
 test("get shop by slug success", async () => {
-  const result = await shopBySlagQuery({ slug: shopSlug });
+  const result = await shopBySlugQuery({ slug: shopSlug });
   expect(result.shopBySlug.name).toBe(shopName);
   expect(result.shopBySlug._id).toBe(opaqueShopId);
 });
 
 test("get shop by slug failure", async () => {
-  const result = await shopBySlagQuery({ slug: "does-not-exist" });
+  const result = await shopBySlugQuery({ slug: "does-not-exist" });
   expect(result.shopBySlug).toBeNull();
 });
 
 test("get invalid params error", async () => {
   try {
-    await shopBySlagQuery({});
+    await shopBySlugQuery({});
   } catch (error) {
     expect(error[0].message).toBe("Variable \"$slug\" of required type \"String!\" was not provided.");
   }
