@@ -10,7 +10,7 @@ defaults: &defaults
     - DOCKER_NAME: "reaction"
   working_directory: ~/reaction-app
   docker:
-    - image: circleci/node:12-alpine
+    - image: circleci/node:12.11.1-stretch
 
 jobs:
   install-dependencies:
