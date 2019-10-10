@@ -1,6 +1,6 @@
 import _ from "lodash";
 import xformArrayToConnection from "@reactioncommerce/api-utils/graphql/xformArrayToConnection.js";
-import { xformOrderItems } from "../../../../xforms/order.js";
+import xformOrderItems from "../../xforms/xformOrderItems.js";
 
 /**
  * @summary Sorts the provided order items according to the connectionArgs.

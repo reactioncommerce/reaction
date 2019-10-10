@@ -1,4 +1,53 @@
-import { xformOrderPayment } from "../../../../xforms/order.js";
+/**
+ * @summary Transform a single order payment
+ * @param {Object} payment A payment object
+ * @returns {Object} Transformed payment
+ */
+function xformOrderPayment(payment) {
+  const {
+    _id,
+    address,
+    amount,
+    captureErrorMessage,
+    cardBrand,
+    createdAt,
+    currencyCode,
+    data,
+    displayName,
+    mode,
+    name: methodName,
+    processor,
+    riskLevel,
+    status,
+    transactionId
+  } = payment;
+
+  return {
+    _id,
+    amount: {
+      amount,
+      currencyCode
+    },
+    billingAddress: address,
+    captureErrorMessage,
+    cardBrand,
+    createdAt,
+    currencyCode,
+    data,
+    displayName,
+    isAuthorizationCanceled: (mode === "cancel"),
+    isCaptured: (mode === "captured"),
+    method: {
+      displayName,
+      name: methodName
+    },
+    mode,
+    processor,
+    riskLevel,
+    status,
+    transactionId
+  };
+}
 
 /**
  * @name Order/payments

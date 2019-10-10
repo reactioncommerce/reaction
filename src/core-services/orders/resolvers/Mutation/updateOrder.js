@@ -1,4 +1,4 @@
-import { decodeOrderOpaqueId } from "../../../../xforms/order.js";
+import { decodeOrderOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/updateOrder

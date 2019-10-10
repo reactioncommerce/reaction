@@ -1,5 +1,4 @@
-import { encodeNavigationTreeOpaqueId } from "../../../../xforms/navigationTree.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { encodeNavigationTreeOpaqueId, encodeShopOpaqueId } from "../../xforms/id.js";
 import xformNavigationTreeItem from "../../xforms/xformNavigationTreeItem.js";
 
 export default {

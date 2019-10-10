@@ -1,5 +1,4 @@
-import { encodeNavigationItemOpaqueId } from "../../../../xforms/navigationItem.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { encodeNavigationItemOpaqueId, encodeShopOpaqueId } from "../../xforms/id.js";
 
 export default {
   _id: (node) => encodeNavigationItemOpaqueId(node._id),

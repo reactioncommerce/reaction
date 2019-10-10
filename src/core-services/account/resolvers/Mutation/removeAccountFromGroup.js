@@ -1,5 +1,4 @@
-import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
-import { decodeGroupOpaqueId } from "../../../../xforms/group.js";
+import { decodeAccountOpaqueId, decodeGroupOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/removeAccountFromGroup

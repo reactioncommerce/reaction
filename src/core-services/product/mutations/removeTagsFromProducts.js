@@ -1,4 +1,4 @@
-import { decodeTagOpaqueId } from "../../../xforms/tag.js";
+import { decodeTagOpaqueId } from "../xforms/id.js";
 import executeBulkOperation from "../utils/executeBulkOperation.js";
 
 /**

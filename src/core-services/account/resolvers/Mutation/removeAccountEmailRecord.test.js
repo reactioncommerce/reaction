@@ -1,5 +1,5 @@
-import { encodeAccountOpaqueId } from "../../../xforms/account.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import { encodeAccountOpaqueId } from "../../xforms/id.js";
 import removeAccountEmailRecord from "./removeAccountEmailRecord.js";
 
 mockContext.mutations.removeAccountEmailRecord = jest.fn().mockName("mutations.removeAccountEmailRecord");

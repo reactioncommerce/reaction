@@ -1,6 +1,5 @@
-import { encodeAccountOpaqueId } from "../../../xforms/account.js";
-import { encodeAddressOpaqueId } from "../../../../xforms/address.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import { encodeAccountOpaqueId, encodeAddressOpaqueId } from "../../xforms/id.js";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
 
 mockContext.mutations.updateAccountAddressBookEntry = jest.fn().mockName("mutations.updateAccountAddressBookEntry");

@@ -1,4 +1,4 @@
-import { decodeCartOpaqueId } from "../../../../xforms/cart.js";
+import { decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query.anonymousCartByCartId

@@ -1,4 +1,4 @@
-import { encodeAccountOpaqueId } from "../../../xforms/account.js";
+import { encodeAccountOpaqueId } from "../../xforms/id.js";
 import addAccountAddressBookEntry from "./addAccountAddressBookEntry.js";
 
 test("correctly passes through to mutations.addressBookAdd", async () => {

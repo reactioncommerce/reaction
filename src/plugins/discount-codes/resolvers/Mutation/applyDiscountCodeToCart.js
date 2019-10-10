@@ -1,5 +1,4 @@
-import { decodeCartOpaqueId } from "../../../../xforms/cart.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeCartOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/applyDiscountCodeToCart

@@ -1,10 +1,7 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import Random from "@reactioncommerce/random";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import Random from "@reactioncommerce/random";
-import { encodeFulfillmentMethodOpaqueId } from "../../../xforms/fulfillment.js";
-import { encodeOrderItemOpaqueId, encodeOrderOpaqueId } from "../../../xforms/order.js";
-import { encodeProductOpaqueId } from "../../../xforms/product.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import AddOrderFulfillmentGroupMutation from "./AddOrderFulfillmentGroupMutation.graphql";
 
 jest.setTimeout(300000);
@@ -166,16 +163,16 @@ test("user with orders role can add an order fulfillment group with new items", 
         items: [{
           price: variant2Price,
           productConfiguration: {
-            productId: encodeProductOpaqueId(catalogItem2.product.productId),
-            productVariantId: encodeProductOpaqueId(catalogItem2.product.variants[0].variantId)
+            productId: encodeOpaqueId("reaction/product", catalogItem2.product.productId),
+            productVariantId: encodeOpaqueId("reaction/product", catalogItem2.product.variants[0].variantId)
           },
           quantity: 5
         }],
-        selectedFulfillmentMethodId: encodeFulfillmentMethodOpaqueId(fulfillmentMethodId),
-        shopId: encodeShopOpaqueId(shopId),
+        selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
+        shopId: encodeOpaqueId("reaction/shop", shopId),
         type: "shipping"
       },
-      orderId: encodeOrderOpaqueId(order._id)
+      orderId: encodeOpaqueId("reaction/order", order._id)
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -194,15 +191,15 @@ test("user with orders role can add an order fulfillment group with new items", 
                 amount: orderItem.price.amount
               },
               productConfiguration: {
-                productId: encodeProductOpaqueId(catalogItem.product.productId),
-                productVariantId: encodeProductOpaqueId(catalogItem.product.variants[0].variantId)
+                productId: encodeOpaqueId("reaction/product", catalogItem.product.productId),
+                productVariantId: encodeOpaqueId("reaction/product", catalogItem.product.variants[0].variantId)
               },
               quantity: 2,
               status: "STATUS"
             }
           ]
         },
-        shop: { _id: encodeShopOpaqueId(shopId) },
+        shop: { _id: encodeOpaqueId("reaction/shop", shopId) },
         status: "new",
         totalItemQuantity: 1,
         type: "shipping"
@@ -215,15 +212,15 @@ test("user with orders role can add an order fulfillment group with new items", 
                 amount: variant2Price
               },
               productConfiguration: {
-                productId: encodeProductOpaqueId(catalogItem2.product.productId),
-                productVariantId: encodeProductOpaqueId(catalogItem2.product.variants[0].variantId)
+                productId: encodeOpaqueId("reaction/product", catalogItem2.product.productId),
+                productVariantId: encodeOpaqueId("reaction/product", catalogItem2.product.variants[0].variantId)
               },
               quantity: 5,
               status: "new"
             }
           ]
         },
-        shop: { _id: encodeShopOpaqueId(shopId) },
+        shop: { _id: encodeOpaqueId("reaction/shop", shopId) },
         status: "new",
         totalItemQuantity: 5,
         type: "shipping"
@@ -301,12 +298,12 @@ test("user with orders role can add an order fulfillment group with moved items"
         data: {
           shippingAddress
         },
-        selectedFulfillmentMethodId: encodeFulfillmentMethodOpaqueId(fulfillmentMethodId),
-        shopId: encodeShopOpaqueId(shopId),
+        selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
+        shopId: encodeOpaqueId("reaction/shop", shopId),
         type: "shipping"
       },
-      moveItemIds: [encodeOrderItemOpaqueId(orderItemToMove._id)],
-      orderId: encodeOrderOpaqueId(order._id)
+      moveItemIds: [encodeOpaqueId("reaction/orderItem", orderItemToMove._id)],
+      orderId: encodeOpaqueId("reaction/order", order._id)
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -325,15 +322,15 @@ test("user with orders role can add an order fulfillment group with moved items"
                 amount: orderItemToStay.price.amount
               },
               productConfiguration: {
-                productId: encodeProductOpaqueId(catalogItem.product.productId),
-                productVariantId: encodeProductOpaqueId(catalogItem.product.variants[0].variantId)
+                productId: encodeOpaqueId("reaction/product", catalogItem.product.productId),
+                productVariantId: encodeOpaqueId("reaction/product", catalogItem.product.variants[0].variantId)
               },
               quantity: 2,
               status: "STATUS"
             }
           ]
         },
-        shop: { _id: encodeShopOpaqueId(shopId) },
+        shop: { _id: encodeOpaqueId("reaction/shop", shopId) },
         status: "new",
         totalItemQuantity: 2,
         type: "shipping"
@@ -346,15 +343,15 @@ test("user with orders role can add an order fulfillment group with moved items"
                 amount: variant2Price
               },
               productConfiguration: {
-                productId: encodeProductOpaqueId(catalogItem2.product.productId),
-                productVariantId: encodeProductOpaqueId(catalogItem2.product.variants[0].variantId)
+                productId: encodeOpaqueId("reaction/product", catalogItem2.product.productId),
+                productVariantId: encodeOpaqueId("reaction/product", catalogItem2.product.variants[0].variantId)
               },
               quantity: 10,
               status: "STATUS"
             }
           ]
         },
-        shop: { _id: encodeShopOpaqueId(shopId) },
+        shop: { _id: encodeOpaqueId("reaction/shop", shopId) },
         status: "new",
         totalItemQuantity: 10,
         type: "shipping"

@@ -39,7 +39,10 @@
     "express": "~4.17.1",
     "faker": "~4.1.0",
     "graphql": "~14.5.8",
+    "graphql-fields": "^2.0.3",
     "graphql-iso-date": "~3.6.1",
+    "graphql-tools": "^4.0.5",
+    "handlebars": "^4.4.3",
     "later": "^1.2.0",
     "lodash": "~4.17.15",
     "mongodb": "~3.2.7",
@@ -73,10 +76,10 @@
   "scripts": {
     "start": "node ./src/index.js",
     "start:dev": "NODE_ENV=development NODE_OPTIONS='--experimental-modules -r ./scripts/requireExtensions.js' nodemon ./src/index.js",
-    "inspect": "node --experimental-modules -r ./scripts/requireExtensions.js . --inspect",
-    "inspect-brk": "node --experimental-modules -r ./scripts/requireExtensions.js  . --inspect-brk",
-    "inspect:docker": "node --experimental-modules -r ./scripts/requireExtensions.js  . --inspect=0.0.0.0:9229",
-    "inspect-brk:docker": "node --experimental-modules -r ./scripts/requireExtensions.js  . --inspect-brk=0.0.0.0:9229",
+    "inspect": "NODE_ENV=development node --experimental-modules -r ./scripts/requireExtensions.js --inspect ./src/index.js",
+    "inspect-brk": "NODE_ENV=development node --experimental-modules -r ./scripts/requireExtensions.js --inspect-brk ./src/index.js",
+    "inspect:docker": "NODE_ENV=development node --experimental-modules -r ./scripts/requireExtensions.js --inspect=0.0.0.0:9229 ./src/index.js",
+    "inspect-brk:docker": "NODE_ENV=development node --experimental-modules -r ./scripts/requireExtensions.js --inspect-brk=0.0.0.0:9229 ./src/index.js",
     "test": "jest",
     "test:unit": "REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
     "test:unit:watch": "REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",
@@ -105,9 +108,10 @@
       "jasmine": true
     },
     "rules": {
-      "jsx-a11y/label-has-for": "off",
+      "node/no-missing-import": "off",
       "node/no-missing-require": "off",
       "node/no-unsupported-features/es-syntax": "off",
+      "node/no-unpublished-import": "off",
       "node/no-unpublished-require": "off"
     }
   },

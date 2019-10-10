@@ -1,4 +1,4 @@
-import { encodeTagOpaqueId } from "../../../../xforms/tag.js";
+import { encodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Product/tagIds

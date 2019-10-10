@@ -1,8 +1,6 @@
 import getCurrencyDefinitionByCode from "@reactioncommerce/api-utils/getCurrencyDefinitionByCode.js";
-import { encodeNavigationTreeOpaqueId } from "../../../../xforms/navigationTree.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { encodeShopOpaqueId } from "../../xforms/id.js";
 import brandAssets from "./brandAssets.js";
-import defaultNavigationTree from "./defaultNavigationTree.js";
 import tags from "./tags.js";
 
 export default {
@@ -19,7 +17,5 @@ export default {
     }));
   },
   currency: (shop) => getCurrencyDefinitionByCode(shop.currency),
-  defaultNavigationTreeId: (shop) => encodeNavigationTreeOpaqueId(shop.defaultNavigationTreeId),
-  defaultNavigationTree,
   tags
 };

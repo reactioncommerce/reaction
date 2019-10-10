@@ -1,6 +1,4 @@
-import { encodeFulfillmentMethodOpaqueId } from "../../../../xforms/fulfillment.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
-import { encodeSurchargeOpaqueId } from "../../xforms/surcharge.js";
+import { encodeFulfillmentMethodOpaqueId, encodeShopOpaqueId, encodeSurchargeOpaqueId } from "../../xforms/id.js";
 import xformSurchargeAmount from "../../xforms/xformSurchargeAmount.js";
 import getSurchargeMessageForLanguage from "../../util/getSurchargeMessageForLanguage.js";
 

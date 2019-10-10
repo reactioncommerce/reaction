@@ -1,5 +1,4 @@
-import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeAccountOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query/accountCartByAccountId

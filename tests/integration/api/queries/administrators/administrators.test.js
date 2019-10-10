@@ -1,7 +1,6 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeAccountOpaqueId } from "../../../xforms/account.js";
-import { encodeShopOpaqueId } from "../../../../xforms/shop.js";
 import AdministratorsFullQuery from "./AdministratorsFullQuery.graphql";
 
 jest.setTimeout(300000);
@@ -12,7 +11,7 @@ jest.setTimeout(300000);
  */
 function accountMongoSchemaToGraphQL(mongoAccount) {
   return {
-    _id: encodeAccountOpaqueId(mongoAccount._id),
+    _id: encodeOpaqueId("reaction/account", mongoAccount._id),
     addressBook: {
       nodes: [
         { address1: "mockAddress1" }
@@ -62,7 +61,7 @@ beforeAll(async () => {
   await testApp.start();
 
   const shopId = await testApp.insertPrimaryShop();
-  opaqueShopId = encodeShopOpaqueId(shopId);
+  opaqueShopId = encodeOpaqueId("reaction/shop", shopId);
 
   mockAdminOneAccount = Factory.Account.makeOne({
     roles: {

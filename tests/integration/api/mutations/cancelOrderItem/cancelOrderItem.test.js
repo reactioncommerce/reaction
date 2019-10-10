@@ -1,6 +1,6 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import { encodeOrderOpaqueId, encodeOrderItemOpaqueId } from "../../../xforms/order.js";
 import CancelOrderItemMutation from "./CancelOrderItemMutation.graphql";
 
 jest.setTimeout(300000);
@@ -67,8 +67,8 @@ test("user who placed an order can cancel an order item", async () => {
   try {
     result = await cancelOrderItem({
       cancelQuantity: orderItem.quantity,
-      itemId: encodeOrderItemOpaqueId(orderItem._id),
-      orderId: encodeOrderOpaqueId(order._id),
+      itemId: encodeOpaqueId("reaction/orderItem", orderItem._id),
+      orderId: encodeOpaqueId("reaction/order", order._id),
       reason: "REASON"
     });
   } catch (error) {

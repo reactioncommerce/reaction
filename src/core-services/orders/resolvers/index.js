@@ -1,5 +1,5 @@
 import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
-import { encodeOrderFulfillmentGroupOpaqueId, encodeOrderItemOpaqueId } from "../../../xforms/order.js";
+import { encodeOrderFulfillmentGroupOpaqueId, encodeOrderItemOpaqueId } from "../xforms/id.js";
 import Mutation from "./Mutation/index.js";
 import Order from "./Order/index.js";
 import OrderFulfillmentGroup from "./OrderFulfillmentGroup/index.js";

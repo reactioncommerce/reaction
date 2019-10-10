@@ -1,4 +1,12 @@
-import { xformTotalItemQuantity } from "../../../../xforms/cart.js";
+/**
+ * @param {Object} collections Map of Mongo collections
+ * @param {Object} items Cart items
+ * @returns {Number} Total quantity of all items in the cart
+ */
+async function xformTotalItemQuantity(collections, items) {
+  // Total item quantity comes from the sum of the quantities of each item
+  return (items || []).reduce((sum, item) => (sum + item.quantity), 0);
+}
 
 /**
  * @name Cart/totalItemQuantity

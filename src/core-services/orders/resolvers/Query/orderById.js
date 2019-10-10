@@ -1,5 +1,4 @@
-import { decodeOrderOpaqueId } from "../../../../xforms/order.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeOrderOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query.orderById

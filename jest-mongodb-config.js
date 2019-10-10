@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = { // eslint-disable-line
   mongodbMemoryServerOptions: {
     instance: {
       dbName: "jest",

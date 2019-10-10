@@ -1,6 +1,6 @@
 import _ from "lodash";
 import formatMoney from "@reactioncommerce/api-utils/formatMoney.js";
-import { xformOrderItems } from "../../../xforms/order.js";
+import xformOrderItems from "../xforms/xformOrderItems.js";
 import { addAnonymousOrderToken } from "./anonymousToken.js";
 
 /**

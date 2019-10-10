@@ -15,7 +15,7 @@ const mockUser = {
 };
 
 test("calls queries.userAccount and returns the viewing user", async () => {
-  require("graphql-fields").mockReturnValueOnce({ _id: "1", name: "1" });
+  require("graphql-fields").mockReturnValueOnce({ _id: "1", name: "1" }); // eslint-disable-line no-undef
 
   const findOne = jest.fn().mockName("collections.users.findOne").mockReturnValueOnce(Promise.resolve(mockUser));
   const userAccount = jest.fn().mockName("queries.userAccount").mockReturnValueOnce(Promise.resolve(mockAccount));
@@ -36,7 +36,7 @@ test("calls queries.userAccount and returns the viewing user", async () => {
 });
 
 test("returns without calling queries.userAccount if only _id requested", async () => {
-  require("graphql-fields").mockReturnValueOnce({ _id: "1" });
+  require("graphql-fields").mockReturnValueOnce({ _id: "1" }); // eslint-disable-line no-undef
 
   const findOne = jest.fn().mockName("collections.users.findOne").mockReturnValueOnce(Promise.resolve(mockUser));
   const userAccount = jest.fn().mockName("userAccount");

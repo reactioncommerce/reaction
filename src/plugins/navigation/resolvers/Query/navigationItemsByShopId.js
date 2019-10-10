@@ -1,6 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query/navigationItemsByShopId

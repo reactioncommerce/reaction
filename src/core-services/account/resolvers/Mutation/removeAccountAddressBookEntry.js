@@ -1,5 +1,4 @@
-import { decodeAccountOpaqueId } from "../../../../xforms/account.js";
-import { decodeAddressOpaqueId } from "../../../../xforms/address.js";
+import { decodeAccountOpaqueId, decodeAddressOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/removeAccountAddressBookEntry

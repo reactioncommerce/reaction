@@ -1,5 +1,4 @@
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
-import { decodeMediaRecordOpaqueId } from "../../xforms/id.js";
+import { decodeMediaRecordOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/updateMediaRecordPriority

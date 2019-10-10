@@ -1,5 +1,4 @@
-import { decodeGroupOpaqueId } from "../../../../xforms/group.js";
-import { decodeShopOpaqueId } from "../../../../xforms/shop.js";
+import { decodeGroupOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/inviteShopMember
