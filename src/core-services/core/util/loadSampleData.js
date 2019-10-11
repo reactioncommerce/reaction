@@ -41,7 +41,7 @@ export default async function loadSampleData(context) {
       throw new Error("More than one primary shop in the sample dataset");
     }
 
-    const currentDomain = rootUrl && new URL(rootUrl).host;
+    const currentDomain = rootUrl && new URL(rootUrl).hostname;
 
     const shopInsertPromises = sampleData.shops.map(async (shop) => {
       // add the current domain to the shop if it doesn't already exist
