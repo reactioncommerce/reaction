@@ -228,6 +228,6 @@ test("get invalid params error: no accountId", async () => {
   try {
     await query();
   } catch (error) {
-    expect(error[0].message).toBe("Variable \"$accountId\" of required type \"ID!\" was not provided.")
+    expect(error[0].message).toBe("Variable \"$accountId\" of required type \"ID!\" was not provided.");
   }
 });
