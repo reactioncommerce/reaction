@@ -805,6 +805,7 @@ export const CartItem = new SimpleSchema({
  * @property {Workflow} workflow optional
  * @property {Date} createdAt required
  * @property {Date} updatedAt optional
+ * @property {String} sessionId Optional and deprecated
  */
 export const Cart = new SimpleSchema({
   "_id": {
@@ -829,6 +830,10 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "referenceId": {
+    type: String,
+    optional: true
+  },
+  "sessionId": {
     type: String,
     optional: true
   },
