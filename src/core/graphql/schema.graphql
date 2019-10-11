@@ -69,12 +69,6 @@ type ImageInfo {
   "The related product ID"
   productId: ID
 
-  """
-  If greater than 0, then this image should be used for the product grid. The number indicates which position
-  within the product grid item, for grid weights that show multiple images.
-  """
-  toGrid: Int
-
   "The related variant ID, if linked with a particular variant"
   variantId: ID
 }

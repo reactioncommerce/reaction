@@ -68,7 +68,6 @@ query (
             priority
             productId
             variantId
-            toGrid
             URLs {
               thumbnail
               small
@@ -81,7 +80,6 @@ query (
             priority
             productId
             variantId
-            toGrid
             URLs {
               thumbnail
               small

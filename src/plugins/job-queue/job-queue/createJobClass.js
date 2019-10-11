@@ -365,19 +365,6 @@ export default function createJobClass() {
       // This is defined above
       this.processJobs = JobQueue;
 
-      // Makes a job object from a job document
-      // This method is deprecated and will be removed
-      this.makeJob = (function () {
-        let depFlag = false;
-        return function (root, doc) {
-          if (!depFlag) {
-            depFlag = true;
-            console.warn("Job.makeJob(root, jobDoc) has been deprecated and will be removed in a future release, use 'new Job(root, jobDoc)' instead.");
-          }
-          return new Job(root, doc);
-        };
-      }());
-
       // Define convenience getters for some document properties
       Object.defineProperties(this.prototype, {
         doc: {

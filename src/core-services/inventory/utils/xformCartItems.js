@@ -24,8 +24,5 @@ export default async function xformCartItems(context, items) {
     Object.getOwnPropertyNames(variantInventoryInfo).forEach((key) => {
       item[key] = variantInventoryInfo[key];
     });
-
-    // Set deprecated `currentQuantity` for now
-    item.currentQuantity = item.inventoryAvailableToSell;
   }
 }

@@ -227,10 +227,6 @@ export default function createJobCollectionClass({ Job, later }) {
     startJobServer(...params) { return Job.startJobServer(this.root, ...Array.from(params)); }
     shutdownJobServer(...params) { return Job.shutdownJobServer(this.root, ...Array.from(params)); }
 
-    // These are deprecated and will be removed
-    startJobs(...params) { return Job.startJobs(this.root, ...Array.from(params)); }
-    stopJobs(...params) { return Job.stopJobs(this.root, ...Array.from(params)); }
-
     async _idsOfDeps(ids, antecedents, dependents, jobStatuses) {
       // Cancel the entire tree of antecedents and/or dependents
       // Dependents: jobs that list one of the ids in their depends list
