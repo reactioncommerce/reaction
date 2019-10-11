@@ -1,6 +1,5 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
-import { getAnonymousAccessToken } from "/imports/plugins/core/orders/server/no-meteor/util/anonymousToken";
 
 jest.setTimeout(300000);
 
