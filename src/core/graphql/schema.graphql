@@ -230,3 +230,72 @@ type PageInfo {
   "When paginating backwards, the cursor to continue."
   startCursor: ConnectionCursor
 }
+
+"A string email address"
+scalar Email
+
+"A confirmable email record"
+type EmailRecord {
+  "The actual email address"
+  address: Email
+
+  "The services provided by this address"
+  provides: String
+
+  "Has this address been verified?"
+  verified: Boolean
+}
+
+"A confirmable email record"
+input EmailRecordInput {
+  "The actual email address"
+  address: Email
+
+  "The services provided by this address"
+  provides: String
+
+  "Has this address been verified?"
+  verified: Boolean
+}
+
+"User defined attributes. You can include only `key` and use these like tags, or also include a `value`."
+input MetafieldInput {
+  "Field description"
+  description: String
+
+  "Field key"
+  key: String!
+
+  "Field namespace"
+  namespace: String
+
+  "Field scope"
+  scope: String
+
+  "Field value"
+  value: String
+
+  "Field value type"
+  valueType: String
+}
+
+"User defined attributes"
+type Metafield {
+  "Field description"
+  description: String
+
+  "Field key"
+  key: String
+
+  "Field namespace"
+  namespace: String
+
+  "Field scope"
+  scope: String
+
+  "Field value"
+  value: String
+
+  "Field value type"
+  valueType: String
+}
