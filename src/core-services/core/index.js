@@ -27,9 +27,6 @@ export default async function register(app) {
       openexchangerates: {
         appId: "",
         refreshPeriod: "every 1 hour"
-      },
-      paymentMethod: {
-        defaultPaymentMethod: ""
       }
     },
     layout: [{
