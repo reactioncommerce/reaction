@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import layouts from "./layouts.js";
 
 /**
  * @param {Object} context App context
@@ -22,6 +21,7 @@ export default async function upsertPackages(context) {
   let loadedIndex = 1;
 
   /* eslint-disable no-await-in-loop */
+  const layouts = [];
   for (const config of Object.values(registeredPlugins)) {
     // Build a single combined layouts list to save on all shops later
     if (config.layout) {

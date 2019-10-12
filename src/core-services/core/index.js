@@ -11,33 +11,6 @@ export default async function register(app) {
     label: "Core",
     name: "core",
     i18n,
-    collections: {
-      Assets: {
-        name: "Assets"
-      },
-      Packages: {
-        name: "Packages",
-        indexes: [
-          // Create indexes. We set specific names for backwards compatibility
-          // with indexes created by the aldeed:schema-index Meteor package.
-          [{ name: 1, shopId: 1 }],
-          [{ "registry.provides": 1 }, { name: "c2_registry.$.provides" }]
-        ]
-      },
-      Shops: {
-        name: "Shops",
-        indexes: [
-          // Create indexes. We set specific names for backwards compatibility
-          // with indexes created by the aldeed:schema-index Meteor package.
-          [{ domains: 1 }, { name: "c2_domains" }],
-          [{ name: 1 }, { name: "c2_name" }],
-          [{ slug: 1 }, { name: "c2_slug", sparse: true, unique: true }]
-        ]
-      },
-      Themes: {
-        name: "Themes"
-      }
-    },
     functionsByType: {
       startup: [startup]
     },
