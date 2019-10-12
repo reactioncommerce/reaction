@@ -29,8 +29,21 @@ export default async function buildContext(context, request = {}) {
   context.account = account || null;
   context.accountId = (account && account._id) || null;
 
-  if (userId && typeof context.getUserHasPermissionFunction === "function") {
-    context.userHasPermission = await context.getUserHasPermissionFunction(context);
+  if (userId) {
+    if (typeof context.auth.getHasPermissionFunctionForUser === "function") {
+      context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
+    } else {
+      context.userHasPermission = () => false;
+    }
+
+    if (typeof context.auth.getShopsUserHasPermissionForFunctionForUser === "function") {
+      context.shopsUserHasPermissionFor = await context.auth.getShopsUserHasPermissionForFunctionForUser(context);
+    } else {
+      context.shopsUserHasPermissionFor = () => [];
+    }
+  } else {
+    context.userHasPermission = () => false;
+    context.shopsUserHasPermissionFor = () => [];
   }
 
   // Make some request headers available to resolvers on context, but remove any
@@ -38,6 +51,7 @@ export default async function buildContext(context, request = {}) {
   context.requestHeaders = { ...request.headers };
   delete context.requestHeaders.authorization;
   delete context.requestHeaders.cookie;
+  delete context.requestHeaders["meteor-login-token"];
 
   // Reset isInternalCall in case it has been incorrectly changed
   context.isInternalCall = false;
