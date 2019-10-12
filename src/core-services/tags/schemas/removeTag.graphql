@@ -1,0 +1,28 @@
+"Input for `removeTag` mutation"
+input RemoveTagInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of tag to delete"
+  id: ID!
+
+  "The shop that owns the tag"
+  shopId: ID!
+}
+
+"Response payload for `removeTag` mutation"
+type RemoveTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The deleted tag"
+  tag: Tag!
+}
+
+extend type Mutation {
+  "Removes an existing tag"
+  removeTag(
+    "Mutation input"
+    input: RemoveTagInput!
+  ): RemoveTagPayload!
+}

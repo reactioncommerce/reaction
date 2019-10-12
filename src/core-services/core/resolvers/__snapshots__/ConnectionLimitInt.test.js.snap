@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`has a description 1`] = `
-"
-An integer between 1 and 50, inclusive. Values less than 1 become 1 and
-values greater than 50 become 50.
-"
-`;

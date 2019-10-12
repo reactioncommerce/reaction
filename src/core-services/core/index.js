@@ -1,5 +1,4 @@
 import i18n from "./i18n/index.js";
-import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 
@@ -44,7 +43,6 @@ export default async function register(app) {
       startup: [startup]
     },
     graphQL: {
-      resolvers,
       schemas
     },
     settings: {

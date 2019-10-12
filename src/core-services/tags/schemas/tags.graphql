@@ -1,50 +1,4 @@
-"Represents a single tag"
-type Tag implements Node & Deletable {
-  "The tag ID"
-  _id: ID!
-
-  "The date and time at which this tag was created"
-  createdAt: DateTime!
-
-  "A string of the title to be displayed on a Tag Listing Page"
-  displayTitle: String
-
-  "A list of the IDs of top products in this tag"
-  featuredProductIds: [ID]
-
-  "A string containing the hero image url for a Tag Listing Page"
-  heroMediaUrl: String
-
-  """
-  If `true`, this object should be considered deleted. Soft deleted objects are not
-  returned in query results unless you explicitly ask for them.
-  """
-  isDeleted: Boolean!
-
-  "If `true`, this tag should be shown at the top level of the tag hierarchy"
-  isTopLevel: Boolean!
-
-  "If `true`, this tag's Tag Listing Page should be visible to the public"
-  isVisible: Boolean!
-
-  "Arbitrary additional metadata about this tag"
-  metafields: [Metafield]
-
-  "The display name for the tag. This is unique within a given shop."
-  name: String!
-
-  "The tag's position relative to other tags at the same level of the tag hierarchy"
-  position: Int
-
-  "The shop to which this tag belongs"
-  shop: Shop!
-
-  "A unique URL-safe string representing this tag for links"
-  slug: String
-
-  "A list of the IDs of tags that have this tag as their parent in the tag hierarchy, in the user-defined order"
-  subTagIds: [ID]!
-
+extend type Tag {
   "A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported."
   subTags(
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
@@ -65,9 +19,6 @@ type Tag implements Node & Deletable {
     "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
     sortBy: TagSortByField = position
   ): TagConnection
-
-  "The date and time at which this tag was last updated"
-  updatedAt: DateTime!
 }
 
 "The fields by which you are allowed to sort any query that returns a `TagConnection`"
@@ -123,15 +74,6 @@ type TagConnection {
 }
 
 extend type Query {
-  "Returns a tag from a provided tag ID or slug. Tags with isVisible set to false are excluded by default."
-  tag(
-    "Slug or ID of Tag"
-    slugOrId: String,
-
-    "Set to true if you want to include tags that have isVisible set to false"
-    shouldIncludeInvisible: Boolean = false
-  ): Tag
-
   "Returns a paged list of tags for a shop. You must include a shopId when querying."
   tags(
     "Only tags associated with this shop will be returned"
