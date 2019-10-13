@@ -13,9 +13,8 @@
  */
 export default async function buildContext(context, request = {}) {
   // To support mocking the user in integration tests, we respect `context.user` if already set
-  if (!context.user && typeof context.getUserByAuthToken === "function") {
-    const user = await context.getUserByAuthToken(context, request.headers.authorization);
-    context.user = user || null;
+  if (!context.user) {
+    context.user = request.user || null;
   }
 
   const userId = (context.user && context.user._id) || null;
