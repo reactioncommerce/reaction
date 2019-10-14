@@ -1,5 +1,5 @@
+import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import getPaginatedResponse from "./getPaginatedResponse";
-import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 import {
   restore as restore$applyBeforeAfterToFilter,
   rewire as rewire$applyBeforeAfterToFilter
