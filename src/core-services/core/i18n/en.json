@@ -11,6 +11,9 @@
         "select": "Select currency"
       },
       "admin": {
+        "landing": {
+          "createFirstShop": "Create Your First Shop"
+        },
         "shortcut": {
           "addProductLabel": "Add product",
           "accountsLabel": "Accounts"
