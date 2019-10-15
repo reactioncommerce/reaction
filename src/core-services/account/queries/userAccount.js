@@ -13,13 +13,13 @@ export default async function userAccountQuery(context, id) {
   const { collections, userHasPermission, userId } = context;
   const { Accounts } = collections;
 
-  const userAccount = await Accounts.findOne({ _id: id });
-  if (!userAccount) throw new ReactionError("not-found", "No account found");
+  const account = await Accounts.findOne({ _id: id });
+  if (!account) throw new ReactionError("not-found", "No account found");
 
   // Check to make sure current user has permissions to view queried user
-  if (userId !== id && !userHasPermission(["reaction-accounts"], userAccount.shopId)) {
+  if (userId !== account.userId && !userHasPermission(["reaction-accounts"], account.shopId)) {
     throw new ReactionError("access-denied", "User does not have permission");
   }
 
-  return userAccount;
+  return account;
 }
