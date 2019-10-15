@@ -2,6 +2,7 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
+import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 
 const inputSchema = new SimpleSchema({
   currencyCode: {
@@ -42,7 +43,6 @@ async function createPackagesForShop(context, shopId) {
       // autoEnable no longer does anything. All are enabled by default.
       enabled: true,
       icon: config.icon,
-      layout: config.layout,
       name: config.name,
       registry: config.registry,
       version: config.version,
@@ -81,6 +81,7 @@ export default async function createShop(context, input) {
   inputSchema.validate(input || {});
 
   const {
+    accountId,
     appEvents,
     collections,
     rootUrl,
@@ -112,6 +113,7 @@ export default async function createShop(context, input) {
     name,
     paymentMethods: [],
     shopType: type || "primary",
+    slug: getSlug(name),
     timezone: defaultTimezone || "US/Pacific",
     unitsOfLength: [{
       uol: "in",
@@ -156,10 +158,18 @@ export default async function createShop(context, input) {
     throw new ReactionError("server-error", "Unable to create shop");
   }
 
+  const newShopId = shop._id;
+
   try {
-    await createPackagesForShop(context, shop._id);
+    await createPackagesForShop(context, newShopId);
+
+    // Create account groups for the new shop
+    await context.mutations.createAuthGroupsForShop(context, newShopId);
+
+    // Give the shop creator "owner" permissions
+    await context.mutations.addAccountToGroupBySlug(context, { accountId, groupSlug: "owner", shopId: newShopId });
   } catch (error) {
-    Logger.error(error, "Error in createPackagesForShop");
+    Logger.error(error, "Error after creating shop");
   }
 
   await appEvents.emit("afterShopCreate", { createdBy: userId, shop });

@@ -5,18 +5,19 @@ import {
   defaultOwnerRoles,
   defaultShopManagerRoles,
   defaultVisitorRoles
-} from "./defaultRoles.js";
+} from "../util/defaultRoles.js";
+import addPluginRolesToGroups from "../util/addPluginRolesToGroups.js";
 
 /**
- * @name createGroups
+ * @name createAuthGroupsForShop
  * @method
  * @memberof Core
- * @summary creates groups for a shop
+ * @summary Creates all auth groups for a shop
  * @param {Object} context App context
  * @param {String} shopId ID of shop to create the group for
  * @returns {undefined}
  */
-export default async function createGroups(context, shopId) {
+export default async function createAuthGroupsForShop(context, shopId) {
   const {
     collections: {
       Groups,
@@ -50,4 +51,6 @@ export default async function createGroups(context, shopId) {
   });
 
   await Promise.all(promises);
+
+  await addPluginRolesToGroups(context, shopId);
 }
