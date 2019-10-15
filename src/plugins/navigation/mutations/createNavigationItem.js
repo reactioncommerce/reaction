@@ -15,7 +15,7 @@ export default async function createNavigationItem(context, navigationItem) {
 
   const { metadata, draftData = {} } = navigationItem;
 
-  const shopId = navigationItem.shopId || await context.queries.primaryShopId(collections);
+  const shopId = navigationItem.shopId || await context.queries.primaryShopId(context);
 
   if (!context.isInternalCall && !userHasPermission(["core"], shopId)) {
     throw new ReactionError("access-denied", "You do not have permission to create a navigation item");

@@ -15,7 +15,7 @@ export default async function updateNavigationTree(context, _id, navigationTree)
   const { collections, userHasPermission } = context;
   const { NavigationTrees } = collections;
 
-  const shopId = await context.queries.primaryShopId(collections);
+  const shopId = await context.queries.primaryShopId(context);
   const {
     shouldNavigationTreeItemsBeAdminOnly,
     shouldNavigationTreeItemsBePubliclyVisible,

@@ -13,7 +13,7 @@ export default async function publishNavigationChanges(context, _id) {
   const { collections, userHasPermission } = context;
   const { NavigationItems, NavigationTrees } = collections;
 
-  const shopId = await context.queries.primaryShopId(context.collections);
+  const shopId = await context.queries.primaryShopId(context);
 
   if (!context.isInternalCall && !userHasPermission(["core"], shopId)) {
     throw new ReactionError("access-denied", "You do not have permission to publish a navigation tree");
