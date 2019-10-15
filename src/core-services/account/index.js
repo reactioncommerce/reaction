@@ -142,23 +142,6 @@ export default async function register(app) {
       label: "Account Invite",
       permission: "accountInvite",
       name: "account/invite"
-    }],
-    layout: [{
-      layout: "coreLayout",
-      workflow: "coreAccountsWorkflow",
-      collection: "Accounts",
-      theme: "default",
-      enabled: true,
-      structure: {
-        template: "accountsDashboard",
-        layoutHeader: "NavBar",
-        layoutFooter: "",
-        notFound: "notFound",
-        dashboardHeader: "dashboardHeader",
-        dashboardControls: "",
-        dashboardHeaderControls: "",
-        adminControlsFooter: "adminControlsFooter"
-      }
     }]
   });
 }

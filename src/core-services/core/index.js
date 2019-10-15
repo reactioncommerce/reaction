@@ -28,30 +28,6 @@ export default async function register(app) {
         appId: "",
         refreshPeriod: "every 1 hour"
       }
-    },
-    layout: [{
-      layout: "coreLayout",
-      workflow: "coreWorkflow",
-      theme: "default",
-      enabled: true,
-      structure: {
-        template: "products",
-        layoutHeader: "NavBar",
-        layoutFooter: "Footer",
-        notFound: "productNotFound",
-        dashboardControls: "dashboardControls",
-        adminControlsFooter: "adminControlsFooter"
-      }
-    }, {
-      layout: "coreLayout",
-      workflow: "coreWorkflow",
-      theme: "default",
-      enabled: true,
-      structure: {
-        template: "unauthorized",
-        layoutHeader: "NavBar",
-        layoutFooter: "Footer"
-      }
-    }]
+    }
   });
 }

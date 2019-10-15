@@ -49,7 +49,6 @@ export default async function upsertPackages(context) {
         // autoEnable no longer does anything. All are enabled by default.
         enabled: true,
         icon: config.icon,
-        layout: config.layout,
         name: config.name,
         registry: config.registry,
         version: config.version,
@@ -77,9 +76,6 @@ export default async function upsertPackages(context) {
     }
   }
   /* eslint-enable no-await-in-loop */
-
-  // Save layouts array on all shops
-  await Shops.updateMany({}, { $set: { layout: layouts } });
 
   // Now delete Packages documents for any plugins that are not present
   await Packages.deleteMany({

@@ -68,7 +68,6 @@ export default async function register(app) {
       label: "Order View",
       permission: "orderView",
       name: "order/view"
-    }],
-    layout: []
+    }]
   });
 }
