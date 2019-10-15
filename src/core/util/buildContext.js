@@ -1,3 +1,5 @@
+import Logger from "@reactioncommerce/logger";
+
 /**
  * @name buildContext
  * @method
@@ -20,14 +22,6 @@ export default async function buildContext(context, request = {}) {
   const userId = (context.user && context.user._id) || null;
   context.userId = userId;
 
-  let account;
-  if (userId && typeof context.getAccountByUserId === "function") {
-    account = await context.getAccountByUserId(context, userId);
-  }
-
-  context.account = account || null;
-  context.accountId = (account && account._id) || null;
-
   if (userId) {
     if (typeof context.auth.getHasPermissionFunctionForUser === "function") {
       context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
@@ -44,6 +38,31 @@ export default async function buildContext(context, request = {}) {
     context.userHasPermission = () => false;
     context.shopsUserHasPermissionFor = () => [];
   }
+
+  let account;
+  if (userId && typeof context.auth.accountByUserId === "function") {
+    account = await context.auth.accountByUserId(context, userId);
+
+    // Create an account the first time a user makes a request
+    if (!account) {
+      try {
+        Logger.debug(`Creating missing account for user ID ${userId}`);
+        account = await context.mutations.createAccount({ ...context, isInternalCall: true }, {
+          emails: context.user.emails && context.user.emails.map((rec) => ({ ...rec, provides: rec.provides || "default" })),
+          name: context.user.name,
+          profile: context.user.profile || {},
+          userId
+        });
+      } catch (error) {
+        // We might have had a unique index error if account already exists due to timing
+        account = await context.auth.accountByUserId(context, userId);
+        if (!account) Logger.error(error, "Creating missing account failed");
+      }
+    }
+  }
+
+  context.account = account || null;
+  context.accountId = (account && account._id) || null;
 
   // Make some request headers available to resolvers on context, but remove any
   // with potentially sensitive information in them.
