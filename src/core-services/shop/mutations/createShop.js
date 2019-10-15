@@ -1,8 +1,8 @@
 import SimpleSchema from "simpl-schema";
+import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 
 const inputSchema = new SimpleSchema({
   currencyCode: {
