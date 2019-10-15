@@ -9,6 +9,7 @@ import tokenMiddleware from "./util/tokenMiddleware.js";
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
 import { getShopsUserHasPermissionForFunctionForUser } from "./util/shopsUserHasPermissionFor.js";
 import accountByUserId from "./util/accountByUserId.js";
+import { Account } from "./simpleSchemas.js";
 
 const ENROLL_URI_BASE = "account/enroll";
 
@@ -75,6 +76,9 @@ export default async function register(app) {
         fn: tokenMiddleware
       }
     ],
+    simpleSchemas: {
+      Account
+    },
     settings: {},
     registry: [{
       route: "/dashboard/accounts",

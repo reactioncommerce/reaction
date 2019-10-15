@@ -1,4 +1,5 @@
 import SimpleSchema from "simpl-schema";
+import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import sendWelcomeEmail from "../util/sendWelcomeEmail.js";
 
@@ -6,8 +7,7 @@ const inputSchema = new SimpleSchema({
   "emails": Array,
   "emails.$": {
     type: Object,
-    blackbox: true,
-    optional: true
+    blackbox: true
   },
   "name": {
     type: String,
@@ -18,12 +18,11 @@ const inputSchema = new SimpleSchema({
     blackbox: true,
     optional: true
   },
-  "shopId": String,
-  "userId": String,
-  "verificationToken": {
+  "shopId": {
     type: String,
     optional: true
-  }
+  },
+  "userId": String
 });
 
 /**
@@ -37,23 +36,30 @@ const inputSchema = new SimpleSchema({
  * @param {String} [input.profile] - Profile object
  * @param {String} input.shopId - shop to create account for
  * @param {String} input.userId - userId account was created from
- * @param {String} [input.verificationToken] - token for account verification
  * @return {Promise<Object>} with boolean of found new account === true || false
  */
 export default async function createAccount(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections, userId: authUserId, userHasPermission } = context;
-  const { Accounts, Groups } = collections;
+
+  const {
+    appEvents,
+    collections: { Accounts, Groups },
+    simpleSchemas: {
+      Account: AccountSchema
+    },
+    userId: authUserId,
+    userHasPermission
+  } = context;
+
   const {
     emails,
-    name,
+    name = null,
     profile,
-    shopId,
-    userId,
-    verificationToken
+    shopId = null,
+    userId
   } = input;
 
-  if (!context.isInternalCall && !userHasPermission(["reaction-accounts", "account/invite"], shopId)) {
+  if (shopId && !context.isInternalCall && !userHasPermission(["reaction-accounts", "account/invite"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
@@ -71,13 +77,23 @@ export default async function createAccount(context, input) {
     userId
   };
 
-  const group = await Groups.findOne({ slug: "customer", shopId });
+  let groupSlug = "customer"; // Default is to put new accounts into the "customer" permission group
+
+  // The identity provider service gives the first created user the global "owner" role. When we
+  // create an account for this user, they should be assigned to the "owner" group.
+  if (authUserId === userId && userHasPermission(["owner"])) groupSlug = "owner";
+
+  const group = await Groups.findOne({ slug: groupSlug, shopId });
   account.groups = group ? [group._id] : [];
+
+  AccountSchema.validate(account);
 
   await Accounts.insertOne(account);
 
-  if (verificationToken) {
-    await sendWelcomeEmail(context, { shopId, token: verificationToken, userId });
+  try {
+    await sendWelcomeEmail(context, { accountId: account._id });
+  } catch (error) {
+    Logger.error(error, "Error sending welcome email but account was created");
   }
 
   await appEvents.emit("afterAccountCreate", {

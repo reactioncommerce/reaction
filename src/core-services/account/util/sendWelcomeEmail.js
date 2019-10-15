@@ -1,10 +1,9 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
+import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
 
 const inputSchema = new SimpleSchema({
-  shopId: String,
-  token: String,
-  userId: String
+  accountId: String
 });
 
 /**
@@ -13,21 +12,33 @@ const inputSchema = new SimpleSchema({
  * @method
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
- * @param {String} input.shopId - shopId of new User
- * @param {String} input.token - the token for the verification URL
- * @param {String} input.userId - new userId to welcome
+ * @param {String} input.accountId - new userId to welcome
  * @returns {Boolean} returns true on success
  */
 export default async function sendWelcomeEmail(context, input) {
   inputSchema.validate(input);
   const { collections } = context;
-  const { Accounts, Shops } = collections;
-  const { shopId, token, userId } = input;
+  const { Accounts, Shops, users } = collections;
+  const { accountId } = input;
 
-  const account = await Accounts.findOne({ userId });
+  const account = await Accounts.findOne({ _id: accountId });
+  if (!account) throw new Error(`Account with ID ${accountId} not found`);
 
-  // Anonymous users don't receive a welcome email
-  if (!account || !account.emails || !account.emails.length > 0) return false;
+  const userEmail = account.emails && account.emails[0];
+
+  // Verify that we have an account and it has an email address that isn't yet verified
+  if (!userEmail || userEmail.verified) return false;
+
+  const { shopId, userId } = account;
+
+  // Generate a token for the user to verify their email address
+  const tokenObj = generateVerificationTokenObject({ address: userEmail.address });
+
+  await users.updateOne({ _id: userId }, {
+    $push: {
+      "services.email.verificationTokens": tokenObj
+    }
+  });
 
   const shop = await Shops.findOne({ _id: shopId });
 
@@ -63,10 +74,9 @@ export default async function sendWelcomeEmail(context, input) {
         link: "https://www.twitter.com"
       }
     },
-    verificationUrl: context.getAbsoluteUrl(`#/verify-email/${token}`)
+    verificationUrl: context.getAbsoluteUrl(`#/verify-email/${tokenObj.token}`)
   };
 
-  const userEmail = account.emails[0].address;
   const language = (account.profile && account.profile.language) || shop.language;
 
   await context.mutations.sendEmail(context, {
@@ -74,7 +84,7 @@ export default async function sendWelcomeEmail(context, input) {
     fromShop: shop,
     templateName: "accounts/sendWelcomeEmail",
     language,
-    to: userEmail
+    to: userEmail.address
   });
 
   return true;
