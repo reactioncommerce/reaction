@@ -1,5 +1,5 @@
-import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
   accountId: String,
