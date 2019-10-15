@@ -1,5 +1,5 @@
 
-"Input parameters for the createShopLogoUrls mutation"
+"Input parameters for the `createShop` mutation"
 input CreateShopInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
