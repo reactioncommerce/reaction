@@ -42,21 +42,6 @@ export default async function register(app) {
           dashboardSize: "md"
         }
       }
-    }],
-    layout: [{
-      layout: "coreLayout",
-      workflow: "coreEmailWorkflow",
-      theme: "default",
-      enabled: true,
-      structure: {
-        template: "email",
-        layoutHeader: "NavBar",
-        layoutFooter: "",
-        notFound: "notFound",
-        dashboardHeader: "dashboardHeader",
-        dashboardControls: "dashboardControls",
-        adminControlsFooter: "adminControlsFooter"
-      }
     }]
   });
 }

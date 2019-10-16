@@ -10,7 +10,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {Object} arts.input.shopLogoUrls - An object containing the shop logo urls to update
  * @param {Object} args.input.storefrontUrls - An object containing storefront url locations
  * @param {Object} context - an object containing the per-request state
- * @returns {Promise<Object>} ShopsPayload
+ * @returns {Promise<Object>} UpdateShopPayload
  */
 export default async function updateShop(_, { input }, context) {
   const {

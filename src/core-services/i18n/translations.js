@@ -58,6 +58,7 @@ export function addTranslationRoutes(expressApp) {
       }
     }
 
+    res.header("Access-Control-Allow-Origin", "*");
     res.json(filteredResources);
   });
 
@@ -65,6 +66,7 @@ export function addTranslationRoutes(expressApp) {
   // it wants -- we provide a route where the browser code can get the full list
   // on page load.
   expressApp.get(GET_NAMESPACES_PATH, (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     res.json(namespaces);
   });
 }

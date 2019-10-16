@@ -1,3 +1,5 @@
+import Logger from "@reactioncommerce/logger";
+
 /**
  * @name buildContext
  * @method
@@ -13,31 +15,61 @@
  */
 export default async function buildContext(context, request = {}) {
   // To support mocking the user in integration tests, we respect `context.user` if already set
-  if (!context.user && typeof context.getUserByAuthToken === "function") {
-    const user = await context.getUserByAuthToken(context, request.headers.authorization);
-    context.user = user || null;
+  if (!context.user) {
+    context.user = request.user || null;
   }
 
   const userId = (context.user && context.user._id) || null;
   context.userId = userId;
 
+  if (userId) {
+    if (typeof context.auth.getHasPermissionFunctionForUser === "function") {
+      context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
+    } else {
+      context.userHasPermission = () => false;
+    }
+
+    if (typeof context.auth.getShopsUserHasPermissionForFunctionForUser === "function") {
+      context.shopsUserHasPermissionFor = await context.auth.getShopsUserHasPermissionForFunctionForUser(context);
+    } else {
+      context.shopsUserHasPermissionFor = () => [];
+    }
+  } else {
+    context.userHasPermission = () => false;
+    context.shopsUserHasPermissionFor = () => [];
+  }
+
   let account;
-  if (userId && typeof context.getAccountByUserId === "function") {
-    account = await context.getAccountByUserId(context, userId);
+  if (userId && typeof context.auth.accountByUserId === "function") {
+    account = await context.auth.accountByUserId(context, userId);
+
+    // Create an account the first time a user makes a request
+    if (!account) {
+      try {
+        Logger.debug(`Creating missing account for user ID ${userId}`);
+        account = await context.mutations.createAccount({ ...context, isInternalCall: true }, {
+          emails: context.user.emails && context.user.emails.map((rec) => ({ ...rec, provides: rec.provides || "default" })),
+          name: context.user.name,
+          profile: context.user.profile || {},
+          userId
+        });
+      } catch (error) {
+        // We might have had a unique index error if account already exists due to timing
+        account = await context.auth.accountByUserId(context, userId);
+        if (!account) Logger.error(error, "Creating missing account failed");
+      }
+    }
   }
 
   context.account = account || null;
   context.accountId = (account && account._id) || null;
-
-  if (userId && typeof context.getUserHasPermissionFunction === "function") {
-    context.userHasPermission = await context.getUserHasPermissionFunction(context);
-  }
 
   // Make some request headers available to resolvers on context, but remove any
   // with potentially sensitive information in them.
   context.requestHeaders = { ...request.headers };
   delete context.requestHeaders.authorization;
   delete context.requestHeaders.cookie;
+  delete context.requestHeaders["meteor-login-token"];
 
   // Reset isInternalCall in case it has been incorrectly changed
   context.isInternalCall = false;

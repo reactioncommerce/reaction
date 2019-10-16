@@ -39,11 +39,8 @@ type Shop implements Node {
   "URLs for various shop assets in various sizes"
   brandAssets: ShopBrandAssets
 
-  "List of all currency definitions for the shop"
-  currencies: [Currency]
-
   "The default shop currency"
-  currency: Currency
+  currency: Currency!
 
   "The default navigation tree for this shop"
   defaultNavigationTree(
@@ -57,14 +54,14 @@ type Shop implements Node {
   "The ID of the shop's default navigation tree"
   defaultNavigationTreeId: String
 
-  "Returns shop description"
+  "Shop description"
   description: String
 
-  "Returns shop language"
-  language: String
+  "Shop default language"
+  language: String!
 
-  "Returns shop name"
-  name: String
+  "Shop name"
+  name: String!
 
   "Returns URLs for shop logos"
   shopLogoUrls: ShopLogoUrls
@@ -72,32 +69,8 @@ type Shop implements Node {
   "Returns URLs for various storefront routes"
   storefrontUrls: StorefrontUrls
 
-  "Returns a paged list of tags for this shop"
-  tags(
-    "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
-    isTopLevel: Boolean,
-
-    "Set to true if you want soft deleted tags to be included in the response"
-    shouldIncludeDeleted: Boolean = false,
-
-    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
-
-    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
-
-    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
-    first: ConnectionLimitInt,
-
-    "Return at most this many results. This parameter may be used with the `before` parameter."
-    last: ConnectionLimitInt,
-
-    "Return results sorted in this order"
-    sortOrder: SortOrder = asc,
-
-    "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
-    sortBy: TagSortByField = position
-  ): TagConnection
+  "Shop default timezone"
+  timezone: String!
 }
 
 extend type Query {

@@ -30,7 +30,8 @@ export default async function addAccountToGroup(context, input) {
       Groups,
       users
     },
-    user
+    user,
+    userHasPermission
   } = context;
 
   const groupToMoveUserTo = await Groups.findOne({ _id: groupId });
@@ -42,11 +43,11 @@ export default async function addAccountToGroup(context, input) {
   // has all permissions granted by that group.
   // We can't use `userHasPermission` here because we want to make sure they
   // have ALL the permissions rather than ANY.
-  // Accounts in the "Owner" group are able to add any user to any group,
-  // regardless of other permissions.
+  // Accounts in the "owner" group and users with the global "owner" permission
+  // are able to add any user to any group, regardless of other permissions.
   const ownerGroup = await Groups.findOne({ name: "owner" });
   const contextUserAccount = await Accounts.findOne({ _id: user._id });
-  const isOwnerAccount = !!ownerGroup && contextUserAccount.groups.includes(ownerGroup._id);
+  const isOwnerAccount = (!!ownerGroup && contextUserAccount.groups.includes(ownerGroup._id)) || userHasPermission(["owner"]);
 
   if (!context.isInternalCall && !isOwnerAccount && _.difference(groupPermissions, user.roles[shopId] || []).length > 0) {
     throw new ReactionError("access-denied", "Access Denied");
@@ -103,7 +104,7 @@ export default async function addAccountToGroup(context, input) {
   });
 
   // Save updated groups list, making sure user only belongs to one group per shop
-  const newGroups = (account.groups || []).filter((grp) => allGroupIDsInShop.indexOf(grp) === -1);
+  const newGroups = (account.groups || []).filter((grp) => !allGroupIDsInShop.includes(grp));
   newGroups.push(groupId);
   await Accounts.updateOne({ _id: accountId }, { $set: { groups: newGroups } });
 

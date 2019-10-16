@@ -61,21 +61,6 @@ export default async function register(app) {
       label: "Edit Tag",
       permission: "tagEdit",
       name: "tag/edit"
-    }],
-    layout: [{
-      layout: "coreLayout",
-      workflow: "coreTagWorkflow",
-      theme: "default",
-      enabled: true,
-      structure: {
-        template: "tagSettings",
-        layoutHeader: "NavBar",
-        layoutFooter: "",
-        notFound: "notFound",
-        dashboardHeader: "dashboardHeader",
-        dashboardControls: "dashboardControls",
-        adminControlsFooter: "adminControlsFooter"
-      }
     }]
   });
 }

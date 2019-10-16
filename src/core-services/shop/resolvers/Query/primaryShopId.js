@@ -11,6 +11,6 @@ import { encodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<String>} The shop ID based on the domain in ROOT_URL
  */
 export default async function primaryShopId(_, __, context) {
-  const shopId = await context.queries.primaryShopId(context.collections);
+  const shopId = await context.queries.primaryShopId(context);
   return encodeShopOpaqueId(shopId);
 }

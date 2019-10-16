@@ -57,3 +57,12 @@ typings/
 # dotenv environment variables file
 .env
 .env.local
+
+# Because we have older branches that are Meteor, we ignore `.meteor` folder. Otherwise when
+# switching between branches, the `.meteor/local` files pollute the Git changes.
+.meteor
+
+# Auto-populated plugin files
+client/plugins.js
+client/plugins.less
+server/plugins.js

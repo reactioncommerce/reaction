@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import layouts from "./layouts.js";
 
 /**
  * @param {Object} context App context
@@ -22,6 +21,7 @@ export default async function upsertPackages(context) {
   let loadedIndex = 1;
 
   /* eslint-disable no-await-in-loop */
+  const layouts = [];
   for (const config of Object.values(registeredPlugins)) {
     // Build a single combined layouts list to save on all shops later
     if (config.layout) {
@@ -49,7 +49,6 @@ export default async function upsertPackages(context) {
         // autoEnable no longer does anything. All are enabled by default.
         enabled: true,
         icon: config.icon,
-        layout: config.layout,
         name: config.name,
         registry: config.registry,
         version: config.version,
@@ -77,9 +76,6 @@ export default async function upsertPackages(context) {
     }
   }
   /* eslint-enable no-await-in-loop */
-
-  // Save layouts array on all shops
-  await Shops.updateMany({}, { $set: { layout: layouts } });
 
   // Now delete Packages documents for any plugins that are not present
   await Packages.deleteMany({

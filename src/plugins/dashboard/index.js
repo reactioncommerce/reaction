@@ -53,22 +53,6 @@ export default async function register(app) {
       container: "dashboard",
       template: "optionsShopSettings",
       showForShopTypes: ["primary"]
-    }],
-    layout: [{
-      layout: "coreLayout",
-      workflow: "coreDashboardWorkflow",
-      theme: "default",
-      enabled: true,
-      structure: {
-        template: "dashboardPackages",
-        layoutHeader: "NavBar",
-        layoutFooter: "",
-        notFound: "notFound",
-        dashboardHeader: "dashboardHeader",
-        dashboardControls: "dashboardControls",
-        dashboardHeaderControls: "dashboardHeaderControls",
-        adminControlsFooter: "adminControlsFooter"
-      }
     }]
   });
 }

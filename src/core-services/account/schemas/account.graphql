@@ -47,9 +47,6 @@ input CreateAccountInput {
 
   "Username on service used to create account"
   username: String
-
-  "Token used to send account verification emails"
-  verificationToken: String
 }
 
 "Describes changes that should be applied to one of the addresses for an account"
