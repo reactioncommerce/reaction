@@ -1,6 +1,7 @@
 /* node-app imports */
 /* core-services */
 import registerAccountsPlugin from "./core-services/account/index.js";
+import registerAuthorizationPlugin from "./core-services/authorization/index.js";
 import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerCartPlugin from "./core-services/cart/index.js";
 import registerCorePlugin from "./core-services/core/index.js";
@@ -79,6 +80,11 @@ export default async function registerPlugins(app) {
    * Accounts
    */
   await registerAccountsPlugin(app); // REQUIRED
+
+  /**
+   * Authorization
+   */
+  await registerAuthorizationPlugin(app); // REQUIRED
 
   /**
    * Catalog
