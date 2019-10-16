@@ -5,7 +5,7 @@ import {
   CatalogProduct,
   CatalogProductOption,
   CatalogProductVariant
-} from "/imports/node-app/core-services/catalog/simpleSchemas.js";
+} from "../../src/core-services/catalog/simpleSchemas.js";
 
 import {
   Cart,
@@ -13,11 +13,11 @@ import {
   CartInvoice,
   CartItem,
   ShipmentQuote
-} from "/imports/node-app/core-services/cart/simpleSchemas.js";
+} from "../../src/core-services/cart/simpleSchemas.js";
 
 import {
   extendInventorySchemas
-} from "/imports/node-app/core-services/inventory/simpleSchemas.js";
+} from "../../src/core-services/inventory/simpleSchemas.js";
 
 import {
   CommonOrder,
@@ -32,34 +32,34 @@ import {
   OrderItem,
   orderItemInputSchema,
   Payment
-} from "/imports/node-app/core-services/orders/simpleSchemas.js";
+} from "../../src/core-services/orders/simpleSchemas.js";
 
 import {
   Account,
   AccountProfileAddress,
   Group
-} from "/imports/node-app/core-services/account/simpleSchemas.js";
+} from "../../src/core-services/account/simpleSchemas.js";
 
 import {
   Product,
   ProductVariant
-} from "/imports/node-app/core-services/product/simpleSchemas.js";
+} from "../../src/core-services/product/simpleSchemas.js";
 
 import {
   Shop
-} from "/imports/node-app/core-services/shop/simpleSchemas.js";
+} from "../../src/core-services/shop/simpleSchemas.js";
 
 import {
   Tag
-} from "/imports/node-app/core-services/tags/simpleSchemas.js";
+} from "../../src/core-services/tags/simpleSchemas.js";
 
 import {
   extendTaxesSchemas
-} from "/imports/node-app/core-services/taxes/simpleSchemas.js";
+} from "../../src/core-services/taxes/simpleSchemas.js";
 
 import {
   extendSimplePricingSchemas
-} from "/imports/node-app/plugins/simple-pricing/simpleSchemas.js";
+} from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
 const schemasToAddToFactory = {
   Account,
