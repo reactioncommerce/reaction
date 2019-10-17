@@ -93,7 +93,7 @@ test("throws if the fromFulfillmentGroup doesn't exist", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -130,7 +130,7 @@ test("throws if the toFulfillmentGroup doesn't exist", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -183,7 +183,7 @@ test("throws if an order item doesn't exist", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -380,7 +380,7 @@ test("throws if the from group would have no items remaining", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 0
@@ -447,7 +447,7 @@ test("throws if the database update fails", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 0
@@ -578,7 +578,7 @@ test("moves items", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

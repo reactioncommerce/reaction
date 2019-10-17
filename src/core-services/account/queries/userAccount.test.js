@@ -30,7 +30,7 @@ test("returns the account without calling userHasPermission if the user ID is th
 });
 
 test("returns the account if the user ID is not the context user ID but userHasPermission returns true", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeAccount);
   const result = await userAccountQuery(mockContext, fakeAccountId);
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["reaction-accounts"], fakeAccount.shopId);

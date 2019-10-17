@@ -12,7 +12,7 @@ test("throws if userHasPermission returns false", async () => {
 });
 
 test("returns roles cursor if user has permission", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockContext.collections.roles.find.mockReturnValueOnce("CURSOR");
   const result = await rolesQuery(mockContext);
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin"], mockContext.shopId);

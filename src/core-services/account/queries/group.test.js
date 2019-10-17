@@ -17,7 +17,7 @@ test("throws not-found if the group does not exist", async () => {
 
 test("returns the group if userHasPermission returns true", async () => {
   mockContext.collections.Groups.findOne.mockReturnValueOnce(fakeGroup);
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   const result = await groupQuery(mockContext, fakeGroup._id);
   expect(mockContext.collections.Groups.findOne).toHaveBeenCalledWith({ _id: fakeGroup._id });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin", "reaction-accounts"], fakeGroup.shopId);

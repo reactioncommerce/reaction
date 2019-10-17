@@ -14,7 +14,7 @@ test("throws if userHasPermission returns false", async () => {
 });
 
 test("returns accounts cursor if user has permission", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockContext.collections.users.find.mockReturnValueOnce({
     toArray: () => Promise.resolve([{ _id: "user1" }, { _id: "user2" }])
   });

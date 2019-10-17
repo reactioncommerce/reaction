@@ -89,7 +89,7 @@ test("skips update if one is not necessary", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await updateOrder(mockContext, { orderId: "order1" });
 
@@ -114,7 +114,7 @@ test("updates an order", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

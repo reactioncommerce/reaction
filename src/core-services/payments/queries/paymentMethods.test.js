@@ -37,7 +37,7 @@ test("throws if userHasPermission returns false", async () => {
 });
 
 test("throws if shop not found", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockShopById.mockReturnValueOnce();
 
   await expect(query(mockContext, "nonexistent-shop-id")).rejects.toThrowErrorMatchingSnapshot();
@@ -45,7 +45,7 @@ test("throws if shop not found", async () => {
 });
 
 test("returns all payment methods for a shop", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockShopById.mockReturnValueOnce(fakeShop);
 
   const result = await query(mockContext, mockContext.shopId);
@@ -60,7 +60,7 @@ test("returns all payment methods for a shop", async () => {
 });
 
 test("returns payment methods with correct enabled status", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockShopById.mockReturnValueOnce(fakeShop);
   fakeShop.availablePaymentMethods.push("mockPaymentMethod");
 

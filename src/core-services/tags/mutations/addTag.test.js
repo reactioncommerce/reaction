@@ -6,7 +6,7 @@ beforeEach(() => {
 });
 
 test("calls mutations.addTag and returns the AddTagPayload on success", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockContext.collections.Tags.insertOne.mockReturnValueOnce({ result: { ok: 1 } });
 
   const input = {

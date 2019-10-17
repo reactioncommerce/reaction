@@ -111,7 +111,7 @@ test("throws if paymentId isn't supplied", async () => {
 test("throws if payment doesn't exist", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(createRefund(mockContext, {
     amount: 10,
@@ -124,7 +124,7 @@ test("throws if payment doesn't exist", async () => {
 test("throws if amount is less than $0.01", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(createRefund(mockContext, {
     amount: 0,

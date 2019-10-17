@@ -11,7 +11,7 @@ export default async function deleteNavigationItem(context, _id) {
   const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
 
-  await checkPermissions(["core"]); // TODO: EK - This needs a shopo id?
+  await checkPermissions(["core"]);
 
   const navigationItem = await NavigationItems.findOne({ _id });
   if (!navigationItem) {

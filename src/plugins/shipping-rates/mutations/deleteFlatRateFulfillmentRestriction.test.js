@@ -5,7 +5,7 @@ import deleteFlatRateFulfillmentRestrictionMutation from "./deleteFlatRateFulfil
 
 // Create mock context with FlatRateFulfillmentRestrictions collection
 mockContext.collections.FlatRateFulfillmentRestrictions = mockCollection("FlatRateFulfillmentRestrictions");
-mockContext.userHasPermission.mockReturnValueOnce(true);
+mockContext.checkPermissions.mockReturnValueOnce(null);
 
 const value = {
   type: "deny",

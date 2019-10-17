@@ -87,7 +87,7 @@ test("throws if the order item doesn't exist", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -129,7 +129,7 @@ test("throws if newItemQuantity is equal to item quantity", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -151,7 +151,7 @@ test("throws if newItemQuantity is greater than item quantity", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -192,7 +192,7 @@ test("throws if the database update fails", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
   rewire$updateGroupTotals(mockUpdateGroupTotals);
@@ -307,7 +307,7 @@ test("splits an item", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
   rewire$updateGroupTotals(mockUpdateGroupTotals);

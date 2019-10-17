@@ -27,7 +27,7 @@ test("throws if shopId isn't supplied", async () => {
 });
 
 test("throws if the order doesn't exist", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
@@ -62,7 +62,7 @@ test("throws if permission check fails", async () => {
 });
 
 test("updates an order status", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "abc",

@@ -14,7 +14,7 @@ test("throws if permission check fails", async () => {
 });
 
 test("throws if the shopId isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(createProduct(mockContext, {
     shopId: undefined

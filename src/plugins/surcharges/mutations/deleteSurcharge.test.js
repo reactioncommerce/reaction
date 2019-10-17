@@ -5,7 +5,7 @@ import deleteSurchargeMutation from "./deleteSurcharge.js";
 
 // Create mock context with Surcharges collection
 mockContext.collections.Surcharges = mockCollection("Surcharges");
-mockContext.userHasPermission.mockReturnValueOnce(true);
+mockContext.checkPermissions.mockReturnValueOnce(null);
 
 const value = {
   type: "surcharge",

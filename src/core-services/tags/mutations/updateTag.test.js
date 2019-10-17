@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 test("calls mutations.updateTag and returns the UpdateTagPayload on success", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockContext.collections.Tags.updateOne.mockReturnValueOnce({ result: { n: 1 } });
   mockContext.collections.Tags.findOne.mockReturnValueOnce({
     _id: "5678",

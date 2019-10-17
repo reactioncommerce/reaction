@@ -5,7 +5,7 @@ import createFlatRateFulfillmentRestrictionMutation from "./createFlatRateFulfil
 
 // Create mock context with FlatRateFulfillmentRestrictions collection
 mockContext.collections.FlatRateFulfillmentRestrictions = mockCollection("FlatRateFulfillmentRestrictions");
-mockContext.userHasPermission.mockReturnValueOnce(true);
+mockContext.checkPermissions.mockReturnValueOnce(null);
 
 test("add a flat rate fulfillment restriction", async () => {
   mockContext.collections.FlatRateFulfillmentRestrictions.insertOne.mockReturnValueOnce(Promise.resolve({}));

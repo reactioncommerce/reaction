@@ -9,7 +9,7 @@ beforeEach(() => {
 });
 
 test("calls mutations.removeTag and returns the RemoveTagPayload on success", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
   mockContext.collections.Tags.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });
   mockContext.collections.Tags.findOne.mockReturnValueOnce({
     shopId: testShopId,

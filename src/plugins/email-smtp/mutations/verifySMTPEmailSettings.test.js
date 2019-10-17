@@ -28,7 +28,7 @@ test("throws if permission check fails", async () => {
 });
 
 test("throws if password isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(verifySMTPEmailSettings(mockContext, {
     host,
@@ -40,7 +40,7 @@ test("throws if password isn't supplied", async () => {
 });
 
 test("throws if service isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(verifySMTPEmailSettings(mockContext, {
     host,
@@ -52,7 +52,7 @@ test("throws if service isn't supplied", async () => {
 });
 
 test("throws if user isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(verifySMTPEmailSettings(mockContext, {
     host,

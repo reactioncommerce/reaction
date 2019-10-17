@@ -15,7 +15,7 @@ test("throws if permission check fails", async () => {
 });
 
 test("throws if the productIds isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(cloneProducts(mockContext, {
     productIds: undefined,
@@ -24,7 +24,7 @@ test("throws if the productIds isn't supplied", async () => {
 });
 
 test("throws if the shopId isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(cloneProducts(mockContext, {
     productIds: ["PRODUCT_ID_1", "PRODUCT_ID_2"],

@@ -34,7 +34,7 @@ test("throws if the order fulfillment group doesn't exist", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await expect(updateOrderFulfillmentGroup(mockContext, {
     orderId: "order1",
@@ -113,7 +113,7 @@ test("skips update if one is not necessary", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   await updateOrderFulfillmentGroup(mockContext, { orderId: "order1", orderFulfillmentGroupId: "group1" });
 
@@ -139,7 +139,7 @@ test("updates an order fulfillment group", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(null);
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,
