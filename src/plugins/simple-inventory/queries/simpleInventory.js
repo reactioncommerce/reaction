@@ -1,5 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { ProductConfigurationSchema } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
