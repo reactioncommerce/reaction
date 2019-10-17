@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name buildContext
@@ -28,6 +29,11 @@ export default async function buildContext(context, request = {}) {
     } else {
       context.userHasPermission = () => false;
     }
+
+    context.checkPermissions = async (...args) => {
+      const allowed = await context.userHasPermission(...args);
+      if (!allowed) throw new ReactionError("access-denied", "Access Denied");
+    };
 
     if (typeof context.auth.getShopsUserHasPermissionForFunctionForUser === "function") {
       context.shopsUserHasPermissionFor = await context.auth.getShopsUserHasPermissionForFunctionForUser(context);

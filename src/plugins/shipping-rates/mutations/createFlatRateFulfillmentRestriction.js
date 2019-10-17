@@ -20,12 +20,10 @@ export default async function createFlatRateFulfillmentRestrictionMutation(conte
   inputSchema.validate(cleanedInput);
 
   const { restriction, shopId } = cleanedInput;
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["admin", "owner", "shipping"], shopId);
 
   const { insertedCount } = await FlatRateFulfillmentRestrictions.insertOne({
     _id: Random.id(),

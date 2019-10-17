@@ -13,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function ordersByAccountId(context, { accountId, orderStatus, shopIds } = {}) {
-  const { accountId: contextAccountId, collections, shopsUserHasPermissionFor, userHasPermission } = context;
+  const { accountId: contextAccountId, checkPermissions, collections, shopsUserHasPermissionFor } = context;
   const { Orders } = collections;
 
   if (!accountId) {
@@ -42,10 +42,8 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
       const shopIdsUserHasPermissionFor = shopsUserHasPermissionFor("orders");
       query.shopId = { $in: shopIdsUserHasPermissionFor };
     } else {
-      shopIds.forEach((shopId) => {
-        if (!userHasPermission(["orders", "order/fulfillment"], shopId)) {
-          throw new ReactionError("access-denied", "Access Denied");
-        }
+      shopIds.forEach(async (shopId) => {
+        await checkPermissions(["orders", "order/fulfillment"], shopId);
       });
     }
   }

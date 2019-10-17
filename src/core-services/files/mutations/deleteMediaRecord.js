@@ -9,15 +9,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function deleteMediaRecord(context, input) {
   const {
     appEvents,
+    checkPermissions,
     collections: { Media, MediaRecords },
-    userHasPermission,
     userId
   } = context;
   const { mediaRecordId, shopId } = input;
 
-  if (!userHasPermission(["media/delete"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["media/delete"], shopId);
 
   const mediaRecord = await MediaRecords.findOne({
     "_id": mediaRecordId,

@@ -20,12 +20,10 @@ export default async function updateFlatRateFulfillmentMethodMutation(context, i
   inputSchema.validate(cleanedInput);
 
   const { method, methodId, shopId } = cleanedInput;
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Shipping } = collections;
 
-  if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["admin", "owner", "shipping"], shopId);
 
   // MongoDB schema still uses `enabled` rather than `isEnabled`
   method.enabled = method.isEnabled;

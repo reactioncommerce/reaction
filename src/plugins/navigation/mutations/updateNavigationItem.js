@@ -10,15 +10,13 @@ import { NavigationItemData } from "../simpleSchemas.js";
  * @returns {Promise<Object>} Updated navigation item
  */
 export default async function updateNavigationItem(context, _id, navigationItem) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
   const { draftData, metadata } = navigationItem;
 
   const shopId = await context.queries.primaryShopId(context);
 
-  if (userHasPermission(["core"], shopId) === false) {
-    throw new ReactionError("access-denied", "You do not have permission to update a navigation item");
-  }
+  await checkPermissions(["core"], shopId);
 
   const existingNavigationItem = await NavigationItems.findOne({ _id });
   if (!existingNavigationItem) {

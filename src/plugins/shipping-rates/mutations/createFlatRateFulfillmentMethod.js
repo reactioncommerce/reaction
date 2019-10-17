@@ -20,12 +20,10 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
   inputSchema.validate(cleanedInput);
 
   const { method, shopId } = cleanedInput;
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Shipping } = collections;
 
-  if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["admin", "owner", "shipping"], shopId);
 
   const shippingRecord = await Shipping.findOne({ "provider.name": "flatRates", shopId });
   if (!shippingRecord) {

@@ -1,4 +1,5 @@
 import i18n from "./i18n/index.js";
+import { getCheckPermissionsFunctionForUser } from "./util/checkPermissions.js";
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
 import { getShopsUserHasPermissionForFunctionForUser } from "./util/shopsUserHasPermissionFor.js";
 
@@ -13,6 +14,7 @@ export default async function register(app) {
     name: "reaction-authorization",
     i18n,
     auth: {
+      getCheckPermissionsFunctionForUser,
       getHasPermissionFunctionForUser,
       getShopsUserHasPermissionForFunctionForUser
     }

@@ -12,7 +12,7 @@ import publishProductsToCatalog from "../utils/publishProductsToCatalog.js";
  * @returns {Promise<Object[]>} Array of CatalogItemProduct objects
  */
 export default async function publishProducts(context, productIds) {
-  const { collections, isInternalCall, userHasPermission } = context;
+  const { checkPermissions, collections, isInternalCall } = context;
   const { Catalog, Products } = collections;
 
   // Find all products
@@ -29,10 +29,8 @@ export default async function publishProducts(context, productIds) {
 
   if (!isInternalCall) {
     const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
-    uniqueShopIds.forEach((shopId) => {
-      if (!userHasPermission(["createProduct", "product/admin", "product/publish"], shopId)) {
-        throw new ReactionError("access-denied", "Access Denied");
-      }
+    uniqueShopIds.forEach(async (shopId) => {
+      await checkPermissions(["createProduct", "product/admin", "product/publish"], shopId);
     });
   }
 
