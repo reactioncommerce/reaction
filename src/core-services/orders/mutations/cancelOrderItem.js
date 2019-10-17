@@ -48,7 +48,7 @@ export default async function cancelOrderItem(context, input) {
     reason = null
   } = input;
 
-  const { accountId, appEvents, collections, isInternalCall, userHasPermission, userId } = context;
+  const { accountId, appEvents, checkPermissions, collections, isInternalCall, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
@@ -58,12 +58,8 @@ export default async function cancelOrderItem(context, input) {
   // Allow cancel if the account that placed the order is attempting to cancel
   // or if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (
-    !isInternalCall &&
-    (!accountId || accountId !== order.accountId) &&
-    !userHasPermission(["orders", "order/fulfillment"], order.shopId)
-  ) {
-    throw new ReactionError("access-denied", "Access Denied");
+  if (!isInternalCall && (!accountId || accountId !== order.accountId)) {
+    await checkPermissions(["orders", "order/fulfillment"], order.shopId);
   }
 
   // Is the account calling this mutation also the account that placed the order?

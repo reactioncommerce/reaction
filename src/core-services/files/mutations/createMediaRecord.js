@@ -1,5 +1,4 @@
 import Random from "@reactioncommerce/random";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecord } from "../simpleSchemas.js";
 
 /**
@@ -13,15 +12,13 @@ export default async function createMediaRecord(context, input) {
   const {
     accountId,
     appEvents,
+    checkPermissions,
     collections: { MediaRecords },
-    userHasPermission,
     userId
   } = context;
   const { mediaRecord, shopId } = input;
 
-  if (!userHasPermission(["media/create"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["media/create"], shopId);
 
   const doc = {
     ...mediaRecord,

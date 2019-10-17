@@ -15,7 +15,7 @@ import {
  * @returns {Promise<Object>} Updated app settings for a shop or global app settings
  */
 export default async function updateAppSettings(context, settingsUpdates, shopId = null) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { AppSettings } = collections;
 
   const updateKeys = Object.keys(settingsUpdates);
@@ -24,10 +24,10 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
   }
 
   // Look up roles that are allowed to set each setting. Throw if not allowed.
-  updateKeys.forEach((field) => {
+  updateKeys.forEach(async (field) => {
     const allowedRoles = shopId ? rolesThatCanEditShopSetting(field) : rolesThatCanEditGlobalSetting(field);
-    if (allowedRoles.length === 0 || !userHasPermission(allowedRoles, shopId)) {
-      throw new ReactionError("access-denied", `You are not allowed to edit the "${field}" setting`);
+    if (allowedRoles.length === 0) {
+      await checkPermissions(allowedRoles, shopId);
     }
   });
 

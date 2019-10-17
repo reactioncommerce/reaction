@@ -19,13 +19,11 @@ const inputSchema = new SimpleSchema({
  */
 export default async function captureOrderPayments(context, input = {}) {
   inputSchema.validate(input);
-  const { appEvents, collections, userId } = context;
+  const { appEvents, checkPermissions, collections, userId } = context;
   const { Orders } = collections;
   const { orderId, paymentIds, shopId } = input;
 
-  if (!context.userHasPermission(["orders", "order/fulfillment"], shopId)) {
-    throw new ReactionError("access-denied", "Access denied");
-  }
+  await checkPermissions(["orders", "order/fulfillment"], shopId);
 
   const order = await Orders.findOne({ _id: orderId, shopId });
   if (!order) throw new ReactionError("not-found", "Order not found");

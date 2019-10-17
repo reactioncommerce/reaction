@@ -1,5 +1,4 @@
 import _ from "lodash";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { taxServices as registeredTaxServices } from "../registration.js";
 
 /**
@@ -11,10 +10,8 @@ import { taxServices as registeredTaxServices } from "../registration.js";
  * @param {String} shopId - shop ID for which to get tax services
  * @returns {Array<Object>} Array of tax services
  */
-export default function taxServices(context, shopId) {
-  if (!context.userHasPermission(["owner", "admin"], shopId)) {
-    throw new ReactionError("access-denied", "Access denied");
-  }
+export default async function taxServices(context, shopId) {
+  await context.checkPermissions(["admin", "owner"], shopId);
 
   const list = Object.values(registeredTaxServices).map((service) => ({
     displayName: service.displayName,

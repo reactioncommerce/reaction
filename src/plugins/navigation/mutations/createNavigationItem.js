@@ -10,15 +10,15 @@ import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
  * @returns {Promise<Object>} The created navigation item
  */
 export default async function createNavigationItem(context, navigationItem) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
 
   const { metadata, draftData = {} } = navigationItem;
 
   const shopId = navigationItem.shopId || await context.queries.primaryShopId(context);
 
-  if (!context.isInternalCall && !userHasPermission(["core"], shopId)) {
-    throw new ReactionError("access-denied", "You do not have permission to create a navigation item");
+  if (!context.isInternalCall) {
+    await checkPermissions(["core"], shopId);
   }
 
   let parsedMetadata = {};

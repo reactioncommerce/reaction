@@ -83,18 +83,16 @@ export default async function createShop(context, input) {
   const {
     accountId,
     appEvents,
+    checkPermissions,
     collections,
     rootUrl,
     simpleSchemas: {
       Shop: ShopSchema
     },
-    userHasPermission,
     userId
   } = context;
 
-  if (!userHasPermission(["owner", "shop/create"], "__global_roles__")) {
-    throw new ReactionError("access-denied", "User does not have permission");
-  }
+  await checkPermissions(["owner", "shop/create"], "__global_roles__");
 
   const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
 

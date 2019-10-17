@@ -28,7 +28,7 @@ export default async function applyDiscountCodeToCart(context, input) {
   inputSchema.validate(input);
 
   const { cartId, discountCode, shopId, token } = input;
-  const { collections, userHasPermission, userId } = context;
+  const { checkPermissions, collections, userId } = context;
   const { Cart, Discounts } = collections;
 
   let userCount = 0;
@@ -44,9 +44,7 @@ export default async function applyDiscountCodeToCart(context, input) {
       throw new ReactionError("not-found", "Cart not found");
     }
 
-    if (!userHasPermission(["owner", "admin", "discounts/apply"], shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
+    await checkPermissions(["owner", "admin", "discounts/apply"], shopId);
   }
 
   const objectToApplyDiscount = cart;

@@ -20,12 +20,10 @@ export default async function createSurchargeMutation(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { surcharge, shopId } = cleanedInput;
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Surcharges } = collections;
 
-  if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["admin", "owner", "shipping"], shopId);
 
   surcharge._id = Random.id();
 
