@@ -32,8 +32,10 @@ async function synchronousPromiseLoop(name, funcs, args) {
 }
 
 class AppEvents {
-  handlers = {};
-  stopped = false;
+  constructor() {
+    this.handlers = {};
+    this.stopped = false;
+  }
 
   resume() {
     this.stopped = false;

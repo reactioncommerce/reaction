@@ -48,7 +48,7 @@ import registerUIPlugin from "./plugins/ui/index.js";
 /**
  * @summary A function in which you should call `register` function for each API plugin,
  *   in the order in which you want to register them.
- * @param {ReactionNodeApp} app The ReactionNodeApp instance
+ * @param {ReactionAPI} app The ReactionAPI instance
  * @returns {Promise<null>} Null
  */
 export default async function registerPlugins(app) {

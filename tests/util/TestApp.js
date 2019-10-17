@@ -3,17 +3,16 @@ import { createTestClient } from "apollo-server-testing";
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
-import buildContext from "/imports/node-app/core/util/buildContext";
 import Factory from "/tests/util/factory.js";
-import registerPlugins from "/imports/node-app/registerPlugins";
-import createDataLoaders from "/imports/node-app/core/util/createDataLoaders";
+import ReactionAPI from "../../src/core/ReactionAPI.js";
+import buildContext from "../../src/core/util/buildContext";
+import registerPlugins from "../../src/registerPlugins";
 
 class TestApp {
   constructor(options = {}) {
     const { extraSchemas = [], functionsByType } = options;
 
-    this.reactionNodeApp = new ReactionNodeApp({
+    this.reactionNodeApp = new ReactionAPI({
       // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
       // error logging in the test output.
       // debug: true,
@@ -28,19 +27,19 @@ class TestApp {
 
     this.collections = this.reactionNodeApp.collections;
     this.context = this.reactionNodeApp.context;
+
+    this.mutate = (mutation) => async (variables) => {
+      const result = await this.graphClient.mutate({ mutation: gql(mutation), variables });
+      if (result.errors) throw result.errors;
+      return result.data;
+    };
+
+    this.query = (query) => async (variables) => {
+      const result = await this.graphClient.query({ query: gql(query), variables });
+      if (result.errors) throw result.errors;
+      return result.data;
+    };
   }
-
-  mutate = (mutation) => async (variables) => {
-    const result = await this.graphClient.mutate({ mutation: gql(mutation), variables });
-    if (result.errors) throw result.errors;
-    return result.data;
-  };
-
-  query = (query) => async (variables) => {
-    const result = await this.graphClient.query({ query: gql(query), variables });
-    if (result.errors) throw result.errors;
-    return result.data;
-  };
 
   async createUserAndAccount(user = {}, globalRoles) {
     await this.reactionNodeApp.collections.users.insertOne({
@@ -125,7 +124,7 @@ class TestApp {
     return result.insertedId;
   }
 
-  // Keep this in sync with the real `registerPlugin` in `ReactionNodeApp`
+  // Keep this in sync with the real `registerPlugin` in `ReactionAPI`
   async registerPlugin(plugin) {
     return this.reactionNodeApp.registerPlugin(plugin);
   }
@@ -137,7 +136,6 @@ class TestApp {
   async start() {
     try {
       await registerPlugins(this.reactionNodeApp);
-      await createDataLoaders(this.reactionNodeApp.context);
     } catch (error) {
       Logger.error(error, "Error registering plugins in TestApp");
       throw error;

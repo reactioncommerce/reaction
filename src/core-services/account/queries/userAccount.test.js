@@ -2,7 +2,8 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import userAccountQuery from "./userAccount.js";
 
 const fakeAccountId = "FAKE_USER_ID_FOR_QUERY";
-const fakeAccount = { _id: fakeAccountId, shopId: "ACCOUNT_SHOP_ID" };
+const fakeAccount = { _id: fakeAccountId, userId: fakeAccountId, shopId: "ACCOUNT_SHOP_ID" };
+const fakeContextAccount = { _id: mockContext.accountId, userId: mockContext.userId, shopId: "ACCOUNT_SHOP_ID" };
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -23,10 +24,10 @@ test("throws if userHasPermission returns false and the user ID is not the conte
 
 test("returns the account without calling userHasPermission if the user ID is the context user ID", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(false);
-  mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeAccount);
-  const result = await userAccountQuery(mockContext, mockContext.userId);
+  mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeContextAccount);
+  const result = await userAccountQuery(mockContext, mockContext.accountId);
   expect(mockContext.userHasPermission).not.toHaveBeenCalled();
-  expect(result).toEqual(fakeAccount);
+  expect(result).toEqual(fakeContextAccount);
 });
 
 test("returns the account if the user ID is not the context user ID but userHasPermission returns true", async () => {
