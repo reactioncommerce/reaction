@@ -30,7 +30,7 @@ export default async function publishProducts(context, productIds) {
   if (!isInternalCall) {
     const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
     uniqueShopIds.forEach(async (shopId) => {
-      await checkPermissions(["createProduct", "product/admin", "product/publish"], shopId); // TODO: EK - update this to make sure async works
+      await checkPermissions(["createProduct", "product/admin", "product/publish"], shopId);
     });
   }
 

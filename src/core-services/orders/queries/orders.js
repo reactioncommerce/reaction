@@ -42,7 +42,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
   // shops for which they're allowed to see orders.
   if (shopIds) {
     shopIds.forEach(async (shopId) => {
-      await checkPermissions(["orders", "order/fulfillment"], shopId); // TODO: EK - update this to make sure async works
+      await checkPermissions(["orders", "order/fulfillment"], shopId);
     });
 
     query.shopId = { $in: shopIds };

@@ -43,7 +43,7 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
       query.shopId = { $in: shopIdsUserHasPermissionFor };
     } else {
       shopIds.forEach(async (shopId) => {
-        await checkPermissions(["orders", "order/fulfillment"], shopId); // TODO: EK - update this to make sure async works
+        await checkPermissions(["orders", "order/fulfillment"], shopId);
       });
     }
   }
