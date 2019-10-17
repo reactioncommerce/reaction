@@ -4,7 +4,7 @@ import getSitemapRouteHandler from "./middleware/handle-sitemap-routes.js";
 /**
  * @summary Called on startup
  * @param {Object} context Startup context
- * @param {Object} context.app The ReactionNodeApp instance
+ * @param {Object} context.app The ReactionAPI instance
  * @param {Object} context.collections A map of MongoDB collections
  * @returns {undefined}
  */
