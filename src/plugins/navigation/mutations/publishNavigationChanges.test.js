@@ -51,6 +51,8 @@ const mockNavigationItem = {
 };
 
 test("Calls NavigationTrees.findOne and updateOne, and NavigationItems.findOne, and returns the updated tree", async () => {
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
   mockContext.collections.NavigationTrees.findOne
     .mockReturnValueOnce(Promise.resolve(mockDraftNavigationTree))
     .mockReturnValueOnce(Promise.resolve(mockPublishedNavigationTree));

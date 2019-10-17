@@ -3,6 +3,7 @@ import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
 import createNavigationItemMutation from "./createNavigationItem.js";
 
 test("calls NavigationItems.insert and returns an object that validates against the schema", async () => {
+  mockContext.userHasPermission.mockReturnValueOnce(true);
   mockContext.queries.primaryShopId = jest.fn().mockName("queries.primaryShopId").mockReturnValueOnce(Promise.resolve("FAKE_SHOP_ID"));
 
   const navigationItem = await createNavigationItemMutation(mockContext, {});
