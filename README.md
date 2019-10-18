@@ -20,7 +20,7 @@ npm install @reactioncommerce/api-utils
 Import API util functions in the file you wish to use them in
 
 ```js
-import { functionName } from "@reactioncommerce/api-utils";
+import functionName from "@reactioncommerce/api-utils/functionName.js";
 ```
 
 ## Releases
