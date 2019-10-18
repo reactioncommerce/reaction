@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Factory from "/tests/util/factory.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import {
   restore as restore$updateGroupTotals,
@@ -87,7 +88,7 @@ test("throws if the order item doesn't exist", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -106,7 +107,9 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -114,7 +117,7 @@ test("throws if permission check fails", async () => {
     newItemQuantity: 1
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("throws if newItemQuantity is equal to item quantity", async () => {
@@ -129,7 +132,7 @@ test("throws if newItemQuantity is equal to item quantity", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -151,7 +154,7 @@ test("throws if newItemQuantity is greater than item quantity", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -192,7 +195,7 @@ test("throws if the database update fails", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
   rewire$updateGroupTotals(mockUpdateGroupTotals);
@@ -258,7 +261,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
+  expect(mockContext.checkPermissions).not.toHaveBeenCalled();
 });
 
 test("splits an item", async () => {
@@ -307,7 +310,7 @@ test("splits an item", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
   rewire$updateGroupTotals(mockUpdateGroupTotals);

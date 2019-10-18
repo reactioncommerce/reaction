@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Factory from "/tests/util/factory.js"; // TODO: research how to add `factory.js` to `api-utils` (https://github.com/reactioncommerce/reaction/issues/5646)
 import query from "./paymentMethods.js";
 
@@ -27,17 +28,19 @@ beforeEach(() => {
   fakeShop.availablePaymentMethods = [];
 });
 
-test("throws if userHasPermission returns false", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+test("throws if permission check fails", async () => {
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
   mockShopById.mockReturnValueOnce(fakeShop);
 
   await expect(query(mockContext, mockContext.shopId)).rejects.toThrowErrorMatchingSnapshot();
   expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin"], mockContext.shopId);
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["owner", "admin"], mockContext.shopId);
 });
 
 test("throws if shop not found", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValueOnce();
 
   await expect(query(mockContext, "nonexistent-shop-id")).rejects.toThrowErrorMatchingSnapshot();
@@ -45,7 +48,7 @@ test("throws if shop not found", async () => {
 });
 
 test("returns all payment methods for a shop", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValueOnce(fakeShop);
 
   const result = await query(mockContext, mockContext.shopId);
@@ -60,7 +63,7 @@ test("returns all payment methods for a shop", async () => {
 });
 
 test("returns payment methods with correct enabled status", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValueOnce(fakeShop);
   fakeShop.availablePaymentMethods.push("mockPaymentMethod");
 

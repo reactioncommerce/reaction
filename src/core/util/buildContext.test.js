@@ -26,6 +26,7 @@ test("properly mutates the context object without user", async () => {
     account: null,
     accountId: null,
     auth,
+    checkPermissions: jasmine.any(Function),
     collections: mockContext.collections,
     isInternalCall: false,
     queries: {

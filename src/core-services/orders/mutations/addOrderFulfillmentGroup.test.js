@@ -1,5 +1,6 @@
 import Factory from "/tests/util/factory.js"; // TODO: research how to add `factory.js` to `api-utils` (https://github.com/reactioncommerce/reaction/issues/5646)
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import {
   restore as restore$buildOrderFulfillmentGroupFromInput,
   rewire as rewire$buildOrderFulfillmentGroupFromInput
@@ -57,7 +58,9 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
 
   const fulfillmentGroup = Factory.orderFulfillmentGroupInputSchema.makeOne({});
 
@@ -69,7 +72,7 @@ test("throws if permission check fails", async () => {
     orderId: "order1"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("throws if an item ID being moved does not exist", async () => {
@@ -95,7 +98,7 @@ test("throws if an item ID being moved does not exist", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
   rewire$updateGroupTotals(mockUpdateGroupTotals);
@@ -186,7 +189,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
+  expect(mockContext.checkPermissions).not.toHaveBeenCalled();
 });
 
 test("adds an order fulfillment group", async () => {
@@ -224,7 +227,7 @@ test("adds an order fulfillment group", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
 import createNavigationItemMutation from "./createNavigationItem.js";
 
@@ -15,7 +16,9 @@ test("calls NavigationItems.insert and returns an object that validates against 
 });
 
 test("throws an error if the user does not have the core permission", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
   const result = createNavigationItemMutation(mockContext, {});
   expect(result).rejects.toThrow();
 });

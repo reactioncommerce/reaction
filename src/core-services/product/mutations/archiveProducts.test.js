@@ -1,21 +1,24 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import archiveProducts from "./archiveProducts.js";
 
 mockContext.mutations.archiveProducts = jest.fn().mockName("mutations.archiveProducts");
 
 test("throws if permission check fails", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
 
   await expect(archiveProducts(mockContext, {
     productIds: ["PRODUCT_ID_1", "PRODUCT_ID_2"],
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["createProduct", "product/admin", "product/archive"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["createProduct", "product/admin", "product/archive"], "SHOP_ID");
 });
 
 test("throws if the productIds isn't supplied", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(archiveProducts(mockContext, {
     productIds: undefined,
@@ -24,7 +27,7 @@ test("throws if the productIds isn't supplied", async () => {
 });
 
 test("throws if the shopId isn't supplied", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(archiveProducts(mockContext, {
     productIds: ["PRODUCT_ID_1", "PRODUCT_ID_2"],

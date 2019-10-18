@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import navigationItemsByShopIdQuery from "./navigationItemsByShopId.js";
 
 const query = { shopId: "123" };
@@ -11,7 +12,9 @@ test("calls NavigationItems.find and returns a navigation item", async () => {
 });
 
 test("throws an error if the user does not have the core permission", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
   const result = navigationItemsByShopIdQuery(mockContext, "123");
   expect(result).rejects.toThrow();
 });

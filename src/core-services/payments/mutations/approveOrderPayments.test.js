@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import approveOrderPayments from "./approveOrderPayments.js";
 
 beforeEach(() => {
@@ -27,7 +28,7 @@ test("throws if shopId isn't supplied", async () => {
 });
 
 test("throws if the order doesn't exist", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
@@ -50,7 +51,10 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
+
 
   await expect(approveOrderPayments(mockContext, {
     orderId: "abc",
@@ -58,11 +62,11 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("updates an order status", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(null);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "abc",
