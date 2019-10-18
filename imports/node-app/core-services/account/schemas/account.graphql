@@ -147,8 +147,11 @@ input UpdateAccountNameInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "The name to set on the account"
-  name: String!
+  "The first name to set on the account"
+  firstName: String!
+
+  "The last name to set on the account"
+  lastName: String!
 }
 
 "Per-account tax exemption settings used by the Avalara plugin"
@@ -454,7 +457,7 @@ extend type Mutation {
     input: UpdateAccountAddressBookEntryInput!
   ): UpdateAccountAddressBookEntryPayload
 
-  "Set the preferred name for an account"
+  "Set the name for an account"
   updateAccountName(
     "Mutation input"
     input: UpdateAccountNameInput!

@@ -6,23 +6,25 @@ mockContext.mutations.updateAccountName = jest.fn().mockName("mutations.updateAc
 
 test("correctly passes through to internal mutation function", async () => {
   const accountId = encodeAccountOpaqueId("1");
-  const name = "Test User Name";
+  const firstName = "Test";
+  const lastName = "Name";
 
-  const fakeResult = { _id: "1", profile: { name: "Test User Name", firstName: "Test", lastName: "Name" } };
+  const fakeResult = { _id: "1", profile: { name: "Test Name", firstName: "Test", lastName: "Name" } };
 
   mockContext.mutations.updateAccountName.mockReturnValueOnce(Promise.resolve(fakeResult));
 
   const result = await updateAccountName(null, {
     input: {
       accountId,
-      name,
+      firstName,
+      lastName,
       clientMutationId: "clientMutationId"
     }
   }, mockContext);
 
   expect(mockContext.mutations.updateAccountName).toHaveBeenCalledWith(
     mockContext,
-    { accountId: "1", name: "Test User Name" }
+    { accountId: "1", firstName: "Test", lastName: "Name" }
   );
 
   expect(result).toEqual({

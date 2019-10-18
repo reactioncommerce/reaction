@@ -2,7 +2,8 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
-  name: String,
+  firstName: String,
+  lastName: String,
   accountId: {
     type: String,
     optional: true
@@ -15,15 +16,16 @@ const inputSchema = new SimpleSchema({
  * @summary Updates users profile name
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
- * @param {String} input.name - name to update on the user profile
+ * @param {String} input.firstName - first name to update on the user profile
+ * @param {String} input.lastName - last name to update on the user profile
  * @param {String} [input.accountId] - optional decoded ID of account on which entry should be updated, for admin
  * @returns {Promise<Object>} with updated name
  */
 export default async function updateAccountName(context, input) {
   inputSchema.validate(input);
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
-  const { Accounts, Shops } = collections;
-  const { name, accountId: providedAccountId } = input;
+  const { Accounts } = collections;
+  const { firstName, lastName, accountId: providedAccountId } = input;
 
   const accountId = providedAccountId || userIdFromContext;
   if (!accountId) throw new ReactionError("access-denied", "You must be logged in to set profile name");
@@ -35,15 +37,13 @@ export default async function updateAccountName(context, input) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }
 
-  const names = name.split(" ");
-
   const { value: updatedAccount } = await Accounts.findOneAndUpdate({
     _id: accountId
   }, {
     $set: {
-      "profile.name": name,
-      "profile.firstName": names[0],
-      "profile.lastName": names[names.length - 1]
+      "profile.name": `${firstName} ${lastName}`,
+      "profile.firstName": firstName,
+      "profile.lastName": lastName
     }
   }, {
     returnOriginal: false
