@@ -22,7 +22,7 @@ const mockProductsWithTagAndFeaturedProducts = Factory.Product.makeMany(77, {
   shopId: internalShopId
 });
 
-const mockAdminAccount = Factory.Accounts.makeOne({
+const mockAdminAccount = Factory.Account.makeOne({
   _id: internalAdminAccountId
 });
 

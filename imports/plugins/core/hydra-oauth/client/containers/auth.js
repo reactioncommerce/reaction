@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
-import { Router } from "/client/api";
+import { Reaction, Router } from "/client/api";
 import { LoginFormValidation } from "/lib/api";
 
 class OAuthFormContainer extends Component {
@@ -73,7 +73,8 @@ class OAuthFormContainer extends Component {
     } else {
       const newUserData = {
         email: username,
-        password: pword
+        password: pword,
+        shopId: Reaction.getShopId()
       };
 
       Accounts.createUser(newUserData, (error) => {

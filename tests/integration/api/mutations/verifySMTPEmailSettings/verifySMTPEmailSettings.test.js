@@ -24,7 +24,7 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
-  mockAdminAccount = Factory.Accounts.makeOne({
+  mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
     roles: {
       [shopId]: ["admin", "shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
@@ -39,7 +39,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("test if email config data is verified by nodemailer", async () => {

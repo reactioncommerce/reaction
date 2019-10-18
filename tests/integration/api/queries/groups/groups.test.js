@@ -38,7 +38,7 @@ beforeAll(async () => {
   const shopId = await testApp.insertPrimaryShop();
   opaqueShopId = encodeShopOpaqueId(shopId);
 
-  mockAdminAccount = Factory.Accounts.makeOne({
+  mockAdminAccount = Factory.Account.makeOne({
     roles: {
       [shopId]: ["reaction-accounts"]
     },
@@ -46,10 +46,10 @@ beforeAll(async () => {
   });
   await testApp.createUserAndAccount(mockAdminAccount);
 
-  groups = Factory.Groups.makeMany(3, { shopId });
+  groups = Factory.Group.makeMany(3, { shopId });
   await testApp.collections.Groups.insertMany(groups);
 
-  mockOtherAccount = Factory.Accounts.makeOne({
+  mockOtherAccount = Factory.Account.makeOne({
     groups: [groups[0]._id],
     shopId
   });

@@ -1,9 +1,9 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 /**
  * @summary Gets the current cart. Assumes a calling context where logged in userID can be retrieved. It works
@@ -29,7 +29,7 @@ export default function getCart(cartId, { cartToken, throwIfNotFound = false } =
   }
 
   if (cartToken) {
-    selector.anonymousAccessToken = hashLoginToken(cartToken);
+    selector.anonymousAccessToken = hashToken(cartToken);
   } else {
     account = (userId && Accounts.findOne({ userId })) || null;
 

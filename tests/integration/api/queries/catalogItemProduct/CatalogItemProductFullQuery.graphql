@@ -49,10 +49,10 @@ query ($slugOrId: String!) {
         displayPrice
       }
       media {
-        toGrid
         priority
         productId
         variantId
+        toGrid
         URLs {
           thumbnail
           small
@@ -62,10 +62,10 @@ query ($slugOrId: String!) {
         }
       }
       primaryImage {
-        toGrid
         priority
         productId
         variantId
+        toGrid
         URLs {
           thumbnail
           small

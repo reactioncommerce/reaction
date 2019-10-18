@@ -1,5 +1,5 @@
+import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import getCollectionFromCursor from "./getCollectionFromCursor";
-import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 const mockCursor = getFakeMongoCursor("Accounts", []);
 
