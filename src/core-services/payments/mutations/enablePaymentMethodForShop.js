@@ -21,7 +21,8 @@ const paramsSchema = new SimpleSchema({
  */
 export default async function enablePaymentMethodForShop(context, input = {}) {
   paramsSchema.validate(input, { ignore: [SimpleSchema.ErrorTypes.KEY_NOT_IN_SCHEMA] });
-  const { checkPermissions, Shops } = context.collections;
+  const { checkPermissions, collections } = context;
+  const { Shops } = collections;
   const { isEnabled, paymentMethodName, shopId } = input;
 
   await checkPermissions(["owner", "admin"], shopId);

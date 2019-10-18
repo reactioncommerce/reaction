@@ -10,10 +10,10 @@ beforeEach(() => {
 
 test("returns the groups cursor if userHasPermission returns true", async () => {
   mockContext.collections.Groups.find.mockReturnValueOnce("CURSOR");
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.userHasPermission.mockReturnValueOnce(true);
   const result = await groupsQuery(mockContext, fakeShopId);
   expect(mockContext.collections.Groups.find).toHaveBeenCalledWith({ shopId: fakeShopId });
-  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["owner", "admin", "reaction-accounts"], fakeShopId);
+  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin", "reaction-accounts"], fakeShopId);
   expect(result).toBe("CURSOR");
 });
 
