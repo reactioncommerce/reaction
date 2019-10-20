@@ -2,7 +2,6 @@ import waitForExpect from "wait-for-expect";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import updateSimpleInventoryBulk from "/imports/node-app/plugins/simple-inventory/mutations/updateSimpleInventoryBulk.js";
 
 const catalogItemQuery = importAsString("./catalogItemQuery.graphql");
 
@@ -83,7 +82,7 @@ test("when all options are sold out and canBackorder, isBackorder is true in Cat
   const {
     failedUpdates,
     invalidUpdates
-  } = await updateSimpleInventoryBulk({
+  } = await testApp.context.mutations.updateSimpleInventoryBulk({
     ...testApp.context,
     isInternalCall: true
   }, {

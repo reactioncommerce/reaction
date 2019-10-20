@@ -173,7 +173,7 @@ test("user with orders role can add an order fulfillment group with new items", 
           },
           quantity: 5
         }],
-        selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
+        selectedFulfillmentMethodId: encodeOpaqueId("reaction/fulfillmentMethod", fulfillmentMethodId),
         shopId: encodeOpaqueId("reaction/shop", shopId),
         type: "shipping"
       },
@@ -303,7 +303,7 @@ test("user with orders role can add an order fulfillment group with moved items"
         data: {
           shippingAddress
         },
-        selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
+        selectedFulfillmentMethodId: encodeOpaqueId("reaction/fulfillmentMethod", fulfillmentMethodId),
         shopId: encodeOpaqueId("reaction/shop", shopId),
         type: "shipping"
       },

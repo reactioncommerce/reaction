@@ -94,23 +94,11 @@ class TestApp {
   }
 
   async insertPrimaryShop(shopData) {
-    // Need shop domains and ROOT_URL set in order for `shopId` to be correctly set on GraphQL context
-    const domain = "shop.fake.site";
-    process.env.ROOT_URL = `https://${domain}/`;
-
     const mockShop = Factory.Shop.makeOne({
-      currencies: {
-        USD: {
-          enabled: true,
-          format: "%s%v",
-          symbol: "$"
-        }
-      },
       currency: "USD",
       name: "Primary Shop",
       ...shopData,
-      shopType: "primary",
-      domains: [domain]
+      shopType: "primary"
     });
 
     const result = await this.reactionNodeApp.collections.Shops.insertOne(mockShop);
