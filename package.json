@@ -31,6 +31,7 @@
     "@reactioncommerce/random": "^1.0.1",
     "@reactioncommerce/reaction-error": "^1.0.1",
     "accounting-js": "^1.1.1",
+    "callsite": "^1.0.0",
     "graphql": "^14.5.8",
     "graphql-fields": "^2.0.3",
     "graphql-relay": "^0.6.0",
@@ -58,7 +59,7 @@
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint .",
     "test": "jest",
-    "test:watch": "jest --watch lib",
+    "test:watch": "jest --watch",
     "test:file": "jest --no-cache --watch --coverage=false"
   },
   "babel": {
