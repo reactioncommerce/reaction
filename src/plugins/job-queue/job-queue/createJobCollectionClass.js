@@ -478,14 +478,20 @@ export default function createJobCollectionClass({ Job, later }) {
         if (this.stopped && (this.stopped !== true)) { clearTimeout(this.stopped); }
         this.stopped = setTimeout(
           async () => {
-            const cursor = this.collection.find({ status: "running" });
-            const failedJobs = await cursor.count();
+            const runningJobs = await this.collection.find({
+              status: "running"
+            }, {
+              projection: {
+                _id: 1,
+                runId: 1
+              }
+            }).toArray();
 
-            if (failedJobs !== 0) {
-              console.warn(`Failing ${failedJobs} jobs on queue stop.`);
+            if (runningJobs.length > 0) {
+              console.warn(`Failing ${runningJobs.length} jobs on queue stop.`);
+
+              await Promise.all(runningJobs.map((doc) => this._DDPMethod_jobFail(doc._id, doc.runId, "Running at Job Server shutdown.")));
             }
-
-            await Promise.all(cursor.map((doc) => this._DDPMethod_jobFail(doc._id, doc.runId, "Running at Job Server shutdown.")));
 
             if (this.logStream !== null) { // Shutting down closes the logStream!
               this.logStream.end();
