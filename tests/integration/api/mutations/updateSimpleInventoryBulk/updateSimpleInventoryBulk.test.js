@@ -1,8 +1,10 @@
 import waitForExpect from "wait-for-expect";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 import updateSimpleInventoryBulk from "/imports/node-app/plugins/simple-inventory/mutations/updateSimpleInventoryBulk.js";
-import catalogItemQuery from "./catalogItemQuery.graphql";
+
+const catalogItemQuery = importAsString("./catalogItemQuery.graphql");
 
 jest.setTimeout(300000);
 

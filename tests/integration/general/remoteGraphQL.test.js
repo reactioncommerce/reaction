@@ -19,6 +19,7 @@ const schema = makeRemoteExecutableSchema({ schema: exSchema, link });
 const testApp = new TestApp();
 
 testApp.registerPlugin({
+  name: "remoteGraphQL.test.js",
   graphQL: {
     schemas: [schema]
   }

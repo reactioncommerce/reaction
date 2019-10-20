@@ -1,8 +1,6 @@
-import { createRequire } from "module";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 
-const require = createRequire(import.meta.url);
-
-const cart = require("./cart.graphql");
-const checkout = require("./checkout.graphql");
+const cart = importAsString("./cart.graphql");
+const checkout = importAsString("./checkout.graphql");
 
 export default [cart, checkout];

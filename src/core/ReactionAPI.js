@@ -6,6 +6,7 @@ import _ from "lodash";
 import mongodb from "mongodb";
 import SimpleSchema from "simpl-schema";
 import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Logger from "@reactioncommerce/logger";
 import appEvents from "./util/appEvents.js";
 import getAbsoluteUrl from "./util/getAbsoluteUrl.js";
@@ -16,7 +17,8 @@ import coreResolvers from "./graphql/resolvers/index.js";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
 const { PubSub } = require("apollo-server");
-const coreGraphQLSchema = require("./graphql/schema.graphql");
+
+const coreGraphQLSchema = importAsString("./graphql/schema.graphql");
 
 const {
   REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED,

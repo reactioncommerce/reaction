@@ -1,3 +1,4 @@
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
 // temp mocks
 import { internalShopId, opaqueShopId, shopName } from "../../../../mocks/mockShop";
@@ -9,9 +10,9 @@ import {
   mockSortedByPriceHigh2LowCatalogItemsResponse,
   mockSortedByPriceLow2HighCatalogItemsResponse
 } from "../../../../mocks/mockCatalogItems";
-// temp mocks
-import CatalogProductItemsFullQuery from "./CatalogProductItemsFullQuery.graphql";
-import CatalogProductItemsFullQueryPaginated from "./CatalogProductItemsFullQueryPaginated.graphql";
+
+const CatalogProductItemsFullQuery = importAsString("./CatalogProductItemsFullQuery.graphql");
+const CatalogProductItemsFullQueryPaginated = importAsString("./CatalogProductItemsFullQueryPaginated.graphql");
 
 jest.setTimeout(300000);
 

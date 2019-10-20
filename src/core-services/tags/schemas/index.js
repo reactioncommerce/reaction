@@ -1,14 +1,12 @@
-import { createRequire } from "module";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 
-const require = createRequire(import.meta.url);
-
-const addTag = require("./addTag.graphql");
-const productsByTagId = require("./productsByTagId.graphql");
-const removeTag = require("./removeTag.graphql");
-const setTagHeroMedia = require("./setTagHeroMedia.graphql");
-const tag = require("./tag.graphql");
-const tags = require("./tags.graphql");
-const updateTag = require("./updateTag.graphql");
+const addTag = importAsString("./addTag.graphql");
+const productsByTagId = importAsString("./productsByTagId.graphql");
+const removeTag = importAsString("./removeTag.graphql");
+const setTagHeroMedia = importAsString("./setTagHeroMedia.graphql");
+const tag = importAsString("./tag.graphql");
+const tags = importAsString("./tags.graphql");
+const updateTag = importAsString("./updateTag.graphql");
 
 export default [
   addTag,

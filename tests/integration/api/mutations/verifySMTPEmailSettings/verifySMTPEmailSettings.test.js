@@ -1,6 +1,8 @@
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import VerifySMTPEmailSettingsMutation from "./verifySMTPEmailSettings.graphql";
+
+const VerifySMTPEmailSettingsMutation = importAsString("./verifySMTPEmailSettings.graphql");
 
 jest.mock("@reactioncommerce/nodemailer", () =>
   ({
