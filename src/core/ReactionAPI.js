@@ -47,6 +47,10 @@ const optionsSchema = new SimpleSchema({
     optional: true
   },
   "serveStaticPaths.$": String,
+  "rootUrl": {
+    type: String,
+    optional: true
+  },
   "version": {
     type: String,
     optional: true
@@ -296,7 +300,7 @@ export default class ReactionAPI {
    * @returns {undefined}
    */
   initServer() {
-    const { httpServer, serveStaticPaths } = this.options;
+    const { httpServer, serveStaticPaths = [] } = this.options;
     const { resolvers, schemas } = this.graphQL;
 
     const {

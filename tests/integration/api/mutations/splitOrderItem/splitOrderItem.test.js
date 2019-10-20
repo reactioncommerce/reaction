@@ -39,7 +39,9 @@ beforeAll(async () => {
     });
   };
 
-  testApp = new TestApp({
+  testApp = new TestApp();
+
+  testApp.registerPlugin({
     functionsByType: {
       getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
     }

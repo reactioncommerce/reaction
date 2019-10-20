@@ -9,21 +9,15 @@ import buildContext from "../../src/core/util/buildContext";
 import registerPlugins from "../../src/registerPlugins";
 
 class TestApp {
-  constructor(options = {}) {
-    const { extraSchemas = [], functionsByType } = options;
-
-    this.reactionNodeApp = new ReactionAPI({
-      // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
-      // error logging in the test output.
-      // debug: true,
-      functionsByType,
-      graphQL: {
-        schemas: extraSchemas
-      },
-      rootUrl: "https://shop.fake.site/",
-      shouldInitReplicaSet: true,
-      version: "0.0.0-test"
-    });
+  constructor() {
+    try {
+      this.reactionNodeApp = new ReactionAPI({
+        rootUrl: "https://shop.fake.site/",
+        version: "0.0.0-test"
+      });
+    } catch (error) {
+      Logger.error("Failed to initialize a ReactionAPI instance", error);
+    }
 
     this.collections = this.reactionNodeApp.collections;
     this.context = this.reactionNodeApp.context;
@@ -152,7 +146,7 @@ class TestApp {
     // it from starting the actual server. We will use
     // `createTestClient` below instead of an actual server.
     try {
-      await this.reactionNodeApp.start({ mongoUrl });
+      await this.reactionNodeApp.start({ mongoUrl, shouldInitReplicaSet: true });
     } catch (error) {
       Logger.error(error, "Error starting app in TestApp");
       throw error;
