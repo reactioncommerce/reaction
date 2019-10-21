@@ -20,7 +20,7 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@reactioncommerce/api-utils": "~1.2.1",
+    "@reactioncommerce/api-utils": "~1.5.0",
     "@reactioncommerce/file-collections": "~0.7.0",
     "@reactioncommerce/file-collections-sa-gridfs": "~0.1.0",
     "@reactioncommerce/logger": "~1.1.2",
