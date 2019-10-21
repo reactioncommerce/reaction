@@ -214,22 +214,15 @@ export default class ReactionAPI {
     const dbUrl = mongoUrl.slice(0, lastSlash);
     const dbName = mongoUrl.slice(lastSlash + 1);
 
-    return new Promise((resolve, reject) => {
-      MongoClient.connect(dbUrl, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      }, (error, client) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-
-        this.mongoClient = client;
-        this.setMongoDatabase(client.db(dbName));
-
-        resolve();
-      });
+    const client = await MongoClient.connect(dbUrl, {
+      useNewUrlParser: true
+      // Uncomment this after this `mongodb` pkg bug is fixed:
+      // https://jira.mongodb.org/browse/NODE-2249
+      // useUnifiedTopology: true
     });
+
+    this.mongoClient = client;
+    this.setMongoDatabase(client.db(dbName));
   }
 
   async disconnectFromMongo() {

@@ -45,7 +45,7 @@
     "handlebars": "~4.4.3",
     "later": "~1.2.0",
     "lodash": "~4.17.15",
-    "mongodb": "~3.2.7",
+    "mongodb": "~3.3.3",
     "node-fetch": "~2.6.0",
     "nodemailer-wellknown": "~0.2.3",
     "object-hash": "~1.3.1",

@@ -31,8 +31,10 @@ async function connect(parsedUrl) {
   const dbUrl = dbParsedUrl.toString();
 
   const client = await MongoClient.connect(dbUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    useNewUrlParser: true
+    // Uncomment this after this `mongodb` pkg bug is fixed:
+    // https://jira.mongodb.org/browse/NODE-2249
+    // useUnifiedTopology: true
   });
 
   return {
