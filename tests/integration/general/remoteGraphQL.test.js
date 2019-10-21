@@ -16,7 +16,14 @@ const schemaSDL = "type Query { unitTestRemoteGraphql: Float }";
 const exSchema = makeExecutableSchema({ typeDefs: schemaSDL });
 const schema = makeRemoteExecutableSchema({ schema: exSchema, link });
 
-const testApp = new TestApp({ extraSchemas: [schema] });
+const testApp = new TestApp();
+
+testApp.registerPlugin({
+  name: "remoteGraphQL.test.js",
+  graphQL: {
+    schemas: [schema]
+  }
+});
 
 jest.setTimeout(300000);
 

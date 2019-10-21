@@ -1,6 +1,8 @@
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import ViewerFullQuery from "./ViewerFullQuery.graphql";
+
+const ViewerFullQuery = importAsString("./ViewerFullQuery.graphql");
 
 jest.setTimeout(300000);
 

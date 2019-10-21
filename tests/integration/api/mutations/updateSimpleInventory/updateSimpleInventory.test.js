@@ -1,8 +1,10 @@
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import catalogItemQuery from "./catalogItemQuery.graphql";
-import simpleInventoryQuery from "./simpleInventoryQuery.graphql";
-import updateSimpleInventoryMutation from "./updateSimpleInventoryMutation.graphql";
+
+const catalogItemQuery = importAsString("./catalogItemQuery.graphql");
+const simpleInventoryQuery = importAsString("./simpleInventoryQuery.graphql");
+const updateSimpleInventoryMutation = importAsString("./updateSimpleInventoryMutation.graphql");
 
 jest.setTimeout(300000);
 
