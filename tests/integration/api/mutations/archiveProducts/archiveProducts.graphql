@@ -1,0 +1,12 @@
+mutation archiveProducts($input: ArchiveProductsInput!) {
+  archiveProducts(input: $input) {
+    products {
+      isDeleted
+      isVisible
+      shop {
+        _id
+      }
+      title
+    }
+  }
+}
