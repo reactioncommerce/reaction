@@ -1,7 +1,9 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import UpdateOrderFulfillmentGroupMutation from "./UpdateOrderFulfillmentGroupMutation.graphql";
+
+const UpdateOrderFulfillmentGroupMutation = importAsString("./UpdateOrderFulfillmentGroupMutation.graphql");
 
 jest.setTimeout(300000);
 

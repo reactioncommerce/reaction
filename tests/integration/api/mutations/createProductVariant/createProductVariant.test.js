@@ -1,5 +1,7 @@
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
-import CreateProductVariantMutation from "./createProductVariant.graphql";
+
+const CreateProductVariantMutation = importAsString("./createProductVariant.graphql");
 
 jest.setTimeout(300000);
 

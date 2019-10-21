@@ -11,7 +11,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function generateSitemaps(context) {
   const { userHasPermission, userId } = context;
 
-  const shopId = await context.queries.primaryShopId(context.collections);
+  const shopId = await context.queries.primaryShopId(context);
 
   if (userHasPermission(["admin"], shopId) === false) {
     throw new ReactionError("access-denied", "User does not have permissions to generate sitemaps");

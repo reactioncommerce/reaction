@@ -800,12 +800,12 @@ export const CartItem = new SimpleSchema({
  * @property {CartItem[]} items Array of CartItem optional
  * @property {Shipment[]} shipping Array of Shipment optional, blackbox
  * @property {Payment[]} billing Array of Payment optional, blackbox
- * @property {String} sessionId Optional and deprecated
  * @property {Number} discount optional
  * @property {Surcharges[]} surcharges optional
  * @property {Workflow} workflow optional
  * @property {Date} createdAt required
  * @property {Date} updatedAt optional
+ * @property {String} sessionId Optional and deprecated
  */
 export const Cart = new SimpleSchema({
   "_id": {
@@ -829,11 +829,11 @@ export const Cart = new SimpleSchema({
     type: CartAddress,
     optional: true
   },
-  "sessionId": {
+  "referenceId": {
     type: String,
     optional: true
   },
-  "referenceId": {
+  "sessionId": {
     type: String,
     optional: true
   },

@@ -3,44 +3,37 @@ import { createTestClient } from "apollo-server-testing";
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
-import buildContext from "/imports/node-app/core/util/buildContext";
 import Factory from "/tests/util/factory.js";
-import registerPlugins from "/imports/node-app/registerPlugins";
-import createDataLoaders from "/imports/node-app/core/util/createDataLoaders";
+import ReactionAPI from "../../src/core/ReactionAPI.js";
+import buildContext from "../../src/core/util/buildContext";
+import registerPlugins from "../../src/registerPlugins";
 
 class TestApp {
-  constructor(options = {}) {
-    const { extraSchemas = [], functionsByType } = options;
-
-    this.reactionNodeApp = new ReactionNodeApp({
-      // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
-      // error logging in the test output.
-      // debug: true,
-      functionsByType,
-      graphQL: {
-        schemas: extraSchemas
-      },
-      rootUrl: "https://shop.fake.site/",
-      shouldInitReplicaSet: true,
-      version: "0.0.0-test"
-    });
+  constructor() {
+    try {
+      this.reactionNodeApp = new ReactionAPI({
+        rootUrl: "https://shop.fake.site/",
+        version: "0.0.0-test"
+      });
+    } catch (error) {
+      Logger.error("Failed to initialize a ReactionAPI instance", error);
+    }
 
     this.collections = this.reactionNodeApp.collections;
     this.context = this.reactionNodeApp.context;
+
+    this.mutate = (mutation) => async (variables) => {
+      const result = await this.graphClient.mutate({ mutation: gql(mutation), variables });
+      if (result.errors) throw result.errors;
+      return result.data;
+    };
+
+    this.query = (query) => async (variables) => {
+      const result = await this.graphClient.query({ query: gql(query), variables });
+      if (result.errors) throw result.errors;
+      return result.data;
+    };
   }
-
-  mutate = (mutation) => async (variables) => {
-    const result = await this.graphClient.mutate({ mutation: gql(mutation), variables });
-    if (result.errors) throw result.errors;
-    return result.data;
-  };
-
-  query = (query) => async (variables) => {
-    const result = await this.graphClient.query({ query: gql(query), variables });
-    if (result.errors) throw result.errors;
-    return result.data;
-  };
 
   async createUserAndAccount(user = {}, globalRoles) {
     await this.reactionNodeApp.collections.users.insertOne({
@@ -101,23 +94,11 @@ class TestApp {
   }
 
   async insertPrimaryShop(shopData) {
-    // Need shop domains and ROOT_URL set in order for `shopId` to be correctly set on GraphQL context
-    const domain = "shop.fake.site";
-    process.env.ROOT_URL = `https://${domain}/`;
-
     const mockShop = Factory.Shop.makeOne({
-      currencies: {
-        USD: {
-          enabled: true,
-          format: "%s%v",
-          symbol: "$"
-        }
-      },
       currency: "USD",
       name: "Primary Shop",
       ...shopData,
-      shopType: "primary",
-      domains: [domain]
+      shopType: "primary"
     });
 
     const result = await this.reactionNodeApp.collections.Shops.insertOne(mockShop);
@@ -125,7 +106,7 @@ class TestApp {
     return result.insertedId;
   }
 
-  // Keep this in sync with the real `registerPlugin` in `ReactionNodeApp`
+  // Keep this in sync with the real `registerPlugin` in `ReactionAPI`
   async registerPlugin(plugin) {
     return this.reactionNodeApp.registerPlugin(plugin);
   }
@@ -137,7 +118,6 @@ class TestApp {
   async start() {
     try {
       await registerPlugins(this.reactionNodeApp);
-      await createDataLoaders(this.reactionNodeApp.context);
     } catch (error) {
       Logger.error(error, "Error registering plugins in TestApp");
       throw error;
@@ -154,7 +134,7 @@ class TestApp {
     // it from starting the actual server. We will use
     // `createTestClient` below instead of an actual server.
     try {
-      await this.reactionNodeApp.start({ mongoUrl });
+      await this.reactionNodeApp.start({ mongoUrl, shouldInitReplicaSet: true });
     } catch (error) {
       Logger.error(error, "Error starting app in TestApp");
       throw error;

@@ -5,9 +5,10 @@ version: 2
 # typing. See http://yaml.org/type/merge.html for details.
 defaults: &defaults
   environment:
-    - DOCKER_REPOSITORY: "reactioncommerce/reaction"
-    - DOCKER_NAMESPACE: "reactioncommerce"
-    - DOCKER_NAME: "reaction"
+    CI_SCRIPTS: 'npx --quiet --package @reactioncommerce/ci-scripts@1.6.2'
+    DOCKER_REPOSITORY: "reactioncommerce/reaction"
+    DOCKER_NAMESPACE: "reactioncommerce"
+    DOCKER_NAME: "reaction"
   working_directory: ~/reaction-app
   docker:
     - image: circleci/node:12.11.1-stretch
@@ -41,7 +42,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Lint Dockerfiles
-          command: npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 lint-dockerfiles
+          command: ${CI_SCRIPTS} lint-dockerfiles
 
   eslint:
     <<: *defaults
@@ -99,7 +100,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Build and push production Docker image
-          command: npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 docker-build-tag-push "$DOCKER_REPOSITORY" .
+          command: ${CI_SCRIPTS} docker-build-tag-push . ${DOCKER_REPOSITORY}
 
   deploy-docs:
     <<: *defaults

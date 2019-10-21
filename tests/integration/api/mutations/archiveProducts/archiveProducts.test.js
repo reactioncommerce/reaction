@@ -1,5 +1,7 @@
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
-import ArchiveProductsMutation from "./archiveProducts.graphql";
+
+const ArchiveProductsMutation = importAsString("./archiveProducts.graphql");
 
 jest.setTimeout(300000);
 

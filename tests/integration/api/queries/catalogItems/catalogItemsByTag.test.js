@@ -1,8 +1,10 @@
 import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import CatalogItemQuery from "./CatalogItemQuery.graphql";
+
+const CatalogItemQuery = importAsString("./CatalogItemQuery.graphql");
 
 const decodeCatalogProductOpaqueId = decodeOpaqueIdForNamespace("reaction/catalogProduct");
 

@@ -127,18 +127,3 @@ test("creates an anonymous cart if no user is logged in", async () => {
 
   mockContext.accountId = originalAccountId;
 });
-
-// TODO need to write these
-test.skip("creates an account cart if logged in", () => {});
-
-test.skip("throws if no items", () => {});
-
-test.skip("creates if no items and shouldCreateWithoutItems is true", () => {});
-
-test.skip("throws creating account cart if one already exists", () => {});
-
-test.skip("if all items are invalid, does not create the cart", () => {});
-
-test.skip("if all items are invalid and shouldCreateWithoutItems is true, creates the cart", () => {});
-
-test.skip("throws if insertOne fails", () => {});

@@ -288,11 +288,8 @@ const Email = new SimpleSchema({
  * @property {Date} updatedAt optional
  */
 export const Account = new SimpleSchema({
-  "userId": {
-    type: String,
-    regEx: SimpleSchema.RegEx.Id,
-    label: "User ID"
-  },
+  "_id": String,
+  "userId": String,
   "sessions": {
     type: Array,
     optional: true

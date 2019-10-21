@@ -76,18 +76,6 @@ input AddAccountToGroupInput {
   groupId: ID!
 }
 
-"Defines a group and account that should be unlinked"
-input RemoveAccountFromGroupInput {
-  "The account ID"
-  accountId: ID!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  "The group ID"
-  groupId: ID!
-}
-
 "Represents an account group"
 type Group implements Node {
   "The group ID"
@@ -179,15 +167,6 @@ type UpdateGroupPayload {
   group: Group
 }
 
-"The response from the `removeAccountFromGroup` mutation"
-type RemoveAccountFromGroupPayload {
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-
-  "The updated group"
-  group: Group
-}
-
 "The response from the `removeGroup` mutation"
 type RemoveGroupPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -232,12 +211,6 @@ extend type Mutation {
     "Mutation input"
     input: CreateGroupInput!
   ): CreateGroupPayload
-
-  "Remove an account from a group"
-  removeAccountFromGroup(
-    "Mutation input"
-    input: RemoveAccountFromGroupInput!
-  ): RemoveAccountFromGroupPayload @deprecated(reason: "Use `addAccountToGroup`.")
 
   "Remove an existing permission group"
   removeGroup(

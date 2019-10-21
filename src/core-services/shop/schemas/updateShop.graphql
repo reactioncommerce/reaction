@@ -22,7 +22,7 @@ input ShopLogoUrlsInput {
   primaryShopLogoUrl: String
 }
 
-"Input parameters for the updateShopLogoUrls mutation"
+"Input parameters for the updateShop mutation"
 input UpdateShopInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
@@ -37,9 +37,9 @@ input UpdateShopInput {
   storefrontUrls: StorefrontUrlsInput
 }
 
-"The response from the `updateShopLogoUrls` mutation"
+"The response from the `updateShop` mutation"
 type UpdateShopPayload {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
   "The shop which was updated"

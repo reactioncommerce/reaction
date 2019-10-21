@@ -3,7 +3,6 @@ import addAccountToGroup from "./addAccountToGroup.js";
 import inviteShopMember from "./inviteShopMember.js";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry.js";
 import removeAccountEmailRecord from "./removeAccountEmailRecord.js";
-import removeAccountFromGroup from "./removeAccountFromGroup.js";
 import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail.js";
 import setAccountProfileCurrency from "./setAccountProfileCurrency.js";
 import setAccountProfileLanguage from "./setAccountProfileLanguage.js";
@@ -15,7 +14,6 @@ export default {
   inviteShopMember,
   removeAccountAddressBookEntry,
   removeAccountEmailRecord,
-  removeAccountFromGroup,
   sendResetAccountPasswordEmail,
   setAccountProfileCurrency,
   setAccountProfileLanguage,

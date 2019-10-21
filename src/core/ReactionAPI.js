@@ -6,6 +6,7 @@ import _ from "lodash";
 import mongodb from "mongodb";
 import SimpleSchema from "simpl-schema";
 import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Logger from "@reactioncommerce/logger";
 import appEvents from "./util/appEvents.js";
 import getAbsoluteUrl from "./util/getAbsoluteUrl.js";
@@ -16,7 +17,8 @@ import coreResolvers from "./graphql/resolvers/index.js";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
 const { PubSub } = require("apollo-server");
-const coreGraphQLSchema = require("./graphql/schema.graphql");
+
+const coreGraphQLSchema = importAsString("./graphql/schema.graphql");
 
 const {
   REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED,
@@ -47,6 +49,10 @@ const optionsSchema = new SimpleSchema({
     optional: true
   },
   "serveStaticPaths.$": String,
+  "rootUrl": {
+    type: String,
+    optional: true
+  },
   "version": {
     type: String,
     optional: true
@@ -208,22 +214,15 @@ export default class ReactionAPI {
     const dbUrl = mongoUrl.slice(0, lastSlash);
     const dbName = mongoUrl.slice(lastSlash + 1);
 
-    return new Promise((resolve, reject) => {
-      MongoClient.connect(dbUrl, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      }, (error, client) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-
-        this.mongoClient = client;
-        this.setMongoDatabase(client.db(dbName));
-
-        resolve();
-      });
+    const client = await MongoClient.connect(dbUrl, {
+      useNewUrlParser: true
+      // Uncomment this after this `mongodb` pkg bug is fixed:
+      // https://jira.mongodb.org/browse/NODE-2249
+      // useUnifiedTopology: true
     });
+
+    this.mongoClient = client;
+    this.setMongoDatabase(client.db(dbName));
   }
 
   async disconnectFromMongo() {
@@ -296,7 +295,7 @@ export default class ReactionAPI {
    * @returns {undefined}
    */
   initServer() {
-    const { httpServer, serveStaticPaths } = this.options;
+    const { httpServer, serveStaticPaths = [] } = this.options;
     const { resolvers, schemas } = this.graphQL;
 
     const {

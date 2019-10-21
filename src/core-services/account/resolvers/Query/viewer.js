@@ -12,13 +12,7 @@ import optimizeIdOnly from "@reactioncommerce/api-utils/graphql/optimizeIdOnly.j
  * @returns {Object} user account object
  */
 export default async function viewer(_, __, context, info) {
-  if (!context.userId) return null;
+  if (!context.accountId) return null;
 
-  // Classic Meteor UI creates dummy accounts for "anonymous" user. We should ignore those.
-  const user = await context.collections.users.findOne({ _id: context.userId });
-  if (!user || !user.roles || !Array.isArray(user.roles[Object.keys(user.roles)[0]]) || user.roles[Object.keys(user.roles)[0]].includes("anonymous")) {
-    return null;
-  }
-
-  return optimizeIdOnly(context.userId, info, context.queries.userAccount)(context, context.userId);
+  return optimizeIdOnly(context.accountId, info, context.queries.userAccount)(context, context.accountId);
 }

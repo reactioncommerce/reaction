@@ -657,20 +657,15 @@ export const Shop = new SimpleSchema({
   "merchantShops.$": {
     type: MerchantShop
   },
-  "shopType": {
-    type: String,
-    // Default value is merchant because we seed the first created shop with "primary"
-    // There should only be one "primary" shop.
-    defaultValue: "merchant" // "primary", "merchant", "affiliate",
-  },
+  "shopType": String,
   "active": {
     type: Boolean,
     defaultValue: true
   },
-  // not sure what this is used for. Prefer the boolean above for indexing
+  // DEPRECATED and UNUSED
   "status": {
     type: String,
-    defaultValue: "active"
+    optional: true
   },
   "name": String,
   "description": {
@@ -700,28 +695,29 @@ export const Shop = new SimpleSchema({
   "emails.$": {
     type: Email
   },
+  // DEPRECATED and UNUSED
   "defaultPaymentMethod": {
     label: "Default Payment Method",
     type: String,
-    defaultValue: "none"
+    optional: true
   },
   "currency": {
     label: "Base Currency",
-    type: String,
-    defaultValue: "USD"
+    type: String
   },
+  // DEPRECATED and UNUSED
   "currencies": {
-    type: Object, // Schemas.Currency
+    type: Object,
     blackbox: true,
     optional: true
   },
   "locales": {
-    type: Locale
+    type: Locale,
+    optional: true
   },
   "language": {
     label: "Base Language",
-    type: String,
-    defaultValue: "en"
+    type: String
   },
   "languages": {
     type: Array,
@@ -798,23 +794,10 @@ export const Shop = new SimpleSchema({
   "metafields.$": {
     type: Metafield
   },
+  // DEPRECATED and UNUSED
   "defaultSellerRoles": {
     type: Array,
-    defaultValue: [
-      "owner",
-      "admin",
-      "seller",
-      "guest",
-      "manage-users",
-      "orders",
-      "account/profile",
-      "product",
-      "createProduct",
-      "product/admin",
-      "tag",
-      "index",
-      "cart/completed"
-    ]
+    optional: true
   },
   "defaultSellerRoles.$": {
     type: String

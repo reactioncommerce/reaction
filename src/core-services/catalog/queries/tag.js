@@ -19,7 +19,7 @@ export default async function tag(context, slugOrId, { shouldIncludeInvisible = 
   };
 
   if (shouldIncludeInvisible === true) {
-    const shopId = await context.queries.primaryShopId(context.collections);
+    const shopId = await context.queries.primaryShopId(context);
     if (userHasPermission(["owner", "admin"], shopId)) {
       query = {
         $and: [
