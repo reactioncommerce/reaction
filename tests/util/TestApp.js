@@ -89,7 +89,8 @@ class TestApp {
   async publishProducts(productIds) {
     const requestContext = { ...this.reactionNodeApp.context };
     await buildContext(requestContext);
-    requestContext.userHasPermission = () => true;
+//     requestContext.userHasPermission = () => true;
+    requestContext.checkPermissions = () => null;
     return this.reactionNodeApp.context.mutations.publishProducts(requestContext, productIds);
   }
 
