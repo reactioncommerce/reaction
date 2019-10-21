@@ -29,9 +29,9 @@ export default async function publishProducts(context, productIds) {
 
   if (!isInternalCall) {
     const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
-    uniqueShopIds.forEach(async (shopId) => {
-      await checkPermissions(["createProduct", "product/admin", "product/publish"], shopId);
-    });
+    for (const shopId of uniqueShopIds) {
+      await checkPermissions(["createProduct", "product/admin", "product/publish"], shopId); // eslint-disable-line no-await-in-loop
+    }
   }
 
   const success = await publishProductsToCatalog(productIds, context);

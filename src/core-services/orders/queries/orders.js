@@ -41,9 +41,9 @@ export default async function orders(context, { filters, shopIds } = {}) {
   // If an admin wants all orders for an account, we force it to be limited to the
   // shops for which they're allowed to see orders.
   if (shopIds) {
-    shopIds.forEach(async (shopId) => {
-      await checkPermissions(["orders", "order/fulfillment"], shopId);
-    });
+    for (const shopId of shopIds) {
+      await checkPermissions(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
+    }
 
     query.shopId = { $in: shopIds };
   } else {

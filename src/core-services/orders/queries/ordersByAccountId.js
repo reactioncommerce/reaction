@@ -42,9 +42,9 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
       const shopIdsUserHasPermissionFor = shopsUserHasPermissionFor("orders");
       query.shopId = { $in: shopIdsUserHasPermissionFor };
     } else {
-      shopIds.forEach(async (shopId) => {
-        await checkPermissions(["orders", "order/fulfillment"], shopId);
-      });
+      for (const shopId of shopIds) {
+        await checkPermissions(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
+      }
     }
   }
 
