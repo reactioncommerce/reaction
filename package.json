@@ -84,7 +84,7 @@
     "wait-for-expect": "~3.0.0"
   },
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "node --experimental-modules ./src/index.js",
     "start:dev": "NODE_ENV=development NODE_OPTIONS='--experimental-modules' nodemon ./src/index.js",
     "inspect": "NODE_ENV=development node --experimental-modules --inspect ./src/index.js",
     "inspect-brk": "NODE_ENV=development node --experimental-modules --inspect-brk ./src/index.js",
