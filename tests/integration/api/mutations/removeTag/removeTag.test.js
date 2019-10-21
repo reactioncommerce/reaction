@@ -12,6 +12,8 @@ let mockTagsAccount;
 let tagInput;
 let fakeTag;
 
+const accountInternalId = "123";
+
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
@@ -25,6 +27,16 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockTagsAccount);
 
   removeTag = testApp.mutate(RemoveTagMutation);
+
+  fakeTag = Factory.Tag.makeOne({
+    _id: encodeTagOpaqueId(accountInternalId),
+    shopId: encodeShopOpaqueId(shopId)
+  });
+
+  tagInput = {
+    id: encodeTagOpaqueId(fakeTag._id),
+    shopId: encodeShopOpaqueId(fakeTag.shopId)
+  };
 });
 
 afterAll(async () => {
@@ -32,23 +44,12 @@ afterAll(async () => {
   await testApp.stop();
 });
 beforeEach(async () => {
-  fakeTag = Factory.Tag.makeOne({
-    _id: encodeTagOpaqueId(123),
-    shopId: encodeShopOpaqueId(shopId)
-  });
-
   await testApp.collections.Tags.insertOne(fakeTag);
-
-  tagInput = {
-    id: encodeTagOpaqueId(fakeTag._id),
-    shopId: encodeShopOpaqueId(fakeTag.shopId)
-  };
 });
 afterEach(async () => {
   await testApp.collections.Tags.deleteMany({});
 });
 
-const accountInternalId = "123";
 
 describe("unauthorized user", () => {
   let logLevel;
@@ -80,8 +81,13 @@ describe("authorized user", () => {
   test("can remove tag", async () => {
     try {
       let removedTag = await testApp.collections.Tags.findOne({ _id: fakeTag._id, shopId: fakeTag.shopId });
+      // tag is returned unencoded diretly from mongoDB but is returned encoded from the mutation
+      removedTag._id = encodeTagOpaqueId(removedTag._id);
+      removedTag.heroMediaUrl = `https://shop.fake.site/${removedTag.heroMediaUrl}`
       expect(removedTag).not.toBeNull();
-      await removeTag(tagInput);
+      let result = await removeTag(tagInput);
+      // mongoDB tag returns more fields than removeTag mutation, so objectContaining is to ensure returned fields match from db entry.
+      expect(removedTag).toEqual(expect.objectContaining(result.removeTag.tag));
       removedTag = await testApp.collections.Tags.findOne({ _id: fakeTag._id, shopId: fakeTag.shopId });
       expect(removedTag).toBeNull();
     } catch (error) {
