@@ -1,7 +1,3 @@
-/* eslint-disable node/no-deprecated-api */
-/* TODO: revisit `url.parse` throughout Reaction */
-import url from "url";
-
 /**
  * @name sitemapQuery
  * @method
@@ -16,7 +12,7 @@ export default async function sitemapQuery(_, params, context) {
   const { Sitemaps, Shops } = context.collections;
   const { handle, shopUrl } = params;
 
-  const domain = url.parse(shopUrl).hostname;
+  const domain = new URL(shopUrl).hostname;
 
   // ensure the domain requested is for a known shop domain
   const { _id: shopId } = await Shops.findOne({ domains: domain }) || {};
