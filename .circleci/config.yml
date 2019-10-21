@@ -5,7 +5,7 @@ version: 2
 # typing. See http://yaml.org/type/merge.html for details.
 defaults: &defaults
   environment:
-    - DOCKER_REPOSITORY: "reactioncommerce/reaction"
+    - DOCKER_REPOSITORY: "yashutanna/reaction"
     - DOCKER_NAMESPACE: "reactioncommerce"
     - DOCKER_NAME: "reaction"
     - GLOBAL_CACHE_VERSION: "v2"
