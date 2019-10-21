@@ -1,7 +1,5 @@
-import { createRequire } from "module";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 
-const require = createRequire(import.meta.url);
-
-const schema = require("./schema.graphql");
+const schema = importAsString("./schema.graphql");
 
 export default [schema];

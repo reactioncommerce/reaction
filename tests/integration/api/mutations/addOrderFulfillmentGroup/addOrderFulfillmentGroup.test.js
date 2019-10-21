@@ -1,8 +1,10 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Random from "@reactioncommerce/random";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import AddOrderFulfillmentGroupMutation from "./AddOrderFulfillmentGroupMutation.graphql";
+
+const AddOrderFulfillmentGroupMutation = importAsString("./AddOrderFulfillmentGroupMutation.graphql");
 
 jest.setTimeout(300000);
 
@@ -43,7 +45,10 @@ beforeAll(async () => {
     });
   };
 
-  testApp = new TestApp({
+  testApp = new TestApp();
+
+  testApp.registerPlugin({
+    name: "addOrderFulfillmentGroup.test.js",
     functionsByType: {
       getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
     }
@@ -168,7 +173,7 @@ test("user with orders role can add an order fulfillment group with new items", 
           },
           quantity: 5
         }],
-        selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
+        selectedFulfillmentMethodId: encodeOpaqueId("reaction/fulfillmentMethod", fulfillmentMethodId),
         shopId: encodeOpaqueId("reaction/shop", shopId),
         type: "shipping"
       },
@@ -298,7 +303,7 @@ test("user with orders role can add an order fulfillment group with moved items"
         data: {
           shippingAddress
         },
-        selectedFulfillmentMethodId: encodeOpaqueId("reaction/surcharge", fulfillmentMethodId),
+        selectedFulfillmentMethodId: encodeOpaqueId("reaction/fulfillmentMethod", fulfillmentMethodId),
         shopId: encodeOpaqueId("reaction/shop", shopId),
         type: "shipping"
       },

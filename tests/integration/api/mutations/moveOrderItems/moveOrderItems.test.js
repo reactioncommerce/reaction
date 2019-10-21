@@ -1,7 +1,9 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
-import MoveOrderItemsMutation from "./MoveOrderItemsMutation.graphql";
+
+const MoveOrderItemsMutation = importAsString("./MoveOrderItemsMutation.graphql");
 
 jest.setTimeout(300000);
 
@@ -31,7 +33,10 @@ beforeAll(async () => {
     });
   };
 
-  testApp = new TestApp({
+  testApp = new TestApp();
+
+  testApp.registerPlugin({
+    name: "moveOrderItems.test.js",
     functionsByType: {
       getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
     }

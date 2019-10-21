@@ -15,9 +15,6 @@ beforeAll(async () => {
   shopQuery = testApp.query(`query ($id: ID!) {
   shop(id: $id) {
     _id
-    currencies {
-      code
-    }
     currency {
       code
     }
@@ -35,9 +32,6 @@ test("get shop, no auth necessary", async () => {
   expect(result).toEqual({
     shop: {
       _id: opaqueShopId,
-      currencies: [
-        { code: "USD" }
-      ],
       currency: { code: "USD" },
       description: "mockDescription",
       name: "Primary Shop"
