@@ -463,42 +463,38 @@ export default function createJobCollectionClass({ Job, later }) {
 
     // eslint-disable-next-line camelcase
     _DDPMethod_startJobServer() {
-      // The client can't actually do this, so skip it
-      if (!this.isSimulation) {
-        if (this.stopped && (this.stopped !== true)) { clearTimeout(this.stopped); }
-        this.stopped = false;
-      }
+      this.stopped = false;
       return true;
     }
 
     // eslint-disable-next-line camelcase
-    _DDPMethod_shutdownJobServer(options = {}) {
-      if (!options.timeout) {
-        options.timeout = 60 * 1000;
+    async _DDPMethod_shutdownJobServer() {
+      this.stopped = true;
+
+      // Fail all currently running jobs
+      if (this.collection) {
+        const runningJobs = await this.collection.find({
+          status: "running"
+        }, {
+          projection: {
+            _id: 1,
+            runId: 1
+          }
+        }).toArray();
+
+        if (runningJobs.length > 0) {
+          console.warn(`Failing ${runningJobs.length} jobs on queue stop.`);
+
+          await Promise.all(runningJobs.map((doc) => this._DDPMethod_jobFail(doc._id, doc.runId, "Running at Job Server shutdown.")));
+        }
       }
 
-      // The client can"t actually do any of this, so skip it
-      if (!this.isSimulation) {
-        if (this.stopped && (this.stopped !== true)) { clearTimeout(this.stopped); }
-        this.stopped = setTimeout(
-          async () => {
-            const cursor = this.collection.find({ status: "running" });
-            const failedJobs = await cursor.count();
-
-            if (failedJobs !== 0) {
-              console.warn(`Failing ${failedJobs} jobs on queue stop.`);
-            }
-
-            await Promise.all(cursor.map((doc) => this._DDPMethod_jobFail(doc._id, doc.runId, "Running at Job Server shutdown.")));
-
-            if (this.logStream !== null) { // Shutting down closes the logStream!
-              this.logStream.end();
-              this.logStream = null;
-            }
-          },
-          options.timeout
-        );
+      // Close the log stream
+      if (this.logStream !== null) {
+        this.logStream.end();
+        this.logStream = null;
       }
+
       return true;
     }
 
