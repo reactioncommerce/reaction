@@ -92,7 +92,7 @@ export default async function createShop(context, input) {
     userId
   } = context;
 
-  await checkPermissions(["owner", "shop/create"], "__global_roles__");
+  await checkPermissions(["owner", "shop/create"]);
 
   const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
 

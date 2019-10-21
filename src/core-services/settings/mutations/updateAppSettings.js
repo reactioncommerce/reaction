@@ -24,12 +24,12 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
   }
 
   // Look up roles that are allowed to set each setting. Throw if not allowed.
-  updateKeys.forEach(async (field) => {
-    const allowedRoles = shopId ? rolesThatCanEditShopSetting(field) : rolesThatCanEditGlobalSetting(field);
+  for (const updateKey of updateKeys) {
+    const allowedRoles = shopId ? rolesThatCanEditShopSetting(updateKey) : rolesThatCanEditGlobalSetting(updateKey);
     if (allowedRoles.length === 0) {
-      await checkPermissions(allowedRoles, shopId);
+      await checkPermissions(allowedRoles, shopId); // eslint-disable-line no-await-in-loop
     }
-  });
+  }
 
   const { value: updatedDoc } = await AppSettings.findOneAndUpdate(
     { shopId },
