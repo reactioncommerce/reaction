@@ -11,6 +11,8 @@ defaults: &defaults
   working_directory: ~/reaction-app
   docker:
     - image: circleci/node:12.11.1-stretch
+  environment:
+    CI_SCRIPTS: 'npx --quiet --package @reactioncommerce/ci-scripts@1.6.2'
 
 jobs:
   install-dependencies:
@@ -99,7 +101,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Build and push production Docker image
-          command: npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 docker-build-tag-push "$DOCKER_REPOSITORY" .
+          command: ${CI_SCRIPTS} docker-build-tag-push . ${DOCKER_REPOSITORY}
 
   deploy-docs:
     <<: *defaults
