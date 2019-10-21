@@ -27,8 +27,9 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
   for (const updateKey of updateKeys) {
     const allowedRoles = shopId ? rolesThatCanEditShopSetting(updateKey) : rolesThatCanEditGlobalSetting(updateKey);
     if (allowedRoles.length === 0) {
-      await checkPermissions(allowedRoles, shopId); // eslint-disable-line no-await-in-loop
+      throw new ReactionError("access-denied", `You are not allowed to edit the "${updateKey}" setting`);
     }
+    await checkPermissions(allowedRoles, shopId); // eslint-disable-line no-await-in-loop
   }
 
   const { value: updatedDoc } = await AppSettings.findOneAndUpdate(
