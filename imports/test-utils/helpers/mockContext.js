@@ -4,6 +4,11 @@ const mockContext = {
     emit() { },
     on() { }
   },
+  auth: {
+    accountByUserId: jest.fn().mockName("accountByUserId").mockImplementation((ctx, userId) => ctx.collections.Accounts.findOne({ userId })),
+    getHasPermissionFunctionForUser: jest.fn().mockName("getHasPermissionFunctionForUser").mockImplementation(() => () => false),
+    getShopsUserHasPermissionForFunctionForUser: jest.fn().mockName("getShopsUserHasPermissionForFunctionForUser").mockImplementation(() => () => [])
+  },
   collections: {},
   getAbsoluteUrl: jest.fn().mockName("getAbsoluteUrl").mockImplementation((path) => {
     const adjustedPath = path[0] === "/" ? path : `/${path}`;

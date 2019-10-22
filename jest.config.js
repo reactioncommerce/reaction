@@ -189,6 +189,7 @@ const jestConfig = {
 // integration tests as opposed to unit tests, which don't need MongoDB running.
 if (process.env.JEST_MONGO) {
   delete jestConfig.testEnvironment;
+  jestConfig.setupFilesAfterEnv = ["<rootDir>/imports/test-utils/setupJestIntegrationTests.js"];
   jestConfig.preset = "@shelf/jest-mongodb";
 }
 

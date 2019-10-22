@@ -14,7 +14,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Payments",
     name: "reaction-payments",
-    icon: "fa fa-credit-card",
     i18n,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler]

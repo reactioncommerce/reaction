@@ -1,4 +1,4 @@
-import resolveAccountFromAccountId from "./resolveAccountFromAccountId";
+import resolveAccountFromAccountId from "./resolveAccountFromAccountId.js";
 
 const fakeAccount = {
   _id: "123",

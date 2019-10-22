@@ -5,7 +5,7 @@ import {
   Product,
   ProductVariant,
   VariantMedia
-} from "./simpleSchemas.js"; // TODO: update simpleschemas
+} from "./simpleSchemas.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.

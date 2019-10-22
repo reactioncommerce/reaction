@@ -25,7 +25,7 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
-  mockAdminAccount = Factory.Accounts.makeOne({
+  mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
     roles: {
       [shopId]: ["admin", "shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
@@ -34,7 +34,7 @@ beforeAll(async () => {
   });
   await testApp.createUserAndAccount(mockAdminAccount);
 
-  mockAdminAccountWithMissingPermission = Factory.Accounts.makeOne({
+  mockAdminAccountWithMissingPermission = Factory.Account.makeOne({
     _id: "mockAdminAccountWithMissingPermission",
     roles: {
       [shopId]: ["admin", "someOtherPermission"]
@@ -43,7 +43,7 @@ beforeAll(async () => {
   });
   await testApp.createUserAndAccount(mockAdminAccountWithMissingPermission);
 
-  mockOtherAccount = Factory.Accounts.makeOne({
+  mockOtherAccount = Factory.Account.makeOne({
     _id: "mockOtherAccount",
     groups: [],
     roles: {},
@@ -51,7 +51,8 @@ beforeAll(async () => {
   });
   await testApp.createUserAndAccount(mockOtherAccount);
 
-  shopManagerGroup = Factory.Groups.makeOne({
+  shopManagerGroup = Factory.Group.makeOne({
+    createdBy: null,
     name: "shop manager",
     permissions: ["admin", "shopManagerGroupPermission"],
     slug: "shop manager",
@@ -59,7 +60,8 @@ beforeAll(async () => {
   });
   await testApp.collections.Groups.insertOne(shopManagerGroup);
 
-  customerGroup = Factory.Groups.makeOne({
+  customerGroup = Factory.Group.makeOne({
+    createdBy: null,
     name: "customer",
     permissions: ["customerGroupPermission"],
     slug: "customer",

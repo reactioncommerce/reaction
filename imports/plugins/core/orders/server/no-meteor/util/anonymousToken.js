@@ -1,4 +1,4 @@
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Random from "@reactioncommerce/random";
 
 /**
@@ -14,7 +14,7 @@ export function getAnonymousAccessToken() {
   const token = Random.secret();
   return {
     createdAt: new Date(),
-    hashedToken: hashLoginToken(token),
+    hashedToken: hashToken(token),
     token
   };
 }
