@@ -1,13 +1,14 @@
-import addressBookAdd from "./addressBookAdd";
-import addAccountToGroup from "./addAccountToGroup";
-import inviteShopMember from "./inviteShopMember";
-import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry";
-import removeAccountEmailRecord from "./removeAccountEmailRecord";
-import removeAccountFromGroup from "./removeAccountFromGroup";
-import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail";
-import setAccountProfileCurrency from "./setAccountProfileCurrency";
-import setAccountProfileLanguage from "./setAccountProfileLanguage";
-import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
+import addressBookAdd from "./addressBookAdd.js";
+import addAccountToGroup from "./addAccountToGroup.js";
+import inviteShopMember from "./inviteShopMember.js";
+import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry.js";
+import removeAccountEmailRecord from "./removeAccountEmailRecord.js";
+import removeAccountFromGroup from "./removeAccountFromGroup.js";
+import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail.js";
+import setAccountProfileCurrency from "./setAccountProfileCurrency.js";
+import setAccountProfileLanguage from "./setAccountProfileLanguage.js";
+import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
+import updateAccountName from "./updateAccountName";
 
 export default {
   addressBookAdd,
@@ -19,5 +20,6 @@ export default {
   sendResetAccountPasswordEmail,
   setAccountProfileCurrency,
   setAccountProfileLanguage,
-  updateAccountAddressBookEntry
+  updateAccountAddressBookEntry,
+  updateAccountName
 };
