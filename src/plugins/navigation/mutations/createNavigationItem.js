@@ -6,16 +6,17 @@ import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
  * @method createNavigationItem
  * @summary Creates a nav item
  * @param {Object} context An object containing the per-request state
- * @param {Object} navigationItem Nav item to add. See schema.graphql
+ * @param {Object} input An object of all mutation arguments that were sent by the client
+ * @param {String} input.navigationItem Nav item to add. See schema.graphql
+ * @param {String} input.shopId ID of the shop navigation item belongs
  * @returns {Promise<Object>} The created navigation item
  */
-export default async function createNavigationItem(context, navigationItem) {
+export default async function createNavigationItem(context, input) {
   const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
+  const { navigationItem, shopId } = input;
 
   const { metadata, draftData = {} } = navigationItem;
-
-  const shopId = navigationItem.shopId || await context.queries.primaryShopId(context);
 
   if (!context.isInternalCall) {
     await checkPermissions(["core"], shopId);
