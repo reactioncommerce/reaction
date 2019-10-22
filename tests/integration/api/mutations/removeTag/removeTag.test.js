@@ -83,9 +83,9 @@ describe("authorized user", () => {
       let removedTag = await testApp.collections.Tags.findOne({ _id: fakeTag._id, shopId: fakeTag.shopId });
       // tag is returned unencoded diretly from mongoDB but is returned encoded from the mutation
       removedTag._id = encodeTagOpaqueId(removedTag._id);
-      removedTag.heroMediaUrl = `https://shop.fake.site/${removedTag.heroMediaUrl}`
+      removedTag.heroMediaUrl = `https://shop.fake.site/${removedTag.heroMediaUrl}`;
       expect(removedTag).not.toBeNull();
-      let result = await removeTag(tagInput);
+      const result = await removeTag(tagInput);
       // mongoDB tag returns more fields than removeTag mutation, so objectContaining is to ensure returned fields match from db entry.
       expect(removedTag).toEqual(expect.objectContaining(result.removeTag.tag));
       removedTag = await testApp.collections.Tags.findOne({ _id: fakeTag._id, shopId: fakeTag.shopId });
