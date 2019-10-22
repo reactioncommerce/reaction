@@ -139,6 +139,18 @@ input RemoveAccountEmailRecordInput {
   email: Email!
 }
 
+"Describes an account profile name change"
+input UpdateAccountNameInput {
+  "The account ID, which defaults to the viewer account"
+  accountId: ID
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+  "The first name to set on the account"
+  firstName: String!
+  "The last name to set on the account"
+  lastName: String!
+}
+
 "Per-account tax exemption settings used by the Avalara plugin"
 type TaxSettings {
   "Customer usage type. A value matching the `code` field of one TaxEntityCode, or any custom string."
@@ -352,6 +364,14 @@ type SetAccountProfileLanguagePayload {
   clientMutationId: String
 }
 
+"The response from the `updateAccountName` mutation"
+type UpdateAccountNamePayload {
+  "The updated account"
+  account: Account
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 extend type Shop {
   """
   Returns a list of administrators for this shop, as a Relay-compatible connection.
@@ -432,6 +452,12 @@ extend type Mutation {
     "Mutation input"
     input: UpdateAccountAddressBookEntryInput!
   ): UpdateAccountAddressBookEntryPayload
+
+  "Set the name for an account"
+  updateAccountName(
+    "Mutation input"
+    input: UpdateAccountNameInput!
+  ): UpdateAccountNamePayload
 }
 
 extend type Query {
