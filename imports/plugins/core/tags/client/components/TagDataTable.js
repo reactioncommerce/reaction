@@ -390,14 +390,13 @@ class TagDataTable extends Component {
    * @returns {undefined} No return value
    */
   handleToggleSelection = (key, shift, row) => {
+    const selectedKey = key.replace("select-", "");
     // update the state
     this.setState((prevState) => {
       // start off with the existing state
       let selection = [...prevState.selection];
-      // let selectedObjects = { ...prevState.selectedObjects }
 
-      const keyIndex = selection.findIndex((element) => element._id === key);
-
+      const keyIndex = selection.findIndex((element) => element._id === selectedKey);
       // check to see if the key exists
       if (keyIndex >= 0) {
         // it does exist so we will remove it using destructing
