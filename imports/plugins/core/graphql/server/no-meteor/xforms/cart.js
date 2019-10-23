@@ -1,7 +1,7 @@
-import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import getRateObjectForRate from "@reactioncommerce/api-utils/getRateObjectForRate.js";
+import namespaces from "@reactioncommerce/api-utils/graphql/namespaces.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { xformCatalogProductMedia } from "./catalogProduct";
-import { xformRateToRateObject } from "./core";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { decodeProductOpaqueId } from "./product";
 
@@ -251,7 +251,7 @@ export async function xformCartCheckout(collections, cart) {
     };
     if (taxSummary) {
       const effectiveTaxRate = taxSummary.tax / taxSummary.taxableAmount;
-      effectiveTaxRateObject = xformRateToRateObject(effectiveTaxRate);
+      effectiveTaxRateObject = getRateObjectForRate(effectiveTaxRate);
     }
   }
 

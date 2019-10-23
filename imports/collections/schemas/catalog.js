@@ -46,7 +46,6 @@ export const ImageSizes = new SimpleSchema({
  * @type {SimpleSchema}
  * @property {Number} priority required
  * @property {String} productId required
- * @property {Number} toGrid required
  * @property {String} variantId optional
  * @property {ImageSizes} URLs required
  */
@@ -58,10 +57,6 @@ export const ImageInfo = new SimpleSchema({
   productId: {
     type: String,
     label: "Product Id"
-  },
-  toGrid: {
-    type: Number,
-    defaultValue: 0
   },
   variantId: {
     type: String,

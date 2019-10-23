@@ -98,7 +98,6 @@ function ProductTable({ history }) {
     onDrop,
     multiple: true,
     disablePreview: true,
-    accept: "text/csv",
     disableClick: true
   });
 

@@ -1,3 +1,137 @@
+# v2.7.0
+
+Reaction v2.7.0 adds performance enhancements and fixes bugs.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.7.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### More packages have continued to migrate from `no-meteor` folders to `node-app`
+
+As part of de-meteorization of the Reaction API, We have continued the migration of moving all server side code in `no-meteor` folders to their respective `node-app` folders.
+
+### Potential Breaking Changes for Custom Plugins
+
+There might be breaking changes in custom plugins due to the movement of core packages to the `node-app` folders. Custom plugins will need to update their imports paths to reflect the new location of packages.
+
+## Fixes
+
+- fix: pass correct userId when creating a shop ([#5694](https://github.com/reactioncommerce/reaction/pull/5694))
+- fix: filter products by file on Windows ([#5700](https://github.com/reactioncommerce/reaction/pull/5700))
+
+## Refactors
+
+- refactor: Move accounts plugin to Node app and better split accounts from users/IDP ([#5693](https://github.com/reactioncommerce/reaction/pull/5693))
+- refactor: clean-up tasks related to removing `appEvents` from all meteor code ([#5692](https://github.com/reactioncommerce/reaction/pull/5692))
+- refactor: clean-up tasks related to moving files to the node-app ([#5688](https://github.com/reactioncommerce/reaction/pull/5688))
+- refactor: simpleSchema updates for mockContext ([#5685](https://github.com/reactioncommerce/reaction/pull/5685))
+- refactor: move getPaymentMethodConfigByName to context ([#5684](https://github.com/reactioncommerce/reaction/pull/5684))
+- refactor: create `archiveProducts` GQL mutation to replace meteor methods ([#5680](https://github.com/reactioncommerce/reaction/pull/5680))
+- refactor: move jobs-queue from server/no-meteor to node-app ([#5678](https://github.com/reactioncommerce/reaction/pull/5678))
+- refactor: move cart from server/no-meteor to node-app ([#5675](https://github.com/reactioncommerce/reaction/pull/5675))
+- refactor: move checkout from server/no-meteor to node-app ([#5674](https://github.com/reactioncommerce/reaction/pull/5674))
+- refactor: move core plugin to Node app ([#5673](https://github.com/reactioncommerce/reaction/pull/5673))
+- refactor: move discounts plugins to Node app ([#5672](https://github.com/reactioncommerce/reaction/pull/5672))
+- refactor: move marketplace to Node app ([#5671](https://github.com/reactioncommerce/reaction/pull/5671))
+- refactor: move orders from server/no-meteor to node-app ([#5670](https://github.com/reactioncommerce/reaction/pull/5670))
+- refactor: move catalog from server/no-meteor to node-app ([#5658](https://github.com/reactioncommerce/reaction/pull/5658))
+- refactor: move navigation from server/no-meteor to node-app ([#5656](https://github.com/reactioncommerce/reaction/pull/5656))
+- refactor: move email from server/no-meteor to node-app ([#5655](https://github.com/reactioncommerce/reaction/pull/5655))
+- refactor: move i18n from server/no-meteor to node-app ([#5654](https://github.com/reactioncommerce/reaction/pull/5654))
+- refactor: move product and product-variant from server/no-meteor to node-app ([#5669](https://github.com/reactioncommerce/reaction/pull/5669))
+- refactor: move sitemap-generator from server/no-meteor to node-app ([#5667](https://github.com/reactioncommerce/reaction/pull/5667))
+- refactor: move Tags from server/no-meteor to node-app ([#5665](https://github.com/reactioncommerce/reaction/pull/5665))
+- refactor: move dashboard from server/no-meteor to node-app ([#5663](https://github.com/reactioncommerce/reaction/pull/5663))
+- refactor: move product-admin plugin to Node app ([#5659](https://github.com/reactioncommerce/reaction/pull/5659))
+- refactor: move notifications plugin to Node app ([#5661](https://github.com/reactioncommerce/reaction/pull/5661))
+
+# v2.6.0
+
+Reaction v2.6.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.6.0.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.6.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### Packages have begun to migrate from `no-meteor` folders to `node-app`
+
+As part of de-meteorization of the Reaction API, We have started the migration of moving all server side code in `no-meteor` folders to their respective `node-app` folders.
+
+## Feature
+
+- feat: add product and productVariant related GraphQL mutations ([#5562](https://github.com/reactioncommerce/reaction/pull/5562))
+
+## Fixes
+
+- fix: product medatafield UI issues ([#5584](https://github.com/reactioncommerce/reaction/pull/5584))
+
+## Refactors
+
+- refactor: move email-smtp from server/no-meteor to node-app ([#5641](https://github.com/reactioncommerce/reaction/pull/5641))
+- refactor: move ui from server/no-meteor to node-app ([#5637](https://github.com/reactioncommerce/reaction/pull/5637))
+- refactor: move address-validation-test from server/no-meteor to node-app ([#5638](https://github.com/reactioncommerce/reaction/pull/5638))
+- refactor: move `shipping` and `surcharges` from server/no-meteor to node-app ([#5632](https://github.com/reactioncommerce/reaction/pull/5632))
+- refactor: move `settings` from server/no-meteor to node-app ([#5634](https://github.com/reactioncommerce/reaction/pull/5634))
+- refactor: ackground jobs rewrite: no Meteor dependencies! ([#5580](https://github.com/reactioncommerce/reaction/pull/5580))
+- refactor: move `address` from server/no-meteor to node-app ([#5587](https://github.com/reactioncommerce/reaction/pull/5587))
+- refactor: move `template` from server/no-meteor to node-app ([#5586](https://github.com/reactioncommerce/reaction/pull/5586))
+- refactor: use `reaction-error` external package instead of internal alias ([#5631](https://github.com/reactioncommerce/reaction/pull/5631))
+- refactor: move system-information from server/no-meteor to node-app ([#5585](https://github.com/reactioncommerce/reaction/pull/5585))
+- refactor: rewrite removeAccountEmail without meteor ([#5577](https://github.com/reactioncommerce/reaction/pull/5577))
+
+# v2.5.0
+
+Reaction v2.5.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.4.0.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.5.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### Filters have been added to Orders query
+
+Adds API support to enable users to filter orders by: search keywords (fuzzy search), status, payment status, fulfillment status, date range.
+
+### Faster Jest integration tests
+
+By switching to `jest-mongodb`, we've seen 8x speed improvement when running `npm run test:integration`
+
+## Feature
+
+- feat: add various filters to the main orders query ([#5575](https://github.com/reactioncommerce/reaction/pull/5575))
+- feat: Translations without Meteor ([#5514](https://github.com/reactioncommerce/reaction/pull/5514))
+
+## Fixes
+
+- fix: restore Add/Remove menu item in products page ([#5564](https://github.com/reactioncommerce/reaction/pull/5564))
+- fix: use catalyst button for mediauploader ([#5563](https://github.com/reactioncommerce/reaction/pull/5563))
+- fix: restore loadTranslations fn ([#5546](https://github.com/reactioncommerce/reaction/pull/5546))
+- fix: Add missing GraphQL argument descriptions ([#5547](https://github.com/reactioncommerce/reaction/pull/5547))
+
+## Refactors
+
+- refactor: create verifySMTPEmailSettings GraphQL mutation, replace meteor version ([#5531](https://github.com/reactioncommerce/reaction/pull/5531))
+- refactor: various small fixes ([#5561](https://github.com/reactioncommerce/reaction/pull/5561))
+- refactor: Add extra field to the error message ([#5574](https://github.com/reactioncommerce/reaction/pull/5574))
+- refactor: use CardHeader for Filter by File card ([#5569](https://github.com/reactioncommerce/reaction/pull/5569))
+- refactor: add indices on updatedAt for CDC (Products & SimpleInventory) ([#5571](https://github.com/reactioncommerce/reaction/pull/5571))
+- refactor: rewrite `accounts/sendResetPasswordEmail` into a GraphQL mutation ([#5558](https://github.com/reactioncommerce/reaction/#5558))
+- refactor: remove Reaction.Email ([#5559](https://github.com/reactioncommerce/reaction/pull/5559))
+- refactor: remove all code releated to inviting a shop owner ([#5553](https://github.com/reactioncommerce/reaction/pull/5553))
+- refactor: Fix proptype warning with ReactSortableTree ([#5552](https://github.com/reactioncommerce/reaction/pull/5552))
+- refactor: remove `catalog/publish/products` meteor method, use `publishProductsToCatalog` GQL Mutation instead ([#5541](https://github.com/reactioncommerce/reaction/pull/5541)
+
+## Tests
+
+- tests: faster Jest integration tests ([#5549](https://github.com/reactioncommerce/reaction/pull/5549))
+
+## Docs
+
+- docs: Fix test command in README.md ([#5565](https://github.com/reactioncommerce/reaction/pull/5565))
+
+## Chores
+
+- chore: fix various prop type validation errors ([#5550](https://github.com/reactioncommerce/reaction/pull/5550))
+
 # v2.4.0
 
 Reaction v2.4.0 adds minor features and performance enhancements, fixes bugs and contains no breaking changes since v2.3.0.
@@ -16,34 +150,34 @@ As part of our move away from Meteor, all Meteor app-tests have been removed. Th
 
 ## Feature
 
-- feat: Translations without Meteor ([#5514](http://github.com/reactioncommerce/reaction/pull/5514))
+- feat: Translations without Meteor ([#5514](https://github.com/reactioncommerce/reaction/pull/5514))
 
 ## Fixes
 
-- fix: restore Add/Remove menu item in products page ([#5564](http://github.com/reactioncommerce/reaction/pull/5564))
-- fix: use catalyst button for mediauploader ([#5563](http://github.com/reactioncommerce/reaction/pull/5563))
-- fix: restore loadTranslations fn ([#5546](http://github.com/reactioncommerce/reaction/pull/5546))
+- fix: restore Add/Remove menu item in products page ([#5564](https://github.com/reactioncommerce/reaction/pull/5564))
+- fix: use catalyst button for mediauploader ([#5563](https://github.com/reactioncommerce/reaction/pull/5563))
+- fix: restore loadTranslations fn ([#5546](https://github.com/reactioncommerce/reaction/pull/5546))
 
 ## Refactors
 
-- refactor: remove Reaction.Email ([#5559](http://github.com/reactioncommerce/reaction/pull/5559))
-- refactor: remove all code releated to inviting a shop owner ([#5553](http://github.com/reactioncommerce/reaction/pull/5553))
-- refactor: Fix proptype warning with ReactSortableTree ([#5552](http://github.com/reactioncommerce/reaction/pull/5552))
+- refactor: remove Reaction.Email ([#5559](https://github.com/reactioncommerce/reaction/pull/5559))
+- refactor: remove all code releated to inviting a shop owner ([#5553](https://github.com/reactioncommerce/reaction/pull/5553))
+- refactor: Fix proptype warning with ReactSortableTree ([#5552](https://github.com/reactioncommerce/reaction/pull/5552))
 - refactor: remove `catalog/publish/products` meteor method, use `publi#5541hProductsToCatalog` GQL Mutation instead ([#](http:#5541//github.com/reactioncommerce/reaction/pull/))
 
 ## Tests
 
-- tests: Faster Jest integration tests ([#5549](http://github.com/reactioncommerce/reaction/pull/5549))
+- tests: Faster Jest integration tests ([#5549](https://github.com/reactioncommerce/reaction/pull/5549))
 
 ## Docs
 
-- docs: Fix test command in README.md ([#5565](http://github.com/reactioncommerce/reaction/pull/5565))
-- docs: Add missing GraphQL argument descriptions ([#5547](http://github.com/reactioncommerce/reaction/pull/5547))
+- docs: Fix test command in README.md ([#5565](https://github.com/reactioncommerce/reaction/pull/5565))
+- docs: Add missing GraphQL argument descriptions ([#5547](https://github.com/reactioncommerce/reaction/pull/5547))
 
 ## Chores
 
-- chore: remove meteor app-tests ([#5560](http://github.com/reactioncommerce/reaction/pull/5560))
-- chore: fix various prop type validation errors ([#5550](http://github.com/reactioncommerce/reaction/pull/5550))
+- chore: remove meteor app-tests ([#5560](https://github.com/reactioncommerce/reaction/pull/5560))
+- chore: fix various prop type validation errors ([#5550](https://github.com/reactioncommerce/reaction/pull/5550))
 
 # v2.3.0
 

@@ -19,7 +19,7 @@ beforeAll(async () => {
     product: Factory.CatalogProduct.makeOne({
       isDeleted: false,
       isVisible: true,
-      variants: Factory.CatalogVariantSchema.makeMany(1)
+      variants: Factory.CatalogProductVariant.makeMany(1)
     })
   });
   await testApp.collections.Catalog.insertOne(catalogItem);

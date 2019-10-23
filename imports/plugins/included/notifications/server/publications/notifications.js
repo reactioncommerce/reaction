@@ -12,7 +12,7 @@ Meteor.publish("Notification", function (userId) {
   check(userId, Match.OptionalOrNull(String));
 
   if (!userId) {
-    Logger.debug("Ingnoring null request on Notification Subscription");
+    Logger.debug("Ignoring null request on Notification Subscription");
     return this.ready();
   }
 

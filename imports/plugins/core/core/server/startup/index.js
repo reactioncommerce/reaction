@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import appEvents from "/imports/node-app/core/util/appEvents";
+import register from "/imports/node-app/core-services/core/index.js";
 import Reaction from "../Reaction";
-import register from "../no-meteor/register";
 import startNodeApp from "./startNodeApp";
 import "./browser-policy";
 import CollectionSecurity from "./collection-security";
