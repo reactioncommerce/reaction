@@ -1,4 +1,4 @@
-import resolveShopFromShopId from "./resolveShopFromShopId";
+import resolveShopFromShopId from "./resolveShopFromShopId.js";
 
 const fakeUser = {
   _id: "123",

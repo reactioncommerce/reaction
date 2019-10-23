@@ -1,5 +1,5 @@
 import { assocPath, dissoc, pipe } from "ramda";
-import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import namespaces from "@reactioncommerce/api-utils/graphql/namespaces.js";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { renameKeys } from "./ramda-ext";
 

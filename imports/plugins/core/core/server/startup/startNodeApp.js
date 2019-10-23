@@ -3,7 +3,6 @@
 import url from "url";
 import Logger from "@reactioncommerce/logger";
 import { execute, subscribe } from "graphql";
-import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { MongoInternals } from "meteor/mongo";
 import { WebApp } from "meteor/webapp";
@@ -30,17 +29,9 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
   const app = new ReactionNodeApp({
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
-    context: {
-      appVersion: packageJson.version,
-      async createUser(options) {
-        return Accounts.createUser(options);
-      },
-      mutations: {},
-      queries: {},
-      rootUrl: ROOT_URL
-    },
     httpServer: WebApp.httpServer,
-    mongodb
+    mongodb,
+    version: packageJson.version
   });
 
   if (onAppInstanceCreated) await onAppInstanceCreated(app);

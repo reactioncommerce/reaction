@@ -1,6 +1,8 @@
 /* node-app imports */
 /* core-services */
+import registerAccountsPlugin from "./core-services/account/index.js";
 import registerCatalogPlugin from "./core-services/catalog/index.js";
+import registerCartPlugin from "./core-services/cart/index.js";
 import registerCorePlugin from "./core-services/core/index.js";
 import registerDiscountsPlugin from "./core-services/discounts/index.js";
 import registerEmailPlugin from "./core-services/email/index.js";
@@ -9,6 +11,7 @@ import registerI18nPlugin from "./core-services/i18n/index.js";
 import registerInventoryPlugin from "./core-services/inventory/index.js";
 import registerProductPlugin from "./core-services/product/index.js";
 import registerSettingsPlugin from "./core-services/settings/index.js";
+import registerOrdersPlugin from "./core-services/orders/index.js";
 import registerPaymentsPlugin from "./core-services/payments/index.js";
 import registerShippingPlugin from "./core-services/shipping/index.js";
 import registerShopPlugin from "./core-services/shop/index.js";
@@ -17,6 +20,7 @@ import registerTaxesPlugin from "./core-services/taxes/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerCheckoutPlugin from "./plugins/checkout/index.js";
 import registerDashboardPlugin from "./plugins/dashboard/index.js";
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
@@ -40,12 +44,6 @@ import registerTaxesRatesPlugin from "./plugins/taxes-rates/index.js";
 import registerTemplatesPlugin from "./plugins/templates/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
 import registerUIPlugin from "./plugins/ui/index.js";
-
-/* meteor-app imports */
-import registerAccountsPlugin from "/imports/plugins/core/accounts/server/no-meteor/register";
-import registerCartPlugin from "/imports/plugins/core/cart/server/no-meteor/register";
-import registerCheckoutPlugin from "/imports/plugins/core/checkout/server/no-meteor/register";
-import registerOrdersPlugin from "/imports/plugins/core/orders/server/no-meteor/register";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
