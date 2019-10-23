@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "../../../core/util/hashLoginToken";
 
 const inputSchema = new SimpleSchema({
   "cartId": String,
@@ -34,7 +34,7 @@ export default async function removeCartItems(context, input) {
 
   const selector = { _id: cartId };
   if (token) {
-    selector.anonymousAccessToken = hashLoginToken(token);
+    selector.anonymousAccessToken = hashToken(token);
   } else if (accountId) {
     selector.accountId = accountId;
   } else {

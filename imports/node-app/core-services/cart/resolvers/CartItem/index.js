@@ -1,5 +1,5 @@
+import resolveShopFromShopId from "@reactioncommerce/api-utils/graphql/resolveShopFromShopId.js";
 import { encodeCartItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
 import productTags from "./productTags.js";
 
 export default {

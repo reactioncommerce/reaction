@@ -11,7 +11,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Email",
     name: "reaction-email",
-    icon: "fa fa-envelope-o",
     i18n,
     collections: {
       Emails: {

@@ -1,5 +1,8 @@
 import Logger from "@reactioncommerce/logger";
+import config from "./config.js";
 import { Job, Jobs } from "./jobs.js";
+
+const { REACTION_WORKERS_ENABLED } = config;
 
 /**
  * @summary Add a worker for a background job type
@@ -13,6 +16,9 @@ import { Job, Jobs } from "./jobs.js";
  * @return {Promise<Job>} A promise that resolves with the worker instance
  */
 export function addWorker(options) {
+  // To disable background workers when running integration tests
+  if (!REACTION_WORKERS_ENABLED) return Promise.resolve();
+
   const {
     pollInterval = 5 * 60 * 1000, // default 5 minutes
     type,

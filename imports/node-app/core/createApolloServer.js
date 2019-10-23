@@ -6,7 +6,6 @@ import { ApolloServer } from "apollo-server-express";
 import config from "./config";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
-import tokenMiddleware from "./util/tokenMiddleware";
 import createDataLoaders from "./util/createDataLoaders";
 
 const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
@@ -26,7 +25,7 @@ const resolverValidationOptions = {
  * @returns {ExpressApp} The express app
  */
 export default function createApolloServer(options = {}) {
-  const { context: contextFromOptions, resolvers } = options;
+  const { context: contextFromOptions, expressMiddleware, resolvers } = options;
   const path = options.path || DEFAULT_GRAPHQL_PATH;
 
   // We support passing in either a typeDefs string or an already executable schema,
@@ -50,7 +49,7 @@ export default function createApolloServer(options = {}) {
       // For a GraphQL subscription WebSocket request, there is no `req`
       if (connection) return context;
 
-      // meteorTokenMiddleware will have already set req.user if there is one
+      // Express middleware should have already set req.user if there is one
       await buildContext(context, req);
 
       await createDataLoaders(context);
@@ -67,8 +66,10 @@ export default function createApolloServer(options = {}) {
     playground: config.GRAPHQL_PLAYGROUND_ENABLED
   });
 
+  const gqlMiddleware = expressMiddleware.filter((def) => def.route === "graphql" || def.route === "all");
+
   // GraphQL endpoint, enhanced with JSON body parser
-  app.use(
+  app.use.apply(app, [
     path,
     // set a higher limit for data transfer, which can help with GraphQL mutations
     // `express` default is 100kb
@@ -76,12 +77,15 @@ export default function createApolloServer(options = {}) {
     bodyParser.json({ limit: config.BODY_PARSER_SIZE_LIMIT }),
     // Enable `cors` to set HTTP response header: Access-Control-Allow-Origin: *
     // Although the `cors: true` option to `applyMiddleware` below does this already
-    // for successful requests, we need it to be set here, before tokenMiddleware,
+    // for successful requests, we need it to be set here, before token middleware,
     // so that the header is set on 401 responses, too. Otherwise it breaks our 401
     // refresh handling on the clients.
     cors(),
-    tokenMiddleware(contextFromOptions)
-  );
+    ...gqlMiddleware.filter((def) => def.stage === "first").map((def) => def.fn(contextFromOptions)),
+    ...gqlMiddleware.filter((def) => def.stage === "before-authenticate").map((def) => def.fn(contextFromOptions)),
+    ...gqlMiddleware.filter((def) => def.stage === "authenticate").map((def) => def.fn(contextFromOptions)),
+    ...gqlMiddleware.filter((def) => def.stage === "before-response").map((def) => def.fn(contextFromOptions))
+  ]);
 
   // Redirect for graphql-alpha route
   app.all("/graphql-alpha", (req, res) => {

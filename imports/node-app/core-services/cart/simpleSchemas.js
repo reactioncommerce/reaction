@@ -49,7 +49,7 @@ const Metafield = new SimpleSchema({
 });
 
 /**
- * @name Address
+ * @name CartAddress
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id
@@ -70,7 +70,7 @@ const Metafield = new SimpleSchema({
  * @property {Boolean} failedValidation
  * @property {Metafield[]} metafields
  */
-export const Address = new SimpleSchema({
+export const CartAddress = new SimpleSchema({
   "_id": {
     type: String,
     optional: true
@@ -323,7 +323,7 @@ const ShippingMethod = new SimpleSchema({
  * @property {ShippingMethod} method ShippingMethod
  * @property {Number} rate default value: `0.00`
  */
-const ShipmentQuote = new SimpleSchema({
+export const ShipmentQuote = new SimpleSchema({
   carrier: {
     type: String
   },
@@ -460,7 +460,7 @@ const Workflow = new SimpleSchema({
 });
 
 /**
- * @name Invoice
+ * @name CartInvoice
  * @type {SimpleSchema}
  * @memberof Schemas
  * @property {Number} discounts Total of all discounts (a positive number, but subtracted from the grand total)
@@ -472,7 +472,7 @@ const Workflow = new SimpleSchema({
  * @property {Number} taxes Total tax
  * @property {Number} total Grand total
  */
-const Invoice = new SimpleSchema({
+export const CartInvoice = new SimpleSchema({
   currencyCode: String,
   discounts: {
     type: Number,
@@ -546,7 +546,7 @@ const Shipment = new SimpleSchema({
     optional: true
   },
   "address": {
-    type: Address,
+    type: CartAddress,
     optional: true
   },
   "shipmentMethod": {
@@ -585,7 +585,7 @@ const Shipment = new SimpleSchema({
     defaultValue: {}
   },
   "invoice": {
-    type: Invoice,
+    type: CartInvoice,
     optional: true
   },
   "itemIds": {
@@ -826,7 +826,7 @@ export const Cart = new SimpleSchema({
   },
   "currencyCode": String,
   "billingAddress": {
-    type: Address,
+    type: CartAddress,
     optional: true
   },
   "sessionId": {

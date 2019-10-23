@@ -5,6 +5,7 @@ import _ from "lodash";
 import { withApollo } from "react-apollo";
 import { compose } from "recompose";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { withRouter } from "react-router";
 import { Validation } from "@reactioncommerce/schemas";
@@ -14,6 +15,16 @@ import Logger from "/client/modules/logger";
 import { ProductVariant } from "/lib/collections/schemas";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import withTaxCodes from "/imports/plugins/core/taxes/client/hoc/withTaxCodes";
+
+const archiveProductVariants = gql`
+  mutation archiveProductVariants($input: ArchiveProductVariantsInput!) {
+    archiveProductVariants(input: $input) {
+      variants {
+        _id
+      }
+    }
+  }
+`;
 
 const cloneProductVariants = gql`
   mutation cloneProductVariants($input: CloneProductVariantsInput!) {
@@ -133,13 +144,28 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    removeVariant = (variant, redirectUrl) => {
-      const id = variant._id;
-      Meteor.call("products/deleteVariant", id, (error, result) => {
-        if (result && ReactionProduct.selectedVariantId() === id) {
-          redirectUrl && this.props.history.replace(redirectUrl);
-        }
-      });
+    removeVariant = async (variant, redirectUrl) => {
+      const { client } = this.props;
+      const opaqueVariantId = await getOpaqueIds([{ namespace: "Product", id: variant._id }]);
+      const [opaqueShopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+
+      try {
+        await client.mutate({
+          mutation: archiveProductVariants,
+          variables: {
+            input: {
+              shopId: opaqueShopId,
+              variantIds: opaqueVariantId
+            }
+          }
+        });
+
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductVariantsSuccess"), "success");
+        redirectUrl && this.props.history.replace(redirectUrl);
+      } catch (error) {
+        Alerts.toast(i18next.t("productDetailEdit.archiveProductVariantsFail", { err: error }), "error");
+        throw new ReactionError("server-error", "Unable to archive product");
+      }
     }
 
     cloneVariant = async (productId, variantId) => {

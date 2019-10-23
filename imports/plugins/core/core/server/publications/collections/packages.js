@@ -94,66 +94,65 @@ Meteor.publish("Packages", function (shopId) {
   const self = this;
   let myShopId = shopId;
 
-  // user is required.
-  if (self.userId) {
-    // default options, we're limiting fields here that we don't want to publish unless admin user. in particular, settings
-    // should not be published but we need to use settings in the transform everything except settings.public and
-    // settings.*.enabled are removed in transform
-    let options = {
-      fields: {
-        shopId: 1,
-        name: 1,
-        enabled: 1,
-        registry: 1,
-        layout: 1,
-        icon: 1,
-        settings: 1,
-        audience: 1
-      }
-    };
+  if (!self.userId) return self.ready();
 
-    if (!shopId) {
-      myShopId = Reaction.getPrimaryShopId();
+  if (!myShopId) {
+    myShopId = Reaction.getPrimaryShopId();
+    if (!myShopId) {
+      return self.ready();
     }
-
-    // we should always have a shop
-    if (myShopId) {
-      // if admin user, return all shop properties
-      if (Roles.userIsInRole(self.userId, [
-        "dashboard", "owner", "admin"
-      ], Reaction.getShopId() || Roles.userIsInRole(self.userId, [
-        "owner", "admin"
-      ], Roles.GLOBAL_GROUP))) {
-        options = {};
-      }
-
-      const query = { shopId: myShopId };
-
-      // This is to ensure only needed Identity-provider-related routes are published
-      // The env can be one of three: "all", "idp-only", "exclude-idp". Default behavior is "all"
-      if (IDENTITY_PROVIDER_MODE === "idp-only") {
-        query.name = IDENTITY_PROVIDER_PLUGIN_NAME;
-      } else if (IDENTITY_PROVIDER_MODE === "exclude-idp") {
-        query.name = { $ne: IDENTITY_PROVIDER_PLUGIN_NAME };
-      }
-
-      // observe and transform Package registry adds i18n and other meta data
-      const observer = Packages.find(query, options).observe({
-        added(doc) {
-          self.added("Packages", doc._id, transform(doc, self.userId));
-        },
-        changed(newDoc, origDoc) {
-          self.changed("Packages", origDoc._id, transform(newDoc, self.userId));
-        },
-        removed(origDoc) {
-          self.removed("Packages", origDoc._id);
-        }
-      });
-
-      self.onStop(() => {
-        observer.stop();
-      });
-    }
-    return self.ready();
   }
+
+  // default options, we're limiting fields here that we don't want to publish unless admin user. in particular, settings
+  // should not be published but we need to use settings in the transform everything except settings.public and
+  // settings.*.enabled are removed in transform
+  let options = {
+    fields: {
+      shopId: 1,
+      name: 1,
+      enabled: 1,
+      registry: 1,
+      layout: 1,
+      icon: 1,
+      settings: 1,
+      audience: 1
+    }
+  };
+
+  // if admin user, return all shop properties
+  if (
+    Roles.userIsInRole(self.userId, ["dashboard", "owner", "admin"], myShopId) ||
+    Roles.userIsInRole(self.userId, ["owner", "admin"], Roles.GLOBAL_GROUP)
+  ) {
+    options = {};
+  }
+
+  const query = { shopId: myShopId };
+
+  // This is to ensure only needed Identity-provider-related routes are published
+  // The env can be one of three: "all", "idp-only", "exclude-idp". Default behavior is "all"
+  if (IDENTITY_PROVIDER_MODE === "idp-only") {
+    query.name = IDENTITY_PROVIDER_PLUGIN_NAME;
+  } else if (IDENTITY_PROVIDER_MODE === "exclude-idp") {
+    query.name = { $ne: IDENTITY_PROVIDER_PLUGIN_NAME };
+  }
+
+  // observe and transform Package registry adds i18n and other meta data
+  const observer = Packages.find(query, options).observe({
+    added(doc) {
+      self.added("Packages", doc._id, transform(doc, self.userId));
+    },
+    changed(newDoc, origDoc) {
+      self.changed("Packages", origDoc._id, transform(newDoc, self.userId));
+    },
+    removed(origDoc) {
+      self.removed("Packages", origDoc._id);
+    }
+  });
+
+  self.onStop(() => {
+    observer.stop();
+  });
+
+  return self.ready();
 });

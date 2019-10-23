@@ -1,6 +1,6 @@
-import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
-import ReactionError from "@reactioncommerce/reaction-error";
 import getRateObjectForRate from "@reactioncommerce/api-utils/getRateObjectForRate.js";
+import namespaces from "@reactioncommerce/api-utils/graphql/namespaces.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { xformCatalogProductMedia } from "./catalogProduct";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { decodeProductOpaqueId } from "./product";
