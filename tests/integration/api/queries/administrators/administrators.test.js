@@ -64,21 +64,21 @@ beforeAll(async () => {
   const shopId = await testApp.insertPrimaryShop();
   opaqueShopId = encodeShopOpaqueId(shopId);
 
-  mockAdminOneAccount = Factory.Accounts.makeOne({
+  mockAdminOneAccount = Factory.Account.makeOne({
     roles: {
       [shopId]: ["admin"]
     }
   });
   await testApp.createUserAndAccount(mockAdminOneAccount);
 
-  mockAdminTwoAccount = Factory.Accounts.makeOne({
+  mockAdminTwoAccount = Factory.Account.makeOne({
     roles: {
       [shopId]: ["admin"]
     }
   });
   await testApp.createUserAndAccount(mockAdminTwoAccount);
 
-  mockOtherAccount = Factory.Accounts.makeOne();
+  mockOtherAccount = Factory.Account.makeOne();
   await testApp.createUserAndAccount(mockOtherAccount);
 
   administratorsQuery = testApp.query(AdministratorsFullQuery);

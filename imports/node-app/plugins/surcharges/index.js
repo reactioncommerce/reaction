@@ -14,7 +14,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Surcharges",
     name: "reaction-surcharges",
-    icon: "fa fa-icon-money",
     collections: {
       Surcharges: {
         name: "Surcharges",

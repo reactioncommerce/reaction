@@ -2,13 +2,15 @@ import { createServer } from "http";
 import { PubSub } from "apollo-server";
 import { merge } from "lodash";
 import mongodb, { MongoClient } from "mongodb";
+import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
 import Logger from "@reactioncommerce/logger";
 import appEvents from "./util/appEvents";
-import collectionIndex from "/imports/utils/collectionIndex";
+import getAbsoluteUrl from "./util/getAbsoluteUrl";
 import createApolloServer from "./createApolloServer";
-import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
-import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
 import initReplicaSet from "./util/initReplicaSet";
+import config from "./config.js";
+
+const { ROOT_URL } = config;
 
 export default class ReactionNodeApp {
   constructor(options = {}) {
@@ -16,12 +18,19 @@ export default class ReactionNodeApp {
     this.collections = {
       ...(options.additionalCollections || {})
     };
+
+    this.version = options.version || null;
+
     this.context = {
       ...(options.context || {}),
       app: this,
       appEvents,
+      appVersion: this.version,
+      auth: {},
       collections: this.collections,
       getFunctionsOfType: (type) => (this.functionsByType[type] || []).map(({ func }) => func),
+      mutations: {},
+      queries: {},
       // In a large production app, you may want to use an external pub-sub system.
       // See https://www.apollographql.com/docs/apollo-server/features/subscriptions.html#PubSub-Implementations
       // We may eventually bind this directly to Kafka.
@@ -45,10 +54,15 @@ export default class ReactionNodeApp {
       }
     }
 
-    this.context.rootUrl = getRootUrl();
+    // Passing in `rootUrl` option is mostly for tests. Recommend using ROOT_URL env variable.
+    const resolvedRootUrl = options.rootUrl || ROOT_URL;
+
+    this.rootUrl = resolvedRootUrl.endsWith("/") ? resolvedRootUrl : `${resolvedRootUrl}/`;
+    this.context.rootUrl = this.rootUrl;
     this.context.getAbsoluteUrl = (path) => getAbsoluteUrl(this.context.rootUrl, path);
 
     this.registeredPlugins = {};
+    this.expressMiddleware = [];
 
     this.mongodb = options.mongodb || mongodb;
   }
@@ -211,6 +225,7 @@ export default class ReactionNodeApp {
     } = createApolloServer({
       context: this.context,
       debug: debug || false,
+      expressMiddleware: this.expressMiddleware,
       resolvers,
       schemas
     });
@@ -362,7 +377,20 @@ export default class ReactionNodeApp {
       merge(this.context.queries, plugin.queries);
     }
 
+    if (plugin.auth) {
+      Object.keys(plugin.auth).forEach((key) => {
+        if (this.context.auth[key]) {
+          throw new Error(`Plugin "${plugin.name} tried to register auth function "${key}" but another plugin already registered this type of function`);
+        }
+        this.context.auth[key] = plugin.auth[key];
+      });
+    }
+
     this._registerFunctionsByType(plugin.functionsByType, plugin.name);
+
+    if (Array.isArray(plugin.expressMiddleware)) {
+      this.expressMiddleware.push(...plugin.expressMiddleware.map((def) => ({ ...def, pluginName: plugin.name })));
+    }
 
     if (plugin.contextAdditions) {
       Object.keys(plugin.contextAdditions).forEach((key) => {

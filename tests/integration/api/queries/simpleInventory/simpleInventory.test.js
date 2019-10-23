@@ -54,14 +54,14 @@ const option2 = Factory.Product.makeOne({
   type: "variant"
 });
 
-const mockCustomerAccount = Factory.Accounts.makeOne({
+const mockCustomerAccount = Factory.Account.makeOne({
   roles: {
     [internalShopId]: []
   },
   shopId: internalShopId
 });
 
-const mockAdminAccount = Factory.Accounts.makeOne({
+const mockAdminAccount = Factory.Account.makeOne({
   roles: {
     [internalShopId]: ["admin"]
   },
