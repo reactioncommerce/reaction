@@ -17,7 +17,7 @@ export default async function navigationTreeById(context, { language, navigation
   const { collections, userHasPermission } = context;
   const { NavigationTrees } = collections;
 
-  const navigationTree = await NavigationTrees.findOne({ _id: navigationTreeId });
+  const navigationTree = await NavigationTrees.findOne({ _id: navigationTreeId, shopId });
   if (navigationTree) {
     // Add language from args so that we can use it in items & draftItems resolvers
     navigationTree.language = language;
