@@ -161,16 +161,19 @@ test("updates an order fulfillment group", async () => {
     },
     {
       $set: {
-        "shipping.$.tracking": "TRACK_REF",
-        "shipping.$.trackingUrl": "http://track.me/TRACK_REF",
-        "shipping.$.updatedAt": jasmine.any(Date),
-        "shipping.$.workflow.status": "NEW_STATUS",
+        "shipping.$[group].tracking": "TRACK_REF",
+        "shipping.$[group].trackingUrl": "http://track.me/TRACK_REF",
+        "shipping.$[group].updatedAt": jasmine.any(Date),
+        "shipping.$[group].workflow.status": "NEW_STATUS",
         "updatedAt": jasmine.any(Date)
       },
       $push: {
-        "shipping.$.workflow.workflow": "NEW_STATUS"
+        "shipping.$[group].workflow.workflow": "NEW_STATUS"
       }
     },
-    { returnOriginal: false }
+    {
+      arrayFilters: [{ "group._id": "group1" }],
+      returnOriginal: false
+    }
   );
 });
