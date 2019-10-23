@@ -65,10 +65,10 @@ query (
             displayPrice
           }
           media {
-            toGrid
             priority
             productId
             variantId
+            toGrid
             URLs {
               thumbnail
               small
@@ -78,10 +78,10 @@ query (
             }
           }
           primaryImage {
-            toGrid
             priority
             productId
             variantId
+            toGrid
             URLs {
               thumbnail
               small

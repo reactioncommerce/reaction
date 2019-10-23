@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import { Accounts, Cart, MediaRecords } from "/lib/collections";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Meteor.publish("Cart", function (accountId, anonymousCarts, shopId) {
@@ -30,7 +30,7 @@ Meteor.publish("Cart", function (accountId, anonymousCarts, shopId) {
     anonymousCarts.forEach((anonymousCart) => {
       selectorOr.push({
         _id: anonymousCart._id,
-        anonymousAccessToken: hashLoginToken(anonymousCart.token)
+        anonymousAccessToken: hashToken(anonymousCart.token)
       });
     });
   }

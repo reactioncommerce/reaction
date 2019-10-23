@@ -1,0 +1,61 @@
+extend type Mutation {
+  "Apply a discount code to a cart"
+  applyDiscountCodeToCart(
+    "Mutation input"
+    input: ApplyDiscountCodeToCartInput!
+  ): ApplyDiscountCodeToCartPayload!
+
+  "Remove a discount code from a cart"
+  removeDiscountCodeFromCart(
+    "Mutation input"
+    input: RemoveDiscountCodeFromCartInput!
+  ): RemoveDiscountCodeFromCartPayload!
+}
+
+"Input for an `ApplyDiscountCodeToCartInput`"
+input ApplyDiscountCodeToCartInput {
+  "Cart to add discount to"
+  cartId: ID!
+
+  "Discount code to add to cart"
+  discountCode: String!
+
+  "Shop cart belongs to"
+  shopId: ID!
+
+  "Cart token, if anonymous"
+  token: String
+}
+
+"Input for an `RemoveDiscountCodeFromCartInput`"
+input RemoveDiscountCodeFromCartInput {
+  "Cart to add discount to"
+  cartId: ID!
+
+  "ID of the discount you want to remove from the cart"
+  discountId: ID!
+
+  "Shop cart belongs to"
+  shopId: ID!
+
+  "Cart token, if anonymous"
+  token: String
+}
+
+"Response from the `applyDiscountCodeToCart` mutation"
+type ApplyDiscountCodeToCartPayload {
+  "The updated cart with discount code applied"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"Response from the `removeDiscountCodeFromCart` mutation"
+type RemoveDiscountCodeFromCartPayload {
+  "The updated cart with discount code removed"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}

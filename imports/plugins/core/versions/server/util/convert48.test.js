@@ -1,4 +1,4 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import { convertCatalogItemVariants } from "./convert48";
 
 const mockCollections = { ...mockContext.collections };

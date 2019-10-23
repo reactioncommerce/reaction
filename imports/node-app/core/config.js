@@ -24,5 +24,11 @@ export default envalid.cleanEnv(process.env, {
   // We currently need to set NODE_ENV to "jesttest" when
   // integration tests run.
   NODE_ENV: str(),
+  ROOT_URL: str({
+    devDefault: "http://localhost:3000",
+    desc: "The protocol, domain, and port portion of the URL, to which relative paths will be appended. " +
+      "This is used when full URLs are generated for things such as emails and notifications, so it must be publicly accessible.",
+    example: "https://shop.mydomain.com"
+  }),
   SKIP_FIXTURES: bool({ default: false })
 });

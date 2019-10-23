@@ -1,6 +1,5 @@
 import hash from "object-hash";
 import Logger from "@reactioncommerce/logger";
-import { customPublishedProductFields, customPublishedProductVariantFields } from "/imports/plugins/core/catalog/server/no-meteor/registration";
 
 const productFieldsThatNeedPublishing = [
   "_id",
@@ -142,11 +141,6 @@ async function createProductHash(product, collections) {
   productFieldsThatNeedPublishing.forEach((field) => {
     productForHashing[field] = product[field];
   });
-  if (Array.isArray(customPublishedProductFields)) {
-    customPublishedProductFields.forEach((field) => {
-      productForHashing[field] = product[field];
-    });
-  }
 
   // Track changes to all related media, too
   productForHashing.media = await getCatalogProductMedia(product._id, collections);
@@ -157,11 +151,6 @@ async function createProductHash(product, collections) {
     variantFieldsThatNeedPublishing.forEach((field) => {
       variantForHashing[field] = variant[field];
     });
-    if (Array.isArray(customPublishedProductVariantFields)) {
-      customPublishedProductVariantFields.forEach((field) => {
-        variantForHashing[field] = variant[field];
-      });
-    }
     return variantForHashing;
   });
 
