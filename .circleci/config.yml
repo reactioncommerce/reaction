@@ -293,10 +293,3 @@ workflows:
           context: reaction-publish-docker
           requires:
             - docker-build
-      - deploy-docs:
-          requires:
-            - test-unit
-            - docker-build
-          filters:
-            branches:
-              only: /^master$/
