@@ -5,11 +5,15 @@ jest.setTimeout(300000);
 
 const shopId = "integ-test-shop-id";
 const accountId = "integ-test-account-id";
+const differentId = "integ-test-different-id";
 const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDppbnRlZy10ZXN0LWFjY291bnQtaWQ=";
 const orderId = "integ-test-order-id";
 const mockAccount = Factory.Account.makeOne({
   _id: accountId
 });
+const mockDifferentAccount = Factory.Account.makeOne({
+  _id: differentId
+})
 
 const ordersByAccountIdQuery = `query ($accountId: ID!, $orderStatus: [String]) {
   ordersByAccountId(accountId: $accountId, orderStatus: $orderStatus) {
@@ -142,13 +146,13 @@ const orders = Factory.Order.makeMany(10, {
   }
 });
 
-const canceledOrders = Factory.Order.makeMany(3, {
-  _id: (iterator) => (iterator + 600).toString(),
-  accountId: mockAccount._id,
-  referenceId: (iterator) => (iterator + 323).toString(),
+const ordersWithDifferentAccount = Factory.Order.makeMany(10, {
+  _id: (iterator) => (iterator + 773).toString(),
+  accountId: mockDifferentAccount._id,
+  referenceId: (iterator) => (iterator + 11234).toString(),
   shopId,
   payments: {
-    _id: (iterator) => (iterator + 11).toString(),
+    _id: (iterator) => (iterator + 3333).toString(),
     data: {
       fullName: "Reaction Commerce",
       gqlType: "ExampleIOUPaymentData"
@@ -162,7 +166,34 @@ const canceledOrders = Factory.Order.makeMany(3, {
     riskLevel: "normal",
     shopId,
     status: "created",
-    transactionId: "s9atGoLbagKvQ3pJc"
+    transactionId: "abc123034k490tjkf"
+  },
+  workflow: {
+    status: "new"
+  }
+});
+
+const canceledOrders = Factory.Order.makeMany(3, {
+  _id: (iterator) => (iterator + 777).toString(),
+  accountId: mockAccount._id,
+  referenceId: (iterator) => (iterator + 444).toString(),
+  shopId,
+  payments: {
+    _id: (iterator) => (iterator + 1211).toString(),
+    data: {
+      fullName: "Reaction Commerce",
+      gqlType: "ExampleIOUPaymentData"
+    },
+    displayName: "IOU from Reaction Commerce",
+    method: "credit",
+    mode: "authorize",
+    name: "iou_example",
+    paymentPluginName: "example-paymentmethod",
+    processor: "Example",
+    riskLevel: "normal",
+    shopId,
+    status: "created",
+    transactionId: "abc123034k490tjkf"
   },
   workflow: {
     status: "coreOrderWorkflow/canceled"
@@ -201,6 +232,7 @@ test("get 1 order by account ID, without shopID or order status", async () => {
 
 test("get multiple orders by account ID, without shopID or order status", async () => {
   await Promise.all(orders.map((mockOrder) => testApp.collections.Orders.insertOne(mockOrder)));
+  await Promise.all(ordersWithDifferentAccount.map((mockDifferentAccountOrder) => testApp.collections.Orders.insertOne(mockDifferentAccountOrder)));
   await testApp.setLoggedInUser(mockAccount);
   const result = await query({ accountId: opaqueAccountId });
   expect(result).toBeTruthy();
