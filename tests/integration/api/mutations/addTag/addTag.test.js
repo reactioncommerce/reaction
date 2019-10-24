@@ -15,7 +15,7 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
-  mockTagsAccount = Factory.Accounts.makeOne({
+  mockTagsAccount = Factory.Account.makeOne({
     roles: {
       [shopId]: ["admin"]
     }
@@ -76,7 +76,10 @@ describe("authorized user", () => {
   test("can create tag with slug converted at save", async () => {
     let result;
     try {
+      let savedTag = await testApp.collections.Tags.findOne({ slug: "tag-slug" });
+      expect(savedTag).toBeNull();
       result = await addTag(tagInput);
+      savedTag = await testApp.collections.Tags.findOne({ slug: "tag-slug" });
     } catch (error) {
       expect(error).toBeUndefined();
     }
@@ -84,6 +87,7 @@ describe("authorized user", () => {
     // slug is converted when saving slug.
     tagInput.slug = "tag-slug";
     tagInput.heroMediaUrl = `https://shop.fake.site/${tagInput.heroMediaUrl}`;
+    delete tagInput.shopId;
 
     // check that the return tag has the correct information.
     expect(result.addTag.tag).toEqual(expect.objectContaining(tagInput));
@@ -101,6 +105,10 @@ describe("authorized user", () => {
     } catch (error) {
       expect(error).toBeUndefined();
     }
+    // slug is converted when saving slug.
+    tagInput.heroMediaUrl = `https://shop.fake.site/${tagInput.heroMediaUrl}`;
+    delete tagInput.shopId;
+
     // check that the return tag has the correct information.
     expect(result.addTag.tag).toEqual(expect.objectContaining(tagInput));
   });
