@@ -67,6 +67,17 @@ type Cart implements Node {
   updatedAt: DateTime!
 }
 
+type Shipment {
+  _id: ID!
+  type: String
+  shopId: ID!
+  items: [ID!]
+}
+
+extend type Cart {
+  shipping: [Shipment]
+}
+
 "Allowed values for cart item sortBy parameter"
 enum CartItemsSortByField {
   "Cart item ID"
