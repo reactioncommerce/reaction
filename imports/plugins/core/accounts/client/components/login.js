@@ -62,8 +62,6 @@ class Login extends Component {
     const idpFormClass = isOauthFlow ? "idp-form" : "";
     const { currentView } = this.state;
 
-    console.log(" ----------- currentView", currentView);
-
     if (currentView === "loginFormSignInView" || currentView === "loginFormSignUpView" || currentView === "loginFormUpdatePasswordView") {
       if (isOauthFlow) {
         return (
