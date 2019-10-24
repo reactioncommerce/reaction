@@ -67,12 +67,12 @@ async function sendResetEmail(userId, optionalEmail) {
     shop,
     contactEmail: shop.emails[0].address,
     homepage: Reaction.absoluteUrl(),
+    storefrontUrl: _.get(shop, "storefrontUrls.storefrontHomeUrl", null),
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
-      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      address: `${_.get(shop, "addressBook[0].address1")}`,
       city: _.get(shop, "addressBook[0].city"),
-      region: _.get(shop, "addressBook[0].region"),
       postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
