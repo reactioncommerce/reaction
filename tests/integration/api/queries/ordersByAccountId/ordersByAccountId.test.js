@@ -14,7 +14,7 @@ const mockAccount = Factory.Account.makeOne({
 });
 const mockDifferentAccount = Factory.Account.makeOne({
   _id: differentId
-})
+});
 
 const order = Factory.Order.makeOne({
   _id: orderId,
