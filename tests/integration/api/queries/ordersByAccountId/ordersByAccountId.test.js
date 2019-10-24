@@ -1,5 +1,6 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import TestApp from "/imports/test-utils/helpers/TestApp";
+import OrdersByAccountIdQuery from "./OrdersByAccountIdQuery.graphql";
 
 jest.setTimeout(300000);
 
@@ -14,84 +15,6 @@ const mockAccount = Factory.Account.makeOne({
 const mockDifferentAccount = Factory.Account.makeOne({
   _id: differentId
 })
-
-const ordersByAccountIdQuery = `query ($accountId: ID!, $orderStatus: [String]) {
-  ordersByAccountId(accountId: $accountId, orderStatus: $orderStatus) {
-    totalCount
-    pageInfo {
-      endCursor
-      hasNextPage
-      hasPreviousPage
-      startCursor
-    }
-    nodes {
-      _id
-      account {
-        _id
-      }
-      cartId
-      createdAt
-      displayStatus(language: "en")
-      email
-      fulfillmentGroups {
-        _id
-        displayStatus(language: "en")
-        status
-        tracking
-        trackingUrl
-        type
-      }
-      notes {
-        content
-      }
-      payments {
-        _id
-        amount {
-          amount
-          displayAmount
-        }
-        billingAddress {
-          _id
-          address1
-          address2
-        }
-        cardBrand
-        displayName
-        isCaptured
-        method {
-          displayName
-          isEnabled
-          name
-          pluginName
-        }
-        mode
-        processor
-        riskLevel
-        status
-        transactionId
-      }
-      referenceId
-      refunds {
-        _id
-      }
-      shop {
-        _id
-      }
-      status
-      summary {
-        total {
-          amount
-        }
-      }
-      totalItemQuantity
-      updatedAt
-      surcharges {
-        _id
-        fulfillmentGroupId
-      }
-    }
-  }
-}`;
 
 const order = Factory.Order.makeOne({
   _id: orderId,
@@ -205,7 +128,7 @@ let query;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  query = testApp.query(ordersByAccountIdQuery);
+  query = testApp.query(OrdersByAccountIdQuery);
   await testApp.createUserAndAccount(mockAccount);
   await testApp.insertPrimaryShop({ _id: shopId, name: "Shop Name" });
 });
