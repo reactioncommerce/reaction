@@ -19,7 +19,7 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
-  mockTagsAccount = Factory.Accounts.makeOne({
+  mockTagsAccount = Factory.Account.makeOne({
     roles: {
       [encodeShopOpaqueId(shopId)]: ["owner"]
     }
@@ -50,7 +50,6 @@ afterEach(async () => {
   await testApp.collections.Tags.deleteMany({});
 });
 
-
 describe("unauthorized user", () => {
   let logLevel;
   beforeAll(async () => {
@@ -71,6 +70,7 @@ describe("unauthorized user", () => {
     }
   });
 });
+
 describe("authorized user", () => {
   beforeAll(async () => {
     await testApp.setLoggedInUser(mockTagsAccount);
