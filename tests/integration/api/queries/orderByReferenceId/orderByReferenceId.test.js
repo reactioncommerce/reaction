@@ -11,7 +11,7 @@ const orderReferenceId = "123456789";
 const accountId = "integ-test-account-id";
 const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDppbnRlZy10ZXN0LWFjY291bnQtaWQ=";
 
-const mockOrdersAccount = Factory.Accounts.makeOne({
+const mockOrdersAccount = Factory.Account.makeOne({
   _id: accountId
 });
 
@@ -96,7 +96,7 @@ test("get invalid params error", async () => {
   try {
     await query({ orderReferenceId: orderReferenceIdAnon });
   } catch (error) {
-    expect(error[0].message).toBe("Variable \"$shopId\" of required type \"ID!\" was not provided.");
+    expect(error[0].message).toBe('Variable "$shopId" of required type "ID!" was not provided.');
   }
 });
 
