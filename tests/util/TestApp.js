@@ -94,14 +94,6 @@ class TestApp {
     return this.reactionNodeApp.context.mutations.publishProducts(requestContext, productIds);
   }
 
-  async userAccountQuery(id) {
-    const requestContext = { ...this.reactionNodeApp.context };
-    await buildContext(requestContext);
-    // requestContext.userHasPermission = () => true; // TODO: EK - remove this
-    requestContext.checkPermissions = () => null;
-    return this.reactionNodeApp.context.queries.userAccountQuery(requestContext, id);
-  }
-
   async insertPrimaryShop(shopData) {
     const mockShop = Factory.Shop.makeOne({
       currency: "USD",
