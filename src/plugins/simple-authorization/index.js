@@ -8,8 +8,8 @@ import { getShopsUserHasPermissionForFunctionForUser } from "./util/shopsUserHas
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Authorization",
-    name: "reaction-authorization",
+    label: "Simple Authorization",
+    name: "reaction-simple-authorization",
     auth: {
       getHasPermissionFunctionForUser,
       getShopsUserHasPermissionForFunctionForUser
