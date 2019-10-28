@@ -1,7 +1,6 @@
 /* node-app imports */
 /* core-services */
 import registerAccountsPlugin from "./core-services/account/index.js";
-import registerAuthorizationPlugin from "./core-services/authorization/index.js";
 import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerCartPlugin from "./core-services/cart/index.js";
 import registerCorePlugin from "./core-services/core/index.js";
@@ -21,6 +20,7 @@ import registerTaxesPlugin from "./core-services/taxes/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerAuthorizationPlugin from "./plugins/simple-authorization/index.js";
 import registerCheckoutPlugin from "./plugins/checkout/index.js";
 import registerDashboardPlugin from "./plugins/dashboard/index.js";
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
