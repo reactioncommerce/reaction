@@ -9,7 +9,6 @@ defaults: &defaults
     DOCKER_REPOSITORY: "reactioncommerce/reaction"
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
-  working_directory: ~/reaction-app
   docker:
     - image: circleci/node:12.11.1-stretch
 
