@@ -217,9 +217,6 @@ input CreateNavigationItemInput {
 
   "The navigation item to create"
   navigationItem: NavigationItemInput!
-
-  "The ID of the shop navigation item belongs to"
-  shopId: ID!
 }
 
 "Input for the `updateNavigationItem` mutation"
