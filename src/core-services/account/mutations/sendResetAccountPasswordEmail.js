@@ -20,17 +20,13 @@ const inputSchema = new SimpleSchema({
 async function sendResetEmail(context, account, email) {
   const { collections } = context;
   const { Shops, users } = collections;
+
   // Make sure the user exists, and email is one of their addresses.
   const user = await users.findOne({ _id: account.userId });
-
-  if (!user) {
-    Logger.error("sendResetAccountPasswordEmail - User not found");
-    throw new ReactionError("not-found", "User not found");
-  }
+  if (!user) throw new ReactionError("not-found", "User not found");
 
   // make sure we have a valid email
   if (!email || !user.emails || !user.emails.map((mailInfo) => mailInfo.address).includes(email)) {
-    Logger.error("sendResetPasswordEmail - Email not found");
     throw new ReactionError("not-found", "Email not found");
   }
 
@@ -50,14 +46,21 @@ async function sendResetEmail(context, account, email) {
   }
 
   // Get shop data for email display
-  const shop = await Shops.findOne({ _id: account.shopId });
+  let shop = await Shops.findOne({ _id: account.shopId });
+
+  // Fall back to primary shop
+  if (!shop) {
+    shop = await Shops.findOne({ shopType: "primary" });
+    if (!shop) throw new ReactionError("not-found", "Shop not found");
+  }
+
+  const contactEmail = shop.emails && shop.emails[0] && shop.emails[0].address;
 
   const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
-    // Shop Data
     shop,
-    contactEmail: shop.emails[0].address,
+    contactEmail,
     homepage: context.getAbsoluteUrl(),
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
@@ -119,14 +122,10 @@ export default async function sendResetAccountPasswordEmail(context, input) {
     email
   } = input;
 
-  const account = await Accounts.findOne({ "emails.address": email });
-
-  if (!account) {
-    Logger.error("sendResetAccountPasswordEmail - Account not found");
-    throw new ReactionError("not-found", "Account not found");
-  }
-
   const caseInsensitiveEmail = email.toLowerCase();
+
+  const account = await Accounts.findOne({ "emails.address": caseInsensitiveEmail });
+  if (!account) throw new ReactionError("not-found", "Account not found");
 
   await sendResetEmail(context, account, caseInsensitiveEmail);
 

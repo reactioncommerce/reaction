@@ -34,13 +34,8 @@ export default async function sendEmail(context, options) {
   }
 
   if (!from) {
-    let shopEmail;
-    // provide some defaults for missing shop email.
-    if (!Array.isArray(fromShop.emails) || fromShop.emails.length === 0) {
-      shopEmail = `${fromShop.name}@localhost`;
-    } else {
-      shopEmail = fromShop.emails[0].address;
-    }
+    const shopEmail = fromShop.emails && fromShop.emails[0] && fromShop.emails[0].address;
+    if (!shopEmail) throw new Error("Shop email address not found");
 
     from = `${fromShop.name} <${shopEmail}>`;
   }
