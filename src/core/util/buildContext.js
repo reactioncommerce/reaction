@@ -41,6 +41,9 @@ export default async function buildContext(context, request = {}) {
       context.shopsUserHasPermissionFor = () => [];
     }
   } else {
+    context.checkPermissions = async () => {
+      throw new ReactionError("access-denied", "Access Denied");
+    };
     context.userHasPermission = () => false;
     context.shopsUserHasPermissionFor = () => [];
   }
