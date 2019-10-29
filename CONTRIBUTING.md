@@ -4,3 +4,9 @@ At Reaction Commerce, we're dedicated to the open source community. In fact, we'
 
 If you'd like to join us, check out our detailed [Contributing Guide](https://docs.reactioncommerce.com/reaction-docs/master/contributing-to-reaction).
 
+### Prem Saktheesh Paul Thavittupitchai
+# #hacktoberfest  #infydiaries 
+- Location: India
+- Bio: Program Manager. Open Source Contributor 
+- Github: https://github.com/preminfy
+***
