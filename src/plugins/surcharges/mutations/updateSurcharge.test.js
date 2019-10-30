@@ -5,7 +5,7 @@ import updateSurchargeMutation from "./updateSurcharge.js";
 
 // Create mock context with Surcharges collection
 mockContext.collections.Surcharges = mockCollection("Surcharges");
-mockContext.userHasPermission.mockReturnValueOnce(true);
+mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
 const surcharge = {
   type: "surcharge",

@@ -1,5 +1,6 @@
 /* eslint camelcase: 0 */
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Factory from "/tests/util/factory.js"; // TODO: research how to add `factory.js` to `api-utils` (https://github.com/reactioncommerce/reaction/issues/5646)
 import createRefund from "./createRefund.js";
 
@@ -52,7 +53,9 @@ const fakeOrder = {
 test("throws if permission check fails", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
 
   await expect(createRefund(mockContext, {
     amount: 10,
@@ -61,7 +64,7 @@ test("throws if permission check fails", async () => {
     reason: "Customer was unsatisfied with purchase"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("skips permission check if context.isInternalCall", async () => {
@@ -111,7 +114,7 @@ test("throws if paymentId isn't supplied", async () => {
 test("throws if payment doesn't exist", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createRefund(mockContext, {
     amount: 10,
@@ -124,7 +127,7 @@ test("throws if payment doesn't exist", async () => {
 test("throws if amount is less than $0.01", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createRefund(mockContext, {
     amount: 0,

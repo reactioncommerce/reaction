@@ -7,6 +7,9 @@ extend type Query {
     "Navigation language"
     language: String!,
 
+    "The ID of the shop to load navigation tree for"
+    shopId: ID!
+
     "Set to true if you want to include secondary navigation items along with the primary items"
     shouldIncludeSecondary: Boolean = false
   ): NavigationTree
@@ -235,6 +238,9 @@ input DeleteNavigationItemInput {
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The ID of the shop navigation item belongs to"
+  shopId: ID!
 }
 
 "Input for the `updateNavigationTree` mutation"

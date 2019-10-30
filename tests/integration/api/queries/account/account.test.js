@@ -45,7 +45,7 @@ test("unauthenticated", async () => {
   try {
     await accountQuery({ id: opaqueNonAdminAccountId });
   } catch (error) {
-    expect(error[0].message).toBe("User does not have permission");
+    expect(error[0].message).toBe("Access Denied");
   }
 });
 
@@ -106,7 +106,7 @@ describe("authenticated, non-admin", () => {
     try {
       await accountQuery({ id: opaqueOtherAccountId });
     } catch (error) {
-      expect(error[0].message).toBe("User does not have permission");
+      expect(error[0].message).toBe("Access Denied");
     }
   });
 });

@@ -1,7 +1,6 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
-import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({

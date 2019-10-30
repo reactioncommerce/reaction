@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import addTag from "./addTag.js";
 
 beforeEach(() => {
@@ -6,7 +7,7 @@ beforeEach(() => {
 });
 
 test("calls mutations.addTag and returns the AddTagPayload on success", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Tags.insertOne.mockReturnValueOnce({ result: { ok: 1 } });
 
   const input = {
@@ -22,7 +23,9 @@ test("calls mutations.addTag and returns the AddTagPayload on success", async ()
 });
 
 test("calls mutations.addTag and throws for non admins", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
   mockContext.collections.Tags.insertOne.mockReturnValueOnce({ result: { ok: 1 } });
 
   const result = addTag(mockContext, {});

@@ -24,8 +24,8 @@ export default async function setAccountProfileLanguage(context, input) {
   const {
     accountId: accountIdFromContext,
     appEvents,
+    checkPermissions,
     collections,
-    userHasPermission,
     userId: userIdFromContext
   } = context;
   const { Accounts, Shops } = collections;
@@ -38,7 +38,7 @@ export default async function setAccountProfileLanguage(context, input) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   if (!context.isInternalCall && accountIdFromContext !== accountId) {
-    if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
+    await checkPermissions(["reaction-accounts"], account.shopId);
   }
 
   // Make sure this language is in the related shop languages list

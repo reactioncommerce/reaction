@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import removeTag from "./removeTag.js";
 
 const testShopId = "1234";
@@ -9,7 +10,7 @@ beforeEach(() => {
 });
 
 test("calls mutations.removeTag and returns the RemoveTagPayload on success", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Tags.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });
   mockContext.collections.Tags.findOne.mockReturnValueOnce({
     shopId: testShopId,
@@ -32,7 +33,9 @@ test("calls mutations.removeTag and returns the RemoveTagPayload on success", as
 });
 
 test("calls mutations.removeTag and throws for non admins", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
   mockContext.collections.Tags.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });
 
   const result = removeTag(mockContext, {});

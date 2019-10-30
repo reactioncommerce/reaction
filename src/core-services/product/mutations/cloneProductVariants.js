@@ -27,13 +27,11 @@ const inputSchema = new SimpleSchema({
  */
 export default async function cloneProductVariants(context, input) {
   inputSchema.validate(input);
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Products } = collections;
   const { shopId, variantIds } = input;
 
-  if (!userHasPermission(["createProduct", "product/admin", "product/clone"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["createProduct", "product/admin", "product/clone"], shopId);
 
   // Check to make sure all variants are on the same shop
   const count = await Products.find({ _id: { $in: variantIds }, type: "variant", shopId }).count();

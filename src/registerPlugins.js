@@ -20,6 +20,7 @@ import registerTaxesPlugin from "./core-services/taxes/index.js";
 
 /* plugins */
 import registerAddressPlugin from "./plugins/address/index.js";
+import registerAuthorizationPlugin from "./plugins/simple-authorization/index.js";
 import registerCheckoutPlugin from "./plugins/checkout/index.js";
 import registerDashboardPlugin from "./plugins/dashboard/index.js";
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
@@ -79,6 +80,11 @@ export default async function registerPlugins(app) {
    * Accounts
    */
   await registerAccountsPlugin(app); // REQUIRED
+
+  /**
+   * Authorization
+   */
+  await registerAuthorizationPlugin(app); // REQUIRED
 
   /**
    * Catalog

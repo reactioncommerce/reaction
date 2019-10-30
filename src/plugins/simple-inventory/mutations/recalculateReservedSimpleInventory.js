@@ -24,7 +24,7 @@ const inputSchema = new SimpleSchema({
 export default async function recalculateReservedSimpleInventory(context, input) {
   inputSchema.validate(input);
 
-  const { appEvents, collections, isInternalCall, userHasPermission, userId } = context;
+  const { appEvents, checkPermissions, collections, isInternalCall, userId } = context;
   const { Products, SimpleInventory } = collections;
   const { productConfiguration, shopId } = input;
 
@@ -44,9 +44,7 @@ export default async function recalculateReservedSimpleInventory(context, input)
 
     // Allow update if the account has "admin" permission. When called internally by another
     // plugin, context.isInternalCall can be set to `true` to disable this check.
-    if (!userHasPermission(["admin"], shopId)) {
-      throw new ReactionError("access-denied", "Access denied");
-    }
+    await checkPermissions(["admin"], shopId);
   }
 
   const inventoryReserved = await getReservedQuantity(context, productConfiguration);

@@ -1,5 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { ProductConfigurationSchema } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
@@ -20,11 +19,11 @@ export default async function simpleInventory(context, input) {
   inputSchema.validate(input);
 
   const { productConfiguration, shopId } = input;
-  const { collections, isInternalCall, userHasPermission } = context;
+  const { checkPermissions, collections, isInternalCall } = context;
   const { SimpleInventory } = collections;
 
-  if (!isInternalCall && !userHasPermission(["admin"], shopId)) {
-    throw new ReactionError("access-denied", "Access denied");
+  if (!isInternalCall) {
+    await checkPermissions(["admin"], shopId);
   }
 
   return SimpleInventory.findOne({

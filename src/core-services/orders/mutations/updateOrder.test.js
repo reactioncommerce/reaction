@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Factory from "/tests/util/factory.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5653)
 import updateOrder from "./updateOrder.js";
 
@@ -28,13 +29,15 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
 
   await expect(updateOrder(mockContext, {
     orderId: "order1"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("skips permission check if context.isInternalCall", async () => {
@@ -67,7 +70,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
+  expect(mockContext.checkPermissions).not.toHaveBeenCalled();
 });
 
 
@@ -89,7 +92,7 @@ test("skips update if one is not necessary", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await updateOrder(mockContext, { orderId: "order1" });
 
@@ -114,7 +117,7 @@ test("updates an order", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

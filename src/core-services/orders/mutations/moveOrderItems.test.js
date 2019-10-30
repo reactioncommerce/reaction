@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Factory from "/tests/util/factory.js"; // TODO: research how to add `factory.js` to `api-utils` (https://github.com/reactioncommerce/reaction/issues/5646)
 import {
   restore as restore$updateGroupTotals,
@@ -93,7 +94,7 @@ test("throws if the fromFulfillmentGroup doesn't exist", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -130,7 +131,7 @@ test("throws if the toFulfillmentGroup doesn't exist", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -183,7 +184,7 @@ test("throws if an order item doesn't exist", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -203,7 +204,9 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -212,7 +215,7 @@ test("throws if permission check fails", async () => {
     toFulfillmentGroupId: "group2"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("throws if user who placed order tries to move item at invalid current item status", async () => {
@@ -380,7 +383,7 @@ test("throws if the from group would have no items remaining", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 0
@@ -447,7 +450,7 @@ test("throws if the database update fails", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 0
@@ -533,7 +536,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
+  expect(mockContext.checkPermissions).not.toHaveBeenCalled();
 });
 
 test("moves items", async () => {
@@ -578,7 +581,7 @@ test("moves items", async () => {
     }
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

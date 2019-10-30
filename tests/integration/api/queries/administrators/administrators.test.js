@@ -91,7 +91,7 @@ test("unauthenticated", async () => {
   try {
     await administratorsQuery({ shopId: opaqueShopId });
   } catch (error) {
-    expect(error[0].message).toBe("User does not have permission");
+    expect(error[0].message).toBe("Access Denied");
   }
 });
 
@@ -126,7 +126,7 @@ test("authenticated as non-admin", async () => {
   try {
     await administratorsQuery({ shopId: opaqueShopId });
   } catch (error) {
-    expect(error[0].message).toBe("User does not have permission");
+    expect(error[0].message).toBe("Access Denied");
   }
 
   await testApp.clearLoggedInUser();
