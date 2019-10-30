@@ -1,5 +1,4 @@
-import { decodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  *

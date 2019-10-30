@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import hashProduct from "./mutations/hashProduct";
+import hashProduct from "./mutations/hashProduct.js";
 
 /**
  * @summary Recalculate the currentProductHash for the related product
