@@ -30,17 +30,17 @@ const order = {
 };
 
 test("throws if orderId isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   await expect(refunds(mockContext, { orderId: null, shopId: order.shopId, token: null })).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("throws if shopId isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   await expect(refunds(mockContext, { orderId: order._id, shopId: null, token: null })).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("throws if the order doesn't exist", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(refunds(mockContext, {
@@ -50,7 +50,7 @@ test("throws if the order doesn't exist", async () => {
 });
 
 test("should call refunds with the proper parameters and return a list of refunds for an order", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(order));
 
   const result = await refunds(mockContext, {

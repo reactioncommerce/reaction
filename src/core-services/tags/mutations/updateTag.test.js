@@ -1,5 +1,6 @@
 /* eslint-disable id-length */
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import updateTag from "./updateTag.js";
 
 const testShopId = "1234";
@@ -10,7 +11,7 @@ beforeEach(() => {
 });
 
 test("calls mutations.updateTag and returns the UpdateTagPayload on success", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Tags.updateOne.mockReturnValueOnce({ result: { n: 1 } });
   mockContext.collections.Tags.findOne.mockReturnValueOnce({
     _id: "5678",
@@ -36,7 +37,9 @@ test("calls mutations.updateTag and returns the UpdateTagPayload on success", as
 });
 
 test("calls mutations.updateTag and throws for non admins", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
   mockContext.collections.Tags.updateOne.mockReturnValueOnce({ result: { n: 1 } });
 
   const result = updateTag(mockContext, {});

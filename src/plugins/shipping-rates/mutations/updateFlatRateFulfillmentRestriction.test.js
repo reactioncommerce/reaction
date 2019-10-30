@@ -5,7 +5,7 @@ import updateFlatRateFulfillmentRestrictionMutation from "./updateFlatRateFulfil
 
 // Create mock context with FlatRateFulfillmentRestrictions collection
 mockContext.collections.FlatRateFulfillmentRestrictions = mockCollection("FlatRateFulfillmentRestrictions");
-mockContext.userHasPermission.mockReturnValueOnce(true);
+mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
 const restriction = {
   type: "deny",

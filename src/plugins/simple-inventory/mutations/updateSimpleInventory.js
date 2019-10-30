@@ -22,7 +22,7 @@ import getModifier from "../utils/getMongoUpdateModifier.js";
 export default async function updateSimpleInventory(context, input, options = {}) {
   inputSchema.validate(input);
 
-  const { appEvents, collections, isInternalCall, userHasPermission, userId } = context;
+  const { appEvents, checkPermissions, collections, isInternalCall, userId } = context;
   const { Products, SimpleInventory } = collections;
   const { productConfiguration, shopId } = input;
   const { returnUpdatedDoc = true } = options;
@@ -43,9 +43,7 @@ export default async function updateSimpleInventory(context, input, options = {}
 
     // Allow update if the account has "admin" permission. When called internally by another
     // plugin, context.isInternalCall can be set to `true` to disable this check.
-    if (!userHasPermission(["admin"], shopId)) {
-      throw new ReactionError("access-denied", "Access denied");
-    }
+    await checkPermissions(["admin"], shopId);
   }
 
   const modifier = getModifier(input);

@@ -1,5 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @name roles
  * @method
@@ -10,12 +8,10 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} roles object Promise
  */
 export default async function rolesQuery(context, shopId) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { roles } = collections;
 
-  if (!userHasPermission(["owner", "admin"], shopId)) {
-    throw new ReactionError("access-denied", "User does not have permissions to view roles");
-  }
+  await checkPermissions(["owner", "admin"], shopId);
 
   return roles.find({});
 }

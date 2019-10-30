@@ -43,7 +43,7 @@ export default async function splitOrderItem(context, input) {
     newItemQuantity
   } = input;
 
-  const { appEvents, collections, isInternalCall, userHasPermission, userId } = context;
+  const { appEvents, checkPermissions, collections, isInternalCall, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
@@ -52,8 +52,8 @@ export default async function splitOrderItem(context, input) {
 
   // Allow split if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall && !userHasPermission(["orders", "order/fulfillment"], order.shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
+  if (!isInternalCall) {
+    await checkPermissions(["orders", "order/fulfillment"], order.shopId);
   }
 
   const { accountId, billingAddress, cartId, currencyCode } = order;

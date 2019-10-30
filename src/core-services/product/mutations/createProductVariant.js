@@ -21,14 +21,12 @@ const inputSchema = new SimpleSchema({
  */
 export default async function createProductVariant(context, input) {
   inputSchema.validate(input);
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Products } = collections;
   const { productId, shopId } = input;
 
   // See that user has permission to create variant
-  if (!userHasPermission(["createProduct", "product/admin", "product/create"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["createProduct", "product/admin", "product/create"], shopId);
 
   // See that parent product exists
   const parentProduct = await Products.findOne({ _id: productId, shopId });

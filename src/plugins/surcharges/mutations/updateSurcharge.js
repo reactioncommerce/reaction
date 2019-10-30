@@ -21,12 +21,10 @@ export default async function updateSurchargeMutation(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { surcharge, surchargeId, shopId } = cleanedInput;
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Surcharges } = collections;
 
-  if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["admin", "owner", "shipping"], shopId);
 
   const { matchedCount } = await Surcharges.updateOne({
     _id: surchargeId,

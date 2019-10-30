@@ -1,5 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @name shopAdministrators
  * @method
@@ -10,10 +8,10 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object[]} Array of user account objects
  */
 export default async function shopAdministratorsQuery(context, id) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Accounts, users: Users } = collections;
 
-  if (!userHasPermission(["owner", "admin"], id)) throw new ReactionError("access-denied", "User does not have permission");
+  await checkPermissions(["owner", "admin"], id);
 
   const users = await Users.find({
     [`roles.${id}`]: "admin"

@@ -40,9 +40,9 @@ export default async function moveOrderItems(context, input) {
   const {
     accountId: authAccountId,
     appEvents,
+    checkPermissions,
     collections,
     isInternalCall,
-    userHasPermission,
     userId
   } = context;
   const { Orders } = collections;
@@ -54,12 +54,8 @@ export default async function moveOrderItems(context, input) {
   // Allow move if the account that placed the order is attempting to move
   // or if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (
-    !isInternalCall &&
-    (!authAccountId || authAccountId !== order.accountId) &&
-    !userHasPermission(["orders", "order/fulfillment"], order.shopId)
-  ) {
-    throw new ReactionError("access-denied", "Access Denied");
+  if (!isInternalCall && (!authAccountId || authAccountId !== order.accountId)) {
+    await checkPermissions(["orders", "order/fulfillment"], order.shopId);
   }
 
   // Is the account calling this mutation also the account that placed the order?

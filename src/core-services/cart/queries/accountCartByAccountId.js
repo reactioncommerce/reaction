@@ -12,11 +12,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>|undefined} A Cart document, if one is found
  */
 export default async function accountCartByAccountId(context, { accountId, shopId } = {}) {
-  const { accountId: contextAccountId, collections, userHasPermission } = context;
+  const { accountId: contextAccountId, checkPermissions, collections } = context;
   const { Cart } = collections;
 
-  if (accountId !== contextAccountId && !userHasPermission(["owner", "admin"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
+  if (accountId !== contextAccountId) {
+    await checkPermissions(["owner", "admin"], shopId);
   }
 
   if (!accountId) {

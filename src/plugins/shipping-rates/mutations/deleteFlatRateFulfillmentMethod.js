@@ -17,12 +17,10 @@ export default async function deleteFlatRateFulfillmentMethodMutation(context, i
   inputSchema.validate(input);
 
   const { methodId, shopId } = input;
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Shipping } = collections;
 
-  if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["admin", "owner", "shipping"], shopId);
 
   const shippingRecord = await Shipping.findOne({
     "methods._id": methodId,

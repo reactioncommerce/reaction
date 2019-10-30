@@ -420,9 +420,12 @@ export default class ReactionAPI {
 
     const {
       mongoUrl = MONGO_URL,
-      port = PORT,
       shouldInitReplicaSet = REACTION_SHOULD_INIT_REPLICA_SET
     } = options;
+
+    // Allow passing `port: null` to skip listening. Otherwise default to PORT env.
+    let { port } = options;
+    if (port === undefined) port = PORT;
 
     diehard.register((done) => {
       Logger.info("Stopping Reaction API...");

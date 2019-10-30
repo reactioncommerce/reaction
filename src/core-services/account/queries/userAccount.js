@@ -10,15 +10,15 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} user account object
  */
 export default async function userAccountQuery(context, id) {
-  const { collections, userHasPermission, userId } = context;
+  const { checkPermissions, collections, userId } = context;
   const { Accounts } = collections;
 
   const account = await Accounts.findOne({ _id: id });
   if (!account) throw new ReactionError("not-found", "No account found");
 
   // Check to make sure current user has permissions to view queried user
-  if (userId !== account.userId && !userHasPermission(["reaction-accounts"], account.shopId)) {
-    throw new ReactionError("access-denied", "User does not have permission");
+  if (userId !== account.userId) {
+    await checkPermissions(["reaction-accounts"], account.shopId);
   }
 
   return account;

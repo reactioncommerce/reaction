@@ -1,5 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @name sitemap/generateSitemaps
  * @memberof Mutations/Sitemap
@@ -9,13 +7,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {undefined} schedules immediate sitemap generation job
  */
 export default async function generateSitemaps(context) {
-  const { userHasPermission, userId } = context;
+  const { checkPermissions, userId } = context;
 
   const shopId = await context.queries.primaryShopId(context);
 
-  if (userHasPermission(["admin"], shopId) === false) {
-    throw new ReactionError("access-denied", "User does not have permissions to generate sitemaps");
-  }
+  await checkPermissions(["admin"], shopId);
 
   const jobOptions = {
     type: "sitemaps/generate",
