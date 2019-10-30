@@ -1,5 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "@reactioncommerce/logger";
+import config from "../config.js";
 import getStripeInstance from "./getStripeInstance.js";
 import getStripePackageForShop from "./getStripePackageForShop.js";
 
@@ -13,8 +14,8 @@ export default async function getStripeInstanceForShop(context, shopId) {
   const stripePkg = await getStripePackageForShop(context, shopId);
   const stripePkgSettings = (stripePkg || {}).settings || {};
 
-  const stripeApiKey = stripePkgSettings.api_key;
-  if (!stripeApiKey) {
+  const { STRIPE_API_KEY } = config;
+  if (!STRIPE_API_KEY) {
     const stripeAccessToken = (stripePkgSettings.connectAuth || {}).access_token;
     if (stripeAccessToken) {
       Logger.warn("Using a Stripe access_token instead of an api_key is deprecated. Please set an API Key.");
@@ -24,5 +25,5 @@ export default async function getStripeInstanceForShop(context, shopId) {
     throw new ReactionError("not-configured", "Stripe is not configured properly. Please set an API Key.");
   }
 
-  return getStripeInstance(context, stripeApiKey);
+  return getStripeInstance(context, STRIPE_API_KEY);
 }
