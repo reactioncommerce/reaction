@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import updateProductField from "./updateProductField.js";
 
 mockContext.mutations.updateProductField = jest.fn().mockName("mutations.updateProductField");
@@ -9,7 +10,9 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
 
   await expect(updateProductField(mockContext, {
     field: "FIELD",
@@ -18,11 +21,11 @@ test("throws if permission check fails", async () => {
     value: "VALUE"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["createProduct", "product/admin", "product/update"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["createProduct", "product/admin", "product/update"], "SHOP_ID");
 });
 
 test("throws if the field isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(updateProductField(mockContext, {
     field: undefined,
@@ -33,7 +36,7 @@ test("throws if the field isn't supplied", async () => {
 });
 
 test("throws if the productId isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(updateProductField(mockContext, {
     field: "FIELD",
@@ -44,7 +47,7 @@ test("throws if the productId isn't supplied", async () => {
 });
 
 test("throws if the shopId isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(updateProductField(mockContext, {
     field: "FIELD",
@@ -55,7 +58,7 @@ test("throws if the shopId isn't supplied", async () => {
 });
 
 test("throws if the value isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(updateProductField(mockContext, {
     field: "FIELD",

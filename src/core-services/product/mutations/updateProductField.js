@@ -28,14 +28,12 @@ const inputSchema = new SimpleSchema({
  */
 export default async function updateProductField(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections, userHasPermission } = context;
+  const { appEvents, checkPermissions, collections } = context;
   const { Products } = collections;
   const { field, productId, shopId, value } = input;
 
   // Check that user has permission to create product
-  if (!userHasPermission(["createProduct", "product/admin", "product/update"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["createProduct", "product/admin", "product/update"], shopId);
 
   const product = await Products.findOne({ _id: productId, shopId });
   if (!product) throw new ReactionError("not-found", "Product not found");
