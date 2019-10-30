@@ -10,6 +10,7 @@ module.exports = {
       version: "3.6.14",
       skipMD5: true
     },
-    autoStart: false
+    autoStart: false,
+    debug: true
   }
 };
