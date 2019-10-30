@@ -216,6 +216,24 @@ type CloneProductVariantsPayload  {
   variants: [ProductVariant]!
 }
 
+"Response payload of `updateProductField` mutation"
+type UpdateProductFieldPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Updated product"
+  product: Product!
+}
+
+"Response payload of `updateProductVariantField` mutation"
+type UpdateProductVariantFieldPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Updated variant"
+  variant: ProductVariant!
+}
+
 "Input for the `archiveProducts` mutation"
 input ArchiveProductsInput  {
   "Array of IDs of products to archive"
@@ -267,6 +285,36 @@ input CloneProductVariantsInput  {
   variantIds: [ID]!
 }
 
+"Input for the `updateProductField` mutation"
+input UpdateProductFieldInput  {
+  "Product field to update"
+  field: String!
+
+  "ID of product to update"
+  productId: ID!
+
+  "ID of shop that owns the product to update"
+  shopId: ID!
+
+  "Value to update the field with"
+  value: String! # TODO: what do we do here, this can be anything
+}
+
+"Input for the `updateProductVariantField` mutation"
+input UpdateProductVariantFieldInput  {
+  "Variant field to update"
+  field: String!
+
+  "ID of shop that owns the variant to update"
+  shopId: ID!
+
+  "Value to update the field with"
+  value: String! # TODO: what do we do here, this can be anything
+
+  "ID of variant to update"
+  variantId: ID!
+}
+
 extend type Mutation {
   "Archive products"
   archiveProducts(
@@ -303,4 +351,16 @@ extend type Mutation {
     "Mutation input"
     input: CloneProductVariantsInput!
   ): CloneProductVariantsPayload!
+
+  "Update a field on an existing product"
+  updateProductField(
+    "Mutation input"
+    input: UpdateProductFieldInput!
+  ): UpdateProductFieldPayload!
+
+  "Update a field on an existing product variant"
+  updateProductVariantField(
+    "Mutation input"
+    input: UpdateProductVariantFieldInput!
+  ): UpdateProductVariantFieldPayload!
 }
