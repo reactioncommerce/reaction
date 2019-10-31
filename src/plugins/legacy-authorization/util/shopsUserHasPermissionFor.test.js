@@ -1,4 +1,4 @@
-import shopsUserHasPermissionForLegacy from "./shopsUserHasPermissionForLegacy.js";
+import shopsUserHasPermissionForLegacy from "./shopsUserHasPermissionFor.js";
 
 const user = {
   roles: {

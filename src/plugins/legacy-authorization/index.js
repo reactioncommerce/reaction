@@ -1,5 +1,5 @@
 import { getHasPermissionFunctionForUserLegacy } from "./util/hasPermission.js";
-import { getShopsUserHasPermissionForFunctionForUserLegacy } from "./util/shopsUserHasPermissionForLegacy.js";
+import { getShopsUserHasPermissionForFunctionForUserLegacy } from "./util/shopsUserHasPermissionFor.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
