@@ -31,10 +31,6 @@ export default async function register(app) {
         listRefunds: stripeListRefunds
       }
     }],
-    settings: {
-      mode: false,
-      connectAuth: {}
-    },
     registry: [
       // Settings panel
       {
