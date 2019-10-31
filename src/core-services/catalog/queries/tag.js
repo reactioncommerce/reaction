@@ -20,6 +20,7 @@ export default async function tag(context, slugOrId, { shouldIncludeInvisible = 
 
   if (shouldIncludeInvisible === true) {
     const shopId = await context.queries.primaryShopId(context);
+    // TODO: pod-auth - figure out what to do with the `userHasPermission` checks
     if (userHasPermissionLegacy(["owner", "admin"], shopId)) {
       query = {
         $and: [

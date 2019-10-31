@@ -22,6 +22,7 @@ export default async function navigationTreeById(context, { language, navigation
     // Add language from args so that we can use it in items & draftItems resolvers
     navigationTree.language = language;
 
+    // TODO: pod-auth - figure out what to do with the `userHasPermission` checks
     const isAdmin = userHasPermissionLegacy(["admin", "owner", "create-product"], shopId);
 
     // Filter items based on visibility options and user permissions

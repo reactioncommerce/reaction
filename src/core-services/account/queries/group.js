@@ -17,6 +17,7 @@ export default async function groupQuery(context, id) {
   if (!group) throw new ReactionError("not-found", "There is no group with this ID");
 
   // If the user has sufficient permissions, then allow them to find any group by ID
+  // TODO: pod-auth - figure out what to do here.
   if (userHasPermissionLegacy(["owner", "admin", "reaction-accounts"], group.shopId)) return group;
 
   // Otherwise, only let users see groups that they are members of

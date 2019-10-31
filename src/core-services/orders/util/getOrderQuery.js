@@ -16,6 +16,7 @@ export function getOrderQuery(context, selector, shopId, token) {
   const { accountId: contextAccountId, userHasPermissionLegacy } = context;
   const newSelector = { ...selector, shopId };
 
+  // TODO: pod-auth - figure out what to do with the `userHasPermission` checks
   if (userHasPermissionLegacy(["orders", "order/fulfillment", "order/view"], shopId)) {
     // admins with orders permissions can see any order in the shop
     // admins with order/fulfillment and order/view permissions can also view order

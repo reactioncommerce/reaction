@@ -27,6 +27,7 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
     query.name = { $regex: _.escapeRegExp(filter), $options: "i" };
   }
 
+    // TODO: pod-auth - figure out what to do with the `userHasPermission` checks
   if (context.userHasPermissionLegacy(["owner", "admin"], shopId)) {
     if (shouldIncludeDeleted === true) {
       query.isDeleted = { $in: [false, true] };

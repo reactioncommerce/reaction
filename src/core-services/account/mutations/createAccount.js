@@ -84,6 +84,7 @@ export default async function createAccount(context, input) {
   // The identity provider service gives the first created user the global "owner" role. When we
   // create an account for this user, they should be assigned to the "owner" group.
   // TODO: pod-auth - How do we go about these where we check for a group?
+  // TODO: pod-auth - figure out what to do with the `userHasPermission` checks
   if (authUserId === userId && userHasPermissionLegacy(["owner"])) groupSlug = "owner";
 
   const group = await Groups.findOne({ slug: groupSlug, shopId });
