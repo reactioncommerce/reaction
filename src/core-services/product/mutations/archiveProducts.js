@@ -23,11 +23,11 @@ const inputSchema = new SimpleSchema({
  */
 export default async function archiveProducts(context, input) {
   inputSchema.validate(input);
-  const { appEvents, checkPermissions, collections, userId } = context;
+  const { appEvents, checkPermissionsLegacy, collections, userId } = context;
   const { MediaRecords, Products } = collections;
   const { productIds, shopId } = input;
 
-  await checkPermissions(["createProduct", "product/admin", "product/archive"], shopId);
+  await checkPermissionsLegacy(["createProduct", "product/admin", "product/archive"], shopId);
 
   // Check to make sure all products are on the same shop
   const count = await Products.find({ _id: { $in: productIds }, shopId }).count();

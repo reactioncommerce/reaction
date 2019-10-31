@@ -9,10 +9,10 @@
  * @returns {Promise<Object>|undefined} - A restrictions document, if one is found
  */
 export default async function getFlatRateFulfillmentRestriction(context, { restrictionId, shopId } = {}) {
-  const { checkPermissions, collections } = context;
+  const { checkPermissionsLegacy, collections } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  await checkPermissions(["admin", "owner", "shipping"], shopId);
+  await checkPermissionsLegacy(["admin", "owner", "shipping"], shopId);
 
   return FlatRateFulfillmentRestrictions.findOne({
     _id: restrictionId,

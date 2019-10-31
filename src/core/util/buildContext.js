@@ -30,7 +30,7 @@ export default async function buildContext(context, request = {}) {
       context.userHasPermission = () => false;
     }
 
-    context.checkPermissions = async (...args) => {
+    context.checkPermissionsLegacy = async (...args) => {
       const allowed = await context.userHasPermission(...args);
       if (!allowed) throw new ReactionError("access-denied", "Access Denied");
     };
@@ -41,7 +41,7 @@ export default async function buildContext(context, request = {}) {
       context.shopsUserHasPermissionFor = () => [];
     }
   } else {
-    context.checkPermissions = async () => {
+    context.checkPermissionsLegacy = async () => {
       throw new ReactionError("access-denied", "Access Denied");
     };
     context.userHasPermission = () => false;

@@ -21,7 +21,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function setAccountProfileCurrency(context, input) {
   inputSchema.validate(input);
-  const { appEvents, checkPermissions, collections, userId: userIdFromContext } = context;
+  const { appEvents, checkPermissionsLegacy, collections, userId: userIdFromContext } = context;
   const { Accounts, Shops } = collections;
   const { currencyCode, accountId: providedAccountId } = input;
 
@@ -32,7 +32,7 @@ export default async function setAccountProfileCurrency(context, input) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   if (!context.isInternalCall && userIdFromContext !== providedAccountId) {
-    await checkPermissions(["reaction-accounts"], account.shopId);
+    await checkPermissionsLegacy(["reaction-accounts"], account.shopId);
   }
 
   // Make sure this currency code is in the related shop currencies list

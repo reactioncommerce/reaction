@@ -7,11 +7,11 @@
  * @returns {undefined} schedules immediate sitemap generation job
  */
 export default async function generateSitemaps(context) {
-  const { checkPermissions, userId } = context;
+  const { checkPermissionsLegacy, userId } = context;
 
   const shopId = await context.queries.primaryShopId(context);
 
-  await checkPermissions(["admin"], shopId);
+  await checkPermissionsLegacy(["admin"], shopId);
 
   const jobOptions = {
     type: "sitemaps/generate",

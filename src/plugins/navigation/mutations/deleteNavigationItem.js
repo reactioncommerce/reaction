@@ -10,11 +10,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>} Deleted navigation item
  */
 export default async function deleteNavigationItem(context, input) {
-  const { checkPermissions, collections } = context;
+  const { checkPermissionsLegacy, collections } = context;
   const { NavigationItems } = collections;
   const { _id, shopId } = input;
 
-  await checkPermissions(["core"], shopId);
+  await checkPermissionsLegacy(["core"], shopId);
 
   const navigationItem = await NavigationItems.findOne({ _id });
   if (!navigationItem) {

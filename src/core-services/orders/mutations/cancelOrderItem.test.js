@@ -81,7 +81,7 @@ test("throws if the order item doesn't exist", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(cancelOrderItem(mockContext, {
     itemId: "abc",
@@ -100,7 +100,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.checkPermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -110,7 +110,7 @@ test("throws if permission check fails", async () => {
     cancelQuantity: 1
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("throws if user who placed order tries to cancel at invalid current item status", async () => {
@@ -217,7 +217,7 @@ test("throws if cancelQuantity is greater than item quantity", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(cancelOrderItem(mockContext, {
     itemId: "abc",
@@ -258,7 +258,7 @@ test("throws if the database update fails", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 0
@@ -366,7 +366,7 @@ test("cancels all of an item", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,
@@ -453,7 +453,7 @@ test("cancels some of an item", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,
@@ -575,7 +575,7 @@ test("cancels the group if all items are canceled", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,
@@ -688,7 +688,7 @@ test("cancels the order and emits afterOrderCancel if all groups are canceled", 
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,
@@ -793,7 +793,7 @@ test("succeeds if already canceled, but does not push canceled status again", as
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

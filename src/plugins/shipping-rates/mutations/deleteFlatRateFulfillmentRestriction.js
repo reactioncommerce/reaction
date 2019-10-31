@@ -17,10 +17,10 @@ export default async function deleteFlatRateFulfillmentRestriction(context, inpu
   inputSchema.validate(input);
 
   const { restrictionId, shopId } = input;
-  const { checkPermissions, collections } = context;
+  const { checkPermissionsLegacy, collections } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  await checkPermissions(["admin", "owner", "shipping"], shopId);
+  await checkPermissionsLegacy(["admin", "owner", "shipping"], shopId);
 
   const { ok, value } = await FlatRateFulfillmentRestrictions.findOneAndDelete({
     _id: restrictionId,

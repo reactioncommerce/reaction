@@ -29,7 +29,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.checkPermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -37,7 +37,7 @@ test("throws if permission check fails", async () => {
     orderId: "order1"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("skips permission check if context.isInternalCall", async () => {
@@ -70,7 +70,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.checkPermissions).not.toHaveBeenCalled();
+  expect(mockContext.checkPermissionsLegacy).not.toHaveBeenCalled();
 });
 
 
@@ -92,7 +92,7 @@ test("skips update if one is not necessary", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await updateOrder(mockContext, { orderId: "order1" });
 
@@ -117,7 +117,7 @@ test("updates an order", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

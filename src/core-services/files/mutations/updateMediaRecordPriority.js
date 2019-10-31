@@ -9,13 +9,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function updateMediaRecordPriority(context, input) {
   const {
     appEvents,
-    checkPermissions,
+    checkPermissionsLegacy,
     collections: { MediaRecords },
     userId
   } = context;
   const { mediaRecordId, priority, shopId } = input;
 
-  await checkPermissions(["media/update"], shopId);
+  await checkPermissionsLegacy(["media/update"], shopId);
 
   const { value: updatedMediaRecord } = await MediaRecords.findOneAndUpdate(
     {

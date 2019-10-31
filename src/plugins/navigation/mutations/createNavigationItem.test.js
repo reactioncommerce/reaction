@@ -14,7 +14,7 @@ test("calls NavigationItems.insert and returns an object that validates against 
 });
 
 test("throws an error if the user does not have the core permission", async () => {
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.checkPermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   const result = createNavigationItemMutation(mockContext, { navigationItem: {} });

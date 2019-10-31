@@ -15,7 +15,7 @@ test("properly mutates the context object without user", async () => {
   process.env.ROOT_URL = "http://localhost:3000";
   const context = {
     auth,
-    checkPermissions: mockContext.checkPermissions,
+    checkPermissionsLegacy: mockContext.checkPermissionsLegacy,
     collections: mockContext.collections,
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
@@ -27,7 +27,7 @@ test("properly mutates the context object without user", async () => {
     account: null,
     accountId: null,
     auth,
-    checkPermissions: jasmine.any(Function),
+    checkPermissionsLegacy: jasmine.any(Function),
     collections: mockContext.collections,
     isInternalCall: false,
     queries: {
@@ -47,7 +47,7 @@ test("properly mutates the context object with user", async () => {
 
   const context = {
     auth,
-    checkPermissions: mockContext.checkPermissions,
+    checkPermissionsLegacy: mockContext.checkPermissionsLegacy,
     collections: mockContext.collections,
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
@@ -58,7 +58,7 @@ test("properly mutates the context object with user", async () => {
     account: mockAccount,
     accountId: mockAccount._id,
     auth,
-    checkPermissions: jasmine.any(Function),
+    checkPermissionsLegacy: jasmine.any(Function),
     collections: mockContext.collections,
     isInternalCall: false,
     queries: {

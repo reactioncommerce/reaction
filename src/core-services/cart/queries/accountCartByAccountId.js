@@ -12,11 +12,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>|undefined} A Cart document, if one is found
  */
 export default async function accountCartByAccountId(context, { accountId, shopId } = {}) {
-  const { accountId: contextAccountId, checkPermissions, collections } = context;
+  const { accountId: contextAccountId, checkPermissionsLegacy, collections } = context;
   const { Cart } = collections;
 
   if (accountId !== contextAccountId) {
-    await checkPermissions(["owner", "admin"], shopId);
+    await checkPermissionsLegacy(["owner", "admin"], shopId);
   }
 
   if (!accountId) {

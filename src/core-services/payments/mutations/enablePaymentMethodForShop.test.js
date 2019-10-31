@@ -98,7 +98,7 @@ test("enables payment method for valid shop", async () => {
 });
 
 test("disables payment method for valid shop", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValue(fakeShop);
   mockPaymentMethods.mockReturnValue([{
     name: "mockPaymentMethod",

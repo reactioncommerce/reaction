@@ -17,10 +17,10 @@ export default async function deleteFlatRateFulfillmentMethodMutation(context, i
   inputSchema.validate(input);
 
   const { methodId, shopId } = input;
-  const { checkPermissions, collections } = context;
+  const { checkPermissionsLegacy, collections } = context;
   const { Shipping } = collections;
 
-  await checkPermissions(["admin", "owner", "shipping"], shopId);
+  await checkPermissionsLegacy(["admin", "owner", "shipping"], shopId);
 
   const shippingRecord = await Shipping.findOne({
     "methods._id": methodId,

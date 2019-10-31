@@ -18,7 +18,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function removeAccountAddressBookEntry(context, input) {
   inputSchema.validate(input);
-  const { appEvents, checkPermissions, collections, userId: userIdFromContext } = context;
+  const { appEvents, checkPermissionsLegacy, collections, userId: userIdFromContext } = context;
   const { Accounts } = collections;
   const {
     accountId,
@@ -29,7 +29,7 @@ export default async function removeAccountAddressBookEntry(context, input) {
   if (!account) throw new ReactionError("not-found", "Not Found");
 
   if (!context.isInternalCall && userIdFromContext !== accountId) {
-    await checkPermissions(["reaction-accounts"], account.shopId);
+    await checkPermissionsLegacy(["reaction-accounts"], account.shopId);
   }
 
   const addressBeingRemoved = account.profile && Array.isArray(account.profile.addressBook) &&

@@ -13,7 +13,7 @@ import _ from "lodash";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function orders(context, { filters, shopIds } = {}) {
-  const { checkPermissions, collections, shopsUserHasPermissionFor } = context;
+  const { checkPermissionsLegacy, collections, shopsUserHasPermissionFor } = context;
   const { Orders } = collections;
 
   const query = {};
@@ -42,7 +42,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
   // shops for which they're allowed to see orders.
   if (shopIds) {
     for (const shopId of shopIds) {
-      await checkPermissions(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
+      await checkPermissionsLegacy(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
     }
 
     query.shopId = { $in: shopIds };

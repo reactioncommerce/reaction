@@ -11,7 +11,7 @@ import { getTaxServicesForShop } from "../registration.js";
  * @returns {Array<Object>} Array of tax services
  */
 export default async function taxCodes(context, shopId) {
-  await context.checkPermissions(["admin", "owner"], shopId);
+  await context.checkPermissionsLegacy(["admin", "owner"], shopId);
 
   const { primaryTaxService } = await getTaxServicesForShop(context, shopId);
   if (!primaryTaxService) return [];

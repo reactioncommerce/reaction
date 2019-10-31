@@ -11,7 +11,7 @@ import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
  * @returns {Promise<Object>} The created navigation item
  */
 export default async function createNavigationItem(context, input) {
-  const { checkPermissions, collections } = context;
+  const { checkPermissionsLegacy, collections } = context;
   const { NavigationItems } = collections;
   const { navigationItem } = input;
   const { shopId } = navigationItem;
@@ -19,7 +19,7 @@ export default async function createNavigationItem(context, input) {
   const { metadata, draftData = {} } = navigationItem;
 
   if (!context.isInternalCall) {
-    await checkPermissions(["core"], shopId);
+    await checkPermissionsLegacy(["core"], shopId);
   }
 
   let parsedMetadata = {};

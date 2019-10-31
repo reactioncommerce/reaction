@@ -10,13 +10,13 @@ import { NavigationItemData } from "../simpleSchemas.js";
  * @returns {Promise<Object>} Updated navigation item
  */
 export default async function updateNavigationItem(context, _id, navigationItem) {
-  const { checkPermissions, collections } = context;
+  const { checkPermissionsLegacy, collections } = context;
   const { NavigationItems } = collections;
   const { draftData, metadata } = navigationItem;
 
   const shopId = await context.queries.primaryShopId(context);
 
-  await checkPermissions(["core"], shopId);
+  await checkPermissionsLegacy(["core"], shopId);
 
   const existingNavigationItem = await NavigationItems.findOne({ _id });
   if (!existingNavigationItem) {

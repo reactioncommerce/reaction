@@ -36,10 +36,10 @@ const inputSchema = new SimpleSchema({
 export default async function verifySMTPEmailSettings(context, input) {
   inputSchema.validate(input);
 
-  const { checkPermissions } = context;
+  const { checkPermissionsLegacy } = context;
   const { host, port, service, shopId, user, password } = input;
 
-  await checkPermissions(["owner", "admin", "dashboard"], shopId);
+  await checkPermissionsLegacy(["owner", "admin", "dashboard"], shopId);
 
   let config;
 

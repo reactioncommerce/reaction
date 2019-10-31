@@ -28,7 +28,7 @@ test("throws if shopId isn't supplied", async () => {
 });
 
 test("throws if the order doesn't exist", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
@@ -51,7 +51,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.checkPermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -62,11 +62,11 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("updates an order status", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "abc",

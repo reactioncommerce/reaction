@@ -42,7 +42,7 @@ export default async function createAccount(context, input) {
 
   const {
     appEvents,
-    checkPermissions,
+    checkPermissionsLegacy,
     collections: { Accounts, Groups },
     simpleSchemas: {
       Account: AccountSchema
@@ -60,7 +60,7 @@ export default async function createAccount(context, input) {
   } = input;
 
   if (shopId && !context.isInternalCall) {
-    await checkPermissions(["reaction-accounts", "account/invite"], shopId);
+    await checkPermissionsLegacy(["reaction-accounts", "account/invite"], shopId);
   }
 
   // Create initial account object from user and profile

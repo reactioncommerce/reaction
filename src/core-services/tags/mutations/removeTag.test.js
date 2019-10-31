@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 test("calls mutations.removeTag and returns the RemoveTagPayload on success", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Tags.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });
   mockContext.collections.Tags.findOne.mockReturnValueOnce({
     shopId: testShopId,
@@ -33,7 +33,7 @@ test("calls mutations.removeTag and returns the RemoveTagPayload on success", as
 });
 
 test("calls mutations.removeTag and throws for non admins", async () => {
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.checkPermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   mockContext.collections.Tags.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });

@@ -21,10 +21,10 @@ export default async function updateSurchargeMutation(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { surcharge, surchargeId, shopId } = cleanedInput;
-  const { checkPermissions, collections } = context;
+  const { checkPermissionsLegacy, collections } = context;
   const { Surcharges } = collections;
 
-  await checkPermissions(["admin", "owner", "shipping"], shopId);
+  await checkPermissionsLegacy(["admin", "owner", "shipping"], shopId);
 
   const { matchedCount } = await Surcharges.updateOne({
     _id: surchargeId,

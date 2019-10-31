@@ -19,11 +19,11 @@ export default async function simpleInventory(context, input) {
   inputSchema.validate(input);
 
   const { productConfiguration, shopId } = input;
-  const { checkPermissions, collections, isInternalCall } = context;
+  const { checkPermissionsLegacy, collections, isInternalCall } = context;
   const { SimpleInventory } = collections;
 
   if (!isInternalCall) {
-    await checkPermissions(["admin"], shopId);
+    await checkPermissionsLegacy(["admin"], shopId);
   }
 
   return SimpleInventory.findOne({
