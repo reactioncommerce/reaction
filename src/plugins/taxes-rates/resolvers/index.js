@@ -10,5 +10,5 @@ import Query from "./Query/index.js";
 export default {
   Mutation,
   Query,
-  ...getConnectionTypeResolvers("TaxRates")
+  ...getConnectionTypeResolvers("TaxRate")
 };
