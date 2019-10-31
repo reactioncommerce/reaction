@@ -1,5 +1,10 @@
 import calculateOrderTaxes from "./util/calculateOrderTaxes.js";
 import getTaxCodes from "./util/getTaxCodes.js";
+import { TaxRates } from "./simpleSchemas.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import mutations from "./mutations/index.js";
+import queries from "./queries/index.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -26,6 +31,15 @@ export default async function register(app) {
       TaxCodes: {
         name: "TaxCodes"
       }
+    },
+    graphQL: {
+      resolvers,
+      schemas
+    },
+    mutations,
+    queries,
+    simpleSchemas: {
+      TaxRates
     },
     taxServices: [
       {
