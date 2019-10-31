@@ -1,4 +1,4 @@
-import shopsUserHasPermissionFor from "./shopsUserHasPermissionFor.js";
+import shopsUserHasPermissionForLegacy from "./shopsUserHasPermissionForLegacy.js";
 
 const user = {
   roles: {
@@ -14,36 +14,36 @@ const user = {
 };
 
 test("returns blank array if no user", () => {
-  const result = shopsUserHasPermissionFor(null, "orders");
+  const result = shopsUserHasPermissionForLegacy(null, "orders");
   expect(result).toEqual([]);
 });
 
 test("returns blank array if no user.roles", () => {
-  const result = shopsUserHasPermissionFor({}, "orders");
+  const result = shopsUserHasPermissionForLegacy({}, "orders");
   expect(result).toEqual([]);
 });
 
 test("returns blank array if no permission", () => {
-  const result = shopsUserHasPermissionFor(user, null);
+  const result = shopsUserHasPermissionForLegacy(user, null);
   expect(result).toEqual([]);
 });
 
 test("returns an array of both shops for `orders` permission", () => {
-  const result = shopsUserHasPermissionFor(user, "orders");
+  const result = shopsUserHasPermissionForLegacy(user, "orders");
   expect(result).toEqual(["abc", "def"]);
 });
 
 test("returns an array of shop `abc` for `accounts` permission", () => {
-  const result = shopsUserHasPermissionFor(user, "accounts");
+  const result = shopsUserHasPermissionForLegacy(user, "accounts");
   expect(result).toEqual(["abc"]);
 });
 
 test("returns an array of shop `def` for `navigation` permission", () => {
-  const result = shopsUserHasPermissionFor(user, "navigation");
+  const result = shopsUserHasPermissionForLegacy(user, "navigation");
   expect(result).toEqual(["def"]);
 });
 
 test("returns a blank array for `dogs` permission", () => {
-  const result = shopsUserHasPermissionFor(user, "dogs");
+  const result = shopsUserHasPermissionForLegacy(user, "dogs");
   expect(result).toEqual([]);
 });

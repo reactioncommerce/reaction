@@ -5,14 +5,14 @@ const require = createRequire(import.meta.url); // eslint-disable-line
 const { curryN } = require("ramda");
 
 /**
- * @name shopsUserHasPermissionFor
+ * @name shopsUserHasPermissionForLegacy
  * @method
  * @memberof Accounts
  * @param {Object} user - The user object, with `roles` property, to check.
  * @param {String} permission - Permission to check for.
  * @returns {Array} Shop IDs user has provided permissions for
  */
-export default function shopsUserHasPermissionFor(user, permission) {
+export default function shopsUserHasPermissionForLegacy(user, permission) {
   if (!user || !user.roles || !permission) return [];
 
   const { roles } = user;
@@ -30,13 +30,13 @@ export default function shopsUserHasPermissionFor(user, permission) {
   return shopIds;
 }
 
-const shopsUserHasPermissionForCurried = curryN(2, shopsUserHasPermissionFor);
+const shopsUserHasPermissionForCurried = curryN(2, shopsUserHasPermissionForLegacy);
 
 /**
- * @summary Get a `shopsUserHasPermissionFor` function bound to the current user context
+ * @summary Get a `shopsUserHasPermissionForLegacy` function bound to the current user context
  * @param {Object} context App context
- * @return {Function} shopsUserHasPermissionFor function for `context.user`
+ * @return {Function} shopsUserHasPermissionForLegacy function for `context.user`
  */
-export function getShopsUserHasPermissionForFunctionForUser(context) {
+export function getShopsUserHasPermissionForFunctionForUserLegacy(context) {
   return shopsUserHasPermissionForCurried(context.user);
 }

@@ -32,8 +32,8 @@ beforeEach(() => {
   fakeShop.availablePaymentMethods = [];
 });
 
-test("throws if userHasPermission returns false", async () => {
-  mockContext.userHasPermission.mockReturnValue(false);
+test("throws if userHasPermissionLegacy returns false", async () => {
+  mockContext.userHasPermissionLegacy.mockReturnValue(false);
   mockShopById.mockReturnValue(fakeShop);
 
   await expect(enablePaymentMethodForShop(mockContext, {
@@ -44,14 +44,14 @@ test("throws if userHasPermission returns false", async () => {
 });
 
 test("errors on missing arguments", async () => {
-  mockContext.userHasPermission.mockReturnValue(true);
+  mockContext.userHasPermissionLegacy.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
 
   await expect(enablePaymentMethodForShop(mockContext, {})).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("errors on invalid payment method", async () => {
-  mockContext.userHasPermission.mockReturnValue(true);
+  mockContext.userHasPermissionLegacy.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
 
   await expect(enablePaymentMethodForShop(mockContext, {
@@ -62,7 +62,7 @@ test("errors on invalid payment method", async () => {
 });
 
 test("errors on invalid shop", async () => {
-  mockContext.userHasPermission.mockReturnValue(true);
+  mockContext.userHasPermissionLegacy.mockReturnValue(true);
   mockShopById.mockReturnValue();
 
   await expect(enablePaymentMethodForShop(mockContext, {
@@ -74,7 +74,7 @@ test("errors on invalid shop", async () => {
 
 test("enables payment method for valid shop", async () => {
   fakeShop.availablePaymentMethods = ["mockPaymentMethod"];
-  mockContext.userHasPermission.mockReturnValue(true);
+  mockContext.userHasPermissionLegacy.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
   mockPaymentMethods.mockReturnValue([{
     name: "mockPaymentMethod",

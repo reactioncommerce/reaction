@@ -6,7 +6,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @method
  * @memberof GraphQL
  * @summary Mutates the provided context object, adding `user`, `userId`, `account`,
- *   `accountId`, `userHasPermission`, and `requestHeaders` properties.
+ *   `accountId`, `userHasPermissionLegacy`, and `requestHeaders` properties.
  * @param {Object} context - A context object on which to set additional context properties
  * @param {Object} request - Request object
  * @param {Object} request.headers - Map of headers from the client request
@@ -24,28 +24,28 @@ export default async function buildContext(context, request = {}) {
   context.userId = userId;
 
   if (userId) {
-    if (typeof context.auth.getHasPermissionFunctionForUser === "function") {
-      context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
+    if (typeof context.auth.getHasPermissionFunctionForUserLegacy === "function") {
+      context.userHasPermissionLegacy = await context.auth.getHasPermissionFunctionForUserLegacy(context);
     } else {
-      context.userHasPermission = () => false;
+      context.userHasPermissionLegacy = () => false;
     }
 
     context.checkPermissionsLegacy = async (...args) => {
-      const allowed = await context.userHasPermission(...args);
+      const allowed = await context.userHasPermissionLegacy(...args);
       if (!allowed) throw new ReactionError("access-denied", "Access Denied");
     };
 
-    if (typeof context.auth.getShopsUserHasPermissionForFunctionForUser === "function") {
-      context.shopsUserHasPermissionFor = await context.auth.getShopsUserHasPermissionForFunctionForUser(context);
+    if (typeof context.auth.getShopsUserHasPermissionForFunctionForUserLegacy === "function") {
+      context.shopsUserHasPermissionForLegacy = await context.auth.getShopsUserHasPermissionForFunctionForUserLegacy(context);
     } else {
-      context.shopsUserHasPermissionFor = () => [];
+      context.shopsUserHasPermissionForLegacy = () => [];
     }
   } else {
     context.checkPermissionsLegacy = async () => {
       throw new ReactionError("access-denied", "Access Denied");
     };
-    context.userHasPermission = () => false;
-    context.shopsUserHasPermissionFor = () => [];
+    context.userHasPermissionLegacy = () => false;
+    context.shopsUserHasPermissionForLegacy = () => [];
   }
 
   let account;

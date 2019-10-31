@@ -13,10 +13,10 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} A mongo selector
  */
 export function getOrderQuery(context, selector, shopId, token) {
-  const { accountId: contextAccountId, userHasPermission } = context;
+  const { accountId: contextAccountId, userHasPermissionLegacy } = context;
   const newSelector = { ...selector, shopId };
 
-  if (userHasPermission(["orders", "order/fulfillment", "order/view"], shopId)) {
+  if (userHasPermissionLegacy(["orders", "order/fulfillment", "order/view"], shopId)) {
     // admins with orders permissions can see any order in the shop
     // admins with order/fulfillment and order/view permissions can also view order
     // with further permission checks in each component to limit functionality where needed

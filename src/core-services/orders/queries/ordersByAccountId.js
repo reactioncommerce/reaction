@@ -13,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function ordersByAccountId(context, { accountId, orderStatus, shopIds } = {}) {
-  const { accountId: contextAccountId, checkPermissionsLegacy, collections, shopsUserHasPermissionFor } = context;
+  const { accountId: contextAccountId, checkPermissionsLegacy, collections, shopsUserHasPermissionForLegacy } = context;
   const { Orders } = collections;
 
   if (!accountId) {
@@ -39,7 +39,7 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
     // If an admin wants all orders for an account, we force it to be limited to the
     // shops for which they're allowed to see orders.
     if (!shopIds) {
-      const shopIdsUserHasPermissionFor = shopsUserHasPermissionFor("orders");
+      const shopIdsUserHasPermissionFor = shopsUserHasPermissionForLegacy("orders");
       query.shopId = { $in: shopIdsUserHasPermissionFor };
     } else {
       for (const shopId of shopIds) {

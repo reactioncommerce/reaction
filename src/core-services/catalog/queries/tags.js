@@ -27,7 +27,7 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
     query.name = { $regex: _.escapeRegExp(filter), $options: "i" };
   }
 
-  if (context.userHasPermission(["owner", "admin"], shopId)) {
+  if (context.userHasPermissionLegacy(["owner", "admin"], shopId)) {
     if (shouldIncludeDeleted === true) {
       query.isDeleted = { $in: [false, true] };
     } else {

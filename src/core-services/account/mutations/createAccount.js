@@ -48,7 +48,7 @@ export default async function createAccount(context, input) {
       Account: AccountSchema
     },
     userId: authUserId,
-    userHasPermission
+    userHasPermissionLegacy
   } = context;
 
   const {
@@ -81,7 +81,7 @@ export default async function createAccount(context, input) {
 
   // The identity provider service gives the first created user the global "owner" role. When we
   // create an account for this user, they should be assigned to the "owner" group.
-  if (authUserId === userId && userHasPermission(["owner"])) groupSlug = "owner";
+  if (authUserId === userId && userHasPermissionLegacy(["owner"])) groupSlug = "owner";
 
   const group = await Groups.findOne({ slug: groupSlug, shopId });
   account.groups = group ? [group._id] : [];

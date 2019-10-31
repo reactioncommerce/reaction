@@ -318,7 +318,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
+  expect(mockContext.userHasPermissionLegacy).not.toHaveBeenCalled();
 });
 
 test("cancels all of an item", async () => {

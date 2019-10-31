@@ -53,6 +53,6 @@ const hasPermissionCurried = curryN(2, hasPermission);
  * @param {Object} context App context
  * @return {Function} hasPermission function for `context.user`
  */
-export function getHasPermissionFunctionForUser(context) {
+export function getHasPermissionFunctionForUserLegacy(context) {
   return hasPermissionCurried(context.user);
 }

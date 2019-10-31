@@ -9,7 +9,7 @@
  * @returns {Object} - A Tag document if one was found
  */
 export default async function tag(context, slugOrId, { shouldIncludeInvisible = false } = {}) {
-  const { collections, userHasPermission } = context;
+  const { collections, userHasPermissionLegacy } = context;
   const { Tags } = collections;
   let query = {
     $and: [
@@ -20,7 +20,7 @@ export default async function tag(context, slugOrId, { shouldIncludeInvisible = 
 
   if (shouldIncludeInvisible === true) {
     const shopId = await context.queries.primaryShopId(context);
-    if (userHasPermission(["owner", "admin"], shopId)) {
+    if (userHasPermissionLegacy(["owner", "admin"], shopId)) {
       query = {
         $and: [
           { isVisible: { $in: [false, true] } },

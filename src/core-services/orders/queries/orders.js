@@ -13,7 +13,7 @@ import _ from "lodash";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function orders(context, { filters, shopIds } = {}) {
-  const { checkPermissionsLegacy, collections, shopsUserHasPermissionFor } = context;
+  const { checkPermissionsLegacy, collections, shopsUserHasPermissionForLegacy } = context;
   const { Orders } = collections;
 
   const query = {};
@@ -47,7 +47,7 @@ export default async function orders(context, { filters, shopIds } = {}) {
 
     query.shopId = { $in: shopIds };
   } else {
-    const shopIdsUserHasPermissionFor = shopsUserHasPermissionFor("orders");
+    const shopIdsUserHasPermissionFor = shopsUserHasPermissionForLegacy("orders");
     query.shopId = { $in: shopIdsUserHasPermissionFor };
   }
 

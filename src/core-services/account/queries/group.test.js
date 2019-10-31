@@ -15,22 +15,22 @@ test("throws not-found if the group does not exist", async () => {
   return expect(result).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("returns the group if userHasPermission returns true", async () => {
+test("returns the group if userHasPermissionLegacy returns true", async () => {
   mockContext.collections.Groups.findOne.mockReturnValueOnce(fakeGroup);
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.userHasPermissionLegacy.mockReturnValueOnce(true);
   const result = await groupQuery(mockContext, fakeGroup._id);
   expect(mockContext.collections.Groups.findOne).toHaveBeenCalledWith({ _id: fakeGroup._id });
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin", "reaction-accounts"], fakeGroup.shopId);
+  expect(mockContext.userHasPermissionLegacy).toHaveBeenCalledWith(["owner", "admin", "reaction-accounts"], fakeGroup.shopId);
   expect(result).toEqual(fakeGroup);
 });
 
-test("returns the group if userHasPermission returns false but the current user is in the group", async () => {
+test("returns the group if userHasPermissionLegacy returns false but the current user is in the group", async () => {
   mockContext.collections.Groups.findOne.mockReturnValueOnce(fakeGroup);
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.userHasPermissionLegacy.mockReturnValueOnce(false);
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeAccount);
   const result = await groupQuery(mockContext, fakeGroup._id);
   expect(mockContext.collections.Groups.findOne).toHaveBeenCalledWith({ _id: fakeGroup._id });
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin", "reaction-accounts"], fakeGroup.shopId);
+  expect(mockContext.userHasPermissionLegacy).toHaveBeenCalledWith(["owner", "admin", "reaction-accounts"], fakeGroup.shopId);
   expect(mockContext.collections.Accounts.findOne).toHaveBeenCalledWith({
     _id: mockContext.userId,
     groups: fakeGroup._id
@@ -44,7 +44,7 @@ test("returns the group if userHasPermission returns false but the current user 
 
 test("throws access-denied if not allowed", async () => {
   mockContext.collections.Groups.findOne.mockReturnValueOnce(fakeGroup);
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.userHasPermissionLegacy.mockReturnValueOnce(false);
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(undefined);
   const result = groupQuery(mockContext, fakeGroup._id);
   return expect(result).rejects.toThrowErrorMatchingSnapshot();

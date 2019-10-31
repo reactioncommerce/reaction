@@ -4,7 +4,7 @@ import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
 import createNavigationItemMutation from "./createNavigationItem.js";
 
 test("calls NavigationItems.insert and returns an object that validates against the schema", async () => {
-  // mockContext.userHasPermission.mockReturnValueOnce(true);
+  // mockContext.userHasPermissionLegacy.mockReturnValueOnce(true);
   const navigationItem = await createNavigationItemMutation(mockContext, { navigationItem: {} });
   const validationContext = NavigationItemSchema.newContext();
   validationContext.validate(navigationItem);

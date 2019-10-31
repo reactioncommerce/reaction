@@ -2,7 +2,7 @@
 import { getOrderQuery } from "./getOrderQuery.js";
 
 function makeContext() {
-  return { accountId: "unit-test-account-id", userHasPermission: () => true };
+  return { accountId: "unit-test-account-id", userHasPermissionLegacy: () => true };
 }
 
 test("getOrderQuery shop admin", () => {
@@ -18,7 +18,7 @@ test("getOrderQuery shopper", () => {
   const shopId = "unit-test-shop-id";
   const referenceId = "unit-test-order-reference-id";
   const context = makeContext();
-  context.userHasPermission = () => false;
+  context.userHasPermissionLegacy = () => false;
   const query = getOrderQuery(context, { referenceId }, shopId, null);
   expect(query).toMatchObject({ referenceId, shopId, accountId: context.accountId });
 });
@@ -27,7 +27,7 @@ test("getOrderQuery anonymous", () => {
   const shopId = "unit-test-shop-id";
   const referenceId = "unit-test-order-reference-id";
   const context = makeContext();
-  context.userHasPermission = () => false;
+  context.userHasPermissionLegacy = () => false;
   delete context.accountId;
   const token = "unit-test-token";
   const query = getOrderQuery(context, { referenceId }, shopId, token);
@@ -39,7 +39,7 @@ test("getOrderQuery access denied", () => {
   const shopId = "unit-test-shop-id";
   const referenceId = "unit-test-order-reference-id";
   const context = makeContext();
-  context.userHasPermission = () => false;
+  context.userHasPermissionLegacy = () => false;
   delete context.accountId;
   expect(() => {
     getOrderQuery(context, { referenceId }, shopId, null);

@@ -6,4 +6,4 @@ exports[`errors on invalid shop 1`] = `"Shop not found"`;
 
 exports[`errors on missing arguments 1`] = `"Is enabled is required"`;
 
-exports[`throws if userHasPermission returns false 1`] = `"Requested payment method is invalid"`;
+exports[`throws if userHasPermissionLegacy returns false 1`] = `"Requested payment method is invalid"`;
