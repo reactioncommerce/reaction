@@ -57,9 +57,6 @@ type CreateTaxRatePayload {
 
 "Describes the input for updating a tax rate"
 input UpdateTaxRateInput {
-  "Shop ID"
-  shopId: ID!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -74,6 +71,9 @@ input UpdateTaxRateInput {
 
   "Amount of tax due"
   region: String!
+
+  "Shop ID"
+  shopId: ID!
 
   "Amount that was used for calculating the tax due"
   taxCode: String!
@@ -151,7 +151,7 @@ For information about what Relay-compatible connections are and how to use them,
 """
 type TaxRateConnection {
   "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
-  edges: [CatalogItemEdge]
+  edges: [TaxRateEdge]
 
   """
   You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
