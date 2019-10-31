@@ -1,6 +1,6 @@
 # v2.9.0
 
-Reaction v2.9.0 adds integration tests for GraphQL API endpoints.
+Reaction v2.9.0 adds integration tests for GraphQL API endpoints, security updates and fixes a fulfillment method bug.
 
 This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.9.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
 
