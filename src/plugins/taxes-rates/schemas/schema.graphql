@@ -1,0 +1,294 @@
+extend type Query {
+  "List all tax codes supported by the current active tax service for the shop"
+  taxCodes(
+    "The shop to use for getting the list of active tax services"
+    shopId: ID!
+  ): [TaxCode]!
+
+  "Get a full list of all tax services for the shop"
+  taxServices(
+    "The shop to use for getting the list of all tax services"
+    shopId: ID!
+  ): [TaxService]!
+}
+
+"A tax code that may be used on a product to indicate proper taxation category"
+type TaxCode {
+  "The code"
+  code: String!
+
+  "Short description of what types of products the code is for"
+  label: String!
+}
+
+"A service registered by a tax plugin, that provides tax codes and calculations"
+type TaxService {
+  "Human-readable display name"
+  displayName: String!
+
+  "The tax service name. Any valid name that has been registered by a tax plugin."
+  name: String!
+
+  "Name of the plugin that added the tax service"
+  pluginName: String!
+}
+
+extend type CatalogProductVariant {
+  "Is sales tax charged on this item?"
+  isTaxable: Boolean!
+
+  "An optional code which, if understood by the active tax service for the shop, determines how this product should be taxed"
+  taxCode: String
+
+  "A description to use for the tax line item on an invoice"
+  taxDescription: String
+}
+
+extend type Cart {
+  """
+  A summary of calculated taxes for this cart. Null means "not able to calculate",
+  such as when no fulfillment method has been selected for some fulfillment groups.
+  """
+  taxSummary: TaxSummary
+}
+
+extend type OrderFulfillmentGroup {
+  """
+  A summary of calculated taxes for this group.
+  """
+  taxSummary: TaxSummary
+}
+
+extend type CartItem {
+  "Is this a taxable item?"
+  isTaxable: Boolean!
+
+  "Total tax calculated for this item"
+  tax: Money
+
+  "The tax code for this item"
+  taxCode: String
+
+  "Amount of subtotal that is taxable"
+  taxableAmount: Money
+
+  "List of calculated taxes due for this item"
+  taxes: [CalculatedTax]
+}
+
+extend type OrderItem {
+  "Is this a taxable item?"
+  isTaxable: Boolean!
+
+  "Total tax calculated for this item"
+  tax: Money!
+
+  "The tax code for this item"
+  taxCode: String
+
+  "Amount of subtotal that is taxable"
+  taxableAmount: Money!
+
+  "List of calculated taxes due for this item"
+  taxes: [CalculatedTax]!
+}
+
+"Tax sources"
+enum TaxSource {
+  "Tax is applied when the destination matches the tax jurisdiction"
+  destination
+
+  "Tax is applied when the origin matches the tax jurisdiction"
+  origin
+}
+
+"A single calculated tax for a cart, order group, cart item, or order item"
+type TaxRate {
+  "Tax rate ID"
+  _id: ID!
+
+  "Shop ID"
+  shopId: ID!
+
+  "Did this tax match due to the order origin or the order destination?"
+  country: String!
+
+  "Amount of tax due"
+  region: String!
+
+  "A human-readable display name for showing this tax to operators and customers in the UI"
+  postal: String!
+
+  "The tax rate used for this calculation"
+  rate: Money!
+
+  "Amount that was used for calculating the tax due"
+  taxCode: String!
+}
+
+"Describes the input for creating a tax rate"
+input CreateTaxRateInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "Shop ID"
+  shopId: ID!
+
+  "Did this tax match due to the order origin or the order destination?"
+  country: String!
+
+  "Amount of tax due"
+  region: String!
+
+  "A human-readable display name for showing this tax to operators and customers in the UI"
+  postal: String!
+
+  "The tax rate used for this calculation"
+  rate: Money!
+
+  "Amount that was used for calculating the tax due"
+  taxCode: String!
+}
+
+"The response from the `createTaxRate` mutation"
+type CreateTaxRatePayload {
+  "The created tax rate"
+  taxRate: TaxRate
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"Describes the input for updating a tax rate"
+input UpdateTaxRateInput {
+  "The tax rate ID"
+  taxRateId: ID!
+
+  "Shop ID"
+  shopId: ID!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "Did this tax match due to the order origin or the order destination?"
+  country: String!
+
+  "Amount of tax due"
+  region: String!
+
+  "A human-readable display name for showing this tax to operators and customers in the UI"
+  postal: String!
+
+  "The tax rate used for this calculation"
+  rate: Money!
+
+  "Amount that was used for calculating the tax due"
+  taxCode: String!
+}
+
+"The response from the `updateTaxRate` mutation"
+type UpdateTaxRatePayload {
+  "The updated tax rate"
+  taxRate: TaxRate
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"Describes the input for removing a tax rate"
+input DeleteTaxRateInput {
+  "The tax rate ID"
+  taxRateId: ID!
+
+  "Shop ID"
+  shopId: ID!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+}
+
+"The response from the `deleteTaxRate` mutation"
+type DeleteTaxRatePayload {
+  "The deleted tax rate"
+  taxRate: TaxRate
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+extend type Mutation {
+  "Create a new tax rate"
+  createTaxRate(
+    "Mutation input"
+    input: CreateTaxRateInput!
+  ): CreateTaxRatePayload
+
+  "Update a tax rate"
+  updateTaxRate(
+    "Mutation input"
+    input: UpdateTaxRateInput!
+  ): UpdateTaxRatePayload
+
+  "Delete a tax rate"
+  deleteTaxRate(
+    "Mutation input"
+    input: DeleteTaxRateInput!
+  ): DeleteTaxRatePayload
+}
+
+"A connection edge in which each node is a `TaxRate` object"
+type TaxRateEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The catalog item"
+  node: TaxRate
+}
+
+"""
+Wraps a list of TaxRate`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type TaxRateConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [CatalogItemEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [TaxRate]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+extend type Query {
+  "Gets items from a shop catalog"
+  catalogItems(
+    "Provide a list of shop IDs from which you want to get catalog items"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+  ): TaxRateConnection
+}
