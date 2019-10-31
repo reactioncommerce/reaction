@@ -3,20 +3,20 @@ type TaxRate {
   "Tax rate ID"
   _id: ID!
 
-  "Shop ID"
-  shopId: ID!
-
   "Did this tax match due to the order origin or the order destination?"
   country: String!
-
-  "Amount of tax due"
-  region: String!
 
   "A human-readable display name for showing this tax to operators and customers in the UI"
   postal: String!
 
   "The tax rate used for this calculation"
   rate: Float!
+
+  "Amount of tax due"
+  region: String!
+
+  "Shop ID"
+  shopId: ID!
 
   "Amount that was used for calculating the tax due"
   taxCode: String!
@@ -27,14 +27,8 @@ input CreateTaxRateInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "Shop ID"
-  shopId: ID!
-
   "Did this tax match due to the order origin or the order destination?"
   country: String!
-
-  "Amount of tax due"
-  region: String!
 
   "A human-readable display name for showing this tax to operators and customers in the UI"
   postal: String!
@@ -42,24 +36,27 @@ input CreateTaxRateInput {
   "The tax rate used for this calculation"
   rate: Float!
 
+  "Amount of tax due"
+  region: String!
+
+  "Shop ID"
+  shopId: ID!
+
   "Amount that was used for calculating the tax due"
   taxCode: String!
 }
 
 "The response from the `createTaxRate` mutation"
 type CreateTaxRatePayload {
-  "The created tax rate"
-  taxRate: TaxRate
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The created tax rate"
+  taxRate: TaxRate
 }
 
 "Describes the input for updating a tax rate"
 input UpdateTaxRateInput {
-  "The tax rate ID"
-  taxRateId: ID!
-
   "Shop ID"
   shopId: ID!
 
@@ -69,47 +66,50 @@ input UpdateTaxRateInput {
   "Did this tax match due to the order origin or the order destination?"
   country: String!
 
-  "Amount of tax due"
-  region: String!
-
   "A human-readable display name for showing this tax to operators and customers in the UI"
   postal: String!
 
   "The tax rate used for this calculation"
-  rate: MoneyInput!
+  rate: Float!
+
+  "Amount of tax due"
+  region: String!
 
   "Amount that was used for calculating the tax due"
   taxCode: String!
+
+  "The tax rate ID"
+  taxRateId: ID!
 }
 
 "The response from the `updateTaxRate` mutation"
 type UpdateTaxRatePayload {
-  "The updated tax rate"
-  taxRate: TaxRate
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The updated tax rate"
+  taxRate: TaxRate
 }
 
 "Describes the input for removing a tax rate"
 input DeleteTaxRateInput {
-  "The tax rate ID"
-  taxRateId: ID!
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
 
   "Shop ID"
   shopId: ID!
 
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
+  "The tax rate ID"
+  taxRateId: ID!
 }
 
 "The response from the `deleteTaxRate` mutation"
 type DeleteTaxRatePayload {
-  "The deleted tax rate"
-  taxRate: TaxRate
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The deleted tax rate"
+  taxRate: TaxRate
 }
 
 extend type Mutation {
