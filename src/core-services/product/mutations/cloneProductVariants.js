@@ -27,11 +27,15 @@ const inputSchema = new SimpleSchema({
  */
 export default async function cloneProductVariants(context, input) {
   inputSchema.validate(input);
-  const { checkPermissionsLegacy, collections } = context;
+  const { checkPermissions, checkPermissionsLegacy, collections } = context;
   const { Products } = collections;
   const { shopId, variantIds } = input;
 
   await checkPermissionsLegacy(["createProduct", "product/admin", "product/clone"], shopId);
+  // TODO: pod-auth - what do we do here when there are multiple productIds?
+  // DO we need to loop over each one?
+  // If so, what if you are OK for 9/10, but not that last 1? Do we fail the whole thing?
+  await checkPermissions(`reaction:product:${variantIds}`, "clone", { shopId });
 
   // Check to make sure all variants are on the same shop
   const count = await Products.find({ _id: { $in: variantIds }, type: "variant", shopId }).count();

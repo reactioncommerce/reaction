@@ -48,7 +48,7 @@ export default async function cancelOrderItem(context, input) {
     reason = null
   } = input;
 
-  const { accountId, appEvents, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
+  const { accountId, appEvents, checkPermissions, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
@@ -60,6 +60,7 @@ export default async function cancelOrderItem(context, input) {
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall && (!accountId || accountId !== order.accountId)) {
     await checkPermissionsLegacy(["orders", "order/fulfillment"], order.shopId);
+    await checkPermissions(`reaction:order:${order._id}`, "update", { shopId: order.shopId });
   }
 
   // Is the account calling this mutation also the account that placed the order?

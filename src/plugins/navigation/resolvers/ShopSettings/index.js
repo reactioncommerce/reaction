@@ -1,3 +1,4 @@
+// TODO: pod-auth - revisit this wasn't sure what it was when scanning over everything
 export default {
   async shouldNavigationTreeItemsBeAdminOnly(settings, args, context) {
     await context.checkPermissionsLegacy(["admin"], args.shopId);

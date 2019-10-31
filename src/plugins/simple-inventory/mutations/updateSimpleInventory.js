@@ -22,7 +22,7 @@ import getModifier from "../utils/getMongoUpdateModifier.js";
 export default async function updateSimpleInventory(context, input, options = {}) {
   inputSchema.validate(input);
 
-  const { appEvents, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
+  const { appEvents, checkPermissions, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
   const { Products, SimpleInventory } = collections;
   const { productConfiguration, shopId } = input;
   const { returnUpdatedDoc = true } = options;
@@ -44,6 +44,8 @@ export default async function updateSimpleInventory(context, input, options = {}
     // Allow update if the account has "admin" permission. When called internally by another
     // plugin, context.isInternalCall can be set to `true` to disable this check.
     await checkPermissionsLegacy(["admin"], shopId);
+    // TODO: pod-auth - is this an inventory or product permission check?
+    await checkPermissions(`reaction:product:${foundProduct._id}`, "update", { shopId });
   }
 
   const modifier = getModifier(input);

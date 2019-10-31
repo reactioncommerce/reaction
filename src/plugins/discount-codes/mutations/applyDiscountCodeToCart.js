@@ -28,7 +28,7 @@ export default async function applyDiscountCodeToCart(context, input) {
   inputSchema.validate(input);
 
   const { cartId, discountCode, shopId, token } = input;
-  const { checkPermissionsLegacy, collections, userId } = context;
+  const { checkPermissions, checkPermissionsLegacy, collections, userId } = context;
   const { Cart, Discounts } = collections;
 
   let userCount = 0;
@@ -45,6 +45,8 @@ export default async function applyDiscountCodeToCart(context, input) {
     }
 
     await checkPermissionsLegacy(["owner", "admin", "discounts/apply"], shopId);
+    // TODO: pod-auth - is this a cart permission, or a discounts permission?
+    await checkPermissions(`reaction:cart:${cartId}`, "update", { shopId });
   }
 
   const objectToApplyDiscount = cart;

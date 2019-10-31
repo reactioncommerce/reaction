@@ -43,7 +43,7 @@ export default async function splitOrderItem(context, input) {
     newItemQuantity
   } = input;
 
-  const { appEvents, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
+  const { appEvents, checkPermissions, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
@@ -54,6 +54,7 @@ export default async function splitOrderItem(context, input) {
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall) {
     await checkPermissionsLegacy(["orders", "order/fulfillment"], order.shopId);
+    await checkPermissions(`reaction:order:${order._id}`, "update", { shopId: order.shopId });
   }
 
   const { accountId, billingAddress, cartId, currencyCode } = order;

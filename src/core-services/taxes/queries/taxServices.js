@@ -12,6 +12,7 @@ import { taxServices as registeredTaxServices } from "../registration.js";
  */
 export default async function taxServices(context, shopId) {
   await context.checkPermissionsLegacy(["admin", "owner"], shopId);
+  await context.checkPermissions("reaction:taxes", "read", { shopId });
 
   const list = Object.values(registeredTaxServices).map((service) => ({
     displayName: service.displayName,

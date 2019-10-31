@@ -13,7 +13,7 @@ import _ from "lodash";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function orders(context, { filters, shopIds } = {}) {
-  const { checkPermissionsLegacy, collections, shopsUserHasPermissionForLegacy } = context;
+  const { checkPermissions, checkPermissionsLegacy, collections, shopsUserHasPermissionForLegacy } = context;
   const { Orders } = collections;
 
   const query = {};
@@ -43,10 +43,12 @@ export default async function orders(context, { filters, shopIds } = {}) {
   if (shopIds) {
     for (const shopId of shopIds) {
       await checkPermissionsLegacy(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
+      await checkPermissions("reaction:orders", "read", { shopId }); // eslint-disable-line no-await-in-loop
     }
 
     query.shopId = { $in: shopIds };
   } else {
+    // TODO: pod-auth - figure out what to do for `shops` permission
     const shopIdsUserHasPermissionFor = shopsUserHasPermissionForLegacy("orders");
     query.shopId = { $in: shopIdsUserHasPermissionFor };
   }

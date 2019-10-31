@@ -15,10 +15,11 @@ import { Tag as TagSchema } from "../simpleSchemas.js"; // TODO: update schemas
 export default async function addTag(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, name, isVisible, displayTitle, metafields, heroMediaUrl, slug: slugInput } = input;
-  const { appEvents, checkPermissionsLegacy, collections } = context;
+  const { appEvents, checkPermissions, checkPermissionsLegacy, collections } = context;
   const { Tags } = collections;
 
   await checkPermissionsLegacy(["admin", "owner"], shopId);
+  await checkPermissions("reaction:tags", "create", { shopId });
 
   let slug = name;
   if (typeof slugInput === "string" && slugInput.trim().length > 0) {

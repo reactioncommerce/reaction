@@ -93,6 +93,8 @@ export default async function createShop(context, input) {
   } = context;
 
   await checkPermissionsLegacy(["owner", "shop/create"]);
+  // TODO: pod-auth - what do we do here? if this is the first shop, then there isn't a shop at this time,
+  // so what permissions do we need to check for?
 
   const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
 

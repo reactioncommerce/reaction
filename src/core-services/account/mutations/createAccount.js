@@ -42,6 +42,7 @@ export default async function createAccount(context, input) {
 
   const {
     appEvents,
+    checkPermissions,
     checkPermissionsLegacy,
     collections: { Accounts, Groups },
     simpleSchemas: {
@@ -61,6 +62,7 @@ export default async function createAccount(context, input) {
 
   if (shopId && !context.isInternalCall) {
     await checkPermissionsLegacy(["reaction-accounts", "account/invite"], shopId);
+    await checkPermissions("reaction:account", "create", { shopId });
   }
 
   // Create initial account object from user and profile
@@ -81,6 +83,7 @@ export default async function createAccount(context, input) {
 
   // The identity provider service gives the first created user the global "owner" role. When we
   // create an account for this user, they should be assigned to the "owner" group.
+  // TODO: pod-auth - How do we go about these where we check for a group?
   if (authUserId === userId && userHasPermissionLegacy(["owner"])) groupSlug = "owner";
 
   const group = await Groups.findOne({ slug: groupSlug, shopId });

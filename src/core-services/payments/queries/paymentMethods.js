@@ -16,6 +16,7 @@ export default async function paymentMethods(context, shopId) {
   const availablePaymentMethods = shop.availablePaymentMethods || [];
 
   await context.checkPermissionsLegacy(["owner", "admin"], shopId);
+  await context.checkPermissions(`reaction:shop:${shopId}`, "read", { shopId });
 
   return Object.keys(allPaymentMethods)
     .map((name) => ({

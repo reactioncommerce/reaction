@@ -24,7 +24,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function updateAccountAddressBookEntry(context, input) {
   inputSchema.validate(input);
-  const { appEvents, checkPermissionsLegacy, collections, userId: userIdFromContext } = context;
+  const { appEvents, checkPermissions, checkPermissionsLegacy, collections, userId: userIdFromContext } = context;
   const { Accounts } = collections;
   const { address, accountId, type } = input;
 
@@ -34,6 +34,7 @@ export default async function updateAccountAddressBookEntry(context, input) {
 
   if (!context.isInternalCall && userIdFromContext !== accountId) {
     await checkPermissionsLegacy(["reaction-accounts"], account.shopId);
+    await checkPermissions(`reaction:account:${account._id}:addresBook:${address._id}`, "update", { shopId: account.shopId });
   }
 
   // Make sure address exists before trying to update

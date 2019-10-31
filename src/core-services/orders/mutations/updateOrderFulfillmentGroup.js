@@ -36,7 +36,7 @@ export default async function updateOrderFulfillmentGroup(context, input) {
     status
   } = input;
 
-  const { appEvents, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
+  const { appEvents, checkPermissions, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
@@ -47,6 +47,7 @@ export default async function updateOrderFulfillmentGroup(context, input) {
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall) {
     await checkPermissionsLegacy(["orders", "order/fulfillment"], order.shopId);
+    await checkPermissions(`reaction:order:${order._id}`, "update", { shopId: order.shopId });
   }
 
   // Verify that there is a group with the ID

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -12,7 +13,7 @@ import publishProductsToCatalog from "../utils/publishProductsToCatalog.js";
  * @returns {Promise<Object[]>} Array of CatalogItemProduct objects
  */
 export default async function publishProducts(context, productIds) {
-  const { checkPermissionsLegacy, collections, isInternalCall } = context;
+  const { checkPermissions, checkPermissionsLegacy, collections, isInternalCall } = context;
   const { Catalog, Products } = collections;
 
   // Find all products
@@ -31,6 +32,7 @@ export default async function publishProducts(context, productIds) {
     const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
     for (const shopId of uniqueShopIds) {
       await checkPermissionsLegacy(["createProduct", "product/admin", "product/publish"], shopId); // eslint-disable-line no-await-in-loop
+      await checkPermissions(`reaction:product:${product._id}`, "publish", { shopId }); // eslint-disable-line no-await-in-loop
     }
   }
 

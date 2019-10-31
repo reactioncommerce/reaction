@@ -13,11 +13,12 @@ import arrayJoinPlusRemainingQuery from "@reactioncommerce/api-utils/arrayJoinPl
  */
 export default async function productsByTagId(context, params) {
   const { connectionArgs, shopId, tagId } = params;
-  const { checkPermissionsLegacy, collections } = context;
+  const { checkPermissions, checkPermissionsLegacy, collections } = context;
   const { Products, Tags } = collections;
 
   // Check for owner or admin permissions from the user before allowing the query
   await checkPermissionsLegacy(["owner", "admin", "tag/admin", "tag/edit"], shopId);
+  await checkPermissions(`reaction:tag:${tagId}`, "read", { shopId });
 
   return arrayJoinPlusRemainingQuery({
     arrayFieldPath: "featuredProductIds",

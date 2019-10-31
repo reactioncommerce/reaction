@@ -12,7 +12,7 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
  * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function updateNavigationTree(context, _id, navigationTree) {
-  const { checkPermissionsLegacy, collections } = context;
+  const { checkPermissions, checkPermissionsLegacy, collections } = context;
   const { NavigationTrees } = collections;
 
   const shopId = await context.queries.primaryShopId(context);
@@ -43,6 +43,7 @@ export default async function updateNavigationTree(context, _id, navigationTree)
   const { draftItems, name } = navigationTreeData;
 
   await checkPermissionsLegacy(["core"], shopId);
+  await checkPermissions(`reaction:navigationTree:${_id}`, "update", { shopId });
 
   const existingNavigationTree = await NavigationTrees.findOne({ _id });
   if (!existingNavigationTree) {

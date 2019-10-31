@@ -11,6 +11,7 @@ export default async function rolesQuery(context, shopId) {
   const { checkPermissionsLegacy, collections } = context;
   const { roles } = collections;
 
+  // TODO: pod-auth - not sure what do here with permissions
   await checkPermissionsLegacy(["owner", "admin"], shopId);
 
   return roles.find({});

@@ -21,7 +21,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function setAccountProfileCurrency(context, input) {
   inputSchema.validate(input);
-  const { appEvents, checkPermissionsLegacy, collections, userId: userIdFromContext } = context;
+  const { appEvents, checkPermissions, checkPermissionsLegacy, collections, userId: userIdFromContext } = context;
   const { Accounts, Shops } = collections;
   const { currencyCode, accountId: providedAccountId } = input;
 
@@ -33,6 +33,7 @@ export default async function setAccountProfileCurrency(context, input) {
 
   if (!context.isInternalCall && userIdFromContext !== providedAccountId) {
     await checkPermissionsLegacy(["reaction-accounts"], account.shopId);
+    await checkPermissions(`reaction:account:${account._id}`, "update", { shopId: account.shopId });
   }
 
   // Make sure this currency code is in the related shop currencies list
