@@ -30,12 +30,7 @@ export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
   const { validatePermissions, validatePermissionsLegacy, collections, user: userFromContext } = context;
   const { Accounts, Groups, Shops, users } = collections;
-  const {
-    email,
-    groupId,
-    name,
-    shopId
-  } = input;
+  const { email, groupId, name, shopId } = input;
 
   await validatePermissionsLegacy(["reaction-accounts", "account/invite"], shopId);
   await validatePermissions(`reaction:shop:${shopId}`, "invite", { shopId });

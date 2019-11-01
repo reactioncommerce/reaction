@@ -8,11 +8,11 @@
  * @returns {Object[]} Array of user account objects
  */
 export default async function shopAdministratorsQuery(context, id) {
-  const { validatePermissionsLegacy, collections } = context;
+  const { collections, validatePermissions, validatePermissionsLegacy } = context;
   const { Accounts, users: Users } = collections;
 
-  // TODO: pod-auth - not sure what do here with permissions
   await validatePermissionsLegacy(["owner", "admin"], id);
+  await validatePermissions(`reaction:shops:${id}`, "read", { shopId: id });
 
   const users = await Users.find({
     [`roles.${id}`]: "admin"

@@ -45,7 +45,7 @@ export default async function applyDiscountCodeToCart(context, input) {
     }
 
     await validatePermissionsLegacy(["owner", "admin", "discounts/apply"], shopId);
-    // TODO: pod-auth - is this a cart permission, or a discounts permission?
+    // TODO: pod-auth - is this a cart permission, or a discounts permission? Or both?
     await validatePermissions(`reaction:cart:${cartId}`, "update", { shopId });
   }
 

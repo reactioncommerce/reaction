@@ -14,7 +14,7 @@ import filterNavigationTreeItems from "../util/filterNavigationTreeItems.js";
  * @returns {Promise<MongoCursor>} A MongoDB cursor for the proper query
  */
 export default async function navigationTreeById(context, { language, navigationTreeId, shopId, shouldIncludeSecondary = false } = {}) {
-  const { collections, userHasPermissionLegacy } = context;
+  const { collections } = context;
   const { NavigationTrees } = collections;
 
   const navigationTree = await NavigationTrees.findOne({ _id: navigationTreeId, shopId });
@@ -22,17 +22,20 @@ export default async function navigationTreeById(context, { language, navigation
     // Add language from args so that we can use it in items & draftItems resolvers
     navigationTree.language = language;
 
-    // TODO: pod-auth - figure out what to do with the `userHasPermission` checks
-    const isAdmin = userHasPermissionLegacy(["admin", "owner", "create-product"], shopId);
+    // TODO: pod-auth - think about how best to handle things like `draft`
+    const canRead = (
+      context.userHasPermissionLegacy(["admin", "owner", "create-product"], shopId) &&
+      await context.userHasPermission(`reaction:navigationTrees:${navigationTreeId}`, "read", { shopId, draft: true })
+    );
 
     // Filter items based on visibility options and user permissions
     navigationTree.items = filterNavigationTreeItems(navigationTree.items, {
-      isAdmin,
+      canRead,
       shouldIncludeSecondary
     });
 
     // Prevent non-admin users from getting draft items in results
-    if (!isAdmin) {
+    if (!canRead) {
       navigationTree.draftItems = null;
     }
   }

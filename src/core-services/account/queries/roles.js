@@ -8,11 +8,11 @@
  * @returns {Object} roles object Promise
  */
 export default async function rolesQuery(context, shopId) {
-  const { validatePermissionsLegacy, collections } = context;
+  const { collections } = context;
   const { roles } = collections;
 
-  // TODO: pod-auth - not sure what do here with permissions
-  await validatePermissionsLegacy(["owner", "admin"], shopId);
+  await context.validatePermissionsLegacy(["owner", "admin"], shopId);
+  await context.validatePermissions(`reaction:shops:${shopId}`, "read", { shopId });
 
   return roles.find({});
 }

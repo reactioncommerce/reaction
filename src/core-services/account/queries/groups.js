@@ -13,7 +13,7 @@ export default async function groups(context, shopId) {
   const { collections, userHasPermissionLegacy, userId } = context;
   const { Accounts, Groups } = collections;
 
-  // TODO: pod-auth - figure out what to do with the `userHasPermission` checks
+  // TODO: Break this query up into one for all groups (for admins only) and one for user's groups
   if (userHasPermissionLegacy(["owner", "admin", "reaction-accounts"], shopId)) {
     // find groups by shop ID
     return Groups.find({ shopId });

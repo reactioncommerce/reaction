@@ -83,18 +83,16 @@ export default async function createShop(context, input) {
   const {
     accountId,
     appEvents,
+    validatePermissions,
     validatePermissionsLegacy,
     collections,
     rootUrl,
-    simpleSchemas: {
-      Shop: ShopSchema
-    },
+    simpleSchemas: { Shop: ShopSchema },
     userId
   } = context;
 
   await validatePermissionsLegacy(["owner", "shop/create"]);
-  // TODO: pod-auth - what do we do here? if this is the first shop, then there isn't a shop at this time,
-  // so what permissions do we need to check for?
+  await validatePermissions(`reaction:shop`, "create");
 
   const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
 
