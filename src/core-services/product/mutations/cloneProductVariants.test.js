@@ -5,7 +5,7 @@ import cloneProductVariants from "./cloneProductVariants.js";
 mockContext.mutations.cloneProductVariants = jest.fn().mockName("mutations.cloneProductVariants");
 
 test("throws if permission check fails", async () => {
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -14,11 +14,11 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["createProduct", "product/admin", "product/clone"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["createProduct", "product/admin", "product/clone"], "SHOP_ID");
 });
 
 test("throws if the variantIds isn't supplied", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(cloneProductVariants(mockContext, {
     shopId: "SHOP_ID",
@@ -27,7 +27,7 @@ test("throws if the variantIds isn't supplied", async () => {
 });
 
 test("throws if the shopId isn't supplied", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(cloneProductVariants(mockContext, {
     shopId: undefined,

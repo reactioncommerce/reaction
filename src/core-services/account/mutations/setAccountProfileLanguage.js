@@ -24,8 +24,8 @@ export default async function setAccountProfileLanguage(context, input) {
   const {
     accountId: accountIdFromContext,
     appEvents,
-    checkPermissions,
-    checkPermissionsLegacy,
+    validatePermissions,
+    validatePermissionsLegacy,
     collections,
     userId: userIdFromContext
   } = context;
@@ -39,8 +39,8 @@ export default async function setAccountProfileLanguage(context, input) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   if (!context.isInternalCall && accountIdFromContext !== accountId) {
-    await checkPermissionsLegacy(["reaction-accounts"], account.shopId);
-    await checkPermissions(`reaction:account:${account._id}`, "update", { shopId: account.shopId });
+    await validatePermissionsLegacy(["reaction-accounts"], account.shopId);
+    await validatePermissions(`reaction:account:${account._id}`, "update", { shopId: account.shopId });
   }
 
   // Make sure this language is in the related shop languages list

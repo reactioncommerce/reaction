@@ -53,7 +53,7 @@ const fakeOrder = {
 test("throws if permission check fails", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -64,7 +64,7 @@ test("throws if permission check fails", async () => {
     reason: "Customer was unsatisfied with purchase"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("skips permission check if context.isInternalCall", async () => {
@@ -114,7 +114,7 @@ test("throws if paymentId isn't supplied", async () => {
 test("throws if payment doesn't exist", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createRefund(mockContext, {
     amount: 10,
@@ -127,7 +127,7 @@ test("throws if payment doesn't exist", async () => {
 test("throws if amount is less than $0.01", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createRefund(mockContext, {
     amount: 0,

@@ -39,7 +39,7 @@ export default async function createRefund(context, input) {
     reason
   } = input;
 
-  const { appEvents, checkPermissions, checkPermissionsLegacy, collections, isInternalCall, userId } = context;
+  const { appEvents, validatePermissions, validatePermissionsLegacy, collections, isInternalCall, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
@@ -50,8 +50,8 @@ export default async function createRefund(context, input) {
   // When called internally by another plugin, context.isInternalCall
   // can be set to `true` to disable this check.
   if (!isInternalCall) {
-    await checkPermissionsLegacy(["orders", "order/fulfillment"], order.shopId);
-    await checkPermissions(`reaction:order:${order._id}`, "update", { shopId: order.shopId });
+    await validatePermissionsLegacy(["orders", "order/fulfillment"], order.shopId);
+    await validatePermissions(`reaction:order:${order._id}`, "update", { shopId: order.shopId });
   }
 
   // Verify payment exists

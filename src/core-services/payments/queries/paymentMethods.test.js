@@ -29,18 +29,18 @@ beforeEach(() => {
 });
 
 test("throws if permission check fails", async () => {
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   mockShopById.mockReturnValueOnce(fakeShop);
 
   await expect(query(mockContext, mockContext.shopId)).rejects.toThrowErrorMatchingSnapshot();
   expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
-  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["owner", "admin"], mockContext.shopId);
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["owner", "admin"], mockContext.shopId);
 });
 
 test("throws if shop not found", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValueOnce();
 
   await expect(query(mockContext, "nonexistent-shop-id")).rejects.toThrowErrorMatchingSnapshot();
@@ -48,7 +48,7 @@ test("throws if shop not found", async () => {
 });
 
 test("returns all payment methods for a shop", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValueOnce(fakeShop);
 
   const result = await query(mockContext, mockContext.shopId);
@@ -63,7 +63,7 @@ test("returns all payment methods for a shop", async () => {
 });
 
 test("returns payment methods with correct enabled status", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValueOnce(fakeShop);
   fakeShop.availablePaymentMethods.push("mockPaymentMethod");
 

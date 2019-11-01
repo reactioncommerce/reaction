@@ -20,12 +20,12 @@ const inputSchema = new SimpleSchema({
 export default async function approveOrderPayments(context, input = {}) {
   inputSchema.validate(input);
 
-  const { appEvents, checkPermissions, checkPermissionsLegacy, collections, userId } = context;
+  const { appEvents, validatePermissions, validatePermissionsLegacy, collections, userId } = context;
   const { Orders } = collections;
   const { orderId, paymentIds, shopId } = input;
 
-  await checkPermissionsLegacy(["orders", "order/fulfillment"], shopId);
-  await checkPermissions(`reaction:order:${orderId}`, "update", { shopId });
+  await validatePermissionsLegacy(["orders", "order/fulfillment"], shopId);
+  await validatePermissions(`reaction:order:${orderId}`, "update", { shopId });
 
   const order = await Orders.findOne({ _id: orderId, shopId });
   if (!order) throw new ReactionError("not-found", "Order not found");

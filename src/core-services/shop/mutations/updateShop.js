@@ -26,7 +26,7 @@ const inputSchema = new SimpleSchema({
  * @returns {Promise<Object>} with updated shop
  */
 export default async function updateShop(context, input) {
-  const { checkPermissions, checkPermissionsLegacy, collections } = context;
+  const { validatePermissions, validatePermissionsLegacy, collections } = context;
   const { Shops } = collections;
 
   inputSchema.validate(input || {});
@@ -55,8 +55,8 @@ export default async function updateShop(context, input) {
 
   // Check permission to make sure user is allowed to do this
   // Security check for admin access
-  await checkPermissionsLegacy(["owner", "admin"], shopId);
-  await checkPermissions(`reaction:shop:${shopId}`, "update", { shopId });
+  await validatePermissionsLegacy(["owner", "admin"], shopId);
+  await validatePermissions(`reaction:shop:${shopId}`, "update", { shopId });
 
   const { value: updatedShop } = await Shops.findOneAndUpdate(
     { _id: shopId },

@@ -30,22 +30,22 @@ const order = {
 };
 
 test("throws if orderId isn't supplied", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   await expect(refundsByPaymentId(mockContext, { orderId: null, paymentId: order.payments[0]._id, shopId: order.shopId, token: null })).rejects.toThrowErrorMatchingSnapshot(); // eslint-disable-line max-len
 });
 
 test("throws if paymentId isn't supplied", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   await expect(refundsByPaymentId(mockContext, { orderId: order._id, paymentId: null, shopId: order.shopId, token: null })).rejects.toThrowErrorMatchingSnapshot(); // eslint-disable-line max-len
 });
 
 test("throws if shopId isn't supplied", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   await expect(refundsByPaymentId(mockContext, { orderId: order._id, shopId: null, token: null })).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("throws if the order doesn't exist", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(refundsByPaymentId(mockContext, {
@@ -56,7 +56,7 @@ test("throws if the order doesn't exist", async () => {
 });
 
 test("throws if the payment doesn't exist", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(order));
 
   await expect(refundsByPaymentId(mockContext, {
@@ -67,7 +67,7 @@ test("throws if the payment doesn't exist", async () => {
 });
 
 test("should call refunds with the proper parameters and return a list of refunds for a payment", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(order));
 
   const result = await refundsByPaymentId(mockContext, {

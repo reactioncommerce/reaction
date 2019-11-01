@@ -28,7 +28,7 @@ export default async function applyDiscountCodeToCart(context, input) {
   inputSchema.validate(input);
 
   const { cartId, discountCode, shopId, token } = input;
-  const { checkPermissions, checkPermissionsLegacy, collections, userId } = context;
+  const { validatePermissions, validatePermissionsLegacy, collections, userId } = context;
   const { Cart, Discounts } = collections;
 
   let userCount = 0;
@@ -44,9 +44,9 @@ export default async function applyDiscountCodeToCart(context, input) {
       throw new ReactionError("not-found", "Cart not found");
     }
 
-    await checkPermissionsLegacy(["owner", "admin", "discounts/apply"], shopId);
+    await validatePermissionsLegacy(["owner", "admin", "discounts/apply"], shopId);
     // TODO: pod-auth - is this a cart permission, or a discounts permission?
-    await checkPermissions(`reaction:cart:${cartId}`, "update", { shopId });
+    await validatePermissions(`reaction:cart:${cartId}`, "update", { shopId });
   }
 
   const objectToApplyDiscount = cart;

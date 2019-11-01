@@ -33,7 +33,7 @@ export default async function buildContext(context, request = {}) {
       context.userHasPermissionLegacy = () => false;
     }
 
-    context.checkPermissionsLegacy = async (...args) => {
+    context.validatePermissionsLegacy = async (...args) => {
       const allowed = await context.userHasPermissionLegacy(...args);
       if (!allowed) throw new ReactionError("access-denied", "Access Denied");
     };
@@ -44,7 +44,7 @@ export default async function buildContext(context, request = {}) {
       context.shopsUserHasPermissionForLegacy = () => [];
     }
   } else {
-    context.checkPermissionsLegacy = async () => {
+    context.validatePermissionsLegacy = async () => {
       throw new ReactionError("access-denied", "Access Denied");
     };
     context.userHasPermissionLegacy = () => false;
@@ -59,7 +59,7 @@ export default async function buildContext(context, request = {}) {
       context.userHasPermission = () => false;
     }
 
-    context.checkPermissions = async (...args) => {
+    context.validatePermissions = async (...args) => {
       const allowed = await context.userHasPermission(...args);
       if (!allowed) throw new ReactionError("access-denied", "Access Denied");
     };
@@ -70,7 +70,7 @@ export default async function buildContext(context, request = {}) {
       context.shopsUserHasPermissionFor = () => [];
     }
   } else {
-    context.checkPermissions = async () => {
+    context.validatePermissions = async () => {
       throw new ReactionError("access-denied", "Access Denied");
     };
     context.userHasPermission = () => false;

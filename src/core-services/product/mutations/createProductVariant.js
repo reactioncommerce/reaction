@@ -21,13 +21,13 @@ const inputSchema = new SimpleSchema({
  */
 export default async function createProductVariant(context, input) {
   inputSchema.validate(input);
-  const { checkPermissions, checkPermissionsLegacy, collections } = context;
+  const { validatePermissions, validatePermissionsLegacy, collections } = context;
   const { Products } = collections;
   const { productId, shopId } = input;
 
   // See that user has permission to create variant
-  await checkPermissionsLegacy(["createProduct", "product/admin", "product/create"], shopId);
-  await checkPermissions("reaction:products", "create", { shopId });
+  await validatePermissionsLegacy(["createProduct", "product/admin", "product/create"], shopId);
+  await validatePermissions("reaction:products", "create", { shopId });
 
   // See that parent product exists
   const parentProduct = await Products.findOne({ _id: productId, shopId });

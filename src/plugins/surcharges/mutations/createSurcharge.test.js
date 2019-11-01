@@ -5,7 +5,7 @@ import createSurchargeMutation from "./createSurcharge.js";
 
 // Create mock context with Surcharges collection
 mockContext.collections.Surcharges = mockCollection("Surcharges");
-mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
 test("add a surcharge", async () => {
   mockContext.collections.Surcharges.insertOne.mockReturnValueOnce(Promise.resolve({}));

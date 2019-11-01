@@ -5,7 +5,7 @@ import createProduct from "./createProduct.js";
 mockContext.mutations.createProduct = jest.fn().mockName("mutations.createProduct");
 
 test("throws if permission check fails", async () => {
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -13,11 +13,11 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["createProduct", "product/admin", "product/create"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["createProduct", "product/admin", "product/create"], "SHOP_ID");
 });
 
 test("throws if the shopId isn't supplied", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createProduct(mockContext, {
     shopId: undefined

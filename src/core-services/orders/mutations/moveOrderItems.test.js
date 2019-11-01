@@ -94,7 +94,7 @@ test("throws if the fromFulfillmentGroup doesn't exist", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -131,7 +131,7 @@ test("throws if the toFulfillmentGroup doesn't exist", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -184,7 +184,7 @@ test("throws if an order item doesn't exist", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
@@ -204,7 +204,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -215,7 +215,7 @@ test("throws if permission check fails", async () => {
     toFulfillmentGroupId: "group2"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("throws if user who placed order tries to move item at invalid current item status", async () => {
@@ -383,7 +383,7 @@ test("throws if the from group would have no items remaining", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 0
@@ -450,7 +450,7 @@ test("throws if the database update fails", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 0
@@ -536,7 +536,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.checkPermissionsLegacy).not.toHaveBeenCalled();
+  expect(mockContext.validatePermissionsLegacy).not.toHaveBeenCalled();
 });
 
 test("moves items", async () => {
@@ -581,7 +581,7 @@ test("moves items", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

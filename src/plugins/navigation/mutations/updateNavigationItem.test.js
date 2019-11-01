@@ -37,7 +37,7 @@ test("calls NavigationItems.findOne and updateOne, and returns the updated navig
 });
 
 test("throws an error if the user does not have the core permission", async () => {
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   const result = updateNavigationItemMutation(mockContext, "n1", {});

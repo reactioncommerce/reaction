@@ -88,7 +88,7 @@ test("throws if the order item doesn't exist", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -107,7 +107,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -117,7 +117,7 @@ test("throws if permission check fails", async () => {
     newItemQuantity: 1
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("throws if newItemQuantity is equal to item quantity", async () => {
@@ -132,7 +132,7 @@ test("throws if newItemQuantity is equal to item quantity", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -154,7 +154,7 @@ test("throws if newItemQuantity is greater than item quantity", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(splitOrderItem(mockContext, {
     itemId: "abc",
@@ -195,7 +195,7 @@ test("throws if the database update fails", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
   rewire$updateGroupTotals(mockUpdateGroupTotals);
@@ -261,7 +261,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.checkPermissionsLegacy).not.toHaveBeenCalled();
+  expect(mockContext.validatePermissionsLegacy).not.toHaveBeenCalled();
 });
 
 test("splits an item", async () => {
@@ -310,7 +310,7 @@ test("splits an item", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
   rewire$updateGroupTotals(mockUpdateGroupTotals);

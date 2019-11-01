@@ -15,7 +15,7 @@ import {
  * @returns {Promise<Object>} Updated app settings for a shop or global app settings
  */
 export default async function updateAppSettings(context, settingsUpdates, shopId = null) {
-  const { checkPermissions, checkPermissionsLegacy, collections } = context;
+  const { validatePermissions, validatePermissionsLegacy, collections } = context;
   const { AppSettings } = collections;
 
   const updateKeys = Object.keys(settingsUpdates);
@@ -29,8 +29,8 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
     if (allowedRoles.length === 0) {
       throw new ReactionError("access-denied", `You are not allowed to edit the "${updateKey}" setting`);
     }
-    await checkPermissionsLegacy(allowedRoles, shopId); // eslint-disable-line no-await-in-loop
-    await checkPermissions(`reaction:shop:${shopId}`, "update", { shopId }); // eslint-disable-line no-await-in-loop
+    await validatePermissionsLegacy(allowedRoles, shopId); // eslint-disable-line no-await-in-loop
+    await validatePermissions(`reaction:shop:${shopId}`, "update", { shopId }); // eslint-disable-line no-await-in-loop
   }
 
   const { value: updatedDoc } = await AppSettings.findOneAndUpdate(

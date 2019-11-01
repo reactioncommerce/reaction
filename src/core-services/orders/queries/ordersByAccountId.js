@@ -13,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function ordersByAccountId(context, { accountId, orderStatus, shopIds } = {}) {
-  const { accountId: contextAccountId, checkPermissions, checkPermissionsLegacy, collections, shopsUserHasPermissionForLegacy } = context;
+  const { accountId: contextAccountId, validatePermissions, validatePermissionsLegacy, collections, shopsUserHasPermissionForLegacy } = context;
   const { Orders } = collections;
 
   if (!accountId) {
@@ -44,8 +44,8 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
       query.shopId = { $in: shopIdsUserHasPermissionFor };
     } else {
       for (const shopId of shopIds) {
-        await checkPermissionsLegacy(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
-        await checkPermissions("reaction:order", "read", { shopId }); // eslint-disable-line no-await-in-loop
+        await validatePermissionsLegacy(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
+        await validatePermissions("reaction:order", "read", { shopId }); // eslint-disable-line no-await-in-loop
       }
     }
   }

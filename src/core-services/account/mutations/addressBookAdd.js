@@ -12,7 +12,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>} with updated address
  */
 export default async function addressBookAdd(context, address, accountUserId) {
-  const { appEvents, checkPermissions, checkPermissionsLegacy, collections, userId: userIdFromContext } = context;
+  const { appEvents, validatePermissions, validatePermissionsLegacy, collections, userId: userIdFromContext } = context;
   const { Accounts } = collections;
 
   const userId = accountUserId || userIdFromContext;
@@ -22,8 +22,8 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
   // Security check for admin access
   if (typeof accountUserId === "string" && userIdFromContext !== accountUserId) {
-    await checkPermissionsLegacy(["reaction-accounts"], account.shopId);
-    await checkPermissions(`reaction:account:${account._id}`, "create", { shopId: account.shopId });
+    await validatePermissionsLegacy(["reaction-accounts"], account.shopId);
+    await validatePermissions(`reaction:account:${account._id}`, "create", { shopId: account.shopId });
   }
 
   // required default ID

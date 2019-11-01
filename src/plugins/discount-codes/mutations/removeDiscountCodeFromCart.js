@@ -27,7 +27,7 @@ export default async function removeDiscountCodeFromCart(context, input) {
   inputSchema.validate(input);
 
   const { cartId, discountId, shopId, token } = input;
-  const { checkPermissions, checkPermissionsLegacy, collections } = context;
+  const { validatePermissions, validatePermissionsLegacy, collections } = context;
   const { Cart } = collections;
 
   let cart = await getCart(context, shopId, cartId, { cartToken: token, throwIfNotFound: false });
@@ -36,8 +36,8 @@ export default async function removeDiscountCodeFromCart(context, input) {
   // not the currently logged in user.
   // Check to make sure current user has admin permission.
   if (!cart) {
-    await checkPermissionsLegacy(["owner", "admin", "discounts/apply"], shopId);
-    await checkPermissions(`reaction:cart:${cartId}`, "update", { shopId });
+    await validatePermissionsLegacy(["owner", "admin", "discounts/apply"], shopId);
+    await validatePermissions(`reaction:cart:${cartId}`, "update", { shopId });
 
     cart = await Cart.findOne({ _id: cartId, shopId });
     if (!cart) {

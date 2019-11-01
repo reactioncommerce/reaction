@@ -35,7 +35,7 @@ test("throws if the order fulfillment group doesn't exist", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(updateOrderFulfillmentGroup(mockContext, {
     orderId: "order1",
@@ -54,7 +54,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -63,7 +63,7 @@ test("throws if permission check fails", async () => {
     orderFulfillmentGroupId: "123"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
 });
 
 test("skips permission check if context.isInternalCall", async () => {
@@ -98,7 +98,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.checkPermissionsLegacy).not.toHaveBeenCalled();
+  expect(mockContext.validatePermissionsLegacy).not.toHaveBeenCalled();
 });
 
 test("skips update if one is not necessary", async () => {
@@ -116,7 +116,7 @@ test("skips update if one is not necessary", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   await updateOrderFulfillmentGroup(mockContext, { orderId: "order1", orderFulfillmentGroupId: "group1" });
 
@@ -142,7 +142,7 @@ test("updates an order fulfillment group", async () => {
     }
   }));
 
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

@@ -8,10 +8,10 @@
  * @returns {Promise<Object>} System Information
  **/
 export default async function systemInformation(context, shopId) {
-  const { checkPermissions, checkPermissionsLegacy, app: { db } } = context;
+  const { validatePermissions, validatePermissionsLegacy, app: { db } } = context;
   // sensitive information should be accessible to admins only
-  await checkPermissionsLegacy(["admin"], shopId);
-  await checkPermissions(`reaction:shop:${shopId}`, "read", { shopId });
+  await validatePermissionsLegacy(["admin"], shopId);
+  await validatePermissions(`reaction:shop:${shopId}`, "read", { shopId });
 
   const mongoAdmin = await db.admin();
   const mongoInfo = await mongoAdmin.serverStatus();

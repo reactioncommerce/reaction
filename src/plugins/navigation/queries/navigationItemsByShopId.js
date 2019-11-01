@@ -8,11 +8,11 @@
  * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function navigationItemsByShopId(context, shopId) {
-  const { checkPermissions, checkPermissionsLegacy, collections } = context;
+  const { validatePermissions, validatePermissionsLegacy, collections } = context;
   const { NavigationItems } = collections;
 
-  await checkPermissionsLegacy(["core"], shopId);
-  await checkPermissions("reaction:navigationItems", "read", { shopId });
+  await validatePermissionsLegacy(["core"], shopId);
+  await validatePermissions("reaction:navigationItems", "read", { shopId });
 
   return NavigationItems.find({ shopId });
 }

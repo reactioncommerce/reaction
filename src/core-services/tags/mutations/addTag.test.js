@@ -7,7 +7,7 @@ beforeEach(() => {
 });
 
 test("calls mutations.addTag and returns the AddTagPayload on success", async () => {
-  mockContext.checkPermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Tags.insertOne.mockReturnValueOnce({ result: { ok: 1 } });
 
   const input = {
@@ -23,7 +23,7 @@ test("calls mutations.addTag and returns the AddTagPayload on success", async ()
 });
 
 test("calls mutations.addTag and throws for non admins", async () => {
-  mockContext.checkPermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissionsLegacy.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   mockContext.collections.Tags.insertOne.mockReturnValueOnce({ result: { ok: 1 } });

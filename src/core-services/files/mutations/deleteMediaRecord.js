@@ -9,15 +9,15 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function deleteMediaRecord(context, input) {
   const {
     appEvents,
-    checkPermissions,
-    checkPermissionsLegacy,
+    validatePermissions,
+    validatePermissionsLegacy,
     collections: { Media, MediaRecords },
     userId
   } = context;
   const { mediaRecordId, shopId } = input;
 
-  await checkPermissionsLegacy(["media/delete"], shopId);
-  await checkPermissions("reaction:media", "delete", { shopId });
+  await validatePermissionsLegacy(["media/delete"], shopId);
+  await validatePermissions("reaction:media", "delete", { shopId });
 
   const mediaRecord = await MediaRecords.findOne({
     "_id": mediaRecordId,

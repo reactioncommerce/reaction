@@ -40,8 +40,8 @@ export default async function moveOrderItems(context, input) {
   const {
     accountId: authAccountId,
     appEvents,
-    checkPermissions,
-    checkPermissionsLegacy,
+    validatePermissions,
+    validatePermissionsLegacy,
     collections,
     isInternalCall,
     userId
@@ -56,8 +56,8 @@ export default async function moveOrderItems(context, input) {
   // or if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall && (!authAccountId || authAccountId !== order.accountId)) {
-    await checkPermissionsLegacy(["orders", "order/fulfillment"], order.shopId);
-    await checkPermissions(`reaction:order:${order._id}`, "update", { shopId: order.shopId });
+    await validatePermissionsLegacy(["orders", "order/fulfillment"], order.shopId);
+    await validatePermissions(`reaction:order:${order._id}`, "update", { shopId: order.shopId });
   }
 
   // Is the account calling this mutation also the account that placed the order?
