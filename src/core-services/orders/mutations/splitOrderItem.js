@@ -54,7 +54,7 @@ export default async function splitOrderItem(context, input) {
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall) {
     await validatePermissionsLegacy(["orders", "order/fulfillment"], order.shopId);
-    await validatePermissions(`reaction:order:${order._id}`, "update", { shopId: order.shopId });
+    await validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId });
   }
 
   const { accountId, billingAddress, cartId, currencyCode } = order;

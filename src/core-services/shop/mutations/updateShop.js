@@ -56,7 +56,7 @@ export default async function updateShop(context, input) {
   // Check permission to make sure user is allowed to do this
   // Security check for admin access
   await validatePermissionsLegacy(["owner", "admin"], shopId);
-  await validatePermissions(`reaction:shop:${shopId}`, "update", { shopId });
+  await validatePermissions(`reaction:shops:${shopId}`, "update", { shopId });
 
   const { value: updatedShop } = await Shops.findOneAndUpdate(
     { _id: shopId },

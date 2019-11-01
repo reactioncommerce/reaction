@@ -31,7 +31,7 @@ export default async function archiveProducts(context, input) {
   // TODO: pod-auth - what do we do here when there are multiple productIds?
   // DO we need to loop over each one?
   // If so, what if you are OK for 9/10, but not that last 1? Do we fail the whole thing?
-  await validatePermissions(`reaction:product:{${productIds.join(",")}}`, "archive", { shopId });
+  await validatePermissions(`reaction:products:{${productIds.join(",")}}`, "archive", { shopId });
 
   // Check to make sure all products are on the same shop
   const count = await Products.find({ _id: { $in: productIds }, shopId }).count();

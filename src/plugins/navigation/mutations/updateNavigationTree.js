@@ -43,7 +43,7 @@ export default async function updateNavigationTree(context, _id, navigationTree)
   const { draftItems, name } = navigationTreeData;
 
   await validatePermissionsLegacy(["core"], shopId);
-  await validatePermissions(`reaction:navigationTree:${_id}`, "update", { shopId });
+  await validatePermissions(`reaction:navigationTrees:${_id}`, "update", { shopId });
 
   const existingNavigationTree = await NavigationTrees.findOne({ _id });
   if (!existingNavigationTree) {

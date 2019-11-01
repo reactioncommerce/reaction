@@ -40,7 +40,7 @@ export default async function setAccountProfileLanguage(context, input) {
 
   if (!context.isInternalCall && accountIdFromContext !== accountId) {
     await validatePermissionsLegacy(["reaction-accounts"], account.shopId);
-    await validatePermissions(`reaction:account:${account._id}`, "update", { shopId: account.shopId });
+    await validatePermissions(`reaction:accounts:${account._id}`, "update", { shopId: account.shopId });
   }
 
   // Make sure this language is in the related shop languages list

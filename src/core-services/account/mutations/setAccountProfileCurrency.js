@@ -33,7 +33,7 @@ export default async function setAccountProfileCurrency(context, input) {
 
   if (!context.isInternalCall && userIdFromContext !== providedAccountId) {
     await validatePermissionsLegacy(["reaction-accounts"], account.shopId);
-    await validatePermissions(`reaction:account:${account._id}`, "update", { shopId: account.shopId });
+    await validatePermissions(`reaction:accounts:${account._id}`, "update", { shopId: account.shopId });
   }
 
   // Make sure this currency code is in the related shop currencies list

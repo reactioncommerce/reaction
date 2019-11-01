@@ -21,7 +21,7 @@ export default async function deleteFlatRateFulfillmentRestriction(context, inpu
   const { FlatRateFulfillmentRestrictions } = collections;
 
   await validatePermissionsLegacy(["admin", "owner", "shipping"], shopId);
-  await validatePermissions(`reaction:shippingRestriction:${restrictionId}`, "delete", { shopId });
+  await validatePermissions(`reaction:shippingRestrictions:${restrictionId}`, "delete", { shopId });
 
   const { ok, value } = await FlatRateFulfillmentRestrictions.findOneAndDelete({
     _id: restrictionId,

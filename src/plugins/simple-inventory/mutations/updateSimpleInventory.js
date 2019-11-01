@@ -45,7 +45,7 @@ export default async function updateSimpleInventory(context, input, options = {}
     // plugin, context.isInternalCall can be set to `true` to disable this check.
     await validatePermissionsLegacy(["admin"], shopId);
     // TODO: pod-auth - is this an inventory or product permission check?
-    await validatePermissions(`reaction:product:${foundProduct._id}`, "update", { shopId });
+    await validatePermissions(`reaction:products:${foundProduct._id}`, "update", { shopId });
   }
 
   const modifier = getModifier(input);

@@ -18,7 +18,7 @@ export default async function productsByTagId(context, params) {
 
   // Check for owner or admin permissions from the user before allowing the query
   await validatePermissionsLegacy(["owner", "admin", "tag/admin", "tag/edit"], shopId);
-  await validatePermissions(`reaction:tag:${tagId}`, "read", { shopId });
+  await validatePermissions(`reaction:tags:${tagId}`, "read", { shopId });
 
   return arrayJoinPlusRemainingQuery({
     arrayFieldPath: "featuredProductIds",

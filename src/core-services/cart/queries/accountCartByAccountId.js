@@ -17,7 +17,7 @@ export default async function accountCartByAccountId(context, { accountId, shopI
 
   if (accountId !== contextAccountId) {
     await validatePermissionsLegacy(["owner", "admin"], shopId);
-    await validatePermissions(`reaction:account:${accountId._id}`, "read", { shopId });
+    await validatePermissions(`reaction:accounts:${accountId._id}`, "read", { shopId });
   }
 
   if (!accountId) {

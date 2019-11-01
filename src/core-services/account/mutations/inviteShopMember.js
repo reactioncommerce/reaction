@@ -33,7 +33,7 @@ export default async function inviteShopMember(context, input) {
   const { email, groupId, name, shopId } = input;
 
   await validatePermissionsLegacy(["reaction-accounts", "account/invite"], shopId);
-  await validatePermissions(`reaction:shop:${shopId}`, "invite", { shopId });
+  await validatePermissions(`reaction:shops:${shopId}`, "invite", { shopId });
 
   // we always use primary shop data, so retrieve this shop first with `Reaction` helper,
   // and only query the `Shops` collection if shopId !== primaryShop._id

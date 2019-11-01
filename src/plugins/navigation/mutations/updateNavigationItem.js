@@ -17,7 +17,7 @@ export default async function updateNavigationItem(context, _id, navigationItem)
   const shopId = await context.queries.primaryShopId(context);
 
   await validatePermissionsLegacy(["core"], shopId);
-  await validatePermissions(`reaction:navigationItem:${_id}`, "update", { shopId });
+  await validatePermissions(`reaction:navigationItems:${_id}`, "update", { shopId });
 
   const existingNavigationItem = await NavigationItems.findOne({ _id });
   if (!existingNavigationItem) {

@@ -40,7 +40,7 @@ export default async function verifySMTPEmailSettings(context, input) {
   const { host, port, service, shopId, user, password } = input;
 
   await validatePermissionsLegacy(["owner", "admin", "dashboard"], shopId);
-  await validatePermissions("reaction:email", "read", { shopId });
+  await validatePermissions("reaction:emails", "read", { shopId });
 
   let config;
 

@@ -92,7 +92,7 @@ export default async function createShop(context, input) {
   } = context;
 
   await validatePermissionsLegacy(["owner", "shop/create"]);
-  await validatePermissions(`reaction:shop`, "create");
+  await validatePermissions("reaction:shops", "create");
 
   const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
 

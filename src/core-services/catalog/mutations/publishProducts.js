@@ -32,7 +32,7 @@ export default async function publishProducts(context, productIds) {
     const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
     for (const shopId of uniqueShopIds) {
       await validatePermissionsLegacy(["createProduct", "product/admin", "product/publish"], shopId); // eslint-disable-line no-await-in-loop
-      await validatePermissions(`reaction:product:${product._id}`, "publish", { shopId }); // eslint-disable-line no-await-in-loop
+      await validatePermissions(`reaction:products:${product._id}`, "publish", { shopId }); // eslint-disable-line no-await-in-loop
     }
   }
 

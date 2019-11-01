@@ -22,7 +22,7 @@ export default async function setTagHeroMedia(context, input) {
 
   // Check for owner or admin permissions from the user before allowing the mutation
   await validatePermissionsLegacy(["owner", "admin"], shopId);
-  await validatePermissions(`reaction:tag:${tagId}`, "update", { shopId });
+  await validatePermissions(`reaction:tags:${tagId}`, "update", { shopId });
 
   let heroMediaUrl = null;
 

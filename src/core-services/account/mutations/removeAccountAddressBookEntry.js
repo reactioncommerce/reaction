@@ -30,7 +30,7 @@ export default async function removeAccountAddressBookEntry(context, input) {
 
   if (!context.isInternalCall && userIdFromContext !== accountId) {
     await validatePermissionsLegacy(["reaction-accounts"], account.shopId);
-    await validatePermissions(`reaction:account:${account._id}:addressBook:${addressId}`, "delete", { shopId: account.shopId });
+    await validatePermissions(`reaction:accounts:${account._id}:addressBooks:${addressId}`, "delete", { shopId: account.shopId });
   }
 
   const addressBeingRemoved = account.profile && Array.isArray(account.profile.addressBook) &&

@@ -34,7 +34,7 @@ export default async function updateAccountAddressBookEntry(context, input) {
 
   if (!context.isInternalCall && userIdFromContext !== accountId) {
     await validatePermissionsLegacy(["reaction-accounts"], account.shopId);
-    await validatePermissions(`reaction:account:${account._id}:addresBook:${address._id}`, "update", { shopId: account.shopId });
+    await validatePermissions(`reaction:accounts:${account._id}:addressBooks:${address._id}`, "update", { shopId: account.shopId });
   }
 
   // Make sure address exists before trying to update

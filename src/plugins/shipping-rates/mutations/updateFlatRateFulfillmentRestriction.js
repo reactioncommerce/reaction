@@ -25,7 +25,7 @@ export default async function updateFlatRateFulfillmentRestrictionMutation(conte
   const { FlatRateFulfillmentRestrictions } = collections;
 
   await validatePermissionsLegacy(["admin", "owner", "shipping"], shopId);
-  await validatePermissions(`reaction:shippingRestriction:${restrictionId}`, "update", { shopId });
+  await validatePermissions(`reaction:shippingRestrictions:${restrictionId}`, "update", { shopId });
 
   const { matchedCount } = await FlatRateFulfillmentRestrictions.updateOne({
     _id: restrictionId,
