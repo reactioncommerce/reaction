@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import { Order as OrderSchema } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   tracking: {
@@ -55,23 +56,25 @@ export default async function updateOrderFulfillmentGroup(context, input) {
 
   const modifier = {
     $set: {
-      "shipping.$[group].updatedAt": new Date(),
+      "shipping.$.updatedAt": new Date(),
       "updatedAt": new Date()
     }
   };
 
-  if (tracking) modifier.$set["shipping.$[group].tracking"] = tracking;
-  if (trackingUrl) modifier.$set["shipping.$[group].trackingUrl"] = trackingUrl;
+  if (tracking) modifier.$set["shipping.$.tracking"] = tracking;
+  if (trackingUrl) modifier.$set["shipping.$.trackingUrl"] = trackingUrl;
 
   if (status && orderFulfillmentGroup.workflow.status !== status) {
-    modifier.$set["shipping.$[group].workflow.status"] = status;
+    modifier.$set["shipping.$.workflow.status"] = status;
     modifier.$push = {
-      "shipping.$[group].workflow.workflow": status
+      "shipping.$.workflow.workflow": status
     };
   }
 
   // Skip updating if we have no updates to make
   if (Object.keys(modifier.$set).length === 2) return { order };
+
+  OrderSchema.validate(modifier, { modifier: true });
 
   const { modifiedCount, value: updatedOrder } = await Orders.findOneAndUpdate(
     {
@@ -79,10 +82,7 @@ export default async function updateOrderFulfillmentGroup(context, input) {
       "shipping._id": orderFulfillmentGroupId
     },
     modifier,
-    {
-      arrayFilters: [{ "group._id": orderFulfillmentGroupId }],
-      returnOriginal: false
-    }
+    { returnOriginal: false }
   );
   if (modifiedCount === 0 || !updatedOrder) throw new ReactionError("server-error", "Unable to update order");
 
