@@ -13,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function ordersByAccountId(context, { accountId, orderStatus, shopIds } = {}) {
-  const { accountId: contextAccountId, validatePermissions, validatePermissionsLegacy, collections, shopsUserHasPermissionForLegacy } = context;
+  const { accountId: contextAccountId, validatePermissions, validatePermissionsLegacy, collections } = context;
   const { Orders } = collections;
 
   if (!accountId) {
@@ -36,17 +36,11 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
   if (shopIds) query.shopId = { $in: shopIds };
 
   if (accountId !== contextAccountId) {
-    // If an admin wants all orders for an account, we force it to be limited to the
-    // shops for which they're allowed to see orders.
-    if (!shopIds) {
-      // TODO: pod-auth - figure out what to do with `shops` permission checks
-      const shopIdsUserHasPermissionFor = shopsUserHasPermissionForLegacy("orders");
-      query.shopId = { $in: shopIdsUserHasPermissionFor };
-    } else {
-      for (const shopId of shopIds) {
-        await validatePermissionsLegacy(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
-        await validatePermissions("reaction:order", "read", { shopId }); // eslint-disable-line no-await-in-loop
-      }
+    // Validate user has permission to view orders for all shopIds
+    if (!shopIds) throw new ReactionError("invalid-param", "You must provide ShopId(s)");
+    for (const shopId of shopIds) {
+      await validatePermissionsLegacy(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
+      await validatePermissions("reaction:orders", "read", { shopId }); // eslint-disable-line no-await-in-loop
     }
   }
 
