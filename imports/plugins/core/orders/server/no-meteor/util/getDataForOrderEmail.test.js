@@ -84,10 +84,19 @@ test("returns expected data structure (base case)", async () => {
       payments: [
         {
           displayAmount: jasmine.any(String),
-          displayName: "mockDisplayName"
+          bankDetails: null,
+          displayName: "mockDisplayName",
+          isCanceled: jasmine.any(Boolean),
+          isCashpresso: jasmine.any(Boolean),
+          isCompleted: jasmine.any(Boolean),
+          isCreated: jasmine.any(Boolean),
+          isFailed: jasmine.any(Boolean),
+          isInAdvance: jasmine.any(Boolean),
+          isInSantanderManual: jasmine.any(Boolean)
         }
       ],
       refunds: jasmine.any(String),
+      santanderMin: jasmine.any(String),
       shipping: jasmine.any(String),
       subtotal: jasmine.any(String),
       taxes: jasmine.any(String),
@@ -166,10 +175,9 @@ test("returns expected data structure (base case)", async () => {
     orderDate: jasmine.any(String),
     orderUrl: "http://example.com/storefrontOrderUrl/mockReferenceId?token=",
     physicalAddress: {
-      address: "mockAddress1 mockAddress2",
+      address: "mockAddress1",
       city: "mockCity",
-      postal: "mockPostal",
-      region: "mockRegion"
+      postal: "mockPostal"
     },
     shipping: {
       address: {
