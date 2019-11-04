@@ -24,8 +24,7 @@ export default async function simpleInventory(context, input) {
 
   if (!isInternalCall) {
     await validatePermissionsLegacy(["admin"], shopId);
-    // TODO: pod-auth - is this an inventory or product permission check?
-    await validatePermissions(`reaction:products:${productConfiguration.productVariantId}`, "read", { shopId });
+    await validatePermissions(`reaction:inventory:${productConfiguration.productVariantId}`, "read", { shopId });
   }
 
   return SimpleInventory.findOne({
