@@ -9,7 +9,7 @@ defaults: &defaults
     - DOCKER_NAMESPACE: "reactioncommerce"
     - DOCKER_NAME: "reaction"
     - GLOBAL_CACHE_VERSION: "v2"
-    - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
+    - TOOL_NODE_FLAGS: "--max-old-space-size=4000"
   working_directory: ~/reaction-app
   docker:
     - image: circleci/node:8-stretch
@@ -96,7 +96,7 @@ jobs:
           name: Docker build
           command: |
             docker build \
-              --build-arg TOOL_NODE_FLAGS="--max-old-space-size=4096" \
+              --build-arg TOOL_NODE_FLAGS="--max-old-space-size=4000" \
               -t "$DOCKER_REPOSITORY:$CIRCLE_SHA1" .
             mkdir -p docker-cache
             docker save \
