@@ -48,7 +48,7 @@ export default async function addAccountToGroup(context, input) {
   const ownerGroup = await Groups.findOne({ name: "owner" });
   const contextUserAccount = await Accounts.findOne({ _id: user._id });
   const isOwnerAccount = (!!ownerGroup && contextUserAccount.groups.includes(ownerGroup._id)) || userHasPermissionLegacy(["owner"]);
-  // TODO: pod-auth - figure out what to do with the `userHasPermission` checks
+  // TODO(pod-auth): figure out what to do with the `userHasPermission` checks
 
   if (!context.isInternalCall && !isOwnerAccount && _.difference(groupPermissions, user.roles[shopId] || []).length > 0) {
     throw new ReactionError("access-denied", "Access Denied");

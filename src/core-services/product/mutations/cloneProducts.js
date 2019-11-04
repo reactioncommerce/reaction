@@ -36,7 +36,7 @@ export default async function cloneProducts(context, input) {
   const { productIds, shopId } = input;
 
   await validatePermissionsLegacy(["createProduct", "product/admin", "product/clone"], shopId);
-  // TODO: pod-auth - what do we do here when there are multiple productIds?
+  // TODO(pod-auth): what do we do here when there are multiple productIds?
   // DO we need to loop over each one?
   // If so, what if you are OK for 9/10, but not that last 1? Do we fail the whole thing?
   await validatePermissions(`reaction:products:{${productIds.join(",")}}`, "clone", { shopId });
