@@ -31,11 +31,11 @@ export default async function cloneProductVariants(context, input) {
   const { Products } = collections;
   const { shopId, variantIds } = input;
 
-  await validatePermissionsLegacy(["createProduct", "product/admin", "product/clone"], shopId);
-  // TODO(pod-auth): what do we do here when there are multiple productIds?
-  // DO we need to loop over each one?
-  // If so, what if you are OK for 9/10, but not that last 1? Do we fail the whole thing?
-  await validatePermissions(`reaction:products:{${variantIds.join(",")}}`, "clone", { shopId });
+  // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
+  for (const variantId of variantIds) {
+    await validatePermissionsLegacy(["createProduct", "product/admin", "product/clone"], shopId); // eslint-disable-line no-await-in-loop
+    await validatePermissions(`reaction:products:${variantId}`, "clone", { shopId }); // eslint-disable-line no-await-in-loop
+  }
 
   // Check to make sure all variants are on the same shop
   const count = await Products.find({ _id: { $in: variantIds }, type: "variant", shopId }).count();
