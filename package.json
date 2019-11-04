@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -28,10 +28,10 @@
     "@reactioncommerce/catalyst": "~1.12.0",
     "@reactioncommerce/components": "^0.67.2",
     "@reactioncommerce/components-context": "1.2.0",
-    "@reactioncommerce/data-factory": "^1.0.0",
+    "@reactioncommerce/data-factory": "^1.0.1",
     "@reactioncommerce/file-collections": "0.7.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.1.0",
-    "@reactioncommerce/job-queue": "1.0.4",
+    "@reactioncommerce/job-queue": "1.0.5",
     "@reactioncommerce/logger": "1.1.1",
     "@reactioncommerce/nodemailer": "5.0.5",
     "@reactioncommerce/random": "1.0.1",
@@ -227,7 +227,7 @@
     "test:app:watch": "MONGO_URL='' SKIP_FIXTURES=true TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
     "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 REACTION_LOG_LEVEL=ERROR jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",
-    "test:integration": "NODE_ENV=jesttest JEST_MONGO=1 BABEL_DISABLE_CACHE=1 SKIP_FIXTURES=true REACTION_WORKERS_ENABLED=false REACTION_LOG_LEVEL=ERROR jest --runInBand --no-cache --forceExit /tests/integration/",
+    "test:integration": "NODE_ENV=jesttest JEST_MONGO=1 BABEL_DISABLE_CACHE=1 SKIP_FIXTURES=true REACTION_WORKERS_ENABLED=false REACTION_LOG_LEVEL=ERROR jest --no-cache --forceExit --maxWorkers=3 /tests/integration/",
     "test:integration:watch": "NODE_ENV=jesttest JEST_MONGO=1 BABEL_DISABLE_CACHE=1 SKIP_FIXTURES=true REACTION_WORKERS_ENABLED=false REACTION_LOG_LEVEL=ERROR jest --runInBand --watch /tests/integration/",
     "test:file": "NODE_ENV=jesttest JEST_MONGO=1 REACTION_LOG_LEVEL=ERROR jest --runInBand --watch",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md",
