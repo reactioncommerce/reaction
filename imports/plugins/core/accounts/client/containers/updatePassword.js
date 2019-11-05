@@ -64,7 +64,10 @@ const wrapComponent = (Comp) => (
         });
         return;
       }
-      const { token } = Router.current().params;
+
+      const { path } = Router.current().route;
+      const token = path.replace("/reset-password/", "");
+
       Accounts.resetPassword(token, password, (error) => {
         if (error) {
           this.setState({
@@ -83,7 +86,7 @@ const wrapComponent = (Comp) => (
           } else if (!storefrontUrls || !storefrontUrls.storefrontLoginUrl) {
             throw new ReactionError("error-occurred", "Missing storefront URLs. Please set these properties from the shop settings panel.");
           } else {
-            window.location.href = storefrontUrls.storefrontLoginUrl;
+            Router.go(storefrontUrls.storefrontLoginUrl);
           }
         }
       });
