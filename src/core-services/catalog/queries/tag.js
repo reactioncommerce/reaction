@@ -18,13 +18,13 @@ export default async function tag(context, slugOrId, { shouldIncludeInvisible = 
   // TODO(pod-auth): determine if `read-admin` is the best action here
   // Check to see if user has `read-admin` permissions
   const hasAdminReadPermissions = context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
-    await context.userHasPermissions("reaction:tags", "read-admin", { shopId });
+    await context.userHasPermissions(`reaction:tags:${slugOrId}`, "read-admin", { shopId });
 
   // If user doesn't have `read-admin` permissions,
   // make sure they at least have `read` permissions
   if (!hasAdminReadPermissions) {
     context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
-      await context.validatePermissions("reaction:tags", "read", { shopId });
+      await context.validatePermissions(`reaction:tags:${slugOrId}`, "read", { shopId });
   }
 
   let query = {
