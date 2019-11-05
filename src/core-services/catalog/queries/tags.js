@@ -46,7 +46,7 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
   }
 
   // If user does not have `read-admin` permissions,
-  // or they do but shouldIncludInvisble === false
+  // or they do but shouldIncludeInvisible === false
   // only show visible products
   if (hasAdminReadPermissions || (hasAdminReadPermissions && !shouldIncludeInvisible)) {
     query.isVisible = true;
