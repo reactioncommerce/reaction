@@ -1,13 +1,19 @@
 extend type Mutation {
+  "Update SMTP email settings"
+  updateSMTPEmailSettings(
+    "SMTP settings input"
+    input: UpdateSMTPEmailSettingsInput
+  ) : UpdateSMTPEmailSettingsPayload
+
   "Use this mutation to verify the SMTP email settings"
   verifySMTPEmailSettings(
     "Mutation input"
     input: VerifySMTPEmailSettingsInput!
-    ): VerifySMTPEmailSettingsInputPayload!
+    ): VerifySMTPEmailSettingsPayload!
 }
 
-"Input for an `VerifySMTPEmailSettingsInput`"
-input VerifySMTPEmailSettingsInput {
+"Input for the SMTP Email settings inputs"
+input SMTPEmailSettingsInput {
   "The host of the SMTP email service"
   host: String
 
@@ -27,11 +33,54 @@ input VerifySMTPEmailSettingsInput {
   user: String!
 }
 
+"Input for `verifySMTPEmailSettings` mutation"
+input VerifySMTPEmailSettingsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  settings: SMTPEmailSettingsInput!
+}
+
+"Input for `updateSMTPEmailSettings` mutation"
+input UpdateSMTPEmailSettingsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  settings: SMTPEmailSettingsInput!
+}
+
 "Response payload for the verifySMTPEmailSettings mutation"
-type VerifySMTPEmailSettingsInputPayload {
+type VerifySMTPEmailSettingsPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
   "True if the SMTP connection was made and authentication was successful."
   isVerified: Boolean!
+}
+
+"SMTP Email settings"
+type SMTPSettings {
+  "The host of the SMTP email service"
+  host: String
+
+  "The password of the SMTP email service user"
+  password: String!
+
+  "The port to send email via"
+  port: Int
+
+  "The SMTP email service"
+  service: String!
+
+  "The username of the SMTP email service user"
+  user: String!
+}
+
+"Response payload for `updateSMTPEmailSettings` mutation"
+type UpdateSMTPEmailSettingsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Updated settings"
+  settings: SMTPSettings
 }
