@@ -15,7 +15,10 @@ export default async function deleteTaxRate(context, input) {
 
   await checkPermissions(["admin", "owner"], shopId);
 
-  const taxRateToDelete = await TaxRates.find({ _id });
+  const taxRateToDelete = await TaxRates.findOne({
+    _id,
+    shopId
+  });
 
   await TaxRates.remove({
     _id,
