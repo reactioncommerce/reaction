@@ -1,7 +1,5 @@
 import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
 
-const decodeShopOpaqueId = decodeOpaqueIdForNamespace("reaction/shop");
-
 /**
  * @name Mutation/updateSMTPEmailSettings
  * @method
@@ -24,7 +22,7 @@ export default async function updateSMTPEmailSettings(_, { input }, context) {
     settings
   } = input;
   const { shopId: opaqueShopId, ...passThroughInput } = settings;
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = decodeOpaqueIdForNamespace("reaction/shop", opaqueShopId);
 
   const updatedSettings = await context.mutations.updateSMTPEmailSettings(context, {
     shopId,
