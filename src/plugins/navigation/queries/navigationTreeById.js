@@ -22,20 +22,24 @@ export default async function navigationTreeById(context, { language, navigation
     // Add language from args so that we can use it in items & draftItems resolvers
     navigationTree.language = language;
 
-    // TODO: pod-auth - think about how best to handle things like `draft`
-    const canRead = (
-      context.userHasPermissionLegacy(["admin", "owner", "create-product"], shopId) &&
-      await context.userHasPermission(`reaction:navigationTrees:${navigationTreeId}`, "read", { shopId, draft: true })
-    );
+    // Check to see if user has `read-admin` permissions
+    const hasAdminReadPermissions = context.userHasPermissionLegacy(["admin", "owner", "create-product"], shopId) &&
+      await context.userHasPermissions(`reaction:navigationTrees:${navigationTreeId}`, "read-admin", { shopId });
+
+    // If user doesn't have `hasAdminReadPermissions` permissions, check to see if they have any `read` permissions
+    if (!hasAdminReadPermissions) {
+      await context.validatePermissionsLegacy(["admin", "owner", "create-product"], shopId) &&
+        await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "read", { shopId });
+    }
 
     // Filter items based on visibility options and user permissions
     navigationTree.items = filterNavigationTreeItems(navigationTree.items, {
-      canRead,
+      hasAdminReadPermissions,
       shouldIncludeSecondary
     });
 
     // Prevent non-admin users from getting draft items in results
-    if (!canRead) {
+    if (!hasAdminReadPermissions) {
       navigationTree.draftItems = null;
     }
   }
