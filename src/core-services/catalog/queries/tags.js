@@ -29,12 +29,12 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
 
   if (context.userHasPermission(["owner", "admin"], shopId)) {
     if (shouldIncludeDeleted === true) {
-      query.isDeleted = { $in: [false, true] };
+      delete query.isDeleted;
     } else {
       query.isDeleted = false;
     }
     if (shouldIncludeInvisible === true) {
-      query.isVisible = { $in: [false, true] };
+      delete query.isVisible;
     } else {
       query.isVisible = true;
     }
