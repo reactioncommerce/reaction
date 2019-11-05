@@ -19,7 +19,7 @@ export default async function catalogItems(_, args, context, info) {
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
-  const query = context.queries.taxRates(context, shopId);
+  const query = await context.queries.taxRates(context, shopId);
 
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
