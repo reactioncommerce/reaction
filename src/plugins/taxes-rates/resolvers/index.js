@@ -1,6 +1,7 @@
 import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
 import Mutation from "./Mutation/index.js";
 import Query from "./Query/index.js";
+import TaxRate from "./TaxRate/index.js";
 
 /**
  * TaxRate-related GraphQL resolvers
@@ -10,5 +11,6 @@ import Query from "./Query/index.js";
 export default {
   Mutation,
   Query,
+  TaxRate,
   ...getConnectionTypeResolvers("TaxRate")
 };
