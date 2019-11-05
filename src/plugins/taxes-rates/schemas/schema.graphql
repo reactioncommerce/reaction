@@ -15,8 +15,8 @@ type TaxRate {
   "Amount of tax due"
   region: String!
 
-  "Shop ID"
-  shopId: ID!
+  "The shop to which this TaxRate belongs"
+  shop: Shop!
 
   "Amount that was used for calculating the tax due"
   taxCode: String!
