@@ -12,11 +12,13 @@ const wsUrl = httpUrl.replace("http", "ws");
 export const meteorAccountsLink = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem("Meteor.loginToken");
 
-  operation.setContext(() => ({
-    headers: {
-      "meteor-login-token": token
-    }
-  }));
+  if (token) {
+    operation.setContext(() => ({
+      headers: {
+        "meteor-login-token": token
+      }
+    }));
+  }
 
   return forward(operation);
 });
