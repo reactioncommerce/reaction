@@ -18,6 +18,7 @@ import SettingsIcon from "mdi-material-ui/Settings";
 import CloseIcon from "mdi-material-ui/Close";
 import ShopLogoWithData from "../ShopLogoWithData";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Reaction } from "/client/api";
 
 const activeClassName = "nav-item-active";
 
@@ -148,7 +149,9 @@ function Sidebar(props) {
         </Toolbar>
       </AppBar>
       <List disablePadding>
-        {primaryRoutes.map((route) => (
+        {primaryRoutes.filter((route) => {
+          return Reaction.hasPermission(route.permissionRequired);
+        }).map((route) => (
           <NavLink
             activeClassName={!isSettingsOpen ? activeClassName : null}
             className={classes.link}
@@ -200,7 +203,9 @@ function Sidebar(props) {
         </ListItem>
 
         <Collapse in={isSettingsOpen}>
-          {settingRoutes.map((route) => (
+          {settingRoutes.filter((route) => {
+            return Reaction.hasPermission(route.permissionRequired)
+          }).map((route) => (
             <NavLink
               activeClassName={activeClassName}
               className={classes.link}
