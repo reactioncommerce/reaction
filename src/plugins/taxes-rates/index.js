@@ -16,8 +16,8 @@ export default async function register(app) {
     label: "Custom Rates",
     name: "reaction-taxes-rates",
     collections: {
-      Taxes: {
-        name: "Taxes",
+      TaxRates: {
+        name: "TaxRates",
         indexes: [
           // Create indexes. We set specific names for backwards compatibility
           // with indexes created by the aldeed:schema-index Meteor package.
