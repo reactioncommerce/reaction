@@ -3,7 +3,7 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
- * @name Query/catalogItems
+ * @name Query/taxRates
  * @method
  * @memberof TaxRates/Query
  * @summary query the Accounts collection and return user account data
@@ -14,7 +14,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} user account object
  */
-export default async function catalogItems(_, args, context, info) {
+export default async function taxRates(_, args, context, info) {
   const { shopId: opaqueShopId, ...connectionArgs } = args;
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
