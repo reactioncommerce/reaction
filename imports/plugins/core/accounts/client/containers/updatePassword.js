@@ -86,7 +86,7 @@ const wrapComponent = (Comp) => (
           } else if (!storefrontUrls || !storefrontUrls.storefrontLoginUrl) {
             throw new ReactionError("error-occurred", "Missing storefront URLs. Please set these properties from the shop settings panel.");
           } else {
-            Router.go(storefrontUrls.storefrontLoginUrl);
+            window.location.href = storefrontUrls.storefrontLoginUrl;
           }
         }
       });
