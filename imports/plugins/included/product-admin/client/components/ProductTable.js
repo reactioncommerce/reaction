@@ -98,6 +98,7 @@ function ProductTable({ history }) {
     onDrop,
     multiple: true,
     disablePreview: true,
+    accept: "text/csv, text/plain, text/x-csv, application/vnd.ms-excel, application/csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values, text/tab-separated-values",
     disableClick: true
   });
 
