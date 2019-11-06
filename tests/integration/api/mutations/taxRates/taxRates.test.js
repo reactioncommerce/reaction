@@ -40,6 +40,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await testApp.collections.TaxRates.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
 });
