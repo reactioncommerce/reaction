@@ -5,7 +5,14 @@
 
 [Reaction](http://reactioncommerce.com) is an API-first, headless commerce platform built using Node.js, React, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
 
-Reaction v2.0.0 is built as a truly headless commerce platform that decouples the Reaction backend services from the frontend. We’ve decoupled the storefront application from the API. Reaction platform consists of this `reaction` project - which is now primarily our GraphQL API (and for the time being Reaction Admin and our identity provider) - alongside our new-to-2.0 [Example Storefront](https://github.com/reactioncommerce/example-storefront), which connects with the Reaction application via GraphQL API to provide a customer-facing storefront.
+Reaction v3.0.0 is built as a truly headless commerce platform, strictly our GraphQL API, that decouples the Reaction backend services from the frontend.
+
+[Reaction Platform](https://github.com/reactioncommerce/reaction-platform) consists of:
+- `Reaction` - this project, which is our GraphQL API (and for the time being Reaction Admin and our identity provider) -
+- (coming soon) [Reaction Admin](https://github.com/reactioncommerce/reaction-admin), which connects with the Reaction application via GraphQL API to provide a UI admin interface.
+- (coming soon) [Reaction Hyrda](https://github.com/reactioncommerce/reaction-hydra), which is a configured Hydra installation using Docker Compose.
+- (coming soon) [Reaction Identity](https://github.com/reactioncommerce/reaction-identity), which is the user interface and server for identity management, including user registration, login, logout, and password change. It works together with reaction-hydra to enable OAuth2 flows.
+- [Example Storefront](https://github.com/reactioncommerce/example-storefront), which connects with the Reaction application via GraphQL API to provide a customer-facing storefront.
 
 ![Reaction Admin](https://user-images.githubusercontent.com/20409254/61161477-bb033c80-a4b8-11e9-9c5e-4f4f6a68b8d0.png)
 
