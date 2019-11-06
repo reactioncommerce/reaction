@@ -30,6 +30,8 @@ const inputSchema = new SimpleSchema({
 export default async function verifySMTPEmailSettings(context, input) {
   inputSchema.validate(input);
 
+  console.log("mockContext", context);
+
   const { checkPermissions } = context;
   const { shopId } = input;
 
