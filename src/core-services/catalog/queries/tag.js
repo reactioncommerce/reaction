@@ -15,17 +15,14 @@ export default async function tag(context, slugOrId, { shouldIncludeInvisible = 
   const { Tags } = collections;
   const shopId = await context.queries.primaryShopId(context);
 
-  // TODO(pod-auth): determine if `read-admin` is the best action here
-  // Check to see if user has `read-admin` permissions
-  const hasAdminReadPermissions = context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
-    await context.userHasPermissions(`reaction:tags:${slugOrId}`, "read-admin", { shopId });
+  // Check to make sure user has `read` permissions for this tag
+  await context.validatePermissionsLegacy(["admin", "owner", "tags"], shopId);
+  await context.validatePermissions(`reaction:tags:${slugOrId}`, "read", { shopId });
 
-  // If user doesn't have `read-admin` permissions,
-  // make sure they at least have `read` permissions
-  if (!hasAdminReadPermissions) {
-    context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
-      await context.validatePermissions(`reaction:tags:${slugOrId}`, "read", { shopId });
-  }
+  // Check to see if user has `read` permissions for hidden / deleted tags
+  // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
+  const hasInactivePermissions = context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
+    await context.userHasPermissions(`reaction:tags:${slugOrId}:inactive`, "read", { shopId });
 
   let query = {
     $and: [
@@ -34,7 +31,7 @@ export default async function tag(context, slugOrId, { shouldIncludeInvisible = 
     ]
   };
 
-  if (hasAdminReadPermissions && shouldIncludeInvisible === true) {
+  if (hasInactivePermissions && shouldIncludeInvisible === true) {
     query = {
       $or: [{ _id: slugOrId }, { slug: slugOrId }]
     };

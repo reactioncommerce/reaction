@@ -19,17 +19,14 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
   const { Tags } = collections;
   const query = { shopId };
 
-  // TODO(pod-auth): determine if `read-admin` is the best action here
-  // Check to see if user has `read-admin` permissions
-  const hasAdminReadPermissions = context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
-    await context.userHasPermissions("reaction:tags", "read-admin", { shopId });
+  // Check to make sure user has `read` permissions for this tag
+  await context.validatePermissionsLegacy(["admin", "owner", "tags"], shopId);
+  await context.validatePermissions("reaction:tags", "read", { shopId });
 
-  // If user doesn't have `read-admin` permissions,
-  // make sure they at least have `read` permissions
-  if (!hasAdminReadPermissions) {
-    context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
-      await context.validatePermissions("reaction:tags", "read", { shopId });
-  }
+  // Check to see if user has `read` permissions for hidden / deleted tags
+  // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
+  const hasInactivePermissions = context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
+    await context.userHasPermissions("reaction:tags:inactive", "read", { shopId });
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
 
@@ -41,14 +38,14 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
   // If user does not have `read-admin` permissions,
   // or they do but shouldIncludeDeleted === false
   // only show non deleted products
-  if (!hasAdminReadPermissions || (hasAdminReadPermissions && !shouldIncludeDeleted)) {
+  if (!hasInactivePermissions || (hasInactivePermissions && !shouldIncludeDeleted)) {
     query.isDeleted = false;
   }
 
   // If user does not have `read-admin` permissions,
   // or they do but shouldIncludeInvisible === false
   // only show visible products
-  if (hasAdminReadPermissions || (hasAdminReadPermissions && !shouldIncludeInvisible)) {
+  if (hasInactivePermissions || (hasInactivePermissions && !shouldIncludeInvisible)) {
     query.isVisible = true;
   }
 
