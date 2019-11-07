@@ -1,5 +1,5 @@
 // Favicons
-import "./favicons";
+// import "./favicons";
 
 // Scripts
 import "bootstrap/dist/js/npm.js";
