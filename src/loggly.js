@@ -54,6 +54,7 @@ class Bunyan2Loggly {
     }
 
     if (this._buffer.length >= this.bufferLength) {
+      // eslint-disable-next-line consistent-return
       return this._processBuffer();
     }
 
