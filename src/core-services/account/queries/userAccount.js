@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} user account object
  */
 export default async function userAccountQuery(context, id) {
-  const { validatePermissions, validatePermissionsLegacy, collections, userId } = context;
+  const { collections, userId } = context;
   const { Accounts } = collections;
 
   const account = await Accounts.findOne({ _id: id });
@@ -18,8 +18,8 @@ export default async function userAccountQuery(context, id) {
 
   // Check to make sure current user has permissions to view queried user
   if (userId !== account.userId) {
-    await validatePermissionsLegacy(["reaction-accounts"], account.shopId);
-    await validatePermissions("reaction:accounts", "read", { shopId: account.shopId });
+    await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
+    await context.validatePermissions("reaction:accounts", "read", { shopId: account.shopId });
   }
 
   return account;

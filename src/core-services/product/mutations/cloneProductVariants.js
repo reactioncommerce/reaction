@@ -27,14 +27,14 @@ const inputSchema = new SimpleSchema({
  */
 export default async function cloneProductVariants(context, input) {
   inputSchema.validate(input);
-  const { validatePermissions, validatePermissionsLegacy, collections } = context;
+  const { collections } = context;
   const { Products } = collections;
   const { shopId, variantIds } = input;
 
   // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
   for (const variantId of variantIds) {
-    await validatePermissionsLegacy(["createProduct", "product/admin", "product/clone"], shopId); // eslint-disable-line no-await-in-loop
-    await validatePermissions(`reaction:products:${variantId}`, "clone", { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissionsLegacy(["createProduct", "product/admin", "product/clone"], null, { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissions(`reaction:products:${variantId}`, "clone", { shopId }); // eslint-disable-line no-await-in-loop
   }
 
   // Check to make sure all variants are on the same shop

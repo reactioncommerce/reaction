@@ -21,12 +21,12 @@ const paramsSchema = new SimpleSchema({
  */
 export default async function enablePaymentMethodForShop(context, input = {}) {
   paramsSchema.validate(input, { ignore: [SimpleSchema.ErrorTypes.KEY_NOT_IN_SCHEMA] });
-  const { validatePermissions, validatePermissionsLegacy, collections } = context;
+  const { collections } = context;
   const { Shops } = collections;
   const { isEnabled, paymentMethodName, shopId } = input;
 
-  await validatePermissionsLegacy(["owner", "admin"], shopId);
-  await validatePermissions(`reaction:shops:${shopId}`, "update", { shopId });
+  await context.validatePermissionsLegacy(["owner", "admin"], null, { shopId });
+  await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId });
 
   if (!allPaymentMethods[paymentMethodName]) {
     throw new ReactionError("not-found", "Requested payment method is invalid");

@@ -19,7 +19,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function removeAccountEmailRecord(context, input) {
   inputSchema.validate(input);
-  const { appEvents, validatePermissions, validatePermissionsLegacy, collections, userId: userIdFromContext } = context;
+  const { appEvents, collections, userId: userIdFromContext } = context;
   const { Accounts, users } = collections;
   const {
     accountId,
@@ -33,8 +33,8 @@ export default async function removeAccountEmailRecord(context, input) {
   if (!user) throw new ReactionError("not-found", "User not Found");
 
   if (!context.isInternalCall && userIdFromContext !== account.userId) {
-    await validatePermissionsLegacy(["reaction-accounts"], account.shopId);
-    await validatePermissions(`reaction:accounts:${account._id}`, "delete", { shopId: account.shopId });
+    await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
+    await context.validatePermissions(`reaction:accounts:${account._id}`, "delete", { shopId: account.shopId });
   }
 
   // Remove email from user

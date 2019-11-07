@@ -7,19 +7,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} Updated MediaRecord
  */
 export default async function updateMediaRecordPriority(context, input) {
-  const {
-    appEvents,
-    validatePermissions,
-    validatePermissionsLegacy,
-    collections: { MediaRecords },
-    userId
-  } = context;
+  const { appEvents, collections, userId } = context;
   const { mediaRecordId, priority, shopId } = input;
 
-  await validatePermissionsLegacy(["media/update"], shopId);
-  await validatePermissions("reaction:media", "update", { shopId });
+  await context.validatePermissionsLegacy(["media/update"], null, { shopId });
+  await context.validatePermissions("reaction:media", "update", { shopId });
 
-  const { value: updatedMediaRecord } = await MediaRecords.findOneAndUpdate(
+  const { value: updatedMediaRecord } = await collections.MediaRecords.findOneAndUpdate(
     {
       "_id": mediaRecordId,
       "metadata.shopId": shopId

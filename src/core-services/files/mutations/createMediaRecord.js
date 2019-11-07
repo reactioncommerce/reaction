@@ -12,15 +12,13 @@ export default async function createMediaRecord(context, input) {
   const {
     accountId,
     appEvents,
-    validatePermissions,
-    validatePermissionsLegacy,
     collections: { MediaRecords },
     userId
   } = context;
   const { mediaRecord, shopId } = input;
 
-  await validatePermissionsLegacy(["media/create"], shopId);
-  await validatePermissions("reaction:media", "create", { shopId });
+  await context.validatePermissionsLegacy(["media/create"], null, { shopId });
+  await context.validatePermissions("reaction:media", "create", { shopId });
 
   const doc = {
     ...mediaRecord,

@@ -17,11 +17,11 @@ export default async function deleteSurcharge(context, input) {
   inputSchema.validate(input);
 
   const { surchargeId, shopId } = input;
-  const { validatePermissions, validatePermissionsLegacy, collections } = context;
+  const { collections } = context;
   const { Surcharges } = collections;
 
-  await validatePermissionsLegacy(["admin", "owner", "shipping"], shopId);
-  await validatePermissions(`reaction:surcharges:${surchargeId}`, "delete", { shopId });
+  await context.validatePermissionsLegacy(["admin", "owner", "shipping"], null, { shopId });
+  await context.validatePermissions(`reaction:surcharges:${surchargeId}`, "delete", { shopId });
 
   const { ok, value } = await Surcharges.findOneAndDelete({
     _id: surchargeId,

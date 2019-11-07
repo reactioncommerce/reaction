@@ -14,7 +14,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function orders(context, { filters, shopIds } = {}) {
-  const { validatePermissions, validatePermissionsLegacy, collections } = context;
+  const { collections } = context;
   const { Orders } = collections;
 
   const query = {};
@@ -42,8 +42,8 @@ export default async function orders(context, { filters, shopIds } = {}) {
   // Validate user has permission to view orders for all shopIds
   if (!shopIds) throw new ReactionError("invalid-param", "You must provide ShopId(s)");
   for (const shopId of shopIds) {
-    await validatePermissionsLegacy(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
-    await validatePermissions("reaction:orders", "read", { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissions("reaction:orders", "read", { shopId }); // eslint-disable-line no-await-in-loop
   }
 
   query.shopId = { $in: shopIds };

@@ -11,7 +11,7 @@ import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
  * @returns {Promise<Object>} The created navigation item
  */
 export default async function createNavigationItem(context, input) {
-  const { validatePermissions, validatePermissionsLegacy, collections } = context;
+  const { collections } = context;
   const { NavigationItems } = collections;
   const { navigationItem } = input;
   const { shopId } = navigationItem;
@@ -19,8 +19,8 @@ export default async function createNavigationItem(context, input) {
   const { metadata, draftData = {} } = navigationItem;
 
   if (!context.isInternalCall) {
-    await validatePermissionsLegacy(["core"], shopId);
-    await validatePermissions("reaction:navigationItems", "create", { shopId });
+    await context.validatePermissionsLegacy(["core"], null, { shopId });
+    await context.validatePermissions("reaction:navigationItems", "create", { shopId });
   }
 
   let parsedMetadata = {};

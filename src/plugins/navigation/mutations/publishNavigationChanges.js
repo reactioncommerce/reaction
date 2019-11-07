@@ -10,14 +10,14 @@ import getNavigationTreeItemIds from "../util/getNavigationTreeItemIds.js";
  * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function publishNavigationChanges(context, _id) {
-  const { validatePermissions, validatePermissionsLegacy, collections } = context;
+  const { collections } = context;
   const { NavigationItems, NavigationTrees } = collections;
 
   const shopId = await context.queries.primaryShopId(context);
 
   if (!context.isInternalCall) {
-    await validatePermissionsLegacy(["core"], shopId);
-    await validatePermissions("reaction:navigationItems", "publish", { shopId });
+    await context.validatePermissionsLegacy(["core"], null, { shopId });
+    await context.validatePermissions("reaction:navigationItems", "publish", { shopId });
   }
 
   const treeSelector = { _id };

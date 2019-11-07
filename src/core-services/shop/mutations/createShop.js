@@ -83,16 +83,14 @@ export default async function createShop(context, input) {
   const {
     accountId,
     appEvents,
-    validatePermissions,
-    validatePermissionsLegacy,
     collections,
     rootUrl,
     simpleSchemas: { Shop: ShopSchema },
     userId
   } = context;
 
-  await validatePermissionsLegacy(["owner", "shop/create"]);
-  await validatePermissions("reaction:shops", "create");
+  await context.validatePermissionsLegacy(["owner", "shop/create"], null);
+  await context.validatePermissions("reaction:shops", "create");
 
   const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
 

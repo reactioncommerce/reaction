@@ -23,14 +23,14 @@ const inputSchema = new SimpleSchema({
  */
 export default async function archiveProducts(context, input) {
   inputSchema.validate(input);
-  const { appEvents, validatePermissions, validatePermissionsLegacy, collections, userId } = context;
+  const { appEvents, collections, userId } = context;
   const { MediaRecords, Products } = collections;
   const { productIds, shopId } = input;
 
   // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
   for (const productId of productIds) {
-    await validatePermissionsLegacy(["createProduct", "product/admin", "product/archive"], shopId); // eslint-disable-line no-await-in-loop
-    await validatePermissions(`reaction:products:${productId}`, "archive", { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissionsLegacy(["createProduct", "product/admin", "product/archive"], null, { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissions(`reaction:products:${productId}`, "archive", { shopId }); // eslint-disable-line no-await-in-loop
   }
 
   // Check to make sure all products are on the same shop

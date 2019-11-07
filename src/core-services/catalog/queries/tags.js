@@ -20,7 +20,7 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
   const query = { shopId };
 
   // Check to make sure user has `read` permissions for this tag
-  await context.validatePermissionsLegacy(["admin", "owner", "tags"], shopId);
+  await context.validatePermissionsLegacy(["admin", "owner", "tags"], null, { shopId });
   await context.validatePermissions("reaction:tags", "read", { shopId });
 
   // Check to see if user has `read` permissions for hidden / deleted tags

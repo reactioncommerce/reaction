@@ -16,13 +16,13 @@ const { FileRecord } = require("@reactioncommerce/file-collections");
  * @returns {Promise<Object>} SetTagHeroMediaPayload
  */
 export default async function setTagHeroMedia(context, input) {
-  const { appEvents, validatePermissions, validatePermissionsLegacy, collections } = context;
+  const { appEvents, collections } = context;
   const { Media, MediaRecords, Tags } = collections;
   const { shopId, tagId, fileRecord } = input;
 
   // Check for owner or admin permissions from the user before allowing the mutation
-  await validatePermissionsLegacy(["owner", "admin"], shopId);
-  await validatePermissions(`reaction:tags:${tagId}`, "update", { shopId });
+  await context.validatePermissionsLegacy(["owner", "admin"], null, { shopId });
+  await context.validatePermissions(`reaction:tags:${tagId}`, "update", { shopId });
 
   let heroMediaUrl = null;
 

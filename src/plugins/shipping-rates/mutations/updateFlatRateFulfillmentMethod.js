@@ -20,11 +20,11 @@ export default async function updateFlatRateFulfillmentMethodMutation(context, i
   inputSchema.validate(cleanedInput);
 
   const { method, methodId, shopId } = cleanedInput;
-  const { validatePermissions, validatePermissionsLegacy, collections } = context;
+  const { collections } = context;
   const { Shipping } = collections;
 
-  await validatePermissionsLegacy(["admin", "owner", "shipping"], shopId);
-  await validatePermissions(`reaction:shippingMethods:${methodId}`, "update", { shopId });
+  await context.validatePermissionsLegacy(["admin", "owner", "shipping"], null, { shopId });
+  await context.validatePermissions(`reaction:shippingMethods:${methodId}`, "update", { shopId });
 
   // MongoDB schema still uses `enabled` rather than `isEnabled`
   method.enabled = method.isEnabled;
