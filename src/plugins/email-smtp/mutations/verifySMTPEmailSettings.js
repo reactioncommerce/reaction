@@ -5,18 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import getMailConfig from "../util/getMailConfig.js";
 
 const inputSchema = new SimpleSchema({
-  host: {
-    type: String,
-    optional: true
-  },
-  password: String,
-  port: {
-    type: Number,
-    optional: true
-  },
-  service: String,
-  shopId: String,
-  user: String
+  shopId: String
 });
 
 /**
@@ -29,8 +18,6 @@ const inputSchema = new SimpleSchema({
  */
 export default async function verifySMTPEmailSettings(context, input) {
   inputSchema.validate(input);
-
-  console.log("mockContext", context);
 
   const { checkPermissions } = context;
   const { shopId } = input;
