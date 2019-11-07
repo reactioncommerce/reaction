@@ -12,19 +12,45 @@ import _ from "lodash";
  * @param {Boolean} [params.isTopLevel] - If set, look for `isTopLevel` matching this value
  * @param {Boolean} [params.shouldIncludeDeleted] - Admin only. Whether or not to include `isDeleted=true` tags. Default is `false`
  * @param {Boolean} [params.shouldIncludeInvisible] - Admin only. Whether or not to include `isVisible=false` tags.  Default is `false`.
+ * @param {Boolean} [params.excludedTagIds] - If set, exclude these tagIds from the result
  * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function tags(context, shopId, { filter, shouldIncludeDeleted = false, isTopLevel, shouldIncludeInvisible = false } = {}) {
+export default async function tags(
+  context,
+  shopId,
+  {
+    filter,
+    shouldIncludeDeleted = false,
+    isTopLevel,
+    shouldIncludeInvisible = false,
+    excludedTagIds
+  } = {}
+) {
   const { collections } = context;
 
   const { Tags } = collections;
   const query = { shopId };
+  let searchFieldFilter = {};
+  let regexMatch;
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
 
   // Use `filter` to filter out results on the server
   if (filter) {
     query.name = { $regex: _.escapeRegExp(filter), $options: "i" };
+    regexMatch = { $regex: escapeRegExp(filter), $options: "i" };
+    searchFieldFilter = {
+      $or: [{
+        name: regexMatch,
+        slug: regexMatch
+      }]
+    };
+  }
+
+  if (Array.isArray(excludedTagIds)) {
+    query._id = {
+      $nin: excludedTagIds
+    };
   }
 
   if (context.userHasPermission(["owner", "admin"], shopId)) {
@@ -43,5 +69,8 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
     query.isVisible = true;
   }
 
-  return Tags.find(query);
+  return Tags.find({
+    ...query,
+    ...searchFieldFilter
+  });
 }
