@@ -25,7 +25,7 @@ export default async function approveOrderPayments(context, input = {}) {
   const { orderId, paymentIds, shopId } = input;
 
   await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId });
-  await context.validatePermissions(`reaction:orders:${orderId}`, "update", { shopId });
+  await context.validatePermissions(`reaction:orders:${orderId}`, "approve-payment", { shopId });
 
   const order = await Orders.findOne({ _id: orderId, shopId });
   if (!order) throw new ReactionError("not-found", "Order not found");
