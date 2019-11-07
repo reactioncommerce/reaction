@@ -37,8 +37,7 @@ export default async function tags(
 
   // Use `filter` to filter out results on the server
   if (filter) {
-    query.name = { $regex: _.escapeRegExp(filter), $options: "i" };
-    regexMatch = { $regex: escapeRegExp(filter), $options: "i" };
+    regexMatch = { $regex: _.escapeRegExp(filter), $options: "i" };
     searchFieldFilter = {
       $or: [{
         name: regexMatch,
