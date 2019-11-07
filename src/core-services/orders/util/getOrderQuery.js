@@ -1,5 +1,4 @@
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
-import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name getOrderQuery
