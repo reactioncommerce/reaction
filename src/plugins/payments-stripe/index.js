@@ -31,15 +31,6 @@ export default async function register(app) {
         listRefunds: stripeListRefunds
       }
     }],
-    settings: {
-      mode: false,
-      api_key: "",
-      public: {
-        publishable_key: "",
-        client_id: ""
-      },
-      connectAuth: {}
-    },
     registry: [
       // Settings panel
       {

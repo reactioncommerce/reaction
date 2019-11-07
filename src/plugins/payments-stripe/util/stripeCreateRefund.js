@@ -16,7 +16,7 @@ import formatForStripe from "./formatForStripe.js";
 export default async function stripeCreateRefund(context, paymentMethod, amount, reason) {
   let result;
   try {
-    const stripe = await getStripeInstanceForShop(context, paymentMethod.shopId);
+    const stripe = await getStripeInstanceForShop(context);
 
     const refundResult = await stripe.refunds.create({ charge: paymentMethod.transactionId, amount: formatForStripe(amount), reason });
     Logger.debug(refundResult);
