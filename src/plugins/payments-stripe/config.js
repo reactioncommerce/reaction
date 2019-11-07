@@ -1,6 +1,6 @@
-import envalid, { testOnly } from "envalid";
+import envalid from "envalid";
 
-const { str } = envalid;
+const { str, testOnly } = envalid;
 
 export default envalid.cleanEnv(process.env, {
   STRIPE_API_KEY: str({
