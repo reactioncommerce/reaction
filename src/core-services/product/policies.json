@@ -1,0 +1,23 @@
+[
+  {
+    "description": "Archive products",
+    "subjects": [ "reaction:products:groups:product-managers" ],
+    "resources": [ "reaction:products:*" ],
+    "actions": [ "archive-product" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Clone products",
+    "subjects": [ "reaction:products:groups:product-managers" ],
+    "resources": [ "reaction:products:*" ],
+    "actions": [ "clone-product" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Clone products",
+    "subjects": [ "reaction:products:groups:product-managers" ],
+    "resources": [ "reaction:products:*" ],
+    "actions": [ "create-product" ],
+    "effect": "allow"
+  }
+]
