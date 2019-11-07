@@ -11,7 +11,7 @@ export default async function updateMediaRecordPriority(context, input) {
   const { mediaRecordId, priority, shopId } = input;
 
   await context.validatePermissionsLegacy(["media/update"], null, { shopId });
-  await context.validatePermissions("reaction:media", "update", { shopId });
+  await context.validatePermissions(`reaction:mediaRecords:${mediaRecordId}`, "update-media", { shopId });
 
   const { value: updatedMediaRecord } = await collections.MediaRecords.findOneAndUpdate(
     {

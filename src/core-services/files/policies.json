@@ -1,0 +1,30 @@
+[
+  {
+    "description": "Archive media record.",
+    "subjects": [ "reaction:media:groups:media-managers" ],
+    "resources": [ "reaction:mediaRecords:*" ],
+    "actions": [ "archive-media" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Create media record.",
+    "subjects": [ "reaction:media:groups:media-managers" ],
+    "resources": [ "reaction:mediaRecords" ],
+    "actions": [ "create-media" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Delete media record.",
+    "subjects": [ "reaction:media:groups:media-managers" ],
+    "resources": [ "reaction:mediaRecords:*" ],
+    "actions": [ "delete-media" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Update media record.",
+    "subjects": [ "reaction:media:groups:media-managers" ],
+    "resources": [ "reaction:mediaRecords:*" ],
+    "actions": [ "update-media" ],
+    "effect": "allow"
+  }
+]

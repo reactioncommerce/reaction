@@ -15,7 +15,7 @@ export default async function deleteMediaRecord(context, input) {
   const { mediaRecordId, shopId } = input;
 
   await context.validatePermissionsLegacy(["media/delete"], null, { shopId });
-  await context.validatePermissions("reaction:media", "delete", { shopId });
+  await context.validatePermissions(`reaction:mediaRecords:${mediaRecordId}`, "delete-media", { shopId });
 
   const mediaRecord = await MediaRecords.findOne({
     "_id": mediaRecordId,
