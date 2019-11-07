@@ -66,6 +66,10 @@ export default async function addOrderFulfillmentGroup(context, input) {
   const orderSurcharges = [];
   const movingItems = [];
   if (moveItemIds) {
+    if (!isInternalCall) {
+      await context.validatePermissions(`reaction:orders:${order._id}`, "move-item", { shopId: order.shopId });
+    }
+
     updatedGroups = await Promise.all(order.shipping.map(async (group) => {
       let movedSomeItems = false;
       const updatedItems = group.items.reduce((list, item) => {

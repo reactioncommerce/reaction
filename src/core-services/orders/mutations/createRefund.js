@@ -51,7 +51,7 @@ export default async function createRefund(context, input) {
   // can be set to `true` to disable this check.
   if (!isInternalCall) {
     await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId: order.shopId });
-    await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId });
+    await context.validatePermissions(`reaction:orders:${order._id}`, "refund", { shopId: order.shopId });
   }
 
   // Verify payment exists
