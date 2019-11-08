@@ -2,7 +2,6 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { xformCatalogProductMedia } from "./catalogProduct";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
-import { decorateWithLogger } from "graphql-tools";
 
 export const assocOrderInternalId = assocInternalId(namespaces.Order);
 export const assocOrderOpaqueId = assocOpaqueId(namespaces.Order);
