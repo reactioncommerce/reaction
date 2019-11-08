@@ -1,14 +1,14 @@
 [
   {
     "description": "Create tags.",
-    "subjects": [ "reaction:groups:order-managers" ],
+    "subjects": [ "reaction:groups:tag-managers" ],
     "resources": [ "reaction:tags" ],
     "actions": [ "create" ],
     "effect": "allow"
   },
   {
     "description": "Read all tags.",
-    "subjects": [ "reaction:groups:order-managers" ],
+    "subjects": [ "reaction:groups:tag-managers" ],
     "resources": [
       "reaction:tags:*",
       "reaction:tags:*:inactive"
@@ -33,7 +33,7 @@
   },
   {
     "description": "Update tags.",
-    "subjects": [ "reaction:groups:order-managers" ],
+    "subjects": [ "reaction:groups:tag-managers" ],
     "resources": [
       "reaction:tags:*"
     ],
@@ -42,7 +42,7 @@
   },
   {
     "description": "Delete tags.",
-    "subjects": [ "reaction:groups:order-managers" ],
+    "subjects": [ "reaction:groups:tag-managers" ],
     "resources": [
       "reaction:tags:*"
     ],

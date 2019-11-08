@@ -1,48 +1,48 @@
 [
   {
-    "description": "Reading orders.",
+    "description": "Read orders.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders" ],
     "actions": [ "read" ],
     "effect": "allow"
   },
   {
-    "description": "Updating orders.",
+    "description": "Update orders.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
     "actions": [ "update" ],
     "effect": "allow"
   },
   {
-    "description": "Canceling items.",
+    "description": "Cancel items.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
     "actions": [ "cancel-item" ],
     "effect": "allow"
   },
   {
-    "description": "Approving payments.",
+    "description": "Approve payments.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
     "actions": [ "approve-payment" ],
     "effect": "allow"
   },
   {
-    "description": "Capturing payments.",
+    "description": "Capture payments.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
     "actions": [ "capture-payment" ],
     "effect": "allow"
   },
   {
-    "description": "Refunding payments.",
+    "description": "Refund payments.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
     "actions": [ "refund-payment" ],
     "effect": "allow"
   },
   {
-    "description": "Moving items between fulfillment groups.",
+    "description": "Move items between fulfillment groups.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
     "actions": [ "move-item" ],

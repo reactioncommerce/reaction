@@ -1,0 +1,30 @@
+[
+  {
+    "description": "Create shops.",
+    "subjects": [ "reaction:groups:shop-managers" ],
+    "resources": [ "reaction:shops" ],
+    "actions": [ "create" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Read shops.",
+    "subjects": [ "reaction:groups:shop-managers" ],
+    "resources": [ "reaction:shops:*" ],
+    "actions": [ "read" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Update shops.",
+    "subjects": [ "reaction:groups:shop-managers" ],
+    "resources": [ "reaction:shops:*" ],
+    "actions": [ "update" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Invite members to shop.",
+    "subjects": [ "reaction:groups:shop-managers" ],
+    "resources": [ "reaction:shops:*" ],
+    "actions": [ "invite" ],
+    "effect": "allow"
+  }
+]
