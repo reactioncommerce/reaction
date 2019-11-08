@@ -1,0 +1,52 @@
+[
+  {
+    "description": "Create tags.",
+    "subjects": [ "reaction:groups:order-managers" ],
+    "resources": [ "reaction:tags" ],
+    "actions": [ "create" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Read all tags.",
+    "subjects": [ "reaction:groups:order-managers" ],
+    "resources": [
+      "reaction:tags:*",
+      "reaction:tags:*:inactive"
+    ],
+    "actions": [ "read" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Read public tags.",
+    "subjects": [ "reaction:**" ],
+    "resources": [
+      "reaction:tags:*"
+    ],
+    "actions": [ "read" ],
+    "effect": "allow",
+    "conditions": {
+      "filter": {
+        "isDeleted": false,
+        "isVisible": true
+      }
+    }
+  },
+  {
+    "description": "Update tags.",
+    "subjects": [ "reaction:groups:order-managers" ],
+    "resources": [
+      "reaction:tags:*"
+    ],
+    "actions": [ "update" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Delete tags.",
+    "subjects": [ "reaction:groups:order-managers" ],
+    "resources": [
+      "reaction:tags:*"
+    ],
+    "actions": [ "delete" ],
+    "effect": "allow"
+  }
+]

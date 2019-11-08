@@ -25,8 +25,10 @@ export default async function tags(context, shopId, { filter, shouldIncludeDelet
 
   // Check to see if user has `read` permissions for hidden / deleted tags
   // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
-  const hasInactivePermissions = context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
-    await context.userHasPermissions("reaction:tags:inactive", "read", { shopId });
+  const hasInactivePermissions = (
+    context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
+    await context.userHasPermissions("reaction:tags:inactive", "read", { shopId })
+  );
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
 
