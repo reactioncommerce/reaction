@@ -17,35 +17,35 @@
     "description": "Cancel items.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
-    "actions": [ "cancel-item" ],
+    "actions": [ "cancel:item" ],
     "effect": "allow"
   },
   {
     "description": "Approve payments.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
-    "actions": [ "approve-payment" ],
+    "actions": [ "approve:payment" ],
     "effect": "allow"
   },
   {
     "description": "Capture payments.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
-    "actions": [ "capture-payment" ],
+    "actions": [ "capture:payment" ],
     "effect": "allow"
   },
   {
     "description": "Refund payments.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
-    "actions": [ "refund-payment" ],
+    "actions": [ "refund:payment" ],
     "effect": "allow"
   },
   {
     "description": "Move items between fulfillment groups.",
     "subjects": [ "reaction:groups:order-managers" ],
     "resources": [ "reaction:orders:*" ],
-    "actions": [ "move-item" ],
+    "actions": [ "move:item" ],
     "effect": "allow"
   }
 ]

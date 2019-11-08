@@ -3,21 +3,21 @@
     "description": "Archive products",
     "subjects": [ "reaction:groups:product-managers" ],
     "resources": [ "reaction:products:*" ],
-    "actions": [ "archive-product" ],
+    "actions": [ "archive:product" ],
     "effect": "allow"
   },
   {
     "description": "Clone products",
     "subjects": [ "reaction:groups:product-managers" ],
     "resources": [ "reaction:products:*" ],
-    "actions": [ "clone-product" ],
+    "actions": [ "clone:product" ],
     "effect": "allow"
   },
   {
     "description": "Clone products",
     "subjects": [ "reaction:groups:product-managers" ],
     "resources": [ "reaction:products:*" ],
-    "actions": [ "create-product" ],
+    "actions": [ "create:product" ],
     "effect": "allow"
   }
 ]
