@@ -27,7 +27,6 @@ export default async function verifySMTPEmailSettings(context, input) {
   const config = await getMailConfig();
 
   const logConfig = { ...config };
-  delete logConfig.auth;
   Logger.debug(logConfig, "Verifying email config settings");
 
   const transporter = nodemailer.createTransport(config);
