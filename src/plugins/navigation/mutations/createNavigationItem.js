@@ -20,7 +20,7 @@ export default async function createNavigationItem(context, input) {
 
   if (!context.isInternalCall) {
     await context.validatePermissionsLegacy(["core"], null, { shopId });
-    await context.validatePermissions("reaction:navigationItems", "create", { shopId });
+    await context.validatePermissions("reaction:navigationTreeItems", "create", { shopId });
   }
 
   let parsedMetadata = {};

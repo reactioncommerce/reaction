@@ -15,7 +15,7 @@ export default async function deleteNavigationItem(context, input) {
   const { _id, shopId } = input;
 
   await context.validatePermissionsLegacy(["core"], null, { shopId });
-  await context.validatePermissions(`reaction:navigationItems:${_id}`, "delete", { shopId });
+  await context.validatePermissions(`reaction:navigationTreeItems:${_id}`, "delete", { shopId });
 
   const navigationItem = await NavigationItems.findOne({ _id });
   if (!navigationItem) {

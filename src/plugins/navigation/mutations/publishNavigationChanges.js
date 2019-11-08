@@ -17,7 +17,7 @@ export default async function publishNavigationChanges(context, _id) {
 
   if (!context.isInternalCall) {
     await context.validatePermissionsLegacy(["core"], null, { shopId });
-    await context.validatePermissions("reaction:navigationItems", "publish", { shopId });
+    await context.validatePermissions("reaction:navigationTreeItems", "publish", { shopId });
   }
 
   const treeSelector = { _id };

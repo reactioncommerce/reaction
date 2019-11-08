@@ -12,7 +12,7 @@ export default async function navigationItemsByShopId(context, shopId) {
   const { NavigationItems } = collections;
 
   await context.validatePermissionsLegacy(["core"], null, { shopId });
-  await context.validatePermissions("reaction:navigationItems", "read", { shopId });
+  await context.validatePermissions("reaction:navigationTreeItems", "read", { shopId });
 
   return NavigationItems.find({ shopId });
 }
