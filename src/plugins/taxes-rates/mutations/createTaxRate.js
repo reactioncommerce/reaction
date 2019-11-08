@@ -27,7 +27,7 @@ export default async function createTaxRate(context, input) {
     rate
   };
 
-  await TaxRates.insert(taxRate);
+  await TaxRates.insertOne(taxRate);
 
   await appEvents.emit("afterTagRateCreate", taxRate);
 
