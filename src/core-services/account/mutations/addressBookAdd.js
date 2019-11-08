@@ -23,7 +23,9 @@ export default async function addressBookAdd(context, address, accountUserId) {
   // Security check for admin access
   if (typeof accountUserId === "string" && userIdFromContext !== accountUserId) {
     await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
-    await context.validatePermissions(`reaction:accounts:${account._id}`, "create", { shopId: account.shopId });
+    await context.validatePermissions(`reaction:accounts:${account._id}`, "add:address-books", {
+      shopId: account.shopId
+    });
   }
 
   // required default ID

@@ -1,0 +1,58 @@
+[
+  {
+    "description": "Create accounts.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:accounts" ],
+    "actions": [ "read" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Read accounts.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:accounts:*" ],
+    "actions": [ "read" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Read all accounts.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:accounts" ],
+    "actions": [ "read" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Update accounts.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:accounts:*" ],
+    "actions": [ "update" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Delete profile email address.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:accounts:*" ],
+    "actions": [ "delete:email" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Add address books.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:accounts:*" ],
+    "actions": [ "add:address-books" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Update address books.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:accounts:*" ],
+    "actions": [ "update:address-books" ],
+    "effect": "allow"
+  },
+  {
+    "description": "Remove address books.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:accounts:*" ],
+    "actions": [ "remove:address-books" ],
+    "effect": "allow"
+  }
+]

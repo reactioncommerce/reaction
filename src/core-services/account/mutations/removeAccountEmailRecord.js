@@ -34,7 +34,7 @@ export default async function removeAccountEmailRecord(context, input) {
 
   if (!context.isInternalCall && userIdFromContext !== account.userId) {
     await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
-    await context.validatePermissions(`reaction:accounts:${account._id}`, "delete", { shopId: account.shopId });
+    await context.validatePermissions(`reaction:accounts:${account._id}`, "delete:email", { shopId: account.shopId });
   }
 
   // Remove email from user
