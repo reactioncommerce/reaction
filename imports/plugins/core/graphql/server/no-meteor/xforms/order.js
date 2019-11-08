@@ -105,7 +105,7 @@ async function xformOrderItem(context, item, catalogItems) {
 
   const catalogProduct = catalogItem.product;
 
-  const { variant } = context.queries.findVariantInCatalogProduct(catalogProduct, variantId);
+  const { variant } = await context.queries.findProductMedia(context, variantId, productId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
