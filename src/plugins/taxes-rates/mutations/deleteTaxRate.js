@@ -20,7 +20,7 @@ export default async function deleteTaxRate(context, input) {
     shopId
   });
 
-  await TaxRates.remove({
+  await TaxRates.removeOne({
     _id,
     shopId
   });
