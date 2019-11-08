@@ -30,7 +30,7 @@ input CreateTaxRateInput {
   "Did this tax match due to the order origin or the order destination?"
   country: String!
 
-  "A human-readable display name for showing this tax to operators and customers in the UI"
+  "Postal code"
   postal: String!
 
   "The tax rate used for this calculation"
@@ -137,7 +137,7 @@ type TaxRateEdge {
   "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
 
-  "The catalog item"
+  "The tax rate"
   node: TaxRate
 }
 
