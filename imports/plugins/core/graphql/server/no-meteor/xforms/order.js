@@ -2,6 +2,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { xformCatalogProductMedia } from "./catalogProduct";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
+import { decorateWithLogger } from "graphql-tools";
 
 export const assocOrderInternalId = assocInternalId(namespaces.Order);
 export const assocOrderOpaqueId = assocOpaqueId(namespaces.Order);
@@ -105,7 +106,7 @@ async function xformOrderItem(context, item, catalogItems) {
 
   const catalogProduct = catalogItem.product;
 
-  const { variant } = context.queries.findVariantInCatalogProduct(catalogProduct, variantId);
+  const { variant } = await context.queries.findProductMedia(context, variantId, productId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
