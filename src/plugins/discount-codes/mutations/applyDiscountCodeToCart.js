@@ -45,7 +45,7 @@ export default async function applyDiscountCodeToCart(context, input) {
     }
 
     await context.validatePermissionsLegacy(["owner", "admin", "discounts/apply"], null, { shopId });
-    await context.validatePermissions(`reaction:cart:${cartId}`, "update", { shopId });
+    await context.validatePermissions(`reaction:carts:${cartId}`, "update", { shopId });
   }
 
   const objectToApplyDiscount = cart;

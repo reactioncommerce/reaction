@@ -1,0 +1,9 @@
+[
+  {
+    "description": "Update carts.",
+    "subjects": [ "reaction:groups:cart-managers" ],
+    "resources": [ "reaction:carts:*" ],
+    "actions": [ "update" ],
+    "effect": "allow"
+  }
+]
