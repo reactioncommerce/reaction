@@ -34,7 +34,7 @@ export default async function cloneProductVariants(context, input) {
   // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
   for (const variantId of variantIds) {
     await context.validatePermissionsLegacy(["createProduct", "product/admin", "product/clone"], null, { shopId }); // eslint-disable-line no-await-in-loop
-    await context.validatePermissions(`reaction:products:${variantId}`, "clone:product", { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissions(`reaction:products:${variantId}`, "clone", { shopId }); // eslint-disable-line no-await-in-loop
   }
 
   // Check to make sure all variants are on the same shop

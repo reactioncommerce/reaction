@@ -1,23 +1,13 @@
 [
   {
-    "description": "Archive products",
+    "description": "Product managers acting on specific entities.",
     "subjects": [ "reaction:groups:product-managers" ],
     "resources": [ "reaction:products:*" ],
-    "actions": [ "archive:product" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Clone products",
-    "subjects": [ "reaction:groups:product-managers" ],
-    "resources": [ "reaction:products:*" ],
-    "actions": [ "clone:product" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Clone products",
-    "subjects": [ "reaction:groups:product-managers" ],
-    "resources": [ "reaction:products:*" ],
-    "actions": [ "create:product" ],
+    "actions": [
+      "archive",
+      "clone",
+      "create"
+    ],
     "effect": "allow"
   }
 ]

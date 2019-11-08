@@ -1,58 +1,26 @@
 [
   {
-    "description": "Create accounts.",
+    "description": "Account managers acting on all entities.",
     "subjects": [ "reaction:groups:account-managers" ],
     "resources": [ "reaction:accounts" ],
-    "actions": [ "read" ],
+    "actions": [
+      "create",
+      "read"
+    ],
     "effect": "allow"
   },
   {
-    "description": "Read accounts.",
+    "description": "Account managers acting on specific entities.",
     "subjects": [ "reaction:groups:account-managers" ],
     "resources": [ "reaction:accounts:*" ],
-    "actions": [ "read" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Read all accounts.",
-    "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts" ],
-    "actions": [ "read" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Update accounts.",
-    "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts:*" ],
-    "actions": [ "update" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Delete profile email address.",
-    "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts:*" ],
-    "actions": [ "delete:email" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Add address books.",
-    "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts:*" ],
-    "actions": [ "add:address-books" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Update address books.",
-    "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts:*" ],
-    "actions": [ "update:address-books" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Remove address books.",
-    "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts:*" ],
-    "actions": [ "remove:address-books" ],
+    "actions": [
+      "add:address-book",
+      "delete:email",
+      "read",
+      "remove:address-book",
+      "update",
+      "update:address-book"
+    ],
     "effect": "allow"
   }
 ]

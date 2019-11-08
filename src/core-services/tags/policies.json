@@ -1,23 +1,33 @@
 [
   {
-    "description": "Create tags.",
+    "description": "Tag managers acting on all entities.",
     "subjects": [ "reaction:groups:tag-managers" ],
     "resources": [ "reaction:tags" ],
     "actions": [ "create" ],
     "effect": "allow"
   },
   {
-    "description": "Read all tags.",
+    "description": "Tag managers acting on specific entities.",
     "subjects": [ "reaction:groups:tag-managers" ],
     "resources": [
-      "reaction:tags:*",
-      "reaction:tags:*:inactive"
+      "reaction:tags:*"
     ],
+    "actions": [
+      "delete",
+      "read",
+      "update"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Reading inactive tags.",
+    "subjects": [ "reaction:groups:tag-managers" ],
+    "resources": [ "reaction:tags:*:inactive" ],
     "actions": [ "read" ],
     "effect": "allow"
   },
   {
-    "description": "Read public tags.",
+    "description": "Anyone can read public tags.",
     "subjects": [ "reaction:**" ],
     "resources": [
       "reaction:tags:*"
@@ -30,23 +40,5 @@
         "isVisible": true
       }
     }
-  },
-  {
-    "description": "Update tags.",
-    "subjects": [ "reaction:groups:tag-managers" ],
-    "resources": [
-      "reaction:tags:*"
-    ],
-    "actions": [ "update" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Delete tags.",
-    "subjects": [ "reaction:groups:tag-managers" ],
-    "resources": [
-      "reaction:tags:*"
-    ],
-    "actions": [ "delete" ],
-    "effect": "allow"
   }
 ]

@@ -1,6 +1,6 @@
 [
   {
-    "description": "Update carts.",
+    "description": "Cart managers acting on specific entities.",
     "subjects": [ "reaction:groups:cart-managers" ],
     "resources": [ "reaction:carts:*" ],
     "actions": [ "update" ],

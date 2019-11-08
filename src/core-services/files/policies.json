@@ -1,23 +1,19 @@
 [
   {
-    "description": "Create media record.",
+    "description": "Media managers acting on all entities.",
     "subjects": [ "reaction:groups:media-managers" ],
     "resources": [ "reaction:mediaRecords" ],
     "actions": [ "create:media" ],
     "effect": "allow"
   },
   {
-    "description": "Delete media record.",
+    "description": "Media managers acting on specific entities.",
     "subjects": [ "reaction:groups:media-managers" ],
     "resources": [ "reaction:mediaRecords:*" ],
-    "actions": [ "delete:media" ],
-    "effect": "allow"
-  },
-  {
-    "description": "Update media record.",
-    "subjects": [ "reaction:groups:media-managers" ],
-    "resources": [ "reaction:mediaRecords:*" ],
-    "actions": [ "update:media" ],
+    "actions": [
+      "delete:media",
+      "update:media"
+    ],
     "effect": "allow"
   }
 ]

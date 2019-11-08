@@ -1,6 +1,6 @@
 [
   {
-    "description": "Read taxes.",
+    "description": "Tax managers acting on all entities.",
     "subjects": [ "reaction:groups:tax-managers" ],
     "resources": [ "reaction:taxes" ],
     "actions": [ "read" ],
