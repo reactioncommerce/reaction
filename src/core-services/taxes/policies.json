@@ -1,0 +1,9 @@
+[
+  {
+    "description": "Read taxes.",
+    "subjects": [ "reaction:groups:tax-managers" ],
+    "resources": [ "reaction:taxes" ],
+    "actions": [ "read" ],
+    "effect": "allow"
+  }
+]
