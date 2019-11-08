@@ -2,8 +2,9 @@ import _ from "lodash";
 import { xformOrderItems } from "@reactioncommerce/reaction-graphql-xforms/order";
 import formatMoney from "/imports/utils/formatMoney";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
-import { addAnonymousOrderToken } from "./anonymousToken";
 import * as R from "ramda";
+import Logger from "@reactioncommerce/logger";
+import { addAnonymousOrderToken } from "./anonymousToken";
 
 const PaymentStatus = {
   created: "created",
@@ -174,9 +175,9 @@ export default async function getDataForOrderEmail(context, { order }) {
   }
 
   if (isCashpresso) {
-    bankDetails = { 
-      url: getCashpressoUrl(order) 
-    }
+    bankDetails = {
+      url: getCashpressoUrl(order)
+    };
   }
 
   // Merge data into single object to pass to email template
@@ -190,7 +191,8 @@ export default async function getDataForOrderEmail(context, { order }) {
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")}`,
       city: _.get(shop, "addressBook[0].city"),
-      postal: _.get(shop, "addressBook[0].postal")
+      postal: _.get(shop, "addressBook[0].postal"),
+      country: _.get(shop, "addressBook[0].country")
     },
     shopName: shop.name,
     socialLinks: {
@@ -213,7 +215,8 @@ export default async function getDataForOrderEmail(context, { order }) {
     },
     order: {
       ...order,
-      shipping: adjustedOrderGroups
+      shipping: adjustedOrderGroups,
+      deliveryOption: await getTranslatedDeliveryOption(context, order)
     },
     billing: {
       address: billingAddressForEmail,
@@ -258,6 +261,28 @@ export default async function getDataForOrderEmail(context, { order }) {
   };
 }
 
+async function getTranslatedDeliveryOption(context, order) {
+  const { collections: { Shops } } = context;
+  const { customFields: { deliveryOption, deliveryShopId }, language } = order;
+  switch (true) {
+    case (language === "de" && deliveryOption === "home"):
+      return "Standardversand";
+    case (language === "de" && deliveryOption === "dealer"): {
+      const shop = await Shops.findOne({ _id: deliveryShopId }, { "addressBook.company": 1 });
+      const shopName = R.path(["addressBook", 0, "company"])(shop);
+      return `Hole dein E-Bike bei deinem Wunschhändler "${shopName}" in deiner Nähe ab`;
+    }
+    case (language === "en" && deliveryOption === "home"):
+      return "Standard Delivery";
+    case (language === "en" && deliveryOption === "dealer"): {
+      return `Pick up your e-bike from your favorite dealer "${shopName}"`;
+    }
+    default:
+      Logger.error(`Error getTranslatedDeliveryOption: incorrect value supplied for ${order.id} with language ${language} and deliveryOption ${deliveryOption}`);
+      return "/";
+  }
+}
+
 async function getBankDetails(context, shopId) {
   const {
     collections: { Shops }
@@ -278,14 +303,14 @@ async function getBankDetails(context, shopId) {
     region: addressBook[0].region,
     postal: addressBook[0].postal,
     city: addressBook[0].city,
-    country: addressBook[0].country,
-  }
+    country: addressBook[0].country
+  };
 
-  return { ...bankDetails, ... locationDetails };
+  return { ...bankDetails, ...locationDetails };
 }
 
 function getCashpressoUrl(order) {
-  return R.path(['payments', 0, 'data', 'cashpresso', 'url'])(order);
+  return R.path(["payments", 0, "data", "cashpresso", "url"])(order);
 }
 
 function getPaymentShopId(order) {
