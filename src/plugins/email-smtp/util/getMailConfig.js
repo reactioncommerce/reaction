@@ -7,7 +7,7 @@ import envConfig from "../config.js";
  * @param {String} mailUrl The mail URL
  * @returns {Object} A mail config object
  */
-function getConfigFromMailUrl({ mailUrl }) {
+function getConfigFromMailUrl(mailUrl) {
   const urlSections = mailUrl.split(":");
   // Prevent URL parsing from breaking due to invalid characters in user/password
   // Look for invalid characters in username,
@@ -59,22 +59,16 @@ export default async function getMailConfig() {
 
   // If a mail service config URL is provided, use it to build the mailer's config.
   if (MAIL_URL) {
-    config = getConfigFromMailUrl({ mailUrl: MAIL_URL });
+    config = getConfigFromMailUrl(MAIL_URL);
     direct = false;
   }
 
   if (direct) {
-    // Try direct sending but warn that this rarely works.
-    Logger.warn(`
-      Mail service not configured. Attempting to use direct sending option.
-      The mail may send, but messages are far more likely go to the user's spam folder.
-      Please configure an SMTP mail sending provider.
-    `);
+    throw new ReactionError("No valid Mail service configuration found, please set the \"MAIL_URL\" environment variable.");
   }
 
   return {
     ...config,
-    direct,
     logger
   };
 }

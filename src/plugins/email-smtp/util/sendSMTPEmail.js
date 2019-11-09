@@ -13,11 +13,12 @@ import getMailConfig from "./getMailConfig.js";
  */
 export default async function sendSMTPEmail(context, { job, sendEmailCompleted, sendEmailFailed }) {
   const { to, shopId, ...otherEmailFields } = job.data;
+  let config = {};
 
-  const config = await getMailConfig();
-  if (config.direct) {
+  try {
+    config = await getMailConfig();
+  } catch (error) {
     sendEmailFailed(job, "SMTP mail settings not configured");
-    return;
   }
 
   Logger.debug(config, "Sending SMTP email with config");
