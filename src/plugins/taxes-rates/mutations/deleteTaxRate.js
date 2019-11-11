@@ -25,7 +25,7 @@ export default async function deleteTaxRate(context, input) {
     shopId
   });
 
-  await appEvents.emit("afterTagRateDelete", taxRateToDelete);
+  await appEvents.emit("afterTaxRateDelete", taxRateToDelete);
 
   return taxRateToDelete;
 }
