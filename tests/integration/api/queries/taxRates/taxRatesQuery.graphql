@@ -1,0 +1,29 @@
+query taxRateQuery(
+  $shopId: ID!,
+  $first: ConnectionLimitInt,
+  $last:  ConnectionLimitInt,
+  $before: ConnectionCursor,
+  $after: ConnectionCursor,
+  $offset: Int
+) {
+  taxRates(
+    shopId: $shopId,
+    first: $first,
+    last: $last,
+    before: $before,
+    after: $after,
+    offset: $offset
+  ) {
+		nodes {
+      _id
+    	rate
+      shop {
+        _id
+      }
+      postal
+      country
+      taxCode
+      postal
+    }
+  }
+}
