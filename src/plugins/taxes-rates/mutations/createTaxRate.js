@@ -29,7 +29,7 @@ export default async function createTaxRate(context, input) {
 
   await TaxRates.insertOne(taxRate);
 
-  await appEvents.emit("afterTagRateCreate", taxRate);
+  await appEvents.emit("afterTaxRateCreate", taxRate);
 
   return taxRate;
 }
