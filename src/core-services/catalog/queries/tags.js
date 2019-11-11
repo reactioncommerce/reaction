@@ -39,10 +39,10 @@ export default async function tags(
   if (filter) {
     regexMatch = { $regex: _.escapeRegExp(filter), $options: "i" };
     searchFieldFilter = {
-      $or: [{
-        name: regexMatch,
-        slug: regexMatch
-      }]
+      $or: [
+        { name: regexMatch },
+        { slug: regexMatch }
+      ]
     };
   }
 
