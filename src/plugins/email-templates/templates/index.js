@@ -1,6 +1,5 @@
 import coreDefaultTemplate from "./coreDefault.js";
 import inviteNewShopMemberTemplate from "./accounts/inviteNewShopMember.js";
-import inviteShopMemberTemplate from "./accounts/inviteShopMember.js";
 import resetPasswordTemplate from "./accounts/resetPassword.js";
 import welcomeEmailTemplate from "./accounts/sendWelcomeEmail.js";
 import verifyUpdatedEmailTemplate from "./accounts/verifyUpdatedEmail.js";
@@ -26,18 +25,6 @@ export default [
   /*
    * Account related email templates
    */
-
-  /*
-   * Accounts - Invite Shop member with an Existing User Account
-   * When: Admin invites new member to shop
-   */
-  {
-    language: "en",
-    title: "Accounts - Invite Shop Member - Existing User Account",
-    name: "accounts/inviteShopMember",
-    template: inviteShopMemberTemplate,
-    subject: "You have been invited to join the group \"{{groupName}}\" in the store \"{{shop.name}}\""
-  },
 
   /*
    * Accounts - Invite Shop member and create new user account

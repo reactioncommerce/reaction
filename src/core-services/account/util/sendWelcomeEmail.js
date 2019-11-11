@@ -57,22 +57,7 @@ export default async function sendWelcomeEmail(context, input) {
     shop,
     shopName: shop.name,
     socialLinks: {
-      display: true,
-      facebook: {
-        display: true,
-        icon: context.getAbsoluteUrl("resources/email-templates/facebook-icon.png"),
-        link: "https://www.facebook.com"
-      },
-      googlePlus: {
-        display: true,
-        icon: context.getAbsoluteUrl("resources/email-templates/google-plus-icon.png"),
-        link: "https://plus.google.com"
-      },
-      twitter: {
-        display: true,
-        icon: context.getAbsoluteUrl("resources/email-templates/twitter-icon.png"),
-        link: "https://www.twitter.com"
-      }
+      display: false
     },
     verificationUrl: context.getAbsoluteUrl(`#/verify-email/${tokenObj.token}`)
   };

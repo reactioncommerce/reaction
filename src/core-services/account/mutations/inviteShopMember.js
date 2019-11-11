@@ -2,9 +2,10 @@ import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createUser from "../util/createUser.js";
+import config from "../config.js";
 import getCurrentUserName from "../util/getCurrentUserName.js";
-import getDataForEmail from "../util/getDataForEmail.js";
+
+const { REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL } = config;
 
 const inputSchema = new SimpleSchema({
   email: String,
@@ -29,7 +30,7 @@ const inputSchema = new SimpleSchema({
 export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
   const { collections, user: userFromContext, userHasPermission } = context;
-  const { Accounts, Groups, Shops, users } = collections;
+  const { Accounts, AccountInvites, Groups, Shops, users } = collections;
   const {
     email,
     groupId,
@@ -43,16 +44,10 @@ export default async function inviteShopMember(context, input) {
 
   // we always use primary shop data, so retrieve this shop first with `Reaction` helper,
   // and only query the `Shops` collection if shopId !== primaryShop._id
-  const primaryShop = await Shops.findOne({ shopType: "primary" });
-  if (!primaryShop) throw new ReactionError("not-found", "No primary shop found");
-
-  let shop = primaryShop;
-  if (primaryShop._id !== shopId) {
-    shop = await Shops.findOne({ _id: shopId });
-  }
+  const shop = await Shops.findOne({ _id: shopId });
   if (!shop) throw new ReactionError("not-found", "No shop found");
 
-  const group = await Groups.findOne({ _id: groupId });
+  const group = await Groups.findOne({ _id: groupId }, { projection: { name: 1, slug: 1 } });
   if (!group) throw new ReactionError("not-found", "No group found");
 
   // we don't allow direct invitation of "owners", throw an error if that is the group
@@ -63,79 +58,65 @@ export default async function inviteShopMember(context, input) {
   // check to see if invited user has an account
   const invitedUser = await users.findOne({ "emails.address": email });
 
-  // if there is a userAccount, check to see if email has been verified
-  const matchingEmail = invitedUser && invitedUser.emails && invitedUser.emails.find((accountEmail) => accountEmail.address === email);
-  const isEmailVerified = matchingEmail && matchingEmail.verified;
-
-  // set variables to pass to email templates
-  const invitedByName = getCurrentUserName(userFromContext);
-  let dataForEmail;
-  let userId;
-  let templateName;
-
   if (invitedUser) {
-    userId = invitedUser._id;
-  }
-
-  // if the user already has an account, send in informative email instead of an invite email
-  if (invitedUser && isEmailVerified) {
-    // make sure user has an `Account` - this should always be the case
-    const invitedAccount = await Accounts.findOne({ userId }, { projection: { _id: 1 } });
+    // make sure user has an account
+    const invitedAccount = await Accounts.findOne({ userId: invitedUser._id }, { projection: { _id: 1 } });
     if (!invitedAccount) throw new ReactionError("not-found", "User found but matching account not found");
 
-    // do not send token, as no password reset is needed
-    const url = context.getAbsoluteUrl();
+    // Set the account's permission group for this shop
+    await context.mutations.addAccountToGroup(context, {
+      accountId: invitedAccount._id,
+      groupId
+    });
 
-    // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = await getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, url });
-
-    // Get email template and subject
-    templateName = "accounts/inviteShopMember";
-  } else {
-    // There could be an existing user with an invite still pending (not activated).
-    // We create a new account only if there's no pending invite.
-    if (!invitedUser) {
-      // The user does not already exist, we need to create a new account
-      userId = await createUser({
-        profile: { invited: true },
-        email,
-        name,
-        shopId: shop._id
-      });
-    }
-
-    const token = Random.id();
-
-    // set token to be used for first login for the new account
-    const tokenUpdate = {
-      "services.password.reset": { token, email, when: new Date() },
-      name
-    };
-
-    await users.updateOne({ _id: userId }, { $set: tokenUpdate }); // TODO: not sure if this is working
-
-    // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = await getDataForEmail(context, { shop: primaryShop, currentUserName: invitedByName, name, token });
-
-    // Get email template and subject
-    templateName = "accounts/inviteNewShopMember";
+    return Accounts.findOne({ _id: invitedAccount._id });
   }
 
-  // add new / existing user to invited group
-  await context.mutations.addAccountToGroup(context, {
-    accountId: userId,
-    groupId
+  // Create an AccountInvites document. If a person eventually creates an account with this email address,
+  // it will be automatically added to this group instead of the default group for this shop.
+  await AccountInvites.updateOne({
+    email,
+    shopId
+  }, {
+    $set: {
+      groupId,
+      invitedByUserId: userFromContext._id
+    },
+    $setOnInsert: {
+      _id: Random.id()
+    }
+  }, {
+    upsert: true
   });
 
-  dataForEmail.groupName = _.startCase(group.name);
+  // Now send them an invitation email
+  const dataForEmail = {
+    shop,
+    contactEmail: _.get(shop, "emails[0].address"),
+    copyrightDate: new Date().getFullYear(),
+    groupName: _.startCase(group.name),
+    legalName: _.get(shop, "addressBook[0].company"),
+    physicalAddress: {
+      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      city: _.get(shop, "addressBook[0].city"),
+      region: _.get(shop, "addressBook[0].region"),
+      postal: _.get(shop, "addressBook[0].postal")
+    },
+    shopName: shop.name,
+    socialLinks: {
+      display: false
+    },
+    currentUserName: getCurrentUserName(userFromContext),
+    invitedUserName: name,
+    url: REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL
+  };
 
-  // send invitation email from primary shop email
   await context.mutations.sendEmail(context, {
     data: dataForEmail,
-    fromShop: primaryShop,
-    templateName,
+    fromShop: shop,
+    templateName: "accounts/inviteNewShopMember",
     to: email
   });
 
-  return Accounts.findOne({ userId });
+  return null;
 }

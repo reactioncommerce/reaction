@@ -44,6 +44,12 @@ export default async function register(app) {
           [{ userId: 1 }, { name: "c2_userId" }]
         ]
       },
+      AccountInvites: {
+        name: "AccountInvites",
+        indexes: [
+          [{ email: 1 }]
+        ]
+      },
       Groups: {
         name: "Groups"
       },
