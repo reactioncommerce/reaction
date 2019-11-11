@@ -30,7 +30,7 @@ export default async function updateTaxRate(context, input) {
 
   const taxRate = await TaxRates.findOne({ _id });
 
-  await appEvents.emit("afterTagRateCreate", taxRate);
+  await appEvents.emit("afterTaxRateCreate", taxRate);
 
   return taxRate;
 }
