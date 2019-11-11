@@ -1,3 +1,113 @@
+"A discount code"
+
+type DiscountCode {
+  "DiscountCode shopId"
+  shopId: ID!
+
+  "Label to describe the code"
+  label: String
+
+  "Discount Code"
+  code: String!
+
+  "Description to describe the discount code"
+  description: String
+
+  "Discount method type"
+  discountMethod: DiscountMethod
+
+  """
+  discount is allowed to be string or number.
+  it's a formula value (could be shipping code)
+  """
+  discount: String
+
+  "History of transactions"
+  transactions: [DiscountTransaction]
+
+  "How the discount should be applied"
+  calculation: DiscountCalculation
+
+  "Discount code conditions"
+  considitons: DiscountConditions
+}
+
+type DiscountTransaction {
+  cartId: String!
+
+  userId: String!
+
+  appliedAt: Date
+}
+
+type DiscountConditionOrder {
+  "Minimum order value"
+  min: Float!
+
+  "Maximum order value"
+  max: Float
+
+  "Order date range start"
+  startDate: Date,
+
+  "Order date range end"
+  endDate: Date
+}
+
+type DiscountConditions {
+  "Account Limit"
+  accountLimit: Integer
+
+  "Order conditions"
+  order: DiscountConditionOrder
+
+  "Is this discount code enabled"
+  enabled: Boolean
+
+  "Audience that may apply this discount code"
+  audience: [String]
+
+  "Permissions that may apply this discount code"
+  permissions: [String]
+
+  "Products that may apply this discount code"
+  products: [String]
+
+  """
+  Number of times this code may be redeemed.
+  Setting to 100 means the first 100 customers may apply this code.
+  Setting this value to 0 will allow this code to be applied an infinite number of times.
+  """
+  redemptionLimit: Integer
+
+  "Tags that may be apply this discount code"
+  tags: [String]
+}
+
+type DiscountCalculation {
+  method: DiscountCalculationMethod
+}
+
+enum DiscountMethod {
+  code
+
+  rate
+}
+
+enum DiscountCalculationMethod {
+  "Store credit"
+  credit
+
+  "Discount of order"
+  discount
+
+  "Sale on an item"
+  sale
+
+  "Discount to shipping"
+  shipping
+}
+
 extend type Mutation {
   "Apply a discount code to a cart"
   applyDiscountCodeToCart(
