@@ -1,4 +1,5 @@
 import { createRequire } from "module";
+import Logger from "@reactioncommerce/logger";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
 
@@ -42,6 +43,8 @@ export default function hasPermission(user, permissions, roleGroup) {
     const groupRoles = roles[group];
     if (Array.isArray(groupRoles) && checkRoles.some((role) => groupRoles.includes(role))) return true;
   }
+
+  Logger.debug(`User ${user._id} has none of [${checkRoles.join(", ")}] permissions`);
 
   return false;
 }
