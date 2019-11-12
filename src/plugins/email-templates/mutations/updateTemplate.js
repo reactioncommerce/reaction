@@ -1,6 +1,4 @@
-import Logger from "@reactioncommerce/logger";
-import ReactionError from "@reactioncommerce/reaction-error";
-import { EmailTemplates } from "./simpleSchemas";
+import { EmailTemplates } from "../simpleSchemas";
 
 /**
  * @name updateTemplate
