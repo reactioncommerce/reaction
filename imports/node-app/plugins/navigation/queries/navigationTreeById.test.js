@@ -8,6 +8,7 @@ const mockNavigationTree = {
   language: "en"
 };
 
+mockContext.queries.primaryShopId = jest.fn().mockName("primaryShopId").mockImplementation(() => "SHOP_ID");
 
 test("calls NavigationTrees.findOne and returns a navigation tree", async () => {
   mockContext.collections.NavigationTrees.findOne.mockReturnValueOnce(mockNavigationTree);
