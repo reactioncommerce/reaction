@@ -3,6 +3,7 @@ import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import config from "../config.js";
+import canAddAccountToGroup from "../util/canAddAccountToGroup.js";
 import getCurrentUserName from "../util/getCurrentUserName.js";
 
 const { REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL } = config;
@@ -45,7 +46,7 @@ export default async function inviteShopMember(context, input) {
   const shop = await Shops.findOne({ _id: shopId });
   if (!shop) throw new ReactionError("not-found", "No shop found");
 
-  const group = await Groups.findOne({ _id: groupId }, { projection: { name: 1, slug: 1 } });
+  const group = await Groups.findOne({ _id: groupId });
   if (!group) throw new ReactionError("not-found", "No group found");
 
   // we don't allow direct invitation of "owners", throw an error if that is the group
@@ -69,6 +70,11 @@ export default async function inviteShopMember(context, input) {
 
     return Accounts.findOne({ _id: invitedAccount._id });
   }
+
+  // This check is part of `addAccountToGroup` mutation for existing users. For new users,
+  // we do it here before creating an invite record and sending the invite email.
+  const isAllowed = await canAddAccountToGroup(context, group);
+  if (!isAllowed) throw new ReactionError("access-denied", "Access Denied");
 
   // Create an AccountInvites document. If a person eventually creates an account with this email address,
   // it will be automatically added to this group instead of the default group for this shop.
