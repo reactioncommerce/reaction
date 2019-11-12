@@ -9,6 +9,8 @@ beforeEach(() => {
 const shopId = "SHOP_ID";
 
 test("throws if permission check fails", async () => {
+  console.log("env vars", process.env);
+
   mockContext.checkPermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
