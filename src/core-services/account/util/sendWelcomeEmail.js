@@ -1,6 +1,10 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
+import ReactionError from "@reactioncommerce/reaction-error";
 import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
+import config from "../config.js";
+
+const { REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL } = config;
 
 const inputSchema = new SimpleSchema({
   accountId: String
@@ -40,7 +44,15 @@ export default async function sendWelcomeEmail(context, input) {
     }
   });
 
-  const shop = await Shops.findOne({ _id: shopId });
+  // Fall back to primary shop if account has no shop linked
+  let shop;
+  if (shopId) {
+    shop = await Shops.findOne({ _id: shopId });
+  } else {
+    shop = await Shops.findOne({ shopType: "primary" });
+  }
+
+  if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const copyrightDate = new Date().getFullYear();
   const dataForEmail = {
@@ -56,10 +68,7 @@ export default async function sendWelcomeEmail(context, input) {
     },
     shop,
     shopName: shop.name,
-    socialLinks: {
-      display: false
-    },
-    verificationUrl: context.getAbsoluteUrl(`#/verify-email/${tokenObj.token}`)
+    verificationUrl: REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL.replace("TOKEN", tokenObj.token)
   };
 
   const language = (account.profile && account.profile.language) || shop.language;

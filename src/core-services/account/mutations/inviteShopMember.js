@@ -91,7 +91,6 @@ export default async function inviteShopMember(context, input) {
 
   // Now send them an invitation email
   const dataForEmail = {
-    shop,
     contactEmail: _.get(shop, "emails[0].address"),
     copyrightDate: new Date().getFullYear(),
     groupName: _.startCase(group.name),
@@ -103,9 +102,6 @@ export default async function inviteShopMember(context, input) {
       postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
-    socialLinks: {
-      display: false
-    },
     currentUserName: getCurrentUserName(userFromContext),
     invitedUserName: name,
     url: REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL
