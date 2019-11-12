@@ -1,6 +1,8 @@
 import SimpleSchema from "simpl-schema";
 import { Metafield } from "./metafield";
 import { ShippingParcel } from "./shipping";
+import { AttributesSchema as AttributesVariantSchema } from "../extend/productVariant";
+import { AttributesSchema as AttributesSimpleSchema } from "../extend/productSimple";
 
 /**
  * @name ImageSizes
@@ -166,6 +168,10 @@ export const VariantBaseSchema = new SimpleSchema({
   },
   "metafields.$": {
     type: Metafield
+  },
+  "attributes": {
+    type: AttributesVariantSchema,
+    optional: true
   },
   "minOrderQuantity": {
     type: SimpleSchema.Integer,
@@ -338,6 +344,10 @@ export const CatalogProduct = new SimpleSchema({
   },
   "metafields.$": {
     type: Metafield
+  },
+  "attributes": {
+    type: AttributesSimpleSchema,
+    optional: true
   },
   "metaDescription": {
     type: String,

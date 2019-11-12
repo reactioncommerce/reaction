@@ -7,6 +7,8 @@ import { Event } from "./event";
 import { Metafield } from "./metafield";
 import { ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
+import { AttributesSchema as AttributesVariantSchema } from "../extend/productVariant";
+import { AttributesSchema as AttributesSimpleSchema } from "../extend/productSimple";
 
 /**
  * @name VariantMedia
@@ -143,6 +145,10 @@ export const ProductVariant = new SimpleSchema({
   },
   "metafields.$": {
     type: Metafield
+  },
+  "attributes": {
+    type: AttributesVariantSchema,
+    optional: true
   },
   "minOrderQuantity": {
     label: "Minimum order quantity",
@@ -311,6 +317,10 @@ export const Product = new SimpleSchema({
   },
   "metafields.$": {
     type: Metafield
+  },
+  "attributes": {
+    type: AttributesSimpleSchema,
+    optional: true
   },
   "originCountry": {
     type: String,
