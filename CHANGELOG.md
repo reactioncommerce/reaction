@@ -1,3 +1,36 @@
+# v2.8.1
+Reaction v2.8.1 adds a bug fix and contains no breaking changes since v2.8.0
+
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.8.1` of `example-storefront` and `reaction-hydra`.
+
+## Notable changes
+
+### Fix password reset issue
+
+Password reset has been fixed to correctly send a password reset email, and re-direct the user once their new password has been set.
+
+## Fixes
+
+fix: password-reset route not working correctly ([#5744](https://github.com/reactioncommerce/reaction/pull/5744))
+
+# v2.8.0
+
+Reaction v2.8.0 adds performance enhancements and fixes bugs.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.8.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### Fix memory issues in jest tests
+
+Jest integration tests were failing due to a memory leak in async test code. We have closed that memory leak with this release.
+
+## Fixes
+
+Merge pull request #5733 from reactioncommerce/fix-aldeed-memory-issues
+
+- fix: fix memory issues with jest tests ([#5733](https://github.com/reactioncommerce/reaction/pull/5733))
+
 # v2.7.0
 
 Reaction v2.7.0 adds performance enhancements and fixes bugs.
