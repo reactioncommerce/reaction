@@ -17,12 +17,10 @@ export default async function deleteFlatRateFulfillmentRestriction(context, inpu
   inputSchema.validate(input);
 
   const { restrictionId, shopId } = input;
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["admin", "owner", "shipping"], shopId);
 
   const { ok, value } = await FlatRateFulfillmentRestrictions.findOneAndDelete({
     _id: restrictionId,

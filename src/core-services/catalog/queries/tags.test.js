@@ -60,7 +60,7 @@ test("include isDeleted", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   const result = await tags(mockContext, mockShopId, { shouldIncludeDeleted: true });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin"], mockShopId);
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isVisible: true, isDeleted: { $in: [false, true] } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isVisible: true });
   expect(result).toBe("CURSOR");
 });
 
@@ -69,7 +69,7 @@ test("top-level only, include isDeleted", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   const result = await tags(mockContext, mockShopId, { isTopLevel: true, shouldIncludeDeleted: true });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin"], mockShopId);
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isTopLevel: true, isVisible: true, isDeleted: { $in: [false, true] } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isTopLevel: true, isVisible: true });
   expect(result).toBe("CURSOR");
 });
 
@@ -78,7 +78,7 @@ test("non-top-level only, include isDeleted", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   const result = await tags(mockContext, mockShopId, { isTopLevel: false, shouldIncludeDeleted: true });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin"], mockShopId);
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isTopLevel: false, isVisible: true, isDeleted: { $in: [false, true] } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isTopLevel: false, isVisible: true });
   expect(result).toBe("CURSOR");
 });
 
@@ -87,7 +87,7 @@ test("include not visible - by an admin", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   const result = await tags(mockContext, mockContext.shopId, { shouldIncludeInvisible: true });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin"], mockContext.shopId);
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockContext.shopId, isDeleted: false, isVisible: { $in: [false, true] } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockContext.shopId, isDeleted: false });
   expect(result).toBe("CURSOR");
 });
 
@@ -96,6 +96,6 @@ test("include not visible and only topLevel - by an admin", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   const result = await tags(mockContext, mockShopId, { shouldIncludeInvisible: true, isTopLevel: true });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin"], mockShopId);
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: true, isVisible: { $in: [false, true] } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: true });
   expect(result).toBe("CURSOR");
 });

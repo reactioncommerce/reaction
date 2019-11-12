@@ -29,7 +29,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
-  const { collections, user: userFromContext, userHasPermission } = context;
+  const { checkPermissions, collections, user: userFromContext } = context;
   const { Accounts, AccountInvites, Groups, Shops, users } = collections;
   const {
     email,
@@ -38,9 +38,7 @@ export default async function inviteShopMember(context, input) {
     shopId
   } = input;
 
-  if (!userHasPermission(["reaction-accounts", "account/invite"], shopId)) {
-    throw new ReactionError("access-denied", "Access denied");
-  }
+  await checkPermissions(["reaction-accounts", "account/invite"], shopId);
 
   // we always use primary shop data, so retrieve this shop first with `Reaction` helper,
   // and only query the `Shops` collection if shopId !== primaryShop._id

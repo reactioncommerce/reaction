@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import publishNavigationChangesMutation from "./publishNavigationChanges.js";
 
 const mockTreeItems = [
@@ -73,7 +74,9 @@ test("Calls NavigationTrees.findOne and updateOne, and NavigationItems.findOne, 
 });
 
 test("throws an error if the user does not have the core permission", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
   const result = publishNavigationChangesMutation(mockContext, "123");
   expect(result).rejects.toThrow();
 });

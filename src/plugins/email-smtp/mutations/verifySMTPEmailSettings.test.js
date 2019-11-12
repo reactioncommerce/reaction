@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 import verifySMTPEmailSettings from "./verifySMTPEmailSettings.js";
 
 beforeEach(() => {
@@ -13,7 +14,9 @@ const user = "testUser";
 const password = "testPassword";
 
 test("throws if permission check fails", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
+  mockContext.checkPermissions.mockImplementation(() => {
+    throw new ReactionError("access-denied", "Access Denied");
+  });
 
   await expect(verifySMTPEmailSettings(mockContext, {
     host,
@@ -24,11 +27,11 @@ test("throws if permission check fails", async () => {
     password
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["owner", "admin", "dashboard"], "SHOP_ID");
+  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["owner", "admin", "dashboard"], "SHOP_ID");
 });
 
 test("throws if password isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(verifySMTPEmailSettings(mockContext, {
     host,
@@ -40,7 +43,7 @@ test("throws if password isn't supplied", async () => {
 });
 
 test("throws if service isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(verifySMTPEmailSettings(mockContext, {
     host,
@@ -52,7 +55,7 @@ test("throws if service isn't supplied", async () => {
 });
 
 test("throws if user isn't supplied", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(verifySMTPEmailSettings(mockContext, {
     host,

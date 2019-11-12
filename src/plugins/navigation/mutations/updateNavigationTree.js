@@ -12,7 +12,7 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
  * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function updateNavigationTree(context, _id, navigationTree) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { NavigationTrees } = collections;
 
   const shopId = await context.queries.primaryShopId(context);
@@ -42,9 +42,7 @@ export default async function updateNavigationTree(context, _id, navigationTree)
   NavigationTreeSchema.validate(navigationTreeData);
   const { draftItems, name } = navigationTreeData;
 
-  if (userHasPermission(["core"], shopId) === false) {
-    throw new ReactionError("access-denied", "You do not have permission to update a navigation tree");
-  }
+  await checkPermissions(["core"], shopId);
 
   const existingNavigationTree = await NavigationTrees.findOne({ _id });
   if (!existingNavigationTree) {

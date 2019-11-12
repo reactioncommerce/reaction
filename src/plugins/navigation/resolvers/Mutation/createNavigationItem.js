@@ -16,7 +16,9 @@ export default async function createNavigationItem(parentResult, { input }, cont
     navigationItem
   } = input;
 
-  const newNavigationItem = await context.mutations.createNavigationItem(context, navigationItem);
+  const newNavigationItem = await context.mutations.createNavigationItem(context, {
+    navigationItem
+  });
 
   return {
     clientMutationId,

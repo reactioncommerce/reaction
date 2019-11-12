@@ -6,19 +6,20 @@ import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
  * @method createNavigationItem
  * @summary Creates a nav item
  * @param {Object} context An object containing the per-request state
- * @param {Object} navigationItem Nav item to add. See schema.graphql
+ * @param {Object} input An object of all mutation arguments that were sent by the client
+ * @param {String} input.navigationItem Nav item to add. See schema.graphql
  * @returns {Promise<Object>} The created navigation item
  */
-export default async function createNavigationItem(context, navigationItem) {
-  const { collections, userHasPermission } = context;
+export default async function createNavigationItem(context, input) {
+  const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
+  const { navigationItem } = input;
+  const { shopId } = navigationItem;
 
   const { metadata, draftData = {} } = navigationItem;
 
-  const shopId = navigationItem.shopId || await context.queries.primaryShopId(context);
-
-  if (!context.isInternalCall && !userHasPermission(["core"], shopId)) {
-    throw new ReactionError("access-denied", "You do not have permission to create a navigation item");
+  if (!context.isInternalCall) {
+    await checkPermissions(["core"], shopId);
   }
 
   let parsedMetadata = {};

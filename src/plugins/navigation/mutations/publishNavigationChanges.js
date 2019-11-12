@@ -10,13 +10,13 @@ import getNavigationTreeItemIds from "../util/getNavigationTreeItemIds.js";
  * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function publishNavigationChanges(context, _id) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { NavigationItems, NavigationTrees } = collections;
 
   const shopId = await context.queries.primaryShopId(context);
 
-  if (!context.isInternalCall && !userHasPermission(["core"], shopId)) {
-    throw new ReactionError("access-denied", "You do not have permission to publish a navigation tree");
+  if (!context.isInternalCall) {
+    await checkPermissions(["core"], shopId);
   }
 
   const treeSelector = { _id };

@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
-import ReactionError from "@reactioncommerce/reaction-error";
 import sendWelcomeEmail from "../util/sendWelcomeEmail.js";
 
 const inputSchema = new SimpleSchema({
@@ -43,6 +42,7 @@ export default async function createAccount(context, input) {
 
   const {
     appEvents,
+    checkPermissions,
     collections: { Accounts, AccountInvites, Groups },
     simpleSchemas: {
       Account: AccountSchema
@@ -59,8 +59,8 @@ export default async function createAccount(context, input) {
     userId
   } = input;
 
-  if (shopId && !context.isInternalCall && !userHasPermission(["reaction-accounts", "account/invite"], shopId)) {
-    throw new ReactionError("access-denied", "Access denied");
+  if (shopId && !context.isInternalCall) {
+    await checkPermissions(["reaction-accounts", "account/invite"], shopId);
   }
 
   // Create initial account object from user and profile

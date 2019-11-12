@@ -89,7 +89,7 @@ class TestApp {
   async publishProducts(productIds) {
     const requestContext = { ...this.reactionNodeApp.context };
     await buildContext(requestContext);
-    requestContext.userHasPermission = () => true;
+    requestContext.checkPermissions = () => null;
     return this.reactionNodeApp.context.mutations.publishProducts(requestContext, productIds);
   }
 
@@ -134,7 +134,7 @@ class TestApp {
     // it from starting the actual server. We will use
     // `createTestClient` below instead of an actual server.
     try {
-      await this.reactionNodeApp.start({ mongoUrl, shouldInitReplicaSet: true });
+      await this.reactionNodeApp.start({ mongoUrl, port: null, shouldInitReplicaSet: true });
     } catch (error) {
       Logger.error(error, "Error starting app in TestApp");
       throw error;

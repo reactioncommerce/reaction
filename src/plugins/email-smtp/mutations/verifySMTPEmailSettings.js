@@ -36,10 +36,10 @@ const inputSchema = new SimpleSchema({
 export default async function verifySMTPEmailSettings(context, input) {
   inputSchema.validate(input);
 
-  const { userHasPermission } = context;
+  const { checkPermissions } = context;
   const { host, port, service, shopId, user, password } = input;
 
-  if (!userHasPermission(["owner", "admin", "dashboard"], shopId)) throw new ReactionError("access-denied", "Access denied");
+  await checkPermissions(["owner", "admin", "dashboard"], shopId);
 
   let config;
 

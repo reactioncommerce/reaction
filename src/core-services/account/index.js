@@ -6,8 +6,6 @@ import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 import tokenMiddleware from "./util/tokenMiddleware.js";
-import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
-import { getShopsUserHasPermissionForFunctionForUser } from "./util/shopsUserHasPermissionFor.js";
 import accountByUserId from "./util/accountByUserId.js";
 import { Account } from "./simpleSchemas.js";
 
@@ -61,9 +59,7 @@ export default async function register(app) {
       }
     },
     auth: {
-      accountByUserId,
-      getHasPermissionFunctionForUser,
-      getShopsUserHasPermissionForFunctionForUser
+      accountByUserId
     },
     functionsByType: {
       registerPluginHandler: [registerPluginHandler],

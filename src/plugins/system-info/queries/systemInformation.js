@@ -1,5 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @name queries.systemInformation
  * @method
@@ -10,9 +8,9 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>} System Information
  **/
 export default async function systemInformation(context, shopId) {
-  const { userHasPermission, app: { db } } = context;
+  const { checkPermissions, app: { db } } = context;
   // sensitive information should be accessible to admins only
-  if (!userHasPermission(["admin"], shopId)) throw new ReactionError("access-denied", "User does not have permission");
+  await checkPermissions(["admin"], shopId);
 
   const mongoAdmin = await db.admin();
   const mongoInfo = await mongoAdmin.serverStatus();

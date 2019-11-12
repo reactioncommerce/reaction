@@ -23,13 +23,11 @@ const inputSchema = new SimpleSchema({
  */
 export default async function archiveProducts(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections, userHasPermission, userId } = context;
+  const { appEvents, checkPermissions, collections, userId } = context;
   const { MediaRecords, Products } = collections;
   const { productIds, shopId } = input;
 
-  if (!userHasPermission(["createProduct", "product/admin", "product/archive"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["createProduct", "product/admin", "product/archive"], shopId);
 
   // Check to make sure all products are on the same shop
   const count = await Products.find({ _id: { $in: productIds }, shopId }).count();

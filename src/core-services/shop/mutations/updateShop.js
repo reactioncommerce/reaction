@@ -1,5 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { ShopLogoUrls, StorefrontUrls } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
@@ -27,7 +26,7 @@ const inputSchema = new SimpleSchema({
  * @returns {Promise<Object>} with updated shop
  */
 export default async function updateShop(context, input) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { Shops } = collections;
 
   inputSchema.validate(input || {});
@@ -56,9 +55,7 @@ export default async function updateShop(context, input) {
 
   // Check permission to make sure user is allowed to do this
   // Security check for admin access
-  if (!userHasPermission(["owner", "admin"], shopId)) {
-    throw new ReactionError("access-denied", "User does not have permission");
-  }
+  await checkPermissions(["owner", "admin"], shopId);
 
   const { value: updatedShop } = await Shops.findOneAndUpdate(
     { _id: shopId },

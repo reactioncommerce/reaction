@@ -9,7 +9,7 @@ Object {
       "error": "access-denied",
       "eventData": Object {},
       "isClientSafe": true,
-      "reason": "Access denied",
+      "reason": "Access Denied",
     },
   },
   "locations": Array [
@@ -18,7 +18,7 @@ Object {
       "line": 2,
     },
   ],
-  "message": "Access denied",
+  "message": "Access Denied",
   "path": Array [
     "simpleInventory",
   ],

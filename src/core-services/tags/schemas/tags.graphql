@@ -111,6 +111,9 @@ extend type Query {
     "If provided, this query will do a regex search using the provided filter data, and return only tags that match"
     filter: String
 
+    "Tags to exclude from results"
+    excludedTagIds: [ID]
+
     "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
     isTopLevel: Boolean,
 

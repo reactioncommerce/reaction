@@ -1,5 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @name navigationItemsByShopId
  * @method
@@ -10,12 +8,10 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function navigationItemsByShopId(context, shopId) {
-  const { collections, userHasPermission } = context;
+  const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
 
-  if (userHasPermission(["core"], shopId) === false) {
-    throw new ReactionError("access-denied", "You do not have operator permission to load navigation items");
-  }
+  await checkPermissions(["core"], shopId);
 
   return NavigationItems.find({ shopId });
 }

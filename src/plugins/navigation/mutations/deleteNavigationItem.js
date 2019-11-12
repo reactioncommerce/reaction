@@ -4,16 +4,17 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @method deleteNavigationItem
  * @summary Deletes a navigation item
  * @param {Object} context An object containing the per-request state
- * @param {String} _id _id of navigation item to delete
+ * @param {Object} input An object of all mutation arguments that were sent by the client
+ * @param {String} input._id ID of the navigation item to delete
+ * @param {String} input.shopId ID of the shop navigation item belongs
  * @returns {Promise<Object>} Deleted navigation item
  */
-export default async function deleteNavigationItem(context, _id) {
-  const { collections, userHasPermission } = context;
+export default async function deleteNavigationItem(context, input) {
+  const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
+  const { _id, shopId } = input;
 
-  if (userHasPermission(["core"]) === false) {
-    throw new ReactionError("access-denied", "You do not have permission to delete a navigation item");
-  }
+  await checkPermissions(["core"], shopId);
 
   const navigationItem = await NavigationItems.findOne({ _id });
   if (!navigationItem) {

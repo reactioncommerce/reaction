@@ -1,22 +1,14 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 export default {
-  shouldNavigationTreeItemsBeAdminOnly(settings, args, context) {
-    if (!context.userHasPermission(["admin"], args.shopId)) {
-      throw new ReactionError("access-denied", "Access denied");
-    }
+  async shouldNavigationTreeItemsBeAdminOnly(settings, args, context) {
+    await context.checkPermissions(["admin"], args.shopId);
     return settings.shouldNavigationTreeItemsBeAdminOnly;
   },
-  shouldNavigationTreeItemsBePubliclyVisible(settings, args, context) {
-    if (!context.userHasPermission(["admin"], args.shopId)) {
-      throw new ReactionError("access-denied", "Access denied");
-    }
+  async shouldNavigationTreeItemsBePubliclyVisible(settings, args, context) {
+    await context.checkPermissions(["admin"], args.shopId);
     return settings.shouldNavigationTreeItemsBePubliclyVisible;
   },
-  shouldNavigationTreeItemsBeSecondaryNavOnly(settings, args, context) {
-    if (!context.userHasPermission(["admin"], args.shopId)) {
-      throw new ReactionError("access-denied", "Access denied");
-    }
+  async shouldNavigationTreeItemsBeSecondaryNavOnly(settings, args, context) {
+    await context.checkPermissions(["admin"], args.shopId);
     return settings.shouldNavigationTreeItemsBeSecondaryNavOnly;
   }
 };

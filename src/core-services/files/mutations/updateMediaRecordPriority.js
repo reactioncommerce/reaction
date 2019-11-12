@@ -9,15 +9,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function updateMediaRecordPriority(context, input) {
   const {
     appEvents,
+    checkPermissions,
     collections: { MediaRecords },
-    userHasPermission,
     userId
   } = context;
   const { mediaRecordId, priority, shopId } = input;
 
-  if (!userHasPermission(["media/update"], shopId)) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  await checkPermissions(["media/update"], shopId);
 
   const { value: updatedMediaRecord } = await MediaRecords.findOneAndUpdate(
     {
