@@ -55,15 +55,11 @@ export default async function getMailConfig() {
   const { MAIL_URL, EMAIL_DEBUG } = envConfig;
   const logger = EMAIL_DEBUG === "true";
   let config = {};
-  let direct = true;
 
   // If a mail service config URL is provided, use it to build the mailer's config.
   if (MAIL_URL) {
     config = getConfigFromMailUrl(MAIL_URL);
-    direct = false;
-  }
-
-  if (direct) {
+  } else {
     throw new ReactionError("No valid Mail service configuration found, please set the \"MAIL_URL\" environment variable.");
   }
 

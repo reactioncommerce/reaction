@@ -25,8 +25,6 @@ export default async function verifySMTPEmailSettings(context, input) {
   await checkPermissions(["owner", "admin", "dashboard"], shopId);
 
   const config = await getMailConfig();
-  console.log("============config: ", config);
-
   delete config.auth;
 
   const logConfig = { ...config };
