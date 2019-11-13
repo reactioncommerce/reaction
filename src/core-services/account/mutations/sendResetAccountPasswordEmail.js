@@ -2,6 +2,9 @@ import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
 import ReactionError from "@reactioncommerce/reaction-error";
+import config from "../config.js";
+
+const { REACTION_IDENTITY_PUBLIC_PASSWORD_RESET_URL } = config;
 
 const inputSchema = new SimpleSchema({
   email: String
@@ -44,24 +47,22 @@ async function sendResetEmail(context, account, email) {
     throw new ReactionError("error-occurred", "Unable to set password reset token");
   }
 
-  // Get shop data for email display
-  let shop = await Shops.findOne({ _id: account.shopId });
-
-  // Fall back to primary shop
-  if (!shop) {
+  // Fall back to primary shop if account has no shop linked
+  let shop;
+  if (account.shopId) {
+    shop = await Shops.findOne({ _id: account.shopId });
+  } else {
     shop = await Shops.findOne({ shopType: "primary" });
-    if (!shop) throw new ReactionError("not-found", "Shop not found");
   }
+
+  if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const contactEmail = shop.emails && shop.emails[0] && shop.emails[0].address;
 
-  const copyrightDate = new Date().getFullYear();
-
   const dataForEmail = {
-    shop,
     contactEmail,
-    homepage: context.getAbsoluteUrl(),
-    copyrightDate,
+    homepage: _.get(shop, "storefrontUrls.storefrontHomeUrl", null),
+    copyrightDate: new Date().getFullYear(),
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
@@ -70,26 +71,8 @@ async function sendResetEmail(context, account, email) {
       postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
-    socialLinks: {
-      display: true,
-      facebook: {
-        display: true,
-        icon: `${context.getAbsoluteUrl()}resources/email-templates/facebook-icon.png`,
-        link: "https://www.facebook.com"
-      },
-      googlePlus: {
-        display: true,
-        icon: `${context.getAbsoluteUrl()}resources/email-templates/google-plus-icon.png`,
-        link: "https://plus.google.com"
-      },
-      twitter: {
-        display: true,
-        icon: `${context.getAbsoluteUrl()}resources/email-templates/twitter-icon.png`,
-        link: "https://www.twitter.com"
-      }
-    },
     // Account Data
-    passwordResetUrl: context.getAbsoluteUrl(`reset-password/${tokenObj.token}`),
+    passwordResetUrl: REACTION_IDENTITY_PUBLIC_PASSWORD_RESET_URL.replace("TOKEN", tokenObj.token),
     user
   };
 

@@ -169,22 +169,7 @@ export default async function getDataForOrderEmail(context, { order }) {
     },
     shopName: shop.name,
     socialLinks: {
-      display: true,
-      facebook: {
-        display: true,
-        icon: getAbsoluteUrl("/resources/email-templates/facebook-icon.png"),
-        link: "https://www.facebook.com"
-      },
-      googlePlus: {
-        display: true,
-        icon: getAbsoluteUrl("/resources/email-templates/google-plus-icon.png"),
-        link: "https://plus.google.com"
-      },
-      twitter: {
-        display: true,
-        icon: getAbsoluteUrl("/resources/email-templates/twitter-icon.png"),
-        link: "https://www.twitter.com"
-      }
+      display: false
     },
     order: {
       ...order,

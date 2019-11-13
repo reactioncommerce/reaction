@@ -186,22 +186,7 @@ test("returns expected data structure (base case)", async () => {
     shop: mockShop,
     shopName: "mockName",
     socialLinks: {
-      display: true,
-      facebook: {
-        display: true,
-        icon: "https://app.mock/resources/email-templates/facebook-icon.png",
-        link: "https://www.facebook.com"
-      },
-      googlePlus: {
-        display: true,
-        icon: "https://app.mock/resources/email-templates/google-plus-icon.png",
-        link: "https://plus.google.com"
-      },
-      twitter: {
-        display: true,
-        icon: "https://app.mock/resources/email-templates/twitter-icon.png",
-        link: "https://www.twitter.com"
-      }
+      display: false
     }
   });
 });

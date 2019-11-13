@@ -6,7 +6,6 @@ import {
   defaultShopManagerRoles,
   defaultVisitorRoles
 } from "./util/defaultRoles.js";
-import sendVerificationEmail from "./util/sendVerificationEmail.js";
 
 /**
  * @summary Called on startup
@@ -15,12 +14,6 @@ import sendVerificationEmail from "./util/sendVerificationEmail.js";
  * @returns {undefined}
  */
 export default async function startup(context) {
-  const { appEvents } = context;
-
-  appEvents.on("afterAddUnverifiedEmailToUser", ({ email, shopId, userId }) => {
-    sendVerificationEmail(context, { email, shopId, userId });
-  });
-
   // Add missing roles to `roles` collection if needed
   await ensureRoles(context, defaultCustomerRoles);
   await ensureRoles(context, defaultOwnerRoles);
