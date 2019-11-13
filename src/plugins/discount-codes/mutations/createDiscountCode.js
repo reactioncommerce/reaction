@@ -1,4 +1,5 @@
 import Random from "@reactioncommerce/random";
+import { DiscountCodes as DiscountCodesSchema } from "../simpleSchemas.js";
 
 /**
  * @name Mutation.createDiscountCode
@@ -37,6 +38,8 @@ export default async function createDiscountCode(context, input) {
     calculation,
     discountMethod
   };
+
+  DiscountCodesSchema.validate(discountCode);
 
   await DiscountCodes.insertOne(discountCode);
 
