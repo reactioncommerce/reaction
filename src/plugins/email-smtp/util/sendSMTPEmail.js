@@ -1,6 +1,5 @@
-import Logger from "@reactioncommerce/logger";
 import nodemailer from "@reactioncommerce/nodemailer";
-import getMailConfig from "./getMailConfig.js";
+import { SMTPConfig } from "../config.js";
 
 /**
  * @name sendSMTPEmail
@@ -14,15 +13,7 @@ import getMailConfig from "./getMailConfig.js";
 export default async function sendSMTPEmail(context, { job, sendEmailCompleted, sendEmailFailed }) {
   const { to, shopId, ...otherEmailFields } = job.data;
 
-  const config = await getMailConfig(context, shopId);
-  if (config.direct) {
-    sendEmailFailed(job, "SMTP mail settings not configured");
-    return;
-  }
-
-  Logger.debug(config, "Sending SMTP email with config");
-
-  const transport = nodemailer.createTransport(config);
+  const transport = nodemailer.createTransport(SMTPConfig);
 
   transport.sendMail({ to, shopId, ...otherEmailFields }, (error) => {
     if (error) {

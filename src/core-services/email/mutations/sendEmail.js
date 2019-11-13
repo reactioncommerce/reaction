@@ -57,7 +57,10 @@ export default async function sendEmail(context, options) {
     const defaultData = {
       emailLogo,
       shop: fromShop,
-      shopId: fromShopId
+      shopId: fromShopId,
+      socialLinks: {
+        display: false
+      }
     };
 
     const { html, subject } = await context.mutations.renderEmail(context, {

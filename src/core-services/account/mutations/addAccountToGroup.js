@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import _ from "lodash";
 import SimpleSchema from "simpl-schema";
+import canAddAccountToGroup from "../util/canAddAccountToGroup.js";
 import ensureRoles from "../util/ensureRoles.js";
 
 const inputSchema = new SimpleSchema({
@@ -30,8 +30,7 @@ export default async function addAccountToGroup(context, input) {
       Groups,
       users
     },
-    user,
-    userHasPermissionLegacy
+    user
   } = context;
 
   const groupToMoveUserTo = await Groups.findOne({ _id: groupId });
@@ -39,20 +38,8 @@ export default async function addAccountToGroup(context, input) {
 
   const { permissions: groupPermissions = [], shopId } = groupToMoveUserTo;
 
-  // An account can add another account to a group as long as the person adding
-  // has all permissions granted by that group.
-  // We can't use `userHasPermissionLegacy` here because we want to make sure they
-  // have ALL the permissions rather than ANY.
-  // Accounts in the "owner" group and users with the global "owner" permission
-  // are able to add any user to any group, regardless of other permissions.
-  const ownerGroup = await Groups.findOne({ name: "owner" });
-  const contextUserAccount = await Accounts.findOne({ _id: user._id });
-  const isOwnerAccount = (!!ownerGroup && contextUserAccount.groups.includes(ownerGroup._id)) || userHasPermissionLegacy(["owner"]);
-  // TODO(pod-auth): figure out what to do with the `userHasPermission` checks
-
-  if (!context.isInternalCall && !isOwnerAccount && _.difference(groupPermissions, user.roles[shopId] || []).length > 0) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  const isAllowed = await canAddAccountToGroup(context, groupToMoveUserTo);
+  if (!isAllowed) throw new ReactionError("access-denied", "Access Denied");
 
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "No account found with that ID");

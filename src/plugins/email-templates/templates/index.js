@@ -1,7 +1,5 @@
 import coreDefaultTemplate from "./coreDefault.js";
 import inviteNewShopMemberTemplate from "./accounts/inviteNewShopMember.js";
-import inviteShopMemberTemplate from "./accounts/inviteShopMember.js";
-import inviteShopOwnerTemplate from "./accounts/inviteShopOwner.js";
 import resetPasswordTemplate from "./accounts/resetPassword.js";
 import welcomeEmailTemplate from "./accounts/sendWelcomeEmail.js";
 import verifyUpdatedEmailTemplate from "./accounts/verifyUpdatedEmail.js";
@@ -29,18 +27,6 @@ export default [
    */
 
   /*
-   * Accounts - Invite Shop member with an Existing User Account
-   * When: Admin invites new member to shop
-   */
-  {
-    language: "en",
-    title: "Accounts - Invite Shop Member - Existing User Account",
-    name: "accounts/inviteShopMember",
-    template: inviteShopMemberTemplate,
-    subject: "You have been invited to join the group \"{{groupName}}\" in the store \"{{shop.name}}\""
-  },
-
-  /*
    * Accounts - Invite Shop member and create new user account
    * When: Admin invites new member to shop
    */
@@ -50,18 +36,6 @@ export default [
     name: "accounts/inviteNewShopMember",
     template: inviteNewShopMemberTemplate,
     subject: "You have been invited to join the group \"{{groupName}}\" in the store \"{{shop.name}}\""
-  },
-
-  /*
-   * Accounts - Invite Shop Owner
-   * When: A new shop is created. This is sent to the new shop owner
-   */
-  {
-    language: "en",
-    title: "Accounts - Invite Shop Owner",
-    name: "accounts/inviteShopOwner",
-    template: inviteShopOwnerTemplate,
-    subject: "{{shop.name}} has invited you to manage a store"
   },
 
   /*
