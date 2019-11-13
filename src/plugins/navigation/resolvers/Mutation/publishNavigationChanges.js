@@ -21,7 +21,10 @@ export default async function publishNavigationChanges(parentResult, { input }, 
 
   const decodedId = decodeNavigationTreeOpaqueId(_id);
   const shopId = decodeShopOpaqueId(opaqueShopId);
-  const publishedNavigationTree = context.mutations.publishNavigationChanges(context, decodedId, shopId);
+  const publishedNavigationTree = context.mutations.publishNavigationChanges(context, {
+    decodedId,
+    shopId
+  });
 
   return {
     clientMutationId,

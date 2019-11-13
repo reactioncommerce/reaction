@@ -1,6 +1,6 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import publishNavigationChangesMutation from "./publishNavigationChanges., "789"js";
+import publishNavigationChangesMutation from "./publishNavigationChanges.js";
 
 const mockTreeItems = [
   {
@@ -64,7 +64,7 @@ test("Calls NavigationTrees.findOne and updateOne, and NavigationItems.findOne, 
 
   mockContext.queries.primaryShopId = jest.fn().mockName("queries.primaryShopId").mockReturnValueOnce(Promise.resolve("FAKE_SHOP_ID"));
 
-  const navigationTree = await publishNavigationChangesMutation(mockContext, "123", "789");
+  const navigationTree = await publishNavigationChangesMutation(mockContext, { _id: "123", shopId: "789" });
 
   expect(mockContext.collections.NavigationTrees.findOne).toHaveBeenCalledTimes(2);
   expect(mockContext.collections.NavigationTrees.updateOne).toHaveBeenCalledTimes(1);
@@ -77,12 +77,12 @@ test("throws an error if the user does not have the core permission", async () =
   mockContext.checkPermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
-  const result = publishNavigationChangesMutation(mockContext, "123", "789");
+  const result = publishNavigationChangesMutation(mockContext, { _id: "123", shopId: "789" });
   expect(result).rejects.toThrow();
 });
 
 test("throws an error if the navigation tree does not exist", async () => {
   mockContext.collections.NavigationTrees.findOne.mockReturnValueOnce(Promise.resolve(null));
-  const result = publishNavigationChangesMutation(mockContext, "123", "789");
+  const result = publishNavigationChangesMutation(mockContext, { _id: "123", shopId: "789" });
   expect(result).rejects.toThrow();
 });
