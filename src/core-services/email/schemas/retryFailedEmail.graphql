@@ -5,6 +5,9 @@ input RetryFailedEmailInput {
 
   "ID of Email Job to retry"
   jobId: ID!
+
+  "Shop ID of Email Job"
+  shopId: ID!
 }
 
 "Response payload for `retryFailedEmail` mutation"

@@ -1,4 +1,4 @@
-import { decodeJobOpaqueId } from "../../xforms/id.js";
+import { decodeJobOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation.resendFailedEmail
@@ -15,10 +15,12 @@ import { decodeJobOpaqueId } from "../../xforms/id.js";
 export default async function resendFailedEmail(parentResult, { input }, context) {
   const {
     clientMutationId = null,
-    jobId: opaqueJobId
+    jobId: opaqueJobId,
+    shopId: opaqueShopId
   } = input;
   const resp = await context.mutations.resendFailedEmail(context, {
-    jobId: decodeJobOpaqueId(opaqueJobId)
+    jobId: decodeJobOpaqueId(opaqueJobId),
+    shopId: decodeShopOpaqueId(opaqueShopId)
   });
 
   return {

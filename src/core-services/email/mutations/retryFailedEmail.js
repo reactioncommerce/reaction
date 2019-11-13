@@ -10,9 +10,8 @@ import Logger from "@reactioncommerce/logger";
  */
 export default async function retryFailed(context, input) {
   const { checkPermissions, backgroundJobs } = context;
-  const { jobId } = input;
+  const { jobId, shopId } = input;
   let emailJobId = jobId;
-  const shopId = await context.queries.primaryShopId(context);
 
   await checkPermissions(["owner", "admin", "reaction-email"], shopId);
 
