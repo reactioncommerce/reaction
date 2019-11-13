@@ -107,15 +107,19 @@ export default async function createAccount(context, input) {
 
   // Add all group permissions to the user roles. Because of the complexity of this
   // and potential security concerns if done incorrectly, it's best to use the mutation.
-  await Promise.all(groups.map((groupId) => (
-    context.mutations.addAccountToGroup({
-      ...context,
-      isInternalCall: true
-    }, {
-      accountId: account._id,
-      groupId
-    })
-  )));
+  try {
+    await Promise.all(groups.map((groupId) => (
+      context.mutations.addAccountToGroup({
+        ...context,
+        isInternalCall: true
+      }, {
+        accountId: account._id,
+        groupId
+      })
+    )));
+  } catch (error) {
+    Logger.error(error, `Error adding account ${account._id} to group upon account creation`);
+  }
 
   // Delete any invites that are now finished
   if (invites) {
