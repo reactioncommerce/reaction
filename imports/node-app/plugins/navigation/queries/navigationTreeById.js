@@ -20,8 +20,9 @@ export default async function navigationTreeById(context, { language, navigation
   if (navigationTree) {
     // Add language from args so that we can use it in items & draftItems resolvers
     navigationTree.language = language;
+    const shopId = await context.queries.primaryShopId(collections);
 
-    const isAdmin = userHasPermission(["admin", "owner", "create-product"]);
+    const isAdmin = userHasPermission(["admin", "owner", "create-product"], shopId);
 
     // Filter items based on visibility options and user permissions
     navigationTree.items = filterNavigationTreeItems(navigationTree.items, {
