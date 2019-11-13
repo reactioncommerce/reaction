@@ -64,7 +64,10 @@ const wrapComponent = (Comp) => (
         });
         return;
       }
-      const { token } = Router.current().params;
+
+      const { path } = Router.current().route;
+      const token = path.replace("/reset-password/", "");
+
       Accounts.resetPassword(token, password, (error) => {
         if (error) {
           this.setState({

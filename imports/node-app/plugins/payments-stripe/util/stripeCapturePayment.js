@@ -22,7 +22,7 @@ export default async function stripeCapturePayment(context, paymentMethod) {
   // If discount is 100%, capture 100% and then refund 100% of transaction
   if (captureDetails.amount === accounting.unformat(0)) {
     const voidedAmount = unformatFromStripe(paymentMethod.transactions[0].amount);
-    stripeCaptureCharge(paymentMethod);
+    await stripeCaptureCharge(context, paymentMethod);
 
     return stripeCreateRefund(context, paymentMethod, voidedAmount);
   }
