@@ -1,3 +1,5 @@
+import { DiscountCodes as DiscountCodesSchema } from "../simpleSchemas.js";
+
 /**
  * @name Mutation.updateDiscountCode
  * @method
@@ -24,25 +26,29 @@ export default async function updateDiscountCode(context, input) {
 
   await checkPermissions(["admin", "owner"], shopId);
 
+  const discountCode = {
+    code,
+    discount,
+    conditions: {
+      accountLimit,
+      redemptionLimit
+    },
+    calculation,
+    discountMethod
+  };
+
+  DiscountCodesSchema.validate(discountCode);
+
   await DiscountCodes.updateOne({
     _id,
     shopId
   }, {
-    $set: {
-      code,
-      discount,
-      conditions: {
-        accountLimit,
-        redemptionLimit
-      },
-      calculation,
-      discountMethod
-    }
+    $set: discountCode
   });
 
-  const discountCode = await DiscountCodes.findOne({ _id });
+  const updatedDiscountCode = await DiscountCodes.findOne({ _id });
 
-  await appEvents.emit("afterDiscountCodeCreate", discountCode);
+  await appEvents.emit("afterDiscountCodeCreate", updatedDiscountCode);
 
-  return discountCode;
+  return updatedDiscountCode;
 }
