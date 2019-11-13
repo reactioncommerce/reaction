@@ -4,8 +4,11 @@ input UpdateTemplateInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "Email template title"
-  title: String
+  "ID of template to modify"
+  id: ID!
+
+  "The shop that owns the template"
+  shopId: ID!
 
   "Email template string"
   subject: String
@@ -13,11 +16,8 @@ input UpdateTemplateInput {
   "Email template body or html text"
   template: String
 
-  "ID of template to modify"
-  id: ID!
-
-  "The shop that owns the template"
-  shopId: ID!
+  "Email template title"
+  title: String
 
 }
 

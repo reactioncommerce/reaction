@@ -3,11 +3,14 @@ type Template implements Node {
   "The shop ID"
   _id: ID!
 
+  "Email template language"
+  language: String
+
+  "Email template name"
+  name: String
+
   "The shop that owns the template"
   shopId: ID!
-
-  "Email template title"
-  title: String
 
   "Email template string"
   subject: String
@@ -15,10 +18,6 @@ type Template implements Node {
   "Email template body or html text"
   template: String
 
-  "Email template language"
-  language: String
-
-  "Email template name"
-  name: String
-
+  "Email template title"
+  title: String
 }
