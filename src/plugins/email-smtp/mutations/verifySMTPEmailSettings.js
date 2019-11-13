@@ -1,8 +1,7 @@
 import SimpleSchema from "simpl-schema";
-import Logger from "@reactioncommerce/logger";
 import nodemailer from "@reactioncommerce/nodemailer";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getMailConfig from "../util/getMailConfig.js";
+import { SMTPConfig } from "../config.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String
@@ -24,13 +23,7 @@ export default async function verifySMTPEmailSettings(context, input) {
 
   await checkPermissions(["owner", "admin", "dashboard"], shopId);
 
-  const config = await getMailConfig();
-  delete config.auth;
-
-  const logConfig = { ...config };
-  Logger.debug(logConfig, "Verifying email config settings");
-
-  const transporter = nodemailer.createTransport(config);
+  const transporter = nodemailer.createTransport(SMTPConfig);
 
   let isVerified;
   try {
