@@ -1,4 +1,4 @@
-import { decodeNavigationTreeOpaqueId } from "../../xforms/id.js";
+import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation.publishNavigationChanges
@@ -15,12 +15,13 @@ import { decodeNavigationTreeOpaqueId } from "../../xforms/id.js";
 export default async function publishNavigationChanges(parentResult, { input }, context) {
   const {
     clientMutationId = null,
-    _id
+    _id,
+    shopId: opaqueShopId
   } = input;
 
   const decodedId = decodeNavigationTreeOpaqueId(_id);
-
-  const publishedNavigationTree = context.mutations.publishNavigationChanges(context, decodedId);
+  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const publishedNavigationTree = context.mutations.publishNavigationChanges(context, decodedId, shopId);
 
   return {
     clientMutationId,

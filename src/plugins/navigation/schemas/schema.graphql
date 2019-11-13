@@ -262,6 +262,9 @@ input PublishNavigationChangesInput {
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "Shop ID of the navigation tree"
+  shopId: ID!
 }
 
 "NavigationItem input"
