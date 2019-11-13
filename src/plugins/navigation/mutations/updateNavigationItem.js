@@ -9,12 +9,10 @@ import { NavigationItemData } from "../simpleSchemas.js";
  * @param {Object} navigationItem Updated navigation item
  * @returns {Promise<Object>} Updated navigation item
  */
-export default async function updateNavigationItem(context, _id, navigationItem) {
+export default async function updateNavigationItem(context, { _id, shopId, navigationItem }) {
   const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
   const { draftData, metadata } = navigationItem;
-
-  const shopId = await context.queries.primaryShopId(context);
 
   await checkPermissions(["core"], shopId);
 

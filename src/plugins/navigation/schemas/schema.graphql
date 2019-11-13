@@ -229,6 +229,9 @@ input UpdateNavigationItemInput {
 
   "The field updates to apply"
   navigationItem: NavigationItemInput!
+
+  "The ID of the shop navigation item belongs to"
+  shopId: ID!
 }
 
 "Input for the `deleteNavigationItem` mutation"

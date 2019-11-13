@@ -1,4 +1,4 @@
-import { decodeNavigationItemOpaqueId } from "../../xforms/id.js";
+import { decodeNavigationItemOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation.updateNavigationItem
@@ -17,12 +17,18 @@ export default async function updateNavigationItem(parentResult, { input }, cont
   const {
     clientMutationId = null,
     _id,
+    shopId: opaqueShopId,
     navigationItem
   } = input;
 
   const decodedId = decodeNavigationItemOpaqueId(_id);
+  const shopId = decodeShopOpaqueId(opaqueShopId);
 
-  const updatedNavigationItem = await context.mutations.updateNavigationItem(context, decodedId, navigationItem);
+  const updatedNavigationItem = await context.mutations.updateNavigationItem(context, {
+    _id: decodedId,
+    navigationItem,
+    shopId
+  });
 
   return {
     clientMutationId,
