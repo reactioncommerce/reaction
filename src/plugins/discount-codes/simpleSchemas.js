@@ -24,6 +24,10 @@ export const Transactions = new SimpleSchema({
  * @summary Discounts schema
  */
 export const DiscountCodes = new SimpleSchema({
+  "_id": {
+    type: String,
+    optional: true
+  },
   "shopId": {
     type: String,
     label: "Discounts shopId"
