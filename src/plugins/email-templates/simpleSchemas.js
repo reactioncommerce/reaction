@@ -7,75 +7,75 @@ import SimpleSchema from "simpl-schema";
  * @summary EmailTemplates schema
  */
 export const EmailTemplates = new SimpleSchema({
-  "shopId": {
-    type: String,
-    label: "Template ShopId"
-  },
-  "name": {
-    type: String,
-    optional: true
-  },
-  "priority": {
-    type: SimpleSchema.Integer,
-    optional: true,
-    defaultValue: 1
-  },
-  "enabled": {
-    type: Boolean,
-    defaultValue: true
-  },
-  "route": {
-    type: String,
-    optional: true
-  },
   "audience": {
-    type: Array,
-    optional: true
+    optional: true,
+    type: Array
   },
   "audience.$": {
     type: String
   },
-  "type": {
-    type: String,
-    defaultValue: "email",
-    optional: true
-  },
-  "provides": {
-    type: String,
-    defaultValue: "template"
-  },
   "block": {
-    type: String,
-    optional: true
+    optional: true,
+    type: String
   },
   "defaultData": {
-    type: Object,
     blackbox: true,
-    optional: true
+    optional: true,
+    type: Object
   },
-  "template": {
-    type: String,
-    optional: true
-  },
-  "parser": {
-    type: String,
-    optional: true
+  "enabled": {
+    defaultValue: true,
+    type: Boolean
   },
   "language": {
-    type: String,
+    defaultValue: "en",
     optional: true,
-    defaultValue: "en"
+    type: String
+  },
+  "name": {
+    optional: true,
+    type: String
+  },
+  "parser": {
+    optional: true,
+    type: String
+  },
+  "priority": {
+    defaultValue: 1,
+    optional: true,
+    type: SimpleSchema.Integer
+  },
+  "provides": {
+    defaultValue: "template",
+    type: String
+  },
+  "route": {
+    optional: true,
+    type: String
+  },
+  "shopId": {
+    label: "Template ShopId",
+    type: String
   },
   "source": {
-    type: String,
-    optional: true
-  },
-  "title": {
-    type: String,
-    optional: true
+    optional: true,
+    type: String
   },
   "subject": {
-    type: String,
-    optional: true
+    optional: true,
+    type: String
+  },
+  "template": {
+    optional: true,
+    type: String
+  },
+  "title": {
+    optional: true,
+    type: String
+  },
+  "type": {
+    defaultValue: "email",
+    optional: true,
+    type: String
   }
 });

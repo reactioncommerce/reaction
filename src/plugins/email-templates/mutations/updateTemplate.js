@@ -1,28 +1,49 @@
-import { EmailTemplates } from "../simpleSchemas";
+import ReactionError from "@reactioncommerce/reaction-error";
+import SimpleSchema from "simpl-schema";
+
+const inputSchema = new SimpleSchema(
+  {
+    templateId: String,
+    shopId: String,
+    title: { type: String, optional: true },
+    subject: { type: String, optional: true },
+    template: { type: String, optional: true }
+  },
+  { requiredByDefault: false }
+);
 
 /**
  * @name updateTemplate
  * @summary Updates email template in Templates collection
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - an object of all mutation arguments that were sent by the client
- * @param {String} input._id - _id of template to update.
- * @param {Object} input.modifier - Template data to update.
- * @returns {Number} update template
+ * @returns {Promise<Object>} UpdateTemplatePayload
  */
 export default async function updateTemplate(context, input) {
   const { checkPermissions, collections } = context;
   const { Templates } = collections;
-  const { _id, modifier } = input;
-
-  const shopId = await context.queries.primaryShopId(context);
+  const { templateId, shopId, ...params } = input;
 
   await checkPermissions(["reaction-templates"], shopId);
 
-  EmailTemplates.validate(modifier, { modifier: true });
+  inputSchema.validate(params, { modifier: true });
 
-  return Templates.update({
-    _id,
-    type: "email",
-    shopId // Ensure that the template we're attempting to update is owned by the active shop.
-  }, modifier);
+  params.updatedAt = new Date();
+
+  try {
+    const { result } = await Templates.updateOne(
+      { _id: templateId, shopId },
+      { $set: params }
+    );
+
+    if (result.n === 0) {
+      throw new ReactionError("not-found", "Template not found");
+    }
+
+    const template = await Templates.findOne({ _id: templateId, shopId });
+
+    return template;
+  } catch ({ message }) {
+    throw new ReactionError("error", message);
+  }
 }
