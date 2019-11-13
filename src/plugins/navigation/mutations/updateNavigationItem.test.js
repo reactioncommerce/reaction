@@ -38,7 +38,7 @@ test("calls NavigationItems.findOne and updateOne, and returns the updated navig
 
   mockContext.queries.primaryShopId = jest.fn().mockName("queries.primaryShopId").mockReturnValueOnce(Promise.resolve("FAKE_SHOP_ID"));
 
-  const result = await updateNavigationItemMutation(mockContext, {...mockInput, navigationItem: mockValidNavigationItemInput });
+  const result = await updateNavigationItemMutation(mockContext, { ...mockInput, navigationItem: mockValidNavigationItemInput });
 
   expect(mockContext.collections.NavigationItems.findOne).toHaveBeenCalledTimes(2);
   expect(mockContext.collections.NavigationItems.updateOne).toHaveBeenCalled();
@@ -60,6 +60,6 @@ test("throws an error if the navigation item does not exist", async () => {
 });
 
 test("throws an error if invalid JSON metadata is passed", async () => {
-  const result = updateNavigationItemMutation(mockContext, {...mockInput, navigationItem: mockInvalidNavigationItemInput });
+  const result = updateNavigationItemMutation(mockContext, { ...mockInput, navigationItem: mockInvalidNavigationItemInput });
   expect(result).rejects.toThrow();
 });

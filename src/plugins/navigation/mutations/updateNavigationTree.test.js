@@ -39,6 +39,11 @@ const mockNavigationTree = {
   hasUnpublishedChanges: false
 };
 
+const mockInput = {
+  _id: mockNavigationTreeId,
+  shopId: "123"
+};
+
 test("calls NavigationTrees.findOne and updateOne, and returns the updated tree", async () => {
   mockContext.collections.NavigationTrees.findOne
     .mockReturnValueOnce(Promise.resolve(mockNavigationTree))
@@ -51,7 +56,10 @@ test("calls NavigationTrees.findOne and updateOne, and returns the updated tree"
     shouldNavigationTreeItemsBePubliclyVisible: false
   }));
 
-  const updatedNavigationTree = await updateNavigationTreeMutation(mockContext, mockNavigationTreeId, mockNavigationTreeInput);
+  const updatedNavigationTree = await updateNavigationTreeMutation(mockContext, {
+    ...mockInput,
+    navigationTree: mockNavigationTreeInput
+  });
 
   expect(mockContext.collections.NavigationTrees.findOne).toHaveBeenCalledTimes(2);
   expect(mockContext.collections.NavigationTrees.updateOne).toHaveBeenCalled();
@@ -63,12 +71,12 @@ test("throws an error if the user does not have the core permission", async () =
   mockContext.checkPermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
-  const result = updateNavigationTreeMutation(mockContext, "123");
+  const result = updateNavigationTreeMutation(mockContext, mockInput);
   expect(result).rejects.toThrow();
 });
 
 test("throws an error if the navigation tree does not exist", async () => {
   mockContext.collections.NavigationTrees.findOne.mockReturnValueOnce(Promise.resolve(null));
-  const result = updateNavigationTreeMutation(mockContext, "123");
+  const result = updateNavigationTreeMutation(mockContext, mockInput);
   expect(result).rejects.toThrow();
 });

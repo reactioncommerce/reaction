@@ -256,6 +256,9 @@ input UpdateNavigationTreeInput {
 
   "The field updates to apply"
   navigationTree: NavigationTreeInput!
+
+  "The ID of the shop navigation item belongs to"
+  shopId: ID!
 }
 
 "Input for the `publishNavigationChanges` mutation"

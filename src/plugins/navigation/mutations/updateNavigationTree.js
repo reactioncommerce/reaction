@@ -11,11 +11,14 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
  * @param {Object} navigationTree Updated navigation tree
  * @returns {Promise<Object>} Updated navigation tree
  */
-export default async function updateNavigationTree(context, _id, navigationTree) {
+export default async function updateNavigationTree(context, {
+  _id,
+  shopId,
+  navigationTree
+}) {
   const { checkPermissions, collections } = context;
   const { NavigationTrees } = collections;
 
-  const shopId = await context.queries.primaryShopId(context);
   const {
     shouldNavigationTreeItemsBeAdminOnly,
     shouldNavigationTreeItemsBePubliclyVisible,
@@ -44,7 +47,8 @@ export default async function updateNavigationTree(context, _id, navigationTree)
 
   await checkPermissions(["core"], shopId);
 
-  const existingNavigationTree = await NavigationTrees.findOne({ _id });
+  const treeSelector = { _id, shopId };
+  const existingNavigationTree = await NavigationTrees.findOne(treeSelector);
   if (!existingNavigationTree) {
     throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");
   }
@@ -62,7 +66,7 @@ export default async function updateNavigationTree(context, _id, navigationTree)
 
   await NavigationTrees.updateOne({ _id }, { $set: { ...update } });
 
-  const updatedNavigationTree = await NavigationTrees.findOne({ _id });
+  const updatedNavigationTree = await NavigationTrees.findOne(treeSelector);
 
   return updatedNavigationTree;
 }

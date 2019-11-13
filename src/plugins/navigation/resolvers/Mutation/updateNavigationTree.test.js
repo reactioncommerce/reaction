@@ -1,5 +1,6 @@
 import updateNavigationTreeMutation from "./updateNavigationTree.js";
 
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
 const mockNavigationTreeItems = [
   {
     navigationItemId: "uaXXawc5oxy9eR4hP",
@@ -15,6 +16,7 @@ const mockNavigationTreeItems = [
 ];
 const mockInput = {
   _id: "cmVhY3Rpb24vbmF2aWdhdGlvblRyZWU6cGtNVFdBRUhKcnNpTnpZMmE=",
+  shopId: opaqueShopId,
   navigationTree: {
     draftItems: mockNavigationTreeItems,
     name: "Main Menu"
