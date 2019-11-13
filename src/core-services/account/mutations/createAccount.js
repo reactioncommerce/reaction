@@ -69,6 +69,8 @@ export default async function createAccount(context, input) {
     acceptsMarketing: false,
     createdAt: new Date(),
     emails,
+    // Proper groups will be set with calls to `addAccountToGroup` below
+    groups: [],
     name,
     profile,
     shopId,
