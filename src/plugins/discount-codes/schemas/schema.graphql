@@ -42,7 +42,7 @@ type DiscountTransaction {
   userId: String!
 
   "Date the code was applied"
-  appliedAt: Date
+  appliedAt: DateTime
 }
 
 type DiscountConditionOrder {
@@ -53,10 +53,10 @@ type DiscountConditionOrder {
   max: Float
 
   "Order date range start"
-  startDate: Date,
+  startDate: DateTime,
 
   "Order date range end"
-  endDate: Date
+  endDate: DateTime
 }
 
 type DiscountConditions {
@@ -252,7 +252,7 @@ input DiscountTransactionInput {
   userId: String!
 
   "Date the code was applied"
-  appliedAt: Date
+  appliedAt: DateTime
 }
 
 input DiscountConditionOrderInput {
@@ -263,10 +263,10 @@ input DiscountConditionOrderInput {
   max: Float
 
   "Order date range start"
-  startDate: Date,
+  startDate: DateTime,
 
   "Order date range end"
-  endDate: Date
+  endDate: DateTime
 }
 
 input DiscountConditionsInput {
