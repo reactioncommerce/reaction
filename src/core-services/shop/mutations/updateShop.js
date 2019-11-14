@@ -84,6 +84,10 @@ export default async function updateShop(context, input) {
     ...shopSettings
   } = input;
 
+  // Check permission to make sure user is allowed to do this
+  // Security check for admin access
+  await checkPermissions(["owner", "admin"], shopId);
+
   // set data to update
   const sets = {};
 
@@ -126,10 +130,6 @@ export default async function updateShop(context, input) {
       });
     }
   });
-
-  // Check permission to make sure user is allowed to do this
-  // Security check for admin access
-  await checkPermissions(["owner", "admin"], shopId);
 
   const { value: updatedShop } = await Shops.findOneAndUpdate(
     { _id: shopId },
