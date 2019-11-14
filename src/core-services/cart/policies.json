@@ -3,7 +3,25 @@
     "description": "Cart managers acting on specific entities.",
     "subjects": [ "reaction:groups:cart-managers" ],
     "resources": [ "reaction:carts:*" ],
-    "actions": [ "update" ],
+    "actions": [
+      "read",
+      "update"
+    ],
     "effect": "allow"
+  },
+  {
+    "description": "Cart owner acting on their cart.",
+    "subjects": [ "reaction:users:*" ],
+    "resources": [ "reaction:carts:*" ],
+    "actions": [
+      "read"
+    ],
+    "effect": "allow",
+    "conditions": {
+      "owner": {
+        "type": "EqualsSubjectCondition",
+        "options": {}
+      }
+    }
   }
 ]
