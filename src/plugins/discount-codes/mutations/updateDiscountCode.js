@@ -14,36 +14,20 @@ export default async function updateDiscountCode(context, input) {
   const {
     _id,
     shopId,
-    code,
-    discount,
-    accountLimit,
-    redemptionLimit,
-    calculation,
-    discountMethod
+    ...discountCodeInput
   } = input;
   const { appEvents, checkPermissions, collections } = context;
   const { Discounts } = collections;
 
   await checkPermissions(["admin", "owner"], shopId);
 
-  const discountCode = {
-    code,
-    discount,
-    conditions: {
-      accountLimit,
-      redemptionLimit
-    },
-    calculation,
-    discountMethod
-  };
-
-  DiscountCodesSchema.validate(discountCode);
+  DiscountCodesSchema.validate(discountCodeInput);
 
   await Discounts.updateOne({
     _id,
     shopId
   }, {
-    $set: discountCode
+    $set: discountCodeInput
   });
 
   const updatedDiscountCode = await Discounts.findOne({ _id });
