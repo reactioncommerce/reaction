@@ -13,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function ordersByAccountId(context, { accountId, orderStatus, shopIds } = {}) {
-  const { accountId: contextAccountId, collections } = context;
+  const { collections } = context;
   const { Orders } = collections;
 
   if (!accountId) {
@@ -35,13 +35,11 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
 
   if (shopIds) query.shopId = { $in: shopIds };
 
-  if (accountId !== contextAccountId) {
-    // Validate user has permission to view orders for all shopIds
-    if (!shopIds) throw new ReactionError("invalid-param", "You must provide ShopId(s)");
-    for (const shopId of shopIds) {
-      await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId }); // eslint-disable-line no-await-in-loop
-      await context.validatePermissions("reaction:orders", "read", { shopId }); // eslint-disable-line no-await-in-loop
-    }
+  // Validate user has permission to view orders for all shopIds
+  if (!shopIds) throw new ReactionError("invalid-param", "You must provide ShopId(s)");
+  for (const shopId of shopIds) {
+    await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissions("reaction:orders", "read", { shopId, owner: accountId }); // eslint-disable-line no-await-in-loop
   }
 
   return Orders.find(query);

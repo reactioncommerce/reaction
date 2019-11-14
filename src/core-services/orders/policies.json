@@ -19,5 +19,23 @@
       "update"
     ],
     "effect": "allow"
+  },
+  {
+    "description": "Order owner acting on their order.",
+    "subjects": [ "reaction:users:*" ],
+    "resources": [ "reaction:orders:*" ],
+    "actions": [
+      "cancel:item",
+      "cancel:order",
+      "read",
+      "update"
+    ],
+    "effect": "allow",
+    "conditions": {
+      "owner": {
+        "type": "EqualsSubjectCondition",
+        "options": {}
+      }
+    }
   }
 ]

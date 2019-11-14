@@ -55,12 +55,9 @@ export default async function cancelOrderItem(context, input) {
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  // Allow cancel if the account that placed the order is attempting to cancel
-  // or if the account has "orders" permission. When called internally by another
-  // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall && (!accountId || accountId !== order.accountId)) {
+  if (!isInternalCall) {
     await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId: order.shopId });
-    await context.validatePermissions(`reaction:orders:${order._id}`, "cancel:item", { shopId: order.shopId });
+    await context.validatePermissions(`reaction:orders:${order._id}`, "cancel:item", { shopId: order.shopId, owner: order.accountId });
   }
 
   // Is the account calling this mutation also the account that placed the order?
