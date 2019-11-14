@@ -35,10 +35,13 @@ type DiscountCode {
 }
 
 type DiscountTransaction {
+  "Cart id"
   cartId: String!
 
+  "User id"
   userId: String!
 
+  "Date the code was applied"
   appliedAt: Date
 }
 
@@ -208,7 +211,7 @@ type DiscountCodeConnection {
   totalCount: Int!
 }
 
-type DiscountCalculationInput {
+input DiscountCalculationInput {
   method: DiscountCalculationMethod
 }
 
@@ -232,13 +235,24 @@ input DiscountCodeInput {
   discount: String
 
   "History of transactions"
-  transactions: [DiscountTransaction]
+  transactions: [DiscountTransactionInput]
 
   "How the discount should be applied"
-  calculation: DiscountCalculation
+  calculation: DiscountCalculationInput
 
   "Discount code conditions"
-  conditions: DiscountConditions
+  conditions: DiscountConditionsInput
+}
+
+input DiscountTransactionInput {
+  "Cart id"
+  cartId: String!
+
+  "User id"
+  userId: String!
+
+  "Date the code was applied"
+  appliedAt: Date
 }
 
 input DiscountConditionOrderInput {
@@ -260,7 +274,7 @@ input DiscountConditionsInput {
   accountLimit: Int
 
   "Order conditions"
-  order: DiscountConditionOrder
+  order: DiscountConditionOrderInput
 
   "Is this discount code enabled"
   enabled: Boolean
