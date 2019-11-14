@@ -21,4 +21,7 @@ async function runApp() {
   Logger.info(`GraphQL subscriptions ready at ${app.graphQLServerSubscriptionUrl} (port ${app.serverPort || "unknown"})`);
 }
 
-runApp().catch(Logger.error.bind(Logger));
+runApp().catch((error) => {
+  Logger.error(error);
+  process.exit(1); // eslint-disable-line no-process-exit
+});

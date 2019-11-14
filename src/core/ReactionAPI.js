@@ -11,6 +11,7 @@ import Logger from "@reactioncommerce/logger";
 import appEvents from "./util/appEvents.js";
 import getAbsoluteUrl from "./util/getAbsoluteUrl.js";
 import initReplicaSet from "./util/initReplicaSet.js";
+import mongoConnectWithRetry from "./util/mongoConnectWithRetry.js";
 import config from "./config.js";
 import createApolloServer from "./createApolloServer.js";
 import coreResolvers from "./graphql/resolvers/index.js";
@@ -30,8 +31,6 @@ const {
 } = config;
 
 const debugLevels = ["DEBUG", "TRACE"];
-
-const { MongoClient } = mongodb;
 
 const optionsSchema = new SimpleSchema({
   "httpServer": {
@@ -214,12 +213,7 @@ export default class ReactionAPI {
     const dbUrl = mongoUrl.slice(0, lastSlash);
     const dbName = mongoUrl.slice(lastSlash + 1);
 
-    const client = await MongoClient.connect(dbUrl, {
-      useNewUrlParser: true
-      // Uncomment this after this `mongodb` pkg bug is fixed:
-      // https://jira.mongodb.org/browse/NODE-2249
-      // useUnifiedTopology: true
-    });
+    const client = await mongoConnectWithRetry(dbUrl);
 
     this.mongoClient = client;
     this.setMongoDatabase(client.db(dbName));
