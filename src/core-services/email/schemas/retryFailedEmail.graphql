@@ -20,7 +20,7 @@ type RetryFailedEmailPayload {
 }
 
 extend type Mutation {
-  "Retry failed email job"
+  "Retry a failed or cancelled email job"
   retryFailedEmail(
     "Mutation input"
     input: RetryFailedEmailInput!

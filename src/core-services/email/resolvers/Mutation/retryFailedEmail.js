@@ -4,7 +4,7 @@ import { decodeJobOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
  * @name Mutation.retryFailedEmail
  * @method
  * @memberof Routes/GraphQL
- * @summary Add a tag
+ * @summary Retry a failed or cancelled email job
  * @param {Object} parentResult - unused
  * @param {Object} args.input - RetryFailedEmailInput
  * @param {String} args.input.id - Email Job id
