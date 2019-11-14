@@ -20,6 +20,8 @@ const mockNavigationItem = {
   }
 };
 
+mockContext.queries.primaryShopId = jest.fn().mockName("primaryShopId").mockImplementation(() => "SHOP_ID");
+
 test("calls NavigationItems.deleteOne and returns an object that validates against the schema", async () => {
   mockContext.collections.NavigationItems.findOne.mockReturnValueOnce(Promise.resolve(mockNavigationItem));
   const navigationItem = await deleteNavigationItemMutation(mockContext, {});

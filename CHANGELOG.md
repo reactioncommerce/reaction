@@ -1,3 +1,40 @@
+# v2.9.0
+
+Reaction v2.9.0 adds integration tests for GraphQL API endpoints, security updates and fixes a fulfillment method bug.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.9.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### Add integration tests and increase `maxWorkers`
+
+As a part of the major push to remove the Meteor dependency from the GraphQL API, we've been adding more Jest integration tests with the goal of full integration test coverage for all GraphQL queries and mutations provided by all core and included plugins. In this release, we've added tests for the following GraphQL queries: `shopBySlug`, `orderByReferenceId`, `ordersByAccountId`, `addTag` and `removeTag`. See test coverage epic [here](https://github.com/reactioncommerce/reaction/issues/5310).
+
+### Fix a fulfillment bug
+
+Refactors the `updateOrderFulfillmentGroup` GraphQL mutation to update only the specified group, not all fulfillment groups.
+
+### Update packages for security vulnerabilities
+
+Bumps [@reactioncommerce/data-factory](https://github.com/reactioncommerce/data-factory/) to version 1.0.1 and [@reactioncommerce/job-queue](https://github.com/reactioncommerce/reaction-job-queue) to version 1.0.5.
+
+
+## Tests
+- Add integration tests for shopBySlug GraphQL query [#5701](https://github.com/reactioncommerce/reaction/pull/5701)
+- Add integration tests for orderByReferenceId GraphQL query [#5697](https://github.com/reactioncommerce/reaction/pull/5697)
+- Add integration tests for ordersByAccountId GraphQL query [#5696](https://github.com/reactioncommerce/reaction/pull/5696)
+- Add integration tests for addTag GraphQL query [#5683](https://github.com/reactioncommerce/reaction/pull/5683)
+- Add integration tests for removeTag GraphQL query [#5687](https://github.com/reactioncommerce/reaction/pull/5687)
+
+## Security
+- Upgrade insecure package versions [#5745](https://github.com/reactioncommerce/reaction/pull/5745)
+
+## Refactors & Fixes
+- Only update fulfillment group for which id is provided [#5723](https://github.com/reactioncommerce/reaction/pull/5723)
+
+## Contributors
+Thanks to [@YuuwakU](https://github.com/YuuwakU) for contributing to this release! 🎉
+
 # v2.8.1
 Reaction v2.8.1 adds a bug fix and contains no breaking changes since v2.8.0
 

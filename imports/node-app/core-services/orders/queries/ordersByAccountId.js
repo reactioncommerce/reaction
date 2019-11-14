@@ -8,7 +8,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
  * @param {String} params.accountId - Account ID to search orders for
- * @param {String} params.orderStatus - Workflow status to limit search results
+ * @param {String} params.orderStatus - Workflow status as a string, or an Array of strings to limit search results
  * @param {String} params.shopIds - Shop IDs for the shops that owns the orders
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */

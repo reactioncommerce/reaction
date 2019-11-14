@@ -7,7 +7,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @name Query/ordersByAccountId
  * @method
  * @memberof Order/GraphQL
- * @summary Get an order by its reference ID
+ * @summary Get all orders from an accountId and (optionally) shopIds and status
  * @param {Object} parentResult - unused
  * @param {ConnectionArgs} args - An object of all arguments that were sent by the client
  * @param {String} args.accountId - accountId of owner of the orders

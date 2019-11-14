@@ -11,7 +11,9 @@ export default async function deleteNavigationItem(context, _id) {
   const { collections, userHasPermission } = context;
   const { NavigationItems } = collections;
 
-  if (userHasPermission(["core"]) === false) {
+  const shopId = await context.queries.primaryShopId(collections);
+
+  if (userHasPermission(["core"], shopId) === false) {
     throw new ReactionError("access-denied", "You do not have permission to delete a navigation item");
   }
 

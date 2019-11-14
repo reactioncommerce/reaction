@@ -15,7 +15,9 @@ export default async function createNavigationItem(context, navigationItem) {
 
   const { metadata, draftData = {} } = navigationItem;
 
-  if (userHasPermission(["core"]) === false) {
+  const shopId = await context.queries.primaryShopId(collections);
+
+  if (userHasPermission(["core"], shopId) === false) {
     throw new ReactionError("access-denied", "You do not have permission to create a navigation item");
   }
 
@@ -27,8 +29,6 @@ export default async function createNavigationItem(context, navigationItem) {
       throw new ReactionError("invalid-metadata-string", "Supplied metadata JSON string could not be parsed");
     }
   }
-
-  const shopId = await context.queries.primaryShopId(collections);
 
   const newNavigationItem = {
     ...navigationItem,
