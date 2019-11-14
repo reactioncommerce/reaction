@@ -26,7 +26,7 @@ export default async function updateTemplate(context, input) {
 
   await checkPermissions(["reaction-templates"], shopId);
 
-  inputSchema.validate(params, { modifier: true });
+  inputSchema.validate(params);
 
   params.updatedAt = new Date();
 

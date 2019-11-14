@@ -26,12 +26,12 @@ type UpdateTemplatePayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "The updated tag"
+  "The updated template"
   template: Template!
 }
 
 extend type Mutation {
-  "Updates an existing tag"
+  "Updates an existing template"
   updateTemplate(
     "Mutation input"
     input: UpdateTemplateInput!
