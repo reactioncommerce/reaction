@@ -132,28 +132,6 @@ test("user can add a discount code", async () => {
   };
 
   expect(createdDiscountCode).toEqual(expectedDiscountCodeResponse);
-  // expect(createdDiscountCode.discountMethod).toEqual("code");
-
-  // // Check the database for the new DiscountCode document
-  // const createdDiscountCodeDatabaseId = decodeOpaqueIdForNamespace("reaction/discountCode")(createdDiscountCodeOpaqueId);
-
-  // const savedDiscountCode = await testApp.collections.DiscountCodes.findOne({
-  //   _id: createdDiscountCodeDatabaseId,
-  //   shopId
-  // });
-
-  // // The document we expect to see in the database
-  // const expectedDiscountCodeDocument = {
-  //   _id: createdDiscountCodeDatabaseId,
-  //   shopId,
-  //   region: "CA",
-  //   rate: 0.10,
-  //   country: "USA",
-  //   postal: "90066",
-  //   taxCode: "CODE"
-  // };
-
-  // expect(savedDiscountCode).toEqual(expectedDiscountCodeDocument);
 });
 
 test("user can update an existing discount code", async () => {
@@ -235,27 +213,6 @@ test("user can update an existing discount code", async () => {
   };
 
   expect(updatedDiscountCode).toEqual(expectedDiscountCodeResponse);
-
-  // // Check the database for the new DiscountCode document
-  // const updatedDiscountCodeDatabaseId = decodeOpaqueIdForNamespace("reaction/discountCode")(updatedDiscountCodeOpaqueId);
-
-  // const savedDiscountCode = await testApp.collections.DiscountCodes.findOne({
-  //   _id: updatedDiscountCodeDatabaseId,
-  //   shopId
-  // });
-
-  // // The document we expect to see in the database
-  // const expectedDiscountCodeDocument = {
-  //   _id: updatedDiscountCodeDatabaseId,
-  //   shopId,
-  //   region: "CA",
-  //   rate: 0.40,
-  //   country: "USA",
-  //   postal: "90210",
-  //   taxCode: "CODE"
-  // };
-
-  // expect(savedDiscountCode).toEqual(expectedDiscountCodeDocument);
 });
 
 test("user can delete an existing discount code", async () => {
