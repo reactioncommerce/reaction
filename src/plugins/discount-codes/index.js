@@ -18,14 +18,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Codes",
     name: "discount-codes",
-    collections: {
-      DiscountCodes: {
-        name: "DiscountCodes",
-        indexes: [
-          [{ code: 1 }, { name: "c2_code" }]
-        ]
-      }
-    },
     i18n,
     functionsByType: {
       "discounts/codes/credit": [getCreditOffDiscount],
