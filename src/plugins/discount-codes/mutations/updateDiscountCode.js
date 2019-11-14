@@ -32,7 +32,7 @@ export default async function updateDiscountCode(context, input) {
 
   const updatedDiscountCode = await Discounts.findOne({ _id });
 
-  await appEvents.emit("afterDiscountCodeCreate", updatedDiscountCode);
+  await appEvents.emit("afterDiscountCodeUpdate", updatedDiscountCode);
 
   return updatedDiscountCode;
 }
