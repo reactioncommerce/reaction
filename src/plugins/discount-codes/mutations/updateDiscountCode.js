@@ -22,7 +22,7 @@ export default async function updateDiscountCode(context, input) {
     discountMethod
   } = input;
   const { appEvents, checkPermissions, collections } = context;
-  const { DiscountCodes } = collections;
+  const { Discounts } = collections;
 
   await checkPermissions(["admin", "owner"], shopId);
 
@@ -39,14 +39,14 @@ export default async function updateDiscountCode(context, input) {
 
   DiscountCodesSchema.validate(discountCode);
 
-  await DiscountCodes.updateOne({
+  await Discounts.updateOne({
     _id,
     shopId
   }, {
     $set: discountCode
   });
 
-  const updatedDiscountCode = await DiscountCodes.findOne({ _id });
+  const updatedDiscountCode = await Discounts.findOne({ _id });
 
   await appEvents.emit("afterDiscountCodeCreate", updatedDiscountCode);
 
