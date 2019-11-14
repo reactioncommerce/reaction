@@ -14,12 +14,7 @@ export default async function createDiscountCode(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
   const {
     shopId,
-    code,
-    discount,
-    accountLimit,
-    redemptionLimit,
-    calculation,
-    discountMethod
+    ...discountCodeInput
   } = input;
   const { appEvents, checkPermissions, collections } = context;
   const { DiscountCodes } = collections;
@@ -29,14 +24,7 @@ export default async function createDiscountCode(context, input) {
   const discountCode = {
     _id: Random.id(),
     shopId,
-    code,
-    discount,
-    conditions: {
-      accountLimit,
-      redemptionLimit
-    },
-    calculation,
-    discountMethod
+    ...discountCodeInput
   };
 
   DiscountCodesSchema.validate(discountCode);
