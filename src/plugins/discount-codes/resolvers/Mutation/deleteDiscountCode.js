@@ -1,4 +1,4 @@
-import { decodeShopOpaqueId, decodeDiscountCodeOpaqueId } from "../../xforms/id.js";
+import { decodeShopOpaqueId, decodeDiscountOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation.deleteDiscountCode
@@ -20,7 +20,7 @@ export default async function deleteDiscountCode(parentResult, { input }, contex
     shopId: opaqueShopId
   } = input;
 
-  const _id = decodeDiscountCodeOpaqueId(opaqueDiscountCodeId);
+  const _id = decodeDiscountOpaqueId(opaqueDiscountCodeId);
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
   const discountCode = await context.mutations.deleteDiscountCode(context, {
