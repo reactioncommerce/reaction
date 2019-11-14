@@ -3,8 +3,8 @@ type DiscountCode {
   "Discount code ID"
   _id: ID!
 
-  "DiscountCode shopId"
-  shopId: ID!
+  "The shop to which this DiscountCode belongs to"
+  shop: Shop!
 
   "Label to describe the code"
   label: String
