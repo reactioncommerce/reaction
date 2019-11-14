@@ -1,0 +1,22 @@
+mutation (
+  $taxRateId: ID!,
+  $shopId: ID!
+) {
+  deleteTaxRate(input: {
+    taxRateId: $taxRateId,
+    shopId: $shopId
+  }) {
+    taxRate {
+      _id
+      rate
+      shop {
+        _id
+      }
+      region
+      postal
+      country
+      taxCode
+      postal
+    }
+  }
+}

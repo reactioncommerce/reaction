@@ -1,6 +1,7 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
-import { decodeShopOpaqueId } from "../../xforms/id.js";
+import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
+
 
 /**
  * Arguments passed by the client for a tags query
@@ -26,11 +27,19 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object[]>} Promise that resolves with array of Tag objects
  */
 export default async function tags(_, connectionArgs, context, info) {
-  const { shopId } = connectionArgs;
+  const { shopId, excludedTagIds } = connectionArgs;
 
   const dbShopId = decodeShopOpaqueId(shopId);
+  let dbExcludedTagIds;
 
-  const query = await context.queries.tags(context, dbShopId, connectionArgs);
+  if (Array.isArray(excludedTagIds)) {
+    dbExcludedTagIds = excludedTagIds.map(decodeTagOpaqueId);
+  }
+
+  const query = await context.queries.tags(context, dbShopId, {
+    ...connectionArgs,
+    excludedTagIds: dbExcludedTagIds
+  });
 
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),

@@ -54,6 +54,10 @@ import {
 } from "../../src/core-services/tags/simpleSchemas.js";
 
 import {
+  TaxRates
+} from "../../src/plugins/taxes-rates/simpleSchemas.js";
+
+import {
   extendTaxesSchemas
 } from "../../src/core-services/taxes/simpleSchemas.js";
 
@@ -88,7 +92,8 @@ const schemasToAddToFactory = {
   ProductVariant,
   ShipmentQuote,
   Shop,
-  Tag
+  Tag,
+  TaxRates
 };
 
 // Extend before creating factories in case some of the added fields
