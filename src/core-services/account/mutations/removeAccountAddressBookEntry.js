@@ -28,12 +28,12 @@ export default async function removeAccountAddressBookEntry(context, input) {
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "Not Found");
 
-  if (!context.isInternalCall && userIdFromContext !== accountId) {
+  if (!context.isInternalCall) {
     await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
     await context.validatePermissions(`reaction:accounts:${account._id}`, "remove:address-books", {
-      shopId: account.shopId
-    });
-  }
+      shopId: account.shopId,
+      owner: account._id
+  });
 
   const addressBeingRemoved = account.profile && Array.isArray(account.profile.addressBook) &&
     account.profile.addressBook.find((addressBookItem) => addressId === addressBookItem._id);

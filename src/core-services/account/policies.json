@@ -14,13 +14,37 @@
     "subjects": [ "reaction:groups:account-managers" ],
     "resources": [ "reaction:accounts:*" ],
     "actions": [
-      "add:address-book",
-      "delete:email",
+      "add:address-books",
+      "delete:emails",
       "read",
-      "remove:address-book",
+      "remove:address-books",
       "update",
-      "update:address-book"
+      "update:address-books",
+      "update:currency",
+      "update:language"
     ],
     "effect": "allow"
+  },
+  {
+    "description": "Account owner acting on their account.",
+    "subjects": [ "reaction:users:*" ],
+    "resources": [ "reaction:accounts:*" ],
+    "actions": [
+      "add:address-books",
+      "delete:emails",
+      "read",
+      "remove:address-books",
+      "update",
+      "update:address-books",
+      "update:currency",
+      "update:language"
+    ],
+    "effect": "allow",
+    "conditions": {
+      "owner": {
+        "type": "EqualsSubjectCondition",
+        "options": {}
+      }
+    }
   }
 ]

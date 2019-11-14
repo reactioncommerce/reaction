@@ -20,13 +20,11 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  // Security check for admin access
-  if (typeof accountUserId === "string" && userIdFromContext !== accountUserId) {
-    await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
-    await context.validatePermissions(`reaction:accounts:${account._id}`, "add:address-books", {
-      shopId: account.shopId
-    });
-  }
+  await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
+  await context.validatePermissions(`reaction:accounts:${account._id}`, "add:address-books", {
+    shopId: account.shopId,
+    owner: account._id
+  });
 
   // required default ID
   if (!address._id) address._id = Random.id();
