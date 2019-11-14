@@ -3,11 +3,11 @@ import { decodeShopOpaqueId, decodeDiscountOpaqueId } from "../../xforms/id.js";
 /**
  * @name Mutation.deleteDiscountCode
  * @method
- * @memberof Routes/GraphQL
- * @summary Delete a tax rate
+ * @memberof DiscountCodes/GraphQL
+ * @summary Delete a discount code
  * @param {Object} parentResult - unused
- * @param {Object} args.input - CreateTagInput
- * @param {String} args.input.discountCodeId - Tax rate ID
+ * @param {Object} args.input - DeleteDiscountCodeInput
+ * @param {String} args.input.discountCodeId - Discount code ID
  * @param {String} args.input.shopId - Shop ID
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
