@@ -33,7 +33,8 @@ export default async function removeAccountAddressBookEntry(context, input) {
     await context.validatePermissions(`reaction:accounts:${account._id}`, "remove:address-books", {
       shopId: account.shopId,
       owner: account._id
-  });
+    });
+  }
 
   const addressBeingRemoved = account.profile && Array.isArray(account.profile.addressBook) &&
     account.profile.addressBook.find((addressBookItem) => addressId === addressBookItem._id);
