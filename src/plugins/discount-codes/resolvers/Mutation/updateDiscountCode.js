@@ -18,7 +18,7 @@ export default async function updateDiscountCode(parentResult, { input }, contex
     clientMutationId = null,
     discountCodeId: opaqueDiscountCodeId,
     shopId: opaqueShopId,
-    ...discountCodeInput
+    discountCode: discountCodeInput
   } = input;
 
   const _id = decodeDiscountCodeOpaqueId(opaqueDiscountCodeId);
