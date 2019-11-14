@@ -10,10 +10,11 @@
 export default async function updateTaxRate(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, _id, country, region, postal, taxCode, rate } = input;
-  const { appEvents, checkPermissions, collections } = context;
+  const { appEvents, collections } = context;
   const { TaxRates } = collections;
 
-  await checkPermissions(["admin", "owner"], shopId);
+  await context.validatePermissionsLegacy(["admin", "owner"], null, { shopId });
+  await context.validatePermissions("reaction:taxRates", "update", { shopId });
 
   await TaxRates.updateOne({
     _id,

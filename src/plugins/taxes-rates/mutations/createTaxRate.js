@@ -12,10 +12,11 @@ import Random from "@reactioncommerce/random";
 export default async function createTaxRate(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, country, region, postal, taxCode, rate } = input;
-  const { appEvents, checkPermissions, collections } = context;
+  const { appEvents, collections } = context;
   const { TaxRates } = collections;
 
-  await checkPermissions(["admin", "owner"], shopId);
+  await context.validatePermissionsLegacy(["admin", "owner"], null, { shopId });
+  await context.validatePermissions("reaction:taxRates", "create", { shopId });
 
   const taxRate = {
     _id: Random.id(),

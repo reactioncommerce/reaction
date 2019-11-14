@@ -30,7 +30,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
-  const { collections, user: userFromContext, validatePermissions } = context;
+  const { collections, user: userFromContext } = context;
   const { Accounts, AccountInvites, Groups, Shops, users } = collections;
   const {
     email,
@@ -39,7 +39,8 @@ export default async function inviteShopMember(context, input) {
     shopId
   } = input;
 
-  await validatePermissions(["reaction-accounts", "account/invite"], shopId);
+  await context.validatePermissionsLegacy(["reaction-accounts", "account/invite"], null, { shopId });
+  await context.validatePermissions("reaction:accounts", "invite:group", { shopId });
 
   // we always use primary shop data, so retrieve this shop first with `Reaction` helper,
   // and only query the `Shops` collection if shopId !== primaryShop._id
