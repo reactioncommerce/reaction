@@ -14,16 +14,16 @@ export default async function deleteDiscountCode(context, input) {
     shopId
   } = input;
   const { appEvents, checkPermissions, collections } = context;
-  const { DiscountCodes } = collections;
+  const { Discounts } = collections;
 
   await checkPermissions(["admin", "owner"], shopId);
 
-  const discountCodeToRemove = await DiscountCodes.findOne({
+  const discountCodeToRemove = await Discounts.findOne({
     _id,
     shopId
   });
 
-  await DiscountCodes.removeOne({
+  await Discounts.removeOne({
     _id,
     shopId
   });
