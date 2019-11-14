@@ -307,9 +307,6 @@ input CreateDiscountCodeInput {
   "The discount code to update"
   discountCode: DiscountCodeInput
 
-  "The ID of the discount code to update"
-  discountCodeId: ID!
-
   "The shop ID of the discount code to update"
   shopId: ID!
 }
