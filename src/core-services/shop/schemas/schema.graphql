@@ -36,6 +36,12 @@ type Shop implements Node {
   "The shop ID"
   _id: ID!
 
+  "An the shop's default address"
+  addressBook: [Address]
+
+  "Whether to allow user to checkout without creating an account"
+  allowGuestCheckout: Boolean
+
   "URLs for various shop assets in various sizes"
   brandAssets: ShopBrandAssets
 
@@ -57,6 +63,12 @@ type Shop implements Node {
   "Shop description"
   description: String
 
+  "The shop's default email record"
+  emails: [EmailRecord]
+
+  "Shop's keywords"
+  keywords: String
+
   "Shop default language"
   language: String!
 
@@ -65,6 +77,9 @@ type Shop implements Node {
 
   "Returns URLs for shop logos"
   shopLogoUrls: ShopLogoUrls
+
+  "Shop's slug"
+  slug: String
 
   "Returns URLs for various storefront routes"
   storefrontUrls: StorefrontUrls
