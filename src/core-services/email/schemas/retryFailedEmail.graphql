@@ -20,7 +20,7 @@ type RetryFailedEmailPayload {
 }
 
 extend type Mutation {
-  "Removes an existing tag"
+  "Retry failed email job"
   retryFailedEmail(
     "Mutation input"
     input: RetryFailedEmailInput!
