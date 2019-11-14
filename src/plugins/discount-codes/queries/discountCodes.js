@@ -9,11 +9,11 @@
  */
 export default async function discountCodes(context, shopId) {
   const { checkPermissions, collections } = context;
-  const { DiscountCodes } = collections;
+  const { Discounts } = collections;
 
   await checkPermissions(["owner", "admin"], shopId);
 
-  return DiscountCodes.find({
+  return Discounts.find({
     shopId
   });
 }
