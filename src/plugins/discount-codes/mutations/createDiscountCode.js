@@ -12,12 +12,9 @@ import { DiscountCodes as DiscountCodesSchema } from "../simpleSchemas.js";
  */
 export default async function createDiscountCode(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
-  const {
-    shopId,
-    ...discountCodeInput
-  } = input;
+  const { shopId, ...discountCodeInput } = input;
   const { appEvents, checkPermissions, collections } = context;
-  const { DiscountCodes } = collections;
+  const { Discounts } = collections;
 
   await checkPermissions(["admin", "owner"], shopId);
 
@@ -29,7 +26,7 @@ export default async function createDiscountCode(context, input) {
 
   DiscountCodesSchema.validate(discountCode);
 
-  await DiscountCodes.insertOne(discountCode);
+  await Discounts.insertOne(discountCode);
 
   await appEvents.emit("afterDiscountCodeCreate", discountCode);
 
