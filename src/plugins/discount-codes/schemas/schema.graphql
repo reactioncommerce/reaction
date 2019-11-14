@@ -67,7 +67,7 @@ type DiscountConditions {
   order: DiscountConditionOrder
 
   "Is this discount code enabled"
-  enabled: Boolean
+  enabled: Boolean!
 
   "Audience that may apply this discount code"
   audience: [String]
@@ -277,7 +277,7 @@ input DiscountConditionsInput {
   order: DiscountConditionOrderInput
 
   "Is this discount code enabled"
-  enabled: Boolean
+  enabled: Boolean!
 
   "Audience that may apply this discount code"
   audience: [String]
