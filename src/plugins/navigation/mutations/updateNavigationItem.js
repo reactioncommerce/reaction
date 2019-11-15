@@ -6,7 +6,7 @@ import { NavigationItemData } from "../simpleSchemas.js";
  * @summary Updates a navigation item
  * @param {Object} context An object containing the per-request state
  * @param {Object} input Input of updateNavigationItem mutation
- * @param {String} input._id ID of navigation item to update
+ * @param {String} input.navigationItemId ID of navigation item to update
  * @param {String} input.shopId Shop ID of navigation item
  * @param {String} input.navigationItem Navigation item object to update
  * @returns {Promise<Object>} Updated navigation item
@@ -14,12 +14,12 @@ import { NavigationItemData } from "../simpleSchemas.js";
 export default async function updateNavigationItem(context, input) {
   const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
-  const { _id, shopId, navigationItem } = input;
+  const { navigationItemId, shopId, navigationItem } = input;
   const { draftData, metadata } = navigationItem;
 
   await checkPermissions(["core"], shopId);
 
-  const existingNavigationItem = await NavigationItems.findOne({ _id });
+  const existingNavigationItem = await NavigationItems.findOne({ navigationItemId });
   if (!existingNavigationItem) {
     throw new ReactionError("navigation-item-not-found", "Navigation item was not found");
   }
@@ -46,9 +46,9 @@ export default async function updateNavigationItem(context, input) {
     }
   }
 
-  await NavigationItems.updateOne({ _id }, { $set: { ...update } });
+  await NavigationItems.updateOne({ navigationItemId }, { $set: { ...update } });
 
-  const updatedNavigationItem = await NavigationItems.findOne({ _id });
+  const updatedNavigationItem = await NavigationItems.findOne({ navigationItemId });
 
   return updatedNavigationItem;
 }

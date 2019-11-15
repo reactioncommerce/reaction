@@ -222,7 +222,7 @@ input CreateNavigationItemInput {
 "Input for the `updateNavigationItem` mutation"
 input UpdateNavigationItemInput {
   "The ID of the navigation item to update"
-  _id: ID!
+  id: ID!
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String

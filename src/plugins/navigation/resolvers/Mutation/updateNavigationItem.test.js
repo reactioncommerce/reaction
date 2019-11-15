@@ -14,7 +14,7 @@ const mockData = {
   classNames: "home-link"
 };
 const mockNavigationItemInput = {
-  _id: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
+  id: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
   draftData: mockData,
   metadata: "{ \"tagId\": \"t1\" }"
 };

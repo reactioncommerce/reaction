@@ -3,7 +3,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import updateNavigationItemMutation from "./updateNavigationItem.js";
 
 const mockInput = {
-  _id: "n1",
+  navigationItemId: "n1",
   shopId: "123",
   navigationItem: {}
 };
