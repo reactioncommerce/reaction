@@ -24,14 +24,35 @@ input ShopLogoUrlsInput {
 
 "Input parameters for the updateShop mutation"
 input UpdateShopInput {
+  "An address book entry to set the primary shop's address"
+  addressBook: [AddressInput]
+
+  "Whether to allow user to checkout without creating an account"
+  allowGuestCheckout: Boolean
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The shop's description"
+  description: String
+
+  "The shops primary email address"
+  emails: [EmailRecordInput]
+
+  "The shop's keywords"
+  keywords: String
+
+  "The shop's name"
+  name: String
 
   "The ID of the shop for the logos to update"
   shopId: ID!
 
   "Object of shop logo urls "
   shopLogoUrls: ShopLogoUrlsInput
+
+  "Shop's slug"
+  slug: String
 
   "Object of storefront routes urls"
   storefrontUrls: StorefrontUrlsInput

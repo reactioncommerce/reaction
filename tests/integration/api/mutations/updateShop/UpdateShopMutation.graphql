@@ -1,0 +1,36 @@
+mutation updateShop($input: UpdateShopInput!) {
+  updateShop(input: $input) {
+    shop {
+       addressBook {
+        fullName
+        address1
+        address2
+        city
+        region
+        postal
+        country
+        isCommercial
+        company
+        phone
+        isBillingDefault
+        isShippingDefault
+      }
+      allowGuestCheckout
+      description
+      emails {
+        address
+        provides
+        verified
+      }
+      slug
+      keywords
+      name
+      storefrontUrls {
+        storefrontOrdersUrl
+      }
+      shopLogoUrls {
+        primaryShopLogoUrl
+      }
+    }
+  }
+}
