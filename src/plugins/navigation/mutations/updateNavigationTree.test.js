@@ -40,7 +40,7 @@ const mockNavigationTree = {
 };
 
 const mockInput = {
-  _id: mockNavigationTreeId,
+  navigationTreeId: mockNavigationTreeId,
   shopId: "123"
 };
 

@@ -248,11 +248,11 @@ input DeleteNavigationItemInput {
 
 "Input for the `updateNavigationTree` mutation"
 input UpdateNavigationTreeInput {
-  "The ID of the navigation tree to update"
-  _id: ID!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The ID of the navigation tree to update"
+  id: ID!
 
   "The field updates to apply"
   navigationTree: NavigationTreeInput!
@@ -263,11 +263,11 @@ input UpdateNavigationTreeInput {
 
 "Input for the `publishNavigationChanges` mutation"
 input PublishNavigationChangesInput {
-  "The ID of the navigation tree"
-  _id: ID!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The ID of the navigation tree"
+  id: ID!
 
   "Shop ID of the navigation tree"
   shopId: ID!

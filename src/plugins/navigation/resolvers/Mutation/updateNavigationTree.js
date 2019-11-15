@@ -7,7 +7,7 @@ import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/i
  * @summary resolver for updateNavigationTree GraphQL mutation
  * @param {Object} parentResult Unused
  * @param {Object} args.input An object of all mutation arguments that were sent by the client
- * @param {String} args.input._id ID of the navigation tree to update
+ * @param {String} args.input.id ID of the navigation tree to update
  * @param {String} args.input.shopId Shop ID of the navigation tree to publish changes
  * @param {String} args.input.navigationTree The updated navigation tree
  * @param {Object} context An object containing the per-request state
@@ -17,16 +17,16 @@ import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/i
 export default async function updateNavigationTree(parentResult, { input }, context) {
   const {
     clientMutationId = null,
-    _id,
+    id: opaqueNavigationTreeId,
     shopId: opaqueShopId,
     navigationTree
   } = input;
 
-  const decodedId = decodeNavigationTreeOpaqueId(_id);
+  const navigationTreeId = decodeNavigationTreeOpaqueId(opaqueNavigationTreeId);
   const shopId = decodeShopOpaqueId(opaqueShopId);
   const updatedNavigationTree = await context.mutations.updateNavigationTree(context, {
     shopId,
-    _id: decodedId,
+    navigationTreeId,
     navigationTree
   });
 
