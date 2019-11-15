@@ -92,7 +92,17 @@ export default async function updateShop(context, input) {
   const sets = {};
 
   Object.keys(shopSettings).forEach((setting) => {
-    // Simple settings
+    // Boolean and number settings
+    if ((
+      typeof shopSettings[setting] === "boolean" ||
+      typeof shopSettings[setting] === "number")
+      && !complexSettings.includes(setting)
+    ) {
+      sets[setting] = shopSettings[setting];
+      return;
+    }
+
+    // Simple string settings
     if (shopSettings[setting] && !complexSettings.includes(setting)) {
       sets[setting] = shopSettings[setting];
       return;
