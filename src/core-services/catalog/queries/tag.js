@@ -7,12 +7,13 @@
  * @param {Object} input input of tag query
  * @param {String} input.shopId - shopId of tag
  * @param {String} input.slugOrId - ID or slug of tag to query
- * @param {Boolean} [params.shouldIncludeInvisible] - Whether or not to include `isVisible=true` tags. Default is `false`
+ * @param {Boolean} [input.shouldIncludeInvisible] - Whether or not to include `isVisible=true` tags. Default is `false`
  * @returns {Object} - A Tag document if one was found
  */
-export default async function tag(context, { slugOrId, shopId }, { shouldIncludeInvisible = false } = {}) {
+export default async function tag(context, input) {
   const { collections, userHasPermission } = context;
   const { Tags } = collections;
+  const { slugOrId, shopId, shouldIncludeInvisible = false } = input;
   let query = {
     $and: [
       { isVisible: true },

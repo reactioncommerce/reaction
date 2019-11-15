@@ -221,11 +221,11 @@ input CreateNavigationItemInput {
 
 "Input for the `updateNavigationItem` mutation"
 input UpdateNavigationItemInput {
-  "The ID of the navigation item to update"
-  id: ID!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The ID of the navigation item to update"
+  id: ID!
 
   "The field updates to apply"
   navigationItem: NavigationItemInput!
@@ -236,11 +236,11 @@ input UpdateNavigationItemInput {
 
 "Input for the `deleteNavigationItem` mutation"
 input DeleteNavigationItemInput {
-  "The ID of the navigation item to delete"
-  id: ID!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The ID of the navigation item to delete"
+  id: ID!
 
   "The ID of the shop navigation item belongs to"
   shopId: ID!

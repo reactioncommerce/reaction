@@ -32,5 +32,5 @@ export default async function tag(_, connectionArgs, context) {
     slugOrId = opaqueSlugOrId;
   }
 
-  return context.queries.tag(context, { slugOrId, shopId }, connectionArgs);
+  return context.queries.tag(context, { ...connectionArgs, slugOrId, shopId });
 }
