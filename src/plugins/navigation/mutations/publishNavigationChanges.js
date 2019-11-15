@@ -6,8 +6,9 @@ import getNavigationTreeItemIds from "../util/getNavigationTreeItemIds.js";
  * @method publishNavigationChanges
  * @summary Publishes changes for a navigation tree and its items
  * @param {Object} context An object containing the per-request state
- * @param {String} input input of navigation tree to publish
- * @param {String} shopId shopId of navigation tree to publish
+ * @param {String} input Input of publishNavigationChanges mutation
+ * @param {String} input._id ID of navigation tree to publish
+ * @param {String} input.shopId shopId of navigation tree to publish
  * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function publishNavigationChanges(context, input) {

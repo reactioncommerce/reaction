@@ -5,13 +5,16 @@ import { NavigationItemData } from "../simpleSchemas.js";
  * @method updateNavigationItem
  * @summary Updates a navigation item
  * @param {Object} context An object containing the per-request state
- * @param {String} _id _id of navigation item to update
- * @param {Object} navigationItem Updated navigation item
+ * @param {Object} input Input of updateNavigationItem mutation
+ * @param {String} input._id ID of navigation item to update
+ * @param {String} input.shopId Shop ID of navigation item
+ * @param {String} input.navigationItem Navigation item object to update
  * @returns {Promise<Object>} Updated navigation item
  */
-export default async function updateNavigationItem(context, { _id, shopId, navigationItem }) {
+export default async function updateNavigationItem(context, input) {
   const { checkPermissions, collections } = context;
   const { NavigationItems } = collections;
+  const { _id, shopId, navigationItem } = input;
   const { draftData, metadata } = navigationItem;
 
   await checkPermissions(["core"], shopId);

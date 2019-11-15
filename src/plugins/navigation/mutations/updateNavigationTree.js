@@ -7,17 +7,16 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
  * @method updateNavigationTree
  * @summary Updates a navigation tree
  * @param {Object} context An object containing the per-request state
- * @param {String} _id _id of navigation tree to update
- * @param {Object} navigationTree Updated navigation tree
+ * @param {Object} input Input of updateNavigationTree mutation
+ * @param {String} input._id ID of navigation tree to update
+ * @param {String} input.shopId Shop ID of navigation tree
+ * @param {Object} input.navigationTree Navigation tree object to update
  * @returns {Promise<Object>} Updated navigation tree
  */
-export default async function updateNavigationTree(context, {
-  _id,
-  shopId,
-  navigationTree
-}) {
+export default async function updateNavigationTree(context, input) {
   const { checkPermissions, collections } = context;
   const { NavigationTrees } = collections;
+  const { _id, shopId, navigationTree } = input;
 
   const {
     shouldNavigationTreeItemsBeAdminOnly,
