@@ -75,7 +75,13 @@ export default async function createDefaultNavigationTreeForShop(context, shop) 
     shopId
   });
 
-  await context.mutations.publishNavigationChanges({ ...context, isInternalCall: true }, navigationTreeId);
+  await context.mutations.publishNavigationChanges({
+    ...context,
+    isInternalCall: true
+  }, {
+    _id: navigationTreeId,
+    shopId
+  });
 
   await Shops.updateOne({ _id: shopId }, { $set: { defaultNavigationTreeId: navigationTreeId } });
 

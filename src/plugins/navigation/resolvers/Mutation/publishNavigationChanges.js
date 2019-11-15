@@ -22,7 +22,7 @@ export default async function publishNavigationChanges(parentResult, { input }, 
   const decodedId = decodeNavigationTreeOpaqueId(_id);
   const shopId = decodeShopOpaqueId(opaqueShopId);
   const publishedNavigationTree = context.mutations.publishNavigationChanges(context, {
-    decodedId,
+    _id: decodedId,
     shopId
   });
 
