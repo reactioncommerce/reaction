@@ -4,8 +4,8 @@
  * @method
  * @summary Regenerates sitemap files for primary shop
  * @param {Object} context - GraphQL execution context
- * @param {String} input input of generateSitemaps
- * @param {String} input.shopId shopId to generate sitemap for
+ * @param {String} input Input of generateSitemaps
+ * @param {String} input.shopId Shop ID to generate sitemap for
  * @returns {undefined} schedules immediate sitemap generation job
  */
 export default async function generateSitemaps(context, input) {
