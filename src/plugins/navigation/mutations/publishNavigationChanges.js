@@ -7,20 +7,20 @@ import getNavigationTreeItemIds from "../util/getNavigationTreeItemIds.js";
  * @summary Publishes changes for a navigation tree and its items
  * @param {Object} context An object containing the per-request state
  * @param {String} input Input of publishNavigationChanges mutation
- * @param {String} input._id ID of navigation tree to publish
+ * @param {String} input.navigationTreeId ID of navigation tree to publish
  * @param {String} input.shopId shopId of navigation tree to publish
  * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function publishNavigationChanges(context, input) {
   const { checkPermissions, collections } = context;
   const { NavigationItems, NavigationTrees } = collections;
-  const { _id, shopId } = input;
+  const { navigationTreeId, shopId } = input;
 
   if (!context.isInternalCall) {
     await checkPermissions(["core"], shopId);
   }
 
-  const treeSelector = { _id, shopId };
+  const treeSelector = { _id: navigationTreeId, shopId };
   const navigationTree = await NavigationTrees.findOne(treeSelector);
   if (!navigationTree) {
     throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");

@@ -3,7 +3,7 @@ import publishNavigationChangesMutation from "./publishNavigationChanges.js";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
 
 const mockInput = {
-  _id: "cmVhY3Rpb24vbmF2aWdhdGlvblRyZWU6cGtNVFdBRUhKcnNpTnpZMmE=",
+  id: "cmVhY3Rpb24vbmF2aWdhdGlvblRyZWU6cGtNVFdBRUhKcnNpTnpZMmE=",
   shopId: opaqueShopId
 };
 const mockNavigationTreeItems = [

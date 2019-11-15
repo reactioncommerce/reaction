@@ -79,7 +79,7 @@ export default async function createDefaultNavigationTreeForShop(context, shop) 
     ...context,
     isInternalCall: true
   }, {
-    _id: navigationTreeId,
+    navigationTreeId,
     shopId
   });
 
