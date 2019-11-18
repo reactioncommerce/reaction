@@ -15,7 +15,7 @@ export default async function stripeCaptureCharge(context, payment) {
     amount: formatForStripe(payment.amount)
   };
 
-  const stripe = await getStripeInstanceForShop(context, payment.shopId);
+  const stripe = await getStripeInstanceForShop(context);
 
   try {
     const captureResult = await stripe.charges.capture(payment.transactionId, captureDetails);

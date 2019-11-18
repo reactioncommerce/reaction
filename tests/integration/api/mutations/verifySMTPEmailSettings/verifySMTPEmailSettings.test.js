@@ -49,12 +49,7 @@ test("test if email config data is verified by nodemailer", async () => {
 
   const result = await verifySMTPEmailSettings({
     input: {
-      host: "test.email.com",
-      port: 22,
-      service: "custom",
-      shopId,
-      password: "test",
-      user: "user"
+      shopId
     }
   });
 

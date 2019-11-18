@@ -1,4 +1,7 @@
 import mutations from "./mutations/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import { EmailTemplates } from "./simpleSchemas.js";
 import startup from "./startup.js";
 
 /**
@@ -10,9 +13,17 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Email Templates",
     name: "reaction-email-templates",
+    version: "1.0.0",
+    graphQL: {
+      resolvers,
+      schemas
+    },
+    mutations,
+    simpleSchemas: {
+      EmailTemplates
+    },
     functionsByType: {
       startup: [startup]
-    },
-    mutations
+    }
   });
 }

@@ -57,7 +57,7 @@ export default async function stripeCreateAuthorizedPayment(context, input) {
     }
   } = input;
 
-  const stripe = await getStripeInstanceForShop(context, shopId);
+  const stripe = await getStripeInstanceForShop(context);
 
   // For orders with only a single fulfillment group, we could create a charge directly from the card token, and skip
   // creating a customer. However, to help make future charging easier and because we always have an email address and tracking

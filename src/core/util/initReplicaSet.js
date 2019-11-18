@@ -1,8 +1,6 @@
 import { URL } from "url";
-import mongodb from "mongodb";
 import Logger from "@reactioncommerce/logger";
-
-const { MongoClient } = mongodb;
+import mongoConnectWithRetry from "./mongoConnectWithRetry.js";
 
 /**
  * @summary Sleep for some milliseconds
@@ -30,12 +28,7 @@ async function connect(parsedUrl) {
   dbParsedUrl.pathname = "";
   const dbUrl = dbParsedUrl.toString();
 
-  const client = await MongoClient.connect(dbUrl, {
-    useNewUrlParser: true
-    // Uncomment this after this `mongodb` pkg bug is fixed:
-    // https://jira.mongodb.org/browse/NODE-2249
-    // useUnifiedTopology: true
-  });
+  const client = await mongoConnectWithRetry(dbUrl);
 
   return {
     client,
@@ -51,31 +44,14 @@ async function connect(parsedUrl) {
  * @returns {Promise} indication of success/failure
  */
 export default async function initReplicaSet(mongoUrl) {
+  Logger.info("Initializing MongoDB replica set...");
   const parsedUrl = new URL(mongoUrl);
 
   // eventually we should set `stopped = true` when the developer interrupts
   // the process
   const stopped = false;
 
-  const canConnectTimestamp = Date.now();
-  let db;
-  let client;
-  while (!stopped) {
-    try {
-      // eslint-disable-next-line no-await-in-loop
-      ({ client, db } = await connect(parsedUrl));
-    } catch (error) {
-      if (Date.now() - canConnectTimestamp > 60000) {
-        Logger.error(error);
-        throw new Error("Unable to connect to MongoDB server after 1 minute");
-      }
-    }
-
-    if (client) break;
-
-    // eslint-disable-next-line no-await-in-loop
-    await sleep(100);
-  }
+  const { client, db } = await connect(parsedUrl);
 
   const replSetConfiguration = {
     _id: "rs0",
@@ -132,4 +108,5 @@ export default async function initReplicaSet(mongoUrl) {
   }
 
   await client.close();
+  Logger.info("Finished MongoDB replica set initialization");
 }

@@ -21,12 +21,7 @@ export default async function tag(context, slugOrId, { shouldIncludeInvisible = 
   if (shouldIncludeInvisible === true) {
     const shopId = await context.queries.primaryShopId(context);
     if (userHasPermission(["owner", "admin"], shopId)) {
-      query = {
-        $and: [
-          { isVisible: { $in: [false, true] } },
-          { $or: [{ _id: slugOrId }, { slug: slugOrId }] }
-        ]
-      };
+      query = { $or: [{ _id: slugOrId }, { slug: slugOrId }] };
     }
   }
 

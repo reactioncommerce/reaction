@@ -11,7 +11,7 @@ import getStripeInstanceForShop from "./getStripeInstanceForShop.js";
  * @private
  */
 export default async function stripeListRefunds(context, paymentMethod) {
-  const stripe = await getStripeInstanceForShop(context, paymentMethod.shopId);
+  const stripe = await getStripeInstanceForShop(context);
 
   let refundListResults;
   try {
