@@ -1,34 +1,36 @@
-import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
+import { decodeProductOpaqueId, decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
  *
  * @method updateProductField
- * @summary updates a field on a product
+ * @summary Updates various product fields
  * @param {Object} _ - unused
  * @param {Object} args - The input arguments
  * @param {Object} args.input - mutation input object
  * @param {String} args.input.clientMutationId - The mutation id
- * @param {String} args.input.field - product field to update
+ * @param {String} args.input.product - product fields to update
  * @param {String} args.input.productId - productId of product to update
  * @param {String} args.input.shopId - shopId of shop product belongs to
- * @param {String} args.input.value - value to update field with
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>} updateProductField payload
  */
 export default async function updateProductField(_, { input }, context) {
   const {
     clientMutationId = null,
-    field,
+    product: productInput,
     productId,
-    shopId,
-    value
+    shopId
   } = input;
 
+  if (Array.isArray(productInput.tagIds)) {
+    productInput.hashtags = productInput.tagIds.map(decodeTagOpaqueId);
+    delete productInput.tagIds;
+  }
+
   const updatedProduct = await context.mutations.updateProductField(context, {
-    field,
+    product: productInput,
     productId: decodeProductOpaqueId(productId),
-    shopId: decodeShopOpaqueId(shopId),
-    value
+    shopId: decodeShopOpaqueId(shopId)
   });
 
   return {
