@@ -6,6 +6,7 @@ import createProduct from "./createProduct.js";
 import createProductVariant from "./createProductVariant.js";
 import removeTagsFromProducts from "./removeTagsFromProducts.js";
 import updateProductField from "./updateProductField.js";
+import updateProductVariant from "./updateProductVariant.js";
 
 export default {
   addTagsToProducts,
@@ -15,5 +16,6 @@ export default {
   createProduct,
   createProductVariant,
   removeTagsFromProducts,
-  updateProductField
+  updateProductField,
+  updateProductVariant
 };
