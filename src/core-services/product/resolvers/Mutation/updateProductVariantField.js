@@ -3,14 +3,13 @@ import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 /**
  *
  * @method updateProductVariantField
- * @summary updates a field on a product
+ * @summary Updates various product variant fields
  * @param {Object} _ - unused
  * @param {Object} args - The input arguments
  * @param {Object} args.input - mutation input object
  * @param {String} args.input.clientMutationId - The mutation id
- * @param {String} args.input.field - product field to update
  * @param {String} args.input.shopId - shopId of shop product belongs to
- * @param {String} args.input.value - value to update field with
+ * @param {String} args.input.variant - value to update field with
  * @param {String} args.input.variantId - Id of variant to update
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>} updateProductVariantField payload
@@ -18,20 +17,15 @@ import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 export default async function updateProductVariantField(_, { input }, context) {
   const {
     clientMutationId = null,
-    field,
     shopId,
-    value,
+    variant,
     variantId
   } = input;
 
-  // This `updateProductVariantField` resolver calls the `updateProductField` mutation
-  // as we don't have the need to separate this into `updateProductVariantField` at this time.
-  // In the future, we can create a `updateProductVariantField` mutation if needed.
-  const updatedVariant = await context.mutations.updateProductField(context, {
-    field,
+  const updatedVariant = await context.mutations.updateProductVariant(context, {
     productId: decodeProductOpaqueId(variantId),
     shopId: decodeShopOpaqueId(shopId),
-    value
+    variant
   });
 
   return {
