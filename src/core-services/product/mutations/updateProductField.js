@@ -1,19 +1,125 @@
-import EJSON from "ejson";
 import SimpleSchema from "simpl-schema";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import createHandle from "../utils/createHandle.js";
 
-const inputSchema = new SimpleSchema({
-  "field": String,
-  "productId": String,
-  "shopId": String,
-  "value": SimpleSchema.oneOf(String, Object, Array, Boolean, Number),
-  "value.$": {
-    type: SimpleSchema.oneOf(String, Object, Boolean, Number),
+const metafieldInputSchema = new SimpleSchema({
+  key: {
+    type: String,
+    max: 30,
+    optional: true
+  },
+  namespace: {
+    type: String,
+    max: 20,
+    optional: true
+  },
+  scope: {
+    type: String,
+    optional: true
+  },
+  value: {
+    type: String,
+    optional: true
+  },
+  valueType: {
+    type: String,
+    optional: true
+  },
+  description: {
+    type: String,
     optional: true
   }
 });
+
+const inputSchema = new SimpleSchema({
+  "_id": {
+    type: String,
+    optional: true
+  },
+  "description": {
+    type: String,
+    optional: true
+  },
+  "facebookMsg": {
+    type: String,
+    optional: true,
+    max: 255
+  },
+  "googleplusMsg": {
+    type: String,
+    optional: true,
+    max: 255
+  },
+  "handle": {
+    type: String,
+    optional: true
+  },
+  "hashtags": {
+    type: Array,
+    optional: true
+  },
+  "hashtags.$": {
+    type: String,
+    optional: true
+  },
+  "isDeleted": {
+    type: Boolean,
+    optional: true
+  },
+  "isVisible": {
+    type: Boolean,
+    optional: true
+  },
+  "metaDescription": {
+    type: String,
+    optional: true
+  },
+  "metafields": {
+    type: Array,
+    optional: true
+  },
+  "metafields.$": metafieldInputSchema,
+  "originCountry": {
+    type: String,
+    optional: true
+  },
+  "pageTitle": {
+    type: String,
+    optional: true
+  },
+  "pinterestMsg": {
+    type: String,
+    optional: true,
+    max: 255
+  },
+  "productType": {
+    type: String,
+    optional: true
+  },
+  "supportedFulfillmentTypes": {
+    type: Array,
+    optional: true
+  },
+  "supportedFulfillmentTypes.$": {
+    type: String,
+    allowedValues: ["shipping", "digital", "pickup"]
+  },
+  "title": {
+    type: String,
+    optional: true
+  },
+  "twitterMsg": {
+    type: String,
+    optional: true,
+    max: 140
+  },
+  "vendor": {
+    type: String,
+    optional: true
+  }
+});
+
 
 /**
  * @method updateProductField
@@ -27,57 +133,47 @@ const inputSchema = new SimpleSchema({
  * @return {Promise<Object>} updateProductField payload
  */
 export default async function updateProductField(context, input) {
-  inputSchema.validate(input);
   const { appEvents, checkPermissions, collections } = context;
   const { Products } = collections;
-  const { field, productId, shopId, value } = input;
+  const { product: productInput, productId, shopId } = input;
 
   // Check that user has permission to create product
   await checkPermissions(["createProduct", "product/admin", "product/update"], shopId);
 
-  const product = await Products.findOne({ _id: productId, shopId });
-  if (!product) throw new ReactionError("not-found", "Product not found");
+  const currentProduct = await Products.findOne({ _id: productId, shopId });
+  if (!currentProduct) throw new ReactionError("not-found", "Product not found");
 
-  let update;
-  // handle booleans with correct typing
-  if (value === "false" || value === "true") {
-    const booleanValue = value === "true" || value === true;
-    update = EJSON.parse(`{"${field}":${booleanValue}}`);
-  } else if (field === "handle") {
-    update = {
-      [field]: createHandle(getSlug(value), productId)
-    };
-  } else if (field === "title" && !product.handle) {
-    // update handle once title is set
-    const handle = createHandle(getSlug(value), productId);
-    update = {
-      [field]: value,
-      handle
-    };
-  } else {
-    const stringValue = EJSON.stringify(value);
-    update = EJSON.parse(`{"${field}":${stringValue}}`);
+  const updateDocument = { ...productInput };
+
+  // Slugify the handle input
+  if (typeof productInput.handle === "string") {
+    updateDocument.handle = createHandle(getSlug(productInput.handle), productId);
   }
 
-  const { value: updatedProduct } = await Products.findOneAndUpdate(
+  // If a title is supplied, and the currently stored product doesn't have a handle,
+  // then slugify the title and save it as the new handle (slug)
+  if (typeof productInput.title === "string" && !currentProduct.handle) {
+    updateDocument.handle = createHandle(getSlug(productInput.title), productId);
+  }
+
+  inputSchema.validate(updateDocument);
+
+  await Products.updateOne(
     {
-      _id: productId
+      _id: productId,
+      shopId
     },
     {
-      $set: update
+      $set: updateDocument
     },
     {
       returnOriginal: false
     }
   );
 
-  if (!updatedProduct) throw new ReactionError("server-error", "Product not updated");
+  const updatedProduct = Products.findOne({ _id: productId, shopId });
 
-  if (updatedProduct.type === "variant") {
-    appEvents.emit("afterVariantUpdate", { productId, field, value });
-  } else {
-    appEvents.emit("afterProductUpdate", { productId, field, value });
-  }
+  appEvents.emit("afterProductUpdate", { productId, product: updatedProduct });
 
   return updatedProduct;
 }
