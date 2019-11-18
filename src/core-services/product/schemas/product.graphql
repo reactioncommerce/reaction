@@ -287,29 +287,145 @@ input CloneProductVariantsInput  {
 
 "Input for the `updateProductField` mutation"
 input UpdateProductFieldInput  {
-  "Product field to update"
-  field: String!
+  "Product input"
+  product: ProductInput!
 
   "ID of product to update"
   productId: ID!
 
   "ID of shop that owns the product to update"
   shopId: ID!
+}
 
-  "Value to update the field with"
-  value: String! # TODO: what do we do here, this can be anything
+"Mutation input for a product"
+input ProductInput {
+  "Product ID"
+  _id: ID
+
+  "The full product description, which may have newline characters in it"
+  description: String
+
+  "Facebook message"
+  facebookMsg: String
+
+  "Google message"
+  googleplusMsg: String
+
+  "True if this product has been deleted. Typically, deleted products are not returned in queries."
+  isDeleted: Boolean!
+
+  "True if this product should be shown to shoppers. Typically, non-visible products are not returned in queries."
+  isVisible: Boolean!
+
+  "The product description to use for page `description` meta element in HTML"
+  metaDescription: String
+
+  "Arbitrary additional metadata about this product"
+  metafields: [MetafieldInput]
+
+  "The country of origin"
+  originCountry: String
+
+  "Subtitle"
+  pageTitle: String
+
+  "Pinterest message"
+  pinterestMsg: String
+
+  "An arbitrary product type value, such as from an external system"
+  productType: String
+
+  "A URL-safe and human-readable string that uniquely identifies this product"
+  slug: String
+
+  "When a shopper purchases this product, what types of fulfillment can they choose from?"
+  supportedFulfillmentTypes: [FulfillmentType]!
+
+  "The list of tag IDs that have been applied to this product"
+  tagIds: [ID]
+
+  "Product title"
+  title: String
+
+  "Twitter message"
+  twitterMsg: String
+
+  "The product vendor or manufacturer, for display"
+  vendor: String
+}
+
+"Mutation input for a product variant or option"
+input ProductVariantInput {
+  "Variant ID"
+  _id: ID
+
+  "Ancestors this variant"
+  ancestors: [ID]
+
+  """
+  The attribute label describes the category of variant, for example, "Color" or "Size".
+  In most cases this will be the same for all variants at the same level.
+  """
+  attributeLabel: String
+
+  "The product variant barcode value, if it has one"
+  barcode: String
+
+  "The date and time at which this variant was created"
+  createdAt: DateTime
+
+  "The height of the product variant, if it has physical dimensions"
+  height: Float
+
+  "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
+  index: Int
+
+  "True if this variant was deleted. Deleted variants are not published to the catalog."
+  isDeleted: Boolean
+
+  "True if this variant is visible. Hidden variants are not published to the catalog."
+  isVisible: Boolean
+
+  "The length of the product, if it has physical dimensions"
+  length: Float
+
+  "Arbitrary additional metadata about this product"
+  metafields: [MetafieldInput]
+
+  "The minimum quantity that must be added to a cart"
+  minOrderQuantity: Int
+
+  "A short title to use for product detail select lists"
+  optionTitle: String
+
+  "The country of origin"
+  originCountry: String
+
+  "SKU of variant"
+  sku: String
+
+  """
+  The full variant title for use on cart, checkout, and order summaries and on invoices.
+  This fully describes the configured variant. For example, if this is an option with
+  `optionTitle` "Large", its parent variant has `optionTitle` "Red", and the product
+  `title` is "Fancy T-Shirt", then this `title` will be something like "Fancy T-Shirt - Red - Large".
+  """
+  title: String
+
+  "The weight of the product on Earth, if it has physical dimensions"
+  weight: Float
+
+  "The width of the product, if it has physical dimensions"
+  width: Float
 }
 
 "Input for the `updateProductVariantField` mutation"
 input UpdateProductVariantFieldInput  {
-  "Variant field to update"
-  field: String!
-
   "ID of shop that owns the variant to update"
   shopId: ID!
 
-  "Value to update the field with"
-  value: String! # TODO: what do we do here, this can be anything
+  "Variant input"
+  variant: ProductVariantInput!
 
   "ID of variant to update"
   variantId: ID!
