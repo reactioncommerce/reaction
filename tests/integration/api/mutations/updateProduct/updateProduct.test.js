@@ -98,12 +98,12 @@ test("expect product fields to be updated", async () => {
     return;
   }
 
-  expect(result.updateProductField.product.title).toEqual("Updated product title");
-  expect(result.updateProductField.product.metafields).toEqual([
+  expect(result.updateProduct.product.title).toEqual("Updated product title");
+  expect(result.updateProduct.product.metafields).toEqual([
     { key: "size", value: "small" },
     { key: "pattern", value: "striped" }
   ]);
-  expect(result.updateProductField.product.socialMetadata).toEqual([
+  expect(result.updateProduct.product.socialMetadata).toEqual([
     {
       message: "",
       service: "facebook"
@@ -141,7 +141,7 @@ test("expect product to be not visible", async () => {
     return;
   }
 
-  expect(result.updateProductField.product.isVisible).toEqual(false);
+  expect(result.updateProduct.product.isVisible).toEqual(false);
 });
 
 test("expect product to be archived", async () => {
@@ -162,5 +162,5 @@ test("expect product to be archived", async () => {
     return;
   }
 
-  expect(result.updateProductField.product.isDeleted).toEqual(true);
+  expect(result.updateProduct.product.isDeleted).toEqual(true);
 });

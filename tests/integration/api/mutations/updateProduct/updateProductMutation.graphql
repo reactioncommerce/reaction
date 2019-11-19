@@ -1,5 +1,5 @@
 mutation($productId: ID!, $shopId: ID!, $product: ProductInput!) {
-	updateProductField(input: {
+	updateProduct(input: {
     productId: $productId
     shopId: $shopId
     product: $product

@@ -122,17 +122,17 @@ const inputSchema = new SimpleSchema({
 
 
 /**
- * @method updateProductField
- * @summary updates a field on a product
+ * @method updateProduct
+ * @summary Updates a product
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - Input arguments for the bulk operation
  * @param {String} input.field - product field to update
  * @param {String} input.productId - productId of product to update
  * @param {String} input.shopId - shopId of shop product belongs to
  * @param {String} input.value - value to update field with
- * @return {Promise<Object>} updateProductField payload
+ * @return {Promise<Object>} updateProduct payload
  */
-export default async function updateProductField(context, input) {
+export default async function updateProduct(context, input) {
   const { appEvents, checkPermissions, collections } = context;
   const { Products } = collections;
   const { product: productInput, productId, shopId } = input;

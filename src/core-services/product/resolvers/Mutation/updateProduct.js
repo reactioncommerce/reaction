@@ -2,7 +2,7 @@ import { decodeProductOpaqueId, decodeShopOpaqueId, decodeTagOpaqueId } from "..
 
 /**
  *
- * @method updateProductField
+ * @method updateProduct
  * @summary Updates various product fields
  * @param {Object} _ - unused
  * @param {Object} args - The input arguments
@@ -12,9 +12,9 @@ import { decodeProductOpaqueId, decodeShopOpaqueId, decodeTagOpaqueId } from "..
  * @param {String} args.input.productId - productId of product to update
  * @param {String} args.input.shopId - shopId of shop product belongs to
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} updateProductField payload
+ * @return {Promise<Object>} updateProduct payload
  */
-export default async function updateProductField(_, { input }, context) {
+export default async function updateProduct(_, { input }, context) {
   const {
     clientMutationId = null,
     product: productInput,
@@ -27,7 +27,7 @@ export default async function updateProductField(_, { input }, context) {
     delete productInput.tagIds;
   }
 
-  const updatedProduct = await context.mutations.updateProductField(context, {
+  const updatedProduct = await context.mutations.updateProduct(context, {
     product: productInput,
     productId: decodeProductOpaqueId(productId),
     shopId: decodeShopOpaqueId(shopId)
