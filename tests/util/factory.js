@@ -66,6 +66,10 @@ import {
 } from "../../src/core-services/taxes/simpleSchemas.js";
 
 import {
+  EmailTemplates
+} from "../../src/plugins/email-templates/simpleSchemas.js";
+
+import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
@@ -83,6 +87,7 @@ const schemasToAddToFactory = {
   CommonOrder,
   CommonOrderItem,
   Discounts,
+  EmailTemplates,
   Group,
   Order,
   OrderAddress,
