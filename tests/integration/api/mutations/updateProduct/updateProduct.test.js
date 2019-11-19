@@ -1,4 +1,3 @@
-import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
 
@@ -47,29 +46,6 @@ const mockOptionOne = {
   isDeleted: false,
   isVisible: true,
   type: "variant"
-};
-
-const expectedClonedProduct = {
-  products: [
-    {
-      isDeleted: false,
-      isVisible: false,
-      shop: {
-        _id: opaqueShopId
-      },
-      supportedFulfillmentTypes: [
-        "shipping"
-      ],
-      title: "Fake Product-copy",
-      variants: [{
-        options: [
-          {
-            title: "Fake Product Option One"
-          }
-        ],
-        title: "Fake Product Variant"
-      }]
-    }]
 };
 
 let testApp;
