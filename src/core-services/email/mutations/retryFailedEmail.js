@@ -9,7 +9,8 @@ import Logger from "@reactioncommerce/logger";
  * @returns {Boolean} - returns true if job is successfully restarted
  */
 export default async function retryFailed(context, input) {
-  const { checkPermissions, backgroundJobs } = context;
+  const { checkPermissions, collections, backgroundJobs } = context;
+  const { Emails } = collections;
   const { jobId, shopId } = input;
   let emailJobId = jobId;
 
@@ -32,7 +33,7 @@ export default async function retryFailed(context, input) {
   }
 
   // Set the job status to ready to trigger the Jobs observer to trigger sendEmail
-  backgroundJobs.update({ _id: emailJobId }, {
+  Emails.update({ _id: emailJobId }, {
     $set: {
       status: "ready"
     }
