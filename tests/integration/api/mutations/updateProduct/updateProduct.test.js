@@ -1,7 +1,9 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const updateProductMutation = importAsString("./updateProductMutation.graphql");
+const updateProductVariantMutation = importAsString("./updateProductVariantMutation.graphql");
 
 jest.setTimeout(300000);
 
@@ -50,10 +52,12 @@ const mockOptionOne = {
 
 let testApp;
 let updateProduct;
+let updateVariant;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   updateProduct = testApp.mutate(updateProductMutation);
+  updateVariant = testApp.mutate(updateProductVariantMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await testApp.collections.Products.insertOne(mockProduct);
   await testApp.collections.Products.insertOne(mockVariant);
@@ -144,23 +148,34 @@ test("expect product to be not visible", async () => {
   expect(result.updateProduct.product.isVisible).toEqual(false);
 });
 
-test("expect product to be archived", async () => {
+// Update a product variant
+test("expect product variant fields to be updated", async () => {
   let result;
 
-  const updateProductInput = {
-    productId: opaqueProductId,
+  const updateProductVariantInput = {
+    variantId: encodeOpaqueId("reaction/product", internalVariantIds[0]),
     shopId: opaqueShopId,
-    product: {
-      isDeleted: true
+    variant: {
+      title: "Updated variant title",
+      attributeLabel: "color",
+      metafields: [
+        { key: "size", value: "small" },
+        { key: "pattern", value: "striped" }
+      ]
     }
   };
 
   try {
-    result = await updateProduct(updateProductInput);
+    result = await updateVariant(updateProductVariantInput);
   } catch (error) {
     expect(error).toBeUndefined();
     return;
   }
 
-  expect(result.updateProduct.product.isDeleted).toEqual(true);
+  expect(result.updateProductVariant.variant.title).toEqual("Updated variant title");
+  expect(result.updateProductVariant.variant.attributeLabel).toEqual("color");
+  expect(result.updateProductVariant.variant.metafields).toEqual([
+    { key: "size", value: "small" },
+    { key: "pattern", value: "striped" }
+  ]);
 });
