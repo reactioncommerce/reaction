@@ -132,7 +132,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - Input arguments for the bulk operation
  * @param {String} input.field - product field to update
- * @param {String} input.productId - productId of product to update
+ * @param {String} input.variantId - variantId of product to update
  * @param {String} input.shopId - shopId of shop product belongs to
  * @param {String} input.value - value to update field with
  * @return {Promise<Object>} updateProductVariant payload
@@ -140,12 +140,12 @@ const inputSchema = new SimpleSchema({
 export default async function updateProductVariant(context, input) {
   const { appEvents, checkPermissions, collections } = context;
   const { Products } = collections;
-  const { variant: variantInput, productId, shopId } = input;
+  const { variant: variantInput, variantId, shopId } = input;
 
   // Check that user has permission to create product
   await checkPermissions(["createProduct", "product/admin", "product/update"], shopId);
 
-  const currentProduct = await Products.findOne({ _id: productId, shopId });
+  const currentProduct = await Products.findOne({ _id: variantId, shopId });
   if (!currentProduct) throw new ReactionError("not-found", "Product variant not found");
 
   const updateDocument = { ...variantInput };
@@ -154,7 +154,7 @@ export default async function updateProductVariant(context, input) {
 
   await Products.updateOne(
     {
-      _id: productId,
+      _id: variantId,
       shopId
     },
     {
@@ -162,9 +162,9 @@ export default async function updateProductVariant(context, input) {
     }
   );
 
-  const updatedProduct = Products.findOne({ _id: productId, shopId });
+  const updatedProduct = Products.findOne({ _id: variantId, shopId });
 
-  appEvents.emit("afterVariantUpdate", { productId, product: updatedProduct });
+  appEvents.emit("afterVariantUpdate", { productId: variantId, product: updatedProduct });
 
   return updatedProduct;
 }
