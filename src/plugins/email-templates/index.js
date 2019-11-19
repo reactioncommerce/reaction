@@ -1,3 +1,4 @@
+import queries from "./queries/index.js";
 import mutations from "./mutations/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
@@ -18,6 +19,7 @@ export default async function register(app) {
       resolvers,
       schemas
     },
+    queries,
     mutations,
     simpleSchemas: {
       EmailTemplates

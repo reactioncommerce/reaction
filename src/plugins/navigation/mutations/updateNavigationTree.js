@@ -7,15 +7,17 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
  * @method updateNavigationTree
  * @summary Updates a navigation tree
  * @param {Object} context An object containing the per-request state
- * @param {String} _id _id of navigation tree to update
- * @param {Object} navigationTree Updated navigation tree
+ * @param {Object} input Input of updateNavigationTree mutation
+ * @param {String} input.navigationTreeId ID of navigation tree to update
+ * @param {String} input.shopId Shop ID of navigation tree
+ * @param {Object} input.navigationTree Navigation tree object to update
  * @returns {Promise<Object>} Updated navigation tree
  */
-export default async function updateNavigationTree(context, _id, navigationTree) {
+export default async function updateNavigationTree(context, input) {
   const { checkPermissions, collections } = context;
   const { NavigationTrees } = collections;
+  const { navigationTreeId, shopId, navigationTree } = input;
 
-  const shopId = await context.queries.primaryShopId(context);
   const {
     shouldNavigationTreeItemsBeAdminOnly,
     shouldNavigationTreeItemsBePubliclyVisible,
@@ -44,7 +46,8 @@ export default async function updateNavigationTree(context, _id, navigationTree)
 
   await checkPermissions(["core"], shopId);
 
-  const existingNavigationTree = await NavigationTrees.findOne({ _id });
+  const treeSelector = { _id: navigationTreeId, shopId };
+  const existingNavigationTree = await NavigationTrees.findOne(treeSelector);
   if (!existingNavigationTree) {
     throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");
   }
@@ -60,9 +63,9 @@ export default async function updateNavigationTree(context, _id, navigationTree)
     update.name = name;
   }
 
-  await NavigationTrees.updateOne({ _id }, { $set: { ...update } });
+  await NavigationTrees.updateOne({ _id: navigationTreeId }, { $set: { ...update } });
 
-  const updatedNavigationTree = await NavigationTrees.findOne({ _id });
+  const updatedNavigationTree = await NavigationTrees.findOne(treeSelector);
 
   return updatedNavigationTree;
 }

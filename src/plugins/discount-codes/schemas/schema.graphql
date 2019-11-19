@@ -367,7 +367,7 @@ type DeleteDiscountCodePayload {
 extend type Query {
   "Gets discount codes"
   discountCodes(
-    "Provide a shp ID from which you want to get discount codes"
+    "Provide a shop ID from which you want to get discount codes"
     shopId: ID!
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
