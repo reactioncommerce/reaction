@@ -2,7 +2,7 @@ import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  *
- * @method updateProductVariantField
+ * @method updateProductVariant
  * @summary Updates various product variant fields
  * @param {Object} _ - unused
  * @param {Object} args - The input arguments
@@ -12,9 +12,9 @@ import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {String} args.input.variant - value to update field with
  * @param {String} args.input.variantId - Id of variant to update
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} updateProductVariantField payload
+ * @return {Promise<Object>} updateProductVariant payload
  */
-export default async function updateProductVariantField(_, { input }, context) {
+export default async function updateProductVariant(_, { input }, context) {
   const {
     clientMutationId = null,
     shopId,

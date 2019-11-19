@@ -226,7 +226,7 @@ type UpdateProductPayload  {
 }
 
 "Response payload of `updateProductVariantField` mutation"
-type UpdateProductVariantFieldPayload  {
+type UpdateProductVariantPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
@@ -420,7 +420,7 @@ input ProductVariantInput {
 }
 
 "Input for the `updateProductVariantField` mutation"
-input UpdateProductVariantFieldInput  {
+input UpdateProductVariantInput  {
   "ID of shop that owns the variant to update"
   shopId: ID!
 
@@ -468,15 +468,15 @@ extend type Mutation {
     input: CloneProductVariantsInput!
   ): CloneProductVariantsPayload!
 
-  "Update a field on an existing product"
+  "Update an existing product"
   updateProduct(
     "Mutation input"
     input: UpdateProductInput!
   ): UpdateProductPayload!
 
-  "Update a field on an existing product variant"
-  updateProductVariantField(
+  "Update an existing product variant"
+  updateProductVariant(
     "Mutation input"
-    input: UpdateProductVariantFieldInput!
-  ): UpdateProductVariantFieldPayload!
+    input: UpdateProductVariantInput!
+  ): UpdateProductVariantPayload!
 }
