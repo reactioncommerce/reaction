@@ -41,6 +41,7 @@ import {
 import {
   Account,
   AccountProfileAddress,
+  Email,
   Group
 } from "../../src/core-services/account/simpleSchemas.js";
 
@@ -83,6 +84,7 @@ const schemasToAddToFactory = {
   CommonOrder,
   CommonOrderItem,
   Discounts,
+  Email,
   Group,
   Order,
   OrderAddress,

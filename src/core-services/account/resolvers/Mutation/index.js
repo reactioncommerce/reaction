@@ -1,4 +1,5 @@
 import addAccountAddressBookEntry from "./addAccountAddressBookEntry.js";
+import addAccountEmailRecord from "./addAccountEmailRecord.js";
 import addAccountToGroup from "./addAccountToGroup.js";
 import inviteShopMember from "./inviteShopMember.js";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry.js";
@@ -10,6 +11,7 @@ import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
 
 export default {
   addAccountAddressBookEntry,
+  addAccountEmailRecord,
   addAccountToGroup,
   inviteShopMember,
   removeAccountAddressBookEntry,
