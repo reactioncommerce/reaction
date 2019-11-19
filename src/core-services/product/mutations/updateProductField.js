@@ -146,14 +146,15 @@ export default async function updateProductField(context, input) {
   const updateDocument = { ...productInput };
 
   // Slugify the handle input
-  if (typeof productInput.handle === "string") {
-    updateDocument.handle = createHandle(getSlug(productInput.handle), productId);
+  if (typeof productInput.slug === "string") {
+    updateDocument.handle = await createHandle(context, getSlug(productInput.slug), productId);
+    delete updateDocument.slug;
   }
 
   // If a title is supplied, and the currently stored product doesn't have a handle,
   // then slugify the title and save it as the new handle (slug)
   if (typeof productInput.title === "string" && !currentProduct.handle) {
-    updateDocument.handle = createHandle(getSlug(productInput.title), productId);
+    updateDocument.handle = await createHandle(context, getSlug(productInput.title), productId);
   }
 
   inputSchema.validate(updateDocument);
@@ -171,7 +172,7 @@ export default async function updateProductField(context, input) {
     }
   );
 
-  const updatedProduct = Products.findOne({ _id: productId, shopId });
+  const updatedProduct = await Products.findOne({ _id: productId, shopId });
 
   appEvents.emit("afterProductUpdate", { productId, product: updatedProduct });
 
