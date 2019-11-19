@@ -22,8 +22,13 @@ export default async function updateProductVariant(_, { input }, context) {
     variantId
   } = input;
 
+  // Decode ancestors array
+  if (Array.isArray(variant.ancestors)) {
+    variant.ancestors = variant.ancestors.map(decodeProductOpaqueId);
+  }
+
   const updatedVariant = await context.mutations.updateProductVariant(context, {
-    productId: decodeProductOpaqueId(variantId),
+    variantId: decodeProductOpaqueId(variantId),
     shopId: decodeShopOpaqueId(shopId),
     variant
   });
