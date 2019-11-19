@@ -312,10 +312,10 @@ input ProductInput {
   googleplusMsg: String
 
   "True if this product has been deleted. Typically, deleted products are not returned in queries."
-  isDeleted: Boolean!
+  isDeleted: Boolean
 
   "True if this product should be shown to shoppers. Typically, non-visible products are not returned in queries."
-  isVisible: Boolean!
+  isVisible: Boolean
 
   "The product description to use for page `description` meta element in HTML"
   metaDescription: String
@@ -339,7 +339,7 @@ input ProductInput {
   slug: String
 
   "When a shopper purchases this product, what types of fulfillment can they choose from?"
-  supportedFulfillmentTypes: [FulfillmentType]!
+  supportedFulfillmentTypes: [FulfillmentType]
 
   "The list of tag IDs that have been applied to this product"
   tagIds: [ID]
