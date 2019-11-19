@@ -1,4 +1,4 @@
-import { decodeTagOpaqueId } from "../../xforms/id.js";
+import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
  * Arguments passed by the client for a tags query
@@ -20,15 +20,17 @@ import { decodeTagOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object[]>} Promise that resolves with array of Tag objects
  */
 export default async function tag(_, connectionArgs, context) {
-  const { slugOrId } = connectionArgs;
+  const { slugOrId: opaqueSlugOrId, shopId: opaqueShopId } = connectionArgs;
 
-  let dbTagId;
+  const shopId = decodeShopOpaqueId(opaqueShopId);
+
+  let slugOrId;
 
   try {
-    dbTagId = decodeTagOpaqueId(slugOrId);
+    slugOrId = decodeTagOpaqueId(opaqueSlugOrId);
   } catch (error) {
-    dbTagId = slugOrId;
+    slugOrId = opaqueSlugOrId;
   }
 
-  return context.queries.tag(context, dbTagId, connectionArgs);
+  return context.queries.tag(context, { ...connectionArgs, slugOrId, shopId });
 }

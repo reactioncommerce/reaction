@@ -646,6 +646,10 @@ export const Shop = new SimpleSchema({
     type: String,
     optional: true
   },
+  "allowGuestCheckout": {
+    type: Boolean,
+    defaultValue: true
+  },
   "slug": {
     type: String,
     optional: true

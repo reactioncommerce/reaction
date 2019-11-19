@@ -1,7 +1,7 @@
 import deleteNavigationItemMutation from "./deleteNavigationItem.js";
 
 const mockInput = {
-  _id: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA="
+  id: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA="
 };
 const mockNavigationItemResult = {
   _id: "wYWSrwT2bWDE9aHLg",

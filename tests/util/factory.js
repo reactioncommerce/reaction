@@ -16,6 +16,10 @@ import {
 } from "../../src/core-services/cart/simpleSchemas.js";
 
 import {
+  DiscountCodes as Discounts
+} from "../../src/plugins/discount-codes/simpleSchemas.js";
+
+import {
   extendInventorySchemas
 } from "../../src/core-services/inventory/simpleSchemas.js";
 
@@ -78,6 +82,7 @@ const schemasToAddToFactory = {
   CatalogProductVariant,
   CommonOrder,
   CommonOrderItem,
+  Discounts,
   Group,
   Order,
   OrderAddress,

@@ -10,6 +10,9 @@ extend type Mutation {
 input GenerateSitemapsInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The ID of the shop to generate sitemap for"
+  shopId: ID!
 }
 
 "Response for the `generateSitemaps` mutation"

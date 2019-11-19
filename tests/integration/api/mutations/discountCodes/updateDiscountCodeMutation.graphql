@@ -1,0 +1,46 @@
+mutation (
+  $discountCodeId: ID!,
+  $shopId: ID!,
+  $discountCode: DiscountCodeInput!
+) {
+  updateDiscountCode(input: {
+    discountCodeId: $discountCodeId
+    shopId: $shopId
+    discountCode: $discountCode
+  }) {
+    discountCode {
+      _id
+      shop {
+        _id
+      }
+      code
+      label
+      description
+      discountMethod
+      discount
+      transactions {
+        cartId
+        userId
+        appliedAt
+      }
+      calculation {
+        method
+      }
+      conditions {
+        accountLimit
+        audience
+        enabled
+        permissions
+        redemptionLimit
+				order {
+          min
+          max
+          startDate
+          endDate
+        }
+        products
+        tags
+      }
+    }
+  }
+}

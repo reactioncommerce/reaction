@@ -1,0 +1,23 @@
+"Represents a Template"
+type Template implements Node {
+  "The shop ID"
+  _id: ID!
+
+  "Email template language"
+  language: String
+
+  "Email template name"
+  name: String
+
+  "The shop that owns the template"
+  shopId: ID!
+
+  "Email template string"
+  subject: String
+
+  "Email template body or html text"
+  template: String
+
+  "Email template title"
+  title: String
+}
