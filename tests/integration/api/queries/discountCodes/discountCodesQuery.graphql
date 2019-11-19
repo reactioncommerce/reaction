@@ -1,0 +1,52 @@
+query discountCodes(
+  $shopId: ID!,
+  $first: ConnectionLimitInt,
+  $last:  ConnectionLimitInt,
+  $before: ConnectionCursor,
+  $after: ConnectionCursor,
+  $offset: Int
+) {
+  discountCodes(
+    shopId: $shopId,
+    first: $first,
+    last: $last,
+    before: $before,
+    after: $after,
+    offset: $offset
+  ) {
+		nodes {
+      _id
+      shop {
+        _id
+      }
+      code
+      label
+      description
+      discountMethod
+      discount
+      transactions {
+        cartId
+        userId
+        appliedAt
+      }
+      calculation {
+        method
+      }
+      conditions {
+        accountLimit
+        audience
+        enabled
+        permissions
+        redemptionLimit
+				order {
+          min
+          max
+          startDate
+          endDate
+        }
+        products
+        tags
+      }
+    }
+  }
+}
