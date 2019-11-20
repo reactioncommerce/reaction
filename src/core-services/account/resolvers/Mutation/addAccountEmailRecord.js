@@ -23,7 +23,7 @@ export default async function addAccountEmailRecord(_, { input }, context) {
   });
 
   return {
-    emailRecord: updatedAccount.emails.pop(),
+    account: updatedAccount,
     clientMutationId
   };
 }

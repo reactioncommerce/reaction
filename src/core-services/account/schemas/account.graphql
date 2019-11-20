@@ -282,8 +282,8 @@ type AddAccountEmailRecordPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "The added email record"
-  emailRecord: EmailRecord
+  "The account, with updated `emailRecords`"
+  account: Account
 }
 
 "The response from the `createAccount` mutation"
