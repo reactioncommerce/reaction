@@ -72,7 +72,7 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  * @param {Number} orderTotal Total due for the order
  * @param {Object[]} paymentsInput List of payment inputs
  * @param {Object} [shippingAddress] Shipping address, if relevant, for fraud detection
- * @param {String} shopId ID of shop that owns the order
+ * @param {String} shop shop that owns the order
  * @returns {Object[]} Array of created payments
  */
 async function createPayments({
@@ -85,11 +85,9 @@ async function createPayments({
   orderTotal,
   paymentsInput,
   shippingAddress,
-  shopId
+  shop
 }) {
-  // Get the shop, for determining which payment methods are enabled
-  const shop = await context.queries.shopById(context, shopId);
-  if (!shop) throw new ReactionError("not-found", "Shop not found");
+  // Determining which payment methods are enabled for the shop
   const availablePaymentMethods = shop.availablePaymentMethods || [];
 
   // Verify that total of payment inputs equals total due. We need to be sure
@@ -122,7 +120,7 @@ async function createPayments({
       currencyCode,
       email,
       shippingAddress, // optional, for fraud detection, the first shipping address if shipping to multiple
-      shopId,
+      shopId: shop._id,
       paymentData: {
         ...(paymentInput.data || {})
       } // optional, object, blackbox
@@ -171,6 +169,13 @@ export default async function placeOrder(context, input) {
   } = orderInput;
   const { accountId, account, appEvents, collections, getFunctionsOfType, userId } = context;
   const { Orders, Cart } = collections;
+
+  const shop = await context.queries.shopById(context, shopId);
+  if (!shop) throw new ReactionError("not-found", "Shop not found");
+
+  if (!userId && !shop.allowGuestCheckout) {
+    throw new ReactionError("access-denied", "Guest checkout not allowed");
+  }
 
   let cart;
   if (cartId) {
@@ -240,7 +245,7 @@ export default async function placeOrder(context, input) {
     orderTotal,
     paymentsInput,
     shippingAddress: shippingAddressForPayments,
-    shopId
+    shop
   });
 
   // Create anonymousAccessToken if no account ID
