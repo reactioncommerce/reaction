@@ -516,7 +516,16 @@ extend type Mutation {
 }
 
 extend type Query {
-  "Products query"
+  "Query for a single Product"
+  product(
+    "Product ID"
+    productId: ID!,
+
+    "Shop ID"
+    shopId: ID!
+  ): Product
+
+  "Query for a list of Products"
   products(
     "Filter by visibility"
     isVisible: Boolean
