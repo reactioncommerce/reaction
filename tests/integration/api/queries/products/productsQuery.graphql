@@ -1,0 +1,33 @@
+query Products(
+  $shopIds: [ID]
+  $first: ConnectionLimitInt,
+  $last:  ConnectionLimitInt,
+  $before: ConnectionCursor,
+  $after: ConnectionCursor,
+  $offset: Int
+) {
+  products(
+    shopIds: $shopIds
+    first: $first
+    last: $last
+    before: $before
+    after: $after
+    offset: $offset
+  ) {
+    nodes {
+      _id
+      title
+      shop {
+        _id
+      }
+      variants {
+        _id
+        title
+        options {
+          _id
+          title
+        }
+      }
+    }
+  }
+}
