@@ -1,5 +1,6 @@
 import updateNavigationItemMutation from "./updateNavigationItem.js";
 
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
 const mockData = {
   content: [
     {
@@ -13,7 +14,7 @@ const mockData = {
   classNames: "home-link"
 };
 const mockNavigationItemInput = {
-  _id: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
+  id: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
   draftData: mockData,
   metadata: "{ \"tagId\": \"t1\" }"
 };
@@ -29,7 +30,7 @@ test("calls mutations.updateNavigationItem and returns the updated item", async 
     .mockName("mutations.updateNavigationItem")
     .mockReturnValueOnce(mockNavigationItemResult);
 
-  const mockArgs = { input: { navigationItem: mockNavigationItemInput } };
+  const mockArgs = { input: { navigationItem: mockNavigationItemInput, shopId: opaqueShopId } };
   const { navigationItem } = await updateNavigationItemMutation({}, mockArgs, {
     mutations: { updateNavigationItem }
   });

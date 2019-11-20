@@ -3,23 +3,22 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
- * @name Query/discountCodes
+ * @name Query/emailTemplates
  * @method
- * @memberof DiscountCodes/Query
- * @summary query the Discount codes collection and return user account data
- * @param {Object} _ - unused
- * @param {Object} args - an object of all arguments that were sent by the client
+ * @memberof Templates/Query
+ * @param {Object} _ unused
+ * @param {Object} args - an object of all the arguments that were sent by the client
  * @param {String} args.shopId - id of the shop
  * @param {Object} context - an object containing the per-request state
- * @param {Object} info Info about the GraphQL request
- * @returns {Promise<Object>} An array of discount codes
+ * @param {Object} info - info about the GraphQL request
+ * @returns {Promise<Object>} an array of email templates
  */
-export default async function discountCodes(_, args, context, info) {
+export default async function emailTemplates(_, args, context, info) {
   const { shopId: opaqueShopId, ...connectionArgs } = args;
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
-  const query = await context.queries.discountCodes(context, shopId);
+  const query = await context.queries.emailTemplates(context, shopId);
 
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
