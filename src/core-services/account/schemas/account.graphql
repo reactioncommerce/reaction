@@ -279,11 +279,11 @@ type AddAccountAddressBookEntryPayload {
 
 "The response from the `addAccountEmailRecord` mutation"
 type AddAccountEmailRecordPayload {
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-
   "The account, with updated `emailRecords`"
   account: Account
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
 }
 
 "The response from the `createAccount` mutation"
