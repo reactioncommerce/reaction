@@ -250,7 +250,7 @@ export const Profile = new SimpleSchema({
  * @property {String} address required
  * @property {Boolean} verified optional
  */
-const Email = new SimpleSchema({
+export const Email = new SimpleSchema({
   provides: {
     type: String,
     defaultValue: "default",

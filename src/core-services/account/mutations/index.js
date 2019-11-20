@@ -1,4 +1,5 @@
 import addressBookAdd from "./addressBookAdd.js";
+import addAccountEmailRecord from "./addAccountEmailRecord.js";
 import addAccountToGroup from "./addAccountToGroup.js";
 import addAccountToGroupBySlug from "./addAccountToGroupBySlug.js";
 import createAccount from "./createAccount.js";
@@ -13,6 +14,7 @@ import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
 
 export default {
   addressBookAdd,
+  addAccountEmailRecord,
   addAccountToGroup,
   addAccountToGroupBySlug,
   createAccount,
