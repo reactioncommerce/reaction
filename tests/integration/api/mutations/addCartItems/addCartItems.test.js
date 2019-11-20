@@ -27,20 +27,23 @@ beforeAll(async () => {
   catalogItem = Factory.Catalog.makeOne({
     isDeleted: false,
     product: Factory.CatalogProduct.makeOne({
-      pricing: {
-        USD: {
-          compareAtPrice: 150,
-          displayPrice: "$100.00",
-          maxPrice: 100,
-          minPrice: 100,
-          price: 100
-        }
-      },
       isDeleted: false,
       isVisible: true,
-      variants: Factory.CatalogProductVariant.makeMany(1)
+      variants: Factory.CatalogProductVariant.makeMany(1, {
+        options: null,
+        pricing: {
+          USD: {
+            compareAtPrice: 109.99,
+            displayPrice: "$99.99 - $105.99",
+            maxPrice: 105.99,
+            minPrice: 99.99,
+            price: 99.99
+          }
+        }
+      })
     })
   });
+
   await testApp.collections.Catalog.insertOne(catalogItem);
 
   // create mock cart
@@ -76,10 +79,10 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("an anonymous user can add a an items to their cart", async () => {
+test("an anonymous user can add an item to their cart", async () => {
   const items = [{
     price: {
-      amount: 100,
+      amount: 99.99,
       currencyCode: "USD"
     },
     productConfiguration: {
@@ -94,11 +97,9 @@ test("an anonymous user can add a an items to their cart", async () => {
   try {
     result = await addCartItems(cartInput);
   } catch (error) {
-    console.log("error", JSON.stringify(error, null, 2));
-
     expect(error).toBeUndefined();
     return;
   }
 
-  console.log(JSON.stringify(result, null, 2));
+  expect(result.addCartItems.cart.items.totalCount).toEqual(1);
 });
