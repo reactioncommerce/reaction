@@ -10,6 +10,7 @@ jest.setTimeout(300000);
 
 let addCartItems;
 let catalogItem;
+let items;
 let mockCart;
 let mockCustomerAccount;
 let opaqueCartId;
@@ -46,19 +47,7 @@ beforeAll(async () => {
 
   await testApp.collections.Catalog.insertOne(catalogItem);
 
-  // create mock cart
-  mockCart = Factory.Cart.makeOne({
-    shopId,
-    anonymousAccessToken: hashToken(token),
-    shipping: null,
-    billing: null,
-    taxSummary: null,
-    items: [],
-    workflow: null
-  });
-  opaqueCartId = encodeOpaqueId("reaction/cart", mockCart._id);
-  await testApp.collections.Cart.insertOne(mockCart);
-
+  // create mock customer account
   mockCustomerAccount = Factory.Account.makeOne({
     _id: "mockCustomerAccount",
     roles: {
@@ -66,6 +55,30 @@ beforeAll(async () => {
     },
     shopId
   });
+
+  // create mock cart
+  mockCart = Factory.Cart.makeOne({
+    shopId,
+    accountId: mockCustomerAccount._id,
+    anonymousAccessToken: hashToken(token),
+    shipping: null,
+    items: [],
+    workflow: null
+  });
+  opaqueCartId = encodeOpaqueId("reaction/cart", mockCart._id);
+  await testApp.collections.Cart.insertOne(mockCart);
+
+  items = [{
+    price: {
+      amount: 99.99,
+      currencyCode: "USD"
+    },
+    productConfiguration: {
+      productId: encodeOpaqueId("reaction/product", catalogItem.product.productId),
+      productVariantId: encodeOpaqueId("reaction/product", catalogItem.product.variants[0].variantId)
+    },
+    quantity: 1
+  }];
 
   await testApp.createUserAndAccount(mockCustomerAccount);
 });
@@ -80,22 +93,23 @@ afterAll(async () => {
 });
 
 test("an anonymous user can add an item to their cart", async () => {
-  const items = [{
-    price: {
-      amount: 99.99,
-      currencyCode: "USD"
-    },
-    productConfiguration: {
-      productId: encodeOpaqueId("reaction/product", catalogItem.product.productId),
-      productVariantId: encodeOpaqueId("reaction/product", catalogItem.product.variants[0].variantId)
-    },
-    quantity: 1
-  }];
-
-  const cartInput = { cartId: opaqueCartId, items, token };
   let result;
   try {
-    result = await addCartItems(cartInput);
+    result = await addCartItems({ cartId: opaqueCartId, items, token });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.addCartItems.cart.items.totalCount).toEqual(1);
+});
+
+test("a logged in user can add an item to their cart", async () => {
+  await testApp.setLoggedInUser(mockCustomerAccount);
+
+  let result;
+  try {
+    result = await addCartItems({ cartId: opaqueCartId, items });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
