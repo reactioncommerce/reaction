@@ -239,7 +239,7 @@ type ProductEdge {
   "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
 
-  "The discount code"
+  "The product"
   node: Product
 }
 
