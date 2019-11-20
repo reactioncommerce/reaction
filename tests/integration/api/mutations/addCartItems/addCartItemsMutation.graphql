@@ -5,7 +5,5 @@ mutation ( $cartId: ID!, $items: [CartItemInput]!, $token: String ) {
         totalCount
       }
     }
-    # incorrectPriceFailures
-    # minOrderQuantityFailures
   }
 }
