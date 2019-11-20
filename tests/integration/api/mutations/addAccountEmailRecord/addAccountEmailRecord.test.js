@@ -54,5 +54,5 @@ test("user can add an email to their own account", async () => {
     return;
   }
 
-  expect(result.addAccountEmailRecord.emailRecord).toEqual(email);
+  expect(result.addAccountEmailRecord.account.emailRecords.pop()).toEqual(email);
 });

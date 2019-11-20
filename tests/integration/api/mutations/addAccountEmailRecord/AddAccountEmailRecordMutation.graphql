@@ -1,9 +1,11 @@
 mutation ($accountId: ID!, $email: Email!) {
   addAccountEmailRecord(input: { accountId: $accountId, email: $email }) {
-    emailRecord {
-      address
-      provides
-      verified
+    account {
+      emailRecords {
+        address
+        provides
+        verified
+      }
     }
   }
 }
