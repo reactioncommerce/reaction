@@ -5,14 +5,14 @@ import { decodeProductOpaqueId, decodeShopOpaqueId, decodeTagOpaqueId } from "..
 /**
  * @name Query/products
  * @method
- * @memberof DiscountCodes/Query
- * @summary query the Products collection and return user account data
+ * @memberof Products/Query
+ * @summary query the Products collection
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.shopId - id of user to query
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @returns {Promise<Object>} user account object
+ * @returns {Promise<Object>} Products
  */
 export default async function products(_, args, context, info) {
   const {
