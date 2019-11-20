@@ -76,7 +76,7 @@ const put = async (flow, action, challenge, body) => {
  * @returns {Object|String} API res
  */
 function deleteUserSession(id) {
-  return fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/sessions/login/${id}`, { method: "DELETE" })
+  return fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/sessions/login?subject=${id}`, { method: "DELETE" })
     .then(async (res) => {
       if (res.status < 200 || res.status > 302) {
         const json = await res.json();
