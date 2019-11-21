@@ -560,7 +560,7 @@ extend type Query {
     "Filter by price range minimum value"
     priceMin: Float
 
-    "List of product IDs to filter"
+    "List of product IDs to filter by"
     productIds: [ID]
 
     "Regex metch query string"
