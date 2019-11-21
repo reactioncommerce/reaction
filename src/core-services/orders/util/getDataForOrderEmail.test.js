@@ -224,7 +224,9 @@ test("storefrontUrls is optional", async () => {
     })
   });
 
-  const mockShop = Factory.Shop.makeOne();
+  const mockShop = Factory.Shop.makeOne({
+    storefrontUrls: {}
+  });
 
   setupMocks(mockShop, mockCatalogItem);
 

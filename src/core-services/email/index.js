@@ -1,7 +1,8 @@
 import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
 import startup from "./startup.js";
-
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
 /**
  * @summary Import and call this function to add this plugin to your API.
  * @param {ReactionAPI} app The ReactionAPI instance
@@ -21,6 +22,11 @@ export default async function register(app) {
           [{ jobId: 1 }, { name: "c2_jobId" }]
         ]
       }
+    },
+    version: "1.0.0",
+    graphQL: {
+      resolvers,
+      schemas
     },
     mutations,
     functionsByType: {

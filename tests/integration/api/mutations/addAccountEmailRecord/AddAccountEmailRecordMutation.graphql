@@ -1,0 +1,11 @@
+mutation ($accountId: ID!, $email: Email!) {
+  addAccountEmailRecord(input: { accountId: $accountId, email: $email }) {
+    account {
+      emailRecords {
+        address
+        provides
+        verified
+      }
+    }
+  }
+}
