@@ -8,7 +8,7 @@ import { decodeCartOpaqueId } from "../../xforms/id.js";
  * @param {Object} parentResult - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client
  * @param {String} args.input.cartId - An anonymous cart ID
- * @param {String} args.input.token - The token for accessing the anonymous cart
+ * @param {String} args.input.cartToken - The cartToken for accessing the anonymous cart
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {String} args.input.email - The email address to associate with this cart
  * @param {Object} context - an object containing the per-request state
@@ -19,7 +19,7 @@ export default async function setEmailOnAnonymousCart(parentResult, { input }, c
     cartId: opaqueCartId,
     clientMutationId = null,
     email,
-    token
+    cartToken
   } = input;
 
   const cartId = decodeCartOpaqueId(opaqueCartId);
@@ -27,7 +27,7 @@ export default async function setEmailOnAnonymousCart(parentResult, { input }, c
   const { cart } = await context.mutations.setEmailOnAnonymousCart(context, {
     cartId,
     email,
-    token
+    cartToken
   });
 
   return {

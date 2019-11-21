@@ -390,6 +390,9 @@ input SetEmailOnAnonymousCartInput {
   "An anonymous cart ID"
   cartId: ID!
 
+  "Provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String!
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -398,9 +401,6 @@ input SetEmailOnAnonymousCartInput {
   other fulfillment purposes.
   """
   email: String!
-
-  "Provide the `token` that was returned in the `CreateCartPayload`"
-  token: String!
 }
 
 ####################

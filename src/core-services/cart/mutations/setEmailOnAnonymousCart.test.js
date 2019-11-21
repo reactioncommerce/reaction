@@ -5,7 +5,7 @@ const dbCart = {
   _id: "cartId"
 };
 const email = "email@address.com";
-const token = "TOKEN";
+const cartToken = "TOKEN";
 const hashedToken = "+YED6SF/CZIIVp0pXBsnbxghNIY2wmjIVLsqCG4AN80=";
 
 beforeAll(() => {
@@ -20,7 +20,7 @@ test("sets the email address on an anonymous cart", async () => {
   const result = await setEmailOnAnonymousCart(mockContext, {
     cartId: "cartId",
     email,
-    token
+    cartToken
   });
 
   expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({
