@@ -2,7 +2,7 @@ import removeCartItems from "./removeCartItems.js";
 
 const internalCartId = "555";
 const opaqueCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
-const token = "TOKEN";
+const cartToken = "TOKEN";
 const cartItemIds = ["666"];
 const opaqueCartItemIds = ["cmVhY3Rpb24vY2FydEl0ZW06NjY2"];
 
@@ -24,7 +24,7 @@ test("correctly passes through to mutations.removeCartItems", async () => {
       cartId: opaqueCartId,
       cartItemIds: opaqueCartItemIds,
       clientMutationId: "clientMutationId",
-      token
+      cartToken
     }
   }, context);
 
@@ -36,6 +36,6 @@ test("correctly passes through to mutations.removeCartItems", async () => {
   expect(mockMutation).toHaveBeenCalledWith(context, {
     cartId: internalCartId,
     cartItemIds,
-    token
+    cartToken
   });
 });

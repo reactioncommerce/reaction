@@ -332,11 +332,11 @@ input RemoveCartItemsInput {
   "Array of items to remove from the cart."
   cartItemIds: [ID]!
 
+  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
-
-  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
-  token: String
 }
 
 "Input for the `updateCartItem` mutation"
