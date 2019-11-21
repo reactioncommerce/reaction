@@ -20,32 +20,30 @@ export default async function products(_, args, context, info) {
     shopIds: opaqueShopIds,
     tagIds: opaqueTagIds,
     query: queryString,
-    visibility,
+    isArchived,
+    isVisible,
     metafieldKey,
     metafieldValue,
     priceMin,
     priceMax,
-    weightMin,
-    weightMax,
     ...connectionArgs
   } = args;
 
   const shopIds = opaqueShopIds.map(decodeShopOpaqueId);
   const productIds = opaqueProductIds && opaqueProductIds.map(decodeProductOpaqueId);
-  const tagIds = opaqueProductIds && opaqueTagIds.map(decodeTagOpaqueId);
+  const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
   const query = await context.queries.products(context, {
     productIds,
     shopIds,
     tagIds,
     query: queryString,
-    visibility,
+    isArchived,
+    isVisible,
     metafieldKey,
     metafieldValue,
     priceMin,
-    priceMax,
-    weightMin,
-    weightMax
+    priceMax
   });
 
   return getPaginatedResponse(query, connectionArgs, {
