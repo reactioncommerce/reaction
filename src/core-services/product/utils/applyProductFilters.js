@@ -20,7 +20,11 @@ const filters = new SimpleSchema({
     type: String,
     optional: true
   },
-  "visibility": {
+  "isArchived": {
+    type: Boolean,
+    optional: true
+  },
+  "isVisible": {
     type: Boolean,
     optional: true
   },
@@ -33,19 +37,11 @@ const filters = new SimpleSchema({
     optional: true
   },
   "priceMin": {
-    type: String,
+    type: Number,
     optional: true
   },
   "priceMax": {
-    type: String,
-    optional: true
-  },
-  "weightMin": {
-    type: String,
-    optional: true
-  },
-  "weightMax": {
-    type: String,
+    type: Number,
     optional: true
   }
 });
@@ -136,10 +132,18 @@ export default function applyProductFilters(context, productFilters) {
     }
 
     // filter by visibility
-    if (productFilters.visibility !== undefined) {
+    if (productFilters.isVisible !== undefined) {
       selector = {
         ...selector,
         isVisible: productFilters.isVisible
+      };
+    }
+
+    // filter by archived
+    if (productFilters.isArchived !== undefined) {
+      selector = {
+        ...selector,
+        isDeleted: productFilters.isArchived
       };
     }
 
@@ -173,43 +177,10 @@ export default function applyProductFilters(context, productFilters) {
       selector = {
         ...selector,
         "price.min": {
-          $lt: priceMax
+          $gte: priceMin
         },
         "price.max": {
-          $gt: priceMin
-        }
-      };
-    }
-
-    // filter by gte minimum weight
-    if (productFilters.weightMin && !productFilters.weightMax) {
-      selector = {
-        ...selector,
-        weight: {
-          $gte: parseFloat(productFilters.weightMin)
-        }
-      };
-    }
-
-    // filter by lte maximum weight
-    if (productFilters.weightMax && !productFilters.weightMin) {
-      selector = {
-        ...selector,
-        weight: {
-          $lte: parseFloat(productFilters.weightMax)
-        }
-      };
-    }
-
-    // filter with a weight range
-    if (productFilters.weightMin && productFilters.weightMax) {
-      const weightMin = parseFloat(productFilters.weightMin);
-      const weightMax = parseFloat(productFilters.weightMax);
-      selector = {
-        ...selector,
-        weight: {
-          $lt: weightMax,
-          $gt: weightMin
+          $lte: priceMax
         }
       };
     }
