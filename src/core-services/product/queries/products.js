@@ -6,13 +6,23 @@ import applyProductFilters from "../utils/applyProductFilters.js";
  * @memberof GraphQL/Products
  * @summary Query the Products collection for a list of products
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - ID of Shop to query against
+ * @param {Object} input - Request input
+ * @param {Boolean} [isArchived] - Filter by archived
+ * @param {Boolean} [isVisible] - Filter by visibility
+ * @param {String} [metafieldKey] - Filter by metafield key
+ * @param {String} [metafieldValue] - Filter by metafield value
+ * @param {Number} [priceMax] - Filter by price range maximum value
+ * @param {Number} [priceMin] - Filter by price range minimum value
+ * @param {String[]} [productIds] - List of product IDs to filter
+ * @param {String} [query] - Regex match query string
+ * @param {String[]} shopIds - List of shop IDs to filter by
+ * @param {String[]} [tagIds] - List of tag ids to filter
  * @returns {Promise<Object>} Products object Promise
  */
 export default async function products(context, input) {
   const { checkPermissions, collections } = context;
   const { Products } = collections;
-  const { ...productFilters } = input;
+  const productFilters = input;
 
   // Check the permissions for all shop requested
   await Promise.all(productFilters.shopIds.map(async (shopId) => (
