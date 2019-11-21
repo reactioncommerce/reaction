@@ -542,6 +542,9 @@ extend type Query {
 
   "Query for a list of Products"
   products(
+    "Filter by archived"
+    isArchived: Boolean
+
     "Filter by visibility"
     isVisible: Boolean
 
