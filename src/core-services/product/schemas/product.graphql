@@ -549,7 +549,7 @@ extend type Query {
     metafieldKey: String
 
     "Filter by metafield value"
-    metaFieldValue: String
+    metafieldValue: String
 
     "Fitler by price range maximun value"
     priceMax: Float
