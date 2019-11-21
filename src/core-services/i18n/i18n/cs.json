@@ -11,7 +11,7 @@
           "allOn": "Vše On",
           "allOff": "All Off"
         },
-        "baseUOM": "Základna Měrná jednotka",
+        "baseUOW": "Základna Měrná jednotka",
         "currency": "Základní měna",
         "currencyTooltip": "Obchod Výchozí měna",
         "language": "základna Language",

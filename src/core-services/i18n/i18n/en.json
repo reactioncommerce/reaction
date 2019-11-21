@@ -18,7 +18,7 @@
           "reloadError": "Translations could not be reloaded for the current shop.",
           "reloadAllError": "Translations could not be reloaded for all shops."
         },
-        "baseUOM": "Base Unit of Measure",
+        "baseUOW": "Base Unit of Measure",
         "currency": "Base Currency",
         "currencyTooltip": "Shop default currency",
         "language": "Base Language",

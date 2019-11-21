@@ -11,7 +11,7 @@
           "allOn": "All On",
           "allOff": "Всички Off"
         },
-        "baseUOM": "Base Мерна единица",
+        "baseUOW": "Base Мерна единица",
         "currency": "Базова валута",
         "currencyTooltip": "Магазин валута по подразбиране",
         "language": "Base Език",

@@ -11,7 +11,7 @@
           "allOn": "wszystko na temat",
           "allOff": "All Off"
         },
-        "baseUOM": "Jednostka podstawowa miary",
+        "baseUOW": "Jednostka podstawowa miary",
         "currency": "Waluta bazowa",
         "currencyTooltip": "Sklep domyślną walutą",
         "language": "Język bazowy",

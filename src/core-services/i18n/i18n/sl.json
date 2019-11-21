@@ -11,7 +11,7 @@
           "allOn": "vse On",
           "allOff": "vse Off"
         },
-        "baseUOM": "Osnovna mersko enoto",
+        "baseUOW": "Osnovna mersko enoto",
         "currency": "Osnovna valuta",
         "currencyTooltip": "Trgovina privzeta valuta",
         "language": "Osnovna jezik",

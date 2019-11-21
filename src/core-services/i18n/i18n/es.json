@@ -11,7 +11,7 @@
           "allOn": "todos de la",
           "allOff": "Todo apagado"
         },
-        "baseUOM": "Unidad de medida base",
+        "baseUOW": "Unidad de medida base",
         "currency": "Divisa base",
         "currencyTooltip": "Divisa predeterminada",
         "language": "Idioma base",

@@ -11,7 +11,7 @@
           "allOn": "all On",
           "allOff": "all Off"
         },
-        "baseUOM": "Grund-Maßeinheit",
+        "baseUOW": "Grund-Maßeinheit",
         "currency": "Grund-Währung",
         "currencyTooltip": "Standard-Währung des Geschäfts",
         "language": "Grund-Sprache",

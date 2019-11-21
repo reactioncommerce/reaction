@@ -11,7 +11,7 @@
           "allOn": "Hepsi Açık",
           "allOff": "Hepsi Kapalı"
         },
-        "baseUOM": "Ölçü Ana Ünite",
+        "baseUOW": "Ölçü Ana Ünite",
         "currency": "baz Döviz",
         "currencyTooltip": "Mağaza varsayılan para birimi",
         "language": "baz Dili",

@@ -11,7 +11,7 @@
           "allOn": "Tất cả Mở",
           "allOff": "Tất cả đều tắt"
         },
-        "baseUOM": "Đơn vị cơ sở của Đo",
+        "baseUOW": "Đơn vị cơ sở của Đo",
         "currency": "base Currency",
         "currencyTooltip": "tiền tệ mặc định cửa hàng",
         "language": "cơ sở Ngôn ngữ",

@@ -11,7 +11,7 @@
           "allOn": "minden On",
           "allOff": "All Off"
         },
-        "baseUOM": "Base Mértékegység",
+        "baseUOW": "Base Mértékegység",
         "currency": "Bázisvaluta",
         "currencyTooltip": "Shop alapértelmezett pénznem",
         "language": "alapnyelv",

@@ -11,7 +11,7 @@
           "allOn": "Pe tot",
           "allOff": "Toate oprite"
         },
-        "baseUOM": "Unitatea de bază a măsurii",
+        "baseUOW": "Unitatea de bază a măsurii",
         "currency": "Moneda de bază",
         "currencyTooltip": "Moneda implicită a magazinului",
         "language": "Limba de bază",

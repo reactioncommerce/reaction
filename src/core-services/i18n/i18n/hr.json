@@ -11,7 +11,7 @@
           "allOn": "Sve o",
           "allOff": "Sve Isključeno"
         },
-        "baseUOM": "Osnovna mjerna jedinica",
+        "baseUOW": "Osnovna mjerna jedinica",
         "currency": "Osnovna valuta",
         "currencyTooltip": "Trgovina Zadana valuta",
         "language": "Baza Jezik",

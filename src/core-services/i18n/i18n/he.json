@@ -7,7 +7,7 @@
         "i18nSettings": {
           "enabledLanguages": "שפות"
         },
-        "baseUOM": "יחידת הכמות הבסיסית",
+        "baseUOW": "יחידת הכמות הבסיסית",
         "currency": "מטבע בסיס",
         "currencyTooltip": "מטבע ברירת המחדל של החנות",
         "language": "שפת בסיס",

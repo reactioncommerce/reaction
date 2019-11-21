@@ -11,7 +11,7 @@
           "allOn": "All On",
           "allOff": "All Off"
         },
-        "baseUOM": "Base maateenheid",
+        "baseUOW": "Base maateenheid",
         "currency": "Basisvaluta",
         "currencyTooltip": "Shop prijslijst",
         "language": "Base Taal",

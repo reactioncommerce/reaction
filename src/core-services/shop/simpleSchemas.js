@@ -607,11 +607,11 @@ export const StorefrontUrls = new SimpleSchema({
  * @property {String} unitsOfLength.$.uol  default value: `in`
  * @property {String} unitsOfLength.$.label default value: `Inches`
  * @property {Boolean} unitsOfLength.$.default default value: `false`
- * @property {String} baseUOM Base UOM (Unit of Measure), default value: `oz`, lowercased by default per style
- * @property {Object[]} unitsOfMeasure optional
- * @property {String} unitsOfMeasure.$.uom default value: `oz`
- * @property {String} unitsOfMeasure.$.label default value: `Ounces`
- * @property {Boolean} unitsOfMeasure.$.default default value: `false`
+ * @property {String} baseUOW Base UOM (Unit of Measure), default value: `oz`, lowercased by default per style
+ * @property {Object[]} unitsOfWeight optional
+ * @property {String} unitsOfWeight.$.uom default value: `oz`
+ * @property {String} unitsOfWeight.$.label default value: `Ounces`
+ * @property {Boolean} unitsOfWeight.$.default default value: `false`
  * @property {Metafield[]} metafields optional
  * @property {String[]} defaultSellerRoles default values: `["owner", "admin", "seller", "guest", "manage-users", "orders", "account/profile", "product", "createProduct", "product/admin", tag", "index", "cart/completed"]`
  * @property {Layout[]} layout optional
@@ -742,25 +742,25 @@ export const Shop = new SimpleSchema({
     type: Boolean,
     optional: true
   },
-  "baseUOM": {
+  "baseUOW": {
     type: String,
     optional: true,
-    label: "Base Unit of Measure"
+    label: "Base Unit of Weight"
   },
-  "unitsOfMeasure": {
+  "unitsOfWeight": {
     type: Array,
     optional: true
   },
-  "unitsOfMeasure.$": Object,
-  "unitsOfMeasure.$.uom": {
+  "unitsOfWeight.$": Object,
+  "unitsOfWeight.$.uow": {
     type: String,
     optional: true
   },
-  "unitsOfMeasure.$.label": {
+  "unitsOfWeight.$.label": {
     type: String,
     optional: true
   },
-  "unitsOfMeasure.$.default": {
+  "unitsOfWeight.$.default": {
     type: Boolean,
     optional: true
   },

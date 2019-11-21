@@ -11,7 +11,7 @@
           "allOn": "全部打开",
           "allOff": "全部关闭"
         },
-        "baseUOM": "基本度量单位",
+        "baseUOW": "基本度量单位",
         "currency": "基本币种",
         "currencyTooltip": "商店默认币种",
         "language": "基本语言",

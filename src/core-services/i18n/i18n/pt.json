@@ -11,7 +11,7 @@
           "allOn": "Tudo em cima",
           "allOff": "All Off"
         },
-        "baseUOM": "Unidade de medida base",
+        "baseUOW": "Unidade de medida base",
         "currency": "Moeda base",
         "currencyTooltip": "Moeda predefinida da loja",
         "language": "Idioma base",

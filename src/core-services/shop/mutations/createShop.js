@@ -103,7 +103,7 @@ export default async function createShop(context, input) {
     active: true,
     availablePaymentMethods: [],
     baseUOL: "in",
-    baseUOM: "oz",
+    baseUOW: "oz",
     createdAt: now,
     currency: currencyCode || "USD",
     domains: [domain],
@@ -124,18 +124,18 @@ export default async function createShop(context, input) {
       uol: "ft",
       label: "Feet"
     }],
-    unitsOfMeasure: [{
-      uom: "oz",
+    unitsOfWeight: [{
+      uow: "oz",
       label: "Ounces",
       default: true
     }, {
-      uom: "lb",
+      uow: "lb",
       label: "Pounds"
     }, {
-      uom: "g",
+      uow: "g",
       label: "Grams"
     }, {
-      uom: "kg",
+      uow: "kg",
       label: "Kilograms"
     }],
     updatedAt: now
