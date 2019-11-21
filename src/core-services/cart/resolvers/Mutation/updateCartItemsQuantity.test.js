@@ -2,7 +2,7 @@ import updateCartItemsQuantity from "./updateCartItemsQuantity.js";
 
 const internalCartId = "555";
 const opaqueCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
-const token = "TOKEN";
+const cartToken = "TOKEN";
 const cartItemId = "666";
 const opaqueCartItemId = "cmVhY3Rpb24vY2FydEl0ZW06NjY2";
 
@@ -29,7 +29,7 @@ test("correctly passes through to mutations.updateCartItemsQuantity", async () =
       cartId: opaqueCartId,
       clientMutationId: "clientMutationId",
       items,
-      token
+      cartToken
     }
   }, context);
 
@@ -44,6 +44,6 @@ test("correctly passes through to mutations.updateCartItemsQuantity", async () =
       cartItemId,
       quantity: 1
     }],
-    token
+    cartToken
   });
 });

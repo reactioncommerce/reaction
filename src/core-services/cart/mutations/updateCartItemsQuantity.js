@@ -13,7 +13,7 @@ const inputSchema = new SimpleSchema({
     type: SimpleSchema.Integer,
     min: 0
   },
-  "token": {
+  "cartToken": {
     type: String,
     optional: true
   }
@@ -28,13 +28,13 @@ const inputSchema = new SimpleSchema({
  * @param {String} input.items - Array of items to update
  * @param {Number} input.items.cartItemId - The cart item ID
  * @param {Object} input.items.quantity - The new quantity, which must be an integer of 0 or greater
- * @param {String} input.token - The token if the cart is an anonymous cart
+ * @param {String} input.cartToken - The cartToken if the cart is an anonymous cart
  * @returns {Promise<Object>} An object containing the updated cart in a `cart` property
  */
 export default async function updateCartItemsQuantity(context, input) {
   inputSchema.validate(input || {});
 
-  const { cartId, items, token: cartToken } = input;
+  const { cartId, items, cartToken: cartToken } = input;
 
   const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 

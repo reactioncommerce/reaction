@@ -353,14 +353,14 @@ input UpdateCartItemsQuantityInput {
   "The cart ID"
   cartId: ID!
 
+  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
   "Array of cart item quantities to update."
   items: [UpdateCartItemInput]!
-
-  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
-  token: String
 }
 
 "Input for the `reconcileCarts` mutation call"
