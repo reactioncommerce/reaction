@@ -4,7 +4,9 @@
  * @memberof GraphQL/Product
  * @summary Query the Products collection for a single product
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - ID of Shop to query against
+ * @param {Object} input - Request input
+ * @param {String} input.productId - Product ID
+ * @param {String} input.shopId - Shop ID
  * @returns {Promise<Object>} Product object Promise
  */
 export default async function product(context, input) {
