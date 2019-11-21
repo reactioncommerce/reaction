@@ -569,12 +569,6 @@ extend type Query {
     "List of tag ids to filter by"
     tagIds: [ID]
 
-    "Filter by weight maximun value"
-    weightMax: String
-
-    "Filter by weight minimun value"
-    weightMin: String
-
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
 
