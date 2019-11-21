@@ -30,6 +30,9 @@ type Product {
   "Subtitle"
   pageTitle: String
 
+  "Price range"
+  price: ProductPriceRange
+
   "An arbitrary product type value, such as from an external system"
   productType: String
 
@@ -160,6 +163,18 @@ type ProductVariant {
 
   "The width of the product, if it has physical dimensions"
   width: Float
+}
+
+"Product price range"
+type ProductPriceRange {
+  "Maximum price in range"
+  max: Float
+
+  "Minimum price in range"
+  min: Float
+
+  "Price range display"
+  range: String
 }
 
 "Response payload of `archiveProducts` mutation"
