@@ -320,8 +320,8 @@ input AddCartItemsInput {
   "Array of items to be added to the cart"
   items: [CartItemInput]!
 
-  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
-  token: String
+  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String
 }
 
 "Input for the `removeCartItems` mutation"
