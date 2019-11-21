@@ -16,6 +16,10 @@ import {
 } from "../../src/core-services/cart/simpleSchemas.js";
 
 import {
+  DiscountCodes as Discounts
+} from "../../src/plugins/discount-codes/simpleSchemas.js";
+
+import {
   extendInventorySchemas
 } from "../../src/core-services/inventory/simpleSchemas.js";
 
@@ -37,6 +41,7 @@ import {
 import {
   Account,
   AccountProfileAddress,
+  Email,
   Group
 } from "../../src/core-services/account/simpleSchemas.js";
 
@@ -62,6 +67,10 @@ import {
 } from "../../src/core-services/taxes/simpleSchemas.js";
 
 import {
+  EmailTemplates
+} from "../../src/plugins/email-templates/simpleSchemas.js";
+
+import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
@@ -78,6 +87,9 @@ const schemasToAddToFactory = {
   CatalogProductVariant,
   CommonOrder,
   CommonOrderItem,
+  Discounts,
+  Email,
+  EmailTemplates,
   Group,
   Order,
   OrderAddress,

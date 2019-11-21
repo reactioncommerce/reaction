@@ -1,17 +1,58 @@
 import SimpleSchema from "simpl-schema";
-import { ShopLogoUrls, StorefrontUrls } from "../simpleSchemas.js";
+import { Email, ShopAddress, ShopLogoUrls, StorefrontUrls } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
-  shopId: String,
-  shopLogoUrls: {
+  "addressBook": {
+    type: Array,
+    optional: true
+  },
+  "allowGuestCheckout": {
+    type: Boolean,
+    optional: true
+  },
+  "addressBook.$": {
+    type: ShopAddress
+  },
+  "description": {
+    type: String,
+    optional: true
+  },
+  "emails": {
+    type: Array,
+    optional: true
+  },
+  "emails.$": {
+    type: Email
+  },
+  "keywords": {
+    type: String,
+    optional: true
+  },
+  "name": {
+    type: String,
+    optional: true
+  },
+  "shopId": String,
+  "shopLogoUrls": {
     type: ShopLogoUrls,
     optional: true
   },
-  storefrontUrls: {
+  "slug": {
+    type: String,
+    optional: true
+  },
+  "storefrontUrls": {
     type: StorefrontUrls,
     optional: true
   }
 });
+
+const complexSettings = [
+  "addressBook",
+  "emails",
+  "shopLogoUrls",
+  "storefrontUrls"
+];
 
 /**
  * @name shop/updateShop
@@ -20,8 +61,15 @@ const inputSchema = new SimpleSchema({
  * @summary Updates data on the Shop object
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - an object of all mutation arguments that were sent
+ * @param {String} input.description - The shop's description
+ * @param {Array} input.addressBook - The shop's physical address
+ * @param {Boolean} input.allowGuestCheckout - Allow user to checkout without creating an account
+ * @param {Array} input.emails - The shop's primary email address
+ * @param {String} input.keywords - The shop's keywords
+ * @param {String} input.name - The shop's name
  * @param {String} input.shopId - The shop ID
  * @param {Object} input.shopLogoUrls - An object containing the shop logo urls to update
+ * @param {String} input.slug - The shop's slug
  * @param {Object} input.storefrontUrls - An object containing storefront url locations
  * @returns {Promise<Object>} with updated shop
  */
@@ -33,29 +81,65 @@ export default async function updateShop(context, input) {
 
   const {
     shopId,
-    shopLogoUrls,
-    storefrontUrls
+    ...shopSettings
   } = input;
-
-  // set data to update
-  const sets = {};
-
-  // Only update provided fields inside `objects`,
-  if (shopLogoUrls) {
-    Object.keys(shopLogoUrls).forEach((key) => {
-      sets[`shopLogoUrls.${key}`] = shopLogoUrls[key];
-    });
-  }
-
-  if (storefrontUrls) {
-    Object.keys(storefrontUrls).forEach((key) => {
-      sets[`storefrontUrls.${key}`] = storefrontUrls[key];
-    });
-  }
 
   // Check permission to make sure user is allowed to do this
   // Security check for admin access
   await checkPermissions(["owner", "admin"], shopId);
+
+  // set data to update
+  const sets = {};
+
+  Object.keys(shopSettings).forEach((setting) => {
+    // Boolean and number settings
+    if ((
+      typeof shopSettings[setting] === "boolean" ||
+      typeof shopSettings[setting] === "number")
+      && !complexSettings.includes(setting)
+    ) {
+      sets[setting] = shopSettings[setting];
+      return;
+    }
+
+    // Simple string settings
+    if (shopSettings[setting] && !complexSettings.includes(setting)) {
+      sets[setting] = shopSettings[setting];
+      return;
+    }
+
+    // Compound settings
+    if (setting === "addressBook") {
+      // Currently only supporting one addressBook entry entry per shop
+      const addressBookEntry = shopSettings[setting][0];
+      Object.keys(addressBookEntry).forEach((key) => {
+        sets[`addressBook.0.${key}`] = addressBookEntry[key];
+      });
+      return;
+    }
+
+    if (setting === "emails") {
+      // Currently only supporting one email record entry per shop
+      const emailInfo = shopSettings[setting][0];
+      Object.keys(emailInfo).forEach((key) => {
+        sets[`emails.0.${key}`] = emailInfo[key];
+      });
+      return;
+    }
+
+    if (setting === "shopLogoUrls") {
+      Object.keys(shopSettings[setting]).forEach((key) => {
+        sets[`shopLogoUrls.${key}`] = shopSettings[setting][key];
+      });
+      return;
+    }
+
+    if (setting === "storefrontUrls") {
+      Object.keys(shopSettings[setting]).forEach((key) => {
+        sets[`storefrontUrls.${key}`] = shopSettings[setting][key];
+      });
+    }
+  });
 
   const { value: updatedShop } = await Shops.findOneAndUpdate(
     { _id: shopId },

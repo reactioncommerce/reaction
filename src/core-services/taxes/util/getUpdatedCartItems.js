@@ -27,24 +27,31 @@ export default async function getUpdatedCartItems(context, cart, commonOrders) {
   });
 
   // Merge all group tax summaries to a single one for the whole cart
-  let combinedSummary = { tax: 0, taxableAmount: 0, taxes: [] };
-  for (const { taxSummary } of taxResultsByGroup) {
-    // groupSummary will be null if there wasn't enough info to calc taxes
-    if (!taxSummary) {
-      combinedSummary = null;
-      break;
-    }
+  let combinedSummary;
 
-    combinedSummary.calculatedAt = taxSummary.calculatedAt;
-    combinedSummary.calculatedByTaxServiceName = taxSummary.calculatedByTaxServiceName;
-    combinedSummary.tax += taxSummary.tax;
-    combinedSummary.taxableAmount += taxSummary.taxableAmount;
-    combinedSummary.taxes = combinedSummary.taxes.concat(taxSummary.taxes);
+  if (taxResultsByGroup.length) {
+    combinedSummary = { tax: 0, taxableAmount: 0, taxes: [] };
 
-    if (taxSummary.customFields) {
-      if (!combinedSummary.customFields) combinedSummary.customFields = {};
-      Object.assign(combinedSummary.customFields, taxSummary.customFields);
+    for (const { taxSummary } of taxResultsByGroup) {
+      // groupSummary will be null if there wasn't enough info to calc taxes
+      if (!taxSummary) {
+        combinedSummary = null;
+        break;
+      }
+
+      combinedSummary.calculatedAt = taxSummary.calculatedAt;
+      combinedSummary.calculatedByTaxServiceName = taxSummary.calculatedByTaxServiceName;
+      combinedSummary.tax += taxSummary.tax;
+      combinedSummary.taxableAmount += taxSummary.taxableAmount;
+      combinedSummary.taxes = combinedSummary.taxes.concat(taxSummary.taxes);
+
+      if (taxSummary.customFields) {
+        if (!combinedSummary.customFields) combinedSummary.customFields = {};
+        Object.assign(combinedSummary.customFields, taxSummary.customFields);
+      }
     }
+  } else {
+    combinedSummary = null;
   }
 
   return { cartItems, taxSummary: combinedSummary };

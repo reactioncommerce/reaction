@@ -1,0 +1,44 @@
+mutation (
+  $discountCodeId: ID!,
+  $shopId: ID!,
+) {
+  deleteDiscountCode(input: {
+    discountCodeId: $discountCodeId
+    shopId: $shopId
+  }) {
+    discountCode {
+      _id
+      shop {
+        _id
+      }
+      code
+      label
+      description
+      discountMethod
+      discount
+      transactions {
+        cartId
+        userId
+        appliedAt
+      }
+      calculation {
+        method
+      }
+      conditions {
+        accountLimit
+        audience
+        enabled
+        permissions
+        redemptionLimit
+				order {
+          min
+          max
+          startDate
+          endDate
+        }
+        products
+        tags
+      }
+    }
+  }
+}

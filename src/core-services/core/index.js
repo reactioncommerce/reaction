@@ -15,9 +15,6 @@ export default async function register(app) {
       startup: [startup]
     },
     settings: {
-      public: {
-        allowGuestCheckout: true
-      },
       mail: {
         user: "",
         password: "",

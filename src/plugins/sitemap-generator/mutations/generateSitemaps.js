@@ -4,12 +4,13 @@
  * @method
  * @summary Regenerates sitemap files for primary shop
  * @param {Object} context - GraphQL execution context
+ * @param {String} input Input of generateSitemaps
+ * @param {String} input.shopId Shop ID to generate sitemap for
  * @returns {undefined} schedules immediate sitemap generation job
  */
-export default async function generateSitemaps(context) {
+export default async function generateSitemaps(context, input) {
   const { checkPermissions, userId } = context;
-
-  const shopId = await context.queries.primaryShopId(context);
+  const { shopId } = input;
 
   await checkPermissions(["admin"], shopId);
 
