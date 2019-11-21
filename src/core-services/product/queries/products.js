@@ -13,10 +13,10 @@ import applyProductFilters from "../utils/applyProductFilters.js";
  * @param {String} [metafieldValue] - Filter by metafield value
  * @param {Number} [priceMax] - Filter by price range maximum value
  * @param {Number} [priceMin] - Filter by price range minimum value
- * @param {String[]} [productIds] - List of product IDs to filter
+ * @param {String[]} [productIds] - List of product IDs to filter by
  * @param {String} [query] - Regex match query string
  * @param {String[]} shopIds - List of shop IDs to filter by
- * @param {String[]} [tagIds] - List of tag ids to filter
+ * @param {String[]} [tagIds] - List of tag ids to filter by
  * @returns {Promise<Object>} Products object Promise
  */
 export default async function products(context, input) {
