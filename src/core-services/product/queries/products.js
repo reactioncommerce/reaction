@@ -4,7 +4,7 @@ import applyProductFilters from "../utils/applyProductFilters.js";
  * @name products
  * @method
  * @memberof GraphQL/Products
- * @summary Query the Products collection
+ * @summary Query the Products collection for a list of products
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - ID of Shop to query against
  * @returns {Promise<Object>} Products object Promise
