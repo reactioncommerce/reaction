@@ -314,14 +314,14 @@ input AddCartItemsInput {
   "The cart ID"
   cartId: ID!
 
+  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
   "Array of items to be added to the cart"
   items: [CartItemInput]!
-
-  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
-  cartToken: String
 }
 
 "Input for the `removeCartItems` mutation"
@@ -369,7 +369,7 @@ input ReconcileCartsInput {
   anonymousCartId: ID!
 
   "An anonymous cart token"
-  anonymousCartToken: String!
+  cartToken: String!
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String

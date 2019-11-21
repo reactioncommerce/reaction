@@ -4,6 +4,8 @@ exports[`when missing anonymousCartId, throws 1`] = `"anonymousCartId is require
 
 exports[`when missing anonymousCartToken, throws 1`] = `"anonymousCartToken is required"`;
 
+exports[`when missing cartToken, throws 1`] = `"cartToken is required"`;
+
 exports[`when no matching anonymous cart is found, throws 1`] = `"Anonymous cart not found"`;
 
 exports[`when not authenticated, throw access denied 1`] = `"Access Denied"`;
