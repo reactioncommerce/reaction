@@ -34,7 +34,7 @@ const inputSchema = new SimpleSchema({
 export default async function updateCartItemsQuantity(context, input) {
   inputSchema.validate(input || {});
 
-  const { cartId, items, cartToken: cartToken } = input;
+  const { cartId, items, cartToken } = input;
 
   const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 
