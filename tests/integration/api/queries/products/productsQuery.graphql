@@ -1,12 +1,30 @@
 query Products(
+  $isArchived: Boolean
+  $isVisible: Boolean
+  $metafieldKey: String
+  $metafieldValue: String
+  $priceMax: Float
+  $priceMin: Float
+  $productIds: [ID]
+  $query: String
+  $tagIds: [ID]
   $shopIds: [ID]
-  $first: ConnectionLimitInt,
-  $last:  ConnectionLimitInt,
-  $before: ConnectionCursor,
-  $after: ConnectionCursor,
+  $first: ConnectionLimitInt
+  $last:  ConnectionLimitInt
+  $before: ConnectionCursor
+  $after: ConnectionCursor
   $offset: Int
 ) {
   products(
+    isArchived: $isArchived
+    isVisible: $isVisible
+    metafieldKey: $metafieldKey
+    metafieldValue: $metafieldValue
+    priceMax: $priceMax
+    priceMin: $priceMin
+    productIds: $productIds
+    query: $query
+    tagIds: $tagIds
     shopIds: $shopIds
     first: $first
     last: $last
@@ -17,6 +35,10 @@ query Products(
     nodes {
       _id
       title
+      price {
+        min
+        max
+      }
       shop {
         _id
       }
