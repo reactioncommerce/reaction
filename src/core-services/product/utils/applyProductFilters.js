@@ -171,9 +171,9 @@ export default function applyProductFilters(context, productFilters) {
     if (productFilters.priceMin && productFilters.priceMax) {
       const priceMin = parseFloat(productFilters.priceMin);
       const priceMax = parseFloat(productFilters.priceMax);
-      // where product A has min 12.99 variant and a 19.99 variant
-      // price.min=12.99&price.max=19.98
-      // should return product A
+
+      // Filters a whose min and max price range are within the
+      // range supplied from the filter
       selector = {
         ...selector,
         "price.min": {
