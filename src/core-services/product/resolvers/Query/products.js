@@ -6,7 +6,7 @@ import { decodeProductOpaqueId, decodeShopOpaqueId, decodeTagOpaqueId } from "..
  * @name Query/products
  * @method
  * @memberof Products/Query
- * @summary query the Products collection
+ * @summary Query for a list of products
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.shopId - id of user to query
