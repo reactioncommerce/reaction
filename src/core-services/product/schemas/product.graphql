@@ -554,10 +554,10 @@ extend type Query {
     "Filter by metafield value"
     metafieldValue: String
 
-    "Fitler by price range maximun value"
+    "Filter by price range maximum value"
     priceMax: Float
 
-    "Fitler by price range minimun value"
+    "Filter by price range minimum value"
     priceMin: Float
 
     "List of product IDs to filter"
