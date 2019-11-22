@@ -19,7 +19,7 @@ export default async function updateNavigationItem(context, input) {
 
   await checkPermissions(["core"], shopId);
 
-  const existingNavigationItem = await NavigationItems.findOne({ navigationItemId });
+  const existingNavigationItem = await NavigationItems.findOne({ _id: navigationItemId, shopId });
   if (!existingNavigationItem) {
     throw new ReactionError("navigation-item-not-found", "Navigation item was not found");
   }

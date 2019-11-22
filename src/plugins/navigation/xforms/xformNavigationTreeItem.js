@@ -15,6 +15,16 @@ export default async function xformNavigationTreeItem(context, language, item) {
   let { items = [] } = item;
 
   const navigationItem = await NavigationItems.findOne({ _id: navigationItemId });
+  if (!navigationItem) {
+    return {
+      navigationItem: null,
+      expanded,
+      isVisible,
+      isPrivate,
+      isSecondary,
+      items
+    };
+  }
 
   // Add translated content value
   const { draftData, data } = navigationItem;
