@@ -1,3 +1,5 @@
+import { decodeShopOpaqueId } from "../../xforms/id.js";
+
 /**
  * @name Mutation.createNavigationItem
  * @method
@@ -17,7 +19,10 @@ export default async function createNavigationItem(parentResult, { input }, cont
   } = input;
 
   const newNavigationItem = await context.mutations.createNavigationItem(context, {
-    navigationItem
+    navigationItem: {
+      ...navigationItem,
+      shopId: decodeShopOpaqueId(navigationItem.shopId)
+    }
   });
 
   return {
