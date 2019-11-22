@@ -5,8 +5,14 @@ import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 const inputSchema = new SimpleSchema({
   "slug": String,
   "name": String,
-  "displayTitle": String,
-  "heroMediaUrl": String,
+  "displayTitle": {
+    type: String,
+    optional: true
+  },
+  "heroMediaUrl": {
+    type: String,
+    optional: true
+  },
   "isVisible": Boolean,
   "metafields": { type: Array, optional: true },
   "metafields.$": new SimpleSchema({
@@ -16,7 +22,7 @@ const inputSchema = new SimpleSchema({
   }),
   "featuredProductIds": { type: Array, optional: true },
   "featuredProductIds.$": String
-}, { requiredByDefault: false });
+});
 
 /**
  * @name Mutation.updateTag

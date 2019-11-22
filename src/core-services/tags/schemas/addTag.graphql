@@ -4,7 +4,7 @@ input AddTagInput {
   clientMutationId: String
 
   "Title to display to customers"
-  displayTitle: String!
+  displayTitle: String
 
   "Hero media URL"
   heroMediaUrl: String
