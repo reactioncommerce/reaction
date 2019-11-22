@@ -8,7 +8,7 @@ query Products(
   $productIds: [ID]
   $query: String
   $tagIds: [ID]
-  $shopIds: [ID]
+  $shopIds: [ID]!
   $first: ConnectionLimitInt
   $last:  ConnectionLimitInt
   $before: ConnectionCursor
