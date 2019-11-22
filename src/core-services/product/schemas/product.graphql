@@ -567,7 +567,7 @@ extend type Query {
     query: String
 
     "List of shop IDs to filter by"
-    shopIds: [ID]
+    shopIds: [ID]!
 
     "List of tag ids to filter by"
     tagIds: [ID]
