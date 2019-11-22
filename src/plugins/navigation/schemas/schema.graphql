@@ -280,6 +280,9 @@ input NavigationItemInput {
 
   "An object storing additional metadata about the navigation item (such as its related tag)"
   metadata: JSONObject
+
+  "Shop ID of the navigation item"
+  shopId: ID!
 }
 
 "NavigationItemData input"

@@ -5,7 +5,7 @@ input UpdateTagInput {
   clientMutationId: String
 
   "Title to display to customers"
-  displayTitle: String!
+  displayTitle: String
 
   "A list of the IDs of top products in this tag"
   featuredProductIds: [ID]

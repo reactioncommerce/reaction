@@ -22,13 +22,11 @@ test("calls mutations.updateTag and returns the UpdateTagPayload on success", as
   });
 
   const input = {
-    input: {
-      shopId: testShopId,
-      tagId: testTagId,
-      isVisible: true,
-      name: "shirts",
-      displayTitle: "Shirts"
-    }
+    shopId: testShopId,
+    tagId: testTagId,
+    isVisible: true,
+    name: "shirts",
+    displayTitle: "Shirts"
   };
   const result = await updateTag(mockContext, input);
 

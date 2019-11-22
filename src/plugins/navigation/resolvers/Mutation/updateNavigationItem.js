@@ -26,7 +26,10 @@ export default async function updateNavigationItem(parentResult, { input }, cont
 
   const updatedNavigationItem = await context.mutations.updateNavigationItem(context, {
     navigationItemId,
-    navigationItem,
+    navigationItem: {
+      ...navigationItem,
+      shopId: decodeShopOpaqueId(navigationItem.shopId)
+    },
     shopId
   });
 
