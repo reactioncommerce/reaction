@@ -3,16 +3,11 @@ import hashProduct from "./mutations/hashProduct.js";
 
 /**
  * @summary Recalculate the currentProductHash for the related product
- * @param {Object} media The media document
+ * @param {Object} productId The product to hash
  * @param {Object} collections Map of MongoDB collections
  * @returns {Promise<null>} Null
  */
-async function hashRelatedProduct(media, collections) {
-  if (!media) {
-    throw new Error("hashRelatedProduct called with no media argument");
-  }
-
-  const { productId } = media.metadata || {};
+async function hashRelatedProduct(productId, collections) {
   if (productId) {
     hashProduct(productId, collections, false)
       .catch((error) => {
@@ -33,19 +28,22 @@ export default async function startup(context) {
   const { appEvents, collections } = context;
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
-    hashRelatedProduct(mediaRecord, collections).catch((error) => {
+    const { productId } = mediaRecord.metadata || {};
+    hashRelatedProduct(productId, collections).catch((error) => {
       Logger.error("Error in afterMediaInsert", error);
     });
   });
 
   appEvents.on("afterMediaUpdate", ({ mediaRecord }) => {
-    hashRelatedProduct(mediaRecord, collections).catch((error) => {
+    const { productId } = mediaRecord.metadata || {};
+    hashRelatedProduct(productId, collections).catch((error) => {
       Logger.error("Error in afterMediaUpdate", error);
     });
   });
 
   appEvents.on("afterMediaRemove", ({ mediaRecord }) => {
-    hashRelatedProduct(mediaRecord, collections).catch((error) => {
+    const { productId } = mediaRecord.metadata || {};
+    hashRelatedProduct(productId, collections).catch((error) => {
       Logger.error("Error in afterMediaRemove", error);
     });
   });
@@ -57,6 +55,21 @@ export default async function startup(context) {
       $set: {
         "product.isDeleted": true
       }
+    });
+  });
+
+  appEvents.on("afterProductUpdate", ({ productId }) => {
+    hashRelatedProduct(productId, collections).catch((error) => {
+      Logger.error("Error in afterProductUpdate", error);
+    });
+  });
+
+  appEvents.on("afterVariantUpdate", async ({ productId }) => {
+    const variant = await collections.Products.findOne({ _id: productId });
+    const productIdFromVariant = variant.ancestors[0];
+
+    hashRelatedProduct(productIdFromVariant, collections).catch((error) => {
+      Logger.error("Error in afterVariantUpdate", error);
     });
   });
 }

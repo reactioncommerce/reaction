@@ -1,0 +1,39 @@
+mutation($productId: ID!, $shopId: ID!, $product: ProductInput!) {
+	updateProduct(input: {
+    productId: $productId
+    shopId: $shopId
+    product: $product
+  }) {
+    product {
+      _id
+      createdAt
+      currentProductHash
+      description
+      isDeleted
+      isVisible
+      metaDescription
+      metafields {
+        key
+        value
+      }
+      originCountry
+      pageTitle
+      productType
+      publishedAt
+      publishedProductHash
+      shop {
+        _id
+      }
+      slug
+      socialMetadata {
+        message
+        service
+      }
+      supportedFulfillmentTypes
+      tagIds
+      title
+      updatedAt
+      vendor
+    }
+  }
+}

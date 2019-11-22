@@ -9,10 +9,10 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @summary query the Discount codes collection and return user account data
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client
- * @param {String} args.shopId - id of user to query
+ * @param {String} args.shopId - id of the shop
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @returns {Promise<Object>} user account object
+ * @returns {Promise<Object>} An array of discount codes
  */
 export default async function discountCodes(_, args, context, info) {
   const { shopId: opaqueShopId, ...connectionArgs } = args;

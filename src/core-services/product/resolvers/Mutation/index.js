@@ -6,6 +6,8 @@ import cloneProductVariants from "./cloneProductVariants.js";
 import createProduct from "./createProduct.js";
 import createProductVariant from "./createProductVariant.js";
 import removeTagsFromProducts from "./removeTagsFromProducts.js";
+import updateProduct from "./updateProduct.js";
+import updateProductVariant from "./updateProductVariant.js";
 
 export default {
   addTagsToProducts,
@@ -15,5 +17,7 @@ export default {
   cloneProductVariants,
   createProduct,
   createProductVariant,
-  removeTagsFromProducts
+  removeTagsFromProducts,
+  updateProduct,
+  updateProductVariant
 };

@@ -102,8 +102,7 @@ export const Layout = new SimpleSchema({
     optional: true
   },
   "enabled": {
-    type: Boolean,
-    defaultValue: true
+    type: Boolean
   },
   "status": {
     type: String,
@@ -130,13 +129,11 @@ export const Layout = new SimpleSchema({
   },
   "priority": {
     type: SimpleSchema.Integer,
-    optional: true,
-    defaultValue: 999
+    optional: true
   },
   "position": {
     type: SimpleSchema.Integer,
-    optional: true,
-    defaultValue: 1
+    optional: true
   }
 });
 
@@ -151,8 +148,7 @@ export const Layout = new SimpleSchema({
  */
 export const Workflow = new SimpleSchema({
   "status": {
-    type: String,
-    defaultValue: "new"
+    type: String
   },
   "workflow": {
     type: Array,
@@ -288,25 +284,21 @@ export const ShopAddress = new SimpleSchema({
   },
   "isCommercial": {
     label: "This is a commercial address.",
-    type: Boolean,
-    defaultValue: false
+    type: Boolean
   },
   "isBillingDefault": {
     label: "Make this your default billing address?",
     type: Boolean,
-    defaultValue: false,
     optional: true
   },
   "isShippingDefault": {
     label: "Make this your default shipping address?",
     type: Boolean,
-    defaultValue: false,
     optional: true
   },
   "failedValidation": {
     label: "Failed validation",
     type: Boolean,
-    defaultValue: false,
     optional: true
   },
   "metafields": {
@@ -329,7 +321,6 @@ export const ShopAddress = new SimpleSchema({
 export const Email = new SimpleSchema({
   provides: {
     type: String,
-    defaultValue: "default",
     optional: true
   },
   address: {
@@ -338,7 +329,6 @@ export const Email = new SimpleSchema({
   },
   verified: {
     type: Boolean,
-    defaultValue: false,
     optional: true
   }
 });
@@ -374,26 +364,21 @@ export const BrandAsset = new SimpleSchema({
  */
 export const Currency = new SimpleSchema({
   symbol: {
-    type: String,
-    defaultValue: "$"
+    type: String
   },
   format: {
-    type: String,
-    defaultValue: "%s%v"
+    type: String
   },
   scale: {
     type: SimpleSchema.Integer,
-    defaultValue: 2,
     optional: true
   },
   decimal: {
     type: String,
-    defaultValue: ".",
     optional: true
   },
   thousand: {
     type: String,
-    defaultValue: ",",
     optional: true
   },
   rate: {
@@ -451,8 +436,7 @@ export const Languages = new SimpleSchema({
     type: String
   },
   enabled: {
-    type: Boolean,
-    defaultValue: true
+    type: Boolean
   }
 });
 
@@ -648,7 +632,7 @@ export const Shop = new SimpleSchema({
   },
   "allowGuestCheckout": {
     type: Boolean,
-    defaultValue: true
+    optional: true
   },
   "slug": {
     type: String,
@@ -663,8 +647,7 @@ export const Shop = new SimpleSchema({
   },
   "shopType": String,
   "active": {
-    type: Boolean,
-    defaultValue: true
+    type: Boolean
   },
   // DEPRECATED and UNUSED
   "status": {
@@ -688,8 +671,7 @@ export const Shop = new SimpleSchema({
     type: ShopAddress
   },
   "domains": {
-    type: Array,
-    defaultValue: ["localhost"]
+    type: Array
   },
   "domains.$": String,
   "emails": {
@@ -736,13 +718,11 @@ export const Shop = new SimpleSchema({
   },
   "timezone": {
     label: "Timezone",
-    type: String,
-    defaultValue: "US/Pacific"
+    type: String
   },
   "baseUOL": {
     type: String,
     optional: true,
-    defaultValue: "in",
     label: "Base Unit of Length"
   },
   "unitsOfLength": {
@@ -752,23 +732,19 @@ export const Shop = new SimpleSchema({
   "unitsOfLength.$": Object,
   "unitsOfLength.$.uol": {
     type: String,
-    optional: true,
-    defaultValue: "in"
+    optional: true
   },
   "unitsOfLength.$.label": {
     type: String,
-    optional: true,
-    defaultValue: "Inches"
+    optional: true
   },
   "unitsOfLength.$.default": {
     type: Boolean,
-    optional: true,
-    defaultValue: false
+    optional: true
   },
   "baseUOM": {
     type: String,
     optional: true,
-    defaultValue: "oz",
     label: "Base Unit of Measure"
   },
   "unitsOfMeasure": {
@@ -778,18 +754,15 @@ export const Shop = new SimpleSchema({
   "unitsOfMeasure.$": Object,
   "unitsOfMeasure.$.uom": {
     type: String,
-    optional: true,
-    defaultValue: "oz"
+    optional: true
   },
   "unitsOfMeasure.$.label": {
     type: String,
-    optional: true,
-    defaultValue: "Ounces"
+    optional: true
   },
   "unitsOfMeasure.$.default": {
     type: Boolean,
-    optional: true,
-    defaultValue: false
+    optional: true
   },
   "metafields": {
     type: Array,
@@ -837,24 +810,21 @@ export const Shop = new SimpleSchema({
     optional: true
   },
   "paymentMethods": {
-    type: Array,
-    defaultValue: []
+    type: Array
   },
   "paymentMethods.$": {
     type: Object,
     blackbox: true
   },
   "availablePaymentMethods": {
-    type: Array,
-    defaultValue: []
+    type: Array
   },
   "availablePaymentMethods.$": {
     type: String
   },
   "workflow": {
     type: Workflow,
-    optional: true,
-    defaultValue: {}
+    optional: true
   },
   "defaultNavigationTreeId": {
     type: String,
@@ -862,17 +832,14 @@ export const Shop = new SimpleSchema({
   },
   "shopLogoUrls": {
     type: ShopLogoUrls,
-    optional: true,
-    defaultValue: {}
+    optional: true
   },
   "storefrontUrls": {
     type: StorefrontUrls,
-    optional: true,
-    defaultValue: {}
+    optional: true
   },
   "allowCustomUserLocale": {
     type: Boolean,
-    defaultValue: true,
     optional: true,
     label: "Allow custom user locale"
   }

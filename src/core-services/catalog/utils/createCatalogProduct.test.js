@@ -151,13 +151,6 @@ const mockProduct = {
 };
 
 const mockShop = {
-  currencies: {
-    USD: {
-      enabled: true,
-      format: "%s%v",
-      symbol: "$"
-    }
-  },
   currency: "USD"
 };
 

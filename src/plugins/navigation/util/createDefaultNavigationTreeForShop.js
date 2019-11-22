@@ -15,35 +15,39 @@ export default async function createDefaultNavigationTreeForShop(context, shop) 
 
   // Create a couple example items
   const navigationItem = await context.mutations.createNavigationItem({ ...context, isInternalCall: true }, {
-    draftData: {
-      classNames: null,
-      content: [
-        {
-          language: "en",
-          value: "Example Navigation"
-        }
-      ],
-      isUrlRelative: true,
-      shouldOpenInNewWindow: false,
-      url: "/"
-    },
-    shopId
+    navigationItem: {
+      draftData: {
+        classNames: null,
+        content: [
+          {
+            language: "en",
+            value: "Example Navigation"
+          }
+        ],
+        isUrlRelative: true,
+        shouldOpenInNewWindow: false,
+        url: "/"
+      },
+      shopId
+    }
   });
 
   const navigationSubItem = await context.mutations.createNavigationItem({ ...context, isInternalCall: true }, {
-    draftData: {
-      classNames: null,
-      content: [
-        {
-          language: "en",
-          value: "Example Tag Page"
-        }
-      ],
-      isUrlRelative: true,
-      shouldOpenInNewWindow: false,
-      url: "/tag/example-tag"
-    },
-    shopId
+    navigationItem: {
+      draftData: {
+        classNames: null,
+        content: [
+          {
+            language: "en",
+            value: "Example Tag Page"
+          }
+        ],
+        isUrlRelative: true,
+        shouldOpenInNewWindow: false,
+        url: "/tag/example-tag"
+      },
+      shopId
+    }
   });
 
   const items = [
