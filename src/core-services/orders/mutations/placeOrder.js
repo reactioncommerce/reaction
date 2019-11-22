@@ -18,56 +18,11 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @summary Gets currency rates from a shop
- * @param {Object} collections Map of MongoDB collections
- * @param {String} shopId The ID of the shop to get rates from
- * @param {String} currencyCode The currency code
- * @returns {Number|null} The rate, or `null` if there isn't one.
- */
-async function getCurrencyRates(collections, shopId, currencyCode) {
-  const shop = await collections.Shops.findOne({ _id: shopId }, {
-    projection: {
-      [`currencies.${currencyCode}.rate`]: 1
-    }
-  });
-
-  return typeof shop.currencies[currencyCode].rate === "number" ? shop.currencies[currencyCode].rate : null;
-}
-
-/**
- * @summary Gets an object representing the exchange rate at the time of an order
- * @param {Object} collections Map of MongoDB collections
- * @param {String} cartCurrencyCode The currency code of the cart
- * @param {String} shopId The ID of the shop that owns the order
- * @param {Object} [account] Current account for this request, if there is one
- * @returns {Object} Object with `userCurrency` and `exchangeRate` properties
- */
-async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, account) {
-  // If user currency === shop currency, exchange rate = 1.0
-  let userCurrency = cartCurrencyCode;
-  let exchangeRate = 1;
-
-  if (account && account.profile && account.profile.currency) {
-    userCurrency = account.profile.currency;
-
-    if (userCurrency !== cartCurrencyCode) {
-      exchangeRate = await getCurrencyRates(collections, shopId, userCurrency);
-    }
-  }
-
-  return {
-    exchangeRate,
-    userCurrency
-  };
-}
-
-/**
  * @summary Create all authorized payments for a potential order
  * @param {String} [accountId] The ID of the account placing the order
  * @param {Object} [billingAddress] Billing address for the order as a whole
  * @param {Object} context - The application context
  * @param {String} currencyCode Currency code for interpreting the amount of all payments
- * @param {Object} currencyExchangeInfo Currency exchange info
  * @param {String} email Email address for the order
  * @param {Number} orderTotal Total due for the order
  * @param {Object[]} paymentsInput List of payment inputs
@@ -80,7 +35,6 @@ async function createPayments({
   billingAddress,
   context,
   currencyCode,
-  currencyExchangeInfo,
   email,
   orderTotal,
   paymentsInput,
@@ -128,7 +82,12 @@ async function createPayments({
       } // optional, object, blackbox
     });
 
-    const paymentWithCurrency = { ...payment, currency: currencyExchangeInfo, currencyCode };
+    const paymentWithCurrency = {
+      ...payment,
+      // This is from previous support for exchange rates, which was removed in v3.0.0
+      currency: { exchangeRate: 1, userCurrency: currencyCode },
+      currencyCode
+    };
 
     PaymentSchema.validate(paymentWithCurrency);
 
@@ -169,7 +128,7 @@ export default async function placeOrder(context, input) {
     ordererPreferredLanguage,
     shopId
   } = orderInput;
-  const { accountId, account, appEvents, collections, getFunctionsOfType, userId } = context;
+  const { accountId, appEvents, collections, getFunctionsOfType, userId } = context;
   const { Orders, Cart } = collections;
 
   let cart;
@@ -228,14 +187,11 @@ export default async function placeOrder(context, input) {
     return group;
   }));
 
-  const currencyExchangeInfo = await getCurrencyExchangeObject(collections, currencyCode, shopId, account);
-
   const payments = await createPayments({
     accountId,
     billingAddress,
     context,
     currencyCode,
-    currencyExchangeInfo,
     email,
     orderTotal,
     paymentsInput,

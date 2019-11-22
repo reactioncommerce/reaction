@@ -1,3 +1,4 @@
+import CurrencyDefinitions from "@reactioncommerce/api-utils/CurrencyDefinitions.js";
 import getPriceRange from "./getPriceRange.js";
 
 /**
@@ -28,7 +29,7 @@ function getPricingObject(doc, priceInfo) {
  */
 export default function publishProductToCatalog(catalogProduct, { product, shop, variants }) {
   const shopCurrencyCode = shop.currency;
-  const shopCurrencyInfo = shop.currencies[shopCurrencyCode];
+  const shopCurrencyInfo = CurrencyDefinitions[shopCurrencyCode];
 
   const prices = [];
 

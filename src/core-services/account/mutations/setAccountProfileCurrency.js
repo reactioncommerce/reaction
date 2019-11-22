@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import CurrencyDefinitions from "@reactioncommerce/api-utils/CurrencyDefinitions.js";
 
 const inputSchema = new SimpleSchema({
   currencyCode: String,
@@ -21,25 +22,22 @@ const inputSchema = new SimpleSchema({
  */
 export default async function setAccountProfileCurrency(context, input) {
   inputSchema.validate(input);
-  const { appEvents, checkPermissions, collections, userId: userIdFromContext } = context;
-  const { Accounts, Shops } = collections;
+  const { appEvents, checkPermissions, collections, accountId: accountIdFromContext } = context;
+  const { Accounts } = collections;
   const { currencyCode, accountId: providedAccountId } = input;
 
-  const accountId = providedAccountId || userIdFromContext;
+  const accountId = providedAccountId || accountIdFromContext;
   if (!accountId) throw new ReactionError("access-denied", "You must be logged in to set profile currency");
 
   const account = await Accounts.findOne({ _id: accountId }, { projection: { shopId: 1 } });
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (!context.isInternalCall && userIdFromContext !== providedAccountId) {
+  if (!context.isInternalCall && accountIdFromContext !== providedAccountId) {
     await checkPermissions(["reaction-accounts"], account.shopId);
   }
 
-  // Make sure this currency code is in the related shop currencies list
-  const shop = await Shops.findOne({ _id: account.shopId }, { projection: { currencies: 1 } });
-
-  if (!shop || !shop.currencies || !shop.currencies[currencyCode]) {
-    throw new ReactionError("invalid-argument", `The shop for this account does not define any currency with code "${currencyCode}"`);
+  if (!CurrencyDefinitions[currencyCode]) {
+    throw new ReactionError("invalid-argument", `No currency has code "${currencyCode}"`);
   }
 
   const { value: updatedAccount } = await Accounts.findOneAndUpdate({
