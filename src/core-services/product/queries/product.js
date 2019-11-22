@@ -14,7 +14,7 @@ export default async function product(context, input) {
   const { Products } = collections;
   const { productId, shopId } = input;
 
-  checkPermissions(["owner", "admin", "createProduct"], shopId);
+  await checkPermissions(["owner", "admin", "createProduct"], shopId);
 
   return Products.findOne({
     _id: productId,
