@@ -65,6 +65,9 @@ class Login extends Component {
     const { currentView } = this.state;
     const isLogin = window.location.search.includes("signin");
     const isSignup = window.location.search.includes("signup");
+    const windowUrl = window.location.href;
+    const signupUrl = windowUrl.replace('signin', "signup");
+    const signinUrl = windowUrl.replace('signup', "signin");
 
     if (currentView === "loginFormSignInView" || currentView === "loginFormSignUpView" || currentView === "loginFormUpdatePasswordView") {
       if (isOauthFlow) {
@@ -77,12 +80,12 @@ class Login extends Component {
             />
             {isLogin && <StyledAuthLink>
               <p>Don't have an account?</p>
-              <a className="auth-option" href="http://localhost:3000/account/login?action=signup&login_challenge=6722e384821e4c968c9272d1ea7db8c0">Sign Up</a>
+              <a className="auth-option" href={signupUrl}>Sign Up</a>
             </StyledAuthLink>}
 
             {isSignup && <StyledAuthLink>
               <p>Already have an account?</p>
-              <a className="auth-option" href="http://localhost:3000/account/login?action=signin&login_challenge=6722e384821e4c968c9272d1ea7db8c0">Login</a>
+              <a className="auth-option" href={signinUrl}>Login</a>
             </StyledAuthLink>}
           </StyledAuth>
         );
