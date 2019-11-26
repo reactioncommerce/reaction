@@ -28,7 +28,7 @@ export default function mongoConnectWithRetry(url) {
       // https://jira.mongodb.org/browse/NODE-2249
       // useUnifiedTopology: true
     }).then((client) => {
-      Logger.info("Connected to MongoDB");
+      Logger.info(`Connected to MongoDB. Database name: ${client.db().databaseName}`);
       return client;
     }).catch((error) => {
       if (error.name === "MongoNetworkError") {
