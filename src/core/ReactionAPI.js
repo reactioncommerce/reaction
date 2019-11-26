@@ -209,14 +209,11 @@ export default class ReactionAPI {
     connectOptionsSchema.validate(options);
 
     const { mongoUrl = MONGO_URL } = options;
-    const lastSlash = mongoUrl.lastIndexOf("/");
-    const dbUrl = mongoUrl.slice(0, lastSlash);
-    const dbName = mongoUrl.slice(lastSlash + 1);
 
-    const client = await mongoConnectWithRetry(dbUrl);
+    const client = await mongoConnectWithRetry(mongoUrl);
 
     this.mongoClient = client;
-    this.setMongoDatabase(client.db(dbName));
+    this.setMongoDatabase(client.db()); // Uses db name from the connection string
   }
 
   async disconnectFromMongo() {
