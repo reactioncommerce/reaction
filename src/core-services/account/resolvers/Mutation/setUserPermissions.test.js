@@ -1,6 +1,6 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import setUserPermissions from "./setUserPermissions.js";
 import AddOrRemoveAccountGroupsOperationType from "../../mutations/AddOrRemoveAccountGroupsOperationType";
+import setUserPermissions from "./setUserPermissions.js";
 
 mockContext.mutations.addOrRemoveAccountGroups = jest.fn().mockName("mutations.addOrRemoveAccountGroups");
 mockContext.validatePermissions = jest.fn().mockName("validatePermissions");
