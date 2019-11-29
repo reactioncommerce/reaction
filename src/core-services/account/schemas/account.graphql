@@ -136,6 +136,14 @@ input RemoveAccountEmailRecordInput {
   email: Email!
 }
 
+"Defines groups to add / remove for a given account"
+input AddOrRemoveAccountInput {
+
+
+  "the groups to add an account to"
+  groups: [String!]!
+}
+
 "Per-account tax exemption settings used by the Avalara plugin"
 type TaxSettings {
   "Customer usage type. A value matching the `code` field of one TaxEntityCode, or any custom string."
@@ -429,6 +437,9 @@ extend type Mutation {
     "Mutation input"
     input: UpdateAccountAddressBookEntryInput!
   ): UpdateAccountAddressBookEntryPayload
+
+  "Adds an account to a group. The user id / account id must be set in the context"
+  setUserPermissions(input: AddOrRemoveAccountInput!): JSONObject
 }
 
 extend type Query {
