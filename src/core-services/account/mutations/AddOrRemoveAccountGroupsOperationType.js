@@ -5,8 +5,8 @@
  * @enum {string}
  */
 const AddOrRemoveAccountGroupsOperationType = Object.freeze({
-  ADD_OR_SET: "ADD_OR_SET",
-  REMOVE: "REMOVE"
+  ADD: "ADD",
+  DELETE: "DELETE"
 });
 
 export default AddOrRemoveAccountGroupsOperationType;
