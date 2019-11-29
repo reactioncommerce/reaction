@@ -1,7 +1,10 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import AddOrRemoveAccountGroupsOperationType from "./AddOrRemoveAccountGroupsOperationType.js";
 
 const inputSchema = new SimpleSchema({
+  "accountId": String,
+  "userId": String,
   "groups": {
     type: Array, // groupIds that user belongs to
     optional: true,
@@ -12,21 +15,63 @@ const inputSchema = new SimpleSchema({
   }
 });
 
+
+const getQueryAndOption = (updateGroupOperationType, groups) => {
+  let queryAndOptions = null;
+  switch (updateGroupOperationType) {
+    case AddOrRemoveAccountGroupsOperationType.ADD_OR_SET: {
+      queryAndOptions = {
+        query: {
+          $addToSet: {
+            groups: {
+              $each: groups
+            }
+          }
+        },
+        options: {
+          returnOriginal: false
+        }
+
+      };
+      break;
+    }
+    case AddOrRemoveAccountGroupsOperationType.REMOVE: {
+      queryAndOptions = {
+        query: {
+          $pull: {
+            groups: {
+              $in: groups
+            }
+          }
+        },
+        options: {
+          multi: true
+        }
+      };
+      break;
+    }
+    default: return queryAndOptions;
+  }
+
+  return queryAndOptions;
+};
 /**
- * @name accounts/updateAccountGroups
+ * @name accounts/addOrRemoveAccountGroups
  * @memberof Mutations/Accounts
- * @summary Update an existing address on an account
+ * @summary Adds or removes  groups on an account
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
+ * @param {AddOrRemoveAccountGroupsOperationType} updateGroupOperationType - the type of operation to perform.
  * @param {Object} input.groups - groups to append to
  * @param {String} input.accountId - optional decoded ID of account on which entry should be updated, for admins
  * @returns {Promise<Object>} with updated account
  */
-export default async function updateAccountGroups(context, input) {
-  inputSchema.validate(input);
+export default async function addOrRemoveAccountGroups(context, input, updateGroupOperationType) {
+  // inputSchema.validate(context);
   const { appEvents, checkPermissions, collections, userId: userIdFromContext } = context;
   const { Accounts } = collections;
-  const { groups, accountId } = input;
+  const { accountId } = context;
+  const { groups } = input;
 
   const account = await Accounts.findOne({ _id: accountId });
 
@@ -36,24 +81,16 @@ export default async function updateAccountGroups(context, input) {
     await checkPermissions(["reaction-accounts"], account.shopId);
   }
 
-  const accountsUpdateQuery = {
-    $addToSet: {
-      groups: {
-        $each: groups
-      }
-    }
-  };
-
+  const accountUpdateQueryOptions = getQueryAndOption(updateGroupOperationType, groups);
 
   // Update the Reaction Accounts collection with new groups info
+  // This
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
     {
       _id: accountId
     },
-    accountsUpdateQuery,
-    {
-      returnOriginal: false
-    }
+    accountUpdateQueryOptions.query,
+    accountUpdateQueryOptions.options
   );
 
   if (!updatedAccount) {
