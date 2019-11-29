@@ -14,5 +14,5 @@ import AddOrRemoveAccountGroupsOperationType from "../../mutations/AddOrRemoveAc
  */
 export default async function setUserPermissions(_, { input }, context) {
   await context.validatePermissions("reaction:accounts", "create", { });
-  return context.mutations.addOrRemoveAccountGroups(context, input, AddOrRemoveAccountGroupsOperationType.ADD_OR_SET);
+  return context.mutations.addOrRemoveAccountGroups(context, input, AddOrRemoveAccountGroupsOperationType.ADD);
 }

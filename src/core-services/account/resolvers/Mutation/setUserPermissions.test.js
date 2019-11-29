@@ -40,7 +40,7 @@ test("correctly passes through to internal mutation function", async () => {
   expect(mockContext.mutations.addOrRemoveAccountGroups).toHaveBeenCalledWith(
     mockContext,
     { groups: ["test-group-id"] },
-    AddOrRemoveAccountGroupsOperationType.ADD_OR_SET
+    AddOrRemoveAccountGroupsOperationType.ADD
   );
 
   expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:accounts", "create", { });
