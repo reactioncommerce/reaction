@@ -19,7 +19,7 @@ const inputSchema = new SimpleSchema({
 const getQueryAndOption = (updateGroupOperationType, groups) => {
   let queryAndOptions = null;
   switch (updateGroupOperationType) {
-    case AddOrRemoveAccountGroupsOperationType.ADD_OR_SET: {
+    case AddOrRemoveAccountGroupsOperationType.ADD: {
       queryAndOptions = {
         query: {
           $addToSet: {
@@ -35,7 +35,7 @@ const getQueryAndOption = (updateGroupOperationType, groups) => {
       };
       break;
     }
-    case AddOrRemoveAccountGroupsOperationType.REMOVE: {
+    case AddOrRemoveAccountGroupsOperationType.DELETE: {
       queryAndOptions = {
         query: {
           $pull: {
