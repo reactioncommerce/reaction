@@ -1,22 +1,7 @@
-import Logger from "@reactioncommerce/logger";
-/* import { check, Match } from "meteor/check";
-import { Roles } from "meteor/alanning:roles";
+import AddOrRemoveAccountGroupsOperationType from "../../mutations/AddOrRemoveAccountGroupsOperationType.js";
 
-const addUserToRolesLegacy = async (input, context) => {
-  await context.validatePermissionsLegacy("reaction-accounts", context.userId, input.group);
-  check(context.userId, Match.OneOf(String, Array));
-  check(input.permissions, Match.OneOf(String, Array));
-  check(input.group, Match.Optional(String));
-  this.unblock();
-  try {
-    return Roles.addUsersToRoles(context.userId, input.permissions, input.group);
-  } catch (error) {
-    return Logger.error(error);
-  }
-};
-*/
 /**
- * @name Mutation/addUserPermissions
+ * @name Mutation/setUserPermissions
  * @method
  * @memberof Accounts/GraphQL
  * @summary resolver to add user permissions
@@ -27,8 +12,7 @@ const addUserToRolesLegacy = async (input, context) => {
  * @param {Object} args.context.userId - the userId of user to add to the given group
  * @returns {Object} - object
  */
-export default async function addUserPermissions(_, { input }, context) {
-  // await addUserToRolesLegacy(input, context);
+export default async function setUserPermissions(_, { input }, context) {
   await context.validatePermissions("reaction:accounts", "create", { });
-  return [];
+  return await context.mutations.addOrRemoveAccountGroups(context, input, AddOrRemoveAccountGroupsOperationType.ADD_OR_SET);
 }
