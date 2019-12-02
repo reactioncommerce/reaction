@@ -3,7 +3,7 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
- * @name Query/getFlatRateFulfillmentMethods
+ * @name Query/flatRateFulfillmentMethods
  * @method
  * @memberof Fulfillment/Query
  * @summary Query for a list of fulfillment methods
@@ -14,7 +14,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} Fulfillment methods
  */
-export default async function getFlatRateFulfillmentMethods(_, args, context, info) {
+export default async function flatRateFulfillmentMethods(_, args, context, info) {
   const {
     shopId: opaqueShopId,
     ...connectionArgs
@@ -22,7 +22,7 @@ export default async function getFlatRateFulfillmentMethods(_, args, context, in
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
-  const query = await context.queries.getFlatRateFulfillmentMethods(context, {
+  const query = await context.queries.flatRateFulfillmentMethods(context, {
     shopId
   });
 

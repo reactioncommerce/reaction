@@ -13,7 +13,7 @@ extend type Query {
   ): FlatRateFulfillmentMethod!
 
   "Get a flat rate fulfillment methods"
-  getFlatRateFulfillmentMethods(
+  flatRateFulfillmentMethods(
     "Shop ID"
     shopId: ID!
 

@@ -1,7 +1,7 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
 
-const getFlatRateFulfillmentMethodsQuery = importAsString("./getFlatRateFulfillmentMethodsQuery.graphql");
+const flatRateFulfillmentMethodsQuery = importAsString("./flatRateFulfillmentMethodsQuery.graphql");
 
 jest.setTimeout(300000);
 
@@ -37,7 +37,7 @@ let queryFulfillmentMethods;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  queryFulfillmentMethods = testApp.query(getFlatRateFulfillmentMethodsQuery);
+  queryFulfillmentMethods = testApp.query(flatRateFulfillmentMethodsQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
   await Promise.all(fulfillmentMethodDocs.map((doc) => (
@@ -70,9 +70,9 @@ test("expect a list of fulfillment methods", async () => {
     return;
   }
 
-  expect(result.getFlatRateFulfillmentMethods.nodes.length).toEqual(10);
-  expect(result.getFlatRateFulfillmentMethods.nodes[0].label).toEqual("Standard 10");
-  expect(result.getFlatRateFulfillmentMethods.nodes[9].label).toEqual("Standard 19");
+  expect(result.flatRateFulfillmentMethods.nodes.length).toEqual(10);
+  expect(result.flatRateFulfillmentMethods.nodes[0].label).toEqual("Standard 10");
+  expect(result.flatRateFulfillmentMethods.nodes[9].label).toEqual("Standard 19");
 });
 
 test("expect a list of fulfillment methods on the second page", async () => {
@@ -89,9 +89,9 @@ test("expect a list of fulfillment methods on the second page", async () => {
     return;
   }
 
-  expect(result.getFlatRateFulfillmentMethods.nodes.length).toEqual(10);
-  expect(result.getFlatRateFulfillmentMethods.nodes[0].label).toEqual("Priority 20");
-  expect(result.getFlatRateFulfillmentMethods.nodes[9].label).toEqual("Priority 29");
+  expect(result.flatRateFulfillmentMethods.nodes.length).toEqual(10);
+  expect(result.flatRateFulfillmentMethods.nodes[0].label).toEqual("Priority 20");
+  expect(result.flatRateFulfillmentMethods.nodes[9].label).toEqual("Priority 29");
 });
 
 test("expect a list of fulfillment methods on the third page", async () => {
@@ -108,7 +108,7 @@ test("expect a list of fulfillment methods on the third page", async () => {
     return;
   }
 
-  expect(result.getFlatRateFulfillmentMethods.nodes.length).toEqual(10);
-  expect(result.getFlatRateFulfillmentMethods.nodes[0].label).toEqual("Next-Day 30");
-  expect(result.getFlatRateFulfillmentMethods.nodes[9].label).toEqual("Next-Day 39");
+  expect(result.flatRateFulfillmentMethods.nodes.length).toEqual(10);
+  expect(result.flatRateFulfillmentMethods.nodes[0].label).toEqual("Next-Day 30");
+  expect(result.flatRateFulfillmentMethods.nodes[9].label).toEqual("Next-Day 39");
 });

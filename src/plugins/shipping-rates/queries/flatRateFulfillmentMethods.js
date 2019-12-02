@@ -1,5 +1,5 @@
 /**
- * @name getFlatRateFulfillmentMethods
+ * @name flatRateFulfillmentMethods
  * @method
  * @memberof Fulfillment/Queries
  * @summary Query the Shipping collection for a list of fulfillment methods
@@ -8,7 +8,7 @@
  * @param {String} input.shopId - The shop id of the fulfillment methods
  * @returns {Promise<Object>} Mongo cursor
  */
-export default async function getFlatRateFulfillmentMethods(context, input) {
+export default async function flatRateFulfillmentMethods(context, input) {
   const { checkPermissions, collections } = context;
   const { Shipping } = collections;
   const { shopId } = input;

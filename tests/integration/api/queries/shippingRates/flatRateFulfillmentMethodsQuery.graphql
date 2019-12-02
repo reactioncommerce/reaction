@@ -6,7 +6,7 @@ query FlatRateFultillmentMetods(
   $after: ConnectionCursor
   $offset: Int
 ) {
-  getFlatRateFulfillmentMethods(
+  flatRateFulfillmentMethods(
     shopId: $shopId
     first: $first
     last: $last
