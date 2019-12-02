@@ -86,7 +86,7 @@ test("expect a fulfillment method", async () => {
   expect(result.flatRateFulfillmentMethod.label).toEqual("Standard 11");
 });
 
-test("throws access-denied when getting fulfillment methods if not an admin", async () => {
+test("throws access-denied when getting a fulfillment method if not an admin", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);
 
   try {
