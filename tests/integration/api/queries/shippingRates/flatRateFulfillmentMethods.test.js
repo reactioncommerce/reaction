@@ -1,4 +1,5 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const flatRateFulfillmentMethodsQuery = importAsString("./flatRateFulfillmentMethodsQuery.graphql");
@@ -31,6 +32,20 @@ for (let index = 10; index < 40; index += 1) {
   fulfillmentMethodDocs.push(mockMethod);
 }
 
+const mockCustomerAccount = Factory.Account.makeOne({
+  roles: {
+    [internalShopId]: []
+  },
+  shopId: internalShopId
+});
+
+const mockAdminAccount = Factory.Account.makeOne({
+  roles: {
+    [internalShopId]: ["admin"]
+  },
+  shopId: internalShopId
+});
+
 let testApp;
 let queryFulfillmentMethods;
 
@@ -43,11 +58,6 @@ beforeAll(async () => {
   await Promise.all(fulfillmentMethodDocs.map((doc) => (
     testApp.collections.Shipping.insertOne(doc)
   )));
-
-  await testApp.setLoggedInUser({
-    _id: "123",
-    roles: { [internalShopId]: ["admin"] }
-  });
 });
 
 afterAll(async () => {
@@ -58,6 +68,8 @@ afterAll(async () => {
 });
 
 test("expect a list of fulfillment methods", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
   let result;
 
   try {
@@ -76,6 +88,8 @@ test("expect a list of fulfillment methods", async () => {
 });
 
 test("expect a list of fulfillment methods on the second page", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
   let result;
 
   try {
@@ -95,6 +109,8 @@ test("expect a list of fulfillment methods on the second page", async () => {
 });
 
 test("expect a list of fulfillment methods on the third page", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
   let result;
 
   try {
@@ -111,4 +127,18 @@ test("expect a list of fulfillment methods on the third page", async () => {
   expect(result.flatRateFulfillmentMethods.nodes.length).toEqual(10);
   expect(result.flatRateFulfillmentMethods.nodes[0].label).toEqual("Next-Day 30");
   expect(result.flatRateFulfillmentMethods.nodes[9].label).toEqual("Next-Day 39");
+});
+
+test("throws access-denied when getting fulfillment methods if not an admin", async () => {
+  await testApp.setLoggedInUser(mockCustomerAccount);
+
+  try {
+    await queryFulfillmentMethods({
+      shopId: opaqueShopId,
+      first: 10
+    });
+  } catch (errors) {
+    expect(errors[0]).toMatchSnapshot();
+    return;
+  }
 });
