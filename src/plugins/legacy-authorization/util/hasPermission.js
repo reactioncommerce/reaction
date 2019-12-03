@@ -14,11 +14,14 @@ const GLOBAL_GROUP = "__global_roles__";
  * @param {Object} user - The user object, with `roles` property, to check.
  * @param {String[]} permissions - Array of permission strings. The account must have at least one of them either globally or for the roleGroup.
  * @param {String} [action] - The action being performed (unused).
- * @param {String} [roleGroup] - The shop ID for which the permissions are needed, or a more specific roles group. If not set,
+ * @param {Object} authContext - context data to verify permissions against
+ * @param {String} [authContext.shopId] - The shop ID for which the permissions are needed. If not set,
  *   only global roles will be checked.
  * @returns {Boolean} True if the account with ID accountId has at least one of the requested permissions in the roleGroup group
  */
-export default function hasPermission(user, permissions, action, { roleGroup }) {
+export default function hasPermission(user, permissions, action, authContext) {
+  const { shopId: roleGroup } = authContext;
+
   if (!user || !user.roles) return false;
 
   if (!Array.isArray(permissions)) throw new Error("permissions must be an array of strings");
