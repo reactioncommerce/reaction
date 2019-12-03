@@ -1,5 +1,5 @@
 import SimpleSchema from "simpl-schema";
-import { Email, ShopAddress, ShopLogoUrls, StorefrontUrls } from "../simpleSchemas.js";
+import { Email, ParcelSize, ShopAddress, ShopLogoUrls, StorefrontUrls } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   "addressBook": {
@@ -19,6 +19,10 @@ const inputSchema = new SimpleSchema({
   },
   "description": {
     type: String,
+    optional: true
+  },
+  "defaultParcelSize": {
+    type: ParcelSize,
     optional: true
   },
   "emails": {
@@ -133,6 +137,11 @@ export default async function updateShop(context, input) {
       Object.keys(addressBookEntry).forEach((key) => {
         sets[`addressBook.0.${key}`] = addressBookEntry[key];
       });
+      return;
+    }
+
+    if (setting === "defaultParcelSize") {
+      sets[setting] = shopSettings[setting];
       return;
     }
 
