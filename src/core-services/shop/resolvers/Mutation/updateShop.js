@@ -10,6 +10,7 @@ import { decodeMediaRecordOpaqueId, decodeShopOpaqueId } from "../../xforms/id.j
  * @param {String} input.description - The shop's description
  * @param {Array} input.addressBook - The shop's physical address
  * @param {Boolean} input.allowGuestCheckout - Allow user to checkout without creating an account
+ * @param {String} input.brandAssets - A media record id to use as the shop's brand asset
  * @param {Array} input.emails - The shop's primary email address
  * @param {String} input.keywords - The shop's keywords
  * @param {Object} arts.input.name - The shop's name
