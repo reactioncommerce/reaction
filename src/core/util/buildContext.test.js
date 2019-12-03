@@ -7,7 +7,7 @@ const accountByUserId = jest.fn().mockName("accountByUserId").mockReturnValue(Pr
 
 const auth = {
   accountByUserId,
-  getHasPermissionFunctionForUserLegacy: () => () => {},
+  getHasPermissionFunctionForUserLegacy: () => () => {}
 };
 
 test("properly mutates the context object without user", async () => {
