@@ -13,6 +13,10 @@ const inputSchema = new SimpleSchema({
   "addressBook.$": {
     type: ShopAddress
   },
+  "brandAssets": {
+    type: String,
+    optional: true
+  },
   "description": {
     type: String,
     optional: true
@@ -64,6 +68,7 @@ const complexSettings = [
  * @param {String} input.description - The shop's description
  * @param {Array} input.addressBook - The shop's physical address
  * @param {Boolean} input.allowGuestCheckout - Allow user to checkout without creating an account
+ * @param {String} input.brandAssets - A media record id to use as the shop's brand asset
  * @param {Array} input.emails - The shop's primary email address
  * @param {String} input.keywords - The shop's keywords
  * @param {String} input.name - The shop's name
@@ -99,6 +104,19 @@ export default async function updateShop(context, input) {
       && !complexSettings.includes(setting)
     ) {
       sets[setting] = shopSettings[setting];
+      return;
+    }
+
+    // Accept a string media record ID for the brandAssets array, and convert it to an
+    // array of a single object. The `brandAssets` resolver for shop only returns
+    // a single brand asset. "navbarBrandImage" has been the only brand asset used.
+    // With the move to have a separate storefront and login apps, brand assets shouldn't
+    // be used and other methods, like the settings api or .env vars, should be preferred.
+    if (setting === "brandAssets") {
+      sets[setting] = [{
+        mediaId: shopSettings[setting],
+        type: "navbarBrandImage"
+      }];
       return;
     }
 
