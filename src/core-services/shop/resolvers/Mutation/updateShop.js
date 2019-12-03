@@ -1,4 +1,4 @@
-import { decodeShopOpaqueId } from "../../xforms/id.js";
+import { decodeMediaRecordOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/updateShop
@@ -26,6 +26,11 @@ export default async function updateShop(_, { input }, context) {
     ...passThroughInput
   } = input;
   const shopId = decodeShopOpaqueId(opaqueShopId);
+
+  // Decode brand asset media record id
+  if (passThroughInput.brandAssets) {
+    passThroughInput.brandAssets = decodeMediaRecordOpaqueId(passThroughInput.brandAssets);
+  }
 
   const updatedShop = await context.mutations.updateShop(context, {
     ...passThroughInput,
