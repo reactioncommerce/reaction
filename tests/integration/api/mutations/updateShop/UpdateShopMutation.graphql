@@ -16,6 +16,12 @@ mutation updateShop($input: UpdateShopInput!) {
         isShippingDefault
       }
       allowGuestCheckout
+      defaultParcelSize {
+        width
+        length
+        height
+        weight
+      }
       description
       emails {
         address
