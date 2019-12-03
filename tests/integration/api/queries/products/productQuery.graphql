@@ -1,0 +1,20 @@
+query Product(
+  $productId: ID!
+  $shopId: ID!
+) {
+  product(
+    productId: $productId
+    shopId: $shopId
+  ) {
+    _id
+    title
+    variants {
+      _id
+      title
+      options {
+        _id
+        title
+      }
+    }
+  }
+}

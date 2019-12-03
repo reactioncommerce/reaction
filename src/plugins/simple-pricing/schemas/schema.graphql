@@ -68,6 +68,18 @@ type CurrencyExchangeProductPricingInfo {
   price: Float
 }
 
+"Product price range"
+type ProductPriceRange {
+  "Maximum price in range"
+  max: Float
+
+  "Minimum price in range"
+  min: Float
+
+  "Price range display"
+  range: String
+}
+
 extend type CatalogProduct {
   "Price and related information, per currency"
   pricing: [ProductPricingInfo]!
@@ -76,4 +88,9 @@ extend type CatalogProduct {
 extend type CatalogProductVariant {
   "Price and related information, per currency"
   pricing: [ProductPricingInfo]!
+}
+
+extend type Product {
+  "Price range"
+  price: ProductPriceRange
 }

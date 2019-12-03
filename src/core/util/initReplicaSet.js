@@ -15,28 +15,6 @@ function sleep(ms) {
 }
 
 /**
- * Connect to mongodb
- *
- * @param {Object} parsedUrl URL to mongodb server and database name, parsed
- * @returns {Promise} a promise resolving to the mongodb db instance
- */
-async function connect(parsedUrl) {
-  const dbName = parsedUrl.pathname.slice(1);
-
-  // clone to remove the DB name
-  const dbParsedUrl = new URL(parsedUrl.toString());
-  dbParsedUrl.pathname = "";
-  const dbUrl = dbParsedUrl.toString();
-
-  const client = await mongoConnectWithRetry(dbUrl);
-
-  return {
-    client,
-    db: client.db(dbName)
-  };
-}
-
-/**
  * Runs the mongo command replSetInitiate,
  * which we need for the oplog for change streams
  *
@@ -51,7 +29,8 @@ export default async function initReplicaSet(mongoUrl) {
   // the process
   const stopped = false;
 
-  const { client, db } = await connect(parsedUrl);
+  const client = await mongoConnectWithRetry(mongoUrl);
+  const db = client.db(); // Uses db name from the connection string
 
   const replSetConfiguration = {
     _id: "rs0",
