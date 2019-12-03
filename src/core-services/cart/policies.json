@@ -14,8 +14,7 @@
     "subjects": [ "reaction:users:*" ],
     "resources": [ "reaction:carts:*" ],
     "actions": [
-      "read",
-      "update"
+      "read"
     ],
     "effect": "allow",
     "conditions": {
