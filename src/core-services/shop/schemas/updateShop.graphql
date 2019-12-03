@@ -30,6 +30,9 @@ input UpdateShopInput {
   "Whether to allow user to checkout without creating an account"
   allowGuestCheckout: Boolean
 
+  "ID of media record to be used as the brand asset"
+  brandAssets: ID
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
