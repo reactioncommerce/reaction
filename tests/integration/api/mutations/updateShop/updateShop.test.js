@@ -53,6 +53,12 @@ test("user with admin/owner roles can update various shop settings", async () =>
       }
     ],
     allowGuestCheckout: true,
+    defaultParcelSize: {
+      width: 20,
+      length: 20,
+      height: 10,
+      weight: 15
+    },
     description: "My shop is super awesome!",
     emails: [
       {
