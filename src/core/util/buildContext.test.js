@@ -8,7 +8,6 @@ const accountByUserId = jest.fn().mockName("accountByUserId").mockReturnValue(Pr
 const auth = {
   accountByUserId,
   getHasPermissionFunctionForUserLegacy: () => () => {},
-  getShopsUserHasPermissionForFunctionForUserLegacy: () => () => {}
 };
 
 test("properly mutates the context object without user", async () => {
@@ -34,7 +33,6 @@ test("properly mutates the context object without user", async () => {
       primaryShopId: jasmine.any(Function)
     },
     requestHeaders: {},
-    shopsUserHasPermissionForLegacy: jasmine.any(Function),
     user: null,
     userHasPermissionLegacy: jasmine.any(Function),
     userId: null
@@ -65,7 +63,6 @@ test("properly mutates the context object with user", async () => {
       primaryShopId: jasmine.any(Function)
     },
     requestHeaders: {},
-    shopsUserHasPermissionForLegacy: jasmine.any(Function),
     user: fakeUser,
     userHasPermissionLegacy: jasmine.any(Function),
     userId: fakeUser._id

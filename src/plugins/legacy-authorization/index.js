@@ -1,5 +1,4 @@
 import { getHasPermissionFunctionForUserLegacy } from "./util/hasPermission.js";
-import { getShopsUserHasPermissionForFunctionForUserLegacy } from "./util/shopsUserHasPermissionFor.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -11,8 +10,7 @@ export default async function register(app) {
     label: "Legacy Authorization",
     name: "reaction-legacy-authorization",
     auth: {
-      getHasPermissionFunctionForUserLegacy,
-      getShopsUserHasPermissionForFunctionForUserLegacy
+      getHasPermissionFunctionForUserLegacy
     }
   });
 }

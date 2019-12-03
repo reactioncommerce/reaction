@@ -37,26 +37,21 @@ export default async function buildContext(context, request = {}) {
       const allowed = await context.userHasPermissionLegacy(...args);
       if (!allowed) throw new ReactionError("access-denied", "Access Denied");
     };
-
-    if (typeof context.auth.getShopsUserHasPermissionForFunctionForUserLegacy === "function") {
-      context.shopsUserHasPermissionForLegacy = await context.auth.getShopsUserHasPermissionForFunctionForUserLegacy(context);
-    } else {
-      context.shopsUserHasPermissionForLegacy = () => [];
-    }
   } else {
     context.validatePermissionsLegacy = async () => {
       throw new ReactionError("access-denied", "Access Denied");
     };
     context.userHasPermissionLegacy = () => false;
-    context.shopsUserHasPermissionForLegacy = () => [];
   }
 
   // Keto authorization methods
   if (userId) {
     if (typeof context.auth.getHasPermissionFunctionForUser === "function") {
-      context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
+      context.userHasPermission = true; // TODO(pod-auth): temporarily set permissions for new auth service to `true`. remove this once auth service is running.
+      // context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
     } else {
-      context.userHasPermission = () => false;
+      context.userHasPermission = () => true; // TODO(pod-auth): temporarily set permissions for new auth service to `true`. remove this once auth service is running.
+      // context.userHasPermission = () => false;
     }
 
     context.validatePermissions = async (...args) => {
