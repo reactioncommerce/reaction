@@ -6,7 +6,8 @@
     "actions": [
       "archive",
       "clone",
-      "create"
+      "create",
+      "update"
     ],
     "effect": "allow"
   }

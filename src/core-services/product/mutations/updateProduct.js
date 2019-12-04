@@ -133,12 +133,13 @@ const inputSchema = new SimpleSchema({
  * @return {Promise<Object>} updateProduct payload
  */
 export default async function updateProduct(context, input) {
-  const { appEvents, checkPermissions, collections } = context;
+  const { appEvents, collections } = context;
   const { Products } = collections;
   const { product: productInput, productId, shopId } = input;
 
   // Check that user has permission to create product
-  await checkPermissions(["createProduct", "product/admin", "product/update"], shopId);
+  await context.validatePermissionsLegacy(["createProduct", "product/admin", "product/update"], null, { shopId });
+  await context.validatePermissions(`reaction:products:${productId}`, "update", { shopId });
 
   const currentProduct = await Products.findOne({ _id: productId, shopId });
   if (!currentProduct) throw new ReactionError("not-found", "Product not found");
