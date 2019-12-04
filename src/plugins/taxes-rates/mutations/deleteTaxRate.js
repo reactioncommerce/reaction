@@ -11,16 +11,16 @@ export default async function deleteTaxRate(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, _id } = input;
   const { appEvents, checkPermissions, collections } = context;
-  const { TaxRates } = collections;
+  const { Taxes } = collections;
 
   await checkPermissions(["admin", "owner"], shopId);
 
-  const taxRateToDelete = await TaxRates.findOne({
+  const taxRateToDelete = await Taxes.findOne({
     _id,
     shopId
   });
 
-  await TaxRates.removeOne({
+  await Taxes.removeOne({
     _id,
     shopId
   });

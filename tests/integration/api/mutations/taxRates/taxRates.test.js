@@ -40,7 +40,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await testApp.collections.TaxRates.deleteMany({});
+  await testApp.collections.Taxes.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
 });
@@ -88,7 +88,7 @@ test("user can add a tax rate", async () => {
   // Check the database for the new TaxRate document
   const createdTaxRateDatabaseId = decodeOpaqueIdForNamespace("reaction/taxRate")(createdTaxRateOpaqueId);
 
-  const savedTaxRate = await testApp.collections.TaxRates.findOne({
+  const savedTaxRate = await testApp.collections.Taxes.findOne({
     _id: createdTaxRateDatabaseId,
     shopId
   });
@@ -148,7 +148,7 @@ test("user can update an existing tax rate", async () => {
   // Check the database for the new TaxRate document
   const updatedTaxRateDatabaseId = decodeOpaqueIdForNamespace("reaction/taxRate")(updatedTaxRateOpaqueId);
 
-  const savedTaxRate = await testApp.collections.TaxRates.findOne({
+  const savedTaxRate = await testApp.collections.Taxes.findOne({
     _id: updatedTaxRateDatabaseId,
     shopId
   });
@@ -203,7 +203,7 @@ test("user can delete an existing tax rate", async () => {
   // Check the database for the new TaxRate document
   const deletedTaxRateDatabaseId = decodeOpaqueIdForNamespace("reaction/taxRate")(deletedTaxRateOpaqueId);
 
-  const savedTaxRate = await testApp.collections.TaxRates.findOne({
+  const savedTaxRate = await testApp.collections.Taxes.findOne({
     _id: deletedTaxRateDatabaseId,
     shopId
   });

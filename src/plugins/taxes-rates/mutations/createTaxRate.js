@@ -13,7 +13,7 @@ export default async function createTaxRate(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, country, region, postal, taxCode, rate } = input;
   const { appEvents, checkPermissions, collections } = context;
-  const { TaxRates } = collections;
+  const { Taxes } = collections;
 
   await checkPermissions(["admin", "owner"], shopId);
 
@@ -24,10 +24,11 @@ export default async function createTaxRate(context, input) {
     region,
     postal,
     taxCode,
+    taxLocale: "destination",
     rate
   };
 
-  await TaxRates.insertOne(taxRate);
+  await Taxes.insertOne(taxRate);
 
   await appEvents.emit("afterTaxRateCreate", taxRate);
 
