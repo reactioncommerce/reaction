@@ -31,8 +31,11 @@ export default async function publishProducts(context, productIds) {
   if (!isInternalCall) {
     const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
     for (const shopId of uniqueShopIds) {
-      await context.validatePermissionsLegacy(["createProduct", "product/admin", "product/publish"], null, { shopId }); // eslint-disable-line no-await-in-loop
-      await context.validatePermissions(`reaction:products:${product._id}`, "publish", { shopId }); // eslint-disable-line no-await-in-loop
+      for (const product of products) {
+        // TODO(pod-auth): figure out a better way to loop through this
+        await context.validatePermissionsLegacy(["createProduct", "product/admin", "product/publish"], null, { shopId }); // eslint-disable-line no-await-in-loop
+        await context.validatePermissions(`reaction:products:${product._id}`, "publish", { shopId }); // eslint-disable-line no-await-in-loop
+      }
     }
   }
 

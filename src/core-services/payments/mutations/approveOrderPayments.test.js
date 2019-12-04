@@ -62,7 +62,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], null, { shopId: "SHOP_ID" });
 });
 
 test("updates an order status", async () => {

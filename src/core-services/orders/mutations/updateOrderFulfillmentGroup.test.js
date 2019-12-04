@@ -63,7 +63,7 @@ test("throws if permission check fails", async () => {
     orderFulfillmentGroupId: "123"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], null, { shopId: "SHOP_ID" });
 });
 
 test("skips permission check if context.isInternalCall", async () => {

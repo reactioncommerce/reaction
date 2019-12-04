@@ -14,7 +14,7 @@ export default async function groups(context, shopId) {
   const { Accounts, Groups } = collections;
 
   // TODO: Break this query up into one for all groups (for admins only) and one for user's groups
-  if (userHasPermissionLegacy(["owner", "admin", "reaction-accounts"], shopId)) {
+  if (userHasPermissionLegacy(["owner", "admin", "reaction-accounts"], null, { shopId })) {
     // find groups by shop ID
     return Groups.find({ shopId });
   }

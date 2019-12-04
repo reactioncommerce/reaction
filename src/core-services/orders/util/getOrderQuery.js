@@ -12,13 +12,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} token An anonymous order token, required if the order was placed without being logged in
  * @returns {Object} A mongo selector
  */
-export function getOrderQuery(context, selector, shopId, token) {
+export async function getOrderQuery(context, selector, shopId, token) {
   const { accountId: contextAccountId } = context;
   const newSelector = { ...selector, shopId };
 
   if (
-    context.userHasPermissionLegacy(["orders", "order/fulfillment", "order/view"], shopId) &&
-    context.userHasPermission("reaction:orders", "read", { shopId })
+    await context.userHasPermissionLegacy(["orders", "order/fulfillment", "order/view"], null, { shopId }) &&
+    await context.userHasPermission("reaction:orders", "read", { shopId })
   ) {
     // admins with orders permissions can see any order in the shop
     // admins with order/fulfillment and order/view permissions can also view order

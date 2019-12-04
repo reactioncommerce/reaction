@@ -14,7 +14,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["createProduct", "product/admin", "product/clone"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["createProduct", "product/admin", "product/clone"], null, { shopId: "SHOP_ID" });
 });
 
 test("throws if the variantIds isn't supplied", async () => {

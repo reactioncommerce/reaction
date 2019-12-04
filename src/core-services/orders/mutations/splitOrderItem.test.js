@@ -117,7 +117,7 @@ test("throws if permission check fails", async () => {
     newItemQuantity: 1
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], null, { shopId: "SHOP_ID" });
 });
 
 test("throws if newItemQuantity is equal to item quantity", async () => {

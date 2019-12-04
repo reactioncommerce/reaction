@@ -17,5 +17,5 @@ test("throws if permission check fails", async () => {
     shopId
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith(["owner", "admin", "dashboard"], shopId);
+  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["owner", "admin", "dashboard"], null, { shopId });
 });

@@ -26,7 +26,6 @@ test("properly mutates the context object without user", async () => {
     account: null,
     accountId: null,
     auth,
-    validatePermissionsLegacy: jasmine.any(Function),
     collections: mockContext.collections,
     isInternalCall: false,
     queries: {
@@ -34,7 +33,10 @@ test("properly mutates the context object without user", async () => {
     },
     requestHeaders: {},
     user: null,
+    userHasPermission: jasmine.any(Function),
     userHasPermissionLegacy: jasmine.any(Function),
+    validatePermissions: jasmine.any(Function),
+    validatePermissionsLegacy: jasmine.any(Function),
     userId: null
   });
 });
@@ -56,7 +58,6 @@ test("properly mutates the context object with user", async () => {
     account: mockAccount,
     accountId: mockAccount._id,
     auth,
-    validatePermissionsLegacy: jasmine.any(Function),
     collections: mockContext.collections,
     isInternalCall: false,
     queries: {
@@ -64,7 +65,10 @@ test("properly mutates the context object with user", async () => {
     },
     requestHeaders: {},
     user: fakeUser,
+    userHasPermission: jasmine.any(Function),
     userHasPermissionLegacy: jasmine.any(Function),
+    validatePermissions: jasmine.any(Function),
+    validatePermissionsLegacy: jasmine.any(Function),
     userId: fakeUser._id
   });
 });
