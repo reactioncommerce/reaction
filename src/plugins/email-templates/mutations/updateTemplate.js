@@ -20,11 +20,12 @@ const inputSchema = new SimpleSchema(
  * @returns {Promise<Object>} UpdateTemplatePayload
  */
 export default async function updateTemplate(context, input) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Templates } = collections;
   const { templateId, shopId, ...params } = input;
 
-  await checkPermissions(["reaction-templates"], shopId);
+  await context.validatePermissionsLegacy(["owner", "admin", "reaction-templates"], null, { shopId });
+  await context.validatePermissions("reaction:emailTemplates", "update", { shopId });
 
   inputSchema.validate(params);
 
