@@ -13,8 +13,8 @@ set -o posix    # more strict failures in subshells
 IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-env_file=${__dir}/../.env
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+env_file=./.env
 
 function main() {
   set -e
