@@ -15,6 +15,7 @@
     "resources": [ "reaction:accounts:*" ],
     "actions": [
       "add:address-books",
+      "add:emails",
       "delete:emails",
       "read",
       "remove:address-books",
@@ -31,6 +32,7 @@
     "resources": [ "reaction:accounts:*" ],
     "actions": [
       "add:address-books",
+      "add:emails",
       "delete:emails",
       "read",
       "remove:address-books",
