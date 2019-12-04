@@ -19,7 +19,7 @@ test("throws if roleGroup is present but not a string", () => {
 });
 
 test("throws if roleGroup is present but an empty string", () => {
-  expect(() => hasPermission({ roles: {} }, [], null, { shopId: "" } )).toThrowErrorMatchingSnapshot();
+  expect(() => hasPermission({ roles: {} }, [], null, { shopId: "" })).toThrowErrorMatchingSnapshot();
 });
 
 test("returns true if in global role, even if not in group-scope role", () => {

@@ -2,8 +2,7 @@
 import { getOrderQuery } from "./getOrderQuery.js";
 
 function makeContext() {
-  return { accountId: "unit-test-account-id", userHasPermission: () => true };
-  return { accountId: "unit-test-account-id", userHasPermissionLegacy: () => true };
+  return { accountId: "unit-test-account-id", userHasPermission: () => true, userHasPermissionLegacy: () => true };
 }
 
 test("getOrderQuery shop admin", () => {
