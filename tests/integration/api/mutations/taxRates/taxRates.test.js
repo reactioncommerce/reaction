@@ -80,6 +80,7 @@ test("user can add a tax rate", async () => {
     rate: 0.10,
     country: "USA",
     postal: "90066",
+    sourcing: "destination",
     taxCode: "CODE"
   };
 
@@ -101,7 +102,8 @@ test("user can add a tax rate", async () => {
     rate: 0.10,
     country: "USA",
     postal: "90066",
-    taxCode: "CODE"
+    taxCode: "CODE",
+    taxLocale: "destination"
   };
 
   expect(savedTaxRate).toEqual(expectedTaxRateDocument);
@@ -140,6 +142,7 @@ test("user can update an existing tax rate", async () => {
     rate: 0.40,
     country: "USA",
     postal: "90210",
+    sourcing: "destination",
     taxCode: "CODE"
   };
 
@@ -161,7 +164,84 @@ test("user can update an existing tax rate", async () => {
     rate: 0.40,
     country: "USA",
     postal: "90210",
+    taxCode: "CODE",
+    taxLocale: "destination"
+  };
+
+  expect(savedTaxRate).toEqual(expectedTaxRateDocument);
+});
+
+test("user can update an existing tax rate to clear all fields except rate", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  const taxRateInput = {
+    shopId: shopOpaqueId,
+    region: "CA",
+    rate: 0.10,
+    country: "USA",
+    postal: "90066",
     taxCode: "CODE"
+  };
+
+  let result;
+  try {
+    result = await createTaxRate(taxRateInput);
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  const { _id: createdTaxRateOpaqueId } = result.createTaxRate.taxRate;
+
+  const taxRateUpdateInput = {
+    taxRateId: createdTaxRateOpaqueId,
+    shopId: shopOpaqueId,
+    rate: 0.40
+  };
+
+  try {
+    result = await updateTaxRate(taxRateUpdateInput);
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  const { _id: updatedTaxRateOpaqueId, ...updatedTaxRate } = result.updateTaxRate.taxRate;
+
+  // Validate the response
+  // _id is omitted since the ID is tested for proper opaque ID conversion in the DB test below.
+  const expectedTaxRateResponse = {
+    shop: {
+      _id: shopOpaqueId
+    },
+    region: null,
+    rate: 0.40,
+    country: null,
+    postal: null,
+    sourcing: "destination",
+    taxCode: null
+  };
+
+  expect(updatedTaxRate).toEqual(expectedTaxRateResponse);
+
+  // Check the database for the new TaxRate document
+  const updatedTaxRateDatabaseId = decodeOpaqueIdForNamespace("reaction/taxRate")(updatedTaxRateOpaqueId);
+
+  const savedTaxRate = await testApp.collections.Taxes.findOne({
+    _id: updatedTaxRateDatabaseId,
+    shopId
+  });
+
+  // The document we expect to see in the database
+  const expectedTaxRateDocument = {
+    _id: updatedTaxRateDatabaseId,
+    shopId,
+    region: null,
+    rate: 0.40,
+    country: null,
+    postal: null,
+    taxCode: null,
+    taxLocale: "destination"
   };
 
   expect(savedTaxRate).toEqual(expectedTaxRateDocument);
@@ -195,6 +275,7 @@ test("user can delete an existing tax rate", async () => {
     rate: 0.40,
     country: "USA",
     postal: "90210",
+    sourcing: "destination",
     taxCode: "CODE"
   };
 
