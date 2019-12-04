@@ -45,24 +45,28 @@ export default async function register(app) {
     },
     mutations,
     queries,
-    registry: [
-      {
-        provides: ["dashboard"],
-        name: "taxes",
-        label: "Taxes",
-        description: "Provide tax rates",
-        icon: "fa fa-university",
-        priority: 1,
-        container: "core",
-        workflow: "coreDashboardWorkflow"
+    shopSettingsConfig: {
+      defaultTaxCode: {
+        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        simpleSchema: {
+          type: String,
+          min: 1
+        }
       },
-      {
-        label: "Tax Settings",
-        icon: "fa fa-university",
-        name: "taxes/settings",
-        provides: ["settings"],
-        template: "taxSettings"
+      fallbackTaxServiceName: {
+        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        simpleSchema: {
+          type: String,
+          min: 1
+        }
+      },
+      primaryTaxServiceName: {
+        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        simpleSchema: {
+          type: String,
+          min: 1
+        }
       }
-    ]
+    }
   });
 }
