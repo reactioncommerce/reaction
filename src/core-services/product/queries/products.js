@@ -20,14 +20,15 @@ import applyProductFilters from "../utils/applyProductFilters.js";
  * @returns {Promise<Object>} Products object Promise
  */
 export default async function products(context, input) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Products } = collections;
   const productFilters = input;
 
-  // Check the permissions for all shop requested
-  await Promise.all(productFilters.shopIds.map(async (shopId) => (
-    checkPermissions(["owner", "admin", "createProduct"], shopId)
-  )));
+  // Check the permissions for all shops requested
+  await Promise.all(productFilters.shopIds.map(async (shopId) => {
+    await context.validatePermissionsLegacy(["owner", "admin", "createProduct", "product/admin"], null, { shopId });
+    await context.validatePermissions("reaction:products", "read", { shopId });
+  }));
 
   // Create the mongo selector from the filters
   const selector = applyProductFilters(context, productFilters);
