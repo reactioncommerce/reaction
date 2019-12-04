@@ -8,10 +8,11 @@
  * @returns {Promise<Object>} DiscountCodes object Promise
  */
 export default async function discountCodes(context, shopId) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Discounts } = collections;
 
-  await checkPermissions(["owner", "admin"], shopId);
+  await context.validatePermissionsLegacy(["admin", "owner"], null, { shopId });
+  await context.validatePermissions("reaction:discounts", "read", { shopId });
 
   return Discounts.find({
     shopId

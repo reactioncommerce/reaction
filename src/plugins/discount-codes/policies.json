@@ -1,0 +1,24 @@
+[
+  {
+    "description": "Discount managers acting on specific entities.",
+    "subjects": [ "reaction:groups:discount-managers" ],
+    "resources": [ "reaction:discounts" ],
+    "actions": [
+      "read"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Discount managers acting on specific entities.",
+    "subjects": [ "reaction:groups:discount-managers" ],
+    "resources": [ "reaction:discounts:*" ],
+    "actions": [
+      "archive",
+      "clone",
+      "create",
+      "read",
+      "update"
+    ],
+    "effect": "allow"
+  }
+]
