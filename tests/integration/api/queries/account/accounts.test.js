@@ -82,7 +82,13 @@ beforeAll(async () => {
   queryAccounts = testApp.query(accountsQuery);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.stop();
+});
+
 
 test("get all non-admin accounts", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
