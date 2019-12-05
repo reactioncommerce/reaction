@@ -17,12 +17,12 @@ test("should create a group for the shop", async () => {
   const groupId = "test-group-id";
   const groupName = "test group";
   const shopId = "test-shop-id";
-  const groupData = {
+  const group = {
     name: groupName,
     slug: groupName
   };
 
-  const input = { groupData, shopId };
+  const input = { group, shopId };
 
   const fakeResult = {
     _id: "test-group-id",
@@ -68,12 +68,12 @@ test("should create a group for the shop", async () => {
 test("should throw if group already exists", async () => {
   const groupName = "test group";
   const shopId = "test-shop-id";
-  const groupData = {
+  const group = {
     name: groupName,
     slug: groupName
   };
 
-  const input = { groupData, shopId };
+  const input = { group, shopId };
 
   const fakeResult = {
     _id: "test-group-id",

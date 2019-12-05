@@ -19,7 +19,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} - `object.status` of 200 on success or Error object on failure
  */
 export default async function createGroup(input, context) {
-  const { groupData, shopId } = input;
+  const { group, shopId } = input;
   let _id;
   const {
     collections: {
@@ -38,8 +38,8 @@ export default async function createGroup(input, context) {
 
   // TODO: Remove when we move away from legacy permission verification
   const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
-  const newGroupData = Object.assign({}, groupData, {
-    slug: context.getSlug(groupData.name), shopId
+  const newGroupData = Object.assign({}, group, {
+    slug: context.getSlug(group.name), shopId
   });
 
   // TODO: Remove when we move away from legacy permission verification
