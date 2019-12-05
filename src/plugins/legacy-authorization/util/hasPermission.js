@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
 
@@ -21,19 +22,26 @@ const GLOBAL_GROUP = "__global_roles__";
  */
 export default async function hasPermission(context, resource, action, authContext) {
   const { user } = context;
-  const { legacyRoles: permissions } = authContext; // TODO(pod-auth): temporarily provide legacy roles
 
   // If the current user is the owner of a resource we are trying to check,
   // such as an order or data on a user profile, they are authorized to perform the action
   if (authContext && authContext.owner && authContext.owner === context.userId) return true;
 
-  const { shopId: roleGroup } = authContext;
-
   if (!user || !user.roles) return false;
 
-  if (!Array.isArray(permissions)) throw new Error("permissions must be an array of strings");
+  if (!resource) throw new ReactionError("invalid-param", "Resource must be provided");
+
+  if (!action) throw new ReactionError("invalid-param", "Action must be provided");
+
+  if (!authContext) throw new ReactionError("invalid-param", "authContext must be provided");
+
+  if (!authContext.shopId) throw new ReactionError("invalid-param", "shopId (roleGroup) must be provided");
+
+  const { legacyRoles: permissions, shopId: roleGroup } = authContext; // TODO(pod-auth): temporarily provide legacy roles
+
+  if (!Array.isArray(permissions)) throw new ReactionError("invalid-param", "permissions must be an array of strings");
   if (roleGroup !== undefined && roleGroup !== null && (typeof roleGroup !== "string" || roleGroup.length === 0)) {
-    throw new Error("roleGroup must be a non-empty string");
+    throw new ReactionError("invalid-param", "roleGroup must be a non-empty string");
   }
 
   const checkRoles = permissions.slice(0);
@@ -52,6 +60,7 @@ export default async function hasPermission(context, resource, action, authConte
     const group = roleGroup.replace(/\./g, "_");
 
     const groupRoles = roles[group];
+
     if (Array.isArray(groupRoles) && checkRoles.some((role) => groupRoles.includes(role))) return true;
   }
 

@@ -41,6 +41,6 @@ test("getOrderQuery access denied", async () => {
   const context = makeContext();
   context.userHasPermission = () => false;
   delete context.accountId;
-  const query = await getOrderQuery(context, { referenceId }, shopId, null);
+  const query = getOrderQuery(context, { referenceId }, shopId, null);
   expect(query).rejects.toThrow();
 });
