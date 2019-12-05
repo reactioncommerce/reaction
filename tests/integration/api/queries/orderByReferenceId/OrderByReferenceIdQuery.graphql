@@ -1,0 +1,11 @@
+query ($orderReferenceId: ID!, $shopId: ID!, $token: String) {
+  orderByReferenceId(id: $orderReferenceId, shopId: $shopId, token: $token) {
+    account {
+      _id
+    }
+    shop {
+      _id
+      name
+    }
+  }
+}
