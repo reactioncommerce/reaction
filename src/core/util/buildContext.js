@@ -23,35 +23,12 @@ export default async function buildContext(context, request = {}) {
   const userId = (context.user && context.user._id) || null;
   context.userId = userId;
 
-  // DEPRECATED
-  // Legacy authorization methods will be removed in a future release
-  // Use Keto authorization methods instead
-  if (userId) {
-    if (typeof context.auth.getHasPermissionFunctionForUserLegacy === "function") {
-      context.userHasPermissionLegacy = await context.auth.getHasPermissionFunctionForUserLegacy(context);
-    } else {
-      context.userHasPermissionLegacy = () => false;
-    }
-
-    context.validatePermissionsLegacy = async (...args) => {
-      const allowed = await context.userHasPermissionLegacy(...args);
-      if (!allowed) throw new ReactionError("access-denied", "Access Denied");
-    };
-  } else {
-    context.validatePermissionsLegacy = async () => {
-      throw new ReactionError("access-denied", "Access Denied");
-    };
-    context.userHasPermissionLegacy = () => false;
-  }
-
-  // Keto authorization methods
+  // authorization methods
   if (userId) {
     if (typeof context.auth.getHasPermissionFunctionForUser === "function") {
-      context.userHasPermission = true; // TODO(pod-auth): temporarily set permissions for new auth service to `true`. remove this once auth service is running.
-      // context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
+      context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
     } else {
-      context.userHasPermission = () => true; // TODO(pod-auth): temporarily set permissions for new auth service to `true`. remove this once auth service is running.
-      // context.userHasPermission = () => false;
+      context.userHasPermission = () => false;
     }
 
     context.validatePermissions = async (...args) => {
@@ -64,6 +41,7 @@ export default async function buildContext(context, request = {}) {
     };
     context.userHasPermission = () => false;
   }
+  // /authorization methods
 
   let account;
   if (userId && typeof context.auth.accountByUserId === "function") {
