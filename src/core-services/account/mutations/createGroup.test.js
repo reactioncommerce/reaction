@@ -3,16 +3,10 @@ import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import createGroup from "./createGroup.js";
 
-mockContext.getSlug = jest.fn("getSlug");
 mockContext.validatePermissions = jest.fn("validatePermissions");
 mockContext.validatePermissionsLegacy = jest.fn("validatePermissionsLegacy");
 mockContext.collections.Groups.insert = jest.fn("collections.Groups.insert");
 mockContext.collections.Groups.findOne = jest.fn("collections.Groups.findOne");
-mockContext.auth = {
-  upsertRole: jest.fn("auth.upsertRole")
-};
-
-beforeEach (() => jest.resetAllMocks())
 
 test("should create a group for the shop", async () => {
   const groupId = "test-group-id";
@@ -37,16 +31,14 @@ test("should create a group for the shop", async () => {
 
   mockContext.collections.Groups.insert.mockReturnValueOnce("test-group-id");
   mockContext.collections.Groups.findOne
-    .mockReturnValueOnce(fakeResult)
-    .mockReturnValueOnce(undefined)
-    .mockReturnValueOnce(fakeResult);
+    .mockReturnValueOnce(Promise.resolve(fakeResult))
+    .mockReturnValueOnce(Promise.resolve(undefined))
+    .mockReturnValueOnce(Promise.resolve(fakeResult));
 
   mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(undefined));
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
-  mockContext.getSlug.mockReturnValueOnce(groupName);
-  mockContext.auth.upsertRole.mockReturnValueOnce(undefined);
 
-  const result = await createGroup(input, mockContext);
+  const result = await createGroup(mockContext, input);
   const expected = Object.assign({}, { group: fakeResult });
   await expect(result).toEqual(expected);
 
@@ -64,7 +56,6 @@ test("should create a group for the shop", async () => {
     shopId: "test-shop-id"
   });
 });
-
 
 test("should throw if group already exists", async () => {
   const groupName = "test group";
@@ -93,7 +84,6 @@ test("should throw if group already exists", async () => {
 
   mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(undefined));
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
-  mockContext.getSlug.mockReturnValueOnce(groupName);
 
-  expect(createGroup(input, mockContext)).rejects.toEqual(new ReactionError("conflict", "Group already exist for this shop"));;
+  await expect(createGroup(mockContext, input)).rejects.toThrow(new ReactionError("conflict", "Group already exist for this shop"));
 });
