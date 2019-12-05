@@ -1,6 +1,7 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
+import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 
 /**
  * @name group/createGroup
@@ -39,7 +40,7 @@ export default async function createGroup(input, context) {
   // TODO: Remove when we move away from legacy permission verification
   const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
   const newGroupData = Object.assign({}, group, {
-    slug: context.getSlug(group.name), shopId
+    slug: getSlug(group.name), shopId
   });
 
   // TODO: Remove when we move away from legacy permission verification
@@ -68,5 +69,5 @@ export default async function createGroup(input, context) {
     throw new ReactionError("invalid-parameter", "Bad request");
   }
 
-  return { status: 200, group: Groups.findOne({ _id }) };
+  return { group: Groups.findOne({ _id }) };
 }

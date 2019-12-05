@@ -55,8 +55,7 @@
     "semver": "~6.3.0",
     "sharp": "~0.23.1",
     "simpl-schema": "~1.5.6",
-    "stripe": "~5.10.0",
-    "transliteration": "^2.1.7"
+    "stripe": "~5.10.0"
   },
   "devDependencies": {
     "@babel/core": "~7.6.4",

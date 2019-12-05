@@ -1,4 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import createGroup from "./createGroup.js";
 
@@ -46,17 +47,17 @@ test("should create a group for the shop", async () => {
   mockContext.auth.upsertRole.mockReturnValueOnce(undefined);
 
   const result = await createGroup(input, mockContext);
-  const expected = Object.assign({}, { group: fakeResult }, { status: 200 });
+  const expected = Object.assign({}, { group: fakeResult });
   await expect(result).toEqual(expected);
 
   expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["admin"], null, { shopId });
   expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:account", "create", { shopId });
   expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(1, { slug: "customer", shopId });
-  expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(2, { slug: groupName, shopId });
+  expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(2, { slug: "test-group", shopId });
   expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(3, { _id: groupId });
   expect(mockContext.collections.Groups.insert).toHaveBeenCalledWith({
     name: "test group",
-    slug: "test group",
+    slug: getSlug("test group"),
     permissions: [
       "dashboard"
     ],
