@@ -8,7 +8,7 @@ import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail.js";
 import setAccountProfileCurrency from "./setAccountProfileCurrency.js";
 import setAccountProfileLanguage from "./setAccountProfileLanguage.js";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
-import createGroup from "../Mutation/createGroup.js";
+import createGroup from "./createGroup.js";
 
 export default {
   addAccountAddressBookEntry,
