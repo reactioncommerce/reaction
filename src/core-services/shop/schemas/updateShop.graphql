@@ -22,6 +22,21 @@ input ShopLogoUrlsInput {
   primaryShopLogoUrl: String
 }
 
+"Parcel size input"
+input ShopParcelSizeInput {
+  "Parcel height"
+  height: Float!
+
+  "Parcel length"
+  length: Float!
+
+  "Parcel weight"
+  weight: Float!
+
+  "Parcel width"
+  width: Float!
+}
+
 "Input parameters for the updateShop mutation"
 input UpdateShopInput {
   "An address book entry to set the primary shop's address"
@@ -30,8 +45,14 @@ input UpdateShopInput {
   "Whether to allow user to checkout without creating an account"
   allowGuestCheckout: Boolean
 
+  "ID of media record to be used as the brand asset"
+  brandAssets: ID
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "Default parcel size used for this shop"
+  defaultParcelSize: ShopParcelSizeInput
 
   "The shop's description"
   description: String

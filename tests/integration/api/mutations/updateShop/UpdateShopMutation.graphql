@@ -16,6 +16,22 @@ mutation updateShop($input: UpdateShopInput!) {
         isShippingDefault
       }
       allowGuestCheckout
+      brandAssets {
+        navbarBrandImage {
+          large
+          medium
+          original
+          small
+          thumbnail
+        }
+        navbarBrandImageId
+      }
+      defaultParcelSize {
+        width
+        length
+        height
+        weight
+      }
       description
       emails {
         address
