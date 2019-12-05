@@ -62,7 +62,11 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:orders:abc", "approve:payment", { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:orders:abc",
+    "approve:payment",
+    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+  );
 });
 
 test("updates an order status", async () => {

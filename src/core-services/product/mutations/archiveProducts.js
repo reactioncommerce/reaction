@@ -29,7 +29,12 @@ export default async function archiveProducts(context, input) {
 
   // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
   for (const productId of productIds) {
-    await context.validatePermissions(`reaction:products:${productId}`, "archive", { shopId, legacyRoles: ["createProduct", "product/admin", "product/archive"] }); // eslint-disable-line no-await-in-loop
+    // eslint-disable-next-line no-await-in-loop
+    await context.validatePermissions(
+      `reaction:products:${productId}`,
+      "archive",
+      { shopId, legacyRoles: ["createProduct", "product/admin", "product/archive"] }
+    );
   }
 
   // Check to make sure all products are on the same shop

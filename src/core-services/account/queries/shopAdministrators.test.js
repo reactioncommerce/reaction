@@ -13,7 +13,11 @@ test("throws if permission check fails", async () => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   await expect(shopAdministratorsQuery(mockContext, fakeShopId)).rejects.toThrowErrorMatchingSnapshot();
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:shops:FAKE_SHOP_ID_ADMIN_QUERY", "read", { shopId: fakeShopId, legacyRoles: ["owner", "admin"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:shops:FAKE_SHOP_ID_ADMIN_QUERY",
+    "read",
+    { shopId: fakeShopId, legacyRoles: ["owner", "admin"] }
+  );
 });
 
 test("returns accounts cursor if user has permission", async () => {
@@ -23,7 +27,11 @@ test("returns accounts cursor if user has permission", async () => {
   });
   mockContext.collections.Accounts.find.mockReturnValueOnce("CURSOR");
   const result = await shopAdministratorsQuery(mockContext, fakeShopId);
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:shops:FAKE_SHOP_ID_ADMIN_QUERY", "read", { shopId: fakeShopId, legacyRoles: ["owner", "admin"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:shops:FAKE_SHOP_ID_ADMIN_QUERY",
+    "read",
+    { shopId: fakeShopId, legacyRoles: ["owner", "admin"] }
+  );
   expect(mockContext.collections.Accounts.find).toHaveBeenCalledWith({ _id: { $in: ["user1", "user2"] } });
   expect(result).toBe("CURSOR");
 });

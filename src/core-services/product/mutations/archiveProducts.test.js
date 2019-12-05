@@ -14,7 +14,11 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:products:PRODUCT_ID_1", "archive", { shopId: "SHOP_ID", legacyRoles: ["createProduct", "product/admin", "product/archive"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:products:PRODUCT_ID_1",
+    "archive",
+    { shopId: "SHOP_ID", legacyRoles: ["createProduct", "product/admin", "product/archive"] }
+  );
 });
 
 test("throws if the productIds isn't supplied", async () => {

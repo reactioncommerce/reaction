@@ -27,7 +27,11 @@ export default async function navigationTreeById(context, { language, navigation
 
     // Check to see if user has `read` permissions for this navigationTree's drafts
     // TODO(pod-auth): revisit using `drafts` in resource
-    const hasDraftPermissions = await context.userHasPermission(`reaction:navigationTrees:${navigationTreeId}:drafts`, "read", { shopId, legacyRoles: ["owner", "admin", "create-product"] });
+    const hasDraftPermissions = await context.userHasPermission(
+      `reaction:navigationTrees:${navigationTreeId}:drafts`,
+      "read",
+      { shopId, legacyRoles: ["owner", "admin", "create-product"] }
+    );
 
     // Filter items based on visibility options and user permissions
     navigationTree.items = filterNavigationTreeItems(navigationTree.items, {

@@ -73,7 +73,11 @@ test("throws if permission check fails", async () => {
     orderId: "order1"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:orders:order1", "update", { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:orders:order1",
+    "update",
+    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+  );
 });
 
 test("throws if an item ID being moved does not exist", async () => {

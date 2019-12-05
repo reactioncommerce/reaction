@@ -40,7 +40,11 @@ test("throws if permission check fails", async () => {
     orderId
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith(`reaction:orders:${orderId}`, "update", { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    `reaction:orders:${orderId}`,
+    "update",
+    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+  );
 });
 
 test("skips permission check if context.isInternalCall", async () => {

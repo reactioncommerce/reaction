@@ -111,7 +111,11 @@ test("throws if permission check fails", async () => {
     cancelQuantity: 1
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:orders:abc", "cancel:item", { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:orders:abc",
+    "cancel:item",
+    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+  );
 });
 
 test("throws if user who placed order tries to cancel at invalid current item status", async () => {

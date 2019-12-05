@@ -216,7 +216,11 @@ test("throws if permission check fails", async () => {
     toFulfillmentGroupId: "group2"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:orders:order1", "move:item", { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:orders:order1",
+    "move:item",
+    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+  );
 });
 
 test("throws if user who placed order tries to move item at invalid current item status", async () => {
