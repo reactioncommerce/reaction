@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getSlug from "./getSlug.js"
 
 /**
  * @name buildContext
@@ -68,7 +67,6 @@ export default async function buildContext(context, request = {}) {
 
   context.account = account || null;
   context.accountId = (account && account._id) || null;
-  context.getSlug = getSlug
 
   // Make some request headers available to resolvers on context, but remove any
   // with potentially sensitive information in them.
