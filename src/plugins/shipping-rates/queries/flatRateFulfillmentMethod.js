@@ -2,7 +2,7 @@
  * @name flatRateFulfillmentMethod
  * @method
  * @memberof Fulfillment/Queries
- * @summary Query the Shipping collection for a single of fulfillment method
+ * @summary Query the Shipping collection for a single fulfillment method
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Request input
  * @param {String} input.methodId - The fulfillment method id
