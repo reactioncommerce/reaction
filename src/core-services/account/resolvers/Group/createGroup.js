@@ -1,3 +1,4 @@
+import { decodeShopOpaqueId } from "../../xforms/id";
 
 /**
  * @name group/createGroup
@@ -17,5 +18,10 @@
  * @returns {Object} - `object.status` of 200 on success or Error object on failure
  */
 export default async function createGroup(_, { input }, context) {
-  return context.mutations.createGroup(input, context);
+  const { shopId } = input;
+  const decodedShopId = decodeShopOpaqueId(shopId);
+
+  const transformedInput = Object.assign({}, input, { shopId: decodedShopId})
+
+  return context.mutations.createGroup(transformedInput, context);
 }
