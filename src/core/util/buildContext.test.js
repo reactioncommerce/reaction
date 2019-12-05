@@ -14,7 +14,7 @@ test("properly mutates the context object without user", async () => {
   process.env.ROOT_URL = "http://localhost:3000";
   const context = {
     auth,
-    validatePermissionsLegacy: mockContext.validatePermissionsLegacy,
+    validatePermissions: mockContext.validatePermissions,
     collections: mockContext.collections,
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
@@ -34,9 +34,7 @@ test("properly mutates the context object without user", async () => {
     requestHeaders: {},
     user: null,
     userHasPermission: jasmine.any(Function),
-    userHasPermissionLegacy: jasmine.any(Function),
     validatePermissions: jasmine.any(Function),
-    validatePermissionsLegacy: jasmine.any(Function),
     userId: null
   });
 });
@@ -47,7 +45,7 @@ test("properly mutates the context object with user", async () => {
 
   const context = {
     auth,
-    validatePermissionsLegacy: mockContext.validatePermissionsLegacy,
+    validatePermissions: mockContext.validatePermissions,
     collections: mockContext.collections,
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
@@ -66,9 +64,7 @@ test("properly mutates the context object with user", async () => {
     requestHeaders: {},
     user: fakeUser,
     userHasPermission: jasmine.any(Function),
-    userHasPermissionLegacy: jasmine.any(Function),
     validatePermissions: jasmine.any(Function),
-    validatePermissionsLegacy: jasmine.any(Function),
     userId: fakeUser._id
   });
 });

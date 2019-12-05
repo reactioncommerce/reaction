@@ -4,7 +4,7 @@ import { NavigationItem as NavigationItemSchema } from "../simpleSchemas.js";
 import createNavigationItemMutation from "./createNavigationItem.js";
 
 test("calls NavigationItems.insert and returns an object that validates against the schema", async () => {
-  // mockContext.userHasPermissionLegacy.mockReturnValueOnce(true);
+  // mockContext.userHasPermission.mockReturnValueOnce(true);
   const navigationItem = await createNavigationItemMutation(mockContext, { navigationItem: {} });
   const validationContext = NavigationItemSchema.newContext();
   validationContext.validate(navigationItem);
@@ -14,7 +14,7 @@ test("calls NavigationItems.insert and returns an object that validates against 
 });
 
 test("throws an error if the user does not have the core permission", async () => {
-  mockContext.validatePermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   const result = createNavigationItemMutation(mockContext, { navigationItem: {} });

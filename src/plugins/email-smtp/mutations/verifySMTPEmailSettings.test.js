@@ -9,7 +9,7 @@ beforeEach(() => {
 const shopId = "SHOP_ID";
 
 test("throws if permission check fails", async () => {
-  mockContext.validatePermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -17,5 +17,5 @@ test("throws if permission check fails", async () => {
     shopId
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["owner", "admin", "dashboard"], null, { shopId });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:emails", "read", { shopId, legacyRoles: ["owner", "admin", "dashboard"] });
 });

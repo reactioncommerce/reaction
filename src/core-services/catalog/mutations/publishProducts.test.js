@@ -335,7 +335,7 @@ beforeAll(() => {
 afterAll(restore$publishProductToCatalog);
 
 test("expect to return a Promise that resolves to an array of CatalogItemProducts", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null)).mockReturnValueOnce(null);
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null)).mockReturnValueOnce(null);
   mockContext.collections.Products.toArray.mockReturnValueOnce(Promise.resolve([mockProduct]));
   mockContext.collections.Catalog.toArray.mockReturnValueOnce(Promise.resolve([expectedItemsResponse]));
   mockPublishProductToCatalog.mockReturnValueOnce(Promise.resolve(true));

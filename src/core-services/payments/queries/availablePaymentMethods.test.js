@@ -28,7 +28,7 @@ beforeEach(() => {
 });
 
 test("throws if shop not found", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValueOnce();
 
   await expect(query(mockContext, "nonexistent-shop-id")).rejects.toThrowErrorMatchingSnapshot();
@@ -37,7 +37,7 @@ test("throws if shop not found", async () => {
 
 test("returns empty array when shop has no payment methods", async () => {
   mockShopById.mockReturnValueOnce(fakeShop);
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   const result = await query(mockContext, mockContext.shopId);
   expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
@@ -46,7 +46,7 @@ test("returns empty array when shop has no payment methods", async () => {
 
 test("returns empty array when shop has no valid payment methods", async () => {
   mockShopById.mockReturnValueOnce(fakeShop);
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   fakeShop.availablePaymentMethods.push("nonexistent-payment-method");
 
   const result = await query(mockContext, mockContext.shopId);
@@ -56,7 +56,7 @@ test("returns empty array when shop has no valid payment methods", async () => {
 
 test("returns available payment methods for a shop", async () => {
   mockShopById.mockReturnValueOnce(fakeShop);
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   fakeShop.availablePaymentMethods.push("mockPaymentMethod");
 
   const result = await query(mockContext, mockContext.shopId);

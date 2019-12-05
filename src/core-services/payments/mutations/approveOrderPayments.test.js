@@ -28,7 +28,7 @@ test("throws if shopId isn't supplied", async () => {
 });
 
 test("throws if the order doesn't exist", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
@@ -51,7 +51,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.validatePermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -62,11 +62,11 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], null, { shopId: "SHOP_ID" });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:orders:abc", "approve:payment", { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] });
 });
 
 test("updates an order status", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "abc",

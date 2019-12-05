@@ -10,7 +10,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.validatePermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -19,11 +19,11 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["createProduct", "product/admin", "product/create"], null, { shopId: "SHOP_ID" });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:products", "create", { shopId: "SHOP_ID", legacyRoles: ["createProduct", "product/admin", "product/create"] });
 });
 
 test("throws if the productId isn't supplied", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createProductVariant(mockContext, {
     productId: undefined,
@@ -32,7 +32,7 @@ test("throws if the productId isn't supplied", async () => {
 });
 
 test("throws if the shopId isn't supplied", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createProductVariant(mockContext, {
     productId: "PRODUCT_ID",

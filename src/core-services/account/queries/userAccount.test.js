@@ -16,28 +16,28 @@ test("throws if account not found", async () => {
   expect(mockContext.collections.Accounts.findOne).toHaveBeenCalledWith({ _id: fakeAccountId });
 });
 
-test("throws if userHasPermissionLegacy returns false and the user ID is not the context user ID", async () => {
-  mockContext.validatePermissionsLegacy.mockImplementation(() => {
+test("throws if userHasPermission returns false and the user ID is not the context user ID", async () => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeAccount);
   await expect(userAccountQuery(mockContext, fakeAccountId)).rejects.toThrowErrorMatchingSnapshot();
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["reaction-accounts"], null, { shopId: fakeAccount.shopId });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:accounts", "read", { shopId: fakeAccount.shopId, owner: fakeAccountId, legacyRoles: ["reaction-accounts"] });
 });
 
-test("returns the account without calling userHasPermissionLegacy if the user ID is the context user ID", async () => {
-  mockContext.userHasPermissionLegacy.mockReturnValueOnce(false);
+test("returns the account without calling userHasPermission if the user ID is the context user ID", async () => {
+  mockContext.userHasPermission.mockReturnValueOnce(false);
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeContextAccount);
   const result = await userAccountQuery(mockContext, mockContext.accountId);
-  expect(mockContext.userHasPermissionLegacy).not.toHaveBeenCalled();
+  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
   expect(result).toEqual(fakeContextAccount);
 });
 
-test("returns the account if the user ID is not the context user ID but userHasPermissionLegacy returns true", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+test("returns the account if the user ID is not the context user ID but userHasPermission returns true", async () => {
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeAccount);
   const result = await userAccountQuery(mockContext, fakeAccountId);
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["reaction-accounts"], null, { shopId: fakeAccount.shopId });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:accounts", "read", { shopId: fakeAccount.shopId, owner: fakeAccountId, legacyRoles: ["reaction-accounts"] });
   expect(result).toEqual(fakeAccount);
 });

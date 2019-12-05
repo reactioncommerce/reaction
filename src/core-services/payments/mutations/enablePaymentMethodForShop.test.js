@@ -32,8 +32,8 @@ beforeEach(() => {
   fakeShop.availablePaymentMethods = [];
 });
 
-test("throws if userHasPermissionLegacy returns false", async () => {
-  mockContext.userHasPermissionLegacy.mockReturnValue(false);
+test("throws if userHasPermission returns false", async () => {
+  mockContext.userHasPermission.mockReturnValue(false);
   mockShopById.mockReturnValue(fakeShop);
 
   await expect(enablePaymentMethodForShop(mockContext, {
@@ -44,14 +44,14 @@ test("throws if userHasPermissionLegacy returns false", async () => {
 });
 
 test("errors on missing arguments", async () => {
-  mockContext.userHasPermissionLegacy.mockReturnValue(true);
+  mockContext.userHasPermission.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
 
   await expect(enablePaymentMethodForShop(mockContext, {})).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("errors on invalid payment method", async () => {
-  mockContext.userHasPermissionLegacy.mockReturnValue(true);
+  mockContext.userHasPermission.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
 
   await expect(enablePaymentMethodForShop(mockContext, {
@@ -62,7 +62,7 @@ test("errors on invalid payment method", async () => {
 });
 
 test("errors on invalid shop", async () => {
-  mockContext.userHasPermissionLegacy.mockReturnValue(true);
+  mockContext.userHasPermission.mockReturnValue(true);
   mockShopById.mockReturnValue();
 
   await expect(enablePaymentMethodForShop(mockContext, {
@@ -74,7 +74,7 @@ test("errors on invalid shop", async () => {
 
 test("enables payment method for valid shop", async () => {
   fakeShop.availablePaymentMethods = ["mockPaymentMethod"];
-  mockContext.userHasPermissionLegacy.mockReturnValue(true);
+  mockContext.userHasPermission.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
   mockPaymentMethods.mockReturnValue([{
     name: "mockPaymentMethod",
@@ -98,7 +98,7 @@ test("enables payment method for valid shop", async () => {
 });
 
 test("disables payment method for valid shop", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   mockShopById.mockReturnValue(fakeShop);
   mockPaymentMethods.mockReturnValue([{
     name: "mockPaymentMethod",

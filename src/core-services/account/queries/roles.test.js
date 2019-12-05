@@ -6,19 +6,21 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
+mockContext.shopId = "SHOP_ID";
+
 test("throws if permission check fails", async () => {
-  mockContext.validatePermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
-  await expect(rolesQuery(mockContext)).rejects.toThrowErrorMatchingSnapshot();
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["owner", "admin"], null, { shopId: mockContext.shopId });
+  await expect(rolesQuery(mockContext, mockContext.shopId)).rejects.toThrowErrorMatchingSnapshot();
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(`reaction:shops:${mockContext.shopId}`, "read", { shopId: mockContext.shopId, legacyRoles: ["owner", "admin"] });
 });
 
 test("returns roles cursor if user has permission", async () => {
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.roles.find.mockReturnValueOnce("CURSOR");
-  const result = await rolesQuery(mockContext);
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["owner", "admin"], null, { shopId: mockContext.shopId });
+  const result = await rolesQuery(mockContext, mockContext.shopId);
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(`reaction:shops:${mockContext.shopId}`, "read", { shopId: mockContext.shopId, legacyRoles: ["owner", "admin"] });
   expect(mockContext.collections.roles.find).toHaveBeenCalledWith({});
   expect(result).toBe("CURSOR");
 });

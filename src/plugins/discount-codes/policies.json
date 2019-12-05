@@ -4,6 +4,7 @@
     "subjects": [ "reaction:groups:discount-managers" ],
     "resources": [ "reaction:discounts" ],
     "actions": [
+      "create",
       "read"
     ],
     "effect": "allow"
@@ -13,12 +14,18 @@
     "subjects": [ "reaction:groups:discount-managers" ],
     "resources": [ "reaction:discounts:*" ],
     "actions": [
-      "archive",
-      "clone",
-      "create",
-      "read",
+      "delete",
       "update"
     ],
     "effect": "allow"
   }
 ]
+
+23, 32
+21, 30
+19, 28
+16, 24
+15, 23
+14, 22
+14, 21
+13, 20

@@ -53,7 +53,7 @@ const mockNavigationItem = {
 };
 
 test("Calls NavigationTrees.findOne and updateOne, and NavigationItems.findOne, and returns the updated tree", async () => {
-  mockContext.userHasPermissionLegacy.mockReturnValueOnce(true);
+  mockContext.userHasPermission.mockReturnValueOnce(true);
 
   mockContext.collections.NavigationTrees.findOne
     .mockReturnValueOnce(Promise.resolve(mockDraftNavigationTree))
@@ -75,7 +75,7 @@ test("Calls NavigationTrees.findOne and updateOne, and NavigationItems.findOne, 
 });
 
 test("throws an error if the user does not have the core permission", async () => {
-  mockContext.validatePermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   const result = publishNavigationChangesMutation(mockContext, mockInput);

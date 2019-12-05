@@ -2,7 +2,7 @@
 import { getOrderQuery } from "./getOrderQuery.js";
 
 function makeContext() {
-  return { accountId: "unit-test-account-id", userHasPermission: () => true, userHasPermissionLegacy: () => true };
+  return { accountId: "unit-test-account-id", userHasPermission: () => true };
 }
 
 test("getOrderQuery shop admin", async () => {
@@ -19,7 +19,6 @@ test("getOrderQuery shopper", async () => {
   const referenceId = "unit-test-order-reference-id";
   const context = makeContext();
   context.userHasPermission = () => false;
-  context.userHasPermissionLegacy = () => false;
   const query = await getOrderQuery(context, { referenceId }, shopId, null);
   expect(query).toMatchObject({ referenceId, shopId, accountId: context.accountId });
 });
@@ -29,7 +28,6 @@ test("getOrderQuery anonymous", async () => {
   const referenceId = "unit-test-order-reference-id";
   const context = makeContext();
   context.userHasPermission = () => false;
-  context.userHasPermissionLegacy = () => false;
   delete context.accountId;
   const token = "unit-test-token";
   const query = await getOrderQuery(context, { referenceId }, shopId, token);
@@ -42,7 +40,6 @@ test("getOrderQuery access denied", async () => {
   const referenceId = "unit-test-order-reference-id";
   const context = makeContext();
   context.userHasPermission = () => false;
-  context.userHasPermissionLegacy = () => false;
   delete context.accountId;
   const query = await getOrderQuery(context, { referenceId }, shopId, null);
   expect(query).rejects.toThrow();

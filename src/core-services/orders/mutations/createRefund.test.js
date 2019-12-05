@@ -53,7 +53,7 @@ const fakeOrder = {
 test("throws if permission check fails", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.validatePermissionsLegacy.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -64,7 +64,7 @@ test("throws if permission check fails", async () => {
     reason: "Customer was unsatisfied with purchase"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissionsLegacy).toHaveBeenCalledWith(["orders", "order/fulfillment"], null, { shopId: "SHOP_ID" });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:orders:order1", "refund:payment", { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] });
 });
 
 test("skips permission check if context.isInternalCall", async () => {
@@ -81,7 +81,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.userHasPermissionLegacy).not.toHaveBeenCalled();
+  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
 });
 
 test("throws if amount isn't supplied", async () => {
@@ -114,7 +114,7 @@ test("throws if paymentId isn't supplied", async () => {
 test("throws if payment doesn't exist", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createRefund(mockContext, {
     amount: 10,
@@ -127,7 +127,7 @@ test("throws if payment doesn't exist", async () => {
 test("throws if amount is less than $0.01", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
 
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(createRefund(mockContext, {
     amount: 0,
