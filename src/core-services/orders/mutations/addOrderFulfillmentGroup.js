@@ -66,7 +66,7 @@ export default async function addOrderFulfillmentGroup(context, input) {
   const movingItems = [];
   if (moveItemIds) {
     if (!isInternalCall) {
-      await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId });
+      await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
     }
 
     updatedGroups = await Promise.all(order.shipping.map(async (group) => {
