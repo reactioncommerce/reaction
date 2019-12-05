@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`authorized user cannot create tag with existing slug 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "error",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Slug tag-slug is already in use",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Slug tag-slug is already in use",
+    "path": Array [
+      "addTag",
+    ],
+  },
+]
+`;
+
+exports[`unauthorized user cannot create tag 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "FORBIDDEN",
+      "exception": Object {
+        "details": Object {},
+        "error": "access-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Access Denied",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Access Denied",
+    "path": Array [
+      "addTag",
+    ],
+  },
+]
+`;
