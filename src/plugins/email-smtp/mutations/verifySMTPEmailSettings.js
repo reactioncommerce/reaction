@@ -20,8 +20,7 @@ export default async function verifySMTPEmailSettings(context, input) {
 
   const { shopId } = input;
 
-  await context.validatePermissionsLegacy(["owner", "admin", "dashboard"], null, { shopId });
-  await context.validatePermissions("reaction:emails", "read", { shopId });
+  await context.validatePermissions("reaction:emails", "read", { shopId, legacyRoles: ["owner", "admin", "dashboard"] });
 
   const transporter = nodemailer.createTransport(SMTPConfig);
 

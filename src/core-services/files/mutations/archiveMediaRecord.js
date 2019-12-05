@@ -10,8 +10,7 @@ export default async function archiveMediaRecord(context, input) {
   const { appEvents, collections, userId } = context;
   const { mediaRecordId, shopId } = input;
 
-  await context.validatePermissionsLegacy(["media/update"], null, { shopId });
-  await context.validatePermissions("reaction:media", "update", { shopId });
+  await context.validatePermissions("reaction:media", "update", { shopId, legacyRoles: ["media/update"] });
 
   const { value: updatedMediaRecord } = await collections.MediaRecords.findOneAndUpdate(
     {

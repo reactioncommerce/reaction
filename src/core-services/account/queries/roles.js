@@ -11,8 +11,7 @@ export default async function rolesQuery(context, shopId) {
   const { collections } = context;
   const { roles } = collections;
 
-  await context.validatePermissionsLegacy(["owner", "admin"], null, { shopId });
-  await context.validatePermissions(`reaction:shops:${shopId}`, "read", { shopId });
+  await context.validatePermissions(`reaction:shops:${shopId}`, "read", { shopId, legacyRoles: ["owner", "admin"] });
 
   return roles.find({});
 }

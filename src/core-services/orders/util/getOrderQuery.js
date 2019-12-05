@@ -17,8 +17,7 @@ export async function getOrderQuery(context, selector, shopId, token) {
   const newSelector = { ...selector, shopId };
 
   if (
-    await context.userHasPermissionLegacy(["orders", "order/fulfillment", "order/view"], null, { shopId }) &&
-    await context.userHasPermission("reaction:orders", "read", { shopId })
+    await context.userHasPermission("reaction:orders", "read", { shopId, legacyRoles: ["orders", "order/fulfillment", "order/view"] })
   ) {
     // admins with orders permissions can see any order in the shop
     // admins with order/fulfillment and order/view permissions can also view order

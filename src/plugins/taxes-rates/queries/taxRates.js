@@ -11,8 +11,7 @@ export default async function taxRates(context, shopId) {
   const { collections } = context;
   const { TaxRates } = collections;
 
-  await context.validatePermissionsLegacy(["admin", "owner"], null, { shopId });
-  await context.validatePermissions("reaction:taxRates", "read", { shopId });
+  await context.validatePermissions("reaction:taxRates", "read", { shopId, legacyRoles: ["owner", "admin"] });
 
   return TaxRates.find({
     shopId

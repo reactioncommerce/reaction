@@ -53,8 +53,7 @@ export default async function splitOrderItem(context, input) {
   // Allow split if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall) {
-    await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId: order.shopId });
-    await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId });
+    await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
   }
 
   const { accountId, billingAddress, cartId, currencyCode } = order;

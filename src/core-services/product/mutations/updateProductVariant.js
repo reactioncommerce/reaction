@@ -143,8 +143,7 @@ export default async function updateProductVariant(context, input) {
   const { variant: variantInput, variantId, shopId } = input;
 
   // Check that user has permission to create product
-  await context.validatePermissionsLegacy(["createProduct", "product/admin", "product/update"], null, { shopId });
-  await context.validatePermissions(`reaction:products:${variantId}`, "update", { shopId });
+  await context.validatePermissions(`reaction:products:${variantId}`, "update", { shopId, legacyRoles: ["createProduct", "product/admin", "product/update"] });
 
   const currentProduct = await Products.findOne({ _id: variantId, shopId });
   if (!currentProduct) throw new ReactionError("not-found", "Product variant not found");

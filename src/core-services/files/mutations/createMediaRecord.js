@@ -17,8 +17,7 @@ export default async function createMediaRecord(context, input) {
   } = context;
   const { mediaRecord, shopId } = input;
 
-  await context.validatePermissionsLegacy(["media/create"], null, { shopId });
-  await context.validatePermissions("reaction:mediaRecords", "create:media", { shopId });
+  await context.validatePermissions("reaction:mediaRecords", "create:media", { shopId, legacyRoles: ["media/create"] });
 
   const doc = {
     ...mediaRecord,

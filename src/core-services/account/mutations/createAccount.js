@@ -58,11 +58,9 @@ export default async function createAccount(context, input) {
     userId
   } = input;
 
-  if (shopId && !context.isInternalCall) {
-    await context.validatePermissionsLegacy(["reaction-accounts", "account/invite"], null, { shopId });
+  if (!context.isInternalCall) {
+    await context.validatePermissions("reaction:accounts", "create", { shopId, legacyRoles: ["reaction-accounts"] });
   }
-
-  await context.validatePermissions("reaction:accounts", "create", { shopId });
 
   // Create initial account object from user and profile
   const account = {

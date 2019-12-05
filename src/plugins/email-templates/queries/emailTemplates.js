@@ -11,8 +11,7 @@ export default async function emailTemplates(context, shopId) {
   const { collections } = context;
   const { Templates } = collections;
 
-  await context.validatePermissionsLegacy(["owner", "admin"], null, { shopId });
-  await context.validatePermissions("reaction:emailTemplates", "read", { shopId });
+  await context.validatePermissions("reaction:emailTemplates", "read", { shopId, legacyRoles: ["owner", "admin"] });
 
   return Templates.find({
     shopId,

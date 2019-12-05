@@ -86,8 +86,7 @@ export default async function updateShop(context, input) {
 
   // Check permission to make sure user is allowed to do this
   // Security check for admin access
-  await context.validatePermissionsLegacy(["owner", "admin"], null, { shopId });
-  await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId });
+  await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId, legacyRoles: ["owner", "admin"] });
 
   // set data to update
   const sets = {};

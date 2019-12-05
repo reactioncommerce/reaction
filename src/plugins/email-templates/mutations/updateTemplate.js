@@ -24,8 +24,7 @@ export default async function updateTemplate(context, input) {
   const { Templates } = collections;
   const { templateId, shopId, ...params } = input;
 
-  await context.validatePermissionsLegacy(["owner", "admin", "reaction-templates"], null, { shopId });
-  await context.validatePermissions("reaction:emailTemplates", "update", { shopId });
+  await context.validatePermissions("reaction:emailTemplates", "update", { shopId, legacyRoles: ["owner", "admin", "reaction-templates"] });
 
   inputSchema.validate(params);
 

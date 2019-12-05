@@ -44,8 +44,11 @@ export default async function applyDiscountCodeToCart(context, input) {
       throw new ReactionError("not-found", "Cart not found");
     }
 
-    await context.validatePermissionsLegacy(["owner", "admin", "discounts/apply"], null, { shopId });
-    await context.validatePermissions(`reaction:carts:${cartId}`, "update", { shopId, owner: cart.accountId });
+    await context.validatePermissions(`reaction:carts:${cartId}`, "update", {
+      shopId,
+      owner: cart.accountId,
+      legacyRoles: ["owner", "admin", "discounts/apply"]
+    });
   }
 
   const objectToApplyDiscount = cart;

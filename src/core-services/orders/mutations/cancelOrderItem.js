@@ -56,8 +56,11 @@ export default async function cancelOrderItem(context, input) {
   if (!order) throw new ReactionError("not-found", "Order not found");
 
   if (!isInternalCall) {
-    await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId: order.shopId });
-    await context.validatePermissions(`reaction:orders:${order._id}`, "cancel:item", { shopId: order.shopId, owner: order.accountId });
+    await context.validatePermissions(`reaction:orders:${order._id}`, "cancel:item", {
+      shopId: order.shopId,
+      owner: order.accountId,
+      legacyRoles: ["orders", "order/fulfillment"]
+    });
   }
 
   // Is the account calling this mutation also the account that placed the order?

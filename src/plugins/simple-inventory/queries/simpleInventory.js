@@ -23,8 +23,7 @@ export default async function simpleInventory(context, input) {
   const { SimpleInventory } = collections;
 
   if (!isInternalCall) {
-    await context.validatePermissionsLegacy(["admin"], null, { shopId });
-    await context.validatePermissions(`reaction:inventory:${productConfiguration.productVariantId}`, "read", { shopId });
+    await context.validatePermissions(`reaction:inventory:${productConfiguration.productVariantId}`, "read", { shopId, legacyRoles: ["admin"] });
   }
 
   return SimpleInventory.findOne({

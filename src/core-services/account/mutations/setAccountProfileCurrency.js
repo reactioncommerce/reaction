@@ -33,10 +33,10 @@ export default async function setAccountProfileCurrency(context, input) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   if (!context.isInternalCall) {
-    await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
     await context.validatePermissions(`reaction:accounts:${account._id}`, "update:currency", {
       shopId: account.shopId,
-      owner: account._id
+      owner: account._id,
+      legacyRoles: ["reaction-accounts"]
     });
   }
 

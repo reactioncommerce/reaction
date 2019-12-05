@@ -44,8 +44,7 @@ export default async function updateNavigationTree(context, input) {
   NavigationTreeSchema.validate(navigationTreeData);
   const { draftItems, name } = navigationTreeData;
 
-  await context.validatePermissionsLegacy(["core"], null, { shopId });
-  await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "update", { shopId });
+  await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "update", { shopId, legacyRoles: ["core"] });
 
   const treeSelector = { _id: navigationTreeId, shopId };
   const existingNavigationTree = await NavigationTrees.findOne(treeSelector);

@@ -23,8 +23,7 @@ export default async function createSurchargeMutation(context, input) {
   const { collections } = context;
   const { Surcharges } = collections;
 
-  await context.validatePermissionsLegacy(["admin", "owner", "shipping"], null, { shopId });
-  await context.validatePermissions("reaction:surcharges", "create", { shopId });
+  await context.validatePermissions("reaction:surcharges", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
   surcharge._id = Random.id();
 

@@ -25,8 +25,7 @@ export default async function enablePaymentMethodForShop(context, input = {}) {
   const { Shops } = collections;
   const { isEnabled, paymentMethodName, shopId } = input;
 
-  await context.validatePermissionsLegacy(["owner", "admin"], null, { shopId });
-  await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId });
+  await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId, legacyRoles: ["owner", "admin"] });
 
   if (!allPaymentMethods[paymentMethodName]) {
     throw new ReactionError("not-found", "Requested payment method is invalid");

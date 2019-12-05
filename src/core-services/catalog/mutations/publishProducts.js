@@ -33,8 +33,7 @@ export default async function publishProducts(context, productIds) {
     for (const shopId of uniqueShopIds) {
       for (const product of products) {
         // TODO(pod-auth): figure out a better way to loop through this
-        await context.validatePermissionsLegacy(["createProduct", "product/admin", "product/publish"], null, { shopId }); // eslint-disable-line no-await-in-loop
-        await context.validatePermissions(`reaction:products:${product._id}`, "publish", { shopId }); // eslint-disable-line no-await-in-loop
+        await context.validatePermissions(`reaction:products:${product._id}`, "publish", { shopId, legacyRoles: ["createProduct", "product/admin", "product/publish"] }); // eslint-disable-line no-await-in-loop
       }
     }
   }

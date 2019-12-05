@@ -18,13 +18,17 @@ export default async function tag(context, input) {
   const { slugOrId, shopId, shouldIncludeInvisible = false } = input;
 
   // Check to make sure user has `read` permissions for this tag
-  await context.validatePermissionsLegacy(["admin", "owner", "tags"], null, { shopId });
-  await context.validatePermissions(`reaction:tags:${slugOrId}`, "read", { shopId });
+  await context.validatePermissions(`reaction:tags:${slugOrId}`, "read", {
+    shopId,
+    legacyRoles: ["admin", "owner", "tags"]
+  });
 
   // Check to see if user has `read` permissions for hidden / deleted tags
   // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
-  const hasInactivePermissions = context.userHasPermissionLegacy(["admin", "owner", "tags"], shopId) &&
-    await context.userHasPermission(`reaction:tags:${slugOrId}:inactive`, "read", { shopId });
+  const hasInactivePermissions = await context.userHasPermission(`reaction:tags:${slugOrId}:inactive`, "read", {
+    shopId,
+    legacyRoles: ["admin", "owner", "tags"]
+  });
 
   let query = {
     $and: [

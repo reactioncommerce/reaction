@@ -33,15 +33,17 @@ export default async function tags(
   let regexMatch;
 
   // Check to make sure user has `read` permissions for this tag
-  await context.validatePermissionsLegacy(["admin", "owner", "tags"], null, { shopId });
-  await context.validatePermissions("reaction:tags", "read", { shopId });
+  await context.validatePermissions("reaction:tags", "read", {
+    shopId,
+    legacyRoles: ["admin", "owner", "tags"]
+  });
 
   // Check to see if user has `read` permissions for hidden / deleted tags
   // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
-  const hasInactivePermissions = (
-    await context.userHasPermissionLegacy(["admin", "owner", "tags"], null, { shopId }) &&
-    await context.userHasPermission("reaction:tags:inactive", "read", { shopId })
-  );
+  const hasInactivePermissions = await context.userHasPermission("reaction:tags:inactive", "read", {
+    shopId,
+    legacyRoles: ["admin", "owner", "tags"]
+  });
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
 

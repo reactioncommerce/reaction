@@ -17,8 +17,7 @@ export default async function updateNavigationItem(context, input) {
   const { navigationItemId, shopId, navigationItem } = input;
   const { draftData, metadata } = navigationItem;
 
-  await context.validatePermissionsLegacy(["core"], null, { shopId });
-  await context.validatePermissions(`reaction:navigationTreeItems:${navigationItemId}`, "update", { shopId });
+  await context.validatePermissions(`reaction:navigationTreeItems:${navigationItemId}`, "update", { shopId, legacyRoles: ["core"] });
 
   const existingNavigationItem = await NavigationItems.findOne({ _id: navigationItemId, shopId });
   if (!existingNavigationItem) {

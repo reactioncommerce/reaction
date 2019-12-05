@@ -13,8 +13,7 @@ export default async function deleteTaxRate(context, input) {
   const { appEvents, collections } = context;
   const { TaxRates } = collections;
 
-  await context.validatePermissionsLegacy(["admin", "owner"], null, { shopId });
-  await context.validatePermissions("reaction:taxRates", "delete", { shopId });
+  await context.validatePermissions("reaction:taxRates", "delete", { shopId, legacyRoles: ["owner", "admin"] });
 
   const taxRateToDelete = await TaxRates.findOne({
     _id,

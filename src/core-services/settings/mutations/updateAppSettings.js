@@ -29,8 +29,7 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
     if (allowedRoles.length === 0) {
       throw new ReactionError("access-denied", `You are not allowed to edit the "${updateKey}" setting`);
     }
-    await context.validatePermissionsLegacy(allowedRoles, null, shopId); // eslint-disable-line no-await-in-loop
-    await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId, legacyRoles: allowedRoles }); // eslint-disable-line no-await-in-loop
   }
 
   const { value: updatedDoc } = await AppSettings.findOneAndUpdate(

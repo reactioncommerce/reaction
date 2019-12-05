@@ -89,8 +89,7 @@ export default async function createShop(context, input) {
     userId
   } = context;
 
-  await context.validatePermissionsLegacy(["owner", "shop/create"], null);
-  await context.validatePermissions("reaction:shops", "create");
+  await context.validatePermissions("reaction:shops", "create", { shopId: null, legacyRoles: ["owner", "shop/create"] });
 
   const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
 

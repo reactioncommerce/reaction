@@ -48,8 +48,7 @@ export default async function updateOrder(context, input) {
   // for the order creator. In the future, if this mutation does more, we should revisit these
   // permissions to see if order owner should be allowed.
   if (!isInternalCall) {
-    await context.validatePermissionsLegacy(["orders", "order/fulfillment"], null, { shopId: order.shopId });
-    await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId });
+    await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
   }
 
   const modifier = {

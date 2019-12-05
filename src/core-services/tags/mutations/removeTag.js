@@ -14,8 +14,7 @@ export default async function removeTag(context, input) {
   const { Tags } = context.collections;
 
   // Check for owner or admin permissions from the user before allowing the mutation
-  await context.validatePermissionsLegacy(["admin", "owner"], null, { shopId });
-  await context.validatePermissions(`reaction:tags:${tagId}`, "delete", { shopId });
+  await context.validatePermissions(`reaction:tags:${tagId}`, "delete", { shopId, legacyRoles: ["owner", "admin"] });
 
   const tag = await Tags.findOne({ _id: tagId, shopId });
   const { result } = await Tags.deleteOne({ _id: tagId, shopId });

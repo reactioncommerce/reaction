@@ -20,10 +20,10 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  await context.validatePermissionsLegacy(["reaction-accounts"], null, { shopId: account.shopId });
   await context.validatePermissions(`reaction:accounts:${account._id}`, "add:address-books", {
     shopId: account.shopId,
-    owner: account._id
+    owner: account._id,
+    legacyRoles: ["reaction-accounts"]
   });
 
   // required default ID

@@ -44,8 +44,7 @@ export default async function recalculateReservedSimpleInventory(context, input)
 
     // Allow update if the account has "admin" permission. When called internally by another
     // plugin, context.isInternalCall can be set to `true` to disable this check.
-    await context.validatePermissionsLegacy(["admin"], null, { shopId });
-    await context.validatePermissions(`reaction:inventory:${foundProduct._id}`, "update", { shopId });
+    await context.validatePermissions(`reaction:inventory:${foundProduct._id}`, "update", { shopId, legacyRoles: ["admin"] });
   }
 
   const inventoryReserved = await getReservedQuantity(context, productConfiguration);

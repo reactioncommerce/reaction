@@ -12,8 +12,7 @@ export default async function generateSitemaps(context, input) {
   const { userId } = context;
   const { shopId } = input;
 
-  await context.validatePermissionsLegacy(["admin"], null, { shopId });
-  await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId });
+  await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId, legacyRoles: ["admin"] });
 
   const jobOptions = {
     type: "sitemaps/generate",

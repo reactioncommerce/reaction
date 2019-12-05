@@ -10,8 +10,7 @@
 export default async function systemInformation(context, shopId) {
   const { app: { db } } = context;
   // sensitive information should be accessible to admins only
-  await context.validatePermissionsLegacy(["admin"], null, { shopId });
-  await context.validatePermissions(`reaction:shops:${shopId}`, "read", { shopId });
+  await context.validatePermissions(`reaction:shops:${shopId}`, "read", { shopId, legacyRoles: ["admin"] });
 
   const mongoAdmin = await db.admin();
   const mongoInfo = await mongoAdmin.serverStatus();

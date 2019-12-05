@@ -19,7 +19,19 @@ const GLOBAL_GROUP = "__global_roles__";
  *   only global roles will be checked.
  * @returns {Boolean} True if the account with ID accountId has at least one of the requested permissions in the roleGroup group
  */
-export default function hasPermission(user, permissions, action, authContext) {
+export default function hasPermission(user, permissions, action, authContext = {}) {
+  console.log(" ----- legacy hasPermission | user:", user);
+  console.log(" ----- legacy hasPermission | permissions:", permissions);
+  console.log(" ----- legacy hasPermission | action:", action);
+  console.log(" ----- legacy hasPermission | authContext:", authContext);
+
+  // TODO(pod-auth) - make context available here. IF the `authContext` has `owner` on it, we need to check that ID
+  // vs the context userId to make sure they match / the current user is the owner
+  // if it is the current user, we can return true here instead of checking the group.
+  // otherwise, continue on
+  // if (authContext && authContext.owner && authContext.owner === context.userId ) { return true } )
+
+
   const { shopId: roleGroup } = authContext;
 
   if (!user || !user.roles) return false;
