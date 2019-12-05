@@ -35,7 +35,7 @@ export default async function updateAccountAddressBookEntry(context, input) {
   if (!context.isInternalCall) {
     await context.validatePermissions(`reaction:accounts:${account._id}`, "update:address-books", {
       shopId: account.shopId,
-      owner: account._id,
+      owner: account.userId,
       legacyRoles: ["reaction-accounts"]
     });
   }

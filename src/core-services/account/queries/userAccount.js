@@ -17,7 +17,11 @@ export default async function userAccountQuery(context, id) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   // Check to make sure current user has permissions to view queried user
-  await context.validatePermissions("reaction:accounts", "read", { shopId: account.shopId, owner: account._id, legacyRoles: ["reaction-accounts"] });
+  await context.validatePermissions("reaction:accounts", "read", {
+    shopId: account.shopId,
+    owner: account.userId,
+    legacyRoles: ["reaction-accounts"]
+  });
 
   return account;
 }
