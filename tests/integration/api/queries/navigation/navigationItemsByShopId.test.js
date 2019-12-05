@@ -90,7 +90,7 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("throws access-denied when getting NavigationItems if not an admin with core permissions", async () => {
+test("throws access-denied when getting NavigationItems if user is not an admin with core permissions", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);
 
   try {
