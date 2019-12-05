@@ -11,6 +11,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "System Information",
     name: "reaction-systeminfo",
+    version: app.context.appVersion,
     graphQL: {
       resolvers,
       schemas

@@ -14,7 +14,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Email Templates",
     name: "reaction-email-templates",
-    version: "1.0.0",
+    version: app.context.appVersion,
     graphQL: {
       resolvers,
       schemas

@@ -18,6 +18,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Codes",
     name: "discount-codes",
+    version: app.context.appVersion,
     i18n,
     functionsByType: {
       "discounts/codes/credit": [getCreditOffDiscount],
@@ -31,21 +32,6 @@ export default async function register(app) {
       schemas
     },
     mutations,
-    queries,
-    registry: [
-      {
-        label: "Codes",
-        provides: ["paymentSettings"],
-        template: "customDiscountCodes"
-      }, {
-        provides: ["paymentMethod"],
-        template: "discountCodesCheckout"
-      }, {
-        route: "discounts/apply",
-        label: "Apply Discounts",
-        permission: "applyDiscounts",
-        name: "discounts/apply"
-      }
-    ]
+    queries
   });
 }

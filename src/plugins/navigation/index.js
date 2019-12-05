@@ -15,6 +15,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Navigation",
     name: "reaction-navigation",
+    version: app.context.appVersion,
     i18n,
     collections: {
       NavigationItems: {

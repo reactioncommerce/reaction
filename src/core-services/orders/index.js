@@ -17,6 +17,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Orders",
     name: "reaction-orders",
+    version: app.context.appVersion,
     i18n,
     collections: {
       Orders: {
@@ -53,21 +54,6 @@ export default async function register(app) {
       Order,
       OrderFulfillmentGroup,
       OrderItem
-    },
-    settings: {
-      name: "Orders"
-    },
-    registry: [{
-      route: "order/fulfillment",
-      label: "Order Fulfillment",
-      permission: "orderFulfillment",
-      name: "order/fulfillment"
-    },
-    {
-      route: "order/view",
-      label: "Order View",
-      permission: "orderView",
-      name: "order/view"
-    }]
+    }
   });
 }

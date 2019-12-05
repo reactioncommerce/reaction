@@ -10,21 +10,10 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Core",
     name: "core",
+    version: app.context.appVersion,
     i18n,
     functionsByType: {
       startup: [startup]
-    },
-    settings: {
-      mail: {
-        user: "",
-        password: "",
-        host: "",
-        port: ""
-      },
-      openexchangerates: {
-        appId: "",
-        refreshPeriod: "every 1 hour"
-      }
     }
   });
 }

@@ -42,9 +42,7 @@ async function createPackagesForShop(context, shopId) {
     const packageDoc = {
       // autoEnable no longer does anything. All are enabled by default.
       enabled: true,
-      icon: config.icon,
       name: config.name,
-      registry: config.registry,
       version: config.version,
       shopId
     };

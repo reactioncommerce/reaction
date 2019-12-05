@@ -13,6 +13,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Address",
     name: "reaction-address",
+    version: app.context.appVersion,
     i18n,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler]
@@ -21,14 +22,6 @@ export default async function register(app) {
       resolvers,
       schemas
     },
-    queries,
-    registry: [
-      {
-        label: "Address Validation",
-        provides: ["shopSettings"],
-        container: "dashboard",
-        template: "ShopAddressValidationSettings"
-      }
-    ]
+    queries
   });
 }

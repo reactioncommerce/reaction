@@ -9,6 +9,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Checkout",
     name: "reaction-checkout",
+    version: app.context.appVersion,
     i18n
   });
 }

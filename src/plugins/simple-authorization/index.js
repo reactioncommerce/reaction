@@ -10,6 +10,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Simple Authorization",
     name: "reaction-simple-authorization",
+    version: app.context.appVersion,
     auth: {
       getHasPermissionFunctionForUser,
       getShopsUserHasPermissionForFunctionForUser

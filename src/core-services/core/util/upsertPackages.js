@@ -37,25 +37,11 @@ export default async function upsertPackages(context) {
       const shopId = shop._id;
       if (!shopId) return;
 
-      // Look up an existing package doc. The `settings` field is the one we want
-      // to keep as is if the doc already exists.
-      const existingDoc = await Packages.findOne({ name: config.name, shopId }, {
-        projection: {
-          settings: 1
-        }
-      });
-
       const packageDoc = {
         // autoEnable no longer does anything. All are enabled by default.
         enabled: true,
-        icon: config.icon,
         name: config.name,
-        registry: config.registry,
         version: config.version,
-        settings: {
-          ...(config.settings || {}),
-          ...((existingDoc && existingDoc.settings) || {})
-        },
         shopId
       };
 
