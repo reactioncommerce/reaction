@@ -31,7 +31,7 @@ export default async function removeAccountAddressBookEntry(context, input) {
   if (!context.isInternalCall) {
     await context.validatePermissions(`reaction:accounts:${account._id}`, "remove:address-books", {
       shopId: account.shopId,
-      owner: account._id,
+      owner: account.userId,
       legacyRoles: ["reaction-accounts"]
     });
   }

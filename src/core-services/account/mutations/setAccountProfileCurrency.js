@@ -35,7 +35,7 @@ export default async function setAccountProfileCurrency(context, input) {
   if (!context.isInternalCall) {
     await context.validatePermissions(`reaction:accounts:${account._id}`, "update:currency", {
       shopId: account.shopId,
-      owner: account._id,
+      owner: account.userId,
       legacyRoles: ["reaction-accounts"]
     });
   }
