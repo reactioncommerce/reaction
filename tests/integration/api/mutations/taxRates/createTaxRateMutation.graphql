@@ -1,10 +1,10 @@
 mutation (
-  $region: String!,
+  $region: String,
   $rate: Float!,
   $shopId: ID!,
-  $country: String!,
-  $postal: String!,
-  $taxCode: String!
+  $country: String,
+  $postal: String,
+  $taxCode: String
 ) {
   createTaxRate(input: {
     region: $region,
@@ -16,15 +16,16 @@ mutation (
   }) {
     taxRate {
       _id
+      country
+      postal
+      postal
       rate
+      region
       shop {
         _id
       }
-      region
-      postal
-      country
+      sourcing
       taxCode
-      postal
     }
   }
 }

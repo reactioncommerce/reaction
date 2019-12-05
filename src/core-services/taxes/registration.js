@@ -20,10 +20,7 @@ export function registerPluginHandler({ name: pluginName, taxServices: pluginTax
  *   primary and fallback tax services currently enabled for the shop with ID `shopId`.
  */
 export async function getTaxServicesForShop(context, shopId) {
-  const plugin = await context.collections.Packages.findOne({ name: "reaction-taxes", shopId });
-  if (!plugin) return {};
-
-  const { primaryTaxServiceName, fallbackTaxServiceName } = plugin.settings || {};
+  const { fallbackTaxServiceName, primaryTaxServiceName } = await context.queries.appSettings(context, shopId);
   if (!primaryTaxServiceName) return {}; // at least a primary service must be set
 
   const primaryTaxService = taxServices[primaryTaxServiceName];

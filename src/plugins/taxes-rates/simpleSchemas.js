@@ -16,8 +16,7 @@ export const TaxRates = new SimpleSchema({
   taxLocale: {
     label: "Taxation Location",
     type: String,
-    allowedValues: ["origin", "destination"],
-    defaultValue: "destination"
+    allowedValues: ["origin", "destination"]
   },
   region: {
     label: "State/Province/Region",

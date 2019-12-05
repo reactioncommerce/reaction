@@ -3,47 +3,50 @@ type TaxRate {
   "Tax rate ID"
   _id: ID!
 
-  "Did this tax match due to the order origin or the order destination?"
-  country: String!
+  "An optional country code to limit where this tax is applied, in conjunction with `sourcing` field"
+  country: String
 
-  "A human-readable display name for showing this tax to operators and customers in the UI"
-  postal: String!
+  "An optional postal code to limit where this tax is applied, in conjunction with `sourcing` field"
+  postal: String
 
-  "The tax rate used for this calculation"
+  "The tax rate. For example, 0.05 for a 5% sales tax."
   rate: Float!
 
-  "Amount of tax due"
-  region: String!
+  "An optional region (e.g., state) to limit where this tax is applied, in conjunction with `sourcing` field"
+  region: String
 
   "The shop to which this TaxRate belongs"
   shop: Shop!
 
-  "Amount that was used for calculating the tax due"
-  taxCode: String!
+  "Whether the `country`, `postal`, and `region` filters apply to the origin address or the destination address"
+  sourcing: TaxSource!
+
+  "An optional tax code, to apply this tax rate to only products that have this tax code"
+  taxCode: String
 }
 
-"Describes the input for creating a tax rate"
+"The input for creating a tax rate"
 input CreateTaxRateInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "Did this tax match due to the order origin or the order destination?"
-  country: String!
+  "An optional country code to limit where this tax is applied based on destination address"
+  country: String
 
-  "Postal code"
-  postal: String!
+  "An optional postal code to limit where this tax is applied based on destination address"
+  postal: String
 
-  "The tax rate used for this calculation"
+  "The tax rate. For example, 0.05 for a 5% sales tax."
   rate: Float!
 
-  "Amount of tax due"
-  region: String!
+  "An optional region (e.g., state) to limit where this tax is applied based on destination address"
+  region: String
 
   "Shop ID"
   shopId: ID!
 
-  "Amount that was used for calculating the tax due"
-  taxCode: String!
+  "An optional tax code, to apply this tax rate to only products that have this tax code"
+  taxCode: String
 }
 
 "The response from the `createTaxRate` mutation"
@@ -52,33 +55,36 @@ type CreateTaxRatePayload {
   clientMutationId: String
 
   "The created tax rate"
-  taxRate: TaxRate
+  taxRate: TaxRate!
 }
 
-"Describes the input for updating a tax rate"
+"""
+The input for updating a tax rate. Note that missing values will cause the field to be cleared, so
+send all optional fields with every request unless they aren't currently set or you intend to clear them.
+"""
 input UpdateTaxRateInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "Did this tax match due to the order origin or the order destination?"
-  country: String!
+  "An optional country code to limit where this tax is applied based on destination address"
+  country: String
 
-  "A human-readable display name for showing this tax to operators and customers in the UI"
-  postal: String!
+  "An optional postal code to limit where this tax is applied based on destination address"
+  postal: String
 
-  "The tax rate used for this calculation"
+  "The tax rate. For example, 0.05 for a 5% sales tax."
   rate: Float!
 
-  "Amount of tax due"
-  region: String!
+  "An optional region (e.g., state) to limit where this tax is applied based on destination address"
+  region: String
 
   "Shop ID"
   shopId: ID!
 
-  "Amount that was used for calculating the tax due"
-  taxCode: String!
+  "An optional tax code, to apply this tax rate to only products that have this tax code"
+  taxCode: String
 
-  "The tax rate ID"
+  "ID of the tax rate you want to update"
   taxRateId: ID!
 }
 
@@ -88,7 +94,7 @@ type UpdateTaxRatePayload {
   clientMutationId: String
 
   "The updated tax rate"
-  taxRate: TaxRate
+  taxRate: TaxRate!
 }
 
 "Describes the input for removing a tax rate"
@@ -109,7 +115,7 @@ type DeleteTaxRatePayload {
   clientMutationId: String
 
   "The deleted tax rate"
-  taxRate: TaxRate
+  taxRate: TaxRate!
 }
 
 extend type Mutation {
@@ -185,6 +191,6 @@ extend type Query {
     last: ConnectionLimitInt,
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
-    offset: Int,
+    offset: Int
   ): TaxRateConnection
 }

@@ -8,15 +8,16 @@ mutation (
   }) {
     taxRate {
       _id
+      country
+      postal
+      postal
       rate
+      region
       shop {
         _id
       }
-      region
-      postal
-      country
+      sourcing
       taxCode
-      postal
     }
   }
 }
