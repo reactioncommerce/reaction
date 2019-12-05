@@ -1,4 +1,4 @@
-import { getHasPermissionFunctionForUserLegacy } from "./util/hasPermission.js";
+import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -10,7 +10,7 @@ export default async function register(app) {
     label: "Legacy Authorization",
     name: "reaction-legacy-authorization",
     auth: {
-      getHasPermissionFunctionForUserLegacy
+      getHasPermissionFunctionForUser
     }
   });
 }
