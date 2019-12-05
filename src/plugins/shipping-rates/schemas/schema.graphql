@@ -2,6 +2,38 @@
 # Base
 ####
 
+extend type Query {
+  "Get a flat rate fulfillment method"
+  flatRateFulfillmentMethod(
+    "Fulfillment method id"
+    methodId: ID!
+
+    "Shop ID"
+    shopId: ID!
+  ): FlatRateFulfillmentMethod!
+
+  "Get a flat rate fulfillment methods"
+  flatRateFulfillmentMethods(
+    "Shop ID"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+  ): FlatRateFulfillmentMethodConnection!
+}
+
 extend type Mutation {
   "Create a flat rate fulfillment method"
   createFlatRateFulfillmentMethod(
@@ -52,6 +84,9 @@ type FlatRateFulfillmentMethod implements Node {
 
   "A fixed price to charge for fulfillment costs when this fulfillment method is selected for an order"
   rate: Float!
+
+  "The shop to which this fulfillment method belongs"
+  shop: Shop!
 }
 
 ####
@@ -155,4 +190,42 @@ type DeleteFlatRateFulfillmentMethodPayload {
 
   "The removed fulfillment method"
   method: FlatRateFulfillmentMethod!
+}
+
+####
+# Connections
+####
+
+"A connection edge in which each node is a `FlatRateFulfillmentMethod` object"
+type FlatRateFulfillmentMethodEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The fulfillment method"
+  node: FlatRateFulfillmentMethod
+}
+
+"""
+Wraps a list of FlatRateFulfillmentMethods`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type FlatRateFulfillmentMethodConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [FlatRateFulfillmentMethodEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [FlatRateFulfillmentMethod]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
 }

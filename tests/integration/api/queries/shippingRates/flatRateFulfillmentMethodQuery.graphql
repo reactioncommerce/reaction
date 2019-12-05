@@ -1,0 +1,21 @@
+query FlatRateFultillmentMetod(
+  $methodId: ID!
+  $shopId: ID!
+) {
+  flatRateFulfillmentMethod(
+    methodId: $methodId
+    shopId: $shopId
+  ) {
+    _id
+    name
+    label
+    handling
+    rate
+    cost
+    isEnabled
+    fulfillmentTypes
+    shop {
+      _id
+    }
+  }
+}
