@@ -9,28 +9,23 @@ const GLOBAL_GROUP = "__global_roles__";
 
 /**
  * @name hasPermission
- * @method
- * @memberof Accounts
- * @param {Object} user - The user object, with `roles` property, to check.
- * @param {String[]} permissions - Array of permission strings. The account must have at least one of them either globally or for the roleGroup.
- * @param {String} [action] - The action being performed (unused).
+ * @param {Object} context App context
+ * @param {Object} resource - resource user is trying to access
+ * @param {Object} action - action user is trying to perform to be passed to in the GQL query
  * @param {Object} authContext - context data to verify permissions against
+ * @param {String} [authContext.owner] - The owner of the resource requested
  * @param {String} [authContext.shopId] - The shop ID for which the permissions are needed. If not set,
  *   only global roles will be checked.
- * @returns {Boolean} True if the account with ID accountId has at least one of the requested permissions in the roleGroup group
+ * @param {Array} [authContext.legacyRoles] - TEMPORARY: roles that match up with the legacy roles package
+ * @returns {Boolean} - true/false
  */
-export default function hasPermission(user, permissions, action, authContext = {}) {
-  console.log(" ----- legacy hasPermission | user:", user);
-  console.log(" ----- legacy hasPermission | permissions:", permissions);
-  console.log(" ----- legacy hasPermission | action:", action);
-  console.log(" ----- legacy hasPermission | authContext:", authContext);
+export default async function hasPermission(context, resource, action, authContext) {
+  const { user } = context;
+  const { legacyRoles: permissions } = authContext; // TODO(pod-auth): temporarily provide legacy roles
 
-  // TODO(pod-auth) - make context available here. IF the `authContext` has `owner` on it, we need to check that ID
-  // vs the context userId to make sure they match / the current user is the owner
-  // if it is the current user, we can return true here instead of checking the group.
-  // otherwise, continue on
-  // if (authContext && authContext.owner && authContext.owner === context.userId ) { return true } )
-
+  // If the current user is the owner of a resource we are trying to check,
+  // such as an order or data on a user profile, they are authorized to perform the action
+  if (authContext && authContext.owner && authContext.owner === context.userId) return true;
 
   const { shopId: roleGroup } = authContext;
 
@@ -70,8 +65,8 @@ const hasPermissionCurried = curryN(2, hasPermission);
 /**
  * @summary Get a `hasPermission` function bound to the current user context
  * @param {Object} context App context
- * @return {Function} hasPermission function for `context.user`
+ * @return {Function} hasPermission function for `context`
  */
-export function getHasPermissionFunctionForUserLegacy(context) {
-  return hasPermissionCurried(context.user);
+export function getHasPermissionFunctionForUser(context) {
+  return hasPermissionCurried(context);
 }
