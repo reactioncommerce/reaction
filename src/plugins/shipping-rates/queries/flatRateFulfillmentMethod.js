@@ -10,11 +10,11 @@
  * @returns {Promise<Object>} Mongo cursor
  */
 export default async function flatRateFulfillmentMethod(context, input) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Shipping } = collections;
   const { methodId, shopId } = input;
 
-  await checkPermissions(["owner", "admin"], shopId);
+  await context.validatePermissions("reaction:shippingMethods", "read", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
   return Shipping.findOne({
     _id: methodId,
