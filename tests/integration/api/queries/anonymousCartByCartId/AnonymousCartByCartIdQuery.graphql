@@ -1,0 +1,8 @@
+query($cartId: ID!, $cartToken: String!){
+  anonymousCartByCartId(cartId: $cartId, cartToken: $cartToken){
+    _id
+    items {
+      totalCount
+    }
+  }
+}
