@@ -146,3 +146,40 @@ type TaxSummary {
   "Full list of all taxes that were calculated by the active tax service for the cart or order group"
   taxes: [CalculatedTax]!
 }
+
+extend type ShopSettings {
+  "The default value to use for `taxCode` property of a product"
+  defaultTaxCode: String
+
+  """
+  The name of the tax service to fall back to if the primary tax service is down.
+  This will match the `name` field of one of the services returned by the `taxServices`
+  query.
+  """
+  fallbackTaxServiceName: String
+
+  """
+  The name of the tax service to use for calculating taxes on carts and orders.
+  This will match the `name` field of one of the services returned by the `taxServices`
+  query.
+  """
+  primaryTaxServiceName: String
+}
+
+extend input ShopSettingsUpdates {
+  "The default value to use for `taxCode` property of a product"
+  defaultTaxCode: String
+
+  """
+  Optionally, set the name of the tax service to fall back to if the primary tax service is down.
+  This must match the `name` field of one of the services returned by the `taxServices` query.
+  """
+  fallbackTaxServiceName: String
+
+  """
+  Set the name of the tax service to use for calculating taxes on carts and orders.
+  This will match the `name` field of one of the services returned by the `taxServices`
+  query. There will be no taxes charged for any carts or orders if this is not set.
+  """
+  primaryTaxServiceName: String
+}

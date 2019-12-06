@@ -13,18 +13,28 @@
           "taxesTitle": "Taxes",
           "taxesDescription": "Tax configuration"
         },
-        "taxGrid": {
-          "taxCode": "Item Code",
-          "rate": "Rate",
+        "taxFormFields": {
           "country": "Country",
+          "postal": "Postal code",
+          "rate": "Rate",
+          "ratePlaceholder": "Example: 0.05 means a 5% tax rate",
           "region": "Region",
-          "postal": "Postal"
+          "taxCode": "Tax code"
+        },
+        "taxFormHelpText": "For which destination addresses and for which products is this tax rate applicable? Leave these blank to apply this rate to every product and every destination address.",
+        "taxGrid": {
+          "any": "Any",
+          "country": "Country",
+          "newTaxRateButton": "New Tax Rate",
+          "postal": "Postal Code",
+          "rate": "Rate",
+          "region": "Region",
+          "taxCode": "Tax Code"
         },
         "settings": {
           "taxSettingsLabel": "Tax"
         },
         "taxSettings": {
-          "noCustomTaxRatesFound": "No custom tax rates found.",
           "shopCustomTaxRatesSaved": "Custom tax rate saved.",
           "shopCustomTaxRatesFailed": "Error saving tax rate.",
           "shopTaxMethodsSaved": "Saved tax method.",

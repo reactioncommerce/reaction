@@ -12,7 +12,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} [params.token] - Anonymous cart token
  * @returns {Promise<Object>|undefined} - A Cart document, if one is found
  */
-export default async function anonymousCartByCartId(context, { cartId, token } = {}) {
+export default async function anonymousCartByCartId(context, { cartId, cartToken } = {}) {
   const { collections } = context;
   const { Cart } = collections;
 
@@ -22,6 +22,6 @@ export default async function anonymousCartByCartId(context, { cartId, token } =
 
   return Cart.findOne({
     _id: cartId,
-    anonymousAccessToken: hashToken(token)
+    anonymousAccessToken: hashToken(cartToken)
   });
 }

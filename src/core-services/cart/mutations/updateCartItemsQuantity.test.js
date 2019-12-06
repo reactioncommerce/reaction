@@ -105,7 +105,7 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
         quantity: 2
       }
     ],
-    token: "TOKEN"
+    cartToken: "TOKEN"
   });
   mockContext.accountId = cachedAccountId;
 

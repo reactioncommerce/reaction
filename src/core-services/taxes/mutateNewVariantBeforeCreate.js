@@ -11,10 +11,7 @@ export default async function mutateNewVariantBeforeCreate(newVariant, { context
     newVariant.isTaxable = true;
 
     // Give new variants the default tax code, if one is set
-    const plugin = await context.collections.Packages.findOne({ name: "reaction-taxes", shopId: newVariant.shopId });
-    if (!plugin) return;
-
-    const { defaultTaxCode } = plugin.settings || {};
+    const { defaultTaxCode } = await context.queries.appSettings(context, newVariant.shopId);
     if (!defaultTaxCode) return;
 
     newVariant.taxCode = defaultTaxCode;

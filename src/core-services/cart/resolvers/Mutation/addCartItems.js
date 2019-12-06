@@ -10,13 +10,13 @@ import { decodeCartItemsOpaqueIds, decodeCartOpaqueId } from "../../xforms/id.js
  * @param {String} args.input.cartId - The opaque ID of the cart to add the items to.
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {String} args.input.items - An array of cart items to add to the new cart. Must not be empty.
- * @param {String} [args.input.token] - The anonymous access token that was returned from `createCart`.
+ * @param {String} [args.input.cartToken] - The anonymous access cartToken that was returned from `createCart`.
  *   Required for anonymous carts.
  * @param {Object} context - an object containing the per-request state
  * @returns {Promise<Object>} AddCartItemsPayload
  */
 export default async function addCartItems(parentResult, { input }, context) {
-  const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, token } = input;
+  const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, cartToken } = input;
   const cartId = decodeCartOpaqueId(opaqueCartId);
   const items = decodeCartItemsOpaqueIds(itemsInput);
 
@@ -27,7 +27,7 @@ export default async function addCartItems(parentResult, { input }, context) {
   } = await context.mutations.addCartItems(context, {
     cartId,
     items,
-    token
+    cartToken
   });
 
   return {

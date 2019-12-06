@@ -49,7 +49,7 @@ beforeAll(async () => {
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
   await Promise.all(taxRateDocuments.map((doc) => (
-    testApp.collections.TaxRates.insertOne(doc)
+    testApp.collections.Taxes.insertOne(doc)
   )));
 
   await testApp.createUserAndAccount(mockCustomerAccount);
@@ -59,7 +59,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await testApp.collections.TaxRates.deleteMany({});
+  await testApp.collections.Taxes.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
 });

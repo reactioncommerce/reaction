@@ -16,21 +16,21 @@ import reconcileCartsMerge from "./reconcileCartsMerge.js";
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - mutation input
  * @param {String} input.anonymousCartId - The anonymous cart ID
- * @param {String} input.anonymousCartToken - The anonymous cart token
+ * @param {String} input.cartToken - The anonymous cart token
  * @param {String} [input.mode] - The reconciliation mode, "merge", "keepAccountCart", or "keepAnonymousCart". Default "merge"
  * @returns {Promise<Object>} Object in which `cart` property is set to the updated account cart
  */
 export default async function reconcileCarts(context, input) {
   const { accountId, collections, user } = context;
   const { Cart } = collections;
-  const { anonymousCartId, anonymousCartToken, mode = "merge" } = input;
+  const { anonymousCartId, cartToken, mode = "merge" } = input;
 
   if (!accountId) throw new ReactionError("access-denied", "Access Denied");
   if (!anonymousCartId) throw new ReactionError("invalid-param", "anonymousCartId is required");
-  if (!anonymousCartToken) throw new ReactionError("invalid-param", "anonymousCartToken is required");
+  if (!cartToken) throw new ReactionError("invalid-param", "cartToken is required");
 
   const accountCartSelector = { accountId };
-  const anonymousCartSelector = { _id: anonymousCartId, anonymousAccessToken: hashToken(anonymousCartToken) };
+  const anonymousCartSelector = { _id: anonymousCartId, anonymousAccessToken: hashToken(cartToken) };
 
   const carts = await Cart.find({
     $or: [accountCartSelector, anonymousCartSelector]

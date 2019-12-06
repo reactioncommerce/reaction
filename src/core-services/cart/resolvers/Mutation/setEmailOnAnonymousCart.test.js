@@ -3,7 +3,7 @@ import setEmailOnAnonymousCart from "./setEmailOnAnonymousCart.js";
 const internalCartId = "555";
 const opaqueCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
 const email = "email@address.com";
-const token = "TOKEN";
+const cartToken = "TOKEN";
 
 test("correctly passes through to mutations.setEmailOnAnonymousCart", async () => {
   const fakeResult = {
@@ -23,7 +23,7 @@ test("correctly passes through to mutations.setEmailOnAnonymousCart", async () =
       cartId: opaqueCartId,
       clientMutationId: "clientMutationId",
       email,
-      token
+      cartToken
     }
   }, context);
 
@@ -35,6 +35,6 @@ test("correctly passes through to mutations.setEmailOnAnonymousCart", async () =
   expect(mockMutation).toHaveBeenCalledWith(context, {
     cartId: internalCartId,
     email,
-    token
+    cartToken
   });
 });

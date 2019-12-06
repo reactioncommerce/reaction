@@ -16,7 +16,7 @@ export default {
   preferences: (account) => _.get(account, "profile.preferences"),
   primaryEmailAddress: (account) => {
     const primaryRecord = (account.emails || []).find((record) => record.provides === "default");
-    return (primaryRecord && primaryRecord.address) || null;
+    return (primaryRecord && primaryRecord.address) || "";
   },
   shop: resolveShopFromShopId
 };
