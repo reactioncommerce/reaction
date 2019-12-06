@@ -147,19 +147,19 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("get 1 order by account ID, without shopID or order status", async () => {
+test("get 1 order by account ID", async () => {
   await testApp.collections.Orders.insertOne(order);
   await testApp.setLoggedInUser(mockAccount);
-  const result = await query({ accountId: opaqueAccountId });
+  const result = await query({ accountId: opaqueAccountId, shopIds: [shopId] });
   expect(result).toBeTruthy();
   expect(result.ordersByAccountId.nodes[0].account._id).toBe(opaqueAccountId);
 });
 
-test("get multiple orders by account ID, without shopID or order status", async () => {
+test("get multiple orders by account ID", async () => {
   await Promise.all(orders.map((mockOrder) => testApp.collections.Orders.insertOne(mockOrder)));
   await Promise.all(ordersWithDifferentAccount.map((mockDifferentAccountOrder) => testApp.collections.Orders.insertOne(mockDifferentAccountOrder)));
   await testApp.setLoggedInUser(mockAccount);
-  const result = await query({ accountId: opaqueAccountId });
+  const result = await query({ accountId: opaqueAccountId, shopIds: [shopId] });
   expect(result).toBeTruthy();
   expect(result.ordersByAccountId.nodes[0].account._id).toBe(opaqueAccountId);
   expect(result.ordersByAccountId.nodes[1].account._id).toBe(opaqueAccountId);
@@ -172,7 +172,7 @@ test("get only cancelled orders by account ID", async () => {
   await Promise.all(orders.map((mockOrder) => testApp.collections.Orders.insertOne(mockOrder)));
   await Promise.all(canceledOrders.map((mockCanceled) => testApp.collections.Orders.insertOne(mockCanceled)));
   await testApp.setLoggedInUser(mockAccount);
-  const result = await query({ accountId: opaqueAccountId, orderStatus: ["coreOrderWorkflow/canceled"] });
+  const result = await query({ accountId: opaqueAccountId, shopIds: [shopId], orderStatus: ["coreOrderWorkflow/canceled"] });
   expect(result).toBeTruthy();
   expect(result.ordersByAccountId.totalCount).toBe(3);
   expect(result.ordersByAccountId.nodes[0].account._id).toBe(opaqueAccountId);
@@ -188,3 +188,12 @@ test("get invalid params error: no accountId", async () => {
     expect(error[0].message).toBe("Variable \"$accountId\" of required type \"ID!\" was not provided.");
   }
 });
+
+test("get invalid params error: no shopId", async () => {
+  try {
+    await query({ accountId: opaqueAccountId });
+  } catch (error) {
+    expect(error[0].message).toBe("You must provide ShopId(s)");
+  }
+});
+

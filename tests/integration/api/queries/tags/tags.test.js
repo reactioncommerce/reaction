@@ -36,6 +36,11 @@ beforeAll(async () => {
   await testApp.start();
   query = testApp.query(tagsQuery);
 
+  await testApp.setLoggedInUser({
+    _id: "123",
+    roles: { [internalShopId]: ["tags"] }
+  });
+
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(mockTags.map((tag) => testApp.collections.Tags.insertOne(tag)));
 });

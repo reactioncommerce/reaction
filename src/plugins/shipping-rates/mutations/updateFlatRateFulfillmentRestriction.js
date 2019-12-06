@@ -21,10 +21,10 @@ export default async function updateFlatRateFulfillmentRestrictionMutation(conte
   inputSchema.validate(cleanedInput);
 
   const { restriction, restrictionId, shopId } = cleanedInput;
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  await checkPermissions(["admin", "owner", "shipping"], shopId);
+  await context.validatePermissions(`reaction:shippingRestrictions:${restrictionId}`, "update", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
   const { matchedCount } = await FlatRateFulfillmentRestrictions.updateOne({
     _id: restrictionId,

@@ -35,7 +35,7 @@ test("throws if the order fulfillment group doesn't exist", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(updateOrderFulfillmentGroup(mockContext, {
     orderId: "order1",
@@ -45,6 +45,7 @@ test("throws if the order fulfillment group doesn't exist", async () => {
 
 test("throws if permission check fails", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    _id: "order1",
     shipping: [
       {
         _id: "123",
@@ -54,7 +55,7 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
@@ -63,7 +64,11 @@ test("throws if permission check fails", async () => {
     orderFulfillmentGroupId: "123"
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:orders:order1",
+    "update",
+    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+  );
 });
 
 test("skips permission check if context.isInternalCall", async () => {
@@ -98,7 +103,7 @@ test("skips permission check if context.isInternalCall", async () => {
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.checkPermissions).not.toHaveBeenCalled();
+  expect(mockContext.validatePermissions).not.toHaveBeenCalled();
 });
 
 test("skips update if one is not necessary", async () => {
@@ -116,7 +121,7 @@ test("skips update if one is not necessary", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   await updateOrderFulfillmentGroup(mockContext, { orderId: "order1", orderFulfillmentGroupId: "group1" });
 
@@ -142,7 +147,7 @@ test("updates an order fulfillment group", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,

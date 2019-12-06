@@ -10,10 +10,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} Groups collection cursor
  */
 export default async function groups(context, shopId) {
-  const { collections, userHasPermission, userId } = context;
+  const { collections, userId } = context;
   const { Accounts, Groups } = collections;
 
-  if (userHasPermission(["owner", "admin", "reaction-accounts"], shopId)) {
+  // TODO: Break this query up into one for all groups (for admins only) and one for user's groups
+  if (context.userHasPermission("reaction:accounts", "read", { shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] })) { // TODO(pod-auth): update this permissions check
     // find groups by shop ID
     return Groups.find({ shopId });
   }

@@ -14,7 +14,7 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
  * @returns {Promise<Object>} Updated navigation tree
  */
 export default async function updateNavigationTree(context, input) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { NavigationTrees } = collections;
   const { navigationTreeId, shopId, navigationTree } = input;
 
@@ -44,7 +44,7 @@ export default async function updateNavigationTree(context, input) {
   NavigationTreeSchema.validate(navigationTreeData);
   const { draftItems, name } = navigationTreeData;
 
-  await checkPermissions(["core"], shopId);
+  await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "update", { shopId, legacyRoles: ["core"] });
 
   const treeSelector = { _id: navigationTreeId, shopId };
   const existingNavigationTree = await NavigationTrees.findOne(treeSelector);

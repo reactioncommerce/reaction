@@ -19,7 +19,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function addAccountEmailRecord(context, input) {
   inputSchema.validate(input);
-  const { appEvents, checkPermissions, collections, userId: userIdFromContext } = context;
+  const { appEvents, collections } = context;
   const { Accounts, users } = collections;
   const {
     accountId,
@@ -32,8 +32,12 @@ export default async function addAccountEmailRecord(context, input) {
   const user = await users.findOne({ _id: account.userId });
   if (!user) throw new ReactionError("not-found", "User not Found");
 
-  if (!context.isInternalCall && userIdFromContext !== account.userId) {
-    await checkPermissions(["reaction-accounts"], account.shopId);
+  if (!context.isInternalCall) {
+    await context.validatePermissions(`reaction:accounts:${account._id}`, "add:emails", {
+      shopId: account.shopId,
+      owner: account.userId,
+      legacyRoles: ["reaction-accounts"]
+    });
   }
 
   // add email to user
