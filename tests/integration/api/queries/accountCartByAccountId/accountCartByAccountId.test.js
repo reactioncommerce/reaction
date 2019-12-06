@@ -24,7 +24,7 @@ beforeAll(async () => {
   mockCustomerAccount = Factory.Account.makeOne({
     _id: "mockCustomerAccountId",
     roles: {
-      [shopId]: ["owner"]
+      [shopId]: []
     },
     shopId
   });
