@@ -247,10 +247,10 @@ extend type Query {
     cartId: ID!,
 
     """
-    A valid anonymous cart access token for this cart. This is returned when you create
+    A valid anonymous cart access cartToken for this cart. This is returned when you create
     an anonymous cart and should be stored securely in storefront client storage.
     """
-    token: String!
+    cartToken: String!
   ): Cart
 
   # Access control should ensure that only authenticated users can find their own
@@ -314,14 +314,14 @@ input AddCartItemsInput {
   "The cart ID"
   cartId: ID!
 
+  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
   "Array of items to be added to the cart"
   items: [CartItemInput]!
-
-  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
-  token: String
 }
 
 "Input for the `removeCartItems` mutation"
@@ -332,11 +332,11 @@ input RemoveCartItemsInput {
   "Array of items to remove from the cart."
   cartItemIds: [ID]!
 
+  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
-
-  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
-  token: String
 }
 
 "Input for the `updateCartItem` mutation"
@@ -353,14 +353,14 @@ input UpdateCartItemsQuantityInput {
   "The cart ID"
   cartId: ID!
 
+  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
   "Array of cart item quantities to update."
   items: [UpdateCartItemInput]!
-
-  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
-  token: String
 }
 
 "Input for the `reconcileCarts` mutation call"
@@ -369,7 +369,7 @@ input ReconcileCartsInput {
   anonymousCartId: ID!
 
   "An anonymous cart token"
-  anonymousCartToken: String!
+  cartToken: String!
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
@@ -390,6 +390,9 @@ input SetEmailOnAnonymousCartInput {
   "An anonymous cart ID"
   cartId: ID!
 
+  "Provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String!
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -398,9 +401,6 @@ input SetEmailOnAnonymousCartInput {
   other fulfillment purposes.
   """
   email: String!
-
-  "Provide the `token` that was returned in the `CreateCartPayload`"
-  token: String!
 }
 
 ####################

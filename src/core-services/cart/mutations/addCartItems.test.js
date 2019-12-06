@@ -30,7 +30,7 @@ test("add an item to an existing anonymous cart", async () => {
   const result = await addCartItems(mockContext, {
     cartId: "cartId",
     items,
-    token: "TOKEN"
+    cartToken: "TOKEN"
   });
 
   expect(result).toEqual({

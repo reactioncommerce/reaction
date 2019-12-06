@@ -16,7 +16,7 @@ let mockCustomerAccount;
 let opaqueCartId;
 let shopId;
 let testApp;
-const token = "TOKEN";
+const cartToken = "TOKEN";
 
 beforeAll(async () => {
   testApp = new TestApp();
@@ -60,7 +60,7 @@ beforeAll(async () => {
   mockCart = Factory.Cart.makeOne({
     shopId,
     accountId: mockCustomerAccount._id,
-    anonymousAccessToken: hashToken(token),
+    anonymousAccessToken: hashToken(cartToken),
     shipping: null,
     items: [],
     workflow: null
@@ -95,7 +95,7 @@ afterAll(async () => {
 test("an anonymous user can add an item to their cart", async () => {
   let result;
   try {
-    result = await addCartItems({ cartId: opaqueCartId, items, token });
+    result = await addCartItems({ cartId: opaqueCartId, items, cartToken });
   } catch (error) {
     expect(error).toBeUndefined();
     return;

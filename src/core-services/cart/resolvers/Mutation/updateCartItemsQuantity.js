@@ -11,13 +11,13 @@ import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
  * @param {String} args.input.items - Array of items to update
  * @param {Number} args.input.items.cartItemId - The cart item ID
  * @param {Object} args.input.items.quantity - The new quantity, which must be an integer of 0 or greater
- * @param {String} args.input.token - The token if the cart is an anonymous cart
+ * @param {String} args.input.cartToken - The cartToken if the cart is an anonymous cart
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
  * @returns {Promise<Object>} UpdateCartItemsQuantityPayload
  */
 export default async function updateCartItemsQuantity(parentResult, { input }, context) {
-  const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, token } = input;
+  const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, cartToken } = input;
 
   const cartId = decodeCartOpaqueId(opaqueCartId);
   const items = itemsInput.map((item) => ({ cartItemId: decodeCartItemOpaqueId(item.cartItemId), quantity: item.quantity }));
@@ -25,7 +25,7 @@ export default async function updateCartItemsQuantity(parentResult, { input }, c
   const { cart } = await context.mutations.updateCartItemsQuantity(context, {
     cartId,
     items,
-    token
+    cartToken
   });
 
   return { cart, clientMutationId };
