@@ -1,0 +1,68 @@
+fragment NavigationTreeItem on NavigationItem {
+  _id
+  data {
+    content {
+      language
+      value
+    }
+    contentForLanguage
+    url
+    isUrlRelative
+    shouldOpenInNewWindow
+  }
+  draftData {
+    content {
+      language
+      value
+    }
+  }
+  metadata
+  createdAt
+  hasUnpublishedChanges
+}
+
+query NavigationTreeById(
+  $id: ID!
+  $language: String!
+  $shopId:  ID!
+  $shouldIncludeSecondary: Boolean
+) {
+  navigationTreeById(
+    id: $id
+    language: $language
+    shopId: $shopId
+    shouldIncludeSecondary: $shouldIncludeSecondary
+  ) {
+    name
+    items {
+      navigationItem {
+				...NavigationTreeItem
+      }
+      items {
+        navigationItem {
+          ...NavigationTreeItem
+        }
+        items {
+          navigationItem {
+            ...NavigationTreeItem
+          }
+        }
+      }
+    }
+    draftItems {
+      navigationItem {
+				...NavigationTreeItem
+      }
+      items {
+        navigationItem {
+          ...NavigationTreeItem
+        }
+        items {
+          navigationItem {
+            ...NavigationTreeItem
+          }
+        }
+      }
+    }
+  }
+}
