@@ -1,4 +1,5 @@
 import i18n from "./i18n/index.js";
+import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
 import { registerPluginHandler } from "./registration.js";
 import resolvers from "./resolvers/index.js";
@@ -22,6 +23,15 @@ export default async function register(app) {
       resolvers,
       schemas
     },
-    queries
+    mutations,
+    queries,
+    collections: {
+      AddressValidationRules: {
+        name: "AddressValidationRules",
+        indexes: [
+          [{ shopId: 1 }]
+        ]
+      }
+    }
   });
 }

@@ -1,9 +1,11 @@
 import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
 import Address from "./Address.js";
+import Mutation from "./Mutation/index.js";
 import Query from "./Query/index.js";
 
 export default {
   Address,
+  Mutation,
   Query,
   ...getConnectionTypeResolvers("Address")
 };

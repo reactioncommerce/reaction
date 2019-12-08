@@ -1,0 +1,124 @@
+"""
+An address validation rule specifies which validation services should run for
+which countries in each shop.
+"""
+type AddressValidationRule {
+  "The rule ID"
+  _id: ID!
+
+  "Country codes for which this service is enabled"
+  countryCodes: [String]
+
+  "The date and time at which this rule was created"
+  createdAt: DateTime!
+
+  """
+  The name of one of the installed validation services. Use `addressValidationServices`
+  query to get a list with more details about all installed services.
+  """
+  serviceName: String!
+
+  "ID of the shop to which this rule applies"
+  shopId: ID!
+
+  "The date and time at which this rule was last updated"
+  updatedAt: DateTime!
+}
+
+"Input for the `createAddressValidationRule` mutation"
+input CreateAddressValidationRuleInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "Country codes for which this service is enabled. `null` means all, while an empty array means none."
+  countryCodes: [String]
+
+  """
+  The name of one of the installed validation services. Use `addressValidationServices`
+  query to get a list, and then use the `name` field value from one of them.
+  """
+  serviceName: String!
+
+  "ID of the shop to which this rule applies"
+  shopId: ID!
+}
+
+"Input for the `deleteAddressValidationRule` mutation"
+input DeleteAddressValidationRuleInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of the rule you want to delete"
+  ruleId: ID!
+
+  "Shop ID of the rule you want to delete"
+  shopId: ID!
+}
+
+"Input for the `updateAddressValidationRule` mutation"
+input UpdateAddressValidationRuleInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "Country codes for which this service is enabled. `null` means all, while an empty array means none."
+  countryCodes: [String]
+
+  "ID of the rule you want to update"
+  ruleId: ID!
+
+  """
+  The name of one of the installed validation services. Use `addressValidationServices`
+  query to get a list, and then use the `name` field value from one of them.
+  """
+  serviceName: String!
+
+  "Shop ID of the rule you want to update. This is not something you can modify."
+  shopId: ID!
+}
+
+"Payload for the `createAddressValidationRule` mutation"
+type CreateAddressValidationRulePayload {
+  "Created address validation rule"
+  addressValidationRule: AddressValidationRule!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"Payload for the `deleteAddressValidationRule` mutation"
+type DeleteAddressValidationRulePayload {
+  "Deleted address validation rule"
+  addressValidationRule: AddressValidationRule!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"Payload for the `updateAddressValidationRule` mutation"
+type UpdateAddressValidationRulePayload {
+  "Updated address validation rule"
+  addressValidationRule: AddressValidationRule!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+extend type Mutation {
+  "Create an address validation rule"
+  createAddressValidationRule(
+    "Mutation input"
+    input: CreateAddressValidationRuleInput!
+  ): CreateAddressValidationRulePayload!
+
+  "Delete an address validation rule"
+  deleteAddressValidationRule(
+    "Mutation input"
+    input: DeleteAddressValidationRuleInput!
+  ): DeleteAddressValidationRulePayload!
+
+  "Update an address validation rule"
+  updateAddressValidationRule(
+    "Mutation input"
+    input: UpdateAddressValidationRuleInput!
+  ): UpdateAddressValidationRulePayload!
+}
