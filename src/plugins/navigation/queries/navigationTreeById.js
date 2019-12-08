@@ -23,7 +23,7 @@ export default async function navigationTreeById(context, { language, navigation
     navigationTree.language = language;
 
     // Check to make sure user has `read` permissions for this navigationTree
-    await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "read", { shopId, legacyRoles: ["owner", "admin", "create-product"] });
+    await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "read", { shopId, legacyRoles: ["owner", "admin", "create-product", "read-navigation"] });
 
     // Check to see if user has `read` permissions for this navigationTree's drafts
     // TODO(pod-auth): revisit using `drafts` in resource
