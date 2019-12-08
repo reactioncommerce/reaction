@@ -35,7 +35,7 @@ export default async function navigationTreeById(context, { language, navigation
 
     // Filter items based on visibility options and user permissions
     navigationTree.items = filterNavigationTreeItems(navigationTree.items, {
-      hasDraftPermissions,
+      isAdmin: hasDraftPermissions,
       shouldIncludeSecondary
     });
 
