@@ -1,5 +1,5 @@
-query ($accountId: ID!, $orderStatus: [String]) {
-  ordersByAccountId(accountId: $accountId, orderStatus: $orderStatus) {
+query ($accountId: ID!, $orderStatus: [String], $shopIds: [ID]!) {
+  ordersByAccountId(accountId: $accountId, orderStatus: $orderStatus, shopIds: $shopIds) {
     totalCount
     pageInfo {
       endCursor

@@ -222,7 +222,7 @@ const mockNavigationTreeDoc2 = {
 
 const mockCustomerAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: []
+    [internalShopId]: ["read-navigation"]
   },
   shopId: internalShopId
 });

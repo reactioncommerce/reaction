@@ -17,7 +17,7 @@ extend type Query {
     filters: OrderFilterInput
 
     "Provide a list of shop IDs from which you want to get orders from"
-    shopIds: [ID]
+    shopIds: [ID],
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
@@ -50,7 +50,7 @@ extend type Query {
     orderStatus: [String],
 
     "Limit to orders owned by one of these shops"
-    shopIds: [ID],
+    shopIds: [ID]!,
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
@@ -1015,7 +1015,7 @@ enum OrderStatus {
 
   "A new order that needs processing"
   new
-  
+
   "An order that is being processed"
   processing
 }
