@@ -10,6 +10,7 @@ const shopId = "integ-test-shop-id";
 const accountId = "integ-test-account-id";
 const differentId = "integ-test-different-id";
 const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDppbnRlZy10ZXN0LWFjY291bnQtaWQ=";
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDppbnRlZy10ZXN0LXNob3AtaWQ=";
 const orderId = "integ-test-order-id";
 const mockAccount = Factory.Account.makeOne({
   _id: accountId
@@ -149,8 +150,11 @@ afterAll(async () => {
 
 test("get 1 order by account ID", async () => {
   await testApp.collections.Orders.insertOne(order);
+  // order with account Id: const accountId = "integ-test-account-id";
+  // logged in user is accountId: accountId
   await testApp.setLoggedInUser(mockAccount);
-  const result = await query({ accountId: opaqueAccountId, shopIds: [shopId] });
+  const result = await query({ accountId: opaqueAccountId, shopIds: [opaqueShopId] });
+
   expect(result).toBeTruthy();
   expect(result.ordersByAccountId.nodes[0].account._id).toBe(opaqueAccountId);
 });
@@ -159,7 +163,7 @@ test("get multiple orders by account ID", async () => {
   await Promise.all(orders.map((mockOrder) => testApp.collections.Orders.insertOne(mockOrder)));
   await Promise.all(ordersWithDifferentAccount.map((mockDifferentAccountOrder) => testApp.collections.Orders.insertOne(mockDifferentAccountOrder)));
   await testApp.setLoggedInUser(mockAccount);
-  const result = await query({ accountId: opaqueAccountId, shopIds: [shopId] });
+  const result = await query({ accountId: opaqueAccountId, shopIds: [opaqueShopId] });
   expect(result).toBeTruthy();
   expect(result.ordersByAccountId.nodes[0].account._id).toBe(opaqueAccountId);
   expect(result.ordersByAccountId.nodes[1].account._id).toBe(opaqueAccountId);
@@ -172,7 +176,7 @@ test("get only cancelled orders by account ID", async () => {
   await Promise.all(orders.map((mockOrder) => testApp.collections.Orders.insertOne(mockOrder)));
   await Promise.all(canceledOrders.map((mockCanceled) => testApp.collections.Orders.insertOne(mockCanceled)));
   await testApp.setLoggedInUser(mockAccount);
-  const result = await query({ accountId: opaqueAccountId, shopIds: [shopId], orderStatus: ["coreOrderWorkflow/canceled"] });
+  const result = await query({ accountId: opaqueAccountId, shopIds: [opaqueShopId], orderStatus: ["coreOrderWorkflow/canceled"] });
   expect(result).toBeTruthy();
   expect(result.ordersByAccountId.totalCount).toBe(3);
   expect(result.ordersByAccountId.nodes[0].account._id).toBe(opaqueAccountId);
@@ -183,7 +187,7 @@ test("get only cancelled orders by account ID", async () => {
 
 test("get invalid params error: no accountId", async () => {
   try {
-    await query();
+    await query({ shopIds: [shopId] });
   } catch (error) {
     expect(error[0].message).toBe("Variable \"$accountId\" of required type \"ID!\" was not provided.");
   }
@@ -193,7 +197,7 @@ test("get invalid params error: no shopId", async () => {
   try {
     await query({ accountId: opaqueAccountId });
   } catch (error) {
-    expect(error[0].message).toBe("You must provide ShopId(s)");
+    expect(error[0].message).toBe("Variable \"$shopIds\" of required type \"[ID]!\" was not provided.");
   }
 });
 
