@@ -206,8 +206,8 @@ extend type Mutation {
     input: AddAccountToGroupInput!
   ): AddAccountToGroupPayload
 
-  "Create a new permission group"
-  createGroup(
+  "Create a new account group. These are usually used for account group permissions"
+  createAccountGroup(
     "Mutation input"
     input: CreateAccountGroupInput!
   ): CreateAccountGroupPayload
