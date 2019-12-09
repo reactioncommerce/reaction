@@ -1,7 +1,7 @@
 import { decodeShopOpaqueId } from "../../xforms/id";
 
 /**
- * @name group/createGroup
+ * @name group/createAccountGroup
  * @method
  * @memberof Group/GraphQL
  * @summary A resolver creates a new permission group for a shop
@@ -17,7 +17,7 @@ import { decodeShopOpaqueId } from "../../xforms/id";
  * @param {String} context.shopId - id of the shop the group belongs to
  * @returns {Object} - `object.status` of 200 on success or Error object on failure
  */
-export default async function createGroup(_, { input }, context) {
+export default async function createAccountGroup(_, { input }, context) {
   const { shopId } = input;
   const decodedShopId = decodeShopOpaqueId(shopId);
 

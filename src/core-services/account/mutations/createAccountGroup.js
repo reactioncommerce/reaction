@@ -4,11 +4,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 
 /**
- * @name group/createGroup
+ * @name group/createAccountGroup
  * @method
  * @memberof Group/Methods
  * @summary Creates a new permission group for a shop
  * It creates permission group for a given shop with passed in roles
+ * This method also effectively creates a role in reaction authorization service with the same
+ * name as the supplied group if kafka connect mongo has been configured on the mongo db
  * @param {object} context - The GraphQL context
  * @param {String} context.shopId - id of the shop the group belongs to
  * @param {object} input - The input supplied from GraphQL
@@ -19,7 +21,7 @@ import getSlug from "@reactioncommerce/api-utils/getSlug.js";
  * @param {Array} input.groupData.members - members of the
  * @returns {Object} - `object.status` of 200 on success or Error object on failure
  */
-export default async function createGroup(context, input) {
+export default async function createAccountGroup(context, input) {
   const { group, shopId } = input;
   let _id;
   const { Groups } = context.collections;
@@ -59,7 +61,7 @@ export default async function createGroup(context, input) {
     // and should place the newly created group on the kakfa groups topic
     // reaction authorization listens on the topic and creates role (group)
     // reaction authorization
-    _id = await Groups.insert(newGroupData);
+    _id = await Groups.insertOne(newGroupData);
   } catch (error) {
     Logger.error(error);
     throw new ReactionError("invalid-parameter", "Bad request");

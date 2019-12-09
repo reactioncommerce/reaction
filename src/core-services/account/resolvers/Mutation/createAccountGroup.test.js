@@ -1,10 +1,10 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import { encodeShopOpaqueId } from "../../xforms/id.js";
-import createGroup from "./createGroup.js";
+import createAccountGroup from "./createAccountGroup.js";
 
 mockContext.mutations.createGroup = jest.fn().mockName("mutations.createGroup");
 
-test("createGroup resolver function should correctly passes through to internal mutation function", async () => {
+test("createAccountGroup resolver function should correctly passes through to internal mutation function", async () => {
   const groupName = "test group";
   const endcodedShopId = encodeShopOpaqueId("test-shop-id");
   const group = {
@@ -29,7 +29,7 @@ test("createGroup resolver function should correctly passes through to internal 
 
   mockContext.mutations.createGroup.mockReturnValueOnce(Promise.resolve(fakeCreatedGroupResult));
 
-  const result = await createGroup(null, { input }, mockContext);
+  const result = await createAccountGroup(null, { input }, mockContext);
   const resolverMutationFunctionInternalInput = Object.assign({}, input, { shopId: "test-shop-id" });
 
   expect(mockContext.mutations.createGroup).toHaveBeenCalledWith(resolverMutationFunctionInternalInput, mockContext);

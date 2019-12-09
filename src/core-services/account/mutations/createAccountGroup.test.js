@@ -1,7 +1,7 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createGroup from "./createGroup.js";
+import createAccountGroup from "./createAccountGroup.js";
 
 mockContext.validatePermissions = jest.fn("validatePermissions");
 mockContext.validatePermissionsLegacy = jest.fn("validatePermissionsLegacy");
@@ -29,7 +29,7 @@ test("should create a group for the shop", async () => {
     shopId: "test-shop-id"
   };
 
-  mockContext.collections.Groups.insert.mockReturnValueOnce("test-group-id");
+  mockContext.collections.Groups.insertOne.mockReturnValueOnce("test-group-id");
   mockContext.collections.Groups.findOne
     .mockReturnValueOnce(Promise.resolve(fakeResult))
     .mockReturnValueOnce(Promise.resolve(undefined))
@@ -38,7 +38,7 @@ test("should create a group for the shop", async () => {
   mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(undefined));
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
 
-  const result = await createGroup(mockContext, input);
+  const result = await createAccountGroup(mockContext, input);
   const expected = Object.assign({}, { group: fakeResult });
   await expect(result).toEqual(expected);
 
@@ -47,7 +47,7 @@ test("should create a group for the shop", async () => {
   expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(1, { slug: "customer", shopId });
   expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(2, { slug: "test-group", shopId });
   expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(3, { _id: groupId });
-  expect(mockContext.collections.Groups.insert).toHaveBeenCalledWith({
+  expect(mockContext.collections.Groups.insertOne).toHaveBeenCalledWith({
     name: "test group",
     slug: getSlug("test group"),
     permissions: [
@@ -77,7 +77,7 @@ test("should throw if group already exists", async () => {
     shopId: "test-shop-id"
   };
 
-  mockContext.collections.Groups.insert.mockReturnValueOnce("test-group-id");
+  mockContext.collections.Groups.insertOne.mockReturnValueOnce("test-group-id");
   mockContext.collections.Groups.findOne
     .mockReturnValueOnce(undefined)
     .mockReturnValueOnce(fakeResult);
@@ -85,5 +85,5 @@ test("should throw if group already exists", async () => {
   mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(undefined));
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
 
-  await expect(createGroup(mockContext, input)).rejects.toThrow(new ReactionError("conflict", "Group already exist for this shop"));
+  await expect(createAccountGroup(mockContext, input)).rejects.toThrow(new ReactionError("conflict", "Group already exist for this shop"));
 });

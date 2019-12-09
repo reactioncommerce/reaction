@@ -11,7 +11,7 @@ import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail.js";
 import setAccountProfileCurrency from "./setAccountProfileCurrency.js";
 import setAccountProfileLanguage from "./setAccountProfileLanguage.js";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
-import createGroup from "./createGroup.js";
+import createAccountGroup from "./createAccountGroup.js";
 
 export default {
   addressBookAdd,
@@ -27,5 +27,5 @@ export default {
   setAccountProfileCurrency,
   setAccountProfileLanguage,
   updateAccountAddressBookEntry,
-  createGroup
+  createAccountGroup
 };
