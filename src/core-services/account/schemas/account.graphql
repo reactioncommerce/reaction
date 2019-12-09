@@ -424,7 +424,7 @@ extend type Mutation {
     input: SetAccountProfileLanguageInput!
   ): SetAccountProfileLanguagePayload!
 
-  "Remove an address that exists in the `addressBook` field for an account"
+  "Update an address that exists in the `addressBook` field for an account"
   updateAccountAddressBookEntry(
     "Mutation input"
     input: UpdateAccountAddressBookEntryInput!

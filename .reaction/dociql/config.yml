@@ -1,0 +1,253 @@
+# To fetch schema from
+introspection: http://localhost:3000/graphql-beta
+
+servers:
+  - url: http://localhost:3000/graphql-beta
+    description: Localhost API
+
+info:
+  description: |
+    This represents the GraphQL API provided by Reaction Commerce with the included plugins. Note that your GraphQL API will vary depending on your mix of plugins.
+    To explore and query the API, go to `/graphql-beta` on a Reaction Commerce URL in a browser.
+  version: 3.0.0
+  title: Reaction Commerce GraphQL API
+  contact:
+    email: hello@reactioncommerce.com
+  license:
+    name: GPL-3.0
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+
+domains:
+  - name: Account Queries
+    description: ""
+    externalDocs: null
+    usecases:
+      - name: account
+        description: Returns the account with the provided ID
+        query: query.account
+      - name: accounts
+        description: Returns accounts for the provided shop ID
+        query: query.accounts
+        expand: edges,node,nodes,pageInfo
+      - name: administrators
+        description: Returns a list of administrators for the shop with ID shopId, as a Relay-compatible connection. "Administrators" means all linked accounts that have the "admin" role for this shop.
+        query: query.administrators
+      - name: group
+        description: Returns a single account group by ID
+        query: query.group
+      - name: groups
+        description: Returns a list of groups for the shop with ID `shopId`, as a Relay-compatible connection.
+        query: query.groups
+      - name: roles
+        description: Returns a paged list of all roles associated with a shop
+        query: query.roles
+      - name: viewer
+        description: Returns the account for the authenticated user
+        query: query.viewer
+  - name: Account Mutations
+    description: ""
+    externalDocs: null
+    usecases:
+      - name: addAccountAddressBookEntry
+        description: Add a new address to the `addressBook` field for an account
+        query: mutation.addAccountAddressBookEntry
+        expand: address
+      - name: addAccountEmailRecord
+        description: Add an email address to an account
+        query: mutation.addAccountEmailRecord
+        expand: account
+      - name: addAccountToGroup
+        description: Add an account to a group
+        query: mutation.addAccountToGroup
+        expand: group
+      - name: inviteShopMember
+        description: Given a person's email address and name, invite them to create an account for a certain shop, and put them in the provided permission group
+        query: mutation.inviteShopMember
+        expand: account
+      - name: removeAccountAddressBookEntry
+        description: Remove an address from the `addressBook` field for an account
+        query: mutation.removeAccountAddressBookEntry
+        expand: address
+      - name: removeAccountEmailRecord
+        description: Remove an email address from an account
+        query: mutation.removeAccountEmailRecord
+        expand: account
+      - name: sendResetAccountPasswordEmail
+        description: Send a reset password email to an email address from an account
+        query: mutation.sendResetAccountPasswordEmail
+      - name: setAccountProfileCurrency
+        description: Set the preferred currency for an account
+        query: mutation.setAccountProfileCurrency
+        expand: account
+      - name: setAccountProfileLanguage
+        description: Set the preferred language for an account
+        query: mutation.setAccountProfileLanguage
+        expand: account
+      - name: updateAccountAddressBookEntry
+        description: Update an address that exists in the `addressBook` field for an account
+        query: mutation.updateAccountAddressBookEntry
+        expand: address
+  - name: Cart
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Catalog
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Core
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Discounts
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Email
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Files
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: I18N
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Inventory
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Orders
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Payments
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Product
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Settings
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Shipping
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Shop
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Tags
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Taxes
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Address
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Address Validation Test
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Checkout
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Dashboard
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Discount Codes
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Email SMTP
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Email Templates
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Job Queue
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Legacy Authorization
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Navigation
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Notifications
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Payments Example
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Payments Stripe
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Product Admin
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Product Variant
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Shipping Rates
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Simple Inventory
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Simple Pricing
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Sitemap Generator
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Surcharges
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: System Information
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Tax Rates
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: Templates
+    description: ""
+    externalDocs: null
+    usecases: []
+  - name: UI
+    description: ""
+    externalDocs: null
+    usecases: []
+
+externalDocs:
+  description: Reaction Commerce
+  url: 'http://reactioncommerce.com'
