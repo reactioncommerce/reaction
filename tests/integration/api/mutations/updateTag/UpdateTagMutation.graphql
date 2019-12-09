@@ -1,0 +1,35 @@
+mutation(
+  $id: ID!
+  $displayTitle: String!
+  $heroMediaUrl: String
+  $isVisible: Boolean!
+  $metafields: [MetafieldInput]
+  $name: String!
+  $shopId:ID!
+  $slug: String
+) {
+  updateTag(input:{
+    id: $id
+    displayTitle: $displayTitle
+    heroMediaUrl: $heroMediaUrl
+    isVisible: $isVisible
+    metafields: $metafields
+    name: $name
+    shopId: $shopId
+    slug: $slug }
+  ) {
+    tag {
+      _id
+      name
+      slug
+      displayTitle
+      metafields {
+        key
+        namespace
+        value
+      }
+      isVisible
+      heroMediaUrl
+    }
+  }
+}
