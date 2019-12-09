@@ -12,17 +12,50 @@ const shopName = "Test Shop";
 let availablePaymentMethods;
 let testApp;
 
+const examplePaymentMethod = {
+  _id: "euAJq7W8MzPJPm7Ne",
+  name: "example-paymentmethod",
+  shopId: "J8Bhq3uTtdgwZx3rz",
+  enabled: true,
+  icon: null,
+  registry: [
+    {
+      label: "Example Payment",
+      provides: [
+        "paymentSettings"
+      ],
+      container: "dashboard",
+      template: "exampleSettings"
+    }
+  ],
+  settings: {
+    mode: false,
+    apiKey: "",
+    example: {
+      enabled: false
+    },
+    support: [
+      "Authorize",
+      "Capture",
+      "Refund"
+    ]
+  },
+  version: null
+};
+
 
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
 
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName, availablePaymentMethods: ["iou_example"] });
+  await testApp.collections.Packages.insertOne(examplePaymentMethod);
   availablePaymentMethods = testApp.query(AvailablePaymentMethodsQuery);
 });
 
 afterAll(async () => {
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Packages.deleteMany({});
   await testApp.stop();
 });
 
@@ -37,5 +70,6 @@ test("retrieves all available payment methods", async () => {
     return;
   }
 
-  console.log(JSON.stringify(result, null, 2));
+  expect(result.availablePaymentMethods[0].name).toEqual("iou_example");
+  expect(result.availablePaymentMethods[0].isEnabled).toEqual(true);
 });
