@@ -1,0 +1,10 @@
+
+query($shopId: ID!){
+  getFlatRateFulfillmentRestrictions(shopId: $shopId){
+    nodes {
+      destination {
+        country
+      }
+    }
+  }
+}
