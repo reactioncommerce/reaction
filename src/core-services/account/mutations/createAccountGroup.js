@@ -26,12 +26,8 @@ export default async function createAccountGroup(context, input) {
   let _id;
   const { Groups } = context.collections;
 
-  // (LEGACY) we are limiting group method actions to only users with admin roles
-  // this also include shop owners, since they have the `admin` role
-  await context.validatePermissionsLegacy(["admin"], null, { shopId });
-
   // we are limiting group method actions to only users within the account managers role
-  await context.validatePermissions("reaction:account", "create", { shopId });
+  await context.validatePermissions("reaction:account", "create", { shopId, legacyRoles: ["admin"] });
 
   const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
 
@@ -67,6 +63,6 @@ export default async function createAccountGroup(context, input) {
     throw new ReactionError("invalid-parameter", "Bad request");
   }
 
-  const newlyCreatedGroup = await Groups.findOne({ _id })
+  const newlyCreatedGroup = await Groups.findOne({ _id });
   return { group: newlyCreatedGroup };
 }
