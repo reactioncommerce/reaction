@@ -34,12 +34,12 @@ const inputSchema = new SimpleSchema({
  * @returns {Promise<Object>} UpdateTagPayload
  */
 export default async function updateTag(context, input) {
-  const { appEvents, checkPermissions, collections } = context;
+  const { appEvents, collections } = context;
   const { Tags } = collections;
   const { shopId, tagId, slug: slugInput } = input;
 
   // Check for owner or admin permissions from the user before allowing the mutation
-  await checkPermissions(["owner", "admin", "tag/admin", "tag/edit"], shopId);
+  await context.validatePermissions(`reaction:tags:${tagId}`, "update", { shopId, legacyRoles: ["owner", "admin", "tag/admin", "tag/edit"] });
 
   const metafields = [];
 

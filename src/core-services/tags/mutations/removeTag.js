@@ -11,11 +11,10 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function removeTag(context, input) {
   const { shopId, tagId } = input;
-  const { checkPermissions } = context;
   const { Tags } = context.collections;
 
   // Check for owner or admin permissions from the user before allowing the mutation
-  await checkPermissions(["admin", "owner"], shopId);
+  await context.validatePermissions(`reaction:tags:${tagId}`, "delete", { shopId, legacyRoles: ["owner", "admin"] });
 
   const tag = await Tags.findOne({ _id: tagId, shopId });
   const { result } = await Tags.deleteOne({ _id: tagId, shopId });

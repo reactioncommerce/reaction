@@ -27,11 +27,23 @@ export default async function tags(
   } = {}
 ) {
   const { collections } = context;
-
   const { Tags } = collections;
   const query = { shopId };
   let searchFieldFilter = {};
   let regexMatch;
+
+  // Check to make sure user has `read` permissions for this tag
+  await context.validatePermissions("reaction:tags", "read", {
+    shopId,
+    legacyRoles: ["admin", "owner", "tags"]
+  });
+
+  // Check to see if user has `read` permissions for hidden / deleted tags
+  // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
+  const hasInactivePermissions = await context.userHasPermission("reaction:tags:inactive", "read", {
+    shopId,
+    legacyRoles: ["admin", "owner", "tags"]
+  });
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
 
@@ -52,19 +64,17 @@ export default async function tags(
     };
   }
 
-  if (context.userHasPermission(["owner", "admin"], shopId)) {
-    if (shouldIncludeDeleted === true) {
-      delete query.isDeleted;
-    } else {
-      query.isDeleted = false;
-    }
-    if (shouldIncludeInvisible === true) {
-      delete query.isVisible;
-    } else {
-      query.isVisible = true;
-    }
-  } else {
+  // If user does not have `read-admin` permissions,
+  // or they do but shouldIncludeDeleted === false
+  // only show non deleted products
+  if (!hasInactivePermissions || (hasInactivePermissions && !shouldIncludeDeleted)) {
     query.isDeleted = false;
+  }
+
+  // If user does not have `read-admin` permissions,
+  // or they do but shouldIncludeInvisible === false
+  // only show visible products
+  if (hasInactivePermissions || (hasInactivePermissions && !shouldIncludeInvisible)) {
     query.isVisible = true;
   }
 

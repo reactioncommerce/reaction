@@ -7,6 +7,8 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
+const orderId = "order1";
+
 test("throws if orderId isn't supplied", async () => {
   await expect(updateOrder(mockContext, {})).rejects.toThrowErrorMatchingSnapshot();
 });
@@ -15,12 +17,13 @@ test("throws if the order doesn't exist", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
 
   await expect(updateOrder(mockContext, {
-    orderId: "order1"
+    orderId
   })).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("throws if permission check fails", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    _id: "order1",
     shipping: [
       {
         items: []
@@ -29,15 +32,19 @@ test("throws if permission check fails", async () => {
     shopId: "SHOP_ID"
   }));
 
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
   await expect(updateOrder(mockContext, {
-    orderId: "order1"
+    orderId
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["orders", "order/fulfillment"], "SHOP_ID");
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    `reaction:orders:${orderId}`,
+    "update",
+    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+  );
 });
 
 test("skips permission check if context.isInternalCall", async () => {
@@ -65,12 +72,12 @@ test("skips permission check if context.isInternalCall", async () => {
   mockContext.isInternalCall = true;
 
   await updateOrder(mockContext, {
-    orderId: "order1"
+    orderId
   });
 
   delete mockContext.isInternalCall;
 
-  expect(mockContext.checkPermissions).not.toHaveBeenCalled();
+  expect(mockContext.validatePermissions).not.toHaveBeenCalled();
 });
 
 
@@ -92,9 +99,9 @@ test("skips update if one is not necessary", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
-  await updateOrder(mockContext, { orderId: "order1" });
+  await updateOrder(mockContext, { orderId });
 
   expect(mockContext.collections.Orders.findOneAndUpdate).not.toHaveBeenCalled();
 });
@@ -117,7 +124,7 @@ test("updates an order", async () => {
     }
   }));
 
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,
@@ -129,12 +136,12 @@ test("updates an order", async () => {
       foo: "bar"
     },
     email: "new@email.com",
-    orderId: "order1",
+    orderId,
     status: "NEW_STATUS"
   });
 
   expect(mockContext.collections.Orders.findOneAndUpdate).toHaveBeenCalledWith(
-    { _id: "order1" },
+    { _id: orderId },
     {
       $set: {
         "customFields": {

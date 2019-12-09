@@ -7,15 +7,14 @@ const accountByUserId = jest.fn().mockName("accountByUserId").mockReturnValue(Pr
 
 const auth = {
   accountByUserId,
-  getHasPermissionFunctionForUser: () => () => {},
-  getShopsUserHasPermissionForFunctionForUser: () => () => {}
+  getHasPermissionFunctionForUserLegacy: () => () => {}
 };
 
 test("properly mutates the context object without user", async () => {
   process.env.ROOT_URL = "http://localhost:3000";
   const context = {
     auth,
-    checkPermissions: mockContext.checkPermissions,
+    validatePermissions: mockContext.validatePermissions,
     collections: mockContext.collections,
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
@@ -27,16 +26,15 @@ test("properly mutates the context object without user", async () => {
     account: null,
     accountId: null,
     auth,
-    checkPermissions: jasmine.any(Function),
     collections: mockContext.collections,
     isInternalCall: false,
     queries: {
       primaryShopId: jasmine.any(Function)
     },
     requestHeaders: {},
-    shopsUserHasPermissionFor: jasmine.any(Function),
     user: null,
     userHasPermission: jasmine.any(Function),
+    validatePermissions: jasmine.any(Function),
     userId: null
   });
 });
@@ -47,7 +45,7 @@ test("properly mutates the context object with user", async () => {
 
   const context = {
     auth,
-    checkPermissions: mockContext.checkPermissions,
+    validatePermissions: mockContext.validatePermissions,
     collections: mockContext.collections,
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
@@ -58,16 +56,15 @@ test("properly mutates the context object with user", async () => {
     account: mockAccount,
     accountId: mockAccount._id,
     auth,
-    checkPermissions: jasmine.any(Function),
     collections: mockContext.collections,
     isInternalCall: false,
     queries: {
       primaryShopId: jasmine.any(Function)
     },
     requestHeaders: {},
-    shopsUserHasPermissionFor: jasmine.any(Function),
     user: fakeUser,
     userHasPermission: jasmine.any(Function),
+    validatePermissions: jasmine.any(Function),
     userId: fakeUser._id
   });
 });

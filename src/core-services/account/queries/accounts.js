@@ -9,11 +9,14 @@
  * @returns {Promise} Mongo cursor
  */
 export default async function accounts(context, input) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Accounts, Groups } = collections;
   const { shopId } = input;
 
-  await checkPermissions(["reaction-accounts"], shopId);
+  await context.validatePermissions("reaction:accounts", "read", {
+    shopId,
+    legacyRoles: ["reaction-accounts"]
+  });
 
   const groups = await Groups.find({
     name: { $in: ["guest", "customer"] },

@@ -83,7 +83,7 @@ const complexSettings = [
  * @returns {Promise<Object>} with updated shop
  */
 export default async function updateShop(context, input) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Shops } = collections;
 
   inputSchema.validate(input || {});
@@ -95,7 +95,7 @@ export default async function updateShop(context, input) {
 
   // Check permission to make sure user is allowed to do this
   // Security check for admin access
-  await checkPermissions(["owner", "admin"], shopId);
+  await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId, legacyRoles: ["owner", "admin"] });
 
   // set data to update
   const sets = {};

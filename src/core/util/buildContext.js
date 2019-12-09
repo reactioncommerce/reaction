@@ -23,6 +23,7 @@ export default async function buildContext(context, request = {}) {
   const userId = (context.user && context.user._id) || null;
   context.userId = userId;
 
+  // authorization methods
   if (userId) {
     if (typeof context.auth.getHasPermissionFunctionForUser === "function") {
       context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
@@ -30,23 +31,17 @@ export default async function buildContext(context, request = {}) {
       context.userHasPermission = () => false;
     }
 
-    context.checkPermissions = async (...args) => {
+    context.validatePermissions = async (...args) => {
       const allowed = await context.userHasPermission(...args);
       if (!allowed) throw new ReactionError("access-denied", "Access Denied");
     };
-
-    if (typeof context.auth.getShopsUserHasPermissionForFunctionForUser === "function") {
-      context.shopsUserHasPermissionFor = await context.auth.getShopsUserHasPermissionForFunctionForUser(context);
-    } else {
-      context.shopsUserHasPermissionFor = () => [];
-    }
   } else {
-    context.checkPermissions = async () => {
+    context.validatePermissions = async () => {
       throw new ReactionError("access-denied", "Access Denied");
     };
     context.userHasPermission = () => false;
-    context.shopsUserHasPermissionFor = () => [];
   }
+  // /authorization methods
 
   let account;
   if (userId && typeof context.auth.accountByUserId === "function") {

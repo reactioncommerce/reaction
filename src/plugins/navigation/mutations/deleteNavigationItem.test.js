@@ -33,7 +33,7 @@ test("calls NavigationItems.deleteOne and returns an object that validates again
 });
 
 test("throws an error if the user does not have the core permission", async () => {
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   const result = deleteNavigationItemMutation(mockContext, { _id: "n1" });

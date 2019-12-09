@@ -37,18 +37,18 @@ export default async function updateOrder(context, input) {
     status
   } = input;
 
-  const { appEvents, checkPermissions, collections, isInternalCall, userId } = context;
+  const { appEvents, collections, isInternalCall, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  // Allow update if the account that placed the order is attempting to update
-  // or if the account has "orders" permission. When called internally by another
-  // plugin, context.isInternalCall can be set to `true` to disable this check.
+  // At this point, this mutation only updates the workflow status, which should not be allowed
+  // for the order creator. In the future, if this mutation does more, we should revisit these
+  // permissions to see if order owner should be allowed.
   if (!isInternalCall) {
-    await checkPermissions(["orders", "order/fulfillment"], order.shopId);
+    await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
   }
 
   const modifier = {

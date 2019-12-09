@@ -10,11 +10,11 @@
  * @returns {Promise<Object>} Product object Promise
  */
 export default async function product(context, input) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Products } = collections;
   const { productId, shopId } = input;
 
-  await checkPermissions(["owner", "admin", "createProduct"], shopId);
+  await context.validatePermissions(`reaction:products:${productId}`, "read", { shopId, legacyRoles: ["owner", "admin", "createProduct", "product/admin"] });
 
   return Products.findOne({
     _id: productId,

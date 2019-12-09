@@ -31,11 +31,14 @@ const inputSchema = new SimpleSchema({
  */
 export default async function cloneProducts(context, input) {
   inputSchema.validate(input);
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Products } = collections;
   const { productIds, shopId } = input;
 
-  await checkPermissions(["createProduct", "product/admin", "product/clone"], shopId);
+  // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
+  for (const productId of productIds) {
+    await context.validatePermissions(`reaction:products:${productId}`, "clone", { shopId, legacyRoles: ["createProduct", "product/admin", "product/clone"] }); // eslint-disable-line no-await-in-loop
+  }
 
   // Check to make sure all variants are on the same shop
   const count = await Products.find({ _id: { $in: productIds }, type: "simple", shopId }).count();

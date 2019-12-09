@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @name tag
  * @method
@@ -11,9 +13,23 @@
  * @returns {Object} - A Tag document if one was found
  */
 export default async function tag(context, input) {
-  const { collections, userHasPermission } = context;
+  const { collections } = context;
   const { Tags } = collections;
   const { slugOrId, shopId, shouldIncludeInvisible = false } = input;
+
+  // Check to make sure user has `read` permissions for this tag
+  await context.validatePermissions(`reaction:tags:${slugOrId}`, "read", {
+    shopId,
+    legacyRoles: ["admin", "owner", "tags"]
+  });
+
+  // Check to see if user has `read` permissions for hidden / deleted tags
+  // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
+  const hasInactivePermissions = await context.userHasPermission(`reaction:tags:${slugOrId}:inactive`, "read", {
+    shopId,
+    legacyRoles: ["admin", "owner", "tags"]
+  });
+
   let query = {
     $and: [
       { isVisible: true },
@@ -22,11 +38,17 @@ export default async function tag(context, input) {
     ]
   };
 
-  if (shouldIncludeInvisible === true) {
-    if (userHasPermission(["owner", "admin"], shopId)) {
-      query = { $or: [{ _id: slugOrId }, { slug: slugOrId }] };
-    }
+  if (hasInactivePermissions && shouldIncludeInvisible === true) {
+    query = {
+      $or: [{ _id: slugOrId }, { slug: slugOrId }]
+    };
   }
 
-  return Tags.findOne(query);
+  const foundTag = await Tags.findOne(query);
+
+  if (!foundTag) {
+    throw new ReactionError("not-found", "Tag not found");
+  }
+
+  return foundTag;
 }

@@ -8,10 +8,10 @@
  * @returns {Promise<Object>} Email templates cursor
  */
 export default async function emailTemplates(context, shopId) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Templates } = collections;
 
-  await checkPermissions(["owner", "admin"], shopId);
+  await context.validatePermissions("reaction:emailTemplates", "read", { shopId, legacyRoles: ["owner", "admin"] });
 
   return Templates.find({
     shopId,
