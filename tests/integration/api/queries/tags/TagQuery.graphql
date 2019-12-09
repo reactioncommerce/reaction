@@ -1,0 +1,7 @@
+query Tag($slugOrId: String!, $shopId: ID!, $shouldIncludeInvisible: Boolean) {
+  tag(slugOrId: $slugOrId, shopId: $shopId, shouldIncludeInvisible: $shouldIncludeInvisible) {
+    _id
+    slug
+    isVisible
+  }
+}
