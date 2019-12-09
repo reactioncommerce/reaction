@@ -1,3 +1,82 @@
+# v3.0.0-alpha
+
+Reaction v3.0.0-alpha is our alpha release of the new Reaction project.
+
+This release is being coordinated with [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) and is designed to work with `v2.9.0` of [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra) and [Example Storefront](https://github.com/reactioncommerce/example-storefront).
+
+## Notable changes
+
+### De-meteorized the API
+
+Abstracted meteor-related sections into other projects.
+This drastically improves build, startup, and restart times.
+
+### Completed GraphQL API coverage
+
+All of the still-used old meteor methods have been ported to GraphQL queries and mutations.
+
+## Features
+
+- Authorization plugin & checkPermissions functionality [#5724](https://github.com/reactioncommerce/reaction/pull/5724)
+- Add checkPermissions function [#5727](https://github.com/reactioncommerce/reaction/pull/5727)
+- Add updateProduct and updateProductVariant mutations for 3.0 [#5768](https://github.com/reactioncommerce/reaction/pull/5768)
+- GQL tax rates [#5774](https://github.com/reactioncommerce/reaction/pull/5774)
+- Improved performance of tag queries [#5783](https://github.com/reactioncommerce/reaction/pull/5783)
+- De-meteorize `tags/getBySlug` [#5786](https://github.com/reactioncommerce/reaction/pull/5786)
+- De-meteorize `templates/email/update` [#5792](https://github.com/reactioncommerce/reaction/pull/5792)
+- Add `retryFailed` method for emails [#5793](https://github.com/reactioncommerce/reaction/pull/5793)
+- Add GQL queries and mutations for discount codes [#5800](https://github.com/reactioncommerce/reaction/pull/5800)
+- Update `updateShop` mutation to set all necessary settings [#5804](https://github.com/reactioncommerce/reaction/pull/5804)
+- Retry initial MongoDB connections [#5807](https://github.com/reactioncommerce/reaction/pull/5807)
+- Add email templates query [#5811](https://github.com/reactioncommerce/reaction/pull/5811)
+- Add `addAccountEmailRecord` mutation [#5813](https://github.com/reactioncommerce/reaction/pull/5813)
+- Add `addCartItems` mutation [#5814](https://github.com/reactioncommerce/reaction/pull/5814)
+- Add queries for `product` and `products` [#5818](https://github.com/reactioncommerce/reaction/pull/5818)
+- Add flat-rate fulfillment method query[#5844](https://github.com/reactioncommerce/reaction/pull/5844)
+- Update `updateShop` mutation to accept parcel size and brand assets [#5846](https://github.com/reactioncommerce/reaction/pull/5846)
+- Add Accounts GraphQL query to find non-admin accounts [#5848](https://github.com/reactioncommerce/reaction/pull/5848)
+- Stop using packages for tax settings [#5852](https://github.com/reactioncommerce/reaction/pull/5852)
+- Add integration test for `accountCartByAccountId` query [#5857](https://github.com/reactioncommerce/reaction/pull/5857)
+- Source Stripe API keys from ENV vars [#5771](https://github.com/reactioncommerce/reaction/pull/5771)
+
+## Fixes
+
+- Various 3.0.0 fixes [#5722](https://github.com/reactioncommerce/reaction/pull/5722)
+- Fix account invite flow and account email data [#5799](https://github.com/reactioncommerce/reaction/pull/5799)
+- Respect `allowGuestCheckout` setting [#5815](https://github.com/reactioncommerce/reaction/pull/5815)
+- Use api-utils for currency definitions [#5823](https://github.com/reactioncommerce/reaction/pull/5823)
+- Unified `updateTag` and `createTag` mutations [#5824](https://github.com/reactioncommerce/reaction/pull/5824)
+- Parse complicated `MONGO_URL` properly [#5827](https://github.com/reactioncommerce/reaction/pull/5827)
+
+## Refactor
+
+- Move xforms into plugins [#5713](https://github.com/reactioncommerce/reaction/pull/5713)
+- Use new `URL` instead of `url.parse` [#5717](https://github.com/reactioncommerce/reaction/pull/5717)
+- Remove previously deprecated code [#5718](https://github.com/reactioncommerce/reaction/pull/5718)
+- Clean up translations for products view [#5746](https://github.com/reactioncommerce/reaction/pull/5746)
+- Source SMTP email configuation from ENV vars instead of DB [#5788](https://github.com/reactioncommerce/reaction/pull/5788)
+- Make cart token param name consistent [#5820](https://github.com/reactioncommerce/reaction/pull/5820)
+
+## Tests
+
+- Add Babel config to make Jest tests work [#5728](https://github.com/reactioncommerce/reaction/pull/5728)
+- Fixed integration tests [#5732](https://github.com/reactioncommerce/reaction/pull/5732)
+- Add navigation query integration tests [#5856](https://github.com/reactioncommerce/reaction/pull/5856)
+- fix failing integration tests [#5862](https://github.com/reactioncommerce/reaction/pull/5862)
+
+## Chores
+
+- Check node version on run [#5734](https://github.com/reactioncommerce/reaction/pull/5734)
+- Lock `api-utils` version number [#5851](https://github.com/reactioncommerce/reaction/pull/5851)
+- Add integration test for `anonymousCartByCartId` query [#5859](https://github.com/reactioncommerce/reaction/pull/5859)
+- Add integration test for available payment methods [#5864](https://github.com/reactioncommerce/reaction/pull/5864)
+- Add integration test for `getFlatRateFulfillmentRestrictions` [#5866](https://github.com/reactioncommerce/reaction/pull/5866)
+- Add integration test for `getFlatRateFulfillmentRestriction` [#5869](https://github.com/reactioncommerce/reaction/pull/5869)
+
+## Contributors
+
+Thanks to [@trojanh](https://github.com/trojanh) for contributing to this release! 🎉
+
 # v2.9.0
 
 Reaction v2.9.0 adds integration tests for GraphQL API endpoints, security updates and fixes a fulfillment method bug.
