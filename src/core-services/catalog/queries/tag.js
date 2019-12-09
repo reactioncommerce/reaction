@@ -17,17 +17,11 @@ export default async function tag(context, input) {
   const { Tags } = collections;
   const { slugOrId, shopId, shouldIncludeInvisible = false } = input;
 
-  // Check to make sure user has `read` permissions for this tag
-  await context.validatePermissions(`reaction:tags:${slugOrId}`, "read", {
-    shopId,
-    legacyRoles: ["admin", "owner", "tags"]
-  });
-
   // Check to see if user has `read` permissions for hidden / deleted tags
   // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
   const hasInactivePermissions = await context.userHasPermission(`reaction:tags:${slugOrId}:inactive`, "read", {
     shopId,
-    legacyRoles: ["admin", "owner", "tags"]
+    legacyRoles: ["admin", "owner"]
   });
 
   let query = {

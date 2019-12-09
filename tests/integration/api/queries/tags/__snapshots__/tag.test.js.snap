@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should not show a hidden tag to a customer 1`] = `
+Object {
+  "extensions": Object {
+    "code": "NOT_FOUND",
+    "exception": Object {
+      "details": Object {},
+      "error": "not-found",
+      "eventData": Object {},
+      "isClientSafe": true,
+      "reason": "Tag not found",
+    },
+  },
+  "locations": Array [
+    Object {
+      "column": 3,
+      "line": 2,
+    },
+  ],
+  "message": "Tag not found",
+  "path": Array [
+    "tag",
+  ],
+}
+`;
+
+exports[`should not show a hidden tag to an admin 1`] = `
+Object {
+  "extensions": Object {
+    "code": "NOT_FOUND",
+    "exception": Object {
+      "details": Object {},
+      "error": "not-found",
+      "eventData": Object {},
+      "isClientSafe": true,
+      "reason": "Tag not found",
+    },
+  },
+  "locations": Array [
+    Object {
+      "column": 3,
+      "line": 2,
+    },
+  ],
+  "message": "Tag not found",
+  "path": Array [
+    "tag",
+  ],
+}
+`;
