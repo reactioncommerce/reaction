@@ -1,6 +1,0 @@
-query($shopId: ID!) {
-  availablePaymentMethods(shopId: $shopId){
-    isEnabled
-    name
-  }
-}
