@@ -16,12 +16,17 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
   const { collections } = context;
   const { Orders } = collections;
 
-  if (!accountId) {
-    throw new ReactionError("invalid-param", "You must provide accountId arguments");
+  if (!accountId) throw new ReactionError("invalid-param", "You must provide accountId arguments");
+
+  // Validate user has permission to view orders for all shopIds
+  if (!shopIds) throw new ReactionError("invalid-param", "You must provide ShopId(s)");
+  for (const shopId of shopIds) {
+    await context.validatePermissions("reaction:orders", "read", { shopId, owner: accountId, legacyRoles: ["orders", "order/fulfillment"] }); // eslint-disable-line no-await-in-loop
   }
 
   let query = {
-    accountId
+    accountId,
+    shopId: { $in: shopIds }
   };
 
   // If orderStatus array is provided, only return orders with statuses in Array
@@ -31,14 +36,6 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
       "workflow.status": { $in: orderStatus },
       ...query
     };
-  }
-
-  if (shopIds) query.shopId = { $in: shopIds };
-
-  // Validate user has permission to view orders for all shopIds
-  if (!shopIds) throw new ReactionError("invalid-param", "You must provide ShopId(s)");
-  for (const shopId of shopIds) {
-    await context.validatePermissions("reaction:orders", "read", { shopId, owner: accountId, legacyRoles: ["orders", "order/fulfillment"] }); // eslint-disable-line no-await-in-loop
   }
 
   return Orders.find(query);
