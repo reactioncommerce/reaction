@@ -1,4 +1,5 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const SitemapQuery = importAsString("./SitemapQuery.graphql");
@@ -12,12 +13,12 @@ const shopUrl = "http://localhost";
 let testApp;
 let sitemap;
 
-const mockSitemap = {
+const mockSitemap = Factory.Sitemap.makeOne({
   _id: "456",
   shopId: internalShopId,
   xml: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n    <sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n      <sitemap>\n        <loc>http://localhost/sitemap-pages-1.xml</loc>\n        <lastmod>2019-12-6</lastmod>\n      </sitemap>\n      <sitemap>\n        <loc>http://localhost/sitemap-tags-1.xml</loc>\n        <lastmod>2018-9-21</lastmod>\n      </sitemap>\n      <sitemap>\n        <loc>http://localhost/sitemap-products-1.xml</loc>\n        <lastmod>2019-9-18</lastmod>\n      </sitemap>\n</sitemapindex>",
   handle
-};
+});
 
 beforeAll(async () => {
   testApp = new TestApp();
