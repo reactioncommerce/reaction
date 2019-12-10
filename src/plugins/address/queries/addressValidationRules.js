@@ -5,7 +5,7 @@
  * @returns {Promise<Mongo.Cursor>} MongoDB cursor for the query
  */
 export default async function addressValidationRules(context, input) {
-  const { serviceName, shopId } = input;
+  const { serviceNames, shopId } = input;
   const { checkPermissions, collections } = context;
   const { AddressValidationRules } = collections;
 
@@ -14,7 +14,7 @@ export default async function addressValidationRules(context, input) {
   const query = { shopId };
 
   // Service name is optional but we filter by it if provided
-  if (serviceName) query.serviceName = serviceName;
+  if (serviceNames) query.serviceName = { $in: serviceNames };
 
   return AddressValidationRules.find(query);
 }

@@ -1,18 +1,5 @@
 import Random from "@reactioncommerce/random";
-import SimpleSchema from "simpl-schema";
-
-const ruleSchema = new SimpleSchema({
-  "_id": String,
-  "countryCodes": {
-    type: Array,
-    optional: true
-  },
-  "countryCodes.$": String,
-  "createdAt": Date,
-  "serviceName": String,
-  "shopId": String,
-  "updatedAt": Date
-});
+import { AddressValidationRule as AddressValidationRuleSchema } from "../simpleSchemas.js";
 
 /**
  * @summary Create an address validation rule
@@ -37,7 +24,7 @@ export default async function createAddressValidationRule(context, input) {
     updatedAt: createdAt
   };
 
-  ruleSchema.validate(rule);
+  AddressValidationRuleSchema.validate(rule);
 
   await AddressValidationRules.insertOne(rule);
 

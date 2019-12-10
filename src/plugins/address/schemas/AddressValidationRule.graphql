@@ -2,7 +2,7 @@
 An address validation rule specifies which validation services should run for
 which countries in each shop.
 """
-type AddressValidationRule {
+type AddressValidationRule implements Node {
   "The rule ID"
   _id: ID!
 
@@ -121,4 +121,85 @@ extend type Mutation {
     "Mutation input"
     input: UpdateAddressValidationRuleInput!
   ): UpdateAddressValidationRulePayload!
+}
+
+"A connection edge in which each node is a `AddressValidationRule` object"
+type AddressValidationRuleEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The address validation rule"
+  node: AddressValidationRule
+}
+
+"""
+Wraps a list of `AddressValidationRules`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type AddressValidationRuleConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [AddressValidationRuleEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [AddressValidationRule]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+"The fields by which you are allowed to sort any query that returns an `AddressValidationRuleConnection`"
+enum AddressValidationRuleSortByField {
+  "AddressValidationRule ID"
+  _id
+
+  "Date and time at which the rule was created"
+  createdAt
+
+  "Service name"
+  serviceName
+
+  "Date and time at which the rule was last updated"
+  updatedAt
+}
+
+extend type Query {
+  "Returns a list of defined address validation rules for a shop"
+  addressValidationRules(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+
+    "An optional list of service names, to get only rules that specify one of these services"
+    serviceNames: [String],
+
+    "ID of the shop for which to get defined address validation rules"
+    shopId: ID!
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, rules are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: AddressValidationRuleSortByField = createdAt
+  ): AddressValidationRuleConnection!
 }
