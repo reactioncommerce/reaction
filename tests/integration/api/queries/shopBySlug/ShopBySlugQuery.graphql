@@ -1,0 +1,6 @@
+query ($slug: String!) {
+    shopBySlug(slug: $slug) {
+      _id
+      name
+    }
+  }

@@ -18,10 +18,9 @@ const inputSchema = new SimpleSchema({
 export default async function verifySMTPEmailSettings(context, input) {
   inputSchema.validate(input);
 
-  const { checkPermissions } = context;
   const { shopId } = input;
 
-  await checkPermissions(["owner", "admin", "dashboard"], shopId);
+  await context.validatePermissions("reaction:emails", "read", { shopId, legacyRoles: ["owner", "admin", "dashboard"] });
 
   const transporter = nodemailer.createTransport(SMTPConfig);
 

@@ -17,13 +17,17 @@ test("throws if account not found", async () => {
 });
 
 test("throws if userHasPermission returns false and the user ID is not the context user ID", async () => {
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
 
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeAccount);
   await expect(userAccountQuery(mockContext, fakeAccountId)).rejects.toThrowErrorMatchingSnapshot();
-  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["reaction-accounts"], fakeAccount.shopId);
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:accounts",
+    "read",
+    { shopId: fakeAccount.shopId, owner: fakeAccountId, legacyRoles: ["reaction-accounts"] }
+  );
 });
 
 test("returns the account without calling userHasPermission if the user ID is the context user ID", async () => {
@@ -35,9 +39,13 @@ test("returns the account without calling userHasPermission if the user ID is th
 });
 
 test("returns the account if the user ID is not the context user ID but userHasPermission returns true", async () => {
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeAccount);
   const result = await userAccountQuery(mockContext, fakeAccountId);
-  expect(mockContext.checkPermissions).toHaveBeenCalledWith(["reaction-accounts"], fakeAccount.shopId);
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:accounts",
+    "read",
+    { shopId: fakeAccount.shopId, owner: fakeAccountId, legacyRoles: ["reaction-accounts"] }
+  );
   expect(result).toEqual(fakeAccount);
 });

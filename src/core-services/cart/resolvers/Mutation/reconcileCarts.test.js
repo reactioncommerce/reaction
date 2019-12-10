@@ -2,7 +2,7 @@ import reconcileCarts from "./reconcileCarts.js";
 
 const internalAnonymousCartId = "555";
 const opaqueAnonymousCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
-const anonymousCartToken = "TOKEN";
+const cartToken = "TOKEN";
 
 test("correctly passes through to mutations.reconcileCarts", async () => {
   const fakeResult = {
@@ -20,7 +20,7 @@ test("correctly passes through to mutations.reconcileCarts", async () => {
   const result = await reconcileCarts(null, {
     input: {
       anonymousCartId: opaqueAnonymousCartId,
-      anonymousCartToken,
+      cartToken,
       clientMutationId: "clientMutationId",
       mode: "merge"
     }
@@ -33,7 +33,7 @@ test("correctly passes through to mutations.reconcileCarts", async () => {
 
   expect(mockMutation).toHaveBeenCalledWith(context, {
     anonymousCartId: internalAnonymousCartId,
-    anonymousCartToken,
+    cartToken,
     mode: "merge"
   });
 });

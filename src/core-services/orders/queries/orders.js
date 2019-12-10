@@ -1,4 +1,5 @@
 import _ from "lodash";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name orders
@@ -13,7 +14,7 @@ import _ from "lodash";
  * @returns {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function orders(context, { filters, shopIds } = {}) {
-  const { checkPermissions, collections, shopsUserHasPermissionFor } = context;
+  const { collections } = context;
   const { Orders } = collections;
 
   const query = {};
@@ -38,18 +39,13 @@ export default async function orders(context, { filters, shopIds } = {}) {
     };
   }
 
-  // If an admin wants all orders for an account, we force it to be limited to the
-  // shops for which they're allowed to see orders.
-  if (shopIds) {
-    for (const shopId of shopIds) {
-      await checkPermissions(["orders", "order/fulfillment"], shopId); // eslint-disable-line no-await-in-loop
-    }
-
-    query.shopId = { $in: shopIds };
-  } else {
-    const shopIdsUserHasPermissionFor = shopsUserHasPermissionFor("orders");
-    query.shopId = { $in: shopIdsUserHasPermissionFor };
+  // Validate user has permission to view orders for all shopIds
+  if (!shopIds) throw new ReactionError("invalid-param", "You must provide ShopId(s)");
+  for (const shopId of shopIds) {
+    await context.validatePermissions("reaction:orders", "read", { shopId, legacyRoles: ["orders", "order/fulfillment"] }); // eslint-disable-line no-await-in-loop
   }
+
+  query.shopId = { $in: shopIds };
 
   // Add fulfillment status if provided
   if (filters && filters.fulfillmentStatus) {

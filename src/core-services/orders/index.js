@@ -1,5 +1,6 @@
 import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
+import policies from "./policies.json";
 import preStartup from "./preStartup.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
@@ -50,6 +51,7 @@ export default async function register(app) {
     },
     mutations,
     queries,
+    policies,
     simpleSchemas: {
       Order,
       OrderFulfillmentGroup,

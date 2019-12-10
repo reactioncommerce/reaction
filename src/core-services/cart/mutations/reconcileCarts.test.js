@@ -19,7 +19,7 @@ jest.mock("./reconcileCartsMerge", () => jest.fn().mockImplementation(() => Prom
 
 const accountId = "accountId";
 const anonymousCartId = "anonymousCartId";
-const anonymousCartToken = "anonymousCartToken";
+const cartToken = "cartToken";
 const shopId = "shopId";
 
 const mockCarts = [
@@ -34,7 +34,7 @@ test("when mode is keepAccountCart, returns the result of reconcileCartsKeepAcco
 
   const result = await reconcileCarts(mockContext, {
     anonymousCartId,
-    anonymousCartToken,
+    cartToken,
     mode: "keepAccountCart",
     shopId
   });
@@ -49,7 +49,7 @@ test("when mode is keepAnonymousCart, returns the result of reconcileCartsKeepAn
 
   const result = await reconcileCarts(mockContext, {
     anonymousCartId,
-    anonymousCartToken,
+    cartToken,
     mode: "keepAnonymousCart",
     shopId
   });
@@ -64,7 +64,7 @@ test("when mode is merge, returns the result of reconcileCartsMerge", async () =
 
   const result = await reconcileCarts(mockContext, {
     anonymousCartId,
-    anonymousCartToken,
+    cartToken,
     mode: "merge",
     shopId
   });
@@ -79,7 +79,7 @@ test("when mode is undefined, returns the result of reconcileCartsMerge", async 
 
   const result = await reconcileCarts(mockContext, {
     anonymousCartId,
-    anonymousCartToken,
+    cartToken,
     shopId
   });
 
@@ -93,7 +93,7 @@ test("when there is no account cart yet, returns the result of convertAnonymousC
 
   const result = await reconcileCarts(mockContext, {
     anonymousCartId,
-    anonymousCartToken,
+    cartToken,
     mode: "keepAccountCart",
     shopId
   });
@@ -108,7 +108,7 @@ test("when not authenticated, throw access denied", async () => {
 
   const promise = reconcileCarts(mockContext, {
     anonymousCartId,
-    anonymousCartToken,
+    cartToken,
     shopId
   });
 
@@ -120,14 +120,14 @@ test("when missing anonymousCartId, throws", async () => {
   mockContext.user = { accountId, roles: ["guest"] };
 
   const promise = reconcileCarts(mockContext, {
-    anonymousCartToken,
+    cartToken,
     shopId
   });
 
   return expect(promise).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("when missing anonymousCartToken, throws", async () => {
+test("when missing cartToken, throws", async () => {
   mockContext.accountId = accountId;
   mockContext.user = { accountId, roles: ["guest"] };
 
@@ -146,7 +146,7 @@ test("when no matching anonymous cart is found, throws", async () => {
 
   const promise = reconcileCarts(mockContext, {
     anonymousCartId,
-    anonymousCartToken,
+    cartToken,
     shopId
   });
 
@@ -160,7 +160,7 @@ test("when unknown mode is passed, throws", async () => {
 
   const promise = reconcileCarts(mockContext, {
     anonymousCartId,
-    anonymousCartToken,
+    cartToken,
     mode: "foo",
     shopId
   });

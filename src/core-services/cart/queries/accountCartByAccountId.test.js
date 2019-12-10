@@ -17,7 +17,7 @@ test("for logged in account, expect to return a Promise that resolves to a cart"
 test("for other account, allows if admin", async () => {
   const cart = { _id: "cart" };
   const accountId = "123";
-  mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(cart));
 
   const result = await accountCartByAccountId(mockContext, { accountId, shopId });
@@ -28,7 +28,7 @@ test("for other account, allows if admin", async () => {
 test("for other account, throws access denied if non-admin", async () => {
   const cart = { _id: "cart" };
   const accountId = "123";
-  mockContext.checkPermissions.mockImplementation(() => {
+  mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(cart));

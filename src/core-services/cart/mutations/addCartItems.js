@@ -16,7 +16,7 @@ import addCartItemsUtil from "../util/addCartItems.js";
  *   optionally retry with the corrected price or quantity.
  */
 export default async function addCartItems(context, input, options = {}) {
-  const { cartId, items, token } = input;
+  const { cartId, items, cartToken } = input;
   const { collections, accountId = null } = context;
   const { Cart } = collections;
 
@@ -26,11 +26,11 @@ export default async function addCartItems(context, input, options = {}) {
     selector = { _id: cartId, accountId };
   } else {
     // Anonymous cart
-    if (!token) {
+    if (!cartToken) {
       throw new ReactionError("not-found", "Cart not found");
     }
 
-    selector = { _id: cartId, anonymousAccessToken: hashToken(token) };
+    selector = { _id: cartId, anonymousAccessToken: hashToken(cartToken) };
   }
 
   const cart = await Cart.findOne(selector);

@@ -1,0 +1,46 @@
+[
+  {
+    "description": "Navigation managers acting on all navigation tree items.",
+    "subjects": [ "reaction:groups:navigation-managers" ],
+    "resources": [ "reaction:navigationTreeItems" ],
+    "actions": [
+      "create",
+      "read"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Navigation managers acting on a single navigation tree item.",
+    "subjects": [ "reaction:groups:navigation-managers" ],
+    "resources": [ "reaction:navigationTreeItems:*" ],
+    "actions": [
+      "delete",
+      "publish",
+      "read",
+      "update"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Navigation managers acting on all navigation trees.",
+    "subjects": [ "reaction:groups:navigation-managers" ],
+    "resources": [ "reaction:navigationTrees" ],
+    "actions": [
+      "create",
+      "read"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Navigation managers acting on a single navigation tree.",
+    "subjects": [ "reaction:groups:navigation-managers" ],
+    "resources": [ "reaction:navigationTrees:*" ],
+    "actions": [
+      "delete",
+      "publish",
+      "read",
+      "update"
+    ],
+    "effect": "allow"
+  }
+]

@@ -1,0 +1,9 @@
+
+
+query ($shopId: ID!) {
+  roles(shopId: $shopId){
+    nodes {
+      name
+    }
+  }
+}

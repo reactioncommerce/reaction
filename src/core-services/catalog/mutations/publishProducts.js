@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -12,7 +13,7 @@ import publishProductsToCatalog from "../utils/publishProductsToCatalog.js";
  * @returns {Promise<Object[]>} Array of CatalogItemProduct objects
  */
 export default async function publishProducts(context, productIds) {
-  const { checkPermissions, collections, isInternalCall } = context;
+  const { collections, isInternalCall } = context;
   const { Catalog, Products } = collections;
 
   // Find all products
@@ -30,7 +31,15 @@ export default async function publishProducts(context, productIds) {
   if (!isInternalCall) {
     const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
     for (const shopId of uniqueShopIds) {
-      await checkPermissions(["createProduct", "product/admin", "product/publish"], shopId); // eslint-disable-line no-await-in-loop
+      for (const product of products) {
+        // TODO(pod-auth): figure out a better way to loop through this
+        // eslint-disable-next-line no-await-in-loop
+        await context.validatePermissions(
+          `reaction:products:${product._id}`,
+          "publish",
+          { shopId, legacyRoles: ["createProduct", "product/admin", "product/publish"] }
+        );
+      }
     }
   }
 

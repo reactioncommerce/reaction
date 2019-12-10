@@ -1,4 +1,5 @@
 import mutations from "./mutations/index.js";
+import policies from "./policies.json";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
@@ -54,6 +55,7 @@ export default async function register(app) {
     },
     mutations,
     queries,
+    policies,
     simpleSchemas: {
       Cart,
       CartItem

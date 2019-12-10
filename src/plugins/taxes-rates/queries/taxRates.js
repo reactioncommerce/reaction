@@ -8,10 +8,10 @@
  * @returns {Promise<Object>} Taxes object Promise
  */
 export default async function taxRates(context, shopId) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Taxes } = collections;
 
-  await checkPermissions(["owner", "admin"], shopId);
+  await context.validatePermissions("reaction:taxRates", "read", { shopId, legacyRoles: ["owner", "admin"] });
 
   return Taxes.find({
     shopId

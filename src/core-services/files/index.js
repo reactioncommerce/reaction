@@ -1,5 +1,6 @@
 import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia.js";
 import mutations from "./mutations/index.js";
+import policies from "./policies.json";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
@@ -35,6 +36,7 @@ export default async function register(app) {
       xformCatalogProductMedia: [xformFileCollectionsProductMedia]
     },
     mutations,
+    policies,
     graphQL: {
       resolvers,
       schemas

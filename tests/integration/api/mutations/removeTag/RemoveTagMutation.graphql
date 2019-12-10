@@ -1,0 +1,23 @@
+mutation($id: ID!, $shopId:ID!) {
+  removeTag(input:{
+    shopId: $shopId,
+    id: $id
+    }) {
+      tag {
+        _id
+        name
+        slug
+        displayTitle
+        metafields {
+          key
+          namespace
+          scope
+          value
+          valueType
+          description
+        }
+        isVisible
+        heroMediaUrl
+      }
+    }
+}

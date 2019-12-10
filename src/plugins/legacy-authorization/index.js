@@ -1,5 +1,4 @@
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
-import { getShopsUserHasPermissionForFunctionForUser } from "./util/shopsUserHasPermissionFor.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -8,12 +7,11 @@ import { getShopsUserHasPermissionForFunctionForUser } from "./util/shopsUserHas
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Simple Authorization",
-    name: "reaction-simple-authorization",
+    label: "Legacy Authorization",
+    name: "reaction-legacy-authorization",
     version: app.context.appVersion,
     auth: {
-      getHasPermissionFunctionForUser,
-      getShopsUserHasPermissionForFunctionForUser
+      getHasPermissionFunctionForUser
     }
   });
 }

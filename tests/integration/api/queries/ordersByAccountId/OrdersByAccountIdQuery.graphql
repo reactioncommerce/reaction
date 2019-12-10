@@ -1,0 +1,77 @@
+query ($accountId: ID!, $orderStatus: [String], $shopIds: [ID]!) {
+  ordersByAccountId(accountId: $accountId, orderStatus: $orderStatus, shopIds: $shopIds) {
+    totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    nodes {
+      _id
+      account {
+        _id
+      }
+      cartId
+      createdAt
+      displayStatus(language: "en")
+      email
+      fulfillmentGroups {
+        _id
+        displayStatus(language: "en")
+        status
+        tracking
+        trackingUrl
+        type
+      }
+      notes {
+        content
+      }
+      payments {
+        _id
+        amount {
+          amount
+          displayAmount
+        }
+        billingAddress {
+          _id
+          address1
+          address2
+        }
+        cardBrand
+        displayName
+        isCaptured
+        method {
+          displayName
+          isEnabled
+          name
+          pluginName
+        }
+        mode
+        processor
+        riskLevel
+        status
+        transactionId
+      }
+      referenceId
+      refunds {
+        _id
+      }
+      shop {
+        _id
+      }
+      status
+      summary {
+        total {
+          amount
+        }
+      }
+      totalItemQuantity
+      updatedAt
+      surcharges {
+        _id
+        fulfillmentGroupId
+      }
+    }
+  }
+}

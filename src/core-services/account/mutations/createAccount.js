@@ -42,13 +42,11 @@ export default async function createAccount(context, input) {
 
   const {
     appEvents,
-    checkPermissions,
     collections: { Accounts, AccountInvites, Groups },
     simpleSchemas: {
       Account: AccountSchema
     },
-    userId: authUserId,
-    userHasPermission
+    userId: authUserId
   } = context;
 
   const {
@@ -59,8 +57,8 @@ export default async function createAccount(context, input) {
     userId
   } = input;
 
-  if (shopId && !context.isInternalCall) {
-    await checkPermissions(["reaction-accounts", "account/invite"], shopId);
+  if (!context.isInternalCall) {
+    await context.validatePermissions("reaction:accounts", "create", { shopId, legacyRoles: ["reaction-accounts"] });
   }
 
   // Create initial account object from user and profile
@@ -85,7 +83,7 @@ export default async function createAccount(context, input) {
   // create an account for this user, they should be assigned to the "owner" group.
   let groups;
   let invites;
-  if (authUserId === userId && userHasPermission(["owner"])) {
+  if (authUserId === userId && context.userHasPermission("reaction:shops", "owner", { shopId, legacyRoles: ["owner"] })) { // TODO(pod-auth): update this permissions check
     groupSlug = "owner";
   } else {
     const emailAddresses = emails.map((emailRecord) => emailRecord.address);

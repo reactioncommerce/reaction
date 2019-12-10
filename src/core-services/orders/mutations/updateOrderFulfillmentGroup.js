@@ -36,7 +36,7 @@ export default async function updateOrderFulfillmentGroup(context, input) {
     status
   } = input;
 
-  const { appEvents, checkPermissions, collections, isInternalCall, userId } = context;
+  const { appEvents, collections, isInternalCall, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
@@ -46,7 +46,7 @@ export default async function updateOrderFulfillmentGroup(context, input) {
   // Allow update if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall) {
-    await checkPermissions(["orders", "order/fulfillment"], order.shopId);
+    await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
   }
 
   // Verify that there is a group with the ID

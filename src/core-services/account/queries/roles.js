@@ -8,10 +8,10 @@
  * @returns {Object} roles object Promise
  */
 export default async function rolesQuery(context, shopId) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { roles } = collections;
 
-  await checkPermissions(["owner", "admin"], shopId);
+  await context.validatePermissions(`reaction:shops:${shopId}`, "read", { shopId, legacyRoles: ["owner", "admin"] });
 
   return roles.find({});
 }

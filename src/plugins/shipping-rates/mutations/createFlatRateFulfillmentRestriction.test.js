@@ -2,10 +2,10 @@ import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js"
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import createFlatRateFulfillmentRestrictionMutation from "./createFlatRateFulfillmentRestriction.js";
 
-mockContext.checkPermissions = jest.fn().mockName("checkPermissions");
+mockContext.validatePermissions = jest.fn().mockName("validatePermissions");
 // Create mock context with FlatRateFulfillmentRestrictions collection
 mockContext.collections.FlatRateFulfillmentRestrictions = mockCollection("FlatRateFulfillmentRestrictions");
-mockContext.checkPermissions.mockReturnValueOnce(Promise.resolve(null));
+mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
 test("add a flat rate fulfillment restriction", async () => {
   mockContext.collections.FlatRateFulfillmentRestrictions.insertOne.mockReturnValueOnce(Promise.resolve({}));

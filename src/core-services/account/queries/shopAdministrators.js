@@ -8,10 +8,10 @@
  * @returns {Object[]} Array of user account objects
  */
 export default async function shopAdministratorsQuery(context, id) {
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Accounts, users: Users } = collections;
 
-  await checkPermissions(["owner", "admin"], id);
+  await context.validatePermissions(`reaction:shops:${id}`, "read", { shopId: id, legacyRoles: ["owner", "admin"] });
 
   const users = await Users.find({
     [`roles.${id}`]: "admin"

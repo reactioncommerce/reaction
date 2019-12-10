@@ -12,11 +12,11 @@ import { DiscountCodes as DiscountCodesSchema } from "../simpleSchemas.js";
 export default async function updateDiscountCode(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
   const { _id, ...discountCodeInput } = input;
-  const { appEvents, checkPermissions, collections } = context;
+  const { appEvents, collections } = context;
   const { Discounts } = collections;
   const { shopId } = discountCodeInput;
 
-  await checkPermissions(["admin", "owner"], shopId);
+  await context.validatePermissions(`reaction:discounts:${_id}`, "update", { shopId, legacyRoles: ["owner", "admin"] });
 
   DiscountCodesSchema.validate(discountCodeInput);
 

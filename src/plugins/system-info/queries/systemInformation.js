@@ -8,13 +8,13 @@
  * @returns {Promise<Object>} System Information
  **/
 export default async function systemInformation(context, shopId) {
-  const { checkPermissions, app: { db } } = context;
+  const { app: { db } } = context;
   // sensitive information should be accessible to admins only
-  await checkPermissions(["admin"], shopId);
+  await context.validatePermissions(`reaction:shops:${shopId}`, "read", { shopId, legacyRoles: ["admin"] });
 
   const mongoAdmin = await db.admin();
   const mongoInfo = await mongoAdmin.serverStatus();
-  const plugins = await Object.values(context.app.registeredPlugins).filter((plugin) => plugin.version);
+  const plugins = Object.values(context.app.registeredPlugins).filter((plugin) => plugin.version);
   return {
     apiVersion: context.appVersion,
     mongoVersion: { version: mongoInfo.version },

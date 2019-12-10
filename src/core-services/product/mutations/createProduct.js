@@ -17,12 +17,12 @@ const inputSchema = new SimpleSchema({
  */
 export default async function createProduct(context, input) {
   inputSchema.validate(input);
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { Products } = collections;
   const { shopId } = input;
 
   // Check that user has permission to create product
-  await checkPermissions(["createProduct", "product/admin", "product/create"], shopId);
+  await context.validatePermissions("reaction:products", "create", { shopId, legacyRoles: ["createProduct", "product/admin", "product/create"] });
 
   const newProductId = Random.id();
   const newProduct = {

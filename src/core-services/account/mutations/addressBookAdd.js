@@ -12,7 +12,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>} with updated address
  */
 export default async function addressBookAdd(context, address, accountUserId) {
-  const { appEvents, checkPermissions, collections, userId: userIdFromContext } = context;
+  const { appEvents, collections, userId: userIdFromContext } = context;
   const { Accounts } = collections;
 
   const userId = accountUserId || userIdFromContext;
@@ -20,10 +20,11 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  // Security check for admin access
-  if (typeof accountUserId === "string" && userIdFromContext !== accountUserId) {
-    await checkPermissions(["reaction-accounts"], account.shopId);
-  }
+  await context.validatePermissions(`reaction:accounts:${account._id}`, "add:address-books", {
+    shopId: account.shopId,
+    owner: account.userId,
+    legacyRoles: ["reaction-accounts"]
+  });
 
   // required default ID
   if (!address._id) address._id = Random.id();

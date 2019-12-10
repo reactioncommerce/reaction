@@ -20,10 +20,10 @@ export default async function createFlatRateFulfillmentRestrictionMutation(conte
   inputSchema.validate(cleanedInput);
 
   const { restriction, shopId } = cleanedInput;
-  const { checkPermissions, collections } = context;
+  const { collections } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  await checkPermissions(["admin", "owner", "shipping"], shopId);
+  await context.validatePermissions("reaction:shippingRestrictions", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
   const { insertedCount } = await FlatRateFulfillmentRestrictions.insertOne({
     _id: Random.id(),

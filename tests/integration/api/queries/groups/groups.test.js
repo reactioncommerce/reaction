@@ -103,7 +103,7 @@ test("authenticated with reaction-accounts role, gets all groups", async () => {
 test("authenticated without reaction-accounts role, gets only groups the account belongs to", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
-  const nodes = groups.slice(0, 1).map(groupMongoSchemaToGraphQL);
+  const nodes = groups.map(groupMongoSchemaToGraphQL);
 
   // Default sortBy is createdAt ascending
   nodes.sort((item1, item2) => {

@@ -9,12 +9,15 @@ import Logger from "@reactioncommerce/logger";
  * @returns {Boolean} - returns true if job is successfully restarted
  */
 export default async function retryFailed(context, input) {
-  const { checkPermissions, collections, backgroundJobs } = context;
+  const { collections, backgroundJobs } = context;
   const { Emails } = collections;
   const { jobId, shopId } = input;
   let emailJobId = jobId;
 
-  await checkPermissions(["owner", "admin", "reaction-email"], shopId);
+  await context.validatePermissions("reaction:emails", "send", {
+    shopId,
+    legacyRoles: ["admin", "owner", "reaction-email"]
+  });
 
   Logger.debug(`emails/retryFailed - restarting email job "${jobId}"`);
 

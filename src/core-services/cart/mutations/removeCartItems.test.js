@@ -43,7 +43,7 @@ test("removes multiple items from anonymous cart", async () => {
   const result = await removeCartItems(mockContext, {
     cartId: "cartId",
     cartItemIds,
-    token: "TOKEN"
+    cartToken: "TOKEN"
   });
   mockContext.accountId = cachedAccountId;
 
@@ -61,7 +61,7 @@ test("removes multiple items from anonymous cart", async () => {
   });
 });
 
-test("throws when no account and no token passed", async () => {
+test("throws when no account and no cartToken passed", async () => {
   const cachedAccountId = mockContext.accountId;
   mockContext.accountId = null;
 

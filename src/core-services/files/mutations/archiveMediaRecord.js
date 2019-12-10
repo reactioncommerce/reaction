@@ -7,17 +7,12 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} Archived MediaRecord
  */
 export default async function archiveMediaRecord(context, input) {
-  const {
-    appEvents,
-    checkPermissions,
-    collections: { MediaRecords },
-    userId
-  } = context;
+  const { appEvents, collections, userId } = context;
   const { mediaRecordId, shopId } = input;
 
-  await checkPermissions(["media/update"], shopId);
+  await context.validatePermissions("reaction:media", "update", { shopId, legacyRoles: ["media/update"] });
 
-  const { value: updatedMediaRecord } = await MediaRecords.findOneAndUpdate(
+  const { value: updatedMediaRecord } = await collections.MediaRecords.findOneAndUpdate(
     {
       "_id": mediaRecordId,
       "metadata.shopId": shopId

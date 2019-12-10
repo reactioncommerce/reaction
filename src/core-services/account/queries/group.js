@@ -10,14 +10,15 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} group object
  */
 export default async function groupQuery(context, id) {
-  const { collections, userHasPermission, userId } = context;
+  const { collections, userId } = context;
   const { Accounts, Groups } = collections;
 
   const group = await Groups.findOne({ _id: id });
   if (!group) throw new ReactionError("not-found", "There is no group with this ID");
 
   // If the user has sufficient permissions, then allow them to find any group by ID
-  if (userHasPermission(["owner", "admin", "reaction-accounts"], group.shopId)) return group;
+  // TODO: Break this query up into one for all groups (for admins only) and one for user's groups
+  if (context.userHasPermission("reaction:accounts", "read", { shopId: group.shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] })) return group; // TODO(pod-auth): update this permissions check
 
   // Otherwise, only let users see groups that they are members of
   const userAccount = await Accounts.findOne({
