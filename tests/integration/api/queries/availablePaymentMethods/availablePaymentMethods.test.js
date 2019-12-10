@@ -49,13 +49,11 @@ beforeAll(async () => {
   await testApp.start();
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName, availablePaymentMethods: ["iou_example"] });
-  await testApp.collections.Packages.insertOne(examplePaymentMethod);
   availablePaymentMethods = testApp.query(AvailablePaymentMethodsQuery);
 });
 
 afterAll(async () => {
   await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Packages.deleteMany({});
   await testApp.stop();
 });
 
