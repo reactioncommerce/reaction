@@ -23,7 +23,7 @@ import getSlug from "@reactioncommerce/api-utils/getSlug.js";
  */
 export default async function createAccountGroup(context, input) {
   const { group, shopId } = input;
-  let _id;
+  let newlyCreatedGroup;
   const { Groups } = context.collections;
 
   // we are limiting group method actions to only users within the account managers role
@@ -33,8 +33,13 @@ export default async function createAccountGroup(context, input) {
 
   // TODO: Remove when we move away from legacy permission verification
   const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
+
+  const nowDate = new Date(Date.now())
   const newGroupData = Object.assign({}, group, {
-    slug: getSlug(group.name), shopId
+    slug: getSlug(group.name),
+    shopId,
+    createdAt: nowDate,
+    updatedAt: nowDate
   });
 
   // TODO: Remove when we move away from legacy permission verification
@@ -57,12 +62,13 @@ export default async function createAccountGroup(context, input) {
     // and should place the newly created group on the kakfa groups topic
     // reaction authorization listens on the topic and creates role (group)
     // reaction authorization
-    _id = await Groups.insertOne(newGroupData);
+
+    const result = await Groups.insertOne(newGroupData);
+    newlyCreatedGroup = result.ops ? result.ops[0] : {};
   } catch (error) {
     Logger.error(error);
     throw new ReactionError("invalid-parameter", "Bad request");
   }
 
-  const newlyCreatedGroup = await Groups.findOne({ _id });
   return { group: newlyCreatedGroup };
 }
