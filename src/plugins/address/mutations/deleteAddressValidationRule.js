@@ -8,10 +8,12 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function deleteAddressValidationRule(context, input) {
   const { shopId, _id } = input;
-  const { appEvents, checkPermissions, collections } = context;
+  const { appEvents, collections } = context;
   const { AddressValidationRules } = collections;
 
-  await checkPermissions(["admin"], shopId);
+  if (!context.isInternalCall) {
+    await context.validatePermissions(`reaction:addressValidationRules:${_id}`, "delete", { shopId, legacyRoles: ["admin"] });
+  }
 
   const { ok, value: deletedRule } = await AddressValidationRules.findOneAndDelete({
     _id,

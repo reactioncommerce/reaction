@@ -9,10 +9,12 @@ import { AddressValidationRule as AddressValidationRuleSchema } from "../simpleS
  */
 export default async function createAddressValidationRule(context, input) {
   const { countryCodes, serviceName, shopId } = input;
-  const { appEvents, checkPermissions, collections } = context;
+  const { appEvents, collections } = context;
   const { AddressValidationRules } = collections;
 
-  await checkPermissions(["admin"], shopId);
+  if (!context.isInternalCall) {
+    await context.validatePermissions("reaction:addressValidationRules", "create", { shopId, legacyRoles: ["admin"] });
+  }
 
   const createdAt = new Date();
   const rule = {

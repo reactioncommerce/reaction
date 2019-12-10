@@ -19,10 +19,12 @@ const ruleUpdatesSchema = new SimpleSchema({
  */
 export default async function updateAddressValidationRule(context, input) {
   const { _id, countryCodes, serviceName, shopId } = input;
-  const { appEvents, checkPermissions, collections } = context;
+  const { appEvents, collections } = context;
   const { AddressValidationRules } = collections;
 
-  await checkPermissions(["admin"], shopId);
+  if (!context.isInternalCall) {
+    await context.validatePermissions(`reaction:addressValidationRules:${_id}`, "update", { shopId, legacyRoles: ["admin"] });
+  }
 
   const updates = {
     countryCodes,

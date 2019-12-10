@@ -6,10 +6,11 @@
  */
 export default async function addressValidationRules(context, input) {
   const { serviceNames, shopId } = input;
-  const { checkPermissions, collections } = context;
-  const { AddressValidationRules } = collections;
+  const { collections: { AddressValidationRules } } = context;
 
-  await checkPermissions(["admin"], shopId);
+  if (!context.isInternalCall) {
+    await context.validatePermissions("reaction:addressValidationRules", "read", { shopId, legacyRoles: ["admin"] });
+  }
 
   const query = { shopId };
 
