@@ -7,18 +7,15 @@ const AddAccountToGroupMutation = importAsString("./CreateAccountGroupMutation.g
 
 jest.setTimeout(300000);
 
-let accountOpaqueId;
 let createAccountGroup;
 let customerGroup;
-let customerGroupOpaqueId;
 let mockAdminAccount;
-let mockAdminAccountWithMissingPermission;
-let mockOtherAccount;
 let shopId;
-let shopManagerGroup;
-let shopManagerGroupOpaqueId;
 let shopOpaqueId;
 let testApp;
+
+// Should match UTC datetime of the form YYYY-MM-DDTHH:MM:SS.mmmZ e.g. 2019-12-10T13:37:58.833Z
+const UTC_REGEX_PATTERN = /\b[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[.]{1}[0-9]{3}Z\b/;
 
 beforeAll(async () => {
   testApp = new TestApp();
@@ -28,157 +25,92 @@ beforeAll(async () => {
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
     roles: {
-      [shopId]: ["admin", "shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
+      [shopId]: ["admin", "customerGroupPermission"]
     },
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
 
-  mockAdminAccountWithMissingPermission = Factory.Account.makeOne({
-    _id: "mockAdminAccountWithMissingPermission",
-    roles: {
-      [shopId]: ["admin", "someOtherPermission"]
-    },
-    shopId
-  });
-  await testApp.createUserAndAccount(mockAdminAccountWithMissingPermission);
-
-  mockOtherAccount = Factory.Account.makeOne({
-    _id: "mockOtherAccount",
-    groups: [],
-    roles: {},
-    shopId
-  });
-  await testApp.createUserAndAccount(mockOtherAccount);
-
-  shopManagerGroup = Factory.Group.makeOne({
-    createdBy: null,
-    name: "shop manager",
-    permissions: ["admin", "shopManagerGroupPermission"],
-    slug: "shop manager",
-    shopId
-  });
-  await testApp.collections.Groups.insertOne(shopManagerGroup);
-
   customerGroup = Factory.Group.makeOne({
     createdBy: null,
     name: "customer",
-    permissions: ["customerGroupPermission"],
+    permissions: [],
     slug: "customer",
     shopId
   });
   await testApp.collections.Groups.insertOne(customerGroup);
 
-  accountOpaqueId = encodeOpaqueId("reaction/account", mockOtherAccount._id);
-  customerGroupOpaqueId = encodeOpaqueId("reaction/group", customerGroup._id);
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
-  shopManagerGroupOpaqueId = encodeOpaqueId("reaction/group", shopManagerGroup._id);
 
   createAccountGroup = testApp.mutate(AddAccountToGroupMutation);
+});
+
+afterEach(async () => {
+
 });
 
 afterAll(async () => {
   await testApp.stop();
 });
 
-beforeEach(async () => {
-  await testApp.collections.Accounts.updateOne({ _id: mockOtherAccount._id }, {
-    $set: {
-      groups: []
-    }
-  });
-
-  await testApp.collections.users.updateOne({ _id: mockOtherAccount._id }, {
-    $set: {
-      roles: {}
-    }
-  });
-});
 
 test("anyone can add account to group if they have ALL the group permissions", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
-
-  /**
-   "A free text description of this group"
-   description: String
-
-   "A unique name for the group"
-   name: String!
-
-   "A list of the account permissions implied by membership in this group"
-   permissions: [String]
-
-   "A unique URL-safe string representing this group"
-   slug: String!
-   */
 
   const group = {
     description: "a group for testing purposes",
     name: "test-int-group",
     permissions: ["test-perm-1", "test-perm-2"],
     slug: "test-int-group"
-
   };
+
   const result = await createAccountGroup({ shopId: shopOpaqueId, group });
 
-  expect(result.createAccountGroup.group).toEqual({
-    _id: shopManagerGroupOpaqueId,
-    createdAt: shopManagerGroup.createdAt.toISOString(),
+  expect(result.createAccountGroup.group).toMatchObject({
+    _id: expect.any(String),
     createdBy: null,
-    description: shopManagerGroup.description,
-    name: shopManagerGroup.name,
-    permissions: shopManagerGroup.permissions,
+    description: "a group for testing purposes",
+    name: "test-int-group",
+    permissions: ["test-perm-1", "test-perm-2", "dashboard"],
     shop: {
       _id: shopOpaqueId
     },
-    slug: shopManagerGroup.slug,
-    updatedAt: shopManagerGroup.updatedAt.toISOString()
+    slug: "test-int-group",
+    updatedAt: expect.stringMatching(UTC_REGEX_PATTERN),
+    createdAt: expect.stringMatching(UTC_REGEX_PATTERN)
   });
-
-  const account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
-  expect(account.groups).toEqual([shopManagerGroup._id]);
-
-  const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toEqual(shopManagerGroup.permissions);
 });
 
-/**
-test("anyone cannot add account to group if they do not have ALL the group permissions", async () => {
-  await testApp.setLoggedInUser(mockAdminAccountWithMissingPermission);
 
-  const beforeUser = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(beforeUser.roles[shopId]).toBe(undefined);
+test("should throw if the group to be created has the same slug and shopId as an existing group", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  const group = {
+    description: "a group for testing purposes",
+    name: "test-int-group",
+    permissions: ["test-perm-1", "test-perm-2"],
+    slug: "test-int-group"
+  };
 
   try {
-    await createAccountGroup({ accountId: accountOpaqueId, groupId: shopManagerGroupOpaqueId });
+    // Make sure DB is in clean state
+    await testApp.collections.Groups.deleteMany({
+      name: "test-int-group",
+      slug: "test-int-group"
+    });
+
+    await createAccountGroup({ shopId: shopOpaqueId, group });
+
+    // This should throw
+    await createAccountGroup({ shopId: shopOpaqueId, group });
   } catch (errors) {
     expect(errors[0]).toMatchSnapshot();
   }
 
-  const account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
-  expect(account.groups.length).toBe(0);
+  const groups = await testApp.collections.Groups.find({
+    name: "test-int-group",
+    slug: "test-int-group"
+  }).toArray();
 
-  const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toBe(undefined);
+  expect(groups.length).toBe(1);
 });
-
-test("permissions from the account's previous group are removed", async () => {
-  await testApp.setLoggedInUser(mockAdminAccount);
-
-  await createAccountGroup({ accountId: accountOpaqueId, groupId: shopManagerGroupOpaqueId });
-
-  let account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
-  expect(account.groups).toEqual([shopManagerGroup._id]);
-
-  let user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toEqual(shopManagerGroup.permissions);
-
-  await createAccountGroup({ accountId: accountOpaqueId, groupId: customerGroupOpaqueId });
-
-  account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
-  expect(account.groups).toEqual([customerGroup._id]);
-
-  user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toEqual(customerGroup.permissions);
-});
- */
