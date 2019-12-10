@@ -13,14 +13,12 @@ const shopName = "Test Shop";
 let testApp;
 let roles;
 
-
 const mockShopOwnerAccount = Factory.Account.makeOne({
   roles: {
     [internalShopId]: ["owner"]
   },
   shopId: internalShopId
 });
-
 
 beforeAll(async () => {
   testApp = new TestApp();
