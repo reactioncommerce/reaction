@@ -1,4 +1,4 @@
-import { decodeShopOpaqueId } from "../../xforms/id";
+import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name group/createAccountGroup
