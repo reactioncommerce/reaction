@@ -1,0 +1,3 @@
+extend type GlobalSettings {
+  canSellVariantWithoutInventory: Boolean
+}
