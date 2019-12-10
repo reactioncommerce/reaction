@@ -45,11 +45,12 @@ beforeAll(async () => {
   createAccountGroup = testApp.mutate(AddAccountToGroupMutation);
 });
 
-afterEach(async () => {
-
-});
 
 afterAll(async () => {
+  await testApp.collections.Groups.deleteMany({});
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
 });
 
