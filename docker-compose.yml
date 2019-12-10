@@ -23,8 +23,6 @@ services:
       - mongo
     env_file:
       - ./.env
-    environment:
-      - MONGO_URL=mongodb://mongo:27017/reaction
     networks:
       default:
       api:
