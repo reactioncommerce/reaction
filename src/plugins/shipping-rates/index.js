@@ -41,6 +41,15 @@ export default async function register(app) {
     queries,
     functionsByType: {
       getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+    },
+    shopSettingsConfig: {
+      isShippingRatesFulfillmentEnabled: {
+        defaultValue: true,
+        rolesThatCanEdit: ["admin"],
+        simpleSchema: {
+          type: Boolean
+        }
+      }
     }
   });
 }
