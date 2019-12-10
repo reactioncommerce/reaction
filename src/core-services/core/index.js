@@ -1,5 +1,4 @@
 import i18n from "./i18n/index.js";
-import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -11,9 +10,6 @@ export default async function register(app) {
     label: "Core",
     name: "core",
     version: app.context.appVersion,
-    i18n,
-    functionsByType: {
-      startup: [startup]
-    }
+    i18n
   });
 }

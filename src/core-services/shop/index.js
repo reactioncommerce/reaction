@@ -16,15 +16,6 @@ export default async function register(app) {
     name: "reaction-shop",
     version: app.context.appVersion,
     collections: {
-      Packages: {
-        name: "Packages",
-        indexes: [
-          // Create indexes. We set specific names for backwards compatibility
-          // with indexes created by the aldeed:schema-index Meteor package.
-          [{ name: 1, shopId: 1 }],
-          [{ "registry.provides": 1 }, { name: "c2_registry.$.provides" }]
-        ]
-      },
       Shops: {
         name: "Shops",
         indexes: [
