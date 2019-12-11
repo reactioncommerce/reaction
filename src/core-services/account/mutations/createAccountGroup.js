@@ -34,7 +34,7 @@ export default async function createAccountGroup(context, input) {
   // TODO: Remove when we move away from legacy permission verification
   const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
 
-  const nowDate = new Date(Date.now())
+  const nowDate = new Date(Date.now());
   const newGroupData = Object.assign({}, group, {
     slug: getSlug(group.name),
     shopId,
