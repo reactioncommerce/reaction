@@ -54,7 +54,7 @@ const Message = new SimpleSchema({
   language: String
 });
 
-const surchargeSchema = new SimpleSchema({
+export const Surcharge = new SimpleSchema({
   "amount": {
     type: Number
   },
@@ -98,4 +98,4 @@ const surchargeSchema = new SimpleSchema({
   }
 });
 
-export default surchargeSchema;
+export default Surcharge;
