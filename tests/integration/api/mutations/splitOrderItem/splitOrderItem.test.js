@@ -70,12 +70,26 @@ beforeAll(async () => {
   });
   await testApp.collections.Catalog.insertOne(catalogItem);
 
+  // Disable the flat rates pkg so that only our getFulfillmentMethodsWithQuotes fn is used
+  await testApp.collections.AppSettings.updateOne(
+    { shopId },
+    {
+      $set: {
+        isShippingRatesFulfillmentEnabled: false
+      }
+    },
+    { upsert: true }
+  );
+
   splitOrderItem = testApp.mutate(SplitOrderItemMutation);
 });
 
 afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
   await testApp.collections.Catalog.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.AppSettings.deleteMany({});
   await testApp.stop();
 });
 
