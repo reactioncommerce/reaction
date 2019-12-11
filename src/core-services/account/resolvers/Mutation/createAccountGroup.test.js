@@ -30,7 +30,7 @@ test("createAccountGroup resolver function should correctly passes through to in
   mockContext.mutations.createAccountGroup.mockReturnValueOnce(Promise.resolve(fakeCreatedGroupResult));
 
   const result = await createAccountGroup(null, { input }, mockContext);
-  const resolverMutationFunctionInternalInput = Object.assign({}, input, { shopId: "test-shop-id" });
+  const resolverMutationFunctionInternalInput = { ...input, shopId: "test-shop-id" };
 
   expect(mockContext.mutations.createAccountGroup).toHaveBeenCalledWith(mockContext, resolverMutationFunctionInternalInput);
 

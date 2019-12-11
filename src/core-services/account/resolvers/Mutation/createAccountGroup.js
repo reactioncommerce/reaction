@@ -21,7 +21,7 @@ export default async function createAccountGroup(_, { input }, context) {
   const { shopId } = input;
   const decodedShopId = decodeShopOpaqueId(shopId);
 
-  const transformedInput = Object.assign({}, input, { shopId: decodedShopId });
+  const transformedInput = { ...input, shopId: decodedShopId };
 
   return context.mutations.createAccountGroup(context, transformedInput);
 }

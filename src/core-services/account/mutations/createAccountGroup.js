@@ -34,7 +34,7 @@ export default async function createAccountGroup(context, input) {
   // TODO: Remove when we move away from legacy permission verification
   const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
 
-  const nowDate = new Date(Date.now());
+  const nowDate = new Date();
   const newGroupData = Object.assign({}, group, {
     slug: getSlug(group.name),
     shopId,
@@ -58,10 +58,11 @@ export default async function createAccountGroup(context, input) {
   }
 
   try {
-    // Kafka connect mongo should be listening for insert events
-    // and should place the newly created group on the kakfa groups topic
-    // reaction authorization listens on the topic and creates role (group)
-    // reaction authorization
+    /** Kafka connect mongo should be listening for insert events
+     and should place the newly created group on the kakfa groups topic.
+     reaction authorization listens on the topic and creates role (group) in
+     reaction authorization
+     */
 
     const result = await Groups.insertOne(newGroupData);
     newlyCreatedGroup = result.ops ? result.ops[0] : {};
