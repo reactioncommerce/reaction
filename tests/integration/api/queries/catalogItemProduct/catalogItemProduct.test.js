@@ -1,20 +1,32 @@
+import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
-import { mockCatalogItems, mockExternalCatalogProductNodes } from "../../../../mocks/mockCatalogItems";
-import { opaqueCatalogItemIds } from "../../../../mocks/mockCatalogProducts";
+import Factory from "/tests/util/factory.js";
 
 const CatalogItemProductFullQuery = importAsString("./CatalogItemProductFullQuery.graphql");
+const decodeCatalogProductOpaqueId = decodeOpaqueIdForNamespace("reaction/catalogProduct");
 
-jest.setTimeout(300000);
-
-const mockCatalogItem = mockCatalogItems[0];
 const internalShopId = "123";
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
 const shopName = "Test Shop";
 const internalTagIds = ["923", "924"];
 
-const expectedItemsResponse = {
-  catalogItemProduct: mockExternalCatalogProductNodes[0]
-};
+const mockCatalogItem = Factory.Catalog.makeOne({
+  _id: "999",
+  product: Factory.CatalogProduct.makeOne({
+    _id: "100",
+    slug: "fake-product",
+    isDeleted: false,
+    isVisible: true,
+    productId: "100",
+    tagIds: internalTagIds,
+    shopId: internalShopId
+  }),
+  shopId: internalShopId
+});
+
+jest.setTimeout(300000);
 
 let testApp;
 let query;
@@ -36,24 +48,33 @@ afterAll(async () => {
 
 test("get a catalog product by slug", async () => {
   let result;
+
+  console.log({mockCatalogItem})
+
   try {
     result = await query({ slugOrId: mockCatalogItem.product.slug });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
   }
-
-  expect(result).toEqual(expectedItemsResponse);
+  console.log({result})
+  expect(result).toEqual({
+    _id: encodeOpaqueId("reaction/catalogItem", mockCatalogItem._id),
+    shopId: opaqueShopId
+  });
 });
 
 test("get a catalog product by ID", async () => {
   let result;
   try {
-    result = await query({ slugOrId: opaqueCatalogItemIds[0] });
+    result = await query({ slugOrId: encodeOpaqueId("reaction/catalogItem", mockCatalogItem._id) });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
   }
 
-  expect(result).toEqual(expectedItemsResponse);
+  expect(result).toEqual({
+    _id: encodeOpaqueId("reaction/catalogItem", mockCatalogItem._id),
+    shopId: opaqueShopId
+  });
 });
