@@ -12,38 +12,6 @@ const shopName = "Test Shop";
 let availablePaymentMethods;
 let testApp;
 
-const examplePaymentMethod = {
-  _id: "euAJq7W8MzPJPm7Ne",
-  name: "example-paymentmethod",
-  shopId: "J8Bhq3uTtdgwZx3rz",
-  enabled: true,
-  icon: null,
-  registry: [
-    {
-      label: "Example Payment",
-      provides: [
-        "paymentSettings"
-      ],
-      container: "dashboard",
-      template: "exampleSettings"
-    }
-  ],
-  settings: {
-    mode: false,
-    apiKey: "",
-    example: {
-      enabled: false
-    },
-    support: [
-      "Authorize",
-      "Capture",
-      "Refund"
-    ]
-  },
-  version: null
-};
-
-
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
