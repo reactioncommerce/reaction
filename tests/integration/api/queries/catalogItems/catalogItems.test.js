@@ -1,7 +1,6 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
 // temp mocks
-import { internalTagIds, opaqueTagIds } from "../../../../mocks/mockTags";
 import { internalCatalogItemIds } from "../../../../mocks/mockCatalogProducts";
 import {
   mockCatalogItems,
@@ -22,6 +21,9 @@ let paginatedQuery;
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
 const shopName = "Test Shop";
+const internalTagIds = ["923", "924"];
+const opaqueTagIds = ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="]; // reaction/tag
+
 
 beforeAll(async () => {
   testApp = new TestApp();
