@@ -1,7 +1,6 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
 // temp mocks
-import { internalShopId, opaqueShopId, shopName } from "../../../../mocks/mockShop";
 import { internalTagIds, opaqueTagIds } from "../../../../mocks/mockTags";
 import { internalCatalogItemIds } from "../../../../mocks/mockCatalogProducts";
 import {
@@ -19,6 +18,11 @@ jest.setTimeout(300000);
 let testApp;
 let query;
 let paginatedQuery;
+
+const internalShopId = "123";
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
+const shopName = "Test Shop";
+
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();

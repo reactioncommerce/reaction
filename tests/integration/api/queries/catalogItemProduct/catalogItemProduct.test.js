@@ -1,6 +1,5 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
-import { internalShopId, shopName } from "../../../../mocks/mockShop";
 import { internalTagIds } from "../../../../mocks/mockTags";
 import { mockCatalogItems, mockExternalCatalogProductNodes } from "../../../../mocks/mockCatalogItems";
 import { opaqueCatalogItemIds } from "../../../../mocks/mockCatalogProducts";
@@ -10,6 +9,8 @@ const CatalogItemProductFullQuery = importAsString("./CatalogItemProductFullQuer
 jest.setTimeout(300000);
 
 const mockCatalogItem = mockCatalogItems[0];
+const internalShopId = "123";
+const shopName = "Test Shop";
 
 const expectedItemsResponse = {
   catalogItemProduct: mockExternalCatalogProductNodes[0]
