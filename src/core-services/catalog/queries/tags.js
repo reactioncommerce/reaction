@@ -33,10 +33,11 @@ export default async function tags(
   let regexMatch;
 
   // Check to make sure user has `read` permissions for this tag
-  await context.validatePermissions("reaction:tags", "read", {
-    shopId,
-    legacyRoles: ["admin", "owner", "tags", "any"]
-  });
+  // TODO(auth-pod): revisit this check once legacyRoles are removed
+  // await context.validatePermissions("reaction:tags", "read", {
+  //   shopId,
+  //   legacyRoles: ["admin", "owner", "tags", "any"]
+  // });
 
   // Check to see if user has `read` permissions for hidden / deleted tags
   // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`

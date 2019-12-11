@@ -62,9 +62,6 @@ export default async function hasPermission(context, resource, action, authConte
     const groupRoles = roles[group];
 
     if (Array.isArray(groupRoles) && checkRoles.some((role) => groupRoles.includes(role))) return true;
-
-    // return true if "any" is provided
-    if (Array.isArray(permissions) && permissions.includes("any")) return true;
   }
 
   Logger.debug(`User ${user._id} has none of [${checkRoles.join(", ")}] permissions`);
