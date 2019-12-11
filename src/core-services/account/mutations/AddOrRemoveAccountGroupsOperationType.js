@@ -1,6 +1,6 @@
 /**
  * Enum for AddOrRemoveAccountGroupsOperationType values.
- * This enum represents the operations that can be used in the addOrRemoveAccountGroups method
+ * This enum represents the operations that can be used in the setUserPermissions method
  * @readonly
  * @enum {string}
  */
