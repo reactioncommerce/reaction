@@ -82,7 +82,7 @@ test("should throw if group already exists", async () => {
   };
   mockContext.collections.Groups.insertOne.mockReturnValueOnce(Promise.resolve(insertOneRes));
   mockContext.collections.Groups.findOne
-    .mockReturnValueOnce(undefined)
+    .mockReturnValueOnce(Promise.resolve(undefined))
     .mockReturnValueOnce(Promise.resolve(fakeResult));
 
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
