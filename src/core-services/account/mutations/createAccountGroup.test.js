@@ -36,7 +36,6 @@ test("should create a group for the shop", async () => {
     .mockReturnValueOnce(Promise.resolve(fakeResult))
     .mockReturnValueOnce(Promise.resolve(undefined));
 
-  mockContext.validatePermissionsLegacy.mockReturnValueOnce(Promise.resolve(undefined));
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
 
   const result = await createAccountGroup(mockContext, input);
