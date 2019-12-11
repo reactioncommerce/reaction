@@ -35,7 +35,7 @@ export default async function tags(
   // Check to make sure user has `read` permissions for this tag
   await context.validatePermissions("reaction:tags", "read", {
     shopId,
-    legacyRoles: ["admin", "owner", "tags"]
+    legacyRoles: ["admin", "owner", "tags", "any"]
   });
 
   // Check to see if user has `read` permissions for hidden / deleted tags
