@@ -434,9 +434,6 @@ input ProductVariantInput {
 
   "The country of origin"
   originCountry: String
-  
-  "The price ofthe variant"
-  price: Float
 
   "SKU of variant"
   sku: String

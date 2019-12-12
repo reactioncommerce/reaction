@@ -94,3 +94,8 @@ extend type Product {
   "Price range"
   price: ProductPriceRange
 }
+
+extend input ProductVariantInput {
+  "The price of the variant"
+  price: Float
+}
