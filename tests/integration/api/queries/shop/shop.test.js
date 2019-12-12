@@ -26,7 +26,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("get shop, no auth necessary", async () => {

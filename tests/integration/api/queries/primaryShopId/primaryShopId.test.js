@@ -19,7 +19,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("get primaryShopId, no auth necessary", async () => {

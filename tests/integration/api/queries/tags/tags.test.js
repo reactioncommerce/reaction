@@ -48,7 +48,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Tags.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("get the first 20 tags when neither first or last is in query", async () => {

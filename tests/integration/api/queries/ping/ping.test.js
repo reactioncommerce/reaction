@@ -13,7 +13,9 @@ beforeAll(async () => {
 }`);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.stop();
+});
 
 test("simple test ping", async () => {
   const result = await pingQuery();

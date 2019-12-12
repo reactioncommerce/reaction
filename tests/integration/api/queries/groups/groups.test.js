@@ -73,7 +73,7 @@ afterAll(async () => {
   await testApp.collections.users.deleteMany({});
   await testApp.collections.Groups.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("unauthenticated", async () => {

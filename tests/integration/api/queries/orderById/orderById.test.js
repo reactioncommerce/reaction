@@ -72,7 +72,7 @@ afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.users.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  testApp.stop();
+  await testApp.stop();
 });
 
 test("get account order success", async () => {

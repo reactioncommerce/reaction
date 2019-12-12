@@ -15,7 +15,9 @@ beforeAll(async () => {
   viewerQuery = testApp.query(ViewerFullQuery);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.stop();
+});
 
 test("unauthenticated", async () => {
   const result = await viewerQuery();
