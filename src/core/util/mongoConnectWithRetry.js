@@ -23,10 +23,10 @@ export default function mongoConnectWithRetry(url) {
     }
 
     return MongoClient.connect(url, {
-      useNewUrlParser: true
+      useNewUrlParser: true,
       // Uncomment this after this `mongodb` pkg bug is fixed:
       // https://jira.mongodb.org/browse/NODE-2249
-      // useUnifiedTopology: true
+      useUnifiedTopology: true
     }).then((client) => {
       Logger.info(`Connected to MongoDB. Database name: ${client.db().databaseName}`);
       return client;
