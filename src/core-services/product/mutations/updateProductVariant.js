@@ -94,6 +94,10 @@ const inputSchema = new SimpleSchema({
     type: String,
     optional: true
   },
+  "price": {
+    type: Number,
+    optional: true
+  },
   "sku": {
     label: "SKU",
     type: String,
