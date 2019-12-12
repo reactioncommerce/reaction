@@ -1,4 +1,3 @@
-import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
@@ -6,8 +5,6 @@ import TestApp from "/tests/util/TestApp.js";
 
 const CatalogProductItemsFullQuery = importAsString("./CatalogProductItemsFullQuery.graphql");
 const CatalogProductItemsFullQueryPaginated = importAsString("./CatalogProductItemsFullQueryPaginated.graphql");
-
-const decodeCatalogProductOpaqueId = decodeOpaqueIdForNamespace("reaction/catalogProduct");
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
@@ -144,7 +141,7 @@ test("expect CatalogItemProducts sorted by minPrice from highest to lowest when 
   const firstResultItem = result.catalogItems.nodes[0];
   const lastResultItem = result.catalogItems.nodes[result.catalogItems.nodes.length - 1];
 
-  const resultProductIds = result.catalogItems.nodes.map((n) => n.product._id);
+  const resultProductIds = result.catalogItems.nodes.map((node) => node.product._id);
 
   expect(result.catalogItems.nodes.length).toEqual(15);
 
@@ -205,9 +202,7 @@ test("expect CatalogitemProducts with offset and featured sort to skip items", a
     expect(error).toBeUndefined();
     return;
   }
-  const ids = result.catalogItems.nodes.map((n) => decodeCatalogProductOpaqueId(n.product._id));
-  // console.log(result.catalogItems.totalCount);
-  // console.log({ ids });
+
   expect(result.catalogItems.pageInfo.hasNextPage).toBe(false);
   // @TODO: debug this
   expect(result.catalogItems.pageInfo.hasPreviousPage).toBe(true);
@@ -228,7 +223,7 @@ test("expect CatalogItemProducts sorted by minPrice from highest to lowest when 
     expect(error).toBeUndefined();
     return;
   }
-  const resultProductIds = result.catalogItems.nodes.map((n) => n.product._id);
+  const resultProductIds = result.catalogItems.nodes.map((node) => node.product._id);
 
   expect(resultProductIds).toEqual(opaqueCatalogItemIds);
 });
@@ -247,7 +242,7 @@ test("expect CatalogItemProducts sorted by minPrice from lowest to highest when 
     expect(error).toBeUndefined();
     return;
   }
-  const resultProductIds = result.catalogItems.nodes.map((n) => n.product._id);
+  const resultProductIds = result.catalogItems.nodes.map((node) => node.product._id);
 
   expect(resultProductIds).toEqual(opaqueCatalogItemIds.reverse());
 });
