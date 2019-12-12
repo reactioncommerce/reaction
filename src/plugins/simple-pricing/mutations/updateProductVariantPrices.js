@@ -5,7 +5,7 @@ const inputSchema = new SimpleSchema({
   "compareAtPrice": {
     type: Number,
     optional: true
-  }
+  },
   "price": {
     type: Number,
     optional: true

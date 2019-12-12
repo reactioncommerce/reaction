@@ -19,7 +19,7 @@ import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 export default async function updateProductVariantPrices(_, { input }, context) {
   const {
     clientMutationId = null,
-    prices
+    prices,
     shopId,
     variantId
   } = input;
