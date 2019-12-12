@@ -131,7 +131,12 @@ export default class FileRecord extends EventEmitter {
 
   attachData(data) {
     if (!data) throw new Error("FileRecord.attachData requires a data argument with some data");
-    this.data = data;
+    if(data instanceof Blob) {
+      this.data = data.stream();
+    }
+    else {
+      this.data = data;
+    }
     return this;
   }
 
@@ -255,6 +260,7 @@ export default class FileRecord extends EventEmitter {
         resume: true,
         retryDelays: [0, 1000, 3000, 5000],
         metadata: { name, size, type },
+        uploadSize: size,
         onError(error) {
           reject(error);
         },
