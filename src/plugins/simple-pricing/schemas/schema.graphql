@@ -102,11 +102,11 @@ extend input ProductVariantInput {
 
 "Input for the `updateProductVariantField` mutation"
 input UpdateProductVariantPricesInput  {
-  "ID of shop that owns the variant to update"
-  shopId: ID!
-
   "Prices to update"
   prices: ProductVariantPricesInput!
+
+  "ID of shop that owns the variant to update"
+  shopId: ID!
 
   "ID of variant to update"
   variantId: ID!

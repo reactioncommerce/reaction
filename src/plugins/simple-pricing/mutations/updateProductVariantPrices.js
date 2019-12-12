@@ -2,11 +2,11 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
-  "compareAtPrice": {
+  compareAtPrice: {
     type: Number,
     optional: true
   },
-  "price": {
+  price: {
     type: Number,
     optional: true
   }
@@ -30,7 +30,10 @@ export default async function updateProductVariantPrices(context, input) {
   const { prices, variantId, shopId } = input;
 
   // Check that user has permission to create product
-  await context.validatePermissions(`reaction:products:${variantId}`, "update:prices", { shopId, legacyRoles: ["createProduct", "product/admin", "product/update"] });
+  await context.validatePermissions(`reaction:products:${variantId}`, "update:prices", {
+    shopId,
+    legacyRoles: ["createProduct", "product/admin", "product/update"]
+  });
 
   const product = await Products.findOne({ _id: variantId, shopId });
   if (!product) throw new ReactionError("not-found", "Product variant not found");
