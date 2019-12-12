@@ -131,10 +131,9 @@ export default class FileRecord extends EventEmitter {
 
   attachData(data) {
     if (!data) throw new Error("FileRecord.attachData requires a data argument with some data");
-    if(data instanceof Blob) {
+    if (data instanceof Blob) {
       this.data = data.stream();
-    }
-    else {
+    } else {
       this.data = data;
     }
     return this;
