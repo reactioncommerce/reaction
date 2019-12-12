@@ -80,7 +80,7 @@ export default async function updateTag(context, input) {
     );
 
     if (result.n === 0) {
-      throw new ReactionError("not-found", "Redirect rule not found");
+      throw new ReactionError("not-found", "Tag couldn't be updated, or doesn't exist");
     }
 
     const tag = await Tags.findOne({ _id: tagId, shopId });

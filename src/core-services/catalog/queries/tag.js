@@ -28,7 +28,7 @@ export default async function tag(context, input) {
   // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
   const hasInactivePermissions = await context.userHasPermission(`reaction:tags:${slugOrId}:inactive`, "read", {
     shopId,
-    legacyRoles: ["admin", "owner", "tags"]
+    legacyRoles: ["admin", "owner"]
   });
 
   let query = {
