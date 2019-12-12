@@ -61,7 +61,9 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
   await testApp.collections.Tags.deleteOne({ _id: mockTagWithFeatured._id });
   await Promise.all(mockProductsWithTagAndFeaturedProducts.map((mockProduct) => testApp.collections.Products.deleteOne({ _id: mockProduct._id })));
   await testApp.clearLoggedInUser();

@@ -17,7 +17,10 @@ beforeAll(async () => {
 }`);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Shops.deleteMany({});
+  testApp.stop();
+});
 
 test("get primaryShopId, no auth necessary", async () => {
   const result = await primaryShopIdQuery();

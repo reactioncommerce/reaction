@@ -45,7 +45,11 @@ beforeAll(async () => {
   await Promise.all(mockTags.map((tag) => testApp.collections.Tags.insertOne(tag)));
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Tags.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  testApp.stop();
+});
 
 test("get the first 20 tags when neither first or last is in query", async () => {
   let result;

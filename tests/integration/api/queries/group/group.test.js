@@ -66,7 +66,14 @@ beforeAll(async () => {
   groupQuery = testApp.query(GroupFullQuery);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+
+  testApp.stop();
+});
 
 test("unauthenticated", async () => {
   try {
