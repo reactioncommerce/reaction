@@ -1,5 +1,5 @@
-import updateProductVariant from "./updateProductVariant.js";
+import updateProductVariantPrices from "./updateProductVariantPrices.js";
 
 export default {
-  updateProductVariant
+  updateProductVariantPrices
 };
