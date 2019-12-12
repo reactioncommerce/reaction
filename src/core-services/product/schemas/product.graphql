@@ -432,11 +432,11 @@ input ProductVariantInput {
   "A short title to use for product detail select lists"
   optionTitle: String
 
-  "The price ofthe variant"
-  price: Float
-
   "The country of origin"
   originCountry: String
+  
+  "The price ofthe variant"
+  price: Float
 
   "SKU of variant"
   sku: String
