@@ -95,6 +95,14 @@ extend type Product {
   price: ProductPriceRange
 }
 
+extend type ProductVariant {
+  "Compare at price of the variant"
+  compareAtPrice: Float
+
+  "Price of the variant"
+  price: Float
+}
+
 extend input ProductVariantInput {
   "The price of the variant"
   price: Float
