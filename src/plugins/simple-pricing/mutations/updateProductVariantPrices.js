@@ -46,7 +46,7 @@ export default async function updateProductVariantPrices(context, input) {
 
   const { value: updatedProduct } = await Products.findOneAndUpdate(
     { _id: variantId, shopId, type: "variant" },
-    { $set: { ...prices }},
+    { $set: { ...prices } },
     { returnOriginal: false }
   );
 

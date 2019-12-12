@@ -8,7 +8,6 @@ jest.setTimeout(300000);
 
 const internalShopId = "123";
 const internalProductId = "999";
-const opaqueProductId = "cmVhY3Rpb24vcHJvZHVjdDo5OTk="; // reaction/product:999
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalVariantIds = ["875", "874", "925"];
 
