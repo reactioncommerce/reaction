@@ -1,1206 +1,93 @@
+import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const CatalogProductItemsFullQuery = importAsString("./CatalogProductItemsFullQuery.graphql");
 const CatalogProductItemsFullQueryPaginated = importAsString("./CatalogProductItemsFullQueryPaginated.graphql");
 
+const decodeCatalogProductOpaqueId = decodeOpaqueIdForNamespace("reaction/catalogProduct");
+
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
-const internalTagIds = ["923", "924"];
-const opaqueTagIds = ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="]; // reaction/tag
 const shopName = "Test Shop";
-const internalCatalogItemIds = ["999", "222"];
 
-const mockCatalogItems = [
-  {
-    _id: "999",
-    product: {
-      _id: "999",
-      barcode: "barcode",
-      createdAt: "2018-04-16T15:34:28.043Z",
-      description: "description",
-      height: 11.23,
-      isBackorder: false,
-      isLowQuantity: false,
-      isSoldOut: false,
+const mockTag = Factory.Tag.makeOne({
+  featuredProductIds: [
+    "501",
+    "503",
+    "505",
+    "506",
+    "504",
+    "500",
+    "501",
+    "502",
+    "507",
+    "508",
+    "509",
+    "512",
+    "511",
+    "513",
+    "510",
+    "506",
+    "514"
+  ],
+  shopId: internalShopId,
+  slug: "2"
+});
+
+const mockCatalogItems = Factory.Catalog.makeMany(15, {
+  _id: (iterator) => (iterator + 500).toString(),
+  product: (iterator) =>
+    Factory.CatalogProduct.makeOne({
+      _id: (iterator + 500).toString(),
+      productId: (iterator + 500).toString(),
+      isDeleted: false,
       isVisible: true,
-      length: 5.67,
-      metafields: [
-        {
-          value: "value",
-          namespace: "namespace",
-          description: "description",
-          valueType: "valueType",
-          scope: "scope",
-          key: "key"
-        }
-      ],
-      metaDescription: "metaDescription",
-      minOrderQuantity: 5,
-      originCountry: "originCountry",
-      pageTitle: "pageTitle",
-      parcel: { containers: "containers", length: 4.44, width: 5.55, height: 6.66, weight: 7.77 },
+      tagIds: [mockTag._id],
+      shopId: internalShopId,
       pricing: {
-        USD: { compareAtPrice: 10, displayPrice: "2.99 - 5.99", maxPrice: 5.99, minPrice: 2.99, price: null }
+        USD: {
+          compareAtPrice: 6.0 + (iterator + 10),
+          displayPrice: `${0.99 + iterator} - ${1.99 + iterator}`,
+          maxPrice: 1.99 + iterator,
+          minPrice: 0.99 + iterator,
+          price: null
+        }
       },
-      productId: "999",
       media: [
         {
           priority: 1,
-          productId: "999",
+          productId: (iterator + 500).toString(),
           variantId: null,
           URLs: { thumbnail: "/thumbnail", small: "/small", medium: "/medium", large: "/large", original: "/original" }
         }
       ],
-      primaryImage: {
-        priority: 1,
-        productId: "999",
-        variantId: null,
-        URLs: { thumbnail: "/thumbnail", small: "/small", medium: "/medium", large: "/large", original: "/original" }
-      },
-      productType: "productType",
-      shopId: "123",
-      sku: "ABC123",
-      slug: "fake-product",
       socialMetadata: [
         { service: "twitter", message: "twitterMessage" },
         { service: "facebook", message: "facebookMessage" },
         { service: "googleplus", message: "googlePlusMessage" },
         { service: "pinterest", message: "pinterestMessage" }
       ],
-      supportedFulfillmentTypes: ["shipping"],
-      tagIds: ["923", "924"],
-      title: "Fake Product Title",
-      type: "product-simple",
-      updatedAt: "2018-04-17T15:34:28.043Z",
-      variants: [
-        {
-          _id: "875",
-          barcode: "barcode",
-          createdAt: "2018-04-16T15:34:28.043Z",
-          height: 0,
-          index: 0,
-          isTaxable: true,
-          length: 0,
-          metafields: [
-            {
-              value: "value",
-              namespace: "namespace",
-              description: "description",
-              valueType: "valueType",
-              scope: "scope",
-              key: "key"
-            }
-          ],
-          minOrderQuantity: 0,
-          options: [
-            {
-              _id: "874",
-              barcode: "barcode",
-              createdAt: null,
-              height: 2,
-              index: 0,
-              isTaxable: true,
-              length: 2,
-              metafields: [
-                {
-                  value: "value",
-                  namespace: "namespace",
-                  description: "description",
-                  valueType: "valueType",
-                  scope: "scope",
-                  key: "key"
-                }
-              ],
-              minOrderQuantity: 0,
-              optionTitle: "Awesome Soft Bike",
-              originCountry: "US",
-              pricing: {
-                USD: { compareAtPrice: null, displayPrice: "5.99", maxPrice: 5.99, minPrice: 5.99, price: 5.99 }
-              },
-              shopId: "123",
-              sku: "sku",
-              taxCode: "0000",
-              taxDescription: "taxDescription",
-              title: "Two pound bag",
-              updatedAt: null,
-              variantId: "874",
-              weight: 2,
-              width: 2
-            },
-            {
-              _id: "873",
-              barcode: "barcode",
-              createdAt: null,
-              height: 2,
-              index: 0,
-              isTaxable: true,
-              length: 2,
-              metafields: [
-                {
-                  value: "value",
-                  namespace: "namespace",
-                  description: "description",
-                  valueType: "valueType",
-                  scope: "scope",
-                  key: "key"
-                }
-              ],
-              minOrderQuantity: 0,
-              optionTitle: "Another Awesome Soft Bike",
-              originCountry: "US",
-              pricing: {
-                USD: { compareAtPrice: null, displayPrice: "2.99", maxPrice: 2.99, minPrice: 2.99, price: 2.99 }
-              },
-              shopId: "123",
-              sku: "sku",
-              taxCode: "0000",
-              taxDescription: "taxDescription",
-              title: "One pound bag",
-              updatedAt: null,
-              variantId: "873",
-              weight: 2,
-              width: 2
-            }
-          ],
-          optionTitle: "Untitled Option",
-          originCountry: "US",
-          pricing: {
-            USD: { compareAtPrice: 10, displayPrice: "2.99 - 5.99", maxPrice: 5.99, minPrice: 2.99, price: null }
-          },
-          shopId: "123",
-          sku: "sku",
-          taxCode: "0000",
-          taxDescription: "taxDescription",
-          title: "Small Concrete Pizza",
-          updatedAt: "2018-04-17T15:34:28.043Z",
-          variantId: "875",
-          weight: 0,
-          width: 0
+      variants: Factory.CatalogProductVariant.makeMany(1, {
+        options: null,
+        shopId: internalShopId,
+        pricing: {
+          USD: {
+            compareAtPrice: 6.0 + (iterator + 10),
+            displayPrice: `${0.99 + iterator} - ${1.99 + iterator}`,
+            maxPrice: 1.99 + iterator,
+            minPrice: 0.99 + iterator,
+            price: null
+          }
         }
-      ],
-      vendor: "vendor",
-      weight: 15.6,
-      width: 8.4
-    },
-    shopId: "123",
-    createdAt: "2018-04-16T15:34:28.043Z",
-    updatedAt: "2018-04-17T15:34:28.043Z"
-  },
-  {
-    _id: "222",
-    product: {
-      _id: "222",
-      barcode: "barcode",
-      createdAt: "2018-04-16T15:34:28.043Z",
-      description: "description",
-      height: 11.23,
-      isBackorder: false,
-      isLowQuantity: false,
-      isSoldOut: false,
-      isVisible: true,
-      length: 5.67,
-      metafields: [
-        {
-          value: "value",
-          namespace: "namespace",
-          description: "description",
-          valueType: "valueType",
-          scope: "scope",
-          key: "key"
-        }
-      ],
-      metaDescription: "metaDescription",
-      minOrderQuantity: 5,
-      originCountry: "originCountry",
-      pageTitle: "pageTitle",
-      parcel: { containers: "containers", length: 4.44, width: 5.55, height: 6.66, weight: 7.77 },
-      pricing: {
-        USD: { compareAtPrice: 35, displayPrice: "16.99 - 25.99", maxPrice: 25.99, minPrice: 16.99, price: null }
-      },
-      productId: "222",
-      media: [
-        {
-          priority: 1,
-          productId: "222",
-          variantId: null,
-          URLs: { thumbnail: "/thumbnail", small: "/small", medium: "/medium", large: "/large", original: "/original" }
-        }
-      ],
-      primaryImage: {
-        priority: 1,
-        productId: "222",
-        variantId: null,
-        URLs: { thumbnail: "/thumbnail", small: "/small", medium: "/medium", large: "/large", original: "/original" }
-      },
-      productType: "productType",
-      shopId: "123",
-      sku: "ABC123",
-      slug: "another-fake-product",
-      socialMetadata: [
-        { service: "twitter", message: "twitterMessage" },
-        { service: "facebook", message: "facebookMessage" },
-        { service: "googleplus", message: "googlePlusMessage" },
-        { service: "pinterest", message: "pinterestMessage" }
-      ],
-      supportedFulfillmentTypes: ["shipping"],
-      tagIds: ["923", "924"],
-      title: "Another Fake Product Title",
-      type: "product-simple",
-      updatedAt: "2018-04-17T15:34:28.043Z",
-      variants: [],
-      vendor: "another vendor",
-      weight: 15.6,
-      width: 8.4
-    },
-    shopId: "123",
-    createdAt: "2018-04-16T15:34:28.043Z",
-    updatedAt: "2018-04-17T15:34:28.043Z"
-  }
-];
+      })
+    }),
+  shopId: internalShopId
+});
 
-const mockUnsortedCatalogItemsResponse = {
-  catalogItems: {
-    nodes: [
-      {
-        _id: "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06OTk5",
-        createdAt: "2018-04-16T15:34:28.043Z",
-        updatedAt: "2018-04-17T15:34:28.043Z",
-        shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-        product: {
-          _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6OTk5",
-          barcode: "barcode",
-          createdAt: "2018-04-16T15:34:28.043Z",
-          description: "description",
-          height: 11.23,
-          isBackorder: false,
-          isLowQuantity: false,
-          isSoldOut: false,
-          length: 5.67,
-          metafields: [
-            {
-              value: "value",
-              namespace: "namespace",
-              description: "description",
-              valueType: "valueType",
-              scope: "scope",
-              key: "key"
-            }
-          ],
-          metaDescription: "metaDescription",
-          minOrderQuantity: 5,
-          originCountry: "originCountry",
-          pageTitle: "pageTitle",
-          parcel: { containers: "containers", length: 4.44, width: 5.55, height: 6.66, weight: 7.77 },
-          pricing: [
-            {
-              currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-              compareAtPrice: { amount: 10 },
-              displayPrice: "2.99 - 5.99",
-              maxPrice: 5.99,
-              minPrice: 2.99,
-              price: null
-            }
-          ],
-          productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-          media: [
-            {
-              priority: 1,
-              productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-              variantId: null,
-              URLs: {
-                thumbnail: "https://shop.fake.site/thumbnail",
-                small: "https://shop.fake.site/small",
-                medium: "https://shop.fake.site/medium",
-                large: "https://shop.fake.site/large",
-                original: "https://shop.fake.site/original"
-              }
-            }
-          ],
-          primaryImage: {
-            priority: 1,
-            productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-            variantId: null,
-            URLs: {
-              thumbnail: "https://shop.fake.site/thumbnail",
-              small: "https://shop.fake.site/small",
-              medium: "https://shop.fake.site/medium",
-              large: "https://shop.fake.site/large",
-              original: "https://shop.fake.site/original"
-            }
-          },
-          productType: "productType",
-          shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-          sku: "ABC123",
-          slug: "fake-product",
-          socialMetadata: [
-            { service: "twitter", message: "twitterMessage" },
-            { service: "facebook", message: "facebookMessage" },
-            { service: "googleplus", message: "googlePlusMessage" },
-            { service: "pinterest", message: "pinterestMessage" }
-          ],
-          supportedFulfillmentTypes: ["shipping"],
-          tagIds: ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="],
-          tags: { nodes: [{ _id: "cmVhY3Rpb24vdGFnOjkyMw==" }, { _id: "cmVhY3Rpb24vdGFnOjkyNA==" }] },
-          title: "Fake Product Title",
-          updatedAt: "2018-04-17T15:34:28.043Z",
-          variants: [
-            {
-              _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NQ==",
-              barcode: "barcode",
-              createdAt: "2018-04-16T15:34:28.043Z",
-              height: 0,
-              index: 0,
-              isLowQuantity: false,
-              isSoldOut: true,
-              isTaxable: true,
-              length: 0,
-              metafields: [
-                {
-                  value: "value",
-                  namespace: "namespace",
-                  description: "description",
-                  valueType: "valueType",
-                  scope: "scope",
-                  key: "key"
-                }
-              ],
-              minOrderQuantity: 0,
-              options: [
-                {
-                  _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA==",
-                  barcode: "barcode",
-                  createdAt: null,
-                  height: 2,
-                  index: 0,
-                  isLowQuantity: false,
-                  isSoldOut: false,
-                  isTaxable: true,
-                  length: 2,
-                  metafields: [
-                    {
-                      value: "value",
-                      namespace: "namespace",
-                      description: "description",
-                      valueType: "valueType",
-                      scope: "scope",
-                      key: "key"
-                    }
-                  ],
-                  minOrderQuantity: 0,
-                  optionTitle: "Awesome Soft Bike",
-                  originCountry: "US",
-                  pricing: [
-                    {
-                      currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                      compareAtPrice: null,
-                      displayPrice: "5.99",
-                      maxPrice: 5.99,
-                      minPrice: 5.99,
-                      price: 5.99
-                    }
-                  ],
-                  shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-                  sku: "sku",
-                  taxCode: "0000",
-                  taxDescription: "taxDescription",
-                  title: "Two pound bag",
-                  updatedAt: null,
-                  variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzQ=",
-                  weight: 2,
-                  width: 2
-                },
-                {
-                  _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3Mw==",
-                  barcode: "barcode",
-                  createdAt: null,
-                  height: 2,
-                  index: 0,
-                  isLowQuantity: false,
-                  isSoldOut: false,
-                  isTaxable: true,
-                  length: 2,
-                  metafields: [
-                    {
-                      value: "value",
-                      namespace: "namespace",
-                      description: "description",
-                      valueType: "valueType",
-                      scope: "scope",
-                      key: "key"
-                    }
-                  ],
-                  minOrderQuantity: 0,
-                  optionTitle: "Another Awesome Soft Bike",
-                  originCountry: "US",
-                  pricing: [
-                    {
-                      currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                      compareAtPrice: null,
-                      displayPrice: "2.99",
-                      maxPrice: 2.99,
-                      minPrice: 2.99,
-                      price: 2.99
-                    }
-                  ],
-                  shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-                  sku: "sku",
-                  taxCode: "0000",
-                  taxDescription: "taxDescription",
-                  title: "One pound bag",
-                  updatedAt: null,
-                  variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzM=",
-                  weight: 2,
-                  width: 2
-                }
-              ],
-              originCountry: "US",
-              pricing: [
-                {
-                  currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                  compareAtPrice: { amount: 10 },
-                  displayPrice: "2.99 - 5.99",
-                  maxPrice: 5.99,
-                  minPrice: 2.99,
-                  price: null
-                }
-              ],
-              shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-              sku: "sku",
-              taxCode: "0000",
-              taxDescription: "taxDescription",
-              title: "Small Concrete Pizza",
-              updatedAt: "2018-04-17T15:34:28.043Z",
-              variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzU=",
-              weight: 0,
-              width: 0
-            }
-          ],
-          vendor: "vendor",
-          weight: 15.6,
-          width: 8.4
-        }
-      },
-      {
-        _id: "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06MjIy",
-        createdAt: "2018-04-16T15:34:28.043Z",
-        updatedAt: "2018-04-17T15:34:28.043Z",
-        shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-        product: {
-          _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6MjIy",
-          barcode: "barcode",
-          createdAt: "2018-04-16T15:34:28.043Z",
-          description: "description",
-          height: 11.23,
-          isBackorder: false,
-          isLowQuantity: false,
-          isSoldOut: false,
-          length: 5.67,
-          metafields: [
-            {
-              value: "value",
-              namespace: "namespace",
-              description: "description",
-              valueType: "valueType",
-              scope: "scope",
-              key: "key"
-            }
-          ],
-          metaDescription: "metaDescription",
-          minOrderQuantity: 5,
-          originCountry: "originCountry",
-          pageTitle: "pageTitle",
-          parcel: { containers: "containers", length: 4.44, width: 5.55, height: 6.66, weight: 7.77 },
-          pricing: [
-            {
-              currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-              compareAtPrice: { amount: 35 },
-              displayPrice: "16.99 - 25.99",
-              maxPrice: 25.99,
-              minPrice: 16.99,
-              price: null
-            }
-          ],
-          productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-          media: [
-            {
-              priority: 1,
-              productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-              variantId: null,
-              URLs: {
-                thumbnail: "https://shop.fake.site/thumbnail",
-                small: "https://shop.fake.site/small",
-                medium: "https://shop.fake.site/medium",
-                large: "https://shop.fake.site/large",
-                original: "https://shop.fake.site/original"
-              }
-            }
-          ],
-          primaryImage: {
-            priority: 1,
-            productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-            variantId: null,
-            URLs: {
-              thumbnail: "https://shop.fake.site/thumbnail",
-              small: "https://shop.fake.site/small",
-              medium: "https://shop.fake.site/medium",
-              large: "https://shop.fake.site/large",
-              original: "https://shop.fake.site/original"
-            }
-          },
-          productType: "productType",
-          shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-          sku: "ABC123",
-          slug: "another-fake-product",
-          socialMetadata: [
-            { service: "twitter", message: "twitterMessage" },
-            { service: "facebook", message: "facebookMessage" },
-            { service: "googleplus", message: "googlePlusMessage" },
-            { service: "pinterest", message: "pinterestMessage" }
-          ],
-          supportedFulfillmentTypes: ["shipping"],
-          tagIds: ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="],
-          tags: { nodes: [{ _id: "cmVhY3Rpb24vdGFnOjkyMw==" }, { _id: "cmVhY3Rpb24vdGFnOjkyNA==" }] },
-          title: "Another Fake Product Title",
-          updatedAt: "2018-04-17T15:34:28.043Z",
-          variants: [],
-          vendor: "another vendor",
-          weight: 15.6,
-          width: 8.4
-        }
-      }
-    ]
-  }
-};
-
-const mockSortedByPriceHigh2LowCatalogItemsResponse = {
-  catalogItems: {
-    nodes: [
-      {
-        _id: "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06MjIy",
-        createdAt: "2018-04-16T15:34:28.043Z",
-        updatedAt: "2018-04-17T15:34:28.043Z",
-        shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-        product: {
-          _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6MjIy",
-          barcode: "barcode",
-          createdAt: "2018-04-16T15:34:28.043Z",
-          description: "description",
-          height: 11.23,
-          isBackorder: false,
-          isLowQuantity: false,
-          isSoldOut: false,
-          length: 5.67,
-          metafields: [
-            {
-              value: "value",
-              namespace: "namespace",
-              description: "description",
-              valueType: "valueType",
-              scope: "scope",
-              key: "key"
-            }
-          ],
-          metaDescription: "metaDescription",
-          minOrderQuantity: 5,
-          originCountry: "originCountry",
-          pageTitle: "pageTitle",
-          parcel: { containers: "containers", length: 4.44, width: 5.55, height: 6.66, weight: 7.77 },
-          pricing: [
-            {
-              currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-              compareAtPrice: { amount: 35 },
-              displayPrice: "16.99 - 25.99",
-              maxPrice: 25.99,
-              minPrice: 16.99,
-              price: null
-            }
-          ],
-          productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-          media: [
-            {
-              priority: 1,
-              productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-              variantId: null,
-              URLs: {
-                thumbnail: "https://shop.fake.site/thumbnail",
-                small: "https://shop.fake.site/small",
-                medium: "https://shop.fake.site/medium",
-                large: "https://shop.fake.site/large",
-                original: "https://shop.fake.site/original"
-              }
-            }
-          ],
-          primaryImage: {
-            priority: 1,
-            productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-            variantId: null,
-            URLs: {
-              thumbnail: "https://shop.fake.site/thumbnail",
-              small: "https://shop.fake.site/small",
-              medium: "https://shop.fake.site/medium",
-              large: "https://shop.fake.site/large",
-              original: "https://shop.fake.site/original"
-            }
-          },
-          productType: "productType",
-          shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-          sku: "ABC123",
-          slug: "another-fake-product",
-          socialMetadata: [
-            { service: "twitter", message: "twitterMessage" },
-            { service: "facebook", message: "facebookMessage" },
-            { service: "googleplus", message: "googlePlusMessage" },
-            { service: "pinterest", message: "pinterestMessage" }
-          ],
-          supportedFulfillmentTypes: ["shipping"],
-          tagIds: ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="],
-          tags: { nodes: [{ _id: "cmVhY3Rpb24vdGFnOjkyMw==" }, { _id: "cmVhY3Rpb24vdGFnOjkyNA==" }] },
-          title: "Another Fake Product Title",
-          updatedAt: "2018-04-17T15:34:28.043Z",
-          variants: [],
-          vendor: "another vendor",
-          weight: 15.6,
-          width: 8.4
-        }
-      },
-      {
-        _id: "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06OTk5",
-        createdAt: "2018-04-16T15:34:28.043Z",
-        updatedAt: "2018-04-17T15:34:28.043Z",
-        shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-        product: {
-          _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6OTk5",
-          barcode: "barcode",
-          createdAt: "2018-04-16T15:34:28.043Z",
-          description: "description",
-          height: 11.23,
-          isBackorder: false,
-          isLowQuantity: false,
-          isSoldOut: false,
-          length: 5.67,
-          metafields: [
-            {
-              value: "value",
-              namespace: "namespace",
-              description: "description",
-              valueType: "valueType",
-              scope: "scope",
-              key: "key"
-            }
-          ],
-          metaDescription: "metaDescription",
-          minOrderQuantity: 5,
-          originCountry: "originCountry",
-          pageTitle: "pageTitle",
-          parcel: { containers: "containers", length: 4.44, width: 5.55, height: 6.66, weight: 7.77 },
-          pricing: [
-            {
-              currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-              compareAtPrice: { amount: 10 },
-              displayPrice: "2.99 - 5.99",
-              maxPrice: 5.99,
-              minPrice: 2.99,
-              price: null
-            }
-          ],
-          productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-          media: [
-            {
-              priority: 1,
-              productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-              variantId: null,
-              URLs: {
-                thumbnail: "https://shop.fake.site/thumbnail",
-                small: "https://shop.fake.site/small",
-                medium: "https://shop.fake.site/medium",
-                large: "https://shop.fake.site/large",
-                original: "https://shop.fake.site/original"
-              }
-            }
-          ],
-          primaryImage: {
-            priority: 1,
-            productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-            variantId: null,
-            URLs: {
-              thumbnail: "https://shop.fake.site/thumbnail",
-              small: "https://shop.fake.site/small",
-              medium: "https://shop.fake.site/medium",
-              large: "https://shop.fake.site/large",
-              original: "https://shop.fake.site/original"
-            }
-          },
-          productType: "productType",
-          shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-          sku: "ABC123",
-          slug: "fake-product",
-          socialMetadata: [
-            { service: "twitter", message: "twitterMessage" },
-            { service: "facebook", message: "facebookMessage" },
-            { service: "googleplus", message: "googlePlusMessage" },
-            { service: "pinterest", message: "pinterestMessage" }
-          ],
-          supportedFulfillmentTypes: ["shipping"],
-          tagIds: ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="],
-          tags: { nodes: [{ _id: "cmVhY3Rpb24vdGFnOjkyMw==" }, { _id: "cmVhY3Rpb24vdGFnOjkyNA==" }] },
-          title: "Fake Product Title",
-          updatedAt: "2018-04-17T15:34:28.043Z",
-          variants: [
-            {
-              _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NQ==",
-              barcode: "barcode",
-              createdAt: "2018-04-16T15:34:28.043Z",
-              height: 0,
-              index: 0,
-              isLowQuantity: false,
-              isSoldOut: true,
-              isTaxable: true,
-              length: 0,
-              metafields: [
-                {
-                  value: "value",
-                  namespace: "namespace",
-                  description: "description",
-                  valueType: "valueType",
-                  scope: "scope",
-                  key: "key"
-                }
-              ],
-              minOrderQuantity: 0,
-              options: [
-                {
-                  _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA==",
-                  barcode: "barcode",
-                  createdAt: null,
-                  height: 2,
-                  index: 0,
-                  isLowQuantity: false,
-                  isSoldOut: false,
-                  isTaxable: true,
-                  length: 2,
-                  metafields: [
-                    {
-                      value: "value",
-                      namespace: "namespace",
-                      description: "description",
-                      valueType: "valueType",
-                      scope: "scope",
-                      key: "key"
-                    }
-                  ],
-                  minOrderQuantity: 0,
-                  optionTitle: "Awesome Soft Bike",
-                  originCountry: "US",
-                  pricing: [
-                    {
-                      currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                      compareAtPrice: null,
-                      displayPrice: "5.99",
-                      maxPrice: 5.99,
-                      minPrice: 5.99,
-                      price: 5.99
-                    }
-                  ],
-                  shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-                  sku: "sku",
-                  taxCode: "0000",
-                  taxDescription: "taxDescription",
-                  title: "Two pound bag",
-                  updatedAt: null,
-                  variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzQ=",
-                  weight: 2,
-                  width: 2
-                },
-                {
-                  _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3Mw==",
-                  barcode: "barcode",
-                  createdAt: null,
-                  height: 2,
-                  index: 0,
-                  isLowQuantity: false,
-                  isSoldOut: false,
-                  isTaxable: true,
-                  length: 2,
-                  metafields: [
-                    {
-                      value: "value",
-                      namespace: "namespace",
-                      description: "description",
-                      valueType: "valueType",
-                      scope: "scope",
-                      key: "key"
-                    }
-                  ],
-                  minOrderQuantity: 0,
-                  optionTitle: "Another Awesome Soft Bike",
-                  originCountry: "US",
-                  pricing: [
-                    {
-                      currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                      compareAtPrice: null,
-                      displayPrice: "2.99",
-                      maxPrice: 2.99,
-                      minPrice: 2.99,
-                      price: 2.99
-                    }
-                  ],
-                  shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-                  sku: "sku",
-                  taxCode: "0000",
-                  taxDescription: "taxDescription",
-                  title: "One pound bag",
-                  updatedAt: null,
-                  variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzM=",
-                  weight: 2,
-                  width: 2
-                }
-              ],
-              originCountry: "US",
-              pricing: [
-                {
-                  currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                  compareAtPrice: { amount: 10 },
-                  displayPrice: "2.99 - 5.99",
-                  maxPrice: 5.99,
-                  minPrice: 2.99,
-                  price: null
-                }
-              ],
-              shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-              sku: "sku",
-              taxCode: "0000",
-              taxDescription: "taxDescription",
-              title: "Small Concrete Pizza",
-              updatedAt: "2018-04-17T15:34:28.043Z",
-              variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzU=",
-              weight: 0,
-              width: 0
-            }
-          ],
-          vendor: "vendor",
-          weight: 15.6,
-          width: 8.4
-        }
-      }
-    ]
-  }
-};
-
-const mockSortedByPriceLow2HighCatalogItemsResponse = {
-  catalogItems: {
-    nodes: [
-      {
-        _id: "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06OTk5",
-        createdAt: "2018-04-16T15:34:28.043Z",
-        updatedAt: "2018-04-17T15:34:28.043Z",
-        shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-        product: {
-          _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6OTk5",
-          barcode: "barcode",
-          createdAt: "2018-04-16T15:34:28.043Z",
-          description: "description",
-          height: 11.23,
-          isBackorder: false,
-          isLowQuantity: false,
-          isSoldOut: false,
-          length: 5.67,
-          metafields: [
-            {
-              value: "value",
-              namespace: "namespace",
-              description: "description",
-              valueType: "valueType",
-              scope: "scope",
-              key: "key"
-            }
-          ],
-          metaDescription: "metaDescription",
-          minOrderQuantity: 5,
-          originCountry: "originCountry",
-          pageTitle: "pageTitle",
-          parcel: { containers: "containers", length: 4.44, width: 5.55, height: 6.66, weight: 7.77 },
-          pricing: [
-            {
-              currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-              compareAtPrice: { amount: 10 },
-              displayPrice: "2.99 - 5.99",
-              maxPrice: 5.99,
-              minPrice: 2.99,
-              price: null
-            }
-          ],
-          productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-          media: [
-            {
-              priority: 1,
-              productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-              variantId: null,
-              URLs: {
-                thumbnail: "https://shop.fake.site/thumbnail",
-                small: "https://shop.fake.site/small",
-                medium: "https://shop.fake.site/medium",
-                large: "https://shop.fake.site/large",
-                original: "https://shop.fake.site/original"
-              }
-            }
-          ],
-          primaryImage: {
-            priority: 1,
-            productId: "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
-            variantId: null,
-            URLs: {
-              thumbnail: "https://shop.fake.site/thumbnail",
-              small: "https://shop.fake.site/small",
-              medium: "https://shop.fake.site/medium",
-              large: "https://shop.fake.site/large",
-              original: "https://shop.fake.site/original"
-            }
-          },
-          productType: "productType",
-          shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-          sku: "ABC123",
-          slug: "fake-product",
-          socialMetadata: [
-            { service: "twitter", message: "twitterMessage" },
-            { service: "facebook", message: "facebookMessage" },
-            { service: "googleplus", message: "googlePlusMessage" },
-            { service: "pinterest", message: "pinterestMessage" }
-          ],
-          supportedFulfillmentTypes: ["shipping"],
-          tagIds: ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="],
-          tags: { nodes: [{ _id: "cmVhY3Rpb24vdGFnOjkyMw==" }, { _id: "cmVhY3Rpb24vdGFnOjkyNA==" }] },
-          title: "Fake Product Title",
-          updatedAt: "2018-04-17T15:34:28.043Z",
-          variants: [
-            {
-              _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NQ==",
-              barcode: "barcode",
-              createdAt: "2018-04-16T15:34:28.043Z",
-              height: 0,
-              index: 0,
-              isLowQuantity: false,
-              isSoldOut: true,
-              isTaxable: true,
-              length: 0,
-              metafields: [
-                {
-                  value: "value",
-                  namespace: "namespace",
-                  description: "description",
-                  valueType: "valueType",
-                  scope: "scope",
-                  key: "key"
-                }
-              ],
-              minOrderQuantity: 0,
-              options: [
-                {
-                  _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA==",
-                  barcode: "barcode",
-                  createdAt: null,
-                  height: 2,
-                  index: 0,
-                  isLowQuantity: false,
-                  isSoldOut: false,
-                  isTaxable: true,
-                  length: 2,
-                  metafields: [
-                    {
-                      value: "value",
-                      namespace: "namespace",
-                      description: "description",
-                      valueType: "valueType",
-                      scope: "scope",
-                      key: "key"
-                    }
-                  ],
-                  minOrderQuantity: 0,
-                  optionTitle: "Awesome Soft Bike",
-                  originCountry: "US",
-                  pricing: [
-                    {
-                      currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                      compareAtPrice: null,
-                      displayPrice: "5.99",
-                      maxPrice: 5.99,
-                      minPrice: 5.99,
-                      price: 5.99
-                    }
-                  ],
-                  shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-                  sku: "sku",
-                  taxCode: "0000",
-                  taxDescription: "taxDescription",
-                  title: "Two pound bag",
-                  updatedAt: null,
-                  variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzQ=",
-                  weight: 2,
-                  width: 2
-                },
-                {
-                  _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3Mw==",
-                  barcode: "barcode",
-                  createdAt: null,
-                  height: 2,
-                  index: 0,
-                  isLowQuantity: false,
-                  isSoldOut: false,
-                  isTaxable: true,
-                  length: 2,
-                  metafields: [
-                    {
-                      value: "value",
-                      namespace: "namespace",
-                      description: "description",
-                      valueType: "valueType",
-                      scope: "scope",
-                      key: "key"
-                    }
-                  ],
-                  minOrderQuantity: 0,
-                  optionTitle: "Another Awesome Soft Bike",
-                  originCountry: "US",
-                  pricing: [
-                    {
-                      currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                      compareAtPrice: null,
-                      displayPrice: "2.99",
-                      maxPrice: 2.99,
-                      minPrice: 2.99,
-                      price: 2.99
-                    }
-                  ],
-                  shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-                  sku: "sku",
-                  taxCode: "0000",
-                  taxDescription: "taxDescription",
-                  title: "One pound bag",
-                  updatedAt: null,
-                  variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzM=",
-                  weight: 2,
-                  width: 2
-                }
-              ],
-              originCountry: "US",
-              pricing: [
-                {
-                  currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-                  compareAtPrice: { amount: 10 },
-                  displayPrice: "2.99 - 5.99",
-                  maxPrice: 5.99,
-                  minPrice: 2.99,
-                  price: null
-                }
-              ],
-              shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-              sku: "sku",
-              taxCode: "0000",
-              taxDescription: "taxDescription",
-              title: "Small Concrete Pizza",
-              updatedAt: "2018-04-17T15:34:28.043Z",
-              variantId: "cmVhY3Rpb24vcHJvZHVjdDo4NzU=",
-              weight: 0,
-              width: 0
-            }
-          ],
-          vendor: "vendor",
-          weight: 15.6,
-          width: 8.4
-        }
-      },
-      {
-        _id: "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06MjIy",
-        createdAt: "2018-04-16T15:34:28.043Z",
-        updatedAt: "2018-04-17T15:34:28.043Z",
-        shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-        product: {
-          _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6MjIy",
-          barcode: "barcode",
-          createdAt: "2018-04-16T15:34:28.043Z",
-          description: "description",
-          height: 11.23,
-          isBackorder: false,
-          isLowQuantity: false,
-          isSoldOut: false,
-          length: 5.67,
-          metafields: [
-            {
-              value: "value",
-              namespace: "namespace",
-              description: "description",
-              valueType: "valueType",
-              scope: "scope",
-              key: "key"
-            }
-          ],
-          metaDescription: "metaDescription",
-          minOrderQuantity: 5,
-          originCountry: "originCountry",
-          pageTitle: "pageTitle",
-          parcel: { containers: "containers", length: 4.44, width: 5.55, height: 6.66, weight: 7.77 },
-          pricing: [
-            {
-              currency: { _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE", code: "USD" },
-              compareAtPrice: { amount: 35 },
-              displayPrice: "16.99 - 25.99",
-              maxPrice: 25.99,
-              minPrice: 16.99,
-              price: null
-            }
-          ],
-          productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-          media: [
-            {
-              priority: 1,
-              productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-              variantId: null,
-              URLs: {
-                thumbnail: "https://shop.fake.site/thumbnail",
-                small: "https://shop.fake.site/small",
-                medium: "https://shop.fake.site/medium",
-                large: "https://shop.fake.site/large",
-                original: "https://shop.fake.site/original"
-              }
-            }
-          ],
-          primaryImage: {
-            priority: 1,
-            productId: "cmVhY3Rpb24vcHJvZHVjdDoyMjI=",
-            variantId: null,
-            URLs: {
-              thumbnail: "https://shop.fake.site/thumbnail",
-              small: "https://shop.fake.site/small",
-              medium: "https://shop.fake.site/medium",
-              large: "https://shop.fake.site/large",
-              original: "https://shop.fake.site/original"
-            }
-          },
-          productType: "productType",
-          shop: { _id: "cmVhY3Rpb24vc2hvcDoxMjM=" },
-          sku: "ABC123",
-          slug: "another-fake-product",
-          socialMetadata: [
-            { service: "twitter", message: "twitterMessage" },
-            { service: "facebook", message: "facebookMessage" },
-            { service: "googleplus", message: "googlePlusMessage" },
-            { service: "pinterest", message: "pinterestMessage" }
-          ],
-          supportedFulfillmentTypes: ["shipping"],
-          tagIds: ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="],
-          tags: { nodes: [{ _id: "cmVhY3Rpb24vdGFnOjkyMw==" }, { _id: "cmVhY3Rpb24vdGFnOjkyNA==" }] },
-          title: "Another Fake Product Title",
-          updatedAt: "2018-04-17T15:34:28.043Z",
-          variants: [],
-          vendor: "another vendor",
-          weight: 15.6,
-          width: 8.4
-        }
-      }
-    ]
-  }
-};
-
+const opaqueCatalogItemIds = mockCatalogItems.map((item) => encodeOpaqueId("reaction/catalogProduct", item._id));
 
 jest.setTimeout(300000);
 
@@ -1214,15 +101,14 @@ beforeAll(async () => {
   query = testApp.query(CatalogProductItemsFullQuery);
   paginatedQuery = testApp.query(CatalogProductItemsFullQueryPaginated);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insertOne({ _id, shopId: internalShopId, slug: `slug${_id}` })));
-  await Promise.all(mockCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.insertOne(mockCatalogItem)));
+  await testApp.collections.Tags.insertOne(mockTag);
+  await Promise.all(mockCatalogItems.map((mockItem) => testApp.collections.Catalog.insertOne(mockItem)));
 });
 
 afterAll(async () => {
   await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Tags.deleteMany({ _id: { $in: internalTagIds } });
-  await testApp.collections.Catalog.deleteOne({ _id: internalCatalogItemIds[0] });
-  await testApp.collections.Catalog.deleteOne({ _id: internalCatalogItemIds[1] });
+  await testApp.collections.Tags.deleteOne({ _id: mockTag._id });
+  await Promise.all(mockCatalogItems.map((mockItem) => testApp.collections.Catalog.deleteOne({ _id: mockItem._id })));
   await testApp.stop();
 });
 
@@ -1235,7 +121,11 @@ test("get all items for shop", async () => {
     return;
   }
 
-  expect(result).toEqual(mockUnsortedCatalogItemsResponse);
+  expect(result.catalogItems.nodes.length).toEqual(15);
+
+  result.catalogItems.nodes.forEach(({ product }) => {
+    expect(opaqueCatalogItemIds).toContain(product._id);
+  });
 });
 
 // expect CatalogItems sorted by minPrice form high to low
@@ -1248,10 +138,25 @@ test("expect CatalogItemProducts sorted by minPrice from highest to lowest when 
     return;
   }
 
-  expect(result).toEqual(mockSortedByPriceHigh2LowCatalogItemsResponse);
+  const firstCatalogItem = mockCatalogItems[0];
+  const lastCatalogItem = mockCatalogItems[mockCatalogItems.length - 1];
+
+  const firstResultItem = result.catalogItems.nodes[0];
+  const lastResultItem = result.catalogItems.nodes[result.catalogItems.nodes.length - 1];
+
+  const resultProductIds = result.catalogItems.nodes.map((n) => n.product._id);
+
+  expect(result.catalogItems.nodes.length).toEqual(15);
+
+  expect(firstResultItem.product.pricing[0].minPrice).toEqual(lastCatalogItem.product.pricing.USD.minPrice);
+  expect(firstResultItem.product._id).toEqual(opaqueCatalogItemIds[opaqueCatalogItemIds.length - 1]);
+
+  expect(lastResultItem.product.pricing[0].minPrice).toEqual(firstCatalogItem.product.pricing.USD.minPrice);
+  expect(lastResultItem.product._id).toEqual(opaqueCatalogItemIds[0]);
+  expect(resultProductIds).toEqual(opaqueCatalogItemIds.reverse());
 });
 
-test("expect CatalogItemProducts with offset 0 to return first item", async () => {
+test("expect CatalogItemProducts with offset 0 to return all items", async () => {
   let result;
   try {
     result = await paginatedQuery({
@@ -1262,10 +167,10 @@ test("expect CatalogItemProducts with offset 0 to return first item", async () =
     expect(error).toBeUndefined();
     return;
   }
-
-  expect(result.catalogItems.totalCount).toBe(2);
-  expect(result.catalogItems.nodes.length).toBe(2);
-  expect(result.catalogItems.nodes[0].product._id).toEqual(mockUnsortedCatalogItemsResponse.catalogItems.nodes[0].product._id);
+  expect(result.catalogItems.pageInfo.hasNextPage).toBe(false);
+  expect(result.catalogItems.pageInfo.hasPreviousPage).toBe(false);
+  expect(result.catalogItems.totalCount).toBe(15);
+  expect(result.catalogItems.nodes.length).toBe(15);
 });
 
 // expect CatalogItems with offset to skip items
@@ -1283,8 +188,7 @@ test("expect CatalogitemProducts with offset to skip items", async () => {
 
   expect(result.catalogItems.pageInfo.hasNextPage).toBe(false);
   expect(result.catalogItems.pageInfo.hasPreviousPage).toBe(true);
-  expect(result.catalogItems.nodes.length).toBe(1);
-  expect(result.catalogItems.nodes[0].product._id).toEqual(mockUnsortedCatalogItemsResponse.catalogItems.nodes[1].product._id);
+  expect(result.catalogItems.nodes.length).toBe(14);
 });
 
 // expect CatalogItems with feature sortBy and offset to skip items correctly
@@ -1295,17 +199,19 @@ test("expect CatalogitemProducts with offset and featured sort to skip items", a
       shopIds: [opaqueShopId],
       offset: 1,
       sortBy: "featured",
-      tagIds: [opaqueTagIds[0]]
+      tagIds: [encodeOpaqueId("reaction/tag", mockTag._id)]
     });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
   }
-
+  const ids = result.catalogItems.nodes.map((n) => decodeCatalogProductOpaqueId(n.product._id));
+  // console.log(result.catalogItems.totalCount);
+  // console.log({ ids });
   expect(result.catalogItems.pageInfo.hasNextPage).toBe(false);
+  // @TODO: debug this
   expect(result.catalogItems.pageInfo.hasPreviousPage).toBe(true);
   expect(result.catalogItems.nodes.length).toBe(1);
-  expect(result.catalogItems.nodes[0].product._id).toEqual(mockUnsortedCatalogItemsResponse.catalogItems.nodes[0].product._id);
 });
 
 // expect CatalogItems sorted by minPrice form high to low when sortOrder is desc
@@ -1322,8 +228,9 @@ test("expect CatalogItemProducts sorted by minPrice from highest to lowest when 
     expect(error).toBeUndefined();
     return;
   }
+  const resultProductIds = result.catalogItems.nodes.map((n) => n.product._id);
 
-  expect(result).toEqual(mockSortedByPriceHigh2LowCatalogItemsResponse);
+  expect(resultProductIds).toEqual(opaqueCatalogItemIds);
 });
 
 // expect CatalogItems sorted by minPrice form low to high when sortOrder is asc
@@ -1340,8 +247,9 @@ test("expect CatalogItemProducts sorted by minPrice from lowest to highest when 
     expect(error).toBeUndefined();
     return;
   }
+  const resultProductIds = result.catalogItems.nodes.map((n) => n.product._id);
 
-  expect(result).toEqual(mockSortedByPriceLow2HighCatalogItemsResponse);
+  expect(resultProductIds).toEqual(opaqueCatalogItemIds.reverse());
 });
 
 // expect error when invalid currency code is provided
