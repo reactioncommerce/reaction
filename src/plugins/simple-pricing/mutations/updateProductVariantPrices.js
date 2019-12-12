@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
-const inputSchema = new SimpleSchema({
+const pricesInput = new SimpleSchema({
   compareAtPrice: {
     type: Number,
     optional: true
@@ -12,8 +12,16 @@ const inputSchema = new SimpleSchema({
   }
 });
 
+const inputSchema = new SimpleSchema({
+  prices: {
+    type: pricesInput
+  },
+  shopId: String,
+  variantId: String
+});
+
 /**
- * @method updateProductVariantPrice
+ * @method updateProductVariantPrices
  * @summary Updates the price fields on a product variant
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - Input arguments for the bulk operation
@@ -25,6 +33,7 @@ const inputSchema = new SimpleSchema({
  * @return {Promise<Object>} updateProductVariant payload
  */
 export default async function updateProductVariantPrices(context, input) {
+  inputSchema.validate(input);
   const { appEvents, collections } = context;
   const { Products } = collections;
   const { prices, variantId, shopId } = input;
@@ -35,24 +44,13 @@ export default async function updateProductVariantPrices(context, input) {
     legacyRoles: ["createProduct", "product/admin", "product/update"]
   });
 
-  const product = await Products.findOne({ _id: variantId, shopId });
-  if (!product) throw new ReactionError("not-found", "Product variant not found");
-
-  const updateDocument = { ...prices };
-
-  inputSchema.validate(updateDocument);
-
-  await Products.updateOne(
-    {
-      _id: variantId,
-      shopId
-    },
-    {
-      $set: updateDocument
-    }
+  const { value: updatedProduct } = await Products.findOneAndUpdate(
+    { _id: variantId, shopId, type: "variant" },
+    { $set: { ...prices }},
+    { returnOriginal: false }
   );
 
-  const updatedProduct = Products.findOne({ _id: variantId, shopId });
+  if (!updatedProduct) throw new ReactionError("error-occurred", "Unable to update variant prices");
 
   appEvents.emit("afterVariantUpdate", { productId: variantId, product: updatedProduct });
 
