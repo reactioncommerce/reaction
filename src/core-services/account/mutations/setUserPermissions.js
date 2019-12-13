@@ -39,7 +39,6 @@ export default async function setUserPermissions(context, input) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   if (!context.isInternalCall && userIdFromContext !== accountId) {
-
     await context.validatePermissions("reaction:accounts", "update", { shopId: account.shopId, legacyRoles: ["reaction-accounts"] });
   }
 
