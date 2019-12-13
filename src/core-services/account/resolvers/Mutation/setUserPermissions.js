@@ -1,3 +1,5 @@
+import { decodeShopOpaqueId } from "../../xforms/id.js";
+
 /**
  * @name Mutation/setUserPermissions
  * @method
@@ -12,6 +14,9 @@
  * @returns {Object} - object
  */
 export default async function setUserPermissions(_, { input }, context) {
+  const { shopId } = input;
+  const decodedShopId = decodeShopOpaqueId(shopId);
+  const transformedImput = { ...input, shopId: decodedShopId };
   await context.validatePermissions("reaction:accounts", "create", { });
-  return context.mutations.setUserPermissions(context, input);
+  return context.mutations.setUserPermissions(context, transformedImput);
 }

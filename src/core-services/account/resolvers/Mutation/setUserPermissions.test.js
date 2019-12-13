@@ -1,12 +1,13 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import setUserPermissions from "./setUserPermissions.js";
 
 mockContext.mutations.setUserPermissions = jest.fn().mockName("mutations.setUserPermissions");
-mockContext.validatePermissions = jest.fn().mockName("validatePermissions");
 
 test("correctly passes through to internal mutation function", async () => {
   const groups = ["test-group-id"];
-
+  const shopId = "test-shop-id";
+  const shopIdOpaque = encodeOpaqueId("reaction/shop", shopId);
   const fakeResult = {
     _id: "3vx5cqBZsymCfHbpf",
     acceptsMarketing: false,
@@ -18,7 +19,7 @@ test("correctly passes through to internal mutation function", async () => {
         provides: "default"
       }
     ],
-    shopId: "test-shop-id",
+    shopId,
     state: "new",
     userId: "3vx5cqBZsymCfHbpf",
     accountId: "3vx5cqBZsymCfHbpf",
@@ -28,17 +29,20 @@ test("correctly passes through to internal mutation function", async () => {
   };
 
   mockContext.mutations.setUserPermissions.mockReturnValueOnce(Promise.resolve(fakeResult));
-  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve({ allow: true }));
 
   const result = await setUserPermissions(null, {
     input: {
-      groups
+      groups,
+      shopId: shopIdOpaque
     }
   }, mockContext);
 
   expect(mockContext.mutations.setUserPermissions).toHaveBeenCalledWith(
     mockContext,
-    { groups: ["test-group-id"] }
+    {
+      groups: ["test-group-id"],
+      shopId
+    }
   );
 
   expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:accounts", "create", { });
