@@ -1,0 +1,6 @@
+
+query{
+  globalSettings {
+    canSellVariantWithoutInventory
+  }
+}

@@ -1,0 +1,6 @@
+
+query($shopId: ID!){
+  shopSettings(shopId: $shopId){
+    sitemapRefreshPeriod
+  }
+}
