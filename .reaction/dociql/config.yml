@@ -2,8 +2,8 @@
 introspection: http://localhost:3000/graphql-beta
 
 servers:
-  - url: http://localhost:3000/graphql-beta
-    description: Localhost API
+  - url: http://api.v3.reactioncommerce.io/graphql-beta
+    description: Reaction GraphQL API
 
 info:
   description: |
