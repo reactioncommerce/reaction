@@ -139,15 +139,14 @@ input RemoveAccountEmailRecordInput {
 "Defines groups to add given user / account to thereby giving that user certain permissions"
 input SetUserPermissionsInput {
 
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
 
   "the groups to add a user / account to"
   groups: [String!]!
 
   "the opaque shopId of the shop"
   shopId: String!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 
 "Per-account tax exemption settings used by the Avalara plugin"
@@ -453,7 +452,10 @@ extend type Mutation {
   ): UpdateAccountAddressBookEntryPayload
 
   "Adds an account to a group. The user id / account id must be set in the context"
-  setUserPermissions(input: SetUserPermissionsInput!): SetUserPermissionPayload
+  setUserPermissions(
+    "Mutation input"
+    input: SetUserPermissionsInput!
+  ): SetUserPermissionPayload
 }
 
 extend type Query {
