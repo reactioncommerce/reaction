@@ -18,6 +18,12 @@ export default async function updateNavigationTree(context, input) {
   const { NavigationTrees } = collections;
   const { navigationTreeId, shopId, navigationTree } = input;
 
+  const treeSelector = { _id: navigationTreeId, shopId };
+  const existingNavigationTree = await NavigationTrees.findOne(treeSelector);
+  if (!existingNavigationTree) {
+    throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");
+  }
+
   const {
     shouldNavigationTreeItemsBeAdminOnly,
     shouldNavigationTreeItemsBePubliclyVisible,
@@ -45,12 +51,6 @@ export default async function updateNavigationTree(context, input) {
   const { draftItems, name } = navigationTreeData;
 
   await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "update", { shopId, legacyRoles: ["core"] });
-
-  const treeSelector = { _id: navigationTreeId, shopId };
-  const existingNavigationTree = await NavigationTrees.findOne(treeSelector);
-  if (!existingNavigationTree) {
-    throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");
-  }
 
   const update = {};
 

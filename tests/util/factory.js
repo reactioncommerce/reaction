@@ -74,6 +74,12 @@ import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
+import {
+  NavigationItem,
+  NavigationTree,
+  NavigationTreeItem
+} from "../../src/plugins/navigation/simpleSchemas.js";
+
 const schemasToAddToFactory = {
   Account,
   AccountProfileAddress,
@@ -91,6 +97,9 @@ const schemasToAddToFactory = {
   Email,
   EmailTemplates,
   Group,
+  NavigationItem,
+  NavigationTree,
+  NavigationTreeItem,
   Order,
   OrderAddress,
   OrderFulfillmentGroup,

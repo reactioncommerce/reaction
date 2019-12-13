@@ -1,0 +1,23 @@
+mutation UpdateNavigationTree($updateNavigationTreeInput: UpdateNavigationTreeInput!) {
+	updateNavigationTree(input: $updateNavigationTreeInput) {
+    navigationTree {
+      ...NavigationTree
+    }
+  }
+}
+
+fragment NavigationTree on NavigationTree {
+  _id
+  draftItems {
+    expanded
+    isPrivate
+    isSecondary
+    isVisible
+    navigationItem {
+      _id
+    }
+  }
+  hasUnpublishedChanges
+  name
+  shopId
+}
