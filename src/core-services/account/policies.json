@@ -5,7 +5,8 @@
     "resources": [ "reaction:accounts" ],
     "actions": [
       "create",
-      "read"
+      "read",
+      "update"
     ],
     "effect": "allow"
   },
