@@ -1,0 +1,10 @@
+
+query ($shopId: ID!) {
+  systemInformation(shopId: $shopId){
+    apiVersion
+    plugins {
+      name
+      version
+    }
+  }
+}
