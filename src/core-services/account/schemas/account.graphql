@@ -143,6 +143,9 @@ input SetUserPermissionsInput {
   "the groups to add a user / account to"
   groups: [String!]!
 
+  "the opaque shopId of the shop"
+  shopId: String!
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 }
