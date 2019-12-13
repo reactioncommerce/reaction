@@ -79,7 +79,7 @@ jobs:
           name: Run Unit Tests
           command: npm run test:unit
 
-  test-integration:
+  test-integration-query:
     <<: *defaults
     steps:
       - checkout
@@ -88,8 +88,21 @@ jobs:
             - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - reaction-v3-node-modules-{{ .Branch }}
       - run:
-          name: Run Integration Tests
-          command: npm run test:integration
+          name: Run Integration Query Tests
+          command: npm run test:integration:query
+
+  test-integration-mutation:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v3-node-modules-{{ .Branch }}
+      - run:
+          name: Run Integration Mutation Tests
+          command: npm run test:integration:mutation
+
 
   docker-build-push:
     <<: *defaults
@@ -146,7 +159,10 @@ workflows:
       - test-unit:
           requires:
             - install-dependencies
-      - test-integration:
+      - test-integration-query:
+          requires:
+            - install-dependencies
+      - test-integration-mutation:
           requires:
             - install-dependencies
       - docker-build-push:
@@ -156,14 +172,16 @@ workflows:
             - eslint
             - graphql-lint
             - test-unit
-            - test-integration
+            - test-integration-query
+            - test-integration-mutation
       - deploy-docs:
           requires:
             - dockerfile-lint
             - eslint
             - graphql-lint
             - test-unit
-            - test-integration
+            - test-integration-query
+            - test-integration-mutation
           filters:
             branches:
               only: /^master$/
