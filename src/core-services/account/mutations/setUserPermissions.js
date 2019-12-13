@@ -26,19 +26,24 @@ const inputSchema = new SimpleSchema({
  * @returns {Promise<Object>} with updated account
  */
 export default async function setUserPermissions(context, input) {
-  // inputSchema.validate(context);
-  const { appEvents, checkPermissions, collections, userId: userIdFromContext } = context;
+  const itemsToValidate = { accountId: context.accountId, userId: context.userId, groups: input.groups };
+  inputSchema.validate(itemsToValidate);
+  const { appEvents, collections, userId: userIdFromContext } = context;
   const { Accounts } = collections;
   const { accountId } = context;
-  const { groups } = input;
+  const { groups, shopId } = input;
+
 
   const account = await Accounts.findOne({ _id: accountId });
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
   if (!context.isInternalCall && userIdFromContext !== accountId) {
-    await checkPermissions(["reaction-accounts"], account.shopId);
+
+    await context.validatePermissions("reaction:accounts", "update", { shopId: account.shopId, legacyRoles: ["reaction-accounts"] });
   }
+
+  await context.validatePermissions("reaction:accounts", "update", { shopId, legacyRoles: ["admin"] });
 
   // Update the Reaction Accounts collection with new groups info
   // This
@@ -72,5 +77,5 @@ export default async function setUserPermissions(context, input) {
     updatedFields
   });
 
-  return updatedAccount;
+  return { account: updatedAccount };
 }
