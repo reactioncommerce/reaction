@@ -28,6 +28,6 @@ export default {
   setAccountProfileCurrency,
   setAccountProfileLanguage,
   updateAccountAddressBookEntry,
-  createAccountGroup
-  addOrRemoveAccountGroups: setUserPermissions
+  createAccountGroup,
+  setUserPermissions
 };
