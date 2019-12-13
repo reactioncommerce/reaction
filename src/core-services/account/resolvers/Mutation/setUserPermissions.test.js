@@ -45,7 +45,5 @@ test("correctly passes through to internal mutation function", async () => {
     }
   );
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:accounts", "create", { });
-
   expect(result).toEqual(fakeResult);
 });
