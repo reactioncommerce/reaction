@@ -159,7 +159,10 @@ workflows:
       - test-unit:
           requires:
             - install-dependencies
-      - test-integration:
+      - test-integration-query:
+          requires:
+            - install-dependencies
+      - test-integration-mutation:
           requires:
             - install-dependencies
       - docker-build-push:
