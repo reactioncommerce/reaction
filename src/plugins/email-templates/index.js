@@ -28,6 +28,16 @@ export default async function register(app) {
     },
     functionsByType: {
       startup: [startup]
+    },
+    collections: {
+      Templates: {
+        name: "Templates",
+        indexes: [
+          // Create indexes. We set specific names for backwards compatibility
+          // with indexes created by the aldeed:schema-index Meteor package.
+          [{ shopId: 1 }, { name: "c2_shopId" }]
+        ]
+      }
     }
   });
 }
