@@ -60,5 +60,5 @@ test("a shop owner can view all user roles", async () => {
     return;
   }
 
-  expect(result.roles.nodes[0].name).toEqual("account/enroll");
+  expect(result.roles.nodes[0].name).toEqual(jasmine.any(String));
 });
