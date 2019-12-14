@@ -15,6 +15,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Shipping Rates",
     name: "reaction-shipping-rates",
+    version: app.context.appVersion,
     i18n,
     collections: {
       FlatRateFulfillmentRestrictions: {
@@ -43,37 +44,14 @@ export default async function register(app) {
     functionsByType: {
       getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
     },
-    settings: {
-      name: "Flat Rate Service",
-      flatRates: {
-        enabled: false
+    shopSettingsConfig: {
+      isShippingRatesFulfillmentEnabled: {
+        defaultValue: true,
+        rolesThatCanEdit: ["admin"],
+        simpleSchema: {
+          type: Boolean
+        }
       }
-    },
-    registry: [
-      {
-        provides: ["dashboard"],
-        route: "/shipping/rates",
-        name: "shipping",
-        label: "Shipping",
-        description: "Provide shipping rates",
-        icon: "fa fa-truck",
-        priority: 1,
-        container: "core",
-        workflow: "coreDashboardWorkflow"
-      },
-      {
-        provides: ["shippingSettings"],
-        name: "shipping/settings/flatRates",
-        label: "Flat Rate",
-        description: "Provide shipping rates",
-        icon: "fa fa-truck",
-        template: "ShippingRatesSettings"
-      },
-      {
-        template: "flatRateCheckoutShipping",
-        name: "shipping/flatRates",
-        provides: ["shippingMethod"]
-      }
-    ]
+    }
   });
 }

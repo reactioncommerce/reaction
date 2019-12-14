@@ -1,0 +1,18 @@
+mutation (
+  $ruleId: ID!,
+  $shopId: ID!
+) {
+  deleteAddressValidationRule(input: {
+    ruleId: $ruleId,
+    shopId: $shopId
+  }) {
+    addressValidationRule {
+      _id
+      countryCodes
+      createdAt
+      serviceName
+      shopId
+      updatedAt
+    }
+  }
+}
