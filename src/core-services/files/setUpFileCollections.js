@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 import Random from "@reactioncommerce/random";
+import ReactionError from "@reactioncommerce/reaction-error";
 import fetch from "node-fetch";
 import sharp from "sharp";
 import config from "./config.js";
@@ -58,11 +59,11 @@ export default function setUpFileCollections({
    * @ignore
    */
   const imgTransforms = [
-    { name: "image", transform: { size: 1600, mod: "max", format: "jpg", type: "image/jpeg" } },
-    { name: "large", transform: { size: 1000, mod: "max", format: "jpg", type: "image/jpeg" } },
-    { name: "medium", transform: { size: 600, mod: "max", format: "jpg", type: "image/jpeg" } },
-    { name: "small", transform: { size: 235, mod: "crop", format: "png", type: "image/png" } },
-    { name: "thumbnail", transform: { size: 100, mod: "crop", format: "png", type: "image/png" } }
+    { name: "image", transform: { size: 1600, fit: "inside", format: "jpg", type: "image/jpeg" } },
+    { name: "large", transform: { size: 1000, fit: "inside", format: "jpg", type: "image/jpeg" } },
+    { name: "medium", transform: { size: 600, fit: "inside", format: "jpg", type: "image/jpeg" } },
+    { name: "small", transform: { size: 235, fit: "cover", format: "png", type: "image/png" } },
+    { name: "thumbnail", transform: { size: 100, fit: "cover", format: "png", type: "image/png" } }
   ];
 
   /**
@@ -83,15 +84,20 @@ export default function setUpFileCollections({
       async transformWrite(fileRecord) {
         if (!transform) return null;
 
-        const { size, mod, format, type } = transform;
+        const { size, fit, format, type } = transform;
 
         // Need to update the content type and extension of the file info, too.
         // The new size gets set correctly automatically by FileCollections package.
         fileRecord.type(type, { store: name });
         fileRecord.extension(format, { store: name });
 
-        // resizing image, adding mod, setting output format
-        return sharp().resize(size, size)[mod]().toFormat(format);
+        // resizing image, adding fit, setting output format
+        return sharp()
+          .resize({ width: size, height: size, fit: sharp.fit[fit], withoutEnlargement: true })
+          .toFormat(format)
+          .on("error", (err) => {
+            throw new ReactionError("error-sharp-resize-internal", err);
+          });
       }
     })
   );

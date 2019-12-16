@@ -229,3 +229,21 @@ type FlatRateFulfillmentMethodConnection {
   "The total number of nodes that match your query"
   totalCount: Int!
 }
+
+extend type ShopSettings {
+  """
+  If `false` no defined shipping rates will be used when fulfillment
+  quotes are requested for a cart or order. A quick way to disable the entire
+  `reaction-shipping-rates` plugin temporarily.
+  """
+  isShippingRatesFulfillmentEnabled: Boolean
+}
+
+extend input ShopSettingsUpdates {
+  """
+  Set to `false` to prevent any defined shipping rates from being used when fulfillment
+  quotes are requested for a cart or order. A quick way to disable the entire
+  `reaction-shipping-rates` plugin temporarily.
+  """
+  isShippingRatesFulfillmentEnabled: Boolean
+}

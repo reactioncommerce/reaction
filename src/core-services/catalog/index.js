@@ -25,6 +25,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Catalog",
     name: "reaction-catalog",
+    version: app.context.appVersion,
     i18n,
     collections: {
       Catalog: {
@@ -52,9 +53,6 @@ export default async function register(app) {
     },
     mutations,
     queries,
-    settings: {
-      name: "Catalog"
-    },
     simpleSchemas: {
       ImageInfo,
       ImageSizes,

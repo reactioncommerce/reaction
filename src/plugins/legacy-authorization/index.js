@@ -9,6 +9,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Legacy Authorization",
     name: "reaction-legacy-authorization",
+    version: app.context.appVersion,
     auth: {
       getHasPermissionFunctionForUser
     }

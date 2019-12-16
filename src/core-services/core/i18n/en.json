@@ -132,6 +132,12 @@
         "pluginVersions": {
           "title": "Plugin Versions"
         },
+        "systemInfo": {
+          "apiVersionLabel": "API Version",
+          "installedPluginsLabel": "Installed Plugins",
+          "mongoVersionLabel": "MongoDB Version",
+          "title": "System Information"
+        },
         "externalServices": "External services",
         "shopBrandAssetsSaved": "Shop brand assets saved",
         "shopBrandAssetsFailed": "Shop brand assets failed",

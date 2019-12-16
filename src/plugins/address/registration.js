@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 export const addressValidationServices = {};
 
 /**
@@ -24,25 +22,23 @@ export function registerPluginHandler({
 /**
  * @param {Object} context The app context
  * @param {String} shopId The shop ID
- * @returns {Object[]} The enabled validation services for the shop with ID `shopId`
- */
-export async function getEnabledAddressValidationServicesForShop(context, shopId) {
-  const plugin = await context.collections.Packages.findOne({ name: "reaction-address", shopId });
-  if (!plugin) return [];
-
-  return _.get(plugin, "settings.addressValidation.enabledServices", []);
-}
-
-/**
- * @param {Object} context The app context
- * @param {String} shopId The shop ID
  * @param {String} countryCode The country code of the address to be validated
  * @returns {Object[]} The first enabled validation services for the shop with ID `shopId`
  *   that supports countryCode.
  */
 export async function getAddressValidationService(context, shopId, countryCode) {
-  const services = await getEnabledAddressValidationServicesForShop(context, shopId);
-  const supportedServices = services.filter(({ serviceName }) => {
+  // First find all service rules that specify this shop ID and country code combination.
+  // Service rules that have no `countryCodes` value apply to all countries.
+  const rules = await context.collections.AddressValidationRules.find({
+    shopId,
+    $or: [
+      { countryCodes: null },
+      { countryCodes: countryCode }
+    ]
+  }).toArray();
+
+  // Then verify that each specified service actually supports validating this country
+  const validRules = rules.filter(({ serviceName }) => {
     const registeredService = addressValidationServices[serviceName];
     if (!registeredService) {
       throw new Error(`The shop has address validation service "${serviceName}" enabled but no such service exists. ` +
@@ -53,7 +49,9 @@ export async function getAddressValidationService(context, shopId, countryCode) 
       registeredService.supportedCountryCodes.includes(countryCode)
     );
   });
-  const foundService = supportedServices.find((service) => !Array.isArray(service.countryCodes) || service.countryCodes.includes(countryCode));
-  if (!foundService) return null;
-  return addressValidationServices[foundService.serviceName];
+
+  if (validRules.length === 0) return null;
+
+  // Use the first valid rule
+  return addressValidationServices[validRules[0].serviceName];
 }

@@ -12,6 +12,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Job Queue",
     name: "reaction-job-queue",
+    version: app.context.appVersion,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler],
       shutdown: [shutdown],
