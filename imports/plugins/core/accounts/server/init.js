@@ -126,6 +126,10 @@ Meteor.startup(() => {
       emailIsVerified = true;
     }
 
+    if (user.emails[0]) {
+      user.emails[0].provides = "default";
+    }
+
     // create a tokenObj and send a welcome email to new users,
     // but skip the first default admin user and anonymous users
     // (default admins already get a verification email)
