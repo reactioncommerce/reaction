@@ -1,11 +1,16 @@
 import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getConnectionTypeResolvers.js";
 import Address from "./Address.js";
+import AddressValidationRule from "./AddressValidationRule.js";
+import Mutation from "./Mutation/index.js";
 import Query from "./Query/index.js";
 
 export default {
   Address,
+  AddressValidationRule,
+  Mutation,
   Query,
-  ...getConnectionTypeResolvers("Address")
+  ...getConnectionTypeResolvers("Address"),
+  ...getConnectionTypeResolvers("AddressValidationRule")
 };
 
 /**

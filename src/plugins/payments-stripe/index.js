@@ -16,6 +16,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Stripe",
     name: STRIPE_PACKAGE_NAME,
+    version: app.context.appVersion,
     i18n,
     graphQL: {
       schemas
@@ -30,15 +31,6 @@ export default async function register(app) {
         createRefund: stripeCreateRefund,
         listRefunds: stripeListRefunds
       }
-    }],
-    registry: [
-      // Settings panel
-      {
-        label: "Stripe",
-        provides: ["paymentSettings"],
-        container: "dashboard",
-        template: "stripeSettings"
-      }
-    ]
+    }]
   });
 }

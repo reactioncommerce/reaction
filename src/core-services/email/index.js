@@ -13,6 +13,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Email",
     name: "reaction-email",
+    version: app.context.appVersion,
     i18n,
     collections: {
       Emails: {
@@ -24,7 +25,6 @@ export default async function register(app) {
         ]
       }
     },
-    version: "1.0.0",
     graphQL: {
       resolvers,
       schemas
@@ -33,23 +33,6 @@ export default async function register(app) {
     policies,
     functionsByType: {
       startup: [startup]
-    },
-    settings: {
-      name: "Email"
-    },
-    registry: [{
-      label: "Email Settings",
-      description: "Email settings",
-      icon: "fa fa-envelope-o",
-      name: "email/settings",
-      provides: ["settings"],
-      workflow: "coreEmailWorkflow",
-      template: "emailSettings",
-      meta: {
-        actionView: {
-          dashboardSize: "md"
-        }
-      }
-    }]
+    }
   });
 }

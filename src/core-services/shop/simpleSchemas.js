@@ -12,8 +12,7 @@ const withoutCodeCountries = ["AO", "AG", "AW", "BS", "BZ", "BJ", "BW",
  * @name LayoutStructure
  * @memberof Schemas
  * @type {SimpleSchema}
- * @summary Layout are used by the Shops and Packages schemas.
- * Layouts are used to in two ways: 1) Define the template layout on the site
+ * @summary Layouts are used to in two ways: 1) Define the template layout on the site
  * 2) Define workflow components used in each layout block
  * @description Read more about Layouts in {@link https://docs.reactioncommerce.com/reaction-docs/master/layout documentation}
  * @property {String} template optional
@@ -64,8 +63,7 @@ export const LayoutStructure = new SimpleSchema({
  * @name Layout
  * @memberof Schemas
  * @type {SimpleSchema}
- * @summary Layout are used by the Shops and Packages schemas.
- * Read more about Layouts in {@link https://docs.reactioncommerce.com/reaction-docs/master/layout documentation}
+ * @summary Read more about Layouts in {@link https://docs.reactioncommerce.com/reaction-docs/master/layout documentation}
  * @property {String} layout optional
  * @property {String} workflow optional
  * @property {String} template optional

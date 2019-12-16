@@ -13,6 +13,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "SMTP Email",
     name: "reaction-email-smtp",
+    version: app.context.appVersion,
     functionsByType: {
       startup: [startup]
     },

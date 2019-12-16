@@ -78,9 +78,12 @@ import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
+import { AddressValidationRule } from "../../src/plugins/address/simpleSchemas.js";
+
 const schemasToAddToFactory = {
   Account,
   AccountProfileAddress,
+  AddressValidationRule,
   Cart,
   CartAddress,
   CartInvoice,

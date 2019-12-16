@@ -15,6 +15,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "ExamplePayment",
     name: "example-paymentmethod",
+    version: app.context.appVersion,
     i18n,
     graphQL: {
       schemas
@@ -32,22 +33,6 @@ export default async function register(app) {
         createRefund: exampleCreateRefund,
         listRefunds: exampleListRefunds
       }
-    }],
-    settings: {
-      mode: false,
-      apiKey: "",
-      example: {
-        enabled: false
-      }
-    },
-    registry: [
-      // Settings panel
-      {
-        label: "Example Payment", // this key (minus spaces) is used for translations
-        provides: ["paymentSettings"],
-        container: "dashboard",
-        template: "exampleSettings"
-      }
-    ]
+    }]
   });
 }
