@@ -12,6 +12,8 @@ const config = envalid.cleanEnv(process.env, {
     desc: "An SMTP mail url, i.e. smtp://user:pass@example.com:465",
     default: ""
   })
+}, {
+  dotEnvPath: null
 });
 
 export const SMTPConfig = { logger: config.EMAIL_DEBUG };

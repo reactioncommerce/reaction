@@ -161,8 +161,5 @@ export default async function registerPlugins(app) {
    * Miscellaneous
    */
   await registerNotificationsPlugin(app); // OPTIONAL
-
-  if (process.env.NODE_ENV === "development") {
-    await registerTestAddressValidationPlugin(app);
-  }
+  await registerTestAddressValidationPlugin(app); // OPTIONAL
 }

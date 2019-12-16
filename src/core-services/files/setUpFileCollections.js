@@ -179,7 +179,7 @@ export default function setUpFileCollections({
   // These workers use `.watch` API, which requires a replica set and proper read/write concern support.
   // Currently our in-memory Mongo server used for Jest integrations tests does not meet these needs,
   // so we skip this code if we're testing.
-  if (!["jesttest", "test"].includes(config.NODE_ENV)) {
+  if (config.NODE_ENV !== "test") {
     /**
      * @name remoteUrlWorker
      * @type RemoteUrlWorker
