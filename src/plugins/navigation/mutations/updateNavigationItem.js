@@ -46,9 +46,9 @@ export default async function updateNavigationItem(context, input) {
     }
   }
 
-  await NavigationItems.updateOne({ navigationItemId }, { $set: { ...update } });
+  await NavigationItems.updateOne({ _id: navigationItemId }, { $set: { ...update } });
 
-  const updatedNavigationItem = await NavigationItems.findOne({ navigationItemId });
+  const updatedNavigationItem = await NavigationItems.findOne({ _id: navigationItemId });
 
   return updatedNavigationItem;
 }
