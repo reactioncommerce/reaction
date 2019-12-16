@@ -389,18 +389,7 @@ Meteor.publish("ProductsAdminList", function (page = 0, limit = 24, productFilte
     return this.ready();
   }
 
-  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId) || [];
-
-  // If the user isn't an admin of any shop, then don't show them any products
-  if (userAdminShopIds.length === 0) {
-    return this.ready();
-  }
-
-  // We publish an admin version of this publication to admins of products who are in "Edit Mode"
-  // Limit to only shops we have "createProduct" role for
-  selector.shopId.$in = _.intersection(selector.shopId.$in, userAdminShopIds);
-  if (selector.shopId.$in.length === 0) {
+  if (!Reaction.hasPermission(["createProduct"])) {
     return this.ready();
   }
 
