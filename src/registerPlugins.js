@@ -4,9 +4,9 @@
 /* node-app imports */
 /* core-services */
 import registerAccountsPlugin from "./core-services/account/index.js";
+import registerAddressPlugin from "./core-services/address/index.js";
 import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerCartPlugin from "./core-services/cart/index.js";
-import registerCorePlugin from "./core-services/core/index.js";
 import registerDiscountsPlugin from "./core-services/discounts/index.js";
 import registerEmailPlugin from "./core-services/email/index.js";
 import registerFilesPlugin from "./core-services/files/index.js";
@@ -22,18 +22,13 @@ import registerTagsPlugin from "./core-services/tags/index.js";
 import registerTaxesPlugin from "./core-services/taxes/index.js";
 
 /* plugins */
-import registerAddressPlugin from "./plugins/address/index.js";
 import registerLegacyAuthorizationPlugin from "./plugins/legacy-authorization/index.js";
-import registerCheckoutPlugin from "./plugins/checkout/index.js";
-import registerDashboardPlugin from "./plugins/dashboard/index.js";
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerExamplePaymentsPlugin from "./plugins/payments-example/index.js";
 import registerJobQueuePlugin from "./plugins/job-queue/index.js";
 import registerNavigationPlugin from "./plugins/navigation/index.js";
 import registerNotificationsPlugin from "./plugins/notifications/index.js";
-import registerProductAdminPlugin from "./plugins/product-admin/index.js";
-import registerProductVariantPlugin from "./plugins/product-variant/index.js";
 import registerShippingRatesPlugin from "./plugins/shipping-rates/index.js";
 import registerSimpleInventoryPlugin from "./plugins/simple-inventory/index.js";
 import registerSimplePricingPlugin from "./plugins/simple-pricing/index.js";
@@ -44,9 +39,8 @@ import registerStripePaymentsPlugin from "./plugins/payments-stripe/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTaxesRatesPlugin from "./plugins/taxes-rates/index.js";
-import registerTemplatesPlugin from "./plugins/templates/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
-import registerUIPlugin from "./plugins/ui/index.js";
+import registerTranslationsPlugin from "./plugins/translations/index.js";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
@@ -62,20 +56,17 @@ export default async function registerPlugins(app) {
   await registerSimpleSchemaPlugin(app); // REQUIRED
   await registerJobQueuePlugin(app); // REQUIRED
   await registerFilesPlugin(app); // REQUIRED
-  await registerCorePlugin(app); // REQUIRED
   await registerShopPlugin(app); // REQUIRED
   await registerSettingsPlugin(app); // REQUIRED
   await registerI18nPlugin(app); // REQUIRED
   await registerEmailPlugin(app); // REQUIRED
   await registerAddressPlugin(app); // REQUIRED
-  await registerDashboardPlugin(app); // REQUIRED
-  await registerUIPlugin(app); // REQUIRED
+  await registerTranslationsPlugin(app); // OPTIONAL
   await registerSystemInfoPlugin(app); // OPTIONAL
 
   /**
    * Email
    */
-  await registerTemplatesPlugin(app); // REQUIRED
   await registerEmailTemplatesPlugin(app); // OPTIONAL
   await registerSMTPEmailPlugin(app); // OPTIONAL
 
@@ -94,11 +85,8 @@ export default async function registerPlugins(app) {
    * Catalog
    */
   await registerProductPlugin(app); // REQUIRED
-  await registerProductVariantPlugin(app); // REQUIRED
-  await registerProductAdminPlugin(app); // REQUIRED
   await registerCatalogPlugin(app); // REQUIRED
   await registerTagsPlugin(app); // REQUIRED
-  await registerCheckoutPlugin(app); // REQUIRED
 
   /**
    * Pricing
@@ -161,8 +149,5 @@ export default async function registerPlugins(app) {
    * Miscellaneous
    */
   await registerNotificationsPlugin(app); // OPTIONAL
-
-  if (process.env.NODE_ENV === "development") {
-    await registerTestAddressValidationPlugin(app);
-  }
+  await registerTestAddressValidationPlugin(app); // OPTIONAL
 }
