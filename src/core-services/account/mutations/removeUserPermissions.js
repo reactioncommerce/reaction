@@ -3,7 +3,6 @@ import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
   "accountId": String,
-  "userId": String,
   "groups": {
     type: Array, // groupIds that user belongs to
     optional: true,
@@ -22,16 +21,15 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {Object} input.groups - groups to append to
- * @param {String} input.accountId - optional decoded ID of account on which entry should be updated, for admins
+ * @param {String} input.accountId - decoded ID of account on which entry should be updated
  * @returns {Promise<Object>} with updated account
  */
 export default async function removeUserPermissions(context, input) {
-  const itemsToValidate = { accountId: context.accountId, userId: context.userId, groups: input.groups };
+  const itemsToValidate = { accountId: input.accountId, groups: input.groups };
   inputSchema.validate(itemsToValidate);
   const { appEvents, collections, userId: userIdFromContext } = context;
   const { Accounts } = collections;
-  const { accountId } = context;
-  const { groups, shopId } = input;
+  const { groups, shopId, accountId } = input;
 
 
   const account = await Accounts.findOne({ _id: accountId });
