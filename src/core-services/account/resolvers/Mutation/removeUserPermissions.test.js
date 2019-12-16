@@ -39,7 +39,7 @@ test("removeUserPermissions must correctly passes through to internal removeUser
 
   expect(mockContext.mutations.removeUserPermissions).toHaveBeenCalledWith(
     mockContext,
-    { groups: ["test-group-id"] }
+    { groups: ["test-group-id"], clientMutationId }
   );
 
   expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:accounts", "delete", { });
