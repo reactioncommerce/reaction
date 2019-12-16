@@ -3,7 +3,6 @@ import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
   "accountId": String,
-  "userId": String,
   "groups": {
     type: Array, // groupIds that user belongs to
     optional: true,
@@ -26,12 +25,11 @@ const inputSchema = new SimpleSchema({
  * @returns {Promise<Object>} with updated account
  */
 export default async function setUserPermissions(context, input) {
-  const itemsToValidate = { accountId: context.accountId, userId: context.userId, groups: input.groups };
+  const itemsToValidate = { accountId: input.accountId, groups: input.groups };
   inputSchema.validate(itemsToValidate);
   const { appEvents, collections, userId: userIdFromContext } = context;
   const { Accounts } = collections;
-  const { accountId } = context;
-  const { groups, shopId } = input;
+  const { groups, accountId } = input;
 
 
   const account = await Accounts.findOne({ _id: accountId });
