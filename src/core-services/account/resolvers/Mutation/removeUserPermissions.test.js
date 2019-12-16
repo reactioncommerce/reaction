@@ -29,7 +29,6 @@ test("removeUserPermissions must correctly passes through to internal removeUser
   };
 
   mockContext.mutations.removeUserPermissions.mockReturnValueOnce(Promise.resolve(fakeResult));
-  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve({ allow: true }));
 
   const result = await removeUserPermissions(null, {
     input: {
@@ -41,8 +40,6 @@ test("removeUserPermissions must correctly passes through to internal removeUser
     mockContext,
     { groups: ["test-group-id"], clientMutationId }
   );
-
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:accounts", "delete", { });
 
   expect(result).toEqual(fakeResult);
 });
