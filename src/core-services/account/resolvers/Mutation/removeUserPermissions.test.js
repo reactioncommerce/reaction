@@ -1,11 +1,12 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import removeUserPermissions from "./removeUserPermissions.js";
 
-mockContext.mutations.addOrRemoveAccountGroups = jest.fn().mockName("mutations.addOrRemoveAccountGroups");
+mockContext.mutations.removeUserPermissions = jest.fn().mockName("mutations.removeUserPermissions");
 mockContext.validatePermissions = jest.fn().mockName("validatePermissions");
 
-test("removeUserPermissions must correctly passes through to internal addOrRemoveAccountGroups mutation function", async () => {
+test("removeUserPermissions must correctly passes through to internal removeUserPermissions mutation function", async () => {
   const groups = ["test-group-id"];
+  const clientMutationId = "SOME_CLIENT_MUTATION_ID";
 
   const fakeResult = {
     _id: "3vx5cqBZsymCfHbpf",
@@ -27,16 +28,16 @@ test("removeUserPermissions must correctly passes through to internal addOrRemov
     ]
   };
 
-  mockContext.mutations.addOrRemoveAccountGroups.mockReturnValueOnce(Promise.resolve(fakeResult));
+  mockContext.mutations.removeUserPermissions.mockReturnValueOnce(Promise.resolve(fakeResult));
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve({ allow: true }));
 
   const result = await removeUserPermissions(null, {
     input: {
-      groups
+      groups, clientMutationId
     }
   }, mockContext);
 
-  expect(mockContext.mutations.addOrRemoveAccountGroups).toHaveBeenCalledWith(
+  expect(mockContext.mutations.removeUserPermissions).toHaveBeenCalledWith(
     mockContext,
     { groups: ["test-group-id"] }
   );
