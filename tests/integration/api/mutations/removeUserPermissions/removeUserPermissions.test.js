@@ -10,6 +10,7 @@ jest.setTimeout(300000);
 let removeUserPermissions;
 let customerGroup;
 let mockAdminAccount;
+let mockAdminAccountIdOpaque;
 let mockOtherAccount;
 let mockOtherAccountIdOpaque;
 let shopId;
@@ -63,6 +64,7 @@ beforeAll(async () => {
   await testApp.collections.Groups.insertOne(customerGroup);
 
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
+  mockAdminAccountIdOpaque = encodeOpaqueId("reaction/account", mockAdminAccountId);
   mockOtherAccountIdOpaque = encodeOpaqueId("reaction/account", mockOtherAccountId);
 
   removeUserPermissions = testApp.mutate(RemoveUserPermissionsMutation);
@@ -159,7 +161,7 @@ test("anyone without the required permissions should be denied access to remove 
 
   let err = null;
   try {
-    await removeUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockAdminAccountId });
+    await removeUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockAdminAccountIdOpaque });
   } catch (errors) {
     err = errors;
   }
