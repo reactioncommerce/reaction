@@ -14,6 +14,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Payments",
     name: "reaction-payments",
+    version: app.context.appVersion,
     i18n,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler]
@@ -23,30 +24,6 @@ export default async function register(app) {
       schemas
     },
     queries,
-    mutations,
-    settings: {
-      payments: {
-        enabled: true
-      }
-    },
-    registry: [
-      {
-        provides: ["dashboard"],
-        name: "payments",
-        label: "Payments",
-        description: "Payment Methods",
-        icon: "fa fa-credit-card",
-        priority: 1,
-        container: "core",
-        workflow: "coreDashboardWorkflow"
-      },
-      {
-        label: "Payment Settings",
-        icon: "fa fa-credit-card",
-        name: "payment/settings",
-        provides: ["settings"],
-        template: "paymentSettings"
-      }
-    ]
+    mutations
   });
 }

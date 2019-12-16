@@ -1,0 +1,166 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
+import TestApp from "/tests/util/TestApp.js";
+
+const createAddressValidationRuleMutation = importAsString("../createAddressValidationRule/createAddressValidationRule.graphql");
+const updateAddressValidationRuleMutation = importAsString("./updateAddressValidationRule.graphql");
+
+jest.setTimeout(300000);
+
+let createAddressValidationRule;
+let updateAddressValidationRule;
+let mockAdminAccount;
+let mockNonAdminAccount;
+let shopId;
+let shopOpaqueId;
+let testApp;
+
+beforeAll(async () => {
+  testApp = new TestApp();
+  await testApp.start();
+  shopId = await testApp.insertPrimaryShop();
+  createAddressValidationRule = testApp.mutate(createAddressValidationRuleMutation);
+  updateAddressValidationRule = testApp.mutate(updateAddressValidationRuleMutation);
+
+  mockAdminAccount = Factory.Account.makeOne({
+    _id: "mockAdminAccount",
+    roles: {
+      [shopId]: ["admin", "shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
+    },
+    shopId
+  });
+  await testApp.createUserAndAccount(mockAdminAccount);
+
+  mockNonAdminAccount = Factory.Account.makeOne({
+    _id: "mockNonAdminAccount",
+    roles: {
+      [shopId]: ["shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
+    },
+    shopId
+  });
+  await testApp.createUserAndAccount(mockNonAdminAccount);
+
+  shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
+});
+
+afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.AddressValidationRules.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.stop();
+});
+
+test("admin can update an address validation rule service name and country list", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  const input = {
+    serviceName: "test",
+    shopId: shopOpaqueId
+  };
+
+  const {
+    createAddressValidationRule: {
+      addressValidationRule: {
+        _id: ruleId,
+        updatedAt
+      }
+    }
+  } = await createAddressValidationRule(input);
+
+  let result;
+  try {
+    result = await updateAddressValidationRule({
+      countryCodes: ["US"],
+      ruleId,
+      serviceName: "test2",
+      shopId: shopOpaqueId
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  const { _id: updatedOpaqueId, ...updatedRule } = result.updateAddressValidationRule.addressValidationRule;
+
+  expect(updatedRule).toEqual({
+    createdAt: jasmine.any(String),
+    countryCodes: ["US"],
+    serviceName: "test2",
+    shopId: shopOpaqueId,
+    updatedAt: jasmine.any(String)
+  });
+
+  // Verify the updatedAt changed
+  expect(new Date(updatedAt) < new Date(updatedRule.updatedAt)).toBe(true);
+
+  // Verify the rule is updated in the database
+  const updatedRuleDatabaseId = decodeOpaqueIdForNamespace("reaction/addressValidationRule")(updatedOpaqueId);
+
+  const rule = await testApp.collections.AddressValidationRules.findOne({ _id: updatedRuleDatabaseId });
+  expect(rule).toEqual({
+    _id: updatedRuleDatabaseId,
+    createdAt: jasmine.any(Date),
+    countryCodes: ["US"],
+    serviceName: "test2",
+    shopId,
+    updatedAt: jasmine.any(Date)
+  });
+});
+
+test("update fails if you do not pass a service name", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  const input = {
+    serviceName: "test",
+    shopId: shopOpaqueId
+  };
+
+  const {
+    createAddressValidationRule: {
+      addressValidationRule: {
+        _id: ruleId
+      }
+    }
+  } = await createAddressValidationRule(input);
+
+  try {
+    await updateAddressValidationRule({
+      ruleId,
+      shopId: shopOpaqueId
+    });
+  } catch (errors) {
+    expect(errors[0].message).toBe("Variable \"$serviceName\" of required type \"String!\" was not provided.");
+  }
+});
+
+test("non-admin cannot update an address validation rule", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  const input = {
+    serviceName: "test",
+    shopId: shopOpaqueId
+  };
+
+  const {
+    createAddressValidationRule: {
+      addressValidationRule: {
+        _id: ruleId
+      }
+    }
+  } = await createAddressValidationRule(input);
+
+  await testApp.setLoggedInUser(mockNonAdminAccount);
+
+  try {
+    await updateAddressValidationRule({
+      countryCodes: ["US"],
+      ruleId,
+      serviceName: "test2",
+      shopId: shopOpaqueId
+    });
+  } catch (errors) {
+    expect(errors[0].message).toBe("Access Denied");
+  }
+});

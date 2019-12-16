@@ -17,7 +17,7 @@ import filterShippingMethods from "./util/filterShippingMethods.js";
  */
 export default async function getFulfillmentMethodsWithQuotes(context, commonOrder, previousQueryResults = []) {
   const { collections } = context;
-  const { Packages, Shipping } = collections;
+  const { Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;
   const currentMethodInfo = {
     packageName: "flat-rate-shipping",
@@ -44,12 +44,9 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
     return [rates, retrialTargets];
   }
 
-  const pkgData = await Packages.findOne({
-    name: "reaction-shipping-rates",
-    shopId: commonOrder.shopId
-  });
+  const { isShippingRatesFulfillmentEnabled } = await context.queries.appSettings(context, commonOrder.shopId);
 
-  if (!pkgData || pkgData.settings.flatRates.enabled !== true) {
+  if (!isShippingRatesFulfillmentEnabled) {
     return [rates, retrialTargets];
   }
 

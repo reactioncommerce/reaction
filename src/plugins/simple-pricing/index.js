@@ -18,6 +18,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Pricing",
     name: "reaction-pricing",
+    version: app.context.appVersion,
     functionsByType: {
       getMinPriceSortByFieldPath: [getMinPriceSortByFieldPath],
       mutateNewProductBeforeCreate: [mutateNewProductBeforeCreate],

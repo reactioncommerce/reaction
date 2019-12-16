@@ -11,6 +11,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Notifications",
     name: "reaction-notification",
+    version: app.context.appVersion,
     collections: {
       Notifications: {
         name: "Notifications"
@@ -22,17 +23,6 @@ export default async function register(app) {
     mutations,
     simpleSchemas: {
       Notification
-    },
-    registry: [{
-      label: "Notifications",
-      name: "notifications",
-      route: "/notifications",
-      workflow: "coreWorkflow",
-      permissions: [{
-        label: "Notifications",
-        permission: "notifications"
-      }],
-      template: "notificationRoute"
-    }]
+    }
   });
 }

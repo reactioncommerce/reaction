@@ -17,6 +17,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Inventory",
     name: "reaction-inventory",
+    version: app.context.appVersion,
     i18n,
     functionsByType: {
       preStartup: [preStartup],
