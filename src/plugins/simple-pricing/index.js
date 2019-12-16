@@ -1,4 +1,6 @@
+import policies from "./policies.json";
 import preStartup from "./preStartup.js";
+import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
@@ -31,6 +33,8 @@ export default async function register(app) {
       resolvers,
       schemas
     },
+    mutations,
+    policies,
     queries,
     catalog: {
       publishedProductFields: ["price"],
