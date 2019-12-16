@@ -136,6 +136,16 @@ input RemoveAccountEmailRecordInput {
   email: Email!
 }
 
+"Defines groups to be removed from an account group. Removin an group from an account effectively also removes permissions from the account"
+input RemoveUserPermissionsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+  "the groups to remove from a user / account"
+  groups: [String!]!
+  "the opaque shopId of the shop"
+  shopId: String!
+}
+
 "Per-account tax exemption settings used by the Avalara plugin"
 type TaxSettings {
   "Customer usage type. A value matching the `code` field of one TaxEntityCode, or any custom string."
@@ -349,6 +359,14 @@ type SetAccountProfileLanguagePayload {
   clientMutationId: String
 }
 
+"The response from the `removeUserPermissionsMutation` mutation"
+type RemoveUserPermissionsPayload {
+  "The updated account"
+  account: Account!
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 extend type Shop {
   """
   Returns a list of administrators for this shop, as a Relay-compatible connection.
@@ -429,6 +447,12 @@ extend type Mutation {
     "Mutation input"
     input: UpdateAccountAddressBookEntryInput!
   ): UpdateAccountAddressBookEntryPayload
+
+  "Remove one or more groups from the account. The user id / account id must be set in the context"
+  removeUserPermissions(
+    "Mutation input"
+    input: RemoveUserPermissionsInput!
+  ): RemoveUserPermissionsPayload
 }
 
 extend type Query {
