@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`anyone without the required permissions should be denied access to add group to an account 1`] = `
+exports[`anyone without the required permissions should be denied access to remove group from an account 1`] = `
 Object {
   "extensions": Object {
     "code": "FORBIDDEN",

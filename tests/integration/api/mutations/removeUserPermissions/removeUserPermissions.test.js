@@ -11,10 +11,15 @@ let removeUserPermissions;
 let customerGroup;
 let mockAdminAccount;
 let mockOtherAccount;
+let mockOtherAccountIdOpaque;
 let shopId;
 let shopManagerGroup;
 let shopOpaqueId;
 let testApp;
+
+const mockAdminAccountId = "mockAdminAccount";
+const mockOtherAccountId = "mockOtherAccount";
+
 const shopManagerGroupName = "shop manager";
 beforeAll(async () => {
   testApp = new TestApp();
@@ -22,7 +27,7 @@ beforeAll(async () => {
   shopId = await testApp.insertPrimaryShop();
 
   mockAdminAccount = Factory.Account.makeOne({
-    _id: "mockAdminAccount",
+    _id: mockAdminAccountId,
     roles: {
       [shopId]: ["reaction-accounts"]
     },
@@ -32,7 +37,7 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockAdminAccount);
 
   mockOtherAccount = Factory.Account.makeOne({
-    _id: "mockOtherAccount",
+    _id: mockOtherAccountId,
     groups: [],
     roles: {},
     shopId
@@ -58,6 +63,7 @@ beforeAll(async () => {
   await testApp.collections.Groups.insertOne(customerGroup);
 
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
+  mockOtherAccountIdOpaque = encodeOpaqueId("reaction/account", mockOtherAccountId);
 
   removeUserPermissions = testApp.mutate(RemoveUserPermissionsMutation);
 });
@@ -96,10 +102,12 @@ test("anyone can with the required permissions can remove a group(s) to an accou
     slug: groupName,
     shopId
   });
+
   await testApp.collections.Groups.insertOne(testGroup1);
-  const updatedAccountBeforeGroupRemoval = await testApp.collections.Accounts.findOneAndUpdate(
+
+  const accountBeforeGroupRemoval = await testApp.collections.Accounts.findOneAndUpdate(
     {
-      _id: mockAdminAccount._id
+      _id: mockOtherAccountId
     }, {
       $addToSet: {
         groups: {
@@ -111,13 +119,13 @@ test("anyone can with the required permissions can remove a group(s) to an accou
   );
 
 
-  await removeUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId });
-  const dbResult = await testApp.collections.Accounts.findOne({ _id: mockAdminAccount._id });
+  await removeUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockOtherAccountIdOpaque });
+  const accountAfterGroupRemoval = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
 
-  expect(updatedAccountBeforeGroupRemoval.value.groups.length).toEqual(2);
-  expect(updatedAccountBeforeGroupRemoval.value.groups).toEqual(expect.arrayContaining(["test-group-1"]));
-  expect(dbResult.groups).toEqual(expect.not.arrayContaining(["test-group-1"]));
-  expect(dbResult.groups.length).toBe(1);
+  expect(accountBeforeGroupRemoval.value.groups.length).toEqual(1);
+  expect(accountBeforeGroupRemoval.value.groups).toEqual(expect.arrayContaining(["test-group-1"]));
+  expect(accountAfterGroupRemoval.groups).toEqual(expect.not.arrayContaining(["test-group-1"]));
+  expect(accountAfterGroupRemoval.groups.length).toBe(0);
 });
 
 
@@ -149,7 +157,7 @@ test("anyone without the required permissions should be denied access to remove 
 
   let err = null;
   try {
-    await removeUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId });
+    await removeUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockOtherAccountIdOpaque });
   } catch (errors) {
     err = errors;
   }
