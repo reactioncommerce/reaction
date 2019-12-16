@@ -141,7 +141,9 @@ test("anyone without the required permissions should be denied access to remove 
     slug: groupName,
     shopId
   });
+
   await testApp.collections.Groups.insertOne(testGroup1);
+
   await testApp.collections.Accounts.findOneAndUpdate(
     {
       _id: mockAdminAccount._id
@@ -157,7 +159,7 @@ test("anyone without the required permissions should be denied access to remove 
 
   let err = null;
   try {
-    await removeUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockOtherAccountIdOpaque });
+    await removeUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockAdminAccountId });
   } catch (errors) {
     err = errors;
   }
