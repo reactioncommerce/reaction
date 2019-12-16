@@ -55,6 +55,10 @@ import {
 } from "../../src/core-services/shop/simpleSchemas.js";
 
 import {
+  Surcharge
+} from "../../src/plugins/surcharges/util/surchargeSchema.js";
+
+import {
   Tag
 } from "../../src/core-services/tags/simpleSchemas.js";
 
@@ -107,6 +111,7 @@ const schemasToAddToFactory = {
   ProductVariant,
   ShipmentQuote,
   Shop,
+  Surcharge,
   Tag,
   TaxRates
 };

@@ -1,0 +1,8 @@
+
+query ($shopId: ID!, $surchargeId: ID!){
+  surchargeById(shopId: $shopId, surchargeId: $surchargeId){
+    amount {
+      amount
+    }
+  }
+}
