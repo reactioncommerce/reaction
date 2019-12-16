@@ -5,8 +5,7 @@ const inputSchema = new SimpleSchema({
   "accountId": String,
   "groups": {
     type: Array, // groupIds that user belongs to
-    optional: true,
-    defaultValue: []
+    minCount: 1
   },
   "groups.$": {
     type: String

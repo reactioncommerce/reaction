@@ -169,3 +169,16 @@ test("anyone without the required permissions should be denied access to remove 
   expect(err[0]).toMatchSnapshot();
 });
 
+
+test("should throw if a groups array is empty", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  let err = null;
+  try {
+    await removeUserPermissions({ groups: [], shopId: shopOpaqueId, accountId: mockAdminAccountIdOpaque });
+  } catch (errors) {
+    err = errors;
+  }
+  expect(err).toBeTruthy();
+  expect(err[0]).toMatchSnapshot();
+});
