@@ -72,5 +72,5 @@ export default async function removeUserPermissions(context, input) {
     updatedFields
   });
 
-  return { account: updatedAccount };
+  return updatedAccount;
 }

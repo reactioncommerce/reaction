@@ -17,5 +17,5 @@ export default async function removeUserPermissions(_, { input }, context) {
   const decodedAccountId = decodeAccountOpaqueId(accountId);
   const transformedInput = { ...input, shopId: decodedShopId, accountId: decodedAccountId };
   const result = await context.mutations.removeUserPermissions(context, transformedInput);
-  return { ...result, clientMutationId };
+  return { account: result, clientMutationId };
 }

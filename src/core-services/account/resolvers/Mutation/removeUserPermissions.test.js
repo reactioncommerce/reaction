@@ -14,26 +14,23 @@ test("removeUserPermissions must correctly passes through to internal removeUser
   const accountIdOpaque = encodeOpaqueId("reaction/account", accountId);
 
   const fakeResult = {
-    account: {
-      _id: accountId,
-      acceptsMarketing: false,
-      createdAt: "2019-11-05T16:34:49.644Z",
-      emails: [
-        {
-          address: "admin@localhost",
-          verified: true,
-          provides: "default"
-        }
-      ],
-      shopId,
-      state: "new",
-      userId: "3vx5cqBZsymCfHbpf",
-      accountId: "3vx5cqBZsymCfHbpf",
-      groups: [
-        "test-group-id"
-      ]
-    },
-    clientMutationId
+    _id: accountId,
+    acceptsMarketing: false,
+    createdAt: "2019-11-05T16:34:49.644Z",
+    emails: [
+      {
+        address: "admin@localhost",
+        verified: true,
+        provides: "default"
+      }
+    ],
+    shopId,
+    state: "new",
+    userId: "3vx5cqBZsymCfHbpf",
+    accountId: "3vx5cqBZsymCfHbpf",
+    groups: [
+      "test-group-id"
+    ]
   };
 
   mockContext.mutations.removeUserPermissions.mockReturnValueOnce(Promise.resolve(fakeResult));
@@ -57,5 +54,6 @@ test("removeUserPermissions must correctly passes through to internal removeUser
     }
   );
 
-  expect(result).toEqual(fakeResult);
+  const expected = { account: fakeResult, clientMutationId };
+  expect(result).toEqual(expected);
 });
