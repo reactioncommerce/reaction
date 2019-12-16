@@ -121,7 +121,7 @@ test("anyone can with the required permissions can remove a group(s) to an accou
 });
 
 
-test("anyone without the required permissions should be denied access to add group to an account", async () => {
+test("anyone without the required permissions should be denied access to remove group from an account", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
   const groupName = "test-group-1";
