@@ -138,6 +138,8 @@ input RemoveAccountEmailRecordInput {
 
 "Defines groups to be removed from an account group. Removin an group from an account effectively also removes permissions from the account"
 input RemoveUserPermissionsInput {
+  "the opaque account Id of the user who is to be removed from the group"
+  accountId: String!
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
   "the groups to remove from a user / account"
