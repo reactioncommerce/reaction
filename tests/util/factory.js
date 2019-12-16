@@ -82,7 +82,7 @@ import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
-import { AddressValidationRule } from "../../src/plugins/address/simpleSchemas.js";
+import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
 
 const schemasToAddToFactory = {
   Account,
