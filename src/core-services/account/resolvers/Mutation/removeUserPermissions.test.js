@@ -8,12 +8,14 @@ mockContext.validatePermissions = jest.fn().mockName("validatePermissions");
 test("removeUserPermissions must correctly passes through to internal removeUserPermissions mutation function", async () => {
   const groups = ["test-group-id"];
   const clientMutationId = "SOME_CLIENT_MUTATION_ID";
+  const accountId = "3vx5cqBZsymCfHbpf";
   const shopId = "test-shop-id";
   const shopIdOpaque = encodeOpaqueId("reaction/shop", shopId);
+  const accountIdOpaque = encodeOpaqueId("reaction/account", accountId);
 
   const fakeResult = {
     account: {
-      _id: "3vx5cqBZsymCfHbpf",
+      _id: accountId,
       acceptsMarketing: false,
       createdAt: "2019-11-05T16:34:49.644Z",
       emails: [
@@ -40,7 +42,8 @@ test("removeUserPermissions must correctly passes through to internal removeUser
     input: {
       groups,
       clientMutationId,
-      shopId: shopIdOpaque
+      shopId: shopIdOpaque,
+      accountId: accountIdOpaque
     }
   }, mockContext);
 
@@ -48,6 +51,7 @@ test("removeUserPermissions must correctly passes through to internal removeUser
     mockContext,
     {
       groups: ["test-group-id"],
+      accountId,
       clientMutationId,
       shopId
     }
