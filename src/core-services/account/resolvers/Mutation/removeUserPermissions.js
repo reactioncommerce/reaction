@@ -12,6 +12,5 @@
  * @returns {Object} - object
  */
 export default async function removeUserPermissions(_, { input }, context) {
-  await context.validatePermissions("reaction:accounts", "delete", { });
   return context.mutations.addOrRemoveAccountGroups(context, input);
 }
