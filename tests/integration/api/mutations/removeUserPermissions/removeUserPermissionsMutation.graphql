@@ -1,0 +1,19 @@
+mutation removeUserPermissions($groups: [String!]!, $shopId: String! ) {
+
+  removeUserPermissions (input: {
+    groups: $groups
+    shopId: $shopId
+  }) {
+    account {
+      groups {
+        nodes {
+          _id
+          description
+          name
+          permissions
+        }
+      }
+    }
+  }
+
+}
