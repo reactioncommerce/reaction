@@ -1,3 +1,4 @@
+import { decodeShopOpaqueId } from "../../xforms/id.js";
 /**
  * @name Mutation/removeUserPermissions
  * @method
@@ -12,5 +13,9 @@
  * @returns {Object} - object
  */
 export default async function removeUserPermissions(_, { input }, context) {
-  return context.mutations.addOrRemoveAccountGroups(context, input);
+  const { shopId, clientMutationId } = input;
+  const decodedShopId = decodeShopOpaqueId(shopId);
+  const transformedInput = { ...input, shopId: decodedShopId };
+  const result = await context.mutations.removeUserPermissions(context, transformedInput);
+  return { ...result, clientMutationId };
 }
