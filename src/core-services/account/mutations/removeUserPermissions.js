@@ -38,24 +38,25 @@ export default async function removeUserPermissions(context, input) {
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (!context.isInternalCall && userIdFromContext !== accountId) {
-    await context.validatePermissions("reaction:accounts", "update", { shopId: account.shopId, legacyRoles: ["reaction-accounts"] });
+  if (!context.isInternalCall) {
+    await context.validatePermissions("reaction:accounts", "update", { shopId, legacyRoles: ["reaction-accounts"] });
   }
 
-  await context.validatePermissions("reaction:accounts", "update", { shopId, legacyRoles: ["admin"] });
 
   // Update the Reaction Accounts collection with new groups info
   // This
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
+    {
+      _id: accountId
+    },
     {
       $pull: {
         groups: {
           $in: groups
         }
       }
-    },
-    {
-      multi: true
+    }, {
+      returnNewDocument: true
     }
   );
 
