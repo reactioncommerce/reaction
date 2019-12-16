@@ -1,8 +1,9 @@
-mutation removeUserPermissions($groups: [String!]!, $shopId: String! ) {
+mutation removeUserPermissions($accountId: String!, $shopId: String!, $groups: [String!]! ) {
 
   removeUserPermissions (input: {
-    groups: $groups
     shopId: $shopId
+    accountId: $accountId
+    groups: $groups
   }) {
     account {
       groups {
