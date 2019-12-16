@@ -1,5 +1,4 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import AddOrRemoveAccountGroupsOperationType from "../../mutations/AddOrRemoveAccountGroupsOperationType";
 import removeUserPermissions from "./removeUserPermissions.js";
 
 mockContext.mutations.addOrRemoveAccountGroups = jest.fn().mockName("mutations.addOrRemoveAccountGroups");
@@ -39,8 +38,7 @@ test("removeUserPermissions must correctly passes through to internal addOrRemov
 
   expect(mockContext.mutations.addOrRemoveAccountGroups).toHaveBeenCalledWith(
     mockContext,
-    { groups: ["test-group-id"] },
-    AddOrRemoveAccountGroupsOperationType.DELETE
+    { groups: ["test-group-id"] }
   );
 
   expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:accounts", "delete", { });
