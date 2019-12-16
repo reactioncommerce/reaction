@@ -41,7 +41,8 @@ export default async function register(app) {
           // with indexes created by the aldeed:schema-index Meteor package.
           [{ groups: 1 }, { name: "c2_groups" }],
           [{ shopId: 1 }, { name: "c2_shopId" }],
-          [{ userId: 1 }, { name: "c2_userId" }]
+          [{ userId: 1 }, { name: "c2_userId" }],
+          [{ shopId: 1, slug: 1 }]
         ]
       },
       AccountInvites: {
