@@ -29,7 +29,7 @@ input GroupInput {
 }
 
 "The details for creating a group"
-input CreateGroupInput {
+input CreateAccountGroupInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -149,8 +149,8 @@ type AddAccountToGroupPayload {
   group: Group
 }
 
-"The response from the `createGroup` mutation"
-type CreateGroupPayload {
+"The response from the `createAccountGroup` mutation"
+type CreateAccountGroupPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
@@ -206,11 +206,11 @@ extend type Mutation {
     input: AddAccountToGroupInput!
   ): AddAccountToGroupPayload
 
-  "Create a new permission group"
-  createGroup(
+  "Create a new account group. These are usually used for account group permissions"
+  createAccountGroup(
     "Mutation input"
-    input: CreateGroupInput!
-  ): CreateGroupPayload
+    input: CreateAccountGroupInput!
+  ): CreateAccountGroupPayload
 
   "Remove an existing permission group"
   removeGroup(

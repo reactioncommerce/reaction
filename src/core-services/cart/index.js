@@ -16,6 +16,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Cart",
     name: "reaction-cart",
+    version: app.context.appVersion,
     collections: {
       Cart: {
         name: "Cart",

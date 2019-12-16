@@ -33,7 +33,6 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Packages.deleteMany({});
   await testApp.stop();
 });
 

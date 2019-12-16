@@ -15,6 +15,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Sitemap Generator",
     name: "reaction-sitemap-generator",
+    version: app.context.appVersion,
     i18n,
     collections: {
       Sitemaps: {
