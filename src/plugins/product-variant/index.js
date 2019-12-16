@@ -9,6 +9,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Product Variant",
     name: "reaction-product-variant",
+    version: app.context.appVersion,
     i18n
   });
 }

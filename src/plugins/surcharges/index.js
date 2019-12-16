@@ -15,6 +15,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Surcharges",
     name: "reaction-surcharges",
+    version: app.context.appVersion,
     collections: {
       Surcharges: {
         name: "Surcharges",

@@ -20,6 +20,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Taxes",
     name: "reaction-taxes",
+    version: app.context.appVersion,
     i18n,
     cart: {
       transforms: [

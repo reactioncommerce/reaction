@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should throw if the group to be created has the same slug and shopId as an existing group 1`] = `
+Object {
+  "extensions": Object {
+    "code": "INTERNAL_SERVER_ERROR",
+    "exception": Object {
+      "details": Object {},
+      "error": "conflict",
+      "eventData": Object {},
+      "isClientSafe": true,
+      "reason": "Group already exist for this shop",
+    },
+  },
+  "locations": Array [
+    Object {
+      "column": 3,
+      "line": 2,
+    },
+  ],
+  "message": "Group already exist for this shop",
+  "path": Array [
+    "createAccountGroup",
+  ],
+}
+`;

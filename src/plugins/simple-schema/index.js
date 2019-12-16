@@ -9,6 +9,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "SimpleSchema",
     name: "reaction-simple-schema",
+    version: app.context.appVersion,
     functionsByType: {
       registerPluginHandler: [registerPluginHandler]
     },

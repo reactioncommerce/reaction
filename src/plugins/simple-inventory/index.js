@@ -21,6 +21,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Simple Inventory",
     name: "reaction-simple-inventory",
+    version: app.context.appVersion,
     i18n,
     collections: {
       SimpleInventory: {
