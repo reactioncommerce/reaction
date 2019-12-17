@@ -4,10 +4,14 @@ import setUserPermissions from "./setUserPermissions.js";
 
 mockContext.mutations.setUserPermissions = jest.fn().mockName("mutations.setUserPermissions");
 
+const mockAccountId = "MockAccountId";
+const mockClientMutationTd = "SOME_CLIENT_MUTATION_ID";
+
 test("correctly passes through to internal mutation function", async () => {
   const groups = ["test-group-id"];
   const shopId = "test-shop-id";
   const shopIdOpaque = encodeOpaqueId("reaction/shop", shopId);
+  const accountIdOpaque = encodeOpaqueId("reaction/account", mockAccountId);
   const fakeResult = {
     _id: "3vx5cqBZsymCfHbpf",
     acceptsMarketing: false,
@@ -33,17 +37,20 @@ test("correctly passes through to internal mutation function", async () => {
   const result = await setUserPermissions(null, {
     input: {
       groups,
-      shopId: shopIdOpaque
+      shopId: shopIdOpaque,
+      accountId: accountIdOpaque,
+      clientMutationId: mockClientMutationTd
     }
   }, mockContext);
 
   expect(mockContext.mutations.setUserPermissions).toHaveBeenCalledWith(
     mockContext,
-    {
+    expect.objectContaining({
       groups: ["test-group-id"],
+      accountId: mockAccountId,
       shopId
-    }
+    })
   );
 
-  expect(result).toEqual(fakeResult);
+  expect(result).toEqual({ account: fakeResult, clientMutationId: mockClientMutationTd });
 });
