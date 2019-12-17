@@ -85,7 +85,12 @@ beforeAll(async () => {
   administratorsQuery = testApp.query(AdministratorsFullQuery);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.stop();
+});
 
 test("unauthenticated", async () => {
   try {

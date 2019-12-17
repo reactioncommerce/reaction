@@ -29,7 +29,7 @@ const mockFulfillmentRestriction = {
   }
 };
 
-const mockOwenrAccount = Factory.Account.makeOne({
+const mockOwnerAccount = Factory.Account.makeOne({
   roles: {
     [internalShopId]: ["owner"]
   },
@@ -43,12 +43,13 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await testApp.collections.FlatRateFulfillmentRestrictions.insertOne(mockFulfillmentRestriction);
-  await testApp.createUserAndAccount(mockOwenrAccount);
+  await testApp.createUserAndAccount(mockOwnerAccount);
   getFlatRateFulfillmentRestriction = testApp.query(FlatRateFulfillmentRestrictionQuery);
 });
 
 afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
   await testApp.collections.FlatRateFulfillmentRestrictions.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
@@ -56,7 +57,7 @@ afterAll(async () => {
 
 test("a shop owner can query for a flat rate fulfillment restriction", async () => {
   let result;
-  await testApp.setLoggedInUser(mockOwenrAccount);
+  await testApp.setLoggedInUser(mockOwnerAccount);
 
   try {
     result = await getFlatRateFulfillmentRestriction({

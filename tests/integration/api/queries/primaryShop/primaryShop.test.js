@@ -19,7 +19,12 @@ beforeAll(async () => {
   }`);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.stop();
+});
 
 test("get primaryShop, no auth necessary", async () => {
   const result = await primaryShopQuery();

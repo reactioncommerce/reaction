@@ -68,7 +68,12 @@ beforeEach(async () => {
   await testApp.collections.Orders.deleteMany({});
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.stop();
+});
 
 test("get account order success", async () => {
   await testApp.collections.Orders.insertOne(order);
