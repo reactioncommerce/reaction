@@ -14,10 +14,10 @@ import { decodeShopOpaqueId, decodeAccountOpaqueId } from "../../xforms/id.js";
  * @returns {Object} - object
  */
 export default async function setUserPermissions(_, { input }, context) {
-  const { shopId, accountId } = input;
+  const { shopId, accountId, clientMutationId } = input;
   const decodedShopId = decodeShopOpaqueId(shopId);
   const decodedAccountId = decodeAccountOpaqueId(accountId);
   const transformedInput = { ...input, shopId: decodedShopId, accountId: decodedAccountId };
   const result = await context.mutations.setUserPermissions(context, transformedInput);
-  return { account: result };
+  return { account: result, clientMutationId };
 }

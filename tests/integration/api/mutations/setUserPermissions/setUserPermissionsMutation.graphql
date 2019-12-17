@@ -1,9 +1,10 @@
-mutation setUserPermissions($accountId: String!, $shopId: String!, $groups: [String!]! ) {
+mutation setUserPermissions($accountId: String!, $shopId: String!, $groups: [String!]!, $clientMutationId: String ) {
 
   setUserPermissions (input: {
     shopId: $shopId
     accountId: $accountId
     groups: $groups
+    clientMutationId: $clientMutationId
   }) {
     account {
       groups {
@@ -15,6 +16,7 @@ mutation setUserPermissions($accountId: String!, $shopId: String!, $groups: [Str
         }
       }
     }
+    clientMutationId
   }
 
 }
