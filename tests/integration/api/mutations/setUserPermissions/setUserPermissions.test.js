@@ -127,4 +127,16 @@ test("anyone without the required permissions should be denied access to add gro
   expect(err[0]).toMatchSnapshot();
 });
 
+test("should throw if there is an empty list of groups provided in the input", async () => {
+  await testApp.setLoggedInUser(mockOtherAccount);
+
+  let err = null;
+  try {
+    await setUserPermissions({ groups: [], shopId: shopOpaqueId });
+  } catch (errors) {
+    err = errors;
+  }
+  expect(err).toBeTruthy();
+  expect(err[0]).toMatchSnapshot();
+});
 

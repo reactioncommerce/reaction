@@ -24,3 +24,41 @@ Object {
   ],
 }
 `;
+
+exports[`should throw if there is an empty list of groups provided in the input 1`] = `
+Object {
+  "extensions": Object {
+    "code": "BAD_USER_INPUT",
+    "exception": Object {
+      "details": Array [
+        Object {
+          "message": "Account ID is required",
+          "name": "accountId",
+          "type": "required",
+          "value": undefined,
+        },
+        Object {
+          "message": "You must specify at least 1 values",
+          "minCount": 1,
+          "name": "groups",
+          "type": "minCount",
+          "value": Array [],
+        },
+      ],
+      "error": "validation-error",
+      "errorType": "ClientError",
+      "name": "ClientError",
+    },
+  },
+  "locations": Array [
+    Object {
+      "column": 3,
+      "line": 2,
+    },
+  ],
+  "message": "Account ID is required",
+  "path": Array [
+    "setUserPermissions",
+  ],
+}
+`;
