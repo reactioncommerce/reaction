@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.2](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.7.1...@reactioncommerce/file-collections@0.7.2) (2019-12-17)
+
+
+### Bug Fixes
+
+* convert Blobs to streams only in a Node env ([f8a01d6](https://github.com/reactioncommerce/reaction-file-collections/commit/f8a01d644d606b26fee6bc9574151195ff345a3f))
+
+
+
+
+
 ## [0.7.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.7.0...@reactioncommerce/file-collections@0.7.1) (2019-12-17)
 
 
