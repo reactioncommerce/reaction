@@ -139,6 +139,9 @@ input RemoveAccountEmailRecordInput {
 "Defines groups to add given user / account to thereby giving that user certain permissions"
 input SetUserPermissionsInput {
 
+  "The accountId of the user whose permissions are to be set"
+  accountId: String!
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
