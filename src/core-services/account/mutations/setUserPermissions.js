@@ -51,9 +51,6 @@ export default async function setUserPermissions(context, input) {
           $each: groups
         }
       }
-    },
-    {
-      multi: true
     }
   );
 
