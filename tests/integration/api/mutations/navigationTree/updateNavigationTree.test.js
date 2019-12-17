@@ -103,7 +103,6 @@ test("an authorized user should be able to update the navigation tree", async ()
     name: "Not Default Navigation",
     shopId: opaqueShopId
   });
-
 });
 
 test("an unauthorized user should not be able to update the navigation tree", async () => {
