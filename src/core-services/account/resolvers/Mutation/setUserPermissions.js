@@ -4,7 +4,8 @@ import { decodeShopOpaqueId, decodeAccountOpaqueId } from "../../xforms/id.js";
  * @name Mutation/setUserPermissions
  * @method
  * @memberof Accounts/GraphQL
- * @summary resolver to add user permissions
+ * @summary resolver to replace user permissions. The replaces the groups on an account with the provided groups
+ * which in effect replaces the permissions of an account. Permissions are applied to groups
  * @param {Object} _ - unused
  * @param {Object} input - an object of all mutation arguments that were sent by the client
  * @param {String} input.groups - The group the user is to be added to
