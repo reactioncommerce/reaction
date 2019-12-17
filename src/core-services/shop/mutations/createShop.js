@@ -28,42 +28,6 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @summary Create one Packages collection doc for each plugin, for this shop
- * @param {Object} context App context
- * @param {String} shopId Shop ID
- * @return {undefined}
- */
-async function createPackagesForShop(context, shopId) {
-  const { app, collections: { Packages } } = context;
-
-  // Create Packages docs for each plugin for this shop
-  /* eslint-disable no-await-in-loop */
-  for (const config of Object.values(app.registeredPlugins)) {
-    const packageDoc = {
-      // autoEnable no longer does anything. All are enabled by default.
-      enabled: true,
-      icon: config.icon,
-      name: config.name,
-      registry: config.registry,
-      version: config.version,
-      shopId
-    };
-
-    await Packages.updateOne({
-      name: config.name,
-      shopId
-    }, {
-      $set: packageDoc,
-      $setOnInsert: {
-        _id: Random.id()
-      }
-    }, {
-      upsert: true
-    });
-  }
-}
-
-/**
  * @name shop/createShop
  * @memberof Mutations/Shop
  * @method
@@ -156,13 +120,17 @@ export default async function createShop(context, input) {
   const newShopId = shop._id;
 
   try {
-    await createPackagesForShop(context, newShopId);
-
     // Create account groups for the new shop
     await context.mutations.createAuthGroupsForShop(context, newShopId);
 
     // Give the shop creator "owner" permissions
     await context.mutations.addAccountToGroupBySlug(context, { accountId, groupSlug: "owner", shopId: newShopId });
+
+    // Add AppSettings object into database for the new shop
+    await collections.AppSettings.insertOne({
+      _id: Random.id(),
+      shopId: newShopId
+    });
   } catch (error) {
     Logger.error(error, "Error after creating shop");
   }

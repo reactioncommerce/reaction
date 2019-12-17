@@ -15,7 +15,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Email Templates",
     name: "reaction-email-templates",
-    version: "1.0.0",
+    version: app.context.appVersion,
     graphQL: {
       resolvers,
       schemas
@@ -28,6 +28,16 @@ export default async function register(app) {
     },
     functionsByType: {
       startup: [startup]
+    },
+    collections: {
+      Templates: {
+        name: "Templates",
+        indexes: [
+          // Create indexes. We set specific names for backwards compatibility
+          // with indexes created by the aldeed:schema-index Meteor package.
+          [{ shopId: 1 }, { name: "c2_shopId" }]
+        ]
+      }
     }
   });
 }

@@ -1,0 +1,12 @@
+query addressValidationRules($shopId: ID!, $serviceNames: [String], $first: ConnectionLimitInt, $last: ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor, $offset: Int, $sortBy: AddressValidationRuleSortByField, $sortOrder: SortOrder) {
+  addressValidationRules(shopId: $shopId, serviceNames: $serviceNames, first: $first, last: $last, before: $before, after: $after, offset: $offset, sortBy: $sortBy, sortOrder: $sortOrder) {
+    nodes {
+      _id
+      countryCodes
+      createdAt
+      serviceName
+      shopId
+      updatedAt
+    }
+  }
+}

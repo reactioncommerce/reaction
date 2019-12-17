@@ -61,26 +61,6 @@ test("throws if no authContext", async () => {
   expect(result).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("throws if no authContext.shopId (referred to as `roleGroup`)", async () => {
-  const result = hasPermission(
-    {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon"], // eslint-disable-line camelcase
-          scope: ["can_eat"]
-        }
-      }
-    },
-    "resource",
-    "action",
-    {
-      shopId: null,
-      legacyRoles: ["role1", "role2"]
-    }
-  );
-  expect(result).rejects.toThrowErrorMatchingSnapshot();
-});
-
 test("throws if roleGroup is present but not a string", async () => {
   const result = hasPermission(
     {

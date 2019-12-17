@@ -13,6 +13,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "App Settings",
     name: "reaction-settings",
+    version: app.context.appVersion,
     collections: {
       AppSettings: {
         name: "AppSettings",
