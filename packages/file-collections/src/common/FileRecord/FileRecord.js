@@ -146,10 +146,22 @@ export default class FileRecord extends EventEmitter {
   static fromFile(file, options) {
     if (typeof File === "undefined") throw new Error("FileRecord.fromFile: File must be defined globally");
     if (!(file instanceof File)) throw new Error("FileRecord.fromFile: first argument is not an instance of File");
-    const { lastModifiedDate, name, size, type } = file;
+    const { lastModified, lastModifiedDate, name, size, type } = file;
+
+    // `lastModifiedDate` is deprecated and removed from some browsers.
+    // `lastModified` is the new one but is a number of milliseconds.
+    // If all else fails, use now.
+    let updatedAt;
+    if (lastModified) {
+      updatedAt = new Date(lastModified);
+    } else {
+      updatedAt = lastModifiedDate || new Date();
+    }
+
     const fileRecord = new FileRecord({
-      original: { name, size, type, updatedAt: lastModifiedDate }
+      original: { name, size, type, updatedAt }
     }, options);
+
     return fileRecord.attachData(file);
   }
 

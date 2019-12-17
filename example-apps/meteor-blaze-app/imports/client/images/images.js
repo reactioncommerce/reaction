@@ -16,6 +16,22 @@ const uploadInfo = new ReactiveVar({
 });
 
 /**
+ * @param {Object} fileRecord file record to be inserted
+ * @returns {void} null
+ */
+function insertFileRecord(fileRecord) {
+  return new Promise((resolve, reject) => {
+    Meteor.call("insertUploadedImage", fileRecord.document, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+
+/**
  *
  * @param {Object} file file to be uploaded/inserted
  *
@@ -35,7 +51,7 @@ function uploadAndInsertBrowserFile(file) {
   fileRecord.upload({ chunkSize: 1024 * 1024 })
     .then((id) => {
       console.log(`Temp ID is ${id}`); // eslint-disable-line no-console
-      return Images.insert(fileRecord);
+      return insertFileRecord(fileRecord);
     })
     .then(() => {
       console.log("FileRecord saved to database"); // eslint-disable-line no-console

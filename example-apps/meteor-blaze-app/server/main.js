@@ -51,7 +51,7 @@ const stores = [
       fileRecord.extension("jpg", { store: "images" });
 
       // Resize keeping aspect ratio so that largest side is max 1600px, and convert to JPEG if necessary
-      return sharp().resize(1600, 1600).max().toFormat("jpg");
+      return sharp().resize(1600, 1600, { fit: "inside", withoutEnlargement: true }).toFormat("jpeg");
     }
   }),
 
@@ -69,7 +69,7 @@ const stores = [
       fileRecord.extension("png", { store: "thumbs" });
 
       // Resize to 100x100 square, cropping to fit, and convert to PNG if necessary
-      return sharp().resize(100, 100).crop().toFormat("png");
+      return sharp().resize(100, 100, { fit: "cover" }).toFormat("png");
     }
   })
 ];
@@ -97,29 +97,33 @@ const Images = new MongoFileCollection("Images", {
 });
 
 Meteor.methods({
-  insertRemoteImage(url) {
+  async insertRemoteImage(url) {
     check(url, String);
-    const fileRecord = Promise.await(FileRecord.fromUrl(url, { fetch }));
+    const fileRecord = await FileRecord.fromUrl(url, { fetch });
     return Images.insert(fileRecord, { raw: true });
   },
-  removeImage(id) {
-    const fileRecord = Promise.await(Images.findOne(id));
+  async insertUploadedImage(fileRecordDocument) {
+    check(fileRecordDocument, Object);
+    return Images._insert(fileRecordDocument);
+  },
+  async removeImage(id) {
+    const fileRecord = await Images.findOne(id);
     if (!fileRecord) throw new Meteor.Error("not-found", `No FileRecord has ID ${id}`);
-    const result = Promise.await(Images.remove(fileRecord));
+    const result = await Images.remove(fileRecord);
     return result;
   },
-  removeAllImages() {
-    const images = Promise.await(Images.find());
-    const result = Promise.await(Promise.all(images.map((fileRecord) => Images.remove(fileRecord))));
+  async removeAllImages() {
+    const images = await Images.find();
+    const result = await Promise.all(images.map((fileRecord) => Images.remove(fileRecord)));
     return result;
   },
-  cloneImage(id) {
-    const fileRecord = Promise.await(Images.findOne(id));
+  async cloneImage(id) {
+    const fileRecord = await Images.findOne(id);
     if (!fileRecord) throw new Meteor.Error("not-found", `No FileRecord has ID ${id}`);
 
     // The side effect of this call should be that a new file record now
     // exists with data in both stores, and will be autopublished to the client.
-    Promise.await(fileRecord.fullClone());
+    await fileRecord.fullClone();
   }
 });
 
