@@ -41,7 +41,6 @@ export default async function removeUserPermissions(context, input) {
 
 
   // Update the Reaction Accounts collection with new groups info
-  // This
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
     {
       _id: accountId
