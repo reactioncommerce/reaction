@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`anyone without the required permissions should be denied access to add group to an account 1`] = `
+Object {
+  "extensions": Object {
+    "code": "FORBIDDEN",
+    "exception": Object {
+      "details": Object {},
+      "error": "access-denied",
+      "eventData": Object {},
+      "isClientSafe": true,
+      "reason": "Access Denied",
+    },
+  },
+  "locations": Array [
+    Object {
+      "column": 3,
+      "line": 2,
+    },
+  ],
+  "message": "Access Denied",
+  "path": Array [
+    "addUserPermissions",
+  ],
+}
+`;
+
+exports[`should throw if there is an empty list of groups provided in the input 1`] = `
+Object {
+  "extensions": Object {
+    "code": "BAD_USER_INPUT",
+    "exception": Object {
+      "details": Array [
+        Object {
+          "message": "You must specify at least 1 values",
+          "minCount": 1,
+          "name": "groups",
+          "type": "minCount",
+          "value": Array [],
+        },
+      ],
+      "error": "validation-error",
+      "errorType": "ClientError",
+      "name": "ClientError",
+    },
+  },
+  "locations": Array [
+    Object {
+      "column": 3,
+      "line": 2,
+    },
+  ],
+  "message": "You must specify at least 1 values",
+  "path": Array [
+    "addUserPermissions",
+  ],
+}
+`;
