@@ -15,6 +15,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Custom Rates",
     name: "reaction-taxes-rates",
+    version: app.context.appVersion,
     collections: {
       Taxes: {
         name: "Taxes",

@@ -1,0 +1,35 @@
+mutation CreateNavigationItem($createNavigationItemInput: CreateNavigationItemInput!) {
+	createNavigationItem(input: $createNavigationItemInput) {
+    navigationItem {
+      ...NavigationItem
+    }
+  }
+}
+
+fragment NavigationItem on NavigationItem {
+  _id
+  data {
+		contentForLanguage
+    content {
+      language
+      value
+    }
+    url
+    isUrlRelative
+    shouldOpenInNewWindow
+  }
+  draftData {
+    classNames
+    content {
+      language
+      value
+    }
+    contentForLanguage
+    isUrlRelative
+    shouldOpenInNewWindow
+    url
+  }
+  metadata
+  createdAt
+  hasUnpublishedChanges
+}

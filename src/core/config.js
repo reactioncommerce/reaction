@@ -14,11 +14,6 @@ export default envalid.cleanEnv(process.env, {
   }),
   GRAPHQL_INTROSPECTION_ENABLED: bool({ default: false, devDefault: true }),
   GRAPHQL_PLAYGROUND_ENABLED: bool({ default: false, devDefault: true }),
-  MIGRATION_BYPASS_ENABLED: bool({
-    default: false,
-    desc: "Bypasses migration version checks and migration runs. Enables startup if migration state is not compatible. " +
-      "This can be dangerous enough to cause data inconsistencies. Use at your own risk!"
-  }),
   MONGO_URL: str({
     devDefault: "mongodb://localhost:27017/reaction",
     desc: "A valid MongoDB connection string URI, ending with the database name",
@@ -50,8 +45,7 @@ export default envalid.cleanEnv(process.env, {
     desc: "The protocol, domain, and port portion of the URL, to which relative paths will be appended. " +
       "This is used when full URLs are generated for things such as emails and notifications, so it must be publicly accessible.",
     example: "https://shop.mydomain.com"
-  }),
-  SKIP_FIXTURES: bool({ default: false })
+  })
 }, {
   dotEnvPath: null
 });

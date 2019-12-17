@@ -1,0 +1,10 @@
+
+query ($shopId: ID!, $first: ConnectionLimitInt){
+  surcharges(shopId: $shopId, first: $first){
+    nodes {
+      amount {
+        amount
+      }
+    }
+  }
+}

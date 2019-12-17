@@ -1,29 +1,21 @@
 /**
- * @name sitemapQuery
+ * @name Query/sitemap
  * @method
- * @param {Object} _ - unused
- * @param {Object} params - an object of all arguments that were sent by the client
- * @param {String} params.handle - Sitemap's handle, as set in Sitemaps collection
- * @param {String} params.shopUrl - URL of the shop the sitemap belongs to. The URL is used to find the shop with the domain of the URL
+ * @memberof SitemapGenerator/GraphQL
+ * @summary resolver for the sitemap GraphQL query
+ * @param {Object} parentResult - unused
+ * @param {Object} args - an object of all arguments that were sent by the client
+ * @param {String} args.handle - The name of the sitemap
+ * @param {String} args.shopUrl - The base URL of the shop
  * @param {Object} context - an object containing the per-request state
- * @returns {String} - Sitemap object containing XML with placeholders replaced (BASE_URL, LAST_MOD)
+ * @param {Object} info Info about the GraphQL request
+ * @returns {Promise<Object>|undefined} A Sitemap object
  */
-export default async function sitemapQuery(_, params, context) {
-  const { Sitemaps, Shops } = context.collections;
-  const { handle, shopUrl } = params;
+export default async function surcharges(parentResult, args, context) {
+  const { handle, shopUrl } = args;
 
-  const domain = new URL(shopUrl).hostname;
-
-  // ensure the domain requested is for a known shop domain
-  const { _id: shopId } = await Shops.findOne({ domains: domain }) || {};
-
-  if (!shopId) return null;
-
-  const sitemap = await Sitemaps.findOne({ shopId, handle });
-
-  if (!sitemap) return null;
-
-  sitemap.xml = sitemap.xml.replace(/BASE_URL/g, shopUrl);
-
-  return sitemap;
+  return context.queries.sitemap(context, {
+    handle,
+    shopUrl
+  });
 }

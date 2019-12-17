@@ -15,6 +15,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Tags",
     name: "reaction-tags",
+    version: app.context.appVersion,
     i18n,
     collections: {
       Tags: {
@@ -29,7 +30,6 @@ export default async function register(app) {
         ]
       }
     },
-    version: "1.0.0",
     graphQL: {
       resolvers,
       schemas
@@ -39,30 +39,6 @@ export default async function register(app) {
     policies,
     simpleSchemas: {
       Tag
-    },
-    registry: [{
-      label: "Tags",
-      description: "Tag Management",
-      icon: "fa fa-tag",
-      name: "tag/settings",
-      provides: ["settings"],
-      workflow: "coreTagWorkflow",
-      template: "tagSettings",
-      meta: {
-        actionView: {
-          dashboardSize: "md"
-        }
-      }
-    }, {
-      route: "tag/admin",
-      label: "Tag Admin",
-      permission: "tagAdmin",
-      name: "tag/admin"
-    }, {
-      route: "tag/edit",
-      label: "Edit Tag",
-      permission: "tagEdit",
-      name: "tag/edit"
-    }]
+    }
   });
 }

@@ -6,6 +6,7 @@ import {
   defaultShopManagerRoles,
   defaultVisitorRoles
 } from "./util/defaultRoles.js";
+import config from "./config.js";
 
 /**
  * @summary Called on startup
@@ -21,7 +22,7 @@ export default async function startup(context) {
   await ensureRoles(context, defaultVisitorRoles);
 
   // timing is important, packages are rqd for initial permissions configuration.
-  if (process.env.NODE_ENV !== "jesttest") {
+  if (config.NODE_ENV !== "test") {
     await addPluginRolesToGroups(context);
   }
 }

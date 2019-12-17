@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @name mutation.deleteTaxRate
  * @method
@@ -15,17 +17,13 @@ export default async function deleteTaxRate(context, input) {
 
   await context.validatePermissions("reaction:taxRates", "delete", { shopId, legacyRoles: ["owner", "admin"] });
 
-  const taxRateToDelete = await Taxes.findOne({
+  const { ok, value: deletedTaxRate } = await Taxes.findOneAndDelete({
     _id,
     shopId
   });
+  if (ok !== 1) throw new ReactionError("not-found", "Not found");
 
-  await Taxes.removeOne({
-    _id,
-    shopId
-  });
+  await appEvents.emit("afterTaxRateDelete", deletedTaxRate);
 
-  await appEvents.emit("afterTaxRateDelete", taxRateToDelete);
-
-  return taxRateToDelete;
+  return deletedTaxRate;
 }
