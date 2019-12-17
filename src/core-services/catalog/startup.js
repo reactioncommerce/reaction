@@ -65,10 +65,7 @@ export default async function startup(context) {
   });
 
   appEvents.on("afterVariantUpdate", async ({ productId }) => {
-    const variant = await collections.Products.findOne({ _id: productId });
-    const productIdFromVariant = variant.ancestors[0];
-
-    hashRelatedProduct(productIdFromVariant, collections).catch((error) => {
+    hashRelatedProduct(productId, collections).catch((error) => {
       Logger.error("Error in afterVariantUpdate", error);
     });
   });

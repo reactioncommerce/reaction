@@ -1,0 +1,13 @@
+mutation($variantId: ID!, $shopId: ID!, $prices: ProductVariantPricesInput!) {
+	updateProductVariantPrices(input: {
+    variantId: $variantId
+    shopId: $shopId
+    prices: $prices
+  }) {
+    variant {
+      _id
+      compareAtPrice
+      price
+    }
+  }
+}

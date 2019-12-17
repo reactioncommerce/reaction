@@ -1,4 +1,5 @@
 import i18n from "./i18n/index.js";
+import queries from "./queries/index.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
 import resolvers from "./resolvers/index.js";
@@ -15,6 +16,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Sitemap Generator",
     name: "reaction-sitemap-generator",
+    version: app.context.appVersion,
     i18n,
     collections: {
       Sitemaps: {
@@ -36,6 +38,7 @@ export default async function register(app) {
       resolvers,
       schemas
     },
+    queries,
     mutations,
     policies,
     shopSettingsConfig: {

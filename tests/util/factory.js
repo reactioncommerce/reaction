@@ -55,8 +55,16 @@ import {
 } from "../../src/core-services/shop/simpleSchemas.js";
 
 import {
+  Surcharge
+} from "../../src/plugins/surcharges/util/surchargeSchema.js";
+
+import {
   Tag
 } from "../../src/core-services/tags/simpleSchemas.js";
+
+import {
+  Sitemap
+} from "../../src/plugins/sitemap-generator/simpleSchemas.js";
 
 import {
   TaxRates
@@ -74,9 +82,12 @@ import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
+import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
+
 const schemasToAddToFactory = {
   Account,
   AccountProfileAddress,
+  AddressValidationRule,
   Cart,
   CartAddress,
   CartInvoice,
@@ -104,6 +115,8 @@ const schemasToAddToFactory = {
   ProductVariant,
   ShipmentQuote,
   Shop,
+  Sitemap,
+  Surcharge,
   Tag,
   TaxRates
 };

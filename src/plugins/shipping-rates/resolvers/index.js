@@ -3,6 +3,7 @@ import FlatRateFulfillmentMethod from "./FlatRateFulfillmentMethod/index.js";
 import FlatRateFulfillmentRestriction from "./FlatRateFulfillmentRestriction/index.js";
 import Mutation from "./Mutation/index.js";
 import Query from "./Query/index.js";
+import ShopSettings from "./ShopSettings/index.js";
 
 export default {
   ...getConnectionTypeResolvers("FlatRateFulfillmentRestriction"),
@@ -10,5 +11,6 @@ export default {
   FlatRateFulfillmentMethod,
   FlatRateFulfillmentRestriction,
   Mutation,
-  Query
+  Query,
+  ShopSettings
 };
