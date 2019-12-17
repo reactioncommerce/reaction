@@ -136,6 +136,18 @@ input RemoveAccountEmailRecordInput {
   email: Email!
 }
 
+"Defines groups to add given user / account to thereby giving that user certain permissions"
+input AddUserPermissionsInput {
+  "The accountId of the user whose permissions are to be set"
+  accountId: String!
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+  "the groups to add a user / account to"
+  groups: [String!]!
+  "the opaque shopId of the shop"
+  shopId: String!
+}
+
 "Per-account tax exemption settings used by the Avalara plugin"
 type TaxSettings {
   "Customer usage type. A value matching the `code` field of one TaxEntityCode, or any custom string."
@@ -349,6 +361,14 @@ type SetAccountProfileLanguagePayload {
   clientMutationId: String
 }
 
+"The response from the `addUserPermissions` mutation"
+type AddUserPermissionsPayload {
+  "The updated account"
+  account: Account!
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 extend type Shop {
   """
   Returns a list of administrators for this shop, as a Relay-compatible connection.
@@ -429,6 +449,12 @@ extend type Mutation {
     "Mutation input"
     input: UpdateAccountAddressBookEntryInput!
   ): UpdateAccountAddressBookEntryPayload
+
+  "Adds an account to a group. The user id / account id must be set in the context"
+  addUserPermissions(
+    "Mutation input"
+    input: AddUserPermissionsInput!
+  ): AddUserPermissionsPayload
 }
 
 extend type Query {
