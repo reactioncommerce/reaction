@@ -53,12 +53,12 @@ export default async function removeUserPermissions(context, input) {
         }
       }
     }, {
-      returnNewDocument: true
+      returnOriginal: false
     }
   );
 
   if (!updatedAccount) {
-    throw new ReactionError("server-error", "Unable to update account groups");
+    throw new ReactionError("server-error", "Unable to update account groups. Account not found");
   }
 
   // Create an array which contains all fields that have changed
