@@ -20,10 +20,15 @@ const mockAddress = {
   address2: faker.address.secondaryAddress(),
   country: "US",
   city: faker.address.city(),
-  postal: "10423",
+  postal: "80423",
   region: "CA",
   phone: faker.phone.phoneNumber(),
   fullName: faker.name.firstName() + faker.name.lastName()
+};
+
+const mockInvalidAddress = {
+  ...mockAddress,
+  postal: "81423"
 };
 
 beforeAll(async () => {
@@ -71,4 +76,19 @@ test("an anonymous user should be able to validate an address", async () => {
   });
 
   expect(result.addressValidation.validationErrors.length).toEqual(0);
+});
+
+test("expect address validation error with invalid address", async () => {
+  let result;
+  try {
+    result = await addressValidationQuery({
+      address: mockInvalidAddress,
+      shopId: opaqueShopId
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.addressValidation.validationErrors.length).toEqual(1);
 });
