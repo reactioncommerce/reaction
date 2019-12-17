@@ -136,7 +136,7 @@ input RemoveAccountEmailRecordInput {
   email: Email!
 }
 
-"Defines groups to add given user / account to thereby giving that user certain permissions"
+"Defines groups to use as replacement of the existing groups on given user / account thereby replacing the account / user permissions"
 input SetUserPermissionsInput {
 
   "The accountId of the user whose permissions are to be set"
@@ -145,7 +145,7 @@ input SetUserPermissionsInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "the groups to add a user / account to"
+  "the groups that are to be used to replace the existing user / account groups"
   groups: [String!]!
 
   "the opaque shopId of the shop"
@@ -454,7 +454,7 @@ extend type Mutation {
     input: UpdateAccountAddressBookEntryInput!
   ): UpdateAccountAddressBookEntryPayload
 
-  "Adds an account to a group. The user id / account id must be set in the context"
+  "Replaces the group(s) on account thereby changing the permissions on the account. The user id / account id must be set in the context"
   setUserPermissions(
     "Mutation input"
     input: SetUserPermissionsInput!
