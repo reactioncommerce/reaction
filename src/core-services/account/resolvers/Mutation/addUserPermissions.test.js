@@ -1,11 +1,17 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import addUserPermissions from "./addUserPermissions.js";
-import setUserPermissions from "./setUserPermissions.js";
 
-jest.mock("./setUserPermissions.js");
-test("addUserPermissionsTests correctly passes through to internal setUserPermissions resolver function", async () => {
+mockContext.mutations.addUserPermissions = jest.fn().mockName("mutations.addUserPermissions");
+
+const mockAccountId = "MockAccountId";
+const mockClientMutationTd = "SOME_CLIENT_MUTATION_ID";
+
+test("addUserPermissions correctly passes through to internal mutation function", async () => {
   const groups = ["test-group-id"];
-
+  const shopId = "test-shop-id";
+  const shopIdOpaque = encodeOpaqueId("reaction/shop", shopId);
+  const accountIdOpaque = encodeOpaqueId("reaction/account", mockAccountId);
   const fakeResult = {
     _id: "3vx5cqBZsymCfHbpf",
     acceptsMarketing: false,
@@ -17,7 +23,7 @@ test("addUserPermissionsTests correctly passes through to internal setUserPermis
         provides: "default"
       }
     ],
-    shopId: "test-shop-id",
+    shopId,
     state: "new",
     userId: "3vx5cqBZsymCfHbpf",
     accountId: "3vx5cqBZsymCfHbpf",
@@ -26,22 +32,25 @@ test("addUserPermissionsTests correctly passes through to internal setUserPermis
     ]
   };
 
-  setUserPermissions.mockReturnValueOnce(Promise.resolve(fakeResult));
+  mockContext.mutations.addUserPermissions.mockReturnValueOnce(Promise.resolve(fakeResult));
 
   const result = await addUserPermissions(null, {
     input: {
-      groups
+      groups,
+      shopId: shopIdOpaque,
+      accountId: accountIdOpaque,
+      clientMutationId: mockClientMutationTd
     }
   }, mockContext);
 
-  expect(setUserPermissions).toHaveBeenCalledWith(
-    null, {
-      input: {
-        groups: ["test-group-id"]
-      }
-    },
-    mockContext
+  expect(mockContext.mutations.addUserPermissions).toHaveBeenCalledWith(
+    mockContext,
+    expect.objectContaining({
+      groups: ["test-group-id"],
+      accountId: mockAccountId,
+      shopId
+    })
   );
 
-  expect(result).toEqual(fakeResult);
+  expect(result).toEqual({ account: fakeResult, clientMutationId: mockClientMutationTd });
 });
