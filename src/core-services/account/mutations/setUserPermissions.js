@@ -20,7 +20,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {Object} input.groups - groups to append to
- * @param {String} input.accountId - optional decoded ID of account on which entry should be updated, for admins
+ * @param {String} input.accountId - the decoded account ID of account on which entry should be updated
  * @returns {Promise<Object>} with updated account
  */
 export default async function setUserPermissions(context, input) {
@@ -68,5 +68,5 @@ export default async function setUserPermissions(context, input) {
     updatedFields
   });
 
-  return { account: updatedAccount };
+  return updatedAccount;
 }
