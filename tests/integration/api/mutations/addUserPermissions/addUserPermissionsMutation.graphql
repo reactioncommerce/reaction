@@ -1,0 +1,22 @@
+mutation addUserPermissions($accountId: String!, $shopId: String!, $groups: [String!]!, $clientMutationId: String ) {
+
+  addUserPermissions (input: {
+    shopId: $shopId
+    accountId: $accountId
+    groups: $groups
+    clientMutationId: $clientMutationId
+  }) {
+    account {
+      groups {
+        nodes {
+          _id
+          description
+          name
+          permissions
+        }
+      }
+    }
+    clientMutationId
+  }
+
+}
