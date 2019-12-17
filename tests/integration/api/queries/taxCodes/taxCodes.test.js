@@ -7,50 +7,51 @@ const TaxCodesQuery = importAsString("./TaxCodesQuery.graphql");
 
 jest.setTimeout(300000);
 
-const internalShopId = "123";
-const opaqueShopId = encodeOpaqueId("reaction/shop", internalShopId); // reaction/shop:123
+const shopId = "123";
+const opaqueShopId = encodeOpaqueId("reaction/shop", shopId); // reaction/shop:123
 const shopName = "Test Shop";
 let testApp;
 let taxCodes;
 
+const mockGlobalSetting = {
+  shopId,
+  primaryTaxServiceName: "custom-rates"
+};
+
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: ["owner"]
+    [shopId]: ["owner"]
   },
-  shopId: internalShopId
+  shopId
 });
 
 beforeAll(async () => {
   testApp = new TestApp();
 
   await testApp.start();
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
   await testApp.createUserAndAccount(mockAdminAccount);
-  taxCodes = testApp.query(TaxCodesQuery);
+  await testApp.collections.AppSettings.insertOne(mockGlobalSetting);
 
-  await testApp.setLoggedInUser(mockAdminAccount);
-  testApp.registerPlugin({
-    label: "Custom Rates",
-    name: "reaction-taxes-rates",
-    taxServices: [
-      {
-        displayName: "Custom Rates",
-        name: "custom-rates",
-        functions: {
-          getTaxCodes: () => ([{
-            code: "RC_TAX",
-            label: "Taxable (RC_TAX)"
-          }])
-        }
-      }
-    ]
-  });
+  taxCodes = testApp.query(TaxCodesQuery);
 });
 
 afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.AppSettings.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
+});
+
+test("an anonymous user cannot view tax codes", async () => {
+  try {
+    await taxCodes({
+      shopId: opaqueShopId
+    });
+  } catch (error) {
+    expect(error).toMatchSnapshot();
+    return;
+  }
 });
 
 test("an admin user can view tax codes", async () => {
@@ -66,5 +67,6 @@ test("an admin user can view tax codes", async () => {
     return;
   }
 
-  console.log(JSON.stringify(result, null, 2));
+  expect(result.taxCodes[0].code).toEqual("RC_TAX");
+  expect(result.taxCodes[0].label).toEqual("Taxable (RC_TAX)");
 });
