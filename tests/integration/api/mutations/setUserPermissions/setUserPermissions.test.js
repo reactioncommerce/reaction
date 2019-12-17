@@ -92,7 +92,7 @@ beforeEach(async () => {
   });
 });
 
-test("anyone can with the required permissions can add group to an account", async () => {
+test("setUserPermissions: anyone can with the required permissions can replace groups on an account", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const groupName = "test-group-1";
@@ -106,14 +106,17 @@ test("anyone can with the required permissions can add group to an account", asy
   });
   await testApp.collections.Groups.insertOne(testGroup1);
 
+  const dbResultBeforeSetPerms = await testApp.collections.Accounts.findOne({ _id: mockOtherAccountId });
   const result = await setUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockOtherAccountIdOpaque, clientMutationId });
   const dbResult = await testApp.collections.Accounts.findOne({ _id: mockOtherAccountId });
+  expect(dbResultBeforeSetPerms.groups.length).toBe(0);
   expect(result.setUserPermissions.clientMutationId).toEqual(clientMutationId);
   expect(dbResult.groups).toEqual(expect.arrayContaining(["test-group-1"]));
+  expect(dbResult.groups.length).toBe(1);
 });
 
 
-test("anyone without the required permissions should be denied access to add group to an account", async () => {
+test("setUserPermissions: anyone without the required permissions should be denied access to replace groups on an account", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
   const groupName = "test-group-1";
@@ -136,7 +139,7 @@ test("anyone without the required permissions should be denied access to add gro
   expect(err[0]).toMatchSnapshot();
 });
 
-test("should throw if there is an empty list of groups provided in the input", async () => {
+test("setUserPermissions: should throw if there is an empty list of groups provided in the input", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   let err = null;

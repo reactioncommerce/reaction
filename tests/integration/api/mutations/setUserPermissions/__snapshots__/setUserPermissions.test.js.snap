@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`anyone without the required permissions should be denied access to add group to an account 1`] = `
+exports[`setUserPermissions: anyone without the required permissions should be denied access to replace groups on an account 1`] = `
 Object {
   "extensions": Object {
     "code": "FORBIDDEN",
@@ -25,7 +25,7 @@ Object {
 }
 `;
 
-exports[`should throw if there is an empty list of groups provided in the input 1`] = `
+exports[`setUserPermissions: should throw if there is an empty list of groups provided in the input 1`] = `
 Object {
   "extensions": Object {
     "code": "BAD_USER_INPUT",
