@@ -8,6 +8,11 @@
     "extends": "@reactioncommerce",
     "rules": {
       "node/no-unsupported-features/es-syntax": "off"
+    },
+    "settings": {
+      "react": {
+        "version": "16.20.0"
+      }
     }
   },
   "scripts": {
