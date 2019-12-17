@@ -10,11 +10,16 @@ jest.setTimeout(300000);
 let setUserPermissions;
 let customerGroup;
 let mockAdminAccount;
+let mockAdminAccountIdOpaque;
 let mockOtherAccount;
+let mockOtherAccountIdOpaque;
 let shopId;
 let shopManagerGroup;
 let shopOpaqueId;
 let testApp;
+
+const mockAdminAccountId = "mockAdminAccount";
+const mockOtherAccountId = "mockOtherAccount";
 
 beforeAll(async () => {
   testApp = new TestApp();
@@ -22,9 +27,9 @@ beforeAll(async () => {
   shopId = await testApp.insertPrimaryShop();
 
   mockAdminAccount = Factory.Account.makeOne({
-    _id: "mockAdminAccount",
+    _id: mockAdminAccountId,
     roles: {
-      [shopId]: ["admin", "shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
+      [shopId]: ["admin", "reaction-accounts"]
     },
     shopId
   });
@@ -32,7 +37,7 @@ beforeAll(async () => {
 
 
   mockOtherAccount = Factory.Account.makeOne({
-    _id: "mockOtherAccount",
+    _id: mockOtherAccountId,
     groups: [],
     roles: {},
     shopId
@@ -58,6 +63,8 @@ beforeAll(async () => {
   await testApp.collections.Groups.insertOne(customerGroup);
 
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
+  mockAdminAccountIdOpaque = encodeOpaqueId("reaction/account", mockAdminAccountId);
+  mockOtherAccountIdOpaque = encodeOpaqueId("reaction/account", mockOtherAccountId);
 
   setUserPermissions = testApp.mutate(SetUserPermissionsMutation);
 });
@@ -98,8 +105,8 @@ test("anyone can with the required permissions can add group to an account", asy
   });
   await testApp.collections.Groups.insertOne(testGroup1);
 
-  await setUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId });
-  const dbResult = await testApp.collections.Accounts.findOne({ _id: mockAdminAccount._id });
+  await setUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockOtherAccountIdOpaque });
+  const dbResult = await testApp.collections.Accounts.findOne({ _id: mockOtherAccountId });
   expect(dbResult.groups).toEqual(expect.arrayContaining(["test-group-1"]));
 });
 
@@ -119,7 +126,7 @@ test("anyone without the required permissions should be denied access to add gro
   await testApp.collections.Groups.insertOne(testGroup1);
   let err = null;
   try {
-    await setUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId });
+    await setUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockAdminAccountIdOpaque });
   } catch (errors) {
     err = errors;
   }
@@ -128,11 +135,11 @@ test("anyone without the required permissions should be denied access to add gro
 });
 
 test("should throw if there is an empty list of groups provided in the input", async () => {
-  await testApp.setLoggedInUser(mockOtherAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
 
   let err = null;
   try {
-    await setUserPermissions({ groups: [], shopId: shopOpaqueId });
+    await setUserPermissions({ groups: [], shopId: shopOpaqueId, accountId: mockOtherAccountIdOpaque });
   } catch (errors) {
     err = errors;
   }

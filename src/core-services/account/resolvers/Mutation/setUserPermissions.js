@@ -1,4 +1,4 @@
-import { decodeShopOpaqueId } from "../../xforms/id.js";
+import { decodeShopOpaqueId, decodeAccountOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation/setUserPermissions
@@ -14,8 +14,9 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Object} - object
  */
 export default async function setUserPermissions(_, { input }, context) {
-  const { shopId } = input;
+  const { shopId, accountId } = input;
   const decodedShopId = decodeShopOpaqueId(shopId);
-  const transformedImput = { ...input, shopId: decodedShopId };
-  return context.mutations.setUserPermissions(context, transformedImput);
+  const decodedAccountId = decodeAccountOpaqueId(accountId);
+  const transformedInput = { ...input, shopId: decodedShopId, accountId: decodedAccountId };
+  return context.mutations.setUserPermissions(context, transformedInput);
 }

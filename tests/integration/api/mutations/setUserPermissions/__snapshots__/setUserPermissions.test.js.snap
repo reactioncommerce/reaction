@@ -32,12 +32,6 @@ Object {
     "exception": Object {
       "details": Array [
         Object {
-          "message": "Account ID is required",
-          "name": "accountId",
-          "type": "required",
-          "value": undefined,
-        },
-        Object {
           "message": "You must specify at least 1 values",
           "minCount": 1,
           "name": "groups",
@@ -56,7 +50,7 @@ Object {
       "line": 2,
     },
   ],
-  "message": "Account ID is required",
+  "message": "You must specify at least 1 values",
   "path": Array [
     "setUserPermissions",
   ],
