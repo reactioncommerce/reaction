@@ -20,7 +20,7 @@ let testApp;
 
 const mockAdminAccountId = "mockAdminAccount";
 const mockOtherAccountId = "mockOtherAccount";
-const clientMutationId = "SOME_CLIENT_MUTATION_ID"
+const clientMutationId = "SOME_CLIENT_MUTATION_ID";
 
 beforeAll(async () => {
   testApp = new TestApp();
@@ -108,7 +108,7 @@ test("anyone can with the required permissions can add group to an account", asy
 
   const result = await setUserPermissions({ groups: ["test-group-1"], shopId: shopOpaqueId, accountId: mockOtherAccountIdOpaque, clientMutationId });
   const dbResult = await testApp.collections.Accounts.findOne({ _id: mockOtherAccountId });
-  expect(result.setUserPermissions.clientMutationId).toEqual(clientMutationId)
+  expect(result.setUserPermissions.clientMutationId).toEqual(clientMutationId);
   expect(dbResult.groups).toEqual(expect.arrayContaining(["test-group-1"]));
 });
 
