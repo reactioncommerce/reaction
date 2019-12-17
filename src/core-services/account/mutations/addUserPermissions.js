@@ -54,6 +54,10 @@ export default async function addUserPermissions(context, input) {
     }
   );
 
+  if (!updatedAccount) {
+    throw new ReactionError("server-error", "Unable to update account groups. Account not found");
+  }
+
   // Create an array which contains all fields that have changed
   // This is used for search, to determine if we need to re-index
   const updatedFields = ["groups"];
