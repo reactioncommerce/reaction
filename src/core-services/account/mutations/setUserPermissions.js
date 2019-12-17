@@ -55,7 +55,7 @@ export default async function setUserPermissions(context, input) {
   );
 
   if (!updatedAccount) {
-    throw new ReactionError("server-error", "Unable to update account groups");
+    throw new ReactionError("server-error", "Unable to update account groups. Account not found");
   }
 
   // Create an array which contains all fields that have changed
