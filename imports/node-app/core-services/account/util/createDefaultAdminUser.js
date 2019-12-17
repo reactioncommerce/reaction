@@ -76,7 +76,8 @@ export default async function createDefaultAdminUser(context) {
     $set: {
       name: userInput.name,
       roles: {
-        __global_roles__: defaultOwnerRoles // eslint-disable-line camelcase
+        __global_roles__: defaultOwnerRoles, // eslint-disable-line camelcase
+        [shop._id]: defaultOwnerRoles // eslint-disable-line camelcase
       }
     }
   });
