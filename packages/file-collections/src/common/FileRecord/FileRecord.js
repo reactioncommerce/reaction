@@ -4,12 +4,16 @@ import { EventEmitter } from "events";
 import tus from "tus-js-client";
 import getUrlForFileRecord from "./url";
 
+const isNode = typeof process !== "undefined" &&
+  process.versions &&
+  process.versions.node;
+
 /**
  * @param {String} name name of file
  * @returns {String} extension string or ''
  */
 function getFileExtensionFromFileName(name) {
-  // Seekout the last '.' if found
+  // Seek the last '.' if found
   const found = name.lastIndexOf(".");
   // Return the extension if found else ''
   // If found is -1, we return '' because there is no extension
@@ -31,8 +35,8 @@ function getFileNameFromUrl(url) {
 
 /**
  * @param {String} name name of file
- * @param {String} ext extention of file
- * @returns {Strong} contat of name and ext
+ * @param {String} ext extension of file
+ * @returns {Strong} concat of name and ext
  */
 function setFileExtension(name, ext) {
   if (!name || !name.length) return name;
@@ -131,7 +135,8 @@ export default class FileRecord extends EventEmitter {
 
   attachData(data) {
     if (!data) throw new Error("FileRecord.attachData requires a data argument with some data");
-    if (data instanceof Blob) {
+    if (isNode && typeof Blob !== "undefined" && data instanceof Blob) {
+      // In a Node env only, tus requires that the data be a stream
       this.data = data.stream();
     } else {
       this.data = data;
