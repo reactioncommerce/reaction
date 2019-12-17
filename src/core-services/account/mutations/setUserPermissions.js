@@ -15,7 +15,7 @@ const inputSchema = new SimpleSchema({
 /**
  * @name accounts/setUserPermissions
  * @memberof Mutations/Accounts
- * @summary Adds a group to an account (user) group. This addition to an account  group effectively
+ * @summary Replaces the groups on an account (user). This addition to an account  group effectively
  * adds permissions to account (user)
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
@@ -46,10 +46,8 @@ export default async function setUserPermissions(context, input) {
       _id: accountId
     },
     {
-      $addToSet: {
-        groups: {
-          $each: groups
-        }
+      $set: {
+        groups
       }
     },
     {
