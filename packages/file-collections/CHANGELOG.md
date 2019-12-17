@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.7.0...@reactioncommerce/file-collections@0.7.1) (2019-12-17)
+
+
+### Bug Fixes
+
+* use newer lastModified prop in fromFile fn ([c2e92bb](https://github.com/reactioncommerce/reaction-file-collections/commit/c2e92bbde86ea43d86947afc0638ec595334ac05))
+
+
+
+
+
 # [0.7.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.6.1...@reactioncommerce/file-collections@0.7.0) (2019-08-23)
 
 **Note:** Version bump only for package @reactioncommerce/file-collections

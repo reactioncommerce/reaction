@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/file-collections-sa-base",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Base StorageAdapter class for Reaction FileCollections. You should depend on this package and extend the exported class to create a new specific type of StorageAdapter.",
   "author": "Reaction Commerce (https://reactioncommerce.com/)",
   "license": "MIT",

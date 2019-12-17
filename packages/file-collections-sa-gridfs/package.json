@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/file-collections-sa-gridfs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A GridFS storage adapter for Reaction FileCollections.",
   "author": "Reaction Commerce (https://reactioncommerce.com/)",
   "license": "MIT",
@@ -66,7 +66,7 @@
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.7.6",
-    "@reactioncommerce/file-collections-sa-base": "^0.1.0",
+    "@reactioncommerce/file-collections-sa-base": "^0.1.1",
     "debug": "^3.1.0",
     "gridfs-stream": "^1.1.1"
   },
