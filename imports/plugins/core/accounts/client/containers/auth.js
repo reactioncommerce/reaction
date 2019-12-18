@@ -75,7 +75,9 @@ class AuthContainer extends Component {
             }
           });
         } else {
-          Router.go(this.props.currentRoute.route.path);
+          Meteor.call("oauth/login", { challenge }, (err, redirect_to) => {
+            window.location.href = redirect_to;
+          });
         }
       });
     } else if (this.props.currentView === "loginFormSignUpView") {
