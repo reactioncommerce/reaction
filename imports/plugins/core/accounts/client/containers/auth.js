@@ -45,6 +45,7 @@ class AuthContainer extends Component {
 
     const validatedEmail = LoginFormValidation.email(username);
     const validatedPassword = LoginFormValidation.password(pword, { validationLevel: "exists" });
+    const challenge = Router.current().query.login_challenge;
 
     if (validatedEmail !== true) {
       errors.email = validatedEmail;
