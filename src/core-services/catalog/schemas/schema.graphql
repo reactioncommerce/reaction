@@ -432,6 +432,12 @@ extend type Query {
 
   "Gets product from catalog"
   catalogItemProduct(
+    """
+    ID of the shop that owns the catalog product. Not required but highly recommended if you
+    have multiple shops and `slugOrId` is a slug because slugs are unique only within a shop.
+    """
+    shopId: ID
+
     "Provide either a product ID or slug"
     slugOrId: String
   ): CatalogItemProduct
