@@ -1,0 +1,32 @@
+mutation CreateSurcharge($createSurchargeInput: CreateSurchargeInput!) {
+	createSurcharge(input: $createSurchargeInput) {
+    surcharge {
+      _id
+      amount {
+        amount
+        displayAmount
+        currency {
+          _id
+          code
+          format
+          symbol
+        }
+      }
+      attributes {
+        operator
+        value
+        property
+        propertyType
+      }
+      destination {
+        region
+      }
+      messagesByLanguage {
+        language
+        content
+      }
+      methodIds
+      shopId
+    }
+  }
+}
