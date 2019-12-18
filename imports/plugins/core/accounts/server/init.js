@@ -77,6 +77,8 @@ Meteor.startup(() => {
         const group = Collections.Groups.findOne({ slug: "customer", shopId });
         // if no group or customer permissions retrieved from DB, use the default Reaction customer set
         roles[shopId] = (group && group.permissions) || Reaction.defaultCustomerRoles;
+        // if we have not services we have to set the provides to "default" to get primaryEmailAddress
+        user.emails[0].provides = "default";
       }
     }
 
@@ -123,6 +125,7 @@ Meteor.startup(() => {
     let emailIsVerified = false;
     if (user.emails[0] && user.emails[0].address.indexOf("localhost") > -1) {
       user.emails[0].verified = true;
+      user.emails[0].provides = "default";
       emailIsVerified = true;
     }
 

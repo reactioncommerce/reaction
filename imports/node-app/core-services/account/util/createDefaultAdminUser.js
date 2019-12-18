@@ -11,7 +11,7 @@ import createUser from "./createUser.js";
  */
 export default async function createDefaultAdminUser(context) {
   const { collections } = context;
-  const { Shops, users } = collections;
+  const { Shops, users, Accounts } = collections;
 
   // Check whether a non-shop-specific "owner" user already exists
   const ownerUser = await users.findOne({ "roles.__global_roles__": "owner" });
@@ -69,6 +69,16 @@ export default async function createDefaultAdminUser(context) {
   }
 
   const userId = await createUser(userInput);
+
+  // The default user have to be the owner.
+  const group = await collections.Groups.findOne({ slug: "owner", shopId: shop._id });
+
+  await Accounts.findOneAndUpdate({
+    _id: userId,
+    shopId: shop._id
+  }, {
+    $set: { groups: [group._id] }
+  });
 
   // Update the new user document with roles and other fields that Meteor's createUser
   // doesn't support.
