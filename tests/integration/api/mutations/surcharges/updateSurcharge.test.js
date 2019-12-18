@@ -3,7 +3,7 @@ import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const CreateSurchargeMutation = importAsString("./CreateSurchargeMutation.graphql");
-const DeleteSurchargeMutation = importAsString("./DeleteSurchargeMutation.graphql");
+const UpdateSurchargeMutation = importAsString("./UpdateSurchargeMutation.graphql");
 
 jest.setTimeout(300000);
 
@@ -35,7 +35,7 @@ const mockAdminAccount = Factory.Account.makeOne({
 
 let testApp;
 let createSurcharge;
-let deleteSurcharge;
+let updateSurcharge;
 let createdSurchargeOpaqueId;
 
 beforeAll(async () => {
@@ -52,7 +52,7 @@ beforeAll(async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   createSurcharge = testApp.mutate(CreateSurchargeMutation);
-  deleteSurcharge = testApp.mutate(DeleteSurchargeMutation);
+  updateSurcharge = testApp.mutate(UpdateSurchargeMutation);
 
   const { createSurcharge: createdSurcharge } = await createSurcharge({
     createSurchargeInput: {
@@ -61,8 +61,7 @@ beforeAll(async () => {
         amount: 19.99,
         messagesByLanguage: surchargeMessagesByLanguage,
         type: "surcharge",
-        attributes: surchargeAttributes,
-        destination: surchargeDestination
+        attributes: surchargeAttributes
       }
     }
   });
@@ -82,35 +81,49 @@ beforeEach(async () => {
   await testApp.clearLoggedInUser();
 });
 
-test("an authorized user can delete a surcharge", async () => {
+test("an authorized user can update a surcharge", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
   let result;
 
   try {
-    result = await deleteSurcharge({
-      deleteSurchargeInput: {
+    result = await updateSurcharge({
+      updateSurchargeInput: {
         shopId: opaqueShopId,
-        surchargeId: createdSurchargeOpaqueId
+        surchargeId: createdSurchargeOpaqueId,
+        surcharge: {
+          amount: 29.99,
+          messagesByLanguage: [surchargeMessagesByLanguage[0]],
+          type: "surcharge",
+          attributes: [surchargeAttributes[1]],
+          destination: surchargeDestination
+        }
       }
     });
   } catch (error) {
     expect(error).toBeUndefined();
   }
 
-  expect(result.deleteSurcharge.surcharge.shopId).toEqual(opaqueShopId);
-  expect(result.deleteSurcharge.surcharge.amount.amount).toEqual(19.99);
-  expect(result.deleteSurcharge.surcharge.messagesByLanguage).toEqual(surchargeMessagesByLanguage);
-  expect(result.deleteSurcharge.surcharge.attributes).toEqual(surchargeAttributes);
-  expect(result.deleteSurcharge.surcharge.destination).toEqual(surchargeDestination);
+  expect(result.updateSurcharge.surcharge.shopId).toEqual(opaqueShopId);
+  expect(result.updateSurcharge.surcharge.amount.amount).toEqual(29.99);
+  expect(result.updateSurcharge.surcharge.messagesByLanguage).toEqual([surchargeMessagesByLanguage[0]]);
+  expect(result.updateSurcharge.surcharge.attributes).toEqual([surchargeAttributes[1]]);
+  expect(result.updateSurcharge.surcharge.destination).toEqual(surchargeDestination);
 });
 
 
-test("an unauthorized user cannot delete a surcharge", async () => {
+test("an unauthorized user cannot update a surcharge", async () => {
   try {
-    await deleteSurcharge({
-      deleteSurchargeInput: {
+    await updateSurcharge({
+      updateSurchargeInput: {
         shopId: opaqueShopId,
-        surchargeId: createdSurchargeOpaqueId
+        surchargeId: createdSurchargeOpaqueId,
+        surcharge: {
+          amount: 29.99,
+          messagesByLanguage: [surchargeMessagesByLanguage[0]],
+          type: "surcharge",
+          attributes: [surchargeAttributes[1]],
+          destination: surchargeDestination
+        }
       }
     });
   } catch (error) {

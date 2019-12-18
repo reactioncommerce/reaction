@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`an unauthorized user cannot delete a surcharge 1`] = `
+exports[`an unauthorized user cannot update a surcharge 1`] = `
 Array [
   Object {
     "extensions": Object {
@@ -21,7 +21,7 @@ Array [
     ],
     "message": "Access Denied",
     "path": Array [
-      "deleteSurcharge",
+      "updateSurcharge",
     ],
   },
 ]

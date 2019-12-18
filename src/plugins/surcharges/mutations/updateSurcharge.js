@@ -35,6 +35,8 @@ export default async function updateSurchargeMutation(context, input) {
       ...surcharge
     }
   });
+  surcharge._id = surchargeId;
+  surcharge.shopId = shopId;
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
   return { surcharge };
