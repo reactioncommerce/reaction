@@ -45,7 +45,7 @@ export function addShopSettingDefaults(settings) {
  * @returns {String[]} List of roles that can edit this setting.
  */
 export function rolesThatCanEditGlobalSetting(field) {
-  const config = globalSettingsSchema[field];
+  const config = globalSettingsConfig[field];
   if (!config) return [];
 
   return config.rolesThatCanEdit || [];
