@@ -4,6 +4,7 @@ import { Mongo } from "meteor/mongo";
 import { FileRecord, MeteorFileCollection } from "@reactioncommerce/file-collections";
 
 // These need to be set in only one client-side file
+FileRecord.absoluteUrlPrefix = "http://localhost:3000";
 FileRecord.downloadEndpointPrefix = "/files/";
 FileRecord.uploadEndpoint = "/juicy/uploads/";
 

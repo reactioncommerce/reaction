@@ -124,6 +124,10 @@ export default class FileRecord extends EventEmitter {
     this._absoluteUrlPrefix = endpoint;
   }
 
+  static get absoluteUploadUrl() {
+    return `${this._absoluteUrlPrefix || ""}${this.uploadEndpoint}`;
+  }
+
   attachCollection(collection) {
     this.collection = collection || null;
     this.collectionName = (collection && collection.name) || null;
@@ -244,7 +248,7 @@ export default class FileRecord extends EventEmitter {
   upload({
     // tus-js-client defaults chunkSize to Infinity but we do 5MB
     chunkSize = 5 * 1024 * 1024,
-    endpoint = FileRecord.uploadEndpoint
+    endpoint = FileRecord.absoluteUploadUrl
   } = {}) {
     return new Promise((resolve, reject) => {
       if (!endpoint) {
