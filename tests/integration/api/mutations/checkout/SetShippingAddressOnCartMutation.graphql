@@ -15,6 +15,7 @@ mutation SetShippingAddressOnCart($input: SetShippingAddressOnCartInput!) {
       }
       checkout {
         fulfillmentGroups {
+          _id
           shippingAddress {
             address1
             address2
