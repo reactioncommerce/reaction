@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.3](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.7.2...@reactioncommerce/file-collections@0.7.3) (2019-12-19)
+
+
+### Bug Fixes
+
+* pass absolute URL to tus client ([98566c2](https://github.com/reactioncommerce/reaction-file-collections/commit/98566c217f4f0bdd0a5536c0cc9a82dcbc22c787)), closes [#34](https://github.com/reactioncommerce/reaction-file-collections/issues/34)
+
+
+
+
+
 ## [0.7.2](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.7.1...@reactioncommerce/file-collections@0.7.2) (2019-12-17)
 
 
