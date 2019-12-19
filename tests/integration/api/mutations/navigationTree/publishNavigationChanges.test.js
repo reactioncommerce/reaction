@@ -11,7 +11,6 @@ const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 const encodeNavigationTreeOpaqueId = encodeOpaqueId("reaction/navigationTree");
-const encodeNavigationItemOpaqueId = encodeOpaqueId("reaction/navigationItem");
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
