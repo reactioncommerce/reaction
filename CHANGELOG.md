@@ -1,8 +1,16 @@
 # v2.9.1
 
-Miscellaneous fixes for our app and some of its dependencies.
+Reaction v2.9.1 adds miscellaneous bug fixes and contains no breaking changes since v2.9.0.
 
-##Fixes
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.9.1` of `example-storefront` and `reaction-hydra`.
+
+## Notable changes
+
+### Fix example-storefront login issue
+
+Logging in from the example storefront has been fixed to allow a user to stay logged in when navigating to login from the storefront.
+
+## Fixes
 
 - fix: login from storefront [#5951](https://github.com/reactioncommerce/reaction/pull/5951)
 - fix: issue that prevented uploading images on Firefox [#5939](https://github.com/reactioncommerce/reaction/pull/5939)
