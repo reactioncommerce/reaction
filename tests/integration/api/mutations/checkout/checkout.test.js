@@ -5,6 +5,7 @@ import TestApp from "/tests/util/TestApp.js";
 const AddCartItemsMutation = importAsString("./AddCartItemsMutation.graphql");
 const RemoveCartItemsMutation = importAsString("./RemoveCartItemsMutation.graphql");
 const CreateCartMutation = importAsString("./CreateCartMutation.graphql");
+const UpdateFulfillmentOptionsForGroupMutation = importAsString("./UpdateFulfillmentOptionsForGroupMutation.graphql");
 const SetShippingAddressOnCartMutation = importAsString("./SetShippingAddressOnCartMutation.graphql");
 const UpdateCartItemsQuantityMutation = importAsString("./UpdateCartItemsQuantityMutation.graphql");
 const PublishProductToCatalogMutation = importAsString("./PublishProductsToCatalogMutation.graphql");
@@ -64,6 +65,33 @@ const mockOptionTwo = {
   price: 29.99
 };
 
+const mockShippingMethod = {
+  _id: "mockShippingMethod",
+  name: "Default Shipping Provider",
+  shopId: internalShopId,
+  provider: {
+    enabled: true,
+    label: "Flat Rate",
+    name: "flatRates"
+  },
+  methods: [
+    {
+      cost: 2,
+      fulfillmentTypes: [
+        "shipping"
+      ],
+      group: "Ground",
+      handling: 1.5,
+      label: "Standard mockMethod",
+      name: "mockMethod",
+      rate: 1,
+      _id: "mockMethod",
+      enabled: true
+    }
+  ]
+};
+
+
 let testApp;
 let addCartItems;
 let createCart;
@@ -71,6 +99,7 @@ let removeCartItems;
 let publishProducts;
 let setShippingAddressOnCart;
 let updateCartItemsQuantity;
+let updateFulfillmentOptionsForGroup;
 
 beforeAll(async () => {
   testApp = new TestApp();
@@ -83,8 +112,10 @@ beforeAll(async () => {
   removeCartItems = testApp.mutate(RemoveCartItemsMutation);
   setShippingAddressOnCart = testApp.mutate(SetShippingAddressOnCartMutation);
   updateCartItemsQuantity = testApp.mutate(UpdateCartItemsQuantityMutation);
+  updateFulfillmentOptionsForGroup = testApp.mutate(UpdateFulfillmentOptionsForGroupMutation);
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Shipping.insertOne(mockShippingMethod);
 
   // Add Tags and products
   await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insertOne({ _id, shopId: internalShopId, slug: `slug${_id}` })));
@@ -103,8 +134,11 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Products.deleteOne({ _id: internalProductId });
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.Shipping.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Products.deleteMany({});
+  await testApp.collections.users.deleteMany({});
   await testApp.clearLoggedInUser();
   await testApp.stop();
 });
@@ -113,6 +147,8 @@ describe("as a signed in user", () => {
   let opaqueCartId;
   let opaqueCartItemId;
   let opaqueCartItemIdToRemove;
+  let opaqueFulfillmentGroupId;
+  let opaqueFulfillmentMethodId;
 
   // create a new cart
   test("create a new cart with one item", async () => {
@@ -243,6 +279,8 @@ describe("as a signed in user", () => {
       return;
     }
 
+    opaqueFulfillmentGroupId = result.setShippingAddressOnCart.cart.checkout.fulfillmentGroups[0]._id;
+
     expect(result.setShippingAddressOnCart.cart.checkout.fulfillmentGroups[0].shippingAddress).toEqual({
       address1: "12345 Drive Lane",
       address2: null,
@@ -258,6 +296,38 @@ describe("as a signed in user", () => {
       phone: "5555555555",
       postal: "97878",
       region: "CA"
+    });
+  });
+
+  test("get available fulfillment options", async () => {
+    let result;
+    try {
+      result = await updateFulfillmentOptionsForGroup({
+        input: {
+          cartId: opaqueCartId,
+          fulfillmentGroupId: opaqueFulfillmentGroupId
+        }
+      });
+    } catch (error) {
+      expect(error).toBeUndefined();
+      return;
+    }
+
+    const option = result.updateFulfillmentOptionsForGroup.cart.checkout.fulfillmentGroups[0].availableFulfillmentOptions[0];
+    opaqueFulfillmentMethodId = option.fulfillmentMethod._id;
+
+    expect(option).toEqual({
+      fulfillmentMethod: {
+        _id: opaqueFulfillmentMethodId,
+        displayName: "Standard mockMethod",
+        fulfillmentTypes: ["shipping"]
+      },
+      handlingPrice: {
+        amount: 1.5
+      },
+      price: {
+        amount: 2.5
+      }
     });
   });
 });
