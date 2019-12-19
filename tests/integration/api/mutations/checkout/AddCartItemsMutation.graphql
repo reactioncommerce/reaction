@@ -1,0 +1,18 @@
+mutation AddCartItems($addCartItemsInput: AddCartItemsInput!) {
+  addCartItems(input: $addCartItemsInput) {
+    cart {
+      _id
+      email
+      items {
+        nodes {
+          _id
+          title
+          quantity
+          price {
+            amount
+          }
+        }
+      }
+    }
+  }
+}
