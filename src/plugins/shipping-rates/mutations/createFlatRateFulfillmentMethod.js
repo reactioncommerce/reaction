@@ -19,9 +19,10 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
-  const { method, shopId } = cleanedInput;
+  const { method: inputMethod, shopId } = cleanedInput;
   const { collections } = context;
   const { Shipping } = collections;
+  const method = { ...inputMethod };
 
   await context.validatePermissions("reaction:shippingMethods", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
@@ -53,7 +54,9 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
       methods: method
     }
   });
+
   if (matchedCount === 0) throw new ReactionError("server-error", "Unable to create fulfillment method");
 
-  return { method };
+  inputMethod._id = method._id;
+  return { method: inputMethod };
 }
