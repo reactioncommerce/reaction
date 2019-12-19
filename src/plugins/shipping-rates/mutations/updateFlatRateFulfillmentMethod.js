@@ -19,9 +19,10 @@ export default async function updateFlatRateFulfillmentMethodMutation(context, i
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
-  const { method, methodId, shopId } = cleanedInput;
+  const { method: inputMethod, methodId, shopId } = cleanedInput;
   const { collections } = context;
   const { Shipping } = collections;
+  const method = { ...inputMethod };
 
   await context.validatePermissions(`reaction:shippingMethods:${methodId}`, "update", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
@@ -42,5 +43,7 @@ export default async function updateFlatRateFulfillmentMethodMutation(context, i
   });
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
-  return { method };
+  inputMethod._id = methodId;
+
+  return { method: inputMethod };
 }
