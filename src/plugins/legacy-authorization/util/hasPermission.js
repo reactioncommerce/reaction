@@ -35,7 +35,12 @@ export default async function hasPermission(context, resource, action, authConte
 
   if (!authContext) throw new ReactionError("invalid-param", "authContext must be provided");
 
-  const { legacyRoles: permissions, shopId: roleGroup } = authContext; // TODO(pod-auth): temporarily provide legacy roles
+  let roleGroup = "__global_roles__";
+  const { legacyRoles: permissions, shopId } = authContext; // TODO(pod-auth): temporarily provide legacy roles
+
+  if (shopId) {
+    roleGroup = shopId;
+  }
 
   if (!Array.isArray(permissions)) throw new ReactionError("invalid-param", "permissions must be an array of strings");
   if (roleGroup !== undefined && roleGroup !== null && (typeof roleGroup !== "string" || roleGroup.length === 0)) {
