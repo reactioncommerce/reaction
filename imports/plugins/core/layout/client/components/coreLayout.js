@@ -142,6 +142,7 @@ CoreLayout.propTypes = {
   isLoading: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   location: PropTypes.object,
+  referer: PropTypes.string,
   storefrontHomeUrl: PropTypes.string
 };
 
@@ -158,7 +159,7 @@ function composer(props, onData) {
   const shop = Reaction.getCurrentShop();
   const isLoading = (isAdmin !== true && isAdmin !== false) || !shop;
   const isLoggedIn = !!Reaction.getUserId();
-  const referer = Router.current().query.referer;
+  const { referer } = Router.current().query;
 
   onData(null, {
     isAdmin,

@@ -75,8 +75,8 @@ class AuthContainer extends Component {
             }
           });
         } else {
-          Meteor.call("oauth/login", { challenge }, (err, redirect_to) => {
-            window.location.href = redirect_to;
+          Meteor.call("oauth/login", { challenge }, (err, redirectUrl) => {
+            window.location.href = redirectUrl;
           });
         }
       });
@@ -96,8 +96,8 @@ class AuthContainer extends Component {
             }
           });
         } else {
-          Meteor.call("oauth/login", { challenge }, (err, redirect_to) => {
-            window.location.href = redirect_to;
+          Meteor.call("oauth/login", { challenge }, (err, redirectUrl) => {
+            window.location.href = redirectUrl;
           });
         }
       });
