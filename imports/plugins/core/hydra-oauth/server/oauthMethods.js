@@ -30,9 +30,7 @@ export function oauthLogin(options) {
       // eslint-disable-next-line camelcase
       remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 86400
     })
-    .then((response) => {
-      return response.redirect_to;
-    })
+    .then((response) => response.redirect_to)
     .catch((error) => {
       Logger.error(error);
       throw error;
