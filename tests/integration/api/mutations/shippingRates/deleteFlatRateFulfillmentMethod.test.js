@@ -3,7 +3,7 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
-const UpdateFlatRateFulfillmentMethodMutation = importAsString("./UpdateFlatRateFulfillmentMethodMutation.graphql");
+const DeleteFlatRateFulfillmentMethodMutation = importAsString("./DeleteFlatRateFulfillmentMethodMutation.graphql");
 
 jest.setTimeout(300000);
 
@@ -42,12 +42,12 @@ const mockAdminAccount = Factory.Account.makeOne({
 });
 
 let testApp;
-let updateFlatRateFulfillmentMethod;
+let deleteFlatRateFulfillmentMethod;
 
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  updateFlatRateFulfillmentMethod = testApp.mutate(UpdateFlatRateFulfillmentMethodMutation);
+  deleteFlatRateFulfillmentMethod = testApp.mutate(DeleteFlatRateFulfillmentMethodMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
   await testApp.collections.Shipping.insertOne({
@@ -73,19 +73,14 @@ afterEach(async () => {
   await testApp.clearLoggedInUser();
 });
 
-test("user can not update flat rate fulfillment method if admin is not logged in", async () => {
+test("user can not delete flat rate fulfillment method if admin is not logged in", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);
 
   try {
-    await updateFlatRateFulfillmentMethod({
+    await deleteFlatRateFulfillmentMethod({
       input: {
         methodId: opaqueMockShippingMethodId,
-        shopId: opaqueShopId,
-        method: {
-          ...mockShippingMethod,
-          label: `${groups[1]} mockMethod`,
-          group: groups[1]
-        }
+        shopId: opaqueShopId
       }
     });
   } catch (errors) {
@@ -93,21 +88,16 @@ test("user can not update flat rate fulfillment method if admin is not logged in
   }
 });
 
-test("user can update flat rate fulfillment method if admin is logged in", async () => {
+test("user can delete flat rate fulfillment method if admin is logged in", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   let result;
 
   try {
-    result = await updateFlatRateFulfillmentMethod({
+    result = await deleteFlatRateFulfillmentMethod({
       input: {
         methodId: opaqueMockShippingMethodId,
-        shopId: opaqueShopId,
-        method: {
-          ...mockShippingMethod,
-          label: `${groups[1]} mockMethod`,
-          group: groups[1]
-        }
+        shopId: opaqueShopId
       }
     });
   } catch (error) {
@@ -115,11 +105,9 @@ test("user can update flat rate fulfillment method if admin is logged in", async
     return;
   }
 
-  expect(result.updateFlatRateFulfillmentMethod.method).toEqual({
-    ...mockShippingMethod,
+  expect(result.deleteFlatRateFulfillmentMethod.method).toEqual({
     _id: opaqueMockShippingMethodId,
-    label: `${groups[1]} mockMethod`,
-    group: groups[1]
+    ...mockShippingMethod
   });
 });
 
