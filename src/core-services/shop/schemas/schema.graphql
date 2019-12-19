@@ -34,16 +34,16 @@ type StorefrontUrls {
 "Parcel size"
 type ShopParcelSize {
   "Parcel height"
-  height: Float!
+  height: Float
 
   "Parcel length"
-  length: Float!
+  length: Float
 
   "Parcel weight"
-  weight: Float!
+  weight: Float
 
   "Parcel width"
-  width: Float!
+  width: Float
 }
 
 "Represents a Reaction shop"
