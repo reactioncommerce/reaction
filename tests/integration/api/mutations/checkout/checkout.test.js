@@ -180,6 +180,7 @@ describe("as a signed in user", () => {
 
     opaqueAccountId = encodeOpaqueId("reaction/account", mockCustomerAccount._id);
 
+    await testApp.createUserAndAccount(mockCustomerAccount);
     await testApp.setLoggedInUser(mockCustomerAccount);
   });
 
@@ -429,13 +430,17 @@ describe("as a signed in user", () => {
       shopId: opaqueShopId
     });
 
+    // Expect the email address on the cart to be null. A signed in user should
+    // not have an email on the cart, it is provided when they place the order.
+    expect(accountCart.email).toBeUndefined();
+
     try {
       result = await placeOrder({
         input: {
           order: {
             cartId: opaqueCartId,
             currencyCode: "USD",
-            email: accountCart.email,
+            email: "test@email.com",
             fulfillmentGroups: [{
               data: {
                 shippingAddress
