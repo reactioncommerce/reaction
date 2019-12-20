@@ -465,7 +465,7 @@ class TagDataTable extends Component {
 
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
-      <Query query={query} variables={variables}>
+      <Query query={query} variables={variables} fetchPolicy="cache-and-network">
         {({ data, fetchMore, refetch }) => {
           const result = (data[otherProps.dataKey] && data[otherProps.dataKey].nodes) || [];
           const resultCount = (Array.isArray(result) && result.length) || 0;
