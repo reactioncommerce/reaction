@@ -46,12 +46,9 @@ The primary focus for this release is the addition of integration tests for many
 - tests: adds integration test sitemap [#5889](https://github.com/reactioncommerce/reaction/pull/5889)
 - tests: adds integration test subrchargeById query [#5896](https://github.com/reactioncommerce/reaction/pull/5896)
 - tests: adds integration test surcharges [#5902](https://github.com/reactioncommerce/reaction/pull/5902)
-
-## Chores
-
-- chore: integration test for update navigation tree [#5914](https://github.com/reactioncommerce/reaction/pull/5914)
-- chore: add integration test for  addressValidationServices query [#5930](https://github.com/reactioncommerce/reaction/pull/5930)
-- chore: add integration test for taxCodes query [#5911](https://github.com/reactioncommerce/reaction/pull/5911)
+- tests: integration test for update navigation tree [#5914](https://github.com/reactioncommerce/reaction/pull/5914)
+- tests: add integration test for  addressValidationServices query [#5930](https://github.com/reactioncommerce/reaction/pull/5930)
+- tests: add integration test for taxCodes query [#5911](https://github.com/reactioncommerce/reaction/pull/5911)
 
 # v3.0.0-alpha
 
