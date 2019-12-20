@@ -1,13 +1,18 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
+const AccountCartByAccountIdQuery = importAsString("./AccountCartByAccountIdQuery.graphql");
+const AvailablePaymentMethodsQuery = importAsString("./AvailablePaymentMethodsQuery.graphql");
 const AddCartItemsMutation = importAsString("./AddCartItemsMutation.graphql");
 const RemoveCartItemsMutation = importAsString("./RemoveCartItemsMutation.graphql");
 const CreateCartMutation = importAsString("./CreateCartMutation.graphql");
 const UpdateFulfillmentOptionsForGroupMutation = importAsString("./UpdateFulfillmentOptionsForGroupMutation.graphql");
+const SelectFulfillmentOptionForGroupMutation = importAsString("./SelectFulfillmentOptionForGroupMutation.graphql");
 const SetShippingAddressOnCartMutation = importAsString("./SetShippingAddressOnCartMutation.graphql");
 const UpdateCartItemsQuantityMutation = importAsString("./UpdateCartItemsQuantityMutation.graphql");
+const PlaceOrderMutation = importAsString("./PlaceOrderMutation.graphql");
 const PublishProductToCatalogMutation = importAsString("./PublishProductsToCatalogMutation.graphql");
 
 jest.setTimeout(300000);
@@ -76,7 +81,7 @@ const mockShippingMethod = {
   },
   methods: [
     {
-      cost: 2,
+      cost: 2.5,
       fulfillmentTypes: [
         "shipping"
       ],
@@ -93,28 +98,37 @@ const mockShippingMethod = {
 
 
 let testApp;
+let accountCartByAccountId;
 let addCartItems;
+let availablePaymentMethods;
 let createCart;
 let removeCartItems;
+let placeOrder;
 let publishProducts;
+let selectFulfillmentOptionForGroup;
 let setShippingAddressOnCart;
 let updateCartItemsQuantity;
 let updateFulfillmentOptionsForGroup;
+let mockCustomerAccount;
 
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
 
+  accountCartByAccountId = testApp.query(AccountCartByAccountIdQuery);
   addCartItems = testApp.mutate(AddCartItemsMutation);
+  availablePaymentMethods = testApp.query(AvailablePaymentMethodsQuery);
   createCart = testApp.mutate(CreateCartMutation);
   removeCartItems = testApp.mutate(RemoveCartItemsMutation);
+  placeOrder = testApp.mutate(PlaceOrderMutation);
   publishProducts = testApp.mutate(PublishProductToCatalogMutation);
   removeCartItems = testApp.mutate(RemoveCartItemsMutation);
+  selectFulfillmentOptionForGroup = testApp.mutate(SelectFulfillmentOptionForGroupMutation);
   setShippingAddressOnCart = testApp.mutate(SetShippingAddressOnCartMutation);
   updateCartItemsQuantity = testApp.mutate(UpdateCartItemsQuantityMutation);
   updateFulfillmentOptionsForGroup = testApp.mutate(UpdateFulfillmentOptionsForGroupMutation);
 
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName, availablePaymentMethods: ["iou_example"] });
   await testApp.collections.Shipping.insertOne(mockShippingMethod);
 
   // Add Tags and products
@@ -144,11 +158,45 @@ afterAll(async () => {
 });
 
 describe("as a signed in user", () => {
+  let opaqueAccountId;
   let opaqueCartId;
   let opaqueCartItemId;
   let opaqueCartItemIdToRemove;
   let opaqueFulfillmentGroupId;
   let opaqueFulfillmentMethodId;
+  let latestCartSummary;
+
+  const opaqueCartProductVariantId = encodeProductOpaqueId(internalVariantIds[1]);
+
+  beforeAll(async () => {
+    // create mock customer account
+    mockCustomerAccount = Factory.Account.makeOne({
+      _id: "mockCustomerAccountId",
+      roles: {
+        [internalShopId]: ["customer"]
+      },
+      shopId: internalShopId
+    });
+
+    opaqueAccountId = encodeOpaqueId("reaction/account", mockCustomerAccount._id);
+
+    await testApp.setLoggedInUser(mockCustomerAccount);
+  });
+
+  const shippingAddress = {
+    address1: "12345 Drive Lane",
+    city: "The city",
+    country: "USA",
+    firstName: "FName",
+    fullName: "FName LName",
+    isBillingDefault: false,
+    isCommercial: false,
+    isShippingDefault: false,
+    lastName: "LName",
+    phone: "5555555555",
+    postal: "97878",
+    region: "CA"
+  };
 
   // create a new cart
   test("create a new cart with one item", async () => {
@@ -164,7 +212,7 @@ describe("as a signed in user", () => {
             },
             productConfiguration: {
               productId: opaqueProductId,
-              productVariantId: encodeProductOpaqueId(internalVariantIds[1])
+              productVariantId: opaqueCartProductVariantId
             },
             quantity: 1
           }
@@ -329,5 +377,95 @@ describe("as a signed in user", () => {
         amount: 2.5
       }
     });
+  });
+
+  test("select the `Standard mockMethod` fulfillment option", async () => {
+    let result;
+    try {
+      result = await selectFulfillmentOptionForGroup({
+        input: {
+          cartId: opaqueCartId,
+          fulfillmentGroupId: opaqueFulfillmentGroupId,
+          fulfillmentMethodId: opaqueFulfillmentMethodId
+        }
+      });
+    } catch (error) {
+      expect(error).toBeUndefined();
+      return;
+    }
+
+    latestCartSummary = result.selectFulfillmentOptionForGroup.cart.checkout.summary;
+
+    expect(result.selectFulfillmentOptionForGroup.cart.checkout.fulfillmentGroups[0].selectedFulfillmentOption).toEqual({
+      fulfillmentMethod: {
+        _id: opaqueFulfillmentMethodId,
+        displayName: "Standard mockMethod",
+        fulfillmentTypes: ["shipping"]
+      },
+      handlingPrice: {
+        amount: 1.5
+      },
+      price: {
+        amount: 2.5 // Shouldn't this be 2.5 like above
+      }
+    });
+  });
+
+  test("place order", async () => {
+    let result;
+
+    // Get available payment methods
+    const paymentMethods = await availablePaymentMethods({
+      shopId: opaqueShopId
+    });
+
+    expect(paymentMethods.availablePaymentMethods[0].name).toEqual("iou_example");
+    expect(paymentMethods.availablePaymentMethods[0].isEnabled).toEqual(true);
+
+    const paymentMethodName = paymentMethods.availablePaymentMethods[0].name;
+
+    const { accountCartByAccountId: accountCart } = await accountCartByAccountId({
+      accountId: opaqueAccountId,
+      shopId: opaqueShopId
+    });
+
+    try {
+      result = await placeOrder({
+        input: {
+          order: {
+            cartId: opaqueCartId,
+            currencyCode: "USD",
+            email: accountCart.email,
+            fulfillmentGroups: [{
+              data: {
+                shippingAddress
+              },
+              items: [{
+                price: 19.99,
+                productConfiguration: {
+                  productId: opaqueProductId,
+                  productVariantId: opaqueCartProductVariantId
+                },
+                quantity: 2
+              }],
+              selectedFulfillmentMethodId: opaqueFulfillmentMethodId,
+              shopId: opaqueShopId,
+              type: "shipping",
+              totalPrice: latestCartSummary.total.amount
+            }],
+            shopId: opaqueShopId
+          },
+          payments: [{
+            amount: latestCartSummary.total.amount,
+            method: paymentMethodName
+          }]
+        }
+      });
+    } catch (error) {
+      expect(error).toBeUndefined();
+      return;
+    }
+
+    expect(result.placeOrder.orders[0].email).toEqual("test@email.com");
   });
 });
