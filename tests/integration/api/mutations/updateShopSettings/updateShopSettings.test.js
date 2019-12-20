@@ -14,6 +14,8 @@ let testApp;
 let shopSettingsMutation;
 
 const mockAdminAccount = Factory.Account.makeOne({
+  _id: "345",
+  shopId,
   roles: {
     [shopId]: ["admin"]
   }
@@ -52,7 +54,7 @@ test("an anonymous user cannot update shop settings", async () => {
 
 test("shop settings can be updated by an admin user", async () => {
   let result;
-  testApp.setLoggedInUser(mockAdminAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
 
   try {
     result = await shopSettingsMutation({
