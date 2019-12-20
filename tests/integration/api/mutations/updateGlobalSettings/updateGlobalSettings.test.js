@@ -35,7 +35,8 @@ const mockGlobalSetting = {
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
     [shopId]: ["admin"]
-  }
+  },
+  shopId
 });
 
 beforeAll(async () => {
@@ -71,7 +72,7 @@ afterAll(async () => {
 
 test("global settings can be updated", async () => {
   let result;
-  testApp.setLoggedInUser(mockAdminAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
 
   try {
     result = await globalSettingsMutation({
