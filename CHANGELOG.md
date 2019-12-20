@@ -2,7 +2,7 @@
 
 Reaction v3.0.0-alpha.2 is the second alpha release of our new Reaction project.
 
-*Reaction releases will no longer be coordinated across all projects. This means version numbers will no longer be in sync. The newest versions of each project will work together.*
+*Reaction releases will no longer be coordinated across all projects - we'll release each project, independently, as needed. This means version numbers will no longer be in sync. The newest versions of each project will work together.*
 
 ## Notable changes
 
@@ -22,7 +22,7 @@ The primary focus for this release is the addition of integration tests for many
 - refactor: eliminate factory mocks for catalogItemProduct [#5892](https://github.com/reactioncommerce/reaction/pull/5892)
 - refactor: consolidate translation plugins [#5920](https://github.com/reactioncommerce/reaction/pull/5920)
 - refactor: clean up ENV/envalid code [#5922](https://github.com/reactioncommerce/reaction/pull/5922)
-- refactor: mo more Packages collection, implement AddressValidationRules GQL, 5888other 3.0 stuff [#](https://github.com/reactioncommerce/reaction5888/pull/)
+- refactor: mo more Packages collection, implement AddressValidationRules GQL, other 3.0 stuff [#5888](https://github.com/reactioncommerce/reaction5888/pull/5888)
 
 ## Tests
 
