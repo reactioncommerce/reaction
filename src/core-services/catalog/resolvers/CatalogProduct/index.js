@@ -3,8 +3,6 @@ import resolveShopFromShopId from "@reactioncommerce/api-utils/graphql/resolveSh
 import xformCatalogProductMedia from "../../utils/xformCatalogProductMedia.js";
 import xformCatalogProductVariants from "../../utils/xformCatalogProductVariants.js";
 import { encodeProductOpaqueId, encodeCatalogProductOpaqueId } from "../../xforms/id.js";
-import tagIds from "./tagIds.js";
-import tags from "./tags.js";
 
 export default {
   _id: (node) => encodeCatalogProductOpaqueId(node._id),
@@ -12,8 +10,6 @@ export default {
   primaryImage: (node, args, context) => xformCatalogProductMedia(node.primaryImage, context),
   productId: (node) => encodeProductOpaqueId(node.productId),
   shop: resolveShopFromShopId,
-  tagIds,
-  tags,
   variants: (node, args, context, info) => node.variants && xformCatalogProductVariants(context, node.variants, {
     catalogProduct: node,
     fields: graphqlFields(info)
