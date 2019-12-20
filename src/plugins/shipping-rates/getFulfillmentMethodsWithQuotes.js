@@ -84,13 +84,13 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
         if (!method.carrier) {
           method.carrier = carrier;
         }
-        const rate = method.rate + method.handling;
+
         rates.push({
           carrier,
           handlingPrice: method.handling,
           method,
-          rate,
-          shippingPrice: method.rate,
+          rate: method.rate,
+          shippingPrice: method.rate + method.handling,
           shopId: doc.shopId
         });
       }
