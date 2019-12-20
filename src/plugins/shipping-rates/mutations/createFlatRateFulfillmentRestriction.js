@@ -25,6 +25,9 @@ export default async function createFlatRateFulfillmentRestrictionMutation(conte
 
   await context.validatePermissions("reaction:shippingRestrictions", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
+  restriction._id = Random.id();
+  restriction.shopId = shopId;
+
   const { insertedCount } = await FlatRateFulfillmentRestrictions.insertOne({
     _id: Random.id(),
     shopId,
