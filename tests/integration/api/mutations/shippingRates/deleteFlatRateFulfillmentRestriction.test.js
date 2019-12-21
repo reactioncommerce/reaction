@@ -15,9 +15,7 @@ const shopName = "Test Shop";
 let deleteFlatRateFulfillmentRestriction;
 let testApp;
 
-const mockFulfillmentRestriction = {
-  _id: internalRestrictionId,
-  shopId: internalShopId,
+const mockFulfillmentRestrictionData = {
   attributes: null,
   type: "allow",
   destination: {
@@ -26,6 +24,12 @@ const mockFulfillmentRestriction = {
     region: ["CA"]
   }
 };
+
+const mockFulfillmentRestriction = Factory.Restriction.makeOne({
+  ...mockFulfillmentRestrictionData,
+  _id: internalRestrictionId,
+  shopId: internalShopId
+});
 
 const mockOwnerAccount = Factory.Account.makeOne({
   roles: {
@@ -73,7 +77,7 @@ test("shop owner can delete flat rate fulfillment restriction", async () => {
   }
 
   expect(result.deleteFlatRateFulfillmentRestriction.restriction).toEqual({
-    ...mockFulfillmentRestriction,
+    ...mockFulfillmentRestrictionData,
     _id: opaqueRestrictionId,
     shopId: opaqueShopId
   });

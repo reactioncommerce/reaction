@@ -13,7 +13,7 @@ const shopName = "Test Shop";
 let createFlatRateFulfillmentRestriction;
 let testApp;
 
-const mockFulfillmentRestriction = {
+const mockFulfillmentRestrictionInput = {
   methodIds: [],
   type: "allow",
   destination: {
@@ -60,7 +60,7 @@ test("shop owner cannot update flat rate fulfillment restriction if not logged i
     await createFlatRateFulfillmentRestriction({
       input: {
         shopId: opaqueShopId,
-        restriction: mockFulfillmentRestriction
+        restriction: mockFulfillmentRestrictionInput
       }
     });
   } catch (error) {
@@ -76,7 +76,7 @@ test("shop owner can update flat rate fulfillment restriction", async () => {
     result = await createFlatRateFulfillmentRestriction({
       input: {
         shopId: opaqueShopId,
-        restriction: mockFulfillmentRestriction
+        restriction: mockFulfillmentRestrictionInput
       }
     });
   } catch (error) {
@@ -87,6 +87,6 @@ test("shop owner can update flat rate fulfillment restriction", async () => {
   expect(result.createFlatRateFulfillmentRestriction.restriction).toMatchObject({
     _id: expect.any(String),
     shopId: opaqueShopId,
-    ...mockFulfillmentRestriction
+    ...mockFulfillmentRestrictionInput
   });
 });

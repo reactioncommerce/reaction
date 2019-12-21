@@ -15,7 +15,7 @@ const shopName = "Test Shop";
 let updateFlatRateFulfillmentRestriction;
 let testApp;
 
-const mockFulfillmentRestriction = {
+const mockFulfillmentRestriction = Factory.Restriction.makeOne({
   _id: internalRestrictionId,
   shopId: internalShopId,
   methodIds: [
@@ -27,7 +27,7 @@ const mockFulfillmentRestriction = {
     postal: ["90817"],
     region: ["CA"]
   }
-};
+});
 
 const mockOwnerAccount = Factory.Account.makeOne({
   roles: {
