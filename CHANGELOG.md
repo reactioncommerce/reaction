@@ -10,6 +10,10 @@ This release is being coordinated with `reaction-platform` and is designed to wo
 
 Logging in from the example storefront has been fixed to allow a user to stay logged in when navigating to login from the storefront.
 
+### Fix cart total calculation
+
+Cart total calculation has been fixed to correctly add rate + handling numbers.
+
 ## Fixes
 
 - fix: login from storefront [#5951](https://github.com/reactioncommerce/reaction/pull/5951)
@@ -20,6 +24,7 @@ Logging in from the example storefront has been fixed to allow a user to stay lo
 - fix: prices not updating via UI [#5924](https://github.com/reactioncommerce/reaction/pull/5924)
 - fix: made bin/setup always run from the desired path [#5853](https://github.com/reactioncommerce/reaction/pull/5853)
 - fix: upgrade handlebars version [#5810](https://github.com/reactioncommerce/reaction/pull/5810)
+- fix: cart total calculation when shipping includes handling fee [#5985](https://github.com/reactioncommerce/reaction/pull/5985)
 
 # v2.9.0
 
