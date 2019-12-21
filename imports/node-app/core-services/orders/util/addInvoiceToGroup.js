@@ -27,7 +27,6 @@ export default function addInvoiceToGroup({
 
   // Fulfillment
   const shippingTotal = group.shipmentMethod.rate || 0;
-  const handlingTotal = group.shipmentMethod.handling || 0;
   const fulfillmentTotal = shippingTotal;
 
   // Totals
