@@ -26,6 +26,10 @@ Cart total calculation has been fixed to correctly add rate + handling numbers.
 - fix: upgrade handlebars version [#5810](https://github.com/reactioncommerce/reaction/pull/5810)
 - fix: cart total calculation when shipping includes handling fee [#5985](https://github.com/reactioncommerce/reaction/pull/5985)
 
+## refactors
+
+- refactor: use better cache policy to show newly created tags [#5978](https://github.com/reactioncommerce/reaction/pull/5978)
+
 # v2.9.0
 
 Reaction v2.9.0 adds integration tests for GraphQL API endpoints, security updates and fixes a fulfillment method bug.
