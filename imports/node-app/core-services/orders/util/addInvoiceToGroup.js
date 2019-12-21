@@ -26,8 +26,7 @@ export default function addInvoiceToGroup({
   const effectiveTaxRate = taxableAmount > 0 ? taxTotal / taxableAmount : 0;
 
   // Fulfillment
-  const shippingTotal = group.shipmentMethod.rate || 0;
-  const fulfillmentTotal = shippingTotal;
+  const fulfillmentTotal = group.shipmentMethod.rate || 0;
 
   // Totals
   // To avoid rounding errors, be sure to keep this calculation the same between here and
