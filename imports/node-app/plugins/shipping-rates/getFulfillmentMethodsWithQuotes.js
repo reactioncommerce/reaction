@@ -87,6 +87,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
         if (!method.carrier) {
           method.carrier = carrier;
         }
+        
         rates.push({
           carrier,
           handlingPrice: method.handling,
