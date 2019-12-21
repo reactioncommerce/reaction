@@ -12,8 +12,10 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 
 const groups = ["Standard", "Priority", "Next-Day"];
+const mockFulfillmentMethodId = "mockMethod";
+const opaqueMockFulfillmentMethodId = encodeOpaqueId("reaction/fulfillmentMethod", mockFulfillmentMethodId);
 
-const mockShippingMethod = {
+const mockFulfillmentMethodData = {
   name: "mockMethod",
   label: `${groups[0]} mockMethod`,
   handling: 9.5,
@@ -24,8 +26,11 @@ const mockShippingMethod = {
   group: groups[0]
 };
 
-const mockShippingMethodId = "mockMethod";
-const opaqueMockShippingMethodId = encodeOpaqueId("reaction/fulfillmentMethod", mockShippingMethodId);
+const mockFulfillmentMethod = Factory.FulfillmentMethod.makeOne({
+  ...mockFulfillmentMethodData,
+  _id: mockFulfillmentMethodId,
+  shopId: internalShopId
+});
 
 const mockCustomerAccount = Factory.Account.makeOne({
   roles: {
@@ -52,9 +57,9 @@ beforeAll(async () => {
 
   await testApp.collections.Shipping.insertOne({
     methods: [{
-      _id: mockShippingMethodId,
+      _id: mockFulfillmentMethodId,
       shopId: internalShopId,
-      ...mockShippingMethod
+      ...mockFulfillmentMethod
     }],
     shopId: internalShopId
   });
@@ -79,7 +84,7 @@ test("user can not delete flat rate fulfillment method if admin is not logged in
   try {
     await deleteFlatRateFulfillmentMethod({
       input: {
-        methodId: opaqueMockShippingMethodId,
+        methodId: opaqueMockFulfillmentMethodId,
         shopId: opaqueShopId
       }
     });
@@ -96,7 +101,7 @@ test("user can delete flat rate fulfillment method if admin is logged in", async
   try {
     result = await deleteFlatRateFulfillmentMethod({
       input: {
-        methodId: opaqueMockShippingMethodId,
+        methodId: opaqueMockFulfillmentMethodId,
         shopId: opaqueShopId
       }
     });
@@ -106,8 +111,8 @@ test("user can delete flat rate fulfillment method if admin is logged in", async
   }
 
   expect(result.deleteFlatRateFulfillmentMethod.method).toEqual({
-    _id: opaqueMockShippingMethodId,
-    ...mockShippingMethod
+    _id: opaqueMockFulfillmentMethodId,
+    ...mockFulfillmentMethodData
   });
 });
 

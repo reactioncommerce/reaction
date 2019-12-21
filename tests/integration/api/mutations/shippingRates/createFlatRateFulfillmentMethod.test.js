@@ -12,7 +12,7 @@ const shopName = "Test Shop";
 
 const groups = ["Standard", "Priority", "Next-Day"];
 
-const mockShippingMethod = {
+const mockFulfillmentMethodInput = {
   name: "mockMethod",
   label: `${groups[0]} mockMethod`,
   handling: 9.5,
@@ -67,7 +67,7 @@ test("user can not create flat rate fulfillment method if admin is not logged in
     await createFlatRateFulfillmentMethod({
       input: {
         shopId: opaqueShopId,
-        method: mockShippingMethod
+        method: mockFulfillmentMethodInput
       }
     });
   } catch (errors) {
@@ -84,7 +84,7 @@ test("user can create flat rate fulfillment method if admin is logged in", async
     result = await createFlatRateFulfillmentMethod({
       input: {
         shopId: opaqueShopId,
-        method: mockShippingMethod
+        method: mockFulfillmentMethodInput
       }
     });
   } catch (error) {
@@ -92,7 +92,7 @@ test("user can create flat rate fulfillment method if admin is logged in", async
     return;
   }
 
-  expect(result.createFlatRateFulfillmentMethod.method).toEqual(mockShippingMethod);
+  expect(result.createFlatRateFulfillmentMethod.method).toEqual(mockFulfillmentMethodInput);
 });
 
 
