@@ -25,16 +25,16 @@ input ShopLogoUrlsInput {
 "Parcel size input"
 input ShopParcelSizeInput {
   "Parcel height"
-  height: Float!
+  height: Float
 
   "Parcel length"
-  length: Float!
+  length: Float
 
   "Parcel weight"
-  weight: Float!
+  weight: Float
 
   "Parcel width"
-  width: Float!
+  width: Float
 }
 
 "Input parameters for the updateShop mutation"
@@ -66,7 +66,7 @@ input UpdateShopInput {
   "The shop's name"
   name: String
 
-  "The ID of the shop for the logos to update"
+  "The ID of the shop to update"
   shopId: ID!
 
   "Object of shop logo urls "

@@ -1,7 +1,7 @@
 import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import rolesResolver from "./roles.js";
 
-const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
+const shopId = "123";
 
 const mockRoles = [
   { _id: "a1", name: "admin" },
@@ -14,9 +14,11 @@ const mockRolesQuery = getFakeMongoCursor("Tags", mockRoles);
 test("calls queries.roles and returns a partial connection", async () => {
   const roles = jest.fn().mockName("queries.roles").mockReturnValueOnce(Promise.resolve(mockRolesQuery));
 
-  const result = await rolesResolver({ _id: base64ID }, {}, {
+  const context = {
     queries: { roles }
-  }, { fieldNodes: [] });
+  };
+
+  const result = await rolesResolver({ _id: shopId }, {}, context, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockRoles,
@@ -27,6 +29,5 @@ test("calls queries.roles and returns a partial connection", async () => {
     totalCount: null
   });
 
-  expect(roles).toHaveBeenCalled();
-  expect(roles.mock.calls[0][1]).toBe("123");
+  expect(roles).toHaveBeenCalledWith(context, shopId);
 });
