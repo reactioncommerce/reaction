@@ -1,3 +1,35 @@
+# v2.9.1
+
+Reaction v2.9.1 adds miscellaneous bug fixes and contains no breaking changes since v2.9.0.
+
+This release is being coordinated with `reaction-platform` and is designed to work with `v2.9.1` of `example-storefront` and `reaction-hydra`.
+
+## Notable changes
+
+### Fix example-storefront login issue
+
+Logging in from the example storefront has been fixed to allow a user to stay logged in when navigating to login from the storefront.
+
+### Fix cart total calculation
+
+Cart total calculation has been fixed to correctly add rate + handling numbers.
+
+## Fixes
+
+- fix: login from storefront [#5951](https://github.com/reactioncommerce/reaction/pull/5951)
+- fix: issue that prevented uploading images on Firefox [#5939](https://github.com/reactioncommerce/reaction/pull/5939)
+- fix: routing when logging in from storefront [#5932](https://github.com/reactioncommerce/reaction/pull/5932)
+- fix: add shop based roles to first user account [#5926](https://github.com/reactioncommerce/reaction/pull/5926)
+- fix: missing logout button [#5927](https://github.com/reactioncommerce/reaction/pull/5927)
+- fix: prices not updating via UI [#5924](https://github.com/reactioncommerce/reaction/pull/5924)
+- fix: made bin/setup always run from the desired path [#5853](https://github.com/reactioncommerce/reaction/pull/5853)
+- fix: upgrade handlebars version [#5810](https://github.com/reactioncommerce/reaction/pull/5810)
+- fix: cart total calculation when shipping includes handling fee [#5985](https://github.com/reactioncommerce/reaction/pull/5985)
+
+## refactors
+
+- refactor: use better cache policy to show newly created tags [#5978](https://github.com/reactioncommerce/reaction/pull/5978)
+
 # v2.9.0
 
 Reaction v2.9.0 adds integration tests for GraphQL API endpoints, security updates and fixes a fulfillment method bug.

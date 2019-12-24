@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -29,8 +29,8 @@
     "@reactioncommerce/components": "^0.67.2",
     "@reactioncommerce/components-context": "1.2.0",
     "@reactioncommerce/data-factory": "^1.0.1",
-    "@reactioncommerce/file-collections": "0.7.0",
-    "@reactioncommerce/file-collections-sa-gridfs": "0.1.0",
+    "@reactioncommerce/file-collections": "0.7.2",
+    "@reactioncommerce/file-collections-sa-gridfs": "0.1.2",
     "@reactioncommerce/job-queue": "1.0.5",
     "@reactioncommerce/logger": "1.1.1",
     "@reactioncommerce/nodemailer": "5.0.5",
@@ -74,7 +74,7 @@
     "graphql-tag": "2.9.2",
     "graphql-tools": "4.0.3",
     "graphql.js": "0.4.20",
-    "handlebars": "~4.4.0",
+    "handlebars": "~4.5.0",
     "hoist-non-react-statics": "^2.3.1",
     "i18next": "17.0.13",
     "i18next-browser-languagedetector": "3.0.3",

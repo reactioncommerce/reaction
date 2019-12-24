@@ -45,6 +45,7 @@ class AuthContainer extends Component {
 
     const validatedEmail = LoginFormValidation.email(username);
     const validatedPassword = LoginFormValidation.password(pword, { validationLevel: "exists" });
+    const challenge = Router.current().query.login_challenge;
 
     if (validatedEmail !== true) {
       errors.email = validatedEmail;
@@ -74,7 +75,9 @@ class AuthContainer extends Component {
             }
           });
         } else {
-          Router.go(this.props.currentRoute.route.path);
+          Meteor.call("oauth/login", { challenge }, (err, redirectUrl) => {
+            window.location.href = redirectUrl;
+          });
         }
       });
     } else if (this.props.currentView === "loginFormSignUpView") {
@@ -93,7 +96,9 @@ class AuthContainer extends Component {
             }
           });
         } else {
-          Router.go(this.props.currentRoute.route.path);
+          Meteor.call("oauth/login", { challenge }, (err, redirectUrl) => {
+            window.location.href = redirectUrl;
+          });
         }
       });
     }
