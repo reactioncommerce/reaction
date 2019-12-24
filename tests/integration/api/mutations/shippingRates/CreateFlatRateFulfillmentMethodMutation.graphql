@@ -1,0 +1,14 @@
+mutation($input: CreateFlatRateFulfillmentMethodInput!) {
+  createFlatRateFulfillmentMethod(input: $input) {
+      method {
+        cost
+        fulfillmentTypes
+        group
+        handling
+        isEnabled
+        label
+        name
+        rate
+      }
+    }
+}

@@ -39,7 +39,11 @@ beforeAll(async () => {
   accountQuery = testApp.query(AccountFullQuery);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
+  await testApp.stop();
+});
 
 test("unauthenticated", async () => {
   try {

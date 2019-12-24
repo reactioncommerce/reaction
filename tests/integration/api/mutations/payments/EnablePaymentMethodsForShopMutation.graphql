@@ -1,0 +1,8 @@
+mutation( $enablePaymentMethodForShopInput: EnablePaymentMethodForShopInput!) {
+  enablePaymentMethodForShop(input: $enablePaymentMethodForShopInput) {
+    paymentMethods {
+      isEnabled
+      name
+    }
+  }
+}

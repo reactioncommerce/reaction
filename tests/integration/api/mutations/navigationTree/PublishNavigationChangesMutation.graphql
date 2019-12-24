@@ -1,0 +1,20 @@
+mutation PublishNavigationChanges($input: PublishNavigationChangesInput!) {
+	publishNavigationChanges(input: $input) {
+    navigationTree {
+      ...NavigationTree
+    }
+  }
+}
+
+fragment NavigationTree on NavigationTree {
+  _id
+  items {
+    expanded
+    isPrivate
+    isSecondary
+    isVisible
+  }
+  hasUnpublishedChanges
+  name
+  shopId
+}

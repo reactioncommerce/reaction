@@ -1,0 +1,16 @@
+
+query ($address: AddressInput!, $shopId: ID!) {
+  addressValidation(address: $address, shopId: $shopId) {
+    suggestedAddresses {
+      address1
+      address2
+      city
+      country
+      postal
+      region
+    }
+    validationErrors {
+      summary
+    }
+  }
+}

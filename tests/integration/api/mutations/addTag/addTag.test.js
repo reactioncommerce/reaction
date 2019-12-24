@@ -30,9 +30,12 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
 });
+
 beforeEach(async () => {
   tagInput = {
     displayTitle: "Tag: Display Title",
@@ -67,6 +70,7 @@ describe("unauthorized user", () => {
     }
   });
 });
+
 describe("authorized user", () => {
   beforeAll(async () => {
     await testApp.setLoggedInUser(mockTagsAccount);

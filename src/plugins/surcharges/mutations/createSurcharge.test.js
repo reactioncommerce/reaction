@@ -7,51 +7,42 @@ import createSurchargeMutation from "./createSurcharge.js";
 mockContext.collections.Surcharges = mockCollection("Surcharges");
 mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
+const surchargeAttributes = [
+  { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
+  { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
+];
+
+const surchargeMessagesByLanguage = [
+  {
+    content: "You are shipping hazardous items, there is a 19.99 surcharge",
+    language: "en"
+  }, {
+    content: "Spanish - You are shipping hazardous items, there is a 19.99 surcharge",
+    language: "es"
+  }
+];
+
+const surchargeDestination = { region: ["CO", "NY"] };
+
 test("add a surcharge", async () => {
   mockContext.collections.Surcharges.insertOne.mockReturnValueOnce(Promise.resolve({}));
 
   const result = await createSurchargeMutation(mockContext, {
-    _id: "surcharge123",
     shopId: "shop123",
     surcharge: {
-      amount: "19.99",
-      messagesByLanguage: [
-        {
-          content: "You are shipping hazardous items, there is a 19.99 surcharge",
-          language: "en"
-        }, {
-          content: "Spanish - You are shipping hazardous items, there is a 19.99 surcharge",
-          language: "es"
-        }
-      ],
+      amount: 19.99,
+      messagesByLanguage: surchargeMessagesByLanguage,
       type: "surcharge",
-      attributes: [
-        { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
-        { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
-      ],
-      destination: { region: ["CO", "NY"] }
+      attributes: surchargeAttributes,
+      destination: surchargeDestination
     }
   });
 
-  expect(result).toEqual({
-    surcharge: {
-      _id: jasmine.any(String),
-      amount: 19.99,
-      messagesByLanguage: [
-        {
-          content: "You are shipping hazardous items, there is a 19.99 surcharge",
-          language: "en"
-        }, {
-          content: "Spanish - You are shipping hazardous items, there is a 19.99 surcharge",
-          language: "es"
-        }
-      ],
-      type: "surcharge",
-      attributes: [
-        { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
-        { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
-      ],
-      destination: { region: ["CO", "NY"] }
-    }
-  });
+  expect(result.surcharge.shopId).toEqual("shop123");
+  expect(result.surcharge.amount).toEqual(19.99);
+  expect(result.surcharge.messagesByLanguage).toEqual(surchargeMessagesByLanguage);
+  expect(result.surcharge.attributes).toEqual(surchargeAttributes);
+  expect(result.surcharge.destination).toEqual(surchargeDestination);
+  expect(typeof result.surcharge._id).toEqual("string");
+  expect(typeof result.surcharge.createdAt).toEqual("object");
 });
