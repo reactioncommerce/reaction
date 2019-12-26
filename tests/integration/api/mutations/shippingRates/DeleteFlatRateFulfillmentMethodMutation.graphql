@@ -1,0 +1,15 @@
+mutation($input: DeleteFlatRateFulfillmentMethodInput!) {
+  deleteFlatRateFulfillmentMethod(input: $input) {
+      method {
+        _id
+        cost
+        fulfillmentTypes
+        group
+        handling
+        isEnabled
+        label
+        name
+        rate
+      }
+    }
+}

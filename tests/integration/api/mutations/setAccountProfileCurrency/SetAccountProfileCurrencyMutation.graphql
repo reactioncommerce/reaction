@@ -1,0 +1,12 @@
+mutation($input: SetAccountProfileCurrencyInput!) {
+  setAccountProfileCurrency(input: $input) {
+      account {
+        _id
+        name
+        currency {
+          code
+          symbol
+        }
+      }
+    }
+}

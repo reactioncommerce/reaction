@@ -1,0 +1,21 @@
+mutation UpdateFlatRateFulfillmentRestriction($input: UpdateFlatRateFulfillmentRestrictionInput!) {
+  updateFlatRateFulfillmentRestriction(input: $input){
+    restriction {
+      _id
+      type
+      shopId
+      attributes {
+        operator
+        property
+        propertyType
+        value
+      }
+      methodIds
+      destination {
+        region
+        country
+        postal
+      }
+    }
+  }
+}

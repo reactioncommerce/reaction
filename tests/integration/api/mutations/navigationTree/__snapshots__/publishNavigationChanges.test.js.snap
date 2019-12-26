@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`an unauthorized user should not be able to update the navigation tree 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "FORBIDDEN",
+      "exception": Object {
+        "details": Object {},
+        "error": "access-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Access Denied",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Access Denied",
+    "path": Array [
+      "publishNavigationChanges",
+      "navigationTree",
+    ],
+  },
+]
+`;

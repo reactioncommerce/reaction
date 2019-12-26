@@ -1,7 +1,7 @@
 import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import groupsResolver from "./groups.js";
 
-const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
+const shopId = "123";
 
 const mockGroups = [
   { _id: "a1", name: "admin" },
@@ -14,9 +14,11 @@ const mockGroupsQuery = getFakeMongoCursor("Groups", mockGroups);
 test("calls queries.groups and returns a partial connection", async () => {
   const groups = jest.fn().mockName("queries.groups").mockReturnValueOnce(Promise.resolve(mockGroupsQuery));
 
-  const result = await groupsResolver({ _id: base64ID }, {}, {
+  const context = {
     queries: { groups }
-  }, { fieldNodes: [] });
+  };
+
+  const result = await groupsResolver({ _id: shopId }, {}, context, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockGroups,
@@ -27,6 +29,5 @@ test("calls queries.groups and returns a partial connection", async () => {
     totalCount: null
   });
 
-  expect(groups).toHaveBeenCalled();
-  expect(groups.mock.calls[0][1]).toBe("123");
+  expect(groups).toHaveBeenCalledWith(context, shopId);
 });

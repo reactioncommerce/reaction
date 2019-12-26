@@ -6,17 +6,21 @@
  * @param {Object} context -  an object containing the per-request state
  * @param {String} productHandle - product `handle`
  * @param {String} productId - current product `_id`
+ * @param {String} shopId - ID of the shop that owns the product
  * @returns {String} handle - modified `handle`
  */
-export default async function createHandle(context, productHandle, productId) {
+export default async function createHandle(context, productHandle, productId, shopId) {
   let handle = productHandle || "";
-  // exception product._id needed for cases then double triggering happens
+
+  // exception product._id needed for cases when double triggering happens
   const handleCount = await context.collections.Products.find({
     handle,
     _id: {
       $nin: [productId]
-    }
+    },
+    shopId
   }).count();
+
   // current product "copy" number
   let handleNumberSuffix = 0;
   // product handle prefix
@@ -49,15 +53,20 @@ export default async function createHandle(context, productHandle, productId) {
 
   // we should check again if there are any new matches with DB
   // exception product._id needed for cases then double triggering happens
-  const newHandleCount = await context.collections.Products.find({
+  const existingProductWithSameSlug = await context.collections.Products.findOne({
     handle,
     _id: {
       $nin: [productId]
+    },
+    shopId
+  }, {
+    projection: {
+      _id: 1
     }
-  }).count();
+  });
 
-  if (newHandleCount !== 0) {
-    handle = createHandle(context, handle, productId);
+  if (existingProductWithSameSlug) {
+    handle = createHandle(context, handle, productId, shopId);
   }
 
   return handle;

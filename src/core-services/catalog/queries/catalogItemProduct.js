@@ -9,10 +9,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
  * @param {String} [params._id] - Product id to include
+ * @param {String} [param.shopId] - ID of shop that owns the product
  * @param {String} [param.slug] - Product slug (handle)
  * @returns {Object} - A Product from the Catalog
  */
-export default async function catalogItemProduct(context, { _id, slug } = {}) {
+export default async function catalogItemProduct(context, { _id, shopId, slug } = {}) {
   const { collections } = context;
   const { Catalog } = collections;
 
@@ -24,6 +25,8 @@ export default async function catalogItemProduct(context, { _id, slug } = {}) {
     "product.isDeleted": { $ne: true },
     "product.isVisible": true
   };
+
+  if (shopId) query.shopId = shopId;
 
   if (_id) {
     query._id = _id;
