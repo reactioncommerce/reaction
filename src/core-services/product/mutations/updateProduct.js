@@ -147,14 +147,14 @@ export default async function updateProduct(context, input) {
 
   // Slugify the handle input
   if (typeof productInput.slug === "string") {
-    updateDocument.handle = await createHandle(context, getSlug(productInput.slug), productId);
+    updateDocument.handle = await createHandle(context, getSlug(productInput.slug), productId, shopId);
     delete updateDocument.slug;
   }
 
   // If a title is supplied, and the currently stored product doesn't have a handle,
   // then slugify the title and save it as the new handle (slug)
-  if (typeof productInput.title === "string" && !currentProduct.handle) {
-    updateDocument.handle = await createHandle(context, getSlug(productInput.title), productId);
+  if (typeof productInput.title === "string" && !currentProduct.handle && !updateDocument.handle) {
+    updateDocument.handle = await createHandle(context, getSlug(productInput.title), productId, shopId);
   }
 
   inputSchema.validate(updateDocument);

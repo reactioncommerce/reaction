@@ -5,6 +5,8 @@
     "ns": "reaction-translations",
     "translation": {
       "reaction-translations": {
+        "changesNotSaved": "There was a problem saving your changes",
+        "changesSaved": "Changes saved",
         "languages": {
           "select": "Select language"
         },

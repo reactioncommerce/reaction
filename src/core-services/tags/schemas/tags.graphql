@@ -1,3 +1,29 @@
+extend type CatalogProduct {
+  "The list of tag IDs that have been applied to this product"
+  tagIds: [ID]
+
+  "The list of tags that have been applied to this product"
+  tags(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, tags are sorted by ID. Set this to sort by one of the other allowed fields"
+    sortBy: TagSortByField = _id
+  ): TagConnection
+}
+
 extend type Shop {
   "Returns a paged list of tags for this shop"
   tags(

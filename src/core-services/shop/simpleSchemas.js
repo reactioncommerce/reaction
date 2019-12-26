@@ -491,19 +491,23 @@ export const MerchantShop = new SimpleSchema({
 export const ParcelSize = new SimpleSchema({
   weight: {
     type: Number,
-    min: 0
+    min: 0,
+    optional: true
   },
   height: {
     type: Number,
-    min: 0
+    min: 0,
+    optional: true
   },
   length: {
     type: Number,
-    min: 0
+    min: 0,
+    optional: true
   },
   width: {
     type: Number,
-    min: 0
+    min: 0,
+    optional: true
   }
 });
 
