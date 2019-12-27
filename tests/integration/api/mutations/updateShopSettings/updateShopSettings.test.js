@@ -21,12 +21,18 @@ const mockAdminAccount = Factory.Account.makeOne({
   }
 });
 
+const mockShopSetting = {
+  shopId,
+  canSellVariantWithoutInventory: true
+};
+
 beforeAll(async () => {
   testApp = new TestApp();
 
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
   await testApp.createUserAndAccount(mockAdminAccount);
+  await testApp.collections.AppSettings.insertOne(mockShopSetting);
   shopSettingsMutation = testApp.query(updateShopSettings);
 });
 
@@ -55,6 +61,10 @@ test("an anonymous user cannot update shop settings", async () => {
 test("shop settings can be updated by an admin user", async () => {
   let result;
   await testApp.setLoggedInUser(mockAdminAccount);
+
+  // Verify setting is true initially.
+  const testSetting = await testApp.collections.AppSettings.findOne({ shopId });
+  expect(testSetting.canSellVariantWithoutInventory).toEqual(true);
 
   try {
     result = await shopSettingsMutation({
