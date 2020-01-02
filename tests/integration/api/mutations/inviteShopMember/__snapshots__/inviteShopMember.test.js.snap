@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`an anonymous user cannot invite new shop members 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "FORBIDDEN",
+      "exception": Object {
+        "details": Object {},
+        "error": "access-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Access Denied",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Access Denied",
+    "path": Array [
+      "inviteShopMember",
+    ],
+  },
+]
+`;
