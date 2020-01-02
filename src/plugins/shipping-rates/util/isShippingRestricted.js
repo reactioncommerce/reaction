@@ -1,5 +1,6 @@
 import operators from "@reactioncommerce/api-utils/operators.js";
 import propertyTypes from "@reactioncommerce/api-utils/propertyTypes.js";
+import isDestinationRestricted from "./isDestinationRestricted.js";
 
 /**
  * @summary Filter shipping methods based on global restrictions
@@ -29,24 +30,7 @@ export default async function isShippingRestricted(context, hydratedOrder) {
 
           if (attributeFound) {
             // If there is no destination restriction, destination restriction is global
-            // Return true to restrict this method
-            if (!destination) return attributeFound;
-
-            const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
-
-            if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
-              return true;
-            }
-
-            // Check for an allow list of regions
-            if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
-              return true;
-            }
-
-            // Check for an allow list of countries
-            if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
-              return true;
-            }
+            return !destination || isDestinationRestricted(destination, shippingAddress);
           }
 
           // If shipping location does not match restricted location && attribute, method is not restricted
@@ -56,21 +40,7 @@ export default async function isShippingRestricted(context, hydratedOrder) {
 
       if (destination) {
         // There are no attribute restrictions, only check destination restrictions
-        const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
-
-        if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
-          return true;
-        }
-
-        // Check for an allow list of regions
-        if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
-          return true;
-        }
-
-        // Check for an allow list of countries
-        if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
-          return true;
-        }
+        return isDestinationRestricted(destination, shippingAddress);
       }
 
       return false;

@@ -90,6 +90,10 @@ import {
 
 import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
 
+import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
+
+import Restriction from "../../src/plugins/shipping-rates/util/restrictionSchema.js";
+
 const schemasToAddToFactory = {
   Account,
   AccountProfileAddress,
@@ -107,6 +111,7 @@ const schemasToAddToFactory = {
   Discounts,
   Email,
   EmailTemplates,
+  FulfillmentMethod,
   Group,
   NavigationItem,
   NavigationTree,
@@ -122,6 +127,7 @@ const schemasToAddToFactory = {
   Payment,
   Product,
   ProductVariant,
+  Restriction,
   ShipmentQuote,
   Shop,
   Sitemap,

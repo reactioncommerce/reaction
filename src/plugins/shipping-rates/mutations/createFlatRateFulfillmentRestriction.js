@@ -25,11 +25,10 @@ export default async function createFlatRateFulfillmentRestrictionMutation(conte
 
   await context.validatePermissions("reaction:shippingRestrictions", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
-  const { insertedCount } = await FlatRateFulfillmentRestrictions.insertOne({
-    _id: Random.id(),
-    shopId,
-    ...restriction
-  });
+  restriction._id = Random.id();
+  restriction.shopId = shopId;
+
+  const { insertedCount } = await FlatRateFulfillmentRestrictions.insertOne(restriction);
   if (insertedCount === 0) throw new ReactionError("server-error", "Unable to create restriction method");
 
   return { restriction };

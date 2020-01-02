@@ -77,8 +77,7 @@
         }
       },
       "defaultParcelSize": {
-        "label": "Default Parcel Size",
-        "saveFailed": "Default parcel size not updated"
+        "label": "Default Parcel Size"
       }
     }
   }

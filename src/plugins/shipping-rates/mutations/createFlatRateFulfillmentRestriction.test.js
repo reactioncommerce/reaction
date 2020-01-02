@@ -25,6 +25,8 @@ test("add a flat rate fulfillment restriction", async () => {
 
   expect(result).toEqual({
     restriction: {
+      _id: expect.any(String),
+      shopId: "shop123",
       type: "deny",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
