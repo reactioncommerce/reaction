@@ -34,7 +34,7 @@ const mockGlobalSetting = {
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [shopId]: ["admin"]
+    __global_roles__: ["admin"]
   },
   shopId
 });
