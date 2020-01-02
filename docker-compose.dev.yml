@@ -1,0 +1,22 @@
+# This docker-compose file is used to run the project in Docker for development.
+# The local files are mounted into the created container.
+#
+# Usage:
+#  ln -s docker-compose.dev.yml docker-compose.override.yml
+#  docker-compose up [-d]
+#
+# To go back to running the published image:
+#  rm docker-compose.override.yml
+
+version: '3.4'
+
+services:
+  api:
+    image: reactioncommerce/node-dev:12.10.0-v1
+    volumes:
+      - .:/usr/local/src/app:cached
+      - api_node_modules:/usr/local/src/app/node_modules # do not link node_modules in, and persist it between dc up runs
+
+volumes:
+  mongo-db4:
+  api_node_modules:
