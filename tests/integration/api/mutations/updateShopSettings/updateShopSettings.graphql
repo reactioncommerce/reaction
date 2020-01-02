@@ -1,0 +1,7 @@
+mutation updateShopSettings($input: UpdateShopSettingsInput!) {
+  updateShopSettings(input: $input) {
+    shopSettings {
+      canSellVariantWithoutInventory
+    }
+  }
+}
