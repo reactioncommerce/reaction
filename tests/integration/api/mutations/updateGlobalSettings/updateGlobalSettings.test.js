@@ -28,15 +28,13 @@ let testApp;
 let globalSettingsMutation;
 
 const mockGlobalSetting = {
-  shopId,
   canSellDigitalProducts: false
 };
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
     __global_roles__: ["admin"]
-  },
-  shopId
+  }
 });
 
 beforeAll(async () => {
@@ -70,9 +68,27 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("global settings can be updated", async () => {
+test("an anonymous user cannot  update global settings", async () => {
+  try {
+    await globalSettingsMutation({
+      input: {
+        settingsUpdates: {
+          canSellDigitalProducts: true
+        }
+      }
+    });
+  } catch (error) {
+    expect(error).toMatchSnapshot();
+  }
+});
+
+test("an admin user can  update global settings", async () => {
   let result;
   await testApp.setLoggedInUser(mockAdminAccount);
+  const settings = await testApp.collections.AppSettings.findOne({
+    canSellDigitalProducts: false
+  });
+  expect(settings.canSellDigitalProducts).toEqual(false);
 
   try {
     result = await globalSettingsMutation({
@@ -87,6 +103,5 @@ test("global settings can be updated", async () => {
     return;
   }
 
-  console.log(JSON.stringify(result));
-  expect(result.globalSettings.canSellDigitalProducts).toEqual(true);
+  expect(result.updateGlobalSettings.globalSettings.canSellDigitalProducts).toEqual(true);
 });
