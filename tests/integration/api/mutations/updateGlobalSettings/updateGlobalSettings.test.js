@@ -33,7 +33,7 @@ const mockGlobalSetting = {
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    __global_roles__: ["admin"]
+    __global_roles__: ["admin"] // eslint-disable-line camelcase
   }
 });
 
