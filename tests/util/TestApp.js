@@ -40,7 +40,7 @@ class TestApp {
       ...user,
       roles: {
         ...(user.roles || {}),
-        __global_roles__: globalRoles || [] // eslint-disable-line camelcase
+        __global_roles__: ((user.roles || {}).__global_roles__ || []).concat(globalRoles || []) // eslint-disable-line camelcase
       },
       services: {
         resume: {
@@ -66,14 +66,17 @@ class TestApp {
     }
 
     // Set the hashed login token on the users document
-    await users.updateOne({ _id: user._id }, {
-      $push: {
-        "services.resume.loginTokens": {
-          hashedToken,
-          when: new Date()
+    await users.updateOne(
+      { _id: user._id },
+      {
+        $push: {
+          "services.resume.loginTokens": {
+            hashedToken,
+            when: new Date()
+          }
         }
       }
-    });
+    );
 
     this.userId = user._id;
 
