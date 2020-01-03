@@ -8,10 +8,12 @@ const inviteShopMember = importAsString("./inviteShopMember.graphql");
 jest.setTimeout(300000);
 
 const shopId = "123";
+const mockInvitedUserId = "1";
 const mockGroup = { _id: "456", name: "mockGroup", shopId };
 const opaqueShopId = encodeOpaqueId("reaction/shop", shopId); // reaction/shop:123
 const opaqueGroupId = encodeOpaqueId("reaction/group", mockGroup._id);
 const shopName = "Test Shop";
+const mockEmail = "user@example.com";
 
 let testApp;
 let inviteShopMemberMutation;
@@ -25,11 +27,19 @@ const mockAdminAccount = Factory.Account.makeOne({
 });
 
 const mockInvitedUser = Factory.Account.makeOne({
+  _id: mockInvitedUserId,
   roles: {
     [shopId]: ["admin"]
   },
-  emails: [{ address: "test@example.com" }],
+  emails: [{ address: mockEmail }],
   shopId
+});
+
+const mockInviteNewShopMemberEmailTemplate = Factory.EmailTemplates.makeOne({
+  language: "en",
+  name: "accounts/inviteNewShopMember",
+  shopId,
+  type: "email"
 });
 
 const shopManagerGroup = Factory.Group.makeOne({
@@ -40,12 +50,17 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
 
-  await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
+  await testApp.insertPrimaryShop({ _id: shopId, name: shopName, language: "en" });
 
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.createUserAndAccount(mockInvitedUser);
   await testApp.collections.Groups.insertOne(shopManagerGroup);
+  await testApp.collections.Templates.insertOne(mockInviteNewShopMemberEmailTemplate);
   inviteShopMemberMutation = testApp.mutate(inviteShopMember);
+});
+
+beforeEach(async () => {
+  await testApp.clearLoggedInUser();
 });
 
 afterAll(async () => {
@@ -58,7 +73,7 @@ test("an anonymous user cannot invite new shop members", async () => {
   try {
     await inviteShopMemberMutation({
       input: {
-        email: "test@example.com",
+        email: mockEmail,
         groupId: opaqueGroupId,
         name: "test user",
         shopId: opaqueShopId
@@ -77,7 +92,7 @@ test("a shop owner can invite a new shop admin member with an existing account",
   try {
     result = await inviteShopMemberMutation({
       input: {
-        email: "test@example.com",
+        email: mockEmail,
         groupId: opaqueGroupId,
         name: "test user",
         shopId: opaqueShopId
@@ -88,5 +103,33 @@ test("a shop owner can invite a new shop admin member with an existing account",
     return;
   }
 
-  expect(result.inviteShopMember.account.emailRecords[0].address).toEqual("test@example.com");
+  expect(result.inviteShopMember.account.emailRecords[0].address).toEqual(mockEmail);
+});
+
+test("a shop owner can invite a new shop admin user with no existing account", async () => {
+  // Ensure user to invite does not have an account
+  await testApp.collections.users.deleteOne({ _id: mockInvitedUserId });
+  await testApp.collections.Accounts.deleteOne({ _id: mockInvitedUserId });
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  try {
+    await inviteShopMemberMutation({
+      input: {
+        email: mockEmail,
+        groupId: opaqueGroupId,
+        name: "test user",
+        shopId: opaqueShopId
+      }
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  // Expect a new record to be added to the AccountInvites collection
+  const invitedUserDoc = await testApp.collections.AccountInvites.findOne({
+    email: mockEmail
+  });
+
+  expect(invitedUserDoc.email).toEqual(mockEmail);
 });
