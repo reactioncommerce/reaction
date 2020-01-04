@@ -1,4 +1,5 @@
 import en from "./en.json";
+import pt from "./pt.json";
 
 //
 // we want all the files in individual
@@ -6,5 +7,8 @@ import en from "./en.json";
 // automated translation software
 //
 export default {
-  translations: [...en]
+  translations: [
+    ...en,
+    ...pt
+  ]
 };
