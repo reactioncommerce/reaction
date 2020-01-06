@@ -254,7 +254,34 @@ describe("as a signed in user", () => {
     expect(result.updateCartItemsQuantity.cart.items.nodes[0].price.amount).toEqual(19.99);
   });
 
-  test("add another item to the cart with a quantity of 5", async () => {
+  test("add another item to the cart with a quantity of 5 with an invalid price", async () => {
+    let result;
+    try {
+      result = await addCartItems({
+        addCartItemsInput: {
+          cartId: opaqueCartId,
+          items: {
+            price: {
+              amount: 9999.99,
+              currencyCode: "USD"
+            },
+            productConfiguration: {
+              productId: opaqueProductId,
+              productVariantId: encodeProductOpaqueId(internalVariantIds[2])
+            },
+            quantity: 5
+          }
+        }
+      });
+    } catch (error) {
+      expect(error).toBeUndefined();
+      return;
+    }
+
+    expect(result.addCartItems.incorrectPriceFailures).toMatchSnapshot();
+  });
+
+  test("add another item to the cart with a quantity of 5 with a valid price", async () => {
     let result;
     try {
       result = await addCartItems({
