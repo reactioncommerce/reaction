@@ -22,6 +22,7 @@ import registerTagsPlugin from "./core-services/tags/index.js";
 import registerTaxesPlugin from "./core-services/taxes/index.js";
 
 /* plugins */
+import registerAuthenticationPlugin from "./plugins/authentication/index.js";
 import registerLegacyAuthorizationPlugin from "./plugins/legacy-authorization/index.js";
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
@@ -76,8 +77,9 @@ export default async function registerPlugins(app) {
   await registerAccountsPlugin(app); // REQUIRED
 
   /**
-   * Authorization
+   * Authentication and Authorization
    */
+  await registerAuthenticationPlugin(app); // REQUIRED
   // await registerAuthorizationPlugin(app); // REQUIRED // TODO(pod-auth): uncomment when `reaction-plugin-authorization` when available
   await registerLegacyAuthorizationPlugin(app); // REQUIRED
 

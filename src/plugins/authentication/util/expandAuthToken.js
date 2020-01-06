@@ -1,6 +1,4 @@
-import qs from "querystring";
 import fetch from "node-fetch";
-import ReactionError from "@reactioncommerce/reaction-error";
 import config from "../config.js";
 
 const { HYDRA_OAUTH2_INTROSPECT_URL } = config;
@@ -19,12 +17,10 @@ export default async function expandAuthToken(token) {
   const response = await fetch(HYDRA_OAUTH2_INTROSPECT_URL, {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     method: "POST",
-    body: qs.stringify({ token })
+    body: `token=${encodeURIComponent(token)}`
   });
 
-  if (!response.ok) {
-    throw new ReactionError("access-denied", "Error introspecting token");
-  }
+  if (!response.ok) throw new Error("Error introspecting token");
 
   return response.json();
 }

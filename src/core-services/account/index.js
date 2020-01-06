@@ -6,7 +6,6 @@ import { registerPluginHandler } from "./registration.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
-import tokenMiddleware from "./util/tokenMiddleware.js";
 import accountByUserId from "./util/accountByUserId.js";
 import { Account } from "./simpleSchemas.js";
 
@@ -75,13 +74,6 @@ export default async function register(app) {
     mutations,
     queries,
     policies,
-    expressMiddleware: [
-      {
-        route: "graphql",
-        stage: "authenticate",
-        fn: tokenMiddleware
-      }
-    ],
     simpleSchemas: {
       Account
     }
