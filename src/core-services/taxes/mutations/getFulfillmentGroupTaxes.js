@@ -7,7 +7,8 @@ import { TaxServiceResult } from "../simpleSchemas.js";
  * @summary Returns all taxes that apply to a provided order, delegating to a more specific
  *   tax calculation service for the actual calculations.
  * @param {Object} context App context
- * @param {Object} order Relevant information about an order. This is similar to an OrderFulfillmentGroup type.
+ * @param {Object} [cart] The original cart object, if CommonOrder was built from a cart
+ * @param {Object} order CommonOrder
  * @param {Boolean} forceZeroes Set to `true` to force tax properties to be added
  *   and set to 0 when no tax plugin is enabled. When calculating tax for a cart, this should be false.
  *   When calculating tax for an order, this should be true.
@@ -15,7 +16,7 @@ import { TaxServiceResult } from "../simpleSchemas.js";
  *   as well as `itemTaxes` array property with `itemId`, `tax`, `taxableAmount`,
  *   and `taxes` properties on each array item.
  */
-export default async function getFulfillmentGroupTaxes(context, { order, forceZeroes }) {
+export default async function getFulfillmentGroupTaxes(context, { cart, order, forceZeroes }) {
   const { items, shopId } = order;
 
   const { primaryTaxService, fallbackTaxService } = await getTaxServicesForShop(context, shopId);
@@ -36,7 +37,7 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
 
   let taxServiceResult;
   try {
-    taxServiceResult = await primaryTaxService.functions.calculateOrderTaxes({ context, order });
+    taxServiceResult = await primaryTaxService.functions.calculateOrderTaxes({ context, cart, order });
   } catch (error) {
     Logger.error(`Error in calculateOrderTaxes for the primary tax service (${primaryTaxService.displayName})`, error);
     throw new ReactionError("internal-error", "Error while calculating taxes");
@@ -47,7 +48,7 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
     // if primaryTaxService returns null, try the fallbackTaxService before falling back to forceZeroTax (if set)
     Logger.info("Primary tax service calculation returned null. Using set fallback tax service");
     try {
-      taxServiceResult = await fallbackTaxService.functions.calculateOrderTaxes({ context, order });
+      taxServiceResult = await fallbackTaxService.functions.calculateOrderTaxes({ context, cart, order });
     } catch (fallbackError) {
       Logger.error(`Error in calculateOrderTaxes for the fallback tax service (${fallbackTaxService.displayName})`, fallbackError);
       throw new ReactionError("internal-error", "Error while calculating taxes");
