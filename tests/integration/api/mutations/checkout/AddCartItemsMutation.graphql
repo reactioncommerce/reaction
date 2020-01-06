@@ -14,5 +14,17 @@ mutation AddCartItems($addCartItemsInput: AddCartItemsInput!) {
         }
       }
     }
+    incorrectPriceFailures {
+      currentPrice {
+        amount
+      }
+      productConfiguration {
+        productId
+        productVariantId
+      }
+      providedPrice {
+        amount
+      }
+    }
   }
 }
