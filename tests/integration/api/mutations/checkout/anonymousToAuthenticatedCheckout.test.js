@@ -462,7 +462,7 @@ describe("as an anonymous user", () => {
 
     // Expect the email address on the cart to be null. A signed in user should
     // not have an email on the cart, it is provided when they place the order.
-    expect(accountCart.email).toBeUndefined();
+    expect(accountCart.email).toBeNull();
 
     try {
       result = await placeOrder({
