@@ -37,7 +37,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
 
   mockContext.queries.inventoryForProductConfiguration = jest.fn().mockName("inventoryForProductConfiguration");
   mockContext.queries.inventoryForProductConfiguration.mockReturnValueOnce({
-    canBackOrder: true,
+    canBackorder: true,
     inventoryAvailableToSell: 10
   });
 
