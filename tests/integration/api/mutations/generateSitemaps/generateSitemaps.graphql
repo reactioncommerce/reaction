@@ -1,0 +1,6 @@
+
+mutation generateSitemaps($input: GenerateSitemapsInput) {
+  generateSitemaps(input: $input){
+    wasJobScheduled
+  }
+}

@@ -1,0 +1,20 @@
+mutation DeleteFlatRateFulfillmentRestriction($input: DeleteFlatRateFulfillmentRestrictionInput!) {
+  deleteFlatRateFulfillmentRestriction(input: $input){
+    restriction {
+      _id
+      type
+      shopId
+      attributes {
+        operator
+        property
+        propertyType
+        value
+      }
+      destination {
+        region
+        country
+        postal
+      }
+    }
+  }
+}

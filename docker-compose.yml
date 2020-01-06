@@ -1,6 +1,8 @@
-# This docker-compose file is used to run the Reaction API in Docker for development.
-# The local files are mounted into the created container.
+# This docker-compose file is used to run the project's published image
+#
 # Usage: docker-compose up [-d]
+#
+# See comment in docker-compose.dev.yml if you want to run for development.
 
 version: '3.4'
 
@@ -16,9 +18,8 @@ networks:
       name: streams.reaction.localhost
 
 services:
-
   api:
-    image: reactioncommerce/node-dev:12.10.0-v1
+    image: reactioncommerce/reaction:release-3.0.0
     depends_on:
       - mongo
     env_file:
@@ -29,9 +30,6 @@ services:
       auth:
     ports:
       - "3000:3000"
-    volumes:
-      - .:/usr/local/src/app:cached
-      - api_node_modules:/usr/local/src/app/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
     image: mongo:4.2.0
@@ -46,4 +44,3 @@ services:
 
 volumes:
   mongo-db4:
-  api_node_modules:

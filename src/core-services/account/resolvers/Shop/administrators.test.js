@@ -1,7 +1,7 @@
 import getFakeMongoCursor from "@reactioncommerce/api-utils/tests/getFakeMongoCursor.js";
 import administratorsResolver from "./administrators.js";
 
-const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
+const shopId = "123";
 
 const mockAccounts = [
   { _id: "a1", name: "Owner" },
@@ -15,10 +15,12 @@ test("calls queries.shopAdministrators and returns a partial connection", async 
   const shopAdministrators = jest.fn().mockName("queries.shopAdministrators")
     .mockReturnValueOnce(Promise.resolve(mockAdministratorsQuery));
 
-  const result = await administratorsResolver({ _id: base64ID }, {}, {
+  const context = {
     queries: { shopAdministrators },
     userId: "999"
-  }, { fieldNodes: [] });
+  };
+
+  const result = await administratorsResolver({ _id: shopId }, {}, context, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockAccounts,
@@ -29,6 +31,5 @@ test("calls queries.shopAdministrators and returns a partial connection", async 
     totalCount: null
   });
 
-  expect(shopAdministrators).toHaveBeenCalled();
-  expect(shopAdministrators.mock.calls[0][1]).toBe("123");
+  expect(shopAdministrators).toHaveBeenCalledWith(context, shopId);
 });

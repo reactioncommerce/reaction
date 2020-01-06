@@ -12,8 +12,12 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 
 const groups = ["Standard", "Priority", "Next-Day"];
+const mockFulfillmentMethodId = "mockMethod";
+const opaqueMockFulfillmentMethodId = encodeOpaqueId("reaction/fulfillmentMethod", mockFulfillmentMethodId);
 
-const mockShippingMethod = {
+const mockFulfillmentMethod = Factory.FulfillmentMethod.makeOne({
+  _id: mockFulfillmentMethodId,
+  shopId: internalShopId,
   name: "mockMethod",
   label: `${groups[0]} mockMethod`,
   handling: 9.5,
@@ -22,10 +26,18 @@ const mockShippingMethod = {
   isEnabled: true,
   fulfillmentTypes: ["shipping"],
   group: groups[0]
-};
+});
 
-const mockShippingMethodId = "mockMethod";
-const opaqueMockShippingMethodId = encodeOpaqueId("reaction/fulfillmentMethod", mockShippingMethodId);
+const mockFulfillmentMethodInput = {
+  name: "mockMethod2",
+  label: `${groups[1]} mockMethod`,
+  handling: 19.5,
+  rate: 80,
+  cost: 8,
+  isEnabled: false,
+  fulfillmentTypes: ["shipping"],
+  group: groups[1]
+};
 
 const mockCustomerAccount = Factory.Account.makeOne({
   roles: {
@@ -51,11 +63,7 @@ beforeAll(async () => {
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
   await testApp.collections.Shipping.insertOne({
-    methods: [{
-      _id: mockShippingMethodId,
-      shopId: internalShopId,
-      ...mockShippingMethod
-    }],
+    methods: [mockFulfillmentMethod],
     shopId: internalShopId
   });
 });
@@ -79,13 +87,9 @@ test("user can not update flat rate fulfillment method if admin is not logged in
   try {
     await updateFlatRateFulfillmentMethod({
       input: {
-        methodId: opaqueMockShippingMethodId,
+        methodId: opaqueMockFulfillmentMethodId,
         shopId: opaqueShopId,
-        method: {
-          ...mockShippingMethod,
-          label: `${groups[1]} mockMethod`,
-          group: groups[1]
-        }
+        method: mockFulfillmentMethodInput
       }
     });
   } catch (errors) {
@@ -101,13 +105,9 @@ test("user can update flat rate fulfillment method if admin is logged in", async
   try {
     result = await updateFlatRateFulfillmentMethod({
       input: {
-        methodId: opaqueMockShippingMethodId,
+        methodId: opaqueMockFulfillmentMethodId,
         shopId: opaqueShopId,
-        method: {
-          ...mockShippingMethod,
-          label: `${groups[1]} mockMethod`,
-          group: groups[1]
-        }
+        method: mockFulfillmentMethodInput
       }
     });
   } catch (error) {
@@ -116,10 +116,8 @@ test("user can update flat rate fulfillment method if admin is logged in", async
   }
 
   expect(result.updateFlatRateFulfillmentMethod.method).toEqual({
-    ...mockShippingMethod,
-    _id: opaqueMockShippingMethodId,
-    label: `${groups[1]} mockMethod`,
-    group: groups[1]
+    ...mockFulfillmentMethodInput,
+    _id: opaqueMockFulfillmentMethodId
   });
 });
 
