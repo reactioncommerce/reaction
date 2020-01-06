@@ -12,6 +12,7 @@ query ($accountId: ID!, $shopId: ID!) {
         }
       }
     }
+    email
     items {
       totalCount
     }
