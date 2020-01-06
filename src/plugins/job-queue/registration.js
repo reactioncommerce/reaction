@@ -20,7 +20,7 @@ export const jobCleanupRequests = [];
  * @param {Object} options The options object that the plugin passed to registerPackage
  * @returns {undefined}
  */
-export function registerPluginHandler({ backgroundJobs }) {
+export function registerPluginHandlerForJobQueue({ backgroundJobs }) {
   if (backgroundJobs) {
     schema.validate(backgroundJobs);
 

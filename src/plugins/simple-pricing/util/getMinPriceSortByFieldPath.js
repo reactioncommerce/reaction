@@ -4,7 +4,7 @@
  * @param {String} connectionArgs.sortPriceByCurrencyCode - currency code
  * @returns {Number} minimum price
  */
-export default function getMinPriceSortByFieldPath(context, { connectionArgs }) {
+export default function getMinPriceSortByFieldPathForSimplePricing(context, { connectionArgs }) {
   const { sortByPriceCurrencyCode } = connectionArgs || {};
 
   if (typeof sortByPriceCurrencyCode !== "string") {

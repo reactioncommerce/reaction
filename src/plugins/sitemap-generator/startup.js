@@ -8,7 +8,7 @@ import getSitemapRouteHandler from "./middleware/handle-sitemap-routes.js";
  * @param {Object} context.collections A map of MongoDB collections
  * @returns {undefined}
  */
-export default async function startup(context) {
+export default async function siteMapGeneratorStartup(context) {
   const { app } = context;
 
   // Setup sitemap generation recurring job

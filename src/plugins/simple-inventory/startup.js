@@ -16,7 +16,7 @@ function getAllOrderItems(order) {
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
+export default function simpleInventoryStartup(context) {
   const { appEvents, collections } = context;
   const { SimpleInventory } = collections;
 
