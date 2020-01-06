@@ -407,7 +407,7 @@ describe("as a signed in user", () => {
         amount: 1.5
       },
       price: {
-        amount: 2.5 // Shouldn't this be 2.5 like above
+        amount: 2.5
       }
     });
   });
