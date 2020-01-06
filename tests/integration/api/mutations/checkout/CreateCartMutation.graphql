@@ -14,5 +14,6 @@ mutation CreateCart($createCartInput: CreateCartInput!) {
         }
       }
     }
+    token
   }
 }
