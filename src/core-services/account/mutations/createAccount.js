@@ -96,12 +96,20 @@ export default async function createAccount(context, input) {
     groups = invites.map((invite) => invite.groupId);
   }
 
-  if (!groups) {
+  // If they weren't invited to any groups, put them in the customer or owner group as determined above
+  if (!groups || groups.length === 0) {
     if (shopId) {
       const group = await Groups.findOne({ slug: groupSlug, shopId });
       groups = group ? [group._id] : [];
     } else {
-      groups = [];
+      // Put them in a group for the primary shop
+      const primaryShopId = await context.queries.primaryShopId(context);
+      if (primaryShopId) {
+        const primaryShopGroup = await Groups.findOne({ slug: groupSlug, shopId: primaryShopId });
+        groups = primaryShopGroup ? [primaryShopGroup._id] : [];
+      } else {
+        groups = [];
+      }
     }
   }
 
