@@ -79,6 +79,8 @@ class TestApp {
 
     const dbUser = await users.findOne({ _id: user._id });
     this.reactionNodeApp.context.user = dbUser;
+    this.reactionNodeApp.context.userId = user._id;
+    this.reactionNodeApp.context.accountId = user._id;
   }
 
   async clearLoggedInUser() {

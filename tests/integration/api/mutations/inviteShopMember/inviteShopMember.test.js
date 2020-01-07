@@ -19,6 +19,7 @@ let testApp;
 let inviteShopMemberMutation;
 
 const mockAdminAccount = Factory.Account.makeOne({
+  _id: "mockAdminAccountId",
   roles: {
     [shopId]: ["owner"]
   },
@@ -35,13 +36,6 @@ const mockInvitedUser = Factory.Account.makeOne({
   shopId
 });
 
-const mockInviteNewShopMemberEmailTemplate = Factory.EmailTemplates.makeOne({
-  language: "en",
-  name: "accounts/inviteNewShopMember",
-  shopId,
-  type: "email"
-});
-
 const shopManagerGroup = Factory.Group.makeOne({
   ...mockGroup
 });
@@ -50,12 +44,21 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
 
-  await testApp.insertPrimaryShop({ _id: shopId, name: shopName, language: "en" });
-
   await testApp.createUserAndAccount(mockAdminAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
+  await testApp.context.mutations.createShop({ ...testApp.context, isInternalCall: true }, {
+    name: shopName,
+    shopId
+  });
+
+  // Set shop email address
+  await testApp.collections.Shops.updateOne(
+    { _id: shopId },
+    { $set: { emails: [{ address: "testing@reactioncommerce.com" }] } }
+  );
+
   await testApp.createUserAndAccount(mockInvitedUser);
   await testApp.collections.Groups.insertOne(shopManagerGroup);
-  await testApp.collections.Templates.insertOne(mockInviteNewShopMemberEmailTemplate);
   inviteShopMemberMutation = testApp.mutate(inviteShopMember);
 });
 
