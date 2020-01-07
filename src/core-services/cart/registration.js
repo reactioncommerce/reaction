@@ -14,7 +14,7 @@ export const cartTransforms = [];
  * @param {Object} options The options object that the plugin passed to registerPackage
  * @returns {undefined}
  */
-export function registerPluginHandler({ name, cart }) {
+export function registerPluginHandlerForCart({ name, cart }) {
   if (cart) {
     const { transforms } = cart;
 

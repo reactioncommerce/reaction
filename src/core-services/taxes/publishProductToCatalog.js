@@ -4,7 +4,7 @@
  * @param {Object} input Input data
  * @returns {undefined}
  */
-export default function publishProductToCatalog(catalogProduct, { variants }) {
+export default function publishProductToCatalogForTaxes(catalogProduct, { variants }) {
   catalogProduct.variants.forEach((catalogProductVariant) => {
     const unpublishedVariant = variants.find((variant) => variant._id === catalogProductVariant.variantId);
     if (!unpublishedVariant) return;

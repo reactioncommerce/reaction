@@ -102,7 +102,7 @@ const configSchema = new SimpleSchema({
  * @summary Reads and merges `appSettingsConfig` from all plugin registration.
  * @returns {undefined}
  */
-export function registerPluginHandler({
+export function registerPluginHandlerForAppSettings({
   globalSettingsConfig: globalSettingsConfigFromPlugin,
   name,
   shopSettingsConfig: shopSettingsConfigFromPlugin

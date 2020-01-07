@@ -142,6 +142,13 @@ export default class ReactionAPI {
           this.functionsByType[type] = [];
         }
         functionsByType[type].forEach((func) => {
+          const entryWithSameName = this.functionsByType[type].find((existingEntry) => existingEntry.func.name === func.name);
+          if (entryWithSameName) {
+            Logger.warn(`Plugin "${pluginName}" registers a function of type "${type}" named "${func.name}", `
+              + `but plugin "${entryWithSameName.pluginName}" has already registered a function of type "${type}" named "${entryWithSameName.func.name}".`
+              + " We recommend you choose a unique and descriptive name for all functions passed to `functionsByType` to help with debugging.");
+          }
+
           this.functionsByType[type].push({ func, pluginName });
         });
       });

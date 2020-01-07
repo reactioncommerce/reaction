@@ -10,7 +10,7 @@ import { jobCleanupRequests } from "./registration.js";
  * @param {Object} context App context
  * @returns {undefined}
  */
-export default async function startup(context) {
+export default async function jobQueueStartup(context) {
   const { appEvents, collections: { Jobs: MongoJobsCollection } } = context;
   Jobs.setCollection(MongoJobsCollection);
 

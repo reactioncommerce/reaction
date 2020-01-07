@@ -94,7 +94,7 @@ async function updateAllCartsForVariant({ Cart, context, variant }) {
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default async function startup(context) {
+export default async function cartStartup(context) {
   const { appEvents, collections } = context;
   const { Cart } = collections;
 

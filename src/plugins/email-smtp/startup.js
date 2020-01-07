@@ -6,6 +6,6 @@ import sendSMTPEmail from "./util/sendSMTPEmail.js";
  * @param {Object} context App context
  * @returns {undefined}
  */
-export default function startup(context) {
+export default function emailSMTPStartup(context) {
   context.appEvents.on("sendEmail", (...args) => sendSMTPEmail(context, ...args));
 }

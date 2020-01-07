@@ -6,6 +6,6 @@ import { extendInventorySchemas } from "../simpleSchemas.js";
  * @param {Object} context.simpleSchemas Simple schemas
  * @returns {undefined}
  */
-export default async function preStartup(context) {
+export default async function inventoryPreStartup(context) {
   extendInventorySchemas(context.simpleSchemas);
 }

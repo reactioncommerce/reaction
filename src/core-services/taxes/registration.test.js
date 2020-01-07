@@ -1,5 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import { registerPluginHandler, getTaxServicesForShop } from "./registration.js";
+import { registerPluginHandlerForTaxes, getTaxServicesForShop } from "./registration.js";
 
 const fakeShopId = "FAKE_SHOP_ID";
 
@@ -31,7 +31,7 @@ const pluginTaxServices = [{
 }];
 
 pluginTaxServices.forEach(({ name, taxServices }) => {
-  registerPluginHandler({ name, taxServices });
+  registerPluginHandlerForTaxes({ name, taxServices });
 });
 
 mockContext.queries.appSettings = jest.fn().mockName("context.queries.appSettings");

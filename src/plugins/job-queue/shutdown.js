@@ -7,7 +7,7 @@ import { Jobs } from "./jobs.js";
  * @param {Object} context App context
  * @returns {undefined}
  */
-export default function shutdown() {
+export default function jobQueueShutdown() {
   return new Promise((resolve, reject) => {
     try {
       Jobs.shutdownJobServer(() => {
