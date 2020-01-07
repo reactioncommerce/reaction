@@ -78,14 +78,18 @@ export default async function createAccount(context, input) {
   };
 
   let groupSlug = "customer"; // Default is to put new accounts into the "customer" permission group
+  let groups;
+  let invites;
 
   // The identity provider service gives the first created user the global "owner" role. When we
   // create an account for this user, they should be assigned to the "owner" group.
-  let groups;
-  let invites;
-  if (authUserId === userId && context.userHasPermission("reaction:shops", "owner", { shopId, legacyRoles: ["owner"] })) { // TODO(pod-auth): update this permissions check
-    groupSlug = "owner";
-  } else {
+  if (authUserId === userId) {
+    const isGlobalOwner = await context.userHasPermission("reaction:shops", "owner", { shopId, legacyRoles: ["owner"] }); // TODO(pod-auth): update this permissions check
+    if (isGlobalOwner) groupSlug = "owner";
+  }
+
+  // If we didn't already upgrade them to the "owner" group, see if they're been invited to any groups
+  if (groupSlug === "customer") {
     const emailAddresses = emails.map((emailRecord) => emailRecord.address);
     // Find all invites for all shops and add to all groups
     invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
