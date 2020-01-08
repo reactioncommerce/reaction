@@ -18,12 +18,13 @@ const PublishProductToCatalogMutation = importAsString("./PublishProductsToCatal
 jest.setTimeout(300000);
 
 const encodeProductOpaqueId = encodeOpaqueId("reaction/product");
+const encodeShopOpaqueId = encodeOpaqueId("reaction/shop");
 
 const internalShopId = "123";
+const opaqueShopId = encodeShopOpaqueId(123);
 const internalProductId = "999";
-const opaqueProductId = "cmVhY3Rpb24vcHJvZHVjdDo5OTk="; // reaction/product:999
+const opaqueProductId = encodeProductOpaqueId(999);
 const internalTagIds = ["923", "924"];
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalVariantIds = ["875", "874", "925"];
 
 const shopName = "Test Shop";
@@ -96,6 +97,13 @@ const mockShippingMethod = {
   ]
 };
 
+const mockAdminAccount = Factory.Account.makeOne({
+  _id: "mockAdminAccountId",
+  roles: {
+    [internalShopId]: ["admin", "createProduct"]
+  },
+  shopId: internalShopId
+});
 
 let testApp;
 let accountCartByAccountId;
@@ -128,7 +136,28 @@ beforeAll(async () => {
   updateCartItemsQuantity = testApp.mutate(UpdateCartItemsQuantityMutation);
   updateFulfillmentOptionsForGroup = testApp.mutate(UpdateFulfillmentOptionsForGroupMutation);
 
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName, availablePaymentMethods: ["iou_example"] });
+  // Setup shop
+  await testApp.createUserAndAccount(mockAdminAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
+  await testApp.context.mutations.createShop({ ...testApp.context, isInternalCall: true }, {
+    name: shopName,
+    shopId: internalShopId,
+    defaultLanguage: "en"
+  });
+
+  // Set other shop settings
+  await testApp.collections.Shops.updateOne(
+    { _id: internalShopId },
+    {
+      $set: {
+        allowGuestCheckout: true,
+        availablePaymentMethods: ["iou_example"],
+        emails: [{ address: "testing@reactioncommerce.com" }]
+      }
+    }
+  );
+
+  // Add shipping methods
   await testApp.collections.Shipping.insertOne(mockShippingMethod);
 
   // Add Tags and products
@@ -137,11 +166,6 @@ beforeAll(async () => {
   await testApp.collections.Products.insertOne(mockVariant);
   await testApp.collections.Products.insertOne(mockOptionOne);
   await testApp.collections.Products.insertOne(mockOptionTwo);
-
-  await testApp.setLoggedInUser({
-    _id: "123",
-    roles: { [internalShopId]: ["createProduct"] }
-  });
 
   // Publish products to the catalog
   await publishProducts({ productIds: [opaqueProductId] });
@@ -172,6 +196,9 @@ describe("as a signed in user", () => {
     // create mock customer account
     mockCustomerAccount = Factory.Account.makeOne({
       _id: "mockCustomerAccountId",
+      profile: {
+        language: "en"
+      },
       roles: {
         [internalShopId]: ["customer"]
       },
