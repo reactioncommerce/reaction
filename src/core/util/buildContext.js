@@ -25,8 +25,20 @@ export default async function buildContext(context, request = {}) {
 
   // authorization methods
   if (userId) {
-    if (typeof context.auth.getHasPermissionFunctionForUser === "function") {
-      context.userHasPermission = await context.auth.getHasPermissionFunctionForUser(context);
+    if (context.getFunctionsOfType("getHasPermissionFunctionForUser") && context.getFunctionsOfType("getHasPermissionFunctionForUser").length) {
+      context.userHasPermission = async (...args) => {
+        // get all functions of type getHasPermissionFunctionForUser
+        const allAuthPluginFunctions = await context.getFunctionsOfType("getHasPermissionFunctionForUser");
+
+        const allPermissions = await Promise.all(allAuthPluginFunctions.map(async (func) => {
+          // call with context for currying
+          const result = await func(context)(...args);
+          return result;
+        }));
+
+        // userHasPermission if ALL permission checks are `true`
+        return allPermissions.every((permission) => permission === true);
+      };
     } else {
       context.userHasPermission = () => false;
     }
