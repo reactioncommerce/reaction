@@ -1,0 +1,43 @@
+mutation SelectFulfillmentOptionForGroup($input: SelectFulfillmentOptionForGroupInput!) {
+  selectFulfillmentOptionForGroup(input: $input) {
+    cart {
+      _id
+      email
+      items {
+        nodes {
+          _id
+          title
+          quantity
+          price {
+            amount
+          }
+        }
+      }
+      checkout {
+        fulfillmentGroups {
+          selectedFulfillmentOption {
+            fulfillmentMethod {
+              _id
+              displayName
+              fulfillmentTypes
+            }
+            handlingPrice {
+              amount
+            }
+            price {
+              amount
+            }
+          }
+        }
+        summary {
+          total {
+            amount
+            currency {
+              code
+            }
+          }
+        }
+      }
+    }
+  }
+}
