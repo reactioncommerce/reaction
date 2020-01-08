@@ -14,7 +14,7 @@ import config from "./config.js";
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default async function startup(context) {
+export default async function accountStartup(context) {
   // Add missing roles to `roles` collection if needed
   await ensureRoles(context, defaultCustomerRoles);
   await ensureRoles(context, defaultOwnerRoles);

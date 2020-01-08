@@ -5,7 +5,7 @@ export const simpleSchemas = {};
  * @param {Object} options The options object that the plugin passed to registerPackage
  * @returns {undefined}
  */
-export function registerPluginHandler({ name, simpleSchemas: pluginSimpleSchemas }) {
+export function registerPluginHandlerForSimpleSchema({ name, simpleSchemas: pluginSimpleSchemas }) {
   if (pluginSimpleSchemas) {
     Object.keys(pluginSimpleSchemas).forEach((key) => {
       if (simpleSchemas[key]) {

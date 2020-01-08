@@ -6,7 +6,7 @@
  * @returns {Object} An object with `taxableAmount` and `taxTotal` properties. Also mutates `group`.
  */
 export default async function setTaxesOnOrderFulfillmentGroup(context, { group, commonOrder }) {
-  const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: commonOrder, forceZeroes: true });
+  const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { cart: null, order: commonOrder, forceZeroes: true });
   group.items = group.items.map((item) => {
     const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
 

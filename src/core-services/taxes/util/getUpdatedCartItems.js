@@ -7,7 +7,7 @@
  */
 export default async function getUpdatedCartItems(context, cart, commonOrders) {
   const taxResultsByGroup = await Promise.all(commonOrders.map(async (order) =>
-    context.mutations.getFulfillmentGroupTaxes(context, { order, forceZeroes: false })));
+    context.mutations.getFulfillmentGroupTaxes(context, { cart, order, forceZeroes: false })));
 
   // Add tax properties to all items in the cart, if taxes were able to be calculated
   const cartItems = (cart.items || []).map((item) => {

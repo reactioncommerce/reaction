@@ -6,7 +6,7 @@
  * @param {Object} item The OrderItem so far. Potentially mutates this to add additional properties.
  * @returns {undefined}
  */
-export default function mutateNewOrderItemBeforeCreate(context, { chosenVariant, item }) {
+export default function mutateNewOrderItemBeforeCreateForTaxes(context, { chosenVariant, item }) {
   item.isTaxable = !!(chosenVariant && chosenVariant.isTaxable);
   item.taxCode = chosenVariant.taxCode || null;
 }

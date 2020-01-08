@@ -5,7 +5,7 @@ import _ from "lodash";
   * @param {Function} dataloaderFactory dataloader factory
   * @returns {Array} converted result
   */
-export default function createDataLoaders(context, dataloaderFactory) {
+export default function createDataLoadersForSimpleInventory(context, dataloaderFactory) {
   return {
     SimpleInventoryByProductVariantId: dataloaderFactory(async (productVariantIds) => {
       const results = await context.collections.SimpleInventory.find({
