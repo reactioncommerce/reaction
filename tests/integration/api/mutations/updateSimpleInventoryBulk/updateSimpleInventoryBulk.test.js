@@ -82,10 +82,7 @@ test("when all options are sold out and canBackorder, isBackorder is true in Cat
   const {
     failedUpdates,
     invalidUpdates
-  } = await testApp.context.mutations.updateSimpleInventoryBulk({
-    ...testApp.context,
-    isInternalCall: true
-  }, {
+  } = await testApp.context.mutations.updateSimpleInventoryBulk(context.getInternalContext(), {
     updates: [
       {
         productConfiguration: {

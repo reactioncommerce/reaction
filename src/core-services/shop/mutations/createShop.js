@@ -57,9 +57,7 @@ export default async function createShop(context, input) {
     userId
   } = context;
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions("reaction:shops", "create", { shopId: null, legacyRoles: ["owner", "shop/create"] });
-  }
+  await context.validatePermissions("reaction:shops", "create", { shopId: null, legacyRoles: ["owner", "shop/create"] });
 
   const { currencyCode, defaultLanguage, defaultTimezone, name, shopId, type } = input;
 

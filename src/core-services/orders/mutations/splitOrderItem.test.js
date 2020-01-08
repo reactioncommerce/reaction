@@ -216,59 +216,6 @@ test("throws if the database update fails", async () => {
   })).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("skips permission check if context.isInternalCall", async () => {
-  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
-    shipping: [
-      Factory.OrderFulfillmentGroup.makeOne({
-        items: [
-          Factory.OrderItem.makeOne({
-            _id: "abc",
-            quantity: 2,
-            price: {
-              amount: 1,
-              currencyCode: "USD"
-            },
-            subtotal: 1,
-            workflow: {
-              status: "new",
-              workflow: ["new"]
-            }
-          })
-        ],
-        workflow: {
-          status: "new",
-          workflow: ["new"]
-        }
-      })
-    ],
-    shopId: "SHOP_ID",
-    workflow: {
-      status: "new",
-      workflow: ["new"]
-    }
-  }));
-
-  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1,
-    value: {}
-  }));
-
-  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
-  rewire$updateGroupTotals(mockUpdateGroupTotals);
-
-  mockContext.isInternalCall = true;
-
-  await splitOrderItem(mockContext, {
-    itemId: "abc",
-    orderId: "abc",
-    newItemQuantity: 1
-  });
-
-  delete mockContext.isInternalCall;
-
-  expect(mockContext.validatePermissions).not.toHaveBeenCalled();
-});
-
 test("splits an item", async () => {
   const item1 = Factory.OrderItem.makeOne({
     _id: "ITEM_1",
