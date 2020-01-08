@@ -67,7 +67,6 @@ export default async function hasPermission(context, resource, action, authConte
   return false;
 }
 
-const hasPermissionCurried = curryN(2, hasPermission);
 const hasPermissionCurried = curryN(4, hasPermission);
 
 /**
