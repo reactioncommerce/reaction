@@ -49,6 +49,8 @@ export default async function updateAccountGroup(context, input) {
     throw new ReactionError("not-found", `Group with ID (${groupId}) doesn't exist`);
   }
 
+  let updatedFields = [];
+
   const updateGroupData = {
     updatedAt: new Date()
   };
@@ -70,11 +72,15 @@ export default async function updateAccountGroup(context, input) {
     updateGroupData.description = group.description;
   }
 
+  // Add updated fields used for appEvents
+  updatedFields = Object.keys(updateGroupData);
+
   // TODO: Remove when we move away from legacy permission verification
   // Update the roles on the group and any user in those groups
   if (Array.isArray(group.permissions)) {
     const roles = _.uniq([...group.permissions, ...defaultCustomerPermissions]);
     await setRolesOnGroupAndUsers(context, existingGroup, roles);
+    updatedFields.push("permissions");
   }
 
   // Validate final group object
@@ -100,7 +106,7 @@ export default async function updateAccountGroup(context, input) {
   await appEvents.emit("afterAccountGroupUpdate", {
     account: updatedGroup,
     updatedBy: user._id,
-    updatedFields: Object.keys(updateGroupData)
+    updatedFields
   });
 
   return updatedGroup;
