@@ -34,7 +34,7 @@ export default async function tags(
 
   // Check to make sure user has `read` permissions for this tag
   // TODO(auth-pod): revisit this check once legacyRoles are removed
-  // await context.validatePermissions("reaction:tags", "read", {
+  // await context.validatePermissions("reaction:legacy:tags", "read", {
   //   shopId,
   //   legacyRoles: ["admin", "owner", "tags", "any"]
   // });
