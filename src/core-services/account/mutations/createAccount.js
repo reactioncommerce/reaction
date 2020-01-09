@@ -83,7 +83,7 @@ export default async function createAccount(context, input) {
   // create an account for this user, they should be assigned to the "owner" group.
   let groups;
   let invites;
-  if (authUserId === userId && context.userHasPermission("reaction:shops", "owner", { shopId, legacyRoles: ["owner"] })) { // TODO(pod-auth): update this permissions check
+  if (authUserId === userId && context.userHasPermission("reaction:legacy:shops", "owner", { shopId, legacyRoles: ["owner"] })) { // TODO(pod-auth): update this permissions check
     groupSlug = "owner";
   } else {
     const emailAddresses = emails.map((emailRecord) => emailRecord.address);

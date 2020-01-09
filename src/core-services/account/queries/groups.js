@@ -14,7 +14,7 @@ export default async function groups(context, shopId) {
   const { Accounts, Groups } = collections;
 
   // TODO: Break this query up into one for all groups (for admins only) and one for user's groups
-  if (context.userHasPermission("reaction:accounts", "read", { shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] })) { // TODO(pod-auth): update this permissions check
+  if (context.userHasPermission("reaction:legacy:accounts", "read", { shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] })) { // TODO(pod-auth): update this permissions check
     // find groups by shop ID
     return Groups.find({ shopId });
   }
