@@ -42,7 +42,7 @@ export default async function updateAccountGroup(context, input) {
   // TODO: Remove when we move away from legacy permission verification
   const defaultCustomerPermissions = defaultCustomerGroupForShop.permissions;
 
-  // ensure one group type per shop
+  // Ensure group exists before proceeding
   const existingGroup = await Groups.findOne({ _id: groupId });
 
   if (!existingGroup) {
