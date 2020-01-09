@@ -33,7 +33,7 @@ export default async function addAccountEmailRecord(context, input) {
   if (!user) throw new ReactionError("not-found", "User not Found");
 
   if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:accounts:${account._id}`, "add:emails", {
+    await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "add:emails", {
       shopId: account.shopId,
       owner: account.userId,
       legacyRoles: ["reaction-accounts"]

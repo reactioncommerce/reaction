@@ -13,7 +13,7 @@ export default async function accounts(context, input) {
   const { Accounts, Groups } = collections;
   const { shopId } = input;
 
-  await context.validatePermissions("reaction:accounts", "read", {
+  await context.validatePermissions("reaction:legacy:accounts", "read", {
     shopId,
     legacyRoles: ["reaction-accounts"]
   });

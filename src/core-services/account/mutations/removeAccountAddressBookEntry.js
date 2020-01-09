@@ -29,7 +29,7 @@ export default async function removeAccountAddressBookEntry(context, input) {
   if (!account) throw new ReactionError("not-found", "Not Found");
 
   if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:accounts:${account._id}`, "remove:address-books", {
+    await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "remove:address-books", {
       shopId: account.shopId,
       owner: account.userId,
       legacyRoles: ["reaction-accounts"]
