@@ -58,7 +58,7 @@ export default async function approveOrderPayments(context, input = {}) {
     updatedBy: userId
   });
 
-  appEvents.emit("afterOrderApprovePayment", {
+  await appEvents.emit("afterOrderApprovePayment", {
     approvedBy: userId,
     order: updatedOrder
   });
