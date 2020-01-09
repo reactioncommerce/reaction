@@ -24,7 +24,7 @@ export default async function navigationTreeById(context, { language, navigation
 
     // Check to make sure user has `read` permissions for this navigationTree
     // TODO(auth-pod): revisit this check once legacyRoles are removed
-    // await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "read", {
+    // await context.validatePermissions(`reaction:legacy:navigationTrees:${navigationTreeId}`, "read", {
     //   shopId,
     //   legacyRoles: ["owner", "admin", "create-product", "read-navigation", "any"]
     // });
