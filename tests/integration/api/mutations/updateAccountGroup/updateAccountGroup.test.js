@@ -60,7 +60,6 @@ beforeAll(async () => {
     }
   );
 
-
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.createUserAndAccount(mockAdminAccountWithBadPermissions);
   await testApp.createUserAndAccount(mockCustomerAccount);
@@ -96,7 +95,6 @@ beforeAll(async () => {
 
   await testApp.clearLoggedInUser();
 });
-
 
 afterAll(async () => {
   await testApp.collections.Groups.deleteMany({});
@@ -158,4 +156,3 @@ test("an admin account should be able to update groups", async () => {
   const afterCustomer = await testApp.context.collections.users.findOne({ _id: "mockCustomerAccount" });
   expect(afterCustomer.roles[shopId]).toEqual(["test-perm-4"]);
 });
-
