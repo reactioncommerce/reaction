@@ -12,7 +12,7 @@ export default async function createAddressValidationRule(context, input) {
   const { appEvents, collections } = context;
   const { AddressValidationRules } = collections;
 
-  await context.validatePermissions("reaction:legacy:addressValidationRules", "create", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions("reaction:legacy:addressValidationRules", "create", { shopId });
 
   const createdAt = new Date();
   const rule = {

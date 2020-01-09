@@ -36,6 +36,10 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:accounts/update:address-books",
   "reaction:legacy:accounts/update:currency",
   "reaction:legacy:accounts/update:language",
+  "reaction:legacy:addressValidationRules/create", // TODO(pod-auth): figure out why this was "admin" only
+  "reaction:legacy:addressValidationRules/delete", // TODO(pod-auth): figure out why this was "admin" only
+  "reaction:legacy:addressValidationRules/read", // TODO(pod-auth): figure out why this was "admin" only
+  "reaction:legacy:addressValidationRules/update", // TODO(pod-auth): figure out why this was "admin" only
   "reaction:legacy:products/publish"
 ];
 
