@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`as a signed in user add another item to the cart with a quantity of 5 with an invalid price 1`] = `
+Array [
+  Object {
+    "currentPrice": Object {
+      "amount": 29.99,
+    },
+    "productConfiguration": Object {
+      "productId": "cmVhY3Rpb24vcHJvZHVjdDo5OTk=",
+      "productVariantId": "cmVhY3Rpb24vcHJvZHVjdDo5MjU=",
+    },
+    "providedPrice": Object {
+      "amount": 9999.99,
+    },
+  },
+]
+`;

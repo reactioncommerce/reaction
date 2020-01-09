@@ -24,9 +24,11 @@ export default async function approveOrderPayments(context, input = {}) {
   const { Orders } = collections;
   const { orderId, paymentIds, shopId } = input;
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:legacy:orders:${orderId}`, "approve:payment", { shopId, legacyRoles: ["orders", "order/fulfillment"] });
-  }
+  await context.validatePermissions(
+    `reaction:legacy:orders:${orderId}`,
+    "approve:payment",
+    { shopId, legacyRoles: ["orders", "order/fulfillment"] }
+  );
 
   const order = await Orders.findOne({ _id: orderId, shopId });
   if (!order) throw new ReactionError("not-found", "Order not found");
@@ -58,7 +60,7 @@ export default async function approveOrderPayments(context, input = {}) {
     updatedBy: userId
   });
 
-  appEvents.emit("afterOrderApprovePayment", {
+  await appEvents.emit("afterOrderApprovePayment", {
     approvedBy: userId,
     order: updatedOrder
   });

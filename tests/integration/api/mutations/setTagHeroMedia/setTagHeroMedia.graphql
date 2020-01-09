@@ -1,0 +1,8 @@
+mutation setTagHeroMedia($input: SetTagHeroMediaInput!) {
+  setTagHeroMedia(input: $input){
+    tag {
+      _id
+      heroMediaUrl
+    }
+  }
+}

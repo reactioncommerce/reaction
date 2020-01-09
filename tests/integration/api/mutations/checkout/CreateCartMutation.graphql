@@ -1,0 +1,19 @@
+mutation CreateCart($createCartInput: CreateCartInput!) {
+  createCart(input: $createCartInput) {
+    cart {
+      _id
+      email
+      items {
+        nodes {
+          _id
+          title
+          quantity
+          price {
+            amount
+          }
+        }
+      }
+    }
+    token
+  }
+}

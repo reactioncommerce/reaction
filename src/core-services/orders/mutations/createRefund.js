@@ -39,23 +39,19 @@ export default async function createRefund(context, input) {
     reason
   } = input;
 
-  const { appEvents, collections, isInternalCall, userId } = context;
+  const { appEvents, collections, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  // Allow refund for accounts with orders or "order/fulfillment" permissions.
-  // When called internally by another plugin, context.isInternalCall
-  // can be set to `true` to disable this check.
-  if (!isInternalCall) {
-    await context.validatePermissions(
-      `reaction:legacy:orders:${order._id}`,
-      "refund:payment",
-      { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
-    );
-  }
+  // Allow refund for accounts with orders or "order/fulfillment" permissions
+  await context.validatePermissions(
+    `reaction:legacy:orders:${order._id}`,
+    "refund:payment",
+    { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
+  );
 
   // Verify payment exists
   const payment = (order.payments || []).find((pmt) => pmt._id === paymentId);

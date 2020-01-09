@@ -1,0 +1,10 @@
+mutation captureOrderPayments($input: CaptureOrderPaymentsInput!) {
+  captureOrderPayments(input: $input){
+    order {
+      payments {
+        mode
+        status
+      }
+    }
+  }
+}

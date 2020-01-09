@@ -63,7 +63,7 @@ export default async function buildContext(context, request = {}) {
     if (!account) {
       try {
         Logger.debug(`Creating missing account for user ID ${userId}`);
-        account = await context.mutations.createAccount({ ...context, isInternalCall: true }, {
+        account = await context.mutations.createAccount(context.getInternalContext(), {
           emails: context.user.emails && context.user.emails.map((rec) => ({ ...rec, provides: rec.provides || "default" })),
           name: context.user.name,
           profile: context.user.profile || {},
@@ -86,7 +86,4 @@ export default async function buildContext(context, request = {}) {
   delete context.requestHeaders.authorization;
   delete context.requestHeaders.cookie;
   delete context.requestHeaders["meteor-login-token"];
-
-  // Reset isInternalCall in case it has been incorrectly changed
-  context.isInternalCall = false;
 }
