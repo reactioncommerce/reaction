@@ -25,7 +25,7 @@ export default async function approveOrderPayments(context, input = {}) {
   const { orderId, paymentIds, shopId } = input;
 
   if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:orders:${orderId}`, "approve:payment", { shopId, legacyRoles: ["orders", "order/fulfillment"] });
+    await context.validatePermissions(`reaction:legacy:orders:${orderId}`, "approve:payment", { shopId, legacyRoles: ["orders", "order/fulfillment"] });
   }
 
   const order = await Orders.findOne({ _id: orderId, shopId });
