@@ -46,7 +46,7 @@ beforeAll(async () => {
 
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.setLoggedInUser(mockAdminAccount);
-  await testApp.context.mutations.createShop(context.getInternalContext(), {
+  await testApp.context.mutations.createShop(testApp.context.getInternalContext(), {
     name: shopName,
     shopId
   });
