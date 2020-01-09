@@ -14,7 +14,7 @@ test("throws if permission check fails", async () => {
   });
   await expect(rolesQuery(mockContext, mockContext.shopId)).rejects.toThrowErrorMatchingSnapshot();
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
-    `reaction:shops:${mockContext.shopId}`,
+    `reaction:legacy:shops:${mockContext.shopId}`,
     "read",
     { shopId: mockContext.shopId, legacyRoles: ["owner", "admin"] }
   );
