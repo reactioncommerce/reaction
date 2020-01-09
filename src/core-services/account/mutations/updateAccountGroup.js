@@ -2,7 +2,7 @@ import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
-import setRolesOnGroupAndUsers from "../util/setRolesOnGroupAndUsers";
+import setRolesOnGroupAndUsers from "../util/setRolesOnGroupAndUsers.js";
 
 const inputSchema = new SimpleSchema({
   slug: { type: String, optional: true },
