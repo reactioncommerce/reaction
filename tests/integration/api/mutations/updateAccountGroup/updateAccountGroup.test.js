@@ -87,7 +87,7 @@ beforeAll(async () => {
   await testApp.collections.Groups.insertOne(customerGroup);
   await testApp.collections.Groups.insertOne(testGroup);
 
-  // Add customer account to the test group
+  // Add customer account to the testGroup
   await addAccountToGroup({
     accountId: encodeOpaqueId("reaction/account", "mockCustomerAccount"),
     groupId: encodeOpaqueId("reaction/group", "testGroup")
@@ -107,7 +107,7 @@ afterAll(async () => {
 test("a customer account should not be able to update groups", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);
 
-  // Expect the before customer to have been added to the test group and have all the roles of that group
+  // Expect the customer to have all of the roles from the testGroup
   const beforeCustomer = await testApp.context.collections.users.findOne({ _id: "mockCustomerAccount" });
   expect(beforeCustomer.roles[shopId]).toEqual(["test-perm-1", "test-perm-2"]);
 
@@ -130,7 +130,7 @@ test("a customer account should not be able to update groups", async () => {
 test("an admin account should be able to update groups", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
-  // Expect the before customer to have been added to the test group and have all the roles of that group
+  // Expect the customer to have all of the roles from the testGroup
   const beforeCustomer = await testApp.context.collections.users.findOne({ _id: "mockCustomerAccount" });
   expect(beforeCustomer.roles[shopId]).toEqual(["test-perm-1", "test-perm-2"]);
 
