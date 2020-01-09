@@ -2,7 +2,7 @@
   {
     "description": "Tax managers acting on all entities.",
     "subjects": [ "reaction:groups:tax-managers" ],
-    "resources": [ "reaction:taxes" ],
+    "resources": [ "reaction:legacy:taxes" ],
     "actions": [ "read" ],
     "effect": "allow"
   }
