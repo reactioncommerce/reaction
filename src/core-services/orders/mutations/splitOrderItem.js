@@ -43,18 +43,15 @@ export default async function splitOrderItem(context, input) {
     newItemQuantity
   } = input;
 
-  const { appEvents, collections, isInternalCall, userId } = context;
+  const { appEvents, collections, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  // Allow split if the account has "orders" permission. When called internally by another
-  // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall) {
-    await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
-  }
+  // Allow split if the account has "orders" permission
+  await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
 
   const { accountId, billingAddress, cartId, currencyCode } = order;
 

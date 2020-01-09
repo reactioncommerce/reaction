@@ -14,7 +14,7 @@ export default async function createDefaultNavigationTreeForShop(context, shop) 
   const { _id: shopId } = shop;
 
   // Create a couple example items
-  const navigationItem = await context.mutations.createNavigationItem({ ...context, isInternalCall: true }, {
+  const navigationItem = await context.mutations.createNavigationItem(context.getInternalContext(), {
     navigationItem: {
       draftData: {
         classNames: null,
@@ -32,7 +32,7 @@ export default async function createDefaultNavigationTreeForShop(context, shop) 
     }
   });
 
-  const navigationSubItem = await context.mutations.createNavigationItem({ ...context, isInternalCall: true }, {
+  const navigationSubItem = await context.mutations.createNavigationItem(context.getInternalContext(), {
     navigationItem: {
       draftData: {
         classNames: null,
@@ -79,10 +79,7 @@ export default async function createDefaultNavigationTreeForShop(context, shop) 
     shopId
   });
 
-  await context.mutations.publishNavigationChanges({
-    ...context,
-    isInternalCall: true
-  }, {
+  await context.mutations.publishNavigationChanges(context.getInternalContext(), {
     navigationTreeId,
     shopId
   });
