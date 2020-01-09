@@ -57,38 +57,6 @@ beforeAll(async () => {
   await testApp.collections.Products.insertOne(variant);
   await testApp.publishProducts([productId]);
 
-  await testApp.createUserAndAccount(mockAdminAccount);
-  approveOrderPaymentsMutation = testApp.mutate(approveOrderPayments);
-});
-
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Products.deleteMany({});
-  await testApp.stop();
-});
-
-test("an anonymous user should not be able to approve order payments", async () => {
-  try {
-    await approveOrderPaymentsMutation({
-      input: {
-        orderId: opaqueOrderId,
-        paymentIds: [opaquePaymentId],
-        shopId: opaqueShopId
-      }
-    });
-  } catch (error) {
-    expect(error).toMatchSnapshot();
-    return;
-  }
-});
-
-
-test("an admin user should be able to approve order payments", async () => {
-  let result;
-  await testApp.setLoggedInUser(mockAdminAccount);
-
   // Place an order
   const orderItem = Factory.OrderItem.makeOne({
     productId,
@@ -121,6 +89,37 @@ test("an admin user should be able to approve order payments", async () => {
   });
 
   await testApp.collections.Orders.insertOne(order);
+
+  await testApp.createUserAndAccount(mockAdminAccount);
+  approveOrderPaymentsMutation = testApp.mutate(approveOrderPayments);
+});
+
+afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Products.deleteMany({});
+  await testApp.stop();
+});
+
+test("an anonymous user should not be able to approve order payments", async () => {
+  try {
+    await approveOrderPaymentsMutation({
+      input: {
+        orderId: opaqueOrderId,
+        paymentIds: [opaquePaymentId],
+        shopId: opaqueShopId
+      }
+    });
+  } catch (error) {
+    expect(error).toMatchSnapshot();
+    return;
+  }
+});
+
+test("an admin user should be able to approve order payments", async () => {
+  let result;
+  await testApp.setLoggedInUser(mockAdminAccount);
 
   // Verify order status is initially set to "created"
   const existingOrder = await testApp.collections.Orders.findOne({ _id: orderId });
