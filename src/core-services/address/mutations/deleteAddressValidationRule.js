@@ -12,7 +12,7 @@ export default async function deleteAddressValidationRule(context, input) {
   const { AddressValidationRules } = collections;
 
   if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:addressValidationRules:${_id}`, "delete", { shopId, legacyRoles: ["admin"] });
+    await context.validatePermissions(`reaction:legacy:addressValidationRules:${_id}`, "delete", { shopId, legacyRoles: ["admin"] });
   }
 
   const { ok, value: deletedRule } = await AddressValidationRules.findOneAndDelete({

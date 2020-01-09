@@ -1,0 +1,23 @@
+[
+  {
+    "description": "Address validation managers acting on all entities.",
+    "subjects": [ "reaction:groups:address-managers" ],
+    "resources": [ "reaction:legacy:addressValidationRules" ],
+    "actions": [
+      "create",
+      "read"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Address validation managers acting on specific entities.",
+    "subjects": [ "reaction:groups:address-managers" ],
+    "resources": [ "reaction:legacy:addressValidationRules:*" ],
+    "actions": [
+      "delete",
+      "read",
+      "update"
+    ],
+    "effect": "allow"
+  }
+]

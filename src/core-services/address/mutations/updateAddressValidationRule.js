@@ -23,7 +23,7 @@ export default async function updateAddressValidationRule(context, input) {
   const { AddressValidationRules } = collections;
 
   if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:addressValidationRules:${_id}`, "update", { shopId, legacyRoles: ["admin"] });
+    await context.validatePermissions(`reaction:legacy:addressValidationRules:${_id}`, "update", { shopId, legacyRoles: ["admin"] });
   }
 
   const updates = {

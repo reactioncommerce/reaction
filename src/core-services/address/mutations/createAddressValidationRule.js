@@ -13,7 +13,7 @@ export default async function createAddressValidationRule(context, input) {
   const { AddressValidationRules } = collections;
 
   if (!context.isInternalCall) {
-    await context.validatePermissions("reaction:addressValidationRules", "create", { shopId, legacyRoles: ["admin"] });
+    await context.validatePermissions("reaction:legacy:addressValidationRules", "create", { shopId, legacyRoles: ["admin"] });
   }
 
   const createdAt = new Date();
