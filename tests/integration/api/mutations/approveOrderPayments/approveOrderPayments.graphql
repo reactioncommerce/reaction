@@ -1,0 +1,10 @@
+
+mutation approveOrderPayments($input: ApproveOrderPaymentsInput!) {
+  approveOrderPayments(input: $input){
+    order {
+      payments {
+        status
+      }
+    }
+  }
+}
