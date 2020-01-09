@@ -34,8 +34,7 @@ export default async function setAccountProfileCurrency(context, input) {
 
   await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "update:currency", {
     shopId: account.shopId,
-    owner: account.userId,
-    legacyRoles: ["reaction-accounts"]
+    owner: account.userId
   });
 
   if (!CurrencyDefinitions[currencyCode]) {

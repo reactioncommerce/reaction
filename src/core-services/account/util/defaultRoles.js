@@ -24,10 +24,23 @@ export const defaultShopManagerRoles = [
   "media/update",
   "media/delete",
   "product/admin",
-  "shopSettings"
+  "shopSettings",
+  "reaction:legacy:accounts/add:address-books",
+  "reaction:legacy:accounts/add:emails",
+  "reaction:legacy:accounts/create",
+  "reaction:legacy:accounts/delete:emails",
+  "reaction:legacy:accounts/invite:group",
+  "reaction:legacy:accounts/read",
+  "reaction:legacy:accounts/read:admin-accounts",
+  "reaction:legacy:accounts/remove:address-books",
+  "reaction:legacy:accounts/update:address-books",
+  "reaction:legacy:accounts/update:currency",
+  "reaction:legacy:accounts/update:language",
+  "reaction:legacy:products/publish"
 ];
 
 export const defaultOwnerRoles = [
   ...defaultShopManagerRoles,
-  "owner"
+  "owner",
+  "reaction:legacy:shops/owner"
 ];

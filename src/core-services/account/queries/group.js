@@ -21,7 +21,7 @@ export default async function groupQuery(context, id) {
   if (context.userHasPermission(
     "reaction:legacy:accounts",
     "read",
-    { shopId: group.shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] }
+    { shopId: group.shopId }
   )) return group; // TODO(pod-auth): update this permissions check
 
   // Otherwise, only let users see groups that they are members of

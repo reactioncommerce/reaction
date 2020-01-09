@@ -34,8 +34,7 @@ export default async function addAccountEmailRecord(context, input) {
 
   await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "add:emails", {
     shopId: account.shopId,
-    owner: account.userId,
-    legacyRoles: ["reaction-accounts"]
+    owner: account.userId
   });
 
   // add email to user

@@ -34,8 +34,7 @@ export default async function removeAccountEmailRecord(context, input) {
 
   await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "delete:emails", {
     shopId: account.shopId,
-    owner: account.userId,
-    legacyRoles: ["reaction-accounts"]
+    owner: account.userId
   });
 
   // Remove email from user
