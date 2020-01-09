@@ -66,7 +66,7 @@ export default async function updateAccountGroup(context, input) {
   }
 
   // Update description
-  if (updateGroupData.description) {
+  if (group.description) {
     updateGroupData.description = group.description;
   }
 
