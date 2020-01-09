@@ -45,11 +45,16 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:mediaRecords/create:media",
   "reaction:legacy:mediaRecords/delete:media",
   "reaction:legacy:mediaRecords/update:media",
-  "reaction:legacy:products/publish"
+  "reaction:legacy:products/publish",
+  "reaction:legacy:shops:/update" // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
 ];
 
 export const defaultOwnerRoles = [
   ...defaultShopManagerRoles,
   "owner",
   "reaction:legacy:shops/owner"
+];
+
+export const otherRolesThatDidntSeemToFit = [
+  "reaction:legacy:shops/create"
 ];
