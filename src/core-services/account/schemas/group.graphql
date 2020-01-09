@@ -60,14 +60,14 @@ input UpdateAccountGroupInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
+  "The changes to apply to the group"
+  group: UpdateGroupInput!
+
   "The group ID"
   groupId: ID!
 
   "The ID of the shop this group belongs to"
   shopId: ID!
-
-  "The changes to apply to the group"
-  group: UpdateGroupInput!
 }
 
 "The details for removing a group"
