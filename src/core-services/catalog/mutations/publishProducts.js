@@ -36,7 +36,7 @@ export default async function publishProducts(context, productIds) {
       await context.validatePermissions(
         `reaction:legacy:products:${product._id}`,
         "publish",
-        { shopId, legacyRoles: ["createProduct", "product/admin", "product/publish"] }
+        { shopId }
       );
     }
   }
