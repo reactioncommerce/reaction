@@ -129,7 +129,7 @@ test("a customer account should not be able to update groups", async () => {
   }
 });
 
-test("anyone can add account to group if they have ALL the group permissions", async () => {
+test("an admin account should be able to update groups", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   // Expect the before customer to have been added to the test group and have all the roles of that group
