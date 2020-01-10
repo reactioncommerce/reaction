@@ -74,8 +74,7 @@ test("throws if roleGroup is present but not a string", async () => {
     "resource",
     "action",
     {
-      shopId: ["thisIsNotAString"],
-      legacyRoles: ["role1", "role2"]
+      shopId: ["thisIsNotAString"]
     }
   );
   expect(result).rejects.toThrowErrorMatchingSnapshot();
@@ -94,8 +93,7 @@ test("throws if roleGroup is present but an empty string", async () => {
     "resource",
     "action",
     {
-      shopId: "",
-      legacyRoles: ["role1", "role2"]
+      shopId: ""
     }
   );
   expect(result).rejects.toThrowErrorMatchingSnapshot();
@@ -114,8 +112,7 @@ test("returns true if in global role, even if not in group-scope role", async ()
     "resource",
     "action",
     {
-      shopId: "SHOP_ID",
-      legacyRoles: ["can_fry_bacon", "can_scoop_ice_cream"]
+      shopId: "SHOP_ID"
     }
   );
   expect(result).toBe(true);
@@ -134,8 +131,7 @@ test("returns true if in group-scope role but not in global role", async () => {
     "resource",
     "action",
     {
-      shopId: "scope",
-      legacyRoles: ["can_eat", "can_scoop_ice_cream"]
+      shopId: "scope"
     }
   );
   expect(result).toBe(true);
@@ -154,8 +150,7 @@ test("returns true if in role in both scopes", async () => {
     "resource",
     "action",
     {
-      shopId: "scope",
-      legacyRoles: ["can_scoop_ice_cream"]
+      shopId: "scope"
     }
   );
   expect(result).toBe(true);
@@ -174,8 +169,7 @@ test("returns false if not in any role in either scope", async () => {
     "resource",
     "action",
     {
-      shopId: "scope",
-      legacyRoles: ["can_do_dishes"]
+      shopId: "scope"
     }
   );
   expect(result).toBe(false);
@@ -194,8 +188,7 @@ test("returns true if has owner role, even if not explicitly in the permissions 
     "resource",
     "action",
     {
-      shopId: "scope",
-      legacyRoles: ["can_do_dishes"]
+      shopId: "scope"
     }
   );
   expect(result).toBe(true);

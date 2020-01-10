@@ -66,6 +66,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:navigationTreeItems/read",
   "reaction:legacy:navigationTreeItems/update",
   "reaction:legacy:navigationTrees/update",
+  "reaction:legacy:navigationTrees-drafts/read",
   "reaction:legacy:orders/approve:payment",
   "reaction:legacy:orders/cancel:item",
   "reaction:legacy:orders/capture:payment",
@@ -97,6 +98,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:tags/delete",
   "reaction:legacy:tags/read",
   "reaction:legacy:tags/update",
+  "reaction:legacy:tags-inactive/read", // TODO(pod-auth): revisit how inactive is done
   "reaction:legacy:taxes/read",
   "reaction:legacy:taxRates/create", // TODO(pod-auth): this was owner / admin only
   "reaction:legacy:taxRates/delete", // TODO(pod-auth): this was owner / admin only
