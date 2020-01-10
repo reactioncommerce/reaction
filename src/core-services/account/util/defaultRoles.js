@@ -3,8 +3,10 @@ export const defaultCustomerRoles = [
   "cart/completed",
   "guest",
   "index",
-  "product",
-  "tag"
+  "product", // not sure what this one is
+  "tag", // not sure what this one is
+  "reaction:legacy:products/read", // should this go here?
+  "reaction:legacy:tags/read"
 ];
 
 export const defaultVisitorRoles = [
@@ -12,8 +14,10 @@ export const defaultVisitorRoles = [
   "cart/completed",
   "guest",
   "index",
-  "product",
-  "tag"
+  "product", // not sure what this one is
+  "tag", // not sure what this one is
+  "reaction:legacy:products/read", // should this go here?
+  "reaction:legacy:tags/read"
 ];
 
 export const defaultShopManagerRoles = [
@@ -52,7 +56,12 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:orders/read",
   "reaction:legacy:orders/refund:payment",
   "reaction:legacy:orders/update",
+  "reaction:products:products/archive",
+  "reaction:products:products/clone",
+  "reaction:products:products/create",
   "reaction:legacy:products/publish",
+  "reaction:legacy:products/read",
+  "reaction:legacy:products/update",
   "reaction:legacy:shops/read", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
   "reaction:legacy:shops/update", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
   "reaction:legacy:tags/create",

@@ -33,7 +33,7 @@ export default async function archiveProducts(context, input) {
     await context.validatePermissions(
       `reaction:legacy:products:${productId}`,
       "archive",
-      { shopId, legacyRoles: ["createProduct", "product/admin", "product/archive"] }
+      { shopId }
     );
   }
 

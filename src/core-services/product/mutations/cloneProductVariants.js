@@ -37,7 +37,7 @@ export default async function cloneProductVariants(context, input) {
     await context.validatePermissions(
       `reaction:legacy:products:${variantId}`,
       "clone",
-      { shopId, legacyRoles: ["createProduct", "product/admin", "product/clone"] }
+      { shopId }
     );
   }
 

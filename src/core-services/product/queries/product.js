@@ -17,7 +17,7 @@ export default async function product(context, input) {
   await context.validatePermissions(
     `reaction:legacy:products:${productId}`,
     "read",
-    { shopId, legacyRoles: ["owner", "admin", "createProduct", "product/admin"] }
+    { shopId }
   );
 
   return Products.findOne({

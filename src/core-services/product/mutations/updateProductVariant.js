@@ -146,7 +146,7 @@ export default async function updateProductVariant(context, input) {
   await context.validatePermissions(
     `reaction:legacy:products:${variantId}`,
     "update",
-    { shopId, legacyRoles: ["createProduct", "product/admin", "product/update"] }
+    { shopId }
   );
 
   const currentProduct = await Products.findOne({ _id: variantId, shopId });
