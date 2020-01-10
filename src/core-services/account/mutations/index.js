@@ -13,6 +13,7 @@ import setAccountProfileLanguage from "./setAccountProfileLanguage.js";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
 import createAccountGroup from "./createAccountGroup.js";
 import updateAccountGroup from "./updateAccountGroup.js";
+import removeAccountGroup from "./removeAccountGroup.js";
 
 export default {
   addressBookAdd,
@@ -29,5 +30,6 @@ export default {
   setAccountProfileLanguage,
   updateAccountAddressBookEntry,
   createAccountGroup,
-  updateAccountGroup
+  updateAccountGroup,
+  removeAccountGroup
 };
