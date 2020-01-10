@@ -97,7 +97,11 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:tags/delete",
   "reaction:legacy:tags/read",
   "reaction:legacy:tags/update",
-  "reaction:legacy:taxes/read"
+  "reaction:legacy:taxes/read",
+  "reaction:legacy:taxRates/create", // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:taxRates/delete", // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:taxRates/read", // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:taxRates/update" // TODO(pod-auth): this was owner / admin only
 ];
 
 export const defaultOwnerRoles = [
