@@ -6,6 +6,6 @@ exports[`throws if no authContext 1`] = `"authContext must be provided"`;
 
 exports[`throws if no resource 1`] = `"Resource must be provided"`;
 
-exports[`throws if roleGroup is present but an empty string 1`] = `"roleGroup must be a non-empty string"`;
+exports[`throws if roleGroup is present but an empty string 1`] = `"shopId must be a non-empty string"`;
 
-exports[`throws if roleGroup is present but not a string 1`] = `"roleGroup must be a non-empty string"`;
+exports[`throws if roleGroup is present but not a string 1`] = `"shopId must be a non-empty string"`;
