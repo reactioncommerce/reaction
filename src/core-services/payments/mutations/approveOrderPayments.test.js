@@ -65,7 +65,7 @@ test("throws if permission check fails", async () => {
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
     "reaction:legacy:orders:abc",
     "approve:payment",
-    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+    { shopId: "SHOP_ID" }
   );
 });
 

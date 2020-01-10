@@ -26,7 +26,7 @@ test("throws if userHasPermission returns false and the user ID is not the conte
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
     "reaction:legacy:accounts",
     "read",
-    { shopId: fakeAccount.shopId, owner: fakeAccountId, legacyRoles: ["reaction-accounts"] }
+    { shopId: fakeAccount.shopId, owner: fakeAccountId }
   );
 });
 
@@ -45,7 +45,7 @@ test("returns the account if the user ID is not the context user ID but userHasP
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
     "reaction:legacy:accounts",
     "read",
-    { shopId: fakeAccount.shopId, owner: fakeAccountId, legacyRoles: ["reaction-accounts"] }
+    { shopId: fakeAccount.shopId, owner: fakeAccountId }
   );
   expect(result).toEqual(fakeAccount);
 });
