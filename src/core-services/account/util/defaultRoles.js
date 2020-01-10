@@ -55,7 +55,11 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:products/publish",
   "reaction:legacy:shops/read", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
   "reaction:legacy:shops/update", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
-  "reaction:legacy:taxes/read" // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
+  "reaction:legacy:tags/create",
+  "reaction:legacy:tags/delete",
+  "reaction:legacy:tags/read",
+  "reaction:legacy:tags/update",
+  "reaction:legacy:taxes/read"
 ];
 
 export const defaultOwnerRoles = [
