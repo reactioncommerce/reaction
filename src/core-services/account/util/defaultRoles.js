@@ -53,6 +53,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:email-templates/update",
   "reaction:legacy:emails/read",
   "reaction:legacy:emails/send",
+  "reaction:legacy:fulfillment/read", // TODO(pod-auth): figure out why this was "admin" only
   "reaction:legacy:media/update",
   "reaction:legacy:mediaRecords/create:media",
   "reaction:legacy:mediaRecords/delete:media",
@@ -76,6 +77,14 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:products/publish",
   "reaction:legacy:products/read",
   "reaction:legacy:products/update",
+  "reaction:legacy:shippingMethods/create",
+  "reaction:legacy:shippingMethods/delete",
+  "reaction:legacy:shippingMethods/read",
+  "reaction:legacy:shippingMethods/update",
+  "reaction:legacy:shippingRestrictions/create",
+  "reaction:legacy:shippingRestrictions/delete",
+  "reaction:legacy:shippingRestrictions/read",
+  "reaction:legacy:shippingRestrictions/update",
   "reaction:legacy:shops/read", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
   "reaction:legacy:shops/update", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
   "reaction:legacy:tags/create",

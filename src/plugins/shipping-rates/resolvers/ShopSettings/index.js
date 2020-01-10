@@ -2,8 +2,7 @@
 export default {
   async isShippingRatesFulfillmentEnabled(settings, args, context) {
     await context.validatePermissions("reaction:legacy:fulfillment", "read", {
-      shopId: settings.shopId,
-      legacyRoles: ["admin"]
+      shopId: settings.shopId
     });
     return settings.isShippingRatesFulfillmentEnabled;
   }
