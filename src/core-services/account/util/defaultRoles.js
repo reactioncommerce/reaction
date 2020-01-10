@@ -44,6 +44,11 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:addressValidationRules/delete", // TODO(pod-auth): figure out why this was "admin" only
   "reaction:legacy:addressValidationRules/read", // TODO(pod-auth): figure out why this was "admin" only
   "reaction:legacy:addressValidationRules/update", // TODO(pod-auth): figure out why this was "admin" only
+  "reaction:legacy:carts:/update",
+  "reaction:legacy:discounts/create", // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:discounts/delete", // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:discounts/read", // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:discounts/update", // TODO(pod-auth): this was owner / admin only
   "reaction:legacy:emails/send",
   "reaction:legacy:media/update",
   "reaction:legacy:mediaRecords/create:media",
