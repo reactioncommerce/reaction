@@ -90,6 +90,9 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:shippingRestrictions/update",
   "reaction:legacy:shops/read", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
   "reaction:legacy:shops/update", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
+  "reaction:legacy:surcharges/create",
+  "reaction:legacy:surcharges/delete",
+  "reaction:legacy:surcharges/update",
   "reaction:legacy:tags/create",
   "reaction:legacy:tags/delete",
   "reaction:legacy:tags/read",
