@@ -54,6 +54,8 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:emails/read",
   "reaction:legacy:emails/send",
   "reaction:legacy:fulfillment/read", // TODO(pod-auth): figure out why this was "admin" only
+  "reaction:legacy:inventory/read", // TODO(pod-auth): figure out why this was "admin" only
+  "reaction:legacy:inventory/update", // TODO(pod-auth): figure out why this was "admin" only
   "reaction:legacy:media/update",
   "reaction:legacy:mediaRecords/create:media",
   "reaction:legacy:mediaRecords/delete:media",

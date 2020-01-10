@@ -25,7 +25,7 @@ export default async function simpleInventory(context, input) {
   await context.validatePermissions(
     `reaction:legacy:inventory:${productConfiguration.productVariantId}`,
     "read",
-    { shopId, legacyRoles: ["admin"] }
+    { shopId }
   );
 
   return SimpleInventory.findOne({
