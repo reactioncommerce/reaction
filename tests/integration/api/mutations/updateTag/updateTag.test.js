@@ -37,7 +37,7 @@ beforeAll(async () => {
 
   mockTagsAccount = Factory.Account.makeOne({
     roles: {
-      [internalShopId]: ["admin"]
+      [internalShopId]: ["reaction:legacy:tags/update"]
     }
   });
 

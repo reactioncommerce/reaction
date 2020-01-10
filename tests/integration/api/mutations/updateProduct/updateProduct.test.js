@@ -65,7 +65,7 @@ beforeAll(async () => {
 
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["createProduct"] }
+    roles: { [internalShopId]: ["reaction:legacy:products/update"] }
   });
 });
 
