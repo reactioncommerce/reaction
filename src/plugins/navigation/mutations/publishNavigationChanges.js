@@ -16,7 +16,7 @@ export default async function publishNavigationChanges(context, input) {
   const { NavigationItems, NavigationTrees } = collections;
   const { navigationTreeId, shopId } = input;
 
-  await context.validatePermissions("reaction:legacy:navigationTreeItems", "publish", { shopId, legacyRoles: ["core"] });
+  await context.validatePermissions("reaction:legacy:navigationTreeItems", "publish", { shopId });
 
   const treeSelector = { _id: navigationTreeId, shopId };
   const navigationTree = await NavigationTrees.findOne(treeSelector);
