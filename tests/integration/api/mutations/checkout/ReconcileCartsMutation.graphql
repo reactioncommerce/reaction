@@ -1,0 +1,18 @@
+mutation ReconcileCarts($input: ReconcileCartsInput!) {
+  reconcileCarts(input: $input) {
+    cart {
+      _id
+      email
+      items {
+        nodes {
+          _id
+          title
+          quantity
+          price {
+            amount
+          }
+        }
+      }
+    }
+  }
+}

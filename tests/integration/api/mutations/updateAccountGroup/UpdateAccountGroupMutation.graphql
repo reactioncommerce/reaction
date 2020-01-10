@@ -1,0 +1,11 @@
+mutation UpdateAccountGroup($input: UpdateAccountGroupInput!) {
+  updateAccountGroup(input: $input) {
+    group {
+      _id
+      slug
+      name
+      description
+      permissions
+    }
+  }
+}

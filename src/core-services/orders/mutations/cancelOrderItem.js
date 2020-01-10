@@ -48,20 +48,18 @@ export default async function cancelOrderItem(context, input) {
     reason = null
   } = input;
 
-  const { accountId, appEvents, collections, isInternalCall, userId } = context;
+  const { accountId, appEvents, collections, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  if (!isInternalCall) {
-    await context.validatePermissions(`reaction:orders:${order._id}`, "cancel:item", {
-      shopId: order.shopId,
-      owner: order.accountId,
-      legacyRoles: ["orders", "order/fulfillment"]
-    });
-  }
+  await context.validatePermissions(`reaction:orders:${order._id}`, "cancel:item", {
+    shopId: order.shopId,
+    owner: order.accountId,
+    legacyRoles: ["orders", "order/fulfillment"]
+  });
 
   // Is the account calling this mutation also the account that placed the order?
   // We need this check in a couple places below, so we'll get it here.

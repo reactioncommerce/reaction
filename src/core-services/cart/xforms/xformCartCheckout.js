@@ -25,7 +25,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
       currencyCode: cart.currencyCode
     },
     price: {
-      amount: option.rate || 0,
+      amount: (option.rate + option.handlingPrice) || 0,
       currencyCode: cart.currencyCode
     }
   }));
@@ -46,7 +46,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
         currencyCode: cart.currencyCode
       },
       price: {
-        amount: fulfillmentGroup.shipmentMethod.rate || 0,
+        amount: (fulfillmentGroup.shipmentMethod.rate + fulfillmentGroup.shipmentMethod.handling) || 0,
         currencyCode: cart.currencyCode
       }
     };

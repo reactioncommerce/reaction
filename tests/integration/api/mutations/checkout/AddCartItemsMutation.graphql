@@ -1,0 +1,30 @@
+mutation AddCartItems($addCartItemsInput: AddCartItemsInput!) {
+  addCartItems(input: $addCartItemsInput) {
+    cart {
+      _id
+      email
+      items {
+        nodes {
+          _id
+          title
+          quantity
+          price {
+            amount
+          }
+        }
+      }
+    }
+    incorrectPriceFailures {
+      currentPrice {
+        amount
+      }
+      productConfiguration {
+        productId
+        productVariantId
+      }
+      providedPrice {
+        amount
+      }
+    }
+  }
+}

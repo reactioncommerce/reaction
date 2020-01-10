@@ -22,9 +22,7 @@ export default async function updateAddressValidationRule(context, input) {
   const { appEvents, collections } = context;
   const { AddressValidationRules } = collections;
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:addressValidationRules:${_id}`, "update", { shopId, legacyRoles: ["admin"] });
-  }
+  await context.validatePermissions(`reaction:addressValidationRules:${_id}`, "update", { shopId, legacyRoles: ["admin"] });
 
   const updates = {
     countryCodes,

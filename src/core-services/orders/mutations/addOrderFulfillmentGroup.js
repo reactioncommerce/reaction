@@ -45,18 +45,15 @@ export default async function addOrderFulfillmentGroup(context, input) {
     orderId
   } = input;
 
-  const { appEvents, collections, isInternalCall, userId } = context;
+  const { appEvents, collections, userId } = context;
   const { Orders } = collections;
 
   // First verify that this order actually exists
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  // Allow update if the account has "orders" permission. When called internally by another
-  // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall) {
-    await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
-  }
+  // Allow update if the account has "orders" permission
+  await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
 
   const { accountId, billingAddress, cartId, currencyCode } = order;
 
@@ -65,9 +62,7 @@ export default async function addOrderFulfillmentGroup(context, input) {
   const orderSurcharges = [];
   const movingItems = [];
   if (moveItemIds) {
-    if (!isInternalCall) {
-      await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
-    }
+    await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
 
     updatedGroups = await Promise.all(order.shipping.map(async (group) => {
       let movedSomeItems = false;

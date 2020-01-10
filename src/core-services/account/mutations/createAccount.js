@@ -57,9 +57,7 @@ export default async function createAccount(context, input) {
     userId
   } = input;
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions("reaction:accounts", "create", { shopId, legacyRoles: ["reaction-accounts"] });
-  }
+  await context.validatePermissions("reaction:accounts", "create", { shopId, legacyRoles: ["reaction-accounts"] });
 
   // Create initial account object from user and profile
   const account = {
@@ -121,10 +119,7 @@ export default async function createAccount(context, input) {
   // and potential security concerns if done incorrectly, it's best to use the mutation.
   try {
     await Promise.all(groups.map((groupId) => (
-      context.mutations.addAccountToGroup({
-        ...context,
-        isInternalCall: true
-      }, {
+      context.mutations.addAccountToGroup(context.getInternalContext(), {
         accountId: account._id,
         groupId
       })
