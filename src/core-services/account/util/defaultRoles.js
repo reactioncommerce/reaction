@@ -79,6 +79,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:products/publish",
   "reaction:legacy:products/read",
   "reaction:legacy:products/update",
+  "reaction:legacy:products/update:prices",
   "reaction:legacy:shippingMethods/create",
   "reaction:legacy:shippingMethods/delete",
   "reaction:legacy:shippingMethods/read",

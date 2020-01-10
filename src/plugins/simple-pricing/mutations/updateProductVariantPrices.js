@@ -40,8 +40,7 @@ export default async function updateProductVariantPrices(context, input) {
 
   // Check that user has permission to create product
   await context.validatePermissions(`reaction:legacy:products:${variantId}`, "update:prices", {
-    shopId,
-    legacyRoles: ["createProduct", "product/admin", "product/update"]
+    shopId
   });
 
   const { value: updatedProduct } = await Products.findOneAndUpdate(
