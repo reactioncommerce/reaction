@@ -49,6 +49,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:discounts/delete", // TODO(pod-auth): this was owner / admin only
   "reaction:legacy:discounts/read", // TODO(pod-auth): this was owner / admin only
   "reaction:legacy:discounts/update", // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:emails/read",
   "reaction:legacy:emails/send",
   "reaction:legacy:media/update",
   "reaction:legacy:mediaRecords/create:media",
