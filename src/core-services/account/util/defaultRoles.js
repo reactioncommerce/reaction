@@ -45,6 +45,11 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:mediaRecords/create:media",
   "reaction:legacy:mediaRecords/delete:media",
   "reaction:legacy:mediaRecords/update:media",
+  "reaction:legacy:orders/cancel:item",
+  "reaction:legacy:orders/move:item",
+  "reaction:legacy:orders/read",
+  "reaction:legacy:orders/refund:payment",
+  "reaction:legacy:orders/update",
   "reaction:legacy:products/publish",
   "reaction:legacy:shops:/update" // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
 ];

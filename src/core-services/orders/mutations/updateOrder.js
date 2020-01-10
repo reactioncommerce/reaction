@@ -50,7 +50,7 @@ export default async function updateOrder(context, input) {
   await context.validatePermissions(
     `reaction:legacy:orders:${order._id}`,
     "update",
-    { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
+    { shopId: order.shopId }
   );
 
   const modifier = {
