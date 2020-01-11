@@ -60,7 +60,7 @@ beforeAll(async () => {
 
   mockOrdersAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["orders"]
+      [shopId]: ["reaction:legacy:orders/move:item", "reaction:legacy:orders/update"]
     }
   });
   await testApp.createUserAndAccount(mockOrdersAccount);
@@ -132,7 +132,7 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("user with orders role can add an order fulfillment group with new items", async () => {
+test("user with `reaction:legacy:orders/update` role can add an order fulfillment group with new items", async () => {
   await testApp.setLoggedInUser(mockOrdersAccount);
 
   const orderItem = Factory.OrderItem.makeOne({
@@ -250,7 +250,7 @@ test("user with orders role can add an order fulfillment group with new items", 
   expect(newFulfillmentGroupId).toEqual(jasmine.any(String));
 });
 
-test("user with orders role can add an order fulfillment group with moved items", async () => {
+test("user with `reaction:legacy:orders/move:item` role can add an order fulfillment group with moved items", async () => {
   await testApp.setLoggedInUser(mockOrdersAccount);
 
   const orderItemToStay = Factory.OrderItem.makeOne({

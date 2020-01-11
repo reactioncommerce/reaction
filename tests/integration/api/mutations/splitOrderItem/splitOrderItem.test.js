@@ -55,7 +55,7 @@ beforeAll(async () => {
 
   mockOrdersAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["orders"]
+      [shopId]: ["reaction:legacy:orders/move:item"]
     }
   });
   await testApp.createUserAndAccount(mockOrdersAccount);
@@ -93,7 +93,7 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("user with orders permission can split an order item", async () => {
+test("user with `reaction:legacy:orders/move:item` permission can split an order item", async () => {
   await testApp.setLoggedInUser(mockOrdersAccount);
 
   const orderItem = Factory.OrderItem.makeOne({

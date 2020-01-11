@@ -19,7 +19,7 @@ beforeAll(async () => {
 
   mockOrdersAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["orders"]
+      [shopId]: ["reaction:legacy:orders/update"]
     }
   });
   await testApp.createUserAndAccount(mockOrdersAccount);

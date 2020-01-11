@@ -23,7 +23,6 @@ const GLOBAL_GROUP = "__global_roles__";
 export default async function hasPermission(context, resource, action, authContext) {
   const { user } = context;
 
-
   if (!user || !user.roles) return false;
 
   if (!resource) throw new ReactionError("invalid-param", "Resource must be provided");
