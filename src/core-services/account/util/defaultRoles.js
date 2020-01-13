@@ -40,22 +40,22 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:accounts/update:address-books",
   "reaction:legacy:accounts/update:currency",
   "reaction:legacy:accounts/update:language",
-  "reaction:legacy:addressValidationRules/create", // TODO(pod-auth): figure out why this was "admin" only
-  "reaction:legacy:addressValidationRules/delete", // TODO(pod-auth): figure out why this was "admin" only
-  "reaction:legacy:addressValidationRules/read", // TODO(pod-auth): figure out why this was "admin" only
-  "reaction:legacy:addressValidationRules/update", // TODO(pod-auth): figure out why this was "admin" only
+  "reaction:legacy:addressValidationRules/create",
+  "reaction:legacy:addressValidationRules/delete",
+  "reaction:legacy:addressValidationRules/read",
+  "reaction:legacy:addressValidationRules/update",
   "reaction:legacy:carts:/update",
-  "reaction:legacy:discounts/create", // TODO(pod-auth): this was owner / admin only
-  "reaction:legacy:discounts/delete", // TODO(pod-auth): this was owner / admin only
-  "reaction:legacy:discounts/read", // TODO(pod-auth): this was owner / admin only
-  "reaction:legacy:discounts/update", // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:discounts/create",
+  "reaction:legacy:discounts/delete",
+  "reaction:legacy:discounts/read",
+  "reaction:legacy:discounts/update",
   "reaction:legacy:email-templates/read",
   "reaction:legacy:email-templates/update",
   "reaction:legacy:emails/read",
   "reaction:legacy:emails/send",
-  "reaction:legacy:fulfillment/read", // TODO(pod-auth): figure out why this was "admin" only
-  "reaction:legacy:inventory/read", // TODO(pod-auth): figure out why this was "admin" only
-  "reaction:legacy:inventory/update", // TODO(pod-auth): figure out why this was "admin" only
+  "reaction:legacy:fulfillment/read",
+  "reaction:legacy:inventory/read",
+  "reaction:legacy:inventory/update",
   "reaction:legacy:media/update",
   "reaction:legacy:mediaRecords/create:media",
   "reaction:legacy:mediaRecords/delete:media",
@@ -66,7 +66,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:navigationTreeItems/read",
   "reaction:legacy:navigationTreeItems/update",
   "reaction:legacy:navigationTrees/update",
-  "reaction:legacy:navigationTrees-drafts/read",
+  "reaction:legacy:navigationTrees-drafts/read", // TODO(pod-auth): revisit how draft is done
   "reaction:legacy:orders/approve:payment",
   "reaction:legacy:orders/cancel:item",
   "reaction:legacy:orders/capture:payment",
@@ -89,8 +89,8 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:shippingRestrictions/delete",
   "reaction:legacy:shippingRestrictions/read",
   "reaction:legacy:shippingRestrictions/update",
-  "reaction:legacy:shops/read", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
-  "reaction:legacy:shops/update", // TODO(pod-auth): this was owner / admin only, might not belong as shopManager
+  "reaction:legacy:shops/read",
+  "reaction:legacy:shops/update",
   "reaction:legacy:surcharges/create",
   "reaction:legacy:surcharges/delete",
   "reaction:legacy:surcharges/update",
@@ -100,10 +100,10 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:tags/update",
   "reaction:legacy:tags-inactive/read", // TODO(pod-auth): revisit how inactive is done
   "reaction:legacy:taxes/read",
-  "reaction:legacy:taxRates/create", // TODO(pod-auth): this was owner / admin only
-  "reaction:legacy:taxRates/delete", // TODO(pod-auth): this was owner / admin only
-  "reaction:legacy:taxRates/read", // TODO(pod-auth): this was owner / admin only
-  "reaction:legacy:taxRates/update" // TODO(pod-auth): this was owner / admin only
+  "reaction:legacy:taxRates/create",
+  "reaction:legacy:taxRates/delete",
+  "reaction:legacy:taxRates/read",
+  "reaction:legacy:taxRates/update"
 ];
 
 export const defaultOwnerRoles = [
