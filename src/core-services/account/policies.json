@@ -5,6 +5,7 @@
     "resources": [ "reaction:accounts" ],
     "actions": [
       "create",
+      "delete",
       "read"
     ],
     "effect": "allow"
