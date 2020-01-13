@@ -16,7 +16,12 @@ export default async function moveAccountsToGroup(context, { shopId, fromGroupId
   const { collections } = context;
   const { Accounts, Groups, users } = collections;
 
+  const fromGroup = await Groups.findOne({ _id: fromGroupId, shopId });
   const toGroup = await Groups.findOne({ _id: toGroupId, shopId });
+
+  if (!fromGroup) {
+    throw new ReactionError("not-found", `Accounts cannot be moved from group ith ID ${fromGroupId}. Group doesn't exist.`);
+  }
 
   if (!toGroup) {
     throw new ReactionError("not-found", `Accounts cannot be moved to group with ID ${toGroupId}. Group doesn't exist.`);
@@ -46,7 +51,7 @@ export default async function moveAccountsToGroup(context, { shopId, fromGroupId
   let lastUserIdUpdated = "";
 
   for (let inc = 0; inc < numQueriesNeeded; inc += 1) {
-    Logger.debug(`Processing account group move #${inc + 1} of ${numQueriesNeeded} for ${name} group, ${roles} roles`);
+    Logger.debug(`Processing account group move #${inc + 1} of ${numQueriesNeeded} from ${fromGroup.name} group to ${toGroup.name} group, ${roles} roles`);
 
     if (lastUserIdUpdated) {
       accountSelector._id = {
@@ -60,22 +65,30 @@ export default async function moveAccountsToGroup(context, { shopId, fromGroupId
     const lastUserIdInBatch = userIds[userIds.length - 1];
     const accountUpdateSelector = { _id: { $gte: firstUserIdInBatch, $lte: lastUserIdInBatch } };
     const userSelector = { _id: { $gte: firstUserIdInBatch, $lte: lastUserIdInBatch } };
-    const accountModifier = {
-      $set: {
+
+    // $pull and $addToSet cannot be performed in the same operation as they modify the same field
+    // Pull the old group from all selected accounts
+    await Accounts.updateMany(accountUpdateSelector, { // eslint-disable-line no-await-in-loop
+      $pull: {
+        groups: fromGroupId
+      }
+    });
+
+    // Add the new group to all selected accounts
+    await Accounts.updateMany(accountUpdateSelector, { // eslint-disable-line no-await-in-loop
+      $addToSet: {
         groups: toGroupId
       }
-    };
-    const userModifier = {
+    });
+
+    await users.updateMany(userSelector, { // eslint-disable-line no-await-in-loop
       $set: {
         [`roles.${shopId}`]: roles
       }
-    };
-
-    await Accounts.updateMany(accountUpdateSelector, accountModifier); // eslint-disable-line no-await-in-loop
-    await users.updateMany(userSelector, userModifier); // eslint-disable-line no-await-in-loop
+    });
 
     lastUserIdUpdated = lastUserIdInBatch;
   }
 
-  Logger.debug(`moveAccountsToGroup completed for ${name} group, ${roles} roles`);
+  Logger.debug(`moveAccountsToGroup completed from ${fromGroup.name} group to ${toGroup.name} group, ${roles} roles`);
 }
