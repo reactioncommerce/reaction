@@ -35,7 +35,7 @@ export default async function updateAccountGroup(context, input) {
   const { Groups } = context.collections;
 
   // we are limiting group method actions to only users within the account managers role
-  await context.validatePermissions("reaction:accounts", "update:group", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions(`reaction:legacy:account-groups:${groupId}`, "update", { shopId, legacyRoles: ["admin"] });
 
   const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
 
