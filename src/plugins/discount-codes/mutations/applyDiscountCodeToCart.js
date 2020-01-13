@@ -44,7 +44,7 @@ export default async function applyDiscountCodeToCart(context, input) {
       throw new ReactionError("not-found", "Cart not found");
     }
 
-    await context.validatePermissions(`reaction:carts:${cartId}`, "update", {
+    await context.validatePermissions(`reaction:legacy:carts:${cartId}`, "update", {
       shopId,
       owner: cart.accountId,
       legacyRoles: ["owner", "admin", "discounts/apply"]

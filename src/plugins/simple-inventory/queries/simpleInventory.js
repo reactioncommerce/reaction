@@ -22,7 +22,11 @@ export default async function simpleInventory(context, input) {
   const { collections } = context;
   const { SimpleInventory } = collections;
 
-  await context.validatePermissions(`reaction:inventory:${productConfiguration.productVariantId}`, "read", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions(
+    `reaction:legacy:inventory:${productConfiguration.productVariantId}`,
+    "read",
+    { shopId, legacyRoles: ["admin"] }
+  );
 
   return SimpleInventory.findOne({
     "productConfiguration.productVariantId": productConfiguration.productVariantId,

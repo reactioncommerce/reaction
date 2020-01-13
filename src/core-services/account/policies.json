@@ -2,7 +2,7 @@
   {
     "description": "Account managers acting on all entities.",
     "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts" ],
+    "resources": [ "reaction:legacy:accounts" ],
     "actions": [
       "create",
       "read"
@@ -12,7 +12,7 @@
   {
     "description": "Account managers acting on specific entities.",
     "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts:*" ],
+    "resources": [ "reaction:legacy:accounts:*" ],
     "actions": [
       "add:address-books",
       "add:emails",
@@ -29,7 +29,7 @@
   {
     "description": "Account owner acting on their account.",
     "subjects": [ "reaction:users:*" ],
-    "resources": [ "reaction:accounts:*" ],
+    "resources": [ "reaction:legacy:accounts:*" ],
     "actions": [
       "add:address-books",
       "add:emails",

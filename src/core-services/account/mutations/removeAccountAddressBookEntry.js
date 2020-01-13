@@ -28,7 +28,7 @@ export default async function removeAccountAddressBookEntry(context, input) {
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "Not Found");
 
-  await context.validatePermissions(`reaction:accounts:${account._id}`, "remove:address-books", {
+  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "remove:address-books", {
     shopId: account.shopId,
     owner: account.userId,
     legacyRoles: ["reaction-accounts"]

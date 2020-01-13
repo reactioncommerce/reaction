@@ -14,7 +14,7 @@ export default async function retryFailed(context, input) {
   const { jobId, shopId } = input;
   let emailJobId = jobId;
 
-  await context.validatePermissions("reaction:emails", "send", {
+  await context.validatePermissions("reaction:legacy:emails", "send", {
     shopId,
     legacyRoles: ["admin", "owner", "reaction-email"]
   });

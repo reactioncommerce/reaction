@@ -10,8 +10,8 @@ export default async function register(app) {
     label: "Legacy Authorization",
     name: "reaction-legacy-authorization",
     version: app.context.appVersion,
-    auth: {
-      getHasPermissionFunctionForUser
+    functionsByType: {
+      getHasPermissionFunctionForUser: [getHasPermissionFunctionForUser]
     }
   });
 }

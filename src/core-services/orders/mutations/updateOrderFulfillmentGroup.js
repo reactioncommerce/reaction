@@ -44,7 +44,11 @@ export default async function updateOrderFulfillmentGroup(context, input) {
   if (!order) throw new ReactionError("not-found", "Order not found");
 
   // Allow update if the account has "orders" permission
-  await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
+  await context.validatePermissions(
+    `reaction:legacy:orders:${order._id}`,
+    "update",
+    { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
+  );
 
   // Verify that there is a group with the ID
   const orderFulfillmentGroup = order.shipping.find((group) => group._id === orderFulfillmentGroupId);

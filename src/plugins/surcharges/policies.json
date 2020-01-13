@@ -2,7 +2,7 @@
   {
     "description": "Surcharge managers acting on all surcharges.",
     "subjects": [ "reaction:groups:surcharge-managers" ],
-    "resources": [ "reaction:surcharges" ],
+    "resources": [ "reaction:legacy:surcharges" ],
     "actions": [
       "create",
       "read"
@@ -12,7 +12,7 @@
   {
     "description": "Surcharge managers acting on a single surcharge.",
     "subjects": [ "reaction:groups:surcharge-managers" ],
-    "resources": [ "reaction:surcharges:*" ],
+    "resources": [ "reaction:legacy:surcharges:*" ],
     "actions": [
       "delete",
       "read",
