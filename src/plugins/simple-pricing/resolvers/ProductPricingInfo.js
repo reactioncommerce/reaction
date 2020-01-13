@@ -3,8 +3,12 @@ import getDisplayPrice from "../util/getDisplayPrice.js";
 
 export default {
   currency: (node) => getCurrencyDefinitionByCode(node.currencyCode),
-  compareAtPrice: ({ compareAtPrice: amount, currencyCode }) =>
-    typeof amount === "number" && amount > 0 ? { amount, currencyCode } : null,
+  compareAtPrice: ({ compareAtPrice: amount, currencyCode }) => {
+    if (typeof amount === "number" && amount > 0) {
+      return { amount, currencyCode };
+    }
+    return null;
+  },
   displayPrice: (node) => {
     if (node.displayPrice) {
       // Operating in core catalog plugin mode.
