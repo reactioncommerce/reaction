@@ -1,0 +1,11 @@
+mutation RemoveAccountGroup($input: RemoveAccountGroupInput!) {
+  removeAccountGroup(input: $input) {
+    group {
+      _id
+      slug
+      name
+      description
+      permissions
+    }
+  }
+}
