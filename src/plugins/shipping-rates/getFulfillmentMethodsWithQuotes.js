@@ -2,6 +2,8 @@ import Logger from "@reactioncommerce/logger";
 import isShippingRestricted from "./util/isShippingRestricted.js";
 import filterShippingMethods from "./util/filterShippingMethods.js";
 
+const packageName = "flat-rate-shipping";
+
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
  * @param {Object} context - Context
@@ -19,29 +21,13 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   const { collections } = context;
   const { Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;
-  const currentMethodInfo = {
-    packageName: "flat-rate-shipping",
-    fileName: "hooks.js"
-  };
+  const currentMethodInfo = { packageName };
 
   if (retrialTargets.length > 0) {
-    const isNotAmongFailedRequests = retrialTargets.every((target) =>
-      target.packageName !== currentMethodInfo.packageName &&
-      target.fileName !== currentMethodInfo.fileName);
+    const isNotAmongFailedRequests = retrialTargets.every((target) => target.packageName !== packageName);
     if (isNotAmongFailedRequests) {
       return previousQueryResults;
     }
-  }
-
-  // Verify that we have a valid address to work with
-  if (!commonOrder.shippingAddress) {
-    const errorDetails = {
-      requestStatus: "error",
-      shippingProvider: "flat-rate-shipping",
-      message: "Fulfillment group is missing a shipping address"
-    };
-    rates.push(errorDetails);
-    return [rates, retrialTargets];
   }
 
   const { isShippingRatesFulfillmentEnabled } = await context.queries.appSettings(context, commonOrder.shopId);
@@ -63,7 +49,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   if (isOrderShippingRestricted) {
     const errorDetails = {
       requestStatus: "error",
-      shippingProvider: "flat-rate-shipping",
+      shippingProvider: packageName,
       message: "Flat rate shipping did not return any shipping methods."
     };
     rates.push(errorDetails);
@@ -84,13 +70,13 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
         if (!method.carrier) {
           method.carrier = carrier;
         }
-        const rate = method.rate + method.handling;
+
         rates.push({
           carrier,
           handlingPrice: method.handling,
           method,
-          rate,
-          shippingPrice: method.rate,
+          rate: method.rate,
+          shippingPrice: method.rate + method.handling,
           shopId: doc.shopId
         });
       }
@@ -101,7 +87,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   if (rates.length === initialNumOfRates) {
     const errorDetails = {
       requestStatus: "error",
-      shippingProvider: "flat-rate-shipping",
+      shippingProvider: packageName,
       message: "Flat rate shipping did not return any shipping methods."
     };
     rates.push(errorDetails);

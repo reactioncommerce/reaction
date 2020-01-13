@@ -1,15 +1,13 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
-import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Shop/roles
  * @method
  * @memberof Shop/GraphQL
  * @summary find and return the roles for a shop
- * @param {Object} _ - unused
+ * @param {Object} shop Shop returned by the parent resolver
  * @param {Object} connectionArgs - an object of all arguments that were sent by the client
- * @param {String} connectionArgs.shopId - id of shop to query
  * @param {String} connectionArgs.after - Connection argument
  * @param {String} connectionArgs.before - Connection argument
  * @param {Number} connectionArgs.first - Connection argument
@@ -18,12 +16,8 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object[]>} Promise that resolves with array of user Roles objects
  */
-export default async function roles({ _id }, connectionArgs, context, info) {
-  // Transform ID from base64
-  const dbShopId = decodeShopOpaqueId(_id);
-
-  const query = await context.queries.roles(context, dbShopId);
-
+export default async function roles(shop, connectionArgs, context, info) {
+  const query = await context.queries.roles(context, shop._id);
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),

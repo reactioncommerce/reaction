@@ -1,10 +1,11 @@
 import operators from "@reactioncommerce/api-utils/operators.js";
 import propertyTypes from "@reactioncommerce/api-utils/propertyTypes.js";
+import isDestinationRestricted from "./isDestinationRestricted.js";
 
 /**
  * @summary Filter shipping methods based on per method deny attribute restrictions
  * @param {Object} methodRestrictions - method restrictions from FlatRateFulfillmentRestrcitionsCollection
- * @param {Object} method - current method to check restrcictions against
+ * @param {Object} method - current method to check restrictions against
  * @param {Object} hydratedOrder - hydrated order for current order
  * @returns {Bool} true / false as to whether method is still valid after this check
  */
@@ -34,24 +35,7 @@ export async function attributeDenyCheck(methodRestrictions, method, hydratedOrd
 
         if (attributeFound) {
           // If there is no destination restriction, destination restriction is global
-          // Return true to restrict this method
-          if (!destination) return attributeFound;
-
-          const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
-
-          if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
-            return true;
-          }
-
-          // Check for an allow list of regions
-          if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
-            return true;
-          }
-
-          // Check for an allow list of countries
-          if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
-            return true;
-          }
+          return !destination || isDestinationRestricted(destination, shippingAddress);
         }
 
         // If shipping location does not match restricted location && attribute, method is not restricted

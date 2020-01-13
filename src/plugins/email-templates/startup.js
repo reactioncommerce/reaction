@@ -6,7 +6,7 @@ import seedEmailTemplatesForShop from "./util/seedEmailTemplatesForShop.js";
  * @param {Object} context App context
  * @returns {undefined}
  */
-export default async function startup(context) {
+export default async function emailTemplatesStartup(context) {
   context.appEvents.on("afterShopCreate", async (payload) => {
     const { shop } = payload;
 

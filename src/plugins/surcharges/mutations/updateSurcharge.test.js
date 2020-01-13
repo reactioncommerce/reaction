@@ -62,6 +62,8 @@ test("update a surcharge", async () => {
 
   expect(result).toEqual({
     surcharge: {
+      _id: "surcharge123",
+      shopId: "shop123",
       type: "surcharge",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },

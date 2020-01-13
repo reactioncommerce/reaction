@@ -1,0 +1,101 @@
+[
+  {
+    "i18n": "pt",
+    "ns": "reaction-tags",
+    "translation": {
+      "reaction-tags": {
+        "tagAddedToProduct": "Etiqueta \"{{tagName}}\" adicionada ao produto",
+        "tagRemovedFromProduct": "Etiqueta \"{{tagName}}\" removida do produto",
+        "admin": {
+          "tags": {
+            "tags": "Etiquetas",
+            "tagManagement": "Gerenciamento de Etiqueta",
+            "enabled": "Ativado",
+            "disabled": "Desativado",
+            "enable": "Ativar",
+            "disable": "Desativar",
+            "delete": "Apagar",
+            "visible": "Visível",
+            "makeVisible": "Deixar visível",
+            "makeHidden": "Deixar escondido",
+            "hidden": "Escondido",
+            "visibleAction": "Deixar {{count}} etiqueta visível para os clientes",
+            "visibleAction_plural": "Deixar {{count}} etiquetas visíveis para os clientes",
+            "hiddenAction": "Esconder {{count}} etiqueta dos clientes",
+            "hiddenAction_plural": "Esconder {{count}} etiquetas dos clientes",
+            "deleteAction": "Apagar {{count}} etiqueta",
+            "deleteAction_plural": "Apagar {{count}} etiquetas",
+            "form": {
+              "name": "Nome da etiqueta",
+              "nameHelpText": "O nome único para a etiqueta",
+              "displayTitle": "Título",
+              "displayTitleAndSlug": "Título e slug",
+              "displayTitleHelpText": "O título da etiqueta para as páginas de listagem de produtos.",
+              "displayTitlePlaceholder": "ex. Sapatos Femininos",
+              "slug": "Slug",
+              "slugHelpText": "Etiqueta slug é automaticamente convertida em texto compatível com URL ao salvar. Se ficar em branco será utilizado o nome da etiqueta.",
+              "slugPlaceholder": "sapatos-femininos",
+              "formTitleNew": "Criar etiqueta",
+              "formTitleUpdate": "Editar Etiqueta",
+              "heroMediaUrl": "Hero media URL",
+              "heroMediaUrlPlaceholder": "URL",
+              "heroMediaDeleteConfirm": "Remover hero media?",
+              "uploadImage": "Upload de imagem",
+              "createNew": "Criar etiqueta",
+              "cancel": "Cancelar",
+              "delete": "Apagar",
+              "deleteConfirm": "Apagar esta etiqueta?",
+              "submitNew": "Criar Etiqueta",
+              "submitUpdate": "Atualizar Etiqueta",
+              "saveChanges": "Salvar alterações",
+              "isVisible": "Etiqueta ativa na loja",
+              "tagDetails": "Detalhes da etiqueta",
+              "metadata": "Metadado",
+              "products": "Produtos",
+              "save": "Salvar",
+              "tagListingHero": "Hero image da página de listagem de etiqueta",
+              "tagListingHeroHelpText": "Imagens com proporção de 16:9 ou maior funcionam melhor.",
+              "tagMetadata": "Metadado da etiqueta",
+              "openGraph": "OpenGraph",
+              "keywords": "Palavras-chave",
+              "keywordsPlaceholder": "Palavras-chave",
+              "description": "Descrição",
+              "descriptionPlaceholder": "Descrição",
+              "ogTitle": "Título [og:title]",
+              "ogTitlePlaceholder": "Título",
+              "ogUrl": "URL [og:url]",
+              "ogUrlPlaceholder": "URL",
+              "ogDescription": "Descrição [og:description]",
+              "ogDescriptionPlaceholder": "Descrição",
+              "ogImageUrl": "URL da Imagem [og:image]",
+              "ogImageUrlPlaceholder": "URL",
+              "fbAppId": "Facebook App Id (Opcional)",
+              "fbAppIdPlaceholder": "App Id",
+              "ogLocale": "Locale [og:locale]",
+              "ogLocalePlaceholder": "Locale",
+              "id": "ID",
+              "title": "Título",
+              "priority": "Prioridade"
+            },
+            "headers": {
+              "slug": "Slug",
+              "name": "Etiqueta",
+              "displayTitle": "Título",
+              "status": "Status"
+            },
+            "tableText": {
+              "noDataMessage": "Nenhum resultado encontrado",
+              "previousText": "Anterior",
+              "nextText": "Próximo",
+              "loadingText": "Carregando...",
+              "noDataText": "Nenhum resultado encontrado",
+              "pageText": "Página",
+              "ofText": "de",
+              "rowsText": "linhas"
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -12,6 +12,7 @@ import setAccountProfileCurrency from "./setAccountProfileCurrency.js";
 import setAccountProfileLanguage from "./setAccountProfileLanguage.js";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
 import createAccountGroup from "./createAccountGroup.js";
+import updateAccountGroup from "./updateAccountGroup.js";
 
 export default {
   addressBookAdd,
@@ -27,5 +28,6 @@ export default {
   setAccountProfileCurrency,
   setAccountProfileLanguage,
   updateAccountAddressBookEntry,
-  createAccountGroup
+  createAccountGroup,
+  updateAccountGroup
 };

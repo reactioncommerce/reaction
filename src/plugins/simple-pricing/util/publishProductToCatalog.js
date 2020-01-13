@@ -27,7 +27,7 @@ function getPricingObject(doc, priceInfo) {
  * @param {Object[]} input.variants All variants and options of the product being published, in Products collection schema
  * @returns {undefined} No return. Mutates `catalogProduct` object.
  */
-export default function publishProductToCatalog(catalogProduct, { product, shop, variants }) {
+export default function publishProductToCatalogForSimplePricing(catalogProduct, { product, shop, variants }) {
   const shopCurrencyCode = shop.currency;
   const shopCurrencyInfo = CurrencyDefinitions[shopCurrencyCode];
 

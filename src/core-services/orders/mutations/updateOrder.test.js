@@ -47,40 +47,6 @@ test("throws if permission check fails", async () => {
   );
 });
 
-test("skips permission check if context.isInternalCall", async () => {
-  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
-    shipping: [
-      Factory.OrderFulfillmentGroup.makeOne({
-        items: Factory.OrderItem.makeMany(2)
-      }),
-      Factory.OrderFulfillmentGroup.makeOne({
-        items: Factory.OrderItem.makeMany(2)
-      })
-    ],
-    shopId: "SHOP_ID",
-    workflow: {
-      status: "new",
-      workflow: ["new"]
-    }
-  }));
-
-  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1,
-    value: {}
-  }));
-
-  mockContext.isInternalCall = true;
-
-  await updateOrder(mockContext, {
-    orderId
-  });
-
-  delete mockContext.isInternalCall;
-
-  expect(mockContext.validatePermissions).not.toHaveBeenCalled();
-});
-
-
 test("skips update if one is not necessary", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
     customFields: {

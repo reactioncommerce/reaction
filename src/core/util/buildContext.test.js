@@ -28,7 +28,6 @@ test("properly mutates the context object without user", async () => {
     auth,
     collections: mockContext.collections,
     getFunctionsOfType: mockContext.getFunctionsOfType,
-    isInternalCall: false,
     queries: {
       primaryShopId: jasmine.any(Function)
     },
@@ -60,7 +59,6 @@ test("properly mutates the context object with user", async () => {
     auth,
     collections: mockContext.collections,
     getFunctionsOfType: mockContext.getFunctionsOfType,
-    isInternalCall: false,
     queries: {
       primaryShopId: jasmine.any(Function)
     },

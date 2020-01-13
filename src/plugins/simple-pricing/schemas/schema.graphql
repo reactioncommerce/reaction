@@ -94,3 +94,54 @@ extend type Product {
   "Price range"
   price: ProductPriceRange
 }
+
+extend type ProductVariant {
+  "Compare at price of the variant"
+  compareAtPrice: Float
+
+  "Price of the variant"
+  price: Float
+}
+
+extend input ProductVariantInput {
+  "The price of the variant"
+  price: Float
+}
+
+"Input for the `updateProductVariantField` mutation"
+input UpdateProductVariantPricesInput  {
+  "Prices to update"
+  prices: ProductVariantPricesInput!
+
+  "ID of shop that owns the variant to update"
+  shopId: ID!
+
+  "ID of variant to update"
+  variantId: ID!
+}
+
+"Mutation input for a product variant or option"
+input ProductVariantPricesInput {
+  "Variant compareAtPrice"
+  compareAtPrice: Float
+
+  "Variant price"
+  price: Float
+}
+
+extend type Mutation {
+  "Update an existing product variants prices"
+  updateProductVariantPrices(
+    "Mutation input"
+    input: UpdateProductVariantPricesInput!
+  ): UpdateProductVariantPricesPayload!
+}
+
+"Response payload of `updateProductVariantPricesField` mutation"
+type UpdateProductVariantPricesPayload  {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Updated variant"
+  variant: ProductVariant!
+}

@@ -109,6 +109,7 @@ afterAll(async () => {
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[2] });
+  await testApp.collections.Tags.deleteMany({});
   await testApp.clearLoggedInUser();
   await testApp.stop();
 });

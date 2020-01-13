@@ -1,4 +1,4 @@
-import { registerPluginHandler, simpleSchemas } from "./registration.js";
+import { registerPluginHandlerForSimpleSchema, simpleSchemas } from "./registration.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -11,7 +11,7 @@ export default async function register(app) {
     name: "reaction-simple-schema",
     version: app.context.appVersion,
     functionsByType: {
-      registerPluginHandler: [registerPluginHandler]
+      registerPluginHandler: [registerPluginHandlerForSimpleSchema]
     },
     contextAdditions: {
       simpleSchemas

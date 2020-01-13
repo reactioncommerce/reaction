@@ -1,0 +1,18 @@
+mutation ($productIds: [ID]!) {
+  publishProductsToCatalog(productIds: $productIds) {
+    product {
+      productId
+      title
+      isDeleted
+      supportedFulfillmentTypes
+      variants {
+        _id
+        title
+        options {
+          _id
+          title
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+
+query ($accountId: ID!, $shopId: ID!) {
+  accountCartByAccountId(accountId: $accountId, shopId: $shopId){
+    _id
+    account {
+      _id
+    }
+    checkout {
+      summary {
+        total {
+          amount
+        }
+      }
+    }
+    email
+    items {
+      totalCount
+    }
+  }
+}

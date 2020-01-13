@@ -24,7 +24,7 @@ async function hashRelatedProduct(productId, collections) {
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default async function startup(context) {
+export default async function catalogStartup(context) {
   const { appEvents, collections } = context;
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
@@ -65,10 +65,7 @@ export default async function startup(context) {
   });
 
   appEvents.on("afterVariantUpdate", async ({ productId }) => {
-    const variant = await collections.Products.findOne({ _id: productId });
-    const productIdFromVariant = variant.ancestors[0];
-
-    hashRelatedProduct(productIdFromVariant, collections).catch((error) => {
+    hashRelatedProduct(productId, collections).catch((error) => {
       Logger.error("Error in afterVariantUpdate", error);
     });
   });

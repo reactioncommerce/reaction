@@ -43,6 +43,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await testApp.collections.Accounts.deleteMany({});
+  await testApp.collections.users.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.stop();
 });

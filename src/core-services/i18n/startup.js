@@ -6,7 +6,7 @@ import { addTranslationRoutes } from "./translations.js";
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default async function startup(context) {
+export default async function i18nStartup(context) {
   const { app } = context;
 
   if (app.expressApp) addTranslationRoutes(app.expressApp);

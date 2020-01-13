@@ -1,3 +1,101 @@
+# v3.0.0-alpha.3
+
+This is the latest alpha release of our new Reaction project.
+
+*Reaction releases will no longer be coordinated across all projects - we'll release each project, independently, as needed. This means version numbers will no longer be in sync. The newest versions of each project will work together.*
+
+## Notable changes
+
+### Integration tests
+
+This release adds new integration tests.
+
+## Fixes
+
+- fix: pt-BR translation for reaction-tags. [#5997](https://github.com/reactioncommerce/reaction/pull/5997)
+- fix: canBackorder has lowercase o throughout codebase [#5990](https://github.com/reactioncommerce/reaction/pull/5990)
+- fix: fix default public password reset URL [#5991](https://github.com/reactioncommerce/reaction/pull/5991)
+- fix: Some minor 3.0 fixes [#5977](https://github.com/reactioncommerce/reaction/pull/5977)
+
+## Refactor
+
+- refactor: Warn about non-unique names of functionsByType functions [#6001](https://github.com/reactioncommerce/reaction/pull/6001)
+- refactor: pass cart down to calculateOrderTaxes fn [#6000](https://github.com/reactioncommerce/reaction/pull/6000)
+
+## Tests
+
+- test integration test set tag hero media [#6007](https://github.com/reactioncommerce/reaction/pull/6007)
+- test: add integration tes for recalculateReservedSimpleInventory mutation [#6010](https://github.com/reactioncommerce/reaction/pull/6010)
+- test: full cart/checkout integration test [#5976](https://github.com/reactioncommerce/reaction/pull/5976)
+- test: adds integration test updateGlobalSettings mutation [#5970](https://github.com/reactioncommerce/reaction/pull/5970)
+- test: add integration test for inviteShopMember mutation [#5984](https://github.com/reactioncommerce/reaction/pull/5984)
+- test: adds integration test for generateSitemaps mutation [#5995](https://github.com/reactioncommerce/reaction/pull/5995)
+- test: adds integration test for updateShopSettings mutation [#5974](https://github.com/reactioncommerce/reaction/pull/5974)
+- test: Use Factory to mock FulfillmentMethod [#5988](https://github.com/reactioncommerce/reaction/pull/5988)
+- test: add integration test for create, update & delete FlatRateFulfillmentRestriction mutations [#5981](https://github.com/reactioncommerce/reaction/pull/5981)
+
+## Chores
+
+- chore: Node debugger config [#5993](https://github.com/reactioncommerce/reaction/pull/5993)
+- chore: use published image for docker-compose [#5992](https://github.com/reactioncommerce/reaction/pull/5992)
+- chore: Upgrade mongodb and jest-mongodb [#5904](https://github.com/reactioncommerce/reaction/pull/5904)
+
+## Contributors
+
+Thanks to [@trojanh](https://github.com/trojanh) and [@rogersoares](https://github.com/rogersoares) for contributing to this release! 🎉
+
+# v3.0.0-alpha.2
+
+Reaction v3.0.0-alpha.2 is the second alpha release of our new Reaction project.
+
+*Reaction releases will no longer be coordinated across all projects - we'll release each project, independently, as needed. This means version numbers will no longer be in sync. The newest versions of each project will work together.*
+
+## Notable changes
+
+### Integration tests
+
+The primary focus for this release is the addition of integration tests for many mutations and queries
+
+## Features
+
+- feat: return fulfillment quotes without a shipping address [#5934](https://github.com/reactioncommerce/reaction/pull/5934)
+- feat: add updateProductVariantPrices mutation to API [#5910](https://github.com/reactioncommerce/reaction/pull/5910)
+- feat: add graphql equivalent of create group [#5850](https://github.com/reactioncommerce/reaction/pull/5850)
+
+
+## Refactor
+
+- refactor: eliminate factory mocks for catalogItemProduct [#5892](https://github.com/reactioncommerce/reaction/pull/5892)
+- refactor: consolidate translation plugins [#5920](https://github.com/reactioncommerce/reaction/pull/5920)
+- refactor: clean up ENV/envalid code [#5922](https://github.com/reactioncommerce/reaction/pull/5922)
+- refactor: mo more Packages collection, implement AddressValidationRules GQL, other 3.0 stuff [#5888](https://github.com/reactioncommerce/reaction5888/pull/5888)
+
+## Tests
+
+- tests: add integration test for setAccountProfileCurrency mutation [#5958](https://github.com/reactioncommerce/reaction/pull/5958)
+- tests: add integration test for setAccountProfileLanguage mutation [#5960](https://github.com/reactioncommerce/reaction/pull/5960)
+- tests: add integration test for updateAccountAddressBookEntry [#5962](https://github.com/reactioncommerce/reaction/pull/5962)
+- tests: add integration test for removeAccountEmailRecord mutation [#5965](https://github.com/reactioncommerce/reaction/pull/5965)
+- tests: add integration test for removeAccountAddressBookEntry [#5961](https://github.com/reactioncommerce/reaction/pull/5961)
+- tests: add integration test for create, update & delete FlatRateFulfillmentMethod [#5964](https://github.com/reactioncommerce/reaction/pull/5964)
+- tests: add integration test for publishNavigationChanges mutation [#5969](https://github.com/reactioncommerce/reaction/pull/5969)
+- tests: Add integration tests for surcharge [#5938](https://github.com/reactioncommerce/reaction/pull/5938)
+- tests: add integration test for echo [#5942](https://github.com/reactioncommerce/reaction/pull/5942)
+- tests: add integration test for enablePaymentMethodForShop [#5944](https://github.com/reactioncommerce/reaction/pull/5944)
+- tests: adds integration test for taxServices query [#5912](https://github.com/reactioncommerce/reaction/pull/5912)
+- tests: adds systemInformation query integration test [#5907](https://github.com/reactioncommerce/reaction/pull/5907)
+- tests: split query and mutation integration tests in CI config [#5919](https://github.com/reactioncommerce/reaction/pull/5919)
+- tests: fix out-of-memory issues in tests [#5918](https://github.com/reactioncommerce/reaction/pull/5918)
+- tests: adds addressValidation query integration test [#5917](https://github.com/reactioncommerce/reaction/pull/5917)
+- tests: delete unused documents in afterAll [#5903](https://github.com/reactioncommerce/reaction/pull/5903)
+- tests: add create/update/delete navigation item integration tests [#5890](https://github.com/reactioncommerce/reaction/pull/5890)
+- tests: adds integration test sitemap [#5889](https://github.com/reactioncommerce/reaction/pull/5889)
+- tests: adds integration test subrchargeById query [#5896](https://github.com/reactioncommerce/reaction/pull/5896)
+- tests: adds integration test surcharges [#5902](https://github.com/reactioncommerce/reaction/pull/5902)
+- tests: integration test for update navigation tree [#5914](https://github.com/reactioncommerce/reaction/pull/5914)
+- tests: add integration test for  addressValidationServices query [#5930](https://github.com/reactioncommerce/reaction/pull/5930)
+- tests: add integration test for taxCodes query [#5911](https://github.com/reactioncommerce/reaction/pull/5911)
+
 # v3.0.0-alpha
 
 Reaction v3.0.0-alpha is our alpha release of the new Reaction project.

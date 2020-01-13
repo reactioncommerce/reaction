@@ -24,7 +24,10 @@ beforeAll(async () => {
 }`);
 });
 
-afterAll(() => testApp.stop());
+afterAll(async () => {
+  await testApp.collections.Shops.deleteMany({});
+  await testApp.stop();
+});
 
 test("get shop, no auth necessary", async () => {
   const opaqueShopId = encodeOpaqueId("reaction/shop", shopId);

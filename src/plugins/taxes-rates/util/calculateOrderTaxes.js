@@ -41,7 +41,8 @@ async function getTaxesForShop(collections, order) {
 /**
  * @summary Calculate and return taxes for an order
  * @param {Object} context App context
- * @param {Object} order The order
+ * @param {Object} [cart] The original cart object, if CommonOrder was built from a cart
+ * @param {Object} order The CommonOrder
  * @returns {Object|null} Calculated tax information, in `TaxServiceResult` schema, or `null` if can't calculate
  */
 export default async function calculateOrderTaxes({ context, order }) {

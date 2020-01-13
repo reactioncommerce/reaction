@@ -1,0 +1,11 @@
+mutation($input: RemoveAccountEmailRecordInput!) {
+  removeAccountEmailRecord(input: $input) {
+      account {
+        _id
+        name
+        emailRecords {
+          address
+        }
+      }
+    }
+}

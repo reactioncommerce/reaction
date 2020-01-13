@@ -71,23 +71,6 @@ test("throws if permission check fails", async () => {
   );
 });
 
-test("skips permission check if context.isInternalCall", async () => {
-  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(fakeOrder));
-
-  mockContext.isInternalCall = true;
-
-  await expect(createRefund(mockContext, {
-    amount: 10,
-    orderId: "order1",
-    paymentId: "paymentNoExist",
-    reason: "Customer was unsatisfied with purchase"
-  })).rejects.toThrowErrorMatchingSnapshot();
-
-  delete mockContext.isInternalCall;
-
-  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
-});
-
 test("throws if amount isn't supplied", async () => {
   await expect(createRefund(mockContext, {
     amount: null,

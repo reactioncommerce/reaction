@@ -20,7 +20,7 @@ const inputSchema = new SimpleSchema({
 export default async function approveOrderPayments(context, input = {}) {
   inputSchema.validate(input);
 
-  const { appEvents, collections, userId } = context;
+  const { appEvents, collections, userId = null } = context;
   const { Orders } = collections;
   const { orderId, paymentIds, shopId } = input;
 
@@ -56,7 +56,7 @@ export default async function approveOrderPayments(context, input = {}) {
     updatedBy: userId
   });
 
-  appEvents.emit("afterOrderApprovePayment", {
+  await appEvents.emit("afterOrderApprovePayment", {
     approvedBy: userId,
     order: updatedOrder
   });
