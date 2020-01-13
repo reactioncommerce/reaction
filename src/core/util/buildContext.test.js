@@ -6,19 +6,19 @@ const mockAccount = { _id: "accountId", userId: fakeUser._id };
 const accountByUserId = jest.fn().mockName("accountByUserId").mockReturnValue(Promise.resolve(mockAccount));
 
 const auth = {
-  accountByUserId,
-  getHasPermissionFunctionForUserLegacy: () => () => {}
+  accountByUserId
 };
 
 test("properly mutates the context object without user", async () => {
   process.env.ROOT_URL = "http://localhost:3000";
   const context = {
     auth,
-    validatePermissions: mockContext.validatePermissions,
     collections: mockContext.collections,
+    getFunctionsOfType: mockContext.getFunctionsOfType,
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
-    }
+    },
+    validatePermissions: mockContext.validatePermissions
   };
 
   await buildContext(context, { user: undefined });
@@ -27,6 +27,7 @@ test("properly mutates the context object without user", async () => {
     accountId: null,
     auth,
     collections: mockContext.collections,
+    getFunctionsOfType: mockContext.getFunctionsOfType,
     queries: {
       primaryShopId: jasmine.any(Function)
     },
@@ -44,11 +45,12 @@ test("properly mutates the context object with user", async () => {
 
   const context = {
     auth,
-    validatePermissions: mockContext.validatePermissions,
     collections: mockContext.collections,
+    getFunctionsOfType: mockContext.getFunctionsOfType,
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
-    }
+    },
+    validatePermissions: mockContext.validatePermissions
   };
   await buildContext(context, { user: fakeUser });
   expect(context).toEqual({
@@ -56,6 +58,7 @@ test("properly mutates the context object with user", async () => {
     accountId: mockAccount._id,
     auth,
     collections: mockContext.collections,
+    getFunctionsOfType: mockContext.getFunctionsOfType,
     queries: {
       primaryShopId: jasmine.any(Function)
     },
