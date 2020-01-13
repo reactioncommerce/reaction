@@ -12,7 +12,6 @@ import moveAccountsToGroup from "../util/moveAccountsToGroup.js";
  * @param {object} input - The input supplied from GraphQL
  * @param {String} input.groupId - id of the group to remove
  * @param {String} input.shopId - id of the shop the group belongs to
- * @param {String} input.newGroupId - id of the group to move users to. Cannot be the same as groupId
  * @returns {Object} - `object.status` of 200 on success or Error object on failure
  */
 export default async function removeAccountGroup(context, input) {
@@ -23,7 +22,23 @@ export default async function removeAccountGroup(context, input) {
   // we are limiting group method actions to only users within the account managers role
   await context.validatePermissions("reaction:accounts", "remove:group", { shopId, legacyRoles: ["admin"] });
 
-  const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
+  const defaultGroupsForShop = await Groups.find({
+    shopId,
+    slug: {
+      $in: ["owner", "shop-manager", "guest", "customer"]
+    }
+  }).toArray();
+
+  const defaultCustomerGroupForShop = defaultGroupsForShop.find(({ slug }) => slug === "customer");
+  const forbiddenGroupIds = defaultGroupsForShop.map(({ _id }) => _id);
+
+  if (forbiddenGroupIds.includes(groupId)) {
+    throw new ReactionError("accedd-denied", `Cannot remove default group with ID ${groupId}.`);
+  }
+
+  if (!defaultCustomerGroupForShop) {
+    throw new ReactionError("server-error", `Cannot remove group ${groupId}. Default "customer" group doesn't exist to move users to.`);
+  }
 
   // TODO: Remove when we move away from legacy permission verification
   // Move accounts from their old group to their new group
