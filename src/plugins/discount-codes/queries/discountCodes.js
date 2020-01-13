@@ -11,7 +11,7 @@ export default async function discountCodes(context, shopId) {
   const { collections } = context;
   const { Discounts } = collections;
 
-  await context.validatePermissions("reaction:discounts", "read", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions("reaction:legacy:discounts", "read", { shopId, legacyRoles: ["owner", "admin"] });
 
   return Discounts.find({
     shopId

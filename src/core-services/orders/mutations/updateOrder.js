@@ -47,7 +47,11 @@ export default async function updateOrder(context, input) {
   // At this point, this mutation only updates the workflow status, which should not be allowed
   // for the order creator. In the future, if this mutation does more, we should revisit these
   // permissions to see if order owner should be allowed.
-  await context.validatePermissions(`reaction:orders:${order._id}`, "update", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
+  await context.validatePermissions(
+    `reaction:legacy:orders:${order._id}`,
+    "update",
+    { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
+  );
 
   const modifier = {
     $set: {

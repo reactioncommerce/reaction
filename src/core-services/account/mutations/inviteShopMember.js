@@ -39,7 +39,7 @@ export default async function inviteShopMember(context, input) {
     shopId
   } = input;
 
-  await context.validatePermissions("reaction:accounts", "invite:group", { shopId, legacyRoles: ["reaction-accounts", "account/invite"] });
+  await context.validatePermissions("reaction:legacy:accounts", "invite:group", { shopId, legacyRoles: ["reaction-accounts", "account/invite"] });
 
   // we always use primary shop data, so retrieve this shop first with `Reaction` helper,
   // and only query the `Shops` collection if shopId !== primaryShop._id

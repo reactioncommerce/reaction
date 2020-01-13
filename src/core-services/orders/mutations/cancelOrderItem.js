@@ -55,7 +55,7 @@ export default async function cancelOrderItem(context, input) {
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  await context.validatePermissions(`reaction:orders:${order._id}`, "cancel:item", {
+  await context.validatePermissions(`reaction:legacy:orders:${order._id}`, "cancel:item", {
     shopId: order.shopId,
     owner: order.accountId,
     legacyRoles: ["orders", "order/fulfillment"]

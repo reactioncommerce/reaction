@@ -16,7 +16,7 @@ export default async function updateDiscountCode(context, input) {
   const { Discounts } = collections;
   const { shopId } = discountCodeInput;
 
-  await context.validatePermissions(`reaction:discounts:${_id}`, "update", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions(`reaction:legacy:discounts:${_id}`, "update", { shopId, legacyRoles: ["owner", "admin"] });
 
   DiscountCodesSchema.validate(discountCodeInput);
 

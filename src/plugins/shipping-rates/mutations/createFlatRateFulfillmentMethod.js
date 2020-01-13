@@ -24,7 +24,7 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
   const { Shipping } = collections;
   const method = { ...inputMethod };
 
-  await context.validatePermissions("reaction:shippingMethods", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
+  await context.validatePermissions("reaction:legacy:shippingMethods", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
 
   const shippingRecord = await Shipping.findOne({ "provider.name": "flatRates", shopId });
   if (!shippingRecord) {

@@ -26,7 +26,7 @@ export default async function products(context, input) {
 
   // Check the permissions for all shops requested
   await Promise.all(productFilters.shopIds.map(async (shopId) => {
-    await context.validatePermissions("reaction:products", "read", { shopId, legacyRoles: ["owner", "admin", "createProduct", "product/admin"] });
+    await context.validatePermissions("reaction:legacy:products", "read", { shopId, legacyRoles: ["owner", "admin", "createProduct", "product/admin"] });
   }));
 
   // Create the mongo selector from the filters

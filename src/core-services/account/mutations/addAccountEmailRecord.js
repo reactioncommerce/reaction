@@ -32,7 +32,7 @@ export default async function addAccountEmailRecord(context, input) {
   const user = await users.findOne({ _id: account.userId });
   if (!user) throw new ReactionError("not-found", "User not Found");
 
-  await context.validatePermissions(`reaction:accounts:${account._id}`, "add:emails", {
+  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "add:emails", {
     shopId: account.shopId,
     owner: account.userId,
     legacyRoles: ["reaction-accounts"]
