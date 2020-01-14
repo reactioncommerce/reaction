@@ -94,9 +94,10 @@ export default function createApolloServer(options = {}) {
     ...gqlMiddleware.filter((def) => def.stage === "before-response").map((def) => def.fn(contextFromOptions))
   ]);
 
-  // Redirect for legacy graphql routes
-  app.all(/\/graphql-\w+/, (req, res) => {
-    res.redirect(path);
+  // Rewrite url to support legacy graphql routes
+  app.all(/\/graphql-\w+/, (req, res, next) => {
+    req.url = path;
+    next();
   });
 
   apolloServer.applyMiddleware({ app, cors: true, path });
