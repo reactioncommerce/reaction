@@ -87,7 +87,7 @@ test("include not visible - by an admin", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   const result = await tags(mockContext, mockShopId, { shouldIncludeInvisible: true });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith("reaction:tags:inactive", "read", { shopId: mockShopId, legacyRoles: ["admin", "owner", "tags"] });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isVisible: true });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false });
   expect(result).toBe("CURSOR");
 });
 
@@ -96,6 +96,6 @@ test("include not visible and only topLevel - by an admin", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   const result = await tags(mockContext, mockShopId, { shouldIncludeInvisible: true, isTopLevel: true });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith("reaction:tags:inactive", "read", { shopId: mockShopId, legacyRoles: ["admin", "owner", "tags"] });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: true, isVisible: true });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: true });
   expect(result).toBe("CURSOR");
 });
