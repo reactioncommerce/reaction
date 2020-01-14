@@ -34,14 +34,14 @@ export default async function tags(
 
   // Check to make sure user has `read` permissions for this tag
   // TODO(auth-pod): revisit this check once legacyRoles are removed
-  // await context.validatePermissions("reaction:tags", "read", {
+  // await context.validatePermissions("reaction:legacy:tags", "read", {
   //   shopId,
   //   legacyRoles: ["admin", "owner", "tags", "any"]
   // });
 
   // Check to see if user has `read` permissions for hidden / deleted tags
   // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
-  const hasInactivePermissions = await context.userHasPermission("reaction:tags:inactive", "read", {
+  const hasInactivePermissions = await context.userHasPermission("reaction:legacy:tags:inactive", "read", {
     shopId,
     legacyRoles: ["admin", "owner", "tags"]
   });

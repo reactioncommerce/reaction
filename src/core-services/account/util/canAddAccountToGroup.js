@@ -29,7 +29,7 @@ export default async function canAddAccountToGroup(context, group) {
   const ownerGroup = await Groups.findOne({ name: "owner", shopId });
   const isOwnerAccount = (
     !!ownerGroup && contextUserAccount && contextUserAccount.groups.includes(ownerGroup._id)) ||
-    userHasPermission("reaction:shops", "owner", { shopId, legacyRoles: ["owner"] }); // TODO(pod-auth): update this to figure out what to do with "owner"
+    userHasPermission("reaction:legacy:shops", "owner", { shopId, legacyRoles: ["owner"] }); // TODO(pod-auth): update this to figure out what to do with "owner"
 
   return isOwnerAccount || _.difference(groupPermissions, user.roles[shopId] || []).length === 0;
 }

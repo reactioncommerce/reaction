@@ -2,7 +2,7 @@
   {
     "description": "Discount managers acting on specific entities.",
     "subjects": [ "reaction:groups:discount-managers" ],
-    "resources": [ "reaction:discounts" ],
+    "resources": [ "reaction:legacy:discounts" ],
     "actions": [
       "create",
       "read"
@@ -12,7 +12,7 @@
   {
     "description": "Discount managers acting on specific entities.",
     "subjects": [ "reaction:groups:discount-managers" ],
-    "resources": [ "reaction:discounts:*" ],
+    "resources": [ "reaction:legacy:discounts:*" ],
     "actions": [
       "delete",
       "update"

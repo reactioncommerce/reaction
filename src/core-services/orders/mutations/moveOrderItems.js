@@ -50,7 +50,7 @@ export default async function moveOrderItems(context, input) {
   if (!order) throw new ReactionError("not-found", "Order not found");
 
   // Allow move if the account that placed the order is attempting to move
-  await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", {
+  await context.validatePermissions(`reaction:legacy:orders:${order._id}`, "move:item", {
     shopId: order.shopId,
     owner: order.accountId,
     legacyRoles: ["orders", "order/fulfillment"]
