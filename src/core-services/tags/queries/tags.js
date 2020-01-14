@@ -75,7 +75,7 @@ export default async function tags(
   // If user does not have `read-admin` permissions,
   // or they do but shouldIncludeInvisible === false
   // only show visible products
-  if (hasInactivePermissions || (hasInactivePermissions && !shouldIncludeInvisible)) {
+  if (!hasInactivePermissions || (hasInactivePermissions && !shouldIncludeInvisible)) {
     query.isVisible = true;
   }
 
