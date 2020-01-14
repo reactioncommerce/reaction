@@ -2,15 +2,12 @@ import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
 import queries from "./queries/index.js";
-import { registerPluginHandlerForAccounts } from "./registration.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 import tokenMiddleware from "./util/tokenMiddleware.js";
 import accountByUserId from "./util/accountByUserId.js";
 import { Account } from "./simpleSchemas.js";
-
-const ENROLL_URI_BASE = "account/enroll";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -23,16 +20,6 @@ export default async function register(app) {
     name: "reaction-accounts",
     version: app.context.appVersion,
     i18n,
-    addRolesToGroups: [{
-      groups: ["guest", "customer"],
-      roles: [
-        "account/login",
-        "account/verify",
-        "not-found",
-        "reset-password",
-        ENROLL_URI_BASE
-      ]
-    }],
     collections: {
       Accounts: {
         name: "Accounts",
@@ -65,7 +52,6 @@ export default async function register(app) {
       accountByUserId
     },
     functionsByType: {
-      registerPluginHandler: [registerPluginHandlerForAccounts],
       startup: [startup]
     },
     graphQL: {

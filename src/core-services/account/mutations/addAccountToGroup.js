@@ -59,7 +59,7 @@ export default async function addAccountToGroup(context, input) {
 
   // Add all group roles to the user. Make sure this stays in this order.
   // Remove former group roles before adding new group roles, in case some are in both.
-  const newAccountUserRoles = new Set(accountUser.roles[shopId] || []);
+  const newAccountUserRoles = new Set((accountUser.roles || {})[shopId] || []);
 
   const formerGroupId = (account.groups || []).find((grpId) => allGroupIDsInShop.indexOf(grpId) !== -1);
   if (formerGroupId) {
