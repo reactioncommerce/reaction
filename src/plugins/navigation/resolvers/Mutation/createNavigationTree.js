@@ -1,4 +1,4 @@
-import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
+import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Mutation.createNavigationTree

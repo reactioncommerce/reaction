@@ -1,4 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
 import Random from "@reactioncommerce/random";
 import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds.js";
 import setDefaultsForNavigationTreeItems from "../util/setDefaultsForNavigationTreeItems.js";
