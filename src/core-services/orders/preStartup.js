@@ -6,6 +6,6 @@ import { extendOrdersSchemas } from "./simpleSchemas.js";
  * @param {Object} context.simpleSchemas Map of SimpleSchemas
  * @returns {undefined}
  */
-export default function preStartup(context) {
+export default function ordersPreStartup(context) {
   extendOrdersSchemas(context.simpleSchemas);
 }

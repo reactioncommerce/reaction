@@ -2,7 +2,7 @@
   {
     "description": "Shop managers acting on specific entities.",
     "subjects": [ "reaction:groups:shop-managers" ],
-    "resources": [ "reaction:shops:*" ],
+    "resources": [ "reaction:legacy:shops:*" ],
     "actions": [
       "read"
     ],

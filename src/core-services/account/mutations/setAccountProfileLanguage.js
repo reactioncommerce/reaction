@@ -36,13 +36,11 @@ export default async function setAccountProfileLanguage(context, input) {
   const account = await Accounts.findOne({ _id: accountId }, { projection: { shopId: 1 } });
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:accounts:${account._id}`, "update:language", {
-      shopId: account.shopId,
-      owner: account.userId,
-      legacyRoles: ["reaction-accounts"]
-    });
-  }
+  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "update:language", {
+    shopId: account.shopId,
+    owner: account.userId,
+    legacyRoles: ["reaction-accounts"]
+  });
 
   // Make sure this language is in the related shop languages list
   const shop = await Shops.findOne({ _id: account.shopId }, { projection: { languages: 1 } });

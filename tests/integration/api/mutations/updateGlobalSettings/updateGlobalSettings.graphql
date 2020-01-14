@@ -1,0 +1,7 @@
+mutation updateGlobalSettings($input: UpdateGlobalSettingsInput!) {
+  updateGlobalSettings(input: $input) {
+    globalSettings {
+      canSellDigitalProducts
+    }
+  }
+}

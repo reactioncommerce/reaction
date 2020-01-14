@@ -6,6 +6,6 @@ import { extendTaxesSchemas } from "./simpleSchemas.js";
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default async function preStartup(context) {
+export default async function taxesPreStartup(context) {
   extendTaxesSchemas(context.simpleSchemas);
 }

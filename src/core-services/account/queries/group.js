@@ -18,7 +18,11 @@ export default async function groupQuery(context, id) {
 
   // If the user has sufficient permissions, then allow them to find any group by ID
   // TODO: Break this query up into one for all groups (for admins only) and one for user's groups
-  if (context.userHasPermission("reaction:accounts", "read", { shopId: group.shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] })) return group; // TODO(pod-auth): update this permissions check
+  if (context.userHasPermission(
+    "reaction:legacy:accounts",
+    "read",
+    { shopId: group.shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] }
+  )) return group; // TODO(pod-auth): update this permissions check
 
   // Otherwise, only let users see groups that they are members of
   const userAccount = await Accounts.findOne({

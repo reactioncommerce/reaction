@@ -94,6 +94,10 @@ import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchem
 
 import Restriction from "../../src/plugins/shipping-rates/util/restrictionSchema.js";
 
+import {
+  SimpleInventoryCollectionSchema as SimpleInventory
+} from "../../src/plugins/simple-inventory/simpleSchemas.js";
+
 const schemasToAddToFactory = {
   Account,
   AccountProfileAddress,
@@ -130,6 +134,7 @@ const schemasToAddToFactory = {
   Restriction,
   ShipmentQuote,
   Shop,
+  SimpleInventory,
   Sitemap,
   Surcharge,
   Tag,

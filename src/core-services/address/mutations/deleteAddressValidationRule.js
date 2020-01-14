@@ -11,9 +11,7 @@ export default async function deleteAddressValidationRule(context, input) {
   const { appEvents, collections } = context;
   const { AddressValidationRules } = collections;
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:addressValidationRules:${_id}`, "delete", { shopId, legacyRoles: ["admin"] });
-  }
+  await context.validatePermissions(`reaction:legacy:addressValidationRules:${_id}`, "delete", { shopId, legacyRoles: ["admin"] });
 
   const { ok, value: deletedRule } = await AddressValidationRules.findOneAndDelete({
     _id,

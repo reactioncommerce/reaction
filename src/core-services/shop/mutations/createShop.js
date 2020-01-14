@@ -18,6 +18,10 @@ const inputSchema = new SimpleSchema({
     optional: true
   },
   name: String,
+  shopId: {
+    type: String,
+    optional: true
+  },
   // Historically, the allowed types were primary, merchant, and affiliate.
   // Until we have solid future direction for multi-shop support, we'll
   // allow any string here.
@@ -53,14 +57,14 @@ export default async function createShop(context, input) {
     userId
   } = context;
 
-  await context.validatePermissions("reaction:shops", "create", { shopId: null, legacyRoles: ["owner", "shop/create"] });
+  await context.validatePermissions("reaction:legacy:shops", "create", { shopId: null, legacyRoles: ["owner", "shop/create"] });
 
-  const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
+  const { currencyCode, defaultLanguage, defaultTimezone, name, shopId, type } = input;
 
   const domain = rootUrl && new URL(rootUrl).hostname;
   const now = new Date();
   const shop = {
-    _id: Random.id(),
+    _id: shopId || Random.id(),
     active: true,
     availablePaymentMethods: [],
     baseUOL: "in",

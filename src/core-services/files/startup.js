@@ -10,7 +10,7 @@ import saveTempImages from "./jobs/saveTempImages.js";
  * @param {Object} context.collections A map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
+export default function filesStartup(context) {
   const { app, collections, rootUrl } = context;
   const { MediaRecords } = collections;
 

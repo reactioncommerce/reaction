@@ -65,45 +65,10 @@ test("throws if permission check fails", async () => {
   })).rejects.toThrowErrorMatchingSnapshot();
 
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
-    "reaction:orders:order1",
+    "reaction:legacy:orders:order1",
     "update",
     { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
   );
-});
-
-test("skips permission check if context.isInternalCall", async () => {
-  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
-    shipping: [
-      Factory.OrderFulfillmentGroup.makeOne({
-        _id: "123",
-        items: Factory.OrderItem.makeMany(2)
-      }),
-      Factory.OrderFulfillmentGroup.makeOne({
-        items: Factory.OrderItem.makeMany(2)
-      })
-    ],
-    shopId: "SHOP_ID",
-    workflow: {
-      status: "new",
-      workflow: ["new"]
-    }
-  }));
-
-  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1,
-    value: {}
-  }));
-
-  mockContext.isInternalCall = true;
-
-  await updateOrderFulfillmentGroup(mockContext, {
-    orderId: "order1",
-    orderFulfillmentGroupId: "123"
-  });
-
-  delete mockContext.isInternalCall;
-
-  expect(mockContext.validatePermissions).not.toHaveBeenCalled();
 });
 
 test("skips update if one is not necessary", async () => {

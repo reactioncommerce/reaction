@@ -29,7 +29,12 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
     if (allowedRoles.length === 0) {
       throw new ReactionError("access-denied", `You are not allowed to edit the "${updateKey}" setting`);
     }
-    await context.validatePermissions(`reaction:shops:${shopId}`, "update", { shopId, legacyRoles: allowedRoles }); // eslint-disable-line no-await-in-loop
+
+    if (shopId) {
+      await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "update", { shopId, legacyRoles: allowedRoles }); // eslint-disable-line no-await-in-loop
+    } else {
+      await context.validatePermissions("reaction:legacy:shops", "update", { shopId: null, legacyRoles: allowedRoles }); // eslint-disable-line no-await-in-loop
+    }
   }
 
   const { value: updatedDoc } = await AppSettings.findOneAndUpdate(

@@ -41,7 +41,6 @@ export default async function moveOrderItems(context, input) {
     accountId: authAccountId,
     appEvents,
     collections,
-    isInternalCall,
     userId
   } = context;
   const { Orders } = collections;
@@ -51,15 +50,11 @@ export default async function moveOrderItems(context, input) {
   if (!order) throw new ReactionError("not-found", "Order not found");
 
   // Allow move if the account that placed the order is attempting to move
-  // or if the account has "orders" permission. When called internally by another
-  // plugin, context.isInternalCall can be set to `true` to disable this check.
-  if (!isInternalCall) {
-    await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", {
-      shopId: order.shopId,
-      owner: order.accountId,
-      legacyRoles: ["orders", "order/fulfillment"]
-    });
-  }
+  await context.validatePermissions(`reaction:legacy:orders:${order._id}`, "move:item", {
+    shopId: order.shopId,
+    owner: order.accountId,
+    legacyRoles: ["orders", "order/fulfillment"]
+  });
 
   // Is the account calling this mutation also the account that placed the order?
   // We need this check in a couple places below, so we'll get it here.

@@ -3,7 +3,7 @@
  * @param {Object} product Product object to mutate
  * @returns {undefined}
  */
-export default function mutateNewProductBeforeCreate(product) {
+export default function mutateNewProductBeforeCreateForSimplePricing(product) {
   if (!product.price) {
     product.price = {
       range: "0.00 - 0.00",

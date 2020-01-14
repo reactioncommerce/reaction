@@ -1,0 +1,20 @@
+
+query AnonymousCartByCartId($cartId: ID!, $cartToken: String!) {
+  anonymousCartByCartId(cartId: $cartId, cartToken: $cartToken) {
+    _id
+    email
+    account {
+      _id
+    }
+    checkout {
+      summary {
+        total {
+          amount
+        }
+      }
+    }
+    items {
+      totalCount
+    }
+  }
+}

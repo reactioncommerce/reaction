@@ -4,7 +4,7 @@
  * @param {Object} input Input data
  * @returns {undefined}
  */
-export default async function mutateNewVariantBeforeCreate(newVariant, { context, isOption }) {
+export default async function mutateNewVariantBeforeCreateForTaxes(newVariant, { context, isOption }) {
   // Tax fields are managed by and inherited from top-level variant
   if (!isOption) {
     // All new variants are taxable by default

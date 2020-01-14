@@ -19,12 +19,14 @@ export default async function simpleInventory(context, input) {
   inputSchema.validate(input);
 
   const { productConfiguration, shopId } = input;
-  const { collections, isInternalCall } = context;
+  const { collections } = context;
   const { SimpleInventory } = collections;
 
-  if (!isInternalCall) {
-    await context.validatePermissions(`reaction:inventory:${productConfiguration.productVariantId}`, "read", { shopId, legacyRoles: ["admin"] });
-  }
+  await context.validatePermissions(
+    `reaction:legacy:inventory:${productConfiguration.productVariantId}`,
+    "read",
+    { shopId, legacyRoles: ["admin"] }
+  );
 
   return SimpleInventory.findOne({
     "productConfiguration.productVariantId": productConfiguration.productVariantId,

@@ -217,7 +217,7 @@ test("throws if permission check fails", async () => {
   })).rejects.toThrowErrorMatchingSnapshot();
 
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
-    "reaction:orders:order1",
+    "reaction:legacy:orders:order1",
     "move:item",
     { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
   );
@@ -467,81 +467,6 @@ test("throws if the database update fails", async () => {
     orderId: "order1",
     toFulfillmentGroupId: "group2"
   })).rejects.toThrowErrorMatchingSnapshot();
-});
-
-test("skips permission check if context.isInternalCall", async () => {
-  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
-    shipping: [
-      Factory.OrderFulfillmentGroup.makeOne({
-        _id: "group1",
-        items: [
-          Factory.OrderItem.makeOne({
-            _id: "item1",
-            quantity: 1,
-            workflow: {
-              status: "new",
-              workflow: ["new"]
-            }
-          }),
-          Factory.OrderItem.makeOne({
-            _id: "item10",
-            quantity: 1,
-            workflow: {
-              status: "new",
-              workflow: ["new"]
-            }
-          })
-        ],
-        workflow: {
-          status: "new",
-          workflow: ["new"]
-        }
-      }),
-      Factory.OrderFulfillmentGroup.makeOne({
-        _id: "group2",
-        items: [
-          Factory.OrderItem.makeOne({
-            _id: "item2",
-            quantity: 1,
-            workflow: {
-              status: "new",
-              workflow: ["new"]
-            }
-          })
-        ],
-        workflow: {
-          status: "new",
-          workflow: ["new"]
-        }
-      })
-    ],
-    shopId: "SHOP_ID",
-    workflow: {
-      status: "new",
-      workflow: ["new"]
-    }
-  }));
-
-  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1,
-    value: {}
-  }));
-
-  mockContext.isInternalCall = true;
-
-  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
-  rewire$updateGroupTotals(mockUpdateGroupTotals);
-
-  await moveOrderItems(mockContext, {
-    fromFulfillmentGroupId: "group1",
-    itemIds: ["item1"],
-    orderId: "order1",
-    toFulfillmentGroupId: "group2"
-  });
-
-  delete mockContext.isInternalCall;
-
-  expect(mockContext.validatePermissions).not.toHaveBeenCalled();
 });
 
 test("moves items", async () => {
