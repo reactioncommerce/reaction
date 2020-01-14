@@ -47,7 +47,11 @@ export default async function createRefund(context, input) {
   if (!order) throw new ReactionError("not-found", "Order not found");
 
   // Allow refund for accounts with orders or "order/fulfillment" permissions
-  await context.validatePermissions(`reaction:orders:${order._id}`, "refund:payment", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
+  await context.validatePermissions(
+    `reaction:legacy:orders:${order._id}`,
+    "refund:payment",
+    { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
+  );
 
   // Verify payment exists
   const payment = (order.payments || []).find((pmt) => pmt._id === paymentId);

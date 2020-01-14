@@ -32,7 +32,7 @@ export default async function setAccountProfileCurrency(context, input) {
   const account = await Accounts.findOne({ _id: accountId }, { projection: { shopId: 1 } });
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  await context.validatePermissions(`reaction:accounts:${account._id}`, "update:currency", {
+  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "update:currency", {
     shopId: account.shopId,
     owner: account.userId,
     legacyRoles: ["reaction-accounts"]

@@ -14,7 +14,7 @@ test("throws if permission check fails", async () => {
   });
   await expect(rolesQuery(mockContext, mockContext.shopId)).rejects.toThrowErrorMatchingSnapshot();
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
-    `reaction:shops:${mockContext.shopId}`,
+    `reaction:legacy:shops:${mockContext.shopId}`,
     "read",
     { shopId: mockContext.shopId, legacyRoles: ["owner", "admin"] }
   );
@@ -25,7 +25,7 @@ test("returns roles cursor if user has permission", async () => {
   mockContext.collections.roles.find.mockReturnValueOnce("CURSOR");
   const result = await rolesQuery(mockContext, mockContext.shopId);
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
-    `reaction:shops:${mockContext.shopId}`,
+    `reaction:legacy:shops:${mockContext.shopId}`,
     "read",
     { shopId: mockContext.shopId, legacyRoles: ["owner", "admin"] }
   );

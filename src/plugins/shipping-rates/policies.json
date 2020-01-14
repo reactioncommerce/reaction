@@ -2,7 +2,7 @@
   {
     "description": "Shipping managers acting on all shipping methods.",
     "subjects": [ "reaction:groups:shipping-managers" ],
-    "resources": [ "reaction:shippingMethods" ],
+    "resources": [ "reaction:legacy:shippingMethods" ],
     "actions": [
       "create",
       "read"
@@ -12,7 +12,7 @@
   {
     "description": "Shipping managers acting on a single shipping method.",
     "subjects": [ "reaction:groups:shipping-managers" ],
-    "resources": [ "reaction:shippingMethods:*" ],
+    "resources": [ "reaction:legacy:shippingMethods:*" ],
     "actions": [
       "create",
       "delete",
@@ -24,7 +24,7 @@
   {
     "description": "Shipping managers acting on all shipping restrictions.",
     "subjects": [ "reaction:groups:shipping-managers" ],
-    "resources": [ "reaction:shippingRestrictions" ],
+    "resources": [ "reaction:legacy:shippingRestrictions" ],
     "actions": [
       "create",
       "read"
@@ -34,7 +34,7 @@
   {
     "description": "Shipping managers acting on a single shipping restriction.",
     "subjects": [ "reaction:groups:shipping-managers" ],
-    "resources": [ "reaction:shippingRestrictions:*" ],
+    "resources": [ "reaction:legacy:shippingRestrictions:*" ],
     "actions": [
       "create",
       "delete",

@@ -11,7 +11,7 @@ export default async function navigationItemsByShopId(context, shopId) {
   const { collections } = context;
   const { NavigationItems } = collections;
 
-  await context.validatePermissions("reaction:navigationTreeItems", "read", { shopId, legacyRoles: ["core"] });
+  await context.validatePermissions("reaction:legacy:navigationTreeItems", "read", { shopId, legacyRoles: ["core"] });
 
   return NavigationItems.find({ shopId });
 }

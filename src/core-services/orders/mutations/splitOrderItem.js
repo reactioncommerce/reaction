@@ -51,7 +51,11 @@ export default async function splitOrderItem(context, input) {
   if (!order) throw new ReactionError("not-found", "Order not found");
 
   // Allow split if the account has "orders" permission
-  await context.validatePermissions(`reaction:orders:${order._id}`, "move:item", { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] });
+  await context.validatePermissions(
+    `reaction:legacy:orders:${order._id}`,
+    "move:item",
+    { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
+  );
 
   const { accountId, billingAddress, cartId, currencyCode } = order;
 
