@@ -14,6 +14,7 @@
     "resources": [ "reaction:legacy:accounts" ],
     "actions": [
       "create",
+      "delete",
       "read"
     ],
     "effect": "allow"
