@@ -95,9 +95,14 @@ export default function createApolloServer(options = {}) {
   ]);
 
   // Rewrite url to support legacy graphql routes
-  app.all(/\/graphql-\w+/, (req, res, next) => {
+  app.all(/\/graphql-\w+/, (req, res) => {
     req.url = path;
-    next();
+
+    // NOTE: This must use `app.handle(req, res)` instead
+    // of `next()` or else all of the middleware attached
+    // to `path` above does not run and, for example,
+    // `request.user` and `context.user` won't be set.
+    app.handle(req, res);
   });
 
   apolloServer.applyMiddleware({ app, cors: true, path });
