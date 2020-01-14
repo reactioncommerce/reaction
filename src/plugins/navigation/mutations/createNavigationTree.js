@@ -16,7 +16,7 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
 export default async function createNavigationTree(context, input) {
   const { collections } = context;
   const { NavigationTrees } = collections;
-  const { navigationTreeId, shopId, navigationTree } = input;
+  const { shopId, navigationTree } = input;
 
   const {
     shouldNavigationTreeItemsBeAdminOnly,
@@ -46,7 +46,7 @@ export default async function createNavigationTree(context, input) {
   NavigationTreeSchema.validate(navigationTreeData);
   const { draftItems } = navigationTreeData;
 
-  await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "update", { shopId, legacyRoles: ["core"] });
+  await context.validatePermissions("reaction:navigationTrees", "create", { shopId, legacyRoles: ["core"] });
 
   if (draftItems) {
     decodeNavigationTreeItemIds(draftItems);

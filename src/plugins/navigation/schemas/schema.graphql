@@ -360,6 +360,18 @@ input NavigationTreeItemInput {
   navigationItemId: ID!
 }
 
+"Input for the `createNavigationTree` mutation"
+input CreateNavigationTreeInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The field updates to apply"
+  navigationTree: NavigationTreeInput!
+
+  "The ID of the shop navigation item belongs to"
+  shopId: ID!
+}
+
 "Response payload for the `createNavigationItem` mutation"
 type CreateNavigationItemPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -405,17 +417,3 @@ type PublishNavigationChangesPayload {
   navigationTree: NavigationTree
 }
 
-"Input for the `createNavigationTree` mutation"
-input CreateNavigationTreeInput {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  "The draft navigation items that make up this tree"
-  draftItems: [NavigationTreeItemInput]
-
-  "The name of the tree, for operator display purposes"
-  name: String!
-
-  "The ID of the shop this navigation tree belongs to"
-  shopId: ID!
-}

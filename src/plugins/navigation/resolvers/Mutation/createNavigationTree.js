@@ -22,13 +22,13 @@ export default async function createNavigationTree(parentResult, { input }, cont
   } = input;
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
-  const updatedNavigationTree = await context.mutations.createNavigationTree(context, {
+  const createdNavigationTree = await context.mutations.createNavigationTree(context, {
     shopId,
     navigationTree
   });
 
   return {
     clientMutationId,
-    navigationTree: updatedNavigationTree
+    navigationTree: createdNavigationTree
   };
 }
