@@ -11,7 +11,7 @@ const require = createRequire(import.meta.url);
 const { makeExecutableSchema, mergeSchemas } = require("apollo-server");
 const { ApolloServer } = require("apollo-server-express");
 
-const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
+const DEFAULT_GRAPHQL_PATH = "/graphql";
 
 const resolverValidationOptions = {
   // After we fix all errors that this prints, we should probably go
@@ -94,9 +94,8 @@ export default function createApolloServer(options = {}) {
     ...gqlMiddleware.filter((def) => def.stage === "before-response").map((def) => def.fn(contextFromOptions))
   ]);
 
-  // Redirect for graphql-alpha route
-  app.all("/graphql-alpha", (req, res) => {
-    // Redirect to path once graphql-alpha is received
+  // Redirect for legacy graphql routes
+  app.all(/\/graphql-\w+/, (req, res) => {
     res.redirect(path);
   });
 
