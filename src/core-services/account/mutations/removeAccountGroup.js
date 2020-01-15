@@ -1,5 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import moveAccountsToGroup from "../util/moveAccountsToGroup.js";
+import defaultAccountGroups, { defaultCustomerGroupSlug } from "../util/defaultAccountGroups.js";
 
 /**
  * @name group/removeAccountGroup
@@ -20,16 +21,16 @@ export default async function removeAccountGroup(context, input) {
   const { Groups } = context.collections;
 
   // we are limiting group method actions to only users within the account managers role
-  await context.validatePermissions(`reaction:legacy:account-groups:${groupId}`, "remove", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "remove", { shopId, legacyRoles: ["admin"] });
 
   const defaultGroupsForShop = await Groups.find({
     shopId,
     slug: {
-      $in: ["owner", "shop-manager", "guest", "customer"]
+      $in: defaultAccountGroups
     }
   }).toArray();
 
-  const defaultCustomerGroupForShop = defaultGroupsForShop.find(({ slug }) => slug === "customer");
+  const defaultCustomerGroupForShop = defaultGroupsForShop.find(({ slug }) => slug === defaultCustomerGroupSlug);
   const forbiddenGroupIds = defaultGroupsForShop.map(({ _id }) => _id);
 
   if (forbiddenGroupIds.includes(groupId)) {
