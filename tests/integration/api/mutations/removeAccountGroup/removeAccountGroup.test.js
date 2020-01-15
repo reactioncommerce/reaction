@@ -121,10 +121,10 @@ beforeEach(async () => {
 
   // Create groups
   await testApp.collections.Groups.insertOne(customerGroup);
-  await testApp.collections.Groups.insertOne(testGroup);
-  await testApp.collections.Groups.insertOne(ownerGroup);
   await testApp.collections.Groups.insertOne(guestGroup);
+  await testApp.collections.Groups.insertOne(ownerGroup);
   await testApp.collections.Groups.insertOne(shopManagerGroup);
+  await testApp.collections.Groups.insertOne(testGroup);
 
   // Add customer account to the testGroup
   await addAccountToGroup({
@@ -143,10 +143,6 @@ afterEach(async () => {
 
 test("a customer account should not be able to remove a group", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);
-
-  // Expect the customer to have all of the roles from the testGroup
-  const beforeCustomer = await testApp.context.collections.users.findOne({ _id: "mockCustomerAccount" });
-  expect(beforeCustomer.roles[shopId]).toEqual(["test-perm-1", "test-perm-2"]);
 
   try {
     await removeAccountGroup({
@@ -167,10 +163,6 @@ test("an admin account should be able to remove a group", async () => {
   // Expect the Account to be moved to the customer group
   const beforeAccount = await testApp.context.collections.Accounts.findOne({ _id: "mockCustomerAccount" });
   expect(beforeAccount.groups).toEqual(["testGroup"]);
-
-  // Expect the customer to have all of the roles from the testGroup
-  const beforeCustomer = await testApp.context.collections.users.findOne({ _id: "mockCustomerAccount" });
-  expect(beforeCustomer.roles[shopId]).toEqual(["test-perm-1", "test-perm-2"]);
 
   let result;
 
@@ -195,13 +187,9 @@ test("an admin account should be able to remove a group", async () => {
   // Expect the Account to be moved to the customer group
   const afterAccount = await testApp.context.collections.Accounts.findOne({ _id: "mockCustomerAccount" });
   expect(afterAccount.groups).toEqual(["customerGroup"]);
-
-  // Expect the user removed to have the permissions of a customer
-  const afterCustomer = await testApp.context.collections.users.findOne({ _id: "mockCustomerAccount" });
-  expect(afterCustomer.roles[shopId]).toEqual(["customer"]);
 });
 
-test("an admin account cannot default groups, owner, shop-manager, guest and customer", async () => {
+test("an admin account cannot delete default groups, 'owner', 'shop-manager', 'guest' or 'customer'", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   try {
@@ -259,10 +247,6 @@ test("an admin account cannot remove a group unless there is a default customer 
   // Expect the Account to be moved to the customer group
   const beforeAccount = await testApp.context.collections.Accounts.findOne({ _id: "mockCustomerAccount" });
   expect(beforeAccount.groups).toEqual(["testGroup"]);
-
-  // Expect the customer to have all of the roles from the testGroup
-  const beforeCustomer = await testApp.context.collections.users.findOne({ _id: "mockCustomerAccount" });
-  expect(beforeCustomer.roles[shopId]).toEqual(["test-perm-1", "test-perm-2"]);
 
   try {
     await removeAccountGroup({
