@@ -62,7 +62,7 @@
   {
     "description": "Account group managers acting on all entities.",
     "subjects": [ "reaction:groups:group-managers" ],
-    "resources": [ "reaction:legacy:account-groups" ],
+    "resources": [ "reaction:legacy:groups" ],
     "actions": [
       "create",
       "read"
@@ -72,7 +72,7 @@
   {
     "description": "Account croup managers acting on specific entities.",
     "subjects": [ "reaction:groups:group-managers" ],
-    "resources": [ "reaction:legacy:account-groups:*" ],
+    "resources": [ "reaction:legacy:groups:*" ],
     "actions": [
       "read",
       "update",
