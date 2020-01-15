@@ -8,17 +8,35 @@ import _ from "lodash";
  */
 export default async function permissionsByUserId(context, userId) {
   const account = await context.collections.Accounts.findOne({ userId });
+  const user = await context.collections.users.findOne({ _id: userId });
+
+  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "read", {
+    shopId: account.shopId,
+    owner: account.userId
+  });
 
   if (account && Array.isArray(account.groups)) {
-    // get groups that this user belongs to
-    // filter results to only provide permissions arrays
-    // flatten multiple permissions arrays into a single array
-    // uniqify the permissions
+    // set __global_roles__ from the user
+    const accountPermissions = { __global_roles__: (user && user.roles && user.roles.__global_roles__) || [] }; // eslint-disable-line camelcase
+
+    // get all groups that this user belongs to
     const groups = await context.collections.Groups.find({ _id: { $in: account.groups } }).toArray();
-    const groupPermissions = groups.map((group) => group.permissions);
-    const flattenedGroupPermissions = groupPermissions.flat();
-    const uniquePermissions = _.uniq(flattenedGroupPermissions);
-    return uniquePermissions;
+    // get unique shops from groups (there may be multiple groups from one shop)
+    const allShopIds = groups.map((group) => group.shopId);
+    const uniqueShopIds = _.uniq(allShopIds);
+
+    // get all groups for shop
+    // flatten all group arrays into a single array
+    // remove duplicate permissions
+    // set permissions array with shopId as key on accountPermissions object
+    uniqueShopIds.forEach((shopId) => {
+      const groupPermissionsForShop = groups.filter((group) => group.shopId === shopId).map((group) => group.permissions);
+      const flattenedGroupPermissionsForShop = groupPermissionsForShop.flat();
+      const uniquePermissionsForShop = _.uniq(flattenedGroupPermissionsForShop);
+      accountPermissions[shopId] = uniquePermissionsForShop;
+    });
+
+    return accountPermissions;
   }
 
   return [];
