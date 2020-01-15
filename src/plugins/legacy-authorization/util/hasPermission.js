@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url); // eslint-disable-line
 
 const { curryN } = require("ramda");
 
-const GLOBAL_GROUP = "__global_roles__";
+const GLOBAL_GROUP = "__global_permissions__";
 
 /**
  * @name hasPermission
@@ -16,14 +16,13 @@ const GLOBAL_GROUP = "__global_roles__";
  * @param {Object} authContext - context data to verify permissions against
  * @param {String} [authContext.owner] - The owner of the resource requested
  * @param {String} [authContext.shopId] - The shop ID for which the permissions are needed. If not set,
- *   only global roles will be checked.
- * @param {Array} [authContext.legacyRoles] - TEMPORARY: roles that match up with the legacy roles package
+ *   only global permissions will be checked.
  * @returns {Boolean} - true/false
  */
 export default async function hasPermission(context, resource, action, authContext) {
-  const { user } = context;
+  const { account } = context;
 
-  if (!user || !user.roles) return false;
+  if (!account || !account.permissions) return false;
 
   if (!resource) throw new ReactionError("invalid-param", "Resource must be provided");
 
@@ -34,10 +33,9 @@ export default async function hasPermission(context, resource, action, authConte
   // If the current user is the owner of a resource we are trying to check,
   // such as an order or data on a user profile, they are authorized to perform the action
   if (authContext && authContext.owner && authContext.owner === context.userId) return true;
-  // Parse the provided data to create the role name to check against (<organization>:<system>:<entity>/<action>)
+  // Parse the provided data to create the permission name to check against (<organization>:<system>:<entity>/<action>)
   const { shopId } = authContext;
-  const roleName = `${resource.split(":").splice(0, 3).join(":")}/${action}`;
-
+  const permissionName = `${resource.split(":").splice(0, 3).join(":")}/${action}`;
 
   // make sure shopId is a non-empty string (if provided)
   if (shopId !== undefined && shopId !== null && (typeof shopId !== "string" || shopId.length === 0)) {
@@ -46,21 +44,21 @@ export default async function hasPermission(context, resource, action, authConte
 
   // "owners" should always have access
   // we create an array with the provided permission, plus owner
-  const checkRoles = [roleName, "owner", "reaction:legacy:shops/owner"]; // TODO(pod-auth): is this the best way to deal with an owner account? do we still have owners?
+  const checkPermissions = [permissionName, "owner", "reaction:legacy:shops/owner"]; // TODO(pod-auth): is this the best way to deal with an owner account? do we still have owners?
 
-  // roles that a user has on their account
-  const { roles } = user;
+  // permissions that an account has, built by permissionsByUserId and attached to the context
+  const { permissions } = account;
 
   // always check GLOBAL_GROUP
-  const globalRoles = roles[GLOBAL_GROUP];
-  if (Array.isArray(globalRoles) && checkRoles.some((role) => globalRoles.includes(role))) return true;
+  const globalPermissions = permissions[GLOBAL_GROUP];
+  if (Array.isArray(globalPermissions) && checkPermissions.some((permission) => globalPermissions.includes(permission))) return true;
 
   if (shopId) {
-    const shopRoles = roles[shopId];
-    if (Array.isArray(shopRoles) && checkRoles.some((role) => shopRoles.includes(role))) return true;
+    const shopPermissions = permissions[shopId];
+    if (Array.isArray(shopPermissions) && checkPermissions.some((permission) => shopPermissions.includes(permission))) return true;
   }
 
-  Logger.debug(`User ${user._id} has none of [${checkRoles.join(", ")}] permissions`);
+  Logger.debug(`User ${account.userId} has none of [${checkPermissions.join(", ")}] permissions`);
 
   return false;
 }
