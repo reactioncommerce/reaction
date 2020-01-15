@@ -6,10 +6,9 @@
  * @returns {String} Full URL
  */
 export default function getAbsoluteUrl(rootUrl, path = "") {
-  // If the path already contains the rootUrl
-  // don't add it again
+  // Check if the path is already absolute
   const regExp = /^https?:\/\/|^\/\//i;
-  if (regExp.exec(path) !== null) {
+  if (regExp.test(path)) {
     return path;
   }
 
