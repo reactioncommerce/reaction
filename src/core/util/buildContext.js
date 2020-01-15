@@ -79,7 +79,7 @@ export default async function buildContext(context, request = {}) {
     if (userId && typeof context.auth.permissionsByUserId === "function") {
       permissions = await context.auth.permissionsByUserId(context, userId);
     }
-    account.permissions = permissions;
+    context.userPermissions = permissions || [];
   }
 
   context.account = account || null;

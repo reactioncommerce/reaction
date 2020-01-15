@@ -20,9 +20,9 @@ const GLOBAL_GROUP = "__global_permissions__";
  * @returns {Boolean} - true/false
  */
 export default async function hasPermission(context, resource, action, authContext) {
-  const { account } = context;
+  const { userPermissions } = context;
 
-  if (!account || !account.permissions) return false;
+  if (!userPermissions) return false;
 
   if (!resource) throw new ReactionError("invalid-param", "Resource must be provided");
 
@@ -46,19 +46,16 @@ export default async function hasPermission(context, resource, action, authConte
   // we create an array with the provided permission, plus owner
   const checkPermissions = [permissionName, "owner", "reaction:legacy:shops/owner"]; // TODO(pod-auth): is this the best way to deal with an owner account? do we still have owners?
 
-  // permissions that an account has, built by permissionsByUserId and attached to the context
-  const { permissions } = account;
-
   // always check GLOBAL_GROUP
-  const globalPermissions = permissions[GLOBAL_GROUP];
+  const globalPermissions = userPermissions[GLOBAL_GROUP];
   if (Array.isArray(globalPermissions) && checkPermissions.some((permission) => globalPermissions.includes(permission))) return true;
 
   if (shopId) {
-    const shopPermissions = permissions[shopId];
+    const shopPermissions = userPermissions[shopId];
     if (Array.isArray(shopPermissions) && checkPermissions.some((permission) => shopPermissions.includes(permission))) return true;
   }
 
-  Logger.debug(`User ${account.userId} has none of [${checkPermissions.join(", ")}] permissions`);
+  Logger.debug(`User ${context.userId} has none of [${checkPermissions.join(", ")}] permissions`);
 
   return false;
 }
