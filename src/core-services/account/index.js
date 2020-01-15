@@ -7,6 +7,7 @@ import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 import tokenMiddleware from "./util/tokenMiddleware.js";
 import accountByUserId from "./util/accountByUserId.js";
+import permissionsByUserId from "./util/permissionsByUserId.js";
 import { Account } from "./simpleSchemas.js";
 
 /**
@@ -49,7 +50,8 @@ export default async function register(app) {
       }
     },
     auth: {
-      accountByUserId
+      accountByUserId,
+      permissionsByUserId
     },
     functionsByType: {
       startup: [startup]
