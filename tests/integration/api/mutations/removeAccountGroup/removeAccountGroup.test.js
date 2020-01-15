@@ -87,9 +87,9 @@ beforeAll(async () => {
   shopManagerGroup = Factory.Group.makeOne({
     _id: "shopManagerGroup",
     createdBy: null,
-    name: "shop-manager",
+    name: "shop manager",
     permissions: ["admin"],
-    slug: "shop-manager",
+    slug: "shop manager",
     shopId
   });
 
@@ -189,7 +189,7 @@ test("an admin account should be able to remove a group", async () => {
   expect(afterAccount.groups).toEqual(["customerGroup"]);
 });
 
-test("an admin account cannot delete default groups, 'owner', 'shop-manager', 'guest' or 'customer'", async () => {
+test("an admin account cannot delete default groups, 'owner', 'shop manager', 'guest' or 'customer'", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   try {
