@@ -22,8 +22,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
   await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "add:address-books", {
     shopId: account.shopId,
-    owner: account.userId,
-    legacyRoles: ["reaction-accounts"]
+    owner: account.userId
   });
 
   // required default ID

@@ -30,8 +30,7 @@ export default async function removeAccountAddressBookEntry(context, input) {
 
   await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "remove:address-books", {
     shopId: account.shopId,
-    owner: account.userId,
-    legacyRoles: ["reaction-accounts"]
+    owner: account.userId
   });
 
   const addressBeingRemoved = account.profile && Array.isArray(account.profile.addressBook) &&

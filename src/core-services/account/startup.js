@@ -1,4 +1,3 @@
-import addPluginRolesToGroups from "./util/addPluginRolesToGroups.js";
 import ensureRoles from "./util/ensureRoles.js";
 import {
   defaultCustomerRoles,
@@ -6,7 +5,6 @@ import {
   defaultShopManagerRoles,
   defaultVisitorRoles
 } from "./util/defaultRoles.js";
-import config from "./config.js";
 
 /**
  * @summary Called on startup
@@ -20,9 +18,4 @@ export default async function accountStartup(context) {
   await ensureRoles(context, defaultOwnerRoles);
   await ensureRoles(context, defaultShopManagerRoles);
   await ensureRoles(context, defaultVisitorRoles);
-
-  // timing is important, packages are rqd for initial permissions configuration.
-  if (config.NODE_ENV !== "test") {
-    await addPluginRolesToGroups(context);
-  }
 }

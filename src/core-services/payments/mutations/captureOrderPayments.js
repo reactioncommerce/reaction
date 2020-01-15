@@ -23,7 +23,7 @@ export default async function captureOrderPayments(context, input = {}) {
   const { Orders } = collections;
   const { orderId, paymentIds, shopId } = input;
 
-  await context.validatePermissions(`reaction:legacy:orders:${orderId}`, "capture:payment", { shopId, legacyRoles: ["orders", "order/fulfillment"] });
+  await context.validatePermissions(`reaction:legacy:orders:${orderId}`, "capture:payment", { shopId });
 
   const order = await Orders.findOne({ _id: orderId, shopId });
   if (!order) throw new ReactionError("not-found", "Order not found");

@@ -67,14 +67,14 @@ beforeAll(async () => {
 
   mockAdminOneAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["admin"]
+      [shopId]: ["admin", "reaction:legacy:shops/read:admin-accounts"]
     }
   });
   await testApp.createUserAndAccount(mockAdminOneAccount);
 
   mockAdminTwoAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["admin"]
+      [shopId]: ["admin", "reaction:legacy:shops/read:admin-accounts"]
     }
   });
   await testApp.createUserAndAccount(mockAdminTwoAccount);

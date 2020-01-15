@@ -34,7 +34,7 @@ export default async function navigationTreeById(context, { language, navigation
     const hasDraftPermissions = await context.userHasPermission(
       `reaction:legacy:navigationTrees:${navigationTreeId}:drafts`,
       "read",
-      { shopId, legacyRoles: ["owner", "admin", "create-product"] }
+      { shopId }
     );
 
     // Filter items based on visibility options and user permissions

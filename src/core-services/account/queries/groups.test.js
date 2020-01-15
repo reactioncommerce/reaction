@@ -16,7 +16,7 @@ test("returns the groups cursor if userHasPermission returns true", async () => 
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(
     "reaction:legacy:accounts",
     "read",
-    { shopId: fakeShopId, legacyRoles: ["owner", "admin", "reaction-accounts"] }
+    { shopId: fakeShopId }
   );
   expect(result).toBe("CURSOR");
 });
@@ -33,7 +33,7 @@ test("returns the groups cursor for groups the current user is in, if userHasPer
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(
     "reaction:legacy:accounts",
     "read",
-    { shopId: fakeShopId, legacyRoles: ["owner", "admin", "reaction-accounts"] }
+    { shopId: fakeShopId }
   );
   expect(result).toBe("CURSOR");
 });

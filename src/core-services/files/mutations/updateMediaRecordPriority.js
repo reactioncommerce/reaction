@@ -10,7 +10,7 @@ export default async function updateMediaRecordPriority(context, input) {
   const { appEvents, collections, userId } = context;
   const { mediaRecordId, priority, shopId } = input;
 
-  await context.validatePermissions(`reaction:legacy:mediaRecords:${mediaRecordId}`, "update:media", { shopId, legacyRoles: ["media/update"] });
+  await context.validatePermissions(`reaction:legacy:mediaRecords:${mediaRecordId}`, "update:media", { shopId });
 
   const { value: updatedMediaRecord } = await collections.MediaRecords.findOneAndUpdate(
     {

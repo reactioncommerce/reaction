@@ -48,7 +48,7 @@ const simpleInventoryDoc = Factory.SimpleInventory.makeOne({
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [shopId]: ["admin"]
+    [shopId]: ["reaction:legacy:inventory/update"]
   },
   shopId
 });

@@ -16,7 +16,7 @@ export default async function createDiscountCode(context, input) {
   const { appEvents, collections } = context;
   const { Discounts } = collections;
 
-  await context.validatePermissions("reaction:legacy:discounts", "create", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions("reaction:legacy:discounts", "create", { shopId });
 
   const discountCode = {
     _id: Random.id(),

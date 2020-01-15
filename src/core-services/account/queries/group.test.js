@@ -23,7 +23,7 @@ test("returns the group if userHasPermission returns true", async () => {
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(
     "reaction:legacy:accounts",
     "read",
-    { shopId: fakeGroup.shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] }
+    { shopId: fakeGroup.shopId }
   );
   expect(result).toEqual(fakeGroup);
 });
@@ -37,7 +37,7 @@ test("returns the group if userHasPermission returns false but the current user 
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(
     "reaction:legacy:accounts",
     "read",
-    { shopId: fakeGroup.shopId, legacyRoles: ["owner", "admin", "reaction-accounts"] }
+    { shopId: fakeGroup.shopId }
   );
   expect(mockContext.collections.Accounts.findOne).toHaveBeenCalledWith({
     _id: mockContext.userId,

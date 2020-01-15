@@ -14,8 +14,7 @@ export default async function accounts(context, input) {
   const { shopId } = input;
 
   await context.validatePermissions("reaction:legacy:accounts", "read", {
-    shopId,
-    legacyRoles: ["reaction-accounts"]
+    shopId
   });
 
   const groups = await Groups.find({

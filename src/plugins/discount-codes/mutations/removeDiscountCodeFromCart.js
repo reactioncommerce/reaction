@@ -38,8 +38,7 @@ export default async function removeDiscountCodeFromCart(context, input) {
   if (!cart) {
     await context.validatePermissions(`reaction:legacy:carts:${cartId}`, "update", {
       shopId,
-      owner: cart.accountId,
-      legacyRoles: ["owner", "admin", "discounts/apply"]
+      owner: cart.accountId
     });
 
     cart = await Cart.findOne({ _id: cartId, shopId });

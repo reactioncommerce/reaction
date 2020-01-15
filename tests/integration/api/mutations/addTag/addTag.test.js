@@ -21,7 +21,7 @@ beforeAll(async () => {
 
   mockTagsAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["admin"]
+      [shopId]: ["reaction:legacy:tags/create"]
     }
   });
   await testApp.createUserAndAccount(mockTagsAccount);

@@ -58,7 +58,7 @@ dc up -d mongo
 docker run -e NODE_ENV=production -e MONGO_URL=mongodb://mongo:27017/reaction -e ROOT_URL=http://localhost:3000 -p 3000:3000 --network streams.reaction.localhost -it test-api
 ```
 
-Use an external GraphQL client to test http://localhost:3000/graphql-beta. GraphQL Playground isn't served on GET requests because it's in production mode.
+Use an external GraphQL client to test http://localhost:3000/graphql. GraphQL Playground isn't served on GET requests because it's in production mode.
 
 # Get involved
 

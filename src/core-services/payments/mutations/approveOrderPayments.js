@@ -27,7 +27,7 @@ export default async function approveOrderPayments(context, input = {}) {
   await context.validatePermissions(
     `reaction:legacy:orders:${orderId}`,
     "approve:payment",
-    { shopId, legacyRoles: ["orders", "order/fulfillment"] }
+    { shopId }
   );
 
   const order = await Orders.findOne({ _id: orderId, shopId });

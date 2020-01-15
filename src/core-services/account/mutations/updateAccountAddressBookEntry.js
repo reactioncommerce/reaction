@@ -34,8 +34,7 @@ export default async function updateAccountAddressBookEntry(context, input) {
 
   await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "update:address-books", {
     shopId: account.shopId,
-    owner: account.userId,
-    legacyRoles: ["reaction-accounts"]
+    owner: account.userId
   });
 
   // Make sure address exists before trying to update

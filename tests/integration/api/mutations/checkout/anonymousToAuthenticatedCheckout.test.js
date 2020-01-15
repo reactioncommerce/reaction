@@ -102,7 +102,7 @@ const mockShippingMethod = {
 const mockAdminAccount = Factory.Account.makeOne({
   _id: "mockAdminAccountId",
   roles: {
-    [internalShopId]: ["admin", "createProduct"]
+    [internalShopId]: ["reaction:legacy:products/publish"]
   },
   shopId: internalShopId
 });

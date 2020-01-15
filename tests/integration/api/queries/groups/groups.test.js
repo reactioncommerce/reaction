@@ -40,7 +40,7 @@ beforeAll(async () => {
 
   mockAdminAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["reaction-accounts"]
+      [shopId]: ["reaction:legacy:accounts/read"]
     },
     shopId
   });

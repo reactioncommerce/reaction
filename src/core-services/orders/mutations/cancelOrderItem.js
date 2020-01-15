@@ -57,8 +57,7 @@ export default async function cancelOrderItem(context, input) {
 
   await context.validatePermissions(`reaction:legacy:orders:${order._id}`, "cancel:item", {
     shopId: order.shopId,
-    owner: order.accountId,
-    legacyRoles: ["orders", "order/fulfillment"]
+    owner: order.accountId
   });
 
   // Is the account calling this mutation also the account that placed the order?

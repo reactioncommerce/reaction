@@ -39,7 +39,7 @@ test("throws if permission check fails", async () => {
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
     `reaction:legacy:shops:${mockContext.shopId}`,
     "read",
-    { shopId: mockContext.shopId, legacyRoles: ["owner", "admin"] }
+    { shopId: mockContext.shopId }
   );
 });
 
