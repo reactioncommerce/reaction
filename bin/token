@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Please Use Google Shell Style: https://google.github.io/styleguide/shell.xml
+
+# ---- Start unofficial bash strict mode boilerplate
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -o errexit  # always exit on error
+set -o errtrace # trap errors in functions as well
+set -o pipefail # don't ignore exit codes when piping output
+set -o posix    # more strict failures in subshells
+# set -x          # enable debugging
+
+IFS="$(printf "\n\t")"
+# ---- End unofficial bash strict mode boilerplate
+
+if [[ "$#" -ne 1 ]]; then
+  echo "Usage: $0 [userId]" 1>&2
+  exit 1
+fi
+
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+node_script=${__dir}/../.reaction/getAuthToken.js
+simple_oauth2_pkg_json=${__dir}/../node_modules/simple-oauth2/package.json
+simple_oauth2_version="3.1.0"
+
+# NPM install the simple-oauth2 package used by the script only if necessary
+if [[ ! -f ${simple_oauth2_pkg_json} ]]; then
+  npm install --no-save simple-oauth2@${simple_oauth2_version}
+elif [[ $(grep -c '"version": "'${simple_oauth2_version}'"' ${simple_oauth2_pkg_json}) != "1" ]]; then
+  npm install --no-save simple-oauth2@${simple_oauth2_version}
+fi
+
+# Run the script using Node
+node ${node_script} "$1"

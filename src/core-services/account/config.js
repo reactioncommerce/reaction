@@ -3,7 +3,6 @@ import envalid from "envalid";
 const { str } = envalid;
 
 export default envalid.cleanEnv(process.env, {
-  HYDRA_OAUTH2_INTROSPECT_URL: str({ devDefault: "http://hydra:4445/oauth2/introspect" }),
   NODE_ENV: str({ default: "production" }),
   REACTION_IDENTITY_PUBLIC_PASSWORD_RESET_URL: str({ devDefault: "http://localhost:4100/account/reset-password/TOKEN" }),
   REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL: str({ devDefault: "http://localhost:4100/#/verify-email/TOKEN" }),
