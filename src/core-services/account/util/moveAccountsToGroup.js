@@ -2,6 +2,8 @@ import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import canAddAccountToGroup from "./canAddAccountToGroup.js";
 
+const logCtx = { name: "core/accounts", file: " executeBulkOperation" };
+
 /**
  * @name moveAccountsToGroup
  * @private
@@ -14,7 +16,7 @@ import canAddAccountToGroup from "./canAddAccountToGroup.js";
  */
 export default async function moveAccountsToGroup(context, { shopId, fromGroupId, toGroupId }) {
   const { collections } = context;
-  const { Accounts, Groups, users } = collections;
+  const { Accounts, Groups } = collections;
 
   const fromGroup = await Groups.findOne({ _id: fromGroupId, shopId });
   const toGroup = await Groups.findOne({ _id: toGroupId, shopId });
@@ -30,65 +32,54 @@ export default async function moveAccountsToGroup(context, { shopId, fromGroupId
   const isAllowed = await canAddAccountToGroup(context, toGroup);
   if (!isAllowed) throw new ReactionError("access-denied", "Access Denied");
 
-  const roles = toGroup.permissions;
-  const maxAccountsPerUpdate = 100000;
-  const accountSelector = { groups: fromGroupId };
-  const numAccounts = await Accounts.find(accountSelector).count();
-  if (numAccounts === 0) {
-    Logger.debug(`No users need to be moved from group ${fromGroupId}`);
-    return;
+  let response;
+  try {
+    Logger.trace({ ...logCtx }, `Processing bulk account group move from ${fromGroup.name} group to ${toGroup.name} group`);
+    response = await Accounts.bulkWrite([
+      // Add the new group to all accounts currently in the old group
+      {
+        updateMany: {
+          filter: {
+            groups: fromGroupId
+          },
+          update: {
+            $addToSet: {
+              groups: toGroupId
+            }
+          }
+        }
+      },
+      // Remove the old groups from all matching accounts
+      {
+        updateMany: {
+          filter: {
+            groups: fromGroupId
+          },
+          update: {
+            $pull: {
+              groups: fromGroupId
+            }
+          }
+        }
+      }
+    ], {
+      ordered: false
+    });
+  } catch (error) {
+    Logger.error({ ...logCtx, error }, "Account group move update failed");
+    response = error; // error object has details about failed & successful operations
   }
 
-  Logger.debug(`Number of users to move: ${numAccounts}`);
-  const numQueriesNeeded = Math.ceil(numAccounts / maxAccountsPerUpdate);
-  Logger.debug(`Number of updates needed: ${numQueriesNeeded}`);
+  const { nMatched, nModified, result: { writeErrors } } = response;
 
-  const accountOptions = {
-    projection: { _id: 1 },
-    sort: { _id: 1 },
-    limit: maxAccountsPerUpdate
+  const cleanedErrors = writeErrors.map((error) => ({
+    documentId: error.op._id,
+    errorMsg: error.errmsg
+  }));
+
+  return {
+    foundCount: nMatched,
+    updatedCount: nModified,
+    writeErrors: cleanedErrors
   };
-  let lastUserIdUpdated = "";
-
-  for (let inc = 0; inc < numQueriesNeeded; inc += 1) {
-    Logger.debug(`Processing account group move #${inc + 1} of ${numQueriesNeeded} from ${fromGroup.name} group to ${toGroup.name} group, ${roles} roles`);
-
-    if (lastUserIdUpdated) {
-      accountSelector._id = {
-        $gt: lastUserIdUpdated
-      };
-    }
-
-    const accounts = await Accounts.find(accountSelector, accountOptions).toArray(); // eslint-disable-line no-await-in-loop
-    const userIds = accounts.map((account) => account._id);
-    const firstUserIdInBatch = userIds[0];
-    const lastUserIdInBatch = userIds[userIds.length - 1];
-    const accountUpdateSelector = { _id: { $gte: firstUserIdInBatch, $lte: lastUserIdInBatch } };
-    const userSelector = { _id: { $gte: firstUserIdInBatch, $lte: lastUserIdInBatch } };
-
-    // $pull and $addToSet cannot be performed in the same operation as they modify the same field
-    // Pull the old group from all selected accounts
-    await Accounts.updateMany(accountUpdateSelector, { // eslint-disable-line no-await-in-loop
-      $pull: {
-        groups: fromGroupId
-      }
-    });
-
-    // Add the new group to all selected accounts
-    await Accounts.updateMany(accountUpdateSelector, { // eslint-disable-line no-await-in-loop
-      $addToSet: {
-        groups: toGroupId
-      }
-    });
-
-    await users.updateMany(userSelector, { // eslint-disable-line no-await-in-loop
-      $set: {
-        [`roles.${shopId}`]: roles
-      }
-    });
-
-    lastUserIdUpdated = lastUserIdInBatch;
-  }
-
-  Logger.debug(`moveAccountsToGroup completed from ${fromGroup.name} group to ${toGroup.name} group, ${roles} roles`);
 }
