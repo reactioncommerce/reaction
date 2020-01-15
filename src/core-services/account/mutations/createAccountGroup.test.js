@@ -42,7 +42,7 @@ test("should create a group for the shop", async () => {
   const expected = Object.assign({}, { group: fakeResult });
   await expect(result).toEqual(expected);
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:legacy:accounts", "create", { shopId, legacyRoles: ["admin"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:legacy:accounts", "create", { shopId });
   expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(1, { slug: "customer", shopId });
   expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(2, { slug: "test-group", shopId });
   expect(mockContext.collections.Groups.insertOne).toHaveBeenCalledWith({

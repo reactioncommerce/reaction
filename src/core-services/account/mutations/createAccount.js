@@ -57,7 +57,7 @@ export default async function createAccount(context, input) {
     userId
   } = input;
 
-  await context.validatePermissions("reaction:legacy:accounts", "create", { shopId, legacyRoles: ["reaction-accounts"] });
+  await context.validatePermissions("reaction:legacy:accounts", "create", { shopId });
 
   // Create initial account object from user and profile
   const account = {

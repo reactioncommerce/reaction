@@ -20,7 +20,7 @@ const shopName = "Test Shop";
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [shopId]: ["admin", "orders"]
+    [shopId]: ["reaction:legacy:orders/approve:payment"]
   },
   shopId
 });

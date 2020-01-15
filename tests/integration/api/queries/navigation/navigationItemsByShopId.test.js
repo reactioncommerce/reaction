@@ -60,7 +60,7 @@ const mockCustomerAccount = Factory.Account.makeOne({
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: ["admin", "core"]
+    [internalShopId]: ["reaction:legacy:navigationTreeItems/read"]
   },
   shopId: internalShopId
 });

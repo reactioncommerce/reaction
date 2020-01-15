@@ -18,7 +18,7 @@ export async function getOrderQuery(context, selector, shopId, token) {
   const userHasPermission = await context.userHasPermission(
     "reaction:legacy:orders",
     "read",
-    { shopId, legacyRoles: ["orders", "order/fulfillment", "order/view"] }
+    { shopId }
   );
 
   if (userHasPermission) {

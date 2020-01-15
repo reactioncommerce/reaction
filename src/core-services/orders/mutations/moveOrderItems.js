@@ -52,8 +52,7 @@ export default async function moveOrderItems(context, input) {
   // Allow move if the account that placed the order is attempting to move
   await context.validatePermissions(`reaction:legacy:orders:${order._id}`, "move:item", {
     shopId: order.shopId,
-    owner: order.accountId,
-    legacyRoles: ["orders", "order/fulfillment"]
+    owner: order.accountId
   });
 
   // Is the account calling this mutation also the account that placed the order?

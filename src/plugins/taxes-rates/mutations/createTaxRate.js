@@ -15,7 +15,7 @@ export default async function createTaxRate(context, input) {
   const { appEvents, collections } = context;
   const { Taxes } = collections;
 
-  await context.validatePermissions("reaction:legacy:taxRates", "create", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions("reaction:legacy:taxRates", "create", { shopId });
 
   const taxRate = {
     _id: Random.id(),

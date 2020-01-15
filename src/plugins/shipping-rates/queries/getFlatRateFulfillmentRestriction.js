@@ -12,7 +12,7 @@ export default async function getFlatRateFulfillmentRestriction(context, { restr
   const { collections } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  await context.validatePermissions(`reaction:legacy:shippingRestrictions:${restrictionId}`, "read", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
+  await context.validatePermissions(`reaction:legacy:shippingRestrictions:${restrictionId}`, "read", { shopId });
 
   return FlatRateFulfillmentRestrictions.findOne({
     _id: restrictionId,

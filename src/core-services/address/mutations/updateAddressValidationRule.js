@@ -22,7 +22,7 @@ export default async function updateAddressValidationRule(context, input) {
   const { appEvents, collections } = context;
   const { AddressValidationRules } = collections;
 
-  await context.validatePermissions(`reaction:legacy:addressValidationRules:${_id}`, "update", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions(`reaction:legacy:addressValidationRules:${_id}`, "update", { shopId });
 
   const updates = {
     countryCodes,

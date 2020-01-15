@@ -17,7 +17,7 @@ test("throws if permission check fails", async () => {
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
     "reaction:legacy:products:VARIANT_ID_1",
     "clone",
-    { shopId: "SHOP_ID", legacyRoles: ["createProduct", "product/admin", "product/clone"] }
+    { shopId: "SHOP_ID" }
   );
 });
 

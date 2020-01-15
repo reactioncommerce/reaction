@@ -23,10 +23,6 @@ const GLOBAL_GROUP = "__global_roles__";
 export default async function hasPermission(context, resource, action, authContext) {
   const { user } = context;
 
-  // If the current user is the owner of a resource we are trying to check,
-  // such as an order or data on a user profile, they are authorized to perform the action
-  if (authContext && authContext.owner && authContext.owner === context.userId) return true;
-
   if (!user || !user.roles) return false;
 
   if (!resource) throw new ReactionError("invalid-param", "Resource must be provided");
@@ -35,31 +31,33 @@ export default async function hasPermission(context, resource, action, authConte
 
   if (!authContext) throw new ReactionError("invalid-param", "authContext must be provided");
 
-  const { legacyRoles: permissions, shopId: roleGroup } = authContext; // TODO(pod-auth): temporarily provide legacy roles
+  // If the current user is the owner of a resource we are trying to check,
+  // such as an order or data on a user profile, they are authorized to perform the action
+  if (authContext && authContext.owner && authContext.owner === context.userId) return true;
+  // Parse the provided data to create the role name to check against (<organization>:<system>:<entity>/<action>)
+  const { shopId } = authContext;
+  const roleName = `${resource.split(":").splice(0, 3).join(":")}/${action}`;
 
-  if (!Array.isArray(permissions)) throw new ReactionError("invalid-param", "permissions must be an array of strings");
-  if (roleGroup !== undefined && roleGroup !== null && (typeof roleGroup !== "string" || roleGroup.length === 0)) {
-    throw new ReactionError("invalid-param", "roleGroup must be a non-empty string");
+
+  // make sure shopId is a non-empty string (if provided)
+  if (shopId !== undefined && shopId !== null && (typeof shopId !== "string" || shopId.length === 0)) {
+    throw new ReactionError("invalid-param", "shopId must be a non-empty string");
   }
 
-  const checkRoles = permissions.slice(0);
+  // "owners" should always have access
+  // we create an array with the provided permission, plus owner
+  const checkRoles = [roleName, "owner", "reaction:legacy:shops/owner"]; // TODO(pod-auth): is this the best way to deal with an owner account? do we still have owners?
 
-  // This should always return true for owners
-  if (!checkRoles.includes("owner")) checkRoles.push("owner");
-
+  // roles that a user has on their account
   const { roles } = user;
 
   // always check GLOBAL_GROUP
   const globalRoles = roles[GLOBAL_GROUP];
   if (Array.isArray(globalRoles) && checkRoles.some((role) => globalRoles.includes(role))) return true;
 
-  if (roleGroup) {
-    // convert any periods to underscores for MongoDB compatibility
-    const group = roleGroup.replace(/\./g, "_");
-
-    const groupRoles = roles[group];
-
-    if (Array.isArray(groupRoles) && checkRoles.some((role) => groupRoles.includes(role))) return true;
+  if (shopId) {
+    const shopRoles = roles[shopId];
+    if (Array.isArray(shopRoles) && checkRoles.some((role) => shopRoles.includes(role))) return true;
   }
 
   Logger.debug(`User ${user._id} has none of [${checkRoles.join(", ")}] permissions`);

@@ -44,8 +44,8 @@ beforeAll(async () => {
 
   mockAdminAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["admin"],
-      [insertedId]: ["admin"]
+      [shopId]: ["reaction:legacy:addressValidationRules/read"],
+      [insertedId]: ["reaction:legacy:addressValidationRules/read"]
     }
   });
   await testApp.createUserAndAccount(mockAdminAccount);

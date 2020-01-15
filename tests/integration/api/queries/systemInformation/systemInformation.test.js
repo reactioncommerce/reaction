@@ -15,7 +15,7 @@ let systemInformation;
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: ["admin"]
+    [internalShopId]: ["reaction:legacy:shops/read"]
   },
   shopId: internalShopId
 });

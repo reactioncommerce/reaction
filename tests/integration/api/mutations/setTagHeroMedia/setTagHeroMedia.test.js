@@ -54,7 +54,7 @@ const mockMediaRecord = {
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [shopId]: ["admin"]
+    [shopId]: ["reaction:legacy:tags/update"]
   },
   shopId
 });

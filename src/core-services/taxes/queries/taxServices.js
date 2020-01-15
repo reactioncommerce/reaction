@@ -11,7 +11,7 @@ import { taxServices as registeredTaxServices } from "../registration.js";
  * @returns {Array<Object>} Array of tax services
  */
 export default async function taxServices(context, shopId) {
-  await context.validatePermissions("reaction:legacy:taxes", "read", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions("reaction:legacy:taxes", "read", { shopId });
 
   const list = Object.values(registeredTaxServices).map((service) => ({
     displayName: service.displayName,

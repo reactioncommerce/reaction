@@ -15,7 +15,7 @@ let taxServices;
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: ["admin"]
+    [internalShopId]: ["reaction:legacy:taxes/read"]
   },
   shopId: internalShopId
 });

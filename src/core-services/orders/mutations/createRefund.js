@@ -50,7 +50,7 @@ export default async function createRefund(context, input) {
   await context.validatePermissions(
     `reaction:legacy:orders:${order._id}`,
     "refund:payment",
-    { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
+    { shopId: order.shopId }
   );
 
   // Verify payment exists

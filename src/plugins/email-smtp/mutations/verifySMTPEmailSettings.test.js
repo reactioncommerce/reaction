@@ -17,5 +17,5 @@ test("throws if permission check fails", async () => {
     shopId
   })).rejects.toThrowErrorMatchingSnapshot();
 
-  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:legacy:emails", "read", { shopId, legacyRoles: ["owner", "admin", "dashboard"] });
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:legacy:emails", "read", { shopId });
 });

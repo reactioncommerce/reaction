@@ -42,7 +42,7 @@ export default async function recalculateReservedSimpleInventory(context, input)
     });
     if (!foundProduct) throw new ReactionError("not-found", "Product not found");
 
-    await context.validatePermissions(`reaction:legacy:inventory:${foundProduct._id}`, "update", { shopId, legacyRoles: ["admin"] });
+    await context.validatePermissions(`reaction:legacy:inventory:${foundProduct._id}`, "update", { shopId });
   }
 
   const inventoryReserved = await getReservedQuantity(context, productConfiguration);

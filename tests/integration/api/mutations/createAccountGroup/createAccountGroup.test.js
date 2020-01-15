@@ -25,7 +25,7 @@ beforeAll(async () => {
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
     roles: {
-      [shopId]: ["admin", "customerGroupPermission"]
+      [shopId]: ["reaction:legacy:accounts/create"]
     },
     shopId
   });

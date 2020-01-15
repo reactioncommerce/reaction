@@ -3,7 +3,7 @@ import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const updateGlobalSettings = importAsString("./updateGlobalSettings.graphql");
-const TestGlobalSettingSchema = ` 
+const TestGlobalSettingSchema = `
   extend type GlobalSettings {
     canSellDigitalProducts: Boolean
   }
@@ -33,7 +33,7 @@ const mockGlobalSetting = {
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    __global_roles__: ["admin"] // eslint-disable-line camelcase
+    __global_roles__: ["reaction:legacy:shops/update"] // eslint-disable-line camelcase
   }
 });
 

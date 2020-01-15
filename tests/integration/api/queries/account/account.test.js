@@ -29,7 +29,7 @@ beforeAll(async () => {
   mockAdminAccount = Factory.Account.makeOne({
     _id: internalAdminAccountId
   });
-  await testApp.createUserAndAccount(mockAdminAccount, ["reaction-accounts"]);
+  await testApp.createUserAndAccount(mockAdminAccount, ["reaction:legacy:accounts/read"]);
 
   mockOtherAccount = Factory.Account.makeOne({
     _id: internalOtherAccountId

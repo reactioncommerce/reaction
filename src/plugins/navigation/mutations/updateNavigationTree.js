@@ -50,7 +50,7 @@ export default async function updateNavigationTree(context, input) {
   NavigationTreeSchema.validate(navigationTreeData);
   const { draftItems, name } = navigationTreeData;
 
-  await context.validatePermissions(`reaction:legacy:navigationTrees:${navigationTreeId}`, "update", { shopId, legacyRoles: ["core"] });
+  await context.validatePermissions(`reaction:legacy:navigationTrees:${navigationTreeId}`, "update", { shopId });
 
   const update = {};
 

@@ -2,7 +2,7 @@
   {
     "description": "Tag managers acting on all entities.",
     "subjects": [ "reaction:groups:tag-managers" ],
-    "resources": [ "reaction:tags" ],
+    "resources": [ "reaction:legacy:tags" ],
     "actions": [ "create" ],
     "effect": "allow"
   },
@@ -22,7 +22,7 @@
   {
     "description": "Reading inactive tags.",
     "subjects": [ "reaction:groups:tag-managers" ],
-    "resources": [ "reaction:tags:*:inactive" ],
+    "resources": [ "reaction:legacy:tags-inactive:*" ],
     "actions": [ "read" ],
     "effect": "allow"
   },

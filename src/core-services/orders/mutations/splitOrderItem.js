@@ -54,7 +54,7 @@ export default async function splitOrderItem(context, input) {
   await context.validatePermissions(
     `reaction:legacy:orders:${order._id}`,
     "move:item",
-    { shopId: order.shopId, legacyRoles: ["orders", "order/fulfillment"] }
+    { shopId: order.shopId }
   );
 
   const { accountId, billingAddress, cartId, currencyCode } = order;

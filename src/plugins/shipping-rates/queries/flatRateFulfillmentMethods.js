@@ -13,7 +13,7 @@ export default async function flatRateFulfillmentMethods(context, input) {
   const { Shipping } = collections;
   const { shopId } = input;
 
-  await context.validatePermissions("reaction:legacy:shippingMethods", "read", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
+  await context.validatePermissions("reaction:legacy:shippingMethods", "read", { shopId });
 
   return Shipping.find({
     shopId

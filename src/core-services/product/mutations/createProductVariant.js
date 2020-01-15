@@ -26,7 +26,7 @@ export default async function createProductVariant(context, input) {
   const { productId, shopId } = input;
 
   // See that user has permission to create variant
-  await context.validatePermissions("reaction:legacy:products", "create", { shopId, legacyRoles: ["createProduct", "product/admin", "product/create"] });
+  await context.validatePermissions("reaction:legacy:products", "create", { shopId });
 
   // See that parent product exists
   const parentProduct = await Products.findOne({ _id: productId, shopId });

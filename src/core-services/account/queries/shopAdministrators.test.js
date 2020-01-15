@@ -15,8 +15,8 @@ test("throws if permission check fails", async () => {
   await expect(shopAdministratorsQuery(mockContext, fakeShopId)).rejects.toThrowErrorMatchingSnapshot();
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
     "reaction:legacy:shops:FAKE_SHOP_ID_ADMIN_QUERY",
-    "read",
-    { shopId: fakeShopId, legacyRoles: ["owner", "admin"] }
+    "read:admin-accounts",
+    { shopId: fakeShopId }
   );
 });
 
@@ -29,8 +29,8 @@ test("returns accounts cursor if user has permission", async () => {
   const result = await shopAdministratorsQuery(mockContext, fakeShopId);
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
     "reaction:legacy:shops:FAKE_SHOP_ID_ADMIN_QUERY",
-    "read",
-    { shopId: fakeShopId, legacyRoles: ["owner", "admin"] }
+    "read:admin-accounts",
+    { shopId: fakeShopId }
   );
   expect(mockContext.collections.Accounts.find).toHaveBeenCalledWith({ _id: { $in: ["user1", "user2"] } });
   expect(result).toBe("CURSOR");
