@@ -6,15 +6,16 @@
  * @returns {String} Full URL
  */
 export default function getAbsoluteUrl(rootUrl, path = "") {
+  // If the path already contains the rootUrl
+  // don't add it again
+  const regExp = /^https?:\/\/|^\/\//i;
+  if (regExp.exec(path) !== null) {
+    return path;
+  }
+
   let pathNoSlash = path;
   if (path.startsWith("/")) {
     pathNoSlash = path.slice(1);
-  }
-
-  // If the path already contains the rootUrl
-  // don't add it again
-  if (rootUrl === path.slice(0, rootUrl.length)) {
-    return pathNoSlash;
   }
 
   return `${rootUrl}${pathNoSlash}`;

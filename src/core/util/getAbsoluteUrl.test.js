@@ -17,3 +17,15 @@ test("returns the correct URL if the path already contains the rootUrl", () => {
   const path = "http://localhost:3000/media/test.jpg";
   expect(getAbsoluteUrl(rootUrl, path)).toBe("http://localhost:3000/media/test.jpg");
 });
+
+test("returns the correct URL for 3rd party services", () => {
+  const rootUrl = "http://localhost:3000/";
+  const path = "https://cloudinary.com/media/test.jpg";
+  expect(getAbsoluteUrl(rootUrl, path)).toBe("https://cloudinary.com/media/test.jpg");
+});
+
+test("returns the correct URL for protocol-relative URLs", () => {
+  const rootUrl = "http://localhost:3000/";
+  const path = "//example.com/img/logo.png";
+  expect(getAbsoluteUrl(rootUrl, path)).toBe("//example.com/img/logo.png");
+});
