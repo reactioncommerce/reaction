@@ -30,7 +30,7 @@ export default async function addAccountToGroup(context, input) {
       Groups,
       users
     },
-    user
+    userId
   } = context;
 
   const groupToMoveUserTo = await Groups.findOne({ _id: groupId });
@@ -103,7 +103,7 @@ export default async function addAccountToGroup(context, input) {
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
-    updatedBy: user._id,
+    updatedBy: userId,
     updatedFields: ["groups"]
   });
 
