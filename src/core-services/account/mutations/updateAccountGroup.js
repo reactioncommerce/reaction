@@ -2,13 +2,15 @@ import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
-import setRolesOnGroupAndUsers from "../util/setRolesOnGroupAndUsers.js";
+import defaultAccountGroups, { defaultCustomerGroupSlug } from "../util/defaultAccountGroups.js";
 
 const inputSchema = new SimpleSchema({
-  slug: { type: String, optional: true },
-  name: { type: String, optional: true },
-  description: { type: String, optional: true },
-  updatedAt: Date
+  "slug": { type: String, optional: true },
+  "name": { type: String, optional: true },
+  "description": { type: String, optional: true },
+  "permissions": { type: Array, optional: true },
+  "permissions.$": String,
+  "updatedAt": Date
 });
 
 /**
@@ -35,9 +37,9 @@ export default async function updateAccountGroup(context, input) {
   const { Groups } = context.collections;
 
   // we are limiting group method actions to only users within the account managers role
-  await context.validatePermissions(`reaction:legacy:account-groups:${groupId}`, "update", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "update", { shopId, legacyRoles: ["admin"] });
 
-  const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
+  const defaultCustomerGroupForShop = await Groups.findOne({ slug: defaultCustomerGroupSlug, shopId }) || {};
 
   // TODO: Remove when we move away from legacy permission verification
   const defaultCustomerPermissions = defaultCustomerGroupForShop.permissions;
@@ -49,8 +51,6 @@ export default async function updateAccountGroup(context, input) {
     throw new ReactionError("not-found", `Group with ID (${groupId}) doesn't exist`);
   }
 
-  let updatedFields = [];
-
   const updateGroupData = {
     updatedAt: new Date()
   };
@@ -60,11 +60,12 @@ export default async function updateAccountGroup(context, input) {
     updateGroupData.name = group.name;
   }
 
-  // Update the slug if available, or sligufy the name
-  if (group.slug) {
+  // Prevent updating the slug of the default groups.
+  // For example, changing the slug of the customer group could cause various features of the application to sop working as intended.
+  if (defaultAccountGroups.includes(existingGroup.slug) && group.slug && group.slug !== existingGroup.slug) {
+    throw new ReactionError("access-denied", `Field 'slug' cannot be updated for default group with ID (${groupId}) and name (${existingGroup.name}).`);
+  } else if (group.slug) { // Update the slug if available for other groups
     updateGroupData.slug = getSlug(group.slug);
-  } else if (group.name && !group.slug) {
-    updateGroupData.slug = getSlug(group.name);
   }
 
   // Update description
@@ -72,15 +73,11 @@ export default async function updateAccountGroup(context, input) {
     updateGroupData.description = group.description;
   }
 
-  // Add updated fields used for appEvents
-  updatedFields = Object.keys(updateGroupData);
-
   // TODO: Remove when we move away from legacy permission verification
   // Update the roles on the group and any user in those groups
   if (Array.isArray(group.permissions)) {
     const roles = _.uniq([...group.permissions, ...defaultCustomerPermissions]);
-    await setRolesOnGroupAndUsers(context, existingGroup, roles);
-    updatedFields.push("permissions");
+    updateGroupData.permissions = roles;
   }
 
   // Validate final group object
@@ -106,7 +103,7 @@ export default async function updateAccountGroup(context, input) {
   await appEvents.emit("afterAccountGroupUpdate", {
     account: updatedGroup,
     updatedBy: user._id,
-    updatedFields
+    updatedFields: Object.keys(updateGroupData)
   });
 
   return updatedGroup;
