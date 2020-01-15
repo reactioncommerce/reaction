@@ -28,7 +28,7 @@ Array [
 ]
 `;
 
-exports[`an admin account cannot default groups, owner, shop-manager, guest and customer 1`] = `
+exports[`an admin account cannot delete default groups, 'owner', 'shop-manager', 'guest' or 'customer' 1`] = `
 Array [
   Object {
     "extensions": Object {
@@ -56,7 +56,7 @@ Array [
 ]
 `;
 
-exports[`an admin account cannot default groups, owner, shop-manager, guest and customer 2`] = `
+exports[`an admin account cannot delete default groups, 'owner', 'shop-manager', 'guest' or 'customer' 2`] = `
 Array [
   Object {
     "extensions": Object {
@@ -84,7 +84,7 @@ Array [
 ]
 `;
 
-exports[`an admin account cannot default groups, owner, shop-manager, guest and customer 3`] = `
+exports[`an admin account cannot delete default groups, 'owner', 'shop-manager', 'guest' or 'customer' 3`] = `
 Array [
   Object {
     "extensions": Object {
@@ -112,7 +112,7 @@ Array [
 ]
 `;
 
-exports[`an admin account cannot default groups, owner, shop-manager, guest and customer 4`] = `
+exports[`an admin account cannot delete default groups, 'owner', 'shop-manager', 'guest' or 'customer' 4`] = `
 Array [
   Object {
     "extensions": Object {
