@@ -11,5 +11,11 @@ export default function getAbsoluteUrl(rootUrl, path = "") {
     pathNoSlash = path.slice(1);
   }
 
+  // If the path already contains the rootUrl
+  // don't add it again
+  if (rootUrl === path.slice(0, rootUrl.length)) {
+    return pathNoSlash;
+  }
+
   return `${rootUrl}${pathNoSlash}`;
 }
