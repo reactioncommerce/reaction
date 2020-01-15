@@ -10,11 +10,6 @@ export default async function permissionsByUserId(context, userId) {
   const account = await context.collections.Accounts.findOne({ userId });
   const user = await context.collections.users.findOne({ _id: userId });
 
-  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "read", {
-    shopId: account.shopId,
-    owner: account.userId
-  });
-
   if (account && Array.isArray(account.groups)) {
     // set __global_roles__ from the user
     const accountPermissions = { __global_permissions__: (user && user.roles && user.roles.__global_roles__) || [] }; // eslint-disable-line camelcase
