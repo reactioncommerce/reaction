@@ -13,10 +13,17 @@ const shopName = "Test Shop";
 let testApp;
 let roles;
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockShopOwnerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -26,6 +33,7 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockShopOwnerAccount);
   roles = testApp.query(RolesQuery);
 });
@@ -34,6 +42,7 @@ afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.users.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 

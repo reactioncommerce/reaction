@@ -118,6 +118,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.Products.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 

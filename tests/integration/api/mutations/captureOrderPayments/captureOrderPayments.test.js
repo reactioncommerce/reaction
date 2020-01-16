@@ -109,6 +109,7 @@ afterAll(async () => {
   await testApp.collections.users.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.collections.Products.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 
