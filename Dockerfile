@@ -1,5 +1,5 @@
 # Dockerfile for production builds
-FROM reactioncommerce/node-prod:12.10.0-v1
+FROM reactioncommerce/node-prod:12.14.1-v1
 
 # The `node-prod` base image installs NPM deps with --no-scripts.
 # This prevents the `sharp` lib from working because it installs the binaries
