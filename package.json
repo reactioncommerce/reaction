@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "type": "module",
   "engines": {
-    "node": ">=12.10.0"
+    "node": ">=12.14.1"
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",
@@ -85,13 +85,13 @@
     "wait-for-expect": "~3.0.0"
   },
   "scripts": {
-    "start": "node --experimental-modules ./src/index.js",
-    "start:dev": "npm run check-node-version && NODE_ENV=development NODE_OPTIONS='--experimental-modules' nodemon ./src/index.js",
-    "inspect": "NODE_ENV=development node --experimental-modules --inspect ./src/index.js",
-    "inspect-brk": "NODE_ENV=development node --experimental-modules --inspect-brk ./src/index.js",
-    "inspect:docker": "NODE_ENV=development node --experimental-modules --inspect=0.0.0.0:9229 ./src/index.js",
-    "inspect-brk:docker": "NODE_ENV=development node --experimental-modules --inspect-brk=0.0.0.0:9229 ./src/index.js",
-    "check-node-version": "node ./src/checkNodeVersion.js",
+    "start": "node --experimental-modules --experimental-json-modules ./src/index.js",
+    "start:dev": "npm run check-node-version && NODE_ENV=development NODE_OPTIONS='--experimental-modules --experimental-json-modules' nodemon ./src/index.js",
+    "inspect": "NODE_ENV=development node --experimental-modules --experimental-json-modules --inspect ./src/index.js",
+    "inspect-brk": "NODE_ENV=development node --experimental-modules --experimental-json-modules --inspect-brk ./src/index.js",
+    "inspect:docker": "NODE_ENV=development node --experimental-modules --experimental-json-modules --inspect=0.0.0.0:9229 ./src/index.js",
+    "inspect-brk:docker": "NODE_ENV=development node --experimental-modules --experimental-json-modules --inspect-brk=0.0.0.0:9229 ./src/index.js",
+    "check-node-version": "node ./src/checkNodeVersion.cjs",
     "test": "npm run test:unit && npm run test:integration:mutation && npm run test:integration:query",
     "test:unit": "jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
     "test:unit:watch": "jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",
