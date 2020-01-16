@@ -29,10 +29,17 @@ const mockFulfillmentRestriction = {
   }
 };
 
-const mockOwnerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner"]
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shippingRestrictions/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const mockAdminAccount = Factory.Account.makeOne({
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -43,7 +50,8 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await testApp.collections.FlatRateFulfillmentRestrictions.insertOne(mockFulfillmentRestriction);
-  await testApp.createUserAndAccount(mockOwnerAccount);
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.createUserAndAccount(mockAdminAccount);
   getFlatRateFulfillmentRestriction = testApp.query(FlatRateFulfillmentRestrictionQuery);
 });
 
@@ -52,12 +60,13 @@ afterAll(async () => {
   await testApp.collections.users.deleteMany({});
   await testApp.collections.FlatRateFulfillmentRestrictions.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 
 test("a shop owner can query for a flat rate fulfillment restriction", async () => {
   let result;
-  await testApp.setLoggedInUser(mockOwnerAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
 
   try {
     result = await getFlatRateFulfillmentRestriction({

@@ -13,10 +13,17 @@ const shopName = "Test Shop";
 let paymentMethods;
 let testApp;
 
-const mockShopOwnerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner"]
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const mockAdminAccount = Factory.Account.makeOne({
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -26,7 +33,8 @@ beforeAll(async () => {
   await testApp.start();
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName, PaymentMethods: ["iou_example"] });
-  await testApp.createUserAndAccount(mockShopOwnerAccount);
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.createUserAndAccount(mockAdminAccount);
   paymentMethods = testApp.query(PaymentMethodsQuery);
 });
 
@@ -34,6 +42,7 @@ afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.users.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 
@@ -49,7 +58,7 @@ test("an anonymous user cannot view all payment methods", async () => {
 });
 
 test("a shop owner can view a full list of all payment methods", async () => {
-  await testApp.setLoggedInUser(mockShopOwnerAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
   let result;
   try {
     result = await paymentMethods({

@@ -1,4 +1,5 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const productQuery = importAsString("./productQuery.graphql");

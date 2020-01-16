@@ -99,11 +99,18 @@ const mockShippingMethod = {
   ]
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:products/publish"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
   _id: "mockAdminAccountId",
-  roles: {
-    [internalShopId]: ["reaction:legacy:products/publish"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -141,6 +148,8 @@ beforeAll(async () => {
   updateFulfillmentOptionsForGroup = testApp.mutate(UpdateFulfillmentOptionsForGroupMutation);
 
   // Setup shop
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.setLoggedInUser(mockAdminAccount);
   await testApp.context.mutations.createShop(testApp.context.getInternalContext(), {

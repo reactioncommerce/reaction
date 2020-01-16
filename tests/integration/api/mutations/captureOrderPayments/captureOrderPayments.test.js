@@ -18,10 +18,17 @@ const productVariantId = "variant1";
 
 const shopName = "Test Shop";
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:orders/capture:payment"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [shopId]: ["reaction:legacy:orders/capture:payment"]
-  },
+  groups: [adminGroup._id],
   shopId
 });
 
@@ -90,6 +97,8 @@ beforeAll(async () => {
   });
 
   await testApp.collections.Orders.insertOne(order);
+
+  await testApp.collections.Groups.insertOne(adminGroup);
 
   await testApp.createUserAndAccount(mockAdminAccount);
   captureOrderPaymentsMutation = testApp.mutate(captureOrderPayments);
