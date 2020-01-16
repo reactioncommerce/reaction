@@ -10,7 +10,6 @@ jest.setTimeout(300000);
 let accountOpaqueId;
 let addAccountToGroup;
 let customerGroup;
-let customerGroupOpaqueId;
 let mockAdminAccount;
 let mockAdminAccountWithMissingPermission;
 let mockOtherAccount;
@@ -70,7 +69,6 @@ beforeAll(async () => {
   await testApp.collections.Groups.insertOne(customerGroup);
 
   accountOpaqueId = encodeOpaqueId("reaction/account", mockOtherAccount._id);
-  customerGroupOpaqueId = encodeOpaqueId("reaction/group", customerGroup._id);
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
   shopManagerGroupOpaqueId = encodeOpaqueId("reaction/group", shopManagerGroup._id);
 
@@ -142,24 +140,4 @@ test("anyone cannot add account to group if they do not have ALL the group permi
 
   const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
   expect(user.roles[shopId]).toBe(undefined);
-});
-
-test("permissions from the account's previous group are removed", async () => {
-  await testApp.setLoggedInUser(mockAdminAccount);
-
-  await addAccountToGroup({ accountId: accountOpaqueId, groupId: shopManagerGroupOpaqueId });
-
-  let account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
-  expect(account.groups).toEqual([shopManagerGroup._id]);
-
-  let user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toEqual(shopManagerGroup.permissions);
-
-  await addAccountToGroup({ accountId: accountOpaqueId, groupId: customerGroupOpaqueId });
-
-  account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
-  expect(account.groups).toEqual([customerGroup._id]);
-
-  user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toEqual(customerGroup.permissions);
 });
