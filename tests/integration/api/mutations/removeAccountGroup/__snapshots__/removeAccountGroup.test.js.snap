@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`a customer account should not be able to remove a group 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "FORBIDDEN",
+      "exception": Object {
+        "details": Object {},
+        "error": "access-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Access Denied",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Access Denied",
+    "path": Array [
+      "removeAccountGroup",
+      "group",
+    ],
+  },
+]
+`;
+
+exports[`an admin account cannot delete default groups, 'owner', 'shop manager', 'guest' or 'customer' 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "accedd-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cannot remove default group with ID shopManagerGroup.",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Cannot remove default group with ID shopManagerGroup.",
+    "path": Array [
+      "removeAccountGroup",
+      "group",
+    ],
+  },
+]
+`;
+
+exports[`an admin account cannot delete default groups, 'owner', 'shop manager', 'guest' or 'customer' 2`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "accedd-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cannot remove default group with ID ownerGroup.",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Cannot remove default group with ID ownerGroup.",
+    "path": Array [
+      "removeAccountGroup",
+      "group",
+    ],
+  },
+]
+`;
+
+exports[`an admin account cannot delete default groups, 'owner', 'shop manager', 'guest' or 'customer' 3`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "accedd-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cannot remove default group with ID guestGroup.",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Cannot remove default group with ID guestGroup.",
+    "path": Array [
+      "removeAccountGroup",
+      "group",
+    ],
+  },
+]
+`;
+
+exports[`an admin account cannot delete default groups, 'owner', 'shop manager', 'guest' or 'customer' 4`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "accedd-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cannot remove default group with ID customerGroup.",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Cannot remove default group with ID customerGroup.",
+    "path": Array [
+      "removeAccountGroup",
+      "group",
+    ],
+  },
+]
+`;
+
+exports[`an admin account cannot remove a group unless there is a default customer group 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "server-error",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cannot remove group testGroup. Default \\"customer\\" group doesn't exist to move users to.",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Cannot remove group testGroup. Default \\"customer\\" group doesn't exist to move users to.",
+    "path": Array [
+      "removeAccountGroup",
+      "group",
+    ],
+  },
+]
+`;
