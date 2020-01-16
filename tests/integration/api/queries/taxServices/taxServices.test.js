@@ -13,10 +13,17 @@ const shopName = "Test Shop";
 let testApp;
 let taxServices;
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:taxes/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:taxes/read"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -25,6 +32,7 @@ beforeAll(async () => {
 
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
 
   taxServices = testApp.query(TaxServicesQuery);

@@ -51,17 +51,31 @@ for (let index = 100; index < 123; index += 1) {
   navigationItemDocuments.push(doc);
 }
 
-const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:navigationTreeItems/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:navigationTreeItems/read"]
-  },
+  groups: [adminGroup._id],
+  shopId: internalShopId
+});
+
+const mockCustomerAccount = Factory.Account.makeOne({
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
@@ -77,6 +91,9 @@ beforeAll(async () => {
   await Promise.all(navigationItemDocuments.map((doc) => (
     testApp.collections.NavigationItems.insertOne(doc)
   )));
+
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
 
   await testApp.createUserAndAccount(mockCustomerAccount);
   await testApp.createUserAndAccount(mockAdminAccount);
