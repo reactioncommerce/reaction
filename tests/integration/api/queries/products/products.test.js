@@ -1,5 +1,6 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const productsQuery = importAsString("./productsQuery.graphql");
@@ -73,6 +74,15 @@ for (let index = 100; index < 136; index += 1) {
   productDocuments.push(mockOption);
 }
 
+const userGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["reaction:legacy:products/read"],
+  slug: "customer",
+  shopId: internalShopId
+});
+
 let testApp;
 let queryProducts;
 
@@ -82,19 +92,22 @@ beforeAll(async () => {
   queryProducts = testApp.query(productsQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
+  await testApp.collections.Groups.insertOne(userGroup);
+
   await Promise.all(productDocuments.map((doc) => (
     testApp.collections.Products.insertOne(doc)
   )));
 
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["reaction:legacy:products/read"] }
+    groups: [userGroup._id]
   });
 });
 
 afterAll(async () => {
   await testApp.collections.Shops.deleteMany({});
   await testApp.collections.Products.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.clearLoggedInUser();
   await testApp.stop();
 });

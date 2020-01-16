@@ -120,6 +120,7 @@ afterAll(async () => {
   await testApp.collections.Templates.deleteMany({});
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 

@@ -48,6 +48,15 @@ const mockOptionOne = {
   type: "variant"
 };
 
+const userGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["reaction:legacy:products/read"],
+  slug: "customer",
+  shopId: internalShopId
+});
+
 let testApp;
 let queryProduct;
 
@@ -60,9 +69,11 @@ beforeAll(async () => {
   await testApp.collections.Products.insertOne(mockVariant);
   await testApp.collections.Products.insertOne(mockOptionOne);
 
+  await testApp.collections.Groups.insertOne(userGroup);
+
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["reaction:legacy:products/read"] }
+    groups: [userGroup._id]
   });
 });
 
@@ -71,6 +82,7 @@ afterAll(async () => {
   await testApp.collections.Products.deleteOne({ _id: internalProductId });
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
+  await testApp.collections.Groups.deleteMany({});
   await testApp.clearLoggedInUser();
   await testApp.stop();
 });
