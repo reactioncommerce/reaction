@@ -144,6 +144,7 @@
               "makeHiddenTitle": "Hide {{count}} product?",
               "makeVisible": "Make Visible",
               "makeVisibleMessage": "Show selected products in your storefront. These changes will need to be published to take effect.",
+              "makeVisibleSuccess": "{{count}} products are now visible",
               "makeVisibleTitle_plural": "Make {{count}} product visible?",
               "makeVisibleTitle": "Make {{count}} product visible?",
               "publish": "Publish",
