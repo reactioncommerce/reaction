@@ -48,6 +48,9 @@ export default async function addAccountToGroup(context, input) {
   const accountUser = await users.findOne({ _id: account.userId });
   if (!accountUser) throw new ReactionError("not-found", "No user found with that ID");
 
+  const groupToAdd = account.groups.includes(groupId);
+  if (groupToAdd) throw new ReactionError("group-found", "Account is already in this group");
+
   // Get existing roles from a user
   const newAccountUserRoles = new Set((accountUser.roles || {})[shopId] || []);
 

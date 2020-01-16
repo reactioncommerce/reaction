@@ -12,13 +12,12 @@ export default async function canAddAccountToGroup(context, group) {
     account: contextUserAccount,
     collections: { Groups },
     isInternalCall,
-    user,
     userHasPermission
   } = context;
 
   if (isInternalCall) return true;
 
-  const { permissions: groupPermissions = [], shopId } = group;
+  const { shopId } = group;
 
   // An account can add another account to a group as long as the person adding
   // has all permissions granted by that group.
@@ -31,5 +30,5 @@ export default async function canAddAccountToGroup(context, group) {
     !!ownerGroup && contextUserAccount && contextUserAccount.groups.includes(ownerGroup._id)) ||
     userHasPermission("reaction:legacy:shops", "owner", { shopId }); // TODO(pod-auth): update this to figure out what to do with "owner"
 
-  return isOwnerAccount || _.difference(groupPermissions, user.roles[shopId] || []).length === 0;
+  return isOwnerAccount || userHasPermission("reaction:legacy:groups", "manage:accounts", { shopId });
 }
