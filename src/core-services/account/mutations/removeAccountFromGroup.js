@@ -59,12 +59,12 @@ export default async function removeAccountFromGroup(context, input) {
 
   // update user to only have roles from other groups they belong
   // TODO(pod-auth): this will likely be removed in #6031, where we no longer get roles from user.roles
-  await ensureRoles(context, remainingRolesToGiveUser || []);
+  await ensureRoles(context, remainingRolesToGiveUser);
   await users.updateOne({
     _id: account.userId
   }, {
     $set: {
-      [`roles.${shopId}`]: remainingRolesToGiveUser || []
+      [`roles.${shopId}`]: remainingRolesToGiveUser
     }
   });
   // TODO(pod-auth): this will likely be removed in #6031, where we no longer get roles from user.roles
@@ -84,5 +84,5 @@ export default async function removeAccountFromGroup(context, input) {
   });
 
   // Return the group the account was added to
-  return Groups.findOne({ _id: groupId });
+  return allGroupsUserBelongsTo.find((group) => group._id === groupId);
 }

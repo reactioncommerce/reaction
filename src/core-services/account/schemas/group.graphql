@@ -203,7 +203,7 @@ type RemoveAccountFromGroupPayload {
   clientMutationId: String
 
   "The removed group"
-  group: Group
+  group: Group!
 }
 
 

@@ -60,8 +60,7 @@ export default async function addAccountToGroup(context, input) {
   const uniqueRoles = _.uniq(newRoles);
 
   // Add all group roles to the user. Make sure this stays in this order.
-  const newAccountUserRolesArray = [...newAccountUserRoles];
-  await ensureRoles(context, newAccountUserRolesArray);
+  await ensureRoles(context, newRoles);
   await users.updateOne({
     _id: account.userId
   }, {
@@ -72,7 +71,7 @@ export default async function addAccountToGroup(context, input) {
   // TODO(pod-auth): this will likely be removed in #6031, where we no longer get roles from user.roles
 
   // Add new group to Account
-  const accountGroups = (Array.isArray(account.groups) && account.groups) || [];
+  const accountGroups = Array.isArray(account.groups) ? account.groups : [];
   accountGroups.push(groupId);
 
   await Accounts.updateOne({ _id: accountId }, { $set: { groups: accountGroups } });
