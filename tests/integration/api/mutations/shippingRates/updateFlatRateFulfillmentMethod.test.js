@@ -39,17 +39,31 @@ const mockFulfillmentMethodInput = {
   group: groups[1]
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shippingMethods/update"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
+  shopId: internalShopId
+});
+
 const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner", "admin", "shipping"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -61,6 +75,9 @@ beforeAll(async () => {
   await testApp.start();
   updateFlatRateFulfillmentMethod = testApp.mutate(UpdateFlatRateFulfillmentMethodMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
 
   await testApp.collections.Shipping.insertOne({
     methods: [mockFulfillmentMethod],

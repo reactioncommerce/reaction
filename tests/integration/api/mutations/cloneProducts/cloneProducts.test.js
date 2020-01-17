@@ -1,4 +1,5 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const CloneProductsMutation = importAsString("./cloneProducts.graphql");
@@ -80,9 +81,19 @@ beforeAll(async () => {
   await testApp.collections.Products.insertOne(mockVariant);
   await testApp.collections.Products.insertOne(mockOptionOne);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:products/clone"],
+    slug: "admin",
+    shopId: internalShopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["reaction:legacy:products/clone"] }
+    groups: [adminGroup._id]
   });
 });
 
@@ -91,6 +102,7 @@ afterAll(async () => {
   await testApp.collections.Products.deleteOne({ _id: internalProductId });
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
   await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
+  await testApp.collections.Groups.deleteMany({});
   await testApp.clearLoggedInUser();
   await testApp.stop();
 });
