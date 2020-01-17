@@ -1,5 +1,5 @@
 import i18n from "./i18n/index.js";
-import { registerPluginHandler } from "./registration.js";
+import { registerPluginHandlerForI18n } from "./registration.js";
 import startup from "./startup.js";
 
 /**
@@ -14,7 +14,7 @@ export default async function register(app) {
     version: app.context.appVersion,
     i18n,
     functionsByType: {
-      registerPluginHandler: [registerPluginHandler],
+      registerPluginHandler: [registerPluginHandlerForI18n],
       startup: [startup]
     }
   });

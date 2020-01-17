@@ -1,0 +1,39 @@
+mutation SetShippingAddressOnCart($input: SetShippingAddressOnCartInput!) {
+  setShippingAddressOnCart(input: $input) {
+    cart {
+      _id
+      email
+      items {
+        nodes {
+          _id
+          title
+          quantity
+          price {
+            amount
+          }
+        }
+      }
+      checkout {
+        fulfillmentGroups {
+          _id
+          shippingAddress {
+            address1
+            address2
+            city
+            company
+            country
+            firstName
+            fullName
+            isBillingDefault
+            isCommercial
+            isShippingDefault
+            lastName
+            phone
+            postal
+            region
+          }
+        }
+      }
+    }
+  }
+}

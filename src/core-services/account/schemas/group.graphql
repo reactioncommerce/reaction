@@ -28,6 +28,21 @@ input GroupInput {
   slug: String!
 }
 
+"A type definition for updating account groups"
+input UpdateGroupInput {
+  "A free text description of this group"
+  description: String
+
+  "A unique name for the group"
+  name: String
+
+  "A list of the account permissions implied by membership in this group"
+  permissions: [String]
+
+  "A unique URL-safe string representing this group"
+  slug: String
+}
+
 "The details for creating a group"
 input CreateAccountGroupInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -41,27 +56,30 @@ input CreateAccountGroupInput {
 }
 
 "The details for updating a group"
-input UpdateGroupInput {
+input UpdateAccountGroupInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
+  "The changes to apply to the group"
+  group: UpdateGroupInput!
+
   "The group ID"
-  id: ID!
+  groupId: ID!
 
   "The ID of the shop this group belongs to"
   shopId: ID!
-
-  "The changes to apply to the group"
-  updates: GroupInput!
 }
 
 "The details for removing a group"
-input RemoveGroupInput {
+input RemoveAccountGroupInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
   "The group ID"
-  id: ID!
+  groupId: ID!
+
+  "The ID of the shop this group belongs to"
+  shopId: ID!
 }
 
 "Defines a group and account that should be linked"
@@ -158,8 +176,8 @@ type CreateAccountGroupPayload {
   group: Group
 }
 
-"The response from the `updateGroup` mutation"
-type UpdateGroupPayload {
+"The response from the `updateAccountGroup` mutation"
+type UpdateAccountGroupPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
@@ -168,12 +186,12 @@ type UpdateGroupPayload {
 }
 
 "The response from the `removeGroup` mutation"
-type RemoveGroupPayload {
+type RemoveAccountGroupPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Successfully removed?"
-  wasRemoved: Boolean!
+  "The removed group"
+  group: Group
 }
 
 extend type Shop {
@@ -213,16 +231,16 @@ extend type Mutation {
   ): CreateAccountGroupPayload
 
   "Remove an existing permission group"
-  removeGroup(
+  removeAccountGroup(
     "Mutation input"
-    input: RemoveGroupInput!
-  ): RemoveGroupPayload
+    input: RemoveAccountGroupInput!
+  ): RemoveAccountGroupPayload
 
   "Update an existing permission group"
-  updateGroup(
+  updateAccountGroup(
     "Mutation input"
-    input: UpdateGroupInput!
-  ): UpdateGroupPayload
+    input: UpdateAccountGroupInput!
+  ): UpdateAccountGroupPayload
 }
 
 extend type Query {

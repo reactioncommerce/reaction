@@ -13,7 +13,7 @@ export default async function updateTaxRate(context, input) {
   const { appEvents, collections } = context;
   const { Taxes } = collections;
 
-  await context.validatePermissions("reaction:taxRates", "update", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions("reaction:legacy:taxRates", "update", { shopId });
 
   await Taxes.updateOne({
     _id,

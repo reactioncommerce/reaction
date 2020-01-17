@@ -6,7 +6,6 @@ import {
   defaultShopManagerRoles,
   defaultVisitorRoles
 } from "../util/defaultRoles.js";
-import addPluginRolesToGroups from "../util/addPluginRolesToGroups.js";
 
 /**
  * @name createAuthGroupsForShop
@@ -51,6 +50,4 @@ export default async function createAuthGroupsForShop(context, shopId) {
   });
 
   await Promise.all(promises);
-
-  await addPluginRolesToGroups(context, shopId);
 }

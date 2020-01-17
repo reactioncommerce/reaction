@@ -2,7 +2,7 @@
   {
     "description": "Cart managers acting on specific entities.",
     "subjects": [ "reaction:groups:cart-managers" ],
-    "resources": [ "reaction:carts:*" ],
+    "resources": [ "reaction:legacy:carts:*" ],
     "actions": [
       "read",
       "update"
@@ -12,7 +12,7 @@
   {
     "description": "Cart owner acting on their cart.",
     "subjects": [ "reaction:users:*" ],
-    "resources": [ "reaction:carts:*" ],
+    "resources": [ "reaction:legacy:carts:*" ],
     "actions": [
       "read"
     ],

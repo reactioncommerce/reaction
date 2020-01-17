@@ -19,7 +19,7 @@ beforeAll(async () => {
 
   mockOrdersAccount = Factory.Account.makeOne({
     roles: {
-      [shopId]: ["orders"]
+      [shopId]: ["reaction:legacy:orders/update"]
     }
   });
   await testApp.createUserAndAccount(mockOrdersAccount);
@@ -43,7 +43,7 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("user with orders role can update an order", async () => {
+test("user with `reaction:legacy:orders/update role can update an order", async () => {
   await testApp.setLoggedInUser(mockOrdersAccount);
 
   const orderItem = Factory.OrderItem.makeOne({

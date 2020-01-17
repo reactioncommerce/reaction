@@ -21,7 +21,7 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
   // Validate user has permission to view orders for all shopIds
   if (!shopIds) throw new ReactionError("invalid-param", "You must provide ShopId(s)");
   for (const shopId of shopIds) {
-    await context.validatePermissions("reaction:orders", "read", { shopId, owner: accountId, legacyRoles: ["orders", "order/fulfillment"] }); // eslint-disable-line no-await-in-loop
+    await context.validatePermissions("reaction:legacy:orders", "read", { shopId, owner: accountId }); // eslint-disable-line no-await-in-loop
   }
 
   let query = {

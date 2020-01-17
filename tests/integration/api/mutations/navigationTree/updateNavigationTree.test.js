@@ -15,7 +15,7 @@ const encodeNavigationItemOpaqueId = encodeOpaqueId("reaction/navigationItem");
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: ["admin", "core"]
+    [internalShopId]: ["reaction:legacy:navigationTrees/update"]
   }
 });
 

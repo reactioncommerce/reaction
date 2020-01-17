@@ -2,7 +2,11 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const GlobalSettingsQuery = importAsString("./GlobalSettingsQuery.graphql");
-const TestGlobalSettingSchema = importAsString("./TestGlobalSettingSchema.graphql");
+const TestGlobalSettingSchema = `
+  extend type GlobalSettings {
+    canSellVariantWithoutInventory: Boolean
+  }
+`;
 
 jest.setTimeout(300000);
 

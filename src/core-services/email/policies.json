@@ -2,7 +2,7 @@
   {
     "description": "Shop managers acting on email settings.",
     "subjects": [ "reaction:groups:shop-managers" ],
-    "resources": [ "reaction:emails" ],
+    "resources": [ "reaction:legacy:emails" ],
     "actions": [
       "send"
     ],

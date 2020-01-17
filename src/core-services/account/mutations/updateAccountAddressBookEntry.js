@@ -32,13 +32,10 @@ export default async function updateAccountAddressBookEntry(context, input) {
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:accounts:${account._id}`, "update:address-books", {
-      shopId: account.shopId,
-      owner: account.userId,
-      legacyRoles: ["reaction-accounts"]
-    });
-  }
+  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "update:address-books", {
+    shopId: account.shopId,
+    owner: account.userId
+  });
 
   // Make sure address exists before trying to update
   const oldAddress = (account.profile.addressBook || []).find((addr) => addr._id === address._id);

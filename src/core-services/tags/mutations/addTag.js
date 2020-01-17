@@ -18,7 +18,7 @@ export default async function addTag(context, input) {
   const { appEvents, collections } = context;
   const { Tags } = collections;
 
-  await context.validatePermissions("reaction:tags", "create", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions("reaction:legacy:tags", "create", { shopId });
 
   let slug = name;
   if (typeof slugInput === "string" && slugInput.trim().length > 0) {

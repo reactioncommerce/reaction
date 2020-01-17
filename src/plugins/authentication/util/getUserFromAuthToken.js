@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import ReactionError from "@reactioncommerce/reaction-error";
 import expandAuthToken from "./expandAuthToken.js";
 
 /**
@@ -21,22 +20,28 @@ async function getUserFromAuthToken(loginToken, context) {
   const token = loginToken.replace(/bearer\s/gi, "");
 
   const tokenObj = await expandAuthToken(token);
-
-  if (tokenObj && !tokenObj.active) {
-    Logger.error("Bearer token is not active");
-    throw new ReactionError("access-denied", "Token invalid or expired");
-  } else if (tokenObj && tokenObj.token_type && tokenObj.token_type !== "access_token") {
-    Logger.error("Bearer token is not an access token");
-    throw new ReactionError("access-denied", "Token is not an access token");
+  if (!tokenObj) {
+    Logger.debug("No token object");
+    throw new Error("No token object");
   }
 
-  const _id = tokenObj.sub;
-  const { collections } = context;
-  const { users } = collections;
+  const { active, sub: _id, token_type: tokenType } = tokenObj;
 
-  const currentUser = await users.findOne({ _id });
+  if (!active) {
+    Logger.debug("Bearer token is expired");
+    throw new Error("Bearer token is expired");
+  }
 
-  if (!currentUser) throw new ReactionError("access-denied", "Token invalid");
+  if (tokenType !== "access_token") {
+    Logger.error("Bearer token is not an access token");
+    throw new Error("Bearer token is not an access token");
+  }
+
+  const currentUser = await context.collections.users.findOne({ _id });
+  if (!currentUser) {
+    Logger.error("Bearer token specifies a user ID that does not exist");
+    throw new Error("Bearer token specifies a user ID that does not exist");
+  }
 
   return currentUser;
 }

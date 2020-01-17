@@ -10,7 +10,7 @@ const fieldsThatChangeAncestorPricing = ["isDeleted", "isVisible", "price"];
  * @param {Object} context - App context.
  * @returns {undefined} - void, no return.
  */
-export default async function startup(context) {
+export default async function simplePricingStartup(context) {
   const { appEvents, collections } = context;
   const { Catalog, Products, Shops } = collections;
 

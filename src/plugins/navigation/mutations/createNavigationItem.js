@@ -18,9 +18,7 @@ export default async function createNavigationItem(context, input) {
 
   const { metadata, draftData = {} } = navigationItem;
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions("reaction:navigationTreeItems", "create", { shopId, legacyRoles: ["core"] });
-  }
+  await context.validatePermissions("reaction:legacy:navigationTreeItems", "create", { shopId });
 
   let parsedMetadata = {};
   if (metadata) {

@@ -1,10 +1,20 @@
 [
   {
     "description": "Account managers acting on all entities.",
+    "subjects": [ "reaction:groups:shop-managers" ],
+    "resources": [ "reaction:legacy:accounts" ],
+    "actions": [
+      "read:admin-accounts"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Account managers acting on all entities.",
     "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts" ],
+    "resources": [ "reaction:legacy:accounts" ],
     "actions": [
       "create",
+      "delete",
       "read"
     ],
     "effect": "allow"
@@ -12,7 +22,7 @@
   {
     "description": "Account managers acting on specific entities.",
     "subjects": [ "reaction:groups:account-managers" ],
-    "resources": [ "reaction:accounts:*" ],
+    "resources": [ "reaction:legacy:accounts:*" ],
     "actions": [
       "add:address-books",
       "add:emails",
@@ -29,7 +39,7 @@
   {
     "description": "Account owner acting on their account.",
     "subjects": [ "reaction:users:*" ],
-    "resources": [ "reaction:accounts:*" ],
+    "resources": [ "reaction:legacy:accounts:*" ],
     "actions": [
       "add:address-books",
       "add:emails",
@@ -48,5 +58,26 @@
         "options": {}
       }
     }
+  },
+  {
+    "description": "Account group managers acting on all entities.",
+    "subjects": [ "reaction:groups:group-managers" ],
+    "resources": [ "reaction:legacy:groups" ],
+    "actions": [
+      "create",
+      "read"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Account croup managers acting on specific entities.",
+    "subjects": [ "reaction:groups:group-managers" ],
+    "resources": [ "reaction:legacy:groups:*" ],
+    "actions": [
+      "read",
+      "update",
+      "delete"
+    ],
+    "effect": "allow"
   }
 ]

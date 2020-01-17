@@ -34,16 +34,15 @@ export default async function tags(
 
   // Check to make sure user has `read` permissions for this tag
   // TODO(auth-pod): revisit this check once legacyRoles are removed
-  // await context.validatePermissions("reaction:tags", "read", {
+  // await context.validatePermissions("reaction:legacy:tags", "read", {
   //   shopId,
   //   legacyRoles: ["admin", "owner", "tags", "any"]
   // });
 
   // Check to see if user has `read` permissions for hidden / deleted tags
   // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
-  const hasInactivePermissions = await context.userHasPermission("reaction:tags:inactive", "read", {
-    shopId,
-    legacyRoles: ["admin", "owner", "tags"]
+  const hasInactivePermissions = await context.userHasPermission("reaction:legacy:tags-inactive", "read", {
+    shopId
   });
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
@@ -75,7 +74,7 @@ export default async function tags(
   // If user does not have `read-admin` permissions,
   // or they do but shouldIncludeInvisible === false
   // only show visible products
-  if (hasInactivePermissions || (hasInactivePermissions && !shouldIncludeInvisible)) {
+  if (!hasInactivePermissions || (hasInactivePermissions && !shouldIncludeInvisible)) {
     query.isVisible = true;
   }
 

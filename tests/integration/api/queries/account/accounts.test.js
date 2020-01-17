@@ -66,7 +66,7 @@ beforeAll(async () => {
     _id: internalAdminAccountId,
     shopId: internalShopId
   });
-  await testApp.createUserAndAccount(mockAdminAccount, ["reaction-accounts"]);
+  await testApp.createUserAndAccount(mockAdminAccount, ["reaction:legacy:accounts/read"]);
 
   mockNonAdminAccount = Factory.Account.makeOne({
     _id: internalNonAdminAccountId

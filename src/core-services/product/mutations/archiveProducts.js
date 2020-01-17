@@ -31,9 +31,9 @@ export default async function archiveProducts(context, input) {
   for (const productId of productIds) {
     // eslint-disable-next-line no-await-in-loop
     await context.validatePermissions(
-      `reaction:products:${productId}`,
+      `reaction:legacy:products:${productId}`,
       "archive",
-      { shopId, legacyRoles: ["createProduct", "product/admin", "product/archive"] }
+      { shopId }
     );
   }
 

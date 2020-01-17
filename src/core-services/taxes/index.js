@@ -2,7 +2,7 @@ import i18n from "./i18n/index.js";
 import mutateNewOrderItemBeforeCreate from "./mutateNewOrderItemBeforeCreate.js";
 import mutateNewVariantBeforeCreate from "./mutateNewVariantBeforeCreate.js";
 import publishProductToCatalog from "./publishProductToCatalog.js";
-import { registerPluginHandler } from "./registration.js";
+import { registerPluginHandlerForTaxes } from "./registration.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
 import preStartup from "./preStartup.js";
@@ -39,7 +39,7 @@ export default async function register(app) {
       mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
       preStartup: [preStartup],
       publishProductToCatalog: [publishProductToCatalog],
-      registerPluginHandler: [registerPluginHandler]
+      registerPluginHandler: [registerPluginHandlerForTaxes]
     },
     graphQL: {
       schemas,

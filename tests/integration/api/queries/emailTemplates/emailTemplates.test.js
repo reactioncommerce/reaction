@@ -67,7 +67,7 @@ for (let index = 0; index < 3; index += 1) {
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: ["admin"]
+    [internalShopId]: ["reaction:legacy:email-templates/read"]
   },
   shopId: internalShopId
 });

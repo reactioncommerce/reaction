@@ -1,11 +1,11 @@
 {
   "name": "reaction-api",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.3",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
   "engines": {
-    "node": ">=12.10.0"
+    "node": ">=12.14.1"
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",
@@ -50,7 +50,6 @@
     "node-fetch": "~2.6.0",
     "object-hash": "~1.3.1",
     "promise-retry": "^1.1.1",
-    "querystring": "~0.2.0",
     "ramda": "~0.26.1",
     "semver": "~6.3.0",
     "sharp": "~0.23.1",
@@ -86,13 +85,13 @@
     "wait-for-expect": "~3.0.0"
   },
   "scripts": {
-    "start": "node --experimental-modules ./src/index.js",
-    "start:dev": "npm run check-node-version && NODE_ENV=development NODE_OPTIONS='--experimental-modules' nodemon ./src/index.js",
-    "inspect": "NODE_ENV=development node --experimental-modules --inspect ./src/index.js",
-    "inspect-brk": "NODE_ENV=development node --experimental-modules --inspect-brk ./src/index.js",
-    "inspect:docker": "NODE_ENV=development node --experimental-modules --inspect=0.0.0.0:9229 ./src/index.js",
-    "inspect-brk:docker": "NODE_ENV=development node --experimental-modules --inspect-brk=0.0.0.0:9229 ./src/index.js",
-    "check-node-version": "node ./src/checkNodeVersion.js",
+    "start": "node --experimental-modules --experimental-json-modules ./src/index.js",
+    "start:dev": "npm run check-node-version && NODE_ENV=development NODE_OPTIONS='--experimental-modules --experimental-json-modules' nodemon ./src/index.js",
+    "inspect": "NODE_ENV=development node --experimental-modules --experimental-json-modules --inspect ./src/index.js",
+    "inspect-brk": "NODE_ENV=development node --experimental-modules --experimental-json-modules --inspect-brk ./src/index.js",
+    "inspect:docker": "NODE_ENV=development node --experimental-modules --experimental-json-modules --inspect=0.0.0.0:9229 ./src/index.js",
+    "inspect-brk:docker": "NODE_ENV=development node --experimental-modules --experimental-json-modules --inspect-brk=0.0.0.0:9229 ./src/index.js",
+    "check-node-version": "node ./src/checkNodeVersion.cjs",
     "test": "npm run test:unit && npm run test:integration:mutation && npm run test:integration:query",
     "test:unit": "jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/",
     "test:unit:watch": "jest --maxWorkers=4 --testPathIgnorePatterns /tests/integration/ --watch",

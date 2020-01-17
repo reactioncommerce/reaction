@@ -28,7 +28,7 @@ const surchargeDestination = { region: ["CO", "NY"] };
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: ["admin", "core"]
+    [internalShopId]: ["reaction:legacy:surcharges/create"]
   }
 });
 

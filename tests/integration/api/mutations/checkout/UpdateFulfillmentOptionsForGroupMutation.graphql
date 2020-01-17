@@ -1,0 +1,35 @@
+mutation UpdateFulfillmentOptionsForGroup($input: UpdateFulfillmentOptionsForGroupInput!) {
+  updateFulfillmentOptionsForGroup(input: $input) {
+    cart {
+      _id
+      email
+      items {
+        nodes {
+          _id
+          title
+          quantity
+          price {
+            amount
+          }
+        }
+      }
+      checkout {
+        fulfillmentGroups {
+          availableFulfillmentOptions {
+            fulfillmentMethod {
+              _id
+              displayName
+              fulfillmentTypes
+            }
+            handlingPrice {
+              amount
+            }
+            price {
+              amount
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -15,7 +15,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export async function getOrderQuery(context, selector, shopId, token) {
   const { accountId: contextAccountId } = context;
   const newSelector = { ...selector, shopId };
-  const userHasPermission = await context.userHasPermission("reaction:orders", "read", { shopId, legacyRoles: ["orders", "order/fulfillment", "order/view"] });
+  const userHasPermission = await context.userHasPermission(
+    "reaction:legacy:orders",
+    "read",
+    { shopId }
+  );
 
   if (userHasPermission) {
     // admins with orders permissions can see any order in the shop

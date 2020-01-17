@@ -27,7 +27,7 @@ export default async function createAccountGroup(context, input) {
   const { Groups } = context.collections;
 
   // we are limiting group method actions to only users within the account managers role
-  await context.validatePermissions("reaction:account", "create", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions("reaction:legacy:groups", "create", { shopId });
 
   const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
 
