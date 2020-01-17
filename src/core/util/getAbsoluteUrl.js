@@ -6,6 +6,12 @@
  * @returns {String} Full URL
  */
 export default function getAbsoluteUrl(rootUrl, path = "") {
+  // Check if the path is already absolute
+  const pathStart = path.slice(0, 8).toLowerCase();
+  if (pathStart.startsWith("https://") || pathStart.startsWith("http://") || pathStart.startsWith("//")) {
+    return path;
+  }
+
   let pathNoSlash = path;
   if (path.startsWith("/")) {
     pathNoSlash = path.slice(1);
