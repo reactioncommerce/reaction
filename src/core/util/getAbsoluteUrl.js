@@ -7,8 +7,8 @@
  */
 export default function getAbsoluteUrl(rootUrl, path = "") {
   // Check if the path is already absolute
-  const pathStart = path.slice(0, 7).toLowerCase();
-  if (pathStart.startsWith("https://") || pathStart.startsWith("http") || pathStart.startsWith("//")) {
+  const pathStart = path.slice(0, 8).toLowerCase();
+  if (pathStart.startsWith("https://") || pathStart.startsWith("http://") || pathStart.startsWith("//")) {
     return path;
   }
 

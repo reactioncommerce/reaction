@@ -26,6 +26,12 @@ test("returns the correct URL for 3rd party services", () => {
 
 test("returns the correct URL for protocol-relative URLs", () => {
   const rootUrl = "http://localhost:3000/";
-  const path = "//example.com/img/logo.png";
-  expect(getAbsoluteUrl(rootUrl, path)).toBe("//example.com/img/logo.png");
+  const path = "//example.com/img/logo.jpg";
+  expect(getAbsoluteUrl(rootUrl, path)).toBe("//example.com/img/logo.jpg");
+});
+
+test("returns the correct URL for path starting with http", () => {
+  const rootUrl = "http://localhost:3000/";
+  const path = "http.jpg";
+  expect(getAbsoluteUrl(rootUrl, path)).toBe("http://localhost:3000/http.jpg");
 });
