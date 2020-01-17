@@ -56,6 +56,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:fulfillment/read",
   "reaction:legacy:groups/create",
   "reaction:legacy:groups/delete",
+  "reaction:legacy:groups/manage:accounts",
   "reaction:legacy:groups/read",
   "reaction:legacy:groups/update",
   "reaction:legacy:inventory/read",
