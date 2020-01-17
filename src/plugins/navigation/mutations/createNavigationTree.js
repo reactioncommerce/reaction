@@ -7,9 +7,9 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
  * @summary Creates a navigation tree
  * @param {Object} context An object containing the per-request state
  * @param {Object} input Input of createNavigationTree mutation
- * @param {String} input.navigationTreeId ID of navigation tree to update
- * @param {String} input.shopId Shop ID of navigation tree
- * @param {Object} input.navigationTree Navigation tree object to update
+ * @param {String} input.name The name of the navigation tree to create
+ * @param {String} input.shopId Shop ID of the navigation tree
+ * @param {Object} input.draftItems The draft navigation items for the navigation tree to create
  * @returns {Promise<Object>} Created navigation tree
  */
 export default async function createNavigationTree(context, input) {

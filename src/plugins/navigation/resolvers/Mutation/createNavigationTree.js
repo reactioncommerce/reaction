@@ -7,9 +7,9 @@ import decodeNavigationTreeItemIds from "../../util/decodeNavigationTreeItemIds.
  * @summary resolver for createNavigationTree GraphQL mutation
  * @param {Object} parentResult Unused
  * @param {Object} args.input An object of all mutation arguments that were sent by the client
- * @param {String} args.input.id ID of the navigation tree to update
- * @param {String} args.input.shopId Shop ID of the navigation tree to publish changes
- * @param {String} args.input.navigationTree The updated navigation tree
+ * @param {String} args.input.name The name of the navigation tree to create
+ * @param {String} args.input.shopId Shop ID of the navigation tree to create
+ * @param {String} args.input.draftItems The draft navigation items for the navigation tree to create
  * @param {Object} context An object containing the per-request state
  * @param {String} [args.input.clientMutationId] An optional string identifying the mutation call
  * @returns {Promise<Object>} CreateNavigationTreePayload
