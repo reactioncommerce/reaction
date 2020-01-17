@@ -76,7 +76,8 @@
     "actions": [
       "read",
       "update",
-      "delete"
+      "delete",
+      "manage:accounts"
     ],
     "effect": "allow"
   }
