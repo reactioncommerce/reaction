@@ -1,5 +1,4 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds.js";
 import setDefaultsForNavigationTreeItems from "../util/setDefaultsForNavigationTreeItems.js";
 import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
 
@@ -55,7 +54,6 @@ export default async function updateNavigationTree(context, input) {
   const update = {};
 
   if (draftItems) {
-    decodeNavigationTreeItemIds(draftItems);
     update.draftItems = draftItems;
     update.hasUnpublishedChanges = true;
   }
