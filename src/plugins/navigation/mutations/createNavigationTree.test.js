@@ -3,18 +3,19 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import createNavigationTreeMutation from "./createNavigationTree.js";
 
 const mockNavigationTreeInput = {
+  shopId: "123",
   name: "Main Menu",
   draftItems: [
     {
-      navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
+      navigationItemId: "uaXXawc5oxy9eR4hP",
       items: [
         {
-          navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dEFLQVRRZXFvRDRBaDVnZzI="
+          navigationItemId: "tAKATQeqoD4Ah5gg2"
         }
       ]
     },
     {
-      navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06S0VjbjZOdnJSdXp0bVBNcTg="
+      navigationItemId: "KEcn6NvrRuztmPMq8"
     }
   ]
 };
@@ -48,10 +49,6 @@ const mockNavigationTree = {
   ]
 };
 
-const mockInput = {
-  shopId: "123"
-};
-
 test("creates and returns new navigation tree", async () => {
   mockContext.queries.primaryShopId = jest.fn().mockName("queries.primaryShopId").mockReturnValueOnce(Promise.resolve("FAKE_SHOP_ID"));
   mockContext.queries.appSettings = jest.fn().mockName("queries.appSettings").mockReturnValueOnce(Promise.resolve({
@@ -60,10 +57,7 @@ test("creates and returns new navigation tree", async () => {
     shouldNavigationTreeItemsBePubliclyVisible: false
   }));
 
-  const updatedNavigationTree = await createNavigationTreeMutation(mockContext, {
-    ...mockInput,
-    navigationTree: mockNavigationTreeInput
-  });
+  const updatedNavigationTree = await createNavigationTreeMutation(mockContext, mockNavigationTreeInput);
   expect(mockContext.collections.NavigationTrees.insertOne).toHaveBeenCalledTimes(1);
   expect(mockContext.queries.appSettings).toHaveBeenCalled();
 
@@ -74,6 +68,6 @@ test("throws an error if the user does not have the core permission", async () =
   mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
-  const result = createNavigationTreeMutation(mockContext, mockInput);
+  const result = createNavigationTreeMutation(mockContext, mockNavigationTreeInput);
   expect(result).rejects.toThrow();
 });
