@@ -10,7 +10,7 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @name accounts/addAccountToGroup
+ * @name accounts/removeAccountFromGroup
  * @memberof Mutations/Accounts
  * @method
  * @summary Add an account to a group
@@ -20,7 +20,7 @@ const inputSchema = new SimpleSchema({
  * @param {String} input.groupId - The group ID
  * @return {Promise<Object>} with updated address
  */
-export default async function addAccountToGroup(context, input) {
+export default async function removeAccountFromGroup(context, input) {
   inputSchema.validate(input);
 
   const { accountId, groupId } = input;
@@ -34,12 +34,12 @@ export default async function addAccountToGroup(context, input) {
     userId
   } = context;
 
-  const groupToAddUserTo = await Groups.findOne({ _id: groupId });
-  if (!groupToAddUserTo) throw new ReactionError("not-found", "No group found with that ID");
+  const groupToRemoveUserFrom = await Groups.findOne({ _id: groupId });
+  if (!groupToRemoveUserFrom) throw new ReactionError("not-found", "No group found with that ID");
 
-  const { permissions: groupPermissions = [], shopId } = groupToAddUserTo;
+  const { shopId } = groupToRemoveUserFrom;
 
-  const isAllowed = await canAddAccountToGroup(context, groupToAddUserTo);
+  const isAllowed = await canAddAccountToGroup(context, groupToRemoveUserFrom);
   if (!isAllowed) throw new ReactionError("access-denied", "Access Denied");
 
   const account = await Accounts.findOne({ _id: accountId });
@@ -48,37 +48,33 @@ export default async function addAccountToGroup(context, input) {
   const accountUser = await users.findOne({ _id: account.userId });
   if (!accountUser) throw new ReactionError("not-found", "No user found with that ID");
 
-  const groupToAdd = account.groups.includes(groupId);
-  if (groupToAdd) throw new ReactionError("group-found", "Account is already in this group");
+  const groupToRemove = account.groups.includes(groupId);
+  if (!groupToRemove) throw new ReactionError("not-found", "Account not found in this group");
 
-  // Get existing roles from a user
-  const newAccountUserRoles = new Set((accountUser.roles || {})[shopId] || []);
+  const allGroupsUserBelongsTo = await Groups.find({ _id: { $in: account.groups } }).toArray();
 
-  // Merge existing roles on user and roles from new group
+  // Get all other groups user belongs to, and all permissions from these groups, and flatten into single array
+  const remainingGroupsUserBelongsTo = allGroupsUserBelongsTo.filter((group) => group.shopId === shopId && group._id !== groupId);
+  const remainingRolesToGiveUser = _.uniq(remainingGroupsUserBelongsTo.map((group) => group.permissions).flat());
+
+  // update user to only have roles from other groups they belong
   // TODO(pod-auth): this will likely be removed in #6031, where we no longer get roles from user.roles
-  const newRoles = [...newAccountUserRoles, ...groupPermissions];
-  const uniqueRoles = _.uniq(newRoles);
-
-  // Add all group roles to the user. Make sure this stays in this order.
-  await ensureRoles(context, newRoles);
+  await ensureRoles(context, remainingRolesToGiveUser);
   await users.updateOne({
     _id: account.userId
   }, {
     $set: {
-      [`roles.${shopId}`]: uniqueRoles
+      [`roles.${shopId}`]: remainingRolesToGiveUser
     }
   });
   // TODO(pod-auth): this will likely be removed in #6031, where we no longer get roles from user.roles
 
-  // Add new group to Account
-  const accountGroups = Array.isArray(account.groups) ? account.groups : [];
-  accountGroups.push(groupId);
-
-  await Accounts.updateOne({ _id: accountId }, { $set: { groups: accountGroups } });
+  const remainingGroupIds = remainingGroupsUserBelongsTo.map((group) => group._id);
+  await Accounts.updateOne({ _id: accountId }, { $set: { groups: remainingGroupIds } });
 
   const updatedAccount = {
     ...account,
-    groups: accountGroups
+    groups: remainingGroupsUserBelongsTo
   };
 
   await appEvents.emit("afterAccountUpdate", {
@@ -88,5 +84,5 @@ export default async function addAccountToGroup(context, input) {
   });
 
   // Return the group the account was added to
-  return Groups.findOne({ _id: groupId });
+  return allGroupsUserBelongsTo.find((group) => group._id === groupId);
 }
