@@ -14,7 +14,7 @@ const encodeNavigationItemOpaqueId = encodeOpaqueId("reaction/navigationItem");
 
 const mockAdminAccount = Factory.Account.makeOne({
   roles: {
-    [internalShopId]: ["admin", "core"]
+    [internalShopId]: ["reaction:legacy:navigationTrees/create"]
   }
 });
 
@@ -24,17 +24,15 @@ const mockNavigationItem = Factory.NavigationItem.makeOne({
 
 const createNavigationTreeInput = {
   shopId: opaqueShopId,
-  navigationTree: {
-    name: "Main Navigation",
-    draftItems: [
-      {
-        navigationItemId: encodeNavigationItemOpaqueId(mockNavigationItem._id),
-        isPrivate: false,
-        isSecondary: false,
-        isVisible: true
-      }
-    ]
-  }
+  name: "Main Navigation",
+  draftItems: [
+    {
+      navigationItemId: encodeNavigationItemOpaqueId(mockNavigationItem._id),
+      isPrivate: false,
+      isSecondary: false,
+      isVisible: true
+    }
+  ]
 };
 
 let testApp;

@@ -17,6 +17,8 @@ export default async function createNavigationTree(context, input) {
   const { NavigationTrees } = collections;
   const { shopId } = input;
 
+  await context.validatePermissions("reaction:legacy:navigationTrees", "create", { shopId });
+
   const {
     shouldNavigationTreeItemsBeAdminOnly,
     shouldNavigationTreeItemsBePubliclyVisible,
@@ -40,14 +42,12 @@ export default async function createNavigationTree(context, input) {
   };
 
   if (navigationTreeData.draftItems) {
-    navigationTreeData.draftItems = setDefaultsForNavigationTreeItems(input.draftItems, visibilityDefaults)
+    navigationTreeData.draftItems = setDefaultsForNavigationTreeItems(input.draftItems, visibilityDefaults);
     navigationTreeData.hasUnpublishedChanges = true;
   }
 
   // Validate the navigation tree with the defaults set
   NavigationTreeSchema.validate(navigationTreeData);
-
-  await context.validatePermissions("reaction:legacy:navigationTrees", "create", { shopId });
 
   await NavigationTrees.insertOne(navigationTreeData);
 
