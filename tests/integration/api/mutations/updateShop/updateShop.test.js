@@ -83,10 +83,19 @@ beforeAll(async () => {
 
   testApp.collections.MediaRecords.insertOne(mockMediaRecord);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:shops/update"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
-    roles: {
-      [shopId]: ["reaction:legacy:shops/update"]
-    }
+    groups: [adminGroup._id],
+    shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
 
@@ -97,6 +106,7 @@ afterAll(async () => {
   await testApp.collections.MediaRecords.deleteMany();
   await testApp.collections.Accounts.deleteMany();
   await testApp.collections.Shops.deleteMany();
+  await testApp.collections.Groups.deleteMany();
   await testApp.stop();
 });
 

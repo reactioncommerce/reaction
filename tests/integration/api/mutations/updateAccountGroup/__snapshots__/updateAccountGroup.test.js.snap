@@ -111,3 +111,59 @@ Array [
   },
 ]
 `;
+
+exports[`an admin account should not be able to change the slug of a default group if is doesn't match 4`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "FORBIDDEN",
+      "exception": Object {
+        "details": Object {},
+        "error": "access-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Access Denied",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Access Denied",
+    "path": Array [
+      "updateAccountGroup",
+      "group",
+    ],
+  },
+]
+`;
+
+exports[`an admin account should not be able to change the slug of a default group unless it matches 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "FORBIDDEN",
+      "exception": Object {
+        "details": Object {},
+        "error": "access-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Access Denied",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 5,
+        "line": 3,
+      },
+    ],
+    "message": "Access Denied",
+    "path": Array [
+      "updateAccountGroup",
+      "group",
+    ],
+  },
+]
+`;

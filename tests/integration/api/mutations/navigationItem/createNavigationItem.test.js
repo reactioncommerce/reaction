@@ -10,10 +10,18 @@ const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:navigationTreeItems/create"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:navigationTreeItems/create"]
-  }
+  groups: [adminGroup._id],
+  shopId: internalShopId
 });
 
 let testApp;
@@ -23,6 +31,7 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
 
   createNavigationItem = testApp.mutate(CreateNavigationItemMutation);
@@ -31,6 +40,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.NavigationItems.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 
