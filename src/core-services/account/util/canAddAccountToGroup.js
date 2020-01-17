@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 /**
  * @summary Determine whether one user is allowed to add another user
  *   to an auth group.
@@ -30,5 +28,7 @@ export default async function canAddAccountToGroup(context, group) {
     !!ownerGroup && contextUserAccount && contextUserAccount.groups.includes(ownerGroup._id)) ||
     userHasPermission("reaction:legacy:shops", "owner", { shopId }); // TODO(pod-auth): update this to figure out what to do with "owner"
 
-  return isOwnerAccount || userHasPermission("reaction:legacy:groups", "manage:accounts", { shopId });
+  const hasPermissionToAddAccountToGroup = await isOwnerAccount || await userHasPermission("reaction:legacy:groups", "manage:accounts", { shopId });
+
+  return hasPermissionToAddAccountToGroup;
 }
