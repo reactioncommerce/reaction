@@ -13,6 +13,7 @@ export default async function shopAdministratorsQuery(context, id) {
 
   await context.validatePermissions(`reaction:legacy:shops:${id}`, "read:admin-accounts", { shopId: id });
 
+  // TODO(pod-auth): rolesUpdate - do we get this as users in a certain group now?
   const users = await Users.find({
     [`roles.${id}`]: "admin"
   }, {
