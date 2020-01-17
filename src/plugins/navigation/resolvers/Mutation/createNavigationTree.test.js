@@ -16,10 +16,20 @@ const mockNavigationTreeItems = [
 ];
 const mockInput = {
   shopId: opaqueShopId,
-  navigationTree: {
-    draftItems: mockNavigationTreeItems,
-    name: "Main Menu"
-  }
+  draftItems: [
+    {
+      navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
+      items: [
+        {
+          navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dEFLQVRRZXFvRDRBaDVnZzI="
+        }
+      ]
+    },
+    {
+      navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06S0VjbjZOdnJSdXp0bVBNcTg="
+    }
+  ],
+  name: "Main Menu"
 };
 const mockNavigationTreeResult = {
   _id: "pkMTWAEHJrsiNzY2a",
