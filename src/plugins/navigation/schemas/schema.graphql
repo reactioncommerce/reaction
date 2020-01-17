@@ -365,10 +365,13 @@ input CreateNavigationTreeInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "The field updates to apply"
-  navigationTree: NavigationTreeInput!
+  "The draft navigation items that make up this tree"
+  draftItems: [NavigationTreeItemInput]
 
-  "The ID of the shop navigation item belongs to"
+  "The name of the tree, for operator display purposes"
+  name: String!
+
+  "The ID of the shop this navigation tree belongs to"
   shopId: ID!
 }
 

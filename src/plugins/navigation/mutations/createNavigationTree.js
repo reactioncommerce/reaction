@@ -1,5 +1,4 @@
 import Random from "@reactioncommerce/random";
-import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds.js";
 import setDefaultsForNavigationTreeItems from "../util/setDefaultsForNavigationTreeItems.js";
 import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
 
@@ -16,7 +15,7 @@ import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
 export default async function createNavigationTree(context, input) {
   const { collections } = context;
   const { NavigationTrees } = collections;
-  const { shopId, navigationTree } = input;
+  const { shopId } = input;
 
   const {
     shouldNavigationTreeItemsBeAdminOnly,
@@ -36,23 +35,19 @@ export default async function createNavigationTree(context, input) {
   // but are required by SimpleSchema. This reduces the input payload size by not
   // needing to include values that aren't explicitly set.
   const navigationTreeData = {
-    ...navigationTree,
-    shopId,
-    _id: Random.id(),
-    draftItems: setDefaultsForNavigationTreeItems(navigationTree.draftItems, visibilityDefaults)
+    ...input,
+    _id: Random.id()
   };
+
+  if (navigationTreeData.draftItems) {
+    navigationTreeData.draftItems = setDefaultsForNavigationTreeItems(input.draftItems, visibilityDefaults)
+    navigationTreeData.hasUnpublishedChanges = true;
+  }
 
   // Validate the navigation tree with the defaults set
   NavigationTreeSchema.validate(navigationTreeData);
-  const { draftItems } = navigationTreeData;
 
-  await context.validatePermissions("reaction:navigationTrees", "create", { shopId, legacyRoles: ["core"] });
-
-  if (draftItems) {
-    decodeNavigationTreeItemIds(draftItems);
-    navigationTreeData.draftItems = draftItems;
-    navigationTreeData.hasUnpublishedChanges = true;
-  }
+  await context.validatePermissions("reaction:legacy:navigationTrees", "create", { shopId });
 
   await NavigationTrees.insertOne(navigationTreeData);
 
