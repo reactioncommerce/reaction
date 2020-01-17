@@ -86,7 +86,6 @@ beforeAll(async () => {
   accountOpaqueId = encodeOpaqueId("reaction/account", mockOtherAccount._id);
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
   shopManagerGroupOpaqueId = encodeOpaqueId("reaction/group", shopManagerGroup._id);
-  shopManagerGroupWithoutGroupPermissionsOpaqueId = encodeOpaqueId("reaction/group", shopManagerGroupWithoutGroupPermissions._id);
 
   removeAccountFromGroup = testApp.mutate(RemoveAccountFromGroupMutation);
 });
