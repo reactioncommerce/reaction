@@ -17,7 +17,6 @@ let shopId;
 let shopManagerGroup;
 let shopManagerGroupWithoutGroupPermissions;
 let shopManagerGroupOpaqueId;
-let shopManagerGroupWithoutGroupPermissionsOpaqueId;
 let shopOpaqueId;
 let testApp;
 
