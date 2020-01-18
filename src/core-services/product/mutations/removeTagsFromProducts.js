@@ -1,4 +1,3 @@
-import { decodeTagOpaqueId } from "../xforms/id.js";
 import executeBulkOperation from "../utils/executeBulkOperation.js";
 
 /**
@@ -8,14 +7,20 @@ import executeBulkOperation from "../utils/executeBulkOperation.js";
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} input - Input arguments for the bulk operation
  * @param {String[]} input.productIds - an array of Product IDs
+ * @param {String} input.shopId - the shop id
  * @param {String[]} input.tagIds - an array of Tag IDs
  * @return {Object} Object with information of results of bulk the operation
  */
 export default async function removeTagsFromProducts(context, input) {
-  const { productIds, tagIds: opaqueTagIds } = input;
+  const { productIds, shopId, tagIds } = input;
   const { collections: { Products } } = context;
-  const tagIds = opaqueTagIds.map(decodeTagOpaqueId);
   const totalProducts = productIds.length;
+
+  for (const _id of productIds) {
+    // TODO(pod-auth): figure out a better way to loop through this
+    // eslint-disable-next-line no-await-in-loop
+    await context.validatePermissions(`reaction:legacy:products:${_id}`, "publish", { shopId });
+  }
 
   // Generate update statements
   const operations = productIds.map((productId) => ({
