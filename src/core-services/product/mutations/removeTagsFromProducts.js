@@ -19,7 +19,7 @@ export default async function removeTagsFromProducts(context, input) {
   for (const _id of productIds) {
     // TODO(pod-auth): figure out a better way to loop through this
     // eslint-disable-next-line no-await-in-loop
-    await context.validatePermissions(`reaction:legacy:products:${_id}`, "publish", { shopId });
+    await context.validatePermissions(`reaction:legacy:products:${_id}`, "update", { shopId });
   }
 
   // Generate update statements
