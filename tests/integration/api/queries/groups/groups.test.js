@@ -31,6 +31,8 @@ let mockAdminAccount;
 let mockOtherAccount;
 let opaqueShopId;
 let groups;
+let allGroups;
+let customerGroup;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
@@ -38,10 +40,26 @@ beforeAll(async () => {
   const shopId = await testApp.insertPrimaryShop();
   opaqueShopId = encodeOpaqueId("reaction/shop", shopId);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    name: "admin",
+    permissions: ["reaction:legacy:groups/read"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
+  customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
-    roles: {
-      [shopId]: ["reaction:legacy:accounts/read"]
-    },
+    groups: [adminGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
@@ -49,20 +67,22 @@ beforeAll(async () => {
   groups = Factory.Group.makeMany(3, { shopId });
   await testApp.collections.Groups.insertMany(groups);
 
+  allGroups = await testApp.collections.Groups.find({}).toArray();
+
   mockOtherAccount = Factory.Account.makeOne({
-    groups: [groups[0]._id],
+    groups: [customerGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockOtherAccount);
 
   await testApp.collections.Groups.updateMany({}, {
     $set: {
-      createdBy: mockOtherAccount._id
+      createdBy: mockAdminAccount._id
     }
   });
 
-  for (let index = 0; index < groups.length; index += 1) {
-    groups[index].createdBy = mockOtherAccount._id;
+  for (let index = 0; index < allGroups.length; index += 1) {
+    allGroups[index].createdBy = mockAdminAccount._id;
   }
 
   groupsQuery = testApp.query(GroupsFullQuery);
@@ -80,36 +100,14 @@ test("unauthenticated", async () => {
   try {
     await groupsQuery({ shopId: opaqueShopId });
   } catch (error) {
-    expect(error[0].message).toBe("User does not have permissions to view groups");
+    expect(error[0].message).toBe("Access Denied");
   }
 });
 
-test("authenticated with reaction-accounts role, gets all groups", async () => {
+test("authenticated with `reaction:legacy:groups/read` permissions, gets all groups", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
-  const nodes = groups.map(groupMongoSchemaToGraphQL);
-
-  // Default sortBy is createdAt ascending
-  nodes.sort((item1, item2) => {
-    if (item1.createdAt > item2.createdAt) return 1;
-    if (item1.createdAt < item2.createdAt) return -1;
-    return 0;
-  });
-
-  const result = await groupsQuery({ shopId: opaqueShopId });
-  expect(result).toEqual({
-    groups: {
-      nodes
-    }
-  });
-
-  await testApp.clearLoggedInUser();
-});
-
-test("authenticated without reaction-accounts role, gets only groups the account belongs to", async () => {
-  await testApp.setLoggedInUser(mockOtherAccount);
-
-  const nodes = groups.map(groupMongoSchemaToGraphQL);
+  const nodes = allGroups.map(groupMongoSchemaToGraphQL);
 
   // Default sortBy is createdAt ascending
   nodes.sort((item1, item2) => {
