@@ -13,12 +13,19 @@ const shopName = "Test Shop";
 let testApp;
 let shopSettingsMutation;
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/update"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
   _id: "345",
-  shopId,
-  roles: {
-    [shopId]: ["reaction:legacy:shops/update"]
-  }
+  groups: [adminGroup._id],
+  shopId
 });
 
 const mockShopSetting = {
@@ -31,6 +38,7 @@ beforeAll(async () => {
 
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.collections.AppSettings.insertOne(mockShopSetting);
   shopSettingsMutation = testApp.query(updateShopSettings);
@@ -39,6 +47,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await testApp.collections.AppSettings.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 
