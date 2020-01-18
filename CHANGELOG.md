@@ -1,3 +1,55 @@
+# v3.0.0-beta
+
+This is the beta release of our new Reaction project.
+
+*Reaction releases will no longer be coordinated across all projects - we'll release each project, independently, as needed. This means version numbers will no longer be in sync. The newest versions of each project will work together. This change has two exceptions: we will release all projects in coordination for a `beta` release, and all projects in coordination for the official `v3.0.0` release.*
+
+## Notable changes
+
+### BREAKING CHANGE: Removal of meteor-login-token
+All Reaction API services now authenticate through OAuth2, via `reaction-hydra` and `reaction-identity`. `meteor-login-token` has been replaced with an `Authorization` header. [See our authorization docs](https://docs.reactioncommerce.com/docs/next/developer-authentication) for more.
+
+### GraphQL API
+
+This release includes additional `queries` and `mutations` which now allows our API to cover _all_ former Meteor methods and actions.
+
+## Features
+
+- feat: Add createNavigationTree mutation & its tests [#6023](https://github.com/reactioncommerce/reaction/pull/6023)
+- feat: pt-BR translation for reaction-orders. [#6004](https://github.com/reactioncommerce/reaction/pull/6004)
+- feat: Compute displayPrice as resolver as needed [#6025](https://github.com/reactioncommerce/reaction/pull/6025)
+- feat: authentication plugin; drop support for meteor-login-token header [#5999](https://github.com/reactioncommerce/reaction/pull/5999)
+- feat: change graphql route [#6027](https://github.com/reactioncommerce/reaction/pull/6027)
+- feat: add delete action to account managers policy [#6024](https://github.com/reactioncommerce/reaction/pull/6024)
+- feat: Add updateAccountGroup mutation [#6016](https://github.com/reactioncommerce/reaction/pull/6016)
+
+## Fixes
+
+- fix: fix user roles and owner permission checks [#6008](https://github.com/reactioncommerce/reaction/pull/6008)
+- fix: Invisible Tags do not show on Admin tags list [#6028](https://github.com/reactioncommerce/reaction/pull/6028)
+
+
+## Refactor
+
+- refactor: remove restriction that limits account to one group per shop [#6035](https://github.com/reactioncommerce/reaction/pull/6035)
+- refactor: remove legacyRoles from authorization [#6021](https://github.com/reactioncommerce/reaction/pull/6021)
+- refactor: add legacy system name to permission resource structure [#6019](https://github.com/reactioncommerce/reaction/pull/6019)
+- refactor: use functionsOfType to register multiple auth permissions functions [#6009](https://github.com/reactioncommerce/reaction/pull/6009)
+- refactor: better internal context design [#6020](https://github.com/reactioncommerce/reaction/pull/6020)
+
+## Tests
+
+- tests: integration test approve order payments mutation [#6013](https://github.com/reactioncommerce/reaction/pull/6013)
+- tests: adds integration test for captureOrderPayments mutation [#6015](https://github.com/reactioncommerce/reaction/pull/6015)
+
+## Chores
+
+- chore: fix up eslintignore [#6026](https://github.com/reactioncommerce/reaction/pull/6026)
+
+## Contributors
+
+Thanks to [@trojanh](https://github.com/trojanh) for contributing to this release! 🎉
+
 # v3.0.0-alpha.3
 
 This is the latest alpha release of our new Reaction project.
