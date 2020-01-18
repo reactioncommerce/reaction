@@ -19,10 +19,19 @@ beforeAll(async () => {
   shopId = await testApp.insertPrimaryShop();
   setAccountProfileCurrency = testApp.mutate(SetAccountProfileCurrencyMutation);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:accounts/update:currency"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
-    groups: [],
-    roles: { [shopId]: ["owner", "admin"] },
+    groups: [adminGroup._id],
     shopId
   });
 
@@ -35,6 +44,7 @@ afterAll(async () => {
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.users.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 

@@ -1,4 +1,5 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const CreateProductMutation = importAsString("./createProduct.graphql");
@@ -31,9 +32,20 @@ beforeAll(async () => {
   mutate = testApp.mutate(CreateProductMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:products/create"],
+    slug: "admin",
+    shopId: internalShopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["reaction:legacy:products/create"] }
+    groups: [adminGroup._id],
+    shopId: internalShopId
   });
 });
 

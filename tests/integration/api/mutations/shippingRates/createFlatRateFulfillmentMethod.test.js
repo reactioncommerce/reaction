@@ -23,17 +23,31 @@ const mockFulfillmentMethodInput = {
   group: groups[0]
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shippingMethods/create"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
+  shopId: internalShopId
+});
+
 const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner", "admin", "shipping"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -45,6 +59,8 @@ beforeAll(async () => {
   await testApp.start();
   createFlatRateFulfillmentMethod = testApp.mutate(CreateFlatRateFulfillmentMethodMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
 });
 
 afterAll(async () => {
@@ -52,6 +68,7 @@ afterAll(async () => {
   await testApp.collections.Shipping.deleteMany({});
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.users.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.clearLoggedInUser();
   await testApp.stop();
 });

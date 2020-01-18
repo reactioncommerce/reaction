@@ -58,10 +58,19 @@ beforeAll(async () => {
 
   shopId = await testApp.insertPrimaryShop();
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:orders/move:item", "reaction:legacy:orders/update"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockOrdersAccount = Factory.Account.makeOne({
-    roles: {
-      [shopId]: ["reaction:legacy:orders/move:item", "reaction:legacy:orders/update"]
-    }
+    groups: [adminGroup._id],
+    shopId
   });
   await testApp.createUserAndAccount(mockOrdersAccount);
 
@@ -129,6 +138,7 @@ afterAll(async () => {
   await testApp.collections.Catalog.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.collections.AppSettings.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 

@@ -26,10 +26,18 @@ const surchargeMessagesByLanguage = [
 
 const surchargeDestination = { region: ["CO", "NY"] };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:surcharges/create"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:surcharges/create"]
-  }
+  groups: [adminGroup._id],
+  shopId: internalShopId
 });
 
 let testApp;
@@ -45,6 +53,7 @@ beforeAll(async () => {
     shopType: "merchant",
     slug: "my-shop"
   });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
 
   createSurcharge = testApp.mutate(CreateSurchargeMutation);
@@ -55,6 +64,7 @@ afterAll(async () => {
   await testApp.collections.Shops.deleteMany({});
   await testApp.collections.Accounts.deleteMany({});
   await testApp.collections.users.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 

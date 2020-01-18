@@ -6,7 +6,6 @@ import TestApp from "/tests/util/TestApp.js";
 const GroupsFullQuery = importAsString("./GroupsFullQuery.graphql");
 
 jest.setTimeout(300000);
-  // TODO(pod-auth): rolesUpdate - do we get this as users in a certain group now?
 
 /**
  * @param {Object} mongoGroup The Group document in MongoDB schema
