@@ -349,32 +349,6 @@ type SetAccountProfileLanguagePayload {
   clientMutationId: String
 }
 
-extend type Shop {
-  """
-  Returns a list of administrators for this shop, as a Relay-compatible connection.
-  "Administrators" means all linked accounts that have the "admin" role for this shop.
-  """
-  administrators(
-    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
-
-    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
-
-    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
-    first: ConnectionLimitInt,
-
-    "Return at most this many results. This parameter may be used with the `before` parameter."
-    last: ConnectionLimitInt,
-
-    "Return results sorted in this order"
-    sortOrder: SortOrder = asc,
-
-    "By default, accounts are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
-    sortBy: AccountSortByField = createdAt
-  ): AccountConnection
-}
-
 extend type Mutation {
   "Add a new address to the `addressBook` field for an account"
   addAccountAddressBookEntry(
@@ -391,6 +365,7 @@ extend type Mutation {
   "Create an account based off a user"
   createAccount(
     "Mutation input"
+    input: CreateAccountInput!
     input: CreateAccountInput!
   ): CreateAccountPayload
 
@@ -460,33 +435,6 @@ extend type Query {
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
     offset: Int
-  ): AccountConnection
-
-  """
-  Returns a list of administrators for the shop with ID `shopId`, as a Relay-compatible connection.
-  "Administrators" means all linked accounts that have the "admin" role for this shop.
-  """
-  administrators(
-    "Return accounts that are administrators in this shop"
-    shopId: ID!,
-
-    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
-
-    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
-
-    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
-    first: ConnectionLimitInt,
-
-    "Return at most this many results. This parameter may be used with the `before` parameter."
-    last: ConnectionLimitInt,
-
-    "Return results sorted in this order"
-    sortOrder: SortOrder = asc,
-
-    "By default, accounts are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
-    sortBy: AccountSortByField = createdAt
   ): AccountConnection
 
   "Returns the account for the authenticated user"
