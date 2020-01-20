@@ -34,7 +34,7 @@ export default async function removeAccountGroup(context, input) {
   const forbiddenGroupIds = defaultGroupsForShop.map(({ _id }) => _id);
 
   if (forbiddenGroupIds.includes(groupId)) {
-    throw new ReactionError("accedd-denied", `Cannot remove default group with ID ${groupId}.`);
+    throw new ReactionError("access-denied", `Cannot remove default group with ID ${groupId}.`);
   }
 
   if (!defaultCustomerGroupForShop) {
