@@ -1,18 +1,3 @@
-"The fields by which you are allowed to sort any query that returns an `AccountConnection`"
-enum AccountSortByField {
-  "Account ID"
-  _id
-
-  "Date and time at which the account was created"
-  createdAt
-
-  "Account name"
-  name
-
-  "Date and time at which the account was last updated"
-  updatedAt
-}
-
 "Defines a new Address and the account to which it should be added"
 input AddAccountAddressBookEntryInput {
   "The account ID"
