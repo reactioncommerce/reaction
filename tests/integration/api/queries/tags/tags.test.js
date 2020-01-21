@@ -36,9 +36,19 @@ beforeAll(async () => {
   await testApp.start();
   query = testApp.query(tagsQuery);
 
+  const customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    createdBy: null,
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId: internalShopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["tags"] }
+    groups: [customerGroup._id]
   });
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
