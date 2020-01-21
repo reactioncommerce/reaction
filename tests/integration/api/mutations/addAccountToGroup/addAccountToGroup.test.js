@@ -109,12 +109,6 @@ beforeEach(async () => {
       groups: []
     }
   });
-
-  await testApp.collections.users.updateOne({ _id: mockOtherAccount._id }, {
-    $set: {
-      roles: {}
-    }
-  });
 });
 
 test("anyone can add account to group if they have `reaction:legacy:groups/manage:accounts` permissions", async () => {
@@ -138,16 +132,10 @@ test("anyone can add account to group if they have `reaction:legacy:groups/manag
 
   const account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
   expect(account.groups).toEqual([shopManagerGroup._id]);
-
-  const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toEqual(shopManagerGroup.permissions);
 });
 
 test("anyone cannot add account to group if they do not have `reaction:legacy:groups/manage:accounts` permissions", async () => {
   await testApp.setLoggedInUser(adminSecondaryGroup);
-
-  const beforeUser = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(beforeUser.roles[shopId]).toBe(undefined);
 
   try {
     await addAccountToGroup({ accountId: accountOpaqueId, groupId: shopManagerGroupOpaqueId });
@@ -157,7 +145,4 @@ test("anyone cannot add account to group if they do not have `reaction:legacy:gr
 
   const account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
   expect(account.groups.length).toBe(0);
-
-  const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toBe(undefined);
 });

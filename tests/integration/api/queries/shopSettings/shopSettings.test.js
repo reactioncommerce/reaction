@@ -18,10 +18,17 @@ const mockShopSettings = {
   sitemapRefreshPeriod: "every 24 hours"
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["shop-managers"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -31,6 +38,7 @@ beforeAll(async () => {
   await testApp.start();
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.collections.AppSettings.insertOne(mockShopSettings);
   await testApp.createUserAndAccount(mockCustomerAccount);
   shopSettings = testApp.query(ShopSettingsQuery);
@@ -41,10 +49,11 @@ afterAll(async () => {
   await testApp.collections.users.deleteMany({});
   await testApp.collections.Shops.deleteMany({});
   await testApp.collections.AppSettings.deleteMany({});
+  await testApp.collections.Groups.deleteMany({});
   await testApp.stop();
 });
 
-test("a shop manager can view shop settigs", async () => {
+test("a user with `reaction:legacy:shops/read` permissions shop manager can view shop settings", async () => {
   let result;
   await testApp.setLoggedInUser(mockCustomerAccount);
 

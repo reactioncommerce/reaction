@@ -110,7 +110,7 @@ afterAll(async () => {
   await testApp.stop();
 });
 
-test("user with `reaction:legacy:shops/update` roles can update various shop settings", async () => {
+test("user with `reaction:legacy:shops/update` permission can update various shop settings", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const mockShopSettings = {

@@ -20,11 +20,20 @@ beforeAll(async () => {
   shopId = await testApp.insertPrimaryShop();
   removeAccountEmailRecord = testApp.mutate(RemoveAccountEmailRecordMutation);
 
+  const customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    createdBy: null,
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
     emails: mockEmails,
-    groups: [],
-    roles: { [shopId]: ["owner", "admin"] },
+    groups: [customerGroup._id],
     shopId
   });
 

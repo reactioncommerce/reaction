@@ -47,12 +47,20 @@ beforeAll(async () => {
 
   await testApp.collections.Catalog.insertOne(catalogItem);
 
+  const customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    createdBy: null,
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   // create mock customer account
   mockCustomerAccount = Factory.Account.makeOne({
     _id: "mockCustomerAccount",
-    roles: {
-      [shopId]: []
-    },
+    groups: [customerGroup._id],
     shopId
   });
 
