@@ -81,6 +81,13 @@ jobs:
 
   test-integration-query:
     <<: *defaults
+    docker:
+      - image: circleci/node:12.14.1-stretch
+      # Integration tests need MongoDB server running and accessible on port 27017
+      - image: circleci/mongo:4.2.0
+        command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
+        ports:
+          - "27017:27017"
     steps:
       - checkout
       - restore_cache:
@@ -89,10 +96,17 @@ jobs:
             - reaction-v3-node-modules-{{ .Branch }}
       - run:
           name: Run Integration Query Tests
-          command: npm run test:integration:query
+          command: MONGO_URL=mongodb://localhost:27017/test npm run test:integration:query
 
   test-integration-mutation:
     <<: *defaults
+    docker:
+      - image: circleci/node:12.14.1-stretch
+      # Integration tests need MongoDB server running and accessible on port 27017
+      - image: circleci/mongo:4.2.0
+        command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
+        ports:
+          - "27017:27017"
     steps:
       - checkout
       - restore_cache:
@@ -101,7 +115,7 @@ jobs:
             - reaction-v3-node-modules-{{ .Branch }}
       - run:
           name: Run Integration Mutation Tests
-          command: npm run test:integration:mutation
+          command: MONGO_URL=mongodb://localhost:27017/test npm run test:integration:mutation
 
 
   docker-build-push:
