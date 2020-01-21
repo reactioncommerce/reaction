@@ -6,7 +6,6 @@ const CreateProductMutation = importAsString("./createProduct.graphql");
 jest.setTimeout(300000);
 
 const internalShopId = "123";
-const internalProductId = "999";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 
 const shopName = "Test Shop";

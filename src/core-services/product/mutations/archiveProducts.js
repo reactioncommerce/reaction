@@ -24,7 +24,7 @@ const inputSchema = new SimpleSchema({
 export default async function archiveProducts(context, input) {
   inputSchema.validate(input);
   const { appEvents, collections, userId } = context;
-  const { MediaRecords, Products } = collections;
+  const { Products } = collections;
   const { productIds, shopId } = input;
 
   // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
