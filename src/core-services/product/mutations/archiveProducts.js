@@ -97,32 +97,6 @@ export default async function archiveProducts(context, input) {
     return archivedProduct;
   }));
 
-  if (archivedProducts && archivedProducts.length) {
-    // Flag associated MediaRecords as deleted.
-    await MediaRecords.updateMany(
-      {
-        $or: [
-          {
-            "metadata.productId": {
-              $in: productIdsToArchive
-            }
-          },
-          {
-            "metadata.variantId": {
-              $in: productIdsToArchive
-            }
-          }
-        ]
-      },
-      {
-        $set: {
-          "metadata.isDeleted": true,
-          "metadata.workflow": "archived"
-        }
-      }
-    );
-  }
-
   // Return only originally supplied product(s),
   // not variants and options also archived
   return archivedProducts.filter((archivedProduct) => productIds.includes(archivedProduct._id));
