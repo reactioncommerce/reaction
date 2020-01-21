@@ -3,7 +3,6 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
-const AddAccountToGroupMutation = importAsString("./AddAccountToGroupMutation.graphql");
 const UpdateAccountGroupMutation = importAsString("./UpdateAccountGroupMutation.graphql");
 
 jest.setTimeout(300000);
