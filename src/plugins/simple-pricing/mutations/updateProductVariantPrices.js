@@ -51,11 +51,11 @@ export default async function updateProductVariantPrices(context, input) {
 
   if (!updatedProduct) throw new ReactionError("error-occurred", "Unable to update variant prices");
 
-  Object.keys(prices).forEach((key) => {
+  const promises = Object.keys(prices).map((key) => {
     const field = key;
     const value = prices[key];
 
-    appEvents.emit("afterVariantUpdate", {
+    return appEvents.emit("afterVariantUpdate", {
       _id: variantId,
       productId: updatedProduct.ancestors[0],
       variant: updatedProduct,
@@ -63,6 +63,8 @@ export default async function updateProductVariantPrices(context, input) {
       value
     });
   });
+
+  await Promise.all(promises);
 
   return updatedProduct;
 }
