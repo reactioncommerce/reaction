@@ -26,7 +26,8 @@ export default async function removeTagsFromProducts(context, input) {
   const operations = productIds.map((productId) => ({
     updateOne: {
       filter: {
-        _id: productId
+        _id: productId,
+        shopId
       },
       update: {
         $pull: {
