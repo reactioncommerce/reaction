@@ -10,7 +10,7 @@ export default async function getShopLogo(context, shop) {
   const { Media } = collections;
 
   let emailLogo;
-  if (Array.isArray(shop.brandAssets)) {
+  if (Media && Array.isArray(shop.brandAssets)) {
     const brandAsset = shop.brandAssets.find((asset) => asset.type === "navbarBrandImage");
     const fileRecord = brandAsset && await Media.findOne(brandAsset.mediaId);
     emailLogo = fileRecord && fileRecord.url({ absolute: true, store: "medium" });
