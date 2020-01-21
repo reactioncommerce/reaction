@@ -109,6 +109,13 @@ test("an admin user can set the hero media URL for a tag", async () => {
   let result;
   await testApp.setLoggedInUser(mockAdminAccount);
 
+  // Mock MediaRecords and Media because files plugin isn't registered
+  // for integration tests.
+  testApp.context.collections.Media = { name: "images" };
+  testApp.context.collections.MediaRecords = {
+    insertOne: () => ({ insertedId: "1234" })
+  };
+
   try {
     result = await setTagHeroMediaMutation({
       input: {
