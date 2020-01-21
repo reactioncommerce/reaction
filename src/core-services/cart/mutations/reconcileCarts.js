@@ -44,8 +44,8 @@ export default async function reconcileCarts(context, input) {
   // In the Meteor app, there are accounts for anonymous users. This check can be removed someday.
   // Don't use `userHasPermission` for this check because that always returns true if there
   // is "owner" role. We want to know explicitly whether they have the "anonymous" role.
-  const roles = (user.roles && user.roles[shopId]) || [];
-  if (roles.includes("anonymous")) {
+  const userPermissions = (context.userPermissions && context.userPermissions[shopId]) || [];
+  if (userPermissions.includes("anonymous")) {
     Logger.warn("reconcileCarts called by an anonymous user. Check client code.");
     throw new ReactionError("access-denied", "Access Denied");
   }

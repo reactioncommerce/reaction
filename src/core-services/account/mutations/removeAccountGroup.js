@@ -21,7 +21,7 @@ export default async function removeAccountGroup(context, input) {
   const { Groups } = context.collections;
 
   // we are limiting group method actions to only users within the account managers role
-  await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "remove", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "remove", { shopId });
 
   const defaultGroupsForShop = await Groups.find({
     shopId,

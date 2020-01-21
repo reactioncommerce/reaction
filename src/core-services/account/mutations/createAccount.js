@@ -82,7 +82,7 @@ export default async function createAccount(context, input) {
   // The identity provider service gives the first created user the global "owner" role. When we
   // create an account for this user, they should be assigned to the "owner" group.
   if (authUserId === userId) {
-    const isGlobalOwner = await context.userHasPermission("reaction:legacy:shops", "owner", { shopId, legacyRoles: ["owner"] }); // TODO(pod-auth): update this permissions check
+    const isGlobalOwner = await context.userHasPermission("reaction:legacy:shops", "owner", { shopId }); // TODO(pod-auth): update this permissions check
     if (isGlobalOwner) groupSlug = "owner";
   }
 
@@ -115,8 +115,6 @@ export default async function createAccount(context, input) {
 
   await Accounts.insertOne(account);
 
-  // Add all group permissions to the user roles. Because of the complexity of this
-  // and potential security concerns if done incorrectly, it's best to use the mutation.
   try {
     await Promise.all(groups.map((groupId) => (
       context.mutations.addAccountToGroup(context.getInternalContext(), {
