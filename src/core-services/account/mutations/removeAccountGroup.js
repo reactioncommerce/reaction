@@ -41,7 +41,6 @@ export default async function removeAccountGroup(context, input) {
     throw new ReactionError("server-error", `Cannot remove group ${groupId}. Default "customer" group doesn't exist to move users to.`);
   }
 
-  // TODO: Remove when we move away from legacy permission verification
   // Move accounts from their old group to their new group
   await moveAccountsToGroup(context, {
     shopId,
