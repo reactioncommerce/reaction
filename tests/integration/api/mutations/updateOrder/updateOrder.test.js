@@ -37,11 +37,10 @@ beforeAll(async () => {
   updateOrder = testApp.mutate(UpdateOrderMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Catalog.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("user with `reaction:legacy:orders/update role can update an order", async () => {
   await testApp.setLoggedInUser(mockOrdersAccount);

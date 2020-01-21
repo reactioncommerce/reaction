@@ -50,11 +50,10 @@ beforeEach(async () => {
   await testApp.clearLoggedInUser();
 });
 
-afterAll(async () => {
-  await testApp.collections.NavigationItems.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("an authorized user should be able to update the navigation tree", async () => {
   let result;

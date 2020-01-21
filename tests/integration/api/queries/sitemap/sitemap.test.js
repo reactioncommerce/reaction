@@ -29,12 +29,10 @@ beforeAll(async () => {
   sitemap = testApp.query(SitemapQuery);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Sitemaps.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("returns a sitemap given a handle/name and shopUrl", async () => {
   let result;
