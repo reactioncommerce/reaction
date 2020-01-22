@@ -3,8 +3,8 @@ export const defaultCustomerRoles = [
   "cart/completed", // legacy role
   "guest", // legacy role
   "index", // legacy role
-  "product", // legacy role
-  "tag", // legacy role
+  "product", // legacy role (unused)
+  "tag", // legacy role (unused)
   "reaction:legacy:products/read",
   "reaction:legacy:tags/read"
 ];
