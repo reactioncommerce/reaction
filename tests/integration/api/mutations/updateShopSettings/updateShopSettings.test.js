@@ -17,7 +17,7 @@ const adminGroup = Factory.Group.makeOne({
   _id: "adminGroup",
   createdBy: null,
   name: "admin",
-  permissions: ["reaction:legacy:shops/update"],
+  permissions: ["reaction:legacy:inventory/update:settings"],
   slug: "admin",
   shopId
 });

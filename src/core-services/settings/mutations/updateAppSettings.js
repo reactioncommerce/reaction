@@ -2,8 +2,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import {
   addGlobalSettingDefaults,
   addShopSettingDefaults,
-  rolesThatCanEditGlobalSetting,
-  rolesThatCanEditShopSetting,
+  permissionsThatCanEditGlobalSetting,
+  permissionsThatCanEditShopSetting,
   runAfterUpdateHooks
 } from "../util/settingsConfig.js";
 
@@ -25,16 +25,16 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
 
   // Look up roles that are allowed to set each setting. Throw if not allowed.
   for (const updateKey of updateKeys) {
-    const allowedRoles = shopId ? rolesThatCanEditShopSetting(updateKey) : rolesThatCanEditGlobalSetting(updateKey);
+    const allowedRoles = shopId ? permissionsThatCanEditShopSetting(updateKey) : permissionsThatCanEditGlobalSetting(updateKey);
     if (allowedRoles.length === 0) {
       throw new ReactionError("access-denied", `You are not allowed to edit the "${updateKey}" setting`);
     }
 
     // eslint-disable-next-line no-await-in-loop
     const permissionChecks = await Promise.all(allowedRoles.map(async (permission) => {
-      const permissionSplit = permission.split("/");
-      if (permissionSplit[0] && permissionSplit[1]) {
-        return context.userHasPermission(permissionSplit[0], permissionSplit[1], { shopId });
+      const [resource, action] = permission.split("/");
+      if (resource && action) {
+        return context.userHasPermission(resource, action, { shopId });
       }
       return false;
     }));

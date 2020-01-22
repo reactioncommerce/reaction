@@ -47,7 +47,7 @@ export default async function register(app) {
           updateSitemapTaskForShop(context, shopId);
         },
         defaultValue: "every 24 hours",
-        rolesThatCanEdit: ["admin"],
+        permissionsThatCanEdit: ["reaction:legacy:sitemaps/update:settings"],
         simpleSchema: {
           type: String
         }

@@ -1,6 +1,7 @@
 import i18n from "./i18n/index.js";
 import queries from "./queries/index.js";
 import schemas from "./schemas/index.js";
+import policies from "./policies.json";
 import preStartup from "./utils/preStartup.js";
 import publishProductToCatalog from "./utils/publishProductToCatalog.js";
 import startup from "./utils/startup.js";
@@ -27,6 +28,7 @@ export default async function register(app) {
       xformCatalogBooleanFilters: [xformCatalogBooleanFilters],
       xformCatalogProductVariants: [xformCatalogProductVariants]
     },
+    policies,
     queries,
     graphQL: {
       schemas
@@ -34,7 +36,7 @@ export default async function register(app) {
     shopSettingsConfig: {
       canSellVariantWithoutInventory: {
         defaultValue: true,
-        rolesThatCanEdit: ["admin"],
+        permissionsThatCanEdit: ["reaction:legacy:inventory/update:settings"],
         simpleSchema: {
           type: Boolean
         }

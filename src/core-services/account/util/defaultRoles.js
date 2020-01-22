@@ -61,6 +61,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:groups/update",
   "reaction:legacy:inventory/read",
   "reaction:legacy:inventory/update",
+  "reaction:legacy:inventory/update:settings",
   "reaction:legacy:media/update",
   "reaction:legacy:mediaRecords/create:media",
   "reaction:legacy:mediaRecords/delete:media",
@@ -70,6 +71,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:navigationTreeItems/publish",
   "reaction:legacy:navigationTreeItems/read",
   "reaction:legacy:navigationTreeItems/update",
+  "reaction:legacy:navigationTreeItems/update:settings",
   "reaction:legacy:navigationTrees/update",
   "reaction:legacy:navigationTrees-drafts/read", // TODO(pod-auth): revisit how draft is done
   "reaction:legacy:orders/approve:payment",
@@ -94,6 +96,8 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:shippingRestrictions/delete",
   "reaction:legacy:shippingRestrictions/read",
   "reaction:legacy:shippingRestrictions/update",
+  "reaction:legacy:shipping-rates/update:settings",
+  "reaction:legacy:sitemaps/update:settings",
   "reaction:legacy:shops/read",
   "reaction:legacy:shops/update",
   "reaction:legacy:surcharges/create",
@@ -105,6 +109,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:tags/update",
   "reaction:legacy:tags-inactive/read", // TODO(pod-auth): revisit how inactive is done
   "reaction:legacy:taxes/read",
+  "reaction:legacy:taxes/update:settings",
   "reaction:legacy:taxRates/create",
   "reaction:legacy:taxRates/delete",
   "reaction:legacy:taxRates/read",

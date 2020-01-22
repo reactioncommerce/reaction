@@ -47,7 +47,7 @@ beforeAll(async () => {
     },
     globalSettingsConfig: {
       canSellDigitalProducts: {
-        rolesThatCanEdit: ["admin"],
+        permissionsThatCanEdit: ["reaction:legacy:shops/update"],
         simpleSchema: {
           type: Boolean
         }
