@@ -12,10 +12,5 @@ export default async function appSettings(context, shopId = null) {
 
   const settings = (await AppSettings.findOne({ shopId })) || {};
 
-  shopId ?
-    await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "read", { shopId })
-    :
-    await context.validatePermissions("reaction:legacy:shops", "read", { shopId });
-
   return shopId ? addShopSettingDefaults(settings) : addGlobalSettingDefaults(settings);
 }
