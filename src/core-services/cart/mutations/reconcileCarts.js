@@ -21,7 +21,7 @@ import reconcileCartsMerge from "./reconcileCartsMerge.js";
  * @returns {Promise<Object>} Object in which `cart` property is set to the updated account cart
  */
 export default async function reconcileCarts(context, input) {
-  const { accountId, collections, user } = context;
+  const { accountId, collections } = context;
   const { Cart } = collections;
   const { anonymousCartId, cartToken, mode = "merge" } = input;
 
