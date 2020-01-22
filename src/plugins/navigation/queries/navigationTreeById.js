@@ -22,13 +22,6 @@ export default async function navigationTreeById(context, { language, navigation
     // Add language from args so that we can use it in items & draftItems resolvers
     navigationTree.language = language;
 
-    // Check to make sure user has `read` permissions for this navigationTree
-    // TODO(auth-pod): revisit this check once legacyRoles are removed
-    // await context.validatePermissions(`reaction:legacy:navigationTrees:${navigationTreeId}`, "read", {
-    //   shopId,
-    //   legacyRoles: ["owner", "admin", "create-product", "read-navigation", "any"]
-    // });
-
     // Check to see if user has `read` permissions for this navigationTree's drafts
     // TODO(pod-auth): revisit using `drafts` in resource
     const hasDraftPermissions = await context.userHasPermission(
