@@ -18,8 +18,7 @@ export default async function tag(context, input) {
   const { slugOrId, shopId, shouldIncludeInvisible = false } = input;
 
   // Check to see if user has `read` permissions for hidden / deleted tags
-  // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
-  const hasInactivePermissions = await context.userHasPermission(`reaction:legacy:tags-inactive:${slugOrId}`, "read", {
+  const hasInactivePermissions = await context.userHasPermission(`reaction:legacy:tags:${slugOrId}`, "read:inactive", {
     shopId
   });
 

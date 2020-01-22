@@ -33,8 +33,7 @@ export default async function tags(
   let regexMatch;
 
   // Check to see if user has `read` permissions for hidden / deleted tags
-  // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
-  const hasInactivePermissions = await context.userHasPermission("reaction:legacy:tags-inactive", "read", {
+  const hasInactivePermissions = await context.userHasPermission("reaction:legacy:tags", "read:inactive", {
     shopId
   });
 
