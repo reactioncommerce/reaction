@@ -76,7 +76,7 @@ Use an external GraphQL client to test http://localhost:3000/graphql. GraphQL Pl
 ## Get help & contact the team
 
 - [Gitter chat](https://gitter.im/reactioncommerce/reaction)
-- Report security vulnerabilities to <mailto:security@reactioncommerce.com>: [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities)
+- Report security vulnerabilities to <mailto:security@reactioncommerce.com>: [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/trunk/reporting-vulnerabilities)
 - Request features in this [repository](https://github.com/reactioncommerce/reaction-feature-requests/)
 
 ## Contribute
@@ -92,7 +92,7 @@ We love your pull requests! Check our our [`Good First Issue`](https://github.co
 ### Pull Request guidelines
 Pull requests should pass all automated tests, style, and security checks.
 
-Your code should pass all [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction). Run `docker-compose run --rm reaction npm run test` to run the test suites in containers. If you're adding functionality to Reaction, you should add tests for the added functionality.
+Your code should pass all [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/trunk/testing-reaction). Run `docker-compose run --rm reaction npm run test` to run the test suites in containers. If you're adding functionality to Reaction, you should add tests for the added functionality.
 
 
 We require that all code contributed to Reaction follows [Reaction's ESLint rules](https://github.com/reactioncommerce/reaction-eslint-config). You can run `docker-compose run --rm reaction npm run lint` to run ESLint against your code locally.
