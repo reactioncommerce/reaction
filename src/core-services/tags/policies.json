@@ -13,7 +13,7 @@
     "actions": [
       "delete",
       "read",
-      "read:inactive",
+      "read:invisible",
       "update"
     ],
     "effect": "allow"

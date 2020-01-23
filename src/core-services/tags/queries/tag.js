@@ -17,28 +17,22 @@ export default async function tag(context, input) {
   const { Tags } = collections;
   const { slugOrId, shopId, shouldIncludeInvisible = false } = input;
 
-  // Check to see if user has `read` permissions for hidden / deleted tags
-  const hasInactivePermissions = await context.userHasPermission(`reaction:legacy:tags:${slugOrId}`, "read:inactive", {
+  const foundTag = await Tags.findOne({
+    $or: [{ _id: slugOrId }, { slug: slugOrId }],
     shopId
   });
 
-  let query = {
-    $and: [
-      { isVisible: true },
-      { shopId },
-      { $or: [{ _id: slugOrId }, { slug: slugOrId }] }
-    ]
-  };
-
-  if (hasInactivePermissions && shouldIncludeInvisible === true) {
-    query = {
-      $or: [{ _id: slugOrId }, { slug: slugOrId }]
-    };
-  }
-
-  const foundTag = await Tags.findOne(query);
+  // Check to see if user has `read` permissions for invisible tags
+  const hasInactivePermissions = await context.userHasPermission(`reaction:legacy:tags:${tag._id}`, "read:invisible", {
+    shopId
+  });
 
   if (!foundTag) {
+    throw new ReactionError("not-found", "Tag not found");
+  }
+
+  // if tag is invisible, only show if `hasInactivePermissions === true` && `shouldIncludeInvisible === true`
+  if (foundTag.isVisible === false && (hasInactivePermissions === false || shouldIncludeInvisible === false)) {
     throw new ReactionError("not-found", "Tag not found");
   }
 

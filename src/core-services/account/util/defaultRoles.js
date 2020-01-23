@@ -106,7 +106,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:tags/create",
   "reaction:legacy:tags/delete",
   "reaction:legacy:tags/read",
-  "reaction:legacy:tags/read:inactive",
+  "reaction:legacy:tags/read:invisible",
   "reaction:legacy:tags/update",
   "reaction:legacy:taxes/read",
   "reaction:legacy:taxes/update:settings",

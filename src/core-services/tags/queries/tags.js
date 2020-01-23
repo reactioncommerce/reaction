@@ -33,7 +33,7 @@ export default async function tags(
   let regexMatch;
 
   // Check to see if user has `read` permissions for hidden / deleted tags
-  const hasInactivePermissions = await context.userHasPermission("reaction:legacy:tags", "read:inactive", {
+  const hasInactivePermissions = await context.userHasPermission("reaction:legacy:tags", "read:invisible", {
     shopId
   });
 
