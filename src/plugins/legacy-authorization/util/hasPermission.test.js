@@ -9,7 +9,7 @@ test("throws if no resource", async () => {
   const result = hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
         scope: ["can_eat"]
       }
     },
@@ -24,7 +24,7 @@ test("throws if no action", async () => {
   const result = hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
         scope: ["can_eat"]
       }
     },
@@ -39,7 +39,7 @@ test("throws if no authContext", async () => {
   const result = hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
         scope: ["can_eat"]
       }
     },
@@ -54,7 +54,7 @@ test("throws if shopId is present but not a string", async () => {
   const result = hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
         scope: ["can_eat"]
       }
     },
@@ -71,7 +71,7 @@ test("throws if shopId is present but an empty string", async () => {
   const result = hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
         scope: ["can_eat"]
       }
     },
@@ -88,7 +88,7 @@ test("returns true if in global permissions, even if not in group-scope permissi
   const result = await hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
         scope: ["otherOrganization:otherSystem:otherEntity/otherAction"]
       }
     },
@@ -105,7 +105,7 @@ test("returns true if in group-scope permissions but not in global permissions",
   const result = await hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
+        __global_roles__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
         scope: ["organization:system:entity/action"]
       }
     },
@@ -122,7 +122,7 @@ test("returns true if in permissions in both scopes", async () => {
   const result = await hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
         scope: ["organization:system:entity/action"]
       }
     },
@@ -139,7 +139,7 @@ test("returns false if not in any permissions in either scope", async () => {
   const result = await hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
+        __global_roles__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
         scope: ["can_eat"]
       }
     },
@@ -156,7 +156,7 @@ test("returns true if has owner permission, even if not explicitly in the permis
   const result = await hasPermission(
     {
       userPermissions: {
-        __global_permissions__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
+        __global_roles__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
         scope: ["reaction:legacy:shops/owner"]
       }
     },

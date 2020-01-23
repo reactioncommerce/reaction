@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url); // eslint-disable-line
 
 const { curryN } = require("ramda");
 
-const GLOBAL_GROUP = "__global_permissions__";
+const GLOBAL_GROUP = "__global_roles__";
 
 /**
  * @name hasPermission

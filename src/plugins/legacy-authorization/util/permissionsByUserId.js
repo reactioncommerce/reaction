@@ -12,7 +12,7 @@ export default async function permissionsByUserId(context, userId) {
 
   if (account && Array.isArray(account.groups)) {
     // set __global_roles__ from the user
-    const accountPermissions = { __global_permissions__: (user && user.roles && user.roles.__global_roles__) || [] }; // eslint-disable-line camelcase
+    const accountPermissions = { __global_roles__: (user && user.roles && user.roles.__global_roles__) || [] }; // eslint-disable-line camelcase
 
     // get all groups that this user belongs to
     const groups = await context.collections.Groups.find({ _id: { $in: account.groups } }).toArray();
