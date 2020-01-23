@@ -25,13 +25,13 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
 
   // Look up roles that are allowed to set each setting. Throw if not allowed.
   for (const updateKey of updateKeys) {
-    const allowedRoles = shopId ? permissionsThatCanEditShopSetting(updateKey) : permissionsThatCanEditGlobalSetting(updateKey);
-    if (allowedRoles.length === 0) {
+    const permissionsNeededToEdit = shopId ? permissionsThatCanEditShopSetting(updateKey) : permissionsThatCanEditGlobalSetting(updateKey);
+    if (permissionsNeededToEdit.length === 0) {
       throw new ReactionError("access-denied", `You are not allowed to edit the "${updateKey}" setting`);
     }
 
     // eslint-disable-next-line no-await-in-loop
-    const permissionChecks = await Promise.all(allowedRoles.map(async (permission) => {
+    const permissionChecks = await Promise.all(permissionsNeededToEdit.map(async (permission) => {
       const [resource, action] = permission.split("/");
       if (resource && action) {
         return context.userHasPermission(resource, action, { shopId });
