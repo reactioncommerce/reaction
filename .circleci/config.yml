@@ -12,7 +12,7 @@ defaults: &defaults
     - TOOL_NODE_FLAGS: "--max-old-space-size=4000"
   working_directory: ~/reaction-app
   docker:
-    - image: circleci/node:8-stretch
+    - image: circleci/node@sha256:deb885eea09fdd008066738298de1c14815e5b200a302c5c25e8d3280060ee6e
 
 jobs:
   build:
