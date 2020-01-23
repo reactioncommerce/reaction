@@ -299,4 +299,4 @@ workflows:
             - docker-build
           filters:
             branches:
-              only: /^master$/
+              only: /^trunk$/
