@@ -144,6 +144,7 @@
               "shipping": "Shipping",
               "status": "Status"
             },
+            "error": "An error occurred",
             "filter": {
               "status": "Status",
               "dateRange": "Date range",
