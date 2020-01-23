@@ -26,7 +26,7 @@ git show-ref --tags -d | grep "^${SHA1}" | sed -e 's,.* refs/tags/,,' -e 's/\^{}
   echo "%"
 
 # Tag with latest if certain conditions are met
-if [[ "$BRANCH" == "master" ]]; then
+if [[ "$BRANCH" == "trunk" ]]; then
   # Check to see if we have a valid `vX.X.X` tag and assign to CURRENT_TAG
   CURRENT_TAG=$( \
     git show-ref --tags -d \
