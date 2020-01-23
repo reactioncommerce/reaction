@@ -21,15 +21,15 @@ export default async function tag(context, input) {
     $or: [{ _id: slugOrId }, { slug: slugOrId }],
     shopId
   });
-
-  // Check to see if user has `read` permissions for invisible tags
-  const hasInactivePermissions = await context.userHasPermission(`reaction:legacy:tags:${tag._id}`, "read:invisible", {
-    shopId
-  });
-
+  
   if (!foundTag) {
     throw new ReactionError("not-found", "Tag not found");
   }
+
+  // Check to see if user has `read` permissions for invisible tags
+  const hasInactivePermissions = await context.userHasPermission(`reaction:legacy:tags:${foundTag._id}`, "read:invisible", {
+    shopId
+  });
 
   // if tag is invisible, only show if `hasInactivePermissions === true` && `shouldIncludeInvisible === true`
   if (foundTag.isVisible === false && (hasInactivePermissions === false || shouldIncludeInvisible === false)) {
