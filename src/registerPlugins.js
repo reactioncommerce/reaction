@@ -60,8 +60,11 @@ export default async function registerPlugins(app) {
   // stream watchers, which end up causing a lot of errors. This doesn't
   // happen when running the app because we don't constantly connect and
   // disconnect to different Mongo databases.
+  //
+  // Note: The import must stay here, too. If the package is imported at
+  // the top of this file, then side effects will happen and cause problems.
   if (!process.env.REACTION_DISABLE_FILES_PLUGIN) {
-    const registerFilesPlugin = import("./core-services/files/index.js");
+    const { default: registerFilesPlugin } = await import("./core-services/files/index.js");
     await registerFilesPlugin(app);
   }
 
