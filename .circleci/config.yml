@@ -40,8 +40,8 @@ jobs:
           paths:
             - ~/.meteor
       - run:
-          name: Meteor NPM Install
-          command: meteor npm install
+          name: NPM Install
+          command: npm install
       - run:
           name: Build dist bundle
           command: meteor build --directory ../build/
