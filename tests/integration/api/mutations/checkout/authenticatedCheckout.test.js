@@ -61,14 +61,22 @@ describe("as a signed in user", () => {
   let latestCartSummary;
 
   beforeAll(async () => {
+    const customerGroup = Factory.Group.makeOne({
+      _id: "customerGroup",
+      createdBy: null,
+      name: "customer",
+      permissions: ["customer"],
+      slug: "customer",
+      shopId: internalShopId
+    });
+    await testApp.collections.Groups.insertOne(customerGroup);
+
     // create mock customer account
     mockCustomerAccount = Factory.Account.makeOne({
       _id: "mockCustomerAccountId",
+      groups: [customerGroup._id],
       profile: {
         language: "en"
-      },
-      roles: {
-        [internalShopId]: ["customer"]
       },
       shopId: internalShopId
     });

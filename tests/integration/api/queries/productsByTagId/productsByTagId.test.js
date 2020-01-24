@@ -40,8 +40,19 @@ const mockProductsWithTagAndFeaturedProducts = Factory.Product.makeMany(77, {
   shopId: internalShopId
 });
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:navigationTrees/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  _id: internalAdminAccountId
+  _id: internalAdminAccountId,
+  groups: [adminGroup._id],
+  shopId: internalShopId
 });
 
 jest.setTimeout(300000);
@@ -54,6 +65,7 @@ beforeAll(async () => {
   await testApp.start();
   query = testApp.query(tagProductsQueryString);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount, ["owner"]);
   await testApp.setLoggedInUser(mockAdminAccount);
   await testApp.collections.Tags.insertOne(mockTagWithFeatured);

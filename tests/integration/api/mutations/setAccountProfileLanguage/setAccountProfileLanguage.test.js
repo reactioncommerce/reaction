@@ -24,10 +24,19 @@ beforeAll(async () => {
   });
   setAccountProfileLanguage = testApp.mutate(SetAccountProfileLanguageMutation);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:accounts/update:language"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
-    groups: [],
-    roles: { [shopId]: ["owner", "admin"] },
+    groups: [adminGroup._id],
     shopId
   });
 

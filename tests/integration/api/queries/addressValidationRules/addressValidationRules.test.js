@@ -42,11 +42,28 @@ beforeAll(async () => {
   const { insertedId } = await testApp.collections.Shops.insertOne(mockShop);
   opaqueOtherShopId = encodeOpaqueId("reaction/shop", insertedId);
 
+  const adminGroupShopOne = Factory.Group.makeOne({
+    _id: "adminGroupOne",
+    createdBy: null,
+    name: "adminOne",
+    permissions: ["reaction:legacy:addressValidationRules/read"],
+    slug: "adminOne",
+    shopId
+  });
+  const adminGroupShopTwo = Factory.Group.makeOne({
+    _id: "adminGroupTwo",
+    createdBy: null,
+    name: "adminTwo",
+    permissions: ["reaction:legacy:addressValidationRules/read"],
+    slug: "adminTwo",
+    shopId: insertedId
+  });
+
+  await testApp.collections.Groups.insertOne(adminGroupShopOne);
+  await testApp.collections.Groups.insertOne(adminGroupShopTwo);
+
   mockAdminAccount = Factory.Account.makeOne({
-    roles: {
-      [shopId]: ["reaction:legacy:addressValidationRules/read"],
-      [insertedId]: ["reaction:legacy:addressValidationRules/read"]
-    }
+    groups: ["adminGroupOne", "adminGroupTwo"]
   });
   await testApp.createUserAndAccount(mockAdminAccount);
 

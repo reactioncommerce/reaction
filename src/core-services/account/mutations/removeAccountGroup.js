@@ -21,7 +21,7 @@ export default async function removeAccountGroup(context, input) {
   const { Groups } = context.collections;
 
   // we are limiting group method actions to only users within the account managers role
-  await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "remove", { shopId, legacyRoles: ["admin"] });
+  await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "remove", { shopId });
 
   const defaultGroupsForShop = await Groups.find({
     shopId,
@@ -34,14 +34,13 @@ export default async function removeAccountGroup(context, input) {
   const forbiddenGroupIds = defaultGroupsForShop.map(({ _id }) => _id);
 
   if (forbiddenGroupIds.includes(groupId)) {
-    throw new ReactionError("accedd-denied", `Cannot remove default group with ID ${groupId}.`);
+    throw new ReactionError("access-denied", `Cannot remove default group with ID ${groupId}.`);
   }
 
   if (!defaultCustomerGroupForShop) {
     throw new ReactionError("server-error", `Cannot remove group ${groupId}. Default "customer" group doesn't exist to move users to.`);
   }
 
-  // TODO: Remove when we move away from legacy permission verification
   // Move accounts from their old group to their new group
   await moveAccountsToGroup(context, {
     shopId,

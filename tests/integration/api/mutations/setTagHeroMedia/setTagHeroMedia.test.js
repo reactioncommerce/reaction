@@ -52,10 +52,17 @@ const mockMediaRecord = {
   }
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:tags/update"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [shopId]: ["reaction:legacy:tags/update"]
-  },
+  groups: [adminGroup._id],
   shopId
 });
 
@@ -79,6 +86,7 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
 
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.collections.Tags.insertOne(mockTag);
   setTagHeroMediaMutation = testApp.mutate(setTagHeroMedia);

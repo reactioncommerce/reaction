@@ -64,18 +64,31 @@ for (let index = 0; index < 3; index += 1) {
   emailTemplateDocuments.push(doc);
 }
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:email-templates/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
+  shopId: internalShopId
+});
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:email-templates/read"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
 const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
@@ -91,6 +104,9 @@ beforeAll(async () => {
   await Promise.all(emailTemplateDocuments.map((doc) => (
     testApp.collections.Templates.insertOne(doc)
   )));
+
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
 
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.createUserAndAccount(mockCustomerAccount);

@@ -36,7 +36,18 @@ beforeAll(async () => {
 
   const shopId = await testApp.insertPrimaryShop();
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:accounts/read"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
+    groups: [adminGroup._id],
     roles: {
       [shopId]: ["reaction:legacy:accounts/read"]
     },

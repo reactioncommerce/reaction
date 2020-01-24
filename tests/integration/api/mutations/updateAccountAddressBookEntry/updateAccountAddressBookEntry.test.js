@@ -35,11 +35,21 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
+
+  const customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    createdBy: null,
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   updateAccountAddressBookEntry = testApp.mutate(UpdateAccountAddressBookEntryMutation);
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
-    groups: [],
-    roles: { [shopId]: ["owner", "admin"] },
+    groups: [customerGroup._id],
     profile: {
       addressBook: [address]
     },

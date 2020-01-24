@@ -46,10 +46,17 @@ const simpleInventoryDoc = Factory.SimpleInventory.makeOne({
   shopId
 });
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:inventory/update"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [shopId]: ["reaction:legacy:inventory/update"]
-  },
+  groups: [adminGroup._id],
   shopId
 });
 
@@ -66,6 +73,7 @@ beforeAll(async () => {
   await testApp.collections.Products.insertOne(variant);
   await testApp.collections.SimpleInventory.insertOne(simpleInventoryDoc);
   await testApp.publishProducts([productId]);
+  await testApp.collections.Groups.insertOne(adminGroup);
 
   await testApp.createUserAndAccount(mockAdminAccount);
   recalculateReservedSimpleInventoryMutation = testApp.mutate(recalculateReservedSimpleInventory);
