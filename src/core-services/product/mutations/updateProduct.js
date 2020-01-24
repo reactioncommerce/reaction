@@ -33,10 +33,6 @@ const metafieldInputSchema = new SimpleSchema({
 });
 
 const inputSchema = new SimpleSchema({
-  "_id": {
-    type: String,
-    optional: true
-  },
   "description": {
     type: String,
     optional: true
@@ -52,14 +48,6 @@ const inputSchema = new SimpleSchema({
     max: 255
   },
   "handle": {
-    type: String,
-    optional: true
-  },
-  "hashtags": {
-    type: Array,
-    optional: true
-  },
-  "hashtags.$": {
     type: String,
     optional: true
   },
@@ -163,7 +151,9 @@ export default async function updateProduct(context, input) {
 
   inputSchema.validate(updateDocument);
 
-  await Products.updateOne(
+  updateDocument.updatedAt = new Date();
+
+  const { value: updatedProduct } = await Products.findOneAndUpdate(
     {
       _id: productId,
       shopId
@@ -176,9 +166,7 @@ export default async function updateProduct(context, input) {
     }
   );
 
-  const updatedProduct = await Products.findOne({ _id: productId, shopId });
-
-  appEvents.emit("afterProductUpdate", { productId, product: updatedProduct });
+  await appEvents.emit("afterProductUpdate", { productId, product: updatedProduct });
 
   return updatedProduct;
 }

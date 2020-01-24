@@ -29,7 +29,7 @@ const mockVariant = {
     shop: {
       _id: opaqueShopId
     },
-    title: ""
+    title: null
   }
 };
 
