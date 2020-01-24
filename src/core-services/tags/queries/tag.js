@@ -21,7 +21,7 @@ export default async function tag(context, input) {
     $or: [{ _id: slugOrId }, { slug: slugOrId }],
     shopId
   });
-  
+
   if (!foundTag) {
     throw new ReactionError("not-found", "Tag not found");
   }
