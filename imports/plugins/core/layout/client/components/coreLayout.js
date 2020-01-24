@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { registerComponent, Components, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Reaction } from "/client/api";
+import { Reaction, Router } from "/client/api";
 import Logger from "/client/modules/logger";
 import { Meteor } from "meteor/meteor";
 import Button from "@material-ui/core/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
+import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import ShopLogo from "/imports/client/ui/components/ShopLogoWithData/ShopLogoWithData";
 
 const styles = (theme) => ({
@@ -35,7 +36,7 @@ const styles = (theme) => ({
  * to operator 2.0
  * @returns {Node} React component
  */
-function CoreLayout({ classes, isAdmin, isLoading, isLoggedIn, location, storefrontHomeUrl }) {
+function CoreLayout({ classes, isAdmin, isLoading, isLoggedIn, location, referer, storefrontHomeUrl }) {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   if (isLoading || isLoggingOut) return null;
@@ -82,6 +83,45 @@ function CoreLayout({ classes, isAdmin, isLoading, isLoggedIn, location, storefr
     }
   }
 
+
+  if (location.pathname.startsWith("/account/logout")) {
+    Meteor.logout();
+    if (referer) {
+      window.location.href = referer;
+      return null;
+    } else if (storefrontHomeUrl && storefrontHomeUrl.length) {
+      window.location.href = storefrontHomeUrl;
+      return null;
+    }
+
+    Logger.warn("Missing storefront home URL. Please set  this from the shop settings panel so that customer users can be redirected to your storefront.");
+
+    content = (
+      <InlineAlert
+        alertType="error"
+        message="Missing storefront home URL. Please set this from the shop settings panel so that customer users can be redirected to your storefront."
+      />
+    );
+  }
+
+  // If user is logged in, and they come from storefront (/account in url)
+  // redirect to storefront
+  if (location.pathname.startsWith("/account") && isLoggedIn) {
+    if (storefrontHomeUrl && storefrontHomeUrl.length) {
+      window.location.href = storefrontHomeUrl;
+      return null;
+    }
+
+    Logger.warn("Missing storefront home URL. Please set this from the shop settings panel so that customer users can be redirected to your storefront.");
+
+    content = (
+      <InlineAlert
+        alertType="error"
+        message="Missing storefront home URL. Please set this from the shop settings panel so that customer users can be redirected to your storefront."
+      />
+    );
+  }
+
   return (
     <div id="reactionAppContainer">
       <div className={classes.root}>
@@ -102,6 +142,7 @@ CoreLayout.propTypes = {
   isLoading: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   location: PropTypes.object,
+  referer: PropTypes.string,
   storefrontHomeUrl: PropTypes.string
 };
 
@@ -118,11 +159,13 @@ function composer(props, onData) {
   const shop = Reaction.getCurrentShop();
   const isLoading = (isAdmin !== true && isAdmin !== false) || !shop;
   const isLoggedIn = !!Reaction.getUserId();
+  const { referer } = Router.current().query;
 
   onData(null, {
     isAdmin,
     isLoading,
     isLoggedIn,
+    referer,
     storefrontHomeUrl: (shop && shop.storefrontUrls && shop.storefrontUrls.storefrontHomeUrl) || null
   });
 }

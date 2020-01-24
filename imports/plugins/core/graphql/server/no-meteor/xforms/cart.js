@@ -1,3 +1,4 @@
+import { toFixed } from "accounting-js";
 import getRateObjectForRate from "@reactioncommerce/api-utils/getRateObjectForRate.js";
 import namespaces from "@reactioncommerce/api-utils/graphql/namespaces.js";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -147,22 +148,27 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
   }));
 
   let selectedFulfillmentOption = null;
-  if (fulfillmentGroup.shipmentMethod) {
+  const { shipmentMethod: selectedShipmentMethod } = fulfillmentGroup;
+  if (selectedShipmentMethod) {
     selectedFulfillmentOption = {
       fulfillmentMethod: {
-        _id: fulfillmentGroup.shipmentMethod._id,
-        carrier: fulfillmentGroup.shipmentMethod.carrier || null,
-        displayName: fulfillmentGroup.shipmentMethod.label || fulfillmentGroup.shipmentMethod.name,
-        group: fulfillmentGroup.shipmentMethod.group || null,
-        name: fulfillmentGroup.shipmentMethod.name,
-        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes
+        _id: selectedShipmentMethod._id,
+        carrier: selectedShipmentMethod.carrier || null,
+        displayName: selectedShipmentMethod.label || selectedShipmentMethod.name,
+        group: selectedShipmentMethod.group || null,
+        name: selectedShipmentMethod.name,
+        fulfillmentTypes: selectedShipmentMethod.fulfillmentTypes
       },
       handlingPrice: {
-        amount: fulfillmentGroup.shipmentMethod.handling || 0,
+        amount: selectedShipmentMethod.handling || 0,
         currencyCode: cart.currencyCode
       },
       price: {
-        amount: fulfillmentGroup.shipmentMethod.rate || 0,
+        amount: +toFixed((selectedShipmentMethod.handling || 0) + (selectedShipmentMethod.rate || 0), 3),
+        currencyCode: cart.currencyCode
+      },
+      shippingPrice: {
+        amount: selectedShipmentMethod.rate || 0,
         currencyCode: cart.currencyCode
       }
     };
