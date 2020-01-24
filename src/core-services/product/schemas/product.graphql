@@ -22,7 +22,7 @@ type Product {
   metaDescription: String
 
   "Arbitrary additional metadata about this product"
-  metafields: [Metafield]
+  metafields: [Metafield]!
 
   "The country of origin"
   originCountry: String
@@ -216,7 +216,7 @@ type CloneProductVariantsPayload  {
   variants: [ProductVariant]!
 }
 
-"Response payload of `updateProductField` mutation"
+"Response payload of `updateProduct` mutation"
 type UpdateProductPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -319,7 +319,7 @@ input CloneProductVariantsInput  {
   variantIds: [ID]!
 }
 
-"Input for the `updateProductField` mutation"
+"Input for the `updateProduct` mutation"
 input UpdateProductInput  {
   "Product input"
   product: ProductInput!
@@ -333,9 +333,6 @@ input UpdateProductInput  {
 
 "Mutation input for a product"
 input ProductInput {
-  "Product ID"
-  _id: ID
-
   "The full product description, which may have newline characters in it"
   description: String
 
@@ -390,12 +387,6 @@ input ProductInput {
 
 "Mutation input for a product variant or option"
 input ProductVariantInput {
-  "Variant ID"
-  _id: ID
-
-  "Ancestors this variant"
-  ancestors: [ID]
-
   """
   The attribute label describes the category of variant, for example, "Color" or "Size".
   In most cases this will be the same for all variants at the same level.
@@ -404,9 +395,6 @@ input ProductVariantInput {
 
   "The product variant barcode value, if it has one"
   barcode: String
-
-  "The date and time at which this variant was created"
-  createdAt: DateTime
 
   "The height of the product variant, if it has physical dimensions"
   height: Float
