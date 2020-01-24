@@ -12,10 +12,18 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 const encodeNavigationItemOpaqueId = encodeOpaqueId("reaction/navigationItem");
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:navigationTrees/create"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:navigationTrees/create"]
-  }
+  groups: [adminGroup._id],
+  shopId: internalShopId
 });
 
 const mockNavigationItem = Factory.NavigationItem.makeOne({
@@ -42,6 +50,7 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.setLoggedInUser(mockAdminAccount);
   await testApp.collections.NavigationItems.insertOne(mockNavigationItem);
