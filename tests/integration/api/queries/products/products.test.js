@@ -97,13 +97,30 @@ beforeAll(async () => {
 // test file gets its own test database.
 afterAll(() => testApp.stop());
 
+test("default sort is by createdAt descending", async () => {
+  let result;
+
+  try {
+    result = await queryProducts({
+      shopIds: [opaqueShopId],
+      first: 1
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.products.nodes[0].title).toEqual("Fake Product 135");
+});
+
 test("expect a list of products", async () => {
   let result;
 
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      first: 10
+      first: 10,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -127,7 +144,8 @@ test("expect a list of products on the second page", async () => {
     result = await queryProducts({
       shopIds: [opaqueShopId],
       first: 10,
-      offset: 10
+      offset: 10,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -153,7 +171,8 @@ test("expect a list of products filtered by product ids", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      productIds: [productId1, productId2, productId3]
+      productIds: [productId1, productId2, productId3],
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -172,7 +191,8 @@ test("expect a list of products filtered by a minimum price", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      priceMin: 132
+      priceMin: 132,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -190,7 +210,8 @@ test("expect a list of products filtered by a maximum price", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      priceMax: 151
+      priceMax: 151,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -209,7 +230,8 @@ test("expect a list of products filtered by a price range", async () => {
     result = await queryProducts({
       shopIds: [opaqueShopId],
       priceMin: 110,
-      priceMax: 163
+      priceMax: 163,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -234,7 +256,8 @@ test("expect a list of products filtered by tags", async () => {
         encodeOpaqueId("reaction/tag", "tag-120-2"),
         encodeOpaqueId("reaction/tag", "tag-130-1"),
         encodeOpaqueId("reaction/tag", "tag-110-0")
-      ]
+      ],
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -255,7 +278,8 @@ test("expect a list of products filtered by a metafield", async () => {
     result = await queryProducts({
       shopIds: [opaqueShopId],
       metafieldKey: "index",
-      metafieldValue: "110"
+      metafieldValue: "110",
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -272,7 +296,8 @@ test("expect a single of product filtered by a search query", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      query: "Fake Product 130"
+      query: "Fake Product 130",
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -283,13 +308,14 @@ test("expect a single of product filtered by a search query", async () => {
   expect(result.products.nodes[0].title).toEqual("Fake Product 130");
 });
 
-test("expect an empty list of products filtered by a visibility", async () => {
+test("expect an empty list of products filtered by visibility", async () => {
   let result;
 
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      isVisible: false
+      isVisible: false,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -299,13 +325,14 @@ test("expect an empty list of products filtered by a visibility", async () => {
   expect(result.products.nodes.length).toEqual(0);
 });
 
-test("expect an empty list of products filtered by a archived", async () => {
+test("expect an empty list of products filtered by archived", async () => {
   let result;
 
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      isArchived: true
+      isArchived: true,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
