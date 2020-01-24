@@ -3,7 +3,6 @@ import TestApp from "/tests/util/TestApp.js";
 // temp mocks
 import { internalShopId, opaqueShopId, shopName } from "../../../../mocks/mockShop";
 import { internalTagIds, opaqueTagIds } from "../../../../mocks/mockTags";
-import { internalCatalogItemIds } from "../../../../mocks/mockCatalogProducts";
 import {
   mockCatalogItems,
   mockUnsortedCatalogItemsResponse,
@@ -29,13 +28,10 @@ beforeAll(async () => {
   await Promise.all(mockCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.insertOne(mockCatalogItem)));
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Tags.deleteMany({ _id: { $in: internalTagIds } });
-  await testApp.collections.Catalog.deleteOne({ _id: internalCatalogItemIds[0] });
-  await testApp.collections.Catalog.deleteOne({ _id: internalCatalogItemIds[1] });
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("get all items for shop", async () => {
   let result;

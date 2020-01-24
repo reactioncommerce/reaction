@@ -1,5 +1,5 @@
 import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
-
+import decodeNavigationTreeItemIds from "../../util/decodeNavigationTreeItemIds.js";
 /**
  * @name Mutation.updateNavigationTree
  * @method
@@ -24,6 +24,13 @@ export default async function updateNavigationTree(parentResult, { input }, cont
 
   const navigationTreeId = decodeNavigationTreeOpaqueId(opaqueNavigationTreeId);
   const shopId = decodeShopOpaqueId(opaqueShopId);
+
+  if (navigationTree.draftItems) {
+    const { draftItems } = navigationTree;
+    decodeNavigationTreeItemIds(navigationTree.draftItems);
+    navigationTree.draftItems = draftItems;
+  }
+
   const updatedNavigationTree = await context.mutations.updateNavigationTree(context, {
     shopId,
     navigationTreeId,

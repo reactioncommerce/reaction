@@ -8,6 +8,8 @@
  */
 export default async function getCatalogProductMedia(productId, collections) {
   const { Media } = collections;
+  if (!Media) return [];
+
   const mediaArray = await Media.find(
     {
       "metadata.productId": productId,

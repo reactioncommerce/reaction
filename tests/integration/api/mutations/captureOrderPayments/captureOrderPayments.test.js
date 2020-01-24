@@ -104,14 +104,10 @@ beforeAll(async () => {
   captureOrderPaymentsMutation = testApp.mutate(captureOrderPayments);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Products.deleteMany({});
-  await testApp.collections.Groups.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("an anonymous user should not be able to capture order payments", async () => {
   try {

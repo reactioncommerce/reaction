@@ -7,15 +7,15 @@ const mockNavigationTreeInput = {
   name: "Main Menu",
   draftItems: [
     {
-      navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
+      navigationItemId: "wYWSrwT2bWDE9aHLg",
       items: [
         {
-          navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dEFLQVRRZXFvRDRBaDVnZzI="
+          navigationItemId: "KEcn6NvrRuztmPMq8"
         }
       ]
     },
     {
-      navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06S0VjbjZOdnJSdXp0bVBNcTg="
+      navigationItemId: "tAKATQeqoD4Ah5gg2"
     }
   ],
   hasUnpublishedChanges: false

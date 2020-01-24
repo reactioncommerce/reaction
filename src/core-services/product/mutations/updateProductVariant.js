@@ -168,7 +168,7 @@ export default async function updateProductVariant(context, input) {
 
   const updatedProduct = Products.findOne({ _id: variantId, shopId });
 
-  appEvents.emit("afterVariantUpdate", { productId: variantId, product: updatedProduct });
+  await appEvents.emit("afterVariantUpdate", { productId: variantId, product: updatedProduct });
 
   return updatedProduct;
 }

@@ -63,16 +63,10 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockCustomerAccount);
 });
 
-
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Tags.deleteMany({});
-  await testApp.collections.Groups.deleteMany({});
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("should get a tag by ID", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);

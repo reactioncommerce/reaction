@@ -66,13 +66,10 @@ beforeAll(async () => {
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.AddressValidationRules.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Groups.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("admin can update an address validation rule service name and country list", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);

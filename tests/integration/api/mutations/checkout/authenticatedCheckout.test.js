@@ -1,207 +1,64 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import getCommonData from "./checkoutTestsCommon.js";
 
 const AccountCartByAccountIdQuery = importAsString("./AccountCartByAccountIdQuery.graphql");
-const AvailablePaymentMethodsQuery = importAsString("./AvailablePaymentMethodsQuery.graphql");
-const AddCartItemsMutation = importAsString("./AddCartItemsMutation.graphql");
-const RemoveCartItemsMutation = importAsString("./RemoveCartItemsMutation.graphql");
-const CreateCartMutation = importAsString("./CreateCartMutation.graphql");
-const UpdateFulfillmentOptionsForGroupMutation = importAsString("./UpdateFulfillmentOptionsForGroupMutation.graphql");
-const SelectFulfillmentOptionForGroupMutation = importAsString("./SelectFulfillmentOptionForGroupMutation.graphql");
-const SetShippingAddressOnCartMutation = importAsString("./SetShippingAddressOnCartMutation.graphql");
-const UpdateCartItemsQuantityMutation = importAsString("./UpdateCartItemsQuantityMutation.graphql");
-const PlaceOrderMutation = importAsString("./PlaceOrderMutation.graphql");
-const PublishProductToCatalogMutation = importAsString("./PublishProductsToCatalogMutation.graphql");
 
-jest.setTimeout(300000);
-
-const encodeProductOpaqueId = encodeOpaqueId("reaction/product");
-const encodeShopOpaqueId = encodeOpaqueId("reaction/shop");
-
-const internalShopId = "123";
-const opaqueShopId = encodeShopOpaqueId(123);
-const internalProductId = "999";
-const opaqueProductId = encodeProductOpaqueId(999);
-const internalTagIds = ["923", "924"];
-const internalVariantIds = ["875", "874", "925"];
-
-const shopName = "Test Shop";
-
-const mockProduct = {
-  _id: internalProductId,
-  ancestors: [],
-  title: "Fake Product",
-  shopId: internalShopId,
-  isDeleted: false,
-  isVisible: true,
-  supportedFulfillmentTypes: ["shipping"]
-};
-
-const mockVariant = {
-  _id: internalVariantIds[0],
-  ancestors: [internalProductId],
-  attributeLabel: "Variant",
-  title: "Fake Product Variant",
-  shopId: internalShopId,
-  isDeleted: false,
-  isVisible: true
-};
-
-const mockOptionOne = {
-  _id: internalVariantIds[1],
-  ancestors: [internalProductId, internalVariantIds[0]],
-  attributeLabel: "Option",
-  title: "Fake Product Option One",
-  shopId: internalShopId,
-  isDeleted: false,
-  isVisible: true,
-  price: 19.99
-};
-
-const mockOptionTwo = {
-  _id: internalVariantIds[2],
-  ancestors: [internalProductId, internalVariantIds[0]],
-  attributeLabel: "Option",
-  title: "Fake Product Option Two",
-  shopId: internalShopId,
-  isDeleted: false,
-  isVisible: true,
-  price: 29.99
-};
-
-const mockShippingMethod = {
-  _id: "mockShippingMethod",
-  name: "Default Shipping Provider",
-  shopId: internalShopId,
-  provider: {
-    enabled: true,
-    label: "Flat Rate",
-    name: "flatRates"
-  },
-  methods: [
-    {
-      cost: 2.5,
-      fulfillmentTypes: [
-        "shipping"
-      ],
-      group: "Ground",
-      handling: 1.5,
-      label: "Standard mockMethod",
-      name: "mockMethod",
-      rate: 1,
-      _id: "mockMethod",
-      enabled: true
-    }
-  ]
-};
-
-const adminGroup = Factory.Group.makeOne({
-  _id: "adminGroup",
-  createdBy: null,
-  name: "admin",
-  permissions: ["reaction:legacy:products/publish"],
-  slug: "admin",
-  shopId: internalShopId
-});
-
-
-const mockAdminAccount = Factory.Account.makeOne({
-  _id: "mockAdminAccountId",
-  groups: [adminGroup._id],
-  shopId: internalShopId
-});
-
-let testApp;
 let accountCartByAccountId;
 let addCartItems;
 let availablePaymentMethods;
 let createCart;
-let removeCartItems;
+let encodeProductOpaqueId;
+let internalShopId;
+let internalVariantIds;
+let mockCustomerAccount;
+let opaqueProductId;
+let opaqueShopId;
 let placeOrder;
-let publishProducts;
+let removeCartItems;
 let selectFulfillmentOptionForGroup;
 let setShippingAddressOnCart;
+let testApp;
 let updateCartItemsQuantity;
 let updateFulfillmentOptionsForGroup;
-let mockCustomerAccount;
 
 beforeAll(async () => {
-  testApp = new TestApp();
-  await testApp.start();
+  ({
+    addCartItems,
+    availablePaymentMethods,
+    createCart,
+    encodeProductOpaqueId,
+    internalShopId,
+    internalVariantIds,
+    opaqueProductId,
+    opaqueShopId,
+    placeOrder,
+    removeCartItems,
+    selectFulfillmentOptionForGroup,
+    setShippingAddressOnCart,
+    testApp,
+    updateCartItemsQuantity,
+    updateFulfillmentOptionsForGroup
+  } = getCommonData());
 
   accountCartByAccountId = testApp.query(AccountCartByAccountIdQuery);
-  addCartItems = testApp.mutate(AddCartItemsMutation);
-  availablePaymentMethods = testApp.query(AvailablePaymentMethodsQuery);
-  createCart = testApp.mutate(CreateCartMutation);
-  removeCartItems = testApp.mutate(RemoveCartItemsMutation);
-  placeOrder = testApp.mutate(PlaceOrderMutation);
-  publishProducts = testApp.mutate(PublishProductToCatalogMutation);
-  removeCartItems = testApp.mutate(RemoveCartItemsMutation);
-  selectFulfillmentOptionForGroup = testApp.mutate(SelectFulfillmentOptionForGroupMutation);
-  setShippingAddressOnCart = testApp.mutate(SetShippingAddressOnCartMutation);
-  updateCartItemsQuantity = testApp.mutate(UpdateCartItemsQuantityMutation);
-  updateFulfillmentOptionsForGroup = testApp.mutate(UpdateFulfillmentOptionsForGroupMutation);
-
-  // Setup shop
-  await testApp.collections.Groups.insertOne(adminGroup);
-
-  await testApp.createUserAndAccount(mockAdminAccount);
-  await testApp.setLoggedInUser(mockAdminAccount);
-  await testApp.context.mutations.createShop(testApp.context.getInternalContext(), {
-    name: shopName,
-    shopId: internalShopId,
-    defaultLanguage: "en"
-  });
-
-  // Set other shop settings
-  await testApp.collections.Shops.updateOne(
-    { _id: internalShopId },
-    {
-      $set: {
-        allowGuestCheckout: true,
-        availablePaymentMethods: ["iou_example"],
-        emails: [{ address: "testing@reactioncommerce.com" }]
-      }
-    }
-  );
-
-  // Add shipping methods
-  await testApp.collections.Shipping.insertOne(mockShippingMethod);
-
-  // Add Tags and products
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insertOne({ _id, shopId: internalShopId, slug: `slug${_id}` })));
-  await testApp.collections.Products.insertOne(mockProduct);
-  await testApp.collections.Products.insertOne(mockVariant);
-  await testApp.collections.Products.insertOne(mockOptionOne);
-  await testApp.collections.Products.insertOne(mockOptionTwo);
-
-  // Publish products to the catalog
-  await publishProducts({ productIds: [opaqueProductId] });
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Shipping.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Products.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Groups.deleteMany({});
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 describe("as a signed in user", () => {
   let opaqueAccountId;
   let opaqueCartId;
   let opaqueCartItemId;
   let opaqueCartItemIdToRemove;
+  let opaqueCartProductVariantId;
   let opaqueFulfillmentGroupId;
   let opaqueFulfillmentMethodId;
   let latestCartSummary;
-
-  const opaqueCartProductVariantId = encodeProductOpaqueId(internalVariantIds[1]);
 
   beforeAll(async () => {
     const customerGroup = Factory.Group.makeOne({
@@ -225,6 +82,7 @@ describe("as a signed in user", () => {
     });
 
     opaqueAccountId = encodeOpaqueId("reaction/account", mockCustomerAccount._id);
+    opaqueCartProductVariantId = encodeProductOpaqueId(internalVariantIds[1]);
 
     await testApp.createUserAndAccount(mockCustomerAccount);
     await testApp.setLoggedInUser(mockCustomerAccount);
