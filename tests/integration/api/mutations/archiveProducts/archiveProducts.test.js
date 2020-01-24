@@ -75,14 +75,10 @@ beforeAll(async () => {
   });
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Products.deleteOne({ _id: internalProductId });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 // archive a product and its' variants and options
 test("expect a product and all variants and options to be archived using `[productIds]` as input", async () => {

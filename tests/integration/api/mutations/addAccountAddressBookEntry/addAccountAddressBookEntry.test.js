@@ -15,10 +15,10 @@ beforeAll(async () => {
   addAccountAddressBookEntry = testApp.mutate(AddAccountAddressBookEntryMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 const accountInternalId = "123";
 const accountOpaqueId = "cmVhY3Rpb24vYWNjb3VudDoxMjM=";

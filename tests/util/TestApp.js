@@ -1,3 +1,4 @@
+import { URL } from "url";
 import { gql } from "apollo-server";
 import { createTestClient } from "apollo-server-testing";
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
@@ -7,6 +8,8 @@ import Factory from "/tests/util/factory.js";
 import ReactionAPI from "../../src/core/ReactionAPI.js";
 import buildContext from "../../src/core/util/buildContext";
 import registerPlugins from "../../src/registerPlugins";
+
+const DEFAULT_MONGO_URL = "mongodb://localhost:27017/test";
 
 class TestApp {
   constructor() {
@@ -19,9 +22,6 @@ class TestApp {
       Logger.error("Failed to initialize a ReactionAPI instance", error);
     }
 
-    this.collections = this.reactionNodeApp.collections;
-    this.context = this.reactionNodeApp.context;
-
     this.mutate = (mutation) => async (variables) => {
       const result = await this.graphClient.mutate({ mutation: gql(mutation), variables });
       if (result.errors) throw result.errors;
@@ -33,6 +33,14 @@ class TestApp {
       if (result.errors) throw result.errors;
       return result.data;
     };
+  }
+
+  get collections() {
+    return this.reactionNodeApp.collections;
+  }
+
+  get context() {
+    return this.reactionNodeApp.context;
   }
 
   async createUserAndAccount(user = {}, globalRoles) {
@@ -128,18 +136,20 @@ class TestApp {
       throw error;
     }
 
-    // These globals are made available by @shelf/jest-mongodb package
-    const dbName = global.__MONGO_DB_NAME__;
-    let mongoUrl = global.__MONGO_URI__;
-
     // Change the default DB name to a unique one so that each test file is sandboxed
-    mongoUrl = mongoUrl.replace(dbName, Random.id());
+    const parsedUrl = new URL(process.env.MONGO_URL || DEFAULT_MONGO_URL);
+    parsedUrl.pathname = `/${Random.id()}`;
+    this.mongoUrl = parsedUrl.toString();
 
     // We intentionally do not pass `port` option, which prevents
     // it from starting the actual server. We will use
     // `createTestClient` below instead of an actual server.
     try {
-      await this.reactionNodeApp.start({ mongoUrl, port: null, shouldInitReplicaSet: true });
+      await this.reactionNodeApp.start({
+        mongoUrl: this.mongoUrl,
+        port: null,
+        shouldInitReplicaSet: true
+      });
     } catch (error) {
       Logger.error(error, "Error starting app in TestApp");
       throw error;
@@ -150,6 +160,11 @@ class TestApp {
 
   async stop() {
     await this.reactionNodeApp.stop();
+
+    // Delete the temporary database
+    await this.reactionNodeApp.connectToMongo({ mongoUrl: this.mongoUrl });
+    await this.reactionNodeApp.mongoClient.db().dropDatabase();
+    await this.reactionNodeApp.disconnectFromMongo();
   }
 }
 

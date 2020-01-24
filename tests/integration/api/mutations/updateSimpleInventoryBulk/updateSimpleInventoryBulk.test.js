@@ -72,11 +72,10 @@ beforeAll(async () => {
   getCatalogItem = testApp.query(catalogItemQuery);
 });
 
-afterAll(async () => {
-  await testApp.collections.Products.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("when all options are sold out and canBackorder, isBackorder is true in Catalog", async () => {
   const {

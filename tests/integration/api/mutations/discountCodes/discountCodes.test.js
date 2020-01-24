@@ -39,13 +39,10 @@ beforeAll(async () => {
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Discounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("user can add a discount code", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);

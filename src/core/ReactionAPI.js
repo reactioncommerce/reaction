@@ -180,8 +180,12 @@ export default class ReactionAPI {
    * @param {Database} db MongoDB library database instance
    * @returns {undefined}
    */
-  setMongoDatabase(db) {
+  async setMongoDatabase(db) {
     this.db = db;
+
+    // Reset these
+    this.collections = {};
+    this.context.collections = this.collections;
 
     // Loop through all registered plugins
     for (const pluginName in this.registeredPlugins) {
@@ -211,9 +215,10 @@ export default class ReactionAPI {
 
               // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {
-                for (const indexArgs of collectionConfig.indexes) {
-                  collectionIndex(this.collections[collectionKey], ...indexArgs);
-                }
+                const indexingPromises = collectionConfig.indexes.map((indexArgs) => (
+                  collectionIndex(this.collections[collectionKey], ...indexArgs)
+                ));
+                await Promise.all(indexingPromises); // eslint-disable-line no-await-in-loop
               }
             }
           }
@@ -238,7 +243,7 @@ export default class ReactionAPI {
     const client = await mongoConnectWithRetry(mongoUrl);
 
     this.mongoClient = client;
-    this.setMongoDatabase(client.db()); // Uses db name from the connection string
+    await this.setMongoDatabase(client.db()); // Uses db name from the connection string
   }
 
   async disconnectFromMongo() {

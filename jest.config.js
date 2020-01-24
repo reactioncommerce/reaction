@@ -191,12 +191,4 @@ const jestConfig = {
   // watchman: true,
 };
 
-// See https://github.com/shelfio/jest-mongodb
-// Setting JEST_MONGO is just our way of telling this file that we're running
-// integration tests as opposed to unit tests, which don't need MongoDB running.
-if (process.env.JEST_MONGO === "1") {
-  delete jestConfig.testEnvironment;
-  jestConfig.preset = "@shelf/jest-mongodb";
-}
-
 module.exports = jestConfig;

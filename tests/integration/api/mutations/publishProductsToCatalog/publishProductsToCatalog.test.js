@@ -103,16 +103,10 @@ beforeAll(async () => {
   });
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Products.deleteOne({ _id: internalProductId });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[2] });
-  await testApp.collections.Tags.deleteMany({});
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 // publish new product to catalog
 test("expect a CatalogItemProduct when a Product is published to the Catalog collection", async () => {

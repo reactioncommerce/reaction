@@ -98,11 +98,10 @@ beforeAll(async () => {
   updateSimpleInventory = testApp.mutate(updateSimpleInventoryMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Products.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("throws access-denied when updating simpleInventory if not an admin", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);

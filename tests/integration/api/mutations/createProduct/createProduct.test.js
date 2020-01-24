@@ -6,7 +6,6 @@ const CreateProductMutation = importAsString("./createProduct.graphql");
 jest.setTimeout(300000);
 
 const internalShopId = "123";
-const internalProductId = "999";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 
 const shopName = "Test Shop";
@@ -37,12 +36,10 @@ beforeAll(async () => {
   });
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Products.deleteOne({ _id: internalProductId });
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 // create a new product
 test("expect a product to be created using `shopId` as input", async () => {

@@ -15,7 +15,6 @@ Reaction comes with a robust set of core commerce capabilities right out of the 
 
 Check out the full list of Reaction [features](https://www.reactioncommerce.com/features) and [release history](https://reactioncommerce.com/roadmap) for more info.
 
-
 # Getting started
 
 Follow the documentation to install Reaction with [Reaction Platform](https://docs.reactioncommerce.com/docs/installation-reaction-platform) for all supported operating systems.
@@ -42,6 +41,31 @@ npm run start:dev
 ```
 
 `CTRL+C` to stop.
+
+## Run Integration Tests in Docker Container (Recommended)
+
+```sh
+bin/setup
+docker-compose run --rm api npm run test:integration # Test all mutations and queries
+docker-compose run --rm api npm run test:integration:query # OR test queries only
+docker-compose run --rm api npm run test:integration:mutation # OR test mutations only
+docker-compose run --rm api npm run test:integration:file:watch -- <filename> # OR test one file
+```
+
+`CTRL+C` to interrupt the test run.
+
+## Run Integration Tests on Local Computer
+
+```sh
+docker-compose up -d mongo
+npm install
+npm run test:integration # Test all mutations and queries
+npm run test:integration:query # OR test queries only
+npm run test:integration:mutation # OR test mutations only
+npm run test:integration:file:watch -- <filename> # OR test one file
+```
+
+`CTRL+C` to interrupt the test run.
 
 # Build and Test a Production Image
 
@@ -72,7 +96,6 @@ Use an external GraphQL client to test http://localhost:3000/graphql. GraphQL Pl
 - [API documentation](http://api.docs.reactioncommerce.com)
 - [Engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
 
-
 ## Get help & contact the team
 
 - [Gitter chat](https://gitter.im/reactioncommerce/reaction)
@@ -94,7 +117,6 @@ Pull requests should pass all automated tests, style, and security checks.
 
 Your code should pass all [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction). Run `docker-compose run --rm reaction npm run test` to run the test suites in containers. If you're adding functionality to Reaction, you should add tests for the added functionality.
 
-
 We require that all code contributed to Reaction follows [Reaction's ESLint rules](https://github.com/reactioncommerce/reaction-eslint-config). You can run `docker-compose run --rm reaction npm run lint` to run ESLint against your code locally.
 
 Please follow the [Reaction Code Style Guide](https://docs.reactioncommerce.com/docs/styleguide). Check out our guides to [JSDoc](https://docs.reactioncommerce.com/docs/jsdoc-style-guide), [Git](https://docs.reactioncommerce.com/docs/git-style-guide), [error handling](https://docs.reactioncommerce.com/docs/error-handling-guide), [logging](https://docs.reactioncommerce.com/docs/logging), and [React](https://docs.reactioncommerce.com/docs/react-best-practices).
@@ -105,6 +127,7 @@ Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/d
 
 ### Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing-off all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+
 ```
 Signed-off-by: Jane Doe <jane.doe@example.com>
 ```
@@ -116,7 +139,6 @@ We ask that you use your real full name (please no anonymous contributions or ps
 We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO sign-offs of every commit.
 
 If you forget to sign-off your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
-
 
 ### License
 Reaction is [GNU GPLv3 Licensed](./LICENSE.md)
