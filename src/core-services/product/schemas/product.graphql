@@ -453,6 +453,22 @@ input UpdateProductVariantInput  {
   variantId: ID!
 }
 
+
+"The fields by which you are allowed to sort any query that returns a `ProductConnection`"
+enum ProductSortByField {
+  "Product ID"
+  _id
+
+  "Date and time the product was created"
+  createdAt
+
+  "Product title"
+  title
+
+  "Date and time the product was last updated"
+  updatedAt
+}
+
 extend type Mutation {
   "Archive products"
   archiveProducts(
@@ -559,5 +575,11 @@ extend type Query {
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
     offset: Int,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = desc,
+
+    "By default, products are sorted by createdAt. Set this to sort by one of the other allowed fields"
+    sortBy: ProductSortByField = createdAt
   ): ProductConnection
 }

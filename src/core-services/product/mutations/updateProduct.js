@@ -149,6 +149,10 @@ export default async function updateProduct(context, input) {
     updateDocument.handle = await createHandle(context, getSlug(productInput.title), productId, shopId);
   }
 
+  if (Object.keys(updateDocument).length === 0) {
+    throw new ReactionError("invalid-param", "At least one field to update must be provided");
+  }
+
   inputSchema.validate(updateDocument);
 
   updateDocument.updatedAt = new Date();
