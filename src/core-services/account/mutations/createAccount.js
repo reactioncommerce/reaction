@@ -88,7 +88,7 @@ export default async function createAccount(context, input) {
 
   // If we didn't already upgrade them to the "owner" group, see if they're been invited to any groups
   if (groupSlug === "customer") {
-    const emailAddresses = emails.map((emailRecord) => emailRecord.address);
+    const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
     // Find all invites for all shops and add to all groups
     invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
     groups = invites.map((invite) => invite.groupId);

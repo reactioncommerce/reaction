@@ -109,6 +109,7 @@ class TestApp {
   async insertPrimaryShop(shopData) {
     const mockShop = Factory.Shop.makeOne({
       currency: "USD",
+      language: "en",
       name: "Primary Shop",
       ...shopData,
       shopType: "primary"
