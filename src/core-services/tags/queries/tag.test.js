@@ -16,11 +16,8 @@ test("default - includes shopId and tag._id", async () => {
     displayTitle: "Shirts"
   };
   const query = {
-    $and: [
-      { isVisible: true },
-      { shopId },
-      { $or: [{ _id: slugOrId }, { slug: slugOrId }] }
-    ]
+    $or: [{ _id: slugOrId }, { slug: slugOrId }],
+    shopId
   };
   mockContext.collections.Tags.findOne.mockReturnValueOnce(tag);
 
@@ -41,11 +38,8 @@ test("default - includes shopId and tag.slug", async () => {
     displayTitle: "Shirts"
   };
   const query = {
-    $and: [
-      { isVisible: true },
-      { shopId },
-      { $or: [{ _id: slugOrId }, { slug: slugOrId }] }
-    ]
+    $or: [{ _id: slugOrId }, { slug: slugOrId }],
+    shopId
   };
   mockContext.collections.Tags.findOne.mockReturnValueOnce(tag);
 

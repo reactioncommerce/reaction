@@ -50,21 +50,21 @@ export default async function register(app) {
     queries,
     shopSettingsConfig: {
       defaultTaxCode: {
-        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        permissionsThatCanEdit: ["reaction:legacy:taxes/update:settings"],
         simpleSchema: {
           type: String,
           min: 1
         }
       },
       fallbackTaxServiceName: {
-        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        permissionsThatCanEdit: ["reaction:legacy:taxes/update:settings"],
         simpleSchema: {
           type: String,
           min: 1
         }
       },
       primaryTaxServiceName: {
-        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        permissionsThatCanEdit: ["reaction:legacy:taxes/update:settings"],
         simpleSchema: {
           type: String,
           min: 1

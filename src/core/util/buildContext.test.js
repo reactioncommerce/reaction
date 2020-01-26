@@ -18,6 +18,7 @@ test("properly mutates the context object without user", async () => {
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
     },
+    userPermissions: [],
     validatePermissions: mockContext.validatePermissions
   };
 
@@ -34,6 +35,7 @@ test("properly mutates the context object without user", async () => {
     requestHeaders: {},
     user: null,
     userHasPermission: jasmine.any(Function),
+    userPermissions: [],
     validatePermissions: jasmine.any(Function),
     userId: null
   });
@@ -50,6 +52,7 @@ test("properly mutates the context object with user", async () => {
     queries: {
       primaryShopId: () => "PRIMARY_SHOP_ID"
     },
+    userPermissions: [],
     validatePermissions: mockContext.validatePermissions
   };
   await buildContext(context, { user: fakeUser });
@@ -65,6 +68,7 @@ test("properly mutates the context object with user", async () => {
     requestHeaders: {},
     user: fakeUser,
     userHasPermission: jasmine.any(Function),
+    userPermissions: [],
     validatePermissions: jasmine.any(Function),
     userId: fakeUser._id
   });

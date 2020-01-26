@@ -56,6 +56,7 @@ export default async function buildContext(context, request = {}) {
   // /authorization methods
 
   let account;
+  let permissions;
   if (userId && typeof context.auth.accountByUserId === "function") {
     account = await context.auth.accountByUserId(context, userId);
 
@@ -75,10 +76,14 @@ export default async function buildContext(context, request = {}) {
         if (!account) Logger.error(error, "Creating missing account failed");
       }
     }
+    if (typeof context.auth.permissionsByUserId === "function") {
+      permissions = await context.auth.permissionsByUserId(context, userId);
+    }
   }
 
   context.account = account || null;
   context.accountId = (account && account._id) || null;
+  context.userPermissions = permissions || [];
 
   // Make some request headers available to resolvers on context, but remove any
   // with potentially sensitive information in them.

@@ -47,7 +47,6 @@ class TestApp {
     await this.reactionNodeApp.collections.users.insertOne({
       ...user,
       roles: {
-        ...(user.roles || {}),
         __global_roles__: ((user.roles || {}).__global_roles__ || []).concat(globalRoles || []) // eslint-disable-line camelcase
       },
       services: {

@@ -36,17 +36,31 @@ for (let index = 10; index < 40; index += 1) {
 let testApp;
 let queryFulfillmentMethod;
 
-const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shippingMethods/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:shippingMethods/read"]
-  },
+  groups: [adminGroup._id],
+  shopId: internalShopId
+});
+
+const mockCustomerAccount = Factory.Account.makeOne({
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
@@ -55,6 +69,12 @@ beforeAll(async () => {
   await testApp.start();
   queryFulfillmentMethod = testApp.query(flatRateFulfillmentMethodQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
+
+  await testApp.createUserAndAccount(mockCustomerAccount);
+  await testApp.createUserAndAccount(mockAdminAccount);
 
   await Promise.all(fulfillmentMethodDocs.map((doc) => (
     testApp.collections.Shipping.insertOne(doc)

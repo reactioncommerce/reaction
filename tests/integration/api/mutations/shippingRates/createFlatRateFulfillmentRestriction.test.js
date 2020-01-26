@@ -27,10 +27,17 @@ const mockFulfillmentRestrictionInput = {
   ]
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shippingRestrictions/create"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockOwnerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -39,6 +46,7 @@ beforeAll(async () => {
   await testApp.start();
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockOwnerAccount);
   createFlatRateFulfillmentRestriction = testApp.mutate(CreateFlatRateFulfillmentRestrictionMutation);
 });
@@ -65,7 +73,7 @@ test("shop owner cannot update flat rate fulfillment restriction if not logged i
   }
 });
 
-test("shop owner can update flat rate fulfillment restriction", async () => {
+test("user with `reaction:legacy:shippingMethods/create` permissions can update flat rate fulfillment restriction", async () => {
   let result;
   await testApp.setLoggedInUser(mockOwnerAccount);
 

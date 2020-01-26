@@ -32,13 +32,13 @@ exports[`an admin account cannot delete default groups, 'owner', 'shop manager',
 Array [
   Object {
     "extensions": Object {
-      "code": "INTERNAL_SERVER_ERROR",
+      "code": "NOT_FOUND",
       "exception": Object {
         "details": Object {},
-        "error": "accedd-denied",
+        "error": "not-found",
         "eventData": Object {},
         "isClientSafe": true,
-        "reason": "Cannot remove default group with ID shopManagerGroup.",
+        "reason": "Accounts cannot be moved from group ith ID shopManagerGroup. Group doesn't exist.",
       },
     },
     "locations": Array [
@@ -47,7 +47,7 @@ Array [
         "line": 3,
       },
     ],
-    "message": "Cannot remove default group with ID shopManagerGroup.",
+    "message": "Accounts cannot be moved from group ith ID shopManagerGroup. Group doesn't exist.",
     "path": Array [
       "removeAccountGroup",
       "group",
@@ -60,13 +60,13 @@ exports[`an admin account cannot delete default groups, 'owner', 'shop manager',
 Array [
   Object {
     "extensions": Object {
-      "code": "INTERNAL_SERVER_ERROR",
+      "code": "NOT_FOUND",
       "exception": Object {
         "details": Object {},
-        "error": "accedd-denied",
+        "error": "not-found",
         "eventData": Object {},
         "isClientSafe": true,
-        "reason": "Cannot remove default group with ID ownerGroup.",
+        "reason": "Accounts cannot be moved from group ith ID ownerGroup. Group doesn't exist.",
       },
     },
     "locations": Array [
@@ -75,7 +75,7 @@ Array [
         "line": 3,
       },
     ],
-    "message": "Cannot remove default group with ID ownerGroup.",
+    "message": "Accounts cannot be moved from group ith ID ownerGroup. Group doesn't exist.",
     "path": Array [
       "removeAccountGroup",
       "group",
@@ -88,10 +88,10 @@ exports[`an admin account cannot delete default groups, 'owner', 'shop manager',
 Array [
   Object {
     "extensions": Object {
-      "code": "INTERNAL_SERVER_ERROR",
+      "code": "FORBIDDEN",
       "exception": Object {
         "details": Object {},
-        "error": "accedd-denied",
+        "error": "access-denied",
         "eventData": Object {},
         "isClientSafe": true,
         "reason": "Cannot remove default group with ID guestGroup.",
@@ -116,10 +116,10 @@ exports[`an admin account cannot delete default groups, 'owner', 'shop manager',
 Array [
   Object {
     "extensions": Object {
-      "code": "INTERNAL_SERVER_ERROR",
+      "code": "FORBIDDEN",
       "exception": Object {
         "details": Object {},
-        "error": "accedd-denied",
+        "error": "access-denied",
         "eventData": Object {},
         "isClientSafe": true,
         "reason": "Cannot remove default group with ID customerGroup.",

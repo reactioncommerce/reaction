@@ -30,8 +30,8 @@ export default async function publishProducts(context, productIds) {
 
   const uniqueShopIds = _.uniq(products.map((product) => product.shopId));
   for (const shopId of uniqueShopIds) {
+    // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
     for (const product of products) {
-      // TODO(pod-auth): figure out a better way to loop through this
       // eslint-disable-next-line no-await-in-loop
       await context.validatePermissions(
         `reaction:legacy:products:${product._id}`,

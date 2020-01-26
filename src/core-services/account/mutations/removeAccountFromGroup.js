@@ -1,8 +1,6 @@
-import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
 import canAddAccountToGroup from "../util/canAddAccountToGroup.js";
-import ensureRoles from "../util/ensureRoles.js";
 
 const inputSchema = new SimpleSchema({
   accountId: String,
@@ -55,19 +53,6 @@ export default async function removeAccountFromGroup(context, input) {
 
   // Get all other groups user belongs to, and all permissions from these groups, and flatten into single array
   const remainingGroupsUserBelongsTo = allGroupsUserBelongsTo.filter((group) => group.shopId === shopId && group._id !== groupId);
-  const remainingRolesToGiveUser = _.uniq(remainingGroupsUserBelongsTo.map((group) => group.permissions).flat());
-
-  // update user to only have roles from other groups they belong
-  // TODO(pod-auth): this will likely be removed in #6031, where we no longer get roles from user.roles
-  await ensureRoles(context, remainingRolesToGiveUser);
-  await users.updateOne({
-    _id: account.userId
-  }, {
-    $set: {
-      [`roles.${shopId}`]: remainingRolesToGiveUser
-    }
-  });
-  // TODO(pod-auth): this will likely be removed in #6031, where we no longer get roles from user.roles
 
   const remainingGroupIds = remainingGroupsUserBelongsTo.map((group) => group._id);
   await Accounts.updateOne({ _id: accountId }, { $set: { groups: remainingGroupIds } });

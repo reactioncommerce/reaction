@@ -27,7 +27,8 @@
     "resources": [ "reaction:legacy:navigationTrees" ],
     "actions": [
       "create",
-      "read"
+      "read",
+      "read:drafts"
     ],
     "effect": "allow"
   },
@@ -39,6 +40,7 @@
       "delete",
       "publish",
       "read",
+      "read:drafts",
       "update"
     ],
     "effect": "allow"

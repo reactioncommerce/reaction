@@ -18,10 +18,17 @@ const mockGlobalSetting = {
   primaryTaxServiceName: "custom-rates"
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["owner"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [shopId]: ["owner"]
-  },
+  groups: [adminGroup._id],
   shopId
 });
 
@@ -30,6 +37,7 @@ beforeAll(async () => {
 
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.collections.AppSettings.insertOne(mockGlobalSetting);
 

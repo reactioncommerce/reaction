@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`anyone cannot add account to group if they do not have ALL the group permissions 1`] = `
+exports[`anyone cannot add account to group if they do not have \`reaction:legacy:groups/manage:accounts\` permissions 1`] = `
 Object {
   "extensions": Object {
     "code": "FORBIDDEN",

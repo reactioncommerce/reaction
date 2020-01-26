@@ -2,8 +2,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import {
   addGlobalSettingDefaults,
   addShopSettingDefaults,
-  rolesThatCanEditGlobalSetting,
-  rolesThatCanEditShopSetting,
+  permissionsThatCanEditGlobalSetting,
+  permissionsThatCanEditShopSetting,
   runAfterUpdateHooks
 } from "../util/settingsConfig.js";
 
@@ -25,18 +25,22 @@ export default async function updateAppSettings(context, settingsUpdates, shopId
 
   // Look up roles that are allowed to set each setting. Throw if not allowed.
   for (const updateKey of updateKeys) {
-    const allowedRoles = shopId ? rolesThatCanEditShopSetting(updateKey) : rolesThatCanEditGlobalSetting(updateKey);
-    if (allowedRoles.length === 0) {
+    const permissionsNeededToEdit = shopId ? permissionsThatCanEditShopSetting(updateKey) : permissionsThatCanEditGlobalSetting(updateKey);
+    if (permissionsNeededToEdit.length === 0) {
       throw new ReactionError("access-denied", `You are not allowed to edit the "${updateKey}" setting`);
     }
 
-    // TODO(pod-auth): revisit allowedRoles
-    if (shopId) {
-      await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "update", { shopId }); // eslint-disable-line no-await-in-loop
-      // await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "update", { shopId, legacyRoles: allowedRoles }); // eslint-disable-line no-await-in-loop
-    } else {
-      await context.validatePermissions("reaction:legacy:shops", "update", { shopId: null }); // eslint-disable-line no-await-in-loop
-      // await context.validatePermissions("reaction:legacy:shops", "update", { shopId: null, legacyRoles: allowedRoles }); // eslint-disable-line no-await-in-loop
+    // eslint-disable-next-line no-await-in-loop
+    const permissionChecks = await Promise.all(permissionsNeededToEdit.map(async (permission) => {
+      const [resource, action] = permission.split("/");
+      if (resource && action) {
+        return context.userHasPermission(resource, action, { shopId });
+      }
+      return false;
+    }));
+
+    if (permissionChecks.every((permission) => permission === false)) {
+      throw new ReactionError("access-denied", "Access Denied");
     }
   }
 

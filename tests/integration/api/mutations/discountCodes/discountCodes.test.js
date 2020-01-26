@@ -23,15 +23,24 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
+
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:discounts/create", "reaction:legacy:discounts/delete", "reaction:legacy:discounts/read", "reaction:legacy:discounts/update"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   createDiscountCode = testApp.mutate(createDiscountCodeMutation);
   updateDiscountCode = testApp.mutate(updateDiscountCodeMutation);
   deleteDiscountCode = testApp.mutate(deleteDiscountCodeMutation);
 
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
-    roles: {
-      [shopId]: ["reaction:legacy:discounts/create", "reaction:legacy:discounts/delete", "reaction:legacy:discounts/read", "reaction:legacy:discounts/update"]
-    },
+    groups: [adminGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);

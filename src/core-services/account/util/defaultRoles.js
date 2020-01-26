@@ -1,34 +1,34 @@
 export const defaultCustomerRoles = [
-  "account/profile",
-  "cart/completed",
-  "guest",
-  "index",
-  "product", // not sure what this one is
-  "tag", // not sure what this one is
-  "reaction:legacy:products/read", // should this go here?
+  "account/profile", // legacy role
+  "cart/completed", // legacy role
+  "guest", // legacy role
+  "index", // legacy role
+  "product", // legacy role (unused)
+  "tag", // legacy role (unused)
+  "reaction:legacy:products/read",
   "reaction:legacy:tags/read"
 ];
 
 export const defaultVisitorRoles = [
-  "anonymous",
-  "cart/completed",
-  "guest",
-  "index",
-  "product", // not sure what this one is
-  "tag", // not sure what this one is
-  "reaction:legacy:products/read", // should this go here?
+  "anonymous", // legacy role
+  "cart/completed", // legacy role
+  "guest", // legacy role
+  "index", // legacy role
+  "product", // legacy role (unused)
+  "tag", // legacy role (unused)
+  "reaction:legacy:products/read",
   "reaction:legacy:tags/read"
 ];
 
 export const defaultShopManagerRoles = [
   ...defaultCustomerRoles,
-  "createProduct",
-  "dashboard",
-  "media/create",
-  "media/update",
-  "media/delete",
-  "product/admin",
-  "shopSettings",
+  "createProduct", // legacy role
+  "dashboard", // legacy role
+  "media/create", // legacy role
+  "media/update", // legacy role
+  "media/delete", // legacy role
+  "product/admin", // legacy role
+  "shopSettings", // legacy role
   "reaction:legacy:accounts/add:address-books",
   "reaction:legacy:accounts/add:emails",
   "reaction:legacy:accounts/create",
@@ -61,6 +61,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:groups/update",
   "reaction:legacy:inventory/read",
   "reaction:legacy:inventory/update",
+  "reaction:legacy:inventory/update:settings",
   "reaction:legacy:media/update",
   "reaction:legacy:mediaRecords/create:media",
   "reaction:legacy:mediaRecords/delete:media",
@@ -70,8 +71,9 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:navigationTreeItems/publish",
   "reaction:legacy:navigationTreeItems/read",
   "reaction:legacy:navigationTreeItems/update",
+  "reaction:legacy:navigationTreeItems/update:settings",
   "reaction:legacy:navigationTrees/update",
-  "reaction:legacy:navigationTrees-drafts/read", // TODO(pod-auth): revisit how draft is done
+  "reaction:legacy:navigationTrees/read:drafts",
   "reaction:legacy:orders/approve:payment",
   "reaction:legacy:orders/cancel:item",
   "reaction:legacy:orders/capture:payment",
@@ -94,6 +96,8 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:shippingRestrictions/delete",
   "reaction:legacy:shippingRestrictions/read",
   "reaction:legacy:shippingRestrictions/update",
+  "reaction:legacy:shipping-rates/update:settings",
+  "reaction:legacy:sitemaps/update:settings",
   "reaction:legacy:shops/read",
   "reaction:legacy:shops/update",
   "reaction:legacy:surcharges/create",
@@ -102,9 +106,10 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:tags/create",
   "reaction:legacy:tags/delete",
   "reaction:legacy:tags/read",
+  "reaction:legacy:tags/read:invisible",
   "reaction:legacy:tags/update",
-  "reaction:legacy:tags-inactive/read", // TODO(pod-auth): revisit how inactive is done
   "reaction:legacy:taxes/read",
+  "reaction:legacy:taxes/update:settings",
   "reaction:legacy:taxRates/create",
   "reaction:legacy:taxRates/delete",
   "reaction:legacy:taxRates/read",
@@ -113,10 +118,7 @@ export const defaultShopManagerRoles = [
 
 export const defaultOwnerRoles = [
   ...defaultShopManagerRoles,
-  "owner",
+  "owner", // legacy role
+  "reaction:legacy:shops/create",
   "reaction:legacy:shops/owner"
-];
-
-export const otherRolesThatDidntSeemToFit = [
-  "reaction:legacy:shops/create"
 ];

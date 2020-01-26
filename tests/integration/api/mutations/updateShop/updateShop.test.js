@@ -16,10 +16,19 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:shops/update"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
-    roles: {
-      [shopId]: ["reaction:legacy:shops/update"]
-    }
+    groups: [adminGroup._id],
+    shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
 
@@ -31,7 +40,7 @@ beforeAll(async () => {
 // test file gets its own test database.
 afterAll(() => testApp.stop());
 
-test("user with `reaction:legacy:shops/update` roles can update various shop settings", async () => {
+test("user with `reaction:legacy:shops/update` permission can update various shop settings", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const mockShopSettings = {

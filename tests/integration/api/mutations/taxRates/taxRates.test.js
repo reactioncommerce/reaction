@@ -27,11 +27,19 @@ beforeAll(async () => {
   updateTaxRate = testApp.mutate(updateTaxRateMutation);
   deleteTaxRate = testApp.mutate(deleteTaxRateMutation);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:taxRates/create", "reaction:legacy:taxRates/delete", "reaction:legacy:taxRates/read", "reaction:legacy:taxRates/update"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
-    roles: {
-      [shopId]: ["reaction:legacy:taxRates/create", "reaction:legacy:taxRates/delete", "reaction:legacy:taxRates/read", "reaction:legacy:taxRates/update"]
-    },
+    groups: [adminGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
