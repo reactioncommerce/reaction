@@ -1,7 +1,6 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
 import config from "../config.js";
 
 const { REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL } = config;
@@ -22,27 +21,27 @@ const inputSchema = new SimpleSchema({
 export default async function sendWelcomeEmail(context, input) {
   inputSchema.validate(input);
   const { collections } = context;
-  const { Accounts, Shops, users } = collections;
+  const { Accounts, Shops } = collections;
   const { accountId } = input;
 
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new Error(`Account with ID ${accountId} not found`);
 
-  const userEmail = account.emails && account.emails[0];
-
-  // Verify that we have an account and it has an email address that isn't yet verified
-  if (!userEmail || userEmail.verified) return false;
-
   const { shopId, userId } = account;
 
-  // Generate a token for the user to verify their email address
-  const tokenObj = generateVerificationTokenObject({ address: userEmail.address });
+  let result;
+  try {
+    result = await context.mutations.startIdentityEmailVerification(context, {
+      userId
+    });
+  } catch (error) {
+    // This will throw an error if there are no email addresses or none needing
+    // validation, or if `startIdentityEmailVerification` doesn't exist because
+    // verification isn't supported. That's ok.
+    return false;
+  }
 
-  await users.updateOne({ _id: userId }, {
-    $push: {
-      "services.email.verificationTokens": tokenObj
-    }
-  });
+  const { email, token } = result;
 
   // Fall back to primary shop if account has no shop linked
   let shop;
@@ -68,7 +67,7 @@ export default async function sendWelcomeEmail(context, input) {
     },
     shop,
     shopName: shop.name,
-    verificationUrl: REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL.replace("TOKEN", tokenObj.token)
+    verificationUrl: REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL.replace("TOKEN", token)
   };
 
   const language = (account.profile && account.profile.language) || shop.language;
@@ -78,7 +77,7 @@ export default async function sendWelcomeEmail(context, input) {
     fromShop: shop,
     templateName: "accounts/sendWelcomeEmail",
     language,
-    to: userEmail.address
+    to: email
   });
 
   return true;
