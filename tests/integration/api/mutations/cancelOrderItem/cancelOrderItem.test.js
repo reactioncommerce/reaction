@@ -29,11 +29,10 @@ beforeAll(async () => {
   cancelOrderItem = testApp.mutate(CancelOrderItemMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Catalog.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 const accountInternalId = "123";
 

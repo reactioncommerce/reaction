@@ -17,36 +17,22 @@ export default async function tag(context, input) {
   const { Tags } = collections;
   const { slugOrId, shopId, shouldIncludeInvisible = false } = input;
 
-  // Check to make sure user has `read` permissions for this tag
-  // TODO(auth-pod): revisit this check once legacyRoles are removed
-  // await context.validatePermissions("reaction:legacy:tags:${slugOrId}", "read", {
-  //   shopId,
-  //   legacyRoles: ["admin", "owner", "tags", "any"]
-  // });
-
-  // Check to see if user has `read` permissions for hidden / deleted tags
-  // TODO(pod-auth): revisit using `inactive` in resource, and revisit the word `inactive`
-  const hasInactivePermissions = await context.userHasPermission(`reaction:legacy:tags-inactive:${slugOrId}`, "read", {
+  const foundTag = await Tags.findOne({
+    $or: [{ _id: slugOrId }, { slug: slugOrId }],
     shopId
   });
 
-  let query = {
-    $and: [
-      { isVisible: true },
-      { shopId },
-      { $or: [{ _id: slugOrId }, { slug: slugOrId }] }
-    ]
-  };
-
-  if (hasInactivePermissions && shouldIncludeInvisible === true) {
-    query = {
-      $or: [{ _id: slugOrId }, { slug: slugOrId }]
-    };
+  if (!foundTag) {
+    throw new ReactionError("not-found", "Tag not found");
   }
 
-  const foundTag = await Tags.findOne(query);
+  // Check to see if user has `read` permissions for invisible tags
+  const hasInactivePermissions = await context.userHasPermission(`reaction:legacy:tags:${foundTag._id}`, "read:invisible", {
+    shopId
+  });
 
-  if (!foundTag) {
+  // if tag is invisible, only show if `hasInactivePermissions === true` && `shouldIncludeInvisible === true`
+  if (foundTag.isVisible === false && (hasInactivePermissions === false || shouldIncludeInvisible === false)) {
     throw new ReactionError("not-found", "Tag not found");
   }
 

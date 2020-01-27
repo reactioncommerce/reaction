@@ -13,10 +13,17 @@ const shopName = "Test Shop";
 let testApp;
 let systemInformation;
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:shops/read"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -25,15 +32,15 @@ beforeAll(async () => {
   await testApp.start();
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   systemInformation = testApp.query(SystemInformationQuery);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("an anonymous user should no be able to view system information", async () => {
   try {

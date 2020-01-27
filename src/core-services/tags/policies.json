@@ -9,28 +9,20 @@
   {
     "description": "Tag managers acting on specific entities.",
     "subjects": [ "reaction:groups:tag-managers" ],
-    "resources": [
-      "reaction:tags:*"
-    ],
+    "resources": ["reaction:legacy:tags:*"],
     "actions": [
       "delete",
       "read",
+      "read:invisible",
       "update"
     ],
-    "effect": "allow"
-  },
-  {
-    "description": "Reading inactive tags.",
-    "subjects": [ "reaction:groups:tag-managers" ],
-    "resources": [ "reaction:legacy:tags-inactive:*" ],
-    "actions": [ "read" ],
     "effect": "allow"
   },
   {
     "description": "Anyone can read public tags.",
     "subjects": [ "reaction:**" ],
     "resources": [
-      "reaction:tags:*"
+      "reaction:legacy:tags:*"
     ],
     "actions": [ "read" ],
     "effect": "allow",

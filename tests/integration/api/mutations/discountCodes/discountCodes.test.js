@@ -23,15 +23,24 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
+
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:discounts/create", "reaction:legacy:discounts/delete", "reaction:legacy:discounts/read", "reaction:legacy:discounts/update"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   createDiscountCode = testApp.mutate(createDiscountCodeMutation);
   updateDiscountCode = testApp.mutate(updateDiscountCodeMutation);
   deleteDiscountCode = testApp.mutate(deleteDiscountCodeMutation);
 
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
-    roles: {
-      [shopId]: ["reaction:legacy:discounts/create", "reaction:legacy:discounts/delete", "reaction:legacy:discounts/read", "reaction:legacy:discounts/update"]
-    },
+    groups: [adminGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
@@ -39,13 +48,10 @@ beforeAll(async () => {
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Discounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("user can add a discount code", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);

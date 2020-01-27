@@ -34,11 +34,10 @@ beforeAll(async () => {
   await testApp.collections.Cart.insertOne(mockCart);
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Cart.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("an anonymous user can retrieve their cart", async () => {
   let result;

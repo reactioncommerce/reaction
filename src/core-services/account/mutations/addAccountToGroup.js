@@ -1,7 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
 import canAddAccountToGroup from "../util/canAddAccountToGroup.js";
-import ensureRoles from "../util/ensureRoles.js";
 
 const inputSchema = new SimpleSchema({
   accountId: String,
@@ -33,12 +32,10 @@ export default async function addAccountToGroup(context, input) {
     userId
   } = context;
 
-  const groupToMoveUserTo = await Groups.findOne({ _id: groupId });
-  if (!groupToMoveUserTo) throw new ReactionError("not-found", "No group found with that ID");
+  const groupToAddUserTo = await Groups.findOne({ _id: groupId });
+  if (!groupToAddUserTo) throw new ReactionError("not-found", "No group found with that ID");
 
-  const { permissions: groupPermissions = [], shopId } = groupToMoveUserTo;
-
-  const isAllowed = await canAddAccountToGroup(context, groupToMoveUserTo);
+  const isAllowed = await canAddAccountToGroup(context, groupToAddUserTo);
   if (!isAllowed) throw new ReactionError("access-denied", "Access Denied");
 
   const account = await Accounts.findOne({ _id: accountId });
@@ -47,58 +44,18 @@ export default async function addAccountToGroup(context, input) {
   const accountUser = await users.findOne({ _id: account.userId });
   if (!accountUser) throw new ReactionError("not-found", "No user found with that ID");
 
-  // Get a list of all the IDs of groups that belong to this shop
-  const allGroupsInShop = await Groups.find({
-    shopId
-  }, {
-    projection: {
-      _id: 1
-    }
-  }).toArray();
-  const allGroupIDsInShop = allGroupsInShop.map((grp) => grp._id);
+  const groupToAdd = account.groups.includes(groupId);
+  if (groupToAdd) throw new ReactionError("group-found", "Account is already in this group");
 
-  // Add all group roles to the user. Make sure this stays in this order.
-  // Remove former group roles before adding new group roles, in case some are in both.
-  const newAccountUserRoles = new Set((accountUser.roles || {})[shopId] || []);
+  // Add new group to Account
+  const accountGroups = Array.isArray(account.groups) ? account.groups : [];
+  accountGroups.push(groupId);
 
-  const formerGroupId = (account.groups || []).find((grpId) => allGroupIDsInShop.indexOf(grpId) !== -1);
-  if (formerGroupId) {
-    const formerGroup = await Groups.findOne({
-      _id: formerGroupId
-    }, {
-      projection: {
-        permissions: 1
-      }
-    });
-    if (formerGroup) {
-      for (const formerRole of (formerGroup.permissions || [])) {
-        newAccountUserRoles.delete(formerRole);
-      }
-    }
-  }
-
-  for (const newRole of groupPermissions) {
-    newAccountUserRoles.add(newRole);
-  }
-
-  const newAccountUserRolesArray = [...newAccountUserRoles];
-  await ensureRoles(context, newAccountUserRolesArray);
-  await users.updateOne({
-    _id: account.userId
-  }, {
-    $set: {
-      [`roles.${shopId}`]: newAccountUserRolesArray
-    }
-  });
-
-  // Save updated groups list, making sure user only belongs to one group per shop
-  const newGroups = (account.groups || []).filter((grp) => !allGroupIDsInShop.includes(grp));
-  newGroups.push(groupId);
-  await Accounts.updateOne({ _id: accountId }, { $set: { groups: newGroups } });
+  await Accounts.updateOne({ _id: accountId }, { $set: { groups: accountGroups } });
 
   const updatedAccount = {
     ...account,
-    groups: newGroups
+    groups: accountGroups
   };
 
   await appEvents.emit("afterAccountUpdate", {

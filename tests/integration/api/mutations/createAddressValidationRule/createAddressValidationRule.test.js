@@ -21,25 +21,41 @@ beforeAll(async () => {
   shopId = await testApp.insertPrimaryShop();
   createAddressValidationRule = testApp.mutate(createAddressValidationRuleMutation);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: [
+      "reaction:legacy:addressValidationRules/create",
+      "reaction:legacy:addressValidationRules/delete",
+      "reaction:legacy:addressValidationRules/read",
+      "reaction:legacy:addressValidationRules/update"
+    ],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
+  const customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    createdBy: null,
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
-    roles: {
-      [shopId]: [
-        "reaction:legacy:addressValidationRules/create",
-        "reaction:legacy:addressValidationRules/delete",
-        "reaction:legacy:addressValidationRules/read",
-        "reaction:legacy:addressValidationRules/update"
-      ]
-    },
+    groups: [adminGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
 
   mockNonAdminAccount = Factory.Account.makeOne({
     _id: "mockNonAdminAccount",
-    roles: {
-      [shopId]: ["shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission"]
-    },
+    groups: [customerGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockNonAdminAccount);
@@ -47,12 +63,10 @@ beforeAll(async () => {
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.AddressValidationRules.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("admin can create an address validation rule", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);

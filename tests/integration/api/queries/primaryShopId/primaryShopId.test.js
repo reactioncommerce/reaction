@@ -17,10 +17,10 @@ beforeAll(async () => {
 }`);
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("get primaryShopId, no auth necessary", async () => {
   const result = await primaryShopIdQuery();

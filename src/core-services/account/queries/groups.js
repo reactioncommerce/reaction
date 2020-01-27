@@ -1,5 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @name groups
  * @method
@@ -10,31 +8,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} Groups collection cursor
  */
 export default async function groups(context, shopId) {
-  const { collections, userId } = context;
-  const { Accounts, Groups } = collections;
+  const { collections } = context;
+  const { Groups } = collections;
+
+  await context.validatePermissions("reaction:legacy:groups", "read", { shopId });
 
   // TODO: Break this query up into one for all groups (for admins only) and one for user's groups
-  if (context.userHasPermission("reaction:legacy:accounts", "read", { shopId })) { // TODO(pod-auth): update this permissions check
-    // find groups by shop ID
-    return Groups.find({ shopId });
-  }
-
-  const userAccount = await Accounts.findOne({
-    userId
-  }, {
-    projection: {
-      groups: 1
-    }
-  });
-
-  // If user is not found, throw an error
-  if (!userAccount) throw new ReactionError("access-denied", "User does not have permissions to view groups");
-
-  // find groups by shop ID limited to those the current user is in
-  return Groups.find({
-    _id: {
-      $in: userAccount.groups || []
-    },
-    shopId
-  });
+  return Groups.find({ shopId });
 }

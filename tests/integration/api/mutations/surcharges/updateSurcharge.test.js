@@ -25,12 +25,20 @@ const surchargeMessagesByLanguage = [
   }
 ];
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:surcharges/create", "reaction:legacy:surcharges/delete", "reaction:legacy:surcharges/update"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const surchargeDestination = { region: ["CO", "NY"] };
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:surcharges/create", "reaction:legacy:surcharges/delete", "reaction:legacy:surcharges/update"]
-  }
+  groups: [adminGroup._id],
+  shopId: internalShopId
 });
 
 let testApp;
@@ -48,6 +56,7 @@ beforeAll(async () => {
     shopType: "merchant",
     slug: "my-shop"
   });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.setLoggedInUser(mockAdminAccount);
 
@@ -69,13 +78,10 @@ beforeAll(async () => {
 });
 
 
-afterAll(async () => {
-  await testApp.collections.Surcharges.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 beforeEach(async () => {
   await testApp.clearLoggedInUser();

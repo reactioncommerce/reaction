@@ -30,15 +30,24 @@ function createMockTag() {
   });
 }
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:tags/update"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
 
   mockTagsAccount = Factory.Account.makeOne({
-    roles: {
-      [internalShopId]: ["reaction:legacy:tags/update"]
-    }
+    groups: [adminGroup._id],
+    shopId: internalShopId
   });
 
   await testApp.createUserAndAccount(mockTagsAccount);
@@ -46,13 +55,10 @@ beforeAll(async () => {
   updateTag = testApp.mutate(UpdateTagMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Tags.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 beforeEach(async () => {
   tagInput = {

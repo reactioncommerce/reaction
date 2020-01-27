@@ -220,17 +220,31 @@ const mockNavigationTreeDoc2 = {
   ]
 };
 
-const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["read-navigation"]
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:navigationTrees/read:drafts", "reaction:legacy:navigationTrees/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:navigationTrees/read"]
-  },
+  groups: [adminGroup._id],
+  shopId: internalShopId
+});
+
+const mockCustomerAccount = Factory.Account.makeOne({
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
@@ -250,20 +264,19 @@ beforeAll(async () => {
   await testApp.collections.NavigationTrees.insertOne(mockNavigationTreeDoc);
   await testApp.collections.NavigationTrees.insertOne(mockNavigationTreeDoc2);
 
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   await testApp.createUserAndAccount(mockCustomerAccount);
   await testApp.createUserAndAccount(mockAdminAccount);
 
   queryNavigationTree = testApp.query(navigationTreeQuery);
 });
 
-afterAll(async () => {
-  await testApp.collections.NavigationItems.deleteMany({});
-  await testApp.collections.NavigationTrees.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("returns a NavigationItem tree named `Default Navigation` for an admin account", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);

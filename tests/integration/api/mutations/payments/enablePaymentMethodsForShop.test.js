@@ -8,10 +8,18 @@ const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/read", "reaction:legacy:shops/update"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:shops/read", "reaction:legacy:shops/update"]
-  }
+  groups: [adminGroup._id],
+  shopId: internalShopId
 });
 
 jest.setTimeout(300000);
@@ -23,6 +31,7 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName, PaymentMethods: ["iou_example"] });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.setLoggedInUser(mockAdminAccount);
 
@@ -33,12 +42,10 @@ beforeEach(async () => {
   await testApp.clearLoggedInUser();
 });
 
-afterAll(async () => {
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("an authorized user should be able to update the payment methods", async () => {
   let result;

@@ -31,10 +31,17 @@ const mockFulfillmentRestriction = Factory.Restriction.makeOne({
   shopId: internalShopId
 });
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shippingRestrictions/delete"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockOwnerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -44,17 +51,16 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await testApp.collections.FlatRateFulfillmentRestrictions.insertOne(mockFulfillmentRestriction);
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   await testApp.createUserAndAccount(mockOwnerAccount);
   deleteFlatRateFulfillmentRestriction = testApp.mutate(DeleteFlatRateFulfillmentRestrictionMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.FlatRateFulfillmentRestrictions.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 afterEach(async () => {
   await testApp.clearLoggedInUser();

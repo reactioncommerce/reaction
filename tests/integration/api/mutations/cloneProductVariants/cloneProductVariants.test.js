@@ -1,4 +1,5 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const CloneProductVariantsMutation = importAsString("./cloneProductVariants.graphql");
@@ -63,6 +64,15 @@ const expectedClonedVariant = {
     }]
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:products/clone"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 let testApp;
 let mutate;
 beforeAll(async () => {
@@ -73,21 +83,18 @@ beforeAll(async () => {
   await testApp.collections.Products.insertOne(mockProduct);
   await testApp.collections.Products.insertOne(mockVariant);
   await testApp.collections.Products.insertOne(mockOptionOne);
+  await testApp.collections.Groups.insertOne(adminGroup);
 
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["reaction:legacy:products/clone"] }
+    groups: [adminGroup._id]
   });
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Products.deleteOne({ _id: internalProductId });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 // create a new product
 test("expect a variant and all variants options to be cloned using `[variantIds]` as input", async () => {

@@ -25,17 +25,31 @@ for (let index = 10; index < 23; index += 1) {
   taxRateDocuments.push(doc);
 }
 
-const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:taxRates/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:taxRates/read"]
-  },
+  groups: [adminGroup._id],
+  shopId: internalShopId
+});
+
+const mockCustomerAccount = Factory.Account.makeOne({
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
@@ -52,19 +66,19 @@ beforeAll(async () => {
     testApp.collections.Taxes.insertOne(doc)
   )));
 
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   await testApp.createUserAndAccount(mockCustomerAccount);
   await testApp.createUserAndAccount(mockAdminAccount);
 
   taxRates = testApp.query(taxRatesQuery);
 });
 
-afterAll(async () => {
-  await testApp.collections.Taxes.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("throws access-denied when getting taxRates if not an admin", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);

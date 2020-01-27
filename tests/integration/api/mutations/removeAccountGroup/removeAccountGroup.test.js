@@ -3,13 +3,13 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
-const AddAccountToGroupMutation = importAsString("./AddAccountToGroupMutation.graphql");
 const RemoveAccountGroupMutation = importAsString("./RemoveAccountGroupMutation.graphql");
 
 jest.setTimeout(300000);
 
-let addAccountToGroup;
 let removeAccountGroup;
+let adminGroup;
+let adminSecondaryGroup;
 let customerGroup;
 let mockAdminAccount;
 let mockAdminAccountWithBadPermissions;
@@ -20,8 +20,6 @@ let testApp;
 let testGroup;
 
 let guestGroup;
-let ownerGroup;
-let shopManagerGroup;
 
 beforeAll(async () => {
   testApp = new TestApp();
@@ -30,33 +28,26 @@ beforeAll(async () => {
   shopId = await testApp.insertPrimaryShop();
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
 
-  addAccountToGroup = testApp.mutate(AddAccountToGroupMutation);
   removeAccountGroup = testApp.mutate(RemoveAccountGroupMutation);
 
-  // Create users
-  mockAdminAccount = Factory.Account.makeOne({
-    _id: "mockAdminAccount",
-    roles: {
-      [shopId]: ["owner", "admin", "ownerGroupPermission", "testGroupGroupPermission", "customerGroupPermission"]
-    },
+  adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:groups/remove", "reaction:legacy:groups/manage:accounts"],
+    slug: "admin",
     shopId
   });
 
-  mockAdminAccountWithBadPermissions = Factory.Account.makeOne({
-    _id: "mockAdminAccountWithBadPermissions",
-    roles: {
-      [shopId]: ["admin"]
-    },
+  adminSecondaryGroup = Factory.Group.makeOne({
+    _id: "adminSecondaryGroup",
+    createdBy: null,
+    name: "adminSecondaryGroup",
+    permissions: ["incorrectPermissions"],
+    slug: "adminSecondaryGroup",
     shopId
   });
 
-  mockCustomerAccount = Factory.Account.makeOne({
-    _id: "mockCustomerAccount",
-    groups: [],
-    shopId
-  });
-
-  // Create group data mocks
   customerGroup = Factory.Group.makeOne({
     _id: "customerGroup",
     createdBy: null,
@@ -75,24 +66,6 @@ beforeAll(async () => {
     shopId
   });
 
-  ownerGroup = Factory.Group.makeOne({
-    _id: "ownerGroup",
-    createdBy: null,
-    name: "owner",
-    permissions: ["owner"],
-    slug: "owner",
-    shopId
-  });
-
-  shopManagerGroup = Factory.Group.makeOne({
-    _id: "shopManagerGroup",
-    createdBy: null,
-    name: "shop manager",
-    permissions: ["admin"],
-    slug: "shop manager",
-    shopId
-  });
-
   testGroup = Factory.Group.makeOne({
     _id: "testGroup",
     createdBy: null,
@@ -102,15 +75,31 @@ beforeAll(async () => {
     slug: "test-int-group",
     shopId
   });
+
+  // Create users
+  mockAdminAccount = Factory.Account.makeOne({
+    _id: "mockAdminAccount",
+    groups: [adminGroup._id],
+    shopId
+  });
+
+  mockAdminAccountWithBadPermissions = Factory.Account.makeOne({
+    _id: "mockAdminAccountWithBadPermissions",
+    groups: [adminSecondaryGroup._id],
+    shopId
+  });
+
+  mockCustomerAccount = Factory.Account.makeOne({
+    _id: "mockCustomerAccount",
+    groups: ["testGroup"],
+    shopId
+  });
 });
 
-afterAll(async () => {
-  await testApp.collections.Groups.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 beforeEach(async () => {
   // Create users
@@ -120,17 +109,11 @@ beforeEach(async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   // Create groups
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(adminSecondaryGroup);
   await testApp.collections.Groups.insertOne(customerGroup);
   await testApp.collections.Groups.insertOne(guestGroup);
-  await testApp.collections.Groups.insertOne(ownerGroup);
-  await testApp.collections.Groups.insertOne(shopManagerGroup);
   await testApp.collections.Groups.insertOne(testGroup);
-
-  // Add customer account to the testGroup
-  await addAccountToGroup({
-    accountId: encodeOpaqueId("reaction/account", "mockCustomerAccount"),
-    groupId: encodeOpaqueId("reaction/group", "testGroup")
-  });
 
   await testApp.clearLoggedInUser();
 });
@@ -157,7 +140,7 @@ test("a customer account should not be able to remove a group", async () => {
   }
 });
 
-test("an admin account should be able to remove a group", async () => {
+test("a user belonging to a group with `reaction:legacy:groups/remove` permissions should be able to remove a group", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   // Expect the Account to be moved to the customer group

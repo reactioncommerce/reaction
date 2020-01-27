@@ -23,7 +23,7 @@ Start here:
 
 ## Learn more
 - [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
-- [Customization themes & plugins tutorial](https://docs.reactioncommerce.com/reaction-docs/master/tutorial)
+- [Customization themes & plugins tutorial](https://docs.reactioncommerce.com/reaction-docs/trunk/tutorial)
 - [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
 
 ## Join the community calls

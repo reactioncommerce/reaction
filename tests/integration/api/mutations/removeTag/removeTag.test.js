@@ -22,18 +22,27 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:tags/delete"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockTagsAccount = Factory.Account.makeOne({
-    roles: {
-      [encodeOpaqueId("reaction/shop", shopId)]: ["owner"]
-    }
+    groups: [adminGroup._id],
+    shopId
   });
   await testApp.createUserAndAccount(mockTagsAccount);
 
   removeTag = testApp.mutate(RemoveTagMutation);
 
   fakeTag = Factory.Tag.makeOne({
-    _id: encodeOpaqueId("reaction/account", accountInternalId),
-    shopId: encodeOpaqueId("reaction/shop", shopId)
+    _id: "tagId",
+    shopId
   });
 
   tagInput = {
@@ -42,15 +51,15 @@ beforeAll(async () => {
   };
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
+
 beforeEach(async () => {
   await testApp.collections.Tags.insertOne(fakeTag);
 });
+
 afterEach(async () => {
   await testApp.collections.Tags.deleteMany({});
 });
@@ -86,7 +95,7 @@ describe("authorized user", () => {
   test("can remove tag", async () => {
     try {
       let removedTag = await testApp.collections.Tags.findOne({ _id: fakeTag._id, shopId: fakeTag.shopId });
-      // tag is returned unencoded diretly from mongoDB but is returned encoded from the mutation
+      // tag is returned unencoded directly from mongoDB but is returned encoded from the mutation
       removedTag._id = encodeOpaqueId("reaction/tag", removedTag._id);
       removedTag.heroMediaUrl = `https://shop.fake.site/${removedTag.heroMediaUrl}`;
       expect(removedTag).not.toBeNull();

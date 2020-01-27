@@ -1,4 +1,21 @@
 /**
+ * @summary Converts URLs object in a MediaItem to absolute (if not already)
+ * @param {Object} context App context
+ * @param {Object} mediaItem Media item
+ * @returns {Object} Transformed media item
+ */
+function ensureAbsoluteUrls(context, mediaItem) {
+  if (!mediaItem || !mediaItem.URLs) return mediaItem;
+
+  const URLs = {};
+  Object.keys(mediaItem.URLs).forEach((name) => {
+    URLs[name] = context.getAbsoluteUrl(mediaItem.URLs[name]);
+  });
+
+  return { ...mediaItem, URLs };
+}
+
+/**
  * @name xformCatalogProductMedia
  * @method
  * @memberof GraphQL/Transforms
@@ -13,9 +30,9 @@ export default async function xformCatalogProductMedia(mediaItem, context) {
   for (const func of xformCatalogProductMediaFuncs) {
     const xformedMediaItem = await func(mediaItem, context); // eslint-disable-line no-await-in-loop
     if (xformedMediaItem) {
-      return xformedMediaItem;
+      return ensureAbsoluteUrls(context, xformedMediaItem);
     }
   }
 
-  return mediaItem;
+  return ensureAbsoluteUrls(context, mediaItem);
 }

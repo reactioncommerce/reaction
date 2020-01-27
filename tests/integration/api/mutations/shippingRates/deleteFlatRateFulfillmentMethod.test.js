@@ -32,17 +32,31 @@ const mockFulfillmentMethod = Factory.FulfillmentMethod.makeOne({
   shopId: internalShopId
 });
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shippingMethods/delete"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
+  shopId: internalShopId
+});
+
 const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner", "admin", "shipping"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -55,6 +69,9 @@ beforeAll(async () => {
   deleteFlatRateFulfillmentMethod = testApp.mutate(DeleteFlatRateFulfillmentMethodMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   await testApp.collections.Shipping.insertOne({
     methods: [{
       _id: mockFulfillmentMethodId,
@@ -65,14 +82,10 @@ beforeAll(async () => {
   });
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Shipping.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 afterEach(async () => {
   await testApp.clearLoggedInUser();
@@ -93,7 +106,7 @@ test("user can not delete flat rate fulfillment method if admin is not logged in
   }
 });
 
-test("user can delete flat rate fulfillment method if admin is logged in", async () => {
+test("user can delete flat rate fulfillment method if they have `reaction:legacy:shippingMethods/delete` permissions", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   let result;

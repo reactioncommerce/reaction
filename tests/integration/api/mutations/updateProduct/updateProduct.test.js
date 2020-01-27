@@ -1,5 +1,6 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const updateProductMutation = importAsString("./updateProductMutation.graphql");
@@ -50,6 +51,15 @@ const mockOptionOne = {
   type: "variant"
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:products/update"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 let testApp;
 let updateProduct;
 let updateVariant;
@@ -59,24 +69,21 @@ beforeAll(async () => {
   updateProduct = testApp.mutate(updateProductMutation);
   updateVariant = testApp.mutate(updateProductVariantMutation);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.collections.Products.insertOne(mockProduct);
   await testApp.collections.Products.insertOne(mockVariant);
   await testApp.collections.Products.insertOne(mockOptionOne);
 
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["reaction:legacy:products/update"] }
+    groups: [adminGroup._id]
   });
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Products.deleteOne({ _id: internalProductId });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[0] });
-  await testApp.collections.Products.deleteOne({ _id: internalVariantIds[1] });
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 // Update fields on a product
 test("expect product fields to be updated", async () => {

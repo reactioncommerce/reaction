@@ -24,6 +24,9 @@ input ProductTagsOperationInput {
   "An array of product productIds to which an array of tags will be added"
   productIds: [ID]
 
+  "The shop id"
+  shopId: ID!
+
   "An array of tag ids to add to an array of products"
   tagIds: [ID]
 }

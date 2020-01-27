@@ -51,17 +51,31 @@ for (let index = 100; index < 123; index += 1) {
   navigationItemDocuments.push(doc);
 }
 
-const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:navigationTreeItems/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:navigationTreeItems/read"]
-  },
+  groups: [adminGroup._id],
+  shopId: internalShopId
+});
+
+const mockCustomerAccount = Factory.Account.makeOne({
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
@@ -78,19 +92,19 @@ beforeAll(async () => {
     testApp.collections.NavigationItems.insertOne(doc)
   )));
 
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   await testApp.createUserAndAccount(mockCustomerAccount);
   await testApp.createUserAndAccount(mockAdminAccount);
 
   navigationItems = testApp.query(navigationItemsQuery);
 });
 
-afterAll(async () => {
-  await testApp.collections.NavigationItems.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("throws access-denied when getting NavigationItems if user is not an admin with core permissions", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);

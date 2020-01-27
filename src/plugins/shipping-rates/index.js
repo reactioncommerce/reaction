@@ -47,7 +47,7 @@ export default async function register(app) {
     shopSettingsConfig: {
       isShippingRatesFulfillmentEnabled: {
         defaultValue: true,
-        rolesThatCanEdit: ["admin"],
+        permissionsThatCanEdit: ["reaction:legacy:shippingMethods/update:settings"],
         simpleSchema: {
           type: Boolean
         }

@@ -87,12 +87,10 @@ beforeAll(async () => {
   await testApp.collections.Catalog.insertOne(mockCatalogItem);
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Tags.deleteOne(mockTag);
-  await testApp.collections.Catalog.deleteOne({ _id: mockCatalogItem._id });
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("get a catalog product by slug", async () => {
   let result;

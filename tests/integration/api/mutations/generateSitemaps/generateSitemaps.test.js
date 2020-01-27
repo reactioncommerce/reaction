@@ -11,10 +11,17 @@ const shopId = "123";
 const opaqueShopId = encodeOpaqueId("reaction/shop", shopId); // reaction/shop:123
 const shopName = "Test Shop";
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/update"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [shopId]: ["reaction:legacy:shops/update"]
-  },
+  groups: [adminGroup._id],
   shopId
 });
 
@@ -27,16 +34,15 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
 
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   generateSitemaps = testApp.mutate(GenerateSitemapsMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Jobs.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("generate sitemaps", async () => {
   let result;

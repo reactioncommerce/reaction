@@ -52,10 +52,17 @@ const mockMediaRecord = {
   }
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:tags/update"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [shopId]: ["reaction:legacy:tags/update"]
-  },
+  groups: [adminGroup._id],
   shopId
 });
 
@@ -79,16 +86,16 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
 
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.collections.Tags.insertOne(mockTag);
   setTagHeroMediaMutation = testApp.mutate(setTagHeroMedia);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("an anonymous user cannot set the hero media URL for a tag", async () => {
   try {
@@ -108,6 +115,13 @@ test("an anonymous user cannot set the hero media URL for a tag", async () => {
 test("an admin user can set the hero media URL for a tag", async () => {
   let result;
   await testApp.setLoggedInUser(mockAdminAccount);
+
+  // Mock MediaRecords and Media because files plugin isn't registered
+  // for integration tests.
+  testApp.context.collections.Media = { name: "images" };
+  testApp.context.collections.MediaRecords = {
+    insertOne: () => ({ insertedId: "1234" })
+  };
 
   try {
     result = await setTagHeroMediaMutation({
