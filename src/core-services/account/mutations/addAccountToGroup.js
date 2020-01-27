@@ -26,8 +26,7 @@ export default async function addAccountToGroup(context, input) {
     appEvents,
     collections: {
       Accounts,
-      Groups,
-      users
+      Groups
     },
     userId
   } = context;
@@ -40,9 +39,6 @@ export default async function addAccountToGroup(context, input) {
 
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "No account found with that ID");
-
-  const accountUser = await users.findOne({ _id: account.userId });
-  if (!accountUser) throw new ReactionError("not-found", "No user found with that ID");
 
   const groupToAdd = account.groups.includes(groupId);
   if (groupToAdd) throw new ReactionError("group-found", "Account is already in this group");
