@@ -56,3 +56,23 @@ test("user can add an email to their own account", async () => {
 
   expect(result.addAccountEmailRecord.account.emailRecords.pop()).toEqual(email);
 });
+
+test("accountId is optional and defaults to calling account", async () => {
+  await testApp.setLoggedInUser(mockUserAccount);
+
+  const email = Factory.Email.makeOne();
+
+  // _id is set by the server, true
+  delete email._id;
+
+  let result;
+  try {
+    result = await addAccountEmailRecord({ email: email.address });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.addAccountEmailRecord.account._id).toBe(accountOpaqueId);
+  expect(result.addAccountEmailRecord.account.emailRecords.pop()).toEqual(email);
+});

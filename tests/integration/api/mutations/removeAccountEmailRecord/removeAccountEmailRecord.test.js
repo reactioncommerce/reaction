@@ -54,7 +54,7 @@ afterEach(async () => {
   await testApp.clearLoggedInUser();
 });
 
-test("user can not set account email if not logged in", async () => {
+test("user can not remove account email if not logged in", async () => {
   try {
     await removeAccountEmailRecord({
       input: { accountId: accountOpaqueId, email: mockEmails[0].address }
@@ -81,3 +81,18 @@ test("user can remove account email", async () => {
   }]);
 });
 
+test("accountId is optional and defaults to calling account", async () => {
+  await testApp.setLoggedInUser(mockUserAccount);
+  let result;
+  try {
+    result = await removeAccountEmailRecord({
+      input: { email: mockEmails[1].address }
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(result.removeAccountEmailRecord.account._id).toBe(accountOpaqueId);
+  expect(result.removeAccountEmailRecord.account.emailRecords.length).toBe(0);
+  expect(result.removeAccountEmailRecord.account.emailRecords).toEqual([]);
+});

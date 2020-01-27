@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`user can not set account email if not logged in 1`] = `
+exports[`user can not remove account email if not logged in 1`] = `
 Array [
   Object {
     "extensions": Object {

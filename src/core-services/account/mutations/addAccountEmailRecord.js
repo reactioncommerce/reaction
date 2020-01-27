@@ -3,7 +3,10 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import sendVerificationEmail from "../util/sendVerificationEmail.js";
 
 const inputSchema = new SimpleSchema({
-  accountId: String,
+  accountId: {
+    type: String,
+    optional: true
+  },
   email: SimpleSchema.RegEx.Email
 });
 
@@ -19,12 +22,12 @@ const inputSchema = new SimpleSchema({
  */
 export default async function addAccountEmailRecord(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections, userId } = context;
+  const { accountId: accountIdFromContext, appEvents, collections, userId } = context;
   const { Accounts } = collections;
-  const {
-    accountId,
-    email
-  } = input;
+  const { email } = input;
+
+  // If no account ID input, default to the account that's calling
+  const accountId = input.accountId || accountIdFromContext;
 
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "Account not Found");
