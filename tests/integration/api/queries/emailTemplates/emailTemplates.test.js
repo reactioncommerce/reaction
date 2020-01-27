@@ -101,6 +101,10 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
+  // Delete some templates auto-created by insertPrimaryShop
+  await testApp.collections.Templates.deleteMany({});
+
+  // Insert the test templates
   await Promise.all(emailTemplateDocuments.map((doc) => (
     testApp.collections.Templates.insertOne(doc)
   )));
