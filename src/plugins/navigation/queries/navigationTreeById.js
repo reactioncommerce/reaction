@@ -35,7 +35,7 @@ export default async function navigationTreeById(context, { language, navigation
       shouldIncludeSecondary
     });
 
-    // Prevent non-admin users from getting draft items in results
+    // Hide draft items from accounts who don't have permission to see them
     if (!hasDraftPermissions) {
       navigationTree.draftItems = null;
     }
