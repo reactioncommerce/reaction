@@ -22,6 +22,9 @@ beforeAll(async () => {
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
     groups: [],
+    profile: {
+      language: "en"
+    },
     shopId
   });
 
