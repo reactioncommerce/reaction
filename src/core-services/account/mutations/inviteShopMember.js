@@ -31,7 +31,7 @@ const inputSchema = new SimpleSchema({
 export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
   const { collections, user: userFromContext } = context;
-  const { Accounts, AccountInvites, Groups, Shops, users } = collections;
+  const { Accounts, AccountInvites, Groups, Shops } = collections;
   const {
     email,
     groupId,
@@ -54,14 +54,12 @@ export default async function inviteShopMember(context, input) {
     throw new ReactionError("bad-request", "Cannot directly invite owner");
   }
 
-  // check to see if invited user has an account
-  const invitedUser = await users.findOne({ "emails.address": email });
+  const lowercaseEmail = email.toLowerCase();
 
-  if (invitedUser) {
-    // make sure user has an account
-    const invitedAccount = await Accounts.findOne({ userId: invitedUser._id }, { projection: { _id: 1 } });
-    if (!invitedAccount) throw new ReactionError("not-found", "User found but matching account not found");
+  // check to see if invited email has an account
+  const invitedAccount = await Accounts.findOne({ "emails.address": lowercaseEmail }, { projection: { _id: 1 } });
 
+  if (invitedAccount) {
     // Set the account's permission group for this shop
     await context.mutations.addAccountToGroup(context, {
       accountId: invitedAccount._id,
@@ -79,7 +77,7 @@ export default async function inviteShopMember(context, input) {
   // Create an AccountInvites document. If a person eventually creates an account with this email address,
   // it will be automatically added to this group instead of the default group for this shop.
   await AccountInvites.updateOne({
-    email,
+    email: lowercaseEmail,
     shopId
   }, {
     $set: {
@@ -115,7 +113,7 @@ export default async function inviteShopMember(context, input) {
     data: dataForEmail,
     fromShop: shop,
     templateName: "accounts/inviteNewShopMember",
-    to: email
+    to: lowercaseEmail
   });
 
   return null;
