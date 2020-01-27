@@ -19,28 +19,34 @@ const inputSchema = new SimpleSchema({
  */
 export default async function removeAccountEmailRecord(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections } = context;
-  const { Accounts, users } = collections;
+  const {
+    appEvents,
+    collections: {
+      Accounts
+    },
+    userId
+  } = context;
   const {
     accountId,
     email
   } = input;
 
-  const account = await Accounts.findOne({ "_id": accountId, "emails.address": email });
+  const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "Account not Found");
 
-  const user = await users.findOne({ "_id": account.userId, "emails.address": email });
-  if (!user) throw new ReactionError("not-found", "User not Found");
-
-  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "delete:emails", {
+  await context.validatePermissions(`reaction:legacy:accounts:${accountId}`, "delete:emails", {
     shopId: account.shopId,
     owner: account.userId
   });
 
-  // Remove email from user
-  // This is the same as `MeteorAccounts.removeEmail(userId, email)
-  const { value: updatedUser } = await users.findOneAndUpdate(
-    { _id: user._id },
+  const existingEmail = (account.emails || []).find(({ address }) => address === email);
+  if (!existingEmail) {
+    throw new ReactionError("invalid-param", "Account does not have this email address");
+  }
+
+  // Remove email from Account
+  const { value: updatedAccount } = await Accounts.findOneAndUpdate(
+    { _id: accountId },
     {
       $pull: { emails: { address: email } }
     },
@@ -49,31 +55,16 @@ export default async function removeAccountEmailRecord(context, input) {
     }
   );
 
-  if (!updatedUser) throw new ReactionError("server-error", "Unable to update User");
-
-  // Remove email from Account
-  const { value: updatedAccount } = await Accounts.findOneAndUpdate(
-    { _id: accountId },
-    {
-      $set: {
-        emails: updatedUser.emails
-      }
-    },
-    {
-      returnOriginal: false
-    }
-  );
-
   if (!updatedAccount) throw new ReactionError("server-error", "Unable to update Account");
 
-  sendVerificationEmail(context, {
+  await sendVerificationEmail(context, {
     bodyTemplate: "accounts/verifyUpdatedEmail",
-    userId: user._id
+    userId: account.userId
   });
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
-    updatedBy: accountId,
+    updatedBy: userId,
     updatedFields: ["emails"]
   });
 

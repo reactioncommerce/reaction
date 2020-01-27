@@ -34,6 +34,9 @@ beforeAll(async () => {
     _id: "mockUserId",
     emails: mockEmails,
     groups: [customerGroup._id],
+    profile: {
+      language: "en"
+    },
     shopId
   });
 
