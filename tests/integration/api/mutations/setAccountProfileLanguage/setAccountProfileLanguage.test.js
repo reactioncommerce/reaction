@@ -9,14 +9,13 @@ jest.setTimeout(300000);
 
 let testApp;
 let setAccountProfileLanguage;
-let shopId;
 let mockUserAccount;
 let accountOpaqueId;
 
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop({
+  await testApp.insertPrimaryShop({
     languages: [
       { label: "mockLabel", i18n: "mockI18n", enabled: false },
       { label: "English", i18n: "EN", enabled: true }

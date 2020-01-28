@@ -9,14 +9,13 @@ jest.setTimeout(300000);
 
 let testApp;
 let setAccountProfileCurrency;
-let shopId;
 let mockUserAccount;
 let accountOpaqueId;
 
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop();
+  await testApp.insertPrimaryShop();
   setAccountProfileCurrency = testApp.mutate(SetAccountProfileCurrencyMutation);
 
   const adminGroup = Factory.Group.makeOne({

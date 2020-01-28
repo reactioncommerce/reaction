@@ -3,7 +3,6 @@ import groupQuery from "./group.js";
 
 const fakeShopId = "FAKE_SHOP_ID";
 const fakeGroup = { _id: "FAKE_GROUP_ID", name: "fake", shopId: fakeShopId };
-const fakeAccount = { _id: "FAKE_ACCOUNT_ID", groups: ["group1", "group2"] };
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -21,9 +20,8 @@ test("returns the group if userHasPermission returns true", async () => {
   const result = await groupQuery(mockContext, fakeGroup._id);
   expect(mockContext.collections.Groups.findOne).toHaveBeenCalledWith({ _id: fakeGroup._id });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(
-    "reaction:legacy:accounts",
-    "read",
-    { shopId: fakeGroup.shopId }
+    "reaction:legacy:groups",
+    "read"
   );
   expect(result).toEqual(fakeGroup);
 });
@@ -31,22 +29,14 @@ test("returns the group if userHasPermission returns true", async () => {
 test("returns the group if userHasPermission returns false but the current user is in the group", async () => {
   mockContext.collections.Groups.findOne.mockReturnValueOnce(fakeGroup);
   mockContext.userHasPermission.mockReturnValueOnce(false);
-  mockContext.collections.Accounts.findOne.mockReturnValueOnce(fakeAccount);
+  mockContext.account = { groups: [fakeGroup._id] };
   const result = await groupQuery(mockContext, fakeGroup._id);
+  delete mockContext.account;
   expect(mockContext.collections.Groups.findOne).toHaveBeenCalledWith({ _id: fakeGroup._id });
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(
-    "reaction:legacy:accounts",
-    "read",
-    { shopId: fakeGroup.shopId }
+    "reaction:legacy:groups",
+    "read"
   );
-  expect(mockContext.collections.Accounts.findOne).toHaveBeenCalledWith({
-    _id: mockContext.userId,
-    groups: fakeGroup._id
-  }, {
-    projection: {
-      _id: 1
-    }
-  });
   expect(result).toEqual(fakeGroup);
 });
 
