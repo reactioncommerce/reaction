@@ -59,17 +59,31 @@ const option2 = Factory.Product.makeOne({
   type: "variant"
 });
 
-const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:inventory/read", "reaction:legacy:inventory/update"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:inventory/read", "reaction:legacy:inventory/update"]
-  },
+  groups: [adminGroup._id],
+  shopId: internalShopId
+});
+
+const mockCustomerAccount = Factory.Account.makeOne({
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
@@ -90,19 +104,21 @@ beforeAll(async () => {
 
   await testApp.publishProducts([internalProductId]);
 
-  await testApp.createUserAndAccount(mockCustomerAccount);
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   await testApp.createUserAndAccount(mockAdminAccount);
+  await testApp.createUserAndAccount(mockCustomerAccount);
 
   getCatalogItem = testApp.query(catalogItemQuery);
   simpleInventory = testApp.query(simpleInventoryQuery);
   updateSimpleInventory = testApp.mutate(updateSimpleInventoryMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Products.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("throws access-denied when updating simpleInventory if not an admin", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);

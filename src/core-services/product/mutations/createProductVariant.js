@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createProductOrVariant from "../utils/createProductOrVariant.js";
+import { ProductVariant } from "../simpleSchemas.js";
 import isAncestorDeleted from "../utils/isAncestorDeleted.js";
 
 const inputSchema = new SimpleSchema({
@@ -52,32 +52,45 @@ export default async function createProductVariant(context, input) {
   }
 
   // get ancestors to build new ancestors array
-  const { ancestors } = parentProduct;
-  Array.isArray(ancestors) && ancestors.push(productId);
+  let { ancestors } = parentProduct;
+  if (Array.isArray(ancestors)) {
+    ancestors.push(productId);
+  } else {
+    ancestors = [productId];
+  }
 
   const newVariantId = Random.id();
+  const createdAt = new Date();
   const newVariant = {
     _id: newVariantId,
     ancestors,
-    shopId: product.shopId,
-    type: "variant"
+    createdAt,
+    isDeleted: false,
+    isVisible: false,
+    shopId,
+    type: "variant",
+    updatedAt: createdAt,
+    workflow: {
+      status: "new"
+    }
   };
 
   const isOption = ancestors.length > 1;
 
-  const createdVariantId = await createProductOrVariant(context, newVariant, { product, parentVariant, isOption });
-
-  if (!createdVariantId) {
-    throw new ReactionError("server-error", "Unable to create product variant");
+  // Apply custom transformations from plugins.
+  for (const customFunc of context.getFunctionsOfType("mutateNewVariantBeforeCreate")) {
+    // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
+    // We need to run each of these functions in a series, rather than in parallel, because
+    // we are mutating the same object on each pass.
+    // eslint-disable-next-line no-await-in-loop
+    await customFunc(newVariant, { context, isOption, parentVariant, product });
   }
 
-  Logger.debug(`createProductVariant: created variant: ${createdVariantId} for ${productId}`);
+  ProductVariant.validate(newVariant);
 
-  const createdVariant = await Products.findOne({ _id: createdVariantId });
+  await Products.insertOne(newVariant);
 
-  if (!createdVariant) {
-    throw new ReactionError("server-error", "Unable to retrieve newly created product variant");
-  }
+  Logger.debug(`createProductVariant: created variant: ${newVariantId} for ${productId}`);
 
-  return createdVariant;
+  return newVariant;
 }

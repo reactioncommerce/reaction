@@ -22,7 +22,6 @@ beforeAll(async () => {
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
     groups: [],
-    roles: {},
     shopId
   });
 
@@ -31,12 +30,10 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockUserAccount);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("user can add an email to their own account", async () => {
   await testApp.setLoggedInUser(mockUserAccount);

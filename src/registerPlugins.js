@@ -9,7 +9,6 @@ import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerCartPlugin from "./core-services/cart/index.js";
 import registerDiscountsPlugin from "./core-services/discounts/index.js";
 import registerEmailPlugin from "./core-services/email/index.js";
-import registerFilesPlugin from "./core-services/files/index.js";
 import registerI18nPlugin from "./core-services/i18n/index.js";
 import registerInventoryPlugin from "./core-services/inventory/index.js";
 import registerProductPlugin from "./core-services/product/index.js";
@@ -52,11 +51,23 @@ import registerTranslationsPlugin from "./plugins/translations/index.js";
 export default async function registerPlugins(app) {
   /**
    * CORE
-   * (Core plugin needs Media collection, so files plugin must be first)
    */
   await registerSimpleSchemaPlugin(app); // REQUIRED
   await registerJobQueuePlugin(app); // REQUIRED
-  await registerFilesPlugin(app); // REQUIRED
+
+  // We don't register the files plugin when running integration tests
+  // because there are some problems with the way MongoDB closes change
+  // stream watchers, which end up causing a lot of errors. This doesn't
+  // happen when running the app because we don't constantly connect and
+  // disconnect to different Mongo databases.
+  //
+  // Note: The import must stay here, too. If the package is imported at
+  // the top of this file, then side effects will happen and cause problems.
+  if (!process.env.REACTION_DISABLE_FILES_PLUGIN) {
+    const { default: registerFilesPlugin } = await import("./core-services/files/index.js");
+    await registerFilesPlugin(app);
+  }
+
   await registerShopPlugin(app); // REQUIRED
   await registerSettingsPlugin(app); // REQUIRED
   await registerI18nPlugin(app); // REQUIRED

@@ -21,7 +21,7 @@ export default async function accounts(context, input) {
     name: { $in: ["guest", "customer"] },
     shopId
   }, {
-    fields: { _id: 1 }
+    projection: { _id: 1 }
   }).toArray();
 
   const groupIds = groups.map((group) => group._id);

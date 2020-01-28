@@ -27,11 +27,19 @@ beforeAll(async () => {
   updateTaxRate = testApp.mutate(updateTaxRateMutation);
   deleteTaxRate = testApp.mutate(deleteTaxRateMutation);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:taxRates/create", "reaction:legacy:taxRates/delete", "reaction:legacy:taxRates/read", "reaction:legacy:taxRates/update"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
-    roles: {
-      [shopId]: ["reaction:legacy:taxRates/create", "reaction:legacy:taxRates/delete", "reaction:legacy:taxRates/read", "reaction:legacy:taxRates/update"]
-    },
+    groups: [adminGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
@@ -39,11 +47,10 @@ beforeAll(async () => {
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
 });
 
-afterAll(async () => {
-  await testApp.collections.Taxes.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("user can add a tax rate", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);

@@ -62,11 +62,16 @@ export default async function sendNewOrderNotifications(context, order) {
   });
   await Promise.all(promises);
 
+  const sendPromises = [];
   Object.keys(ownersByShop).forEach((shopId) => {
     ownersByShop[shopId].forEach((user) => {
-      sendNotificationToAdmin(context, user._id, shopId).catch((error) => {
-        Logger.error("Error in sendNotificationToAdmin within sendNewOrderNotifications", error);
-      });
+      sendPromises.push(sendNotificationToAdmin(context, user._id, shopId));
     });
   });
+
+  try {
+    await Promise.all(sendPromises);
+  } catch (error) {
+    Logger.error("Error in sendNotificationToAdmin within sendNewOrderNotifications", error);
+  }
 }

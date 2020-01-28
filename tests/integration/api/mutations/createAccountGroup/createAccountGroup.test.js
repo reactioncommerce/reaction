@@ -22,11 +22,19 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:groups/create"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
-    roles: {
-      [shopId]: ["reaction:legacy:groups/create"]
-    },
+    groups: [adminGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
@@ -45,15 +53,10 @@ beforeAll(async () => {
   createAccountGroup = testApp.mutate(AddAccountToGroupMutation);
 });
 
-
-afterAll(async () => {
-  await testApp.collections.Groups.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
-
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("anyone can add account to group if they have ALL the group permissions", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);

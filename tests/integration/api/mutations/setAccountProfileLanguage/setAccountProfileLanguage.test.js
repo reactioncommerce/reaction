@@ -24,10 +24,19 @@ beforeAll(async () => {
   });
   setAccountProfileLanguage = testApp.mutate(SetAccountProfileLanguageMutation);
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:accounts/update:language"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
-    groups: [],
-    roles: { [shopId]: ["owner", "admin"] },
+    groups: [adminGroup._id],
     shopId
   });
 
@@ -36,12 +45,10 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockUserAccount);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 afterEach(async () => {
   await testApp.clearLoggedInUser();

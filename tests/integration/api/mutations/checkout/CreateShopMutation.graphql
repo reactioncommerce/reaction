@@ -1,0 +1,7 @@
+mutation CreateShop($input: CreateShopInput!) {
+  createShop(input: $input) {
+    shop {
+      _id
+    }
+  }
+}

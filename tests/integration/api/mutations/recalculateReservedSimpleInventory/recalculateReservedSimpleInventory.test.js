@@ -46,10 +46,17 @@ const simpleInventoryDoc = Factory.SimpleInventory.makeOne({
   shopId
 });
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:inventory/update"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [shopId]: ["reaction:legacy:inventory/update"]
-  },
+  groups: [adminGroup._id],
   shopId
 });
 
@@ -66,18 +73,16 @@ beforeAll(async () => {
   await testApp.collections.Products.insertOne(variant);
   await testApp.collections.SimpleInventory.insertOne(simpleInventoryDoc);
   await testApp.publishProducts([productId]);
+  await testApp.collections.Groups.insertOne(adminGroup);
 
   await testApp.createUserAndAccount(mockAdminAccount);
   recalculateReservedSimpleInventoryMutation = testApp.mutate(recalculateReservedSimpleInventory);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Products.deleteMany({});
-  await testApp.collections.SimpleInventory.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("anonymous users cannot recalculate simple inventory", async () => {
   try {

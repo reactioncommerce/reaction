@@ -64,18 +64,31 @@ for (let index = 0; index < 3; index += 1) {
   emailTemplateDocuments.push(doc);
 }
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:email-templates/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
+  shopId: internalShopId
+});
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:email-templates/read"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
 const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+  groups: [customerGroup._id],
   shopId: internalShopId
 });
 
@@ -92,20 +105,19 @@ beforeAll(async () => {
     testApp.collections.Templates.insertOne(doc)
   )));
 
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.createUserAndAccount(mockCustomerAccount);
 
   emailTemplates = testApp.query(emailTemplatesQuery);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Templates.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("throws access-denied when retrieving email templates if not an admin", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);

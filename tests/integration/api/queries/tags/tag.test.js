@@ -18,20 +18,33 @@ const mockTags = Factory.Tag.makeMany(25, {
   isVisible: (index) => index < 20
 });
 
-const mockCustomerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: []
-  },
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:tags/read:invisible"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
+const customerGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["customer"],
+  slug: "customer",
   shopId: internalShopId
 });
 
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["reaction:legacy:tags-inactive/read"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
+const mockCustomerAccount = Factory.Account.makeOne({
+  groups: [customerGroup._id],
+  shopId: internalShopId
+});
 
 let testApp;
 let query;
@@ -43,19 +56,17 @@ beforeAll(async () => {
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(mockTags.map((tag) => testApp.collections.Tags.insertOne(tag)));
 
+  await testApp.collections.Groups.insertOne(adminGroup);
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.createUserAndAccount(mockCustomerAccount);
 });
 
-
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Tags.deleteMany({});
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("should get a tag by ID", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);

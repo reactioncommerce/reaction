@@ -11,7 +11,10 @@ import Logger from "@reactioncommerce/logger";
  * @returns {undefined}
  */
 export default async function copyMedia(context, newId, variantOldId, variantNewId) {
-  await context.collections.Media.find({
+  const { Media } = context.collections;
+  if (!Media) return;
+
+  await Media.find({
     "metadata.variantId": variantOldId
   })
     .then((fileRecords) => {

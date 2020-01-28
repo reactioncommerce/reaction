@@ -1,4 +1,3 @@
-import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
 import resolvers from "./resolvers/index.js";
@@ -32,8 +31,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
-      startup: [startup],
-      xformCatalogProductMedia: [xformFileCollectionsProductMedia]
+      startup: [startup]
     },
     mutations,
     policies,

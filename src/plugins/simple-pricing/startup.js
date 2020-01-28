@@ -65,10 +65,9 @@ export default async function simplePricingStartup(context) {
 
   // Listen for variant price changes in the Products collection, and recalculate
   // the price range for the parent variant and product
-  appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
-    if (!fieldsThatChangeAncestorPricing.includes(field)) return;
+  appEvents.on("afterVariantUpdate", async ({ productVariant, fields }) => {
+    if (!fields.some((field) => fieldsThatChangeAncestorPricing.includes(field))) return;
 
-    const variant = await Products.findOne({ _id });
-    await updateProductPrice(variant);
+    await updateProductPrice(productVariant);
   });
 }

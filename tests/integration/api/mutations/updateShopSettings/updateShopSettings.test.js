@@ -13,12 +13,19 @@ const shopName = "Test Shop";
 let testApp;
 let shopSettingsMutation;
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:inventory/update:settings"],
+  slug: "admin",
+  shopId
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
   _id: "345",
-  shopId,
-  roles: {
-    [shopId]: ["reaction:legacy:shops/update"]
-  }
+  groups: [adminGroup._id],
+  shopId
 });
 
 const mockShopSetting = {
@@ -31,16 +38,16 @@ beforeAll(async () => {
 
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.collections.AppSettings.insertOne(mockShopSetting);
   shopSettingsMutation = testApp.query(updateShopSettings);
 });
 
-afterAll(async () => {
-  await testApp.collections.AppSettings.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("an anonymous user cannot update shop settings", async () => {
   try {

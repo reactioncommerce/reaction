@@ -15,6 +15,7 @@ export default async function brandAssets(shop, args, context) {
   if (!brandAsset) return null;
 
   const { collections: { Media } } = context;
+  if (!Media) return null;
 
   const fileRecord = await Media.findOne(brandAsset.mediaId);
   if (!fileRecord) return null;

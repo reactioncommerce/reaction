@@ -141,13 +141,10 @@ beforeEach(async () => {
   await testApp.collections.Orders.deleteMany({});
 });
 
-afterAll(async () => {
-  await testApp.collections.Orders.deleteMany({});
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("get 1 order by account ID", async () => {
   await testApp.collections.Orders.insertOne(order);

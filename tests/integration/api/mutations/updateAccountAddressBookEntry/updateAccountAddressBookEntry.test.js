@@ -35,11 +35,21 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
+
+  const customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    createdBy: null,
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   updateAccountAddressBookEntry = testApp.mutate(UpdateAccountAddressBookEntryMutation);
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
-    groups: [],
-    roles: { [shopId]: ["owner", "admin"] },
+    groups: [customerGroup._id],
     profile: {
       addressBook: [address]
     },
@@ -52,12 +62,10 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockUserAccount);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 afterEach(async () => {
   await testApp.clearLoggedInUser();

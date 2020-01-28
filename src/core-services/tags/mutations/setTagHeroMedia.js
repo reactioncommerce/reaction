@@ -26,6 +26,8 @@ export default async function setTagHeroMedia(context, input) {
   let heroMediaUrl = null;
 
   if (fileRecord) {
+    if (!Media || !MediaRecords) throw new Error("Cannot add media if the files plugin isn't registered");
+
     const doc = {
       ...fileRecord,
       _id: Random.id(),

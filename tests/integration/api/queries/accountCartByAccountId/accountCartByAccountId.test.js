@@ -20,12 +20,20 @@ beforeAll(async () => {
   shopId = await testApp.insertPrimaryShop();
   accountCartByAccountIdQuery = testApp.query(AccountCartByAccountIdQuery);
 
+  const customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    createdBy: null,
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   // create mock customer account
   mockCustomerAccount = Factory.Account.makeOne({
     _id: "mockCustomerAccountId",
-    roles: {
-      [shopId]: []
-    },
+    groups: [customerGroup._id],
     shopId
   });
 
@@ -44,13 +52,10 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockCustomerAccount);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Cart.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("a logged in user can see his/her own cart", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);

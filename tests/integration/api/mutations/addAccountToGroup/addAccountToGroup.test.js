@@ -8,10 +8,11 @@ const AddAccountToGroupMutation = importAsString("./AddAccountToGroupMutation.gr
 jest.setTimeout(300000);
 
 let accountOpaqueId;
+let adminGroup;
+let adminSecondaryGroup;
 let addAccountToGroup;
 let customerGroup;
 let mockAdminAccount;
-let mockAdminAccountWithMissingPermission;
 let mockOtherAccount;
 let shopId;
 let shopManagerGroup;
@@ -24,28 +25,47 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
+  adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission", "reaction:legacy:groups/manage:accounts"],
+    slug: "admin",
+    shopId
+  });
+
+  await testApp.collections.Groups.insertOne(adminGroup);
+
+  adminSecondaryGroup = Factory.Group.makeOne({
+    _id: "adminSecondaryGroup",
+    createdBy: null,
+    name: "adminSecondaryGroup",
+    permissions: ["incorrectPermissions"],
+    slug: "adminSecondaryGroup",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminSecondaryGroup);
+
+  customerGroup = Factory.Group.makeOne({
+    _id: "customerGroup",
+    createdBy: null,
+    name: "customer",
+    permissions: ["customer"],
+    slug: "customer",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(customerGroup);
+
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
-    roles: {
-      [shopId]: ["owner", "admin", "shopManagerGroupPermission", "someOtherPermission", "customerGroupPermission", "reaction:legacy:groups/manage:accounts"]
-    },
+    groups: [adminGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
 
-  mockAdminAccountWithMissingPermission = Factory.Account.makeOne({
-    _id: "mockAdminAccountWithMissingPermission",
-    roles: {
-      [shopId]: ["admin", "someOtherPermission"]
-    },
-    shopId
-  });
-  await testApp.createUserAndAccount(mockAdminAccountWithMissingPermission);
-
   mockOtherAccount = Factory.Account.makeOne({
     _id: "mockOtherAccount",
-    groups: [],
-    roles: {},
+    groups: [customerGroup._id],
     shopId
   });
   await testApp.createUserAndAccount(mockOtherAccount);
@@ -75,13 +95,10 @@ beforeAll(async () => {
   addAccountToGroup = testApp.mutate(AddAccountToGroupMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.users.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Groups.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 beforeEach(async () => {
   await testApp.collections.Accounts.updateOne({ _id: mockOtherAccount._id }, {
@@ -89,15 +106,9 @@ beforeEach(async () => {
       groups: []
     }
   });
-
-  await testApp.collections.users.updateOne({ _id: mockOtherAccount._id }, {
-    $set: {
-      roles: {}
-    }
-  });
 });
 
-test("anyone can add account to group if they have ALL the group permissions", async () => {
+test("anyone can add account to group if they have `reaction:legacy:groups/manage:accounts` permissions", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const result = await addAccountToGroup({ accountId: accountOpaqueId, groupId: shopManagerGroupOpaqueId });
@@ -118,16 +129,10 @@ test("anyone can add account to group if they have ALL the group permissions", a
 
   const account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
   expect(account.groups).toEqual([shopManagerGroup._id]);
-
-  const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toEqual(shopManagerGroup.permissions);
 });
 
-test("anyone cannot add account to group if they do not have ALL the group permissions", async () => {
-  await testApp.setLoggedInUser(mockAdminAccountWithMissingPermission);
-
-  const beforeUser = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(beforeUser.roles[shopId]).toBe(undefined);
+test("anyone cannot add account to group if they do not have `reaction:legacy:groups/manage:accounts` permissions", async () => {
+  await testApp.setLoggedInUser(adminSecondaryGroup);
 
   try {
     await addAccountToGroup({ accountId: accountOpaqueId, groupId: shopManagerGroupOpaqueId });
@@ -137,7 +142,4 @@ test("anyone cannot add account to group if they do not have ALL the group permi
 
   const account = await testApp.collections.Accounts.findOne({ _id: mockOtherAccount._id });
   expect(account.groups.length).toBe(0);
-
-  const user = await testApp.collections.users.findOne({ _id: mockOtherAccount._id });
-  expect(user.roles[shopId]).toBe(undefined);
 });
