@@ -18,7 +18,6 @@ export default async function userAccountQuery(context, id) {
 
   // Check to make sure current user has permissions to view queried user
   await context.validatePermissions("reaction:legacy:accounts", "read", {
-    shopId: account.shopId,
     owner: account.userId
   });
 

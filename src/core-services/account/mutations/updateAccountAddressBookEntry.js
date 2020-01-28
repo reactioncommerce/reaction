@@ -33,7 +33,6 @@ export default async function updateAccountAddressBookEntry(context, input) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "update:address-books", {
-    shopId: account.shopId,
     owner: account.userId
   });
 
