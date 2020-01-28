@@ -60,10 +60,11 @@ export default async function createAccount(context, input) {
   await context.validatePermissions("reaction:legacy:accounts", "create", { shopId });
 
   // Create initial account object from user and profile
+  const createdAt = new Date();
   const account = {
     _id: userId,
     acceptsMarketing: false,
-    createdAt: new Date(),
+    createdAt,
     emails,
     // Proper groups will be set with calls to `addAccountToGroup` below
     groups: [],
@@ -71,7 +72,7 @@ export default async function createAccount(context, input) {
     profile,
     shopId,
     state: "new",
-    updatedAt: new Date(),
+    updatedAt: createdAt,
     userId
   };
 

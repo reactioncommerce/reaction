@@ -56,7 +56,13 @@ class TestApp {
       }
     });
 
-    await this.reactionNodeApp.collections.Accounts.insertOne({ ...user, userId: user._id });
+    const createdAt = new Date();
+    await this.reactionNodeApp.collections.Accounts.insertOne({
+      ...user,
+      createdAt,
+      updatedAt: createdAt,
+      userId: user._id
+    });
   }
 
   async setLoggedInUser(user = {}) {
