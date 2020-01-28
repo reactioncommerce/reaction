@@ -24,20 +24,18 @@ beforeAll(async () => {
     createdBy: null,
     name: "admin",
     permissions: ["reaction:legacy:accounts/update:currency"],
-    slug: "admin",
-    shopId
+    slug: "admin"
   });
   await testApp.collections.Groups.insertOne(adminGroup);
 
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
-    groups: [adminGroup._id],
-    shopId
+    groups: [adminGroup._id]
   });
 
   accountOpaqueId = encodeOpaqueId("reaction/account", mockUserAccount._id);
 
-  await testApp.createUserAndAccount(mockUserAccount);
+  await testApp.createUserAndAccount(mockUserAccount, ["reaction:legacy:accounts/update:currency"]);
 });
 
 // There is no need to delete any test data from collections because

@@ -32,7 +32,7 @@ export default async function hasPermission(context, resource, action, authConte
 
   // If the current user is the owner of a resource we are trying to check,
   // such as an order or data on a user profile, they are authorized to perform the action
-  if (resourceOwner === context.userId) return true;
+  if (resourceOwner && resourceOwner === context.userId) return true;
 
   // Parse the provided data to create the permission name to check against (<organization>:<system>:<entity>/<action>)
   const permissionName = `${resource.split(":").splice(0, 3).join(":")}/${action}`;
