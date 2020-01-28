@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import sendVerificationEmail from "../util/sendVerificationEmail.js";
 
 const inputSchema = new SimpleSchema({
   accountId: {
@@ -60,11 +59,6 @@ export default async function addAccountEmailRecord(context, input) {
   );
 
   if (!updatedAccount) throw new ReactionError("server-error", "Unable to update Account");
-
-  await sendVerificationEmail(context, {
-    bodyTemplate: "accounts/verifyUpdatedEmail",
-    userId: account.userId
-  });
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
