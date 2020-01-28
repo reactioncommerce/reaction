@@ -69,7 +69,7 @@
     "babel-plugin-rewire-exports": "~2.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "~6.26.2",
     "babel-plugin-transform-import-meta": "~1.0.0",
-    "eslint": "~6.4.0",
+    "eslint": "~6.8.0",
     "eslint-plugin-import": "~2.18.2",
     "eslint-plugin-jest": "~22.17.0",
     "eslint-plugin-jsx-a11y": "~6.2.3",
