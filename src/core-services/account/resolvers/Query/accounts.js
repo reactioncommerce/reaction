@@ -14,12 +14,12 @@ import { decodeGroupOpaqueId } from "../../xforms/id.js";
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} Promise containing queried accounts
  */
-export default async function account(_, args, context, info) {
+export default async function accounts(_, args, context, info) {
   const { groupIds: opaqueGroupIds, ...connectionArgs } = args;
 
   let groupIds;
   if (opaqueGroupIds) {
-    groupIds = opaqueGroupIds.map(decodeGroupOpaqueId);
+    groupIds = opaqueGroupIds.map((opaqueGroupId) => decodeGroupOpaqueId(opaqueGroupId));
   }
 
   const query = await context.queries.accounts(context, { groupIds });
