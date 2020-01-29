@@ -51,6 +51,13 @@ const inputSchema = new SimpleSchema({
     type: String,
     optional: true
   },
+  "hashtags": {
+    type: Array,
+    optional: true
+  },
+  "hashtags.$": {
+    type: String
+  },
   "isDeleted": {
     type: Boolean,
     optional: true
