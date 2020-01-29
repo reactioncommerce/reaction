@@ -26,3 +26,30 @@ Array [
   },
 ]
 `;
+
+exports[`user cannot remove default account email 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "server-error",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cannot delete default email address.",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Cannot delete default email address.",
+    "path": Array [
+      "removeAccountEmailRecord",
+    ],
+  },
+]
+`;
