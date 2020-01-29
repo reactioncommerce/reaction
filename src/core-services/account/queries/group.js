@@ -10,32 +10,21 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} group object
  */
 export default async function groupQuery(context, id) {
-  const { collections, userId } = context;
-  const { Accounts, Groups } = collections;
+  const { account: authContextAccount, collections } = context;
+  const { Groups } = collections;
 
   const group = await Groups.findOne({ _id: id });
   if (!group) throw new ReactionError("not-found", "There is no group with this ID");
 
   // If the user has sufficient permissions, then allow them to find any group by ID
   // TODO: Break this query up into one for all groups (for admins only) and one for user's groups
-  if (context.userHasPermission(
-    "reaction:legacy:accounts",
-    "read",
-    { shopId: group.shopId }
-  )) return group; // TODO(pod-auth): update this permissions check
+  const allowed = await context.userHasPermission("reaction:legacy:groups", "read");
+  if (allowed) return group;
 
   // Otherwise, only let users see groups that they are members of
-  const userAccount = await Accounts.findOne({
-    _id: userId,
-    groups: id
-  }, {
-    projection: {
-      _id: 1
-    }
-  });
-
-  // If user is not found, throw an error
-  if (!userAccount) throw new ReactionError("access-denied", "User does not have permissions to view groups");
+  if (!authContextAccount || !authContextAccount.groups.includes(id)) {
+    throw new ReactionError("access-denied", "Access Denied");
+  }
 
   return group;
 }

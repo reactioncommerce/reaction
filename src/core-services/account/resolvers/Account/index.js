@@ -3,6 +3,7 @@ import getCurrencyDefinitionByCode from "@reactioncommerce/api-utils/getCurrency
 import resolveShopFromShopId from "@reactioncommerce/api-utils/graphql/resolveShopFromShopId.js";
 import { encodeAccountOpaqueId } from "../../xforms/id.js";
 import addressBook from "./addressBook.js";
+import groups from "./groups.js";
 
 export default {
   _id: (account) => encodeAccountOpaqueId(account._id),
@@ -10,6 +11,7 @@ export default {
   currency: (account) => getCurrencyDefinitionByCode(account.profile && account.profile.currency),
   emailRecords: (account) => account.emails,
   firstName: (account) => account.profile.firstName,
+  groups,
   lastName: (account) => account.profile.lastName,
   language: (account) => account.profile.language,
   name: (account) => account.profile.name,

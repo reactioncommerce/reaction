@@ -1,3 +1,27 @@
+# v3.0.0-beta.2
+
+This is the second beta release of our new Reaction project.
+
+*Reaction releases will no longer be coordinated across all projects - we'll release each project, independently, as needed. This means version numbers will no longer be in sync. The newest versions of each project will work together. This change has two exceptions: we will release all projects in coordination for a `beta` release, and all projects in coordination for the official `v3.0.0` release.*
+
+## Notable changes
+
+### Permissions are checked against groups, not users
+
+Permissions are now checked by querying a `group` that user belongs to, and checking against `permissions` that the `group` has. In the past, each `user` had `roles` (renamed permissions) attached to it, and the roles were checked. This will help keep permissions in sync via groups, instead of individually updating all users every time a permission changes or a user is added to a group.
+
+## Fixes
+
+- fix: add missing permissions check to [#6040](https://github.com/reactioncommerce/reaction/pull/6040)
+
+## Refactor
+
+- refactor: get roles / permissions directly from group(s), not user object [#6031](https://github.com/reactioncommerce/reaction/pull/6031)
+
+## Docs
+
+- docs: update links to use trunk branch of docs [#6050](https://github.com/reactioncommerce/reaction/pull/6050)
+
 # v3.0.0-beta
 
 This is the beta release of our new Reaction project.

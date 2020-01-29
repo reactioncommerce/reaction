@@ -33,7 +33,7 @@ export default async function sendWelcomeEmail(context, input) {
   // Verify that we have an account and it has an email address that isn't yet verified
   if (!userEmail || userEmail.verified) return false;
 
-  const { shopId, userId } = account;
+  const { userId } = account;
 
   // Generate a token for the user to verify their email address
   const tokenObj = generateVerificationTokenObject({ address: userEmail.address });
@@ -44,14 +44,9 @@ export default async function sendWelcomeEmail(context, input) {
     }
   });
 
-  // Fall back to primary shop if account has no shop linked
-  let shop;
-  if (shopId) {
-    shop = await Shops.findOne({ _id: shopId });
-  } else {
-    shop = await Shops.findOne({ shopType: "primary" });
-  }
-
+  // Account emails are always sent from the primary shop email and using primary shop
+  // email templates.
+  const shop = await Shops.findOne({ shopType: "primary" });
   if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const copyrightDate = new Date().getFullYear();

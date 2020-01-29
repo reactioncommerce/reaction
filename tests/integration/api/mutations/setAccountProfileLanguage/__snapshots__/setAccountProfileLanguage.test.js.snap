@@ -37,7 +37,7 @@ Array [
         "error": "invalid-argument",
         "eventData": Object {},
         "isClientSafe": true,
-        "reason": "Shop does not define any enabled language with code \\"mockI18n\\"",
+        "reason": "Primary shop does not define any enabled language with code \\"mockI18n\\"",
       },
     },
     "locations": Array [
@@ -46,7 +46,7 @@ Array [
         "line": 2,
       },
     ],
-    "message": "Shop does not define any enabled language with code \\"mockI18n\\"",
+    "message": "Primary shop does not define any enabled language with code \\"mockI18n\\"",
     "path": Array [
       "setAccountProfileLanguage",
     ],
