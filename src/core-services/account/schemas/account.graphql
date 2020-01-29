@@ -121,6 +121,18 @@ input RemoveAccountEmailRecordInput {
   email: Email!
 }
 
+"Defines which email address should be set as the default for which account"
+input SetAccountDefaultEmailInput {
+  "The account ID, which defaults to the viewer account"
+  accountId: ID
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The email address to set as default"
+  email: Email!
+}
+
 "Per-account tax exemption settings used by the Avalara plugin"
 type TaxSettings {
   "Customer usage type. A value matching the `code` field of one TaxEntityCode, or any custom string."
@@ -307,6 +319,15 @@ type RemoveAccountEmailRecordPayload {
   clientMutationId: String
 }
 
+"The response from the `setAccountDefaultEmail` mutation"
+type SetAccountDefaultEmailPayload {
+  "The account, with updated `emailRecords`"
+  account: Account
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 "The response from the `updateAccountAddressBookEntry` mutation"
 type UpdateAccountAddressBookEntryPayload {
   "The updated address"
@@ -370,6 +391,12 @@ extend type Mutation {
     "Mutation input"
     input: SendResetAccountPasswordEmailInput!
   ): SendResetAccountPasswordEmailPayload
+
+  "Set default email address for an account"
+  setAccountDefaultEmail(
+    "Mutation input"
+    input: SetAccountDefaultEmailInput!
+  ): SetAccountDefaultEmailPayload
 
   "Set the preferred currency for an account"
   setAccountProfileCurrency(
