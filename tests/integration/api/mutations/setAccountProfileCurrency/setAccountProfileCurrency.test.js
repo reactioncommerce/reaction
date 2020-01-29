@@ -9,14 +9,13 @@ jest.setTimeout(300000);
 
 let testApp;
 let setAccountProfileCurrency;
-let shopId;
 let mockUserAccount;
 let accountOpaqueId;
 
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop();
+  await testApp.insertPrimaryShop();
   setAccountProfileCurrency = testApp.mutate(SetAccountProfileCurrencyMutation);
 
   const adminGroup = Factory.Group.makeOne({
@@ -24,20 +23,18 @@ beforeAll(async () => {
     createdBy: null,
     name: "admin",
     permissions: ["reaction:legacy:accounts/update:currency"],
-    slug: "admin",
-    shopId
+    slug: "admin"
   });
   await testApp.collections.Groups.insertOne(adminGroup);
 
   mockUserAccount = Factory.Account.makeOne({
     _id: "mockUserId",
-    groups: [adminGroup._id],
-    shopId
+    groups: [adminGroup._id]
   });
 
   accountOpaqueId = encodeOpaqueId("reaction/account", mockUserAccount._id);
 
-  await testApp.createUserAndAccount(mockUserAccount);
+  await testApp.createUserAndAccount(mockUserAccount, ["reaction:legacy:accounts/update:currency"]);
 });
 
 // There is no need to delete any test data from collections because

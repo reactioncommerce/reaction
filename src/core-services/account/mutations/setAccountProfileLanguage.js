@@ -37,14 +37,13 @@ export default async function setAccountProfileLanguage(context, input) {
   if (!account) throw new ReactionError("not-found", "No account found");
 
   await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "update:language", {
-    shopId: account.shopId,
     owner: account.userId
   });
 
-  // Make sure this language is in the related shop languages list
-  const shop = await Shops.findOne({ _id: account.shopId }, { projection: { languages: 1 } });
+  // Make sure this language is in the primary shop languages list
+  const shop = await Shops.findOne({ shopType: "primary" }, { projection: { languages: 1 } });
   if (!shop || !shop.languages || !isLanguageEnabled(shop.languages, language)) {
-    throw new ReactionError("invalid-argument", `Shop does not define any enabled language with code "${language}"`);
+    throw new ReactionError("invalid-argument", `Primary shop does not define any enabled language with code "${language}"`);
   }
 
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(

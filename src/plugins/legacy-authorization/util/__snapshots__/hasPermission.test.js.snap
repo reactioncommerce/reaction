@@ -2,8 +2,6 @@
 
 exports[`throws if no action 1`] = `"Action must be provided"`;
 
-exports[`throws if no authContext 1`] = `"authContext must be provided"`;
-
 exports[`throws if no resource 1`] = `"Resource must be provided"`;
 
 exports[`throws if shopId is present but an empty string 1`] = `"shopId must be a non-empty string"`;

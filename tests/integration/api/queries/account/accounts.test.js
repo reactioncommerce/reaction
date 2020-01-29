@@ -1,3 +1,4 @@
+import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
@@ -7,51 +8,36 @@ const accountsQuery = importAsString("./accountsQuery.graphql");
 
 jest.setTimeout(300000);
 
+const decodeAccountOpaqueId = decodeOpaqueIdForNamespace("reaction/account");
 const internalNonAdminAccountId = "123";
-const internalShopId = "123";
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalAdminAccountId = "456";
 const mockAccounts = [];
+
+const mockCustomerGroup = {
+  _id: "mockCustomerGroup",
+  name: "customer",
+  slug: "customer",
+  permissions: [
+    "test"
+  ],
+  createdAt: new Date(),
+  updatedAt: new Date()
+};
 
 for (let index = 100; index < 136; index += 1) {
   const mockAccount = Factory.Account.makeOne({
     _id: `account-${index}`,
-    shopId: internalShopId,
     username: `username-${index}`,
-    groups: [
-      "group-customer"
-    ]
+    groups: []
   });
+
+  // Put only the first 5 in the permission group for the group filter test
+  if (index < 105) {
+    mockAccount.groups = [mockCustomerGroup._id];
+  }
 
   mockAccounts.push(mockAccount);
 }
-
-const mockCustomerGroup = {
-  _id: "group-customer",
-  name: "customer",
-  slug: "customer",
-  permissions: [
-    "guest",
-    "account/profile",
-    "product",
-    "tag",
-    "index",
-    "cart/checkout",
-    "cart/completed",
-    "notifications",
-    "reaction-paypal/paypalDone",
-    "reaction-paypal/paypalCancel",
-    "stripe/connect/authorize",
-    "account/verify",
-    "account/login",
-    "reset-password",
-    "not-found",
-    "account/enroll"
-  ],
-  shopId: internalShopId,
-  createdAt: "2018-06-22T20:35:33.369Z",
-  updatedAt: "2019-04-30T19:02:34.276Z"
-};
 
 let testApp;
 let queryAccounts;
@@ -62,9 +48,17 @@ beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
 
+  // Create the test accounts before our accounts that we'll log in as. That way
+  // we know what to expect from the query. Note that it's necessary to await each
+  // one here rather than using Promise.all because otherwise there's no guarantee
+  // they're created in order, which means we don't reliably know what the createdAt
+  // sort will return.
+  for (const account of mockAccounts) {
+    await testApp.createUserAndAccount(account); // eslint-disable-line no-await-in-loop
+  }
+
   mockAdminAccount = Factory.Account.makeOne({
-    _id: internalAdminAccountId,
-    shopId: internalShopId
+    _id: internalAdminAccountId
   });
   await testApp.createUserAndAccount(mockAdminAccount, ["reaction:legacy:accounts/read"]);
 
@@ -72,12 +66,6 @@ beforeAll(async () => {
     _id: internalNonAdminAccountId
   });
   await testApp.createUserAndAccount(mockNonAdminAccount);
-
-  await testApp.collections.Groups.insertOne(mockCustomerGroup);
-
-  await Promise.all(mockAccounts.map((account) => (
-    testApp.createUserAndAccount(account, ["guest", "customer"])
-  )));
 
   queryAccounts = testApp.query(accountsQuery);
 });
@@ -87,14 +75,13 @@ beforeAll(async () => {
 // test file gets its own test database.
 afterAll(() => testApp.stop());
 
-test("get all non-admin accounts", async () => {
+test("get all accounts with default createdAt ascending sort", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   let result;
 
   try {
     result = await queryAccounts({
-      shopId: opaqueShopId,
       first: 10
     });
   } catch (error) {
@@ -102,9 +89,73 @@ test("get all non-admin accounts", async () => {
     return;
   }
 
-  expect(result.accounts.nodes.length).toEqual(10);
-  expect(result.accounts.nodes[0]._id).toEqual(encodeOpaqueId("reaction/account", "account-100"));
-  expect(result.accounts.nodes[1]._id).toEqual(encodeOpaqueId("reaction/account", "account-101"));
+  expect(result.accounts.nodes.length).toBe(10);
+  expect(decodeAccountOpaqueId(result.accounts.nodes[0]._id)).toBe("account-100");
+  expect(decodeAccountOpaqueId(result.accounts.nodes[1]._id)).toBe("account-101");
+});
+
+test("get all accounts sorted by ID", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  let result;
+
+  try {
+    result = await queryAccounts({
+      first: 10,
+      sortBy: "_id"
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.accounts.nodes.length).toBe(10);
+  expect(decodeAccountOpaqueId(result.accounts.nodes[0]._id)).toBe(internalNonAdminAccountId);
+  expect(decodeAccountOpaqueId(result.accounts.nodes[1]._id)).toBe(internalAdminAccountId);
+});
+
+test("get all accounts sorted by createdAt descending", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  let result;
+
+  try {
+    result = await queryAccounts({
+      first: 10,
+      sortBy: "createdAt",
+      sortOrder: "desc"
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.accounts.nodes.length).toBe(10);
+  expect(decodeAccountOpaqueId(result.accounts.nodes[0]._id)).toBe(internalNonAdminAccountId);
+  expect(decodeAccountOpaqueId(result.accounts.nodes[1]._id)).toBe(internalAdminAccountId);
+});
+
+test("get only accounts in a certain permission group", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  let result;
+
+  try {
+    result = await queryAccounts({
+      first: 10,
+      groupIds: [encodeOpaqueId("reaction/group", mockCustomerGroup._id)]
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.accounts.nodes.length).toBe(5);
+  expect(decodeAccountOpaqueId(result.accounts.nodes[0]._id)).toBe("account-100");
+  expect(decodeAccountOpaqueId(result.accounts.nodes[1]._id)).toBe("account-101");
+  expect(decodeAccountOpaqueId(result.accounts.nodes[2]._id)).toBe("account-102");
+  expect(decodeAccountOpaqueId(result.accounts.nodes[3]._id)).toBe("account-103");
+  expect(decodeAccountOpaqueId(result.accounts.nodes[4]._id)).toBe("account-104");
 });
 
 test("throws access-denied when getting accounts if not an admin", async () => {
@@ -112,7 +163,6 @@ test("throws access-denied when getting accounts if not an admin", async () => {
 
   try {
     await queryAccounts({
-      shopId: opaqueShopId,
       first: 10
     });
   } catch (errors) {

@@ -43,7 +43,7 @@ test("authenticated", async () => {
           { address1: "mockAddress1" }
         ]
       },
-      createdAt: mockAccount.createdAt.toISOString(),
+      createdAt: jasmine.any(String),
       currency: null,
       emailRecords: [
         {
@@ -52,7 +52,7 @@ test("authenticated", async () => {
         }
       ],
       groups: {
-        nodes: null
+        nodes: []
       },
       metafields: [
         {
@@ -72,7 +72,7 @@ test("authenticated", async () => {
         customerUsageType: "mockCustomerUsageType",
         exemptionNo: "mockExemptionNo"
       },
-      updatedAt: mockAccount.updatedAt.toISOString()
+      updatedAt: jasmine.any(String)
     }
   });
 
