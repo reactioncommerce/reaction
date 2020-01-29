@@ -8,6 +8,7 @@ import removeAccountEmailRecord from "./removeAccountEmailRecord.js";
 import removeAccountGroup from "./removeAccountGroup.js";
 import removeAccountFromGroup from "./removeAccountFromGroup.js";
 import sendResetAccountPasswordEmail from "./sendResetAccountPasswordEmail.js";
+import setAccountDefaultEmail from "./setAccountDefaultEmail.js";
 import setAccountProfileCurrency from "./setAccountProfileCurrency.js";
 import setAccountProfileLanguage from "./setAccountProfileLanguage.js";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
@@ -24,6 +25,7 @@ export default {
   removeAccountFromGroup,
   removeAccountGroup,
   sendResetAccountPasswordEmail,
+  setAccountDefaultEmail,
   setAccountProfileCurrency,
   setAccountProfileLanguage,
   updateAccountAddressBookEntry,

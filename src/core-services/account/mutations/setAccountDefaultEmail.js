@@ -10,16 +10,16 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @name accounts/removeAccountEmailRecord
+ * @name accounts/setAccountDefaultEmail
  * @memberof Mutations/Accounts
- * @summary Remove existing email in user's profile
+ * @summary Update default email in account
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} input.accountId - decoded ID of account on which entry should be updated
- * @param {String} input.email - the email to remove from the account
- * @returns {Promise<Object>} account with removed email
+ * @param {String} input.email - the email to set as the default from the account
+ * @returns {Promise<Object>} account with updated default email
  */
-export default async function removeAccountEmailRecord(context, input) {
+export default async function setAccountDefaultEmail(context, input) {
   inputSchema.validate(input);
   const {
     accountId: accountIdFromContext,
@@ -29,7 +29,7 @@ export default async function removeAccountEmailRecord(context, input) {
     },
     userId
   } = context;
-  const { email } = input;
+  const { email: newDefaultEmail } = input;
 
   // If no account ID input, default to the account that's calling
   const accountId = input.accountId || accountIdFromContext;
@@ -42,20 +42,34 @@ export default async function removeAccountEmailRecord(context, input) {
     owner: account.userId
   });
 
-  const existingEmail = (account.emails || []).find(({ address }) => address === email);
+  const existingEmail = (account.emails || []).find(({ address }) => address === newDefaultEmail);
   if (!existingEmail) {
-    throw new ReactionError("invalid-param", "Account does not have this email address");
+    throw new ReactionError("invalid-param", "Email address is not associated with this account");
   }
 
-  if (existingEmail.provides === "default") {
-    throw new ReactionError("server-error", "Cannot delete default email address.");
+  if (existingEmail && existingEmail.provides === "default") {
+    throw new ReactionError("invalid-param", "Email is already default address for this account");
   }
 
-  // Remove email from Account
+  // remove `provides: default` from any email address which had it
+  const emails = account.emails.map((eml) => {
+    delete eml.provides;
+    return eml;
+  });
+
+  // set `provides: default to new email
+  emails.map((eml) => {
+    if (eml.address === newDefaultEmail) {
+      eml.provides = "default";
+    }
+    return eml;
+  });
+
+  // update emails on Account
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
     { _id: accountId },
     {
-      $pull: { emails: { address: email } }
+      $set: { emails }
     },
     {
       returnOriginal: false

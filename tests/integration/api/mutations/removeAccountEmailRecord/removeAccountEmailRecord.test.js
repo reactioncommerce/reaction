@@ -4,7 +4,16 @@ import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const RemoveAccountEmailRecordMutation = importAsString("./RemoveAccountEmailRecordMutation.graphql");
-const mockEmails = Factory.Email.makeMany(2);
+const mockEmails = [
+  {
+    address: "default@mockemail.com",
+    provides: "default",
+    verified: false
+  }, {
+    address: "not-default@mockemail.com",
+    verified: false
+  }
+];
 
 jest.setTimeout(300000);
 
@@ -45,6 +54,14 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockUserAccount);
 });
 
+beforeEach(async () => {
+  await testApp.collections.Accounts.updateOne({ _id: mockUserAccount._id }, {
+    $set: {
+      emails: mockEmails
+    }
+  });
+});
+
 // There is no need to delete any test data from collections because
 // testApp.stop() will drop the entire test database. Each integration
 // test file gets its own test database.
@@ -64,12 +81,24 @@ test("user can not remove account email if not logged in", async () => {
   }
 });
 
-test("user can remove account email", async () => {
+test("user cannot remove default account email", async () => {
+  await testApp.setLoggedInUser(mockUserAccount);
+  try {
+    await removeAccountEmailRecord({
+      input: { accountId: accountOpaqueId, email: mockEmails[0].address }
+    });
+  } catch (error) {
+    expect(error).toMatchSnapshot();
+    return;
+  }
+});
+
+test("user can remove non-default account email", async () => {
   await testApp.setLoggedInUser(mockUserAccount);
   let result;
   try {
     result = await removeAccountEmailRecord({
-      input: { accountId: accountOpaqueId, email: mockEmails[0].address }
+      input: { accountId: accountOpaqueId, email: mockEmails[1].address }
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -77,7 +106,7 @@ test("user can remove account email", async () => {
   }
   expect(result.removeAccountEmailRecord.account.emailRecords.length).toEqual(1);
   expect(result.removeAccountEmailRecord.account.emailRecords).toEqual([{
-    address: mockEmails[1].address
+    address: mockEmails[0].address
   }]);
 });
 
@@ -92,7 +121,8 @@ test("accountId is optional and defaults to calling account", async () => {
     expect(error).toBeUndefined();
     return;
   }
-  expect(result.removeAccountEmailRecord.account._id).toBe(accountOpaqueId);
-  expect(result.removeAccountEmailRecord.account.emailRecords.length).toBe(0);
-  expect(result.removeAccountEmailRecord.account.emailRecords).toEqual([]);
+  expect(result.removeAccountEmailRecord.account.emailRecords.length).toEqual(1);
+  expect(result.removeAccountEmailRecord.account.emailRecords).toEqual([{
+    address: mockEmails[0].address
+  }]);
 });

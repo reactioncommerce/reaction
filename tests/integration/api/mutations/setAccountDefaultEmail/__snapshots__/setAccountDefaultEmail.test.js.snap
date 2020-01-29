@@ -1,43 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`user can not remove account email if not logged in 1`] = `
-Array [
-  Object {
-    "extensions": Object {
-      "code": "FORBIDDEN",
-      "exception": Object {
-        "details": Object {},
-        "error": "access-denied",
-        "eventData": Object {},
-        "isClientSafe": true,
-        "reason": "Access Denied",
-      },
-    },
-    "locations": Array [
-      Object {
-        "column": 3,
-        "line": 2,
-      },
-    ],
-    "message": "Access Denied",
-    "path": Array [
-      "removeAccountEmailRecord",
-    ],
-  },
-]
-`;
-
-exports[`user cannot remove default account email 1`] = `
+exports[`user cannot set default email on their own account if address doesn't already exists 1`] = `
 Array [
   Object {
     "extensions": Object {
       "code": "INTERNAL_SERVER_ERROR",
       "exception": Object {
         "details": Object {},
-        "error": "server-error",
+        "error": "invalid-param",
         "eventData": Object {},
         "isClientSafe": true,
-        "reason": "Cannot delete default email address.",
+        "reason": "Email address is not associated with this account",
       },
     },
     "locations": Array [
@@ -46,9 +19,36 @@ Array [
         "line": 2,
       },
     ],
-    "message": "Cannot delete default email address.",
+    "message": "Email address is not associated with this account",
     "path": Array [
-      "removeAccountEmailRecord",
+      "setAccountDefaultEmail",
+    ],
+  },
+]
+`;
+
+exports[`user cannot update default email if provided address is already default email 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "invalid-param",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Email is already default address for this account",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Email is already default address for this account",
+    "path": Array [
+      "setAccountDefaultEmail",
     ],
   },
 ]
