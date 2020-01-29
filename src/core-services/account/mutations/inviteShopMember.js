@@ -49,11 +49,6 @@ export default async function inviteShopMember(context, input) {
   const group = await Groups.findOne({ _id: groupId });
   if (!group) throw new ReactionError("not-found", "No group found");
 
-  // we don't allow direct invitation of "owners", throw an error if that is the group
-  if (group.slug === "owner") {
-    throw new ReactionError("bad-request", "Cannot directly invite owner");
-  }
-
   const lowercaseEmail = email.toLowerCase();
 
   // check to see if invited email has an account
