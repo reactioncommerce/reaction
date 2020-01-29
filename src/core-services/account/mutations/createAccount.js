@@ -76,16 +76,9 @@ export default async function createAccount(context, input) {
     userId
   };
 
-  let groupSlug = "customer"; // Default is to put new accounts into the "customer" permission group
+  const groupSlug = "customer"; // Default is to put new accounts into the "customer" permission group
   let groups;
   let invites;
-
-  // The identity provider service gives the first created user the global "owner" role. When we
-  // create an account for this user, they should be assigned to the "owner" group.
-  if (authUserId === userId) {
-    const isGlobalOwner = await context.userHasPermission("reaction:legacy:shops", "owner", { shopId }); // TODO(pod-auth): update this permissions check
-    if (isGlobalOwner) groupSlug = "owner";
-  }
 
   // If we didn't already upgrade them to the "owner" group, see if they're been invited to any groups
   if (groupSlug === "customer") {
