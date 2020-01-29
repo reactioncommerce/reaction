@@ -76,34 +76,10 @@ export default async function createAccount(context, input) {
     userId
   };
 
-  const groupSlug = "customer"; // Default is to put new accounts into the "customer" permission group
-  let groups;
-  let invites;
-
-  // If we didn't already upgrade them to the "owner" group, see if they're been invited to any groups
-  if (groupSlug === "customer") {
-    const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
-    // Find all invites for all shops and add to all groups
-    invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
-    groups = invites.map((invite) => invite.groupId);
-  }
-
-  // If they weren't invited to any groups, put them in the customer or owner group as determined above
-  if (!groups || groups.length === 0) {
-    if (shopId) {
-      const group = await Groups.findOne({ slug: groupSlug, shopId });
-      groups = group ? [group._id] : [];
-    } else {
-      // Put them in a group for the primary shop
-      const primaryShopId = await context.queries.primaryShopId(context);
-      if (primaryShopId) {
-        const primaryShopGroup = await Groups.findOne({ slug: groupSlug, shopId: primaryShopId });
-        groups = primaryShopGroup ? [primaryShopGroup._id] : [];
-      } else {
-        groups = [];
-      }
-    }
-  }
+  // find all invites for this email address, for all shops, and add to all groups
+  const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
+  const invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
+  const groups = invites.map((invite) => invite.groupId);
 
   AccountSchema.validate(account);
 
