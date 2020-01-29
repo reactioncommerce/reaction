@@ -103,7 +103,7 @@ test("accountId is optional and defaults to calling account", async () => {
   expect(oldDefaultEmail.address).toEqual(mockUserAccount.emails[0].address);
 });
 
-test("user cannot set default email on their own account if address doesn't already exists", async () => {
+test("user cannot set default email on their own account if address doesn't already exist", async () => {
   await testApp.setLoggedInUser(mockUserAccount);
   try {
     await setAccountDefaultEmail({ accountId: accountOpaqueId, email: "invalid@email.com" });

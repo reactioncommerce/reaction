@@ -15,7 +15,7 @@ const inputSchema = new SimpleSchema({
  * @summary Update default email in account
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
- * @param {String} input.accountId - decoded ID of account on which entry should be updated
+ * @param {String} [input.accountId] - decoded ID of account on which entry should be updated
  * @param {String} input.email - the email to set as the default from the account
  * @returns {Promise<Object>} account with updated default email
  */
@@ -37,8 +37,7 @@ export default async function setAccountDefaultEmail(context, input) {
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "Account not Found");
 
-  await context.validatePermissions(`reaction:legacy:accounts:${accountId}`, "delete:emails", {
-    shopId: account.shopId,
+  await context.validatePermissions(`reaction:legacy:accounts:${accountId}`, "update:emails", {
     owner: account.userId
   });
 
@@ -47,20 +46,17 @@ export default async function setAccountDefaultEmail(context, input) {
     throw new ReactionError("invalid-param", "Email address is not associated with this account");
   }
 
-  if (existingEmail && existingEmail.provides === "default") {
+  if (existingEmail.provides === "default") {
     throw new ReactionError("invalid-param", "Email is already default address for this account");
   }
 
-  // remove `provides: default` from any email address which had it
-  const emails = account.emails.map((eml) => {
-    delete eml.provides;
-    return eml;
-  });
-
-  // set `provides: default to new email
-  emails.map((eml) => {
+  // remove `provides: default` from any email address which
+  // had it and set `provides: default` to new email
+  const emails = (account.emails || []).map((eml) => {
     if (eml.address === newDefaultEmail) {
       eml.provides = "default";
+    } else {
+      delete eml.provides;
     }
     return eml;
   });
