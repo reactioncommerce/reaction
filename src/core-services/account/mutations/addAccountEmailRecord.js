@@ -41,23 +41,16 @@ export default async function addAccountEmailRecord(context, input) {
     throw new ReactionError("duplicate", "Account already has this email address");
   }
 
-  const emails = {
-    address: email,
-    verified: false
-  };
-
-  const isDefaultEmailSet = (account.emails || []).some(({ provides }) => provides === "default");
-
-  if (!isDefaultEmailSet) {
-    emails.provides = "default";
-  }
-
   // add email to Account
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
     { _id: accountId },
     {
       $addToSet: {
-        emails
+        emails: {
+          address: email,
+          provides: "default",
+          verified: false
+        }
       }
     },
     {

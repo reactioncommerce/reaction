@@ -47,10 +47,6 @@ export default async function removeAccountEmailRecord(context, input) {
     throw new ReactionError("invalid-param", "Account does not have this email address");
   }
 
-  if (existingEmail.provides === "default") {
-    throw new ReactionError("server-error", "Cannot delete default email address.");
-  }
-
   // Remove email from Account
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
     { _id: accountId },
