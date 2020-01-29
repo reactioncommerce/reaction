@@ -239,6 +239,29 @@ extend type Shop {
   ): GroupConnection
 }
 
+extend type Account {
+  "A paged list of the permission groups in which this account is listed"
+  groups(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: GroupSortByField = createdAt
+  ): GroupConnection
+}
+
 extend type Mutation {
   "Add an account to a group"
   addAccountToGroup(

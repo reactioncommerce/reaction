@@ -1,47 +1,6 @@
 import SimpleSchema from "simpl-schema";
 
 /**
- * @name Event for EventLog
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} title Event title required
- * @property {String} type Event type required
- * @property {String} description Event description optional
- * @property {String} userId User who triggered event optional
- * @property {String} trigger Action that triggered event optional
- * @property {Date} createdAt required
- */
-const Event = new SimpleSchema({
-  title: {
-    type: String,
-    label: "Event Title"
-  },
-  type: {
-    type: String,
-    label: "Event Type"
-  },
-  description: {
-    type: String,
-    label: "Event Description",
-    optional: true
-  },
-  userId: {
-    type: String,
-    label: "User who triggered event",
-    optional: true
-  },
-  trigger: {
-    type: String,
-    label: "What triggered the event",
-    optional: true
-  },
-  createdAt: {
-    type: Date,
-    label: "Created At"
-  }
-});
-
-/**
  * @name Metafield
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -125,8 +84,7 @@ const ShippingParcel = new SimpleSchema({
  */
 const Workflow = new SimpleSchema({
   "status": {
-    type: String,
-    defaultValue: "new"
+    type: String
   },
   "workflow": {
     type: Array,
@@ -178,7 +136,6 @@ export const VariantMedia = new SimpleSchema({
  * @property {String[]} ancestors, default value: `[]`
  * @property {String} barcode optional
  * @property {Date} createdAt optional
- * @property {Event[]} eventLog optional, Variant Event Log
  * @property {Number} height optional, default value: `0`
  * @property {Number} index optional, Variant position number in list. Keep array index for moving variants in a list.
  * @property {Boolean} isDeleted, default value: `false`
@@ -203,8 +160,7 @@ export const ProductVariant = new SimpleSchema({
     label: "Variant ID"
   },
   "ancestors": {
-    type: Array,
-    defaultValue: []
+    type: Array
   },
   "ancestors.$": {
     type: String
@@ -214,32 +170,17 @@ export const ProductVariant = new SimpleSchema({
     optional: true
   },
   "barcode": {
-    label: "Barcode",
     type: String,
     optional: true
   },
   "createdAt": {
-    label: "Created at",
     type: Date,
     optional: true
   },
-  // TODO: REVIEW - Does this need to exist? Should we use workflow instead?
-  // Should it be called 'history' or something else instead?
-  // Should this go into the Logger instead? Is the logger robust enough for this?
-  "eventLog": {
-    label: "Variant Event Log",
-    type: Array,
-    optional: true
-  },
-  "eventLog.$": {
-    type: Event
-  },
   "height": {
-    label: "Height",
     type: Number,
     min: 0,
-    optional: true,
-    defaultValue: 0
+    optional: true
   },
   "index": {
     label: "Variant position number in list",
@@ -247,19 +188,15 @@ export const ProductVariant = new SimpleSchema({
     optional: true
   },
   "isDeleted": {
-    type: Boolean,
-    defaultValue: false
+    type: Boolean
   },
   "isVisible": {
-    type: Boolean,
-    defaultValue: false
+    type: Boolean
   },
   "length": {
-    label: "Length",
     type: Number,
     min: 0,
-    optional: true,
-    defaultValue: 0
+    optional: true
   },
   "metafields": {
     type: Array,
@@ -274,7 +211,6 @@ export const ProductVariant = new SimpleSchema({
     optional: true
   },
   "optionTitle": {
-    label: "Option",
     type: String,
     optional: true
   },
@@ -283,47 +219,36 @@ export const ProductVariant = new SimpleSchema({
     optional: true
   },
   "shopId": {
-    type: String,
-    label: "Variant ShopId"
+    type: String
   },
   "sku": {
-    label: "SKU",
     type: String,
     optional: true
   },
   "title": {
-    label: "Label",
     type: String,
     optional: true
   },
   "type": {
-    label: "Type",
-    type: String,
-    defaultValue: "variant"
+    type: String
   },
   "updatedAt": {
-    label: "Updated at",
     type: Date,
     optional: true
   },
   "weight": {
-    label: "Weight",
     type: Number,
     min: 0,
-    optional: true,
-    defaultValue: 0
+    optional: true
   },
   "width": {
-    label: "Width",
     type: Number,
     min: 0,
-    optional: true,
-    defaultValue: 0
+    optional: true
   },
   "workflow": {
     type: Workflow,
-    optional: true,
-    defaultValue: {}
+    optional: true
   }
 });
 
@@ -368,8 +293,7 @@ export const Product = new SimpleSchema({
     label: "Product ID"
   },
   "ancestors": {
-    type: Array,
-    defaultValue: []
+    type: Array
   },
   "ancestors.$": {
     type: String
@@ -396,9 +320,7 @@ export const Product = new SimpleSchema({
     max: 255
   },
   "handle": {
-    type: String,
-    defaultValue: "",
-    label: "Permalink"
+    type: String
   },
   "hashtags": {
     type: Array,
@@ -408,12 +330,10 @@ export const Product = new SimpleSchema({
     type: String
   },
   "isDeleted": {
-    type: Boolean,
-    defaultValue: false
+    type: Boolean
   },
   "isVisible": {
-    type: Boolean,
-    defaultValue: false
+    type: Boolean
   },
   "metaDescription": {
     type: String,
@@ -456,29 +376,22 @@ export const Product = new SimpleSchema({
     optional: true
   },
   "shopId": {
-    type: String,
-    label: "Product ShopId"
+    type: String
   },
   "shouldAppearInSitemap": {
     type: Boolean,
-    optional: true,
-    defaultValue: true
+    optional: true
   },
   "supportedFulfillmentTypes": {
-    type: Array,
-    label: "Supported fulfillment types",
-    defaultValue: ["shipping"]
+    type: Array
   },
   "supportedFulfillmentTypes.$": String,
   "template": {
-    label: "Template",
-    optional: true,
-    type: String
+    type: String,
+    optional: true
   },
   "title": {
-    type: String,
-    defaultValue: "",
-    label: "Product Title"
+    type: String
   },
   "twitterMsg": {
     type: String,
@@ -486,9 +399,7 @@ export const Product = new SimpleSchema({
     max: 140
   },
   "type": {
-    label: "Type",
-    type: String,
-    defaultValue: "simple"
+    type: String
   },
   "updatedAt": {
     type: Date,
@@ -500,7 +411,6 @@ export const Product = new SimpleSchema({
   },
   "workflow": {
     type: Workflow,
-    optional: true,
-    defaultValue: {}
+    optional: true
   }
 });

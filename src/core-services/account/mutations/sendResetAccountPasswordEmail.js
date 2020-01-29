@@ -33,14 +33,9 @@ async function sendResetEmail(context, account, email) {
     userId: account.userId
   });
 
-  // Fall back to primary shop if account has no shop linked
-  let shop;
-  if (account.shopId) {
-    shop = await Shops.findOne({ _id: account.shopId });
-  } else {
-    shop = await Shops.findOne({ shopType: "primary" });
-  }
-
+  // Account emails are always sent from the primary shop email and using primary shop
+  // email templates.
+  const shop = await Shops.findOne({ shopType: "primary" });
   if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const contactEmail = shop.emails && shop.emails[0] && shop.emails[0].address;

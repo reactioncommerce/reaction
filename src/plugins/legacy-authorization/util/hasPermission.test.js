@@ -35,21 +35,6 @@ test("throws if no action", async () => {
   expect(result).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("throws if no authContext", async () => {
-  const result = hasPermission(
-    {
-      userPermissions: {
-        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
-        scope: ["can_eat"]
-      }
-    },
-    "organization:system:entity",
-    "action",
-    null
-  );
-  expect(result).rejects.toThrowErrorMatchingSnapshot();
-});
-
 test("throws if shopId is present but not a string", async () => {
   const result = hasPermission(
     {

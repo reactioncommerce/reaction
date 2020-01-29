@@ -1,7 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
-import ReactionError from "@reactioncommerce/reaction-error";
-import createProductOrVariant from "../utils/createProductOrVariant.js";
+import { Product } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String
@@ -25,34 +24,43 @@ export default async function createProduct(context, input) {
   await context.validatePermissions("reaction:legacy:products", "create", { shopId });
 
   const newProductId = Random.id();
+  const createdAt = new Date();
   const newProduct = {
     _id: newProductId,
+    ancestors: [],
+    createdAt,
+    handle: "",
+    isDeleted: false,
+    isVisible: false,
     shopId,
-    type: "simple"
+    shouldAppearInSitemap: true,
+    supportedFulfillmentTypes: ["shipping"],
+    title: "",
+    type: "simple",
+    updatedAt: createdAt,
+    workflow: {
+      status: "new"
+    }
   };
 
-  // Create a product
-  const createdProductId = await createProductOrVariant(context, newProduct);
-
-  // Get full product document to create variant
-  const createdProduct = await Products.findOne({ _id: createdProductId });
-
-  if (!createdProduct) {
-    throw new ReactionError("server-error", "Unable to find created product");
+  // Apply custom transformations from plugins.
+  for (const customFunc of context.getFunctionsOfType("mutateNewProductBeforeCreate")) {
+    // Functions of type "mutateNewProductBeforeCreate" are expected to mutate the provided variant.
+    // We need to run each of these functions in a series, rather than in parallel, because
+    // we are mutating the same object on each pass.
+    // eslint-disable-next-line no-await-in-loop
+    await customFunc(newProduct, { context });
   }
 
-  // Create a product variant
-  const newVariantId = Random.id();
-  const createdVariantId = await createProductOrVariant(context, {
-    _id: newVariantId,
-    ancestors: [createdProductId],
-    shopId,
-    type: "variant" // needed for multi-schema
-  }, { product: createdProduct, parentVariant: null, isOption: false });
+  Product.validate(newProduct);
 
-  if (!createdVariantId) {
-    throw new ReactionError("server-error", "Unable to create product variant");
-  }
+  await Products.insertOne(newProduct);
 
-  return createdProduct;
+  // Create one initial product variant for it
+  await context.mutations.createProductVariant(context.getInternalContext(), {
+    productId: newProductId,
+    shopId
+  });
+
+  return newProduct;
 }

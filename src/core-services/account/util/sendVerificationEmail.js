@@ -28,16 +28,9 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
   const account = await Accounts.findOne({ userId });
   if (!account) throw new ReactionError("not-found", "Account not found");
 
-  const { shopId } = account;
-
-  // Fall back to primary shop if account has no shop linked
-  let shop;
-  if (shopId) {
-    shop = await Shops.findOne({ _id: shopId });
-  } else {
-    shop = await Shops.findOne({ shopType: "primary" });
-  }
-
+  // Account emails are always sent from the primary shop email and using primary shop
+  // email templates.
+  const shop = await Shops.findOne({ shopType: "primary" });
   if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const dataForEmail = {

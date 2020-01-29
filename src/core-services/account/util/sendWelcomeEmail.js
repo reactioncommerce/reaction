@@ -27,7 +27,7 @@ export default async function sendWelcomeEmail(context, input) {
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new Error(`Account with ID ${accountId} not found`);
 
-  const { shopId, userId } = account;
+  const { userId } = account;
 
   let result;
   try {
@@ -43,14 +43,9 @@ export default async function sendWelcomeEmail(context, input) {
 
   const { email, token } = result;
 
-  // Fall back to primary shop if account has no shop linked
-  let shop;
-  if (shopId) {
-    shop = await Shops.findOne({ _id: shopId });
-  } else {
-    shop = await Shops.findOne({ shopType: "primary" });
-  }
-
+  // Account emails are always sent from the primary shop email and using primary shop
+  // email templates.
+  const shop = await Shops.findOne({ shopType: "primary" });
   if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const copyrightDate = new Date().getFullYear();

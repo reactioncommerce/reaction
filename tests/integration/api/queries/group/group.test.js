@@ -40,27 +40,29 @@ beforeAll(async () => {
     _id: "adminGroup",
     createdBy: null,
     name: "admin",
-    permissions: ["reaction:legacy:accounts/read"],
-    slug: "admin",
-    shopId
+    permissions: [
+      "reaction:legacy:groups/read",
+      // accounts/read is needed to request the createdAt account
+      "reaction:legacy:accounts/read"
+    ],
+    slug: "admin"
   });
   await testApp.collections.Groups.insertOne(adminGroup);
 
   mockAdminAccount = Factory.Account.makeOne({
-    groups: [adminGroup._id],
-    roles: {
-      [shopId]: ["reaction:legacy:accounts/read"]
-    },
-    shopId
+    groups: [adminGroup._id]
   });
-  await testApp.createUserAndAccount(mockAdminAccount);
+  await testApp.createUserAndAccount(mockAdminAccount, [
+    "reaction:legacy:groups/read",
+    // accounts/read is needed to request the createdAt account
+    "reaction:legacy:accounts/read"
+  ]);
 
   groups = Factory.Group.makeMany(2, { shopId });
   await testApp.collections.Groups.insertMany(groups);
 
   mockOtherAccount = Factory.Account.makeOne({
-    groups: [groups[0]._id],
-    shopId
+    groups: [groups[0]._id]
   });
   await testApp.createUserAndAccount(mockOtherAccount);
 
@@ -86,11 +88,11 @@ test("unauthenticated", async () => {
   try {
     await groupQuery({ id: groupMongoSchemaToGraphQL(groups[0])._id });
   } catch (error) {
-    expect(error[0].message).toBe("User does not have permissions to view groups");
+    expect(error[0].message).toBe("Access Denied");
   }
 });
 
-test("authenticated with reaction-accounts role, gets any group", async () => {
+test("authenticated with groups/read permission, gets any group", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const expectedGroup = groupMongoSchemaToGraphQL(groups[0]);
@@ -103,7 +105,7 @@ test("authenticated with reaction-accounts role, gets any group", async () => {
   await testApp.clearLoggedInUser();
 });
 
-test("authenticated without reaction-accounts role, gets group they belong to", async () => {
+test("authenticated without groups/read permission, gets group they belong to", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
   const expectedGroup = groupMongoSchemaToGraphQL(groups[0]);
@@ -116,13 +118,13 @@ test("authenticated without reaction-accounts role, gets group they belong to", 
   await testApp.clearLoggedInUser();
 });
 
-test("authenticated without reaction-accounts role, does not get group they do not belong to", async () => {
+test("authenticated without groups/read permission, does not get group they do not belong to", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
   try {
     await groupQuery({ id: groupMongoSchemaToGraphQL(groups[1])._id });
   } catch (error) {
-    expect(error[0].message).toBe("User does not have permissions to view groups");
+    expect(error[0].message).toBe("Access Denied");
   }
 
   await testApp.clearLoggedInUser();

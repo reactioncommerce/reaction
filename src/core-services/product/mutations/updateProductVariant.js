@@ -31,17 +31,6 @@ const metafieldInputSchema = new SimpleSchema({
 });
 
 const inputSchema = new SimpleSchema({
-  "_id": {
-    type: String,
-    optional: true
-  },
-  "ancestors": {
-    type: Array,
-    optional: true
-  },
-  "ancestors.$": {
-    type: String
-  },
   "attributeLabel": {
     type: String,
     optional: true
@@ -53,8 +42,7 @@ const inputSchema = new SimpleSchema({
   "height": {
     type: Number,
     min: 0,
-    optional: true,
-    defaultValue: 0
+    optional: true
   },
   "index": {
     type: SimpleSchema.Integer,
@@ -69,11 +57,9 @@ const inputSchema = new SimpleSchema({
     optional: true
   },
   "length": {
-    label: "Length",
     type: Number,
     min: 0,
-    optional: true,
-    defaultValue: 0
+    optional: true
   },
   "metafields": {
     type: Array,
@@ -95,33 +81,23 @@ const inputSchema = new SimpleSchema({
     optional: true
   },
   "sku": {
-    label: "SKU",
     type: String,
     optional: true
   },
   "title": {
-    label: "Label",
-    type: String,
-    optional: true
-  },
-  "type": {
-    label: "Type",
     type: String,
     optional: true
   },
   "weight": {
-    label: "Weight",
     type: Number,
     min: 0,
     optional: true,
     defaultValue: 0
   },
   "width": {
-    label: "Width",
     type: Number,
     min: 0,
-    optional: true,
-    defaultValue: 0
+    optional: true
   }
 });
 
@@ -149,26 +125,35 @@ export default async function updateProductVariant(context, input) {
     { shopId }
   );
 
+  inputSchema.validate(variantInput);
+  const fields = Object.keys(variantInput);
+  if (fields.length === 0) throw new ReactionError("invalid-param", "At least one field to update must be provided");
+
   const currentProduct = await Products.findOne({ _id: variantId, shopId });
   if (!currentProduct) throw new ReactionError("not-found", "Product variant not found");
 
-  const updateDocument = { ...variantInput };
-
-  inputSchema.validate(updateDocument);
-
-  await Products.updateOne(
+  const { value: updatedProductVariant } = await Products.findOneAndUpdate(
     {
       _id: variantId,
       shopId
     },
     {
-      $set: updateDocument
+      $set: {
+        ...variantInput,
+        updatedAt: new Date()
+      }
+    },
+    {
+      returnOriginal: false
     }
   );
 
-  const updatedProduct = Products.findOne({ _id: variantId, shopId });
+  await appEvents.emit("afterVariantUpdate", {
+    fields,
+    productId: updatedProductVariant.ancestors[0],
+    productVariant: updatedProductVariant,
+    productVariantId: variantId
+  });
 
-  await appEvents.emit("afterVariantUpdate", { productId: variantId, product: updatedProduct });
-
-  return updatedProduct;
+  return updatedProductVariant;
 }

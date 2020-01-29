@@ -43,28 +43,23 @@ export default async function updateProductVariantPrices(context, input) {
     shopId
   });
 
-  const { value: updatedProduct } = await Products.findOneAndUpdate(
+  const fields = Object.keys(prices);
+  if (fields.length === 0) throw new ReactionError("invalid-param", "At least one field to update must be provided");
+
+  const { value: updatedProductVariant } = await Products.findOneAndUpdate(
     { _id: variantId, shopId, type: "variant" },
     { $set: { ...prices } },
     { returnOriginal: false }
   );
 
-  if (!updatedProduct) throw new ReactionError("error-occurred", "Unable to update variant prices");
+  if (!updatedProductVariant) throw new ReactionError("error-occurred", "Unable to update variant prices");
 
-  const promises = Object.keys(prices).map((key) => {
-    const field = key;
-    const value = prices[key];
-
-    return appEvents.emit("afterVariantUpdate", {
-      _id: variantId,
-      productId: updatedProduct.ancestors[0],
-      variant: updatedProduct,
-      field,
-      value
-    });
+  await appEvents.emit("afterVariantUpdate", {
+    fields,
+    productId: updatedProductVariant.ancestors[0],
+    productVariant: updatedProductVariant,
+    productVariantId: variantId
   });
 
-  await Promise.all(promises);
-
-  return updatedProduct;
+  return updatedProductVariant;
 }

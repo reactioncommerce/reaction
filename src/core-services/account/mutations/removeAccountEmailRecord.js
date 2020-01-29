@@ -38,7 +38,6 @@ export default async function removeAccountEmailRecord(context, input) {
   if (!account) throw new ReactionError("not-found", "Account not Found");
 
   await context.validatePermissions(`reaction:legacy:accounts:${accountId}`, "delete:emails", {
-    shopId: account.shopId,
     owner: account.userId
   });
 
