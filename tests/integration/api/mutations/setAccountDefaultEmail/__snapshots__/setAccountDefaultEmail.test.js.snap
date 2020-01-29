@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`user cannot set default email on their own account if address doesn't already exists 1`] = `
+exports[`user cannot set default email on their own account if address doesn't already exist 1`] = `
 Array [
   Object {
     "extensions": Object {
