@@ -49,16 +49,20 @@ export default async function orders(context, { filters, shopIds } = {}) {
 
   // Add fulfillment status if provided
   if (filters && filters.fulfillmentStatus) {
-    const prefix = filters.fulfillmentStatus === "new" ? "" : "coreOrderWorkflow/";
+    const fulfillmentStatuses = filters.fulfillmentStatus.map((status) => {
+      const prefix = status === "new" ? "" : "coreOrderWorkflow/";
+      return `${prefix}${status}`;
+    });
+
     fulfillmentStatusFilter = {
-      "shipping.workflow.status": `${prefix}${filters.fulfillmentStatus}`
+      "shipping.workflow.status": { $in: fulfillmentStatuses }
     };
   }
 
   // Add payment status filters if provided
   if (filters && filters.paymentStatus) {
     paymentStatusFilter = {
-      "payments.status": filters.paymentStatus
+      "payments.status": { $in: filters.paymentStatus }
     };
   }
 

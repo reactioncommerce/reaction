@@ -144,16 +144,21 @@
               "shipping": "Shipping",
               "status": "Status"
             },
+            "error": "An error occurred",
             "filter": {
-              "status": "Status",
-              "dateRange": "Date range",
-              "shippingStatus": "Shipping status",
-              "new": "New",
-              "captured": "Captured",
-              "shipped": "Shipped",
-              "completed": "Completed",
               "canceled": "Canceled",
-              "refunded": "Refunded"
+              "captured": "Captured",
+              "completed": "Completed",
+              "dateRange": "Date range",
+              "globalFilter": "Filter orders",
+              "last30": "Last 30 days",
+              "last7": "Last 7 days",
+              "new": "New",
+              "refunded": "Refunded",
+              "shipped": "Shipped",
+              "shippingStatus": "Shipping status",
+              "status": "Status",
+              "today": "Today"
             },
             "search": {
               "clearSearch": "Clear",

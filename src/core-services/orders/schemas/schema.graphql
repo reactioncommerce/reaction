@@ -1035,10 +1035,10 @@ input OrderFilterInput {
   createdAt: CreatedAtInput
 
   "An order's fulfillment status"
-  fulfillmentStatus: OrderFulfillmentStatus
+  fulfillmentStatus: [OrderFulfillmentStatus]
 
   "An order's payment status"
-  paymentStatus: OrderPaymentStatus
+  paymentStatus: [OrderPaymentStatus]
 
   "Keywords typed by the user in the search input field"
   searchField: String
