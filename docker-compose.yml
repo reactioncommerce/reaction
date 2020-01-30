@@ -7,15 +7,9 @@
 version: '3.4'
 
 networks:
-  api:
+  reaction:
     external:
-      name: api.reaction.localhost
-  auth:
-    external:
-      name: auth.reaction.localhost
-  streams:
-    external:
-      name: streams.reaction.localhost
+      name: reaction.localhost
 
 services:
   api:
@@ -26,8 +20,7 @@ services:
       - ./.env
     networks:
       default:
-      api:
-      auth:
+      reaction:
     ports:
       - "3000:3000"
 
@@ -36,7 +29,7 @@ services:
     command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
     networks:
       default:
-      streams:
+      reaction:
     ports:
       - "27017:27017"
     volumes:
