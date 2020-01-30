@@ -1,4 +1,3 @@
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
