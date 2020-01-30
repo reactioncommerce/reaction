@@ -1,6 +1,6 @@
 import ensureRoles from "./util/ensureRoles.js";
 import {
-  defaultOwnerRoles,
+  defaultShopOwnerRoles,
   defaultShopManagerRoles
 } from "./util/defaultRoles.js";
 
@@ -12,6 +12,6 @@ import {
  */
 export default async function accountStartup(context) {
   // Add missing roles to `roles` collection if needed
-  await ensureRoles(context, defaultOwnerRoles);
+  await ensureRoles(context, defaultShopOwnerRoles);
   await ensureRoles(context, defaultShopManagerRoles);
 }

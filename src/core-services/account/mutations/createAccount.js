@@ -1,6 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
+import ensureAccountsManagerGroup from "../util/ensureAccountsManagerGroup.js";
+import ensureSystemManagerGroup from "../util/ensureSystemManagerGroup.js";
 import sendWelcomeEmail from "../util/sendWelcomeEmail.js";
 
 const inputSchema = new SimpleSchema({
@@ -43,7 +44,7 @@ export default async function createAccount(context, input) {
 
   const {
     appEvents,
-    collections: { Accounts, AccountInvites, Groups },
+    collections: { Accounts, AccountInvites },
     simpleSchemas: {
       Account: AccountSchema
     },
@@ -78,82 +79,18 @@ export default async function createAccount(context, input) {
   };
 
   let groups = [];
+  let invites;
 
   // if this is the first user created overall, add them to the
   // `system-manager` and `accounts-manager` groups
-  const appAccounts = await Accounts.find({}).toArray();
-  if (appAccounts.length === 0) {
-    // get IDs of `system-manager` and `account-manager` groups
-    const systemManagerGroup = await Groups.findOne({ slug: "system-manager" });
-    let systemManagerGroupId = (systemManagerGroup && systemManagerGroup._id) || null;
-    // if system-manager group doesn't exist, create it now
-    if (!systemManagerGroup) {
-      systemManagerGroupId = Random.id();
-      await Groups.insertOne({
-        _id: systemManagerGroupId,
-        name: "system manager",
-        slug: "system-manager",
-        permissions: [
-          "reaction:legacy:accounts/invite:group",
-          "reaction:legacy:accounts/add:emails",
-          "reaction:legacy:accounts/add:address-books",
-          "reaction:legacy:accounts/create",
-          "reaction:legacy:accounts/delete:emails",
-          "reaction:legacy:accounts/invite:group",
-          "reaction:legacy:accounts/read",
-          "reaction:legacy:accounts/remove:address-books",
-          "reaction:legacy:accounts/update:address-books",
-          "reaction:legacy:accounts/update:currency",
-          "reaction:legacy:accounts/update:language",
-          "reaction:legacy:accounts/read",
-          "reaction:legacy:accounts/read:admin-accounts",
-          "reaction:legacy:accounts/create",
-          "reaction:legacy:accounts/read",
-          "reaction:legacy:accounts/read:admin-accounts",
-          "reaction:legacy:shops/create"
-        ],
-        shopId: null
-      });
-    }
+  const anyAccount = await Accounts.findOne();
+  if (!anyAccount) {
+    const accountsManagerGroupId = await ensureAccountsManagerGroup(context);
+    const systemManagerGroupId = await ensureSystemManagerGroup(context);
     groups.push(systemManagerGroupId);
-
-    const accountsManagerGroup = await Groups.findOne({ slug: "system-manager" });
-    let accountsManagerGroupId = (accountsManagerGroup && accountsManagerGroup._id) || null;
-    // if accounts-manager group doesn't exist, create it now
-    if (!accountsManagerGroup) {
-      accountsManagerGroupId = Random.id();
-      await Groups.insertOne({
-        _id: accountsManagerGroupId,
-        name: "system manager",
-        slug: "system-manager",
-        permissions: [
-          "reaction:legacy:accounts/invite:group",
-          "reaction:legacy:accounts/add:emails",
-          "reaction:legacy:accounts/add:address-books",
-          "reaction:legacy:accounts/create",
-          "reaction:legacy:accounts/delete:emails",
-          "reaction:legacy:accounts/invite:group",
-          "reaction:legacy:accounts/read",
-          "reaction:legacy:accounts/remove:address-books",
-          "reaction:legacy:accounts/update:address-books",
-          "reaction:legacy:accounts/update:currency",
-          "reaction:legacy:accounts/update:language",
-          "reaction:legacy:accounts/read",
-          "reaction:legacy:accounts/read:admin-accounts",
-          "reaction:legacy:accounts/create",
-          "reaction:legacy:accounts/read",
-          "reaction:legacy:accounts/read:admin-accounts",
-          "reaction:legacy:shops/create"
-        ],
-        shopId: null
-      });
-    }
     groups.push(accountsManagerGroupId);
-  }
-
-  // if this isn't the first account, check to see if this user was invited to a group
-  let invites;
-  if (appAccounts) {
+  } else {
+    // if this isn't the first account see if they were invited by another user
     // find all invites for this email address, for all shops, and add to all groups
     const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
     invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
