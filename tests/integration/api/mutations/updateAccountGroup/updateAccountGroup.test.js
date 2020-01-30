@@ -95,7 +95,7 @@ beforeAll(async () => {
     shopId
   });
 
-  // Create users
+  // Create accounts
   mockAdminAccount = Factory.Account.makeOne({
     _id: "mockAdminAccount",
     groups: [adminGroup._id],
@@ -121,7 +121,7 @@ beforeAll(async () => {
 afterAll(() => testApp.stop());
 
 beforeEach(async () => {
-  // Create users
+  // Create accounts
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.createUserAndAccount(mockAdminAccountWithBadPermissions);
   await testApp.createUserAndAccount(mockCustomerAccount);

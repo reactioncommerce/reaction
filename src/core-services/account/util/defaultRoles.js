@@ -9,6 +9,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:accounts/add:address-books",
   "reaction:legacy:accounts/add:emails",
   "reaction:legacy:accounts/create",
+  "reaction:legacy:accounts/update:emails",
   "reaction:legacy:accounts/delete:emails",
   "reaction:legacy:accounts/invite:group",
   "reaction:legacy:accounts/read",

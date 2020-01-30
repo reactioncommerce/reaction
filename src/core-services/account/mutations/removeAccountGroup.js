@@ -38,7 +38,7 @@ export default async function removeAccountGroup(context, input) {
   }
 
   if (!defaultCustomerGroupForShop) {
-    throw new ReactionError("server-error", `Cannot remove group ${groupId}. Default "customer" group doesn't exist to move users to.`);
+    throw new ReactionError("server-error", `Cannot remove group ${groupId}. Default "customer" group doesn't exist to move account to.`);
   }
 
   // Move accounts from their old group to their new group

@@ -150,7 +150,7 @@ Array [
         "error": "server-error",
         "eventData": Object {},
         "isClientSafe": true,
-        "reason": "Cannot remove group testGroup. Default \\"customer\\" group doesn't exist to move users to.",
+        "reason": "Cannot remove group testGroup. Default \\"customer\\" group doesn't exist to move account to.",
       },
     },
     "locations": Array [
@@ -159,7 +159,7 @@ Array [
         "line": 3,
       },
     ],
-    "message": "Cannot remove group testGroup. Default \\"customer\\" group doesn't exist to move users to.",
+    "message": "Cannot remove group testGroup. Default \\"customer\\" group doesn't exist to move account to.",
     "path": Array [
       "removeAccountGroup",
       "group",

@@ -26,8 +26,7 @@ export default async function removeAccountFromGroup(context, input) {
     appEvents,
     collections: {
       Accounts,
-      Groups,
-      users
+      Groups
     },
     userId
   } = context;
@@ -42,9 +41,6 @@ export default async function removeAccountFromGroup(context, input) {
 
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "No account found with that ID");
-
-  const accountUser = await users.findOne({ _id: account.userId });
-  if (!accountUser) throw new ReactionError("not-found", "No user found with that ID");
 
   const groupToRemove = account.groups.includes(groupId);
   if (!groupToRemove) throw new ReactionError("not-found", "Account not found in this group");

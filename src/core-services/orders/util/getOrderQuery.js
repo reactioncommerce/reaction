@@ -27,7 +27,7 @@ export async function getOrderQuery(context, selector, shopId, token) {
     // with further permission checks in each component to limit functionality where needed
     // No need to adjust the selector to get the order
   } else if (contextAccountId) {
-    // Regular users can only see their own orders
+    // Customer accounts can only see their own orders
     newSelector.accountId = contextAccountId;
   } else if (token) {
     // If you have an anonymous access token for this order, OK to see it

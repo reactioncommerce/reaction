@@ -1,28 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 
 /**
- * @summary Sends a new order notification to an admin
- * @param {Object} context App context
- * @param {Object} context.collections Map of MongoDB collections
- * @param {String} adminUserId User ID (not account ID)
- * @returns {undefined}
- */
-async function sendNotificationToAdmin(context, adminUserId) {
-  const { collections: { Accounts } } = context;
-
-  const account = await Accounts.findOne({ userId: adminUserId }, { projection: { _id: 1 } });
-  if (!account) {
-    throw new Error(`No account found for admin user ID ${adminUserId}`);
-  }
-
-  return context.mutations.createNotification(context, {
-    accountId: account._id,
-    type: "forAdmin",
-    url: "/operator/orders"
-  });
-}
-
-/**
  * @summary Given a new order, sends appropriate notifications to all interested parties.
  * @param {Object} context App context
  * @param {Object} context.collections Map of MongoDB collections
@@ -30,7 +8,7 @@ async function sendNotificationToAdmin(context, adminUserId) {
  * @returns {undefined}
  */
 export default async function sendNewOrderNotifications(context, order) {
-  const { collections: { Shops, users } } = context;
+  const { collections: { Shops } } = context;
 
   // Send notification to user who made the order
   if (order.accountId) {
@@ -51,27 +29,13 @@ export default async function sendNewOrderNotifications(context, order) {
     });
   }
 
-  // Send notification to all who have "owner" role for each shop that has items to fulfill
-  const ownersByShop = {};
-  const promises = order.shipping.map(async ({ shopId }) => {
-    ownersByShop[shopId] = await users.find({ [`roles.${shopId}`]: "owner" }, {
-      projection: {
-        _id: 1
-      }
-    }).toArray();
-  });
-  await Promise.all(promises);
-
-  const sendPromises = [];
-  Object.keys(ownersByShop).forEach((shopId) => {
-    ownersByShop[shopId].forEach((user) => {
-      sendPromises.push(sendNotificationToAdmin(context, user._id, shopId));
-    });
-  });
-
-  try {
-    await Promise.all(sendPromises);
-  } catch (error) {
-    Logger.error("Error in sendNotificationToAdmin within sendNewOrderNotifications", error);
-  }
+  // TODO: Send notification to all who want to know about new orders coming in for this shop.
+  // First we need to add a way to add accounts to a list of people who want to be notified about
+  // all new orders. Then call this for each account:
+  //
+  // context.mutations.createNotification(context, {
+  //   accountId,
+  //   type: "forAdmin",
+  //   url: "/operator/orders"
+  // });
 }

@@ -12,7 +12,7 @@ const inputSchema = new SimpleSchema({
 /**
  * @name accounts/setAccountProfileLanguage
  * @memberof Mutations/Accounts
- * @summary Sets users profile language
+ * @summary Sets account profile language
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} input.language- i18n language code to add to user profile

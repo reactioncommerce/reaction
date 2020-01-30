@@ -18,6 +18,9 @@ type Product {
   "True if this product should be shown to shoppers. Typically, non-visible products are not returned in queries."
   isVisible: Boolean!
 
+  "All media for a product"
+  media: [ImageInfo]
+
   "The product description to use for page `description` meta element in HTML"
   metaDescription: String
 
@@ -122,6 +125,9 @@ type ProductVariant {
 
   "The length of the product, if it has physical dimensions"
   length: Float
+
+  "All media for a variant"
+  media: [ImageInfo]
 
   "Arbitrary additional metadata about this product"
   metafields: [Metafield]!

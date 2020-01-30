@@ -13,7 +13,7 @@ const inputSchema = new SimpleSchema({
 /**
  * @name accounts/setAccountProfileCurrency
  * @memberof Mutations/Accounts
- * @summary Sets users profile currency
+ * @summary Sets account profile currency
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} input.currencyCode - currency symbol to add to user profile
@@ -22,7 +22,7 @@ const inputSchema = new SimpleSchema({
  */
 export default async function setAccountProfileCurrency(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections, accountId: accountIdFromContext } = context;
+  const { appEvents, collections, accountId: accountIdFromContext, userId } = context;
   const { Accounts } = collections;
   const { currencyCode, accountId: providedAccountId } = input;
 
@@ -50,7 +50,7 @@ export default async function setAccountProfileCurrency(context, input) {
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
-    updatedBy: accountId,
+    updatedBy: userId,
     updatedFields: ["profile.currency"]
   });
 

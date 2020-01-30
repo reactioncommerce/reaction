@@ -122,6 +122,14 @@ class TestApp {
 
     const result = await this.reactionNodeApp.collections.Shops.insertOne(mockShop);
 
+    await this.context.appEvents.emit("afterShopCreate", {
+      createdBy: this.userId,
+      shop: {
+        ...mockShop,
+        _id: result.insertedId
+      }
+    });
+
     return result.insertedId;
   }
 

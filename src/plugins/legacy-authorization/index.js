@@ -12,6 +12,11 @@ export default async function register(app) {
     label: "Legacy Authorization",
     name: "reaction-legacy-authorization",
     version: app.context.appVersion,
+    collections: {
+      roles: {
+        name: "roles"
+      }
+    },
     auth: {
       permissionsByUserId
     },
