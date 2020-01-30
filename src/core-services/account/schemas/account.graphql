@@ -42,7 +42,7 @@ input CreateAccountInput {
   "The userID account was created from create a new account from"
   userId: ID!
 
-  "Username on service used to create account"
+  "Username"
   username: String
 }
 
@@ -109,6 +109,42 @@ input SetAccountProfileLanguageInput {
  language: String!
 }
 
+"Describes an account update"
+input UpdateAccountInput {
+  "The account ID, which defaults to the viewer account"
+  accountId: ID
+
+  "Bio to display on profile"
+  bio: String
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The preferred currency code used by this account"
+  currencyCode: String
+
+  "The first name of the person this account represents"
+  firstName: String
+
+  "The preferred language (code) used by this account"
+  language: String
+
+  "The last name of the person this account represents"
+  lastName: String
+
+  "The full name of the person this account represents"
+  name: String
+
+  "Some note about this account"
+  note: String
+
+  "URL of picture to diplay on profile"
+  picture: String
+
+  "Username"
+  username: String
+}
+
 "Defines a new Email and the account to which it should be added"
 input AddAccountEmailRecordInput {
   "The account ID, which defaults to the viewer account"
@@ -145,15 +181,6 @@ input SetAccountDefaultEmailInput {
   email: Email!
 }
 
-"Per-account tax exemption settings used by the Avalara plugin"
-type TaxSettings {
-  "Customer usage type. A value matching the `code` field of one TaxEntityCode, or any custom string."
-  customerUsageType: String
-
-  "Exemption number for an account"
-  exemptionNo: String
-}
-
 "Represents a single user account"
 type Account implements Node {
   "The account ID"
@@ -173,6 +200,9 @@ type Account implements Node {
     "Return at most this many results. This parameter may be used with the `before` parameter."
     last: ConnectionLimitInt
   ): AddressConnection
+
+  "Bio to display on profile"
+  bio: String
 
   "The date and time at which this account was created"
   createdAt: DateTime!
@@ -201,6 +231,9 @@ type Account implements Node {
   "Some note about this account"
   note: String
 
+  "URL of picture to diplay on profile"
+  picture: String
+
   "An object storing plugin-specific preferences for this account"
   preferences: JSONObject
 
@@ -209,14 +242,14 @@ type Account implements Node {
   """
   primaryEmailAddress: Email!
 
-  "The shop to which this account belongs, if it is associated with a specific shop"
-  shop: Shop
-
-  "Per-account tax exemption settings used by the Avalara plugin"
-  taxSettings: TaxSettings
-
   "The date and time at which this account was last updated"
-  updatedAt: DateTime!
+  updatedAt: DateTime
+
+  "The Identity user ID with which this account is associated"
+  userId: String!
+
+  "Username"
+  username: String
 }
 
 """
@@ -346,6 +379,15 @@ type SetAccountProfileLanguagePayload {
   clientMutationId: String
 }
 
+"The response from the `updateAccount` mutation"
+type UpdateAccountPayload {
+  "The updated account"
+  account: Account!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 extend type Mutation {
   "Add a new address to the `addressBook` field for an account"
   addAccountAddressBookEntry(
@@ -406,6 +448,12 @@ extend type Mutation {
     "Mutation input"
     input: UpdateAccountAddressBookEntryInput!
   ): UpdateAccountAddressBookEntryPayload
+
+  "Update account fields"
+  updateAccount(
+    "Mutation input"
+    input: UpdateAccountInput!
+  ): UpdateAccountPayload
 }
 
 extend type Query {
