@@ -1,4 +1,3 @@
-import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
