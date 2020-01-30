@@ -26,6 +26,7 @@
     "actions": [
       "add:address-books",
       "add:emails",
+      "update:emails",
       "delete:emails",
       "read",
       "remove:address-books",
@@ -43,6 +44,7 @@
     "actions": [
       "add:address-books",
       "add:emails",
+      "update:emails",
       "delete:emails",
       "read",
       "remove:address-books",

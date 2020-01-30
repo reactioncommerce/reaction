@@ -1,3 +1,4 @@
+import mutations from "./mutations/index.js";
 import tokenMiddleware from "./util/tokenMiddleware.js";
 
 /**
@@ -10,6 +11,12 @@ export default async function register(app) {
     label: "Authentication",
     name: "reaction-authentication",
     version: app.context.appVersion,
+    collections: {
+      users: {
+        name: "users"
+      }
+    },
+    mutations,
     expressMiddleware: [
       {
         route: "graphql",

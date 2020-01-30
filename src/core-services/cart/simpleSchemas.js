@@ -792,7 +792,7 @@ export const CartItem = new SimpleSchema({
  * @name Cart
  * @memberof Schemas
  * @type {SimpleSchema}
- * @property {String} _id required for check of users' carts
+ * @property {String} _id required
  * @property {String} shopId required, Cart ShopId
  * @property {String} accountId Account ID for account carts, or null for anonymous
  * @property {String} anonymousAccessToken Token for accessing anonymous carts, null for account carts

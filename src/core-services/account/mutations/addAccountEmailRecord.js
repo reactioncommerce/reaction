@@ -1,9 +1,11 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import sendVerificationEmail from "../util/sendVerificationEmail.js";
 
 const inputSchema = new SimpleSchema({
-  accountId: String,
+  accountId: {
+    type: String,
+    optional: true
+  },
   email: SimpleSchema.RegEx.Email
 });
 
@@ -19,48 +21,42 @@ const inputSchema = new SimpleSchema({
  */
 export default async function addAccountEmailRecord(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections } = context;
-  const { Accounts, users } = collections;
-  const {
-    accountId,
-    email
-  } = input;
+  const { accountId: accountIdFromContext, appEvents, collections, userId } = context;
+  const { Accounts } = collections;
+  const { email } = input;
+
+  // If no account ID input, default to the account that's calling
+  const accountId = input.accountId || accountIdFromContext;
 
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "Account not Found");
 
-  const user = await users.findOne({ _id: account.userId });
-  if (!user) throw new ReactionError("not-found", "User not Found");
-
-  await context.validatePermissions(`reaction:legacy:accounts:${account._id}`, "add:emails", {
+  await context.validatePermissions(`reaction:legacy:accounts:${accountId}`, "add:emails", {
     owner: account.userId
   });
 
-  // add email to user
-  const { value: updatedUser } = await users.findOneAndUpdate(
-    { _id: user._id },
-    {
-      $addToSet: {
-        emails: {
-          address: email,
-          provides: "default",
-          verified: false
-        }
-      }
-    },
-    {
-      returnOriginal: false
-    }
-  );
+  const existingEmail = (account.emails || []).find(({ address }) => address === email);
+  if (existingEmail) {
+    throw new ReactionError("duplicate", "Account already has this email address");
+  }
 
-  if (!updatedUser) throw new ReactionError("server-error", "Unable to update User");
+  const emails = {
+    address: email,
+    verified: false
+  };
+
+  const isDefaultEmailSet = (account.emails || []).some(({ provides }) => provides === "default");
+
+  if (!isDefaultEmailSet) {
+    emails.provides = "default";
+  }
 
   // add email to Account
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
     { _id: accountId },
     {
-      $set: {
-        emails: updatedUser.emails
+      $addToSet: {
+        emails
       }
     },
     {
@@ -70,14 +66,9 @@ export default async function addAccountEmailRecord(context, input) {
 
   if (!updatedAccount) throw new ReactionError("server-error", "Unable to update Account");
 
-  sendVerificationEmail(context, {
-    bodyTemplate: "accounts/verifyUpdatedEmail",
-    userId: user._id
-  });
-
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
-    updatedBy: accountId,
+    updatedBy: userId,
     updatedFields: ["emails"]
   });
 

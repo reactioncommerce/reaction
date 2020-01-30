@@ -379,7 +379,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "isVisible": {
     type: Boolean,
-    label: "Indicates if a product is visible to non-admin users",
+    label: "Indicates if a product is visible to shoppers",
     defaultValue: false
   },
   "length": {

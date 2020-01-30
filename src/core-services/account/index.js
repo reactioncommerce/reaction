@@ -39,12 +39,6 @@ export default async function register(app) {
       },
       Groups: {
         name: "Groups"
-      },
-      roles: {
-        name: "roles"
-      },
-      users: {
-        name: "users"
       }
     },
     auth: {
