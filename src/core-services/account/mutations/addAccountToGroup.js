@@ -1,6 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
-import canAddAccountToGroup from "../util/canAddAccountToGroup.js";
 
 const inputSchema = new SimpleSchema({
   accountId: String,
@@ -34,8 +33,7 @@ export default async function addAccountToGroup(context, input) {
   const groupToAddUserTo = await Groups.findOne({ _id: groupId });
   if (!groupToAddUserTo) throw new ReactionError("not-found", "No group found with that ID");
 
-  const isAllowed = await canAddAccountToGroup(context, groupToAddUserTo);
-  if (!isAllowed) throw new ReactionError("access-denied", "Access Denied");
+  await context.validatePermissions("reaction:legacy:groups", "manage:accounts", { shopId: groupToAddUserTo.shopId });
 
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "No account found with that ID");

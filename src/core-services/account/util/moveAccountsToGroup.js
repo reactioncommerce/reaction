@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import canAddAccountToGroup from "./canAddAccountToGroup.js";
 
 const logCtx = { name: "core/accounts", file: " executeBulkOperation" };
 
@@ -29,8 +28,7 @@ export default async function moveAccountsToGroup(context, { shopId, fromGroupId
     throw new ReactionError("not-found", `Accounts cannot be moved to group with ID ${toGroupId}. Group doesn't exist.`);
   }
 
-  const isAllowed = await canAddAccountToGroup(context, toGroup);
-  if (!isAllowed) throw new ReactionError("access-denied", "Access Denied");
+  await context.validatePermissions("reaction:legacy:groups", "manage:accounts", { shopId });
 
   let response;
   try {
