@@ -114,11 +114,6 @@ describe("authenticated, non-admin", () => {
         name: "mockName",
         note: "mockNote",
         preferences: {},
-        shop: null,
-        taxSettings: {
-          customerUsageType: "mockCustomerUsageType",
-          exemptionNo: "mockExemptionNo"
-        },
         updatedAt: jasmine.any(String)
       }
     });
@@ -183,11 +178,6 @@ describe("authenticated, admin", () => {
         name: "mockName",
         note: "mockNote",
         preferences: {},
-        shop: null,
-        taxSettings: {
-          customerUsageType: "mockCustomerUsageType",
-          exemptionNo: "mockExemptionNo"
-        },
         updatedAt: jasmine.any(String)
       }
     });

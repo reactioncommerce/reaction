@@ -33,13 +33,6 @@ query {
     name
     note
     preferences
-    shop {
-      _id
-    }
-    taxSettings {
-      exemptionNo
-      customerUsageType
-    }
     updatedAt
   }
 }

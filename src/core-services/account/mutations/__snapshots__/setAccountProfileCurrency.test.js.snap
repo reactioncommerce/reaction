@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if account not found - auth account 1`] = `"No account found"`;
-
-exports[`throws if account not found - other account 1`] = `"No account found"`;
-
-exports[`throws if currency code is invalid 1`] = `"No currency has code \\"BAD_CODE\\""`;
