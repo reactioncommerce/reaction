@@ -90,13 +90,6 @@ const mockShippingMethod = {
   ]
 };
 
-const mockAdminAccount = Factory.Account.makeOne({
-  _id: "mockAdminAccountId",
-  roles: {
-    __global_roles__: ["owner"] // eslint-disable-line camelcase
-  }
-});
-
 let addCartItems;
 let availablePaymentMethods;
 let createCart;
@@ -128,6 +121,21 @@ beforeAll(async () => {
   updateCartItemsQuantity = testApp.mutate(UpdateCartItemsQuantityMutation);
   updateFulfillmentOptionsForGroup = testApp.mutate(UpdateFulfillmentOptionsForGroupMutation);
 
+  const shopCreateGroup = Factory.Group.makeOne({
+    _id: "shopCreateGroup",
+    createdBy: null,
+    name: "shopCreate",
+    permissions: ["reaction:legacy:shops/create", "reaction:legacy:groups/manage:accounts"],
+    slug: "shop-create",
+    shopId: null
+  });
+  await testApp.collections.Groups.insertOne(shopCreateGroup);
+
+  const mockAdminAccount = Factory.Account.makeOne({
+    _id: "mockAdminAccountId",
+    groups: ["shopCreateGroup", "adminGroup"]
+  });
+
   // Setup shop
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.setLoggedInUser(mockAdminAccount);
@@ -144,18 +152,18 @@ beforeAll(async () => {
     }
   });
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:products/publish"],
+    slug: "admin",
+    shopId: newShopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   opaqueShopId = newShopId;
   internalShopId = decodeOpaqueIdForNamespace("reaction/shop", newShopId);
-
-  // Give admin account necessary permissions for this shop
-  await testApp.collections.Accounts.updateOne(
-    { _id: mockAdminAccount._id },
-    {
-      $set: {
-        [`roles.${internalShopId}`]: ["reaction:legacy:products/publish"]
-      }
-    }
-  );
 
   // Set other shop settings
   await testApp.collections.Shops.updateOne(
