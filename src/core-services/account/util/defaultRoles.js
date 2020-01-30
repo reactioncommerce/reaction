@@ -1,11 +1,4 @@
 export const defaultShopManagerRoles = [
-  "createProduct", // legacy role
-  "dashboard", // legacy role
-  "media/create", // legacy role
-  "media/update", // legacy role
-  "media/delete", // legacy role
-  "product/admin", // legacy role
-  "shopSettings", // legacy role
   "reaction:legacy:accounts/add:address-books",
   "reaction:legacy:accounts/add:emails",
   "reaction:legacy:accounts/create",
