@@ -96,9 +96,7 @@ export const defaultShopManagerRoles = [
 
 export const defaultShopOwnerRoles = [
   ...defaultShopManagerRoles,
-  "owner", // legacy role
-  "reaction:legacy:shops/create",
-  "reaction:legacy:shops/owner"
+  "reaction:legacy:shops/create"
 ];
 
 export const defaultAccountsManagerRoles = [
