@@ -33,7 +33,7 @@ input CreateAccountInput {
   "Name to display on profile"
   name: String
 
-  "URL of picture to diplay on profile"
+  "URL of picture to display on profile"
   picture: String
 
   "The ID of the shop this account will belong to"
@@ -114,7 +114,7 @@ input UpdateAccountInput {
   "Some note about this account"
   note: String
 
-  "URL of picture to diplay on profile"
+  "URL of picture to display on profile"
   picture: String
 
   "Username"
@@ -207,7 +207,7 @@ type Account implements Node {
   "Some note about this account"
   note: String
 
-  "URL of picture to diplay on profile"
+  "URL of picture to display on profile"
   picture: String
 
   "An object storing plugin-specific preferences for this account"
