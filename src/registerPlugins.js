@@ -41,6 +41,7 @@ import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTaxesRatesPlugin from "./plugins/taxes-rates/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
 import registerTranslationsPlugin from "./plugins/translations/index.js";
+import registerAdminUIPlugin from "./plugins/admin-ui/index.js";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
@@ -75,6 +76,7 @@ export default async function registerPlugins(app) {
   await registerAddressPlugin(app); // REQUIRED
   await registerTranslationsPlugin(app); // OPTIONAL
   await registerSystemInfoPlugin(app); // OPTIONAL
+  await registerAdminUIPlugin(app); // REQUIRED
 
   /**
    * Email

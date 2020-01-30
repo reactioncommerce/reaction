@@ -1,5 +1,3 @@
-import mutations from "./mutations/index.js";
-import tokenMiddleware from "./util/tokenMiddleware.js";
 import schemas from "./schemas/index.js";
 
 /**
@@ -15,17 +13,10 @@ export default async function register(app) {
     graphQL: {
       schemas
     },
-    expressMiddleware: [
-      {
-        route: "graphql",
-        stage: "authenticate",
-        fn: tokenMiddleware
-      }
-    ],
     globalSettingsConfig: {
       canSeeAdminUI: {
         defaultValue: false,
-        permissionsThatCanEdit: ["reaction:legacy:shops/owner"],
+        permissionsThatCanEdit: ["reaction:legacy:shops/update"],
         simpleSchema: {
           type: Boolean
         }
