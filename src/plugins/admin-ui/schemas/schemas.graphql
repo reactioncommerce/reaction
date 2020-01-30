@@ -1,0 +1,9 @@
+extend type GlobalSettings {
+  "Should allow access Admin UI"
+  canSeeAdminUI: Boolean
+}
+
+extend input GlobalSettingsUpdates {
+  "Should allow access Admin UI"
+  canSeeAdminUI: Boolean
+}
