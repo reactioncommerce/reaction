@@ -1,27 +1,4 @@
-export const defaultCustomerRoles = [
-  "account/profile", // legacy role
-  "cart/completed", // legacy role
-  "guest", // legacy role
-  "index", // legacy role
-  "product", // legacy role (unused)
-  "tag", // legacy role (unused)
-  "reaction:legacy:products/read",
-  "reaction:legacy:tags/read"
-];
-
-export const defaultVisitorRoles = [
-  "anonymous", // legacy role
-  "cart/completed", // legacy role
-  "guest", // legacy role
-  "index", // legacy role
-  "product", // legacy role (unused)
-  "tag", // legacy role (unused)
-  "reaction:legacy:products/read",
-  "reaction:legacy:tags/read"
-];
-
 export const defaultShopManagerRoles = [
-  ...defaultCustomerRoles,
   "createProduct", // legacy role
   "dashboard", // legacy role
   "media/create", // legacy role

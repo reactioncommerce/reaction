@@ -8,7 +8,6 @@
  * @returns {Promise<Object>} UpdateTaxRatePayload
  */
 export default async function updateTaxRate(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, _id, country, region, postal, taxCode, rate } = input;
   const { appEvents, collections } = context;
   const { Taxes } = collections;
