@@ -1,9 +1,0 @@
-mutation($input: SetAccountProfileLanguageInput!) {
-  setAccountProfileLanguage(input: $input) {
-      account {
-        _id
-        name
-        language
-      }
-    }
-}
