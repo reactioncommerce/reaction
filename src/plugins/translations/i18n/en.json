@@ -123,6 +123,7 @@
               "qty": "Qty",
               "product": "Product",
               "id": "ID",
+              "title": "Title",
               "visible": "Visible",
               "published": "Published"
             },
