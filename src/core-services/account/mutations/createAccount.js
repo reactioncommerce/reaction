@@ -101,15 +101,12 @@ export default async function createAccount(context, input) {
 
   await Accounts.insertOne(account);
 
-  try {
-    await Promise.all(groups.map((groupId) => (
-      context.mutations.addAccountToGroup(context.getInternalContext(), {
-        accountId: account._id,
-        groupId
-      })
-    )));
-  } catch (error) {
-    Logger.error(error, `Error adding account ${account._id} to group upon account creation`);
+  for (const groupId of groups) {
+    // eslint-disable-next-line no-await-in-loop
+    await context.mutations.addAccountToGroup(context.getInternalContext(), {
+      accountId: account._id,
+      groupId
+    });
   }
 
   // Delete any invites that are now finished
