@@ -106,7 +106,7 @@ export default async function createAccount(context, input) {
     await context.mutations.addAccountToGroup(context.getInternalContext(), {
       accountId: account._id,
       groupId
-    })
+    });
   }
 
   // Delete any invites that are now finished
