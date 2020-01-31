@@ -1,8 +1,7 @@
-import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
-import defaultAccountGroups, { defaultCustomerGroupSlug } from "../util/defaultAccountGroups.js";
+import defaultAccountGroups from "../util/defaultAccountGroups.js";
 
 const inputSchema = new SimpleSchema({
   "slug": { type: String, optional: true },
@@ -39,11 +38,6 @@ export default async function updateAccountGroup(context, input) {
   // we are limiting group method actions to only users within the account managers role
   await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "update", { shopId });
 
-  const defaultCustomerGroupForShop = await Groups.findOne({ slug: defaultCustomerGroupSlug, shopId }) || {};
-
-  // TODO: Remove when we move away from legacy permission verification
-  const defaultCustomerPermissions = defaultCustomerGroupForShop.permissions;
-
   // Ensure group exists before proceeding
   const existingGroup = await Groups.findOne({ _id: groupId });
 
@@ -61,7 +55,7 @@ export default async function updateAccountGroup(context, input) {
   }
 
   // Prevent updating the slug of the default groups.
-  // For example, changing the slug of the customer group could cause various features of the application to sop working as intended.
+  // For example, changing the slug of the shop manager group could cause various features of the application to stop working as intended.
   if (defaultAccountGroups.includes(existingGroup.slug) && group.slug && group.slug !== existingGroup.slug) {
     throw new ReactionError("access-denied", `Field 'slug' cannot be updated for default group with ID (${groupId}) and name (${existingGroup.name}).`);
   } else if (group.slug) { // Update the slug if available for other groups
@@ -73,11 +67,9 @@ export default async function updateAccountGroup(context, input) {
     updateGroupData.description = group.description;
   }
 
-  // TODO: Remove when we move away from legacy permission verification
-  // Update the roles on the group and any user in those groups
+  // Update the permissions on the group and any user in those groups
   if (Array.isArray(group.permissions)) {
-    const roles = _.uniq([...group.permissions, ...defaultCustomerPermissions]);
-    updateGroupData.permissions = roles;
+    updateGroupData.permissions = group.permissions;
   }
 
   // Validate final group object

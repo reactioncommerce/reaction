@@ -10,7 +10,6 @@ import { DiscountCodes as DiscountCodesSchema } from "../simpleSchemas.js";
  * @returns {Promise<Object>} UpdateDiscountCodePayload
  */
 export default async function updateDiscountCode(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
   const { _id, ...discountCodeInput } = input;
   const { appEvents, collections } = context;
   const { Discounts } = collections;

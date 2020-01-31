@@ -10,7 +10,6 @@ import Random from "@reactioncommerce/random";
  * @returns {Promise<Object>} AddTaxRatePayload
  */
 export default async function createTaxRate(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, country, region, postal, taxCode, rate } = input;
   const { appEvents, collections } = context;
   const { Taxes } = collections;

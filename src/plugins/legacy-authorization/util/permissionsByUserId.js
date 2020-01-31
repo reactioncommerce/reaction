@@ -8,16 +8,23 @@ import _ from "lodash";
  */
 export default async function permissionsByUserId(context, userId) {
   const account = await context.collections.Accounts.findOne({ userId });
-  const user = await context.collections.users.findOne({ _id: userId });
 
   if (account && Array.isArray(account.groups)) {
-    // set __global_roles__ from the user
-    const accountPermissions = { __global_roles__: (user && user.roles && user.roles.__global_roles__) || [] }; // eslint-disable-line camelcase
-
     // get all groups that this user belongs to
     const groups = await context.collections.Groups.find({ _id: { $in: account.groups } }).toArray();
-    // get unique shops from groups (there may be multiple groups from one shop)
-    const allShopIds = groups.map((group) => group.shopId);
+
+    // global groups are groups without a shopId
+    // there may be multiple global groups
+    const globalGroupPermissions = groups.filter((group) => !group.shopId).map((group) => group.permissions);
+    const flattenedGlobalGroupPermissions = globalGroupPermissions.flat();
+    const uniqueGlobalPermissions = _.uniq(flattenedGlobalGroupPermissions);
+    // set global roles
+    const accountPermissions = { __global_roles__: uniqueGlobalPermissions }; // eslint-disable-line camelcase
+
+    // shopGroups are groups with a shopId
+    // there may be multiple groups from one shop
+    // get all unique shopIds to map over
+    const allShopIds = groups.filter((group) => group.shopId).map((group) => group.shopId);
     const uniqueShopIds = _.uniq(allShopIds);
 
     // get all groups for shop

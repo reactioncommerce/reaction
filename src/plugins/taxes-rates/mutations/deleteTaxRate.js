@@ -10,7 +10,6 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Promise<Object>} DeleteTaxRatePayload
  */
 export default async function deleteTaxRate(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, _id } = input;
   const { appEvents, collections } = context;
   const { Taxes } = collections;

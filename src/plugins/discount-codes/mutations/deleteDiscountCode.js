@@ -8,7 +8,6 @@
  * @returns {Promise<Object>} DeleteDiscountCodePayload
  */
 export default async function deleteDiscountCode(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
   const {
     _id,
     shopId

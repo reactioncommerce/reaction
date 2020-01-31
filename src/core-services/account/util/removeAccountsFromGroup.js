@@ -4,50 +4,31 @@ import ReactionError from "@reactioncommerce/reaction-error";
 const logCtx = { name: "core/accounts", file: " executeBulkOperation" };
 
 /**
- * @name moveAccountsToGroup
+ * @name removeAccountsFromGroup
  * @private
- * @summary Move all accounts from a specified group to another group.
+ * @summary Remove all accounts from a specified group.
  * @param {Object} context App context
- * @param {String} input.shopId - Shop to perform the move within. Both groups must be on the same shop.
- * @param {String} input.fromGroupId - Group to move accounts from
- * @param {String} input.toGroupId - Group to move accounts to
+ * @param {String} input.shopId - Shop group belongs to
+ * @param {String} input.fromGroupId - Group to remove accounts from
  * @returns {undefined} Nothing
  */
-export default async function moveAccountsToGroup(context, { shopId, fromGroupId, toGroupId }) {
+export default async function removeAccountsFromGroup(context, { shopId, fromGroupId }) {
   const { collections } = context;
   const { Accounts, Groups } = collections;
 
   const fromGroup = await Groups.findOne({ _id: fromGroupId, shopId });
-  const toGroup = await Groups.findOne({ _id: toGroupId, shopId });
 
   if (!fromGroup) {
     throw new ReactionError("not-found", `Accounts cannot be moved from group ith ID ${fromGroupId}. Group doesn't exist.`);
-  }
-
-  if (!toGroup) {
-    throw new ReactionError("not-found", `Accounts cannot be moved to group with ID ${toGroupId}. Group doesn't exist.`);
   }
 
   await context.validatePermissions("reaction:legacy:groups", "manage:accounts", { shopId });
 
   let response;
   try {
-    Logger.trace({ ...logCtx }, `Processing bulk account group move from ${fromGroup.name} group to ${toGroup.name} group`);
+    Logger.trace({ ...logCtx }, `Processing bulk account group remove from ${fromGroup.name} group`);
     response = await Accounts.bulkWrite([
-      // Add the new group to all accounts currently in the old group
-      {
-        updateMany: {
-          filter: {
-            groups: fromGroupId
-          },
-          update: {
-            $addToSet: {
-              groups: toGroupId
-            }
-          }
-        }
-      },
-      // Remove the old groups from all matching accounts
+      // Remove the old group from all matching accounts
       {
         updateMany: {
           filter: {

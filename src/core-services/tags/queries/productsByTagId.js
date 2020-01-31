@@ -16,7 +16,6 @@ export default async function productsByTagId(context, params) {
   const { collections } = context;
   const { Products, Tags } = collections;
 
-  // Check for owner or admin permissions from the user before allowing the query
   await context.validatePermissions(`reaction:legacy:tags:${tagId}`, "read", { shopId });
 
   return arrayJoinPlusRemainingQuery({

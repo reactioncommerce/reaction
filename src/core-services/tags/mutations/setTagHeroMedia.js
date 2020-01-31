@@ -20,7 +20,6 @@ export default async function setTagHeroMedia(context, input) {
   const { Media, MediaRecords, Tags } = collections;
   const { shopId, tagId, fileRecord } = input;
 
-  // Check for owner or admin permissions from the user before allowing the mutation
   await context.validatePermissions(`reaction:legacy:tags:${tagId}`, "update", { shopId });
 
   let heroMediaUrl = null;
