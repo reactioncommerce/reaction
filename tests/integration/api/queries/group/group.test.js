@@ -40,23 +40,28 @@ beforeAll(async () => {
     _id: "adminGroup",
     createdBy: null,
     name: "admin",
-    permissions: [
-      "reaction:legacy:groups/read",
-      // accounts/read is needed to request the createdAt account
-      "reaction:legacy:accounts/read"
-    ],
-    slug: "admin"
+    permissions: ["reaction:legacy:groups/read"],
+    slug: "admin",
+    shopId
   });
   await testApp.collections.Groups.insertOne(adminGroup);
 
-  mockAdminAccount = Factory.Account.makeOne({
-    groups: [adminGroup._id]
+  const globalAdminGroup = Factory.Group.makeOne({
+    _id: "globalAdminGroup",
+    createdBy: null,
+    name: "globalAdmin",
+    permissions: [
+      "reaction:legacy:accounts/read"
+    ],
+    slug: "global-admin",
+    shopId: null
   });
-  await testApp.createUserAndAccount(mockAdminAccount, [
-    "reaction:legacy:groups/read",
-    // accounts/read is needed to request the createdAt account
-    "reaction:legacy:accounts/read"
-  ]);
+  await testApp.collections.Groups.insertOne(globalAdminGroup);
+
+  mockAdminAccount = Factory.Account.makeOne({
+    groups: [adminGroup._id, globalAdminGroup._id]
+  });
+  await testApp.createUserAndAccount(mockAdminAccount);
 
   groups = Factory.Group.makeMany(2, { shopId });
   await testApp.collections.Groups.insertMany(groups);

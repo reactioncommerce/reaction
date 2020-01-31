@@ -41,13 +41,24 @@ beforeAll(async () => {
   });
   await testApp.createUserAndAccount(mockNonAdminAccount);
 
-  mockAdminAccount = Factory.Account.makeOne({
-    _id: internalAdminAccountId
+  const globalAdminGroup = Factory.Group.makeOne({
+    _id: "globalAdminGroup",
+    createdBy: null,
+    name: "globalAdmin",
+    permissions: [
+      "reaction:legacy:groups/read",
+      "reaction:legacy:accounts/read"
+    ],
+    slug: "global-admin",
+    shopId: null
   });
-  await testApp.createUserAndAccount(mockAdminAccount, [
-    "reaction:legacy:accounts/read",
-    "reaction:legacy:groups/read"
-  ]);
+  await testApp.collections.Groups.insertOne(globalAdminGroup);
+
+  mockAdminAccount = Factory.Account.makeOne({
+    _id: internalAdminAccountId,
+    groups: ["globalAdminGroup"]
+  });
+  await testApp.createUserAndAccount(mockAdminAccount);
 
   mockOtherAccount = Factory.Account.makeOne({
     _id: internalOtherAccountId,
