@@ -57,7 +57,7 @@
             "shopSettingsLabel": "Sklep",
             "import": "Import",
             "general": {
-              "label": "Generał"
+              "label": "Ogólne"
             },
             "address": {
               "label": "Adres"
@@ -70,7 +70,7 @@
             },
             "productSettingsLabel": "Ustawienia produktu",
             "productDetailsLabel": "Szczegóły Produktu",
-            "templateSettingsLabel": "Ustawienia szablonu"
+            "templateSettingsLabel": "Ustawienia szablonów"
           },
           "userAccountDropdown": {
             "profileLabel": "Profil"
@@ -171,7 +171,16 @@
           "localization": "Lokalizacja",
           "options": "Opcje",
           "paymentMethods": "Metody Płatności",
-          "externalServices": "External Services",
+          "pluginVersions": {
+            "title": "Wersja pluginów"
+          },
+          "systemInfo": {
+            "apiVersionLabel": "Wersja API",
+            "installedPluginsLabel": "Zainstalowane pluginy",
+            "mongoVersionLabel": "Wersja MongoDB",
+            "title": "Informacje systemowe"
+          },
+          "externalServices": "Usługi zewnętrzne",
           "shopLocalizationSettingsSaved": "Ustawienia lokalizacji Shop zapisane.",
           "shopLocalizationSettingsFailed": "Sklep ustawienia lokalizacyjne aktualizacja nie powiodła się.",
           "shopPaymentMethodsSaved": "Sklep ustawienia Metody płatności zapisane.",
@@ -205,12 +214,12 @@
           "tagExists": "Tag już istnieje lub jest pusta.",
           "tagInUse": "Tag jest w użyciu i nie może być usunięty.",
           "dropFiles": "Upuścić pliki do przesłania",
-          "addInventory": "Dodaj Inwentarz",
+          "addInventory": "Dodaj stock",
           "barcode": "kod kreskowy",
           "confirmDeleteBarcode": "Czy na pewno chcesz usunąć kod kreskowy",
           "details": "Szczegóły",
-          "detailsName": "Nazwa Szczegółu",
-          "detailsInfo": "Szczegółowe informacje",
+          "detailsName": "Nazwa",
+          "detailsInfo": "Informacje",
           "generate": "Generuj",
           "generateBarcodes": "Generowanie kodów kreskowych",
           "hideBarcodes": "Ukryj Kody kreskowe",
@@ -294,11 +303,11 @@
           "details": "Szczegóły",
           "noSelectedProducts": "Nie wybrano produktów. Użyj",
           "orShiftCtrlCmd": " lub przesunięcia | ctrl | cmd + kliknij, aby zaznaczyć wiele produktów. Z przesunięciem można wybrać ciągłą gamę produktów.",
-          "makeVisible": "Bądź widoczny",
+          "makeVisible": "Zmień widoczność",
           "hideProduct": "Karta produktu",
           "productIsVisible": "Produkt jest widoczny",
           "productIsNotVisible": "Produkt nie jest widoczny",
-          "template": "Ustawienia szablonu",
+          "template": "Ustawienia szablonów",
           "templateSelectPlaceholder": "Wybierz szablon"
         },
         "productVariant": {
@@ -349,12 +358,12 @@
           "keepShopping": "Kontynuuj zakupy",
           "checkout": "Kup teraz",
           "new": "Nowy",
-          "coreOrderWorkflow/created": "Utworzono",
+          "coreOrderWorkflow/created": "Nowe",
           "coreOrderWorkflow/processing": "Przetwarzanie",
-          "coreOrderWorkflow/completed": "Zakończono",
-          "coreOrderWorkflow/canceled": "Odwołano",
-          "coreOrderWorkflow/picked": "Doborowy",
-          "coreOrderWorkflow/packed": "Zatłoczony",
+          "coreOrderWorkflow/completed": "Zakończone",
+          "coreOrderWorkflow/canceled": "Anulowane",
+          "coreOrderWorkflow/picked": "Odebrane",
+          "coreOrderWorkflow/packed": "Spakowane",
           "coreOrderWorkflow/labeled": "Oznaczone",
           "coreOrderWorkflow/shipped": "Wysłane"
         },
@@ -422,9 +431,9 @@
           "capture": "Zdobyć",
           "capturing": "Przechwytywanie",
           "bulkActions": "Działania masowe",
-          "selected": "Wybrany",
-          "picked": "Doborowy",
-          "packed": "Zatłoczony",
+          "selected": "Wybrane",
+          "picked": "Odebrane",
+          "packed": "Spakowane",
           "labeled": "Oznaczone",
           "shipped": "Wysłane",
           "printInvoiceAndPickSheet": "Wydrukuj fakturę i wybierz arkusz",
@@ -629,7 +638,7 @@
           "suggestedTags": "Sugerowane tagi",
           "searchTypeProducts": "Produkty",
           "searchTypeAccounts": "Konta",
-          "searchTypeOrders": "Święcenia",
+          "searchTypeOrders": "Zamówienia",
           "accountSearchResults": {
             "accountId": "ID konta",
             "shopId": "Sklep ID",
