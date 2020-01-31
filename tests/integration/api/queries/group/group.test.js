@@ -30,6 +30,7 @@ let groupQuery;
 let mockAdminAccount;
 let mockOtherAccount;
 let groups;
+let globalSecondaryGroup;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
@@ -51,12 +52,24 @@ beforeAll(async () => {
     createdBy: null,
     name: "globalAdmin",
     permissions: [
-      "reaction:legacy:accounts/read"
+      "reaction:legacy:accounts/read",
+      "reaction:legacy:groups/read"
     ],
     slug: "global-admin",
     shopId: null
   });
   await testApp.collections.Groups.insertOne(globalAdminGroup);
+
+  globalSecondaryGroup = Factory.Group.makeOne({
+    _id: "globalSecondaryGroup",
+    createdBy: null,
+    name: "globalSecondary",
+    permissions: [
+      "reaction:legacy:accounts/read"
+    ],
+    slug: "global-secondary"
+  });
+  await testApp.collections.Groups.insertOne(globalSecondaryGroup);
 
   mockAdminAccount = Factory.Account.makeOne({
     groups: [adminGroup._id, globalAdminGroup._id]
@@ -97,12 +110,28 @@ test("unauthenticated", async () => {
   }
 });
 
-test("authenticated with groups/read permission, gets any group", async () => {
+test("authenticated with groups/read permission, gets any shop group", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const expectedGroup = groupMongoSchemaToGraphQL(groups[0]);
 
   const result = await groupQuery({ id: expectedGroup._id });
+  expect(result).toEqual({
+    group: expectedGroup
+  });
+
+  await testApp.clearLoggedInUser();
+});
+
+test("authenticated with groups/read permission, gets any global group", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  const group = await testApp.collections.Groups.findOne({ _id: "globalSecondaryGroup" });
+
+  const expectedGroup = groupMongoSchemaToGraphQL(group);
+
+  const result = await groupQuery({ id: expectedGroup._id });
+
   expect(result).toEqual({
     group: expectedGroup
   });
