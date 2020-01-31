@@ -14,7 +14,6 @@ export default async function getVariants(context, productOrVariantId, topOnly, 
   const { shouldIncludeHidden, shouldIncludeArchived } = args;
   const { collections } = context;
   const { Products } = collections;
-console.log("ARGS", args);
 
   const selector = {
     ancestors: topOnly ? [productOrVariantId] : productOrVariantId,
