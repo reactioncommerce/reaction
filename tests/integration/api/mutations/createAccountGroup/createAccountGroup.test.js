@@ -75,7 +75,7 @@ test("anyone can add account to group if they have ALL the group permissions", a
     createdBy: null,
     description: "a group for testing purposes",
     name: "test-int-group",
-    permissions: ["test-perm-1", "test-perm-2", "dashboard"],
+    permissions: ["test-perm-1", "test-perm-2"],
     shop: {
       _id: shopOpaqueId
     },

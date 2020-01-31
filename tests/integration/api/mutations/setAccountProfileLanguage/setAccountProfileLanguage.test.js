@@ -28,7 +28,8 @@ beforeAll(async () => {
     createdBy: null,
     name: "admin",
     permissions: ["reaction:legacy:accounts/update:language"],
-    slug: "admin"
+    slug: "admin",
+    shopId: null // global permission group
   });
   await testApp.collections.Groups.insertOne(adminGroup);
 
