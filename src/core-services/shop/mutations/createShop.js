@@ -125,10 +125,14 @@ export default async function createShop(context, input) {
 
   try {
     // Create account groups for the new shop
-    await context.mutations.createAuthGroupsForShop(context, newShopId);
+    await context.mutations.createAuthGroupsForShop(context.getInternalContext(), newShopId);
 
     // Give the shop creator "owner" permissions
-    await context.mutations.addAccountToGroupBySlug(context, { accountId, groupSlug: "owner", shopId: newShopId });
+    await context.mutations.addAccountToGroupBySlug(context.getInternalContext(), {
+      accountId,
+      groupSlug: "owner",
+      shopId: newShopId
+    });
 
     // Add AppSettings object into database for the new shop
     await collections.AppSettings.insertOne({
