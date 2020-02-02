@@ -10,7 +10,15 @@ import Random from "@reactioncommerce/random";
  * @returns {Promise<Object>} AddTaxRatePayload
  */
 export default async function createTaxRate(context, input) {
-  const { shopId, country, region, postal, taxCode, rate } = input;
+  const {
+    country,
+    postal,
+    rate,
+    region,
+    shopId,
+    sourcing: taxLocale,
+    taxCode
+  } = input;
   const { appEvents, collections } = context;
   const { Taxes } = collections;
 
@@ -18,13 +26,13 @@ export default async function createTaxRate(context, input) {
 
   const taxRate = {
     _id: Random.id(),
-    shopId,
     country,
-    region,
     postal,
+    rate,
+    region,
+    shopId,
     taxCode,
-    taxLocale: "destination",
-    rate
+    taxLocale
   };
 
   await Taxes.insertOne(taxRate);

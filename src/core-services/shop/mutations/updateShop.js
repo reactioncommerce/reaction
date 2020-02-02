@@ -56,7 +56,6 @@ const inputSchema = new SimpleSchema({
 });
 
 const complexSettings = [
-  "addressBook",
   "emails",
   "shopLogoUrls",
   "storefrontUrls"
@@ -124,23 +123,8 @@ export default async function updateShop(context, input) {
       return;
     }
 
-    // Simple string settings
+    // Simple settings
     if (shopSettings[setting] && !complexSettings.includes(setting)) {
-      sets[setting] = shopSettings[setting];
-      return;
-    }
-
-    // Compound settings
-    if (setting === "addressBook") {
-      // Currently only supporting one addressBook entry entry per shop
-      const addressBookEntry = shopSettings[setting][0];
-      Object.keys(addressBookEntry).forEach((key) => {
-        sets[`addressBook.0.${key}`] = addressBookEntry[key];
-      });
-      return;
-    }
-
-    if (setting === "defaultParcelSize") {
       sets[setting] = shopSettings[setting];
       return;
     }
