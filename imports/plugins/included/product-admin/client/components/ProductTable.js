@@ -25,6 +25,18 @@ mutation createProduct($input: CreateProductInput!) {
 }
 `;
 
+const CSV_FILE_TYPES = [
+  "text/csv",
+  "text/plain",
+  "text/x-csv",
+  "application/vnd.ms-excel",
+  "application/csv",
+  "application/x-csv",
+  "text/comma-separated-values",
+  "text/x-comma-separated-values",
+  "text/tab-separated-values"
+];
+
 /**
  * ProductTable component
  * @param {Object} props Component props
@@ -98,6 +110,7 @@ function ProductTable({ history }) {
     onDrop,
     multiple: true,
     disablePreview: true,
+    accept: CSV_FILE_TYPES.join(", "),
     disableClick: true
   });
 
