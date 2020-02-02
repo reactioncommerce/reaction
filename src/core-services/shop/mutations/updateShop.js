@@ -146,11 +146,7 @@ export default async function updateShop(context, input) {
     }
 
     if (setting === "emails") {
-      // Currently only supporting one email record entry per shop
-      const emailInfo = shopSettings[setting][0];
-      Object.keys(emailInfo).forEach((key) => {
-        sets[`emails.0.${key}`] = emailInfo[key];
-      });
+      sets[setting] = shopSettings[setting];
       return;
     }
 

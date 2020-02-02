@@ -165,7 +165,7 @@ table[class=wrap1001], td[class=wrap1001] { width:96% !important; margin:0 !impo
                   </tr>
 
                   <tr>
-                    <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:12px; color:#4d4c4d;">&copy; {{copyrightDate}} {{legalName}}. All rights reserved</td>
+                    <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:12px; color:#4d4c4d;">&copy; {{copyrightDate}} {{#if legalName}}{{legalName}}{{else}}{{shopName}}{{/if}}. All rights reserved</td>
                   </tr>
                   <tr>
                     <td height="8" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
