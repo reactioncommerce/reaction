@@ -1,3 +1,5 @@
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+
 /**
  *
  * @method getVariantMedia
@@ -29,6 +31,7 @@ export default async function getVariantMedia(variant, context) {
       const { priority, variantId: variantIdLocal } = metadata || {};
 
       return {
+        _id: encodeOpaqueId("reaction/mediaRecord", media._id),
         priority,
         variantId: variantIdLocal,
         URLs: {
