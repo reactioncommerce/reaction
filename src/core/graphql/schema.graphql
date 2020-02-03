@@ -57,6 +57,9 @@ type ImageSizes {
 
 "Information about an image"
 type ImageInfo {
+  "ID"
+  _id: ID!
+
   "A list of URLs for various size files of this image"
   URLs: ImageSizes
 
