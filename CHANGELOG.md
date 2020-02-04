@@ -1,3 +1,43 @@
+# v3.0.0-beta.3
+
+This is the third beta release of our new Reaction project.
+
+*Reaction releases will no longer be coordinated across all projects - we'll release each project, independently, as needed. This means version numbers will no longer be in sync. The newest versions of each project will work together. This change has two exceptions: we will release all projects in coordination for a `beta` release, and all projects in coordination for the official `v3.0.0` release.*
+
+## Notable changes
+
+### Owner permissions are no longer
+
+`owner` is no longer a global override permission which allows the user to perform any actions. Users must now have specific permissions for all tasks they wish to perform.
+
+## Features
+
+- feat: Create `updateAccount` GraphQL mutation [#6067](https://github.com/reactioncommerce/reaction/pull/6067)
+
+## Fixes
+
+- fix Polish translations [#6069](https://github.com/reactioncommerce/reaction/pull/6069)
+- fix: fix adding shop creator to owner group [#6072](https://github.com/reactioncommerce/reaction/pull/6072)
+- fix: addAccountToGroup [#6071](https://github.com/reactioncommerce/reaction/pull/6071)
+- fix: problems with accounts queries [#6060](https://github.com/reactioncommerce/reaction/pull/6060)
+- fix: partialProductPublish for products without Catalog [#6059](https://github.com/reactioncommerce/reaction/pull/6059)
+
+## Refactor
+
+- refactor: remove "owner" and other default permissions / groups [#6063](https://github.com/reactioncommerce/reaction/pull/6063)
+- refactor: Remove most remaining uses of users collection [#6056](https://github.com/reactioncommerce/reaction/pull/6056)
+- refactor:  add product media resolver & update translations for new DataTable products view [#6036](https://github.com/reactioncommerce/reaction/pull/6036)
+- refactor: only allow provides: default for one email address [#6062](https://github.com/reactioncommerce/reaction/pull/6062)
+
+## Chores
+
+- chore: reconfigure docker-compose networks [#6068](https://github.com/reactioncommerce/reaction/pull/6068)
+- chore: update Babel [#6065](https://github.com/reactioncommerce/reaction/pull/6065)
+
+## Contributors
+
+Thanks to [@trojanh](https://github.com/trojanh) and [@daniel-rosiak](https://github.com/daniel-rosiak) for contributing to this release! 🎉
+
 # v3.0.0-beta.2
 
 This is the second beta release of our new Reaction project.
