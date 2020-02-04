@@ -57,11 +57,11 @@ type ImageSizes {
 
 "Information about an image"
 type ImageInfo {
-  "ID"
-  _id: ID!
-
   "A list of URLs for various size files of this image"
   URLs: ImageSizes
+
+  "ID"
+  _id: ID!
 
   """
   Sort by priority ascending when displaying more than one image for a product in a user interface.
