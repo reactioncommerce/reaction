@@ -452,7 +452,9 @@
           "productIsVisible": "Product is visible",
           "productIsNotVisible": "Product is not visible",
           "template": "Template",
-          "templateSelectPlaceholder": "Select a template"
+          "templateSelectPlaceholder": "Select a template",
+          "metafieldKey": "Key",
+          "metafieldValue": "Value"
         },
         "productVariant": {
           "addVariantOptions": "Add options to enable 'Add to Cart' button",
