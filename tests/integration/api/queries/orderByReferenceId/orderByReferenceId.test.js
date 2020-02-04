@@ -63,17 +63,17 @@ beforeEach(async () => {
 // test file gets its own test database.
 afterAll(() => testApp.stop());
 
-// test("get account order success", async () => {
-//   // Set up initial data state
-//   await testApp.collections.Orders.insertOne(order);
-//   await testApp.setLoggedInUser(mockOrdersAccount);
+test("get account order success", async () => {
+  // Set up initial data state
+  await testApp.collections.Orders.insertOne(order);
+  await testApp.setLoggedInUser(mockOrdersAccount);
 
-//   // Query for order and check results
-//   const result = await query({ orderReferenceId, shopId: opaqueShopId, token: null });
-//   expect(result.orderByReferenceId.account._id).toBe(opaqueAccountId);
-//   expect(result.orderByReferenceId.shop._id).toBe(opaqueShopId);
-//   expect(result.orderByReferenceId.shop.name).toBe(shopName);
-// });
+  // Query for order and check results
+  const result = await query({ orderReferenceId, shopId: opaqueShopId, token: null });
+  expect(result.orderByReferenceId.account._id).toBe(opaqueAccountId);
+  expect(result.orderByReferenceId.shop._id).toBe(opaqueShopId);
+  expect(result.orderByReferenceId.shop.name).toBe(shopName);
+});
 
 test("get not found error for order that does not exist", async () => {
   await testApp.collections.Orders.insertOne(order);
@@ -85,18 +85,18 @@ test("get not found error for order that does not exist", async () => {
   }
 });
 
-// test("get invalid params error", async () => {
-//   await testApp.collections.Orders.insertOne(orderAnon);
-//   try {
-//     await query({ orderReferenceId: orderReferenceIdAnon });
-//   } catch (error) {
-//     expect(error[0].message).toBe('Variable "$shopId" of required type "ID!" was not provided.');
-//   }
-// });
+test("get invalid params error", async () => {
+  await testApp.collections.Orders.insertOne(orderAnon);
+  try {
+    await query({ orderReferenceId: orderReferenceIdAnon });
+  } catch (error) {
+    expect(error[0].message).toBe('Variable "$shopId" of required type "ID!" was not provided.');
+  }
+});
 
-// test("get anonymous order success", async () => {
-//   await testApp.collections.Orders.insertOne(orderAnon);
-//   const result = await query({ orderReferenceId: orderReferenceIdAnon, shopId: opaqueShopId, token: tokenInfo.token });
-//   expect(result.orderByReferenceId.shop._id).toBe(opaqueShopId);
-//   expect(result.orderByReferenceId.shop.name).toBe(shopName);
-// });
+test("get anonymous order success", async () => {
+  await testApp.collections.Orders.insertOne(orderAnon);
+  const result = await query({ orderReferenceId: orderReferenceIdAnon, shopId: opaqueShopId, token: tokenInfo.token });
+  expect(result.orderByReferenceId.shop._id).toBe(opaqueShopId);
+  expect(result.orderByReferenceId.shop.name).toBe(shopName);
+});
