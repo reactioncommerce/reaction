@@ -302,10 +302,10 @@ function generateIndexXML(items) {
  * @private
  * @summary Given a date, returns a formatted date string
  * @param {Date} date - Date to format
- * @returns {String} - in the format of YYYY-MM-DD
+ * @returns {String} - in the format of YYYY-MM-DDTHH:MM:SSZ
  */
 function getLastModStr(date) {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  return date.toISOString();
 }
 
 /**
