@@ -1,8 +1,10 @@
 query Product(
   $productId: ID!
   $shopId: ID!
-  $shouldIncludeHidden: Boolean
-  $shouldIncludeArchived: Boolean
+  $shouldIncludeHiddenVariants: Boolean
+  $shouldIncludeArchivedVariants: Boolean
+  $shouldIncludeHiddenOptions: Boolean
+  $shouldIncludeArchivedOptions: Boolean
 ) {
   product(
     productId: $productId
@@ -20,12 +22,24 @@ query Product(
       }
     }
     variants(
-      shouldIncludeHidden: $shouldIncludeHidden,
-      shouldIncludeArchived: $shouldIncludeArchived
+      shouldIncludeHidden: $shouldIncludeHiddenVariants,
+      shouldIncludeArchived: $shouldIncludeArchivedVariants
     ) {
       _id
       title
-      options {
+      media {
+        _id
+        URLs {
+          small
+          medium
+          large
+          thumbnail
+        }
+      }
+      options(
+        shouldIncludeHidden: $shouldIncludeHiddenOptions,
+        shouldIncludeArchived: $shouldIncludeArchivedOptions
+      ) {
         _id
         title
         media {
