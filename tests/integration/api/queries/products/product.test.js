@@ -84,6 +84,39 @@ const mockOptionOne = {
   type: "variant"
 };
 
+const mockOptionTwo = {
+  _id: "2002",
+  ancestors: [internalProductId, "1001"],
+  attributeLabel: "Option",
+  title: "Fake Product Option One",
+  shopId: internalShopId,
+  isDeleted: false,
+  isVisible: false,
+  type: "variant"
+};
+
+const mockOptionThree = {
+  _id: "2003",
+  ancestors: [internalProductId, "1001"],
+  attributeLabel: "Option",
+  title: "Fake Product Option One",
+  shopId: internalShopId,
+  isDeleted: true,
+  isVisible: true,
+  type: "variant"
+};
+
+const mockOptionFour = {
+  _id: "2004",
+  ancestors: [internalProductId, "1001"],
+  attributeLabel: "Option",
+  title: "Fake Product Option One",
+  shopId: internalShopId,
+  isDeleted: true,
+  isVisible: false,
+  type: "variant"
+};
+
 const userGroup = Factory.Group.makeOne({
   _id: "customerGroup",
   createdBy: null,
@@ -155,6 +188,9 @@ beforeAll(async () => {
   await testApp.collections.Products.insertOne(mockVariantDeleted);
   await testApp.collections.Products.insertOne(mockVariantDeletedHidden);
   await testApp.collections.Products.insertOne(mockOptionOne);
+  await testApp.collections.Products.insertOne(mockOptionTwo);
+  await testApp.collections.Products.insertOne(mockOptionThree);
+  await testApp.collections.Products.insertOne(mockOptionFour);
 
   await testApp.collections.Groups.insertOne(userGroup);
 
@@ -198,7 +234,7 @@ test("expect only visible variants", async () => {
     result = await queryProduct({
       productId: opaqueProductId,
       shopId: opaqueShopId,
-      shouldIncludeHidden: false
+      shouldIncludeHiddenVariants: false
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -216,7 +252,7 @@ test("expect both hidden and visible variants", async () => {
     result = await queryProduct({
       productId: opaqueProductId,
       shopId: opaqueShopId,
-      shouldIncludeHidden: true
+      shouldIncludeHiddenVariants: true
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -235,8 +271,8 @@ test("expect archived and visible variants", async () => {
     result = await queryProduct({
       productId: opaqueProductId,
       shopId: opaqueShopId,
-      shouldIncludeHidden: false,
-      shouldIncludeArchived: true
+      shouldIncludeHiddenVariants: false,
+      shouldIncludeArchivedVariants: true
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -255,8 +291,8 @@ test("expect archived, visible and hidden variants", async () => {
     result = await queryProduct({
       productId: opaqueProductId,
       shopId: opaqueShopId,
-      shouldIncludeHidden: true,
-      shouldIncludeArchived: true
+      shouldIncludeHiddenVariants: true,
+      shouldIncludeArchivedVariants: true
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -268,5 +304,85 @@ test("expect archived, visible and hidden variants", async () => {
   expect(result.product.variants[1]._id).toEqual(encodeProductOpaqueId("1002"));
   expect(result.product.variants[2]._id).toEqual(encodeProductOpaqueId("1003"));
   expect(result.product.variants[3]._id).toEqual(encodeProductOpaqueId("1004"));
+});
+
+test("expect only visible options", async () => {
+  let result;
+
+  try {
+    result = await queryProduct({
+      productId: opaqueProductId,
+      shopId: opaqueShopId,
+      shouldIncludeHiddenOptions: false
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.product.variants[0].options.length).toEqual(1);
+  expect(result.product.variants[0].options[0]._id).toEqual(encodeProductOpaqueId("2001"));
+});
+
+test("expect both hidden and visible options", async () => {
+  let result;
+
+  try {
+    result = await queryProduct({
+      productId: opaqueProductId,
+      shopId: opaqueShopId,
+      shouldIncludeHiddenOptions: true
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.product.variants[0].options.length).toEqual(2);
+  expect(result.product.variants[0].options[0]._id).toEqual(encodeProductOpaqueId("2001"));
+  expect(result.product.variants[0].options[1]._id).toEqual(encodeProductOpaqueId("2002"));
+});
+
+test("expect archived and visible variants", async () => {
+  let result;
+
+  try {
+    result = await queryProduct({
+      productId: opaqueProductId,
+      shopId: opaqueShopId,
+      shouldIncludeHiddenOptions: false,
+      shouldIncludeArchivedOptions: true
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.product.variants[0].options.length).toEqual(2);
+  expect(result.product.variants[0].options[0]._id).toEqual(encodeProductOpaqueId("2001"));
+  expect(result.product.variants[0].options[1]._id).toEqual(encodeProductOpaqueId("2003"));
+});
+
+test("expect archived, visible and hidden variants", async () => {
+  let result;
+
+  try {
+    result = await queryProduct({
+      productId: opaqueProductId,
+      shopId: opaqueShopId,
+      shouldIncludeHiddenOptions: true,
+      shouldIncludeArchivedOptions: true
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.product.variants[0].options.length).toEqual(4);
+
+  expect(result.product.variants[0].options[0]._id).toEqual(encodeProductOpaqueId("2001"));
+  expect(result.product.variants[0].options[1]._id).toEqual(encodeProductOpaqueId("2002"));
+  expect(result.product.variants[0].options[2]._id).toEqual(encodeProductOpaqueId("2003"));
+  expect(result.product.variants[0].options[3]._id).toEqual(encodeProductOpaqueId("2004"));
 });
 
