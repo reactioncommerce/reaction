@@ -15,6 +15,16 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export async function getOrderQuery(context, selector, shopId, token) {
   const { accountId: contextAccountId } = context;
   const newSelector = { ...selector, shopId };
+
+  // If you have the hashed token, you don't need to pass a permission check
+  if (token) {
+    newSelector["anonymousAccessTokens.hashedToken"] = hashToken(token);
+    return newSelector;
+  }
+
+  // if you don't have the hashed token,
+  // you must either have `reaction:legacy:orders/read` permissions,
+  // or this must be your own order
   const userHasPermission = await context.userHasPermission(
     "reaction:legacy:orders",
     "read",
@@ -29,9 +39,6 @@ export async function getOrderQuery(context, selector, shopId, token) {
   } else if (contextAccountId) {
     // Customer accounts can only see their own orders
     newSelector.accountId = contextAccountId;
-  } else if (token) {
-    // If you have an anonymous access token for this order, OK to see it
-    newSelector["anonymousAccessTokens.hashedToken"] = hashToken(token);
   } else {
     throw new ReactionError("access-denied", "Access Denied");
   }
