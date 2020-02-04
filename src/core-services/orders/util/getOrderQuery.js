@@ -1,4 +1,5 @@
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name getOrderQuery
@@ -15,6 +16,10 @@ export async function getOrderQuery(context, selector, shopId, token) {
   const { collections } = context;
 
   const order = await collections.Orders.findOne(selector);
+
+  if (!order) {
+    throw new ReactionError("not-found", "Order not found");
+  }
 
   // If you have the hashed token, you don't need to pass a permission check
   if (token && order.anonymousAccessTokens.some((accessToken) => accessToken.hashedToken === hashToken(token))) {
