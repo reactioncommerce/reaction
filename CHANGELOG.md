@@ -34,6 +34,10 @@ This is the third beta release of our new Reaction project.
 - chore: reconfigure docker-compose networks [#6068](https://github.com/reactioncommerce/reaction/pull/6068)
 - chore: update Babel [#6065](https://github.com/reactioncommerce/reaction/pull/6065)
 
+## Contributors
+
+Thanks to [@trojanh](https://github.com/trojanh) and [@daniel-rosiak](https://github.com/daniel-rosiak) for contributing to this release! 🎉
+
 # v3.0.0-beta.2
 
 This is the second beta release of our new Reaction project.
