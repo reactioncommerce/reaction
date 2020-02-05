@@ -27,7 +27,6 @@ export default async function getCatalogProductMedia(productId, collections) {
       const { priority, productId: prodId, variantId } = metadata || {};
 
       return {
-        _id: media._id,
         priority,
         productId: prodId,
         variantId,
