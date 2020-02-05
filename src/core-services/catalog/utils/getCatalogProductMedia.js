@@ -1,5 +1,3 @@
-import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
-
 /**
  *
  * @method getCatalogProductMedia
@@ -29,7 +27,7 @@ export default async function getCatalogProductMedia(productId, collections) {
       const { priority, productId: prodId, variantId } = metadata || {};
 
       return {
-        _id: encodeOpaqueId("reaction/mediaRecord", media._id),
+        _id: media._id,
         priority,
         productId: prodId,
         variantId,
