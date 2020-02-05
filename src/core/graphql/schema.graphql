@@ -61,7 +61,7 @@ type ImageInfo {
   URLs: ImageSizes
 
   "ID"
-  _id: ID!
+  _id: ID
 
   """
   Sort by priority ascending when displaying more than one image for a product in a user interface.
