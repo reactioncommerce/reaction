@@ -15,8 +15,11 @@ export default async function ensureSystemManagerGroup(context) {
   // if system-manager group doesn't exist, create it now
   if (!group) {
     groupId = Random.id();
+    const currentDate = Date();
     await Groups.insertOne({
       _id: groupId,
+      createdAt: currentDate,
+      updatedAt: currentDate,
       name: "system manager",
       slug: "system-manager",
       permissions: defaultSystemManagerRoles,
