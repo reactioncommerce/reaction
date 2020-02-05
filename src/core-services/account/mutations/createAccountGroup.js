@@ -1,4 +1,3 @@
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getSlug from "@reactioncommerce/api-utils/getSlug.js";
@@ -29,11 +28,6 @@ export default async function createAccountGroup(context, input) {
   // we are limiting group method actions to only users within the account managers role
   await context.validatePermissions("reaction:legacy:groups", "create", { shopId });
 
-  const defaultCustomerGroupForShop = await Groups.findOne({ slug: "customer", shopId }) || {};
-
-  // TODO: Remove when we move away from legacy permission verification
-  const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
-
   const nowDate = new Date();
   const newGroupData = Object.assign({}, group, {
     slug: getSlug(group.name),
@@ -46,9 +40,6 @@ export default async function createAccountGroup(context, input) {
   if (!newGroupData.permissions) {
     newGroupData.permissions = [];
   }
-
-  // TODO: Remove when we move away from legacy permission verification
-  newGroupData.permissions = _.uniq([...newGroupData.permissions, ...defaultAdminPermissions]);
 
   // ensure one group type per shop
   const groupExists = await Groups.findOne({ slug: newGroupData.slug, shopId });

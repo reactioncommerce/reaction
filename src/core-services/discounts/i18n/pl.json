@@ -6,15 +6,15 @@
     "reaction-discounts": {
       "admin": {
         "settings": {
-          "discountsettingsLabel": "Ustawienia zniżki"
+          "discountsettingsLabel": "Ustawienia zniżek"
         },
         "shortcut": {
-          "discountsLabel": "zniżki",
-          "discountsDescription": "Zapewnienie promocje i rabaty."
+          "discountsLabel": "Kody zniżkowe",
+          "discountsDescription": "Kody zniżkowe, promocje i rabaty."
         },
         "dashboard": {
-          "discountsLabel": "zniżki",
-          "discountsDescription": "Zapewnienie promocje i rabaty."
+          "discountsLabel": "Kody zniżkowe",
+          "discountsDescription": "Kody zniżkowe, promocje i rabaty."
         }
       }
     }

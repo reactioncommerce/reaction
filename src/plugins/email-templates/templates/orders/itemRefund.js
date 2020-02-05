@@ -238,12 +238,12 @@ export default `
                                             <tr>
                                               <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">
                                                 {{#with shipping.address}}
-                                                  {{this.address}},<br> {{this.city}}, {{this.region}} {{this.postal}}
+                                                  {{this.fullName}}<br>{{this.address}}<br>{{this.city}} {{this.region}} {{this.postal}}
                                                 {{/with}}
                                               </td>
                                               <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">
                                                 {{#with billing.address}}
-                                                  {{this.address}},<br> {{this.city}}, {{this.region}} {{this.postal}}
+                                                  {{this.fullName}}<br>{{this.address}}<br>{{this.city}} {{this.region}} {{this.postal}}
                                                 {{/with}}
                                               </td>
                                               <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">
@@ -299,7 +299,7 @@ export default `
                                                 <table width="360" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
                                                   <tbody>
                                                     <tr>
-                                                      <td align="left" valign="middle" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{title}} - {{variants.title}}</td>
+                                                      <td align="left" valign="middle" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{variantTitle}}</td>
                                                       <td align="right" valign="middle" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{price.displayAmount}}</td>
                                                     </tr>
                                                   </tbody>
@@ -441,13 +441,13 @@ export default `
                               <td height="18" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:12px; color:#4d4c4d;">&copy; {{copyrightDate}} {{legalName}}. All rights reserved</td>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:12px; color:#4d4c4d;">&copy; {{copyrightDate}} {{#if legalName}}{{legalName}}{{else}}{{shopName}}{{/if}}. All rights reserved</td>
                             </tr>
                             <tr>
                               <td height="8" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:normal; line-height:10px; color:#787878;">{{physicalAddress.address}}, {{physicalAddress.city}}, {{physicalAddress.region}} {{physicalAddress.postal}}</td>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:normal; line-height:10px; color:#787878;">{{#if physicalAddress}}{{physicalAddress.address}}, {{physicalAddress.city}}, {{physicalAddress.region}} {{physicalAddress.postal}}{{/if}}</td>
                             </tr>
                             <!-- End footer -->
 

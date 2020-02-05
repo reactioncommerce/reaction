@@ -44,7 +44,7 @@ const adminGroup = Factory.Group.makeOne({
   _id: "adminGroup",
   createdBy: null,
   name: "admin",
-  permissions: ["reaction:legacy:navigationTrees/read"],
+  permissions: ["reaction:legacy:tags/read"],
   slug: "admin",
   shopId: internalShopId
 });

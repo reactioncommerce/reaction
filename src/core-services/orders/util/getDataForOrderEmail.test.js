@@ -63,6 +63,18 @@ test("returns expected data structure (base case)", async () => {
   });
 
   const mockShop = Factory.Shop.makeOne({
+    addressBook: [
+      {
+        address1: "mockAddress1",
+        address2: "mockAddress2",
+        city: "mockCity",
+        company: "mockCompany",
+        country: "mockCountry",
+        fullName: "mockFullName",
+        postal: "mockPostal",
+        region: "mockRegion"
+      }
+    ],
     storefrontUrls: {
       storefrontHomeUrl: "http://example.com/storefrontHomeUrl",
       storefrontOrderUrl: "http://example.com/storefrontOrderUrl/:orderId?token=:token"
@@ -78,6 +90,7 @@ test("returns expected data structure (base case)", async () => {
       address: {
         address: "mockAddress1 mockAddress2",
         city: "mockCity",
+        fullName: "mockFullName",
         postal: "mockPostal",
         region: "mockRegion"
       },
@@ -169,7 +182,12 @@ test("returns expected data structure (base case)", async () => {
     orderUrl: "http://example.com/storefrontOrderUrl/mockReferenceId?token=",
     physicalAddress: {
       address: "mockAddress1 mockAddress2",
+      address1: "mockAddress1",
+      address2: "mockAddress2",
       city: "mockCity",
+      company: "mockCompany",
+      country: "mockCountry",
+      fullName: "mockFullName",
       postal: "mockPostal",
       region: "mockRegion"
     },
@@ -177,6 +195,7 @@ test("returns expected data structure (base case)", async () => {
       address: {
         address: "mockAddress1 mockAddress2",
         city: "mockCity",
+        fullName: "mockFullName",
         postal: "mockPostal",
         region: "mockRegion"
       },

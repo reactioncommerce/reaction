@@ -31,10 +31,17 @@ const mockGlobalSetting = {
   canSellDigitalProducts: false
 };
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/update"],
+  slug: "admin",
+  shopId: null // global permission group
+});
+
 const mockAdminAccount = Factory.Account.makeOne({
-  roles: {
-    __global_roles__: ["reaction:legacy:shops/update"] // eslint-disable-line camelcase
-  }
+  groups: ["adminGroup"]
 });
 
 beforeAll(async () => {
@@ -57,6 +64,7 @@ beforeAll(async () => {
 
   await testApp.start();
   await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.collections.AppSettings.insertOne(mockGlobalSetting);
   globalSettingsMutation = testApp.query(updateGlobalSettings);

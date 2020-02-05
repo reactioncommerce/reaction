@@ -13,6 +13,7 @@ let mockAdminUserAccount;
 let mockOtherUserAccount;
 let adminAccountOpaqueId;
 let otherAccountOpaqueId;
+let adminGroup;
 
 beforeAll(async () => {
   testApp = new TestApp();
@@ -20,9 +21,22 @@ beforeAll(async () => {
   await testApp.insertPrimaryShop();
   updateAccount = testApp.mutate(UpdateAccountMutation);
 
-  mockAdminUserAccount = Factory.Account.makeOne({ _id: "mockAdminUserId" });
+  adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:accounts/update"],
+    slug: "admin",
+    shopId: null // global permission group
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
+  mockAdminUserAccount = Factory.Account.makeOne({
+    _id: "mockAdminUserId",
+    groups: ["adminGroup"]
+  });
   adminAccountOpaqueId = encodeOpaqueId("reaction/account", mockAdminUserAccount._id);
-  await testApp.createUserAndAccount(mockAdminUserAccount, ["reaction:legacy:accounts/update"]);
+  await testApp.createUserAndAccount(mockAdminUserAccount);
 
   mockOtherUserAccount = Factory.Account.makeOne({ _id: "mockOtherUserId" });
   otherAccountOpaqueId = encodeOpaqueId("reaction/account", mockOtherUserAccount._id);

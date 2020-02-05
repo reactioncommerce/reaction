@@ -45,6 +45,9 @@ input CreateTaxRateInput {
   "Shop ID"
   shopId: ID!
 
+  "Whether the `country`, `postal`, and `region` filters apply to the origin address or the destination address"
+  sourcing: TaxSource = destination
+
   "An optional tax code, to apply this tax rate to only products that have this tax code"
   taxCode: String
 }
@@ -80,6 +83,9 @@ input UpdateTaxRateInput {
 
   "Shop ID"
   shopId: ID!
+
+  "Whether the `country`, `postal`, and `region` filters apply to the origin address or the destination address"
+  sourcing: TaxSource
 
   "An optional tax code, to apply this tax rate to only products that have this tax code"
   taxCode: String

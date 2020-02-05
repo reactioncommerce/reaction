@@ -137,7 +137,10 @@ test("returns false if not in any permissions in either scope", async () => {
   expect(result).toBe(false);
 });
 
-test("returns true if has owner permission, even if not explicitly in the permissions array", async () => {
+test("returns false if has owner permission, even if not explicitly in the permissions array", async () => {
+  // we no longer allow "owner" permissions to override all other permissions
+  // users should not even have this permission anymore, but in case they do, make sure
+  // "owner" does not get a free pass
   const result = await hasPermission(
     {
       userPermissions: {
@@ -151,5 +154,5 @@ test("returns true if has owner permission, even if not explicitly in the permis
       shopId: "scope"
     }
   );
-  expect(result).toBe(true);
+  expect(result).toBe(false);
 });

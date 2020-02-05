@@ -15,18 +15,13 @@ export default async function sendOrderEmail(context, order, action) {
     return false;
   }
 
-  const registeredFuncs = context.getFunctionsOfType("getDataForOrderEmail");
-  const getDataForOrderEmail = registeredFuncs[0];
-  if (!getDataForOrderEmail) {
-    Logger.warn("Cannot send email because no function of type `getDataForOrderEmail` is registered.");
-    return false;
+  const dataForEmail = {};
+  const getDataForOrderEmailFns = context.getFunctionsOfType("getDataForOrderEmail");
+  for (const getDataForOrderEmailFn of getDataForOrderEmailFns) {
+    const someData = await getDataForOrderEmailFn(context, { order }); // eslint-disable-line no-await-in-loop
+    Object.assign(dataForEmail, someData);
   }
 
-  if (registeredFuncs.length > 1) {
-    Logger.warn("Plugins registered more than one function of type `getDataForOrderEmail`. Using the first one.");
-  }
-
-  const dataForEmail = await getDataForOrderEmail(context, { order });
   const language = await getLanguageForOrder(context, order);
 
   await context.mutations.sendOrderEmail(context, {

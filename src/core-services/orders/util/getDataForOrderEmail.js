@@ -32,10 +32,16 @@ function formatDateForEmail(date) {
  */
 export default async function getDataForOrderEmailDefault(context, { order }) {
   const { collections, getAbsoluteUrl } = context;
-  const { Shops } = collections;
+  const { Accounts, Shops } = collections;
 
   // Get Shop information
   const shop = await Shops.findOne({ _id: order.shopId });
+
+  // Get Account information
+  let account = null;
+  if (order.accountId) {
+    account = await Accounts.findOne({ _id: order.accountId });
+  }
 
   // TODO need to make this fully support multiple fulfillment groups. Now it's just collapsing into one
   const amount = order.shipping.reduce((sum, group) => sum + group.invoice.total, 0);
@@ -52,8 +58,9 @@ export default async function getDataForOrderEmailDefault(context, { order }) {
   const shippingAddressForEmail = shippingAddress ? {
     address: `${shippingAddress.address1}${shippingAddress.address2 ? ` ${shippingAddress.address2}` : ""}`,
     city: shippingAddress.city,
-    region: shippingAddress.region,
-    postal: shippingAddress.postal
+    fullName: shippingAddress.fullName,
+    postal: shippingAddress.postal,
+    region: shippingAddress.region
   } : null;
 
   let billingAddressForEmail = null;
@@ -61,15 +68,17 @@ export default async function getDataForOrderEmailDefault(context, { order }) {
     billingAddressForEmail = {
       address: `${order.billingAddress.address1}${order.billingAddress.address2 ? ` ${order.billingAddress.address2}` : ""}`,
       city: order.billingAddress.city,
-      region: order.billingAddress.region,
-      postal: order.billingAddress.postal
+      fullName: order.billingAddress.fullName,
+      postal: order.billingAddress.postal,
+      region: order.billingAddress.region
     };
   } else if (paymentBillingAddress) {
     billingAddressForEmail = {
       address: `${paymentBillingAddress.address1}${paymentBillingAddress.address2 ? ` ${paymentBillingAddress.address2}` : ""}`,
       city: paymentBillingAddress.city,
-      region: paymentBillingAddress.region,
-      postal: paymentBillingAddress.postal
+      fullName: paymentBillingAddress.fullName,
+      postal: paymentBillingAddress.postal,
+      region: paymentBillingAddress.region
     };
   }
 
@@ -153,28 +162,14 @@ export default async function getDataForOrderEmailDefault(context, { order }) {
     orderUrl = orderUrl.replace(":token", encodeURIComponent(token));
   }
 
+  const physicalAddress = (shop.addressBook && shop.addressBook[0]) || null;
+  if (physicalAddress) {
+    physicalAddress.address = `${physicalAddress.address1}${physicalAddress.address2 ? ` ${physicalAddress.address2}` : ""}`;
+  }
+
   // Merge data into single object to pass to email template
   return {
-    // Shop Data
-    shop,
-    contactEmail: shop.emails[0].address,
-    homepage: _.get(shop, "storefrontUrls.storefrontHomeUrl", null),
-    copyrightDate,
-    legalName: _.get(shop, "addressBook[0].company"),
-    physicalAddress: {
-      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
-      city: _.get(shop, "addressBook[0].city"),
-      region: _.get(shop, "addressBook[0].region"),
-      postal: _.get(shop, "addressBook[0].postal")
-    },
-    shopName: shop.name,
-    socialLinks: {
-      display: false
-    },
-    order: {
-      ...order,
-      shipping: adjustedOrderGroups
-    },
+    account,
     billing: {
       address: billingAddressForEmail,
       payments: (order.payments || []).map((payment) => ({
@@ -196,12 +191,26 @@ export default async function getDataForOrderEmailDefault(context, { order }) {
       )
     },
     combinedItems,
+    contactEmail: shop.emails[0].address,
+    copyrightDate,
+    homepage: _.get(shop, "storefrontUrls.storefrontHomeUrl", null),
+    legalName: _.get(shop, "addressBook[0].company"),
+    order: {
+      ...order,
+      shipping: adjustedOrderGroups
+    },
     orderDate: formatDateForEmail(order.createdAt),
     orderUrl,
+    physicalAddress,
     shipping: {
       address: shippingAddressForEmail,
       carrier,
       tracking
+    },
+    shop,
+    shopName: shop.name,
+    socialLinks: {
+      display: false
     }
   };
 }

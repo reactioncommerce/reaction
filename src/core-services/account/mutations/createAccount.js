@@ -1,5 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
+import ensureAccountsManagerGroup from "../util/ensureAccountsManagerGroup.js";
+import ensureSystemManagerGroup from "../util/ensureSystemManagerGroup.js";
 import sendWelcomeEmail from "../util/sendWelcomeEmail.js";
 
 const inputSchema = new SimpleSchema({
@@ -42,7 +44,7 @@ export default async function createAccount(context, input) {
 
   const {
     appEvents,
-    collections: { Accounts, AccountInvites, Groups },
+    collections: { Accounts, AccountInvites },
     simpleSchemas: {
       Account: AccountSchema
     },
@@ -76,55 +78,35 @@ export default async function createAccount(context, input) {
     userId
   };
 
-  let groupSlug = "customer"; // Default is to put new accounts into the "customer" permission group
-  let groups;
+  let groups = [];
   let invites;
 
-  // The identity provider service gives the first created user the global "owner" role. When we
-  // create an account for this user, they should be assigned to the "owner" group.
-  if (authUserId === userId) {
-    const isGlobalOwner = await context.userHasPermission("reaction:legacy:shops", "owner", { shopId }); // TODO(pod-auth): update this permissions check
-    if (isGlobalOwner) groupSlug = "owner";
-  }
-
-  // If we didn't already upgrade them to the "owner" group, see if they're been invited to any groups
-  if (groupSlug === "customer") {
+  // if this is the first user created overall, add them to the
+  // `system-manager` and `accounts-manager` groups
+  const anyAccount = await Accounts.findOne();
+  if (!anyAccount) {
+    const accountsManagerGroupId = await ensureAccountsManagerGroup(context);
+    const systemManagerGroupId = await ensureSystemManagerGroup(context);
+    groups.push(systemManagerGroupId);
+    groups.push(accountsManagerGroupId);
+  } else {
+    // if this isn't the first account see if they were invited by another user
+    // find all invites for this email address, for all shops, and add to all groups
     const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
-    // Find all invites for all shops and add to all groups
     invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
     groups = invites.map((invite) => invite.groupId);
-  }
-
-  // If they weren't invited to any groups, put them in the customer or owner group as determined above
-  if (!groups || groups.length === 0) {
-    if (shopId) {
-      const group = await Groups.findOne({ slug: groupSlug, shopId });
-      groups = group ? [group._id] : [];
-    } else {
-      // Put them in a group for the primary shop
-      const primaryShopId = await context.queries.primaryShopId(context);
-      if (primaryShopId) {
-        const primaryShopGroup = await Groups.findOne({ slug: groupSlug, shopId: primaryShopId });
-        groups = primaryShopGroup ? [primaryShopGroup._id] : [];
-      } else {
-        groups = [];
-      }
-    }
   }
 
   AccountSchema.validate(account);
 
   await Accounts.insertOne(account);
 
-  try {
-    await Promise.all(groups.map((groupId) => (
-      context.mutations.addAccountToGroup(context.getInternalContext(), {
-        accountId: account._id,
-        groupId
-      })
-    )));
-  } catch (error) {
-    Logger.error(error, `Error adding account ${account._id} to group upon account creation`);
+  for (const groupId of groups) {
+    // eslint-disable-next-line no-await-in-loop
+    await context.mutations.addAccountToGroup(context.getInternalContext(), {
+      accountId: account._id,
+      groupId
+    });
   }
 
   // Delete any invites that are now finished
