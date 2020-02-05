@@ -25,11 +25,10 @@ async function xformCatalogProductMedia(mediaItem, context) {
 /**
  * @param {Object} context - an object containing the per-request state
  * @param {Object[]} catalogItems Array of CatalogItem docs from the db
- * @param {Object[]} products Array of Product docs from the db
  * @param {Object} cartItem CartItem
  * @returns {Object} Same object with GraphQL-only props added
  */
-async function xformCartItem(context, catalogItems, products, cartItem) {
+async function xformCartItem(context, catalogItems, cartItem) {
   const { productId, variantId } = cartItem;
 
   const catalogItem = catalogItems.find((cItem) => cItem.product.productId === productId);
@@ -76,26 +75,13 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
  */
 export default async function xformCartItems(context, items) {
   const { collections, getFunctionsOfType } = context;
-  const { Catalog, Products } = collections;
+  const { Catalog } = collections;
 
   const productIds = items.map((item) => item.productId);
 
-  const catalogItems = await Catalog.find({
-    "product.productId": {
-      $in: productIds
-    },
-    "product.isVisible": true,
-    "product.isDeleted": { $ne: true },
-    "isDeleted": { $ne: true }
-  }).toArray();
+  const catalogItems = await Catalog.find({ "product.productId": { $in: productIds } }).toArray();
 
-  const products = await Products.find({
-    ancestors: {
-      $in: productIds
-    }
-  }).toArray();
-
-  const xformedItems = await Promise.all(items.map((item) => xformCartItem(context, catalogItems, products, item)));
+  const xformedItems = await Promise.all(items.map((item) => xformCartItem(context, catalogItems, item)));
 
   for (const mutateItems of getFunctionsOfType("xformCartItems")) {
     await mutateItems(context, xformedItems); // eslint-disable-line no-await-in-loop

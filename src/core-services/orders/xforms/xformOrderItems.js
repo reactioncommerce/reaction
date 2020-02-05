@@ -79,19 +79,18 @@ async function xformOrderItem(context, item, catalogItems) {
  * @returns {Object[]} Same array with GraphQL-only props added
  */
 export default async function xformOrderItems(context, items) {
-  const { collections } = context;
+  const { collections, getFunctionsOfType } = context;
   const { Catalog } = collections;
 
   const productIds = items.map((item) => item.productId);
 
-  const catalogItems = await Catalog.find({
-    "product.productId": {
-      $in: productIds
-    },
-    "product.isVisible": true,
-    "product.isDeleted": { $ne: true },
-    "isDeleted": { $ne: true }
-  }).toArray();
+  const catalogItems = await Catalog.find({ "product.productId": { $in: productIds } }).toArray();
 
-  return Promise.all(items.map((item) => xformOrderItem(context, item, catalogItems)));
+  const xformedItems = await Promise.all(items.map((item) => xformOrderItem(context, item, catalogItems)));
+
+  for (const mutateItems of getFunctionsOfType("xformOrderItems")) {
+    await mutateItems(context, xformedItems); // eslint-disable-line no-await-in-loop
+  }
+
+  return xformedItems;
 }

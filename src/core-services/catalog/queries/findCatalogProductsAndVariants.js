@@ -11,12 +11,7 @@ export default async function findCatalogProductsAndVariants(context, variants) 
   const { collections: { Catalog } } = context;
   const productIds = variants.map((variant) => variant.productId);
 
-  const catalogProductItems = await Catalog.find({
-    "product.productId": { $in: productIds },
-    "product.isVisible": true,
-    "product.isDeleted": { $ne: true },
-    "isDeleted": { $ne: true }
-  }).toArray();
+  const catalogProductItems = await Catalog.find({ "product.productId": { $in: productIds } }).toArray();
 
   const catalogProductsAndVariants = catalogProductItems.map((catalogProductItem) => {
     const { product } = catalogProductItem;
