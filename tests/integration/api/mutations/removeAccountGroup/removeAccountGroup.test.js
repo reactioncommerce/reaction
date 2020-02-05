@@ -8,7 +8,9 @@ const RemoveAccountGroupMutation = importAsString("./RemoveAccountGroupMutation.
 jest.setTimeout(300000);
 
 let removeAccountGroup;
+let ownerGroup;
 let adminGroup;
+let shopManagerGroup;
 let adminSecondaryGroup;
 let customerGroup;
 let mockAdminAccount;
@@ -29,6 +31,24 @@ beforeAll(async () => {
   shopOpaqueId = encodeOpaqueId("reaction/shop", shopId);
 
   removeAccountGroup = testApp.mutate(RemoveAccountGroupMutation);
+
+  ownerGroup = Factory.Group.makeOne({
+    _id: "ownerGroup",
+    createdBy: null,
+    name: "owner",
+    permissions: ["reaction:legacy:groups/remove", "reaction:legacy:groups/manage:accounts"],
+    slug: "owner",
+    shopId
+  });
+
+  shopManagerGroup = Factory.Group.makeOne({
+    _id: "shopManagerGroup",
+    createdBy: null,
+    name: "shopManager",
+    permissions: ["reaction:legacy:groups/remove", "reaction:legacy:groups/manage:accounts"],
+    slug: "shop manager",
+    shopId
+  });
 
   adminGroup = Factory.Group.makeOne({
     _id: "adminGroup",
@@ -109,6 +129,8 @@ beforeEach(async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   // Create groups
+  await testApp.collections.Groups.insertOne(ownerGroup);
+  await testApp.collections.Groups.insertOne(shopManagerGroup);
   await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.collections.Groups.insertOne(adminSecondaryGroup);
   await testApp.collections.Groups.insertOne(customerGroup);
@@ -169,10 +191,10 @@ test("a user belonging to a group with `reaction:legacy:groups/remove` permissio
 
   // Expect the Account to be moved to the customer group
   const afterAccount = await testApp.context.collections.Accounts.findOne({ _id: "mockCustomerAccount" });
-  expect(afterAccount.groups).toEqual(["customerGroup"]);
+  expect(afterAccount.groups).toEqual([]);
 });
 
-test("an admin account cannot delete default groups, 'owner', 'shop manager', 'guest' or 'customer'", async () => {
+test("an admin account cannot delete default groups, 'owner', 'shop manager'", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   try {
@@ -195,51 +217,5 @@ test("an admin account cannot delete default groups, 'owner', 'shop manager', 'g
     });
   } catch (errors) {
     expect(errors).toMatchSnapshot();
-  }
-
-  try {
-    await removeAccountGroup({
-      input: {
-        groupId: encodeOpaqueId("reaction/group", "guestGroup"),
-        shopId: shopOpaqueId
-      }
-    });
-  } catch (errors) {
-    expect(errors).toMatchSnapshot();
-  }
-
-  try {
-    await removeAccountGroup({
-      input: {
-        groupId: encodeOpaqueId("reaction/group", "customerGroup"),
-        shopId: shopOpaqueId
-      }
-    });
-  } catch (errors) {
-    expect(errors).toMatchSnapshot();
-  }
-});
-
-test("an admin account cannot remove a group unless there is a default customer group", async () => {
-  await testApp.setLoggedInUser(mockAdminAccount);
-
-  // Remove the default customer group directly with mongo.
-  // This simulates a user manually deleting or somehow otherwise altering the default customer group in the database
-  await testApp.collections.Groups.deleteOne({ _id: "customerGroup" });
-
-  // Expect the Account to be moved to the customer group
-  const beforeAccount = await testApp.context.collections.Accounts.findOne({ _id: "mockCustomerAccount" });
-  expect(beforeAccount.groups).toEqual(["testGroup"]);
-
-  try {
-    await removeAccountGroup({
-      input: {
-        groupId: encodeOpaqueId("reaction/group", "testGroup"),
-        shopId: shopOpaqueId
-      }
-    });
-  } catch (errors) {
-    expect(errors).toMatchSnapshot();
-    return;
   }
 });

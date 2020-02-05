@@ -13,7 +13,6 @@ import { Tag as TagSchema } from "../simpleSchemas.js"; // TODO: update schemas
  * @returns {Promise<Object>} AddTagPayload
  */
 export default async function addTag(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, name, isVisible, displayTitle, metafields, heroMediaUrl, slug: slugInput } = input;
   const { appEvents, collections } = context;
   const { Tags } = collections;

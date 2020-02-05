@@ -21,9 +21,7 @@ test("should create a group for the shop", async () => {
     _id: "test-group-id",
     name: "test group",
     slug: "test group",
-    permissions: [
-      "dashboard"
-    ],
+    permissions: [],
     shopId: "test-shop-id"
   };
 
@@ -32,9 +30,7 @@ test("should create a group for the shop", async () => {
     ops: [fakeResult]
   };
   mockContext.collections.Groups.insertOne.mockReturnValueOnce(Promise.resolve(insertOneRes));
-  mockContext.collections.Groups.findOne
-    .mockReturnValueOnce(Promise.resolve(fakeResult))
-    .mockReturnValueOnce(Promise.resolve(undefined));
+  mockContext.collections.Groups.findOne.mockReturnValueOnce(Promise.resolve(undefined));
 
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
 
@@ -43,14 +39,11 @@ test("should create a group for the shop", async () => {
   await expect(result).toEqual(expected);
 
   expect(mockContext.validatePermissions).toHaveBeenCalledWith("reaction:legacy:groups", "create", { shopId });
-  expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(1, { slug: "customer", shopId });
-  expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(2, { slug: "test-group", shopId });
+  expect(mockContext.collections.Groups.findOne).toHaveBeenNthCalledWith(1, { slug: "test-group", shopId });
   expect(mockContext.collections.Groups.insertOne).toHaveBeenCalledWith({
     name: "test group",
     slug: getSlug("test group"),
-    permissions: [
-      "dashboard"
-    ],
+    permissions: [],
     shopId: "test-shop-id",
     updatedAt: expect.any(Date),
     createdAt: expect.any(Date)
@@ -82,8 +75,8 @@ test("should throw if group already exists", async () => {
   };
   mockContext.collections.Groups.insertOne.mockReturnValueOnce(Promise.resolve(insertOneRes));
   mockContext.collections.Groups.findOne
-    .mockReturnValueOnce(Promise.resolve(undefined))
-    .mockReturnValueOnce(Promise.resolve(fakeResult));
+    .mockReturnValueOnce(Promise.resolve(fakeResult))
+    .mockReturnValueOnce(Promise.resolve(undefined));
 
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
 

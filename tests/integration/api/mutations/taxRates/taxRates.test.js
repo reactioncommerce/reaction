@@ -56,11 +56,11 @@ test("user can add a tax rate", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const taxRateInput = {
-    shopId: shopOpaqueId,
-    region: "CA",
-    rate: 0.10,
     country: "USA",
     postal: "90066",
+    rate: 0.10,
+    region: "CA",
+    shopId: shopOpaqueId,
     taxCode: "CODE"
   };
 
@@ -80,13 +80,13 @@ test("user can add a tax rate", async () => {
   // Validate the response
   // _id is omitted since the ID is tested for proper opaque ID conversion in the DB test below.
   const expectedTaxRateResponse = {
+    country: "USA",
+    postal: "90066",
+    rate: 0.10,
+    region: "CA",
     shop: {
       _id: shopOpaqueId
     },
-    region: "CA",
-    rate: 0.10,
-    country: "USA",
-    postal: "90066",
     sourcing: "destination",
     taxCode: "CODE"
   };
@@ -120,13 +120,14 @@ test("user can update an existing tax rate", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const taxRateInput = {
-    taxRateId: taxRateOpaqueId,
-    shopId: shopOpaqueId,
-    region: "CA",
-    rate: 0.40,
     country: "USA",
     postal: "90210",
-    taxCode: "CODE"
+    rate: 0.40,
+    region: "CA",
+    shopId: shopOpaqueId,
+    sourcing: "origin",
+    taxCode: "CODE",
+    taxRateId: taxRateOpaqueId
   };
 
   let result;
@@ -142,14 +143,14 @@ test("user can update an existing tax rate", async () => {
   // Validate the response
   // _id is omitted since the ID is tested for proper opaque ID conversion in the DB test below.
   const expectedTaxRateResponse = {
+    country: "USA",
+    postal: "90210",
+    rate: 0.40,
+    region: "CA",
     shop: {
       _id: shopOpaqueId
     },
-    region: "CA",
-    rate: 0.40,
-    country: "USA",
-    postal: "90210",
-    sourcing: "destination",
+    sourcing: "origin",
     taxCode: "CODE"
   };
 
@@ -166,27 +167,28 @@ test("user can update an existing tax rate", async () => {
   // The document we expect to see in the database
   const expectedTaxRateDocument = {
     _id: updatedTaxRateDatabaseId,
-    shopId,
-    region: "CA",
-    rate: 0.40,
     country: "USA",
     postal: "90210",
+    rate: 0.40,
+    region: "CA",
+    shopId,
     taxCode: "CODE",
-    taxLocale: "destination"
+    taxLocale: "origin"
   };
 
   expect(savedTaxRate).toEqual(expectedTaxRateDocument);
 });
 
-test("user can update an existing tax rate to clear all fields except rate", async () => {
+test("user can update an existing tax rate to clear all fields except rate and sourcing", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const taxRateInput = {
-    shopId: shopOpaqueId,
-    region: "CA",
-    rate: 0.10,
     country: "USA",
     postal: "90066",
+    rate: 0.10,
+    region: "CA",
+    shopId: shopOpaqueId,
+    sourcing: "destination",
     taxCode: "CODE"
   };
 
@@ -201,9 +203,9 @@ test("user can update an existing tax rate to clear all fields except rate", asy
   const { _id: createdTaxRateOpaqueId } = result.createTaxRate.taxRate;
 
   const taxRateUpdateInput = {
-    taxRateId: createdTaxRateOpaqueId,
+    rate: 0.40,
     shopId: shopOpaqueId,
-    rate: 0.40
+    taxRateId: createdTaxRateOpaqueId
   };
 
   try {
@@ -218,13 +220,13 @@ test("user can update an existing tax rate to clear all fields except rate", asy
   // Validate the response
   // _id is omitted since the ID is tested for proper opaque ID conversion in the DB test below.
   const expectedTaxRateResponse = {
+    country: null,
+    postal: null,
+    rate: 0.40,
+    region: null,
     shop: {
       _id: shopOpaqueId
     },
-    region: null,
-    rate: 0.40,
-    country: null,
-    postal: null,
     sourcing: "destination",
     taxCode: null
   };
@@ -242,11 +244,11 @@ test("user can update an existing tax rate to clear all fields except rate", asy
   // The document we expect to see in the database
   const expectedTaxRateDocument = {
     _id: updatedTaxRateDatabaseId,
-    shopId,
-    region: null,
-    rate: 0.40,
     country: null,
     postal: null,
+    rate: 0.40,
+    region: null,
+    shopId,
     taxCode: null,
     taxLocale: "destination"
   };
@@ -275,14 +277,14 @@ test("user can delete an existing tax rate", async () => {
   // Validate the response
   // _id is omitted since the ID is tested for proper opaque ID conversion in the DB test below.
   const expectedTaxRateResponse = {
+    country: "USA",
+    postal: "90210",
+    rate: 0.40,
+    region: "CA",
     shop: {
       _id: shopOpaqueId
     },
-    region: "CA",
-    rate: 0.40,
-    country: "USA",
-    postal: "90210",
-    sourcing: "destination",
+    sourcing: "origin",
     taxCode: "CODE"
   };
 

@@ -402,7 +402,8 @@ export const Group = new SimpleSchema({
     type: String
   },
   "shopId": {
-    type: String
+    type: String,
+    optional: true
   },
   "createdBy": {
     type: String,

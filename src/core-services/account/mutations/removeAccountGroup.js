@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import moveAccountsToGroup from "../util/moveAccountsToGroup.js";
-import defaultAccountGroups, { defaultCustomerGroupSlug } from "../util/defaultAccountGroups.js";
+import defaultAccountGroups from "../util/defaultAccountGroups.js";
+import removeAccountsFromGroup from "../util/removeAccountsFromGroup.js";
 
 /**
  * @name group/removeAccountGroup
@@ -20,7 +20,6 @@ export default async function removeAccountGroup(context, input) {
   const { appEvents, user } = context;
   const { Groups } = context.collections;
 
-  // we are limiting group method actions to only users within the account managers role
   await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "remove", { shopId });
 
   const defaultGroupsForShop = await Groups.find({
@@ -30,22 +29,15 @@ export default async function removeAccountGroup(context, input) {
     }
   }).toArray();
 
-  const defaultCustomerGroupForShop = defaultGroupsForShop.find(({ slug }) => slug === defaultCustomerGroupSlug);
   const forbiddenGroupIds = defaultGroupsForShop.map(({ _id }) => _id);
 
   if (forbiddenGroupIds.includes(groupId)) {
     throw new ReactionError("access-denied", `Cannot remove default group with ID ${groupId}.`);
   }
 
-  if (!defaultCustomerGroupForShop) {
-    throw new ReactionError("server-error", `Cannot remove group ${groupId}. Default "customer" group doesn't exist to move account to.`);
-  }
-
-  // Move accounts from their old group to their new group
-  await moveAccountsToGroup(context, {
+  await removeAccountsFromGroup(context, {
     shopId,
-    fromGroupId: groupId,
-    toGroupId: defaultCustomerGroupForShop._id
+    fromGroupId: groupId
   });
 
   /** Kafka connect mongo should be listening for update events

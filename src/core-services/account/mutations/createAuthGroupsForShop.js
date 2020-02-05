@@ -1,10 +1,8 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import {
-  defaultCustomerRoles,
-  defaultOwnerRoles,
-  defaultShopManagerRoles,
-  defaultVisitorRoles
+  defaultShopOwnerRoles,
+  defaultShopManagerRoles
 } from "../util/defaultRoles.js";
 
 /**
@@ -26,9 +24,7 @@ export default async function createAuthGroupsForShop(context, shopId) {
 
   const roles = {
     "shop manager": defaultShopManagerRoles,
-    "customer": defaultCustomerRoles,
-    "guest": defaultVisitorRoles,
-    "owner": defaultOwnerRoles
+    "owner": defaultShopOwnerRoles
   };
 
   const primaryShop = await Shops.findOne({ shopType: "primary" });

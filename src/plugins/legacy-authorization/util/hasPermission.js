@@ -42,9 +42,8 @@ export default async function hasPermission(context, resource, action, authConte
     throw new ReactionError("invalid-param", "shopId must be a non-empty string");
   }
 
-  // "owners" should always have access
-  // we create an array with the provided permission, plus owner
-  const checkPermissions = [permissionName, "owner", "reaction:legacy:shops/owner"]; // TODO(pod-auth): is this the best way to deal with an owner account? do we still have owners?
+  // we create an array with the provided permission
+  const checkPermissions = [permissionName];
 
   // always check GLOBAL_GROUP
   const globalPermissions = userPermissions[GLOBAL_GROUP];

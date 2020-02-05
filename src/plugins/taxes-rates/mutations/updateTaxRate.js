@@ -8,24 +8,37 @@
  * @returns {Promise<Object>} UpdateTaxRatePayload
  */
 export default async function updateTaxRate(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
-  const { shopId, _id, country, region, postal, taxCode, rate } = input;
+  const {
+    _id,
+    country,
+    postal,
+    rate,
+    region,
+    shopId,
+    sourcing: taxLocale,
+    taxCode
+  } = input;
   const { appEvents, collections } = context;
   const { Taxes } = collections;
 
   await context.validatePermissions("reaction:legacy:taxRates", "update", { shopId });
 
+  const updates = {
+    country,
+    region,
+    postal,
+    taxCode,
+    rate
+  };
+  if (taxLocale) {
+    updates.taxLocale = taxLocale;
+  }
+
   await Taxes.updateOne({
     _id,
     shopId
   }, {
-    $set: {
-      country,
-      region,
-      postal,
-      taxCode,
-      rate
-    }
+    $set: updates
   });
 
   const taxRate = await Taxes.findOne({ _id });

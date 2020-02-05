@@ -2,8 +2,15 @@ import SimpleSchema from "simpl-schema";
 
 const MediaRecordInfo = new SimpleSchema({
   name: String,
+  remoteURL: {
+    type: String,
+    optional: true
+  },
   size: SimpleSchema.Integer,
-  tempStoreId: String,
+  tempStoreId: {
+    type: String,
+    optional: true
+  },
   type: String,
   updatedAt: Date,
   uploadedAt: Date

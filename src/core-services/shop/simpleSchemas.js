@@ -245,6 +245,10 @@ export const ShopAddress = new SimpleSchema({
     type: String,
     optional: true
   },
+  "addressName": {
+    optional: true,
+    type: String
+  },
   "city": {
     type: String,
     label: "City"
