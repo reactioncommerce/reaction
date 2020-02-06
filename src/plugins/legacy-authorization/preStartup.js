@@ -1,4 +1,4 @@
-import doesDatabaseVersionMatch from "@reactioncommerce/migrator-version-check";
+import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
 
 const expectedVersion = 2;
 const namespace = "legacy-authorization";
