@@ -16,7 +16,23 @@ const ok = await doesDatabaseVersionMatch({
   // These must match one of the namespaces and versions
   // your package exports in the `migrations` named export
   expectedVersion: 2,
-  namespace: "my-package-name"
+  namespace: "my-package-name",
+  // Defines what to do if no current version is found for this track in
+  // the database. By default, the check will fail. That is, we will assume
+  // that some data must need to be migrated. If you have a way of checking
+  // whether it's an empty database or confirming that no migrations are
+  // needed, you can do that and pass `true` here. Then the check will
+  // succeed and the current version for the track will be set to
+  // `expectedVersion`. Alternatively, pass a function that returns
+  // a Promise that returns `true` or `false`. This way you can avoid
+  // database lookups unless a decision is necessary.
+  async setToExpectedIfMissing() {
+    const anyAccount = await db.collection("Accounts").findOne();
+    // If there are no accounts, it's probably a brand new database
+    // so we can assume all our data will be at the latest version
+    // and mark it as such in the database.
+    return !anyAccount;
+  }
 });
 
 if (!ok) {
@@ -32,7 +48,7 @@ Examples of commit messages: https://github.com/semantic-release/semantic-releas
 
 ## Publication to NPM
 
-The `@reactioncommerce/db-version-check` package is automatically published by CI when commits are merged or pushed to the `master` branch. This is done using [semantic-release](https://www.npmjs.com/package/semantic-release), which also determines version bumps based on conventional Git commit messages.
+The `@reactioncommerce/db-version-check` package is automatically published by CI when commits are merged or pushed to the `trunk` branch. This is done using [semantic-release](https://www.npmjs.com/package/semantic-release), which also determines version bumps based on conventional Git commit messages.
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing-off all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
