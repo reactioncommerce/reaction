@@ -40,5 +40,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "release": {
+    "branches": ["trunk"]
   }
 }
