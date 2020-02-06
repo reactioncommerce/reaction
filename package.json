@@ -3,6 +3,11 @@
   "version": "0.0.0-development",
   "description": "Data version checker function compatible with @reactioncommerce/migrator",
   "main": "./src/main.js",
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
   "type": "module",
   "scripts": {
     "lint": "eslint src",
