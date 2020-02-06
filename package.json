@@ -1,5 +1,5 @@
 {
-  "name": "@reactioncommerce/migrator-version-check",
+  "name": "@reactioncommerce/db-version-check",
   "version": "0.0.0-development",
   "description": "Data version checker function compatible with @reactioncommerce/migrator",
   "main": "./src/main.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/migrator-version-check.git"
+    "url": "git+https://github.com/reactioncommerce/db-version-check.git"
   },
   "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/migrator-version-check/issues"
+    "url": "https://github.com/reactioncommerce/db-version-check/issues"
   },
-  "homepage": "https://github.com/reactioncommerce/migrator-version-check#readme",
+  "homepage": "https://github.com/reactioncommerce/db-version-check#readme",
   "dependencies": {},
   "devDependencies": {},
   "eslintConfig": {
