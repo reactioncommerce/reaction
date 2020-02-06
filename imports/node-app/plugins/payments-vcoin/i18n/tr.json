@@ -1,0 +1,27 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "example-paymentmethod",
+  "translation": {
+    "example-paymentmethod": {
+      "admin": {
+        "shortcut": {
+          "examplePaymentProviderLabel": "Örnek Ödeme",
+          "examplePaymentProviderTitle": "Örnek Ödeme"
+        },
+        "dashboard": {
+          "examplePaymentProviderLabel": "Örnek Ödeme",
+          "examplePaymentProviderTitle": "Örnek Ödeme",
+          "examplePaymentProviderDescription": "Örnek Ödeme Yöntemi"
+        },
+        "paymentSettings": {
+          "examplePaymentLabel": "Örnek Sağlayıcı",
+          "examplePaymentSettingsLabel": "Örnek Ödeme",
+          "exampleCredentials": "Bu örnek bir ödeme yöntemi ayarıdır.",
+          "apiClientId": "API İstemci Kimliği",
+          "supportedMethodsLabel": "Ödeme sağlayıcısı tarafından desteklenen yöntemler"
+        }
+      }
+    }
+  }
+}]

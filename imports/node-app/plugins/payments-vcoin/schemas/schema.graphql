@@ -1,0 +1,20 @@
+"Data for an vcoin payment"
+type VCoinPaymentData {
+  "The name of the Vcoin payer entered by the shopper"
+  fullName: String!
+}
+
+extend union PaymentData = VCoinPaymentData
+
+"Data for an vcoin payment method"
+type VCoinPaymentMethodData {
+  "Example"
+  example: String!
+}
+
+extend union PaymentMethodData = VCoinPaymentMethodData
+
+extend enum PaymentMethodName {
+  "Vcoin payment method"
+  vcoin_example
+}

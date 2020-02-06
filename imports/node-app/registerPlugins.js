@@ -25,6 +25,7 @@ import registerDashboardPlugin from "./plugins/dashboard/index.js";
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerExamplePaymentsPlugin from "./plugins/payments-example/index.js";
+import registerVcoinPaymentsPlugin from "./plugins/payments-vcoin/index.js";
 import registerJobQueuePlugin from "./plugins/job-queue/index.js";
 import registerMarketplacePlugin from "./plugins/marketplace/index.js";
 import registerNavigationPlugin from "./plugins/navigation/index.js";
@@ -118,6 +119,8 @@ export default async function registerPlugins(app) {
   await registerPaymentsPlugin(app); // REQUIRED
   await registerExamplePaymentsPlugin(app); // OPTIONAL
   await registerStripePaymentsPlugin(app); // OPTIONAL
+  await registerVcoinPaymentsPlugin(app); // OPTIONAL
+
 
   /**
    * Discounts

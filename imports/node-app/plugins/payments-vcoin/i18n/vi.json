@@ -1,0 +1,27 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "example-paymentmethod",
+  "translation": {
+    "example-paymentmethod": {
+      "admin": {
+        "shortcut": {
+          "examplePaymentProviderLabel": "Ví dụ thanh toán",
+          "examplePaymentProviderTitle": "Ví dụ thanh toán"
+        },
+        "dashboard": {
+          "examplePaymentProviderLabel": "Ví dụ thanh toán",
+          "examplePaymentProviderTitle": "Ví dụ thanh toán",
+          "examplePaymentProviderDescription": "Phương thức thanh toán Ví dụ"
+        },
+        "paymentSettings": {
+          "examplePaymentLabel": "Nhà cung cấp ví dụ",
+          "examplePaymentSettingsLabel": "Ví dụ thanh toán",
+          "exampleCredentials": "Đây là cài đặt phương thức thanh toán ví dụ.",
+          "apiClientId": "ID Client API",
+          "supportedMethodsLabel": "Phương thức hỗ trợ nhà cung cấp thanh toán"
+        }
+      }
+    }
+  }
+}]

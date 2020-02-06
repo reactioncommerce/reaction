@@ -1,0 +1,1 @@
+import "./settings/templates/vcoin";
