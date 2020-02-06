@@ -9,6 +9,12 @@ const namespace = "legacy-authorization";
  * @returns {undefined}
  */
 export default async function preStartup(context) {
+  const setToExpectedIfMissing = async () => {
+    const anyAccount = await context.collections.Accounts.findOne();
+    const anyGroup = await context.collections.Groups.findOne();
+    return !anyAccount && !anyGroup;
+  };
+
   const ok = await doesDatabaseVersionMatch({
     // `db` is a Db instance from the `mongodb` NPM package,
     // such as what is returned when you do `client.db()`
@@ -16,7 +22,8 @@ export default async function preStartup(context) {
     // These must match one of the namespaces and versions
     // your package exports in the `migrations` named export
     expectedVersion,
-    namespace
+    namespace,
+    setToExpectedIfMissing
   });
 
   if (!ok) {
