@@ -1,20 +1,20 @@
 /**
  *
- * @method getProductMedia
- * @summary Get an array of ImageInfo objects by Product ID
- * @param {Object} product -  A product of type simple
+ * @method getVariantMedia
+ * @summary Get an array of ImageInfo objects by Variant ID
+ * @param {Object} variant -  A product variant or option
  * @param {Object} context - The per request context
  * @returns {Promise<Object[]>} Array of ImageInfo objects sorted by priority
  */
-export default async function getProductMedia(product, context) {
+export default async function getVariantMedia(variant, context) {
   const { Media } = context.collections;
-  const { _id: productId, shopId } = product;
+  const { _id: variantId, shopId } = variant;
   if (!Media) return [];
 
   const mediaArray = await Media.find(
     {
       "metadata.shopId": shopId,
-      "metadata.productId": productId,
+      "metadata.variantId": variantId,
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     },
     {
@@ -23,16 +23,15 @@ export default async function getProductMedia(product, context) {
   );
 
   // Denormalize media
-  const productMedia = mediaArray
+  const variantMedia = mediaArray
     .map((media) => {
       const { metadata } = media;
-      const { priority, productId: prodId, variantId } = metadata || {};
+      const { priority, variantId: variantIdLocal } = metadata || {};
 
       return {
         _id: media._id,
         priority,
-        productId: prodId,
-        variantId,
+        variantId: variantIdLocal,
         URLs: {
           large: `${media.url({ store: "large" })}`,
           medium: `${media.url({ store: "medium" })}`,
@@ -44,5 +43,5 @@ export default async function getProductMedia(product, context) {
     })
     .sort((mediaA, mediaB) => mediaA.priority - mediaB.priority);
 
-  return productMedia;
+  return variantMedia;
 }

@@ -88,7 +88,13 @@ type Product {
   updatedAt: DateTime
 
   "A list of all variants for this product"
-  variants: [ProductVariant]!
+  variants(
+    "Include hidden variants"
+    shouldIncludeHidden: Boolean = true,
+
+    "Include archived variants"
+    shouldIncludeArchived: Boolean = false
+  ): [ProductVariant]!
 
   "The product vendor or manufacturer, for display"
   vendor: String
@@ -139,7 +145,13 @@ type ProductVariant {
   optionTitle: String
 
   "Child variants, if any"
-  options: [ProductVariant]!
+  options(
+    "Include hidden variants"
+    shouldIncludeHidden: Boolean = true,
+
+    "Include archived variants"
+    shouldIncludeArchived: Boolean = false
+  ): [ProductVariant]!
 
   "The country of origin"
   originCountry: String

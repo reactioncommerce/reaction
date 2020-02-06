@@ -1,4 +1,5 @@
 import { createRequire } from "module";
+import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import ConnectionCursor from "./ConnectionCursor.js";
 import ConnectionLimitInt from "./ConnectionLimitInt.js";
 import Currency from "./Currency.js";
@@ -13,6 +14,9 @@ export default {
   Currency,
   Date: GraphQLDate,
   DateTime: GraphQLDateTime,
+  ImageInfo: {
+    _id: (node) => encodeOpaqueId("reaction/mediaRecord", node._id)
+  },
   Money,
   Mutation: {
     echo: (_, { str }) => `${str}`
