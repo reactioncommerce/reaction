@@ -3,17 +3,9 @@
 [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Open Source Helpers](https://www.codetriage.com/reactioncommerce/reaction/badges/users.svg)](https://www.codetriage.com/reactioncommerce/reaction)
 
-[Reaction](http://reactioncommerce.com) is an API-first, headless commerce platform built using Node.js, React, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
-
-Reaction v2.0.0 is built as a truly headless commerce platform that decouples the Reaction backend services from the frontend. We’ve decoupled the storefront application from the API. Reaction platform consists of this `reaction` project - which is now primarily our GraphQL API (and for the time being Reaction Admin and our identity provider) - alongside our new-to-2.0 [Example Storefront](https://github.com/reactioncommerce/example-storefront), which connects with the Reaction application via GraphQL API to provide a customer-facing storefront.
+[Reaction](http://reactioncommerce.com) headless commerce platform built using Node.js, React, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
 
 ![Reaction Admin](https://user-images.githubusercontent.com/20409254/61161477-bb033c80-a4b8-11e9-9c5e-4f4f6a68b8d0.png)
-
-## Features
-
-Reaction comes with a robust set of core commerce capabilities right out of the box. And since anything in our codebase can be extended, overwritten, or installed as a package, you may also customize anything on our platform.
-
-Check out the full list of Reaction [features](https://www.reactioncommerce.com/features) and [release history](https://reactioncommerce.com/roadmap) for more info.
 
 # Getting started
 
