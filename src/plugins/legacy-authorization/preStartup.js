@@ -27,6 +27,6 @@ export default async function preStartup(context) {
   });
 
   if (!ok) {
-    throw new Error(`Database needs migrating. The "${namespace}" namespace must be at version ${expectedVersion}`);
+    throw new Error(`Database needs migrating. The "${namespace}" namespace must be at version ${expectedVersion}. See docs for more information on migrations: https://github.com/reactioncommerce/api-migrations`);
   }
 }
