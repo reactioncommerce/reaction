@@ -1,4 +1,4 @@
-# @reactioncommerce/migrator-version-check
+# @reactioncommerce/db-version-check
 
 An NPM package that provides migrations for use with the `@reactioncommerce/migrator` CLI tool should use this package to check whether data is at the correct version before running any database commands.
 
@@ -7,7 +7,7 @@ An NPM package that provides migrations for use with the `@reactioncommerce/migr
 This package exports only one function: `doesDatabaseVersionMatch`.
 
 ```js
-import doesDatabaseVersionMatch from "@reactioncommerce/migrator-version-check";
+import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
 
 const ok = await doesDatabaseVersionMatch({
   // `db` is a Db instance from the `mongodb` NPM package,
@@ -32,7 +32,7 @@ Examples of commit messages: https://github.com/semantic-release/semantic-releas
 
 ## Publication to NPM
 
-The `@reactioncommerce/migrator-version-check` package is automatically published by CI when commits are merged or pushed to the `master` branch. This is done using [semantic-release](https://www.npmjs.com/package/semantic-release), which also determines version bumps based on conventional Git commit messages.
+The `@reactioncommerce/db-version-check` package is automatically published by CI when commits are merged or pushed to the `master` branch. This is done using [semantic-release](https://www.npmjs.com/package/semantic-release), which also determines version bumps based on conventional Git commit messages.
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing-off all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
