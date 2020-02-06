@@ -1,0 +1,18 @@
+mutation RemoveCartItems($removeCartItemsInput: RemoveCartItemsInput!) {
+  removeCartItems(input: $removeCartItemsInput) {
+    cart {
+      _id
+      email
+      items {
+        nodes {
+          _id
+          title
+          quantity
+          price {
+            amount
+          }
+        }
+      }
+    }
+  }
+}

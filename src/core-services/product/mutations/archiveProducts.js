@@ -24,16 +24,16 @@ const inputSchema = new SimpleSchema({
 export default async function archiveProducts(context, input) {
   inputSchema.validate(input);
   const { appEvents, collections, userId } = context;
-  const { MediaRecords, Products } = collections;
+  const { Products } = collections;
   const { productIds, shopId } = input;
 
   // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
   for (const productId of productIds) {
     // eslint-disable-next-line no-await-in-loop
     await context.validatePermissions(
-      `reaction:products:${productId}`,
+      `reaction:legacy:products:${productId}`,
       "archive",
-      { shopId, legacyRoles: ["createProduct", "product/admin", "product/archive"] }
+      { shopId }
     );
   }
 
@@ -96,32 +96,6 @@ export default async function archiveProducts(context, input) {
     }
     return archivedProduct;
   }));
-
-  if (archivedProducts && archivedProducts.length) {
-    // Flag associated MediaRecords as deleted.
-    await MediaRecords.updateMany(
-      {
-        $or: [
-          {
-            "metadata.productId": {
-              $in: productIdsToArchive
-            }
-          },
-          {
-            "metadata.variantId": {
-              $in: productIdsToArchive
-            }
-          }
-        ]
-      },
-      {
-        $set: {
-          "metadata.isDeleted": true,
-          "metadata.workflow": "archived"
-        }
-      }
-    );
-  }
 
   // Return only originally supplied product(s),
   // not variants and options also archived

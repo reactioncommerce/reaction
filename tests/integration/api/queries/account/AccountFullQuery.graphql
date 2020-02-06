@@ -33,13 +33,6 @@ query ($id: ID!) {
     name
     note
     preferences
-    shop {
-      _id
-    }
-    taxSettings {
-      exemptionNo
-      customerUsageType
-    }
     updatedAt
   }
 }

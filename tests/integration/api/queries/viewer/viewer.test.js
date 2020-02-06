@@ -15,6 +15,9 @@ beforeAll(async () => {
   viewerQuery = testApp.query(ViewerFullQuery);
 });
 
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
 afterAll(() => testApp.stop());
 
 test("unauthenticated", async () => {
@@ -40,7 +43,7 @@ test("authenticated", async () => {
           { address1: "mockAddress1" }
         ]
       },
-      createdAt: mockAccount.createdAt.toISOString(),
+      createdAt: jasmine.any(String),
       currency: null,
       emailRecords: [
         {
@@ -49,7 +52,7 @@ test("authenticated", async () => {
         }
       ],
       groups: {
-        nodes: null
+        nodes: []
       },
       metafields: [
         {
@@ -64,12 +67,7 @@ test("authenticated", async () => {
       name: "mockName",
       note: "mockNote",
       preferences: {},
-      shop: null,
-      taxSettings: {
-        customerUsageType: "mockCustomerUsageType",
-        exemptionNo: "mockExemptionNo"
-      },
-      updatedAt: mockAccount.updatedAt.toISOString()
+      updatedAt: jasmine.any(String)
     }
   });
 

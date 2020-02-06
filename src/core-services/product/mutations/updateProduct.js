@@ -33,10 +33,6 @@ const metafieldInputSchema = new SimpleSchema({
 });
 
 const inputSchema = new SimpleSchema({
-  "_id": {
-    type: String,
-    optional: true
-  },
   "description": {
     type: String,
     optional: true
@@ -60,8 +56,7 @@ const inputSchema = new SimpleSchema({
     optional: true
   },
   "hashtags.$": {
-    type: String,
-    optional: true
+    type: String
   },
   "isDeleted": {
     type: Boolean,
@@ -138,7 +133,11 @@ export default async function updateProduct(context, input) {
   const { product: productInput, productId, shopId } = input;
 
   // Check that user has permission to create product
-  await context.validatePermissions(`reaction:products:${productId}`, "update", { shopId, legacyRoles: ["createProduct", "product/admin", "product/update"] });
+  await context.validatePermissions(
+    `reaction:legacy:products:${productId}`,
+    "update",
+    { shopId }
+  );
 
   const currentProduct = await Products.findOne({ _id: productId, shopId });
   if (!currentProduct) throw new ReactionError("not-found", "Product not found");
@@ -147,19 +146,25 @@ export default async function updateProduct(context, input) {
 
   // Slugify the handle input
   if (typeof productInput.slug === "string") {
-    updateDocument.handle = await createHandle(context, getSlug(productInput.slug), productId);
+    updateDocument.handle = await createHandle(context, getSlug(productInput.slug), productId, shopId);
     delete updateDocument.slug;
   }
 
   // If a title is supplied, and the currently stored product doesn't have a handle,
   // then slugify the title and save it as the new handle (slug)
-  if (typeof productInput.title === "string" && !currentProduct.handle) {
-    updateDocument.handle = await createHandle(context, getSlug(productInput.title), productId);
+  if (typeof productInput.title === "string" && !currentProduct.handle && !updateDocument.handle) {
+    updateDocument.handle = await createHandle(context, getSlug(productInput.title), productId, shopId);
+  }
+
+  if (Object.keys(updateDocument).length === 0) {
+    throw new ReactionError("invalid-param", "At least one field to update must be provided");
   }
 
   inputSchema.validate(updateDocument);
 
-  await Products.updateOne(
+  updateDocument.updatedAt = new Date();
+
+  const { value: updatedProduct } = await Products.findOneAndUpdate(
     {
       _id: productId,
       shopId
@@ -172,9 +177,7 @@ export default async function updateProduct(context, input) {
     }
   );
 
-  const updatedProduct = await Products.findOne({ _id: productId, shopId });
-
-  appEvents.emit("afterProductUpdate", { productId, product: updatedProduct });
+  await appEvents.emit("afterProductUpdate", { productId, product: updatedProduct });
 
   return updatedProduct;
 }

@@ -1,5 +1,4 @@
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
-import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart.js";
 import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart.js";
@@ -21,7 +20,7 @@ import reconcileCartsMerge from "./reconcileCartsMerge.js";
  * @returns {Promise<Object>} Object in which `cart` property is set to the updated account cart
  */
 export default async function reconcileCarts(context, input) {
-  const { accountId, collections, user } = context;
+  const { accountId, collections } = context;
   const { Cart } = collections;
   const { anonymousCartId, cartToken, mode = "merge" } = input;
 
@@ -40,15 +39,6 @@ export default async function reconcileCarts(context, input) {
   if (!anonymousCart) throw new ReactionError("not-found", "Anonymous cart not found");
 
   const { shopId } = anonymousCart;
-
-  // In the Meteor app, there are accounts for anonymous users. This check can be removed someday.
-  // Don't use `userHasPermission` for this check because that always returns true if there
-  // is "owner" role. We want to know explicitly whether they have the "anonymous" role.
-  const roles = (user.roles && user.roles[shopId]) || [];
-  if (roles.includes("anonymous")) {
-    Logger.warn("reconcileCarts called by an anonymous user. Check client code.");
-    throw new ReactionError("access-denied", "Access Denied");
-  }
 
   const accountCart = carts.find((cart) => cart.accountId === accountId && cart.shopId === shopId);
 

@@ -3,7 +3,6 @@ import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import config from "../config.js";
-import canAddAccountToGroup from "../util/canAddAccountToGroup.js";
 import getCurrentUserName from "../util/getCurrentUserName.js";
 
 const { REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL } = config;
@@ -31,7 +30,7 @@ const inputSchema = new SimpleSchema({
 export default async function inviteShopMember(context, input) {
   inputSchema.validate(input);
   const { collections, user: userFromContext } = context;
-  const { Accounts, AccountInvites, Groups, Shops, users } = collections;
+  const { Accounts, AccountInvites, Groups, Shops } = collections;
   const {
     email,
     groupId,
@@ -39,7 +38,7 @@ export default async function inviteShopMember(context, input) {
     shopId
   } = input;
 
-  await context.validatePermissions("reaction:accounts", "invite:group", { shopId, legacyRoles: ["reaction-accounts", "account/invite"] });
+  await context.validatePermissions("reaction:legacy:accounts", "invite:group", { shopId });
 
   // we always use primary shop data, so retrieve this shop first with `Reaction` helper,
   // and only query the `Shops` collection if shopId !== primaryShop._id
@@ -49,19 +48,12 @@ export default async function inviteShopMember(context, input) {
   const group = await Groups.findOne({ _id: groupId });
   if (!group) throw new ReactionError("not-found", "No group found");
 
-  // we don't allow direct invitation of "owners", throw an error if that is the group
-  if (group.slug === "owner") {
-    throw new ReactionError("bad-request", "Cannot directly invite owner");
-  }
+  const lowercaseEmail = email.toLowerCase();
 
-  // check to see if invited user has an account
-  const invitedUser = await users.findOne({ "emails.address": email });
+  // check to see if invited email has an account
+  const invitedAccount = await Accounts.findOne({ "emails.address": lowercaseEmail }, { projection: { _id: 1 } });
 
-  if (invitedUser) {
-    // make sure user has an account
-    const invitedAccount = await Accounts.findOne({ userId: invitedUser._id }, { projection: { _id: 1 } });
-    if (!invitedAccount) throw new ReactionError("not-found", "User found but matching account not found");
-
+  if (invitedAccount) {
     // Set the account's permission group for this shop
     await context.mutations.addAccountToGroup(context, {
       accountId: invitedAccount._id,
@@ -73,13 +65,12 @@ export default async function inviteShopMember(context, input) {
 
   // This check is part of `addAccountToGroup` mutation for existing users. For new users,
   // we do it here before creating an invite record and sending the invite email.
-  const isAllowed = await canAddAccountToGroup(context, group);
-  if (!isAllowed) throw new ReactionError("access-denied", "Access Denied");
+  await context.validatePermissions("reaction:legacy:groups", "manage:accounts", { shopId: group.shopId });
 
   // Create an AccountInvites document. If a person eventually creates an account with this email address,
   // it will be automatically added to this group instead of the default group for this shop.
   await AccountInvites.updateOne({
-    email,
+    email: lowercaseEmail,
     shopId
   }, {
     $set: {
@@ -115,7 +106,7 @@ export default async function inviteShopMember(context, input) {
     data: dataForEmail,
     fromShop: shop,
     templateName: "accounts/inviteNewShopMember",
-    to: email
+    to: lowercaseEmail
   });
 
   return null;

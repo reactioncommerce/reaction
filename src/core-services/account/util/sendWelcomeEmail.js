@@ -1,7 +1,6 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
 import config from "../config.js";
 
 const { REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL } = config;
@@ -22,36 +21,31 @@ const inputSchema = new SimpleSchema({
 export default async function sendWelcomeEmail(context, input) {
   inputSchema.validate(input);
   const { collections } = context;
-  const { Accounts, Shops, users } = collections;
+  const { Accounts, Shops } = collections;
   const { accountId } = input;
 
   const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new Error(`Account with ID ${accountId} not found`);
 
-  const userEmail = account.emails && account.emails[0];
+  const { userId } = account;
 
-  // Verify that we have an account and it has an email address that isn't yet verified
-  if (!userEmail || userEmail.verified) return false;
-
-  const { shopId, userId } = account;
-
-  // Generate a token for the user to verify their email address
-  const tokenObj = generateVerificationTokenObject({ address: userEmail.address });
-
-  await users.updateOne({ _id: userId }, {
-    $push: {
-      "services.email.verificationTokens": tokenObj
-    }
-  });
-
-  // Fall back to primary shop if account has no shop linked
-  let shop;
-  if (shopId) {
-    shop = await Shops.findOne({ _id: shopId });
-  } else {
-    shop = await Shops.findOne({ shopType: "primary" });
+  let result;
+  try {
+    result = await context.mutations.startIdentityEmailVerification(context, {
+      userId
+    });
+  } catch (error) {
+    // This will throw an error if there are no email addresses or none needing
+    // validation, or if `startIdentityEmailVerification` doesn't exist because
+    // verification isn't supported. That's ok.
+    return false;
   }
 
+  const { email, token } = result;
+
+  // Account emails are always sent from the primary shop email and using primary shop
+  // email templates.
+  const shop = await Shops.findOne({ shopType: "primary" });
   if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const copyrightDate = new Date().getFullYear();
@@ -68,7 +62,7 @@ export default async function sendWelcomeEmail(context, input) {
     },
     shop,
     shopName: shop.name,
-    verificationUrl: REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL.replace("TOKEN", tokenObj.token)
+    verificationUrl: REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL.replace("TOKEN", token)
   };
 
   const language = (account.profile && account.profile.language) || shop.language;
@@ -78,7 +72,7 @@ export default async function sendWelcomeEmail(context, input) {
     fromShop: shop,
     templateName: "accounts/sendWelcomeEmail",
     language,
-    to: userEmail.address
+    to: email
   });
 
   return true;

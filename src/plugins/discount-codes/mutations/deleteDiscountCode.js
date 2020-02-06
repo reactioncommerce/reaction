@@ -8,7 +8,6 @@
  * @returns {Promise<Object>} DeleteDiscountCodePayload
  */
 export default async function deleteDiscountCode(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
   const {
     _id,
     shopId
@@ -16,7 +15,7 @@ export default async function deleteDiscountCode(context, input) {
   const { appEvents, collections } = context;
   const { Discounts } = collections;
 
-  await context.validatePermissions(`reaction:discounts:${_id}`, "delete", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions(`reaction:legacy:discounts:${_id}`, "delete", { shopId });
 
   const discountCodeToRemove = await Discounts.findOne({
     _id,

@@ -1,5 +1,4 @@
 import _ from "lodash";
-import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import config from "../config.js";
 
@@ -15,42 +14,23 @@ const { REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL } = config;
  * @returns {Job} - returns a sendEmail Job instance
  */
 export default async function sendVerificationEmail(context, { bodyTemplate = "accounts/verifyEmail", userId }) {
-  const { collections } = context;
-  const { Accounts, Shops, users } = collections;
+  const {
+    collections: { Accounts, Shops },
+    mutations: { startIdentityEmailVerification }
+  } = context;
 
-  const user = await users.findOne({ _id: userId });
+  if (typeof startIdentityEmailVerification !== "function") {
+    throw new ReactionError("not-supported", "Password reset not supported");
+  }
 
-  if (!user) throw new ReactionError("not-found", `User ${userId} not found`);
+  const { email, token } = await startIdentityEmailVerification(context, { userId });
 
   const account = await Accounts.findOne({ userId });
-
   if (!account) throw new ReactionError("not-found", "Account not found");
 
-  const { address } = _.find(user.emails || [], (item) => !item.verified) || {};
-
-  if (!address) {
-    // No unverified email addresses found
-    return null;
-  }
-
-  const tokenObj = generateVerificationTokenObject({ address });
-
-  await users.updateOne({ _id: userId }, {
-    $push: {
-      "services.email.verificationTokens": tokenObj
-    }
-  });
-
-  const { shopId } = account;
-
-  // Fall back to primary shop if account has no shop linked
-  let shop;
-  if (shopId) {
-    shop = await Shops.findOne({ _id: shopId });
-  } else {
-    shop = await Shops.findOne({ shopType: "primary" });
-  }
-
+  // Account emails are always sent from the primary shop email and using primary shop
+  // email templates.
+  const shop = await Shops.findOne({ shopType: "primary" });
   if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const dataForEmail = {
@@ -66,8 +46,8 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
       postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
-    confirmationUrl: REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL.replace("TOKEN", tokenObj.token),
-    userEmailAddress: address
+    confirmationUrl: REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL.replace("TOKEN", token),
+    userEmailAddress: email
   };
 
   const language = (account.profile && account.profile.language) || shop.language;
@@ -77,6 +57,6 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
     fromShop: shop,
     templateName: bodyTemplate,
     language,
-    to: address
+    to: email
   });
 }

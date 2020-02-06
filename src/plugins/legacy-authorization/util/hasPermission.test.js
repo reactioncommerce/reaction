@@ -1,23 +1,16 @@
 import hasPermission from "./hasPermission.js";
 
-test("returns false if no user", async () => {
-  const result = await hasPermission({ user: null }, "resource", "action", { shopId: "scope" });
-  expect(result).toBe(false);
-});
-
-test("returns false if no user.roles", async () => {
-  const result = await hasPermission({ user: { roles: null } }, "resource", "action", { shopId: "scope" });
+test("returns false if no userPermissions", async () => {
+  const result = await hasPermission({ userPermissions: null }, "resource", "action", { shopId: "scope" });
   expect(result).toBe(false);
 });
 
 test("throws if no resource", async () => {
   const result = hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon"], // eslint-disable-line camelcase
-          scope: ["can_eat"]
-        }
+      userPermissions: {
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        scope: ["can_eat"]
       }
     },
     null,
@@ -30,173 +23,136 @@ test("throws if no resource", async () => {
 test("throws if no action", async () => {
   const result = hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon"], // eslint-disable-line camelcase
-          scope: ["can_eat"]
-        }
+      userPermissions: {
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        scope: ["can_eat"]
       }
     },
-    "resource",
+    "organization:system:entity",
     null,
     { shopId: "scope" }
   );
   expect(result).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("throws if no authContext", async () => {
+test("throws if shopId is present but not a string", async () => {
   const result = hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon"], // eslint-disable-line camelcase
-          scope: ["can_eat"]
-        }
+      userPermissions: {
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        scope: ["can_eat"]
       }
     },
-    "resource",
-    "action",
-    null
-  );
-  expect(result).rejects.toThrowErrorMatchingSnapshot();
-});
-
-test("throws if roleGroup is present but not a string", async () => {
-  const result = hasPermission(
-    {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon"], // eslint-disable-line camelcase
-          scope: ["can_eat"]
-        }
-      }
-    },
-    "resource",
+    "organization:system:entity",
     "action",
     {
-      shopId: ["thisIsNotAString"],
-      legacyRoles: ["role1", "role2"]
+      shopId: ["thisIsNotAString"]
     }
   );
   expect(result).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("throws if roleGroup is present but an empty string", async () => {
+test("throws if shopId is present but an empty string", async () => {
   const result = hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon"], // eslint-disable-line camelcase
-          scope: ["can_eat"]
-        }
+      userPermissions: {
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        scope: ["can_eat"]
       }
     },
-    "resource",
+    "organization:system:entity",
     "action",
     {
-      shopId: "",
-      legacyRoles: ["role1", "role2"]
+      shopId: ""
     }
   );
   expect(result).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("returns true if in global role, even if not in group-scope role", async () => {
+test("returns true if in global permissions, even if not in group-scope permissions", async () => {
   const result = await hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon"], // eslint-disable-line camelcase
-          scope: ["can_eat"]
-        }
+      userPermissions: {
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        scope: ["otherOrganization:otherSystem:otherEntity/otherAction"]
       }
     },
-    "resource",
+    "organization:system:entity",
     "action",
     {
-      shopId: "SHOP_ID",
-      legacyRoles: ["can_fry_bacon", "can_scoop_ice_cream"]
+      shopId: "SHOP_ID"
     }
   );
   expect(result).toBe(true);
 });
 
-test("returns true if in group-scope role but not in global role", async () => {
+test("returns true if in group-scope permissions but not in global permissions", async () => {
   const result = await hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon"], // eslint-disable-line camelcase
-          scope: ["can_eat"]
-        }
+      userPermissions: {
+        __global_roles__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
+        scope: ["organization:system:entity/action"]
       }
     },
-    "resource",
+    "organization:system:entity",
     "action",
     {
-      shopId: "scope",
-      legacyRoles: ["can_eat", "can_scoop_ice_cream"]
+      shopId: "scope"
     }
   );
   expect(result).toBe(true);
 });
 
-test("returns true if in role in both scopes", async () => {
+test("returns true if in permissions in both scopes", async () => {
   const result = await hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon", "can_scoop_ice_cream"], // eslint-disable-line camelcase
-          scope: ["can_eat", "can_scoop_ice_cream"]
-        }
+      userPermissions: {
+        __global_roles__: ["organization:system:entity/action"], // eslint-disable-line camelcase
+        scope: ["organization:system:entity/action"]
       }
     },
-    "resource",
+    "organization:system:entity",
     "action",
     {
-      shopId: "scope",
-      legacyRoles: ["can_scoop_ice_cream"]
+      shopId: "scope"
     }
   );
   expect(result).toBe(true);
 });
 
-test("returns false if not in any role in either scope", async () => {
+test("returns false if not in any permissions in either scope", async () => {
   const result = await hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon", "can_scoop_ice_cream"], // eslint-disable-line camelcase
-          scope: ["can_eat", "can_scoop_ice_cream"]
-        }
+      userPermissions: {
+        __global_roles__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
+        scope: ["can_eat"]
       }
     },
-    "resource",
+    "organization:system:entity",
     "action",
     {
-      shopId: "scope",
-      legacyRoles: ["can_do_dishes"]
+      shopId: "scope"
     }
   );
   expect(result).toBe(false);
 });
 
-test("returns true if has owner role, even if not explicitly in the permissions array", async () => {
+test("returns false if has owner permission, even if not explicitly in the permissions array", async () => {
+  // we no longer allow "owner" permissions to override all other permissions
+  // users should not even have this permission anymore, but in case they do, make sure
+  // "owner" does not get a free pass
   const result = await hasPermission(
     {
-      user: {
-        roles: {
-          __global_roles__: ["can_fry_bacon", "can_scoop_ice_cream"], // eslint-disable-line camelcase
-          scope: ["can_eat", "can_scoop_ice_cream", "owner"]
-        }
+      userPermissions: {
+        __global_roles__: ["otherOrganization:otherSystem:otherEntity/otherAction"], // eslint-disable-line camelcase
+        scope: ["reaction:legacy:shops/owner"]
       }
     },
-    "resource",
+    "organization:system:entity",
     "action",
     {
-      shopId: "scope",
-      legacyRoles: ["can_do_dishes"]
+      shopId: "scope"
     }
   );
-  expect(result).toBe(true);
+  expect(result).toBe(false);
 });

@@ -1,0 +1,12 @@
+mutation ($accountId: ID, $email: Email!) {
+  setAccountDefaultEmail(input: { accountId: $accountId, email: $email }) {
+    account {
+      _id
+      emailRecords {
+        address
+        provides
+        verified
+      }
+    }
+  }
+}

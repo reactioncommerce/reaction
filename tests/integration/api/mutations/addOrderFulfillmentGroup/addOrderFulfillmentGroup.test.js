@@ -58,10 +58,19 @@ beforeAll(async () => {
 
   shopId = await testApp.insertPrimaryShop();
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:orders/move:item", "reaction:legacy:orders/update"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
   mockOrdersAccount = Factory.Account.makeOne({
-    roles: {
-      [shopId]: ["orders"]
-    }
+    groups: [adminGroup._id],
+    shopId
   });
   await testApp.createUserAndAccount(mockOrdersAccount);
 
@@ -109,16 +118,26 @@ beforeAll(async () => {
   });
   await testApp.collections.Catalog.insertOne(catalogItem2);
 
+  // Disable the flat rates pkg so that only our getFulfillmentMethodsWithQuotes fn is used
+  await testApp.collections.AppSettings.updateOne(
+    { shopId },
+    {
+      $set: {
+        isShippingRatesFulfillmentEnabled: false
+      }
+    },
+    { upsert: true }
+  );
+
   addOrderFulfillmentGroup = testApp.mutate(AddOrderFulfillmentGroupMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Catalog.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
-test("user with orders role can add an order fulfillment group with new items", async () => {
+test("user with `reaction:legacy:orders/update` role can add an order fulfillment group with new items", async () => {
   await testApp.setLoggedInUser(mockOrdersAccount);
 
   const orderItem = Factory.OrderItem.makeOne({
@@ -236,7 +255,7 @@ test("user with orders role can add an order fulfillment group with new items", 
   expect(newFulfillmentGroupId).toEqual(jasmine.any(String));
 });
 
-test("user with orders role can add an order fulfillment group with moved items", async () => {
+test("user with `reaction:legacy:orders/move:item` role can add an order fulfillment group with moved items", async () => {
   await testApp.setLoggedInUser(mockOrdersAccount);
 
   const orderItemToStay = Factory.OrderItem.makeOne({

@@ -1,5 +1,6 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import Factory from "/tests/util/factory.js";
 import TestApp from "/tests/util/TestApp.js";
 
 const productsQuery = importAsString("./productsQuery.graphql");
@@ -73,6 +74,15 @@ for (let index = 100; index < 136; index += 1) {
   productDocuments.push(mockOption);
 }
 
+const userGroup = Factory.Group.makeOne({
+  _id: "customerGroup",
+  createdBy: null,
+  name: "customer",
+  permissions: ["reaction:legacy:products/read"],
+  slug: "customer",
+  shopId: internalShopId
+});
+
 let testApp;
 let queryProducts;
 
@@ -82,21 +92,37 @@ beforeAll(async () => {
   queryProducts = testApp.query(productsQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
+  await testApp.collections.Groups.insertOne(userGroup);
+
   await Promise.all(productDocuments.map((doc) => (
     testApp.collections.Products.insertOne(doc)
   )));
 
   await testApp.setLoggedInUser({
     _id: "123",
-    roles: { [internalShopId]: ["createProduct"] }
+    groups: [userGroup._id]
   });
 });
 
-afterAll(async () => {
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.collections.Products.deleteMany({});
-  await testApp.clearLoggedInUser();
-  await testApp.stop();
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
+
+test("default sort is by createdAt descending", async () => {
+  let result;
+
+  try {
+    result = await queryProducts({
+      shopIds: [opaqueShopId],
+      first: 1
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.products.nodes[0].title).toEqual("Fake Product 135");
 });
 
 test("expect a list of products", async () => {
@@ -105,7 +131,8 @@ test("expect a list of products", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      first: 10
+      first: 10,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -129,7 +156,8 @@ test("expect a list of products on the second page", async () => {
     result = await queryProducts({
       shopIds: [opaqueShopId],
       first: 10,
-      offset: 10
+      offset: 10,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -155,7 +183,8 @@ test("expect a list of products filtered by product ids", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      productIds: [productId1, productId2, productId3]
+      productIds: [productId1, productId2, productId3],
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -174,7 +203,8 @@ test("expect a list of products filtered by a minimum price", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      priceMin: 132
+      priceMin: 132,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -192,7 +222,8 @@ test("expect a list of products filtered by a maximum price", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      priceMax: 151
+      priceMax: 151,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -211,7 +242,8 @@ test("expect a list of products filtered by a price range", async () => {
     result = await queryProducts({
       shopIds: [opaqueShopId],
       priceMin: 110,
-      priceMax: 163
+      priceMax: 163,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -236,7 +268,8 @@ test("expect a list of products filtered by tags", async () => {
         encodeOpaqueId("reaction/tag", "tag-120-2"),
         encodeOpaqueId("reaction/tag", "tag-130-1"),
         encodeOpaqueId("reaction/tag", "tag-110-0")
-      ]
+      ],
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -257,7 +290,8 @@ test("expect a list of products filtered by a metafield", async () => {
     result = await queryProducts({
       shopIds: [opaqueShopId],
       metafieldKey: "index",
-      metafieldValue: "110"
+      metafieldValue: "110",
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -274,7 +308,8 @@ test("expect a single of product filtered by a search query", async () => {
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      query: "Fake Product 130"
+      query: "Fake Product 130",
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -285,13 +320,14 @@ test("expect a single of product filtered by a search query", async () => {
   expect(result.products.nodes[0].title).toEqual("Fake Product 130");
 });
 
-test("expect an empty list of products filtered by a visibility", async () => {
+test("expect an empty list of products filtered by visibility", async () => {
   let result;
 
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      isVisible: false
+      isVisible: false,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -301,13 +337,14 @@ test("expect an empty list of products filtered by a visibility", async () => {
   expect(result.products.nodes.length).toEqual(0);
 });
 
-test("expect an empty list of products filtered by a archived", async () => {
+test("expect an empty list of products filtered by archived", async () => {
   let result;
 
   try {
     result = await queryProducts({
       shopIds: [opaqueShopId],
-      isArchived: true
+      isArchived: true,
+      sortOrder: "asc"
     });
   } catch (error) {
     expect(error).toBeUndefined();

@@ -15,7 +15,7 @@ export default async function accountCartByAccountId(context, { accountId, shopI
   const { collections } = context;
   const { Cart } = collections;
 
-  await context.validatePermissions(`reaction:accounts:${accountId._id}`, "read", { shopId, owner: accountId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions(`reaction:legacy:accounts:${accountId._id}`, "read", { shopId, owner: accountId });
 
   if (!accountId) {
     throw new ReactionError("invalid-param", "You must provide accountId");

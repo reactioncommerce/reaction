@@ -1,4 +1,3 @@
-import xformFileCollectionsProductMedia from "./xforms/xformFileCollectionsProductMedia.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
 import resolvers from "./resolvers/index.js";
@@ -14,6 +13,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "File Collections",
     name: "reaction-file-collections",
+    version: app.context.appVersion,
     collections: {
       MediaRecords: {
         name: "cfs.Media.filerecord",
@@ -31,8 +31,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
-      startup: [startup],
-      xformCatalogProductMedia: [xformFileCollectionsProductMedia]
+      startup: [startup]
     },
     mutations,
     policies,
@@ -45,26 +44,6 @@ export default async function register(app) {
         { type: "saveImage/local", purgeAfterDays: 7 },
         { type: "saveImage/remote", purgeAfterDays: 7 }
       ]
-    },
-    registry: [
-      {
-        route: "media/create",
-        label: "Create Media",
-        permission: "mediaCreate",
-        name: "media/create"
-      },
-      {
-        route: "media/update",
-        label: "Update Media",
-        permission: "mediaUpdate",
-        name: "media/update"
-      },
-      {
-        route: "media/delete",
-        label: "Delete Media",
-        permission: "mediaDelete",
-        name: "media/delete"
-      }
-    ]
+    }
   });
 }

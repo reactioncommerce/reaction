@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user can not remove account email if not logged in 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "FORBIDDEN",
+      "exception": Object {
+        "details": Object {},
+        "error": "access-denied",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Access Denied",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Access Denied",
+    "path": Array [
+      "removeAccountEmailRecord",
+    ],
+  },
+]
+`;
+
+exports[`user cannot remove default account email 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "server-error",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Cannot delete default email address.",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Cannot delete default email address.",
+    "path": Array [
+      "removeAccountEmailRecord",
+    ],
+  },
+]
+`;

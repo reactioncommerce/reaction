@@ -1,0 +1,17 @@
+mutation UpdateAccountMutation($input: UpdateAccountInput!) {
+  updateAccount(input: $input) {
+    account {
+      bio
+      currency {
+        code
+      }
+      language
+      firstName
+      lastName
+      name
+      note
+      picture
+      username
+    }
+  }
+}

@@ -1,0 +1,22 @@
+mutation CreateNavigationTree($createNavigationTreeInput: CreateNavigationTreeInput!) {
+	createNavigationTree(input: $createNavigationTreeInput) {
+    navigationTree {
+      ...NavigationTree
+    }
+  }
+}
+
+fragment NavigationTree on NavigationTree {
+  draftItems {
+    expanded
+    isPrivate
+    isSecondary
+    isVisible
+    navigationItem {
+      _id
+    }
+  }
+  hasUnpublishedChanges
+  name
+  shopId
+}

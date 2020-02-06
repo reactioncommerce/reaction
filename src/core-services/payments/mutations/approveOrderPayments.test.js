@@ -63,9 +63,9 @@ test("throws if permission check fails", async () => {
   })).rejects.toThrowErrorMatchingSnapshot();
 
   expect(mockContext.validatePermissions).toHaveBeenCalledWith(
-    "reaction:orders:abc",
+    "reaction:legacy:orders:abc",
     "approve:payment",
-    { shopId: "SHOP_ID", legacyRoles: ["orders", "order/fulfillment"] }
+    { shopId: "SHOP_ID" }
   );
 });
 

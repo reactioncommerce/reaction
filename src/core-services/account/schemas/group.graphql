@@ -28,8 +28,23 @@ input GroupInput {
   slug: String!
 }
 
+"A type definition for updating account groups"
+input UpdateGroupInput {
+  "A free text description of this group"
+  description: String
+
+  "A unique name for the group"
+  name: String
+
+  "A list of the account permissions implied by membership in this group"
+  permissions: [String]
+
+  "A unique URL-safe string representing this group"
+  slug: String
+}
+
 "The details for creating a group"
-input CreateGroupInput {
+input CreateAccountGroupInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -41,31 +56,46 @@ input CreateGroupInput {
 }
 
 "The details for updating a group"
-input UpdateGroupInput {
+input UpdateAccountGroupInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
+  "The changes to apply to the group"
+  group: UpdateGroupInput!
+
   "The group ID"
-  id: ID!
+  groupId: ID!
 
   "The ID of the shop this group belongs to"
   shopId: ID!
-
-  "The changes to apply to the group"
-  updates: GroupInput!
 }
 
 "The details for removing a group"
-input RemoveGroupInput {
+input RemoveAccountGroupInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
   "The group ID"
-  id: ID!
+  groupId: ID!
+
+  "The ID of the shop this group belongs to"
+  shopId: ID!
 }
 
 "Defines a group and account that should be linked"
 input AddAccountToGroupInput {
+  "The account ID"
+  accountId: ID!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The group ID"
+  groupId: ID!
+}
+
+"Defines a group and account that should be unlinked"
+input RemoveAccountFromGroupInput {
   "The account ID"
   accountId: ID!
 
@@ -149,8 +179,8 @@ type AddAccountToGroupPayload {
   group: Group
 }
 
-"The response from the `createGroup` mutation"
-type CreateGroupPayload {
+"The response from the `createAccountGroup` mutation"
+type CreateAccountGroupPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
@@ -158,8 +188,8 @@ type CreateGroupPayload {
   group: Group
 }
 
-"The response from the `updateGroup` mutation"
-type UpdateGroupPayload {
+"The response from the `updateAccountGroup` mutation"
+type UpdateAccountGroupPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
@@ -167,17 +197,50 @@ type UpdateGroupPayload {
   group: Group
 }
 
-"The response from the `removeGroup` mutation"
-type RemoveGroupPayload {
+"The response from the `removeAccountFromGroup` mutation"
+type RemoveAccountFromGroupPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Successfully removed?"
-  wasRemoved: Boolean!
+  "The removed group"
+  group: Group!
+}
+
+
+"The response from the `removeGroup` mutation"
+type RemoveAccountGroupPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The removed group"
+  group: Group
 }
 
 extend type Shop {
   "Returns a list of groups for this shop, as a Relay-compatible connection."
+  groups(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: GroupSortByField = createdAt
+  ): GroupConnection
+}
+
+extend type Account {
+  "A paged list of the permission groups in which this account is listed"
   groups(
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
@@ -206,23 +269,29 @@ extend type Mutation {
     input: AddAccountToGroupInput!
   ): AddAccountToGroupPayload
 
-  "Create a new permission group"
-  createGroup(
+  "Create a new account group. These are usually used for account group permissions"
+  createAccountGroup(
     "Mutation input"
-    input: CreateGroupInput!
-  ): CreateGroupPayload
+    input: CreateAccountGroupInput!
+  ): CreateAccountGroupPayload
+
+  "Remove an account from a group"
+  removeAccountFromGroup(
+    "Mutation input"
+    input: RemoveAccountFromGroupInput!
+  ): RemoveAccountFromGroupPayload
 
   "Remove an existing permission group"
-  removeGroup(
+  removeAccountGroup(
     "Mutation input"
-    input: RemoveGroupInput!
-  ): RemoveGroupPayload
+    input: RemoveAccountGroupInput!
+  ): RemoveAccountGroupPayload
 
   "Update an existing permission group"
-  updateGroup(
+  updateAccountGroup(
     "Mutation input"
-    input: UpdateGroupInput!
-  ): UpdateGroupPayload
+    input: UpdateAccountGroupInput!
+  ): UpdateAccountGroupPayload
 }
 
 extend type Query {

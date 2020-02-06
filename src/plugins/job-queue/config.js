@@ -1,14 +1,10 @@
 import envalid from "envalid";
 
-const { bool, str } = envalid;
+const { bool } = envalid;
 
 export default envalid.cleanEnv(process.env, {
-  // This is necessary to override the envalid default
-  // validation for NODE_ENV, which uses
-  // str({ choices: ['development', 'test', 'production'] })
-  //
-  // We currently need to set NODE_ENV to "jesttest" when
-  // integration tests run.
-  NODE_ENV: str(),
-  REACTION_WORKERS_ENABLED: bool({ default: true })
+  REACTION_WORKERS_ENABLED: bool({ default: true }),
+  VERBOSE_JOBS: bool({ default: false })
+}, {
+  dotEnvPath: null
 });

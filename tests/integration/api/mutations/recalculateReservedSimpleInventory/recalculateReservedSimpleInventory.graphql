@@ -1,0 +1,8 @@
+mutation recalculateReservedSimpleInventory($input: RecalculateReservedSimpleInventoryInput!) { 
+  recalculateReservedSimpleInventory(input: $input ){
+    inventoryInfo {
+      inventoryInStock
+      inventoryReserved
+    }
+  }
+}

@@ -6,7 +6,7 @@ export const customPublishedProductVariantFields = [];
  * @param {Object} options The options object that the plugin passed to registerPackage
  * @returns {undefined}
  */
-export function registerPluginHandler({ catalog }) {
+export function registerPluginHandlerForCatalog({ catalog }) {
   if (catalog) {
     const { publishedProductFields, publishedProductVariantFields } = catalog;
     if (Array.isArray(publishedProductFields)) {

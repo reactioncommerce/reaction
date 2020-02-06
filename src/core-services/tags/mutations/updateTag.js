@@ -38,8 +38,7 @@ export default async function updateTag(context, input) {
   const { Tags } = collections;
   const { shopId, tagId, slug: slugInput } = input;
 
-  // Check for owner or admin permissions from the user before allowing the mutation
-  await context.validatePermissions(`reaction:tags:${tagId}`, "update", { shopId, legacyRoles: ["owner", "admin", "tag/admin", "tag/edit"] });
+  await context.validatePermissions(`reaction:legacy:tags:${tagId}`, "update", { shopId });
 
   const metafields = [];
 

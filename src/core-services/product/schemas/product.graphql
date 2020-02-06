@@ -18,11 +18,14 @@ type Product {
   "True if this product should be shown to shoppers. Typically, non-visible products are not returned in queries."
   isVisible: Boolean!
 
+  "All media for a product"
+  media: [ImageInfo]
+
   "The product description to use for page `description` meta element in HTML"
   metaDescription: String
 
   "Arbitrary additional metadata about this product"
-  metafields: [Metafield]
+  metafields: [Metafield]!
 
   "The country of origin"
   originCountry: String
@@ -85,7 +88,13 @@ type Product {
   updatedAt: DateTime
 
   "A list of all variants for this product"
-  variants: [ProductVariant]!
+  variants(
+    "Include hidden variants"
+    shouldIncludeHidden: Boolean = true,
+
+    "Include archived variants"
+    shouldIncludeArchived: Boolean = false
+  ): [ProductVariant]!
 
   "The product vendor or manufacturer, for display"
   vendor: String
@@ -123,6 +132,9 @@ type ProductVariant {
   "The length of the product, if it has physical dimensions"
   length: Float
 
+  "All media for a variant"
+  media: [ImageInfo]
+
   "Arbitrary additional metadata about this product"
   metafields: [Metafield]!
 
@@ -133,7 +145,13 @@ type ProductVariant {
   optionTitle: String
 
   "Child variants, if any"
-  options: [ProductVariant]!
+  options(
+    "Include hidden variants"
+    shouldIncludeHidden: Boolean = true,
+
+    "Include archived variants"
+    shouldIncludeArchived: Boolean = false
+  ): [ProductVariant]!
 
   "The country of origin"
   originCountry: String
@@ -216,7 +234,7 @@ type CloneProductVariantsPayload  {
   variants: [ProductVariant]!
 }
 
-"Response payload of `updateProductField` mutation"
+"Response payload of `updateProduct` mutation"
 type UpdateProductPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -319,7 +337,7 @@ input CloneProductVariantsInput  {
   variantIds: [ID]!
 }
 
-"Input for the `updateProductField` mutation"
+"Input for the `updateProduct` mutation"
 input UpdateProductInput  {
   "Product input"
   product: ProductInput!
@@ -333,9 +351,6 @@ input UpdateProductInput  {
 
 "Mutation input for a product"
 input ProductInput {
-  "Product ID"
-  _id: ID
-
   "The full product description, which may have newline characters in it"
   description: String
 
@@ -390,12 +405,6 @@ input ProductInput {
 
 "Mutation input for a product variant or option"
 input ProductVariantInput {
-  "Variant ID"
-  _id: ID
-
-  "Ancestors this variant"
-  ancestors: [ID]
-
   """
   The attribute label describes the category of variant, for example, "Color" or "Size".
   In most cases this will be the same for all variants at the same level.
@@ -404,9 +413,6 @@ input ProductVariantInput {
 
   "The product variant barcode value, if it has one"
   barcode: String
-
-  "The date and time at which this variant was created"
-  createdAt: DateTime
 
   "The height of the product variant, if it has physical dimensions"
   height: Float
@@ -463,6 +469,22 @@ input UpdateProductVariantInput  {
 
   "ID of variant to update"
   variantId: ID!
+}
+
+
+"The fields by which you are allowed to sort any query that returns a `ProductConnection`"
+enum ProductSortByField {
+  "Product ID"
+  _id
+
+  "Date and time the product was created"
+  createdAt
+
+  "Product title"
+  title
+
+  "Date and time the product was last updated"
+  updatedAt
 }
 
 extend type Mutation {
@@ -571,5 +593,11 @@ extend type Query {
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
     offset: Int,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = desc,
+
+    "By default, products are sorted by createdAt. Set this to sort by one of the other allowed fields"
+    sortBy: ProductSortByField = createdAt
   ): ProductConnection
 }

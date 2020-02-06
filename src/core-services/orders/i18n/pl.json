@@ -9,12 +9,12 @@
         "applyRefundDuringCancelOrder": "Spowoduje to zwrot całkowitej kwoty zamówienia {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Czy chcesz anulować zamówienie?",
         "cancelOrderLabel": "Anuluj zamówienie",
-        "cancelOrderThenRestock": "Tak, i uzupełnij",
-        "cancelOrderNoRestock": "Tak, ale nie restocking"
+        "cancelOrderThenRestock": "Tak, i restockuj",
+        "cancelOrderNoRestock": "Tak, ale nie restockuj"
       },
       "admin": {
         "shortcut": {
-          "ordersLabel": "Święcenia"
+          "ordersLabel": "Zamówienia"
         },
         "orderRisk": {
           "high": "Wysokie ryzyko",
@@ -22,8 +22,8 @@
           "riskCaptureWarn": "Zamierzasz uchwycić zlecenie z ładunkiem. Potwierdź przed kontynuowaniem."
         },
         "dashboard": {
-          "ordersLabel": "Święcenia",
-          "ordersTitle": "Święcenia",
+          "ordersLabel": "Zamówienia",
+          "ordersTitle": "Zamówienia",
           "ordersDescription": "Spełnij swoje zamówienia",
           "clearSearch": "Wyczyść"
         },
@@ -31,7 +31,7 @@
           "ordersList": {
             "date": "Data",
             "orderId": "Identyfikator zamówienia",
-            "total": "Razem",
+            "total": "Kwota",
             "emailNotFound": "E-mail nie jest dostępny"
           },
           "summary": {
@@ -40,12 +40,12 @@
           },
           "invoice": {
             "cardTitle": "Faktura",
-            "adjustedTotal": "Skorygowany Razem",
-            "capturedTotal": "schwytany Razem",
+            "adjustedTotal": "Skorygowana kwota",
+            "capturedTotal": "Zapłacona kwota",
             "refund": "Zwrot",
-            "refundLabel": "Za zwrot",
-            "refundItem": "Przedmiotów",
-            "refundItemAmount": "Razem",
+            "refundLabel": "Zwrot",
+            "refundItem": "Przedmiot",
+            "refundItemAmount": "Kwota",
             "refundTotal": "Zwrot kosztów"
           },
           "fulfillment": "Spełnienie",
@@ -58,7 +58,7 @@
             "email": "Ustawienia poczty e-mail",
             "date": "Data",
             "id": "ID",
-            "total": "Razem",
+            "total": "Kwota",
             "shipping": "Wysyłka",
             "status": "Status"
           },
@@ -70,7 +70,7 @@
             "captured": "Płatność Przechwycona",
             "shipped": "Wysłano",
             "completed": "Zakończono",
-            "canceled": "Odwołano",
+            "canceled": "Anulowane",
             "refunded": "Zwrócone"
           },
           "search": {
@@ -80,12 +80,12 @@
           "data": {
             "status": {
               "new": "Nowy",
-              "coreOrderWorkflow/created": "Stworzony",
-              "coreOrderWorkflow/processing": "Przetwarzanie",
-              "coreOrderWorkflow/completed": "Zakończony",
-              "coreOrderWorkflow/canceled": "Odwołany",
-              "coreOrderWorkflow/picked": "Doborowy",
-              "coreOrderWorkflow/packed": "Zatłoczony",
+              "coreOrderWorkflow/created": "Nowe",
+              "coreOrderWorkflow/processing": "Przetwarzane",
+              "coreOrderWorkflow/completed": "Zakończone",
+              "coreOrderWorkflow/canceled": "Anulowane",
+              "coreOrderWorkflow/picked": "Odebrane",
+              "coreOrderWorkflow/packed": "Spakowane",
               "coreOrderWorkflow/labeled": "Oznaczone",
               "coreOrderWorkflow/shipped": "Wysłane"
             }

@@ -1,0 +1,19 @@
+mutation ($accountId: ID!, $groupId: ID!) {
+  addAccountToGroup(input: { accountId: $accountId, groupId: $groupId }) {
+    group {
+      _id
+      createdAt
+      createdBy {
+        _id
+      }
+      description
+      name
+      permissions
+      shop {
+        _id
+      }
+      slug
+      updatedAt
+    }
+  }
+}

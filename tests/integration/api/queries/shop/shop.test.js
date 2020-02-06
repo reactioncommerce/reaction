@@ -24,6 +24,9 @@ beforeAll(async () => {
 }`);
 });
 
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
 afterAll(() => testApp.stop());
 
 test("get shop, no auth necessary", async () => {

@@ -105,6 +105,24 @@ export default class ReactionAPI {
       appVersion: this.version,
       auth: {},
       collections: this.collections,
+      /**
+       * @summary When calling a query or mutation function that checks permissions from another
+       *   query or mutation where you have already checked permissions, or from system code such
+       *   as a background job or ETL process, call `context.getInternalContext()` and pass the
+       *   result as the `context` argument. This will bypass all permission checks in the function
+       *   you are calling.
+       * @return {Object} Context object with permission to do anything
+       */
+      getInternalContext: () => ({
+        ...this.context,
+        account: null,
+        accountId: null,
+        isInternalCall: true,
+        user: null,
+        userHasPermission: async () => true,
+        userId: null,
+        validatePermissions: async () => undefined
+      }),
       getFunctionsOfType: (type) => (this.functionsByType[type] || []).map(({ func }) => func),
       mutations: {},
       queries: {},
@@ -142,6 +160,13 @@ export default class ReactionAPI {
           this.functionsByType[type] = [];
         }
         functionsByType[type].forEach((func) => {
+          const entryWithSameName = this.functionsByType[type].find((existingEntry) => existingEntry.func.name === func.name);
+          if (entryWithSameName) {
+            Logger.warn(`Plugin "${pluginName}" registers a function of type "${type}" named "${func.name}", `
+              + `but plugin "${entryWithSameName.pluginName}" has already registered a function of type "${type}" named "${entryWithSameName.func.name}".`
+              + " We recommend you choose a unique and descriptive name for all functions passed to `functionsByType` to help with debugging.");
+          }
+
           this.functionsByType[type].push({ func, pluginName });
         });
       });
@@ -155,8 +180,12 @@ export default class ReactionAPI {
    * @param {Database} db MongoDB library database instance
    * @returns {undefined}
    */
-  setMongoDatabase(db) {
+  async setMongoDatabase(db) {
     this.db = db;
+
+    // Reset these
+    this.collections = {};
+    this.context.collections = this.collections;
 
     // Loop through all registered plugins
     for (const pluginName in this.registeredPlugins) {
@@ -186,9 +215,10 @@ export default class ReactionAPI {
 
               // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {
-                for (const indexArgs of collectionConfig.indexes) {
-                  collectionIndex(this.collections[collectionKey], ...indexArgs);
-                }
+                const indexingPromises = collectionConfig.indexes.map((indexArgs) => (
+                  collectionIndex(this.collections[collectionKey], ...indexArgs)
+                ));
+                await Promise.all(indexingPromises); // eslint-disable-line no-await-in-loop
               }
             }
           }
@@ -213,7 +243,7 @@ export default class ReactionAPI {
     const client = await mongoConnectWithRetry(mongoUrl);
 
     this.mongoClient = client;
-    this.setMongoDatabase(client.db()); // Uses db name from the connection string
+    await this.setMongoDatabase(client.db()); // Uses db name from the connection string
   }
 
   async disconnectFromMongo() {

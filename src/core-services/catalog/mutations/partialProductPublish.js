@@ -10,6 +10,8 @@ export default async function partialProductPublish(context, { productId, startF
   const { collections: { Catalog, Products, Shops } } = context;
 
   const catalogItem = await Catalog.findOne({ "product.productId": productId });
+  if (!catalogItem) return;
+
   const { product: catalogProduct } = catalogItem;
 
   // Get some data that we pass to all publish transformation functions

@@ -20,12 +20,13 @@ export default async function setTagHeroMedia(context, input) {
   const { Media, MediaRecords, Tags } = collections;
   const { shopId, tagId, fileRecord } = input;
 
-  // Check for owner or admin permissions from the user before allowing the mutation
-  await context.validatePermissions(`reaction:tags:${tagId}`, "update", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions(`reaction:legacy:tags:${tagId}`, "update", { shopId });
 
   let heroMediaUrl = null;
 
   if (fileRecord) {
+    if (!Media || !MediaRecords) throw new Error("Cannot add media if the files plugin isn't registered");
+
     const doc = {
       ...fileRecord,
       _id: Random.id(),

@@ -1,0 +1,9 @@
+mutation ($input: InviteShopMemberInput!) {
+  inviteShopMember(input: $input){
+    account {
+      emailRecords {
+        address
+      }
+    }
+  }
+}

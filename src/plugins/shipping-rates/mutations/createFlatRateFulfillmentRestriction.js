@@ -23,13 +23,12 @@ export default async function createFlatRateFulfillmentRestrictionMutation(conte
   const { collections } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  await context.validatePermissions("reaction:shippingRestrictions", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
+  await context.validatePermissions("reaction:legacy:shippingRestrictions", "create", { shopId });
 
-  const { insertedCount } = await FlatRateFulfillmentRestrictions.insertOne({
-    _id: Random.id(),
-    shopId,
-    ...restriction
-  });
+  restriction._id = Random.id();
+  restriction.shopId = shopId;
+
+  const { insertedCount } = await FlatRateFulfillmentRestrictions.insertOne(restriction);
   if (insertedCount === 0) throw new ReactionError("server-error", "Unable to create restriction method");
 
   return { restriction };

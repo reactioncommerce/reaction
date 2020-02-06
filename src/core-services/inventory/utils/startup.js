@@ -4,7 +4,7 @@
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
+export default function inventoryStartup(context) {
   const { appEvents } = context;
 
   // Whenever inventory is updated for any sellable variant, the plugin that did the update is

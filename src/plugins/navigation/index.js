@@ -16,6 +16,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Navigation",
     name: "reaction-navigation",
+    version: app.context.appVersion,
     i18n,
     collections: {
       NavigationItems: {
@@ -38,21 +39,21 @@ export default async function register(app) {
     shopSettingsConfig: {
       shouldNavigationTreeItemsBePubliclyVisible: {
         defaultValue: false,
-        rolesThatCanEdit: ["admin"],
+        permissionsThatCanEdit: ["reaction:legacy:navigationTreeItems/update:settings"],
         simpleSchema: {
           type: Boolean
         }
       },
       shouldNavigationTreeItemsBeAdminOnly: {
         defaultValue: false,
-        rolesThatCanEdit: ["admin"],
+        permissionsThatCanEdit: ["reaction:legacy:navigationTreeItems/update:settings"],
         simpleSchema: {
           type: Boolean
         }
       },
       shouldNavigationTreeItemsBeSecondaryNavOnly: {
         defaultValue: false,
-        rolesThatCanEdit: ["admin"],
+        permissionsThatCanEdit: ["reaction:legacy:navigationTreeItems/update:settings"],
         simpleSchema: {
           type: Boolean
         }

@@ -7,7 +7,7 @@ import sendNewOrderNotifications from "./util/sendNewOrderNotifications.js";
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
+export default function notificationsStartup(context) {
   const { appEvents } = context;
 
   appEvents.on("afterOrderCreate", ({ order }) => sendNewOrderNotifications(context, order));

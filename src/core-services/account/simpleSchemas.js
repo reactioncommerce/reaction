@@ -202,6 +202,14 @@ export const Profile = new SimpleSchema({
   "addressBook.$": {
     type: AccountProfileAddress
   },
+  "firstName": {
+    type: String,
+    optional: true
+  },
+  "lastName": {
+    type: String,
+    optional: true
+  },
   "invited": {
     type: Boolean,
     optional: true,
@@ -394,7 +402,8 @@ export const Group = new SimpleSchema({
     type: String
   },
   "shopId": {
-    type: String
+    type: String,
+    optional: true
   },
   "createdBy": {
     type: String,

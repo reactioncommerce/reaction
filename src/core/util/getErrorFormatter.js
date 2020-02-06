@@ -36,7 +36,12 @@ function getErrorFormatter() {
       } else {
         err.message = originalError.message;
       }
-      Logger.error(eventObj, err.message || "ApolloServer error with no message");
+
+      // There is no need to log access denied since it's an expected part of API requests
+      // and it will be clear to the calling client what the problem is
+      if (type !== "access-denied") {
+        Logger.error(eventObj, err.message || "ApolloServer error with no message");
+      }
     }
 
     // Add a `type` prop to our `errors` response object for client parsing

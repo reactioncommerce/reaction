@@ -2,7 +2,7 @@ import i18n from "./i18n/index.js";
 import mutateNewOrderItemBeforeCreate from "./mutateNewOrderItemBeforeCreate.js";
 import mutateNewVariantBeforeCreate from "./mutateNewVariantBeforeCreate.js";
 import publishProductToCatalog from "./publishProductToCatalog.js";
-import { registerPluginHandler } from "./registration.js";
+import { registerPluginHandlerForTaxes } from "./registration.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
 import preStartup from "./preStartup.js";
@@ -20,6 +20,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Taxes",
     name: "reaction-taxes",
+    version: app.context.appVersion,
     i18n,
     cart: {
       transforms: [
@@ -38,7 +39,7 @@ export default async function register(app) {
       mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
       preStartup: [preStartup],
       publishProductToCatalog: [publishProductToCatalog],
-      registerPluginHandler: [registerPluginHandler]
+      registerPluginHandler: [registerPluginHandlerForTaxes]
     },
     graphQL: {
       schemas,
@@ -49,21 +50,21 @@ export default async function register(app) {
     queries,
     shopSettingsConfig: {
       defaultTaxCode: {
-        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        permissionsThatCanEdit: ["reaction:legacy:taxes/update:settings"],
         simpleSchema: {
           type: String,
           min: 1
         }
       },
       fallbackTaxServiceName: {
-        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        permissionsThatCanEdit: ["reaction:legacy:taxes/update:settings"],
         simpleSchema: {
           type: String,
           min: 1
         }
       },
       primaryTaxServiceName: {
-        rolesThatCanEdit: ["admin", "tax-settings/write"],
+        permissionsThatCanEdit: ["reaction:legacy:taxes/update:settings"],
         simpleSchema: {
           type: String,
           min: 1

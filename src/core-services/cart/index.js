@@ -3,7 +3,7 @@ import policies from "./policies.json";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
-import { registerPluginHandler } from "./registration.js";
+import { registerPluginHandlerForCart } from "./registration.js";
 import { Cart, CartItem } from "./simpleSchemas.js";
 import startup from "./startup.js";
 
@@ -16,6 +16,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Cart",
     name: "reaction-cart",
+    version: app.context.appVersion,
     collections: {
       Cart: {
         name: "Cart",
@@ -45,7 +46,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
-      registerPluginHandler: [registerPluginHandler],
+      registerPluginHandler: [registerPluginHandlerForCart],
       startup: [startup]
     },
     graphQL: {

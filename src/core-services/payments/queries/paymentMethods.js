@@ -15,7 +15,7 @@ export default async function paymentMethods(context, shopId) {
   if (!shop) throw new ReactionError("not-found", "Shop not found");
   const availablePaymentMethods = shop.availablePaymentMethods || [];
 
-  await context.validatePermissions(`reaction:shops:${shopId}`, "read", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "read", { shopId });
 
   return Object.keys(allPaymentMethods)
     .map((name) => ({

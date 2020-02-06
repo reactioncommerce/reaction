@@ -10,22 +10,29 @@ import Random from "@reactioncommerce/random";
  * @returns {Promise<Object>} AddTaxRatePayload
  */
 export default async function createTaxRate(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
-  const { shopId, country, region, postal, taxCode, rate } = input;
+  const {
+    country,
+    postal,
+    rate,
+    region,
+    shopId,
+    sourcing: taxLocale,
+    taxCode
+  } = input;
   const { appEvents, collections } = context;
   const { Taxes } = collections;
 
-  await context.validatePermissions("reaction:taxRates", "create", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions("reaction:legacy:taxRates", "create", { shopId });
 
   const taxRate = {
     _id: Random.id(),
-    shopId,
     country,
-    region,
     postal,
+    rate,
+    region,
+    shopId,
     taxCode,
-    taxLocale: "destination",
-    rate
+    taxLocale
   };
 
   await Taxes.insertOne(taxRate);

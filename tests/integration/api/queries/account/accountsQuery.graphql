@@ -1,18 +1,22 @@
 query accounts(
-  $shopId: ID!,
+  $groupIds: [ID],
   $first: ConnectionLimitInt,
   $last:  ConnectionLimitInt,
   $before: ConnectionCursor,
   $after: ConnectionCursor,
-  $offset: Int
+  $offset: Int,
+  $sortBy: AccountSortByField,
+  $sortOrder: SortOrder
 ) {
   accounts(
-    shopId: $shopId,
+    groupIds: $groupIds,
     first: $first,
     last: $last,
     before: $before,
     after: $after,
-    offset: $offset
+    offset: $offset,
+    sortBy: $sortBy,
+    sortOrder: $sortOrder
   ) {
     nodes {
       _id
@@ -48,13 +52,6 @@ query accounts(
       name
       note
       preferences
-      shop {
-        _id
-      }
-      taxSettings {
-        exemptionNo
-        customerUsageType
-      }
       updatedAt
     }
   }

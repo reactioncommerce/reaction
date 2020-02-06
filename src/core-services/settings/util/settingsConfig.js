@@ -44,22 +44,22 @@ export function addShopSettingDefaults(settings) {
  * @param {String} field The setting field name
  * @returns {String[]} List of roles that can edit this setting.
  */
-export function rolesThatCanEditGlobalSetting(field) {
-  const config = globalSettingsSchema[field];
+export function permissionsThatCanEditGlobalSetting(field) {
+  const config = globalSettingsConfig[field];
   if (!config) return [];
 
-  return config.rolesThatCanEdit || [];
+  return config.permissionsThatCanEdit || [];
 }
 
 /**
  * @param {String} field The setting field name
  * @returns {String[]} List of roles that can edit this setting.
  */
-export function rolesThatCanEditShopSetting(field) {
+export function permissionsThatCanEditShopSetting(field) {
   const config = shopSettingsConfig[field];
   if (!config) return [];
 
-  return config.rolesThatCanEdit || [];
+  return config.permissionsThatCanEdit || [];
 }
 
 /**
@@ -87,11 +87,11 @@ const configSchema = new SimpleSchema({
     type: SimpleSchema.oneOf(String, Number, Date, Boolean),
     optional: true
   },
-  "rolesThatCanEdit": {
+  "permissionsThatCanEdit": {
     type: Array,
     optional: true
   },
-  "rolesThatCanEdit.$": String,
+  "permissionsThatCanEdit.$": String,
   "simpleSchema": {
     type: Object,
     blackbox: true
@@ -102,7 +102,7 @@ const configSchema = new SimpleSchema({
  * @summary Reads and merges `appSettingsConfig` from all plugin registration.
  * @returns {undefined}
  */
-export function registerPluginHandler({
+export function registerPluginHandlerForAppSettings({
   globalSettingsConfig: globalSettingsConfigFromPlugin,
   name,
   shopSettingsConfig: shopSettingsConfigFromPlugin

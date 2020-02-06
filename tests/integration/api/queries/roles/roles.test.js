@@ -13,10 +13,17 @@ const shopName = "Test Shop";
 let testApp;
 let roles;
 
+const adminGroup = Factory.Group.makeOne({
+  _id: "adminGroup",
+  createdBy: null,
+  name: "admin",
+  permissions: ["reaction:legacy:shops/read"],
+  slug: "admin",
+  shopId: internalShopId
+});
+
 const mockShopOwnerAccount = Factory.Account.makeOne({
-  roles: {
-    [internalShopId]: ["owner"]
-  },
+  groups: [adminGroup._id],
   shopId: internalShopId
 });
 
@@ -26,15 +33,15 @@ beforeAll(async () => {
 
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
+  await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockShopOwnerAccount);
   roles = testApp.query(RolesQuery);
 });
 
-afterAll(async () => {
-  await testApp.collections.Accounts.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
 test("an anonymous user cannot view user roles ", async () => {
   try {
@@ -60,5 +67,5 @@ test("a shop owner can view all user roles", async () => {
     return;
   }
 
-  expect(result.roles.nodes[0].name).toEqual("account/enroll");
+  expect(result.roles.nodes[0].name).toEqual(jasmine.any(String));
 });

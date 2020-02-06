@@ -1,5 +1,4 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds.js";
 import setDefaultsForNavigationTreeItems from "../util/setDefaultsForNavigationTreeItems.js";
 import { NavigationTree as NavigationTreeSchema } from "../simpleSchemas.js";
 
@@ -17,6 +16,12 @@ export default async function updateNavigationTree(context, input) {
   const { collections } = context;
   const { NavigationTrees } = collections;
   const { navigationTreeId, shopId, navigationTree } = input;
+
+  const treeSelector = { _id: navigationTreeId, shopId };
+  const existingNavigationTree = await NavigationTrees.findOne(treeSelector);
+  if (!existingNavigationTree) {
+    throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");
+  }
 
   const {
     shouldNavigationTreeItemsBeAdminOnly,
@@ -44,18 +49,11 @@ export default async function updateNavigationTree(context, input) {
   NavigationTreeSchema.validate(navigationTreeData);
   const { draftItems, name } = navigationTreeData;
 
-  await context.validatePermissions(`reaction:navigationTrees:${navigationTreeId}`, "update", { shopId, legacyRoles: ["core"] });
-
-  const treeSelector = { _id: navigationTreeId, shopId };
-  const existingNavigationTree = await NavigationTrees.findOne(treeSelector);
-  if (!existingNavigationTree) {
-    throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");
-  }
+  await context.validatePermissions(`reaction:legacy:navigationTrees:${navigationTreeId}`, "update", { shopId });
 
   const update = {};
 
   if (draftItems) {
-    decodeNavigationTreeItemIds(draftItems);
     update.draftItems = draftItems;
     update.hasUnpublishedChanges = true;
   }

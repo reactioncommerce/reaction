@@ -1,9 +1,11 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import sendVerificationEmail from "../util/sendVerificationEmail.js";
 
 const inputSchema = new SimpleSchema({
-  accountId: String,
+  accountId: {
+    type: String,
+    optional: true
+  },
   email: String
 });
 
@@ -19,31 +21,38 @@ const inputSchema = new SimpleSchema({
  */
 export default async function removeAccountEmailRecord(context, input) {
   inputSchema.validate(input);
-  const { appEvents, collections } = context;
-  const { Accounts, users } = collections;
   const {
-    accountId,
-    email
-  } = input;
+    accountId: accountIdFromContext,
+    appEvents,
+    collections: {
+      Accounts
+    },
+    userId
+  } = context;
+  const { email } = input;
 
-  const account = await Accounts.findOne({ "_id": accountId, "emails.address": email });
+  // If no account ID input, default to the account that's calling
+  const accountId = input.accountId || accountIdFromContext;
+
+  const account = await Accounts.findOne({ _id: accountId });
   if (!account) throw new ReactionError("not-found", "Account not Found");
 
-  const user = await users.findOne({ "_id": account.userId, "emails.address": email });
-  if (!user) throw new ReactionError("not-found", "User not Found");
+  await context.validatePermissions(`reaction:legacy:accounts:${accountId}`, "delete:emails", {
+    owner: account.userId
+  });
 
-  if (!context.isInternalCall) {
-    await context.validatePermissions(`reaction:accounts:${account._id}`, "delete:emails", {
-      shopId: account.shopId,
-      owner: account.userId,
-      legacyRoles: ["reaction-accounts"]
-    });
+  const existingEmail = (account.emails || []).find(({ address }) => address === email);
+  if (!existingEmail) {
+    throw new ReactionError("invalid-param", "Account does not have this email address");
   }
 
-  // Remove email from user
-  // This is the same as `MeteorAccounts.removeEmail(userId, email)
-  const { value: updatedUser } = await users.findOneAndUpdate(
-    { _id: user._id },
+  if (existingEmail.provides === "default") {
+    throw new ReactionError("server-error", "Cannot delete default email address.");
+  }
+
+  // Remove email from Account
+  const { value: updatedAccount } = await Accounts.findOneAndUpdate(
+    { _id: accountId },
     {
       $pull: { emails: { address: email } }
     },
@@ -52,31 +61,11 @@ export default async function removeAccountEmailRecord(context, input) {
     }
   );
 
-  if (!updatedUser) throw new ReactionError("server-error", "Unable to update User");
-
-  // Remove email from Account
-  const { value: updatedAccount } = await Accounts.findOneAndUpdate(
-    { _id: accountId },
-    {
-      $set: {
-        emails: updatedUser.emails
-      }
-    },
-    {
-      returnOriginal: false
-    }
-  );
-
   if (!updatedAccount) throw new ReactionError("server-error", "Unable to update Account");
-
-  sendVerificationEmail(context, {
-    bodyTemplate: "accounts/verifyUpdatedEmail",
-    userId: user._id
-  });
 
   await appEvents.emit("afterAccountUpdate", {
     account: updatedAccount,
-    updatedBy: accountId,
+    updatedBy: userId,
     updatedFields: ["emails"]
   });
 

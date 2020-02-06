@@ -55,8 +55,16 @@ import {
 } from "../../src/core-services/shop/simpleSchemas.js";
 
 import {
+  Surcharge
+} from "../../src/plugins/surcharges/util/surchargeSchema.js";
+
+import {
   Tag
 } from "../../src/core-services/tags/simpleSchemas.js";
+
+import {
+  Sitemap
+} from "../../src/plugins/sitemap-generator/simpleSchemas.js";
 
 import {
   TaxRates
@@ -74,9 +82,26 @@ import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
+import {
+  NavigationItem,
+  NavigationTree,
+  NavigationTreeItem
+} from "../../src/plugins/navigation/simpleSchemas.js";
+
+import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
+
+import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
+
+import Restriction from "../../src/plugins/shipping-rates/util/restrictionSchema.js";
+
+import {
+  SimpleInventoryCollectionSchema as SimpleInventory
+} from "../../src/plugins/simple-inventory/simpleSchemas.js";
+
 const schemasToAddToFactory = {
   Account,
   AccountProfileAddress,
+  AddressValidationRule,
   Cart,
   CartAddress,
   CartInvoice,
@@ -90,7 +115,11 @@ const schemasToAddToFactory = {
   Discounts,
   Email,
   EmailTemplates,
+  FulfillmentMethod,
   Group,
+  NavigationItem,
+  NavigationTree,
+  NavigationTreeItem,
   Order,
   OrderAddress,
   OrderFulfillmentGroup,
@@ -102,8 +131,12 @@ const schemasToAddToFactory = {
   Payment,
   Product,
   ProductVariant,
+  Restriction,
   ShipmentQuote,
   Shop,
+  SimpleInventory,
+  Sitemap,
+  Surcharge,
   Tag,
   TaxRates
 };

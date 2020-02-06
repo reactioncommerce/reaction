@@ -18,6 +18,10 @@ const inputSchema = new SimpleSchema({
     optional: true
   },
   name: String,
+  shopId: {
+    type: String,
+    optional: true
+  },
   // Historically, the allowed types were primary, merchant, and affiliate.
   // Until we have solid future direction for multi-shop support, we'll
   // allow any string here.
@@ -26,42 +30,6 @@ const inputSchema = new SimpleSchema({
     optional: true
   }
 });
-
-/**
- * @summary Create one Packages collection doc for each plugin, for this shop
- * @param {Object} context App context
- * @param {String} shopId Shop ID
- * @return {undefined}
- */
-async function createPackagesForShop(context, shopId) {
-  const { app, collections: { Packages } } = context;
-
-  // Create Packages docs for each plugin for this shop
-  /* eslint-disable no-await-in-loop */
-  for (const config of Object.values(app.registeredPlugins)) {
-    const packageDoc = {
-      // autoEnable no longer does anything. All are enabled by default.
-      enabled: true,
-      icon: config.icon,
-      name: config.name,
-      registry: config.registry,
-      version: config.version,
-      shopId
-    };
-
-    await Packages.updateOne({
-      name: config.name,
-      shopId
-    }, {
-      $set: packageDoc,
-      $setOnInsert: {
-        _id: Random.id()
-      }
-    }, {
-      upsert: true
-    });
-  }
-}
 
 /**
  * @name shop/createShop
@@ -89,14 +57,14 @@ export default async function createShop(context, input) {
     userId
   } = context;
 
-  await context.validatePermissions("reaction:shops", "create", { shopId: null, legacyRoles: ["owner", "shop/create"] });
+  await context.validatePermissions("reaction:legacy:shops", "create", { shopId: null });
 
-  const { currencyCode, defaultLanguage, defaultTimezone, name, type } = input;
+  const { currencyCode, defaultLanguage, defaultTimezone, name, shopId, type } = input;
 
   const domain = rootUrl && new URL(rootUrl).hostname;
   const now = new Date();
   const shop = {
-    _id: Random.id(),
+    _id: shopId || Random.id(),
     active: true,
     availablePaymentMethods: [],
     baseUOL: "in",
@@ -156,13 +124,15 @@ export default async function createShop(context, input) {
   const newShopId = shop._id;
 
   try {
-    await createPackagesForShop(context, newShopId);
-
     // Create account groups for the new shop
-    await context.mutations.createAuthGroupsForShop(context, newShopId);
+    await context.mutations.createAuthGroupsForShop(context.getInternalContext(), newShopId);
 
     // Give the shop creator "owner" permissions
-    await context.mutations.addAccountToGroupBySlug(context, { accountId, groupSlug: "owner", shopId: newShopId });
+    await context.mutations.addAccountToGroupBySlug(context.getInternalContext(), {
+      accountId,
+      groupSlug: "owner",
+      shopId: newShopId
+    });
 
     // Add AppSettings object into database for the new shop
     await collections.AppSettings.insertOne({

@@ -24,7 +24,7 @@ export default async function updateSurchargeMutation(context, input) {
   const { collections } = context;
   const { Surcharges } = collections;
 
-  await context.validatePermissions(`reaction:surcharges:${surchargeId}`, "update", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
+  await context.validatePermissions(`reaction:legacy:surcharges:${surchargeId}`, "update", { shopId });
 
   const { matchedCount } = await Surcharges.updateOne({
     _id: surchargeId,
@@ -35,6 +35,8 @@ export default async function updateSurchargeMutation(context, input) {
       ...surcharge
     }
   });
+  surcharge._id = surchargeId;
+  surcharge.shopId = shopId;
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
   return { surcharge };

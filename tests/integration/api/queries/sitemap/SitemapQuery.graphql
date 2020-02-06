@@ -1,0 +1,6 @@
+
+query ($handle: String!, $shopUrl: String!) {
+  sitemap(handle: $handle, shopUrl: $shopUrl){
+    xml
+  }
+}

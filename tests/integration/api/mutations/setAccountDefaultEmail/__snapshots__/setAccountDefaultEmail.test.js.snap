@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user cannot set default email on their own account if address doesn't already exist 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "invalid-param",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Email address is not associated with this account",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Email address is not associated with this account",
+    "path": Array [
+      "setAccountDefaultEmail",
+    ],
+  },
+]
+`;
+
+exports[`user cannot update default email if provided address is already default email 1`] = `
+Array [
+  Object {
+    "extensions": Object {
+      "code": "INTERNAL_SERVER_ERROR",
+      "exception": Object {
+        "details": Object {},
+        "error": "invalid-param",
+        "eventData": Object {},
+        "isClientSafe": true,
+        "reason": "Email is already default address for this account",
+      },
+    },
+    "locations": Array [
+      Object {
+        "column": 3,
+        "line": 2,
+      },
+    ],
+    "message": "Email is already default address for this account",
+    "path": Array [
+      "setAccountDefaultEmail",
+    ],
+  },
+]
+`;

@@ -15,12 +15,12 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @name Query/groups
  * @method
  * @memberof Accounts/GraphQL
- * @summary find and return the administrators (users with "admin" or "owner" role) for a shop
+ * @summary Returns a list of account groups for a shop
  * @param {Object} _ - unused
  * @param {GroupConnectionArgs} args - an object of all arguments that were sent by the client. {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @returns {Promise<Object[]>} an array of user Group objects
+ * @returns {Promise<Object[]>} an array of account Group objects
  */
 export default async function groups(_, { shopId, ...connectionArgs }, context, info) {
   // Transform ID from base64

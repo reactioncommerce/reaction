@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import config from "./config.js";
 import { Jobs } from "./jobs.js";
 import removeOldJobs from "./removeOldJobs.js";
 import { jobCleanupRequests } from "./registration.js";
@@ -9,11 +10,11 @@ import { jobCleanupRequests } from "./registration.js";
  * @param {Object} context App context
  * @returns {undefined}
  */
-export default async function startup(context) {
+export default async function jobQueueStartup(context) {
   const { appEvents, collections: { Jobs: MongoJobsCollection } } = context;
   Jobs.setCollection(MongoJobsCollection);
 
-  if (process.env.VERBOSE_JOBS) {
+  if (config.VERBOSE_JOBS) {
     Jobs.setLogStream(process.stdout);
   }
 

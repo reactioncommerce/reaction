@@ -1,0 +1,20 @@
+mutation (
+  $countryCodes: [String],
+  $serviceName: String!,
+  $shopId: ID!
+) {
+  createAddressValidationRule(input: {
+    countryCodes: $countryCodes,
+    serviceName: $serviceName,
+    shopId: $shopId
+  }) {
+    addressValidationRule {
+      _id
+      countryCodes
+      createdAt
+      serviceName
+      shopId
+      updatedAt
+    }
+  }
+}

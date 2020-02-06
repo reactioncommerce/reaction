@@ -3,18 +3,9 @@
 [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Open Source Helpers](https://www.codetriage.com/reactioncommerce/reaction/badges/users.svg)](https://www.codetriage.com/reactioncommerce/reaction)
 
-[Reaction](http://reactioncommerce.com) is an API-first, headless commerce platform built using Node.js, React, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
-
-Reaction v2.0.0 is built as a truly headless commerce platform that decouples the Reaction backend services from the frontend. We’ve decoupled the storefront application from the API. Reaction platform consists of this `reaction` project - which is now primarily our GraphQL API (and for the time being Reaction Admin and our identity provider) - alongside our new-to-2.0 [Example Storefront](https://github.com/reactioncommerce/example-storefront), which connects with the Reaction application via GraphQL API to provide a customer-facing storefront.
+[Reaction](http://reactioncommerce.com) is a headless commerce platform built using Node.js, React, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
 
 ![Reaction Admin](https://user-images.githubusercontent.com/20409254/61161477-bb033c80-a4b8-11e9-9c5e-4f4f6a68b8d0.png)
-
-## Features
-
-Reaction comes with a robust set of core commerce capabilities right out of the box. And since anything in our codebase can be extended, overwritten, or installed as a package, you may also customize anything on our platform.
-
-Check out the full list of Reaction [features](https://www.reactioncommerce.com/features) and [release history](https://reactioncommerce.com/roadmap) for more info.
-
 
 # Getting started
 
@@ -43,6 +34,31 @@ npm run start:dev
 
 `CTRL+C` to stop.
 
+## Run Integration Tests in Docker Container (Recommended)
+
+```sh
+bin/setup
+docker-compose run --rm api npm run test:integration # Test all mutations and queries
+docker-compose run --rm api npm run test:integration:query # OR test queries only
+docker-compose run --rm api npm run test:integration:mutation # OR test mutations only
+docker-compose run --rm api npm run test:integration:file:watch -- <filename> # OR test one file
+```
+
+`CTRL+C` to interrupt the test run.
+
+## Run Integration Tests on Local Computer
+
+```sh
+docker-compose up -d mongo
+npm install
+npm run test:integration # Test all mutations and queries
+npm run test:integration:query # OR test queries only
+npm run test:integration:mutation # OR test mutations only
+npm run test:integration:file:watch -- <filename> # OR test one file
+```
+
+`CTRL+C` to interrupt the test run.
+
 # Build and Test a Production Image
 
 Build:
@@ -55,10 +71,10 @@ Run:
 
 ```sh
 dc up -d mongo
-docker run -e NODE_ENV=production -e MONGO_URL=mongodb://mongo:27017/reaction -e ROOT_URL=http://localhost:3000 -p 3000:3000 --network streams.reaction.localhost -it test-api
+docker run --env-file ./.env -p 3000:3000 --network reaction.localhost -it test-api:latest
 ```
 
-Use an external GraphQL client to test http://localhost:3000/graphql-beta. GraphQL Playground isn't served on GET requests because it's in production mode.
+Use an external GraphQL client to test http://localhost:3000/graphql. GraphQL Playground isn't served on GET requests because it's in production mode.
 
 # Get involved
 
@@ -72,11 +88,10 @@ Use an external GraphQL client to test http://localhost:3000/graphql-beta. Graph
 - [API documentation](http://api.docs.reactioncommerce.com)
 - [Engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
 
-
 ## Get help & contact the team
 
 - [Gitter chat](https://gitter.im/reactioncommerce/reaction)
-- Report security vulnerabilities to <mailto:security@reactioncommerce.com>: [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities)
+- Report security vulnerabilities to <mailto:security@reactioncommerce.com>: [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/trunk/reporting-vulnerabilities)
 - Request features in this [repository](https://github.com/reactioncommerce/reaction-feature-requests/)
 
 ## Contribute
@@ -92,8 +107,7 @@ We love your pull requests! Check our our [`Good First Issue`](https://github.co
 ### Pull Request guidelines
 Pull requests should pass all automated tests, style, and security checks.
 
-Your code should pass all [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction). Run `docker-compose run --rm reaction npm run test` to run the test suites in containers. If you're adding functionality to Reaction, you should add tests for the added functionality.
-
+Your code should pass all [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/trunk/testing-reaction). Run `docker-compose run --rm reaction npm run test` to run the test suites in containers. If you're adding functionality to Reaction, you should add tests for the added functionality.
 
 We require that all code contributed to Reaction follows [Reaction's ESLint rules](https://github.com/reactioncommerce/reaction-eslint-config). You can run `docker-compose run --rm reaction npm run lint` to run ESLint against your code locally.
 
@@ -105,6 +119,7 @@ Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/d
 
 ### Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing-off all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+
 ```
 Signed-off-by: Jane Doe <jane.doe@example.com>
 ```
@@ -116,7 +131,6 @@ We ask that you use your real full name (please no anonymous contributions or ps
 We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO sign-offs of every commit.
 
 If you forget to sign-off your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
-
 
 ### License
 Reaction is [GNU GPLv3 Licensed](./LICENSE.md)

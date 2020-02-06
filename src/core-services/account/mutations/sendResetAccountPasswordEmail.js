@@ -1,6 +1,5 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
-import generateVerificationTokenObject from "@reactioncommerce/api-utils/generateVerificationTokenObject.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import config from "../config.js";
 
@@ -20,41 +19,23 @@ const inputSchema = new SimpleSchema({
  * @returns {Job} - returns a sendEmail Job instance
  */
 async function sendResetEmail(context, account, email) {
-  const { collections } = context;
-  const { Shops, users } = collections;
+  const {
+    collections: { Shops },
+    mutations: { startIdentityPasswordReset }
+  } = context;
 
-  // Make sure the user exists, and email is one of their addresses.
-  const user = await users.findOne({ _id: account.userId });
-  if (!user) throw new ReactionError("not-found", "User not found");
-
-  // make sure we have a valid email
-  if (!email || !user.emails || !user.emails.map((mailInfo) => mailInfo.address).includes(email)) {
-    throw new ReactionError("not-found", "Email not found");
+  if (typeof startIdentityPasswordReset !== "function") {
+    throw new ReactionError("not-supported", "Password reset not supported");
   }
 
-  // Create token for password reset
-  const tokenObj = generateVerificationTokenObject({ email });
-
-  const { value: updatedAccount } = await users.findOneAndUpdate({ _id: account.userId }, {
-    $set: {
-      "services.password.reset": tokenObj
-    }
-  }, {
-    returnOriginal: false
+  const { token } = await startIdentityPasswordReset(context, {
+    email,
+    userId: account.userId
   });
 
-  if (!updatedAccount) {
-    throw new ReactionError("error-occurred", "Unable to set password reset token");
-  }
-
-  // Fall back to primary shop if account has no shop linked
-  let shop;
-  if (account.shopId) {
-    shop = await Shops.findOne({ _id: account.shopId });
-  } else {
-    shop = await Shops.findOne({ shopType: "primary" });
-  }
-
+  // Account emails are always sent from the primary shop email and using primary shop
+  // email templates.
+  const shop = await Shops.findOne({ shopType: "primary" });
   if (!shop) throw new ReactionError("not-found", "Shop not found");
 
   const contactEmail = shop.emails && shop.emails[0] && shop.emails[0].address;
@@ -72,8 +53,7 @@ async function sendResetEmail(context, account, email) {
     },
     shopName: shop.name,
     // Account Data
-    passwordResetUrl: REACTION_IDENTITY_PUBLIC_PASSWORD_RESET_URL.replace("TOKEN", tokenObj.token),
-    user
+    passwordResetUrl: REACTION_IDENTITY_PUBLIC_PASSWORD_RESET_URL.replace("TOKEN", token)
   };
 
   // get account profile language for email

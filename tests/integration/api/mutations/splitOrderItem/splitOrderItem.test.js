@@ -53,10 +53,20 @@ beforeAll(async () => {
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:orders/move:item"],
+    slug: "admin",
+    shopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
+
   mockOrdersAccount = Factory.Account.makeOne({
-    roles: {
-      [shopId]: ["orders"]
-    }
+    groups: [adminGroup._id],
+    shopId
   });
   await testApp.createUserAndAccount(mockOrdersAccount);
 
@@ -70,16 +80,26 @@ beforeAll(async () => {
   });
   await testApp.collections.Catalog.insertOne(catalogItem);
 
+  // Disable the flat rates pkg so that only our getFulfillmentMethodsWithQuotes fn is used
+  await testApp.collections.AppSettings.updateOne(
+    { shopId },
+    {
+      $set: {
+        isShippingRatesFulfillmentEnabled: false
+      }
+    },
+    { upsert: true }
+  );
+
   splitOrderItem = testApp.mutate(SplitOrderItemMutation);
 });
 
-afterAll(async () => {
-  await testApp.collections.Catalog.deleteMany({});
-  await testApp.collections.Shops.deleteMany({});
-  await testApp.stop();
-});
+// There is no need to delete any test data from collections because
+// testApp.stop() will drop the entire test database. Each integration
+// test file gets its own test database.
+afterAll(() => testApp.stop());
 
-test("user with orders permission can split an order item", async () => {
+test("user with `reaction:legacy:orders/move:item` permission can split an order item", async () => {
   await testApp.setLoggedInUser(mockOrdersAccount);
 
   const orderItem = Factory.OrderItem.makeOne({

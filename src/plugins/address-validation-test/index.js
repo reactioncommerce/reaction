@@ -9,6 +9,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Address Validation Test",
     name: "address-validation-test",
+    version: app.context.appVersion,
     addressValidationServices: [
       {
         displayName: "Test Validation",

@@ -23,15 +23,14 @@ export default async function createSurchargeMutation(context, input) {
   const { collections } = context;
   const { Surcharges } = collections;
 
-  await context.validatePermissions("reaction:surcharges", "create", { shopId, legacyRoles: ["owner", "admin", "shipping"] });
+  await context.validatePermissions("reaction:legacy:surcharges", "create", { shopId });
 
   surcharge._id = Random.id();
+  surcharge.shopId = shopId;
+  surcharge.createdAt = new Date();
 
-  const { insertedCount } = await Surcharges.insertOne({
-    shopId,
-    createdAt: new Date(),
-    ...surcharge
-  });
+
+  const { insertedCount } = await Surcharges.insertOne(surcharge);
   if (insertedCount === 0) throw new ReactionError("server-error", "Unable to create surcharge");
 
   return { surcharge };

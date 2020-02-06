@@ -11,12 +11,11 @@ import { DiscountCodes as DiscountCodesSchema } from "../simpleSchemas.js";
  * @returns {Promise<Object>} AddDiscountCodePayload
  */
 export default async function createDiscountCode(context, input) {
-  // Check for owner or admin permissions from the user before allowing the mutation
   const { shopId, ...discountCodeInput } = input;
   const { appEvents, collections } = context;
   const { Discounts } = collections;
 
-  await context.validatePermissions("reaction:discounts", "create", { shopId, legacyRoles: ["owner", "admin"] });
+  await context.validatePermissions("reaction:legacy:discounts", "create", { shopId });
 
   const discountCode = {
     _id: Random.id(),

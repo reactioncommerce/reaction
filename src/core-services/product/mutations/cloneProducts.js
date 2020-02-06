@@ -37,7 +37,12 @@ export default async function cloneProducts(context, input) {
 
   // TODO(pod-auth): create helper to handle multiple permissions checks for multiple items
   for (const productId of productIds) {
-    await context.validatePermissions(`reaction:products:${productId}`, "clone", { shopId, legacyRoles: ["createProduct", "product/admin", "product/clone"] }); // eslint-disable-line no-await-in-loop
+    // eslint-disable-next-line no-await-in-loop
+    await context.validatePermissions(
+      `reaction:legacy:products:${productId}`,
+      "clone",
+      { shopId }
+    );
   }
 
   // Check to make sure all variants are on the same shop
@@ -96,7 +101,7 @@ export default async function cloneProducts(context, input) {
     newProduct.isVisible = false;
     if (newProduct.title) {
       newProduct.title = await createTitle(context, newProduct.title, newProduct._id);
-      newProduct.handle = await createHandle(context, getSlug(newProduct.title), newProduct._id);
+      newProduct.handle = await createHandle(context, getSlug(newProduct.title), newProduct._id, newProduct.shopId);
     }
 
     const { insertedId: productInsertedId } = await Products.insertOne(newProduct, { validate: false });

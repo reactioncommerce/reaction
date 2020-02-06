@@ -1,4 +1,7 @@
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
+import permissionsByUserId from "./util/permissionsByUserId.js";
+import preStartup from "./preStartup.js";
+
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -9,8 +12,18 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Legacy Authorization",
     name: "reaction-legacy-authorization",
+    version: app.context.appVersion,
+    collections: {
+      roles: {
+        name: "roles"
+      }
+    },
     auth: {
-      getHasPermissionFunctionForUser
+      permissionsByUserId
+    },
+    functionsByType: {
+      getHasPermissionFunctionForUser: [getHasPermissionFunctionForUser],
+      preStartup: [preStartup]
     }
   });
 }
