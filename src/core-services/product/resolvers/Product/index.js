@@ -15,5 +15,5 @@ export default {
   socialMetadata,
   tagIds,
   tags,
-  variants: (node, args, context) => getVariants(context, node._id, true)
+  variants: (node, args, context) => getVariants(context, node._id, true, args)
 };
