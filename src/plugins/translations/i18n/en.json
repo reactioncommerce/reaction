@@ -53,7 +53,8 @@
             "accountSettingsLabel": "Login services",
             "accountSettingsTitle": "Login services",
             "accountSettingsDescription": "Authentication through social providers",
-            "saveSuccess": "Settings updated.",
+            "saveSuccess": "Settings updated",
+            "saveProcessing": "Saving Settings...",
             "saveFailed": "Failed to update settings.",
             "addShopMemberLabel": "Add shop member",
             "permissionsSettingsLabel": "Permissions",
@@ -61,10 +62,20 @@
             "shopSettingsLabel": "Shop",
             "import": "Import",
             "general": {
-              "label": "General"
+              "label": "Shop"
             },
             "address": {
-              "label": "Address"
+              "label": "Address",
+              "nameLabel": "Name",
+              "namePlaceholder": "Enter a name for the shop",
+              "emailLabel": "Email",
+              "emailPlaceholder": "Enter an email address for the shop",
+              "slugLabel": "Slug",
+              "slugPlaceholder": "Enter a slug for the shop",
+              "descriptionLabel": "Description",
+              "descriptionPlaceholder": "Enter a description for the shop",
+              "keywordsLabel": "Keywords",
+              "keywordsPlaceholder": "Enter keywords for the shop"
             },
             "options": {
               "label": "Options"
@@ -74,6 +85,7 @@
             },
             "productSettingsLabel": "Product Settings",
             "productDetailsLabel": "Product Details",
+            "settings": "Settings",
             "templateSettingsLabel": "Template"
           },
           "userAccountDropdown": {
