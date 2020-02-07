@@ -16,7 +16,7 @@ import mongoConnectWithRetry from "./util/mongoConnectWithRetry.js";
 import config from "./config.js";
 import createApolloServer from "./createApolloServer.js";
 import coreResolvers from "./graphql/resolvers/index.js";
-import defaultPlugins from "../registerPlugins.js";
+import defaultPlugins from "../../plugins.json";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
 const { PubSub } = require("apollo-server");
