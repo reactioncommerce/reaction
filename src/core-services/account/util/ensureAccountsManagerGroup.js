@@ -15,8 +15,11 @@ export default async function ensureAccountsManagerGroup(context) {
   // if accounts-manager group doesn't exist, create it now
   if (!group) {
     groupId = Random.id();
+    const currentDate = Date();
     await Groups.insertOne({
       _id: groupId,
+      createdAt: currentDate,
+      updatedAt: currentDate,
       name: "accounts manager",
       slug: "accounts-manager",
       permissions: defaultAccountsManagerRoles,

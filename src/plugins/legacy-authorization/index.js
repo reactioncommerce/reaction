@@ -1,5 +1,6 @@
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
 import permissionsByUserId from "./util/permissionsByUserId.js";
+import preStartup from "./preStartup.js";
 
 
 /**
@@ -21,7 +22,8 @@ export default async function register(app) {
       permissionsByUserId
     },
     functionsByType: {
-      getHasPermissionFunctionForUser: [getHasPermissionFunctionForUser]
+      getHasPermissionFunctionForUser: [getHasPermissionFunctionForUser],
+      preStartup: [preStartup]
     }
   });
 }

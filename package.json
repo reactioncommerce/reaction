@@ -1,6 +1,6 @@
 {
   "name": "reaction-api",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@reactioncommerce/api-utils": "~1.7.0",
+    "@reactioncommerce/db-version-check": "^1.0.0",
     "@reactioncommerce/file-collections": "~0.7.0",
     "@reactioncommerce/file-collections-sa-gridfs": "~0.1.0",
     "@reactioncommerce/logger": "~1.1.2",
