@@ -1,5 +1,6 @@
 import { createServer } from "http";
 import { createRequire } from "module";
+import path from "path";
 import diehard from "diehard";
 import express from "express";
 import _ from "lodash";
@@ -15,6 +16,7 @@ import mongoConnectWithRetry from "./util/mongoConnectWithRetry.js";
 import config from "./config.js";
 import createApolloServer from "./createApolloServer.js";
 import coreResolvers from "./graphql/resolvers/index.js";
+import defaultPlugins from "../registerPlugins.js";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
 const { PubSub } = require("apollo-server");
@@ -56,6 +58,10 @@ const optionsSchema = new SimpleSchema({
   },
   "version": {
     type: String,
+    optional: true
+  },
+  "transformPlugins": {
+    type: Function,
     optional: true
   }
 });
@@ -458,6 +464,18 @@ export default class ReactionAPI {
     // Allow passing `port: null` to skip listening. Otherwise default to PORT env.
     let { port } = options;
     if (port === undefined) port = PORT;
+
+    let plugins = defaultPlugins;
+    if (typeof options.transformPlugins === "function") {
+      // allow plugins to be added and removed
+      plugins = options.transformPlugins(defaultPlugins);
+    }
+
+    /* eslint-disable no-await-in-loop */
+    for (const pluginPath of Object.values(plugins)) {
+      await import(path.join("..", pluginPath));
+    }
+    /* eslint-enable no-await-in-loop */
 
     diehard.register((done) => {
       Logger.info("Stopping Reaction API...");

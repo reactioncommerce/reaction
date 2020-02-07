@@ -1,7 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import packageJson from "../package.json";
 import ReactionAPI from "./core/ReactionAPI.js";
-import registerPlugins from "./registerPlugins.js";
 import config from "./core/config.js";
 
 const app = new ReactionAPI({
@@ -14,8 +13,6 @@ const app = new ReactionAPI({
  * @return {Promise<undefined>} undefined
  */
 async function runApp() {
-  await registerPlugins(app);
-
   await app.start();
 
   Logger.info(`GraphQL listening at ${app.graphQLServerUrl} (port ${app.serverPort || "unknown"})`);
