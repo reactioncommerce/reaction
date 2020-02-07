@@ -44,8 +44,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.0.1",
-    "jest": "^24.9.0",
-    "semantic-release": "^15.13.24"
+    "jest": "^24.9.0"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
