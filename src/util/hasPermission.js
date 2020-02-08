@@ -3,8 +3,8 @@ import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const require = createRequire(import.meta.url);
-
 const { curryN } = require("ramda");
+
 const GLOBAL_GROUP = "__global_roles__";
 
 /**
