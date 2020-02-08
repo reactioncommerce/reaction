@@ -166,6 +166,17 @@ extend type ShopSettings {
   primaryTaxServiceName: String
 }
 
+extend type ProductVariant {
+  "Whether this variant is taxable"
+  isTaxable: Boolean
+
+  "Tax code"
+  taxCode: String
+
+  "Tax description"
+  taxDescription: String
+}
+
 extend input ShopSettingsUpdates {
   "The default value to use for `taxCode` property of a product"
   defaultTaxCode: String
@@ -182,4 +193,15 @@ extend input ShopSettingsUpdates {
   query. There will be no taxes charged for any carts or orders if this is not set.
   """
   primaryTaxServiceName: String
+}
+
+extend input ProductVariantInput {
+  "Whether this variant is taxable"
+  isTaxable: Boolean
+
+  "Tax code"
+  taxCode: String
+
+  "Tax description"
+  taxDescription: String
 }
