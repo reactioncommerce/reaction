@@ -48,7 +48,7 @@ import {
 import {
   Product,
   ProductVariant,
-  ProductVariantInputSchema,
+  ProductVariantInputSchema
 } from "../../src/core-services/product/simpleSchemas.js";
 
 import {
