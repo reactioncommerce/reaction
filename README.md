@@ -1,4 +1,4 @@
-# legacy-authorization
+# simple-authorization
 
 ## Summary
 
@@ -57,6 +57,6 @@ Context is used to pass any extra information to the permissions check. We use i
 Import this package into the [registerPlugins.js](https://github.com/reactioncommerce/reaction/blob/8b3d66d758c8fe0e2ba1df1958767587ddb7a046/src/registerPlugins.js) file in the Reaction API, and then await its `registerPlugin` function:
 
 ```js
-import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugins-simple-authorization/index.js";
+import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization/index.js";
 await registerSimpleAuthorizationPlugin(app);
 ```

@@ -1,15 +1,15 @@
 {
-  "name": "@reactioncommerce/legacy-authorization",
-  "description": "Legacy Authorization service for the Reaction API",
+  "name": "@reactioncommerce/plugin-simple-authorization",
+  "description": "Simple Authorization service for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
   "type": "module",
-  "homepage": "https://github.com/reactioncommerce/legacy-authorization",
-  "url": "https://github.com/reactioncommerce/legacy-authorization",
+  "homepage": "https://github.com/reactioncommerce/plugin-simple-authorization",
+  "url": "https://github.com/reactioncommerce/plugin-simple-authorization",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/legacy-authorization.git"
+    "url": "git+https://github.com/reactioncommerce/plugin-simple-authorization.git"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -18,7 +18,7 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/legacy-authorization/issues"
+    "url": "https://github.com/reactioncommerce/plugin-simple-authorization/issues"
   },
   "exports": {
     "./": "./src/"
