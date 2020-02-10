@@ -1,4 +1,4 @@
-# legacy-authorization
+# simple-authorization
 
 ## Summary
 
@@ -32,7 +32,7 @@ Resource is the name of the resource a user is trying to access. This consists o
 For our purposes in Reaction code:
 
 - `organization` will always be `reaction`.
-- `system` is the service or group of services that provide the resource we want to access control. It will always be `legacy` if the code lives within the Reaction API project, and will be the package name (i.e. `legacy-authorization`) if the code live outside of the Reaction API project.
+- `system` is the service or group of services that provide the resource we want to access control. It will always be `legacy` if the code lives within the Reaction API project, and will be the package name (i.e. `simple-authorization`) if the code live outside of the Reaction API project.
 - `entity` is the actual data entity to access control, such as an `orders`. Entity names are always plural.
 - `id`  is the actual ID of a data entity to access control. This is for super granular Policies and will most of the time be omitted or described with just a * meaning "all IDs".
 
@@ -57,6 +57,6 @@ Context is used to pass any extra information to the permissions check. We use i
 Import this package into the [registerPlugins.js](https://github.com/reactioncommerce/reaction/blob/8b3d66d758c8fe0e2ba1df1958767587ddb7a046/src/registerPlugins.js) file in the Reaction API, and then await its `registerPlugin` function:
 
 ```js
-import registerLegacyAuthorizationPlugin from "./plugins/legacy-authorization/index.js";
-await registerLegacyAuthorizationPlugin(app);
+import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization/index.js";
+await registerSimpleAuthorizationPlugin(app);
 ```
