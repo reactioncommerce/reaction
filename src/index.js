@@ -1,3 +1,4 @@
+import pkg from "../package.json";
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
 import permissionsByUserId from "./util/permissionsByUserId.js";
 import preStartup from "./preStartup.js";
@@ -12,7 +13,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Simple Authorization",
     name: "simple-authorization",
-    version: "1.0.0",
+    version: pkg.version,
     collections: {
       roles: {
         name: "roles"
