@@ -1,1 +1,1 @@
-export const migrationNamespace = "simple-authorization";
+export const migrationsNamespace = "simple-authorization";
