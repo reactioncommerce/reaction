@@ -1,4 +1,4 @@
-import migrationNamespace from "./migrationsNamespace.js";
+import { migrationNamespace } from "./migrationsNamespace.js";
 import migration2 from "./2.js";
 
 export default {

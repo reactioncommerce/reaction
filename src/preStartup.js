@@ -1,5 +1,5 @@
 import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
-import migrationNamespace from "../migrations/migrationsNamespace.js";
+import { migrationNamespace } from "../migrations/migrationsNamespace.js";
 
 const expectedVersion = 2;
 
