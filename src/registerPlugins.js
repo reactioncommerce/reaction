@@ -1,5 +1,5 @@
 /* npm package imports */
-import registerLegacyAuthorizationPlugin from "@reactioncommerce/legacy-authorization/index.js";
+import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization/index.js";
 
 /* node-app imports */
 /* core-services */
@@ -90,7 +90,7 @@ export default async function registerPlugins(app) {
    * Authentication and Authorization
    */
   await registerAuthenticationPlugin(app); // REQUIRED
-  await registerLegacyAuthorizationPlugin(app); // REQUIRED
+  await registerSimpleAuthorizationPlugin(app); // REQUIRED
 
   /**
    * Catalog
