@@ -20,9 +20,6 @@
   "bugs": {
     "url": "https://github.com/reactioncommerce/plugin-simple-authorization/issues"
   },
-  "exports": {
-    "./": "./src/"
-  },
   "sideEffects": false,
   "dependencies": {
     "@reactioncommerce/db-version-check": "^1.0.0",
