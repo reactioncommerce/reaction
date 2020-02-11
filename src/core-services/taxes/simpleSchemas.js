@@ -119,7 +119,8 @@ export function extendTaxesSchemas(schemas) {
     CatalogProductVariant,
     OrderFulfillmentGroup,
     OrderItem,
-    ProductVariant
+    ProductVariant,
+    ProductVariantInputSchema
   } = schemas;
 
   Cart.extend({
@@ -193,7 +194,7 @@ export function extendTaxesSchemas(schemas) {
     "taxes.$": Taxes
   });
 
-  ProductVariant.extend({
+  const productVariantSchemaExtension = {
     isTaxable: {
       type: Boolean,
       optional: true
@@ -206,9 +207,11 @@ export function extendTaxesSchemas(schemas) {
       type: String,
       optional: true
     }
-  });
+  };
 
   // Extend the catalog variant database schemas
   CatalogProductVariant.extend(variantSchemaExtension);
   CatalogProductOption.extend(variantSchemaExtension);
+  ProductVariant.extend(productVariantSchemaExtension);
+  ProductVariantInputSchema.extend(productVariantSchemaExtension);
 }
