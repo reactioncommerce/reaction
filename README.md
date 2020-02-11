@@ -1,4 +1,8 @@
-# legacy-authorization
+# simple-authorization
+
+[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/plugin-simple-authorization.svg)](https://www.npmjs.com/package/@reactioncommerce/plugin-simple-authorization)
+[![CircleCI](https://circleci.com/gh/reactioncommerce/plugin-simple-authorization.svg?style=svg)](https://circleci.com/gh/reactioncommerce/plugin-simple-authorization)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Summary
 
@@ -32,7 +36,7 @@ Resource is the name of the resource a user is trying to access. This consists o
 For our purposes in Reaction code:
 
 - `organization` will always be `reaction`.
-- `system` is the service or group of services that provide the resource we want to access control. It will always be `legacy` if the code lives within the Reaction API project, and will be the package name (i.e. `legacy-authorization`) if the code live outside of the Reaction API project.
+- `system` is the service or group of services that provide the resource we want to access control. It will always be `legacy` if the code lives within the Reaction API project, and will be the package name (i.e. `simple-authorization`) if the code live outside of the Reaction API project.
 - `entity` is the actual data entity to access control, such as an `orders`. Entity names are always plural.
 - `id`  is the actual ID of a data entity to access control. This is for super granular Policies and will most of the time be omitted or described with just a * meaning "all IDs".
 
@@ -57,6 +61,35 @@ Context is used to pass any extra information to the permissions check. We use i
 Import this package into the [registerPlugins.js](https://github.com/reactioncommerce/reaction/blob/8b3d66d758c8fe0e2ba1df1958767587ddb7a046/src/registerPlugins.js) file in the Reaction API, and then await its `registerPlugin` function:
 
 ```js
-import registerLegacyAuthorizationPlugin from "./plugins/legacy-authorization/index.js";
-await registerLegacyAuthorizationPlugin(app);
+import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization/index.js";
+await registerSimpleAuthorizationPlugin(app);
 ```
+
+## Developer Certificate of Origin
+We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+```
+Signed-off-by: Jane Doe <jane.doe@example.com>
+```
+
+You can sign your commit automatically with Git by using `git commit -s` if you have your `user.name` and `user.email` set as part of your Git configuration.
+
+We ask that you use your real name (please no anonymous contributions or pseudonyms). By signing your commit you are certifying that you have the right have the right to submit it under the open source license used by that particular Reaction Commerce project. You must use your real name (no pseudonyms or anonymous contributions are allowed.)
+
+We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO signoffs of every commit.
+
+If you forget to sign your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
+
+## License
+   Copyright 2020 Reaction Commerce
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.

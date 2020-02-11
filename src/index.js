@@ -1,3 +1,4 @@
+import pkg from "../package.json";
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
 import permissionsByUserId from "./util/permissionsByUserId.js";
 import preStartup from "./preStartup.js";
@@ -10,9 +11,9 @@ import preStartup from "./preStartup.js";
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Legacy Authorization",
-    name: "reaction-legacy-authorization",
-    version: app.context.appVersion,
+    label: "Simple Authorization",
+    name: "simple-authorization",
+    version: pkg.version,
     collections: {
       roles: {
         name: "roles"

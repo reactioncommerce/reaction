@@ -1,1 +1,5 @@
-console.warn("You should not import from this file, please import modules directly."); // eslint-disable-line
+import register from "./src/index.js";
+
+export { default as migrations } from "./migrations/index.js";
+
+export default register;

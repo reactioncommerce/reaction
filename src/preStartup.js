@@ -1,7 +1,7 @@
 import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
+import { migrationsNamespace } from "../migrations/migrationsNamespace.js";
 
 const expectedVersion = 2;
-const namespace = "legacy-authorization";
 
 /**
  * @summary Called before startup
@@ -22,11 +22,11 @@ export default async function preStartup(context) {
     // These must match one of the namespaces and versions
     // your package exports in the `migrations` named export
     expectedVersion,
-    namespace,
+    namespace: migrationsNamespace,
     setToExpectedIfMissing
   });
 
   if (!ok) {
-    throw new Error(`Database needs migrating. The "${namespace}" namespace must be at version ${expectedVersion}. See docs for more information on migrations: https://github.com/reactioncommerce/api-migrations`);
+    throw new Error(`Database needs migrating. The "${migrationsNamespace}" namespace must be at version ${expectedVersion}. See docs for more information on migrations: https://github.com/reactioncommerce/api-migrations`);
   }
 }
