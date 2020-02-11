@@ -1,5 +1,5 @@
 /* npm package imports */
-import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization/index.js";
+import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization";
 
 /* node-app imports */
 /* core-services */
