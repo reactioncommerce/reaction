@@ -62,20 +62,32 @@
             "shopSettingsLabel": "Shop",
             "import": "Import",
             "general": {
-              "label": "Shop"
-            },
-            "address": {
-              "label": "Address",
+              "label": "General Shop Settings",
               "nameLabel": "Name",
               "namePlaceholder": "Enter a name for the shop",
               "emailLabel": "Email",
-              "emailPlaceholder": "Enter an email address for the shop",
+              "emailPlaceholder": "Enter a store contact email",
               "slugLabel": "Slug",
               "slugPlaceholder": "Enter a slug for the shop",
               "descriptionLabel": "Description",
               "descriptionPlaceholder": "Enter a description for the shop",
               "keywordsLabel": "Keywords",
               "keywordsPlaceholder": "Enter keywords for the shop"
+            },
+            "address": {
+              "label": "Shop Address",
+              "companyLabel": "Company Name",
+              "companyPlaceholder": "Enter the legal name of the company",
+              "fullNameLabel": "Full Name",
+              "fullNamePlaceholder": "Enter the full name of the main contact for the shop",
+              "address1Label": "Street",
+              "address2Label": "Suite, P.O. Box etc (optional)",
+              "cityLabel": "City",
+              "countryLabel": "Country",
+              "postalLabel": "Postal/ZIP code",
+              "regionLabel": "Region (State)",
+              "phoneLabel": "Phone",
+              "isCommercialLabel": "This is a commercial address"
             },
             "options": {
               "label": "Options"
