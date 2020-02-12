@@ -1,3 +1,15 @@
+# v3.1.0
+
+Reaction v3.1.0 moves our `simple-authorization` plugin (formerly `legacy-permission`) into it's own plugin and `npm` package to set up the pattern of installing Reaction API plugins from `npm`.
+
+## Features
+
+- feat: move legacy permissions into npm package ([#6096](https://github.com/reactioncommerce/reaction/pull/6096))
+
+## Fixes
+
+- fix: Add variant tax fields to schema  ([#6098](https://github.com/reactioncommerce/reaction/pull/6098))
+
 # v3.0.0
 
 We're excited to introduce version 3.0.0 (v3.0.0) of the Reaction Commerce GraphQL API (hereby referred to as "The Reaction API"). In this version, we've expanded the existing GraphQL API to include administrative and operator functionality, eliminated the Meteor framework from the Reaction API, split the Reaction Admin UI and the identity provider into separate services, added support for plugins as NPM packages, and improved automated integration testing for the Reaction API.
