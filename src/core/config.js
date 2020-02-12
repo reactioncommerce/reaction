@@ -31,10 +31,6 @@ export default envalid.cleanEnv(process.env, {
     desc: "Determines how much logging you see. The options, from least to most logging, are FATAL, ERROR, WARN, INFO, DEBUG, TRACE. See: https://github.com/trentm/node-bunyan#levels",
     example: "ERROR"
   }),
-  REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED: bool({
-    default: true,
-    desc: "Set this to false if you do not need GraphQL subscription support"
-  }),
   REACTION_SHOULD_INIT_REPLICA_SET: bool({
     default: false,
     devDefault: true,
