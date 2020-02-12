@@ -22,7 +22,6 @@ const { PubSub } = require("apollo-server");
 const coreGraphQLSchema = importAsString("./graphql/schema.graphql");
 
 const {
-  REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED,
   MONGO_URL,
   PORT,
   REACTION_LOG_LEVEL,
@@ -339,10 +338,6 @@ export default class ReactionAPI {
 
     // HTTP server for GraphQL subscription websocket handlers
     this.httpServer = httpServer || createServer(this.expressApp);
-
-    if (REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
-      apolloServer.installSubscriptionHandlers(this.httpServer);
-    }
 
     this.graphQLServerSubscriptionUrl = getAbsoluteUrl(this.rootUrl.replace("http", "ws"), apolloServer.subscriptionsPath);
 
