@@ -31,14 +31,18 @@ export default function createApolloServer(options = {}) {
   const { context: contextFromOptions, expressMiddleware, resolvers } = options;
   const path = options.path || DEFAULT_GRAPHQL_PATH;
 
-  // We support passing in either a typeDefs string or an already executable schema,
-  // for the case where a plugin is stitching in a schema from an external API.
+  // We support passing in typeDef strings.
+  // Already executable schema are not supported with federation.
   const schemas = options.schemas || [];
-  const schemasToMerge = schemas.filter((td) => typeof td !== "string");
+  const executableSchemas = schemas.filter((td) => typeof td !== "string");
   const typeDefs = schemas.filter((td) => typeof td === "string");
 
-  if (typeDefs.length === 0 && schemasToMerge.length === 0) {
+  if (typeDefs.length === 0) {
     throw new Error("No type definitions (schemas) provided for GraphQL");
+  }
+
+  if (executableSchemas.length) {
+    throw new Error("Executable schemas are not supported.");
   }
 
   // Create a custom Express server so that we can add our own middleware and HTTP routes
