@@ -1,6 +1,6 @@
 # v3.1.0
 
-Reaction v3.1.0 moves our `simple-authorization` plugin (formerly `legacy-permission`) into it's own plugin and `npm` package to set up the pattern of installing Reaction API plugins from `npm`.
+Reaction v3.1.0 moves our `simple-authorization` plugin (formerly `legacy-permission`) into it's own `npm` package to set up the pattern of installing Reaction API plugins from `npm`.
 
 ## Features
 
