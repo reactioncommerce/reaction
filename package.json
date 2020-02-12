@@ -24,6 +24,7 @@
     "@reactioncommerce/db-version-check": "^1.0.0",
     "@reactioncommerce/file-collections": "~0.7.0",
     "@reactioncommerce/file-collections-sa-gridfs": "~0.1.0",
+    "@reactioncommerce/plugin-simple-authorization": "~1.0.0",
     "@reactioncommerce/logger": "~1.1.2",
     "@reactioncommerce/nodemailer": "~5.0.5",
     "@reactioncommerce/random": "~1.0.2",

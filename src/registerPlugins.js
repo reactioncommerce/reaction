@@ -1,5 +1,5 @@
 /* npm package imports */
-// import registerAuthorizationPlugin from "@reactioncommerce/reaction-plugin-authorization"; // TODO(pod-auth): npm install `reaction-plugin-authorization` when available
+import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization";
 
 /* node-app imports */
 /* core-services */
@@ -22,7 +22,6 @@ import registerTaxesPlugin from "./core-services/taxes/index.js";
 
 /* plugins */
 import registerAuthenticationPlugin from "./plugins/authentication/index.js";
-import registerLegacyAuthorizationPlugin from "./plugins/legacy-authorization/index.js";
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerExamplePaymentsPlugin from "./plugins/payments-example/index.js";
@@ -91,8 +90,7 @@ export default async function registerPlugins(app) {
    * Authentication and Authorization
    */
   await registerAuthenticationPlugin(app); // REQUIRED
-  // await registerAuthorizationPlugin(app); // REQUIRED // TODO(pod-auth): uncomment when `reaction-plugin-authorization` when available
-  await registerLegacyAuthorizationPlugin(app); // REQUIRED
+  await registerSimpleAuthorizationPlugin(app); // REQUIRED
 
   /**
    * Catalog
