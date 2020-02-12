@@ -4,7 +4,6 @@ import {
   makeRemoteExecutableSchema
 } from "graphql-tools";
 import fetch from "node-fetch";
-import nock from "nock";
 import TestApp from "/tests/util/TestApp.js";
 
 // This is used in URLs for testing,
@@ -27,17 +26,12 @@ testApp.registerPlugin({
 
 jest.setTimeout(300000);
 
-beforeAll(async () => {
-  await testApp.start();
-});
-
-test("plugin with remote graphQL should delegate properly", async () => {
-  const graphql = "{unitTestRemoteGraphql}";
-  nock(baseUrl)
-    .post("/", (body) => body.query.includes("unitTestRemoteGraphql"))
-    .reply(200, { data: { unitTestRemoteGraphql: 43.43 } });
-  const res = await testApp.query(graphql)();
-  expect(res).toHaveProperty("unitTestRemoteGraphql", 43.43);
+test("should not be able to register a remote executable schema", async () => {
+  try {
+    await testApp.start();
+  } catch (error) {
+    expect(error).toMatchSnapshot();
+  }
 });
 
 // There is no need to delete any test data from collections because
