@@ -66,9 +66,6 @@ export default function createApolloServer(options = {}) {
     debug: options.debug || false,
     formatError: getErrorFormatter(),
     schema,
-    subscriptions: {
-      path
-    },
     introspection: config.GRAPHQL_INTROSPECTION_ENABLED,
     playground: config.GRAPHQL_PLAYGROUND_ENABLED
   });
