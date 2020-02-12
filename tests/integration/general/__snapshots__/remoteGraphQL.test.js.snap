@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should not be able to register a remote executable schema 1`] = `[Error: Executable schemas are not supported.]`;
