@@ -62,6 +62,7 @@
             "shopSettingsLabel": "Shop",
             "import": "Import",
             "general": {
+              "header": "Manage the shop's general settings, such as its name and contact email",
               "label": "General Shop Settings",
               "nameLabel": "Name",
               "namePlaceholder": "Enter a name for the shop",
@@ -75,6 +76,7 @@
               "keywordsPlaceholder": "Enter keywords for the shop"
             },
             "address": {
+              "header": "Manage the shop's physical mailing address",
               "label": "Shop Address",
               "companyLabel": "Company Name",
               "companyPlaceholder": "Enter the legal name of the company",
