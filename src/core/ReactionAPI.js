@@ -20,8 +20,11 @@ const require = createRequire(import.meta.url); // eslint-disable-line
 const { PubSub } = require("apollo-server");
 
 const coreGraphQLSchema = importAsString("./graphql/schema.graphql");
+const coreGraphQLSubscriptionSchema = importAsString("./graphql/subscription.graphql");
 
 const {
+  REACTION_APOLLO_FEDERATION_ENABLED,
+  REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED,
   MONGO_URL,
   PORT,
   REACTION_LOG_LEVEL,
@@ -131,10 +134,16 @@ export default class ReactionAPI {
       pubSub: new PubSub()
     };
 
+    const schemas = [coreGraphQLSchema];
+
+    if (REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
+      schemas.push(coreGraphQLSubscriptionSchema);
+    }
+
     this.functionsByType = {};
     this.graphQL = {
       resolvers: {},
-      schemas: [coreGraphQLSchema]
+      schemas
     };
 
     _.merge(this.graphQL.resolvers, coreResolvers);
@@ -339,7 +348,14 @@ export default class ReactionAPI {
     // HTTP server for GraphQL subscription websocket handlers
     this.httpServer = httpServer || createServer(this.expressApp);
 
-    this.graphQLServerSubscriptionUrl = getAbsoluteUrl(this.rootUrl.replace("http", "ws"), apolloServer.subscriptionsPath);
+    if (REACTION_APOLLO_FEDERATION_ENABLED && REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
+      throw new Error("Subscriptions are not supported with Apollo Federation. Set `REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED=false` to disable subscriptions.");
+    }
+
+    if (REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
+      apolloServer.installSubscriptionHandlers(this.httpServer);
+      this.graphQLServerSubscriptionUrl = getAbsoluteUrl(this.rootUrl.replace("http", "ws"), apolloServer.subscriptionsPath);
+    }
 
     // Serve files in the /public folder statically
     for (const staticPath of serveStaticPaths) {
