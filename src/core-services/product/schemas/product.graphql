@@ -315,14 +315,14 @@ input ArchiveProductVariantsInput  {
 
 "Input for the `updateProductsVisibility` mutation"
 input UpdateProductsVisibilityInput {
+  "The desired visibility"
+  isVisible: Boolean!
+
   "Array of product ids to update"
   productIds: [ID]!
 
   "ID of shop the products belong to"
   shopId: ID!
-
-  "The desired visibility"
-  isVisible: Boolean!
 }
 
 "Input for the `createProduct` mutation"
