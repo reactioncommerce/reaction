@@ -8,8 +8,9 @@ import getErrorFormatter from "./util/getErrorFormatter.js";
 import createDataLoaders from "./util/createDataLoaders.js";
 
 const require = createRequire(import.meta.url);
-const { makeExecutableSchema, mergeSchemas } = require("apollo-server");
+const { gql, makeExecutableSchema, mergeSchemas } = require("apollo-server");
 const { ApolloServer } = require("apollo-server-express");
+const { buildFederatedSchema } = require("@apollo/federation");
 
 const DEFAULT_GRAPHQL_PATH = "/graphql";
 
@@ -31,22 +32,42 @@ export default function createApolloServer(options = {}) {
   const { context: contextFromOptions, expressMiddleware, resolvers } = options;
   const path = options.path || DEFAULT_GRAPHQL_PATH;
 
-  // We support passing in either a typeDefs string or an already executable schema,
-  // for the case where a plugin is stitching in a schema from an external API.
+  // We support passing in typeDef strings.
+  // Already executable schema are not supported with federation.
   const schemas = options.schemas || [];
-  const schemasToMerge = schemas.filter((td) => typeof td !== "string");
+  const executableSchemas = schemas.filter((td) => typeof td !== "string");
   const typeDefs = schemas.filter((td) => typeof td === "string");
 
-  if (typeDefs.length === 0 && schemasToMerge.length === 0) {
+  if (schemas.length === 0) {
     throw new Error("No type definitions (schemas) provided for GraphQL");
+  }
+
+  if (executableSchemas.length && config.REACTION_APOLLO_FEDERATION_ENABLED) {
+    throw new Error("Executable schemas are not supported with Apollo Federation.");
   }
 
   // Create a custom Express server so that we can add our own middleware and HTTP routes
   const app = express();
+  let schema;
+  let subscriptions = false;
 
-  let schema = makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions });
-  if (schemasToMerge.length) {
-    schema = mergeSchemas({ schemas: [schema, ...schemasToMerge] });
+  if (config.REACTION_APOLLO_FEDERATION_ENABLED) {
+    // Build federated schema from typeDefs and resolvers
+    schema = buildFederatedSchema([{
+      typeDefs: gql(typeDefs.join(" ")),
+      resolvers
+    }]);
+  } else {
+    schema = makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions });
+    if (executableSchemas.length) {
+      schema = mergeSchemas({ schemas: [schema, ...executableSchemas] });
+    }
+  }
+
+  if (config.REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
+    subscriptions = {
+      path
+    };
   }
 
   const apolloServer = new ApolloServer({
@@ -66,9 +87,7 @@ export default function createApolloServer(options = {}) {
     debug: options.debug || false,
     formatError: getErrorFormatter(),
     schema,
-    subscriptions: {
-      path
-    },
+    subscriptions,
     introspection: config.GRAPHQL_INTROSPECTION_ENABLED,
     playground: config.GRAPHQL_PLAYGROUND_ENABLED
   });
