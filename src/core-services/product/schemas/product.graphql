@@ -198,6 +198,15 @@ type ArchiveProductVariantsPayload  {
   variants: [ProductVariant]!
 }
 
+"Response payload for `updateProductsVisibility` mutation"
+type UpdateProductsVisibilityPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Boolean that indicates whether the operation was successful or not"
+  success: Boolean
+}
+
 "Response payload of `createProduct` mutation"
 type CreateProductPayload  {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -302,6 +311,18 @@ input ArchiveProductVariantsInput  {
 
   "Array of IDs of variants to archive"
   variantIds: [ID]!
+}
+
+"Input for the `updateProductsVisibility` mutation"
+input UpdateProductsVisibilityInput {
+  "Array of product ids to update"
+  productIds: [ID]!
+
+  "ID of shop the products belong to"
+  shopId: ID!
+
+  "The desired visibility"
+  isVisible: Boolean!
 }
 
 "Input for the `createProduct` mutation"
@@ -499,6 +520,12 @@ extend type Mutation {
     "Mutation input"
     input: ArchiveProductVariantsInput!
   ): ArchiveProductVariantsPayload!
+
+  "Update the isVisible property of an array of products"
+  updateProductsVisibility(
+    "Mutation input"
+    input: UpdateProductsVisibilityInput!
+  ): UpdateProductsVisibilityPayload!
 
   "Create a new product"
   createProduct(
