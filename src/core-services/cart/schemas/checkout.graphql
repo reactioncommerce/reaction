@@ -52,7 +52,7 @@ type FulfillmentGroup implements Node {
   shop: Shop!
 
   """
-  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: `shipping`, `digital`
   """
   type: FulfillmentType!
 }
@@ -146,14 +146,14 @@ type CartSummary {
 
   """
   The calculated tax-exclusive tax rate on all items and fulfillment prices (taxTotal / taxableAmount).
-  This may be null, and there is a difference between null and 0. Null means "not able to calculate",
+  This may be null, and there is a difference between null and 0. Null means `not able to calculate`,
   such as when no fulfillment method has been selected for some fulfillment groups.
   """
   effectiveTaxRate: Rate
 
   """
   The total price of all chosen fulfillment methods. This may be null, and there is a difference
-  between null and 0. Null means "not able to calculate", such as when no fulfillment method has
+  between null and 0. Null means `not able to calculate`, such as when no fulfillment method has
   been selected for some fulfillment groups.
   """
   fulfillmentTotal: Money
@@ -163,7 +163,7 @@ type CartSummary {
 
   """
   The total estimated tax that has not already been included in the item prices. This may be null,
-  and there is a difference between null and 0. Null means "not able to calculate", such as when no
+  and there is a difference between null and 0. Null means `not able to calculate`, such as when no
   fulfillment methods have been selected or there is some other issue with the tax service.
   """
   taxTotal: Money

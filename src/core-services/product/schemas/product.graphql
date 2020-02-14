@@ -106,7 +106,7 @@ type ProductVariant {
   _id: ID!
 
   """
-  The attribute label describes the category of variant, for example, "Color" or "Size".
+  The attribute label describes the category of variant, for example, `Color` or `Size`.
   In most cases this will be the same for all variants at the same level.
   """
   attributeLabel: String
@@ -165,8 +165,8 @@ type ProductVariant {
   """
   The full variant title for use on cart, checkout, and order summaries and on invoices.
   This fully describes the configured variant. For example, if this is an option with
-  `optionTitle` "Large", its parent variant has `optionTitle` "Red", and the product
-  `title` is "Fancy T-Shirt", then this `title` will be something like "Fancy T-Shirt - Red - Large".
+  `optionTitle` "Large", its parent variant has `optionTitle` `Red`, and the product
+  `title` is "Fancy T-Shirt", then this `title` will be something like `Fancy T-Shirt - Red - Large`.
   """
   title: String
 
@@ -406,7 +406,7 @@ input ProductInput {
 "Mutation input for a product variant or option"
 input ProductVariantInput {
   """
-  The attribute label describes the category of variant, for example, "Color" or "Size".
+  The attribute label describes the category of variant, for example, `Color` or `Size`.
   In most cases this will be the same for all variants at the same level.
   """
   attributeLabel: String
@@ -447,8 +447,8 @@ input ProductVariantInput {
   """
   The full variant title for use on cart, checkout, and order summaries and on invoices.
   This fully describes the configured variant. For example, if this is an option with
-  `optionTitle` "Large", its parent variant has `optionTitle` "Red", and the product
-  `title` is "Fancy T-Shirt", then this `title` will be something like "Fancy T-Shirt - Red - Large".
+  `optionTitle` `Large`, its parent variant has `optionTitle` `Red`, and the product
+  `title` is `Fancy T-Shirt`, then this `title` will be something like `Fancy T-Shirt - Red - Large`.
   """
   title: String
 
