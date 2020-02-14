@@ -135,8 +135,8 @@ type CartItem implements Node {
   addedAt: DateTime!
 
   """
-  FUTURE. Additional attributes of the chosen item. For example, if this item is for a product, socks, where "blue" and "small"
-  options were chosen for some configurable attributes, then "color:blue" and "size:small" will be indicated here.
+  FUTURE. Additional attributes of the chosen item. For example, if this item is for a product, socks, where `blue` and `small`
+  options were chosen for some configurable attributes, then `color:blue` and `size:small` will be indicated here.
   """
   attributes: [CartItemAttribute]
 
