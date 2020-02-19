@@ -1,0 +1,11 @@
+[
+  {
+    "description": "Shop managers acting on specific entities.",
+    "subjects": [ "reaction:groups:shop-managers" ],
+    "resources": [ "reaction:legacy:shops:*" ],
+    "actions": [
+      "read"
+    ],
+    "effect": "allow"
+  }
+]
