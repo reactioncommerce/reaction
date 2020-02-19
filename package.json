@@ -31,6 +31,7 @@
   "devDependencies": {
     "@reactioncommerce/data-factory": "~1.0.1",
     "@reactioncommerce/eslint-config": "~2.1.0",
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.7.0",
