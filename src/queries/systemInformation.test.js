@@ -1,10 +1,14 @@
-import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+// import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import ReactionError from "@reactioncommerce/reaction-error";
 import systemInformation from "./systemInformation.js";
 
 const fakeShopId = "FAKE_SHOP_ID";
+const mockContext = {
+  app: {
+    db: "db"
+  }
+};
 mockContext.validatePermissions = jest.fn("validatePermissions");
-mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
 
 beforeEach(() => {
   jest.resetAllMocks();
