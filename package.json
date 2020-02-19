@@ -4,6 +4,9 @@
   "version": "0.0.0-development",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=12.14.1"
+  },
   "homepage": "https://github.com/reactioncommerce/plugin-system-information",
   "url": "https://github.com/reactioncommerce/plugin-system-information",
   "email": "engineering@reactioncommerce.com",
@@ -38,7 +41,7 @@
     "babel-plugin-transform-import-meta": "~1.0.0",
     "eslint": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.21.0",
+    "eslint-plugin-jest": "^23.7.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
@@ -72,6 +75,13 @@
     "env": {
       "es6": true,
       "jasmine": true
+    },
+    "rules": {
+      "node/no-missing-import": "off",
+      "node/no-missing-require": "off",
+      "node/no-unsupported-features/es-syntax": "off",
+      "node/no-unpublished-import": "off",
+      "node/no-unpublished-require": "off"
     }
   },
   "prettier": {
