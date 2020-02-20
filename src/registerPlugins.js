@@ -1,6 +1,7 @@
 /* npm package imports */
 import registerAuthenticationPlugin from "@reactioncommerce/plugin-authentication";
 import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization";
+import registerSystemInformationPlugin from "@reactioncommerce/plugin-system-information";
 
 /* node-app imports */
 /* core-services */
@@ -36,7 +37,6 @@ import registerSitemapGeneratorPlugin from "./plugins/sitemap-generator/index.js
 import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
 import registerStripePaymentsPlugin from "./plugins/payments-stripe/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
-import registerSystemInfoPlugin from "./plugins/system-info/index.js";
 import registerTaxesRatesPlugin from "./plugins/taxes-rates/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
 import registerTranslationsPlugin from "./plugins/translations/index.js";
@@ -73,7 +73,7 @@ export default async function registerPlugins(app) {
   await registerEmailPlugin(app); // REQUIRED
   await registerAddressPlugin(app); // REQUIRED
   await registerTranslationsPlugin(app); // OPTIONAL
-  await registerSystemInfoPlugin(app); // OPTIONAL
+  await registerSystemInformationPlugin(app); // OPTIONAL
 
   /**
    * Email
