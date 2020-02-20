@@ -11,7 +11,7 @@ import executeBulkOperation from "../utils/executeBulkOperation.js";
  * @param {String[]} input.isVisible - the desired visibility
  * @return {Boolean} A boolean flag that indicates whether the operation completed successfully or not.
  */
-export default async function addTagsToProducts(context, input) {
+export default async function updateProductsVisibility(context, input) {
   const { productIds, shopId, isVisible } = input;
   const { collections: { Products } } = context;
   const totalProducts = productIds.length;
