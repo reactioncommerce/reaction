@@ -1,6 +1,13 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
+const transformIgnorePatternsPackages = [
+  "node_modules/@reactioncommerce/api-utils",
+  "node_modules/@reactioncommerce/db-version-check",
+  "node_modules/@reactioncommerce/plugin-authentication",
+  "node_modules/@reactioncommerce/plugin-simple-authorization"
+];
+
 const jestConfig = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -173,10 +180,7 @@ const jestConfig = {
   // transform: {},
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: [
-    // Any packages that are published only as ESM need to be listed here
-    "node_modules/(?!(@reactioncommerce/api-utils|@reactioncommerce/db-version-check|@reactioncommerce/plugin-simple-authorization|@reactioncommerce/plugin-authentication)/)"
-  ]
+  transformIgnorePatterns: transformIgnorePatternsPackages
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
