@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/plugin-simple-authorization",
-  "description": "Simple Authorization service for the Reaction API",
+  "description": "Simple Authorization plugin for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
   "type": "module",
