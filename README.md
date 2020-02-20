@@ -6,9 +6,9 @@
 
 ## Summary
 
-This plugin provides Authentication for the Reaction API.
+This plugin provides Authentication middleware for the Reaction API.
 
-`API Version`, `Mongo Version`, and `Plugin Versions` can be checked through the `systemInformation` query provided by this plugin.
+Utils included in this plugin help connect the Identity service and the Reaction API via an Auth Token.
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
