@@ -1,3 +1,4 @@
+import pkg from "../package.json";
 import policies from "./policies.json";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
@@ -12,7 +13,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "System Information",
     name: "system-information",
-    version: app.context.appVersion,
+    version: pkg.version,
     graphQL: {
       resolvers,
       schemas
