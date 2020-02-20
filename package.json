@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/plugin-system-information",
-  "description": "System Information service for the Reaction API",
+  "description": "System Information plugin for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
   "type": "module",
