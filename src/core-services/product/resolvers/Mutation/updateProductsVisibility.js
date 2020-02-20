@@ -11,7 +11,7 @@ import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 * @param {String} args.input.shopId - shop these products belong to
 * @param {String} args.input.isVisible - the desired product visibility
 * @param {Object} context - an object containing the per-request state
-* @return {Object} Includes a success boolean prop indicating whether the operation was successful or not
+* @return {Object} Includes a property that indicates the number of updated documents
 */
 export default async function updateProductsVisibility(_, { input }, context) {
   const {
@@ -23,7 +23,7 @@ export default async function updateProductsVisibility(_, { input }, context) {
 
   const decodedProductIds = productIds.map((productId) => decodeProductOpaqueId(productId));
 
-  const result = await context.mutations.updateProductsVisibility(context, {
+  const { updatedCount } = await context.mutations.updateProductsVisibility(context, {
     productIds: decodedProductIds,
     shopId: decodeShopOpaqueId(shopId),
     isVisible
@@ -31,6 +31,6 @@ export default async function updateProductsVisibility(_, { input }, context) {
 
   return {
     clientMutationId,
-    success: result
+    updatedCount
   };
 }

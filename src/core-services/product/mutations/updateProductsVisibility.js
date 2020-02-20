@@ -9,13 +9,12 @@ import executeBulkOperation from "../utils/executeBulkOperation.js";
  * @param {String[]} input.productIds - an array of Product IDs
  * @param {String} input.shopId - the shop's id
  * @param {String[]} input.isVisible - the desired visibility
- * @return {Boolean} A boolean flag that indicates whether the operation completed successfully or not.
+ * @return {Number} A count of how many documents were successfully updated
  */
 export default async function updateProductsVisibility(context, input) {
   const { productIds, shopId, isVisible } = input;
   const { collections: { Products } } = context;
   const totalProducts = productIds.length;
-  let success = false;
 
   for (const _id of productIds) {
     // TODO(pod-auth): figure out a better way to loop through this
@@ -23,7 +22,7 @@ export default async function updateProductsVisibility(context, input) {
     await context.validatePermissions(`reaction:legacy:products:${_id}`, "update", { shopId });
   }
 
-  // // Generate update statements
+  // Generate update statements
   const operations = productIds.map((productId) => ({
     updateOne: {
       filter: {
@@ -40,7 +39,5 @@ export default async function updateProductsVisibility(context, input) {
 
   const results = await executeBulkOperation(Products, operations, totalProducts);
 
-  success = totalProducts === results.updatedCount;
-
-  return success;
+  return results;
 }

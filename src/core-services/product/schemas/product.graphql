@@ -203,8 +203,8 @@ type UpdateProductsVisibilityPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Boolean that indicates whether the operation was successful or not"
-  success: Boolean
+  "The number of products that were updated successfully"
+  updatedCount: Int
 }
 
 "Response payload of `createProduct` mutation"
