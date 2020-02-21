@@ -1,14 +1,16 @@
-# To fetch schema from
-introspection: http://localhost:3000/graphql-beta
-
+introspection: 'http://localhost:3000/graphql'
 servers:
-  - url: http://api.v3.reactioncommerce.io/graphql-beta
-    description: Reaction GraphQL API
-
+  - description: Reaction GraphQL API
+    url: 'http://api.v3.reactioncommerce.io/graphql'
+externalDocs:
+  description: Reaction Commerce
+  url: 'http://reactioncommerce.com'
 info:
-  description: |
-    This represents the GraphQL API provided by Reaction Commerce with the included plugins. Note that your GraphQL API will vary depending on your mix of plugins.
-    To explore and query the API, go to `/graphql-beta` on a Reaction Commerce URL in a browser.
+  description: >-
+    This represents the GraphQL API provided by Reaction Commerce with the
+    included plugins. Note that your GraphQL API will vary depending on your mix
+    of plugins. To explore and query the API, go to `/graphql` on a Reaction
+    Commerce URL in a browser.
   version: 3.0.0
   title: Reaction Commerce GraphQL API
   contact:
@@ -16,238 +18,765 @@ info:
   license:
     name: GPL-3.0
     url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
-
 domains:
-  - name: Account Queries
-    description: ""
+  - name: Queries
+    description: 'Queries return all requested data, without any side effects'
     externalDocs: null
     usecases:
       - name: account
         description: Returns the account with the provided ID
         query: query.account
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,account'
+      - name: accountCartByAccountId
+        description: Find a cart for a given account ID.
+        query: query.accountCartByAccountId
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,accountCartByAccountId
       - name: accounts
-        description: Returns accounts for the provided shop ID
+        description: Returns accounts optionally filtered by account groups
         query: query.accounts
-        expand: edges,node,nodes,pageInfo
-      - name: administrators
-        description: Returns a list of administrators for the shop with ID shopId, as a Relay-compatible connection. "Administrators" means all linked accounts that have the "admin" role for this shop.
-        query: query.administrators
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,accounts'
+      - name: addressValidation
+        description: >-
+          Get a list of errors and suggested properly formatted addresses for an
+          address. If no address
+
+          validation service is active for the shop, this will return as if the
+          address is valid even
+
+          though no check actually occurred.
+        query: query.addressValidation
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,addressValidation'
+      - name: addressValidationRules
+        description: Returns a list of defined address validation rules for a shop
+        query: query.addressValidationRules
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,addressValidationRules
+      - name: addressValidationServices
+        description: Get a full list of all registered address validation services
+        query: query.addressValidationServices
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,addressValidationServices
+      - name: anonymousCartByCartId
+        description: Finds a cart by the cart ID and anonymous cart token.
+        query: query.anonymousCartByCartId
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,anonymousCartByCartId
+      - name: availablePaymentMethods
+        description: >-
+          Get a list of all payment methods available during a checkout. This
+          may filter by auth,
+
+          active/inactive, IP/region, shop, etc. To get the full list, use the
+          `paymentMethods`
+
+          query with proper authorization.
+        query: query.availablePaymentMethods
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,availablePaymentMethods
+      - name: catalogItemProduct
+        description: Gets product from catalog
+        query: query.catalogItemProduct
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,catalogItemProduct'
+      - name: catalogItems
+        description: Gets items from a shop catalog
+        query: query.catalogItems
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,catalogItems'
+      - name: discountCodes
+        description: Gets discount codes
+        query: query.discountCodes
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,discountCodes'
+      - name: emailTemplates
+        description: Retrieves a list of email templates
+        query: query.emailTemplates
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,emailTemplates'
+      - name: flatRateFulfillmentMethod
+        description: Get a flat rate fulfillment method
+        query: query.flatRateFulfillmentMethod
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,flatRateFulfillmentMethod
+      - name: flatRateFulfillmentMethods
+        description: Get a flat rate fulfillment methods
+        query: query.flatRateFulfillmentMethods
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,flatRateFulfillmentMethods
+      - name: getFlatRateFulfillmentRestriction
+        description: Get a single flat rate fulfillment method restriction.
+        query: query.getFlatRateFulfillmentRestriction
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,getFlatRateFulfillmentRestriction
+      - name: getFlatRateFulfillmentRestrictions
+        description: Get the full list of flat rate fulfillment method restrictions.
+        query: query.getFlatRateFulfillmentRestrictions
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,getFlatRateFulfillmentRestrictions
+      - name: globalSettings
+        description: >-
+          Returns app settings that are not shop specific. Plugins extend the
+          GlobalSettings type to support
+
+          whatever settings they need.
+        query: query.globalSettings
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,globalSettings'
       - name: group
-        description: Returns a single account group by ID
+        description: Returns a single group by ID.
         query: query.group
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,group'
       - name: groups
-        description: Returns a list of groups for the shop with ID `shopId`, as a Relay-compatible connection.
+        description: >-
+          Returns a list of groups for the shop with ID `shopId`, as a
+          Relay-compatible connection.
         query: query.groups
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,groups'
+      - name: navigationItemsByShopId
+        description: Returns the navigation items for a shop
+        query: query.navigationItemsByShopId
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,navigationItemsByShopId
+      - name: navigationTreeById
+        description: Returns a navigation tree by its ID in the specified language
+        query: query.navigationTreeById
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,navigationTreeById'
+      - name: orderById
+        description: Get an order by its ID
+        query: query.orderById
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,orderById'
+      - name: orderByReferenceId
+        description: Get an order by its reference ID (the ID shown to customers)
+        query: query.orderByReferenceId
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,orderByReferenceId'
+      - name: orders
+        description: >-
+          Get all orders for a single account, optionally limited to certain
+          shop IDs and certain orderStatus
+        query: query.orders
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,orders'
+      - name: ordersByAccountId
+        description: >-
+          Get all orders for a single account, optionally limited to certain
+          shop IDs and certain orderStatus
+        query: query.ordersByAccountId
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,ordersByAccountId'
+      - name: paymentMethods
+        description: Get a full list of all payment methods
+        query: query.paymentMethods
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,paymentMethods'
+      - name: ping
+        description: A test query
+        query: query.ping
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,ping'
+      - name: primaryShop
+        description: Returns the primary shop for the domain
+        query: query.primaryShop
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,primaryShop'
+      - name: primaryShopId
+        description: Returns the ID of the primary shop for the domain
+        query: query.primaryShopId
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,primaryShopId'
+      - name: product
+        description: Query for a single Product
+        query: query.product
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,product'
+      - name: products
+        description: Query for a list of Products
+        query: query.products
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,products'
+      - name: productsByTagId
+        description: Returns a list of product in a tag
+        query: query.productsByTagId
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,productsByTagId'
+      - name: refunds
+        description: Get refunds applied to an order by order ID
+        query: query.refunds
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,refunds'
+      - name: refundsByPaymentId
+        description: Get refunds applied to a specific payment by payment ID
+        query: query.refundsByPaymentId
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,refundsByPaymentId'
       - name: roles
         description: Returns a paged list of all roles associated with a shop
         query: query.roles
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,roles'
+      - name: shop
+        description: Returns a shop by ID
+        query: query.shop
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,shop'
+      - name: shopBySlug
+        description: Returns a shop by slug
+        query: query.shopBySlug
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,shopBySlug'
+      - name: shopSettings
+        description: >-
+          Returns app settings for a specific shop. Plugins extend the
+          ShopSettings type to support
+
+          whatever settings they need.
+        query: query.shopSettings
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,shopSettings'
+      - name: simpleInventory
+        description: >-
+          Get the SimpleInventory info for a product configuration. Returns
+          `null` if `updateSimpleInventory`
+
+          has never been called for this product configuration.
+        query: query.simpleInventory
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,simpleInventory'
+      - name: sitemap
+        description: Returns Sitemap object for a shop based on the handle param
+        query: query.sitemap
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,sitemap'
+      - name: surchargeById
+        description: Get a single surcharge definition by its ID
+        query: query.surchargeById
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,surchargeById'
+      - name: surcharges
+        description: Get the full list of surcharges.
+        query: query.surcharges
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,surcharges'
+      - name: systemInformation
+        description: SystemInformation object
+        query: query.systemInformation
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,systemInformation'
+      - name: tag
+        description: >-
+          Returns a tag from a provided tag ID or slug. Tags with isVisible set
+          to false are excluded by default.
+        query: query.tag
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,tag'
+      - name: tags
+        description: >-
+          Returns a paged list of tags for a shop. You must include a shopId
+          when querying.
+        query: query.tags
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,tags'
+      - name: taxCodes
+        description: >-
+          List all tax codes supported by the current active tax service for the
+          shop
+        query: query.taxCodes
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,taxCodes'
+      - name: taxRates
+        description: Gets tax rates
+        query: query.taxRates
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,taxRates'
+      - name: taxServices
+        description: Get a full list of all tax services for the shop
+        query: query.taxServices
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,taxServices'
       - name: viewer
         description: Returns the account for the authenticated user
         query: query.viewer
-  - name: Account Mutations
-    description: ""
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,viewer'
+  - name: Mutations
+    description: 'Mutations have side effects, such as mutating data or triggering a task'
     externalDocs: null
     usecases:
       - name: addAccountAddressBookEntry
         description: Add a new address to the `addressBook` field for an account
         query: mutation.addAccountAddressBookEntry
-        expand: address
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,addAccountAddressBookEntry
       - name: addAccountEmailRecord
         description: Add an email address to an account
         query: mutation.addAccountEmailRecord
-        expand: account
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,addAccountEmailRecord
       - name: addAccountToGroup
         description: Add an account to a group
         query: mutation.addAccountToGroup
-        expand: group
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,addAccountToGroup'
+      - name: addCartItems
+        description: Add item(s) to a cart
+        query: mutation.addCartItems
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,addCartItems'
+      - name: addOrderFulfillmentGroup
+        description: >-
+          Use this mutation to add a new order fulfillment group to an order. It
+          must have at least one
+
+          item. Items may be provided or moved from another existing group or
+          both.
+        query: mutation.addOrderFulfillmentGroup
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,addOrderFulfillmentGroup
+      - name: addTag
+        description: Adds a new tag
+        query: mutation.addTag
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,addTag'
+      - name: addTagsToProducts
+        description: Bulk operation for adding an array of tags to an array of products
+        query: mutation.addTagsToProducts
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,addTagsToProducts'
+      - name: applyDiscountCodeToCart
+        description: Apply a discount code to a cart
+        query: mutation.applyDiscountCodeToCart
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,applyDiscountCodeToCart
+      - name: approveOrderPayments
+        description: Approve one or more payments for an order
+        query: mutation.approveOrderPayments
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,approveOrderPayments
+      - name: archiveMediaRecord
+        description: >-
+          Archive a MediaRecord to hide it without deleting the backing file
+          data
+        query: mutation.archiveMediaRecord
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,archiveMediaRecord'
+      - name: archiveProducts
+        description: Archive products
+        query: mutation.archiveProducts
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,archiveProducts'
+      - name: archiveProductVariants
+        description: Archive product variants
+        query: mutation.archiveProductVariants
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,archiveProductVariants
+      - name: cancelOrderItem
+        description: >-
+          Use this mutation to cancel one item of an order, either for the full
+          ordered quantity
+
+          or for a partial quantity. If partial, the item will be split into two
+          items and the
+
+          original item will have a lower quantity and will be canceled.
+
+
+          If this results in all items in a fulfillment group being canceled,
+          the group will also
+
+          be canceled. If this results in all fulfillment groups being canceled,
+          the full order will
+
+          also be canceled.
+        query: mutation.cancelOrderItem
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,cancelOrderItem'
+      - name: captureOrderPayments
+        description: Capture one or more payments for an order
+        query: mutation.captureOrderPayments
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,captureOrderPayments
+      - name: cloneProducts
+        description: Clone an existing product
+        query: mutation.cloneProducts
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,cloneProducts'
+      - name: cloneProductVariants
+        description: Clone an existing product variant
+        query: mutation.cloneProductVariants
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,cloneProductVariants
+      - name: createAccount
+        description: Create an account based off a user
+        query: mutation.createAccount
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createAccount'
+      - name: createAccountGroup
+        description: >-
+          Create a new account group. These are usually used for account group
+          permissions
+        query: mutation.createAccountGroup
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createAccountGroup'
+      - name: createAddressValidationRule
+        description: Create an address validation rule
+        query: mutation.createAddressValidationRule
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,createAddressValidationRule
+      - name: createCart
+        description: Create a new cart
+        query: mutation.createCart
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createCart'
+      - name: createDiscountCode
+        description: Create a new discount code
+        query: mutation.createDiscountCode
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createDiscountCode'
+      - name: createFlatRateFulfillmentMethod
+        description: Create a flat rate fulfillment method
+        query: mutation.createFlatRateFulfillmentMethod
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,createFlatRateFulfillmentMethod
+      - name: createFlatRateFulfillmentRestriction
+        description: Create a flat rate fulfillment method restriction.
+        query: mutation.createFlatRateFulfillmentRestriction
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,createFlatRateFulfillmentRestriction
+      - name: createMediaRecord
+        description: Create the MediaRecord for file data after you upload it
+        query: mutation.createMediaRecord
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createMediaRecord'
+      - name: createNavigationItem
+        description: Create a new navigation item
+        query: mutation.createNavigationItem
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,createNavigationItem
+      - name: createNavigationTree
+        description: Create a new navigation tree
+        query: mutation.createNavigationTree
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,createNavigationTree
+      - name: createProduct
+        description: Create a new product
+        query: mutation.createProduct
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createProduct'
+      - name: createProductVariant
+        description: Create a new product variant
+        query: mutation.createProductVariant
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,createProductVariant
+      - name: createRefund
+        description: >-
+          Use this mutation to create a refund on a payment method used to make
+          the order
+        query: mutation.createRefund
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createRefund'
+      - name: createShop
+        description: Create a new shop
+        query: mutation.createShop
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createShop'
+      - name: createSurcharge
+        description: Create a surcharge
+        query: mutation.createSurcharge
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createSurcharge'
+      - name: createTaxRate
+        description: Create a new tax rate
+        query: mutation.createTaxRate
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,createTaxRate'
+      - name: deleteAddressValidationRule
+        description: Delete an address validation rule
+        query: mutation.deleteAddressValidationRule
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,deleteAddressValidationRule
+      - name: deleteDiscountCode
+        description: Delete a discount code
+        query: mutation.deleteDiscountCode
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,deleteDiscountCode'
+      - name: deleteFlatRateFulfillmentMethod
+        description: Delete a flat rate fulfillment method
+        query: mutation.deleteFlatRateFulfillmentMethod
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,deleteFlatRateFulfillmentMethod
+      - name: deleteFlatRateFulfillmentRestriction
+        description: Delete a flat rate fulfillment method restriction
+        query: mutation.deleteFlatRateFulfillmentRestriction
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,deleteFlatRateFulfillmentRestriction
+      - name: deleteMediaRecord
+        description: >-
+          Delete a MediaRecord to delete both the record and the backing file
+          data
+        query: mutation.deleteMediaRecord
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,deleteMediaRecord'
+      - name: deleteNavigationItem
+        description: Delete a navigation item
+        query: mutation.deleteNavigationItem
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,deleteNavigationItem
+      - name: deleteSurcharge
+        description: Delete a flat rate fulfillment restriction
+        query: mutation.deleteSurcharge
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,deleteSurcharge'
+      - name: deleteTaxRate
+        description: Delete a tax rate
+        query: mutation.deleteTaxRate
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,deleteTaxRate'
+      - name: echo
+        description: A test mutation that returns whatever string you send it
+        query: mutation.echo
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,echo'
+      - name: enablePaymentMethodForShop
+        description: Enable a payment method for a shop
+        query: mutation.enablePaymentMethodForShop
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,enablePaymentMethodForShop
+      - name: generateSitemaps
+        description: Generate sitemap documents
+        query: mutation.generateSitemaps
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,generateSitemaps'
       - name: inviteShopMember
-        description: Given a person's email address and name, invite them to create an account for a certain shop, and put them in the provided permission group
+        description: >-
+          Given a person's email address and name, invite them to create an
+          account for a certain shop,
+
+          and put them in the provided permission group
         query: mutation.inviteShopMember
-        expand: account
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,inviteShopMember'
+      - name: moveOrderItems
+        description: >-
+          Use this mutation to move one or more items between existing order
+          fulfillment groups.
+        query: mutation.moveOrderItems
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,moveOrderItems'
+      - name: placeOrder
+        description: >-
+          Use this mutation to place an order, providing information necessary
+          to pay for it.
+
+          The order will be placed only if authorization is successful for all
+          submitted payments.
+        query: mutation.placeOrder
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,placeOrder'
+      - name: publishNavigationChanges
+        description: >-
+          Publish the draft structure for a navigation tree and the draft
+          changes for all of its navigation items. Sets hasUnpublishedChanges to
+          false on tree and its items
+        query: mutation.publishNavigationChanges
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,publishNavigationChanges
+      - name: publishProductsToCatalog
+        description: Publish products to the Catalog collection by product ID
+        query: mutation.publishProductsToCatalog
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,publishProductsToCatalog
+      - name: recalculateReservedSimpleInventory
+        description: >-
+          Force recalculation of the system-managed `inventoryReserved` field
+          based on current order statuses
+        query: mutation.recalculateReservedSimpleInventory
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,recalculateReservedSimpleInventory
+      - name: reconcileCarts
+        description: >-
+          Reconcile an anonymous cart with the current account cart for the same
+          shop
+        query: mutation.reconcileCarts
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,reconcileCarts'
       - name: removeAccountAddressBookEntry
         description: Remove an address from the `addressBook` field for an account
         query: mutation.removeAccountAddressBookEntry
-        expand: address
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,removeAccountAddressBookEntry
       - name: removeAccountEmailRecord
         description: Remove an email address from an account
         query: mutation.removeAccountEmailRecord
-        expand: account
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,removeAccountEmailRecord
+      - name: removeAccountFromGroup
+        description: Remove an account from a group
+        query: mutation.removeAccountFromGroup
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,removeAccountFromGroup
+      - name: removeAccountGroup
+        description: Remove an existing permission group
+        query: mutation.removeAccountGroup
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,removeAccountGroup'
+      - name: removeCartItems
+        description: Remove item(s) from a cart
+        query: mutation.removeCartItems
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,removeCartItems'
+      - name: removeDiscountCodeFromCart
+        description: Remove a discount code from a cart
+        query: mutation.removeDiscountCodeFromCart
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,removeDiscountCodeFromCart
+      - name: removeTag
+        description: Removes an existing tag
+        query: mutation.removeTag
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,removeTag'
+      - name: removeTagsFromProducts
+        description: Bulk operation for removing an array of tags from an array of products
+        query: mutation.removeTagsFromProducts
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,removeTagsFromProducts
+      - name: retryFailedEmail
+        description: Retry a failed or cancelled email job
+        query: mutation.retryFailedEmail
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,retryFailedEmail'
+      - name: selectFulfillmentOptionForGroup
+        description: >-
+          Select a fulfillment option from the `availableFulfillmentOptions`
+          list for a fulfillment group
+        query: mutation.selectFulfillmentOptionForGroup
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,selectFulfillmentOptionForGroup
       - name: sendResetAccountPasswordEmail
         description: Send a reset password email to an email address from an account
         query: mutation.sendResetAccountPasswordEmail
-      - name: setAccountProfileCurrency
-        description: Set the preferred currency for an account
-        query: mutation.setAccountProfileCurrency
-        expand: account
-      - name: setAccountProfileLanguage
-        description: Set the preferred language for an account
-        query: mutation.setAccountProfileLanguage
-        expand: account
-      - name: updateAccountAddressBookEntry
-        description: Update an address that exists in the `addressBook` field for an account
-        query: mutation.updateAccountAddressBookEntry
-        expand: address
-  - name: Cart
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Catalog
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Core
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Discounts
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Email
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Files
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: I18N
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Inventory
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Orders
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Payments
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Product
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Settings
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Shipping
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Shop
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Tags
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Taxes
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Address
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Address Validation Test
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Checkout
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Dashboard
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Discount Codes
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Email SMTP
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Email Templates
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Job Queue
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Legacy Authorization
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Navigation
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Notifications
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Payments Example
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Payments Stripe
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Product Admin
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Product Variant
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Shipping Rates
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Simple Inventory
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Simple Pricing
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Sitemap Generator
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Surcharges
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: System Information
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Tax Rates
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: Templates
-    description: ""
-    externalDocs: null
-    usecases: []
-  - name: UI
-    description: ""
-    externalDocs: null
-    usecases: []
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,sendResetAccountPasswordEmail
+      - name: setAccountDefaultEmail
+        description: Set default email address for an account
+        query: mutation.setAccountDefaultEmail
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,setAccountDefaultEmail
+      - name: setEmailOnAnonymousCart
+        description: Set the email address for an anonymous cart
+        query: mutation.setEmailOnAnonymousCart
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,setEmailOnAnonymousCart
+      - name: setShippingAddressOnCart
+        description: Set the shipping address for all fulfillment groups
+        query: mutation.setShippingAddressOnCart
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,setShippingAddressOnCart
+      - name: setTagHeroMedia
+        description: Add an image to the tag
+        query: mutation.setTagHeroMedia
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,setTagHeroMedia'
+      - name: splitOrderItem
+        description: >-
+          Use this mutation to reduce the quantity of one item of an order and
+          create
 
-externalDocs:
-  description: Reaction Commerce
-  url: 'http://reactioncommerce.com'
+          a new item for the remaining quantity in the same fulfillment group,
+          and with the
+
+          same item status. You may want to do this if you are only able to
+          partially fulfill
+
+          the item order right now.
+        query: mutation.splitOrderItem
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,splitOrderItem'
+      - name: updateAccount
+        description: Update account fields
+        query: mutation.updateAccount
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateAccount'
+      - name: updateAccountAddressBookEntry
+        description: >-
+          Update an address that exists in the `addressBook` field for an
+          account
+        query: mutation.updateAccountAddressBookEntry
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateAccountAddressBookEntry
+      - name: updateAccountGroup
+        description: Update an existing permission group
+        query: mutation.updateAccountGroup
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateAccountGroup'
+      - name: updateAddressValidationRule
+        description: Update an address validation rule
+        query: mutation.updateAddressValidationRule
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateAddressValidationRule
+      - name: updateCartItemsQuantity
+        description: >-
+          Update cart item(s) quantity. Use absolute quantity. If updating to 0,
+          the item will be removed.
+        query: mutation.updateCartItemsQuantity
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateCartItemsQuantity
+      - name: updateDiscountCode
+        description: Update a discount code
+        query: mutation.updateDiscountCode
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateDiscountCode'
+      - name: updateFlatRateFulfillmentMethod
+        description: Update a flat rate fulfillment method
+        query: mutation.updateFlatRateFulfillmentMethod
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateFlatRateFulfillmentMethod
+      - name: updateFlatRateFulfillmentRestriction
+        description: Update a flat rate fulfillment method restriction
+        query: mutation.updateFlatRateFulfillmentRestriction
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateFlatRateFulfillmentRestriction
+      - name: updateFulfillmentOptionsForGroup
+        description: >-
+          Clients should call this as necessary during checkout to update the
+          `availableFulfillmentOptions`
+
+          property for all fulfillment groups of the cart with fresh price
+          quotes. These need to be
+
+          recalculated every time the items in that group change. When the order
+          is placed, the chosen
+
+          option for each group will have its prices recalculated one last time.
+          If the prices do not match,
+
+          order creation will fail.
+        query: mutation.updateFulfillmentOptionsForGroup
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateFulfillmentOptionsForGroup
+      - name: updateGlobalSettings
+        description: >-
+          Returns app settings that are not shop specific. Plugins extend the
+          GlobalSettings type to support
+
+          whatever settings they need.
+        query: mutation.updateGlobalSettings
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateGlobalSettings
+      - name: updateMediaRecordPriority
+        description: >-
+          Update the priority metadata for a MediaRecord. Used for sorting
+          product and variant media in the catalog.
+        query: mutation.updateMediaRecordPriority
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateMediaRecordPriority
+      - name: updateNavigationItem
+        description: >-
+          Update an existing navigation item's draft data. Sets
+          hasUnpublishedChanges to true
+        query: mutation.updateNavigationItem
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateNavigationItem
+      - name: updateNavigationTree
+        description: >-
+          Update an existing navigation tree's draft items. Sets
+          hasUnpublishedChanges to true
+        query: mutation.updateNavigationTree
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateNavigationTree
+      - name: updateOrder
+        description: >-
+          Use this mutation to update order details after the order has been
+          placed.
+        query: mutation.updateOrder
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateOrder'
+      - name: updateOrderFulfillmentGroup
+        description: >-
+          Use this mutation to update an order fulfillment group status and
+          tracking information.
+        query: mutation.updateOrderFulfillmentGroup
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateOrderFulfillmentGroup
+      - name: updateProduct
+        description: Update an existing product
+        query: mutation.updateProduct
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateProduct'
+      - name: updateProductVariant
+        description: Update an existing product variant
+        query: mutation.updateProductVariant
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateProductVariant
+      - name: updateProductVariantPrices
+        description: Update an existing product variants prices
+        query: mutation.updateProductVariantPrices
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateProductVariantPrices
+      - name: updateShop
+        description: 'Given shop data, update the Shops collection with this data'
+        query: mutation.updateShop
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateShop'
+      - name: updateShopSettings
+        description: >-
+          Returns app settings for a specific shop. Plugins extend the
+          ShopSettings type to support
+
+          whatever settings they need.
+        query: mutation.updateShopSettings
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateShopSettings'
+      - name: updateSimpleInventory
+        description: Update the SimpleInventory info for a product configuration
+        query: mutation.updateSimpleInventory
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,updateSimpleInventory
+      - name: updateSurcharge
+        description: Update a flat rate fulfillment surcharge
+        query: mutation.updateSurcharge
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateSurcharge'
+      - name: updateTag
+        description: Updates an existing tag
+        query: mutation.updateTag
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateTag'
+      - name: updateTaxRate
+        description: Update a tax rate
+        query: mutation.updateTaxRate
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateTaxRate'
+      - name: updateTemplate
+        description: Updates an existing template
+        query: mutation.updateTemplate
+        expand: 'nodes,node,edges,pageInfo,metafields,price,pricing,updateTemplate'
+      - name: verifySMTPEmailSettings
+        description: Use this mutation to verify the SMTP email settings
+        query: mutation.verifySMTPEmailSettings
+        expand: >-
+          nodes,node,edges,pageInfo,metafields,price,pricing,verifySMTPEmailSettings
