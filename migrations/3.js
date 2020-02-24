@@ -12,7 +12,7 @@ import _ from "lodash";
 async function up({ db, progress }) {
   const affectedGroups = [
     "owner",
-    "shop-manager"
+    "shop manager"
   ];
 
   const newShopPermissions = [
