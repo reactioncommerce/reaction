@@ -76,6 +76,9 @@
     "env": {
       "es6": true,
       "jasmine": true
+    },
+    "rules": {
+      "node/no-missing-import": "off"
     }
   },
   "prettier": {

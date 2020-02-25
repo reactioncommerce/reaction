@@ -9,6 +9,14 @@ const expectedVersion = 3;
  * @returns {undefined}
  */
 export default async function preStartup(context) {
+  context.simpleSchemas.Group.extend({
+    "permissions": {
+      type: Array,
+      optional: true
+    },
+    "permissions.$": String
+  });
+
   const setToExpectedIfMissing = async () => {
     const anyAccount = await context.collections.Accounts.findOne();
     const anyGroup = await context.collections.Groups.findOne();
