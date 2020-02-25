@@ -82,7 +82,9 @@
     "arrowParens": "always"
   },
   "release": {
-    "branches": ["trunk"]
+    "branches": [
+      "trunk"
+    ]
   },
   "publishConfig": {
     "access": "public"

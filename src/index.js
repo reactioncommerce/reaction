@@ -2,7 +2,10 @@ import pkg from "../package.json";
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
 import permissionsByUserId from "./util/permissionsByUserId.js";
 import preStartup from "./preStartup.js";
-
+import queries from "./queries/index.js";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -24,7 +27,13 @@ export default async function register(app) {
     },
     functionsByType: {
       getHasPermissionFunctionForUser: [getHasPermissionFunctionForUser],
-      preStartup: [preStartup]
+      preStartup: [preStartup],
+      startup: [startup]
+    },
+    queries,
+    graphQL: {
+      resolvers,
+      schemas
     }
   });
 }
