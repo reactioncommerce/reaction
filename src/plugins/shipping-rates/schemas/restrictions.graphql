@@ -163,7 +163,7 @@ type FlatRateFulfillmentRestriction implements Node {
   shopId: ID!
 
   """
-  The type of this restriction. Allowed types are "allow" or "deny".
+  The type of this restriction. Allowed types are `allow` or `deny`.
   """
   type: RestrictionTypeEnum!
 }
@@ -192,7 +192,7 @@ input FlatRateFulfillmentRestrictionInput {
   methodIds: [ID]
 
   """
-  The type of this restriction. Allowed types are "allow" or "deny".
+  The type of this restriction. Allowed types are `allow` or `deny`.
   """
   type: RestrictionTypeEnum!
 }

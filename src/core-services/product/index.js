@@ -6,6 +6,7 @@ import schemas from "./schemas/index.js";
 import {
   Product,
   ProductVariant,
+  ProductVariantInputSchema,
   VariantMedia
 } from "./simpleSchemas.js";
 
@@ -46,6 +47,7 @@ export default async function register(app) {
     simpleSchemas: {
       Product,
       ProductVariant,
+      ProductVariantInputSchema,
       VariantMedia
     }
   });

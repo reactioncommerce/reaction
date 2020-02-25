@@ -29,6 +29,9 @@ mutation($variantId: ID!, $shopId: ID!, $variant: ProductVariantInput!) {
       updatedAt
       weight
       width
+      isTaxable
+      taxCode
+      taxDescription
     }
   }
 }

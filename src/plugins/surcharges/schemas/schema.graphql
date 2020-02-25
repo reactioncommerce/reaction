@@ -63,7 +63,7 @@ type Surcharge implements Node {
   shopId: ID!
 
   """
-  The type of this surcharge. Allowed types "surcharge".
+  The type of this surcharge. Allowed types `surcharge`.
   """
   type: SurchargeTypeEnum!
 }
@@ -157,7 +157,7 @@ extend type Order {
 extend type CartSummary {
   """
   The combined total of all surcharges. This may be null, and there is a difference
-  between null and 0. Null means "not able to calculate", such as when no fulfillment method has
+  between null and 0. Null means `not able to calculate`, such as when no fulfillment method has
   been selected for some fulfillment groups.
   """
   surchargeTotal: Money
@@ -265,7 +265,7 @@ input SurchargeInput {
   methodIds: [ID]
 
   """
-  The type of this surcharge. Allowed types are "surcharge".
+  The type of this surcharge. Allowed types are `surcharge`.
   """
   type: SurchargeTypeEnum!
 }

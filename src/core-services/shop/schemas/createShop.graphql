@@ -4,13 +4,13 @@ input CreateShopInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "Currency in which all money values should be assumed to be. Default is \"USD\"."
+  "Currency in which all money values should be assumed to be. Default is `USD`."
   currencyCode: String
 
-  "Default language for translation and localization. Default is \"en\"."
+  "Default language for translation and localization. Default is `en`."
   defaultLanguage: String
 
-  "Primary timezone. Default is \"US/Pacific\""
+  "Primary timezone. Default is `US/Pacific`"
   defaultTimezone: String
 
   "An optional description of the shop, intended for only admins to see"
@@ -19,7 +19,7 @@ input CreateShopInput {
   "A unique name for the shop"
   name: String!
 
-  "The shop type. Default is \"primary\", but there may be only one primary shop."
+  "The shop type. Default is `primary`, but there may be only one primary shop."
   type: String
 }
 
