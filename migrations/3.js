@@ -1,6 +1,3 @@
-/* eslint-disable no-await-in-loop */
-import _ from "lodash";
-
 /**
  * @summary Performs migration up from previous data version
  * @param {Object} context Migration context
@@ -30,29 +27,11 @@ async function up({ db, progress }) {
     "reaction:legacy:taxes/update:settings"
   ];
 
-  // get all groups that need new permissions
-  const groups = await db.collection("Groups").find({ slug: { $in: affectedGroups } }).toArray();
-
-  if (groups && Array.isArray(groups)) {
-    // loop over each group
-    for (let index = 0; index < groups.length; index += 1) {
-      const group = groups[index];
-      const newPermissions = [...group.permissions, ...newShopPermissions];
-      // remove duplicates from list
-      const uniquePermissions = _.uniq(newPermissions);
-
-      // update Groups collection with new permissions
-      await db.collection("Groups").updateOne({
-        _id: group._id
-      }, {
-        $set: {
-          permissions: uniquePermissions
-        }
-      });
-
-      progress(Math.floor((((index + 1) / groups.length) / 2) * 100));
-    }
-  }
+  await db.collection("Groups").updateMany({
+    _id: { $in: affectedGroups }
+  }, {
+    $addToSet: { permissions: { $each: newShopPermissions } }
+  });
 
   progress(100);
 }
