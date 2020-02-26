@@ -1,6 +1,6 @@
 # v3.2.0
 
-Reaction v3.2.0 enables Federated Gateway capability for the API, moves the `simple-authorization` and `system-information` plugins into their own `npm` packages, and adds an `updateProductsVisibility` GraphQL mutation to the API.
+Reaction v3.2.0 introduces Federated Gateway capability for the API, moves the `simple-authorization` and `system-information` plugins into their own `npm` packages, and adds an `updateProductsVisibility` GraphQL mutation to the API.
 
 ## Features
 
