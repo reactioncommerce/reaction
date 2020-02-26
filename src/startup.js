@@ -58,4 +58,11 @@ export default async function simpleAuthStartup(context) {
       shopId: group.shopId
     });
   });
+
+  // Whenever permissions array changes on any group, ensure that they all exist in
+  // the `roles` collection so that the `roles` GQL query will include them.
+  appEvents.on("afterAccountGroupUpdate", async ({ group, updatedFields }) => {
+    if (!Array.isArray(updatedFields) || !updatedFields.includes("permissions")) return;
+    await ensureRoles(context, group.permissions);
+  });
 }
