@@ -4,6 +4,8 @@ import systemInformation from "./systemInformation.js";
 
 const fakeShopId = "FAKE_SHOP_ID";
 mockContext.validatePermissions = jest.fn("validatePermissions");
+// mockContext.app = {};
+mockContext.app = { db: { admin: jest.fn("admin") } };
 
 beforeEach(() => {
   jest.resetAllMocks();
