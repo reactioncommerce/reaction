@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
@@ -175,7 +176,7 @@ const jestConfig = {
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
     // Any packages that are published only as ESM need to be listed here
-    "node_modules/(?!(@reactioncommerce/api-utils|@reactioncommerce/db-version-check)/)"
+    "node_modules/(?!(@reactioncommerce/api-utils|@reactioncommerce/db-version-check|@reactioncommerce/plugin-simple-authorization|@reactioncommerce/plugin-system-information|@reactioncommerce/plugin-authentication)/)"
   ]
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them

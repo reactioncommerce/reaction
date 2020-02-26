@@ -46,7 +46,7 @@ input AddressInput {
   address2: String
 
   """
-  Optionally, a name for this address (e.g. "Home") to easily identify it in the future
+  Optionally, a name for this address (e.g. 'Home') to easily identify it in the future
   """
   addressName: String
 
