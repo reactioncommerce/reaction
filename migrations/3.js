@@ -28,7 +28,7 @@ async function up({ db, progress }) {
   ];
 
   await db.collection("Groups").updateMany({
-    _id: { $in: affectedGroups }
+    slug: { $in: affectedGroups }
   }, {
     $addToSet: { permissions: { $each: newShopPermissions } }
   });
