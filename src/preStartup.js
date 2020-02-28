@@ -1,7 +1,7 @@
 import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
 import { migrationsNamespace } from "../migrations/migrationsNamespace.js";
 
-const expectedVersion = 3;
+const expectedVersion = 4;
 
 /**
  * @summary Called before startup
