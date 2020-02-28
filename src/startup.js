@@ -39,6 +39,11 @@ export default async function simpleAuthStartup(context) {
   // Also, when a shop group is created, we set the default permissions for it,
   // or an empty array for custom groups.
   appEvents.on("afterAccountGroupCreate", async ({ group }) => {
+    // If permissions were supplied when creating, do not overwrite them here
+    if (Array.isArray(group.permissions) && group.permissions.length > 0) {
+      return;
+    }
+
     let permissions = [];
 
     if (group.slug === "accounts-manager") {
