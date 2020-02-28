@@ -1,6 +1,6 @@
 {
   "name": "reaction-api",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
@@ -28,7 +28,7 @@
     "@reactioncommerce/logger": "~1.1.2",
     "@reactioncommerce/nodemailer": "~5.0.5",
     "@reactioncommerce/plugin-authentication": "~1.0.0",
-    "@reactioncommerce/plugin-simple-authorization": "~1.0.1",
+    "@reactioncommerce/plugin-simple-authorization": "~1.0.2",
     "@reactioncommerce/plugin-system-information": "~1.0.0",
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/reaction-error": "~1.0.1",
