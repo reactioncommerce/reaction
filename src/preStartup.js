@@ -1,7 +1,7 @@
 import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
 import { migrationsNamespace } from "../migrations/migrationsNamespace.js";
 
-const expectedVersion = 3;
+const expectedVersion = 4;
 
 /**
  * @summary Called before startup
@@ -9,6 +9,14 @@ const expectedVersion = 3;
  * @returns {undefined}
  */
 export default async function preStartup(context) {
+  context.simpleSchemas.Group.extend({
+    "permissions": {
+      type: Array,
+      optional: true
+    },
+    "permissions.$": String
+  });
+
   const setToExpectedIfMissing = async () => {
     const anyAccount = await context.collections.Accounts.findOne();
     const anyGroup = await context.collections.Groups.findOne();

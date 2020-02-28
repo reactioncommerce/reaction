@@ -22,34 +22,35 @@
   },
   "sideEffects": false,
   "dependencies": {
+    "@reactioncommerce/api-utils": "^1.7.2",
     "@reactioncommerce/db-version-check": "^1.0.0",
     "@reactioncommerce/logger": "^1.1.3",
     "@reactioncommerce/random": "^1.0.2",
     "@reactioncommerce/reaction-error": "^1.0.1",
     "lodash": "^4.17.15",
-    "ramda": "^0.27.0",
-    "semantic-release": "^17.0.2"
+    "ramda": "^0.27.0"
   },
   "devDependencies": {
-    "@reactioncommerce/eslint-config": "~2.1.0",
     "@babel/core": "^7.7.7",
-    "babel-eslint": "^10.0.3",
     "@babel/preset-env": "^7.7.7",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
+    "@reactioncommerce/eslint-config": "~2.1.0",
+    "babel-eslint": "^10.0.3",
     "babel-jest": "~25.1.0",
     "babel-plugin-rewire-exports": "^2.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-plugin-transform-import-meta": "~1.0.0",
     "eslint": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-jest": "^22.21.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.0.1",
-    "jest": "^24.9.0"
+    "jest": "^25.1.0",
+    "semantic-release": "^17.0.2"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
@@ -76,13 +77,18 @@
     "env": {
       "es6": true,
       "jasmine": true
+    },
+    "rules": {
+      "node/no-missing-import": "off"
     }
   },
   "prettier": {
     "arrowParens": "always"
   },
   "release": {
-    "branches": ["trunk"]
+    "branches": [
+      "trunk"
+    ]
   },
   "publishConfig": {
     "access": "public"

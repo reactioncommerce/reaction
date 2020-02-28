@@ -53,7 +53,12 @@ export default async function hasPermission(context, resource, action, authConte
     if (Array.isArray(shopPermissions) && checkPermissions.some((permission) => shopPermissions.includes(permission))) return true;
   }
 
-  Logger.debug(`User ${context.userId} has none of [${checkPermissions.join(", ")}] permissions`);
+  Logger.debug({
+    requestedPermissions: checkPermissions,
+    permissions: context.userPermissions,
+    shopId,
+    userId: context.userId
+  }, `User ${context.userId} has none of [${checkPermissions.join(", ")}] permissions`);
 
   return false;
 }
