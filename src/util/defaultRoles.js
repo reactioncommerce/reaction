@@ -108,5 +108,13 @@ export const defaultAccountsManagerRoles = [
 
 export const defaultSystemManagerRoles = [
   ...defaultAccountsManagerRoles,
-  "reaction:legacy:shops/create"
+  "reaction:legacy:shops/create",
+  // It's imperative that at least `create` and `update` group permissions
+  // are listed here. Without these, nobody can create or update global
+  // groups, which means nobody can give anybody any global permissions.
+  "reaction:legacy:groups/create",
+  "reaction:legacy:groups/delete",
+  "reaction:legacy:groups/manage:accounts",
+  "reaction:legacy:groups/read",
+  "reaction:legacy:groups/update"
 ];
