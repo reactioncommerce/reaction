@@ -115,6 +115,6 @@ export const defaultSystemManagerRoles = [
   "reaction:legacy:groups/delete",
   "reaction:legacy:groups/manage:accounts",
   "reaction:legacy:groups/read",
-  "reaction:legacy:groups/update"
-  "reaction:legacy:shops/create",
+  "reaction:legacy:groups/update",
+  "reaction:legacy:shops/create"
 ];
