@@ -377,39 +377,27 @@ export const Account = new SimpleSchema({
  * @property {String} name required
  * @property {String} description optional
  * @property {String} slug required
- * @property {String[]} permissions optional
- * @property {String} shopId required
+ * @property {String} shopId optional
  * @property {String} createdBy optional
  * @property {Date} createdAt required
  * @property {Date} updatedAt required
  */
 export const Group = new SimpleSchema({
-  "name": {
-    type: String
-  },
-  "description": {
+  _id: String,
+  name: String,
+  description: {
     type: String,
     optional: true
   },
-  "slug": {
-    type: String
-  },
-  "permissions": {
-    type: Array,
-    optional: true
-  },
-  "permissions.$": {
-    type: String
-  },
-  "shopId": {
+  slug: String,
+  shopId: {
     type: String,
     optional: true
   },
-  "createdBy": {
+  createdBy: {
     type: String,
-    optional: true,
-    regEx: SimpleSchema.RegEx.Id
+    optional: true
   },
-  "createdAt": Date,
-  "updatedAt": Date
+  createdAt: Date,
+  updatedAt: Date
 });

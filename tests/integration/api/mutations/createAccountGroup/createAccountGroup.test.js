@@ -72,7 +72,9 @@ test("anyone can add account to group if they have ALL the group permissions", a
 
   expect(result.createAccountGroup.group).toMatchObject({
     _id: expect.any(String),
-    createdBy: null,
+    createdBy: {
+      _id: "cmVhY3Rpb24vYWNjb3VudDptb2NrQWRtaW5BY2NvdW50"
+    },
     description: "a group for testing purposes",
     name: "test-int-group",
     permissions: ["test-perm-1", "test-perm-2"],

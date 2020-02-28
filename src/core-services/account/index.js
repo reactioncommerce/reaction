@@ -4,9 +4,8 @@ import policies from "./policies.json";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
-import startup from "./startup.js";
 import accountByUserId from "./util/accountByUserId.js";
-import { Account } from "./simpleSchemas.js";
+import { Account, Group } from "./simpleSchemas.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -44,9 +43,6 @@ export default async function register(app) {
     auth: {
       accountByUserId
     },
-    functionsByType: {
-      startup: [startup]
-    },
     graphQL: {
       resolvers,
       schemas
@@ -55,7 +51,8 @@ export default async function register(app) {
     queries,
     policies,
     simpleSchemas: {
-      Account
+      Account,
+      Group
     }
   });
 }
