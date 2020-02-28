@@ -28,8 +28,7 @@ async function up({ db, progress }) {
   ];
 
   await db.collection("Groups").updateMany({
-    // NOTE: There is a bug with this selector, so this is redone in migration 4
-    _id: { $in: affectedGroups }
+    slug: { $in: affectedGroups }
   }, {
     $addToSet: { permissions: { $each: newShopPermissions } }
   });
