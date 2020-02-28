@@ -21,23 +21,17 @@ input GroupInput {
   "A unique name for the group"
   name: String!
 
-  "A list of the account permissions implied by membership in this group"
-  permissions: [String]
-
   "A unique URL-safe string representing this group"
-  slug: String!
+  slug: String
 }
 
-"A type definition for updating account groups"
+"Fields to update for an existing account group"
 input UpdateGroupInput {
   "A free text description of this group"
   description: String
 
   "A unique name for the group"
   name: String
-
-  "A list of the account permissions implied by membership in this group"
-  permissions: [String]
 
   "A unique URL-safe string representing this group"
   slug: String
@@ -52,7 +46,7 @@ input CreateAccountGroupInput {
   group: GroupInput!
 
   "The ID of the shop this group belongs to"
-  shopId: ID!
+  shopId: ID
 }
 
 "The details for updating a group"
@@ -67,7 +61,7 @@ input UpdateAccountGroupInput {
   groupId: ID!
 
   "The ID of the shop this group belongs to"
-  shopId: ID!
+  shopId: ID
 }
 
 "The details for removing a group"
@@ -79,7 +73,7 @@ input RemoveAccountGroupInput {
   groupId: ID!
 
   "The ID of the shop this group belongs to"
-  shopId: ID!
+  shopId: ID
 }
 
 "Defines a group and account that should be linked"
@@ -122,9 +116,6 @@ type Group implements Node {
 
   "A unique name for the group"
   name: String!
-
-  "A list of the account permissions implied by membership in this group"
-  permissions: [String]
 
   "The shop to which this group belongs"
   shop: Shop
@@ -240,7 +231,7 @@ extend type Shop {
 }
 
 extend type Account {
-  "A paged list of the permission groups in which this account is listed"
+  "A paged list of the account groups in which this account is listed"
   groups(
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
@@ -269,7 +260,7 @@ extend type Mutation {
     input: AddAccountToGroupInput!
   ): AddAccountToGroupPayload
 
-  "Create a new account group. These are usually used for account group permissions"
+  "Create a new account group. These are usually used for account permissions"
   createAccountGroup(
     "Mutation input"
     input: CreateAccountGroupInput!
@@ -281,13 +272,13 @@ extend type Mutation {
     input: RemoveAccountFromGroupInput!
   ): RemoveAccountFromGroupPayload
 
-  "Remove an existing permission group"
+  "Remove an existing account group"
   removeAccountGroup(
     "Mutation input"
     input: RemoveAccountGroupInput!
   ): RemoveAccountGroupPayload
 
-  "Update an existing permission group"
+  "Update an existing account group"
   updateAccountGroup(
     "Mutation input"
     input: UpdateAccountGroupInput!

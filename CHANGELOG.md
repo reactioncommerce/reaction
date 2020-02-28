@@ -1,3 +1,21 @@
+# v3.2.0
+
+Reaction v3.2.0 introduces Federated Gateway capability for the API, moves the `simple-authorization` and `system-information` plugins into their own `npm` packages, and adds an `updateProductsVisibility` GraphQL mutation to the API.
+
+## Features
+
+- feat: add gateway capabilities to API ([#6100](https://github.com/reactioncommerce/reaction/pull/6100))
+- feat: add updateProductsVisibility mutation ([#6104](https://github.com/reactioncommerce/reaction/pull/6104))
+
+## Refactor
+
+- refactor: move system information plugin to npm ([#6105](https://github.com/reactioncommerce/reaction/pull/6105))
+- refactor: replace internal authentication plugin with NPM installed plugin-authentication ([#6108](https://github.com/reactioncommerce/reaction/pull/6108))
+
+## Chores
+
+- chore: update `plugin-simple-authorization` package ([#6110](https://github.com/reactioncommerce/reaction/pull/6110))
+
 # v3.1.0
 
 Reaction v3.1.0 moves our `simple-authorization` plugin (formerly `legacy-permission`) into it's own `npm` package to set up the pattern of installing Reaction API plugins from `npm`.

@@ -19,6 +19,5 @@ export default {
   Query,
   Shop,
   ...getConnectionTypeResolvers("Account"),
-  ...getConnectionTypeResolvers("Group"),
-  ...getConnectionTypeResolvers("Role")
+  ...getConnectionTypeResolvers("Group")
 };

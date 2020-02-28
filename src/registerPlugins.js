@@ -1,4 +1,5 @@
 /* npm package imports */
+import registerAuthenticationPlugin from "@reactioncommerce/plugin-authentication";
 import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization";
 import registerSystemInformationPlugin from "@reactioncommerce/plugin-system-information";
 
@@ -22,7 +23,6 @@ import registerTagsPlugin from "./core-services/tags/index.js";
 import registerTaxesPlugin from "./core-services/taxes/index.js";
 
 /* plugins */
-import registerAuthenticationPlugin from "./plugins/authentication/index.js";
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerExamplePaymentsPlugin from "./plugins/payments-example/index.js";
