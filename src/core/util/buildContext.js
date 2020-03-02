@@ -40,6 +40,7 @@ export default async function buildContext(context, request = {}) {
         return allPermissions.every((permission) => permission === true);
       };
     } else {
+      Logger.debug("No functions of type 'getHasPermissionFunctionForUser' found");
       context.userHasPermission = () => false;
     }
 
@@ -49,6 +50,7 @@ export default async function buildContext(context, request = {}) {
     };
   } else {
     context.validatePermissions = async () => {
+      Logger.debug("Access denied due to no authenticated user");
       throw new ReactionError("access-denied", "Access Denied");
     };
     context.userHasPermission = () => false;

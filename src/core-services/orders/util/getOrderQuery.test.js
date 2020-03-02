@@ -1,38 +1,60 @@
 /* eslint-disable require-jsdoc */
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
+import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import { getOrderQuery } from "./getOrderQuery.js";
 
 function makeContext() {
   return { accountId: "unit-test-account-id", userHasPermission: () => true };
 }
+mockContext.validatePermissions = jest.fn("validatePermissions");
+mockContext.collections.Groups.insert = jest.fn("collections.Groups.insertOne");
+mockContext.collections.Groups.findOne = jest.fn("collections.Groups.findOne");
+mockContext.accountId = "unit-test-account-id";
+mockContext.userHasPermission = () => true;
 
-test("getOrderQuery shop admin", async () => {
+test("getOrderQuery, user with `reaction:legacy:orders/read` permissions", async () => {
+  const result = {
+    _id: "unit-test-order-id",
+    shopId: "unit-test-shop-id"
+  };
   const shopId = "unit-test-shop-id";
   const orderId = "unit-test-order-id";
-  const context = makeContext();
-  const query = await getOrderQuery(context, { _id: orderId }, shopId, null);
-  expect(query).toMatchObject({ _id: "unit-test-order-id", shopId });
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(result));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
+  const query = await getOrderQuery(mockContext, { _id: orderId }, shopId, null);
+  expect(query).toMatchObject(result);
   expect(query.accountId).toBeUndefined();
 });
 
-test("getOrderQuery shopper", async () => {
+test("getOrderQuery, user owns order", async () => {
+  const result = {
+    _id: "unit-test-order-id",
+    accountId: "account-id",
+    shopId: "unit-test-shop-id"
+  };
   const shopId = "unit-test-shop-id";
-  const referenceId = "unit-test-order-reference-id";
-  const context = makeContext();
-  context.userHasPermission = () => false;
-  const query = await getOrderQuery(context, { referenceId }, shopId, null);
-  expect(query).toMatchObject({ referenceId, shopId, accountId: context.accountId });
+  const orderId = "unit-test-order-id";
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(result));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
+  const query = await getOrderQuery(mockContext, { _id: orderId }, shopId, null);
+  expect(query).toMatchObject(result);
+  expect(query.accountId).toEqual(result.accountId);
 });
 
-test("getOrderQuery anonymous", async () => {
-  const shopId = "unit-test-shop-id";
-  const referenceId = "unit-test-order-reference-id";
-  const context = makeContext();
-  context.userHasPermission = () => false;
-  delete context.accountId;
+test("getOrderQuery anonymous with token", async () => {
+  const result = {
+    referenceId: "unit-test-order-reference-id",
+    accountId: "account-id",
+    shopId: "unit-test-shop-id",
+    anonymousAccessTokens: [{ hashedToken: hashToken("unit-test-token") }]
+  };
+
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(result));
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
   const token = "unit-test-token";
-  const query = await getOrderQuery(context, { referenceId }, shopId, token);
-  expect(query).toMatchObject({ referenceId, shopId });
-  expect(Buffer.from(query["anonymousAccessTokens.hashedToken"], "base64").toString("hex")).toHaveLength(64);
+  const query = await getOrderQuery(mockContext, { referenceId: result.referenceId }, result.shopId, token);
+  expect(query).toMatchObject(result);
+  expect(query.anonymousAccessTokens[0].hashedToken).toBe(hashToken(token));
 });
 
 test("getOrderQuery access denied", async () => {
@@ -41,6 +63,6 @@ test("getOrderQuery access denied", async () => {
   const context = makeContext();
   context.userHasPermission = () => false;
   delete context.accountId;
-  const query = getOrderQuery(context, { referenceId }, shopId, null);
+  const query = getOrderQuery(mockContext, { referenceId }, shopId, null);
   expect(query).rejects.toThrow();
 });
