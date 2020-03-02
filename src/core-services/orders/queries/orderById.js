@@ -18,6 +18,5 @@ export default async function orderById(context, { orderId, shopId, token } = {}
     throw new ReactionError("invalid-param", "You must provide orderId and shopId arguments");
   }
 
-  const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
-  return context.collections.Orders.findOne(selector);
+  return getOrderQuery(context, { _id: orderId }, shopId, token);
 }
