@@ -1,8 +1,4 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import {
-  rewire as rewire$getCatalogProductMedia,
-  restore as restore$getCatalogProductMedia
-} from "./getCatalogProductMedia";
 import createCatalogProduct, { restore as restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
 
 const internalShopId = "123";
@@ -117,20 +113,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  media: [
-    {
-      metadata: {
-        priority: 1,
-        productId: internalProductId,
-        variantId: null
-      },
-      thumbnail: "http://localhost/thumbnail",
-      small: "http://localhost/small",
-      medium: "http://localhost/medium",
-      large: "http://localhost/large",
-      image: "http://localhost/original"
-    }
-  ],
   productId: internalProductId,
   productType: "productType",
   shop: {
@@ -163,18 +145,7 @@ const mockCatalogProduct = {
   isDeleted: false,
   isVisible: false,
   length: 5.67,
-  media: [{
-    URLs: {
-      large: "large/path/to/image.jpg",
-      medium: "medium/path/to/image.jpg",
-      original: "image/path/to/image.jpg",
-      small: "small/path/to/image.jpg",
-      thumbnail: "thumbnail/path/to/image.jpg"
-    },
-    priority: 1,
-    productId: "999",
-    variantId: "874"
-  }],
+  media: [],
   metaDescription: "metaDescription",
   metafields: [{
     description: "description",
@@ -193,18 +164,7 @@ const mockCatalogProduct = {
     weight: 7.77,
     width: 5.55
   },
-  primaryImage: {
-    URLs: {
-      large: "large/path/to/image.jpg",
-      medium: "medium/path/to/image.jpg",
-      original: "image/path/to/image.jpg",
-      small: "small/path/to/image.jpg",
-      thumbnail: "thumbnail/path/to/image.jpg"
-    },
-    priority: 1,
-    productId: "999",
-    variantId: "874"
-  },
+  primaryImage: null,
   productId: "999",
   productType: "productType",
   shopId: "123",
@@ -253,18 +213,7 @@ const mockCatalogProduct = {
       height: 2,
       index: 0,
       length: 2,
-      media: [{
-        URLs: {
-          large: "large/path/to/image.jpg",
-          medium: "medium/path/to/image.jpg",
-          original: "image/path/to/image.jpg",
-          small: "small/path/to/image.jpg",
-          thumbnail: "thumbnail/path/to/image.jpg"
-        },
-        priority: 1,
-        productId: "999",
-        variantId: "874"
-      }],
+      media: [],
       metafields: [{
         description: "description",
         key: "key",
@@ -276,18 +225,7 @@ const mockCatalogProduct = {
       minOrderQuantity: 0,
       optionTitle: "Awesome Soft Bike",
       originCountry: "US",
-      primaryImage: {
-        URLs: {
-          large: "large/path/to/image.jpg",
-          medium: "medium/path/to/image.jpg",
-          original: "image/path/to/image.jpg",
-          small: "small/path/to/image.jpg",
-          thumbnail: "thumbnail/path/to/image.jpg"
-        },
-        priority: 1,
-        productId: "999",
-        variantId: "874"
-      },
+      primaryImage: null,
       shopId: "123",
       sku: "sku",
       title: "One pound bag",
@@ -312,32 +250,9 @@ const mockCatalogProduct = {
 };
 
 
-const mockGeCatalogProductMedia = jest
-  .fn()
-  .mockName("getCatalogProductMedia")
-  .mockReturnValue(Promise.resolve([
-    {
-      priority: 1,
-      productId: internalProductId,
-      variantId: internalVariantIds[1],
-      URLs: {
-        large: "large/path/to/image.jpg",
-        medium: "medium/path/to/image.jpg",
-        original: "image/path/to/image.jpg",
-        small: "small/path/to/image.jpg",
-        thumbnail: "thumbnail/path/to/image.jpg"
-      }
-    }
-  ]));
-
 mockContext.mutations.applyCustomPublisherTransforms = jest.fn().mockName("applyCustomPublisherTransforms");
 
-beforeAll(() => {
-  rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
-});
-
 afterAll(() => {
-  restore$getCatalogProductMedia();
   restore$createCatalogProduct();
 });
 

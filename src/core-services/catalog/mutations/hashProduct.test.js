@@ -1,8 +1,4 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import {
-  rewire as rewire$getCatalogProductMedia,
-  restore as restore$getCatalogProductMedia
-} from "../utils/getCatalogProductMedia.js";
 import { rewire as rewire$getTopLevelProduct, restore as restore$getTopLevelProduct } from "../utils/getTopLevelProduct.js";
 import hashProduct, { rewire$createProductHash, restore as restore$hashProduct } from "./hashProduct.js";
 
@@ -13,7 +9,6 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalCatalogItemId = "999";
 const internalProductId = "999";
 const internalTagIds = ["923", "924"];
-const internalVariantIds = ["875", "874"];
 
 const productSlug = "fake-product";
 
@@ -53,20 +48,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  media: [
-    {
-      metadata: {
-        priority: 1,
-        productId: internalProductId,
-        variantId: null
-      },
-      thumbnail: "http://localhost/thumbnail",
-      small: "http://localhost/small",
-      medium: "http://localhost/medium",
-      large: "http://localhost/large",
-      image: "http://localhost/original"
-    }
-  ],
   productId: internalProductId,
   productType: "productType",
   shop: {
@@ -88,36 +69,16 @@ const mockProduct = {
   }
 };
 
-const mockGetCatalogProductMedia = jest
-  .fn()
-  .mockName("getCatalogProductMedia")
-  .mockReturnValue(Promise.resolve([
-    {
-      priority: 1,
-      productId: internalProductId,
-      variantId: internalVariantIds[1],
-      URLs: {
-        large: "large/path/to/image.jpg",
-        medium: "medium/path/to/image.jpg",
-        original: "image/path/to/image.jpg",
-        small: "small/path/to/image.jpg",
-        thumbnail: "thumbnail/path/to/image.jpg"
-      }
-    }
-  ]));
-
 const mockCreateProductHash = jest.fn().mockName("createProductHash").mockReturnValue("fake_hash");
 const mockGetTopLevelProduct = jest.fn().mockName("getTopLevelProduct").mockReturnValue(mockProduct);
 
 beforeAll(() => {
   rewire$createProductHash(mockCreateProductHash);
-  rewire$getCatalogProductMedia(mockGetCatalogProductMedia);
   rewire$getTopLevelProduct(mockGetTopLevelProduct);
 });
 
 afterAll(() => {
   restore$hashProduct();
-  restore$getCatalogProductMedia();
   restore$getTopLevelProduct();
 });
 
