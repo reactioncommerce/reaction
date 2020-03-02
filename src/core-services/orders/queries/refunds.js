@@ -18,8 +18,7 @@ export default async function refunds(context, { orderId, shopId, token } = {}) 
     throw new ReactionError("invalid-param", "You must provide orderId and shopId arguments");
   }
 
-  const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
-  const order = await context.collections.Orders.findOne(selector);
+  const order = await getOrderQuery(context, { _id: orderId }, shopId, token);
 
   if (!order) {
     throw new ReactionError("not-found", "Order not found");

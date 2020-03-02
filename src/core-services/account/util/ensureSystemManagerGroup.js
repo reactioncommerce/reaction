@@ -1,6 +1,3 @@
-import Random from "@reactioncommerce/random";
-import { defaultSystemManagerRoles } from "./defaultRoles.js";
-
 /**
  * @name ensureSystemManagerGroup
  * @summary Ensure system manager group exists
@@ -9,22 +6,19 @@ import { defaultSystemManagerRoles } from "./defaultRoles.js";
  */
 export default async function ensureSystemManagerGroup(context) {
   const { collections: { Groups } } = context;
-  // get IDs of `system-manager` and `account-manager` groups
   const group = await Groups.findOne({ slug: "system-manager" }, { projection: { _id: 1 } });
   let groupId = (group && group._id) || null;
+
   // if system-manager group doesn't exist, create it now
   if (!group) {
-    groupId = Random.id();
-    const currentDate = Date();
-    await Groups.insertOne({
-      _id: groupId,
-      createdAt: currentDate,
-      updatedAt: currentDate,
-      name: "system manager",
-      slug: "system-manager",
-      permissions: defaultSystemManagerRoles,
+    const { group: newGroup } = await context.mutations.createAccountGroup(context.getInternalContext(), {
+      group: {
+        name: "system manager",
+        slug: "system-manager"
+      },
       shopId: null
     });
+    groupId = newGroup._id;
   }
 
   return groupId;

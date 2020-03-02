@@ -75,11 +75,14 @@ test("get account order success", async () => {
   expect(result.orderByReferenceId.shop.name).toBe(shopName);
 });
 
-test("get account order failure", async () => {
+test("get not found error for order that does not exist", async () => {
   await testApp.collections.Orders.insertOne(order);
   await testApp.setLoggedInUser(mockOrdersAccount);
-  const result = await query({ orderReferenceId: "does-not-exist", shopId: opaqueShopId, token: null });
-  expect(result.orderByReferenceId).toBeNull();
+  try {
+    await query({ orderReferenceId: "does-not-exist", shopId: opaqueShopId, token: null });
+  } catch (errors) {
+    expect(errors[0]).toMatchSnapshot();
+  }
 });
 
 test("get invalid params error", async () => {

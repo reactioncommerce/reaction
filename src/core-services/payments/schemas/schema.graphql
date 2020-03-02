@@ -53,12 +53,12 @@ type Payment implements Node {
   billingAddress: Address
 
   """
-  If status is "error" due to a capture error, this code describes the error in a machine-readable way.
+  If status is `error` due to a capture error, this code describes the error in a machine-readable way.
   """
   captureErrorCode: String
 
   """
-  If status is "error" due to a capture error, this code describes the error in a human-readable way.
+  If status is `error` due to a capture error, this code describes the error in a human-readable way.
   """
   captureErrorMessage: String
 

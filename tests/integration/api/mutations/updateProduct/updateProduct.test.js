@@ -165,6 +165,9 @@ test("expect product variant fields to be updated", async () => {
     variant: {
       title: "Updated variant title",
       attributeLabel: "color",
+      isTaxable: true,
+      taxCode: "1234",
+      taxDescription: "tax description",
       metafields: [
         { key: "size", value: "small" },
         { key: "pattern", value: "striped" }
@@ -181,6 +184,9 @@ test("expect product variant fields to be updated", async () => {
 
   expect(result.updateProductVariant.variant.title).toEqual("Updated variant title");
   expect(result.updateProductVariant.variant.attributeLabel).toEqual("color");
+  expect(result.updateProductVariant.variant.isTaxable).toEqual(true);
+  expect(result.updateProductVariant.variant.taxCode).toEqual("1234");
+  expect(result.updateProductVariant.variant.taxDescription).toEqual("tax description");
   expect(result.updateProductVariant.variant.metafields).toEqual([
     { key: "size", value: "small" },
     { key: "pattern", value: "striped" }

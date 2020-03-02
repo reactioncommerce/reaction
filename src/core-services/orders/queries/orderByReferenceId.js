@@ -17,6 +17,6 @@ export default async function orderByReferenceId(context, { orderReferenceId, sh
   if (!orderReferenceId || !shopId) {
     throw new ReactionError("invalid-param", "You must provide orderReferenceId and shopId arguments");
   }
-  const selector = await getOrderQuery(context, { referenceId: orderReferenceId }, shopId, token);
-  return context.collections.Orders.findOne(selector);
+
+  return getOrderQuery(context, { referenceId: orderReferenceId }, shopId, token);
 }
