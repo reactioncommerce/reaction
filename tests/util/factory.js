@@ -2,7 +2,7 @@ import {
   NavigationItem,
   NavigationTree,
   NavigationTreeItem
-} from "@reactioncommerce/plugin-navigation/src/simpleSchemas";
+} from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
 
 import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
 
