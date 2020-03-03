@@ -1,3 +1,4 @@
+import pkg from "../package.json";
 import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
@@ -16,7 +17,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Navigation",
     name: "reaction-navigation",
-    version: app.context.appVersion,
+    version: pkg.version,
     i18n,
     collections: {
       NavigationItems: {
