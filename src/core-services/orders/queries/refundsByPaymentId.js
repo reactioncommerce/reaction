@@ -22,8 +22,7 @@ export default async function refundsByPaymentId(context, { orderId, paymentId, 
 
   let order = providedOrder;
   if (!providedOrder) {
-    const selector = getOrderQuery(context, { _id: orderId }, shopId, token);
-    order = await context.collections.Orders.findOne(selector);
+    order = await getOrderQuery(context, { _id: orderId }, shopId, token);
   }
 
   if (!order) {

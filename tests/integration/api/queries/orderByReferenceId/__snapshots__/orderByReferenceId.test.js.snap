@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get not found error for order that does not exist 1`] = `
+Object {
+  "extensions": Object {
+    "code": "NOT_FOUND",
+    "exception": Object {
+      "details": Object {},
+      "error": "not-found",
+      "eventData": Object {},
+      "isClientSafe": true,
+      "reason": "Order not found",
+    },
+  },
+  "locations": Array [
+    Object {
+      "column": 3,
+      "line": 2,
+    },
+  ],
+  "message": "Order not found",
+  "path": Array [
+    "orderByReferenceId",
+  ],
+}
+`;
