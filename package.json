@@ -28,7 +28,7 @@
     "@reactioncommerce/logger": "~1.1.2",
     "@reactioncommerce/nodemailer": "~5.0.5",
     "@reactioncommerce/plugin-authentication": "~1.0.0",
-    "@reactioncommerce/plugin-navigation": "~1.0.0",
+    "@reactioncommerce/plugin-navigation": "~1.0.1",
     "@reactioncommerce/plugin-simple-authorization": "~1.1.0",
     "@reactioncommerce/plugin-system-information": "~1.0.0",
     "@reactioncommerce/random": "~1.0.2",
