@@ -59,11 +59,13 @@
             "addShopMemberLabel": "Add shop member",
             "permissionsSettingsLabel": "Permissions",
             "localizationAndI18NLabel": "Localization and i18n",
+            "settingsLabel": "Settings",
             "shopSettingsLabel": "Shop",
             "import": "Import",
-            "general": {
+            "shop": {
+              "allowGuestCheckout": "Allow guest checkout",
               "header": "Manage the shop's general settings, such as its name and contact email",
-              "label": "General Shop Settings",
+              "label": "Shop",
               "nameLabel": "Name",
               "namePlaceholder": "Enter a name for the shop",
               "emailLabel": "Email",
@@ -76,8 +78,8 @@
               "keywordsPlaceholder": "Enter keywords for the shop"
             },
             "address": {
-              "header": "Manage the shop's physical mailing address",
-              "label": "Shop Address",
+              "dialogHeader": "Edit the shop's address",
+              "label": "Address",
               "companyLabel": "Company Name",
               "companyPlaceholder": "Enter the legal name of the company",
               "fullNameLabel": "Full Name",
