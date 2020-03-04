@@ -1,0 +1,27 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "example-paymentmethod",
+  "translation": {
+    "example-paymentmethod": {
+      "admin": {
+        "shortcut": {
+          "examplePaymentProviderLabel": "παράδειγμα πληρωμής",
+          "examplePaymentProviderTitle": "παράδειγμα πληρωμής"
+        },
+        "dashboard": {
+          "examplePaymentProviderLabel": "παράδειγμα πληρωμής",
+          "examplePaymentProviderTitle": "παράδειγμα πληρωμής",
+          "examplePaymentProviderDescription": "Παράδειγμα Μέθοδος Πληρωμής"
+        },
+        "paymentSettings": {
+          "examplePaymentLabel": "παράδειγμα Provider",
+          "examplePaymentSettingsLabel": "παράδειγμα πληρωμής",
+          "exampleCredentials": "Αυτή είναι μια ρύθμιση παράδειγμα τη μέθοδο πληρωμής.",
+          "apiClientId": "API ID πελάτη",
+          "supportedMethodsLabel": "Οι μέθοδοι υποστήριξης του παρόχου πληρωμών"
+        }
+      }
+    }
+  }
+}]
