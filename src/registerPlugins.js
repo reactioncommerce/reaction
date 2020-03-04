@@ -2,6 +2,7 @@
 import registerAuthenticationPlugin from "@reactioncommerce/plugin-authentication";
 import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization";
 import registerSystemInformationPlugin from "@reactioncommerce/plugin-system-information";
+import registerExamplePaymentsPlugin from "@reactioncommerce/plugin-payments-example";
 
 /* node-app imports */
 /* core-services */
@@ -25,7 +26,6 @@ import registerTaxesPlugin from "./core-services/taxes/index.js";
 /* plugins */
 import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
-import registerExamplePaymentsPlugin from "./plugins/payments-example/index.js";
 import registerJobQueuePlugin from "./plugins/job-queue/index.js";
 import registerNavigationPlugin from "./plugins/navigation/index.js";
 import registerNotificationsPlugin from "./plugins/notifications/index.js";
