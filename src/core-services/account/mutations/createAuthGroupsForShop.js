@@ -1,10 +1,3 @@
-import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
-import {
-  defaultShopOwnerRoles,
-  defaultShopManagerRoles
-} from "../util/defaultRoles.js";
-
 /**
  * @name createAuthGroupsForShop
  * @method
@@ -15,31 +8,16 @@ import {
  * @returns {undefined}
  */
 export default async function createAuthGroupsForShop(context, shopId) {
-  const {
-    collections: {
-      Groups,
-      Shops
-    }
-  } = context;
+  const { collections: { Groups } } = context;
 
-  const roles = {
-    "shop manager": defaultShopManagerRoles,
-    "owner": defaultShopOwnerRoles
-  };
-
-  const primaryShop = await Shops.findOne({ shopType: "primary" });
-
-  const promises = Object.keys(roles).map(async (slug) => {
+  const promises = ["shop manager", "owner"].map(async (slug) => {
     const existingGroup = await Groups.findOne({ shopId, slug });
-    if (!existingGroup) { // create group only if it doesn't exist before
-      Logger.debug(`creating group ${slug} for shop ${shopId}`);
-      // get roles from the default groups of the primary shop; we try to use this first before using default roles
-      const primaryShopGroup = primaryShop ? await Groups.findOne({ shopId: primaryShop._id, slug }) : null;
-      await Groups.insertOne({
-        _id: Random.id(),
-        name: slug,
-        slug,
-        permissions: (primaryShopGroup && primaryShopGroup.permissions) || roles[slug],
+    if (!existingGroup) {
+      await context.mutations.createAccountGroup(context.getInternalContext(), {
+        group: {
+          name: slug,
+          slug
+        },
         shopId
       });
     }

@@ -5,35 +5,38 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @name getOrderQuery
  * @method
  * @memberof Order/helpers
- * @summary Creates Order mongo selector based on user permissions
+ * @summary Queries for an order and returns it if user has correct permissions
  * @param {Object} context An object containing the per-request state
- * @param {Object} selector A mongo selector
+ * @param {Object} selector Order ID or Reference ID to query
  * @param {String} shopId Shop ID of the order
  * @param {String} token An anonymous order token, required if the order was placed without being logged in
- * @returns {Object} A mongo selector
+ * @returns {Object} An order object
  */
 export async function getOrderQuery(context, selector, shopId, token) {
-  const { accountId: contextAccountId } = context;
-  const newSelector = { ...selector, shopId };
-  const userHasPermission = await context.userHasPermission(
+  const { collections } = context;
+
+  const order = await collections.Orders.findOne(selector);
+
+  if (!order) {
+    throw new ReactionError("not-found", "Order not found");
+  }
+
+  // If you have the hashed token, you don't need to pass a permission check
+  if (token && order.anonymousAccessTokens.some((accessToken) => accessToken.hashedToken === hashToken(token))) {
+    return order;
+  }
+
+  // if you don't have the hashed token,
+  // you must either have `reaction:legacy:orders/read` permissions,
+  // or this must be your own order
+  await context.validatePermissions(
     "reaction:legacy:orders",
     "read",
-    { shopId }
+    {
+      shopId,
+      owner: order.accountId
+    }
   );
 
-  if (userHasPermission) {
-    // admins with orders permissions can see any order in the shop
-    // admins with order/fulfillment and order/view permissions can also view order
-    // with further permission checks in each component to limit functionality where needed
-    // No need to adjust the selector to get the order
-  } else if (contextAccountId) {
-    // Customer accounts can only see their own orders
-    newSelector.accountId = contextAccountId;
-  } else if (token) {
-    // If you have an anonymous access token for this order, OK to see it
-    newSelector["anonymousAccessTokens.hashedToken"] = hashToken(token);
-  } else {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
-  return newSelector;
+  return order;
 }
