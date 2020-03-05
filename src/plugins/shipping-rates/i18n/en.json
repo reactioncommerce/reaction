@@ -5,6 +5,7 @@
     "reaction-shipping-rates": {
       "admin": {
         "shippingSettings": {
+          "header": "Shipping",
           "flatRateLabel": "Flat Rate",
           "confirmRateDelete": "Delete this fulfillment method?",
           "rateSaved": "Fulfillment method saved",
