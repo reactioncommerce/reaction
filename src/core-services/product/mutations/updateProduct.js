@@ -92,6 +92,10 @@ const inputSchema = new SimpleSchema({
     type: String,
     optional: true
   },
+  "shouldAppearInSitemap": {
+    type: Boolean,
+    optional: true
+  },
   "supportedFulfillmentTypes": {
     type: Array,
     optional: true
