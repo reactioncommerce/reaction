@@ -305,7 +305,9 @@
           "shortcut": {
             "addProductLabel": "Add product",
             "accountsLabel": "Accounts"
-          }
+          },
+          "visible": "Visible",
+          "hidden": "Hidden"
         },
         "searchSettings": {
           "productSearchSettings": {
@@ -495,6 +497,7 @@
           "archiveThisProduct": "Archive this product?",
           "archiveSelectedProducts": "Archive selected products?",
           "publish": "Publish",
+          "published": "Published",
           "moreOptions": "More Options",
           "details": "Details",
           "noSelectedProducts": "No selected products. Use the ",
@@ -512,6 +515,7 @@
           "addVariantOptions": "Add options to enable 'Add to Cart' button",
           "title": "Title",
           "price": "Price",
+          "prices": "Prices",
           "optionTitle": "Short title",
           "barcode": "Barcode",
           "compareAtPrice": "Compare at price",
@@ -524,7 +528,12 @@
           "taxCode": "Tax code",
           "taxDescription": "Tax description",
           "originCountry": "Origin country",
-          "selectTaxCode": "Select tax code"
+          "selectTaxCode": "Select tax code",
+          "updateVariantSuccess": "Product variant updated successfully",
+          "updateVariantFail": "Unable to update product variant",
+          "updateVariantPricesSuccess": "Variant Prices updated successfully",
+          "updateVariantPricesFail": "Unable to update variant prices",
+          "pricePublishWarning": "Changes to prices are published on save"
         },
         "variantList": {
           "moreOptions": "There are more options available for this selection.",
