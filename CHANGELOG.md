@@ -16,6 +16,7 @@ Remaining `role` and `permissions` related code has been moved of the API and in
 
 - refactor: allow all users with token to view order ([#6092](https://github.com/reactioncommerce/reaction/pull/6092))
 - refactor: move roles and group.permissions code from account plugin to simple-auth plugin ([#6111](https://github.com/reactioncommerce/reaction/pull/6111))
+- refactor: add translation strings for settings form ([#6097](https://github.com/reactioncommerce/reaction/pull/6097))
 
 # v3.2.0
 
