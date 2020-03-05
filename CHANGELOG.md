@@ -1,6 +1,35 @@
+# v3.3.0
+
+Reaction v3.3.0 adds minor features and performance enhancements, and contains no breaking changes since v3.2.0.
+
+## Notable changes
+
+### Roles and Permissions code has finished moving out of the API
+
+Remaining `role` and `permissions` related code has been moved of the API and into the `simple-authorization` plugin, which makes it easier to swap this plugin for a custom authorization service.
+
+## Features
+
+- feat: various updates for product editor ([#6141](https://github.com/reactioncommerce/reaction/pull/6141))
+
+## Refactor
+
+- refactor: allow all users with token to view order ([#6092](https://github.com/reactioncommerce/reaction/pull/6092))
+- refactor: move roles and group.permissions code from account plugin to simple-auth plugin ([#6111](https://github.com/reactioncommerce/reaction/pull/6111))
+
 # v3.2.0
 
-Reaction v3.2.0 introduces Federated Gateway capability for the API, moves the `simple-authorization` and `system-information` plugins into their own `npm` packages, and adds an `updateProductsVisibility` GraphQL mutation to the API.
+Reaction v3.2.0 adds minor features and performance enhancements, and contains no breaking changes since v3.1.0.
+
+## Notable changes
+
+### Introduces Federated Gateway capabilities for the API
+
+Introduces Gateway capability, which allows for the API to be a participant on the Federated Gateway.
+
+### Moves two plugins into their own npm packages
+
+`simple-authorization` and `system-information` plugins have been moved from internal plugins, to npm install packages.
 
 ## Features
 
@@ -18,7 +47,13 @@ Reaction v3.2.0 introduces Federated Gateway capability for the API, moves the `
 
 # v3.1.0
 
-Reaction v3.1.0 moves our `simple-authorization` plugin (formerly `legacy-permission`) into it's own `npm` package to set up the pattern of installing Reaction API plugins from `npm`.
+Reaction v3.1.0 adds minor features and performance enhancements, fixes bugs, and contains no breaking changes since v3.0.0.
+
+## Notable changes
+
+### Moves our first plugin into its own npm package
+
+Moves our `simple-authorization` plugin (formerly `legacy-permission`) into it's own `npm` package to set up the pattern of installing Reaction API plugins from `npm`.
 
 ## Features
 
