@@ -63,12 +63,12 @@
             "shopSettingsLabel": "Shop",
             "import": "Import",
             "shop": {
+              "header": "Shop",
               "allowGuestCheckout": "Allow guest checkout",
               "descriptionLabel": "Description",
               "descriptionPlaceholder": "Enter a description for the shop",
               "emailLabel": "Email",
               "emailPlaceholder": "Enter a store contact email",
-              "header": "Manage the shop's general settings, such as its name and contact email",
               "keywordsLabel": "Keywords",
               "keywordsPlaceholder": "Enter keywords for the shop",
               "label": "Shop",
@@ -96,6 +96,27 @@
               "postalLabel": "Postal/ZIP code",
               "regionLabel": "Region (State)"
             },
+            "payment": {
+              "header": "Payment"
+            },
+            "taxes": {
+              "header": "Taxes"
+            },
+            "addressValidation": {
+              "header": "Address Validation Services"
+            },
+            "system": {
+              "header": "System Information"
+            },
+            "email": {
+              "header": "Email"
+            },
+            "localization": {
+              "header": "Localization"
+            },
+            "emailTemplates": {
+              "header": "Email Templates"
+            },
             "options": {
               "label": "Options"
             },
@@ -105,7 +126,7 @@
             "productSettingsLabel": "Product Settings",
             "productDetailsLabel": "Product Details",
             "settings": "Settings",
-            "templateSettingsLabel": "Template"
+            "templateSettingsLabel": "Email Templates"
           },
           "userAccountDropdown": {
             "profileLabel": "Profile"
