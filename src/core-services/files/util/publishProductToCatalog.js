@@ -21,10 +21,12 @@ export default async function publishProductToCatalogMedia(catalogProduct, { con
     catalogProductVariant.media = variantMedia;
     catalogProductVariant.primaryImage = variantMedia[0] || null;
 
-    for (const catalogProductOption of catalogProductVariant.options) {
-      const optionMedia = catalogProductMedia.filter((media) => media.variantId === catalogProductOption.variantId);
-      catalogProductVariant.media = optionMedia;
-      catalogProductVariant.primaryImage = optionMedia[0] || null;
+    if (catalogProductVariant.options) {
+      for (const catalogProductOption of catalogProductVariant.options) {
+        const optionMedia = catalogProductMedia.filter((media) => media.variantId === catalogProductOption.variantId);
+        catalogProductVariant.media = optionMedia;
+        catalogProductVariant.primaryImage = optionMedia[0] || null;
+      }
     }
   }
 }
