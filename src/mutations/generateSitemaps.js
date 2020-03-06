@@ -12,9 +12,6 @@ export default async function generateSitemaps(context, input) {
   const { userId } = context;
   const { shopId } = input;
 
-  console.log(" ---- we jere?");
-
-
   await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "update", { shopId });
 
   const jobOptions = {
