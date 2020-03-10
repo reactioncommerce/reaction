@@ -42,6 +42,20 @@ extend type Query {
   ): NavigationItemConnection
 }
 
+extend type Shop {
+  "The default navigation tree for this shop"
+  defaultNavigationTree(
+    "Navigation tree language"
+    language: String!,
+
+    "Whether to include secondary navigation items"
+    shouldIncludeSecondary: Boolean = false
+  ): NavigationTree
+
+  "The ID of the shop's default navigation tree"
+  defaultNavigationTreeId: String
+}
+
 "The fields by which you are allowed to sort any query that returns a `NavigationItemConnection`"
 enum NavigationItemSortByField {
   "Sort by NavigationItem ID"
