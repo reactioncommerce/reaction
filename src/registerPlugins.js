@@ -1,8 +1,8 @@
 /* npm package imports */
 import registerAuthenticationPlugin from "@reactioncommerce/plugin-authentication";
+import registerExamplePaymentsPlugin from "@reactioncommerce/plugin-payments-example";
 import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization";
 import registerSystemInformationPlugin from "@reactioncommerce/plugin-system-information";
-import registerExamplePaymentsPlugin from "@reactioncommerce/plugin-payments-example";
 
 /* node-app imports */
 /* core-services */

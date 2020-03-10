@@ -3,7 +3,7 @@
 // https://jestjs.io/docs/en/configuration.html
 
 // Any packages that are published only as ESM need to be listed here
-const externalNodeModules.join("|") = [
+const externalNodeModules = [
   "@reactioncommerce/api-utils",
   "@reactioncommerce/db-version-check",
   "@reactioncommerce/plugin-simple-authorization",
