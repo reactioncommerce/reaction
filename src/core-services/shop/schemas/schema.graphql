@@ -57,6 +57,12 @@ type Shop implements Node {
   "Whether to allow user to checkout without creating an account"
   allowGuestCheckout: Boolean
 
+  "The base unit of length"
+  baseUOL: String
+
+  "The base unit of Measure"
+  baseUOM: String
+
   "URLs for various shop assets in various sizes"
   brandAssets: ShopBrandAssets
 
