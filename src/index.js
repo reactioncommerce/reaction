@@ -5,6 +5,7 @@ import exampleCreateAuthorizedPayment from "./util/exampleCreateAuthorizedPaymen
 import exampleCreateRefund from "./util/exampleCreateRefund.js";
 import exampleListRefunds from "./util/exampleListRefunds.js";
 import startup from "./startup.js";
+import pkg from "../package.json";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -15,7 +16,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "ExamplePayment",
     name: "example-paymentmethod",
-    version: app.context.appVersion,
+    version: pkg.version,
     i18n,
     graphQL: {
       schemas

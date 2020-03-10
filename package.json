@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/plugin-payments-example",
   "description": "Example Payments plugin for the Reaction API",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "main": "index.js",
   "type": "module",
   "engines": {
