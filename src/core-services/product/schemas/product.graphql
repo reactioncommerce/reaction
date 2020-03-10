@@ -45,6 +45,9 @@ type Product {
   "The shop to which this product belongs"
   shop: Shop!
 
+  "Whether this product will be shown in the generated sitemap"
+  shouldAppearInSitemap: Boolean
+
   "A URL-safe and human-readable string that uniquely identifies this product"
   slug: String
 
@@ -404,6 +407,9 @@ input ProductInput {
 
   "An arbitrary product type value, such as from an external system"
   productType: String
+
+  "Whether this product will be shown in the generated sitemap"
+  shouldAppearInSitemap: Boolean
 
   "A URL-safe and human-readable string that uniquely identifies this product"
   slug: String
