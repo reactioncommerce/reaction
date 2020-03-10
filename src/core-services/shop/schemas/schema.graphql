@@ -63,18 +63,6 @@ type Shop implements Node {
   "The default shop currency"
   currency: Currency!
 
-  "The default navigation tree for this shop"
-  defaultNavigationTree(
-    "Navigation tree language"
-    language: String!,
-
-    "Whether to include secondary navigation items"
-    shouldIncludeSecondary: Boolean = false
-  ): NavigationTree
-
-  "The ID of the shop's default navigation tree"
-  defaultNavigationTreeId: String
-
   "Default parcel size for this shop"
   defaultParcelSize: ShopParcelSize
 
