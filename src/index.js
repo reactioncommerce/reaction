@@ -1,3 +1,4 @@
+import pkg from "../package.json";
 import i18n from "./i18n/index.js";
 import schemas from "./schemas/index.js";
 import exampleCapturePayment from "./util/exampleCapturePayment.js";
@@ -5,7 +6,6 @@ import exampleCreateAuthorizedPayment from "./util/exampleCreateAuthorizedPaymen
 import exampleCreateRefund from "./util/exampleCreateRefund.js";
 import exampleListRefunds from "./util/exampleListRefunds.js";
 import startup from "./startup.js";
-import pkg from "../package.json";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
