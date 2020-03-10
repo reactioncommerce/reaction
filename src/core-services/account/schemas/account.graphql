@@ -214,7 +214,7 @@ type Account implements Node {
   preferences: JSONObject
 
   """
-  The primary email address for the account. This matches the address in `emailRecords` where `provides` is "default".
+  The primary email address for the account. This matches the address in `emailRecords` where `provides` is `default`.
   """
   primaryEmailAddress: Email!
 
