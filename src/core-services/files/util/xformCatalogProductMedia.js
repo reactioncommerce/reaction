@@ -23,12 +23,14 @@ function ensureAbsoluteUrls(context, mediaItem) {
  *  "xformCatalogProductMedia". First to return an object is returned here
  * @param {Object} mediaItem Media item object. See ImageInfo SimpleSchema
  * @param {Object} context Request context
+ * @param {Object} info Other info about the media
+ * @param {Object} info.shopId ID of the shop that owns the catalog product
  * @returns {Object} Transformed media item
  */
-export default async function xformCatalogProductMedia(mediaItem, context) {
+export default async function xformCatalogProductMedia(mediaItem, context, { shopId }) {
   const xformCatalogProductMediaFuncs = context.getFunctionsOfType("xformCatalogProductMedia");
   for (const func of xformCatalogProductMediaFuncs) {
-    const xformedMediaItem = await func(mediaItem, context); // eslint-disable-line no-await-in-loop
+    const xformedMediaItem = await func(mediaItem, context, { shopId }); // eslint-disable-line no-await-in-loop
     if (xformedMediaItem) {
       return ensureAbsoluteUrls(context, xformedMediaItem);
     }

@@ -12,7 +12,7 @@ export default async function xformItemsAddImageUrls(context, items) {
   if (items.length === 0) return;
 
   for (const item of items) {
-    const { productId, variantId } = item;
+    const { productId, shopId, variantId } = item;
 
     const catalogProductMedia = await getCatalogProductMedia(productId, context.collections); // eslint-disable-line no-await-in-loop
 
@@ -26,7 +26,7 @@ export default async function xformItemsAddImageUrls(context, items) {
 
     // Allow plugins to transform the media object
     if (media) {
-      media = await xformCatalogProductMedia(media, context); // eslint-disable-line no-await-in-loop
+      media = await xformCatalogProductMedia(media, context, { shopId }); // eslint-disable-line no-await-in-loop
     }
 
     item.imageURLs = (media && media.URLs) || null;
