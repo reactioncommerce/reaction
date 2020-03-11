@@ -48,26 +48,26 @@ type ShopParcelSize {
 
 "Units of length"
 type UnitOfLength {
-  "Unit of length"
-  uol: String
+  "Whether this unit of length is the default"
+  default: Boolean
 
   "The name of the unit of length"
   label: String
 
-  "Whether this unit of length is the default"
-  default: Boolean
+  "Unit of length"
+  uol: String
 }
 
 "Units of measure"
 type UnitOfMeasure {
-  "Unit of measure"
-  uom: String
+  "Whether this unit of measure is the default"
+  default: Boolean
 
   "The name of the unit of measure"
   label: String
 
-  "Whether this unit of measure is the default"
-  default: Boolean
+  "Unit of measure"
+  uom: String
 }
 
 "Represents a Reaction shop"
