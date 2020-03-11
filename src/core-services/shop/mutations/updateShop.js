@@ -1,5 +1,5 @@
 import SimpleSchema from "simpl-schema";
-import { Currency, Email, ParcelSize, ShopAddress, ShopLogoUrls, StorefrontUrls } from "../simpleSchemas.js";
+import { Email, ParcelSize, ShopAddress, ShopLogoUrls, StorefrontUrls } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   "addressBook": {
@@ -26,7 +26,7 @@ const inputSchema = new SimpleSchema({
     optional: true
   },
   "currency": {
-    type: Currency,
+    type: String,
     optional: true
   },
   "description": {

@@ -22,12 +22,6 @@ input ShopLogoUrlsInput {
   primaryShopLogoUrl: String
 }
 
-"The shop's currency code"
-input CurrencyInput {
-  "The currency code"
-  code: String
-}
-
 "Parcel size input"
 input ShopParcelSizeInput {
   "Parcel height"
@@ -52,10 +46,10 @@ input UpdateShopInput {
   allowGuestCheckout: Boolean
   
   "The base unit of length"
-  baseUOL: String!
+  baseUOL: String
 
   "The base unit of Measure"
-  baseUOM: String!
+  baseUOM: String
 
   "ID of media record to be used as the brand asset"
   brandAssets: ID
@@ -64,7 +58,7 @@ input UpdateShopInput {
   clientMutationId: String
 
   "The shop's currency"
-  currency: CurrencyInput!
+  currency: String
 
   "Default parcel size used for this shop"
   defaultParcelSize: ShopParcelSizeInput
@@ -79,7 +73,7 @@ input UpdateShopInput {
   keywords: String
 
   "The shop's language"
-  language: String!
+  language: String
 
   "The shop's name"
   name: String
@@ -97,7 +91,7 @@ input UpdateShopInput {
   storefrontUrls: StorefrontUrlsInput
 
   "The shop's timezone"
-  timezone: String!
+  timezone: String
 }
 
 "The response from the `updateShop` mutation"

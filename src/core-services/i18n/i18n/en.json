@@ -20,6 +20,17 @@
         },
         "baseUOL": "Base Unit of Length",
         "baseUOM": "Base Unit of Measure",
+        "uol": {
+          "Inches": "Inches",
+          "Centimeters": "Centimeters",
+          "Feet": "Feet"
+        },
+        "uom": {
+          "oz": "Ounces",
+          "lb": "Pounds",
+          "g": "Grams",
+          "kg": "Kilograms"
+        },
         "currency": "Currency",
         "currencyTooltip": "Shop default currency",
         "language": "Language",

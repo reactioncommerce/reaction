@@ -46,6 +46,30 @@ type ShopParcelSize {
   width: Float
 }
 
+"Units of length"
+type UnitOfLength {
+  "Unit of length"
+  uol: String
+
+  "The name of the unit of length"
+  label: String
+
+  "Whether this unit of length is the default"
+  default: Boolean
+}
+
+"Units of measure"
+type UnitOfMeasure {
+  "Unit of measure"
+  uom: String
+
+  "The name of the unit of measure"
+  label: String
+
+  "Whether this unit of measure is the default"
+  default: Boolean
+}
+
 "Represents a Reaction shop"
 type Shop implements Node {
   "The shop ID"
@@ -109,7 +133,13 @@ type Shop implements Node {
   storefrontUrls: StorefrontUrls
 
   "Shop default timezone"
-  timezone: String!
+  timezone: String
+
+  "The shop's units of length"
+  unitsOfLength: [UnitOfLength]
+
+  "The shop's units of measure"
+  unitsOfMeasure: [UnitOfMeasure]
 }
 
 extend type Query {
