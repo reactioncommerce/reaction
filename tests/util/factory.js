@@ -1,3 +1,9 @@
+import {
+  NavigationItem,
+  NavigationTree,
+  NavigationTreeItem
+} from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
+
 import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
 
 import {
@@ -82,12 +88,6 @@ import {
 import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
-
-import {
-  NavigationItem,
-  NavigationTree,
-  NavigationTreeItem
-} from "../../src/plugins/navigation/simpleSchemas.js";
 
 import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
 
