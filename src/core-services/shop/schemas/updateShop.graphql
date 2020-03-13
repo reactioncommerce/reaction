@@ -44,12 +44,21 @@ input UpdateShopInput {
 
   "Whether to allow user to checkout without creating an account"
   allowGuestCheckout: Boolean
+  
+  "The base unit of length"
+  baseUOL: String
+
+  "The base unit of Measure"
+  baseUOM: String
 
   "ID of media record to be used as the brand asset"
   brandAssets: ID
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The shop's currency"
+  currency: String
 
   "Default parcel size used for this shop"
   defaultParcelSize: ShopParcelSizeInput
@@ -62,6 +71,9 @@ input UpdateShopInput {
 
   "The shop's keywords"
   keywords: String
+
+  "The shop's language"
+  language: String
 
   "The shop's name"
   name: String
@@ -77,6 +89,9 @@ input UpdateShopInput {
 
   "Object of storefront routes urls"
   storefrontUrls: StorefrontUrlsInput
+
+  "The shop's timezone"
+  timezone: String
 }
 
 "The response from the `updateShop` mutation"
