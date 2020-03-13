@@ -140,7 +140,7 @@ export default async function cloneProductVariants(context, input) {
     }));
 
     const newFinalProduct = await Products.findOne({ _id: variantNewId });
-    console.log("NEW FINAL VARIANT PRICE", newFinalProduct._id, newFinalProduct.length)
+
     return newFinalProduct;
   }));
 
