@@ -1,0 +1,41 @@
+[{
+  "language": "Spanish",
+  "i18n": "es",
+  "ns": "discount-codes",
+  "translation": {
+    "discount-codes": {
+      "checkoutPayment": {
+        "applyDiscount": "Aplicar",
+        "discountError": "Ha habido un error al aplicar descuento."
+      },
+      "discounts": {
+        "enterItHere": "¿Tiene un código? Insértelo aquí.",
+        "discountLabel": "Código de descuento",
+        "submitted": "Descuento guardar y aplicar",
+        "applied": "aplicado",
+        "code": "código",
+        "codeIsExpired": "Código ha caducado",
+        "codeIsInvalid": "Código no es válido",
+        "multiShopError": "No se pueden aplicar descuentos a un carrito o pedido de varias tiendas"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "códigos"
+        },
+        "settings": {
+          "codesLabel": "códigos",
+          "noCustomDiscountCodesFound": "No se encontraron códigos de descuento."
+        },
+        "discountGrid": {
+          "code": "Código",
+          "calculation": {
+            "method": "Cálculo"
+          },
+          "conditions": {
+            "redemptionLimit": "Límite"
+          }
+        }
+      }
+    }
+  }
+}]
