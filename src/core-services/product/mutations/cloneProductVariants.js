@@ -75,29 +75,44 @@ export default async function cloneProductVariants(context, input) {
     await Promise.all(sortedVariants.map(async (sortedVariant) => {
       const originalVariantId = sortedVariant._id;
       let type = "child";
-      const clonedVariantObject = {};
+      let clonedVariantObject;
       if (variantId === sortedVariant._id) {
         type = "parent";
-        Object.assign(clonedVariantObject, sortedVariant, {
+        clonedVariantObject = {
+          ...sortedVariant,
           _id: variantNewId,
-          title: `${sortedVariant.title} - copy`,
-          optionTitle: `${sortedVariant.optionTitle} - copy`
-        });
+          title: `${sortedVariant.title || "Untitled"} - copy`,
+          optionTitle: `${sortedVariant.optionTitle || "Untitled"} - copy`
+        };
       } else {
         const parentIndex = sortedVariant.ancestors.indexOf(variantId);
         const ancestorsClone = sortedVariant.ancestors.slice(0);
         // if variantId exists in ancestors, we override it by new _id
         if (parentIndex >= 0) ancestorsClone.splice(parentIndex, 1, variantNewId);
-        Object.assign(clonedVariantObject, existingVariant, {
+
+        clonedVariantObject = {
+          ...existingVariant,
           _id: Random.id(),
           ancestors: ancestorsClone,
-          title: `${sortedVariant.title}`,
-          optionTitle: `${sortedVariant.optionTitle}`,
-          height: `${sortedVariant.height}`,
-          width: `${sortedVariant.width}`,
-          weight: `${sortedVariant.weight}`,
-          length: `${sortedVariant.length}`
-        });
+          title: `${sortedVariant.title || "Untitled"} - copy`,
+          optionTitle: `${sortedVariant.optionTitle || "Untitled"} - copy`
+        };
+
+        if (typeof sortedVariant.height === "number" && sortedVariant.height >= 0) {
+          clonedVariantObject.height = sortedVariant.height;
+        }
+
+        if (typeof sortedVariant.width === "number" && sortedVariant.width >= 0) {
+          clonedVariantObject.width = sortedVariant.width;
+        }
+
+        if (typeof sortedVariant.weight === "number" && sortedVariant.weight >= 0) {
+          clonedVariantObject.weight = sortedVariant.weight;
+        }
+
+        if (typeof sortedVariant.length === "number" && sortedVariant.length >= 0) {
+          clonedVariantObject.length = sortedVariant.length;
+        }
       }
       delete clonedVariantObject.updatedAt;
       delete clonedVariantObject.createdAt;
@@ -125,7 +140,7 @@ export default async function cloneProductVariants(context, input) {
     }));
 
     const newFinalProduct = await Products.findOne({ _id: variantNewId });
-
+    console.log("NEW FINAL VARIANT PRICE", newFinalProduct._id, newFinalProduct.length)
     return newFinalProduct;
   }));
 
