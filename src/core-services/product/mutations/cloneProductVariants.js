@@ -93,10 +93,16 @@ export default async function cloneProductVariants(context, input) {
         clonedVariantObject = {
           ...existingVariant,
           _id: Random.id(),
-          ancestors: ancestorsClone,
-          title: `${sortedVariant.title || "Untitled"} - copy`,
-          optionTitle: `${sortedVariant.optionTitle || "Untitled"} - copy`
+          ancestors: ancestorsClone
         };
+
+        if (typeof sortedVariant.title === "string") {
+          clonedVariantObject.title = sortedVariant.title;
+        }
+
+        if (typeof sortedVariant.optionTitle === "string") {
+          clonedVariantObject.optionTitle = sortedVariant.optionTitle;
+        }
 
         if (typeof sortedVariant.height === "number" && sortedVariant.height >= 0) {
           clonedVariantObject.height = sortedVariant.height;
