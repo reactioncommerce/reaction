@@ -329,13 +329,16 @@ input UpdateProductsVisibilityInput {
 }
 
 "Input for the `createProduct` mutation"
-input CreateProductInput  {
+input CreateProductInput {
+  "Product input"
+  product: ProductInput
+
   "ID of shop product will belong to"
   shopId: ID!
 }
 
 "Input for the `createProductVariant` mutation"
-input CreateProductVariantInput  {
+input CreateProductVariantInput {
   "ID of product variant belongs to"
   productId: ID!
 
@@ -362,7 +365,7 @@ input CloneProductVariantsInput  {
 }
 
 "Input for the `updateProduct` mutation"
-input UpdateProductInput  {
+input UpdateProductInput {
   "Product input"
   product: ProductInput!
 
