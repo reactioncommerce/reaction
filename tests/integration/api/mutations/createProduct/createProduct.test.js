@@ -40,6 +40,11 @@ const expectedProduct = {
   tagIds: [],
   title: "",
   updatedAt: jasmine.any(String),
+  variants: [
+    {
+      _id: jasmine.any(String)
+    }
+  ],
   vendor: null
 };
 
@@ -142,4 +147,21 @@ test("expect a product to be created with all product input", async () => {
       }
     }
   });
+});
+
+test("no variant is created when shouldCreateFirstVariant is false", async () => {
+  let result;
+  try {
+    result = await mutate({
+      input: {
+        shopId: opaqueShopId,
+        shouldCreateFirstVariant: false
+      }
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.createProduct.product.variants.length).toBe(0);
 });

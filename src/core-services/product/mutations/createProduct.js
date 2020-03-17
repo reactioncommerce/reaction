@@ -9,7 +9,11 @@ const inputSchema = new SimpleSchema({
     blackbox: true,
     optional: true
   },
-  shopId: String
+  shopId: String,
+  shouldCreateFirstVariant: {
+    type: Boolean,
+    optional: true
+  }
 });
 
 /**
@@ -18,6 +22,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input arguments for the operation
  * @param {String} [input.product] - product data
+ * @param {Boolean} [input.shouldCreateFirstVariant=true] - Auto-create one variant for the product
  * @param {String} input.shopId - the shop to create the product for
  * @return {String} created productId
  */
@@ -27,7 +32,7 @@ export default async function createProduct(context, input) {
   const { appEvents, collections, simpleSchemas } = context;
   const { Product } = simpleSchemas;
   const { Products } = collections;
-  const { product: productInput, shopId } = input;
+  const { product: productInput, shopId, shouldCreateFirstVariant = true } = input;
 
   // Check that user has permission to create product
   await context.validatePermissions("reaction:legacy:products", "create", { shopId });
@@ -78,10 +83,12 @@ export default async function createProduct(context, input) {
   await Products.insertOne(newProduct);
 
   // Create one initial product variant for it
-  await context.mutations.createProductVariant(context.getInternalContext(), {
-    productId: newProductId,
-    shopId
-  });
+  if (shouldCreateFirstVariant) {
+    await context.mutations.createProductVariant(context.getInternalContext(), {
+      productId: newProductId,
+      shopId
+    });
+  }
 
   await appEvents.emit("afterProductCreate", { product: newProduct });
 

@@ -30,6 +30,9 @@ mutation createProduct($input: CreateProductInput!) {
       tagIds
       title
       updatedAt
+      variants {
+        _id
+      }
       vendor
     }
   }

@@ -335,6 +335,9 @@ input CreateProductInput {
 
   "ID of shop product will belong to"
   shopId: ID!
+
+  "Set to false if you do not want to auto-create the first variant of the product"
+  shouldCreateFirstVariant: Boolean = true
 }
 
 "Input for the `createProductVariant` mutation"
