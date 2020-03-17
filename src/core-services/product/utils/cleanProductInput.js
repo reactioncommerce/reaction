@@ -46,7 +46,7 @@ export default async function cleanProductInput(context, {
     input.handle = await createHandle(context, getSlug(input.title), productId, shopId);
   }
 
-  // Product.validate call below will ensure most validity, but there are certain fields
+  // Product.validate call will ensure most validity, but there are certain fields
   // that we never want to allow arbitrary values for because they are controlled by the
   // system. We'll clear those here if someone is trying to set them.
   productFieldsThatShouldNotBeDirectlySet.forEach((forbiddenField) => {

@@ -1,12 +1,23 @@
 mutation createProductVariant($input: CreateProductVariantInput!) {
   createProductVariant(input: $input) {
     variant {
+      attributeLabel
+      barcode
+      height
+      index
       isDeleted
       isVisible
+      length
+      minOrderQuantity
+      optionTitle
+      originCountry
       shop {
         _id
       }
+      sku
       title
+      weight
+      width
     }
   }
 }

@@ -24,14 +24,23 @@ const mockProduct = {
 };
 
 const mockVariant = {
-  variant: {
-    isDeleted: false,
-    isVisible: false,
-    shop: {
-      _id: opaqueShopId
-    },
-    title: null
-  }
+  attributeLabel: null,
+  barcode: null,
+  height: null,
+  index: null,
+  isDeleted: false,
+  isVisible: false,
+  length: null,
+  minOrderQuantity: null,
+  optionTitle: null,
+  originCountry: null,
+  shop: {
+    _id: opaqueShopId
+  },
+  sku: null,
+  title: null,
+  weight: null,
+  width: null
 };
 
 const adminGroup = Factory.Group.makeOne({
@@ -64,7 +73,6 @@ beforeAll(async () => {
 // test file gets its own test database.
 afterAll(() => testApp.stop());
 
-// create a new product
 test("expect a variant to be created on a product using `productId` as input", async () => {
   let result;
   try {
@@ -73,5 +81,51 @@ test("expect a variant to be created on a product using `productId` as input", a
     expect(error).toBeUndefined();
     return;
   }
-  expect(result).toEqual({ createProductVariant: mockVariant });
+  expect(result).toEqual({
+    createProductVariant: {
+      variant: mockVariant
+    }
+  });
+});
+
+test("expect a variant to be created with all product variant input", async () => {
+  const variantData = {
+    attributeLabel: "attributeLabel",
+    barcode: "barcode",
+    height: 12,
+    index: 5,
+    isDeleted: false,
+    isVisible: true,
+    length: 13,
+    minOrderQuantity: 99,
+    optionTitle: "optionTitle",
+    originCountry: "originCountry",
+    sku: "sku",
+    title: "title",
+    weight: 14,
+    width: 15
+  };
+
+  let result;
+  try {
+    result = await mutate({
+      input: {
+        productId: opaqueProductId,
+        shopId: opaqueShopId,
+        variant: variantData
+      }
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result).toEqual({
+    createProductVariant: {
+      variant: {
+        ...mockVariant,
+        ...variantData
+      }
+    }
+  });
 });
