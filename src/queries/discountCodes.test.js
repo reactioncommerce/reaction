@@ -14,13 +14,9 @@ test("throws if permission check fails", async () => {
   mockContext.validatePermissions.mockImplementation(() => {
     throw new ReactionError("access-denied", "Access Denied");
   });
-  await expect(
-    discountCodes(mockContext, mockContext.shopId)
-  ).rejects.toThrowErrorMatchingSnapshot();
-  expect(
-    mockContext.validatePermissions
-  ).toHaveBeenCalledWith(
-    `reaction:legacy:discounts`,
+  await expect(discountCodes(mockContext, mockContext.shopId)).rejects.toThrowErrorMatchingSnapshot();
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:legacy:discounts",
     "read",
     { shopId: mockContext.shopId }
   );
@@ -30,10 +26,8 @@ test("returns Discounts cursor if user has permission", async () => {
   mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
   mockContext.collections.Discounts.find.mockReturnValueOnce("CURSOR");
   const result = await discountCodes(mockContext, mockContext.shopId);
-  expect(
-    mockContext.validatePermissions
-  ).toHaveBeenCalledWith(
-    `reaction:legacy:discounts`,
+  expect(mockContext.validatePermissions).toHaveBeenCalledWith(
+    "reaction:legacy:discounts",
     "read",
     { shopId: mockContext.shopId }
   );
