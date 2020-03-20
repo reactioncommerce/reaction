@@ -466,20 +466,34 @@ export default class ReactionAPI {
     if (port === undefined) port = PORT;
 
     let plugins = defaultPlugins;
-    if (typeof options.transformPlugins === "function") {
+    if (typeof this.options.transformPlugins === "function") {
       // allow plugins to be added and removed
-      plugins = options.transformPlugins(defaultPlugins);
+      plugins = this.options.transformPlugins(defaultPlugins);
     }
 
     /* eslint-disable no-await-in-loop */
     for (const pluginPath of Object.values(plugins)) {
-      // Attempt to distinguish between node modules and relative/absolute paths
-      if (/[a-zA-Z@]/.test(pluginPath[0])) {
-        await import(pluginPath);
+      let plugin;
+
+      // Distinguish between pre-imported modules, node module paths, and relative/absolute paths
+      if (typeof pluginPath !== "string") {
+        plugin = pluginPath;
+      } else if (/[a-zA-Z@]/.test(pluginPath[0])) {
+        plugin = await import(pluginPath);
       } else {
-        await import(path.join("..", pluginPath));
+        plugin = await import(path.join("..", pluginPath));
       }
-      Logger.debug(`Imported plugin ${pluginPath}`);
+
+      if (typeof plugin === "object" && typeof plugin.default === "function") {
+        plugin = plugin.default;
+      }
+
+      if (typeof plugin === "function") {
+        plugin(this);
+        Logger.debug(`Imported plugin ${pluginPath}`);
+      } else {
+        Logger.error({ pluginPath, plugin }, "Plugin is not a function and was skipped");
+      }
     }
     /* eslint-enable no-await-in-loop */
 
