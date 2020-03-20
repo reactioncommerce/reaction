@@ -473,7 +473,12 @@ export default class ReactionAPI {
 
     /* eslint-disable no-await-in-loop */
     for (const pluginPath of Object.values(plugins)) {
-      await import(path.join("..", pluginPath));
+      // Attempt to distinguish between node modules and relative/absolute paths
+      if (/[a-zA-Z@]/.test(pluginPath[0])) {
+        await import(pluginPath);
+      } else {
+        await import(path.join("..", pluginPath));
+      }
     }
     /* eslint-enable no-await-in-loop */
 
