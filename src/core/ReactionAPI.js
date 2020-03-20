@@ -479,6 +479,7 @@ export default class ReactionAPI {
       } else {
         await import(path.join("..", pluginPath));
       }
+      Logger.debug(`Imported plugin ${pluginPath}`);
     }
     /* eslint-enable no-await-in-loop */
 
