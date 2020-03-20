@@ -472,7 +472,7 @@ export default class ReactionAPI {
     }
 
     /* eslint-disable no-await-in-loop */
-    for (const pluginPath of Object.values(plugins)) {
+    for (const [name, pluginPath] of Object.entries(plugins)) {
       let plugin;
 
       // Distinguish between pre-imported modules, node module paths, and relative/absolute paths
@@ -490,9 +490,9 @@ export default class ReactionAPI {
 
       if (typeof plugin === "function") {
         plugin(this);
-        Logger.debug(`Imported plugin ${pluginPath}`);
+        Logger.debug({ pluginPath }, `Imported plugin ${name}`);
       } else {
-        Logger.error({ pluginPath, plugin }, "Plugin is not a function and was skipped");
+        Logger.error({ name, pluginPath, plugin }, "Plugin is not a function and was skipped");
       }
     }
     /* eslint-enable no-await-in-loop */
