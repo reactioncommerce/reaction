@@ -26,7 +26,6 @@ import registerTagsPlugin from "./core-services/tags/index.js";
 import registerTaxesPlugin from "./core-services/taxes/index.js";
 
 /* plugins */
-// import registerDiscountCodesPlugin from "./plugins/discount-codes/index.js";
 import registerEmailTemplatesPlugin from "./plugins/email-templates/index.js";
 import registerJobQueuePlugin from "./plugins/job-queue/index.js";
 import registerNotificationsPlugin from "./plugins/notifications/index.js";
