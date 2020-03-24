@@ -23,7 +23,7 @@ import {
 
 import {
   DiscountCodes as Discounts
-} from "../../src/plugins/discount-codes/simpleSchemas.js";
+} from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js"
 
 import {
   extendInventorySchemas
