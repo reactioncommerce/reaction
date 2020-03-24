@@ -10,6 +10,7 @@ const externalNodeModules = [
   "@reactioncommerce/plugin-navigation",
   "@reactioncommerce/plugin-payments-example",
   "@reactioncommerce/plugin-simple-authorization",
+  "@reactioncommerce/plugin-sitemap-generator",
   "@reactioncommerce/plugin-system-information"
 ];
 
