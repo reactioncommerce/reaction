@@ -22,7 +22,7 @@ import {
 } from "../../src/core-services/cart/simpleSchemas.js";
 
 import {
-  DiscountCodes as Discounts
+  DiscountCodes
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js"
 
 import {
@@ -113,7 +113,7 @@ const schemasToAddToFactory = {
   CatalogProductVariant,
   CommonOrder,
   CommonOrderItem,
-  Discounts,
+  Discounts: DiscountCodes,
   Email,
   EmailTemplates,
   FulfillmentMethod,
