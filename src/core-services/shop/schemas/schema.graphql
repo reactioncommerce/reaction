@@ -46,6 +46,30 @@ type ShopParcelSize {
   width: Float
 }
 
+"Units of length"
+type UnitOfLength {
+  "Whether this unit of length is the default"
+  default: Boolean
+
+  "The name of the unit of length"
+  label: String
+
+  "Unit of length"
+  uol: String
+}
+
+"Units of measure"
+type UnitOfMeasure {
+  "Whether this unit of measure is the default"
+  default: Boolean
+
+  "The name of the unit of measure"
+  label: String
+
+  "Unit of measure"
+  uom: String
+}
+
 "Represents a Reaction shop"
 type Shop implements Node {
   "The shop ID"
@@ -57,23 +81,17 @@ type Shop implements Node {
   "Whether to allow user to checkout without creating an account"
   allowGuestCheckout: Boolean
 
+  "The base unit of length"
+  baseUOL: String
+
+  "The base unit of Measure"
+  baseUOM: String
+
   "URLs for various shop assets in various sizes"
   brandAssets: ShopBrandAssets
 
   "The default shop currency"
   currency: Currency!
-
-  "The default navigation tree for this shop"
-  defaultNavigationTree(
-    "Navigation tree language"
-    language: String!,
-
-    "Whether to include secondary navigation items"
-    shouldIncludeSecondary: Boolean = false
-  ): NavigationTree
-
-  "The ID of the shop's default navigation tree"
-  defaultNavigationTreeId: String
 
   "Default parcel size for this shop"
   defaultParcelSize: ShopParcelSize
@@ -103,7 +121,13 @@ type Shop implements Node {
   storefrontUrls: StorefrontUrls
 
   "Shop default timezone"
-  timezone: String!
+  timezone: String
+
+  "The shop's units of length"
+  unitsOfLength: [UnitOfLength]
+
+  "The shop's units of measure"
+  unitsOfMeasure: [UnitOfMeasure]
 }
 
 extend type Query {
