@@ -6,6 +6,8 @@ import {
 
 import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
 
+import { DiscountCodes } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
+
 import {
   Catalog,
   CatalogProduct,
@@ -20,10 +22,6 @@ import {
   CartItem,
   ShipmentQuote
 } from "../../src/core-services/cart/simpleSchemas.js";
-
-import {
-  DiscountCodes
-} from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js"
 
 import {
   extendInventorySchemas
