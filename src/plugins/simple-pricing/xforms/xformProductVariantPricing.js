@@ -1,3 +1,4 @@
+import accounting from "accounting-js";
 import getDisplayPrice from "../util/getDisplayPrice.js";
 
 export default (node) => {
@@ -14,7 +15,7 @@ export default (node) => {
   } else {
     pricing = {
       compareAtPrice: node.compareAtPrice || 0,
-      displayPrice: null,
+      displayPrice: accounting.formatMoney(price),
       maxPrice: price || 0,
       minPrice: price || 0,
       price: price || 0
