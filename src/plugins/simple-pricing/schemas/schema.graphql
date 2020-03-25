@@ -91,16 +91,22 @@ extend type CatalogProductVariant {
 }
 
 extend type Product {
-  "Price range"
+  "Deprecated, please use the `pricing` field. Price range"
   price: ProductPriceRange
+
+  "Pricing information"
+  pricing: ProductPricingInfo!
 }
 
 extend type ProductVariant {
-  "Compare at price of the variant"
+  "Deprecated, please use the `pricing` field. Compare at price of the variant"
   compareAtPrice: Float
 
-  "Price of the variant"
+  "Deprecated please use the `pricing` field. Price of the variant"
   price: Float
+
+  "Pricing information"
+  pricing: ProductPricingInfo!
 }
 
 extend input ProductVariantInput {
