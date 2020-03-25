@@ -31,4 +31,4 @@ elif [[ $(grep -c '"version": "'${simple_oauth2_version}'"' ${simple_oauth2_pkg_
 fi
 
 # Run the script using Node
-node ${node_script} "$1"
+node --experimental-modules --no-warnings ${node_script} "$@"
