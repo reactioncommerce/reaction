@@ -10,6 +10,8 @@ import {
   Sitemap
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
+import { DiscountCodes } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
+
 import {
   Catalog,
   CatalogProduct,
@@ -24,10 +26,6 @@ import {
   CartItem,
   ShipmentQuote
 } from "../../src/core-services/cart/simpleSchemas.js";
-
-import {
-  DiscountCodes as Discounts
-} from "../../src/plugins/discount-codes/simpleSchemas.js";
 
 import {
   extendInventorySchemas
@@ -113,7 +111,7 @@ const schemasToAddToFactory = {
   CatalogProductVariant,
   CommonOrder,
   CommonOrderItem,
-  Discounts,
+  Discounts: DiscountCodes,
   Email,
   EmailTemplates,
   FulfillmentMethod,
