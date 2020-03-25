@@ -1,3 +1,9 @@
+---
+name: Bug report
+about: Something not up to standard? Let us know!
+labels: 'bug, needs triage'
+---
+
 Issue tracker is **ONLY** used for reporting bugs. NO NEW FEATURE REQUESTS ACCEPTED. For new features, add an issue in our [Request Feature Request](https://github.com/reactioncommerce/reaction-feature-requests) repository.
 
 Are you looking for help with getting started on Reaction? Please visit our [Reaction documentation](https://docs.reactioncommerce.com/reaction-docs/trunk/getting-started-developing-with-reaction).
