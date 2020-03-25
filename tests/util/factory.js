@@ -1,6 +1,10 @@
 import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
 
 import {
+  DiscountCodes
+} from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
+
+import {
   NavigationItem,
   NavigationTree,
   NavigationTreeItem
@@ -9,8 +13,6 @@ import {
 import {
   Sitemap
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
-
-import { DiscountCodes } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
 import {
   Catalog,
