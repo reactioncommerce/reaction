@@ -1,6 +1,6 @@
 ---
 name: Core Work
-about: Reaction team development work
+about: Reaction team development work ticket tracker
 labels: 'core work'
 ---
 
