@@ -5,6 +5,7 @@ import registerExamplePaymentsPlugin from "@reactioncommerce/plugin-payments-exa
 import registerNavigationPlugin from "@reactioncommerce/plugin-navigation";
 import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization";
 import registerSystemInformationPlugin from "@reactioncommerce/plugin-system-information";
+import registerTranslationsPlugin from "@reactioncommerce/plugin-translations";
 
 /* node-app imports */
 /* core-services */
@@ -39,7 +40,6 @@ import registerStripePaymentsPlugin from "./plugins/payments-stripe/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerTaxesRatesPlugin from "./plugins/taxes-rates/index.js";
 import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
-import registerTranslationsPlugin from "./plugins/translations/index.js";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
