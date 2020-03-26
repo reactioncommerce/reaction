@@ -12,6 +12,8 @@ import getVariantPriceRange from "./getVariantPriceRange.js";
 export default function getProductPriceRange(productId, variants) {
   const visibleVariants = variants.filter((option) => option.ancestors.length === 1 &&
     option.isVisible && !option.isDeleted);
+
+  // If there are no visible variants, set price range to 0
   if (visibleVariants.length === 0) return getPriceRange([0]);
 
   const variantPrices = [];
