@@ -31,6 +31,7 @@
     "@reactioncommerce/plugin-discount-codes": "~1.0.0",
     "@reactioncommerce/plugin-navigation": "~1.0.2",
     "@reactioncommerce/plugin-payments-example": "~1.0.0",
+    "@reactioncommerce/plugin-payments-stripe": "~1.0.0",
     "@reactioncommerce/plugin-simple-authorization": "~1.1.0",
     "@reactioncommerce/plugin-system-information": "~1.0.0",
     "@reactioncommerce/random": "~1.0.2",
