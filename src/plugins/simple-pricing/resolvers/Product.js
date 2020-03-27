@@ -3,5 +3,5 @@ import xformProductPrice from "../xforms/xformProductPrice.js";
 
 export default {
   price: (node) => xformProductPrice(node),
-  pricing: (node) => xformProductPricing(node)
+  pricing: (node, _, context) => xformProductPricing(node, context)
 };

@@ -5,5 +5,5 @@ import xformProductVariantCompareAtPrice from "../xforms/xformProductVariantComp
 export default {
   compareAtPrice: (node) => xformProductVariantCompareAtPrice(node),
   price: (node) => xformProductVariantPrice(node),
-  pricing: (node) => xformProductVariantPricing(node)
+  pricing: (node, _, context) => xformProductVariantPricing(node, context)
 };
