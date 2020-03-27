@@ -1,3 +1,4 @@
+import i18n from "./i18n/index.js";
 import policies from "./policies.json";
 import preStartup from "./preStartup.js";
 import mutations from "./mutations/index.js";
@@ -21,6 +22,7 @@ export default async function register(app) {
     label: "Pricing",
     name: "reaction-pricing",
     version: app.context.appVersion,
+    i18n,
     functionsByType: {
       getMinPriceSortByFieldPath: [getMinPriceSortByFieldPath],
       mutateNewProductBeforeCreate: [mutateNewProductBeforeCreate],
