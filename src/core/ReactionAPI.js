@@ -218,8 +218,15 @@ export default class ReactionAPI {
                   " but another plugin has already defined a collection with that key");
               }
 
+              const collectionOptions = {};
+              if (collectionConfig.schema) {
+                collectionOptions.validator = {
+                  $jsonSchema: collectionConfig.schema
+                };
+              }
+
               // Add the collection instance to `context.collections`
-              this.collections[collectionKey] = this.db.collection(collectionConfig.name);
+              this.collections[collectionKey] = await this.db.createCollection(collectionConfig.name, collectionOptions); // eslint-disable-line no-await-in-loop
 
               // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {
