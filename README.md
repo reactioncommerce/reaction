@@ -6,7 +6,7 @@
 
 ## Summary
 
-Address Validation Test plugin for the Reaction API
+Address Validation Test plugin for the [Reaction API](https://github.com/reactioncommerce/reaction)
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
