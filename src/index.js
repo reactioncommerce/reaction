@@ -1,4 +1,5 @@
 import pkg from "../package.json";
+import addressValidation from "./addressValidation.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -7,8 +8,18 @@ import pkg from "../package.json";
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Plugin Example",
-    name: "plugin-example",
+    label: "Address Validation Test",
+    name: "address-validation-test",
     version: pkg.version,
+    addressValidationServices: [
+      {
+        displayName: "Test Validation",
+        functions: {
+          addressValidation
+        },
+        name: "test",
+        supportedCountryCodes: ["US", "CA"]
+      }
+    ]
   });
 }
