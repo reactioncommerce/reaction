@@ -149,6 +149,26 @@ test("expect a product to be created with all product input", async () => {
   });
 });
 
+test("non-opaque _id can be provided optionally", async () => {
+  const id = "CUSTOM_ID";
+  const encodedId = "cmVhY3Rpb24vcHJvZHVjdDpDVVNUT01fSUQ="; // reaction/product:CUSTOM_ID
+
+  let result;
+  try {
+    result = await mutate({
+      input: {
+        product: { _id: id },
+        shopId: opaqueShopId
+      }
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.createProduct.product._id).toEqual(encodedId);
+});
+
 test("no variant is created when shouldCreateFirstVariant is false", async () => {
   let result;
   try {

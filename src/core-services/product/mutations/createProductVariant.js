@@ -73,7 +73,9 @@ export default async function createProductVariant(context, input) {
     throw new ReactionError("invalid-param", "Creating a deleted product variant is not allowed");
   }
 
-  const newVariantId = Random.id();
+  // Generate a random ID, but only if one was not passed in
+  const newVariantId = (productVariantInput && productVariantInput._id) || Random.id();
+
   const createdAt = new Date();
   const newVariant = {
     _id: newVariantId,

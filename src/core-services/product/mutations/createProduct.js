@@ -37,7 +37,7 @@ export default async function createProduct(context, input) {
   // Check that user has permission to create product
   await context.validatePermissions("reaction:legacy:products", "create", { shopId });
 
-  const newProductId = Random.id();
+  const newProductId = (productInput && productInput._id) || Random.id();
 
   const initialProductData = await cleanProductInput(context, {
     productId: newProductId,

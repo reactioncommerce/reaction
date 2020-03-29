@@ -1,6 +1,7 @@
 mutation createProductVariant($input: CreateProductVariantInput!) {
   createProductVariant(input: $input) {
     variant {
+      _id
       attributeLabel
       barcode
       height

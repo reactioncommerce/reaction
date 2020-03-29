@@ -83,7 +83,10 @@ test("expect a variant to be created on a product using `productId` as input", a
   }
   expect(result).toEqual({
     createProductVariant: {
-      variant: mockVariant
+      variant: {
+        _id: jasmine.any(String),
+        ...mockVariant
+      }
     }
   });
 });
@@ -123,9 +126,31 @@ test("expect a variant to be created with all product variant input", async () =
   expect(result).toEqual({
     createProductVariant: {
       variant: {
+        _id: jasmine.any(String),
         ...mockVariant,
         ...variantData
       }
     }
   });
+});
+
+test("non-opaque _id can be provided optionally", async () => {
+  const id = "CUSTOM_VARIANT_ID";
+  const encodedId = "cmVhY3Rpb24vcHJvZHVjdDpDVVNUT01fVkFSSUFOVF9JRA=="; // reaction/product:CUSTOM_VARIANT_ID
+
+  let result;
+  try {
+    result = await mutate({
+      input: {
+        productId: opaqueProductId,
+        shopId: opaqueShopId,
+        variant: { _id: id }
+      }
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.createProductVariant.variant._id).toEqual(encodedId);
 });
