@@ -41,4 +41,17 @@ const options = {
 };
 
 const results = await getPaginatedResponseFromAggregate(collection, pipeline, args, options);
+
+return results;
+// {
+//   pipeline: Array (the pipeline that was passed, with the necessary modifications that were added to it by `getPaginatedResponseFromAggregate`)
+//   nodes: Array (the returned items)
+//   pageInfo: Object {
+//     `hasNextPage: Boolean` (if requested in `options`),
+//     `hasPreviousPage: Boolean` (if requested in `options`),
+//     `startCursor`: String (`_id` of the first item in `nodes`),
+//     `endCursor`: String (`_id of the last item in `nodes`)
+//   },
+//   totalCount: Int (if requested in `options`)
+// }
 ```
