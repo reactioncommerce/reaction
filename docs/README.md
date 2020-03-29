@@ -2,4 +2,4 @@
 
 ## Methods
 
-- [getPaginatedResponseFromAggregate](https://github.com/reactioncommerce/api-utils/)
+- [getPaginatedResponseFromAggregate](./getPaginatedResponseFromAggregate.md)
