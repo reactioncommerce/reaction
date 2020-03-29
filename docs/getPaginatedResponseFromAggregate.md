@@ -25,11 +25,12 @@ const pipeline = [
 
 const args = {
   // connection arguments from your GraphQL query or mutation
+  // more info here: https://facebook.github.io/relay/graphql/connections.htm#sec-Arguments
   // supported:
   // offset: Int,
   // last: Int,
   // sortBy: String (the name of the MongoDB field you want to sort results by)
-  // sortOrder: Int (-1 for descending or 1 for ascending)
+  // sortOrder: String ("desc" for descending, or "asc" for ascending)
 };
 
 const options = {
