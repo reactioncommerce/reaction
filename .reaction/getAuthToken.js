@@ -1,6 +1,6 @@
-const { URL } = require("url");
-const fetch = require("node-fetch");
-const simpleOAuth2 = require("simple-oauth2");
+import { URL } from "url";
+import simpleOAuth2 from "simple-oauth2";
+import fetch from "node-fetch";
 
 const HYDRA_OAUTH_URL = "http://localhost:4444";
 const HYDRA_ADMIN_URL = "http://localhost:4445";
