@@ -110,11 +110,13 @@ extend type ProductVariant {
 }
 
 extend input ProductVariantInput {
-  "Variant compareAtPrice"
-  compareAtPrice: Float @deprecated(reason: "Use the `updateProductVariantPrices` mutation to set product variant prices")
+  "Variant compareAtPrice. DEPRECATED. Use the `updateProductVariantPrices` mutation to set product variant prices."
+  # @deprecated isn't allowed on input fields yet. See See https://github.com/graphql/graphql-spec/pull/525
+  compareAtPrice: Float
 
-  "Variant price"
-  price: Float @deprecated(reason: "Use the `updateProductVariantPrices` mutation to set product variant prices")
+  "Variant price. DEPRECATED. Use the `updateProductVariantPrices` mutation to set product variant prices."
+  # @deprecated isn't allowed on input fields yet. See See https://github.com/graphql/graphql-spec/pull/525
+  price: Float
 }
 
 "Input for the `updateProductVariantField` mutation"
