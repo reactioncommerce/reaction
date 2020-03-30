@@ -1,5 +1,5 @@
 {
-  "name": "@reactioncommerce/plugin-surcharges",
+  "name": "@reactioncommerce/api-plugin-surcharges",
   "description": "Surcharges plugin for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
@@ -7,27 +7,30 @@
   "engines": {
     "node": ">=12.14.1"
   },
-  "homepage": "https://github.com/reactioncommerce/plugin-surcharges",
-  "url": "https://github.com/reactioncommerce/plugin-surcharges",
+  "homepage": "https://github.com/reactioncommerce/api-plugin-surcharges",
+  "url": "https://github.com/reactioncommerce/api-plugin-surcharges",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/plugin-surcharges.git"
+    "url": "git+https://github.com/reactioncommerce/api-plugin-surcharges.git"
   },
   "author": {
     "name": "Reaction Commerce",
     "email": "engineering@reactioncommerce.com",
     "url": "https://reactioncommerce.com"
   },
-  "license": "Apache-2.0",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/plugin-surcharges/issues"
+    "url": "https://github.com/reactioncommerce/api-plugin-surcharges/issues"
   },
   "sideEffects": false,
   "dependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@reactioncommerce/api-utils": "^1.7.3",
     "@reactioncommerce/random": "^1.0.2",
     "@reactioncommerce/reaction-error": "^1.0.1",
+    "husky": "^4.2.3",
     "simpl-schema": "^1.5.7"
   },
   "devDependencies": {
@@ -78,6 +81,16 @@
       "node/no-unsupported-features/es-syntax": "off",
       "node/no-unpublished-import": "off",
       "node/no-unpublished-require": "off"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "prettier": {

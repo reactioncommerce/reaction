@@ -15,7 +15,7 @@ import setSurchargesOnCart from "./util/setSurchargesOnCart.js";
 export default async function register(app) {
   await app.registerPlugin({
     label: "Surcharges",
-    name: "plugin-surcharges",
+    name: "api-plugin-surcharges",
     version: pkg.version,
     collections: {
       Surcharges: {
