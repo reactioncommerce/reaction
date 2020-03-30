@@ -28,6 +28,8 @@
     "faker": "^4.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/eslint-config": "~2.1.0",
     "babel-eslint": "^10.0.3",
@@ -39,6 +41,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.0.1",
+    "husky": "^4.2.3",
     "semantic-release": "^17.0.4"
   },
   "scripts": {
@@ -64,6 +67,16 @@
       "node/no-unsupported-features/es-syntax": "off",
       "node/no-unpublished-import": "off",
       "node/no-unpublished-require": "off"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "prettier": {
