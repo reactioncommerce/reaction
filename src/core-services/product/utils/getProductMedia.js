@@ -15,6 +15,7 @@ export default async function getProductMedia(product, context) {
     {
       "metadata.shopId": shopId,
       "metadata.productId": productId,
+      "metadata.variantId": { $eq: null },
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     },
     {
