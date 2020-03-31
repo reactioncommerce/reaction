@@ -1,3 +1,31 @@
+# v3.4.0
+
+Reaction v3.4.0 adds minor features and performance enhancements, and contains no breaking changes since v3.3.0.
+
+## Notable changes
+
+### Moves two plugins into their own npm packages
+
+`navigation` and `payments-example` plugins have been moved from internal plugins, to npm install packages.
+
+### Adds additional fields to `updateShop` mutation
+
+`updateShop` mutation has been expanded to allow updating of more Shop related settings via the GraphQL API
+
+## Refactor
+
+- refactor: add missing fields to updateShop mutation ([#6146](https://github.com/reactioncommerce/reaction/pull/6146))
+- refactor: move navigation plugin into npm ([#6118](https://github.com/reactioncommerce/reaction/pull/6118))
+- refactor: move payments-example plugin to npm package ([#6142](https://github.com/reactioncommerce/reaction/pull/6142))
+
+## Fixes
+
+- fix: variant clone produces null and undefined values ([#6149](https://github.com/reactioncommerce/reaction/pull/6149))
+
+## Contributors
+
+Thanks to @trojanh for contributing to this release! 🎉
+
 # v3.3.0
 
 Reaction v3.3.0 adds minor features and performance enhancements, and contains no breaking changes since v3.2.0.

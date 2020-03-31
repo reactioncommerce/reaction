@@ -18,13 +18,26 @@
           "reloadError": "Translations could not be reloaded for the current shop.",
           "reloadAllError": "Translations could not be reloaded for all shops."
         },
+        "baseUOL": "Base Unit of Length",
         "baseUOM": "Base Unit of Measure",
-        "currency": "Base Currency",
+        "uol": {
+          "Inches": "Inches",
+          "Centimeters": "Centimeters",
+          "Feet": "Feet"
+        },
+        "uom": {
+          "oz": "Ounces",
+          "lb": "Pounds",
+          "g": "Grams",
+          "kg": "Kilograms"
+        },
+        "currency": "Currency",
         "currencyTooltip": "Shop default currency",
-        "language": "Base Language",
+        "language": "Language",
+        "languagePlaceholder": "Language",
         "languageTooltip": "This language will be used if device language detection will be failed",
         "timezone": "Timezone",
-        "timezoneOptions": "Choose timezone"
+        "timezoneLabel": "Choose a timezone"
       }
     }
   }

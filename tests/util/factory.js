@@ -1,4 +1,12 @@
+import {
+  NavigationItem,
+  NavigationTree,
+  NavigationTreeItem
+} from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
+
 import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
+
+import { DiscountCodes } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
 import {
   Catalog,
@@ -14,10 +22,6 @@ import {
   CartItem,
   ShipmentQuote
 } from "../../src/core-services/cart/simpleSchemas.js";
-
-import {
-  DiscountCodes as Discounts
-} from "../../src/plugins/discount-codes/simpleSchemas.js";
 
 import {
   extendInventorySchemas
@@ -83,12 +87,6 @@ import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
-import {
-  NavigationItem,
-  NavigationTree,
-  NavigationTreeItem
-} from "../../src/plugins/navigation/simpleSchemas.js";
-
 import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
 
 import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
@@ -113,7 +111,7 @@ const schemasToAddToFactory = {
   CatalogProductVariant,
   CommonOrder,
   CommonOrderItem,
-  Discounts,
+  Discounts: DiscountCodes,
   Email,
   EmailTemplates,
   FulfillmentMethod,
