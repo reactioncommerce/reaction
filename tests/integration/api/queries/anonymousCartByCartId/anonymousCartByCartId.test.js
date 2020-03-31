@@ -175,7 +175,7 @@ test("anonymous cart query works after a related catalog product is deleted", as
   }
 
   expect(result.anonymousCartByCartId._id).toBe(opaqueCartId);
-  expect(result.anonymousCartByCartId.items.nodes.length).toBe(2);
+  expect(result.anonymousCartByCartId.items.nodes.length).toBe(1);
 });
 
 test("anonymous cart query works after a related catalog product variant is deleted or hidden", async () => {
@@ -196,5 +196,5 @@ test("anonymous cart query works after a related catalog product variant is dele
   }
 
   expect(result.anonymousCartByCartId._id).toBe(opaqueCartId);
-  expect(result.anonymousCartByCartId.items.nodes.length).toBe(2);
+  expect(result.anonymousCartByCartId.items.nodes.length).toBe(1);
 });
