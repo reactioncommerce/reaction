@@ -7,7 +7,7 @@ import pkg from "../package.json";
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Taxes Rates",
+    label: "Tax Rates",
     name: "taxes-rates",
     version: pkg.version,
   });
