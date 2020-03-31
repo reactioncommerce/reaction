@@ -2,8 +2,6 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import { rewire as rewire$getTopLevelProduct, restore as restore$getTopLevelProduct } from "../utils/getTopLevelProduct.js";
 import hashProduct, { rewire$createProductHash, restore as restore$hashProduct } from "./hashProduct.js";
 
-const mockCollections = { ...mockContext.collections };
-
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalCatalogItemId = "999";
@@ -83,10 +81,10 @@ afterAll(() => {
 });
 
 test("successful update when publishing", async () => {
-  mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
-  const updatedProduct = await hashProduct(mockProduct._id, mockCollections);
+  mockContext.collections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
+  const updatedProduct = await hashProduct(mockContext, mockProduct._id);
 
-  expect(mockCollections.Products.updateOne).toHaveBeenCalledWith({
+  expect(mockContext.collections.Products.updateOne).toHaveBeenCalledWith({
     _id: mockProduct._id
   }, {
     $set: {
@@ -100,10 +98,10 @@ test("successful update when publishing", async () => {
 });
 
 test("when update fails, returns null", async () => {
-  mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
-  const updatedProduct = await hashProduct(mockProduct._id, mockCollections);
+  mockContext.collections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
+  const updatedProduct = await hashProduct(mockContext, mockProduct._id);
 
-  expect(mockCollections.Products.updateOne).toHaveBeenCalledWith({
+  expect(mockContext.collections.Products.updateOne).toHaveBeenCalledWith({
     _id: mockProduct._id
   }, {
     $set: {
@@ -116,10 +114,10 @@ test("when update fails, returns null", async () => {
 });
 
 test("does not update publishedProductHash when isPublished arg is false", async () => {
-  mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
-  const updatedProduct = await hashProduct(mockProduct._id, mockCollections, false);
+  mockContext.collections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
+  const updatedProduct = await hashProduct(mockContext, mockProduct._id, false);
 
-  expect(mockCollections.Products.updateOne).toHaveBeenCalledWith({
+  expect(mockContext.collections.Products.updateOne).toHaveBeenCalledWith({
     _id: mockProduct._id
   }, {
     $set: {

@@ -32,7 +32,6 @@ const variantFieldsThatNeedPublishing = [
   "_id",
   "attributeLabel",
   "barcode",
-  "compareAtPrice",
   "height",
   "index",
   "isDeleted",
@@ -92,12 +91,13 @@ export async function createProductHash(context, product) {
  * @method hashProduct
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
+ * @param {Object} context - App context
  * @param {String} productId - A productId
- * @param {Object} collections - Raw mongo collections
  * @param {Boolean} isPublished - Is product published to catalog
  * @returns {Object} updated product if successful, original product if unsuccessful
  */
-export default async function hashProduct(productId, collections, isPublished = true) {
+export default async function hashProduct(context, productId, isPublished = true) {
+  const { collections } = context;
   const { Products } = collections;
 
   const topLevelProduct = await getTopLevelProduct(productId, collections);
@@ -105,7 +105,7 @@ export default async function hashProduct(productId, collections, isPublished = 
     throw new Error(`No top level product found for product with ID ${productId}`);
   }
 
-  const productHash = await createProductHash(topLevelProduct, collections);
+  const productHash = await createProductHash(context, topLevelProduct);
 
   // Insert/update product document with hash field
   const hashFields = {

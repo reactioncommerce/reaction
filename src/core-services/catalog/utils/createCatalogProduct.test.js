@@ -20,7 +20,6 @@ const mockVariants = [
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
     createdAt,
-    compareAtPrice: 1100,
     height: 0,
     index: 0,
     isDeleted: false,

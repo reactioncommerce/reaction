@@ -21,7 +21,8 @@ export default async function saveManyCarts(context, carts) {
 
   // Transform and validate each cart and then add to `bulkWrites` array
   const bulkWritePromises = carts.map(async (cart) => {
-    // Mutates `cart`
+    // These will mutate `cart`
+    await context.mutations.removeMissingItemsFromCart(context, cart);
     await context.mutations.transformAndValidateCart(context, cart);
 
     return {
