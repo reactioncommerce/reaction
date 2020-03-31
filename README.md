@@ -1,12 +1,12 @@
-# plugin-job-queue
+# api-plugin-job-queue
 
-[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/plugin-job-queue.svg)](https://www.npmjs.com/package/@reactioncommerce/plugin-job-queue)
-[![CircleCI](https://circleci.com/gh/reactioncommerce/plugin-job-queue.svg?style=svg)](https://circleci.com/gh/reactioncommerce/plugin-job-queue)
+[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-job-queue.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-job-queue)
+[![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-job-queue.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-job-queue)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Summary
 
-Job Queue plugin for the Reaction API
+Job Queue plugin for the [Reaction API](https://github.com/reactioncommerce/reaction)
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
