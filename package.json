@@ -19,7 +19,7 @@
     "email": "engineering@reactioncommerce.com",
     "url": "https://reactioncommerce.com"
   },
-  "license": "Apache-2.0",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/api-service-account/issues"
   },
