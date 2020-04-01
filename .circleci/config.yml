@@ -18,20 +18,20 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-  # deploy:
-  #   docker:
-  #     - image: node:12
+  deploy:
+    docker:
+      - image: node:12
 
-  #   steps:
-  #     - checkout
+    steps:
+      - checkout
 
-  #     - restore_cache:
-  #         keys:
-  #         - v1-dependencies-{{ checksum "package.json" }}
-  #         # fallback to using the latest cache if no exact match is found
-  #         - v1-dependencies-
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
 
-  #     - run: npx semantic-release
+      - run: npx semantic-release
 
   lint:
     docker:
@@ -75,11 +75,11 @@ workflows:
       - test:
           requires:
             - build
-      # - deploy:
-      #     context: reaction-publish-semantic-release
-      #     requires:
-      #       - lint
-      #       - test
-      #     filters:
-      #       branches:
-      #         only: trunk
+      - deploy:
+          context: reaction-publish-semantic-release
+          requires:
+            - lint
+            - test
+          filters:
+            branches:
+              only: trunk
