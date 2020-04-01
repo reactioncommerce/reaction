@@ -1,0 +1,37 @@
+"Input parameters for the inviteShopMember mutation"
+input InviteShopMemberInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The email address of the person to invite"
+  email: String!
+
+  "The permission group for this person's new account"
+  groupId: ID!
+
+  "The invitee's full name"
+  name: String!
+
+  "The ID of the shop to which you want to invite this person"
+  shopId: ID!
+}
+
+"The response from the `inviteShopMember` mutation"
+type InviteShopMemberPayload {
+  "The account that was successfully created or found and updated by inviting this shop member"
+  account: Account
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+extend type Mutation {
+  """
+  Given a person's email address and name, invite them to create an account for a certain shop,
+  and put them in the provided permission group
+  """
+  inviteShopMember(
+    "Mutation input"
+    input: InviteShopMemberInput!
+  ): InviteShopMemberPayload
+}

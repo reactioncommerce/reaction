@@ -1,0 +1,40 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Buchhaltung",
+          "accountsTitle": "Buchhaltung",
+          "accountsDescription": "Kontoeinstellungen"
+        },
+        "settings": {
+          "continue": "Fortsetzen",
+          "cancel": "Abbrechen",
+          "changeOwner": "Besitzer wechseln",
+          "removeUser": "Benutzer entfernen",
+          "createGroupSuccess": "Gruppe erfolgreich erstellt",
+          "updateGroupSuccess": "Gruppe erfolgreich aktualisiert",
+          "createGroupError": "Fehler beim Erstellen der Gruppe",
+          "updateGroupError": "Fehler beim Aktualisieren der Gruppe",
+          "changeShopOwnerWarn": "Sie sind dabei, den Ladenbesitzer zu wechseln. Der derzeitige Besitzer wird ersetzt",
+          "removeUserWarn": "Du bist dabei, einen Benutzer aus einer Gruppe zu entfernen. Der Benutzer verliert die zugehörigen Berechtigungen",
+          "accountsSettingsLabel": "Buchhaltung",
+          "accountsSettingsTitle": "Buchhaltung",
+          "accountsSettingsDescription": "Kontoeinstellungen"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "Johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Sie können einen Benutzer nicht direkt als Besitzer einladen. Fördern Sie einen vorhandenen Admin",
+          "groupRequired": "Eine Gruppe muss einen Administrator einladen",
+          "cannotInvite": "Sie können nicht zur Gruppe einladen",
+          "unableToSendInvitationEmail": "Kann keine Einladungsnachricht senden",
+          "errorSendingInvite": "Beim Senden der Einladung ist ein Fehler aufgetreten",
+          "NeedToSetUsernameOrEmail": "Bitte Benutzernamen oder E-Mail-Adresse angeben"
+        }
+      }
+    }
+  }
+}]
