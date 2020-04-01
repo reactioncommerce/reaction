@@ -28,6 +28,7 @@ const args = {
   // more info here: https://facebook.github.io/relay/graphql/connections.htm#sec-Arguments
   // supported:
   // offset: Int,
+  // first: Int,
   // last: Int,
   // sortBy: String (the name of the MongoDB field you want to sort results by)
   // sortOrder: String ("desc" for descending, or "asc" for ascending)
