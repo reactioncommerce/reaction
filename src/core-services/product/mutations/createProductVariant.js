@@ -3,11 +3,17 @@ import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { ProductVariant } from "../simpleSchemas.js";
+import cleanProductVariantInput from "../utils/cleanProductVariantInput.js";
 import isAncestorDeleted from "../utils/isAncestorDeleted.js";
 
 const inputSchema = new SimpleSchema({
   productId: String,
-  shopId: String
+  shopId: String,
+  variant: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  }
 });
 
 /**
@@ -17,20 +23,20 @@ const inputSchema = new SimpleSchema({
  * @param {Object} input - Input arguments for the bulk operation
  * @param {String} input.productId - the product or variant ID which we create new variant on
  * @param {String} input.shopId - the shop to create the variant for
+ * @param {Object} [input.variant] - variant data
  * @return {String} created variantId
  */
 export default async function createProductVariant(context, input) {
   inputSchema.validate(input);
   const { collections } = context;
   const { Products } = collections;
-  const { productId, shopId } = input;
+  const { productId, shopId, variant: productVariantInput } = input;
 
   // See that user has permission to create variant
   await context.validatePermissions("reaction:legacy:products", "create", { shopId });
 
   // See that parent product exists
   const parentProduct = await Products.findOne({ _id: productId, shopId });
-
   if (!parentProduct) {
     throw new ReactionError("not-found", "Product not found");
   }
@@ -59,7 +65,17 @@ export default async function createProductVariant(context, input) {
     ancestors = [productId];
   }
 
-  const newVariantId = Random.id();
+  const initialProductVariantData = await cleanProductVariantInput(context, {
+    productVariantInput
+  });
+
+  if (initialProductVariantData.isDeleted) {
+    throw new ReactionError("invalid-param", "Creating a deleted product variant is not allowed");
+  }
+
+  // Generate a random ID, but only if one was not passed in
+  const newVariantId = (productVariantInput && productVariantInput._id) || Random.id();
+
   const createdAt = new Date();
   const newVariant = {
     _id: newVariantId,
@@ -72,7 +88,8 @@ export default async function createProductVariant(context, input) {
     updatedAt: createdAt,
     workflow: {
       status: "new"
-    }
+    },
+    ...initialProductVariantData
   };
 
   const isOption = ancestors.length > 1;
