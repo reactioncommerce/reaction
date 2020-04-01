@@ -91,26 +91,31 @@ extend type CatalogProductVariant {
 }
 
 extend type Product {
-  "Deprecated, please use the `pricing` field. Price range"
-  price: ProductPriceRange
+  "Price range"
+  price: ProductPriceRange @deprecated(reason: "Use `pricing`")
 
   "Pricing information"
   pricing: ProductPricingInfo!
 }
 
 extend type ProductVariant {
-  "Deprecated, please use the `pricing` field. Compare at price of the variant"
-  compareAtPrice: Float
+  "Compare at price of the variant"
+  compareAtPrice: Float @deprecated(reason: "Use `pricing`")
 
-  "Deprecated please use the `pricing` field. Price of the variant"
-  price: Float
+  "Price of the variant"
+  price: Float @deprecated(reason: "Use `pricing`")
 
   "Pricing information"
   pricing: ProductPricingInfo!
 }
 
 extend input ProductVariantInput {
-  "The price of the variant"
+  "Variant compareAtPrice. DEPRECATED. Use the `updateProductVariantPrices` mutation to set product variant prices."
+  # @deprecated isn't allowed on input fields yet. See See https://github.com/graphql/graphql-spec/pull/525
+  compareAtPrice: Float
+
+  "Variant price. DEPRECATED. Use the `updateProductVariantPrices` mutation to set product variant prices."
+  # @deprecated isn't allowed on input fields yet. See See https://github.com/graphql/graphql-spec/pull/525
   price: Float
 }
 

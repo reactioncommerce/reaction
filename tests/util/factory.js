@@ -51,8 +51,7 @@ import {
 
 import {
   Product,
-  ProductVariant,
-  ProductVariantInputSchema
+  ProductVariant
 } from "../../src/core-services/product/simpleSchemas.js";
 
 import {
@@ -130,7 +129,6 @@ const schemasToAddToFactory = {
   Payment,
   Product,
   ProductVariant,
-  ProductVariantInputSchema,
   Restriction,
   ShipmentQuote,
   Shop,
