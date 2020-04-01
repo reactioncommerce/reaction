@@ -9,7 +9,7 @@ import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {Object} args.input - mutation input object
  * @param {String} args.input.clientMutationId - The mutation id
  * @param {String} args.input.shopId - shopId of shop product belongs to
- * @param {String} args.input.variant - value to update field with
+ * @param {Object} args.input.variant - updated variant fields
  * @param {String} args.input.variantId - Id of variant to update
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>} updateProductVariant payload
@@ -21,11 +21,6 @@ export default async function updateProductVariant(_, { input }, context) {
     variant,
     variantId
   } = input;
-
-  // Decode ancestors array
-  if (Array.isArray(variant.ancestors)) {
-    variant.ancestors = variant.ancestors.map(decodeProductOpaqueId);
-  }
 
   const updatedVariant = await context.mutations.updateProductVariant(context, {
     variantId: decodeProductOpaqueId(variantId),
