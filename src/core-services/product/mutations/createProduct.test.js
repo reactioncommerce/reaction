@@ -1,8 +1,10 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import ReactionError from "@reactioncommerce/reaction-error";
+import * as simpleSchemas from "../simpleSchemas.js";
 import createProduct from "./createProduct.js";
 
 mockContext.mutations.createProduct = jest.fn().mockName("mutations.createProduct");
+mockContext.simpleSchemas = simpleSchemas;
 
 test("throws if permission check fails", async () => {
   mockContext.validatePermissions.mockImplementation(() => {
