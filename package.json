@@ -1,18 +1,18 @@
 {
-  "name": "@reactioncommerce/api-plugin-example",
-  "description": "Boilerplate Example plugin for the Reaction API",
+  "name": "@reactioncommerce/api-service-taxes",
+  "description": "Taxes service for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
   "type": "module",
   "engines": {
     "node": ">=12.14.1"
   },
-  "homepage": "https://github.com/reactioncommerce/api-plugin-example",
-  "url": "https://github.com/reactioncommerce/api-plugin-example",
+  "homepage": "https://github.com/reactioncommerce/api-service-taxes",
+  "url": "https://github.com/reactioncommerce/api-service-taxes",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/api-plugin-example.git"
+    "url": "git+https://github.com/reactioncommerce/api-service-taxes.git"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -21,7 +21,7 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/api-plugin-example/issues"
+    "url": "https://github.com/reactioncommerce/api-service-taxes/issues"
   },
   "sideEffects": false,
   "dependencies": {},
