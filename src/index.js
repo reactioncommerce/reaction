@@ -7,8 +7,8 @@ import pkg from "../package.json";
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Plugin Example",
-    name: "plugin-example",
+    label: "i18n",
+    name: "i18n",
     version: pkg.version
   });
 }
