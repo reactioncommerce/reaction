@@ -1,3 +1,6 @@
+"A date"
+scalar Date
+
 extend type Mutation {
   "Generate sitemap documents"
   generateSitemaps(
