@@ -13,22 +13,14 @@ set -o posix    # more strict failures in subshells
 IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
-if [[ "$#" -ne 1 ]]; then
-  echo "Usage: $0 [userId]" 1>&2
-  exit 1
-fi
+echo "
+Please globally install the @reactioncommerce/hydra-token package:
 
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-node_script=${__dir}/../.reaction/getAuthToken.js
-simple_oauth2_pkg_json=${__dir}/../node_modules/simple-oauth2/package.json
-simple_oauth2_version="3.1.0"
+https://www.npmjs.com/package/@reactioncommerce/hydra-token
 
-# NPM install the simple-oauth2 package used by the script only if necessary
-if [[ ! -f ${simple_oauth2_pkg_json} ]]; then
-  npm install --no-save simple-oauth2@${simple_oauth2_version}
-elif [[ $(grep -c '"version": "'${simple_oauth2_version}'"' ${simple_oauth2_pkg_json}) != "1" ]]; then
-  npm install --no-save simple-oauth2@${simple_oauth2_version}
-fi
+Then run 'hydra-token get' command instead of 'bin/token' in the future.
 
-# Run the script using Node
-node ${node_script} "$1"
+Getting token...
+"
+
+npx @reactioncommerce/hydra-token get $1

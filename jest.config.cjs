@@ -12,7 +12,8 @@ const externalNodeModules = [
   "@reactioncommerce/plugin-payments-example",
   "@reactioncommerce/plugin-simple-authorization",
   "@reactioncommerce/plugin-sitemap-generator",
-  "@reactioncommerce/plugin-system-information"
+  "@reactioncommerce/plugin-system-information",
+  "@reactioncommerce/plugin-translations"
 ];
 
 const jestConfig = {
