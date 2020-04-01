@@ -18,5 +18,9 @@ Please globally install the @reactioncommerce/hydra-token package:
 
 https://www.npmjs.com/package/@reactioncommerce/hydra-token
 
-Then run 'hydra-token get' command instead of 'bin/token'
+Then run 'hydra-token get' command instead of 'bin/token' in the future.
+
+Getting token...
 "
+
+npx @reactioncommerce/hydra-token get $1
