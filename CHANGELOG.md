@@ -1,3 +1,37 @@
+# v3.5.0
+
+Reaction v3.5.0 adds minor features and performance enhancements, fixes bugs, and contains no breaking changes since v3.4.0.
+
+## Notable changes
+
+### Moves three plugins into their own npm packages
+
+`discount-codes`, `sitemap-generator` and `translations` plugins have been moved from internal plugins, to npm install packages.
+
+### Price field has been deprecated on Product Variants and Options
+
+A new `pricing` field has been added to Product and ProductVariant types, and `price` has been deprecated, to keep field consistant across packages and product types.
+
+## Features
+
+- feat: support passing product data with createProduct and createProductVariant ([#6150](https://github.com/reactioncommerce/reaction/pull/6150))
+
+## Refactors
+
+- refactor: deprecate bin/token script ([#6183](https://github.com/reactioncommerce/reaction/pull/6183))
+- refactor: move sitemap generator plugin to npm ([#6144](https://github.com/reactioncommerce/reaction/pull/6144))
+- refactor: move translations plugin to npm ([#6160](https://github.com/reactioncommerce/reaction/pull/6160))
+- refactor: npm discount codes ([#6157](https://github.com/reactioncommerce/reaction/pull/6157))
+
+## Fixes
+
+- fix: adds new pricing field to product variants in order to correctly display prices ([#6159](https://github.com/reactioncommerce/reaction/pull/6159))
+- fix: Update getAuthToken for ES6 modules ([#6156](https://github.com/reactioncommerce/reaction/pull/6156))
+
+## Chores
+
+- chore: issue template update ([#6158](https://github.com/reactioncommerce/reaction/pull/6158))
+
 # v3.4.0
 
 Reaction v3.4.0 adds minor features and performance enhancements, and contains no breaking changes since v3.3.0.
@@ -12,7 +46,35 @@ Reaction v3.4.0 adds minor features and performance enhancements, and contains n
 
 `updateShop` mutation has been expanded to allow updating of more Shop related settings via the GraphQL API
 
-## Refactor
+## Refactors
+
+- refactor: add missing fields to updateShop mutation ([#6146](https://github.com/reactioncommerce/reaction/pull/6146))
+- refactor: move navigation plugin into npm ([#6118](https://github.com/reactioncommerce/reaction/pull/6118))
+- refactor: move payments-example plugin to npm package ([#6142](https://github.com/reactioncommerce/reaction/pull/6142))
+
+## Fixes
+
+- fix: variant clone produces null and undefined values ([#6149](https://github.com/reactioncommerce/reaction/pull/6149))
+
+## Contributors
+
+Thanks to @trojanh for contributing to this release! 🎉
+
+# v3.4.0
+
+Reaction v3.4.0 adds minor features and performance enhancements, and contains no breaking changes since v3.3.0.
+
+## Notable changes
+
+### Moves two plugins into their own npm packages
+
+`navigation` and `payments-example` plugins have been moved from internal plugins, to npm install packages.
+
+### Adds additional fields to `updateShop` mutation
+
+`updateShop` mutation has been expanded to allow updating of more Shop related settings via the GraphQL API
+
+## Refactors
 
 - refactor: add missing fields to updateShop mutation ([#6146](https://github.com/reactioncommerce/reaction/pull/6146))
 - refactor: move navigation plugin into npm ([#6118](https://github.com/reactioncommerce/reaction/pull/6118))
@@ -40,7 +102,7 @@ Remaining `role` and `permissions` related code has been moved of the API and in
 
 - feat: various updates for product editor ([#6141](https://github.com/reactioncommerce/reaction/pull/6141))
 
-## Refactor
+## Refactors
 
 - refactor: allow all users with token to view order ([#6092](https://github.com/reactioncommerce/reaction/pull/6092))
 - refactor: move roles and group.permissions code from account plugin to simple-auth plugin ([#6111](https://github.com/reactioncommerce/reaction/pull/6111))
@@ -65,7 +127,7 @@ Introduces Gateway capability, which allows for the API to be a participant on t
 - feat: add gateway capabilities to API ([#6100](https://github.com/reactioncommerce/reaction/pull/6100))
 - feat: add updateProductsVisibility mutation ([#6104](https://github.com/reactioncommerce/reaction/pull/6104))
 
-## Refactor
+## Refactors
 
 - refactor: move system information plugin to npm ([#6105](https://github.com/reactioncommerce/reaction/pull/6105))
 - refactor: replace internal authentication plugin with NPM installed plugin-authentication ([#6108](https://github.com/reactioncommerce/reaction/pull/6108))
@@ -1136,7 +1198,7 @@ This release is being coordinated with `reaction-platform` and is designed to wo
 - chore: ensure an error message is logged for apollo errors (#5061)
 - chore: more consistent Usage of ES6+ Code (#5056)
 
-## Refactor
+## Refactors
 
 - refactor: Demeteorize registration for remaining API server plugins (#5234)
 - refactor: Rename graphql endpoint (#5249)
@@ -1395,7 +1457,7 @@ We have added new documentation! :
 - fix: migration 56 throwing an error (#4934)
 - fix: 404 from invite email link (#4919)
 
-## Refactor
+## Refactors
 
 - refactor: update `inventoryQuantity` field to be `inventoryInStock` (#4930)
 - refactor: replace all Hooks with appEvents (#4915)
@@ -1582,7 +1644,7 @@ Breaking changes to how address validation works. Affects all plugins that provi
 - fix: catalog variant inventory flags always false (#4742) .. Resolves #4741
 - fix: tax calculation arguments, other tax fixes (#4811)
 
-## Refactor
+## Refactors
 
 - refactor: shipping rules (#4789)
 
@@ -2062,7 +2124,7 @@ Fulfillment options are what we're calling what used to be shipment options. In 
 - fix: sync lowInventoryThreshold number between variants and child options (#4519)
 - fix: Product prices showing as \$NaN.undefined on the customer product grid (#4518)
 
-### Refactor
+### Refactors
 
 - refactor: Refactor cart / fulfillment hooks (#4535)
 - refactor fulfillment items (#4531)
@@ -3288,7 +3350,7 @@ reactioncommerce/base:v4.0.1 removed the following:
 
 We've updated our circle ci config to use [v2 of Workflows](https://circleci.com/docs/2.0/workflows/). This permits us to run additional automated tests on circle instead of using other services. We now have 6 workflow steps that must pass before a PR can be merged.
 
-## Refactor
+## Refactors
 
 - refactor: rename Import to Importer (#3613) .. Resolves ##1364
 - refactor: convert search modal wrapper to React (#3853)
@@ -3374,7 +3436,7 @@ Thanks to @pmn4 for contributing to this release!
 
 - feat: Allow for ShopId when adding Brand Assets (#3529)
 
-## Refactor
+## Refactors
 
 - refactor: Call OrdersList as a Component (#3848)
 
@@ -3563,7 +3625,7 @@ There are potentially breaking changes you should be aware of in this release.
 
 - We've converted the Avalara Setting page to React (see #3348)
 
-### Refactor
+### Refactors
 
 - (refactor): upgrade Meteor to 1.6.1 (#3615) .. Resolves #3029
 - (refactor): eslint-9 and Aria (#3582) .. Resolves #3574
