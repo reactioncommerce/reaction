@@ -21,7 +21,7 @@ type Product {
   "All media for a product"
   media(
     "Determines whether variant media should be included in the product or not"
-    shouldIncludeVariantMedia: Boolean
+    shouldIncludeVariantMedia: Boolean = true
     ): [ImageInfo]
 
   "The product description to use for page `description` meta element in HTML"
@@ -609,8 +609,6 @@ extend type Query {
     "Shop ID"
     shopId: ID!
 
-    "Should variant media be included in the top level product?"
-    shouldIncludeVariantMedia: Boolean
   ): Product
 
   "Query for a list of Products"

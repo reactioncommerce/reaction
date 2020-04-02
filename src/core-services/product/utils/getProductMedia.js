@@ -15,7 +15,7 @@ export default async function getProductMedia(product, { shouldIncludeVariantMed
 
   let includeVariantMedia = {};
   if (!shouldIncludeVariantMedia) {
-    includeVariantMedia = { "metadata.variantId": { $eq: null } };
+    includeVariantMedia = { "metadata.variantId": null };
   }
 
   const mediaArray = await Media.find(
