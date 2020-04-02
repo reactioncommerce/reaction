@@ -1,12 +1,18 @@
+import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
+
+import {
+  DiscountCodes
+} from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
+
 import {
   NavigationItem,
   NavigationTree,
   NavigationTreeItem
 } from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
 
-import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
-
-import { DiscountCodes } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
+import {
+  Sitemap
+} from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
 import {
   Catalog,
@@ -51,8 +57,7 @@ import {
 
 import {
   Product,
-  ProductVariant,
-  ProductVariantInputSchema
+  ProductVariant
 } from "../../src/core-services/product/simpleSchemas.js";
 
 import {
@@ -66,10 +71,6 @@ import {
 import {
   Tag
 } from "../../src/core-services/tags/simpleSchemas.js";
-
-import {
-  Sitemap
-} from "../../src/plugins/sitemap-generator/simpleSchemas.js";
 
 import {
   TaxRates
@@ -130,7 +131,6 @@ const schemasToAddToFactory = {
   Payment,
   Product,
   ProductVariant,
-  ProductVariantInputSchema,
   Restriction,
   ShipmentQuote,
   Shop,

@@ -1,13 +1,39 @@
 mutation createProduct($input: CreateProductInput!) {
   createProduct(input: $input) {
     product {
+      _id
+      createdAt
+      currentProductHash
+      description
       isDeleted
       isVisible
+      metaDescription
+      metafields {
+        key
+        value
+      }
+      originCountry
+      pageTitle
+      productType
+      publishedAt
+      publishedProductHash
       shop {
         _id
       }
+      slug
+      socialMetadata {
+        message
+        service
+      }
+      shouldAppearInSitemap
       supportedFulfillmentTypes
+      tagIds
       title
+      updatedAt
+      variants {
+        _id
+      }
+      vendor
     }
   }
 }
