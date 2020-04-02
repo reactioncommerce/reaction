@@ -19,7 +19,7 @@ type Product {
   isVisible: Boolean!
 
   "All media for a product"
-  media: [ImageInfo]
+  media(shouldIncludeVariantMedia: Boolean): [ImageInfo]
 
   "The product description to use for page `description` meta element in HTML"
   metaDescription: String
@@ -578,6 +578,9 @@ extend type Query {
 
     "Shop ID"
     shopId: ID!
+
+    "Should variant media be included in the top level product?"
+    shouldIncludeVariantMedia: Boolean
   ): Product
 
   "Query for a list of Products"
