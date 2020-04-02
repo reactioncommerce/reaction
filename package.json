@@ -1,18 +1,18 @@
 {
-  "name": "@reactioncommerce/api-plugin-shipping-rates",
-  "description": "Shipping Rates plugin for the Reaction API",
+  "name": "@reactioncommerce/api-plugin-shipments-flat-rate",
+  "description": "Flat Rate Shipments plugin for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
   "type": "module",
   "engines": {
     "node": ">=12.14.1"
   },
-  "homepage": "https://github.com/reactioncommerce/api-plugin-shipping-rates",
-  "url": "https://github.com/reactioncommerce/api-plugin-shipping-rates",
+  "homepage": "https://github.com/reactioncommerce/api-plugin-shipments-flat-rate",
+  "url": "https://github.com/reactioncommerce/api-plugin-shipments-flat-rate",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/api-plugin-shipping-rates.git"
+    "url": "git+https://github.com/reactioncommerce/api-plugin-shipments-flat-rate.git"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -21,7 +21,7 @@
   },
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/api-plugin-shipping-rates/issues"
+    "url": "https://github.com/reactioncommerce/api-plugin-shipments-flat-rate/issues"
   },
   "sideEffects": false,
   "dependencies": {},
