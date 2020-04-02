@@ -19,7 +19,10 @@ type Product {
   isVisible: Boolean!
 
   "All media for a product"
-  media(shouldIncludeVariantMedia: Boolean): [ImageInfo]
+  media(
+    "Determines whether variant media should be included in the product or not"
+    shouldIncludeVariantMedia: Boolean
+    ): [ImageInfo]
 
   "The product description to use for page `description` meta element in HTML"
   metaDescription: String
