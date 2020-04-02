@@ -119,8 +119,7 @@ export function extendTaxesSchemas(schemas) {
     CatalogProductVariant,
     OrderFulfillmentGroup,
     OrderItem,
-    ProductVariant,
-    ProductVariantInputSchema
+    ProductVariant
   } = schemas;
 
   Cart.extend({
@@ -213,5 +212,4 @@ export function extendTaxesSchemas(schemas) {
   CatalogProductVariant.extend(variantSchemaExtension);
   CatalogProductOption.extend(variantSchemaExtension);
   ProductVariant.extend(productVariantSchemaExtension);
-  ProductVariantInputSchema.extend(productVariantSchemaExtension);
 }
