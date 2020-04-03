@@ -25,6 +25,7 @@
   },
   "sideEffects": false,
   "dependencies": {
+    "@reactioncommerce/api-utils": "^1.9.0",
     "faker": "^4.1.0"
   },
   "devDependencies": {
