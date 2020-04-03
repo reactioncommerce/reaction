@@ -9,6 +9,6 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Simple Schema",
     name: "simple-schema",
-    version: pkg.version,
+    version: pkg.version
   });
 }
