@@ -57,9 +57,6 @@ workflows:
       - lint:
           requires:
             - build
-      - test:
-          requires:
-            - build
       - deploy:
           context: reaction-publish-semantic-release
           requires:
