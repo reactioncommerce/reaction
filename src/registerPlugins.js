@@ -3,6 +3,7 @@
 // coming soon
 
 /* plugins */
+import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-address-validation-test";
 import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
 import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes";
 import registerPluginExamplePayments from "@reactioncommerce/plugin-payments-example";
@@ -43,7 +44,6 @@ import registerSMTPEmailPlugin from "./plugins/email-smtp/index.js";
 import registerStripePaymentsPlugin from "./plugins/payments-stripe/index.js";
 import registerSurchargesPlugin from "./plugins/surcharges/index.js";
 import registerTaxesRatesPlugin from "./plugins/taxes-rates/index.js";
-import registerTestAddressValidationPlugin from "./plugins/address-validation-test/index.js";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
@@ -164,5 +164,5 @@ export default async function registerPlugins(app) {
    * Miscellaneous
    */
   await registerNotificationsPlugin(app); // OPTIONAL
-  await registerTestAddressValidationPlugin(app); // OPTIONAL
+  await registerPluginAddressValidationTest(app); // OPTIONAL
 }
