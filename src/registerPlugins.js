@@ -1,12 +1,16 @@
 /* npm package imports */
-import registerAuthenticationPlugin from "@reactioncommerce/plugin-authentication";
-import registerDiscountCodesPlugin from "@reactioncommerce/plugin-discount-codes";
-import registerExamplePaymentsPlugin from "@reactioncommerce/plugin-payments-example";
-import registerNavigationPlugin from "@reactioncommerce/plugin-navigation";
-import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization";
-import registerSitemapGeneratorPlugin from "@reactioncommerce/plugin-sitemap-generator";
-import registerSystemInformationPlugin from "@reactioncommerce/plugin-system-information";
-import registerTranslationsPlugin from "@reactioncommerce/plugin-translations";
+/* core-services */
+// coming soon
+
+/* plugins */
+import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
+import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes";
+import registerPluginExamplePayments from "@reactioncommerce/plugin-payments-example";
+import registerPluginNavigation from "@reactioncommerce/plugin-navigation";
+import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-authorization";
+import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
+import registerPluginSystemInformation from "@reactioncommerce/plugin-system-information";
+import registerPluginTranslations from "@reactioncommerce/plugin-translations";
 
 /* node-app imports */
 /* core-services */
@@ -72,8 +76,8 @@ export default async function registerPlugins(app) {
   await registerI18nPlugin(app); // REQUIRED
   await registerEmailPlugin(app); // REQUIRED
   await registerAddressPlugin(app); // REQUIRED
-  await registerTranslationsPlugin(app); // OPTIONAL
-  await registerSystemInformationPlugin(app); // OPTIONAL
+  await registerPluginTranslations(app); // OPTIONAL
+  await registerPluginSystemInformation(app); // OPTIONAL
 
   /**
    * Email
@@ -89,8 +93,8 @@ export default async function registerPlugins(app) {
   /**
    * Authentication and Authorization
    */
-  await registerAuthenticationPlugin(app); // REQUIRED
-  await registerSimpleAuthorizationPlugin(app); // REQUIRED
+  await registerPluginAuthentication(app); // REQUIRED
+  await registerPluginSimpleAuthorization(app); // REQUIRED
 
   /**
    * Catalog
@@ -124,14 +128,14 @@ export default async function registerPlugins(app) {
    * Payments
    */
   await registerPaymentsPlugin(app); // REQUIRED
-  await registerExamplePaymentsPlugin(app); // OPTIONAL
+  await registerPluginExamplePayments(app); // OPTIONAL
   await registerStripePaymentsPlugin(app); // OPTIONAL
 
   /**
    * Discounts
    */
   await registerDiscountsPlugin(app); // REQUIRED
-  await registerDiscountCodesPlugin(app); // OPTIONAL
+  await registerPluginDiscountCodes(app); // OPTIONAL
 
   /**
    * Surcharges
@@ -153,8 +157,8 @@ export default async function registerPlugins(app) {
   /**
    * Navigation
    */
-  await registerNavigationPlugin(app); // OPTIONAL
-  await registerSitemapGeneratorPlugin(app); // OPTIONAL
+  await registerPluginNavigation(app); // OPTIONAL
+  await registerPluginSitemapGenerator(app); // OPTIONAL
 
   /**
    * Miscellaneous
