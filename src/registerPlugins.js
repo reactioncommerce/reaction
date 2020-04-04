@@ -1,6 +1,6 @@
 /* npm package imports */
-/* core-services */
-// coming soon
+/* services */
+import registerServiceAddressValidation from "@reactioncommerce/api-service-address-validation";
 
 /* plugins */
 import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-address-validation-test";
@@ -16,7 +16,6 @@ import registerPluginTranslations from "@reactioncommerce/plugin-translations";
 /* node-app imports */
 /* core-services */
 import registerAccountsPlugin from "./core-services/account/index.js";
-import registerAddressPlugin from "./core-services/address/index.js";
 import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerCartPlugin from "./core-services/cart/index.js";
 import registerDiscountsPlugin from "./core-services/discounts/index.js";
@@ -75,7 +74,7 @@ export default async function registerPlugins(app) {
   await registerSettingsPlugin(app); // REQUIRED
   await registerI18nPlugin(app); // REQUIRED
   await registerEmailPlugin(app); // REQUIRED
-  await registerAddressPlugin(app); // REQUIRED
+  await registerServiceAddressValidation(app); // REQUIRED
   await registerPluginTranslations(app); // OPTIONAL
   await registerPluginSystemInformation(app); // OPTIONAL
 
