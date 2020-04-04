@@ -24,7 +24,9 @@
     "url": "https://github.com/reactioncommerce/api-service-settings/issues"
   },
   "sideEffects": false,
-  "dependencies": {},
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^1.9.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
