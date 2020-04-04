@@ -6,6 +6,8 @@
 const externalNodeModules = [
   "@reactioncommerce/api-utils",
   "@reactioncommerce/db-version-check",
+  "@reactioncommerce/api-plugin-address-validation-test",
+  "@reactioncommerce/api-service-address-validation",
   "@reactioncommerce/plugin-authentication",
   "@reactioncommerce/plugin-discount-codes",
   "@reactioncommerce/plugin-navigation",
