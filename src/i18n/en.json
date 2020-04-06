@@ -9,6 +9,7 @@
         "discountError": "Sorry, there was an error applying discount."
       },
       "discounts": {
+        "title": "Discount Codes",
         "enterItHere": "Have a code? Enter it here.",
         "discountLabel": "Discount Code",
         "submitted": "Discount saved and applied",
@@ -29,16 +30,17 @@
           "settingsSaveFailure": "Failed to save settings.",
           "confirmRateDelete": "Confirm discount rate deletion."
         },
-        "discountGrid": {
-          "code": "Code",
-          "label": "Label",
-          "discountMethod": "Method",
-          "discount": "Discount",
-          "calculation": {
-            "method": "Calculation"
-          },
-          "conditions": {
-            "redemptionLimit": "Limit"
+        "discountsTable": {
+          "headers": {
+            "code": "Code",
+            "discountMethod": "Method",
+            "discount": "Discount",
+            "calculation": {
+              "method": "Calculation"
+            },
+            "conditions": {
+              "redemptionLimit": "Limit"
+            }
           }
         }
       }
