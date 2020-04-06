@@ -1,0 +1,27 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "shortcut": {
+          "catalogLabel": "Catalogus",
+          "catalogTitle": "Catalogus"
+        },
+        "dashboard": {
+          "catalogLabel": "Catalogus",
+          "catalogTitle": "Catalogus",
+          "catalogDescription": "Marketplace Catalog"
+        },
+        "settings": {
+          "catalogSettingsLabel": "Catalogusinstellingen",
+          "catalogSettingsTitle": "Catalogusinstellingen",
+          "catalogSettingsDescription": "Marketplace Catalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "product revisies"
+        }
+      }
+    }
+  }
+}]

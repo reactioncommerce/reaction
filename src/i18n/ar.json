@@ -1,0 +1,27 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "shortcut": {
+          "catalogLabel": "فهرس",
+          "catalogTitle": "فهرس"
+        },
+        "dashboard": {
+          "catalogLabel": "فهرس",
+          "catalogTitle": "فهرس",
+          "catalogDescription": "السوق كتالوج"
+        },
+        "settings": {
+          "catalogSettingsLabel": "إعدادات كتالوج",
+          "catalogSettingsTitle": "إعدادات كتالوج",
+          "catalogSettingsDescription": "السوق كتالوج"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "مراجعات المنتج"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,27 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "shortcut": {
+          "catalogLabel": "Κατάλογος",
+          "catalogTitle": "Κατάλογος"
+        },
+        "dashboard": {
+          "catalogLabel": "Κατάλογος",
+          "catalogTitle": "Κατάλογος",
+          "catalogDescription": "Marketplace Κατάλογος"
+        },
+        "settings": {
+          "catalogSettingsLabel": "Ρυθμίσεις Κατάλογος",
+          "catalogSettingsTitle": "Ρυθμίσεις Κατάλογος",
+          "catalogSettingsDescription": "Marketplace Κατάλογος"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "αναθεωρήσεις του προϊόντος"
+        }
+      }
+    }
+  }
+}]
