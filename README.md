@@ -1,7 +1,7 @@
 # api-plugin-address-validation-test
 
-[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/plugin-address-validation-test.svg)](https://www.npmjs.com/package/@reactioncommerce/plugin-address-validation-test)
-[![CircleCI](https://circleci.com/gh/reactioncommerce/plugin-address-validation-test.svg?style=svg)](https://circleci.com/gh/reactioncommerce/plugin-address-validation-test)
+[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-address-validation-test.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-address-validation-test)
+[![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-address-validation-test.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-address-validation-test)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Summary
