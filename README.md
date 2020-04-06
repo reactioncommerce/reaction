@@ -73,7 +73,7 @@ run().catch((error) => {
 
 ### Included Features
 
-Most Reaction API features are released as [plugins](./#Plugins), but even if you never register any plugins and run your API, you'll get the following core features automatically:
+Most Reaction API features are released as [plugins](#plugins), but even if you never register any plugins and run your API, you'll get the following core features automatically:
 
 - A minimal GraphQL API running at `/graphql` on `ROOT_URL`, with a `ping` query, an `echo` mutation, and a `tick` subscription for testing.
 - Commonly used core GraphQL types such as `Date`, `DateTime`, `Money`, and `Rate`, as well as types related to Relay-style pagination
