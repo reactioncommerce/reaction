@@ -1,0 +1,97 @@
+{
+  "name": "api-core",
+  "version": "1.0.0",
+  "description": "This NPM package provides the `ReactionAPICore` class. Use this to build a NodeJS microservice that is compatible with the Reaction Commerce platform, or to build your main Reaction Commerce API if you don't want to start by forking the `https://github.com/reactioncommerce/reaction` project.",
+  "main": "./src/index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=12.14.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/api-core",
+  "url": "https://github.com/reactioncommerce/api-core",
+  "email": "reaction@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/api-core.git"
+  },
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/api-core/issues"
+  },
+  "scripts": {
+    "test": "npm run test:unit",
+    "test:unit": "jest --maxWorkers=4",
+    "test:unit:watch": "jest --maxWorkers=4 --watch",
+    "test:unit:file": "jest --no-cache --maxWorkers=4",
+    "test:unit:file:watch": "jest --no-cache --maxWorkers=4 --watch",
+    "lint": "eslint .",
+    "lint:gql": "graphql-schema-linter ./src/**/*.graphql"
+  },
+  "keywords": [],
+  "prettier": {
+    "arrowParens": "always"
+  },
+  "graphql-schema-linter": {
+    "rules": [
+      "arguments-have-descriptions",
+      "deprecations-have-a-reason",
+      "descriptions-are-capitalized",
+      "enum-values-have-descriptions",
+      "enum-values-sorted-alphabetically",
+      "fields-have-descriptions",
+      "input-object-fields-sorted-alphabetically",
+      "input-object-values-have-descriptions",
+      "relay-connection-types-spec",
+      "relay-page-info-spec",
+      "type-fields-sorted-alphabetically",
+      "types-are-capitalized",
+      "types-have-descriptions"
+    ]
+  },
+  "dependencies": {
+    "@apollo/federation": "^0.13.2",
+    "@reactioncommerce/api-utils": "^1.9.0",
+    "@reactioncommerce/logger": "^1.1.3",
+    "@reactioncommerce/random": "^1.0.2",
+    "@reactioncommerce/reaction-error": "^1.0.1",
+    "apollo-server": "^2.11.0",
+    "apollo-server-express": "^2.11.0",
+    "apollo-server-testing": "^2.11.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cuid": "^2.1.8",
+    "dataloader": "^2.0.0",
+    "diehard": "^1.5.2",
+    "envalid": "^6.0.1",
+    "express": "^4.17.1",
+    "graphql": "^14.6.0",
+    "graphql-iso-date": "^3.6.1",
+    "lodash": "^4.17.15",
+    "mongodb": "^3.5.5",
+    "promise-retry": "^1.1.1",
+    "simpl-schema": "^1.5.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1",
+    "@reactioncommerce/eslint-config": "~2.1.1",
+    "babel-eslint": "~10.1.0",
+    "babel-jest": "~25.2.6",
+    "babel-plugin-rewire-exports": "~2.1.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "~6.26.2",
+    "babel-plugin-transform-import-meta": "~1.0.1",
+    "eslint": "~6.8.0",
+    "eslint-plugin-import": "~2.18.2",
+    "eslint-plugin-jest": "~22.17.0",
+    "eslint-plugin-jsx-a11y": "~6.2.3",
+    "eslint-plugin-node": "~10.0.0",
+    "eslint-plugin-promise": "~4.2.1",
+    "eslint-plugin-react": "~7.14.3",
+    "eslint-plugin-react-hooks": "~2.0.1",
+    "graphql-schema-linter": "~0.2.5",
+    "jest": "~25.2.7"
+  }
+}
