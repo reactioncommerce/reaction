@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws access-denied if not allowed 1`] = `"Access Denied"`;
