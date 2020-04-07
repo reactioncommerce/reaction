@@ -1,5 +1,7 @@
 import { createServer } from "http";
 import { createRequire } from "module";
+import nodePath from "path";
+import stack from "callsite";
 import diehard from "diehard";
 import express from "express";
 import _ from "lodash";
@@ -72,6 +74,10 @@ const startServerOptionsSchema = new SimpleSchema({
   port: {
     type: SimpleSchema.Integer,
     optional: true
+  },
+  silent: {
+    type: Boolean,
+    optional: true
   }
 });
 
@@ -85,6 +91,10 @@ const startOptionsSchema = new SimpleSchema({
     optional: true
   },
   shouldInitReplicaSet: {
+    type: Boolean,
+    optional: true
+  },
+  silent: {
     type: Boolean,
     optional: true
   }
@@ -373,12 +383,13 @@ export default class ReactionAPICore {
    * @param {Object} options Options object
    * @param {Number} [options.port] Port to listen on. If not provided,
    *   the server will be created but will not listen.
+   * @param {Boolean} [options.silent=false] Don't log info when the server starts listening
    * @returns {Promise<undefined>} Nothing
    */
   async startServer(options = {}) {
     startServerOptionsSchema.validate(options);
 
-    const { port } = options;
+    const { port, silent } = options;
 
     if (!this.httpServer) this.initServer();
 
@@ -398,11 +409,20 @@ export default class ReactionAPICore {
         // rather than `this.expressApp.listen`.
         this.httpServer.listen({ port }, () => {
           this.serverPort = port;
+
+          if (!silent) {
+            Logger.info(`GraphQL listening at ${this.graphQLServerUrl} (port ${port || "unknown"})`);
+
+            if (this.hasSubscriptionsEnabled) {
+              Logger.info(`GraphQL subscriptions ready at ${this.graphQLServerSubscriptionUrl} (port ${port || "unknown"})`);
+            }
+          }
+
           resolve();
         });
       } catch (error) {
         if (error.code === "EADDRINUSE") {
-          this.retryStartServer(port);
+          this.retryStartServer(port, silent);
         } else {
           reject(error);
         }
@@ -410,12 +430,12 @@ export default class ReactionAPICore {
     });
   }
 
-  async retryStartServer(port) {
+  async retryStartServer(port, silent) {
     Logger.error(`Port ${port} is in use. Stop whatever is listening on that port. Retrying in 5 seconds...`);
     setTimeout(() => {
       const stopStart = async () => {
         await this.stopServer();
-        await this.startServer({ port });
+        await this.startServer({ port, silent });
       };
 
       stopStart.catch((error) => { throw error; });
@@ -449,6 +469,7 @@ export default class ReactionAPICore {
    * @param {Number} [options.shouldInitReplicaSet] Automatically initialize a
    *   replica set for the MongoDB instance. Set this to `true` when running
    *   the app for development or tests.
+   * @param {Boolean} [options.silent=false] Don't log info when the server starts listening
    * @returns {Promise<undefined>} Nothing
    */
   async start(options = {}) {
@@ -456,7 +477,8 @@ export default class ReactionAPICore {
 
     const {
       mongoUrl = MONGO_URL,
-      shouldInitReplicaSet = REACTION_SHOULD_INIT_REPLICA_SET
+      shouldInitReplicaSet = REACTION_SHOULD_INIT_REPLICA_SET,
+      silent = false
     } = options;
 
     // Allow passing `port: null` to skip listening. Otherwise default to PORT env.
@@ -499,7 +521,7 @@ export default class ReactionAPICore {
     await this.runServiceStartup();
 
     // (4) Start the Express GraphQL server
-    await this.startServer({ port });
+    await this.startServer({ port, silent });
   }
 
   /**
@@ -588,5 +610,87 @@ export default class ReactionAPICore {
         this.context[key] = plugin.contextAdditions[key];
       });
     }
+
+    Logger.info(`Registered plugin ${plugin.name}`);
+    Logger.debug({ plugin });
+  }
+
+  /**
+   * @summary Register all plugins in the order listed. Each plugin may be the
+   *   object with the registration info or a function that takes the API
+   *   instance and will call `registerPlugin` on its own.
+   * @param {Object} plugins Object listing plugins like:
+   *   {
+   *     name: function or registration object
+   *   }
+   * @returns {Promise<undefined>} Nothing
+   */
+  async registerPlugins(plugins) {
+    /* eslint-disable no-await-in-loop */
+    for (const [name, plugin] of Object.entries(plugins)) {
+      if (typeof plugin === "function") {
+        await plugin(this);
+      } else if (typeof plugin === "object") {
+        await this.registerPlugin(plugin);
+      } else {
+        Logger.error({ name, plugin }, "Plugin is not a function or object and was skipped");
+      }
+    }
+    /* eslint-enable no-await-in-loop */
+  }
+
+  /**
+   * @summary Import all plugins listed in a JSON file. Relative paths are assumed
+   *   to be relative to the JSON file. This does NOT register the plugins. It builds
+   *   a valid `plugins` object which you can then pass to `api.registerPlugins`.
+   * @param {Object} pluginsFile An absolute or relative file path for a JSON file.
+   * @param {Object} [options] Options
+   * @param {Function} [options.transformPlugins] A function that takes the loaded plugins object and
+   *   may return an altered plugins object.
+   * @returns {Promise<Object>} Plugins object suitable for `api.registerPlugins`
+   */
+  static async importPluginsJSONFile(pluginsFile, options = {}) {
+    let absolutePluginsFile;
+    if (nodePath.isAbsolute(pluginsFile)) {
+      absolutePluginsFile = pluginsFile;
+    } else {
+      // Assume relative paths are relative to the file that is calling `importPluginsJSONFile`
+      const caller = stack()[1];
+      const callerFileName = caller.getFileName();
+      absolutePluginsFile = nodePath.join(nodePath.dirname(callerFileName), pluginsFile);
+    }
+
+    let pluginRefs = await import(absolutePluginsFile);
+
+    if (typeof options.transformPlugins === "function") {
+      // allow plugins to be added and removed
+      pluginRefs = options.transformPlugins(pluginRefs);
+    }
+
+    // Now import each module that is referenced. They are either package names or
+    // paths that are relative to the JSON file.
+    /* eslint-disable no-await-in-loop */
+    const plugins = {};
+    for (const [name, pluginPath] of Object.entries(pluginRefs)) {
+      let plugin;
+
+      // Distinguish between pre-imported modules, node module paths, and relative/absolute paths
+      if (typeof pluginPath !== "string") {
+        throw new Error(`Plugin "${name}" is not set to a string`);
+      } else if (/[a-zA-Z@]/.test(pluginPath[0])) {
+        plugin = await import(pluginPath);
+      } else {
+        plugin = await import(nodePath.join(nodePath.dirname(absolutePluginsFile), pluginPath));
+      }
+
+      if (typeof plugin === "object" && plugin.default) {
+        plugin = plugin.default;
+      }
+
+      plugins[name] = plugin;
+    }
+    /* eslint-enable no-await-in-loop */
+
+    return plugins;
   }
 }

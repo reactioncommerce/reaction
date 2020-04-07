@@ -56,13 +56,16 @@ async function run() {
   // for those you just pass `api` to the function.
   await registerFooPlugin(api);
 
+  // Or you can register multiple at once, passing in either a function or a
+  // registration object for each.
+  await api.registerPlugins({
+    foo: registerFooPlugin,
+    another: {
+      // some plugin config
+    }
+  });
+
   await api.start();
-
-  Logger.info(`GraphQL listening at ${api.graphQLServerUrl} (port ${api.serverPort || "unknown"})`);
-
-  if (api.hasSubscriptionsEnabled) {
-    Logger.info(`GraphQL subscriptions ready at ${api.graphQLServerSubscriptionUrl} (port ${api.serverPort || "unknown"})`);
-  }
 }
 
 run().catch((error) => {
@@ -70,6 +73,57 @@ run().catch((error) => {
   process.exit(1);
 });
 ```
+
+Alternatively, you can keep your plugin list in a JSON file:
+
+```js
+import { ReactionAPICore } from "@reactioncommerce/api-core";
+import Logger from "@reactioncommerce/logger";
+import authorizationPlugin from "@reactioncommerce/reaction-plugin-authorization";
+import packageJson from "../package.json";
+
+const api = new ReactionAPICore({
+  // See "ReactionAPICore Configuration" section. Many options are also configured
+  // by environment variables. See "Supported Environment Variables" section.
+  serveStaticPaths: ["public"],
+  version: packageJson.version
+});
+
+async function run() {
+  const plugins = await ReactionAPICore.importPluginsJSONFile("./plugins.json", {
+    // An optional function that allows you to transform the list from the
+    // JSON (add, swap, or remove plugins) before it attempts to load the
+    // plugin modules.
+    transformPlugins(pluginList) {
+      pluginList.authorization = authorizationPlugin;
+
+      return pluginList;
+    }
+  });
+
+  await api.registerPlugins(plugins);
+
+  await api.start();
+}
+
+run().catch((error) => {
+  Logger.error(error);
+  process.exit(1);
+});
+```
+
+Sample `plugins.json` file:
+
+```json
+{
+  "accounts": "./core-services/account/index.js",
+  "address": "./core-services/address/index.js",
+  "authentication": "@reactioncommerce/plugin-authentication",
+  "authorization": "@reactioncommerce/plugin-simple-authorization"
+}
+```
+
+All relative paths are assumed to be relative to the JSON file and are assumed to be an ES module. All packages are assumed to export the plugin registration function as their default ES module export.
 
 ### Included Features
 
@@ -249,6 +303,7 @@ expressMiddleware: [
 ```
 
 For now, only the "graphql" route is supported, and the following stages are supported in this order:
+
 - `first`
 - `before-authenticate`
 - `authenticate`
@@ -280,6 +335,7 @@ Look at built-in plugins for examples of these, and read [How To: Share Code Bet
 Use the `graphQL` object to register schemas and resolvers that extend the core GraphQL API.
 
 More information:
+
 - [How To: Create a new GraphQL mutation](https://docs.reactioncommerce.com/docs/graphql-create-mutation)
 - [How To: Create a new GraphQL query](https://docs.reactioncommerce.com/docs/graphql-create-query)
 - [How To: Extend GraphQL to add a field](https://docs.reactioncommerce.com/docs/how-to-extend-graphql-to-add-field)
@@ -321,6 +377,7 @@ Apollo Server passes a `context` object to every GraphQL resolver. By convention
 There are two types of properties on the app context: instance properties and request properties. Most properties are instance properties; they are set when you initialize a `ReactionAPICore` instance or when you register a plugin, and they do not change while the API is running. A few other properties are added to the context at the start of every request that comes in, and these are the request properties.
 
 Instance properties:
+
 - `app`: The `ReactionAPICore` instance that owns this context. (Note that `api.context.app` is a circular reference.)
 - `appEvents`: A simple event mechanism with `on` and `emit` properties. This allows event-based communication among plugins. Unlike Node's built-in `EventEmitter`, `appEvents.on` functions may return Promises and `appEvents.emit` may be awaited in situations where you want to be sure all event listeners have handled the event before continuing.
 - `appVersion`: A string set to whatever the `version` option is when creating the `ReactionAPICore` instance
