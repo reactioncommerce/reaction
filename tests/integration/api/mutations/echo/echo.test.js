@@ -1,11 +1,11 @@
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 jest.setTimeout(300000);
 
 let echo;
 let testApp;
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
 
   echo = testApp.mutate(`mutation {

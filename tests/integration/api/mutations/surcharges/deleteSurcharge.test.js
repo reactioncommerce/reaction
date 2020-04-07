@@ -1,6 +1,7 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const CreateSurchargeMutation = importAsString("./CreateSurchargeMutation.graphql");
 const DeleteSurchargeMutation = importAsString("./DeleteSurchargeMutation.graphql");
@@ -50,9 +51,9 @@ let deleteSurcharge;
 let createdSurchargeOpaqueId;
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
-  await testApp.insertPrimaryShop({
+  await insertPrimaryShop(testApp.context, {
     _id: internalShopId,
     name: shopName,
     currency: "USD",

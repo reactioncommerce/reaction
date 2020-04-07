@@ -1,6 +1,7 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
-import TestApp from "/tests/util/TestApp.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const ShopBySlugQuery = importAsString("./ShopBySlugQuery.graphql");
 
@@ -14,9 +15,9 @@ let opaqueShopId;
 const shopSlug = "integ-test-shop-slug";
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop({ slug: shopSlug, name: shopName });
+  shopId = await insertPrimaryShop(testApp.context, { slug: shopSlug, name: shopName });
   opaqueShopId = encodeOpaqueId("reaction/shop", shopId);
   shopBySlugQuery = testApp.query(ShopBySlugQuery);
 });

@@ -1,6 +1,7 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const OrdersByAccountIdQuery = importAsString("./OrdersByAccountIdQuery.graphql");
 
@@ -129,11 +130,11 @@ let testApp;
 let query;
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
   query = testApp.query(OrdersByAccountIdQuery);
   await testApp.createUserAndAccount(mockAccount);
-  await testApp.insertPrimaryShop({ _id: shopId, name: "Shop Name" });
+  await insertPrimaryShop(testApp.context, { _id: shopId, name: "Shop Name" });
 });
 
 beforeEach(async () => {

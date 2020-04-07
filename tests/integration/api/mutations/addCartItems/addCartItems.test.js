@@ -1,8 +1,9 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const addCartItemsMutation = importAsString("./addCartItemsMutation.graphql");
 
@@ -19,9 +20,9 @@ let testApp;
 const cartToken = "TOKEN";
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop();
+  shopId = await insertPrimaryShop(testApp.context);
   addCartItems = testApp.mutate(addCartItemsMutation);
 
   // create mock product

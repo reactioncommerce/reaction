@@ -1,7 +1,8 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const addressValidationRulesQuery = importAsString("./addressValidationRules.graphql");
 
@@ -26,10 +27,10 @@ let rules;
 let testApp;
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
 
-  const shopId = await testApp.insertPrimaryShop();
+  const shopId = await insertPrimaryShop(testApp.context);
   opaqueShopId = encodeOpaqueId("reaction/shop", shopId);
 
   const mockShop = Factory.Shop.makeOne({

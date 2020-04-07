@@ -1,6 +1,7 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const VerifySMTPEmailSettingsMutation = importAsString("./verifySMTPEmailSettings.graphql");
 
@@ -22,9 +23,9 @@ let shopId;
 let testApp;
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop();
+  shopId = await insertPrimaryShop(testApp.context);
 
   const adminGroup = Factory.Group.makeOne({
     _id: "adminGroup",

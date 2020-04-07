@@ -1,6 +1,7 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const tagProductsQueryString = `
   query getTagProducts($shopId: ID!, $first: ConnectionLimitInt, $tagId: ID!, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
@@ -61,10 +62,10 @@ let testApp;
 let query;
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
   query = testApp.query(tagProductsQueryString);
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
   await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount, ["owner"]);
   await testApp.setLoggedInUser(mockAdminAccount);

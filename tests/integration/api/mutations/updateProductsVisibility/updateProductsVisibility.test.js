@@ -1,7 +1,8 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const updateProductsVisibility = importAsString("./UpdateProductsVisibility.graphql");
 
@@ -44,10 +45,10 @@ const mockProduct2 = Factory.Product.makeOne({
 });
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
 
   await testApp.start();
-  await testApp.insertPrimaryShop({ _id: shopId, name: shopName });
+  await insertPrimaryShop(testApp.context, { _id: shopId, name: shopName });
   await testApp.collections.Groups.insertOne(mockAdminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   await testApp.collections.Products.insertOne(mockProduct1);

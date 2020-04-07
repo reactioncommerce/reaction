@@ -1,7 +1,8 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionAPICore } from "@reactioncommerce/api-core";
 
 const UpdateAccountAddressBookEntryMutation = importAsString("./UpdateAccountAddressBookEntryMutation.graphql");
 const address = Factory.AccountProfileAddress.makeOne({
@@ -32,9 +33,9 @@ let mockUserAccount;
 let accountOpaqueId;
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionAPICore();
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop();
+  shopId = await insertPrimaryShop(testApp.context);
 
   const customerGroup = Factory.Group.makeOne({
     _id: "customerGroup",
