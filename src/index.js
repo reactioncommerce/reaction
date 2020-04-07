@@ -15,8 +15,8 @@ import { Account, Group } from "./simpleSchemas.js";
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Account",
-    name: "account",
+    label: "Accounts",
+    name: "accounts",
     version: pkg.version,
     i18n,
     collections: {
