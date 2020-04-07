@@ -1,6 +1,13 @@
 import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
 
 import {
+  Account,
+  AccountProfileAddress,
+  Email,
+  Group
+} from "@reactioncommerce/api-plugin-accounts/src/simpleSchemas.js";
+
+import {
   DiscountCodes
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
@@ -47,13 +54,6 @@ import {
   orderItemInputSchema,
   Payment
 } from "../../src/core-services/orders/simpleSchemas.js";
-
-import {
-  Account,
-  AccountProfileAddress,
-  Email,
-  Group
-} from "../../src/core-services/account/simpleSchemas.js";
 
 import {
   Product,
