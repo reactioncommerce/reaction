@@ -1,12 +1,12 @@
-# api-service-carts
+# api-plugin-carts
 
-[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-service-carts.svg)](https://www.npmjs.com/package/@reactioncommerce/api-service-carts)
-[![CircleCI](https://circleci.com/gh/reactioncommerce/api-service-carts.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-service-carts)
+[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-carts.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-carts)
+[![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-carts.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-carts)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Summary
 
-Carts service for the [Reaction API](https://github.com/reactioncommerce/reaction)
+Carts plugin for the [Reaction API](https://github.com/reactioncommerce/reaction)
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
