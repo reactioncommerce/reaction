@@ -41,7 +41,7 @@ export async function getAddressValidationService(context, shopId, countryCode) 
   const validRules = rules.filter(({ serviceName }) => {
     const registeredService = addressValidationServices[serviceName];
     if (!registeredService) {
-      throw new Error(`The shop has address validation service "${serviceName}" enabled but no such service exists. ` +
+      throw new Error(`The shop has address validation service "${serviceName}" enabled, but no such service exists. ` +
         "Did you forget to install the plugin that provides this service?");
     }
     return (
