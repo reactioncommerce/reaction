@@ -1,7 +1,7 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const tagProductsQueryString = `
   query getTagProducts($shopId: ID!, $first: ConnectionLimitInt, $tagId: ID!, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
@@ -62,7 +62,7 @@ let testApp;
 let query;
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   query = testApp.query(tagProductsQueryString);
   await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });

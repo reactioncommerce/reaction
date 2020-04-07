@@ -1,4 +1,4 @@
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 
 jest.setTimeout(300000);
@@ -9,7 +9,7 @@ const shopName = "Test Shop";
 let primaryShopQuery;
 let testApp;
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
 

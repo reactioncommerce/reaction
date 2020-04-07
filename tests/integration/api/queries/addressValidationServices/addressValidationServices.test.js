@@ -1,6 +1,6 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const AddressValidationServicesQuery = importAsString("./AddressValidationServicesQuery.graphql");
 
@@ -12,7 +12,7 @@ let testApp;
 let addressValidationServices;
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
 
   await testApp.start();
   await insertPrimaryShop(testApp.context, { _id: shopId, name: shopName });

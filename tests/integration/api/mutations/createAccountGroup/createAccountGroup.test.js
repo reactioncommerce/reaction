@@ -2,7 +2,7 @@ import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const AddAccountToGroupMutation = importAsString("./CreateAccountGroupMutation.graphql");
 
@@ -19,7 +19,7 @@ let testApp;
 const UTC_REGEX_PATTERN = /\b[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[.]{1}[0-9]{3}Z\b/;
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   shopId = await insertPrimaryShop(testApp.context);
 

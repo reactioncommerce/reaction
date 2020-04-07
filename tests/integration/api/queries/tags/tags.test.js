@@ -1,5 +1,5 @@
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 
 jest.setTimeout(300000);
@@ -33,7 +33,7 @@ const tagsQuery = `query ($shopId: ID!, $after: ConnectionCursor, $before: Conne
 let testApp;
 let query;
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   query = testApp.query(tagsQuery);
 

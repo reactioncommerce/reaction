@@ -1,5 +1,5 @@
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 
@@ -57,7 +57,7 @@ const orderByIdQuery = `query ($id: ID!, $shopId: ID!, $token: String) {
 let testApp;
 let query;
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   query = testApp.query(orderByIdQuery);
   await testApp.createUserAndAccount(mockOrdersAccount);

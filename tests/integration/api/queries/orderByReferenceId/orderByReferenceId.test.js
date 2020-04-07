@@ -2,7 +2,7 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const OrderByReferenceIdQuery = importAsString("./OrderByReferenceIdQuery.graphql");
 
@@ -47,7 +47,7 @@ let testApp;
 let query;
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   query = testApp.query(OrderByReferenceIdQuery);
   await testApp.createUserAndAccount(mockOrdersAccount);

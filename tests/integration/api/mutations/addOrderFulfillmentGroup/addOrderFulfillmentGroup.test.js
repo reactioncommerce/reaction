@@ -3,7 +3,7 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Random from "@reactioncommerce/random";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const AddOrderFulfillmentGroupMutation = importAsString("./AddOrderFulfillmentGroupMutation.graphql");
 
@@ -46,7 +46,7 @@ beforeAll(async () => {
     });
   };
 
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
 
   testApp.registerPlugin({
     name: "addOrderFulfillmentGroup.test.js",

@@ -1,6 +1,6 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const AccountFullQuery = importAsString("./AccountFullQuery.graphql");
 
@@ -31,7 +31,7 @@ let mockNonAdminAccount;
 let mockAdminAccount;
 let mockOtherAccount;
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
 
   await testApp.collections.Groups.insertOne(mockCustomerGroup);

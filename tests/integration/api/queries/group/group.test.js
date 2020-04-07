@@ -2,7 +2,7 @@ import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const GroupFullQuery = importAsString("./GroupFullQuery.graphql");
 
@@ -33,7 +33,7 @@ let mockOtherAccount;
 let groups;
 let globalSecondaryGroup;
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
 
   const shopId = await insertPrimaryShop(testApp.context);

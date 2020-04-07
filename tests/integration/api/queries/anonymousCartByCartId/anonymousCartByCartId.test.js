@@ -3,7 +3,7 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const AnonymousCartByCartIdQuery = importAsString("./AnonymousCartByCartIdQuery.graphql");
 
@@ -17,7 +17,7 @@ let testApp;
 const cartToken = "TOKEN";
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   shopId = await insertPrimaryShop(testApp.context);
   anonymousCartByCartId = testApp.query(AnonymousCartByCartIdQuery);

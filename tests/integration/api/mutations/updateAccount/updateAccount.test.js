@@ -2,7 +2,7 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const UpdateAccountMutation = importAsString("./UpdateAccountMutation.graphql");
 
@@ -17,7 +17,7 @@ let otherAccountOpaqueId;
 let adminGroup;
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   await insertPrimaryShop(testApp.context);
   updateAccount = testApp.mutate(UpdateAccountMutation);

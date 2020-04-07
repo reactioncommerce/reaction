@@ -1,7 +1,7 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const inviteShopMember = importAsString("./inviteShopMember.graphql");
 
@@ -50,7 +50,7 @@ const mockInvitedUser = Factory.Account.makeOne({
 });
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
 
   // await testApp.collections.Groups.insertOne(ownerGroup);

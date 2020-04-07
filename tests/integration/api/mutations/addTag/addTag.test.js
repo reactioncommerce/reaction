@@ -3,7 +3,7 @@ import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimarySh
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import Logger from "@reactioncommerce/logger";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const AddTagMutation = importAsString("./AddTagMutation.graphql");
 
@@ -16,7 +16,7 @@ let mockTagsAccount;
 let tagInput;
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   shopId = await insertPrimaryShop(testApp.context);
 

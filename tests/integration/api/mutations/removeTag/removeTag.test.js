@@ -3,7 +3,7 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Logger from "@reactioncommerce/logger";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const RemoveTagMutation = importAsString("./RemoveTagMutation.graphql");
 
@@ -19,7 +19,7 @@ let fakeTag;
 const accountInternalId = "123";
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
   shopId = await insertPrimaryShop(testApp.context);
 

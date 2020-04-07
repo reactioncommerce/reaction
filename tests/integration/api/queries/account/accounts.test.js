@@ -2,7 +2,7 @@ import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaque
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const accountsQuery = importAsString("./accountsQuery.graphql");
 
@@ -45,7 +45,7 @@ let mockAdminAccount;
 let mockNonAdminAccount;
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
 
   // Create the test accounts before our accounts that we'll log in as. That way

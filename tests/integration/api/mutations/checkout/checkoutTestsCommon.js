@@ -2,7 +2,7 @@ import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaque
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const AddCartItemsMutation = importAsString("./AddCartItemsMutation.graphql");
 const AvailablePaymentMethodsQuery = importAsString("./AvailablePaymentMethodsQuery.graphql");
@@ -106,7 +106,7 @@ let updateCartItemsQuantity;
 let updateFulfillmentOptionsForGroup;
 
 beforeAll(async () => {
-  testApp = new ReactionAPICore();
+  testApp = new ReactionTestAPICore();
   await testApp.start();
 
   addCartItems = testApp.mutate(AddCartItemsMutation);
