@@ -1,8 +1,5 @@
 /* npm package imports */
-/* services */
-import registerServiceAddressValidation from "@reactioncommerce/api-service-address-validation";
-
-/* plugins */
+import registerPluginAddressValidation from "@reactioncommerce/api-plugin-address-validation";
 import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-address-validation-test";
 import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
 import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes";
@@ -15,21 +12,21 @@ import registerPluginTranslations from "@reactioncommerce/plugin-translations";
 
 /* node-app imports */
 /* core-services */
-import registerServiceAccounts from "./core-services/account/index.js";
-import registerServiceCatalog from "./core-services/catalog/index.js";
-import registerServiceCart from "./core-services/cart/index.js";
-import registerServiceDiscounts from "./core-services/discounts/index.js";
-import registerServiceEmail from "./core-services/email/index.js";
-import registerServiceI18n from "./core-services/i18n/index.js";
-import registerServiceInventory from "./core-services/inventory/index.js";
-import registerServiceProduct from "./core-services/product/index.js";
-import registerServiceSettings from "./core-services/settings/index.js";
-import registerServiceOrders from "./core-services/orders/index.js";
-import registerServicePayments from "./core-services/payments/index.js";
-import registerServiceShipping from "./core-services/shipping/index.js";
-import registerServiceShop from "./core-services/shop/index.js";
-import registerServiceTags from "./core-services/tags/index.js";
-import registerServiceTaxes from "./core-services/taxes/index.js";
+import registerPluginAccounts from "./core-services/account/index.js";
+import registerPluginCatalog from "./core-services/catalog/index.js";
+import registerPluginCart from "./core-services/cart/index.js";
+import registerPluginDiscounts from "./core-services/discounts/index.js";
+import registerPluginEmail from "./core-services/email/index.js";
+import registerPluginI18n from "./core-services/i18n/index.js";
+import registerPluginInventory from "./core-services/inventory/index.js";
+import registerPluginProduct from "./core-services/product/index.js";
+import registerPluginSettings from "./core-services/settings/index.js";
+import registerPluginOrders from "./core-services/orders/index.js";
+import registerPluginPayments from "./core-services/payments/index.js";
+import registerPluginShipping from "./core-services/shipping/index.js";
+import registerPluginShop from "./core-services/shop/index.js";
+import registerPluginTags from "./core-services/tags/index.js";
+import registerPluginTaxes from "./core-services/taxes/index.js";
 
 /* plugins */
 import registerPluginEmailTemplates from "./plugins/email-templates/index.js";
@@ -70,11 +67,11 @@ export default async function registerPlugins(app) {
     await registerFilesPlugin(app);
   }
 
-  await registerServiceShop(app); // REQUIRED
-  await registerServiceSettings(app); // REQUIRED
-  await registerServiceI18n(app); // REQUIRED
-  await registerServiceEmail(app); // REQUIRED
-  await registerServiceAddressValidation(app); // REQUIRED
+  await registerPluginShop(app); // REQUIRED
+  await registerPluginSettings(app); // REQUIRED
+  await registerPluginI18n(app); // REQUIRED
+  await registerPluginEmail(app); // REQUIRED
+  await registerPluginAddressValidation(app); // REQUIRED
   await registerPluginTranslations(app); // OPTIONAL
   await registerPluginSystemInformation(app); // OPTIONAL
 
@@ -87,7 +84,7 @@ export default async function registerPlugins(app) {
   /**
    * Accounts
    */
-  await registerServiceAccounts(app); // REQUIRED
+  await registerPluginAccounts(app); // REQUIRED
 
   /**
    * Authentication and Authorization
@@ -98,9 +95,9 @@ export default async function registerPlugins(app) {
   /**
    * Catalog
    */
-  await registerServiceProduct(app); // REQUIRED
-  await registerServiceCatalog(app); // REQUIRED
-  await registerServiceTags(app); // REQUIRED
+  await registerPluginProduct(app); // REQUIRED
+  await registerPluginCatalog(app); // REQUIRED
+  await registerPluginTags(app); // REQUIRED
 
   /**
    * Pricing
@@ -110,30 +107,30 @@ export default async function registerPlugins(app) {
   /**
    * Inventory
    */
-  await registerServiceInventory(app); // REQUIRED
+  await registerPluginInventory(app); // REQUIRED
   await registerPluginSimpleInventory(app); // OPTIONAL
 
   /**
    * Cart
    */
-  await registerServiceCart(app); // REQUIRED
+  await registerPluginCart(app); // REQUIRED
 
   /**
    * Orders
    */
-  await registerServiceOrders(app); // REQUIRED
+  await registerPluginOrders(app); // REQUIRED
 
   /**
    * Payments
    */
-  await registerServicePayments(app); // REQUIRED
+  await registerPluginPayments(app); // REQUIRED
   await registerPluginExamplePayments(app); // OPTIONAL
   await registerPluginStripePayments(app); // OPTIONAL
 
   /**
    * Discounts
    */
-  await registerServiceDiscounts(app); // REQUIRED
+  await registerPluginDiscounts(app); // REQUIRED
   await registerPluginDiscountCodes(app); // OPTIONAL
 
   /**
@@ -144,13 +141,13 @@ export default async function registerPlugins(app) {
   /**
    * Shipping
    */
-  await registerServiceShipping(app); // REQUIRED
+  await registerPluginShipping(app); // REQUIRED
   await registerPluginShippingRates(app); // OPTIONAL
 
   /**
    * Taxes
    */
-  await registerServiceTaxes(app); // REQUIRED
+  await registerPluginTaxes(app); // REQUIRED
   await registerPluginTaxesRates(app); // OPTIONAL
 
   /**
