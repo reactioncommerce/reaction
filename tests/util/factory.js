@@ -1,6 +1,10 @@
 import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
 
 import {
+  AddressValidationRule
+} from "@reactioncommerce/api-service-address-validation/src/simpleSchemas.js";
+
+import {
   DiscountCodes
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
@@ -87,8 +91,6 @@ import {
 import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
-
-import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
 
 import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
 
