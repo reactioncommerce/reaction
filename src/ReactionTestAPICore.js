@@ -8,20 +8,18 @@ import ReactionAPICore from "./ReactionAPICore.js";
 import buildContext from "./util/buildContext";
 
 const DEFAULT_MONGO_URL = "mongodb://localhost:27017/test";
-const noOp = () => {};
 
 class ReactionTestAPICore {
-  constructor({ registerPlugins } = {}) {
+  constructor(options = {}) {
     try {
       this.reactionNodeApp = new ReactionAPICore({
         rootUrl: "https://shop.fake.site/",
-        version: "0.0.0-test"
+        version: "0.0.0-test",
+        ...options
       });
     } catch (error) {
       Logger.error("Failed to initialize a ReactionAPICore instance", error);
     }
-
-    this.registerPlugins = registerPlugins || noOp;
 
     this.mutate = (mutation) => async (variables) => {
       const result = await this.graphClient.mutate({ mutation: gql(mutation), variables });
@@ -122,13 +120,6 @@ class ReactionTestAPICore {
   }
 
   async start() {
-    try {
-      await this.registerPlugins(this.reactionNodeApp);
-    } catch (error) {
-      Logger.error(error, "Error registering plugins in ReactionTestAPICore");
-      throw error;
-    }
-
     // Change the default DB name to a unique one so that each test file is sandboxed
     const parsedUrl = new URL(process.env.MONGO_URL || DEFAULT_MONGO_URL);
     parsedUrl.pathname = `/${Random.id()}`;
