@@ -1,18 +1,18 @@
 {
-  "name": "@reactioncommerce/api-service-settings",
-  "description": "Settings service for the Reaction API",
+  "name": "@reactioncommerce/api-plugin-settings",
+  "description": "Settings plugin for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
   "type": "module",
   "engines": {
     "node": ">=12.14.1"
   },
-  "homepage": "https://github.com/reactioncommerce/api-service-settings",
-  "url": "https://github.com/reactioncommerce/api-service-settings",
+  "homepage": "https://github.com/reactioncommerce/api-plugin-settings",
+  "url": "https://github.com/reactioncommerce/api-plugin-settings",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/api-service-settings.git"
+    "url": "git+https://github.com/reactioncommerce/api-plugin-settings.git"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -21,7 +21,7 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/api-service-settings/issues"
+    "url": "https://github.com/reactioncommerce/api-plugin-settings/issues"
   },
   "sideEffects": false,
   "dependencies": {
