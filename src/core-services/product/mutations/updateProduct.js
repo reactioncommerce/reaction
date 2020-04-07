@@ -1,124 +1,16 @@
 import SimpleSchema from "simpl-schema";
-import getSlug from "@reactioncommerce/api-utils/getSlug.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import createHandle from "../utils/createHandle.js";
-
-const metafieldInputSchema = new SimpleSchema({
-  key: {
-    type: String,
-    max: 30,
-    optional: true
-  },
-  namespace: {
-    type: String,
-    max: 20,
-    optional: true
-  },
-  scope: {
-    type: String,
-    optional: true
-  },
-  value: {
-    type: String,
-    optional: true
-  },
-  valueType: {
-    type: String,
-    optional: true
-  },
-  description: {
-    type: String,
-    optional: true
-  }
-});
+import cleanProductInput from "../utils/cleanProductInput.js";
 
 const inputSchema = new SimpleSchema({
-  "description": {
-    type: String,
+  product: {
+    type: Object,
+    blackbox: true,
     optional: true
   },
-  "facebookMsg": {
-    type: String,
-    optional: true,
-    max: 255
-  },
-  "googleplusMsg": {
-    type: String,
-    optional: true,
-    max: 255
-  },
-  "handle": {
-    type: String,
-    optional: true
-  },
-  "hashtags": {
-    type: Array,
-    optional: true
-  },
-  "hashtags.$": {
-    type: String
-  },
-  "isDeleted": {
-    type: Boolean,
-    optional: true
-  },
-  "isVisible": {
-    type: Boolean,
-    optional: true
-  },
-  "metaDescription": {
-    type: String,
-    optional: true
-  },
-  "metafields": {
-    type: Array,
-    optional: true
-  },
-  "metafields.$": metafieldInputSchema,
-  "originCountry": {
-    type: String,
-    optional: true
-  },
-  "pageTitle": {
-    type: String,
-    optional: true
-  },
-  "pinterestMsg": {
-    type: String,
-    optional: true,
-    max: 255
-  },
-  "productType": {
-    type: String,
-    optional: true
-  },
-  "shouldAppearInSitemap": {
-    type: Boolean,
-    optional: true
-  },
-  "supportedFulfillmentTypes": {
-    type: Array,
-    optional: true
-  },
-  "supportedFulfillmentTypes.$": {
-    type: String,
-    allowedValues: ["shipping", "digital", "pickup"]
-  },
-  "title": {
-    type: String,
-    optional: true
-  },
-  "twitterMsg": {
-    type: String,
-    optional: true,
-    max: 140
-  },
-  "vendor": {
-    type: String,
-    optional: true
-  }
+  productId: String,
+  shopId: String
 });
-
 
 /**
  * @method updateProduct
@@ -132,7 +24,10 @@ const inputSchema = new SimpleSchema({
  * @return {Promise<Object>} updateProduct payload
  */
 export default async function updateProduct(context, input) {
-  const { appEvents, collections } = context;
+  inputSchema.validate(input);
+
+  const { appEvents, collections, simpleSchemas } = context;
+  const { Product } = simpleSchemas;
   const { Products } = collections;
   const { product: productInput, productId, shopId } = input;
 
@@ -146,36 +41,29 @@ export default async function updateProduct(context, input) {
   const currentProduct = await Products.findOne({ _id: productId, shopId });
   if (!currentProduct) throw new ReactionError("not-found", "Product not found");
 
-  const updateDocument = { ...productInput };
-
-  // Slugify the handle input
-  if (typeof productInput.slug === "string") {
-    updateDocument.handle = await createHandle(context, getSlug(productInput.slug), productId, shopId);
-    delete updateDocument.slug;
-  }
-
-  // If a title is supplied, and the currently stored product doesn't have a handle,
-  // then slugify the title and save it as the new handle (slug)
-  if (typeof productInput.title === "string" && !currentProduct.handle && !updateDocument.handle) {
-    updateDocument.handle = await createHandle(context, getSlug(productInput.title), productId, shopId);
-  }
+  const updateDocument = await cleanProductInput(context, {
+    currentProductHandle: currentProduct.handle,
+    productId,
+    productInput,
+    shopId
+  });
 
   if (Object.keys(updateDocument).length === 0) {
     throw new ReactionError("invalid-param", "At least one field to update must be provided");
   }
 
-  inputSchema.validate(updateDocument);
-
   updateDocument.updatedAt = new Date();
+
+  const modifier = { $set: updateDocument };
+
+  Product.validate(modifier, { modifier: true });
 
   const { value: updatedProduct } = await Products.findOneAndUpdate(
     {
       _id: productId,
       shopId
     },
-    {
-      $set: updateDocument
-    },
+    modifier,
     {
       returnOriginal: false
     }

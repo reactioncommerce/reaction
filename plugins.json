@@ -5,7 +5,7 @@
   "authorization": "@reactioncommerce/plugin-simple-authorization",
   "cart": "./core-services/cart/index.js",
   "catalog": "./core-services/catalog/index.js",
-  "discountCodes": "./plugins/discount-codes/index.js",
+  "discountCodes": "@reactioncommerce/plugin-discount-codes",
   "discounts": "./core-services/discounts/index.js",
   "email": "./core-services/email/index.js",
   "emailTemplates": "./plugins/email-templates/index.js",
@@ -27,7 +27,7 @@
   "shop": "./core-services/shop/index.js",
   "simpleInventory": "./plugins/simple-inventory/index.js",
   "simpleSchema": "./plugins/simple-schema/index.js",
-  "sitemapGenerator": "./plugins/sitemap-generator/index.js",
+  "sitemapGenerator": "@reactioncommerce/plugin-sitemap-generator",
   "stripePayments": "./plugins/payments-stripe/index.js",
   "surcharges": "./plugins/surcharges/index.js",
   "systemInfo": "@reactioncommerce/plugin-system-information",
@@ -35,5 +35,5 @@
   "taxes": "./core-services/taxes/index.js",
   "taxesRates": "./plugins/taxes-rates/index.js",
   "testAddressValidation": "./plugins/address-validation-test/index.js",
-  "translations": "./plugins/translations/index.js"
+  "translations": "@reactioncommerce/plugin-translations"
 }
