@@ -10,6 +10,15 @@ enum AccountSortByField {
   updatedAt
 }
 
+"A list of the possible types of `Address`"
+enum AddressType {
+  "Address can be used for payment transactions and invoicing"
+  billing
+
+  "Address can be used as a mailing address for sending physical items"
+  shipping
+}
+
 "Defines a new Address and the account to which it should be added"
 input AddAccountAddressBookEntryInput {
   "The account ID"
