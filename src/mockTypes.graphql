@@ -1,0 +1,8 @@
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-accounts`
+"""
+type Account {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
