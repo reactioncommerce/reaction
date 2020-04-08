@@ -32,11 +32,11 @@ A new `pricing` field has been added to Product and ProductVariant types, and `p
 ## Chores
 
 - chore: issue template update ([#6158](https://github.com/reactioncommerce/reaction/pull/6158))
- - chore: Update security deps ([#6190](https://github.com/reactioncommerce/reaction/pull/6190))
+- chore: Update security deps ([#6190](https://github.com/reactioncommerce/reaction/pull/6190))
 
 ## Docs
 
- - docs: Fix simple typo, epxect -> expect ([#6188](https://github.com/reactioncommerce/reaction/pull/6188))
+- docs: Fix simple typo, epxect -> expect ([#6188](https://github.com/reactioncommerce/reaction/pull/6188))
 
 ## Contributors
 
