@@ -3,18 +3,26 @@
  * @method getProductMedia
  * @summary Get an array of ImageInfo objects by Product ID
  * @param {Object} product -  A product of type simple
+ * @param {Boolean} shouldIncludeVariantMedia - Whether to return variant media or not
  * @param {Object} context - The per request context
  * @returns {Promise<Object[]>} Array of ImageInfo objects sorted by priority
  */
-export default async function getProductMedia(product, context) {
+export default async function getProductMedia(product, { shouldIncludeVariantMedia = true }, context) {
   const { Media } = context.collections;
   const { _id: productId, shopId } = product;
+
   if (!Media) return [];
+
+  let includeVariantMedia = {};
+  if (!shouldIncludeVariantMedia) {
+    includeVariantMedia = { "metadata.variantId": null };
+  }
 
   const mediaArray = await Media.find(
     {
       "metadata.shopId": shopId,
       "metadata.productId": productId,
+      ...includeVariantMedia,
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     },
     {
