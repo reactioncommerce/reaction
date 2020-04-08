@@ -22,6 +22,7 @@ A new `pricing` field has been added to Product and ProductVariant types, and `p
 - refactor: move sitemap generator plugin to npm ([#6144](https://github.com/reactioncommerce/reaction/pull/6144))
 - refactor: move translations plugin to npm ([#6160](https://github.com/reactioncommerce/reaction/pull/6160))
 - refactor: npm discount codes ([#6157](https://github.com/reactioncommerce/reaction/pull/6157))
+- refactor: filter out variant media from product media query ([#6165](https://github.com/reactioncommerce/reaction/pull/6165))
 
 ## Fixes
 
@@ -31,6 +32,15 @@ A new `pricing` field has been added to Product and ProductVariant types, and `p
 ## Chores
 
 - chore: issue template update ([#6158](https://github.com/reactioncommerce/reaction/pull/6158))
+ - chore: Update security deps ([#6190](https://github.com/reactioncommerce/reaction/pull/6190))
+
+## Docs
+
+ - docs: Fix simple typo, epxect -> expect ([#6188](https://github.com/reactioncommerce/reaction/pull/6188))
+
+## Contributors
+
+Thanks to @timgates42 for contributing to this release! 🎉
 
 # v3.4.0
 
