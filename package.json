@@ -1,6 +1,6 @@
 {
   "name": "reaction-api",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@apollo/federation": "^0.12.0",
+    "@reactioncommerce/api-plugin-accounts": "~1.2.0",
     "@reactioncommerce/api-utils": "~1.7.0",
     "@reactioncommerce/db-version-check": "~1.0.0",
     "@reactioncommerce/file-collections": "~0.7.0",

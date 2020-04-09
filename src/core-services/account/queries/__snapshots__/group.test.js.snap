@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws access-denied if not allowed 1`] = `"Access Denied"`;
-
-exports[`throws not-found if the group does not exist 1`] = `"There is no group with this ID"`;
