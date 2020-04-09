@@ -501,7 +501,7 @@
           "moreOptions": "Meer Opties",
           "details": "Details",
           "noSelectedProducts": "Geen geselecteerde producten. Gebruik de ",
-          "orShiftCtrlCmd": " of shift|ctrl|cmd + click op producten om meerdere te selecteren. Met shift selecteerd u een aansluitende bereik van producten.",
+          "orShiftCtrlCmd": " of shift|ctrl|cmd + klik op producten om meerdere te selecteren. Met shift selecteerd u een aansluitende bereik van producten.",
           "makeVisible": "Zichtbaar maken",
           "hideProduct": "Verberg product",
           "productIsVisible": "Product is zichtbaar",
@@ -1026,7 +1026,7 @@
             "navbar": "Nagigatie Bar",
             "button": "Knop",
             "mediaUploader": {
-              "dropFiles": "Sleep afbeelding of click om te uploaden"
+              "dropFiles": "Sleep afbeelding of klik om te uploaden"
             },
             "sortableTable": {
               "filterPlaceholder": "Filter Data",
@@ -1042,7 +1042,7 @@
               }
             },
             "mediaGallery": {
-              "deleteImage": "Click om afbeelding te verwijderen",
+              "deleteImage": "Klik om de afbeelding te verwijderen",
               "addedImage": "Dit is een nieuwe afbeelding. Publiceer om wijzigen op te slaan.",
               "removedImage": "Image is verwijderd. Publiceer om wijzigen op te slaan."
             }
