@@ -6,3 +6,17 @@ type Account {
   "A fake field to satisfy linting"
   fakeField: String
 }
+
+extend type FakeData {
+  "AddressConnection lint fix"
+  addressConnection(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: String,
+    "Return only String that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: String,
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: Int,
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: Int
+  ): AddressConnection!
+}
