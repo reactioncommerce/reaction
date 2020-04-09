@@ -1,0 +1,24 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "shopLocalization": "Shop Lokalisierung",
+          "enabledCurrencies": "Währungen",
+          "enabledLanguages": "Sprachen",
+          "allOn": "all On",
+          "allOff": "all Off"
+        },
+        "baseUOM": "Grund-Maßeinheit",
+        "currency": "Grund-Währung",
+        "currencyTooltip": "Standard-Währung des Geschäfts",
+        "language": "Grund-Sprache",
+        "languageTooltip": "Diese Sprache wird verwendet, wenn die automatische Spracherkennung des Geräts fehlschlägt",
+        "timezone": "Zeitzone",
+        "timezoneOptions": "Zeitzone wählen"
+      }
+    }
+  }
+}]
