@@ -16,7 +16,7 @@ export default async function register(app) {
     i18n,
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForI18n],
-      startup: [startup],
-    },
+      startup: [startup]
+    }
   });
 }
