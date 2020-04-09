@@ -293,3 +293,153 @@ type Metafield {
   "Field value type"
   valueType: String
 }
+
+"The details of an `Address` to be created or updated"
+input AddressInput {
+  "The street address / first line"
+  address1: String!
+
+  "Optional second line"
+  address2: String
+
+  """
+  Optionally, a name for this address (e.g. 'Home') to easily identify it in the future
+  """
+  addressName: String
+
+  "City"
+  city: String!
+
+  "Optional company name, if it's a business address"
+  company: String
+
+  "Country"
+  country: String!
+
+  """
+  The first name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  firstName: String
+
+  "The full name of a person at this address"
+  fullName: String!
+
+  "Is this the default address for billing purposes?"
+  isBillingDefault: Boolean
+
+  "Is this a commercial address?"
+  isCommercial: Boolean
+
+  "Is this the default address to use when selecting a shipping address at checkout?"
+  isShippingDefault: Boolean
+
+  """
+  The last name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  lastName: String
+
+  "Arbitrary additional metadata about this address"
+  metafields: [MetafieldInput]
+
+  "A phone number for someone at this address"
+  phone: String!
+
+  "Postal code"
+  postal: String!
+
+  "Region. For example, a U.S. state"
+  region: String!
+}
+
+"Represents a physical or mailing address somewhere on Earth"
+type Address {
+  "The address ID"
+  _id: ID
+
+  "The street address / first line"
+  address1: String!
+
+  "Optional second line"
+  address2: String
+
+  "City"
+  city: String!
+
+  "Optional company name, if it's a business address"
+  company: String
+
+  "Country"
+  country: String!
+
+  """
+  The first name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  firstName: String
+
+  "The full name of a person at this address"
+  fullName: String!
+
+  "Is this the default address for billing purposes?"
+  isBillingDefault: Boolean
+
+  "Is this a commercial address?"
+  isCommercial: Boolean!
+
+  "Is this the default address to use when selecting a shipping address at checkout?"
+  isShippingDefault: Boolean
+
+  """
+  The last name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  lastName: String
+
+  "Arbitrary additional metadata about this address"
+  metafields: [Metafield]
+
+  "A phone number for someone at this address"
+  phone: String!
+
+  "Postal code"
+  postal: String!
+
+  "Region. For example, a U.S. state"
+  region: String!
+}
+
+"""
+Wraps a list of `Addresses`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type AddressConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [AddressEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Address]
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+"A connection edge in which each node is an `Address` object"
+type AddressEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+  "The address"
+  node: Address
+}
