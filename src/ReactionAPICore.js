@@ -1,7 +1,5 @@
 import { createServer } from "http";
 import { createRequire } from "module";
-import nodePath from "path";
-import stack from "callsite";
 import diehard from "diehard";
 import express from "express";
 import _ from "lodash";
@@ -16,6 +14,7 @@ import initReplicaSet from "./util/initReplicaSet.js";
 import mongoConnectWithRetry from "./util/mongoConnectWithRetry.js";
 import config from "./config.js";
 import createApolloServer from "./createApolloServer.js";
+import importPluginsJSONFile from "./importPluginsJSONFile.js";
 import coreResolvers from "./graphql/resolvers/index.js";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
@@ -637,56 +636,6 @@ export default class ReactionAPICore {
     }
     /* eslint-enable no-await-in-loop */
   }
-
-  /**
-   * @summary Import all plugins listed in a JSON file. Relative paths are assumed
-   *   to be relative to the JSON file. This does NOT register the plugins. It builds
-   *   a valid `plugins` object which you can then pass to `api.registerPlugins`.
-   * @param {Object} pluginsFile An absolute or relative file path for a JSON file.
-   * @param {Object} [options] Options
-   * @param {Function} [options.transformPlugins] A function that takes the loaded plugins object and
-   *   may return an altered plugins object.
-   * @returns {Promise<Object>} Plugins object suitable for `api.registerPlugins`
-   */
-  static async importPluginsJSONFile(pluginsFile, options = {}) {
-    let absolutePluginsFile;
-    if (nodePath.isAbsolute(pluginsFile)) {
-      absolutePluginsFile = pluginsFile;
-    } else {
-      // Assume relative paths are relative to the file that is calling `importPluginsJSONFile`
-      const caller = stack()[1];
-      const callerFileName = caller.getFileName();
-      absolutePluginsFile = nodePath.join(nodePath.dirname(callerFileName), pluginsFile);
-    }
-
-    let { default: pluginRefs } = await import(absolutePluginsFile);
-
-    if (typeof options.transformPlugins === "function") {
-      // allow plugins to be added and removed
-      pluginRefs = options.transformPlugins(pluginRefs);
-    }
-
-    // Now import each module that is referenced. They are either package names or
-    // paths that are relative to the JSON file.
-    /* eslint-disable no-await-in-loop */
-    const plugins = {};
-    for (const [name, pluginPath] of Object.entries(pluginRefs)) {
-      let plugin;
-
-      // Distinguish between pre-imported modules, node module paths, and relative/absolute paths
-      if (typeof pluginPath !== "string") {
-        Logger.debug({ pluginPath, pluginRefs });
-        throw new Error(`Plugin "${name}" is not set to a string`);
-      } else if (/[a-zA-Z@]/.test(pluginPath[0])) {
-        ({ default: plugin } = await import(pluginPath));
-      } else {
-        ({ default: plugin } = await import(nodePath.join(nodePath.dirname(absolutePluginsFile), pluginPath)));
-      }
-
-      plugins[name] = plugin;
-    }
-    /* eslint-enable no-await-in-loop */
-
-    return plugins;
-  }
 }
+
+ReactionAPICore.importPluginsJSONFile = importPluginsJSONFile;
