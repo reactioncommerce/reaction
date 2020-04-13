@@ -1,5 +1,5 @@
 import Factory from "/tests/util/factory.js";
-import { ReactionTestAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 
@@ -58,6 +58,15 @@ let testApp;
 let query;
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", {
+    transformPlugins(pluginList) {
+      // Remove the `files` plugin when testing. Avoids lots of errors.
+      delete pluginList.files;
+
+      return pluginList;
+    }
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   query = testApp.query(orderByIdQuery);
   await testApp.createUserAndAccount(mockOrdersAccount);

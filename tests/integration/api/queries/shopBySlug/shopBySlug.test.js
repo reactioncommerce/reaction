@@ -1,7 +1,7 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
-import { ReactionTestAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const ShopBySlugQuery = importAsString("./ShopBySlugQuery.graphql");
 
@@ -16,6 +16,15 @@ const shopSlug = "integ-test-shop-slug";
 
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", {
+    transformPlugins(pluginList) {
+      // Remove the `files` plugin when testing. Avoids lots of errors.
+      delete pluginList.files;
+
+      return pluginList;
+    }
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   shopId = await insertPrimaryShop(testApp.context, { slug: shopSlug, name: shopName });
   opaqueShopId = encodeOpaqueId("reaction/shop", shopId);

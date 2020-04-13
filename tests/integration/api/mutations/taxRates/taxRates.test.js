@@ -3,7 +3,7 @@ import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaque
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionTestAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const createTaxRateMutation = importAsString("./createTaxRateMutation.graphql");
 const updateTaxRateMutation = importAsString("./updateTaxRateMutation.graphql");
@@ -22,6 +22,15 @@ let updateTaxRate;
 
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", {
+    transformPlugins(pluginList) {
+      // Remove the `files` plugin when testing. Avoids lots of errors.
+      delete pluginList.files;
+
+      return pluginList;
+    }
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   shopId = await insertPrimaryShop(testApp.context);
   createTaxRate = testApp.mutate(createTaxRateMutation);

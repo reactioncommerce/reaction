@@ -1,7 +1,7 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import { ReactionTestAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const CreateSurchargeMutation = importAsString("./CreateSurchargeMutation.graphql");
 const UpdateSurchargeMutation = importAsString("./UpdateSurchargeMutation.graphql");
@@ -49,6 +49,15 @@ let createdSurchargeOpaqueId;
 
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", {
+    transformPlugins(pluginList) {
+      // Remove the `files` plugin when testing. Avoids lots of errors.
+      delete pluginList.files;
+
+      return pluginList;
+    }
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   await insertPrimaryShop(testApp.context, {
     _id: internalShopId,

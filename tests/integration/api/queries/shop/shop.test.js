@@ -1,6 +1,6 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
-import { ReactionTestAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 jest.setTimeout(300000);
 
@@ -9,6 +9,15 @@ let shopId;
 let testApp;
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", {
+    transformPlugins(pluginList) {
+      // Remove the `files` plugin when testing. Avoids lots of errors.
+      delete pluginList.files;
+
+      return pluginList;
+    }
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
 
   shopId = await insertPrimaryShop(testApp.context);

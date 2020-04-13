@@ -2,7 +2,7 @@ import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import faker from "faker";
-import { ReactionTestAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 import Factory from "/tests/util/factory.js";
 
 const AddressValidationQuery = importAsString("./AddressValidationQuery.graphql");
@@ -34,6 +34,15 @@ const mockInvalidAddress = {
 
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", {
+    transformPlugins(pluginList) {
+      // Remove the `files` plugin when testing. Avoids lots of errors.
+      delete pluginList.files;
+
+      return pluginList;
+    }
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
 
   await testApp.start();
   await insertPrimaryShop(testApp.context, { _id: shopId, name: shopName });

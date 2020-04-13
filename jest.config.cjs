@@ -4,6 +4,7 @@
 
 // Any packages that are published only as ESM need to be listed here
 const externalNodeModules = [
+  "@reactioncommerce/api-core",
   "@reactioncommerce/api-utils",
   "@reactioncommerce/db-version-check",
   "@reactioncommerce/api-plugin-accounts",

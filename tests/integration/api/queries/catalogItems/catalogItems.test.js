@@ -1,6 +1,6 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
-import { ReactionTestAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 // temp mocks
 import { internalShopId, opaqueShopId, shopName } from "../../../../mocks/mockShop";
 import { internalTagIds, opaqueTagIds } from "../../../../mocks/mockTags";
@@ -21,6 +21,15 @@ let query;
 let paginatedQuery;
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", {
+    transformPlugins(pluginList) {
+      // Remove the `files` plugin when testing. Avoids lots of errors.
+      delete pluginList.files;
+
+      return pluginList;
+    }
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   query = testApp.query(CatalogProductItemsFullQuery);
   paginatedQuery = testApp.query(CatalogProductItemsFullQueryPaginated);
