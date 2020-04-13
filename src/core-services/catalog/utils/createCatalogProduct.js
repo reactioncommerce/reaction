@@ -1,17 +1,13 @@
 import Logger from "@reactioncommerce/logger";
-import getCatalogProductMedia from "./getCatalogProductMedia.js";
 
 /**
  * @method
  * @summary Converts a variant Product document into the catalog schema for variants
  * @param {Object} variant The variant from Products collection
- * @param {Object} variantMedia Media for this specific variant
  * @private
  * @returns {Object} The transformed variant
  */
-export function xformVariant(variant, variantMedia) {
-  const primaryImage = variantMedia[0] || null;
-
+export function xformVariant(variant) {
   return {
     _id: variant._id,
     attributeLabel: variant.attributeLabel,
@@ -20,12 +16,12 @@ export function xformVariant(variant, variantMedia) {
     height: variant.height,
     index: variant.index || 0,
     length: variant.length,
-    media: variantMedia,
+    media: variant.media || [],
     metafields: variant.metafields,
     minOrderQuantity: variant.minOrderQuantity,
     optionTitle: variant.optionTitle,
     originCountry: variant.originCountry,
-    primaryImage,
+    primaryImage: variant.primaryImage || null,
     shopId: variant.shopId,
     sku: variant.sku,
     title: variant.title,
@@ -45,11 +41,7 @@ export function xformVariant(variant, variantMedia) {
  * @param {Object[]} data.variants The Product documents for all variants of this product
  * @returns {Object} The CatalogProduct document
  */
-export async function xformProduct({ context, product, variants }) {
-  const { collections } = context;
-  const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
-  const primaryImage = catalogProductMedia[0] || null;
-
+export async function xformProduct({ product, variants }) {
   const topVariants = [];
   const options = new Map();
 
@@ -69,15 +61,11 @@ export async function xformProduct({ context, product, variants }) {
   const catalogProductVariants = topVariants
     // We want to explicitly map everything so that new properties added to variant are not published to a catalog unless we want them
     .map((variant) => {
-      const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
-      const newVariant = xformVariant(variant, variantMedia);
+      const newVariant = xformVariant(variant);
 
       const variantOptions = options.get(variant._id);
       if (variantOptions) {
-        newVariant.options = variantOptions.map((option) => {
-          const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
-          return xformVariant(option, optionMedia);
-        });
+        newVariant.options = variantOptions.map((option) => xformVariant(option));
       }
 
       return newVariant;
@@ -93,13 +81,13 @@ export async function xformProduct({ context, product, variants }) {
     isDeleted: !!product.isDeleted,
     isVisible: !!product.isVisible,
     length: product.length,
-    media: catalogProductMedia,
+    media: product.media || [],
     metafields: product.metafields,
     metaDescription: product.metaDescription,
     originCountry: product.originCountry,
     pageTitle: product.pageTitle,
     parcel: product.parcel,
-    primaryImage,
+    primaryImage: product.primaryImage || null,
     // The _id prop could change whereas this should always point back to the source product in Products collection
     productId: product._id,
     productType: product.productType,

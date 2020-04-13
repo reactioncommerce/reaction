@@ -849,6 +849,13 @@ export const Cart = new SimpleSchema({
   "items.$": {
     type: CartItem
   },
+  "missingItems": {
+    type: Array,
+    optional: true
+  },
+  "missingItems.$": {
+    type: CartItem
+  },
   "shipping": {
     type: Array,
     optional: true

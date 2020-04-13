@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if account not found 1`] = `"No account found"`;
-
-exports[`throws if userHasPermission returns false and the user ID is not the context user ID 1`] = `"Access Denied"`;

@@ -3,6 +3,9 @@ import policies from "./policies.json";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
+import mutateProductHashObjectAddMedia from "./util/mutateProductHashObject.js";
+import publishProductToCatalog from "./util/publishProductToCatalog.js";
+import xformItemsAddImageUrls from "./util/xformItemsAddImageUrls.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -31,7 +34,11 @@ export default async function register(app) {
       }
     },
     functionsByType: {
-      startup: [startup]
+      mutateProductHashObject: [mutateProductHashObjectAddMedia],
+      publishProductToCatalog: [publishProductToCatalog],
+      startup: [startup],
+      xformCartItems: [xformItemsAddImageUrls],
+      xformOrderItems: [xformItemsAddImageUrls]
     },
     mutations,
     policies,

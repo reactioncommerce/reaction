@@ -1,4 +1,5 @@
 /* npm package imports */
+import registerAccountsPlugin from "@reactioncommerce/api-plugin-accounts";
 import registerPluginAddressValidation from "@reactioncommerce/api-plugin-address-validation";
 import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-address-validation-test";
 import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
