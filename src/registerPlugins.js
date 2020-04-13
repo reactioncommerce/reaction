@@ -1,5 +1,5 @@
 /* npm package imports */
-import registerAccountsPlugin from "@reactioncommerce/api-plugin-accounts";
+import registerPluginAccounts from "@reactioncommerce/api-plugin-accounts";
 import registerPluginAddressValidation from "@reactioncommerce/api-plugin-address-validation";
 import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-address-validation-test";
 import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
@@ -13,7 +13,6 @@ import registerPluginTranslations from "@reactioncommerce/plugin-translations";
 
 /* node-app imports */
 /* core-services */
-import registerPluginAccounts from "./core-services/account/index.js";
 import registerPluginCatalog from "./core-services/catalog/index.js";
 import registerPluginCart from "./core-services/cart/index.js";
 import registerPluginDiscounts from "./core-services/discounts/index.js";
