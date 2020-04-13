@@ -2,6 +2,70 @@ query($cartId: ID!, $cartToken: String!){
   anonymousCartByCartId(cartId: $cartId, cartToken: $cartToken){
     _id
     items {
+      nodes {
+        _id
+        productConfiguration {
+          productId
+          productVariantId
+        }
+        addedAt
+        attributes {
+          label
+          value
+        }
+        createdAt
+        isBackorder
+        isLowQuantity
+        isSoldOut
+        imageURLs {
+          large
+          small
+          original
+          medium
+          thumbnail
+        }
+        metafields {
+          value
+          key
+        }
+        parcel {
+          length
+          width
+          weight
+          height
+        }
+        price {
+          amount
+          displayAmount
+          currency {
+            code
+          }
+        }
+        priceWhenAdded {
+          amount
+          displayAmount
+          currency {
+            code
+          }
+        }
+        productSlug
+        productType
+        quantity
+        subtotal {
+          displayAmount
+        }
+        title
+        productTags {
+          nodes {
+            name
+          }
+        }
+        productVendor
+        variantTitle
+        optionTitle
+        updatedAt
+        inventoryAvailableToSell
+      }
       totalCount
     }
   }

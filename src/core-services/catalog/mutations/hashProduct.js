@@ -1,6 +1,5 @@
 import hash from "object-hash";
 import { customPublishedProductFields, customPublishedProductVariantFields } from "../registration.js";
-import getCatalogProductMedia from "../utils/getCatalogProductMedia.js";
 import getTopLevelProduct from "../utils/getTopLevelProduct.js";
 
 const productFieldsThatNeedPublishing = [
@@ -33,7 +32,6 @@ const variantFieldsThatNeedPublishing = [
   "_id",
   "attributeLabel",
   "barcode",
-  "compareAtPrice",
   "height",
   "index",
   "isDeleted",
@@ -55,12 +53,12 @@ const variantFieldsThatNeedPublishing = [
  * @method createProductHash
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
- * @param {String} product - The Product document to hash. Expected to be a top-level product, not a variant
- * @param {Object} collections - Raw mongo collections
+ * @param {Object} context App context
+ * @param {String} product The Product document to hash. Expected to be a top-level product, not a variant
  * @returns {String} product hash
  */
-export async function createProductHash(product, collections) {
-  const variants = await collections.Products.find({ ancestors: product._id, type: "variant" }).toArray();
+export async function createProductHash(context, product) {
+  const variants = await context.collections.Products.find({ ancestors: product._id, type: "variant" }).toArray();
 
   const productForHashing = {};
   productFieldsThatNeedPublishing.forEach((field) => {
@@ -69,9 +67,6 @@ export async function createProductHash(product, collections) {
   customPublishedProductFields.forEach((field) => {
     productForHashing[field] = product[field];
   });
-
-  // Track changes to all related media, too
-  productForHashing.media = await getCatalogProductMedia(product._id, collections);
 
   // Track changes to all variants, too
   productForHashing.variants = variants.map((variant) => {
@@ -85,6 +80,10 @@ export async function createProductHash(product, collections) {
     return variantForHashing;
   });
 
+  for (const func of context.getFunctionsOfType("mutateProductHashObject")) {
+    await func(context, { productForHashing, product }); // eslint-disable-line no-await-in-loop
+  }
+
   return hash(productForHashing);
 }
 
@@ -92,12 +91,13 @@ export async function createProductHash(product, collections) {
  * @method hashProduct
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
+ * @param {Object} context - App context
  * @param {String} productId - A productId
- * @param {Object} collections - Raw mongo collections
  * @param {Boolean} isPublished - Is product published to catalog
  * @returns {Object} updated product if successful, original product if unsuccessful
  */
-export default async function hashProduct(productId, collections, isPublished = true) {
+export default async function hashProduct(context, productId, isPublished = true) {
+  const { collections } = context;
   const { Products } = collections;
 
   const topLevelProduct = await getTopLevelProduct(productId, collections);
@@ -105,7 +105,7 @@ export default async function hashProduct(productId, collections, isPublished = 
     throw new Error(`No top level product found for product with ID ${productId}`);
   }
 
-  const productHash = await createProductHash(topLevelProduct, collections);
+  const productHash = await createProductHash(context, topLevelProduct);
 
   // Insert/update product document with hash field
   const hashFields = {
