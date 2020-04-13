@@ -8,6 +8,7 @@ import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-a
 import registerSitemapGeneratorPlugin from "@reactioncommerce/plugin-sitemap-generator";
 import registerSystemInformationPlugin from "@reactioncommerce/plugin-system-information";
 import registerTranslationsPlugin from "@reactioncommerce/plugin-translations";
+import registerI18nPlugin from "@reactioncommerce/api-plugin-i18n";
 
 /* node-app imports */
 /* core-services */
@@ -16,7 +17,6 @@ import registerCatalogPlugin from "./core-services/catalog/index.js";
 import registerCartPlugin from "./core-services/cart/index.js";
 import registerDiscountsPlugin from "./core-services/discounts/index.js";
 import registerEmailPlugin from "./core-services/email/index.js";
-import registerI18nPlugin from "./core-services/i18n/index.js";
 import registerInventoryPlugin from "./core-services/inventory/index.js";
 import registerProductPlugin from "./core-services/product/index.js";
 import registerSettingsPlugin from "./core-services/settings/index.js";
