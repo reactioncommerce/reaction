@@ -3,7 +3,15 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import xformCartGroupToCommonOrder from "../util/xformCartGroupToCommonOrder.js";
 
 const inputSchema = new SimpleSchema({
-  cartId: String,
+  cart: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  cartId: {
+    type: String,
+    optional: true
+  },
   fulfillmentGroupId: String
 });
 
@@ -16,7 +24,9 @@ const inputSchema = new SimpleSchema({
  *    a CommonOrder style object
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - request parameters
- * @param {String} input.cartId - cart ID to create CommonOrder from
+ * @param {Object} [input.cart] - Cart to create CommonOrder from. Use this instead
+ *   of `cartId` if you have already looked up the cart.
+ * @param {String} [input.cartId] - cart ID to create CommonOrder from
  * @param {String} input.fulfillmentGroupId - fulfillment group ID to create CommonOrder from
  * @returns {Promise<Object>|undefined} - A CommonOrder document
  */
@@ -26,21 +36,16 @@ export default async function getCommonOrderForCartGroup(context, input = {}) {
   const { Cart } = collections;
 
   const {
+    cart: cartInput,
     cartId,
     fulfillmentGroupId
   } = input;
 
-  const cart = await Cart.findOne({ _id: cartId });
-
-  if (!cart) {
-    throw new ReactionError("not-found", "Cart not found");
-  }
+  const cart = cartInput || (cartId && await Cart.findOne({ _id: cartId }));
+  if (!cart) throw new ReactionError("not-found", "Cart not found");
 
   const group = cart.shipping.find((grp) => grp._id === fulfillmentGroupId);
-
-  if (!group) {
-    throw new ReactionError("not-found", "Group not found");
-  }
+  if (!group) throw new ReactionError("not-found", "Group not found");
 
   return xformCartGroupToCommonOrder(cart, group, context);
 }

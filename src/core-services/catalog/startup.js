@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import hashProduct from "./mutations/hashProduct.js";
 
 /**
  * @summary Called on startup
@@ -8,12 +7,12 @@ import hashProduct from "./mutations/hashProduct.js";
  * @returns {undefined}
  */
 export default async function catalogStartup(context) {
-  const { appEvents, collections } = context;
+  const { appEvents, collections, mutations } = context;
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
     const { productId } = mediaRecord.metadata || {};
     if (productId) {
-      hashProduct(productId, collections, false).catch((error) => {
+      mutations.hashProduct(context, productId, false).catch((error) => {
         Logger.error(`Error updating currentProductHash for product with ID ${productId}`, error);
       });
     }
@@ -22,7 +21,7 @@ export default async function catalogStartup(context) {
   appEvents.on("afterMediaUpdate", ({ mediaRecord }) => {
     const { productId } = mediaRecord.metadata || {};
     if (productId) {
-      hashProduct(productId, collections, false).catch((error) => {
+      mutations.hashProduct(context, productId, false).catch((error) => {
         Logger.error(`Error updating currentProductHash for product with ID ${productId}`, error);
       });
     }
@@ -31,7 +30,7 @@ export default async function catalogStartup(context) {
   appEvents.on("afterMediaRemove", ({ mediaRecord }) => {
     const { productId } = mediaRecord.metadata || {};
     if (productId) {
-      hashProduct(productId, collections, false).catch((error) => {
+      mutations.hashProduct(context, productId, false).catch((error) => {
         Logger.error(`Error updating currentProductHash for product with ID ${productId}`, error);
       });
     }
@@ -49,7 +48,7 @@ export default async function catalogStartup(context) {
 
   const productOrVariantUpdateHandler = ({ productId }) => {
     if (productId) {
-      hashProduct(productId, collections, false).catch((error) => {
+      mutations.hashProduct(context, productId, false).catch((error) => {
         Logger.error(`Error updating currentProductHash for product with ID ${productId}`, error);
       });
     }

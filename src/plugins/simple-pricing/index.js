@@ -40,7 +40,7 @@ export default async function register(app) {
     queries,
     catalog: {
       publishedProductFields: ["price"],
-      publishedProductVariantFields: ["price"]
+      publishedProductVariantFields: ["compareAtPrice", "price"]
     },
     simpleSchemas: {
       PriceRange

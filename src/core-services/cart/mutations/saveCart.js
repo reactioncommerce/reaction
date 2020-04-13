@@ -10,7 +10,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function saveCart(context, cart) {
   const { appEvents, collections: { Cart }, userId = null } = context;
 
-  // This will mutate `cart`
+  // These will mutate `cart`
+  await context.mutations.removeMissingItemsFromCart(context, cart);
   await context.mutations.transformAndValidateCart(context, cart);
 
   const { result, upsertedCount } = await Cart.replaceOne({ _id: cart._id }, cart, { upsert: true });

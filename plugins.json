@@ -1,5 +1,5 @@
 {
-  "accounts": "./core-services/account/index.js",
+  "accounts": "@reactioncommerce/api-plugin-accounts",
   "address": "./core-services/address/index.js",
   "authentication": "@reactioncommerce/plugin-authentication",
   "authorization": "@reactioncommerce/plugin-simple-authorization",

@@ -1,4 +1,3 @@
-import { cloneDeep } from "lodash";
 import { internalShopId } from "./mockShop";
 import {
   internalCatalogItemIds,
@@ -35,38 +34,11 @@ export const mockCatalogItems = [
 ];
 
 /**
- * Mock absolute URLs in catalog products when returned from GraphQL
- */
-export const mockExternalCatalogProductNodes = [];
-const siteURL = "https://shop.fake.site";
-
-function mockMediaURLsResponse(URLs) {
-  const { large, medium, original, small, thumbnail } = URLs;
-  return {
-    thumbnail: `${siteURL}${thumbnail}`,
-    small: `${siteURL}${small}`,
-    medium: `${siteURL}${medium}`,
-    large: `${siteURL}${large}`,
-    original: `${siteURL}${original}`
-  };
-}
-
-mockExternalCatalogProducts.forEach((mockExternalCatalogProduct) => {
-  const cloned = cloneDeep(mockExternalCatalogProduct);
-  cloned.product.primaryImage.URLs = mockMediaURLsResponse(cloned.product.primaryImage.URLs);
-  cloned.product.media.forEach((media) => {
-    media.URLs = mockMediaURLsResponse(media.URLs);
-  });
-
-  mockExternalCatalogProductNodes.push(cloned);
-});
-
-/**
  * mock unsorted catalogItems query response
  */
 export const mockUnsortedCatalogItemsResponse = {
   catalogItems: {
-    nodes: mockExternalCatalogProductNodes
+    nodes: mockExternalCatalogProducts
   }
 };
 
@@ -76,7 +48,7 @@ export const mockUnsortedCatalogItemsResponse = {
  */
 export const mockSortedByPriceHigh2LowCatalogItemsResponse = {
   catalogItems: {
-    nodes: [mockExternalCatalogProductNodes[1], mockExternalCatalogProductNodes[0]]
+    nodes: [mockExternalCatalogProducts[1], mockExternalCatalogProducts[0]]
   }
 };
 
@@ -85,6 +57,6 @@ export const mockSortedByPriceHigh2LowCatalogItemsResponse = {
  */
 export const mockSortedByPriceLow2HighCatalogItemsResponse = {
   catalogItems: {
-    nodes: [mockExternalCatalogProductNodes[0], mockExternalCatalogProductNodes[1]]
+    nodes: [mockExternalCatalogProducts[0], mockExternalCatalogProducts[1]]
   }
 };
