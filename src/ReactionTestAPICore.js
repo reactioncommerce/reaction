@@ -1,13 +1,16 @@
+import { createRequire } from "module";
 import { URL } from "url";
-import { gql } from "apollo-server";
-import { createTestClient } from "apollo-server-testing";
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionAPICore from "./ReactionAPICore.js";
-import buildContext from "./util/buildContext";
+import buildContext from "./util/buildContext.js";
 
 const DEFAULT_MONGO_URL = "mongodb://localhost:27017/test";
+
+const require = createRequire(import.meta.url);
+const { gql } = require("apollo-server");
+const { createTestClient } = require("apollo-server-testing");
 
 class ReactionTestAPICore {
   constructor(options = {}) {

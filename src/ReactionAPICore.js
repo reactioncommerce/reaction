@@ -612,7 +612,6 @@ export default class ReactionAPICore {
     }
 
     Logger.info(`Registered plugin ${plugin.name}`);
-    Logger.debug({ plugin });
   }
 
   /**
@@ -660,7 +659,7 @@ export default class ReactionAPICore {
       absolutePluginsFile = nodePath.join(nodePath.dirname(callerFileName), pluginsFile);
     }
 
-    let pluginRefs = await import(absolutePluginsFile);
+    let { default: pluginRefs } = await import(absolutePluginsFile);
 
     if (typeof options.transformPlugins === "function") {
       // allow plugins to be added and removed
@@ -676,15 +675,12 @@ export default class ReactionAPICore {
 
       // Distinguish between pre-imported modules, node module paths, and relative/absolute paths
       if (typeof pluginPath !== "string") {
+        Logger.debug({ pluginPath, pluginRefs });
         throw new Error(`Plugin "${name}" is not set to a string`);
       } else if (/[a-zA-Z@]/.test(pluginPath[0])) {
-        plugin = await import(pluginPath);
+        ({ default: plugin } = await import(pluginPath));
       } else {
-        plugin = await import(nodePath.join(nodePath.dirname(absolutePluginsFile), pluginPath));
-      }
-
-      if (typeof plugin === "object" && plugin.default) {
-        plugin = plugin.default;
+        ({ default: plugin } = await import(nodePath.join(nodePath.dirname(absolutePluginsFile), pluginPath)));
       }
 
       plugins[name] = plugin;
