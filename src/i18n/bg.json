@@ -1,0 +1,24 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "shopLocalization": "Локализиране на магазина",
+          "enabledCurrencies": "Валути",
+          "enabledLanguages": "Езици",
+          "allOn": "All On",
+          "allOff": "Всички Off"
+        },
+        "baseUOM": "Base Мерна единица",
+        "currency": "Базова валута",
+        "currencyTooltip": "Магазин валута по подразбиране",
+        "language": "Base Език",
+        "languageTooltip": "Този език ще се използва, ако откриване на езика на устройството ще се провали",
+        "timezone": "Часова зона",
+        "timezoneOptions": "Изберете часова зона"
+      }
+    }
+  }
+}]

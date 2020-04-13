@@ -1,0 +1,24 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "shopLocalization": "تسوق التعريب",
+          "enabledCurrencies": "العملات",
+          "enabledLanguages": "اللغات",
+          "allOn": "الكل في",
+          "allOff": "كل معطلة"
+        },
+        "baseUOM": "قاعدة وحدة القياس",
+        "currency": "العملة الأساسية",
+        "currencyTooltip": "عملة المتجر الإفتراضية",
+        "language": "اللغة الأساسية",
+        "languageTooltip": "سوف يتم استخدام هذه اللغة إذا فشل التعرف على لغة جهازك",
+        "timezone": "التوقيت",
+        "timezoneOptions": "أختيار التوقيت"
+      }
+    }
+  }
+}]

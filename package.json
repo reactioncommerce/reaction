@@ -19,27 +19,22 @@
     "email": "engineering@reactioncommerce.com",
     "url": "https://reactioncommerce.com"
   },
-  "license": "Apache-2.0",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/api-plugin-i18n/issues"
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.9.0"
+    "@reactioncommerce/api-utils": "^1.9.0",
+    "lodash": "~4.17.15"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
     "@reactioncommerce/eslint-config": "~2.1.0",
     "babel-eslint": "^10.0.3",
-    "babel-jest": "~25.1.0",
-    "babel-plugin-rewire-exports": "^2.0.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "babel-plugin-transform-import-meta": "~1.0.0",
     "eslint": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.7.0",
@@ -49,15 +44,11 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.0.1",
     "husky": "^4.2.3",
-    "jest": "^25.1.0",
     "semantic-release": "^17.0.4"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
-    "lint:eslint": "eslint .",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:file": "jest --no-cache --watch --coverage=false"
+    "lint:eslint": "eslint ."
   },
   "commitlint": {
     "extends": [

@@ -1,0 +1,24 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "shopLocalization": "Localizzazione del negozio",
+          "enabledCurrencies": "Valute",
+          "enabledLanguages": "Lingue",
+          "allOn": "All On",
+          "allOff": "All Off"
+        },
+        "baseUOM": "Unità base di misura",
+        "currency": "Valuta di Base",
+        "currencyTooltip": "valuta di default negozio",
+        "language": "Lingua Base",
+        "languageTooltip": "Questo linguaggio viene utilizzato se il rilevamento lingua del dispositivo può essere considerata negativa",
+        "timezone": "Fuso orario",
+        "timezoneOptions": "Scegli fuso orario"
+      }
+    }
+  }
+}]
