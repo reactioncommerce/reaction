@@ -9,7 +9,7 @@ import {
 
 import {
   AddressValidationRule
-} from "@reactioncommerce/api-service-address-validation/src/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-address-validation/src/simpleSchemas.js";
 
 import {
   DiscountCodes
