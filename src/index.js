@@ -26,7 +26,7 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Catalog",
     name: "reaction-catalog",
-    version: pkg.version
+    version: pkg.version,
     i18n,
     collections: {
       Catalog: {
