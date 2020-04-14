@@ -20,3 +20,45 @@ extend type FakeData {
     last: Int
   ): AddressConnection!
 }
+
+"""
+A fake enum to satisfy linting
+enum lives in `api-plugin-catalogs`
+"""
+enum CatalogBooleanFilterName {
+  "A fake enum to satisfy linting"
+  fakeField
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-catalogs`
+"""
+type CatalogProduct {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-catalogs`
+"""
+type CatalogProductVariant {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-catalogs`
+"""
+type SocialMetadata {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  catalogProduct: CatalogProduct,
+  "Fake field to satisfy linting"
+  catalogProductVariant: CatalogProductVariant,
+  "Fake field to satisfy linting"
+  catalogBooleanFilterName: CatalogBooleanFilterName
+}

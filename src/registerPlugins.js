@@ -3,6 +3,7 @@ import registerPluginAccounts from "@reactioncommerce/api-plugin-accounts";
 import registerPluginAddressValidation from "@reactioncommerce/api-plugin-address-validation";
 import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-address-validation-test";
 import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
+import registerPluginCatalog from "@reactioncommerce/api-plugin-catalogs";
 import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes";
 import registerPluginExamplePayments from "@reactioncommerce/plugin-payments-example";
 import registerPluginI18n from "@reactioncommerce/api-plugin-i18n";
@@ -14,7 +15,6 @@ import registerPluginTranslations from "@reactioncommerce/plugin-translations";
 
 /* node-app imports */
 /* core-services */
-import registerPluginCatalog from "./core-services/catalog/index.js";
 import registerPluginCart from "./core-services/cart/index.js";
 import registerPluginDiscounts from "./core-services/discounts/index.js";
 import registerPluginEmail from "./core-services/email/index.js";
