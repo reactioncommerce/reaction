@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import surchargeSchema from "../util/surchargeSchema.js";
+import surchargeSchema from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String,
