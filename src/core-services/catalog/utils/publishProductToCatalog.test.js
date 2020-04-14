@@ -1,8 +1,4 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import {
-  rewire as rewire$getCatalogProductMedia,
-  restore as restore$getCatalogProductMedia
-} from "./getCatalogProductMedia.js";
 import { rewire as rewire$createCatalogProduct, restore as restore$createCatalogProduct } from "./createCatalogProduct.js";
 import publishProductToCatalog from "./publishProductToCatalog.js";
 
@@ -198,36 +194,16 @@ const mockShop = {
   currency: "USD"
 };
 
-const mockGeCatalogProductMedia = jest
-  .fn()
-  .mockName("getCatalogProductMedia")
-  .mockReturnValue(Promise.resolve([
-    {
-      priority: 1,
-      productId: internalProductId,
-      variantId: internalVariantIds[1],
-      URLs: {
-        large: "large/path/to/image.jpg",
-        medium: "medium/path/to/image.jpg",
-        original: "image/path/to/image.jpg",
-        small: "small/path/to/image.jpg",
-        thumbnail: "thumbnail/path/to/image.jpg"
-      }
-    }
-  ]));
-
 const mockCreateCatalogProduct = jest
   .fn()
   .mockName("createCatalogProduct")
   .mockReturnValue(mockProduct);
 
 beforeAll(() => {
-  rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
   rewire$createCatalogProduct(mockCreateCatalogProduct);
 });
 
 afterAll(() => {
-  restore$getCatalogProductMedia();
   restore$createCatalogProduct();
 });
 

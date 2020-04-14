@@ -8,7 +8,7 @@ import tags from "./tags.js";
 
 export default {
   _id: (node) => encodeProductOpaqueId(node._id),
-  media: (node, args, context) => getProductMedia(node, context),
+  media: (node, args, context) => getProductMedia(node, args, context),
   metafields: (node) => node.metafields || [],
   shop: resolveShopFromShopId,
   slug: (node) => node.handle,

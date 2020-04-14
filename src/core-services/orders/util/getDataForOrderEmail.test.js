@@ -111,13 +111,6 @@ test("returns expected data structure (base case)", async () => {
     combinedItems: [
       {
         ...mockOrder.shipping[0].items[0],
-        imageURLs: {
-          large: "large.jpg",
-          medium: "medium.jpg",
-          original: "original.jpg",
-          small: "small.jpg",
-          thumbnail: "thumbnail.jpg"
-        },
         placeholderImage: "https://app.mock/resources/placeholder.gif",
         price: {
           amount: jasmine.any(Number),
@@ -128,8 +121,6 @@ test("returns expected data structure (base case)", async () => {
           productId: "mockProductId",
           productVariantId: "mockVariantId"
         },
-        productImage: "large.jpg",
-        variantImage: "large.jpg",
         subtotal: {
           amount: jasmine.any(Number),
           currencyCode: "mockCurrencyCode",
@@ -149,13 +140,6 @@ test("returns expected data structure (base case)", async () => {
           items: [
             {
               ...mockOrder.shipping[0].items[0],
-              imageURLs: {
-                large: "large.jpg",
-                medium: "medium.jpg",
-                original: "original.jpg",
-                small: "small.jpg",
-                thumbnail: "thumbnail.jpg"
-              },
               placeholderImage: "https://app.mock/resources/placeholder.gif",
               price: {
                 amount: jasmine.any(Number),
@@ -166,8 +150,6 @@ test("returns expected data structure (base case)", async () => {
                 productId: "mockProductId",
                 productVariantId: "mockVariantId"
               },
-              productImage: "large.jpg",
-              variantImage: "large.jpg",
               subtotal: {
                 amount: jasmine.any(Number),
                 currencyCode: "mockCurrencyCode",

@@ -19,7 +19,10 @@ type Product {
   isVisible: Boolean!
 
   "All media for a product"
-  media: [ImageInfo]
+  media(
+    "Determines whether variant media should be included in the product or not"
+    shouldIncludeVariantMedia: Boolean = true
+    ): [ImageInfo]
 
   "The product description to use for page `description` meta element in HTML"
   metaDescription: String
@@ -329,18 +332,27 @@ input UpdateProductsVisibilityInput {
 }
 
 "Input for the `createProduct` mutation"
-input CreateProductInput  {
+input CreateProductInput {
+  "Product input"
+  product: ProductInput
+
   "ID of shop product will belong to"
   shopId: ID!
+
+  "Set to false if you do not want to auto-create the first variant of the product"
+  shouldCreateFirstVariant: Boolean = true
 }
 
 "Input for the `createProductVariant` mutation"
-input CreateProductVariantInput  {
+input CreateProductVariantInput {
   "ID of product variant belongs to"
   productId: ID!
 
   "ID of shop product variant will belong to"
   shopId: ID!
+
+  "Variant input"
+  variant: ProductVariantInput
 }
 
 "Input for the `cloneProducts` mutation"
@@ -362,7 +374,7 @@ input CloneProductVariantsInput  {
 }
 
 "Input for the `updateProduct` mutation"
-input UpdateProductInput  {
+input UpdateProductInput {
   "Product input"
   product: ProductInput!
 
@@ -375,6 +387,15 @@ input UpdateProductInput  {
 
 "Mutation input for a product"
 input ProductInput {
+  """
+  Any string to use as the internal ID for a new product. Do not prefix or base64 encode this ID.
+  This field is allowed only when creating a product. If you include an ID for an update, you
+  will get an error. The string must also be different from any existing product, variant, or
+  option internal ID or you will get a duplicate ID error. If you do not include this when creating
+  a product, a random unique string is generated for you.
+  """
+  _id: String
+
   "The full product description, which may have newline characters in it"
   description: String
 
@@ -432,6 +453,15 @@ input ProductInput {
 
 "Mutation input for a product variant or option"
 input ProductVariantInput {
+  """
+  Any string to use as the internal ID for a new variant. Do not prefix or base64 encode this ID.
+  This field is allowed only when creating a variant. If you include an ID for an update, you
+  will get an error. The string must also be different from any existing product, variant, or
+  option internal ID or you will get a duplicate ID error. If you do not include this when creating
+  a variant, a random unique string is generated for you.
+  """
+  _id: String
+
   """
   The attribute label describes the category of variant, for example, `Color` or `Size`.
   In most cases this will be the same for all variants at the same level.
@@ -578,6 +608,7 @@ extend type Query {
 
     "Shop ID"
     shopId: ID!
+
   ): Product
 
   "Query for a list of Products"

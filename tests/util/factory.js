@@ -1,12 +1,29 @@
+import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
+
+import {
+  Account,
+  AccountProfileAddress,
+  Email,
+  Group
+} from "@reactioncommerce/api-plugin-accounts/src/simpleSchemas.js";
+
+import {
+  AddressValidationRule
+} from "@reactioncommerce/api-plugin-address-validation/src/simpleSchemas.js";
+
+import {
+  DiscountCodes
+} from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
+
 import {
   NavigationItem,
   NavigationTree,
   NavigationTreeItem
 } from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
 
-import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
-
-import { DiscountCodes } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
+import {
+  Sitemap
+} from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
 import {
   Catalog,
@@ -43,16 +60,8 @@ import {
 } from "../../src/core-services/orders/simpleSchemas.js";
 
 import {
-  Account,
-  AccountProfileAddress,
-  Email,
-  Group
-} from "../../src/core-services/account/simpleSchemas.js";
-
-import {
   Product,
-  ProductVariant,
-  ProductVariantInputSchema
+  ProductVariant
 } from "../../src/core-services/product/simpleSchemas.js";
 
 import {
@@ -66,10 +75,6 @@ import {
 import {
   Tag
 } from "../../src/core-services/tags/simpleSchemas.js";
-
-import {
-  Sitemap
-} from "../../src/plugins/sitemap-generator/simpleSchemas.js";
 
 import {
   TaxRates
@@ -86,8 +91,6 @@ import {
 import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
-
-import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
 
 import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
 
@@ -130,7 +133,6 @@ const schemasToAddToFactory = {
   Payment,
   Product,
   ProductVariant,
-  ProductVariantInputSchema,
   Restriction,
   ShipmentQuote,
   Shop,

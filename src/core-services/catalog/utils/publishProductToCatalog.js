@@ -54,7 +54,7 @@ export default async function publishProductToCatalog(product, context) {
   const wasUpdateSuccessful = result && result.result && result.result.ok === 1;
   if (wasUpdateSuccessful) {
     // Update the Product hashes so that we know there are now no unpublished changes
-    const productHash = await createProductHash(product, context.collections);
+    const productHash = await createProductHash(context, product);
 
     const now = new Date();
     const productUpdates = {

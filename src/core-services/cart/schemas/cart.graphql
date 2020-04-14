@@ -50,6 +50,16 @@ type Cart implements Node {
   ): CartItemConnection
 
   """
+  If any products or variants become hidden or are deleted after they were added to this cart, they'll be
+  automatically moved from `items` to `missingItems`. Clients may want to use this to show an
+  "items that are no longer available" list to storefront users.
+
+  If a product becomes visible again, the item will never be automatically moved from `missingItems`
+  back to `items`, but clients may want to provide a way for users to manually do this.
+  """
+  missingItems: [CartItem]
+
+  """
   If you integrate with third-party systems that require you to send the same ID for order
   calculations as for cart calculations, you may use this ID, which is the same on a `cart` as on
   the `order` placed from that cart. This ID can also be customized by plugins and is the best

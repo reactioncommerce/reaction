@@ -6,6 +6,7 @@ import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart.js";
 import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart.js";
 import reconcileCartsMerge from "./reconcileCartsMerge.js";
 import removeCartItems from "./removeCartItems.js";
+import removeMissingItemsFromCart from "./removeMissingItemsFromCart.js";
 import saveCart from "./saveCart.js";
 import saveManyCarts from "./saveManyCarts.js";
 import setEmailOnAnonymousCart from "./setEmailOnAnonymousCart.js";
@@ -22,6 +23,7 @@ export default {
   reconcileCartsKeepAnonymousCart,
   reconcileCartsMerge,
   removeCartItems,
+  removeMissingItemsFromCart,
   saveCart,
   saveManyCarts,
   setEmailOnAnonymousCart,
