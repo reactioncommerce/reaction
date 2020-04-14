@@ -5,12 +5,12 @@ import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-ad
 import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
 import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes";
 import registerPluginExamplePayments from "@reactioncommerce/plugin-payments-example";
+import registerPluginI18n from "@reactioncommerce/api-plugin-i18n";
 import registerPluginNavigation from "@reactioncommerce/plugin-navigation";
 import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-authorization";
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
 import registerPluginSystemInformation from "@reactioncommerce/plugin-system-information";
 import registerPluginTranslations from "@reactioncommerce/plugin-translations";
-import registerPluginI18n from "@reactioncommerce/api-plugin-i18n";
 
 /* node-app imports */
 /* core-services */
