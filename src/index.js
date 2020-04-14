@@ -25,22 +25,22 @@ export default async function register(app) {
           // with indexes created by the aldeed:schema-index Meteor package.
           [{ domains: 1 }, { name: "c2_domains" }],
           [{ name: 1 }, { name: "c2_name" }],
-          [{ slug: 1 }, { name: "c2_slug", sparse: true, unique: true }],
-        ],
-      },
+          [{ slug: 1 }, { name: "c2_slug", sparse: true, unique: true }]
+        ]
+      }
     },
     graphQL: {
       resolvers,
-      schemas,
+      schemas
     },
     queries,
     mutations,
     policies,
     functionsByType: {
-      createDataLoaders: [createDataLoaders],
+      createDataLoaders: [createDataLoaders]
     },
     simpleSchemas: {
-      Shop,
-    },
+      Shop
+    }
   });
 }
