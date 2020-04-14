@@ -11,6 +11,7 @@ import registerPluginNavigation from "@reactioncommerce/plugin-navigation";
 import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-authorization";
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
 import registerPluginSystemInformation from "@reactioncommerce/plugin-system-information";
+import registerPluginTaxesFlatRate from "@reactioncommerce/api-plugin-taxes-flat-rate";
 import registerPluginTranslations from "@reactioncommerce/plugin-translations";
 
 /* node-app imports */
@@ -39,7 +40,6 @@ import registerPluginSimpleSchema from "./plugins/simple-schema/index.js";
 import registerPluginSMTPEmail from "./plugins/email-smtp/index.js";
 import registerPluginStripePayments from "./plugins/payments-stripe/index.js";
 import registerPluginSurcharges from "./plugins/surcharges/index.js";
-import registerPluginTaxesRates from "./plugins/taxes-rates/index.js";
 
 /**
  * @summary A function in which you should call `register` function for each API plugin,
@@ -148,7 +148,7 @@ export default async function registerPlugins(app) {
    * Taxes
    */
   await registerPluginTaxes(app); // REQUIRED
-  await registerPluginTaxesRates(app); // OPTIONAL
+  await registerPluginTaxesFlatRate(app); // OPTIONAL
 
   /**
    * Navigation
