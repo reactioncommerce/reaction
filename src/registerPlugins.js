@@ -1,4 +1,3 @@
-/* npm package imports */
 import registerPluginAccounts from "@reactioncommerce/api-plugin-accounts";
 import registerPluginAddressValidation from "@reactioncommerce/api-plugin-address-validation";
 import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-address-validation-test";
@@ -7,6 +6,7 @@ import registerPluginCatalog from "@reactioncommerce/api-plugin-catalogs";
 import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes";
 import registerPluginExamplePayments from "@reactioncommerce/plugin-payments-example";
 import registerPluginI18n from "@reactioncommerce/api-plugin-i18n";
+import registerPluginJobQueue from "@reactioncommerce/api-plugin-job-queue";
 import registerPluginNavigation from "@reactioncommerce/plugin-navigation";
 import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-authorization";
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
@@ -30,7 +30,6 @@ import registerPluginTaxes from "./core-services/taxes/index.js";
 
 /* plugins */
 import registerPluginEmailTemplates from "./plugins/email-templates/index.js";
-import registerPluginJobQueue from "./plugins/job-queue/index.js";
 import registerPluginNotifications from "./plugins/notifications/index.js";
 import registerPluginShippingRates from "./plugins/shipping-rates/index.js";
 import registerPluginSimpleInventory from "./plugins/simple-inventory/index.js";
