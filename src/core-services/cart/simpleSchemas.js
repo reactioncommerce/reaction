@@ -641,7 +641,7 @@ const SurchargeMessagesByLanguage = new SimpleSchema({
  * @property {String} reason optional
  * @property {String} surchargeId optional
  */
-const AppliedSurcharge = new SimpleSchema({
+export const AppliedSurcharge = new SimpleSchema({
   "_id": String,
   "amount": Number,
   "cartId": {

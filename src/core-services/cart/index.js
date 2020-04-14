@@ -4,7 +4,7 @@ import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import { registerPluginHandlerForCart } from "./registration.js";
-import { Cart, CartItem } from "./simpleSchemas.js";
+import { Cart, CartItem, AppliedSurcharge } from "./simpleSchemas.js";
 import startup from "./startup.js";
 
 /**
@@ -57,6 +57,7 @@ export default async function register(app) {
     queries,
     policies,
     simpleSchemas: {
+      AppliedSurcharge,
       Cart,
       CartItem
     }

@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import surchargeSchema from "../util/surchargeSchema.js";
+import surchargeSchema from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   surcharge: surchargeSchema,

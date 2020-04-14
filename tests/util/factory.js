@@ -70,7 +70,7 @@ import {
 
 import {
   Surcharge
-} from "../../src/plugins/surcharges/util/surchargeSchema.js";
+} from "../../src/plugins/surcharges/simpleSchemas.js";
 
 import {
   Tag
