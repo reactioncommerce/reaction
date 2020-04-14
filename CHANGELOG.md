@@ -1,3 +1,19 @@
+# v2.9.2
+
+Reaction v2.9.2 adds miscellaneous bug fixes and contains no breaking changes since v2.9.1.
+
+This release is being coordinated with `reaction-development-platform` and is designed to work with `v2.9.2` of `example-storefront` and `reaction-hydra`.
+
+## Fixes
+
+- fix: Add csv file type validation for all platforms [#5785](https://github.com/reactioncommerce/reaction/pull/5785)
+- fix: sync develop & trunk now that trunk is the default branch [#6052](https://github.com/reactioncommerce/reaction/pull/6052)
+- fix: release v2.9.1 [#5973](https://github.com/reactioncommerce/reaction/pull/5973)
+- fix: remove extra `handling` charge from fulfillment total [#5987](https://github.com/reactioncommerce/reaction/pull/5987)
+- fix: use better cache policy to show newly created tags [#5978](https://github.com/reactioncommerce/reaction/pull/5978)
+- fix: made bin/setup always run from the desired path [#5853](https://github.com/reactioncommerce/reaction/pull/5853)
+- fix: upgrade handlebars version [#5810](https://github.com/reactioncommerce/reaction/pull/5810)
+
 # v2.9.1
 
 Reaction v2.9.1 adds miscellaneous bug fixes and contains no breaking changes since v2.9.0.
