@@ -12,6 +12,13 @@ import {
 } from "@reactioncommerce/api-plugin-address-validation/src/simpleSchemas.js";
 
 import {
+  Catalog,
+  CatalogProduct,
+  CatalogProductOption,
+  CatalogProductVariant
+} from "@reactioncommerce/api-plugin-catalogs/src/simpleSchemas.js";
+
+import {
   DiscountCodes
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
@@ -24,13 +31,6 @@ import {
 import {
   Sitemap
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
-
-import {
-  Catalog,
-  CatalogProduct,
-  CatalogProductOption,
-  CatalogProductVariant
-} from "../../src/core-services/catalog/simpleSchemas.js";
 
 import {
   Cart,
