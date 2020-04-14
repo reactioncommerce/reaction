@@ -5,6 +5,7 @@ import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-ad
 import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
 import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes";
 import registerPluginExamplePayments from "@reactioncommerce/plugin-payments-example";
+import registerPluginI18n from "@reactioncommerce/api-plugin-i18n";
 import registerPluginNavigation from "@reactioncommerce/plugin-navigation";
 import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-authorization";
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
@@ -17,7 +18,6 @@ import registerPluginCatalog from "./core-services/catalog/index.js";
 import registerPluginCart from "./core-services/cart/index.js";
 import registerPluginDiscounts from "./core-services/discounts/index.js";
 import registerPluginEmail from "./core-services/email/index.js";
-import registerPluginI18n from "./core-services/i18n/index.js";
 import registerPluginInventory from "./core-services/inventory/index.js";
 import registerPluginProduct from "./core-services/product/index.js";
 import registerPluginSettings from "./core-services/settings/index.js";
