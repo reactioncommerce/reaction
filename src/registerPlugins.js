@@ -10,7 +10,7 @@ import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-a
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
 import registerPluginSystemInformation from "@reactioncommerce/plugin-system-information";
 import registerPluginTranslations from "@reactioncommerce/plugin-translations";
-import registerI18nPlugin from "@reactioncommerce/api-plugin-i18n";
+import registerPluginI18n from "@reactioncommerce/api-plugin-i18n";
 
 /* node-app imports */
 /* core-services */
