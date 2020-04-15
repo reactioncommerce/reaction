@@ -1,4 +1,3 @@
-import pkg from "../package.json";
 import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
@@ -13,8 +12,8 @@ import schemas from "./schemas/index.js";
 export default async function register(app) {
   await app.registerPlugin({
     label: "Email",
-    name: "email",
-    version: pkg.version,
+    name: "reaction-email",
+    version: app.context.appVersion,
     i18n,
     collections: {
       Emails: {
