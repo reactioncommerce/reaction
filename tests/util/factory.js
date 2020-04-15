@@ -18,6 +18,10 @@ import {
   CatalogProductVariant
 } from "@reactioncommerce/api-plugin-catalogs/src/simpleSchemas.js";
 
+import FulfillmentMethod from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/methodSchema.js";
+
+import Restriction from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/restrictionSchema.js";
+
 import {
   DiscountCodes
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
@@ -91,10 +95,6 @@ import {
 import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
-
-import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
-
-import Restriction from "../../src/plugins/shipping-rates/util/restrictionSchema.js";
 
 import {
   SimpleInventoryCollectionSchema as SimpleInventory
