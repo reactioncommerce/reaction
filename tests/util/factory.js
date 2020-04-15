@@ -29,6 +29,10 @@ import {
 } from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
 
 import {
+  Shop
+} from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
+
+import {
   Sitemap
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
@@ -63,10 +67,6 @@ import {
   Product,
   ProductVariant
 } from "../../src/core-services/product/simpleSchemas.js";
-
-import {
-  Shop
-} from "../../src/core-services/shop/simpleSchemas.js";
 
 import {
   Surcharge
