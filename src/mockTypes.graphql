@@ -62,3 +62,24 @@ extend type FakeData {
   "Fake field to satisfy linting"
   catalogBooleanFilterName: CatalogBooleanFilterName
 }
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-shops`
+"""
+type Shop {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  emailRecord: EmailRecord
+  "Fake field to satisfy linting"
+  fakeInput: FakeInput
+}
+
+extend input FakeInput {
+  "Fake field to satisfy linting"
+  emailRecordInput: EmailRecordInput
+}
