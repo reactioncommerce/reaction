@@ -137,6 +137,11 @@ type FakeData {
   "Do not use this"
   doNotUse: String
 }
+"Do not use this"
+input FakeInput {
+  "Do not use this"
+  doNotUse: String
+}
 
 "Represents one type of currency"
 type Currency implements Node {

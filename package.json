@@ -26,6 +26,7 @@
     "@reactioncommerce/api-plugin-address-validation-test": "~1.0.0",
     "@reactioncommerce/api-plugin-catalogs": "~1.0.0",
     "@reactioncommerce/api-plugin-i18n": "~1.0.0",
+    "@reactioncommerce/api-plugin-shops": "~1.0.0",
     "@reactioncommerce/api-utils": "~1.10.0",
     "@reactioncommerce/db-version-check": "~1.0.0",
     "@reactioncommerce/file-collections": "~0.7.0",
