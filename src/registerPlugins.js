@@ -8,6 +8,7 @@ import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes
 import registerPluginExamplePayments from "@reactioncommerce/plugin-payments-example";
 import registerPluginI18n from "@reactioncommerce/api-plugin-i18n";
 import registerPluginNavigation from "@reactioncommerce/plugin-navigation";
+import registerPluginShipmentsFlatRate from "@reactioncommerce/api-plugin-shipments-flat-rate";
 import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-authorization";
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
 import registerPluginSystemInformation from "@reactioncommerce/plugin-system-information";
@@ -32,7 +33,6 @@ import registerPluginTaxes from "./core-services/taxes/index.js";
 import registerPluginEmailTemplates from "./plugins/email-templates/index.js";
 import registerPluginJobQueue from "./plugins/job-queue/index.js";
 import registerPluginNotifications from "./plugins/notifications/index.js";
-import registerPluginShippingRates from "./plugins/shipping-rates/index.js";
 import registerPluginSimpleInventory from "./plugins/simple-inventory/index.js";
 import registerPluginSimplePricing from "./plugins/simple-pricing/index.js";
 import registerPluginSimpleSchema from "./plugins/simple-schema/index.js";
@@ -142,7 +142,7 @@ export default async function registerPlugins(app) {
    * Shipping
    */
   await registerPluginShipping(app); // REQUIRED
-  await registerPluginShippingRates(app); // OPTIONAL
+  await registerPluginShipmentsFlatRate(app); // OPTIONAL
 
   /**
    * Taxes
