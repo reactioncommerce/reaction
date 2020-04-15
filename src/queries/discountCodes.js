@@ -15,9 +15,9 @@ export default async function discountCodes(context, shopId, filters) {
   await context.validatePermissions("reaction:legacy:discounts", "read", { shopId });
 
   // Create the mongo selector from the provided filters
-  let selector = { 
+  let selector = {
     shopId
-  }
+  };
 
   // filter by searchField
   if (filters.searchField) {
