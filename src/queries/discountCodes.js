@@ -20,7 +20,7 @@ export default async function discountCodes(context, shopId, filters) {
   };
 
   // filter by searchField
-  if (filters.searchField) {
+  if (filters && filters.searchField) {
     const cond = {
       $regex: filters.searchField,
       $options: "i"
