@@ -1,0 +1,23 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "Jednolita stawka",
+          "confirmRateDelete": "Usuń stopę?",
+          "rateSaved": "Ryczałt zapisane.",
+          "rateFailed": "Aktualizacja ryczałtowa nie powiodło się.",
+          "noRatesFound": "Nie znaleziono stopy."
+        },
+        "shippingGrid": {
+          "name": "Nazwa",
+          "group": "Grupa",
+          "rate": "Oceniać",
+          "label": "Etykieta"
+        }
+      }
+    }
+  }
+}]

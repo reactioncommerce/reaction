@@ -1,0 +1,23 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "Единна ставка",
+          "confirmRateDelete": "ставка Изтриване?",
+          "rateSaved": "Единна ставка спасен.",
+          "rateFailed": "актуализация Единна ставка провали.",
+          "noRatesFound": "Няма намерени проценти."
+        },
+        "shippingGrid": {
+          "name": "Име",
+          "group": "група",
+          "rate": "скорост",
+          "label": "Етикет"
+        }
+      }
+    }
+  }
+}]

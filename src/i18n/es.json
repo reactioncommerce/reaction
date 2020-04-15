@@ -1,0 +1,23 @@
+[{
+  "i18n": "es",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "Tarifa plana",
+          "confirmRateDelete": "Eliminar tasa?",
+          "rateSaved": "La tarifa plana de guarda.",
+          "rateFailed": "actualización de tarifa plana falló.",
+          "noRatesFound": "No se encontraron tasas."
+        },
+        "shippingGrid": {
+          "name": "Nombre",
+          "group": "Grupo",
+          "rate": "Tarifa",
+          "label": "Etiqueta"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,23 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "giá thấp nhứt",
+          "confirmRateDelete": "Xóa tỷ lệ?",
+          "rateSaved": "tỷ lệ căn hộ lưu.",
+          "rateFailed": "cập nhật tỷ lệ căn hộ thất bại.",
+          "noRatesFound": "Không tìm thấy giá."
+        },
+        "shippingGrid": {
+          "name": "Tên",
+          "group": "Nhóm",
+          "rate": "Tỷ lệ",
+          "label": "Nhãn"
+        }
+      }
+    }
+  }
+}]
