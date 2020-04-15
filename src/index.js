@@ -18,17 +18,17 @@ export default async function register(app) {
     collections: {
       AppSettings: {
         name: "AppSettings",
-        indexes: [[{ shopId: 1 }, { unique: true }]],
-      },
+        indexes: [[{ shopId: 1 }, { unique: true }]]
+      }
     },
     functionsByType: {
-      registerPluginHandler: [registerPluginHandlerForAppSettings],
+      registerPluginHandler: [registerPluginHandlerForAppSettings]
     },
     mutations,
     queries,
     graphQL: {
       resolvers,
-      schemas,
-    },
+      schemas
+    }
   });
 }
