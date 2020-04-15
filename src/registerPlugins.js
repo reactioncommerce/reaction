@@ -3,12 +3,12 @@ import registerPluginAccounts from "@reactioncommerce/api-plugin-accounts";
 import registerPluginAddressValidation from "@reactioncommerce/api-plugin-address-validation";
 import registerPluginAddressValidationTest from "@reactioncommerce/api-plugin-address-validation-test";
 import registerPluginAuthentication from "@reactioncommerce/plugin-authentication";
-import registerPluginCatalog from "@reactioncommerce/api-plugin-catalogs";
+import registerPluginCatalogs from "@reactioncommerce/api-plugin-catalogs";
 import registerPluginDiscountCodes from "@reactioncommerce/plugin-discount-codes";
-import registerPluginExamplePayments from "@reactioncommerce/plugin-payments-example";
+import registerPluginPaymentsExample from "@reactioncommerce/plugin-payments-example";
 import registerPluginI18n from "@reactioncommerce/api-plugin-i18n";
 import registerPluginNavigation from "@reactioncommerce/plugin-navigation";
-import registerPluginShop from "@reactioncommerce/api-plugin-shops";
+import registerPluginShops from "@reactioncommerce/api-plugin-shops";
 import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-authorization";
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
 import registerPluginSystemInformation from "@reactioncommerce/plugin-system-information";
@@ -67,7 +67,7 @@ export default async function registerPlugins(app) {
     await registerFilesPlugin(app);
   }
 
-  await registerPluginShop(app); // REQUIRED
+  await registerPluginShops(app); // REQUIRED
   await registerPluginSettings(app); // REQUIRED
   await registerPluginI18n(app); // REQUIRED
   await registerPluginEmail(app); // REQUIRED
@@ -96,7 +96,7 @@ export default async function registerPlugins(app) {
    * Catalog
    */
   await registerPluginProduct(app); // REQUIRED
-  await registerPluginCatalog(app); // REQUIRED
+  await registerPluginCatalogs(app); // REQUIRED
   await registerPluginTags(app); // REQUIRED
 
   /**
@@ -124,7 +124,7 @@ export default async function registerPlugins(app) {
    * Payments
    */
   await registerPluginPayments(app); // REQUIRED
-  await registerPluginExamplePayments(app); // OPTIONAL
+  await registerPluginPaymentsExample(app); // OPTIONAL
   await registerPluginStripePayments(app); // OPTIONAL
 
   /**
