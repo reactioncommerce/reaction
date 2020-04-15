@@ -1,4 +1,9 @@
 import pkg from "../package.json";
+import mutations from "./mutations/index.js";
+import policies from "./policies.json";
+import resolvers from "./resolvers/index.js";
+import schemas from "./schemas/index.js";
+import startup from "./startup.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -9,6 +14,15 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "SMTP Email",
     name: "email-smtp",
-    version: pkg.version
+    version: pkg.version,
+    functionsByType: {
+      startup: [startup]
+    },
+    graphQL: {
+      resolvers,
+      schemas
+    },
+    mutations,
+    policies
   });
 }
