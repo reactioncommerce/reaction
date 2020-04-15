@@ -152,6 +152,12 @@ input RemoveDiscountCodeFromCartInput {
   token: String
 }
 
+"Input type for filters to be applied to an discount codes list"
+input DiscountCodeFilterInput {
+  "Keywords typed by the user in the search input field"
+  searchField: String
+}
+
 "Response from the `applyDiscountCodeToCart` mutation"
 type ApplyDiscountCodeToCartPayload {
   "The updated cart with discount code applied"
@@ -369,6 +375,9 @@ extend type Query {
   discountCodes(
     "Provide a shop ID from which you want to get discount codes"
     shopId: ID!
+
+    "Filters to apply to a discount codes query"
+    filters: DiscountCodeFilterInput 
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
