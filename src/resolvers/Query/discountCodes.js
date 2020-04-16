@@ -10,16 +10,17 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.shopId - id of the shop
+ * @param {Object} args.filters - query filters
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} An array of discount codes
  */
 export default async function discountCodes(_, args, context, info) {
-  const { shopId: opaqueShopId, ...connectionArgs } = args;
+  const { shopId: opaqueShopId, filters, ...connectionArgs } = args;
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
-  const query = await context.queries.discountCodes(context, shopId);
+  const query = await context.queries.discountCodes(context, shopId, filters);
 
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
