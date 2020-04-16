@@ -44,11 +44,11 @@ const mockCatalogItem = Factory.Catalog.makeOne({
           productId: "500",
           variantId: null,
           URLs: {
-            thumbnail: "/thumbnail",
-            small: "/small",
-            medium: "/medium",
-            large: "/large",
-            original: "/original"
+            thumbnail: "https://shop.fake.site/thumbnail",
+            small: "https://shop.fake.site/small",
+            medium: "https://shop.fake.site/medium",
+            large: "https://shop.fake.site/large",
+            original: "https://shop.fake.site/original"
           }
         }
       ],
@@ -127,11 +127,11 @@ test("get a catalog product by slug", async () => {
       productId: result.catalogItemProduct.product.productId,
       variantId: null,
       URLs: {
-        thumbnail: "/thumbnail",
-        small: "/small",
-        medium: "/medium",
-        large: "/large",
-        original: "/original"
+        thumbnail: "https://shop.fake.site/thumbnail",
+        small: "https://shop.fake.site/small",
+        medium: "https://shop.fake.site/medium",
+        large: "https://shop.fake.site/large",
+        original: "https://shop.fake.site/original"
       }
     }
   ]);
@@ -160,11 +160,11 @@ test("get a catalog product by ID", async () => {
     {
       productId: result.catalogItemProduct.product.productId,
       URLs: {
-        thumbnail: "/thumbnail",
-        small: "/small",
-        medium: "/medium",
-        large: "/large",
-        original: "/original"
+        thumbnail: "https://shop.fake.site/thumbnail",
+        small: "https://shop.fake.site/small",
+        medium: "https://shop.fake.site/medium",
+        large: "https://shop.fake.site/large",
+        original: "https://shop.fake.site/original"
       }
     }
   ]);

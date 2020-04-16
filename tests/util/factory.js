@@ -8,6 +8,17 @@ import {
 } from "@reactioncommerce/api-plugin-accounts/src/simpleSchemas.js";
 
 import {
+  AddressValidationRule
+} from "@reactioncommerce/api-plugin-address-validation/src/simpleSchemas.js";
+
+import {
+  Catalog,
+  CatalogProduct,
+  CatalogProductOption,
+  CatalogProductVariant
+} from "@reactioncommerce/api-plugin-catalogs/src/simpleSchemas.js";
+
+import {
   DiscountCodes
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
@@ -18,15 +29,12 @@ import {
 } from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
 
 import {
-  Sitemap
-} from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
+  Shop
+} from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
 import {
-  Catalog,
-  CatalogProduct,
-  CatalogProductOption,
-  CatalogProductVariant
-} from "../../src/core-services/catalog/simpleSchemas.js";
+  Sitemap
+} from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
 import {
   Cart,
@@ -61,10 +69,6 @@ import {
 } from "../../src/core-services/product/simpleSchemas.js";
 
 import {
-  Shop
-} from "../../src/core-services/shop/simpleSchemas.js";
-
-import {
   Surcharge
 } from "../../src/plugins/surcharges/util/surchargeSchema.js";
 
@@ -87,8 +91,6 @@ import {
 import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
-
-import { AddressValidationRule } from "../../src/core-services/address/simpleSchemas.js";
 
 import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
 
