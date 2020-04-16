@@ -1,0 +1,31 @@
+"Input for `setTagHeroMedia` mutation"
+input SetTagHeroMediaInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "File record document"
+  fileRecord: JSONObject
+
+  "ID of tag to add the hero image record to"
+  id: ID!
+
+  "The shop that owns the tag"
+  shopId: ID!
+}
+
+"Response payload for `setTagHeroMedia` mutation"
+type SetTagHeroMediaPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Tag the hero image was added to"
+  tag: Tag!
+}
+
+extend type Mutation {
+  "Add an image to the tag"
+  setTagHeroMedia(
+    "Mutation input"
+    input: SetTagHeroMediaInput!
+  ): SetTagHeroMediaPayload!
+}
