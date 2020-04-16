@@ -126,7 +126,7 @@ Signed-off-by: Jane Doe <jane.doe@example.com>
 
 You can sign-off your commit automatically with Git by using `git commit -s` if you have your `user.name` and `user.email` set as part of your Git configuration.
 
-We ask that you use your real full name (please no anonymous contributions or pseudonyms) and a real email address. By signing-off your commit you are certifying that you have the right to submit it under the [GNU GPLv3 Licensed](./LICENSE.md).
+We ask that you use your real full name (please no anonymous contributions or pseudonyms) and a real email address. By signing-off your commit you are certifying that you have the right to submit it under the [GNU GPLv3 License](./LICENSE.md).
 
 We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO sign-offs of every commit.
 
