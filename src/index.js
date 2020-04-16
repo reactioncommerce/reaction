@@ -1,4 +1,7 @@
 import pkg from "../package.json";
+import mutations from "./mutations/index.js";
+import startup from "./startup.js";
+import { Notification } from "./simpleSchemas.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -9,6 +12,18 @@ export default async function register(app) {
   await app.registerPlugin({
     label: "Notifications",
     name: "notifications",
-    version: pkg.version
+    version: pkg.version,
+    collections: {
+      Notifications: {
+        name: "Notifications"
+      }
+    },
+    functionsByType: {
+      startup: [startup]
+    },
+    mutations,
+    simpleSchemas: {
+      Notification
+    }
   });
 }
