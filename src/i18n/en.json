@@ -1,0 +1,101 @@
+[
+  {
+    "i18n": "en",
+    "ns": "reaction-tags",
+    "translation": {
+      "reaction-tags": {
+        "tagAddedToProduct": "Tag \"{{tagName}}\" added to product",
+        "tagRemovedFromProduct": "Tag \"{{tagName}}\" removed from product",
+        "admin": {
+          "tags": {
+            "tags": "Tags",
+            "tagManagement": "Tag Management",
+            "enabled": "Enabled",
+            "disabled": "Disabled",
+            "enable": "Enable",
+            "disable": "Disable",
+            "delete": "Delete",
+            "visible": "Visible",
+            "makeVisible": "Make visible",
+            "makeHidden": "Make hidden",
+            "hidden": "Hidden",
+            "visibleAction": "Make {{count}} tag visible to customers",
+            "visibleAction_plural": "Make {{count}} tags visible to customers",
+            "hiddenAction": "Hide {{count}} tag from customers",
+            "hiddenAction_plural": "Hide {{count}} tags from customers",
+            "deleteAction": "Delete {{count}} tag",
+            "deleteAction_plural": "Delete {{count}} tags",
+            "form": {
+              "name": "Tag name",
+              "nameHelpText": "The unique name for the tag",
+              "displayTitle": "Display title",
+              "displayTitleAndSlug": "Display title and slug",
+              "displayTitleHelpText": "The tag display title for product listing pages.",
+              "displayTitlePlaceholder": "i.e. Women's Shoes",
+              "slug": "Slug",
+              "slugHelpText": "Tag slug is automatically converted into a URL-safe slug on save. Defaults to the tag name if left blank.",
+              "slugPlaceholder": "womens-shoes",
+              "formTitleNew": "Create a tag",
+              "formTitleUpdate": "Edit Tag",
+              "heroMediaUrl": "Hero media URL",
+              "heroMediaUrlPlaceholder": "URL",
+              "heroMediaDeleteConfirm": "Remove hero media?",
+              "uploadImage": "Upload an image",
+              "createNew": "Create a tag",
+              "cancel": "Cancel",
+              "delete": "Delete",
+              "deleteConfirm": "Delete this tag?",
+              "submitNew": "Create Tag",
+              "submitUpdate": "Update Tag",
+              "saveChanges": "Save changes",
+              "isVisible": "Tag is enabled in storefront",
+              "tagDetails": "Tag details",
+              "metadata": "Metadata",
+              "products": "Products",
+              "save": "Save",
+              "tagListingHero": "Tag listing page hero image",
+              "tagListingHeroHelpText": "Images with an aspect ratio of 16:9 or greater work best.",
+              "tagMetadata": "Tag metadata",
+              "openGraph": "OpenGraph",
+              "keywords": "Keywords",
+              "keywordsPlaceholder": "Keywords",
+              "description": "Description",
+              "descriptionPlaceholder": "Description",
+              "ogTitle": "title [og:title]",
+              "ogTitlePlaceholder": "Title",
+              "ogUrl": "URL [og:url]",
+              "ogUrlPlaceholder": "URL",
+              "ogDescription": "Description [og:description]",
+              "ogDescriptionPlaceholder": "Description",
+              "ogImageUrl": "Image URL [og:image]",
+              "ogImageUrlPlaceholder": "URL",
+              "fbAppId": "Facebook App Id (Optional)",
+              "fbAppIdPlaceholder": "App Id",
+              "ogLocale": "Locale [og:locale]",
+              "ogLocalePlaceholder": "Locale",
+              "id": "ID",
+              "title": "Title",
+              "priority": "Priority"
+            },
+            "headers": {
+              "slug": "Slug",
+              "name": "Tag",
+              "displayTitle": "Display Title",
+              "status": "Status"
+            },
+            "tableText": {
+              "noDataMessage": "No results found",
+              "previousText": "Previous",
+              "nextText": "Next",
+              "loadingText": "Loading...",
+              "noDataText": "No results found",
+              "pageText": "Page",
+              "ofText": "of",
+              "rowsText": "rows"
+            }
+          }
+        }
+      }
+    }
+  }
+]
