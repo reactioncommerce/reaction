@@ -1,3 +1,39 @@
+# v3.6.0
+
+Reaction v3.6.0 adds minor features and performance enhancements, fixes bugs, and contains no breaking changes since v3.5.0.
+
+## Notable changes
+
+### Addresses hidden items in cart and checkout
+
+Fixes a bug which was causing cart and checkout to fail if an item was hidden after it was added to cart
+
+### Moves eight plugins into their own npm packages
+
+`accounts`, `address-validation`, `address-validation-test` `catalogs`, `i18n` `settings`, `simple-schema` and `shops` plugins have been moved from internal plugins, to npm install packages.
+
+## Refactors
+
+- refactor: use npm package for settings plugin ([#6203](https://github.com/reactioncommerce/reaction/pull/6203))
+- refactor: move `simple-schema` plugin to npm ([#6202](https://github.com/reactioncommerce/reaction/pull/6202))
+- refactor: use npm package for shops plugin ([#6201](https://github.com/reactioncommerce/reaction/pull/6201))
+- refactor: move catalogs plugin to npm ([#6196](https://github.com/reactioncommerce/reaction/pull/6196))
+- refactor: move i18n service to npm ([#6193](https://github.com/reactioncommerce/reaction/pull/6193))
+- refactor: move address-validation service and address-validation-test plugin to npm ([#6186](https://github.com/reactioncommerce/reaction/pull/6186))
+- refactor: move accounts plugin to npm ([#6189](https://github.com/reactioncommerce/reaction/pull/6189))
+
+## Fixes
+
+- fix: find catalog product regardless of visibility ([#6089](https://github.com/reactioncommerce/reaction/pull/6089))
+
+## Chores
+
+- chore: update graphql-schema-linter ([#6192](https://github.com/reactioncommerce/reaction/pull/6192))
+
+## Contributors
+
+Thanks to @timgates42 for contributing to this release! 🎉
+
 # v3.5.0
 
 Reaction v3.5.0 adds minor features and performance enhancements, fixes bugs, and contains no breaking changes since v3.4.0.
