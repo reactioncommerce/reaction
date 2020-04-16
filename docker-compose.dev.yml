@@ -19,7 +19,6 @@ services:
     volumes:
       - .:/usr/local/src/app:cached
       - api_node_modules:/usr/local/src/app/node_modules # do not link node_modules in, and persist it between dc up runs
-      - /Users/eric/DevProjects/reaction/api-core:/usr/local/src/app/node_modules/@reactioncommerce/api-core
 
 volumes:
   mongo-db4:
