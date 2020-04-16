@@ -1,0 +1,35 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "Betalingen",
+          "paymentsTitle": "Betalingen"
+        },
+        "dashboard": {
+          "paymentsLabel": "Betalingen",
+          "paymentsTitle": "Betalingen",
+          "paymentsDescription": "betalingen configuratie"
+        },
+        "settings": {
+          "paymentSettingsLabel": "betaling Instellingen"
+        },
+        "paymentSettings": {
+          "paymentMethod": "Default Provider"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "betaling toevoegen aan bestelling af te ronden",
+        "processingError": "Er was een probleem met uw betaling.",
+        "completeYourOrder": "Vul uw bestelling",
+        "noPaymentMethods": "Geen betaalmethodes zijn geconfigureerd.",
+        "contactAdmin": "Neem contact op met de winkelbeheerder.",
+        "configureNow": "Configureren nu.",
+        "failedToPlaceOrder": "Kan bestelling te plaatsen."
+      }
+    }
+  }
+}]

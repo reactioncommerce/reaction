@@ -19,13 +19,15 @@
     "email": "engineering@reactioncommerce.com",
     "url": "https://reactioncommerce.com"
   },
-  "license": "Apache-2.0",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/api-plugin-payments/issues"
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.9.0"
+    "@reactioncommerce/api-utils": "^1.9.0",
+    "@reactioncommerce/reaction-error": "^1.0.1",
+    "simpl-schema": "^1.5.7"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
