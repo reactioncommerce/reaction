@@ -30,10 +30,6 @@ Fixes a bug which was causing cart and checkout to fail if an item was hidden af
 
 - chore: update graphql-schema-linter ([#6192](https://github.com/reactioncommerce/reaction/pull/6192))
 
-## Contributors
-
-Thanks to @timgates42 for contributing to this release! 🎉
-
 # v3.5.0
 
 Reaction v3.5.0 adds minor features and performance enhancements, fixes bugs, and contains no breaking changes since v3.4.0.
