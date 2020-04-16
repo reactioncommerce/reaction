@@ -1,0 +1,11 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-simple-pricing",
+  "translation": {
+    "reaction-simple-pricing": {
+      "productVariant": {
+        "noPriceTracking": "Prices are tracked only for sellable variants. Select an option to manage prices for it."
+      }
+    }
+  }
+}]
