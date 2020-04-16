@@ -1,4 +1,4 @@
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionAPICore } from "@reactioncommerce/api-core";
 import Logger from "@reactioncommerce/logger";
 import packageJson from "../package.json";
 
@@ -12,7 +12,7 @@ const api = new ReactionAPICore({
  * @return {Promise<undefined>} undefined
  */
 async function runApp() {
-  const plugins = await ReactionAPICore.importPluginsJSONFile("../plugins.json");
+  const plugins = await importPluginsJSONFile("../plugins.json");
 
   await api.registerPlugins(plugins);
 

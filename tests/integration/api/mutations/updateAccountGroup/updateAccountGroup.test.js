@@ -25,13 +25,11 @@ let updateAccountGroup;
 
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
-  const plugins = await importPluginsJSONFile("../../../../../plugins.json", {
-    transformPlugins(pluginList) {
-      // Remove the `files` plugin when testing. Avoids lots of errors.
-      delete pluginList.files;
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
 
-      return pluginList;
-    }
+    return pluginList;
   });
   await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
