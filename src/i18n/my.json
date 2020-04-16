@@ -1,0 +1,22 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "လျှော့စျေးက Settings"
+        },
+        "shortcut": {
+          "discountsLabel": "အထူးလျှော့စျေး",
+          "discountsDescription": "ပရိုမိုးရှင်းနှင့်ဈေးလျှော့ပေး။"
+        },
+        "dashboard": {
+          "discountsLabel": "အထူးလျှော့စျေး",
+          "discountsDescription": "ပရိုမိုးရှင်းနှင့်ဈေးလျှော့ပေး။"
+        }
+      }
+    }
+  }
+}]

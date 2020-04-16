@@ -1,0 +1,22 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "Kedvezmény beállítások"
+        },
+        "shortcut": {
+          "discountsLabel": "kedvezmények",
+          "discountsDescription": "Adjon akciók és kedvezmények."
+        },
+        "dashboard": {
+          "discountsLabel": "kedvezmények",
+          "discountsDescription": "Adjon akciók és kedvezmények."
+        }
+      }
+    }
+  }
+}]

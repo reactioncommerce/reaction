@@ -1,0 +1,22 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "rabatterade Inställningar"
+        },
+        "shortcut": {
+          "discountsLabel": "rabatter",
+          "discountsDescription": "Tillhandahålla erbjudanden och rabatter."
+        },
+        "dashboard": {
+          "discountsLabel": "rabatter",
+          "discountsDescription": "Tillhandahålla erbjudanden och rabatter."
+        }
+      }
+    }
+  }
+}]
