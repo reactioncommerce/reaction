@@ -7,12 +7,11 @@ import Logger from "@reactioncommerce/logger";
  *   to be relative to the JSON file. This does NOT register the plugins. It builds
  *   a valid `plugins` object which you can then pass to `api.registerPlugins`.
  * @param {Object} pluginsFile An absolute or relative file path for a JSON file.
- * @param {Object} [options] Options
- * @param {Function} [options.transformPlugins] A function that takes the loaded plugins object and
+ * @param {Function} [transformPlugins] A function that takes the loaded plugins object and
  *   may return an altered plugins object.
  * @returns {Promise<Object>} Plugins object suitable for `api.registerPlugins`
  */
-export default async function importPluginsJSONFile(pluginsFile, options = {}) {
+export default async function importPluginsJSONFile(pluginsFile, transformPlugins) {
   let absolutePluginsFile;
   if (path.isAbsolute(pluginsFile)) {
     absolutePluginsFile = pluginsFile;
@@ -25,9 +24,9 @@ export default async function importPluginsJSONFile(pluginsFile, options = {}) {
 
   let { default: pluginRefs } = await import(absolutePluginsFile);
 
-  if (typeof options.transformPlugins === "function") {
+  if (typeof transformPlugins === "function") {
     // allow plugins to be added and removed
-    pluginRefs = options.transformPlugins(pluginRefs);
+    pluginRefs = transformPlugins(pluginRefs);
   }
 
   // Now import each module that is referenced. They are either package names or

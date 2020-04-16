@@ -77,7 +77,7 @@ run().catch((error) => {
 Alternatively, you can keep your plugin list in a JSON file:
 
 ```js
-import { ReactionAPICore } from "@reactioncommerce/api-core";
+import { importPluginsJSONFile, ReactionAPICore } from "@reactioncommerce/api-core";
 import Logger from "@reactioncommerce/logger";
 import authorizationPlugin from "@reactioncommerce/reaction-plugin-authorization";
 import packageJson from "../package.json";
@@ -90,15 +90,13 @@ const api = new ReactionAPICore({
 });
 
 async function run() {
-  const plugins = await ReactionAPICore.importPluginsJSONFile("./plugins.json", {
-    // An optional function that allows you to transform the list from the
-    // JSON (add, swap, or remove plugins) before it attempts to load the
-    // plugin modules.
-    transformPlugins(pluginList) {
-      pluginList.authorization = authorizationPlugin;
+  // An optional function allows you to transform the list from the
+  // JSON (add, swap, or remove plugins) before it attempts to load the
+  // plugin modules.
+  const plugins = await importPluginsJSONFile("./plugins.json", (pluginList) => {
+    pluginList.authorization = authorizationPlugin;
 
-      return pluginList;
-    }
+    return pluginList;
   });
 
   await api.registerPlugins(plugins);
