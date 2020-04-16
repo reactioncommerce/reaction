@@ -10,7 +10,7 @@ Fixes a bug which was causing cart and checkout to fail if an item was hidden af
 
 ### Moves eight plugins into their own npm packages
 
-`accounts`, `address-validation`, `address-validation-test` `catalogs`, `i18n` `settings`, `simple-schema` and `shops` plugins have been moved from internal plugins, to npm install packages.
+`accounts`, `address-validation`, `address-validation-test`, `catalogs`, `i18n`, `settings`, `simple-schema` and `shops` plugins have been moved from internal plugins, to npm install packages.
 
 ## Refactors
 
