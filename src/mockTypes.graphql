@@ -288,14 +288,10 @@ type Shop {
 
 extend type FakeData {
   "Fake field to satisfy linting"
-  emailRecord: EmailRecord
-  "Fake field to satisfy linting"
-  fakeInput: FakeInput
-}
-
-extend input FakeInput {
-  "Fake field to satisfy linting"
-  emailRecordInput: EmailRecordInput
+  emailRecord(
+    "Fake field to satisfy linting"
+    emailRecordInput: EmailRecordInput
+  ): EmailRecord
 }
 
 """
@@ -306,10 +302,15 @@ type ShopSettings {
   "A fake field to satisfy linting"
   fakeField: String
 }
+
 extend type FakeData {
   "Fake field to satisfy linting"
-  shopSettings: ShopSettings
+  shopSettings(
+    "Fake input to satisfy linting"
+    shopSettingsUpdates: ShopSettingsUpdates
+  ): ShopSettings
 }
+
 """
 A fake type to satisfy linting
 type lives in `api-plugin-settings`
@@ -317,9 +318,4 @@ type lives in `api-plugin-settings`
 input ShopSettingsUpdates {
   "A fake field to satisfy linting"
   fakeField: String
-}
-
-extend input FakeInput {
-  "Fake field to satisfy linting"
-  shopSettingsUpdates: ShopSettingsUpdates
 }
