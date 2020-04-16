@@ -11,6 +11,7 @@ import registerPluginNavigation from "@reactioncommerce/plugin-navigation";
 import registerPluginShops from "@reactioncommerce/api-plugin-shops";
 import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-authorization";
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
+import registerPluginSimpleSchema from "@reactioncommerce/api-plugin-simple-schema";
 import registerPluginSystemInformation from "@reactioncommerce/plugin-system-information";
 import registerPluginTranslations from "@reactioncommerce/plugin-translations";
 
@@ -35,7 +36,6 @@ import registerPluginNotifications from "./plugins/notifications/index.js";
 import registerPluginShippingRates from "./plugins/shipping-rates/index.js";
 import registerPluginSimpleInventory from "./plugins/simple-inventory/index.js";
 import registerPluginSimplePricing from "./plugins/simple-pricing/index.js";
-import registerPluginSimpleSchema from "./plugins/simple-schema/index.js";
 import registerPluginSMTPEmail from "./plugins/email-smtp/index.js";
 import registerPluginStripePayments from "./plugins/payments-stripe/index.js";
 import registerPluginSurcharges from "./plugins/surcharges/index.js";
