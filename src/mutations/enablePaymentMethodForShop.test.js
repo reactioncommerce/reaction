@@ -1,5 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import Factory from "/tests/util/factory.js"; // TODO: research how to add `factory.js` to `api-utils` (https://github.com/reactioncommerce/reaction/issues/5646)
+import Factory from "../tests/factory.js";
 import enablePaymentMethodForShop from "./enablePaymentMethodForShop.js";
 
 jest.mock("../registration", () => ({
