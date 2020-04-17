@@ -35,6 +35,5 @@
   "tags": "./src/core-services/tags/index.js",
   "taxes": "./src/core-services/taxes/index.js",
   "taxesRates": "./src/plugins/taxes-rates/index.js",
-  "testAddressValidation": "./src/plugins/address-validation-test/index.js",
   "translations": "@reactioncommerce/plugin-translations"
 }
