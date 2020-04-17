@@ -1,6 +1,6 @@
 {
   "name": "api-core",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "This NPM package provides the `ReactionAPICore` class. Use this to build a NodeJS microservice that is compatible with the Reaction Commerce platform, or to build your main Reaction Commerce API if you don't want to start by forking the `https://github.com/reactioncommerce/reaction` project.",
   "main": "./src/index.js",
   "type": "module",
