@@ -1,0 +1,12 @@
+[
+  {
+    "description": "Inventory managers acting on a single product inventory.",
+    "subjects": [ "reaction:groups:inventory-managers" ],
+    "resources": [ "reaction:legacy:inventory:*" ],
+    "actions": [
+      "read",
+      "update"
+    ],
+    "effect": "allow"
+  }
+]
