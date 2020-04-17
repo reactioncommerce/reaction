@@ -1,3 +1,6 @@
+"A date"
+scalar Date
+
 "A date and time"
 scalar DateTime
 
