@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws when no account and no cartToken passed 1`] = `"A cartToken is required when updating an anonymous cart"`;
