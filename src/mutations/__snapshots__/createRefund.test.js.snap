@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if amount is less than $0.01 1`] = `"Amount must be greater than 0"`;
+
+exports[`throws if amount isn't supplied 1`] = `"Amount is required"`;
+
+exports[`throws if orderId isn't supplied 1`] = `"Order ID is required"`;
+
+exports[`throws if payment doesn't exist 1`] = `"Payment not found"`;
+
+exports[`throws if paymentId isn't supplied 1`] = `"Payment ID is required"`;
+
+exports[`throws if permission check fails 1`] = `"Access Denied"`;

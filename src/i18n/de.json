@@ -1,0 +1,97 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "notFound": "Auftrag nicht gefunden",
+      "order": {
+        "applyRefundToThisOrder": "Wenden Sie die Rückerstattung von {{currencySymbol}}{{refund}} auf diese Bestellung an?",
+        "applyRefundDuringCancelOrder": "Damit wird die Auftragssumme von {{currencySymbol}}{{invoiceTotal}} zurückerstattet",
+        "cancelOrder": "Möchten Sie diese Bestellung stornieren?",
+        "cancelOrderLabel": "Bestellung stornieren",
+        "cancelOrderThenRestock": "Ja, und wieder aufzutragen",
+        "cancelOrderNoRestock": "Ja, aber keine Aufstockung"
+      },
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "Bestellungen"
+        },
+        "orderRisk": {
+          "high": "Hohes Risiko",
+          "riskCapture": "Capture Order mit Risikogebühr?",
+          "riskCaptureWarn": "Sie sind dabei, die Bestellung mit einem Gebührenrisiko zu erfassen. Vorher bestätigen."
+        },
+        "dashboard": {
+          "ordersLabel": "Bestellungen",
+          "ordersTitle": "Bestellungen",
+          "ordersDescription": "Erfüllen Sie sich Ihre Aufträge",
+          "clearSearch": "Klar"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Datum",
+            "orderId": "Bestellnummer",
+            "total": "Summe",
+            "emailNotFound": "E-Mail nicht verfügbar"
+          },
+          "summary": {
+            "cardTitle": "Zusammenfassung",
+            "copyOrderLink": "Kopierauftragslink"
+          },
+          "invoice": {
+            "cardTitle": "Rechnung",
+            "adjustedTotal": "Angepasste Summe",
+            "capturedTotal": "Erfasst gesamt",
+            "refund": "Rückerstattung",
+            "refundLabel": "Für Rückerstattung",
+            "refundItem": "Artikel",
+            "refundItemAmount": "Summe",
+            "refundTotal": "Rückerstattung Gesamt"
+          },
+          "fulfillment": "Abwicklung",
+          "orderDetails": "Bestellungs-Details",
+          "shipmentTracking": "Versand"
+        },
+        "table": {
+          "headers": {
+            "name": "Name",
+            "email": "E-Mail-Einstellungen",
+            "date": "Datum",
+            "id": "Identifikation",
+            "total": "Summe",
+            "shipping": "Versand",
+            "status": "Status"
+          },
+          "filter": {
+            "status": "Status",
+            "dateRange": "Datumsbereich",
+            "shippingStatus": "Versandstatus",
+            "new": "Neu",
+            "captured": "Zahlung erfasst",
+            "shipped": "Versendet",
+            "completed": "Beendet",
+            "canceled": "Abgebrochen",
+            "refunded": "Erstattet"
+          },
+          "search": {
+            "clearSearch": "Klar",
+            "placeholder": "Aufträge durchsuchen"
+          },
+          "data": {
+            "status": {
+              "new": "Neu",
+              "coreOrderWorkflow/created": "Erstellt",
+              "coreOrderWorkflow/processing": "wird bearbeitet",
+              "coreOrderWorkflow/completed": "Abgeschlossen",
+              "coreOrderWorkflow/canceled": "Abgebrochen",
+              "coreOrderWorkflow/picked": "Gepflückt",
+              "coreOrderWorkflow/packed": "Verpackt",
+              "coreOrderWorkflow/labeled": "Beschriftet",
+              "coreOrderWorkflow/shipped": "Versand"
+            }
+          }
+        }
+      }
+    }
+  }
+}]

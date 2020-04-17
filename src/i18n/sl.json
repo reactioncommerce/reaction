@@ -1,0 +1,97 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "notFound": "Naročilo ni bilo mogoče najti",
+      "order": {
+        "applyRefundToThisOrder": "Uporabi vračilo {{currencySymbol}}{{refund}} k temu, da bi?",
+        "applyRefundDuringCancelOrder": "To bo povrnil red skupaj {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrder": "Ali želite preklicati naročilo?",
+        "cancelOrderLabel": "Preklic naročila",
+        "cancelOrderThenRestock": "Ja, in obnovo",
+        "cancelOrderNoRestock": "Da, vendar se ne obnavlja stalež"
+      },
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "naročila"
+        },
+        "orderRisk": {
+          "high": "Visoko tveganje",
+          "riskCapture": "Ukaz za prestrezanje s tveganjem?",
+          "riskCaptureWarn": "Prihajali boste po naročilu s tveganjem polnjenja. Potrdite, preden nadaljujete."
+        },
+        "dashboard": {
+          "ordersLabel": "naročila",
+          "ordersTitle": "naročila",
+          "ordersDescription": "Izpolnitev vašega naročila",
+          "clearSearch": "Počisti"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Datum",
+            "orderId": "ID naročila",
+            "total": "Skupaj",
+            "emailNotFound": "E-pošta ni na voljo"
+          },
+          "summary": {
+            "cardTitle": "Povzetek",
+            "copyOrderLink": "Kopiraj Naročilo Link"
+          },
+          "invoice": {
+            "cardTitle": "Račun",
+            "adjustedTotal": "prilagojena Skupaj",
+            "capturedTotal": "Zajeto Skupaj",
+            "refund": "vračilo",
+            "refundLabel": "Za vračilo",
+            "refundItem": "Elementi",
+            "refundItemAmount": "Skupaj",
+            "refundTotal": "Povračilo skupaj"
+          },
+          "fulfillment": "izpolnitev",
+          "orderDetails": "podrobnosti naročila",
+          "shipmentTracking": "pošiljka"
+        },
+        "table": {
+          "headers": {
+            "name": "Name",
+            "email": "E-naslov",
+            "date": "Datum",
+            "id": "ID",
+            "total": "Skupaj",
+            "shipping": "Dostava",
+            "status": "Status"
+          },
+          "filter": {
+            "status": "Status",
+            "dateRange": "Časovno obdobje",
+            "shippingStatus": "Status pošiljanja",
+            "new": "New",
+            "captured": "plačilo Zajeto",
+            "shipped": "pošiljajo",
+            "completed": "končan",
+            "canceled": "preklicana",
+            "refunded": "Vrnjeno"
+          },
+          "search": {
+            "clearSearch": "Počisti",
+            "placeholder": "Iskalna naročila"
+          },
+          "data": {
+            "status": {
+              "new": "Novo",
+              "coreOrderWorkflow/created": "Ustvarjeno",
+              "coreOrderWorkflow/processing": "Obravnavati",
+              "coreOrderWorkflow/completed": "Dokončano",
+              "coreOrderWorkflow/canceled": "Preklicano",
+              "coreOrderWorkflow/picked": "Izbrano",
+              "coreOrderWorkflow/packed": "Pakirano",
+              "coreOrderWorkflow/labeled": "Označeno",
+              "coreOrderWorkflow/shipped": "Shipped"
+            }
+          }
+        }
+      }
+    }
+  }
+}]

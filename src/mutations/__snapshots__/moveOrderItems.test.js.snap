@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if an order item doesn't exist 1`] = `"Some order items not found"`;
+
+exports[`throws if fromFulfillmentGroupId isn't supplied 1`] = `"From fulfillment group ID is required"`;
+
+exports[`throws if itemIds is empty 1`] = `"You must specify at least 1 values"`;
+
+exports[`throws if itemIds isn't supplied 1`] = `"Item ids is required"`;
+
+exports[`throws if orderId isn't supplied 1`] = `"Order ID is required"`;
+
+exports[`throws if permission check fails 1`] = `"Access Denied"`;
+
+exports[`throws if the database update fails 1`] = `"queries.getFulfillmentMethodsWithQuotes is not a function"`;
+
+exports[`throws if the from group would have no items remaining 1`] = `"move would result in group having no items"`;
+
+exports[`throws if the fromFulfillmentGroup doesn't exist 1`] = `"Order fulfillment group (from) not found"`;
+
+exports[`throws if the order doesn't exist 1`] = `"Order not found"`;
+
+exports[`throws if the toFulfillmentGroup doesn't exist 1`] = `"Order fulfillment group (to) not found"`;
+
+exports[`throws if toFulfillmentGroupId isn't supplied 1`] = `"To fulfillment group ID is required"`;
+
+exports[`throws if user who placed order tries to move item at invalid current item status 1`] = `"Item status (processing) is not one of: new"`;
+
+exports[`throws if user who placed order tries to move item at invalid current order status 1`] = `"Order status (processing) is not one of: new"`;

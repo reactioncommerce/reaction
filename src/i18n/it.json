@@ -1,0 +1,97 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "notFound": "Ordine non trovato",
+      "order": {
+        "applyRefundToThisOrder": "Applicare il rimborso di {{currencySymbol}}{{refund}} a questo ordine?",
+        "applyRefundDuringCancelOrder": "Ciò restituisce il totale dell'ordine di {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrder": "Vuoi annullare questo ordine?",
+        "cancelOrderLabel": "Annulla Ordine",
+        "cancelOrderThenRestock": "Sì, e riposare",
+        "cancelOrderNoRestock": "Sì, ma non ripieno"
+      },
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "Ordini"
+        },
+        "orderRisk": {
+          "high": "Alto rischio",
+          "riskCapture": "Acquisizione dell'ordine con carica di rischio?",
+          "riskCaptureWarn": "Stai per catturare l'ordine con un rischio di addebito. Confermare prima di procedere."
+        },
+        "dashboard": {
+          "ordersLabel": "Ordini",
+          "ordersTitle": "Ordini",
+          "ordersDescription": "Soddisfare i vostri ordini",
+          "clearSearch": "Chiaro"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Data",
+            "orderId": "ID ordine",
+            "total": "Totale",
+            "emailNotFound": "L'email non è disponibile"
+          },
+          "summary": {
+            "cardTitle": "Sommario",
+            "copyOrderLink": "Copia ordini di copia"
+          },
+          "invoice": {
+            "cardTitle": "Fattura",
+            "adjustedTotal": "totale rettificato",
+            "capturedTotal": "catturato totale",
+            "refund": "Rimborso",
+            "refundLabel": "Per il rimborso",
+            "refundItem": "Elementi",
+            "refundItemAmount": "Totale",
+            "refundTotal": "Rimborso Totale"
+          },
+          "fulfillment": "Compimento",
+          "orderDetails": "Dettagli ordine",
+          "shipmentTracking": "Spedizione"
+        },
+        "table": {
+          "headers": {
+            "name": "Nome",
+            "email": "Impostazioni e-mail",
+            "date": "Data",
+            "id": "ID",
+            "total": "Totale",
+            "shipping": "spedizione",
+            "status": "Stato"
+          },
+          "filter": {
+            "status": "Stato",
+            "dateRange": "Intervallo di date",
+            "shippingStatus": "Stato della spedizione",
+            "new": "Nuovo",
+            "captured": "pagamento Captured",
+            "shipped": "Spedito",
+            "completed": "Completato",
+            "canceled": "Annullato",
+            "refunded": "rimborsato"
+          },
+          "search": {
+            "clearSearch": "Chiaro",
+            "placeholder": "Ordini di ricerca"
+          },
+          "data": {
+            "status": {
+              "new": "Nuovo",
+              "coreOrderWorkflow/created": "Creato",
+              "coreOrderWorkflow/processing": "lavorazione",
+              "coreOrderWorkflow/completed": "Completato",
+              "coreOrderWorkflow/canceled": "Annullato",
+              "coreOrderWorkflow/picked": "raccolto",
+              "coreOrderWorkflow/packed": "Confezionato",
+              "coreOrderWorkflow/labeled": "Labeled",
+              "coreOrderWorkflow/shipped": "Spedito"
+            }
+          }
+        }
+      }
+    }
+  }
+}]
