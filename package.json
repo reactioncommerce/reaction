@@ -4,12 +4,13 @@
   "description": "This NPM package provides the `ReactionAPICore` class. Use this to build a NodeJS microservice that is compatible with the Reaction Commerce platform, or to build your main Reaction Commerce API if you don't want to start by forking the `https://github.com/reactioncommerce/reaction` project.",
   "main": "./src/index.js",
   "type": "module",
+  "sideEffects": false,
   "engines": {
     "node": ">=12.14.1"
   },
   "homepage": "https://github.com/reactioncommerce/api-core",
   "url": "https://github.com/reactioncommerce/api-core",
-  "email": "reaction@reactioncommerce.com",
+  "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/reactioncommerce/api-core.git"
@@ -29,9 +30,6 @@
     "lint:gql": "graphql-schema-linter ./src/**/*.graphql"
   },
   "keywords": [],
-  "prettier": {
-    "arrowParens": "always"
-  },
   "graphql-schema-linter": {
     "rules": [
       "arguments-have-descriptions",
@@ -76,6 +74,8 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
     "@reactioncommerce/eslint-config": "~2.1.1",
@@ -93,6 +93,28 @@
     "eslint-plugin-react": "~7.14.3",
     "eslint-plugin-react-hooks": "~2.0.1",
     "graphql-schema-linter": "~0.2.5",
+    "husky": "^4.2.3",
     "jest": "~25.2.7"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "prettier": {
+    "arrowParens": "always"
+  },
+  "release": {
+    "branches": [
+      "trunk"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
