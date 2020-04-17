@@ -1,0 +1,81 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "livrare",
+          "shippingTitle": "livrare",
+          "shippingDescription": "Oferi tarife de transport maritim"
+        },
+        "settings": {
+          "shippingLabel": "livrare"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Selectați opțiunea de transport maritim",
+        "noShippingMethods": "Nu există metode de expediere sunt configurate.",
+        "contactAdmin": "Contactați administratorul magazinului.",
+        "configureNow": "Configurati.",
+        "shipping": "livrare"
+      },
+      "shipping": {
+        "addShippingProvider": "Adăugați un furnizor de transport maritim",
+        "editShippingProvider": "Editare furnizori de transport maritim",
+        "addShippingMethod": "Adăugați o metodă de transport maritim",
+        "editShippingMethod": "Edita metodă de expediere",
+        "deleteShippingMethod": "Șterge metodă de expediere",
+        "noSettingsForThisView": "Nu există setări pentru această vizualizare",
+        "noShippingMethods": "Nu există metode de expediere sunt configurate.",
+        "removeShippingMethodConfirm": "Sunteți sigur că doriți să ștergeți {{method}}?",
+        "removeShippingMethodTitle": "Eliminați Metodă de expediere",
+        "shippingMethodDeleted": "Această metodă de transport maritim a fost șters.",
+        "removeShippingProvider": "Furnizorul de transport elimina",
+        "removeShippingProviderConfirm": "Sunteți sigur că doriți să ștergeți {{provider}}?",
+        "shippingProviderSaved": "Furnizor de transport maritim salvat.",
+        "shippingProviderUpdated": "Date de furnizor de transport maritim actualizat.",
+        "shippingMethodRateAdded": "Rata metodă de expediere adăugată.",
+        "shippingMethodRateUpdated": "Rata metodă de expediere actualizată.",
+        "name": "Nume",
+        "label": "Eticheta",
+        "group": "grup",
+        "cost": "A costat",
+        "handling": "manipularea",
+        "rate": "Rată",
+        "enabled": "Activat",
+        "disabled": "Pentru persoane cu handicap",
+        "addRate": "adauga o rată",
+        "updateRate": "Rata de actualizare {{name}}",
+        "addNewCondition": "Adăugați o condiție nouă",
+        "deleteCondition": "şterge condiție",
+        "provider": {
+          "name": "Codul de service",
+          "label": "Etichetă publică",
+          "enabled": "Activat"
+        }
+      },
+      "shippingMethod": {
+        "name": "Nume metoda",
+        "label": "Etichetă publică",
+        "group": "grup",
+        "cost": "A costat",
+        "handling": "manipularea",
+        "rate": "Rată",
+        "enabled": "Activat",
+        "matchingCartRanges": "Potrivire Ranges Coș",
+        "validRanges": {
+          "begin": "ÎNCEPE",
+          "end": "Sfârşit"
+        },
+        "matchingLocales": "potrivire Localizările",
+        "validLocales": {
+          "origination": "Din",
+          "destination": "La",
+          "deliveryBegin": "De transport maritim Est.",
+          "deliveryEnd": "Livrare Est."
+        }
+      }
+    }
+  }
+}]

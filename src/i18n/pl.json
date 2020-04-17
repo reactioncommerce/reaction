@@ -1,0 +1,81 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "Wysyłka",
+          "shippingTitle": "Wysyłka",
+          "shippingDescription": "Zapewnić koszty wysyłki"
+        },
+        "settings": {
+          "shippingLabel": "Wysyłka"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Wybierz opcję wysyłki",
+        "noShippingMethods": "są skonfigurowane żadne metody wysyłki.",
+        "contactAdmin": "Skontaktuj się z administratorem sklepu.",
+        "configureNow": "Skonfiguruj teraz.",
+        "shipping": "Wysyłka"
+      },
+      "shipping": {
+        "addShippingProvider": "Dodaj dostawcę przesyłki",
+        "editShippingProvider": "Edycja kurierska",
+        "addShippingMethod": "Dodaj metodę wysyłki",
+        "editShippingMethod": "Zmień sposób wysyłki",
+        "deleteShippingMethod": "Usuń metodę wysyłki",
+        "noSettingsForThisView": "Brak ustawienia dla tego widoku",
+        "noShippingMethods": "są skonfigurowane żadne metody wysyłki.",
+        "removeShippingMethodConfirm": "Czy na pewno chcesz usunąć {{method}}?",
+        "removeShippingMethodTitle": "Usuń metody wysyłki",
+        "shippingMethodDeleted": "Ta metoda wysyłki została usunięta.",
+        "removeShippingProvider": "Usuń kurierska",
+        "removeShippingProviderConfirm": "Czy na pewno chcesz usunąć {{provider}}?",
+        "shippingProviderSaved": "dostawcą Dostawa zapisane.",
+        "shippingProviderUpdated": "zaktualizowane dane kurierska.",
+        "shippingMethodRateAdded": "Dostawa stopa metoda dodaje.",
+        "shippingMethodRateUpdated": "Dostawa stopa metoda aktualizowana.",
+        "name": "Nazwa",
+        "label": "Etykieta",
+        "group": "Grupa",
+        "cost": "Koszt",
+        "handling": "Obsługa",
+        "rate": "Oceniać",
+        "enabled": "Włączone",
+        "disabled": "Niepełnosprawny",
+        "addRate": "Dodaj stopę",
+        "updateRate": "Częstotliwość odświeżania {{name}}",
+        "addNewCondition": "Dodaj nowy warunek",
+        "deleteCondition": "Usuń warunek",
+        "provider": {
+          "name": "service Code",
+          "label": "Etykieta publiczny",
+          "enabled": "Włączone"
+        }
+      },
+      "shippingMethod": {
+        "name": "Nazwa metody",
+        "label": "Etykieta publiczny",
+        "group": "Grupa",
+        "cost": "Koszt",
+        "handling": "Obsługa",
+        "rate": "Oceniać",
+        "enabled": "Włączone",
+        "matchingCartRanges": "Dopasowane Koszyk Zakresy",
+        "validRanges": {
+          "begin": "Zaczynać",
+          "end": "Koniec"
+        },
+        "matchingLocales": "Dopasowane Locales",
+        "validLocales": {
+          "origination": "Od",
+          "destination": "Do",
+          "deliveryBegin": "Dostawa Est.",
+          "deliveryEnd": "Dostawa Est."
+        }
+      }
+    }
+  }
+}]

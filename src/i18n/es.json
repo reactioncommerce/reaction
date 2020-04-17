@@ -1,0 +1,81 @@
+[{
+  "i18n": "es",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "Envío",
+          "shippingTitle": "Envío",
+          "shippingDescription": "Indicar gastos de envío"
+        },
+        "settings": {
+          "shippingLabel": "Envío"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Seleccione la opción de envío",
+        "noShippingMethods": "No hay métodos de envío están configurados.",
+        "contactAdmin": "Póngase en contacto con el administrador de la tienda.",
+        "configureNow": "Configurar ahora.",
+        "shipping": "Envío"
+      },
+      "shipping": {
+        "addShippingProvider": "Añadir la empresa de transportes",
+        "editShippingProvider": "Editar proveedor de envío",
+        "addShippingMethod": "Añadir método de envío",
+        "editShippingMethod": "Editar método de envío",
+        "deleteShippingMethod": "Eliminar método de envío",
+        "noSettingsForThisView": "No hay parámetros para este punto de vista",
+        "noShippingMethods": "No hay métodos de envío están configurados.",
+        "removeShippingMethodConfirm": "¿Está seguro de que quiere eliminar {{method}}?",
+        "removeShippingMethodTitle": "Retire Método de envío",
+        "shippingMethodDeleted": "Este método de envío que se ha suprimido.",
+        "removeShippingProvider": "Retire Proveedor de envío",
+        "removeShippingProviderConfirm": "¿Está seguro de que quiere eliminar {{provider}}?",
+        "shippingProviderSaved": "Formas de envío salvó.",
+        "shippingProviderUpdated": "Formas de envío de datos actualizados.",
+        "shippingMethodRateAdded": "tasa método de envío añadió.",
+        "shippingMethodRateUpdated": "tasa de actualización del método de envío.",
+        "name": "Nombre",
+        "label": "Etiqueta",
+        "group": "Grupo",
+        "cost": "Costo",
+        "handling": "Manejo",
+        "rate": "Tarifa",
+        "enabled": "Activado",
+        "disabled": "Discapacitados",
+        "addRate": "Añadir tasa",
+        "updateRate": "Velocidad de actualización {{name}}",
+        "addNewCondition": "Añadir nueva condición",
+        "deleteCondition": "eliminar condición",
+        "provider": {
+          "name": "Código de servicio",
+          "label": "Etiqueta pública",
+          "enabled": "Activado"
+        }
+      },
+      "shippingMethod": {
+        "name": "Nombre del método",
+        "label": "Etiqueta pública",
+        "group": "Grupo",
+        "cost": "Costo",
+        "handling": "Manejo",
+        "rate": "Tarifa",
+        "enabled": "Activado",
+        "matchingCartRanges": "Coincidencia Cesta Gamas",
+        "validRanges": {
+          "begin": "Empezar",
+          "end": "Fin"
+        },
+        "matchingLocales": "Locales a juego",
+        "validLocales": {
+          "origination": "De",
+          "destination": "A",
+          "deliveryBegin": "Este envío.",
+          "deliveryEnd": "Entrega Est."
+        }
+      }
+    }
+  }
+}]

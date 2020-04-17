@@ -1,0 +1,81 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "Доставка",
+          "shippingTitle": "Доставка",
+          "shippingDescription": "Осигуряване на тарифите за доставка"
+        },
+        "settings": {
+          "shippingLabel": "Доставка"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Изберете опция за доставка",
+        "noShippingMethods": "Не са методи на доставка са конфигурирани.",
+        "contactAdmin": "Моля, свържете се с администратора на магазина.",
+        "configureNow": "Конфигуриране на предприятието.",
+        "shipping": "Доставка"
+      },
+      "shipping": {
+        "addShippingProvider": "Добави доставчик корабоплаването",
+        "editShippingProvider": "Edit доставчик корабоплаването",
+        "addShippingMethod": "Добави начин за доставка",
+        "editShippingMethod": "метод Edit корабоплаването",
+        "deleteShippingMethod": "Изтриване на начин за доставка",
+        "noSettingsForThisView": "Не настройки за тази гледка",
+        "noShippingMethods": "Не са методи на доставка са конфигурирани.",
+        "removeShippingMethodConfirm": "Сигурни ли сте, че искате да изтриете {{method}}?",
+        "removeShippingMethodTitle": "Премахване Начин на доставка",
+        "shippingMethodDeleted": "Този метод на пратката е била изтрита.",
+        "removeShippingProvider": "Премахване Provider Доставка",
+        "removeShippingProviderConfirm": "Сигурни ли сте, че искате да изтриете {{provider}}?",
+        "shippingProviderSaved": "доставчик Доставка спасен.",
+        "shippingProviderUpdated": "актуализирани данни на доставчика за доставка.",
+        "shippingMethodRateAdded": "прибавя процент Доставка метод.",
+        "shippingMethodRateUpdated": "ставка метод за доставка се обновява.",
+        "name": "Име",
+        "label": "Етикет",
+        "group": "група",
+        "cost": "цена",
+        "handling": "боравене",
+        "rate": "скорост",
+        "enabled": "Enabled",
+        "disabled": "хора с увреждания",
+        "addRate": "Добави скорост",
+        "updateRate": "Актуализация {{name}} скорост",
+        "addNewCondition": "Добавяне на нов състояние",
+        "deleteCondition": "Изтриване състояние",
+        "provider": {
+          "name": "Service Code",
+          "label": "Public Label",
+          "enabled": "Enabled"
+        }
+      },
+      "shippingMethod": {
+        "name": "Име на метода",
+        "label": "Public Label",
+        "group": "група",
+        "cost": "цена",
+        "handling": "боравене",
+        "rate": "скорост",
+        "enabled": "Enabled",
+        "matchingCartRanges": "Съвпадение Количка диапазоните",
+        "validRanges": {
+          "begin": "започвам",
+          "end": "Край"
+        },
+        "matchingLocales": "съвпадение Локалите",
+        "validLocales": {
+          "origination": "от",
+          "destination": "Да се",
+          "deliveryBegin": "Доставка Est.",
+          "deliveryEnd": "Доставка Est."
+        }
+      }
+    }
+  }
+}]

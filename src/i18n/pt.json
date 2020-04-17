@@ -1,0 +1,81 @@
+[{
+  "i18n": "pt",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "Remessa",
+          "shippingTitle": "Remessa",
+          "shippingDescription": "Fornecer taxas de envio"
+        },
+        "settings": {
+          "shippingLabel": "Remessa"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Selecione a opção de envio",
+        "noShippingMethods": "Não há métodos de envio estão configurados.",
+        "contactAdmin": "Entre em contato com o administrador da loja.",
+        "configureNow": "Configurar agora.",
+        "shipping": "Remessa"
+      },
+      "shipping": {
+        "addShippingProvider": "Adicionar provedor de transporte",
+        "editShippingProvider": "Editar provedor de transporte",
+        "addShippingMethod": "Adicionar método de envio",
+        "editShippingMethod": "Editar método de envio",
+        "deleteShippingMethod": "Excluir método de envio",
+        "noSettingsForThisView": "Não há definições para este ponto de vista",
+        "noShippingMethods": "Não há métodos de envio estão configurados.",
+        "removeShippingMethodConfirm": "Tem certeza de que deseja excluir {{method}}?",
+        "removeShippingMethodTitle": "Remover Método de Envio",
+        "shippingMethodDeleted": "Este método de envio foi excluída.",
+        "removeShippingProvider": "Remover fornecedor de Frete",
+        "removeShippingProviderConfirm": "Tem certeza de que deseja excluir {{provider}}?",
+        "shippingProviderSaved": "provedor de envio salvo.",
+        "shippingProviderUpdated": "dados do provedor envio atualizado.",
+        "shippingMethodRateAdded": "Envio da tarifa método acrescentou.",
+        "shippingMethodRateUpdated": "taxa de método de envio atualizado.",
+        "name": "Nome",
+        "label": "Etiqueta",
+        "group": "Grupo",
+        "cost": "Custo",
+        "handling": "Manipulação",
+        "rate": "Taxa",
+        "enabled": "Ativado",
+        "disabled": "Desativado",
+        "addRate": "Adicionar taxa de",
+        "updateRate": "Taxa de Atualização {{name}}",
+        "addNewCondition": "Adicionar nova condição",
+        "deleteCondition": "excluir condição",
+        "provider": {
+          "name": "Código de serviço",
+          "label": "Etiqueta pública",
+          "enabled": "Ativado"
+        }
+      },
+      "shippingMethod": {
+        "name": "Nome do método",
+        "label": "Etiqueta pública",
+        "group": "Grupo",
+        "cost": "Custo",
+        "handling": "Manipulação",
+        "rate": "Taxa",
+        "enabled": "Ativado",
+        "matchingCartRanges": "Combinando Carrinho Ranges",
+        "validRanges": {
+          "begin": "Início",
+          "end": "Fim"
+        },
+        "matchingLocales": "Localidades combinando",
+        "validLocales": {
+          "origination": "A partir da",
+          "destination": "Para",
+          "deliveryBegin": "O envio Est.",
+          "deliveryEnd": "Entrega Est."
+        }
+      }
+    }
+  }
+}]
