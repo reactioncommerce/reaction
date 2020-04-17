@@ -14,6 +14,7 @@ import registerPluginSimpleAuthorization from "@reactioncommerce/plugin-simple-a
 import registerPluginSitemapGenerator from "@reactioncommerce/plugin-sitemap-generator";
 import registerPluginSimpleSchema from "@reactioncommerce/api-plugin-simple-schema";
 import registerPluginSystemInformation from "@reactioncommerce/plugin-system-information";
+import registerPluginTags from "@reactioncommerce/api-plugin-tags";
 import registerPluginTranslations from "@reactioncommerce/plugin-translations";
 
 /* node-app imports */
@@ -26,7 +27,6 @@ import registerPluginProduct from "./core-services/product/index.js";
 import registerPluginOrders from "./core-services/orders/index.js";
 import registerPluginPayments from "./core-services/payments/index.js";
 import registerPluginShipping from "./core-services/shipping/index.js";
-import registerPluginTags from "./core-services/tags/index.js";
 import registerPluginTaxes from "./core-services/taxes/index.js";
 
 /* plugins */
