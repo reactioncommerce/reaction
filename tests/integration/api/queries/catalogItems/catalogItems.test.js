@@ -1,5 +1,6 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
-import TestApp from "/tests/util/TestApp.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 // temp mocks
 import { internalShopId, opaqueShopId, shopName } from "../../../../mocks/mockShop";
 import { internalTagIds, opaqueTagIds } from "../../../../mocks/mockTags";
@@ -19,11 +20,18 @@ let testApp;
 let query;
 let paginatedQuery;
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
+
+    return pluginList;
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   query = testApp.query(CatalogProductItemsFullQuery);
   paginatedQuery = testApp.query(CatalogProductItemsFullQueryPaginated);
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
   await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insertOne({ _id, shopId: internalShopId, slug: `slug${_id}` })));
   await Promise.all(mockCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.insertOne(mockCatalogItem)));
 });

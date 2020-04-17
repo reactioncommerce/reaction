@@ -1,6 +1,7 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
-import TestApp from "/tests/util/TestApp.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const AvailablePaymentMethodsQuery = importAsString("./AvailablePaymentMethodsQuery.graphql");
 
@@ -13,10 +14,17 @@ let availablePaymentMethods;
 let testApp;
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
+
+    return pluginList;
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
 
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName, availablePaymentMethods: ["iou_example"] });
+  await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName, availablePaymentMethods: ["iou_example"] });
   availablePaymentMethods = testApp.query(AvailablePaymentMethodsQuery);
 });
 

@@ -1,6 +1,7 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const CreateProductVariantMutation = importAsString("./createProductVariant.graphql");
 
@@ -55,10 +56,17 @@ const adminGroup = Factory.Group.makeOne({
 let testApp;
 let mutate;
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
+
+    return pluginList;
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   mutate = testApp.mutate(CreateProductVariantMutation);
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
   await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.collections.Products.insertOne(mockProduct);
 

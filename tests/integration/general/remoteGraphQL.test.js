@@ -5,7 +5,7 @@ import {
 } from "graphql-tools";
 import fetch from "node-fetch";
 import nock from "nock";
-import TestApp from "/tests/util/TestApp.js";
+import { ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 // This is used in URLs for testing,
 // but we never actually start a service on this port.
@@ -16,7 +16,7 @@ const schemaSDL = "type Query { unitTestRemoteGraphql: Float }";
 const exSchema = makeExecutableSchema({ typeDefs: schemaSDL });
 const schema = makeRemoteExecutableSchema({ schema: exSchema, link });
 
-const testApp = new TestApp();
+const testApp = new ReactionTestAPICore();
 
 testApp.registerPlugin({
   name: "remoteGraphQL.test.js",
