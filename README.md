@@ -35,7 +35,7 @@ This NPM package also provides the `ReactionTestAPICore` class, which you can us
 ## Installation
 
 ```sh
-npm install @reactioncommerce/api-core graphql
+npm install @reactioncommerce/api-core graphql@14.6
 ```
 
 The `graphql` package is a required peer dependency.
