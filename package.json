@@ -29,6 +29,7 @@
     "@reactioncommerce/api-plugin-settings": "~1.0.0",
     "@reactioncommerce/api-plugin-shops": "~1.0.0",
     "@reactioncommerce/api-plugin-simple-schema": "~1.0.0",
+    "@reactioncommerce/api-plugin-tags": "~1.0.0",
     "@reactioncommerce/api-utils": "~1.10.0",
     "@reactioncommerce/file-collections": "~0.7.0",
     "@reactioncommerce/file-collections-sa-gridfs": "~0.1.0",

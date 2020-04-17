@@ -32,7 +32,7 @@
   "stripePayments": "./src/plugins/payments-stripe/index.js",
   "surcharges": "./src/plugins/surcharges/index.js",
   "systemInfo": "@reactioncommerce/plugin-system-information",
-  "tags": "./src/core-services/tags/index.js",
+  "tags": "@reactioncommerce/api-plugin-tags",
   "taxes": "./src/core-services/taxes/index.js",
   "taxesRates": "./src/plugins/taxes-rates/index.js",
   "translations": "@reactioncommerce/plugin-translations"
