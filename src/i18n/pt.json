@@ -1,0 +1,46 @@
+[{
+  "i18n": "pt",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Impostos",
+          "taxesTitle": "Impostos"
+        },
+        "dashboard": {
+          "taxesLabel": "Impostos",
+          "taxesTitle": "Impostos",
+          "taxesDescription": "configuração de imposto"
+        },
+        "taxGrid": {
+          "taxCode": "Código",
+          "rate": "Taxa",
+          "country": "País",
+          "region": "Região",
+          "postal": "Postal"
+        },
+        "settings": {
+          "taxSettingsLabel": "Definições de impostos"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Nenhuma taxa personalizada do imposto encontrada.",
+          "shopCustomTaxRatesSaved": "Taxa personalizada do imposto guardada.",
+          "shopCustomTaxRatesFailed": "Erro ao guardar taxa do imposto.",
+          "shopTaxMethodsSaved": "Método de imposto guardado.",
+          "shopTaxMethodsAlreadySaved": "Taxa de códigos já carregada",
+          "shopTaxMethodsFailed": "Falha ao guardar método de imposto.",
+          "customRatesLabel": "Taxas personalizadas",
+          "customRatesDescription": "Taxas personalizadas",
+          "taxCode": "Código do imposto",
+          "taxShipping": "Incluir envio",
+          "taxRate": "Taxa",
+          "discountsIncluded": "Incluir descontos",
+          "taxable": "Tributável",
+          "nottaxable": "Não tributável",
+          "confirmRateDelete": "Confirmar eliminação da taxa do imposto"
+        }
+      }
+    }
+  }
+}]

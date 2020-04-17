@@ -1,0 +1,46 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Taxes",
+          "taxesTitle": "Taxes"
+        },
+        "dashboard": {
+          "taxesLabel": "Taxes",
+          "taxesTitle": "Taxes",
+          "taxesDescription": "Configuration de la taxe"
+        },
+        "taxGrid": {
+          "taxCode": "Code",
+          "rate": "Taux",
+          "country": "Pays",
+          "region": "Région",
+          "postal": "Code postal"
+        },
+        "settings": {
+          "taxSettingsLabel": "Paramètres de taxe"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Aucun taux de taxe douanière identifié.",
+          "shopCustomTaxRatesSaved": "Taux des taxes douanières enregistrés.",
+          "shopCustomTaxRatesFailed": "Erreur lors de l'enregistrement du taux de taxation.",
+          "shopTaxMethodsSaved": "Enregistrer la méthode d'application de la taxe.",
+          "shopTaxMethodsAlreadySaved": "Codes de taxe déjà chargés",
+          "shopTaxMethodsFailed": "Echec de l'enregistrement de la méthode d'application de la taxe.",
+          "customRatesLabel": "Frais de douane",
+          "customRatesDescription": "Frais de douane",
+          "taxCode": "Code fiscal",
+          "taxShipping": "Inclure la livraison",
+          "taxRate": "Taux",
+          "discountsIncluded": "Inclure des réductions",
+          "taxable": "Taxable",
+          "nottaxable": "Non taxable",
+          "confirmRateDelete": "Confirmer la suppression du taux de taxation"
+        }
+      }
+    }
+  }
+}]

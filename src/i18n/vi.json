@@ -1,0 +1,46 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "thuế",
+          "taxesTitle": "thuế"
+        },
+        "dashboard": {
+          "taxesLabel": "thuế",
+          "taxesTitle": "thuế",
+          "taxesDescription": "cấu hình thuế"
+        },
+        "taxGrid": {
+          "taxCode": "Mã",
+          "rate": "Tỷ lệ",
+          "country": "Quốc gia",
+          "region": "Khu vực",
+          "postal": "bưu chính"
+        },
+        "settings": {
+          "taxSettingsLabel": "Cài đặt thuế"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Không tìm thấy mức thuế suất tùy chỉnh.",
+          "shopCustomTaxRatesSaved": "thuế suất tùy chỉnh lưu.",
+          "shopCustomTaxRatesFailed": "tiết kiệm thuế suất lỗi.",
+          "shopTaxMethodsSaved": "Phương pháp thuế lưu.",
+          "shopTaxMethodsAlreadySaved": "Mã số thuế đã được tải",
+          "shopTaxMethodsFailed": "Không tiết kiệm phương pháp thuế.",
+          "customRatesLabel": "Giá tùy chỉnh",
+          "customRatesDescription": "Giá tùy chỉnh",
+          "taxCode": "Mã số thuế",
+          "taxShipping": "Bao gồm Vận Chuyển",
+          "taxRate": "Tỷ lệ",
+          "discountsIncluded": "Bao gồm giảm giá",
+          "taxable": "Thu nhập chịu thuế",
+          "nottaxable": "không chịu thuế",
+          "confirmRateDelete": "Xác nhận xoá thuế suất"
+        }
+      }
+    }
+  }
+}]

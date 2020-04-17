@@ -1,0 +1,45 @@
+[{
+  "i18n": "he",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "מסים",
+          "taxesTitle": "מסים"
+        },
+        "dashboard": {
+          "taxesLabel": "מסים",
+          "taxesTitle": "מסים",
+          "taxesDescription": "תצורת מס"
+        },
+        "taxGrid": {
+          "taxCode": "קוד",
+          "rate": "אחוז",
+          "country": "מדינה",
+          "region": "אזור",
+          "postal": "מיקוד"
+        },
+        "settings": {
+          "taxSettingsLabel": "הגדרות מס"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "לא נמצאו תעריפים מס בהתאמה אישית.",
+          "shopCustomTaxRatesSaved": "שיעור מס מותאם אישית נשמר.",
+          "shopCustomTaxRatesFailed": "שגיאה בשמירת שיעור המס.",
+          "shopTaxMethodsSaved": "שיטת המס נשמרה.",
+          "shopTaxMethodsFailed": "שמירת שיטת המס נכשלה.",
+          "customRatesLabel": "התאם אישית תעריפים",
+          "customRatesDescription": "התאם אישית תעריפים",
+          "taxCode": "קוד מס",
+          "taxShipping": "כלול משלוח",
+          "taxRate": "תעריף",
+          "discountsIncluded": "כלול הנחות",
+          "taxable": "חייב במס",
+          "nottaxable": "לא חייב במס",
+          "confirmRateDelete": "אשר מחיקת שיעור מס"
+        }
+      }
+    }
+  }
+}]
