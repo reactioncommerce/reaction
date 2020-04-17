@@ -10,6 +10,7 @@ This NPM package also provides the `ReactionTestAPICore` class, which you can us
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
+- [Installation](#installation)
 - [Usage](#usage)
   - [Included Features](#included-features)
 - [Supported Environment Variables](#supported-environment-variables)
@@ -26,8 +27,18 @@ This NPM package also provides the `ReactionTestAPICore` class, which you can us
     - [simpleSchemas](#simpleschemas)
 - [App Context](#app-context)
 - [Writing Tests Using ReactionTestAPICore](#writing-tests-using-reactiontestapicore)
+- [Developer Certificate of Origin](#developer-certificate-of-origin)
+- [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Installation
+
+```sh
+npm install @reactioncommerce/api-core graphql
+```
+
+The `graphql` package is a required peer dependency.
 
 ## Usage
 

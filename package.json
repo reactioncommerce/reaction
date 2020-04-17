@@ -64,7 +64,6 @@
     "diehard": "^1.5.2",
     "envalid": "^6.0.1",
     "express": "^4.17.1",
-    "graphql": "^14.6.0",
     "graphql-iso-date": "^3.6.1",
     "lodash": "^4.17.15",
     "mongodb": "^3.5.5",
@@ -72,10 +71,10 @@
     "simpl-schema": "^1.5.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/core": "~7.9.0",
+    "@babel/preset-env": "~7.9.0",
     "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-conventional": "~8.3.4",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
     "@reactioncommerce/eslint-config": "~2.1.1",
@@ -92,9 +91,13 @@
     "eslint-plugin-promise": "~4.2.1",
     "eslint-plugin-react": "~7.14.3",
     "eslint-plugin-react-hooks": "~2.0.1",
+    "graphql": "~14.6.0",
     "graphql-schema-linter": "~0.2.5",
-    "husky": "^4.2.3",
+    "husky": "~4.2.3",
     "jest": "~25.2.7"
+  },
+  "peerDependencies": {
+    "graphql": "~14.6.0"
   },
   "commitlint": {
     "extends": [
