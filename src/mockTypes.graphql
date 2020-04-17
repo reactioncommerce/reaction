@@ -36,15 +36,6 @@ interface Node {
   _id: ID!
 }
 
-"Objects implementing the Deletable support soft deletion"
-interface Deletable {
-  """
-  If true, this object should be considered deleted. Soft deleted objects are not
-  returned in query results unless you explicitly ask for them.
-  """
-  isDeleted: Boolean!
-}
-
 """
 Objects implementing the NodeEdge interface will always have a node and a cursor
 that represents that node for purposes of requesting paginated results.
@@ -336,3 +327,35 @@ extend type FakeData {
   ): EmailRecord
 }
 
+# ========================================
+# api-plugin-tags
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-tags`
+"""
+input TagSortByField {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-tags`
+"""
+type TagConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [String]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [String]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
