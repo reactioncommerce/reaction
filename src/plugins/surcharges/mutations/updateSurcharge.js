@@ -4,8 +4,11 @@ import surchargeSchema from "../util/surchargeSchema.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String,
-  surcharge: surchargeSchema,
-  surchargeId: String
+  surchargeId: String,
+  surcharge: {
+    type: Object,
+    blackbox: true
+  },
 });
 
 
@@ -25,6 +28,8 @@ export default async function updateSurchargeMutation(context, input) {
   const { Surcharges } = collections;
 
   await context.validatePermissions(`reaction:legacy:surcharges:${surchargeId}`, "update", { shopId });
+
+  surchargeSchema.validate(surcharge);
 
   const { matchedCount } = await Surcharges.updateOne({
     _id: surchargeId,

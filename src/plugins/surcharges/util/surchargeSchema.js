@@ -55,6 +55,13 @@ const Message = new SimpleSchema({
 });
 
 export const Surcharge = new SimpleSchema({
+  "_id": String,
+  "shopId": String,
+  "createdAt": Date,
+  "updatedAt": {
+    type: Date,
+    optional: true
+  },
   "amount": {
     type: Number
   },
