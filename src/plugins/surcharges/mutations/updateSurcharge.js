@@ -8,7 +8,7 @@ const inputSchema = new SimpleSchema({
   surcharge: {
     type: Object,
     blackbox: true
-  },
+  }
 });
 
 
@@ -29,6 +29,9 @@ export default async function updateSurchargeMutation(context, input) {
 
   await context.validatePermissions(`reaction:legacy:surcharges:${surchargeId}`, "update", { shopId });
 
+  surcharge._id = surchargeId;
+  surcharge.shopId = shopId;
+
   surchargeSchema.validate(surcharge);
 
   const { matchedCount } = await Surcharges.updateOne({
@@ -40,8 +43,7 @@ export default async function updateSurchargeMutation(context, input) {
       ...surcharge
     }
   });
-  surcharge._id = surchargeId;
-  surcharge.shopId = shopId;
+
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
   return { surcharge };

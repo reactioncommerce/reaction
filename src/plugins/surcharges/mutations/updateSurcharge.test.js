@@ -13,6 +13,7 @@ const surcharge = {
     { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
     { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
   ],
+  createdAt: new Date(),
   destination: { region: ["CO", "NY"] },
   amount: 5.99,
   messagesByLanguage: [
@@ -69,6 +70,7 @@ test("update a surcharge", async () => {
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
+      createdAt: jasmine.any(Date),
       destination: { region: ["CO", "NY"] },
       amount: 5.99,
       messagesByLanguage: [

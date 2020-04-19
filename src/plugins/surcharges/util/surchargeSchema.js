@@ -56,12 +56,6 @@ const Message = new SimpleSchema({
 
 export const Surcharge = new SimpleSchema({
   "_id": String,
-  "shopId": String,
-  "createdAt": Date,
-  "updatedAt": {
-    type: Date,
-    optional: true
-  },
   "amount": {
     type: Number
   },
@@ -73,6 +67,7 @@ export const Surcharge = new SimpleSchema({
     optional: true
   },
   "attributes.$": Attributes,
+  "createdAt": Date,
   /*
    * Destinations this surcharge applies to
   */
@@ -99,9 +94,14 @@ export const Surcharge = new SimpleSchema({
     optional: true
   },
   "methodIds.$": String,
+  "shopId": String,
   "type": {
     type: String,
     defaultValue: "surcharge"
+  },
+  "updatedAt": {
+    type: Date,
+    optional: true
   }
 });
 
