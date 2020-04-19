@@ -41,6 +41,9 @@ type Surcharge implements Node {
   "Attribute restrictions."
   attributes: [SurchargeAttributeRestrictions]
 
+  "The date and time at which this surcharge was created"
+  createdAt: DateTime!
+
   "Destination restrictions."
   destination: SurchargeDestinationRestrictions
 
@@ -62,16 +65,13 @@ type Surcharge implements Node {
   "The shop ID"
   shopId: ID!
 
-  "The date and time at which this surcharge was created"
-  createdAt: DateTime!
-
-  "The date and time at which this surcharge was last updated"
-  updatedAt: DateTime
-
   """
   The type of this surcharge. Allowed types `surcharge`.
   """
   type: SurchargeTypeEnum!
+
+  "The date and time at which this surcharge was last updated"
+  updatedAt: DateTime
 }
 
 "Attribute Restrictions attached to a Surcharge"
