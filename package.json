@@ -26,6 +26,8 @@
     "@reactioncommerce/api-plugin-address-validation-test": "~1.0.0",
     "@reactioncommerce/api-plugin-catalogs": "~1.0.0",
     "@reactioncommerce/api-plugin-i18n": "~1.0.0",
+    "@reactioncommerce/api-plugin-job-queue": "~1.0.0",
+    "@reactioncommerce/api-plugin-notifications": "~1.0.0",
     "@reactioncommerce/api-plugin-orders": "~1.0.0",
     "@reactioncommerce/api-plugin-settings": "~1.0.0",
     "@reactioncommerce/api-plugin-shops": "~1.0.0",
