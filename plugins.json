@@ -16,7 +16,7 @@
   "inventory": "./src/core-services/inventory/index.js",
   "jobQueue": "@reactioncommerce/api-plugin-job-queue",
   "navigation": "@reactioncommerce/plugin-navigation",
-  "notifications": "./src/plugins/notifications/index.js",
+  "notifications": "@reactioncommerce/api-plugin-notifications",
   "orders": "./src/core-services/orders/index.js",
   "payments": "./src/core-services/payments/index.js",
   "pricing": "./src/plugins/simple-pricing/index.js",
