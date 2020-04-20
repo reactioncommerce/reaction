@@ -11,7 +11,7 @@
   "email": "./src/core-services/email/index.js",
   "emailTemplates": "./src/plugins/email-templates/index.js",
   "examplePayments": "@reactioncommerce/plugin-payments-example",
-  "files": "./src/core-services/files/index.js",
+  "files": "@reactioncommerce/api-plugin-files",
   "i18": "@reactioncommerce/api-plugin-i18n",
   "inventory": "./src/core-services/inventory/index.js",
   "jobQueue": "@reactioncommerce/api-plugin-job-queue",
