@@ -1,5 +1,0 @@
-"Subscriptions allow you to request to get updated data whenever it changes"
-type Subscription {
-  "A test subscription that returns an incremented number every 1 second for 10 seconds"
-  tick: Int!
-}

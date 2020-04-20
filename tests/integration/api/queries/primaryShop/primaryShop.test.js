@@ -1,4 +1,5 @@
-import TestApp from "/tests/util/TestApp.js";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 
 jest.setTimeout(300000);
 
@@ -8,9 +9,16 @@ const shopName = "Test Shop";
 let primaryShopQuery;
 let testApp;
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
+
+    return pluginList;
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
 
   primaryShopQuery = testApp.query(`query {
     primaryShop {

@@ -1,10 +1,8 @@
+import { importPluginsJSONFile, ReactionAPICore } from "@reactioncommerce/api-core";
 import Logger from "@reactioncommerce/logger";
 import packageJson from "../package.json";
-import ReactionAPI from "./core/ReactionAPI.js";
-import registerPlugins from "./registerPlugins.js";
-import config from "./core/config.js";
 
-const app = new ReactionAPI({
+const api = new ReactionAPICore({
   serveStaticPaths: ["public"],
   version: packageJson.version
 });
@@ -14,15 +12,11 @@ const app = new ReactionAPI({
  * @return {Promise<undefined>} undefined
  */
 async function runApp() {
-  await registerPlugins(app);
+  const plugins = await importPluginsJSONFile("../plugins.json");
 
-  await app.start();
+  await api.registerPlugins(plugins);
 
-  Logger.info(`GraphQL listening at ${app.graphQLServerUrl} (port ${app.serverPort || "unknown"})`);
-
-  if (config.REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
-    Logger.info(`GraphQL subscriptions ready at ${app.graphQLServerSubscriptionUrl} (port ${app.serverPort || "unknown"})`);
-  }
+  await api.start();
 }
 
 runApp().catch((error) => {

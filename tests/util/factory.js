@@ -29,8 +29,16 @@ import {
 } from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
 
 import {
+  Shop
+} from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
+
+import {
   Sitemap
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
+
+import {
+  Tag
+} from "@reactioncommerce/api-plugin-tags/src/simpleSchemas.js";
 
 import {
   Cart,
@@ -65,16 +73,8 @@ import {
 } from "../../src/core-services/product/simpleSchemas.js";
 
 import {
-  Shop
-} from "../../src/core-services/shop/simpleSchemas.js";
-
-import {
   Surcharge
 } from "../../src/plugins/surcharges/util/surchargeSchema.js";
-
-import {
-  Tag
-} from "../../src/core-services/tags/simpleSchemas.js";
 
 import {
   TaxRates

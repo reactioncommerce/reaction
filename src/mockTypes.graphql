@@ -1,11 +1,20 @@
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-accounts`
-"""
-type Account {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
+# Types in this file are picked up only by graphql-schema-linter package to avoid errors.
+# They are never imported and therefore are not part of the API.
+
+# ========================================
+# core-api / global
+# ========================================
+"A date and time"
+scalar DateTime
+
+"An object with any fields"
+scalar JSONObject
+
+"A string used as a connection cursor"
+scalar ConnectionCursor
+
+"An integer which will be auto-adjusted to be greater than 0 and less than 50 if necessary"
+scalar ConnectionLimitInt
 
 extend type FakeData {
   "AddressConnection lint fix"
@@ -21,6 +30,212 @@ extend type FakeData {
   ): AddressConnection!
 }
 
+"Objects implementing the Node interface will always have an _id field that is globally unique."
+interface Node {
+  "The ID of the object"
+  _id: ID!
+}
+
+"""
+Objects implementing the NodeEdge interface will always have a node and a cursor
+that represents that node for purposes of requesting paginated results.
+"""
+interface NodeEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The node itself"
+  node: Node
+}
+
+"User defined attributes. You can include only `key` and use these like tags, or also include a `value`."
+input MetafieldInput {
+  "Fake"
+  fake: String
+}
+
+"User defined attributes"
+type Metafield {
+  "Fake"
+  fake: String
+}
+
+"Do not use this"
+type FakeData {
+  "Do not use this"
+  doNotUse: String
+}
+
+"Fake"
+type EmailRecord {
+  "Fake"
+  fake: String
+}
+
+"Fake"
+input EmailRecordInput {
+  "Fake"
+  fake: String
+}
+
+
+"Distance units"
+enum DistanceUnit {
+  "Centimeter"
+  cm
+
+  "Foot"
+  ft
+
+  "Inch"
+  in
+}
+
+"Mass units"
+enum MassUnit {
+  "Gram"
+  g
+
+  "Kilogram"
+  kg
+
+  "Pound"
+  lb
+
+  "Ounce"
+  oz
+}
+
+"Fake"
+type ImageSizes {
+  "Fake"
+  fake: String
+}
+
+"Fake"
+type ImageInfo {
+  "Fake"
+  fake: String
+}
+
+
+"Fake"
+input MoneyInput {
+  "Fake"
+  fake: String
+}
+
+"Fake"
+type Rate {
+  "Fake"
+  fake: String
+}
+
+"Fake"
+input AddressInput {
+  "Fake"
+  fake: String
+}
+
+"Fake"
+type Address {
+  "Fake"
+  fake: String
+}
+
+"Fake"
+type AddressConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [AddressEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Address]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+"Fake"
+type AddressEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The address"
+  node: Address
+}
+
+"The order in which the connection results should be sorted, based on the sortBy field."
+enum SortOrder {
+  "ascending"
+  asc
+
+  "descending"
+  desc
+}
+
+"Mutations have side effects, such as mutating data or triggering a task"
+type Mutation {
+  "A test mutation that returns whatever string you send it"
+  echo(
+    "Any string"
+    str: String
+  ): String
+}
+
+"Queries return all requested data, without any side effects"
+type Query {
+  "A test query"
+  ping: String!
+}
+
+"Fake"
+type Money {
+  "Fake"
+  fake: String
+}
+
+"Fake"
+type PageInfo {
+  "When paginating forwards, the cursor to continue."
+  endCursor: ConnectionCursor
+
+  "When paginating forwards, are there more items?"
+  hasNextPage: Boolean!
+
+  "When paginating backwards, are there more items?"
+  hasPreviousPage: Boolean!
+
+  "When paginating backwards, the cursor to continue."
+  startCursor: ConnectionCursor
+}
+
+"Fake"
+type Currency implements Node {
+  "ID"
+  _id: ID!
+}
+
+# ========================================
+# api-plugin-accounts
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-accounts`
+"""
+type Account {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+# ========================================
+# api-plugin-catalogs
+# ========================================
 """
 A fake enum to satisfy linting
 enum lives in `api-plugin-catalogs`
@@ -61,4 +276,86 @@ extend type FakeData {
   catalogProductVariant: CatalogProductVariant,
   "Fake field to satisfy linting"
   catalogBooleanFilterName: CatalogBooleanFilterName
+}
+
+# ========================================
+# api-plugin-settings
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-settings`
+"""
+type ShopSettings {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  shopSettings(
+    "Fake input to satisfy linting"
+    shopSettingsUpdates: ShopSettingsUpdates
+  ): ShopSettings
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-settings`
+"""
+input ShopSettingsUpdates {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+# ========================================
+# api-plugin-shops
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-shops`
+"""
+type Shop {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  emailRecord(
+    "Fake field to satisfy linting"
+    emailRecordInput: EmailRecordInput
+  ): EmailRecord
+}
+
+# ========================================
+# api-plugin-tags
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-tags`
+"""
+input TagSortByField {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-tags`
+"""
+type TagConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [String]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [String]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
 }
