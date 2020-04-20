@@ -14,7 +14,7 @@
   "files": "./src/core-services/files/index.js",
   "i18": "@reactioncommerce/api-plugin-i18n",
   "inventory": "./src/core-services/inventory/index.js",
-  "jobQueue": "./src/plugins/job-queue/index.js",
+  "jobQueue": "@reactioncommerce/api-plugin-job-queue",
   "navigation": "@reactioncommerce/plugin-navigation",
   "notifications": "./src/plugins/notifications/index.js",
   "orders": "./src/core-services/orders/index.js",
