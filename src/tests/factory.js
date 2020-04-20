@@ -2,7 +2,6 @@ import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory"
 import {
   Catalog,
   CatalogProduct,
-  CatalogProductOption,
   CatalogProductVariant
 } from "@reactioncommerce/api-plugin-catalogs/src/simpleSchemas.js";
 
