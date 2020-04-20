@@ -308,6 +308,69 @@ input ShopSettingsUpdates {
 }
 
 # ========================================
+# api-plugin-orders
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type Order {
+  "A fake field to satisfy linting"
+  fakeField: String
+
+  "A fake field to satisfy linting"
+  obj: JSONObject
+
+  "A fake field to satisfy linting"
+  orderFulfillmentGroup: OrderFulfillmentGroup
+
+  "A fake field to satisfy linting"
+  orderItem: OrderItem
+
+  "A fake field to satisfy linting"
+  orderSummary: OrderSummary
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type OrderFulfillmentGroup {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type OrderItem {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type OrderSummary {
+  "A fake field to satisfy linting"
+  fakeField: String
+
+  "A fake field to satisfy linting"
+  paymentMethodName: PaymentMethodName
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type Refund {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+# ========================================
 # api-plugin-shops
 # ========================================
 """
