@@ -37,6 +37,10 @@ import {
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
 import {
+  Tag
+} from "@reactioncommerce/api-plugin-tags/src/simpleSchemas.js";
+
+import {
   Cart,
   CartAddress,
   CartInvoice,
@@ -71,10 +75,6 @@ import {
 import {
   Surcharge
 } from "../../src/plugins/surcharges/util/surchargeSchema.js";
-
-import {
-  Tag
-} from "../../src/core-services/tags/simpleSchemas.js";
 
 import {
   TaxRates
