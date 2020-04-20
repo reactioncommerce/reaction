@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if orderId isn't supplied 1`] = `"Order ID is required"`;
-
-exports[`throws if permission check fails 1`] = `"Access Denied"`;
-
-exports[`throws if the order doesn't exist 1`] = `"Order not found"`;
