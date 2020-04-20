@@ -1,6 +1,16 @@
 import { createFactoryForSchema, Factory } from "@reactioncommerce/data-factory";
 
 import {
+  CartAddress
+} from "@reactioncommerce/api-plugin-carts/src/simpleSchemas.js";
+
+import {
+  CommonOrder,
+  CommonOrderItem,
+  OrderAddress
+} from "@reactioncommerce/api-plugin-orders/src/simpleSchemas.js";
+
+import {
   Taxes,
   TaxServiceItemTax,
   TaxServiceResult,
@@ -8,6 +18,10 @@ import {
 } from "../simpleSchemas.js";
 
 const schemasToAddToFactory = {
+  CartAddress,
+  CommonOrder,
+  CommonOrderItem,
+  OrderAddress,
   Taxes,
   TaxServiceItemTax,
   TaxServiceResult,
