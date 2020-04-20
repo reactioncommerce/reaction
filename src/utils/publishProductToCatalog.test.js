@@ -1,18 +1,6 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import {
-  createFactoryForSchema,
-  Factory
-} from "@reactioncommerce/data-factory";
-import {
-  CatalogProduct,
-  CatalogProductVariant,
-  CatalogProductOption
-} from "../simpleSchemas.js";
+import Factory from "../tests/factory.js";
 import publishProductToCatalog from "./publishProductToCatalog.js";
-
-createFactoryForSchema("CatalogProduct", CatalogProduct);
-createFactoryForSchema("CatalogProductVariant", CatalogProductVariant);
-createFactoryForSchema("CatalogProductOption", CatalogProductOption);
 
 const productId = "TOP_PRODUCT_ID";
 
@@ -37,7 +25,7 @@ function getCatalogProduct() {
       isSoldOut: undefined,
       isVisible: true,
       variantId: "TOP_VARIANT_1",
-      options: Factory.CatalogProductOption.makeMany(1, {
+      options: Factory.CatalogProductOption.makeMany(2, {
         isDeleted: false,
         isSoldOut: undefined,
         isVisible: true,
