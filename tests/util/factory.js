@@ -29,6 +29,21 @@ import {
 } from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
 
 import {
+  CommonOrder,
+  CommonOrderItem,
+  extendOrdersSchemas,
+  Order,
+  OrderAddress,
+  OrderFulfillmentGroup,
+  orderFulfillmentGroupInputSchema,
+  orderInputSchema,
+  OrderInvoice,
+  OrderItem,
+  orderItemInputSchema,
+  Payment
+} from "@reactioncommerce/api-plugin-orders/src/simpleSchemas.js";
+
+import {
   Shop
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
@@ -51,21 +66,6 @@ import {
 import {
   extendInventorySchemas
 } from "../../src/core-services/inventory/simpleSchemas.js";
-
-import {
-  CommonOrder,
-  CommonOrderItem,
-  extendOrdersSchemas,
-  Order,
-  OrderAddress,
-  OrderFulfillmentGroup,
-  orderFulfillmentGroupInputSchema,
-  orderInputSchema,
-  OrderInvoice,
-  OrderItem,
-  orderItemInputSchema,
-  Payment
-} from "../../src/core-services/orders/simpleSchemas.js";
 
 import {
   Product,
