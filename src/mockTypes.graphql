@@ -471,7 +471,19 @@ extend type FakeData {
   cart(
     "Fake field to satisfy linting"
     moneyInput: MoneyInput
-  ): Cart
+  ): Cart,
+  "Fake field to satisfy linting"
+  shippingParcel: ShippingParcel
+  "Fake field to satisfy linting"
+  nodeEdge: NodeEdge,
+  "Fake field to satisfy linting"
+  imageSizes: ImageSizes,
+  "Fake field to satisfy linting"
+  addressInput: AddressInput,
+  "Fake field to satisfy linting"
+  account: Account,
+  "Fake field to satisfy linting"
+  fulfillmentOption: FulfillmentOption
 }
 
 """
