@@ -359,3 +359,63 @@ type TagConnection {
   "The total number of nodes that match your query"
   totalCount: Int!
 }
+
+# ========================================
+# api-plugin-carts
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type Cart {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type CartItem {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type CartSummary {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type FulfillmentOption {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  cartItem: CartItem,
+  "Fake field to satisfy linting"
+  cartSummary: CartSummary,
+  "Fake field to satisfy linting"
+  cart(
+    "Fake field to satisfy linting"
+    moneyInput: MoneyInput
+  ): Cart
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+input ProductConfigurationInput {
+  "Fake"
+  fake: String
+}

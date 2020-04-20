@@ -4,7 +4,7 @@
   "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test",
   "authentication": "@reactioncommerce/plugin-authentication",
   "authorization": "@reactioncommerce/plugin-simple-authorization",
-  "cart": "./src/core-services/cart/index.js",
+  "cart": "@reactioncommerce/api-plugin-carts",
   "catalogs": "@reactioncommerce/api-plugin-catalogs",
   "discountCodes": "@reactioncommerce/plugin-discount-codes",
   "discounts": "./src/core-services/discounts/index.js",
