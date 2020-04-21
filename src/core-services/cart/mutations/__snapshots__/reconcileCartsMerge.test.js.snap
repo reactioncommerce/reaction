@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if deleteOne fails 1`] = `"Unable to delete anonymous cart"`;
