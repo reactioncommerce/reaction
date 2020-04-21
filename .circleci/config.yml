@@ -48,21 +48,6 @@ jobs:
 
       - run: npm run lint
 
-  test:
-    docker:
-      - image: node:12
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: npm run test
-
 workflows:
   version: 2
   build_deploy:
@@ -72,14 +57,10 @@ workflows:
       - lint:
           requires:
             - build
-      - test:
+      - deploy:
+          context: reaction-publish-semantic-release
           requires:
-            - build
-      # - deploy:
-      #     context: reaction-publish-semantic-release
-      #     requires:
-      #       - lint
-      #       - test
-      #     filters:
-      #       branches:
-      #         only: trunk
+            - lint
+          filters:
+            branches:
+              only: trunk
