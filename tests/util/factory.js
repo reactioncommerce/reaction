@@ -48,6 +48,10 @@ import {
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
 import {
+  SimpleInventoryCollectionSchema as SimpleInventory
+} from "@reactioncommerce/api-plugin-inventory-simple/src/simpleSchemas.js";
+
+import {
   Sitemap
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
@@ -95,10 +99,6 @@ import {
 import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
 
 import Restriction from "../../src/plugins/shipping-rates/util/restrictionSchema.js";
-
-import {
-  SimpleInventoryCollectionSchema as SimpleInventory
-} from "../../src/plugins/simple-inventory/simpleSchemas.js";
 
 const schemasToAddToFactory = {
   Account,
