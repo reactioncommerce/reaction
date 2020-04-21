@@ -24,6 +24,7 @@
     "@reactioncommerce/api-plugin-accounts": "~1.2.0",
     "@reactioncommerce/api-plugin-address-validation": "~1.3.0",
     "@reactioncommerce/api-plugin-address-validation-test": "~1.0.0",
+    "@reactioncommerce/db-version-check": "~1.0.0",
     "@reactioncommerce/api-plugin-carts": "^1.0.0",
     "@reactioncommerce/api-plugin-catalogs": "~1.0.0",
     "@reactioncommerce/api-plugin-email": "~1.0.0",
@@ -31,6 +32,7 @@
     "@reactioncommerce/api-plugin-job-queue": "~1.0.0",
     "@reactioncommerce/api-plugin-notifications": "~1.0.0",
     "@reactioncommerce/api-plugin-orders": "~1.0.0",
+    "@reactioncommerce/api-plugin-payments-stripe": "~1.0.0",
     "@reactioncommerce/api-plugin-settings": "~1.0.0",
     "@reactioncommerce/api-plugin-shops": "~1.0.0",
     "@reactioncommerce/api-plugin-simple-schema": "~1.0.0",
@@ -62,8 +64,7 @@
     "ramda": "~0.26.1",
     "semver": "~6.3.0",
     "sharp": "~0.23.1",
-    "simpl-schema": "~1.5.6",
-    "stripe": "~5.10.0"
+    "simpl-schema": "~1.5.6"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
