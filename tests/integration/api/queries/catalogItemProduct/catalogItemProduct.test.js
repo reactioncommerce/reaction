@@ -1,8 +1,9 @@
 import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const CatalogItemProductFullQuery = importAsString("./CatalogItemProductFullQuery.graphql");
 
@@ -43,11 +44,11 @@ const mockCatalogItem = Factory.Catalog.makeOne({
           productId: "500",
           variantId: null,
           URLs: {
-            thumbnail: "/thumbnail",
-            small: "/small",
-            medium: "/medium",
-            large: "/large",
-            original: "/original"
+            thumbnail: "https://shop.fake.site/thumbnail",
+            small: "https://shop.fake.site/small",
+            medium: "https://shop.fake.site/medium",
+            large: "https://shop.fake.site/large",
+            original: "https://shop.fake.site/original"
           }
         }
       ],
@@ -79,10 +80,17 @@ jest.setTimeout(300000);
 let testApp;
 let query;
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
+
+    return pluginList;
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   query = testApp.query(CatalogItemProductFullQuery);
-  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
   await testApp.collections.Tags.insertOne(mockTag);
   await testApp.collections.Catalog.insertOne(mockCatalogItem);
 });
@@ -117,11 +125,11 @@ test("get a catalog product by slug", async () => {
       productId: result.catalogItemProduct.product.productId,
       variantId: null,
       URLs: {
-        thumbnail: "/thumbnail",
-        small: "/small",
-        medium: "/medium",
-        large: "/large",
-        original: "/original"
+        thumbnail: "https://shop.fake.site/thumbnail",
+        small: "https://shop.fake.site/small",
+        medium: "https://shop.fake.site/medium",
+        large: "https://shop.fake.site/large",
+        original: "https://shop.fake.site/original"
       }
     }
   ]);
@@ -150,11 +158,11 @@ test("get a catalog product by ID", async () => {
     {
       productId: result.catalogItemProduct.product.productId,
       URLs: {
-        thumbnail: "/thumbnail",
-        small: "/small",
-        medium: "/medium",
-        large: "/large",
-        original: "/original"
+        thumbnail: "https://shop.fake.site/thumbnail",
+        small: "https://shop.fake.site/small",
+        medium: "https://shop.fake.site/medium",
+        large: "https://shop.fake.site/large",
+        original: "https://shop.fake.site/original"
       }
     }
   ]);

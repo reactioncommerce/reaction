@@ -12,6 +12,13 @@ import {
 } from "@reactioncommerce/api-plugin-address-validation/src/simpleSchemas.js";
 
 import {
+  Catalog,
+  CatalogProduct,
+  CatalogProductOption,
+  CatalogProductVariant
+} from "@reactioncommerce/api-plugin-catalogs/src/simpleSchemas.js";
+
+import {
   DiscountCodes
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
@@ -20,29 +27,6 @@ import {
   NavigationTree,
   NavigationTreeItem
 } from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
-
-import {
-  Sitemap
-} from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
-
-import {
-  Catalog,
-  CatalogProduct,
-  CatalogProductOption,
-  CatalogProductVariant
-} from "../../src/core-services/catalog/simpleSchemas.js";
-
-import {
-  Cart,
-  CartAddress,
-  CartInvoice,
-  CartItem,
-  ShipmentQuote
-} from "../../src/core-services/cart/simpleSchemas.js";
-
-import {
-  extendInventorySchemas
-} from "../../src/core-services/inventory/simpleSchemas.js";
 
 import {
   CommonOrder,
@@ -57,7 +41,31 @@ import {
   OrderItem,
   orderItemInputSchema,
   Payment
-} from "../../src/core-services/orders/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-orders/src/simpleSchemas.js";
+
+import {
+  Shop
+} from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
+
+import {
+  Sitemap
+} from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
+
+import {
+  Tag
+} from "@reactioncommerce/api-plugin-tags/src/simpleSchemas.js";
+
+import {
+  Cart,
+  CartAddress,
+  CartInvoice,
+  CartItem,
+  ShipmentQuote
+} from "@reactioncommerce/api-plugin-carts/src/simpleSchemas.js";
+
+import {
+  extendInventorySchemas
+} from "../../src/core-services/inventory/simpleSchemas.js";
 
 import {
   Product,
@@ -65,16 +73,8 @@ import {
 } from "../../src/core-services/product/simpleSchemas.js";
 
 import {
-  Shop
-} from "../../src/core-services/shop/simpleSchemas.js";
-
-import {
   Surcharge
 } from "../../src/plugins/surcharges/util/surchargeSchema.js";
-
-import {
-  Tag
-} from "../../src/core-services/tags/simpleSchemas.js";
 
 import {
   TaxRates
