@@ -86,7 +86,7 @@ import {
 
 import {
   EmailTemplates
-} from "../../src/plugins/email-templates/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-email-templates/src/simpleSchemas.js";
 
 import {
   extendSimplePricingSchemas

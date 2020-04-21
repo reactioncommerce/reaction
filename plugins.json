@@ -9,7 +9,7 @@
   "discountCodes": "@reactioncommerce/plugin-discount-codes",
   "discounts": "./src/core-services/discounts/index.js",
   "email": "@reactioncommerce/api-plugin-email",
-  "emailTemplates": "./src/plugins/email-templates/index.js",
+  "emailTemplates": "@reactioncommerce/api-plugin-email-templates",
   "examplePayments": "@reactioncommerce/plugin-payments-example",
   "files": "./src/core-services/files/index.js",
   "i18": "@reactioncommerce/api-plugin-i18n",
