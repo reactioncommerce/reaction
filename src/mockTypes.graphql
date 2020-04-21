@@ -422,3 +422,75 @@ type TagConnection {
   "The total number of nodes that match your query"
   totalCount: Int!
 }
+
+# ========================================
+# api-plugin-carts
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type Cart {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type CartItem {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type CartSummary {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type FulfillmentOption {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  cartItem: CartItem,
+  "Fake field to satisfy linting"
+  cartSummary: CartSummary,
+  "Fake field to satisfy linting"
+  cart(
+    "Fake field to satisfy linting"
+    moneyInput: MoneyInput
+  ): Cart,
+  "Fake field to satisfy linting"
+  shippingParcel: ShippingParcel
+  "Fake field to satisfy linting"
+  nodeEdge: NodeEdge,
+  "Fake field to satisfy linting"
+  imageSizes: ImageSizes,
+  "Fake field to satisfy linting"
+  addressInput: AddressInput,
+  "Fake field to satisfy linting"
+  account: Account,
+  "Fake field to satisfy linting"
+  fulfillmentOption: FulfillmentOption
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+input ProductConfigurationInput {
+  "Fake"
+  fake: String
+}

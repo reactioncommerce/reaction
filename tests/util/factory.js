@@ -61,7 +61,7 @@ import {
   CartInvoice,
   CartItem,
   ShipmentQuote
-} from "../../src/core-services/cart/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-carts/src/simpleSchemas.js";
 
 import {
   extendInventorySchemas
