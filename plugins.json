@@ -20,7 +20,7 @@
   "orders": "@reactioncommerce/api-plugin-orders",
   "payments": "./src/core-services/payments/index.js",
   "pricing": "./src/plugins/simple-pricing/index.js",
-  "product": "./src/core-services/product/index.js",
+  "product": "@reactioncommerce/api-plugin-products",
   "sMTPEmail": "./src/plugins/email-smtp/index.js",
   "settings": "@reactioncommerce/api-plugin-settings",
   "shipping": "./src/core-services/shipping/index.js",

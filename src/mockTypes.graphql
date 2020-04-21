@@ -494,3 +494,65 @@ input ProductConfigurationInput {
   "Fake"
   fake: String
 }
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-products`
+"""
+type Product {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-products`
+"""
+type ProductVariant {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-products`
+"""
+type ProductConfiguration {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-products`
+"""
+input ProductVariantInput {
+  "Fake"
+  fake: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  product(
+    "Fake field to satisfy linting"
+    metafieldInput: MetafieldInput,
+    "Fake field to satisfy linting"
+    productVariantInput: ProductVariantInput
+  ): Product,
+  "Fake field to satisfy linting"
+  metafield: Metafield
+  "Fake field to satisfy linting"
+  imageInfo: ImageInfo,
+  "Fake field to satisfy linting"
+  socialMetadata: SocialMetadata,
+  "Fake field to satisfy linting"
+  tagSortByField: TagSortByField,
+  "Fake field to satisfy linting"
+  tagConnection(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: String,
+    "Return only String that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: String,
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: Int,
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: Int
+  ): TagConnection
+}
