@@ -60,7 +60,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
     },
     // For now, we only ever set one fulfillment group, so it has all of the items.
     // Revisit when the UI supports breaking into multiple groups.
-    items: cart.items || [],
+    items: cart.items.filter(({ _id }) => fulfillmentGroup.itemIds.includes(_id)),
     selectedFulfillmentOption,
     shippingAddress: fulfillmentGroup.address,
     shopId: fulfillmentGroup.shopId,
