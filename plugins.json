@@ -21,7 +21,7 @@
   "payments": "./src/core-services/payments/index.js",
   "pricing": "./src/plugins/simple-pricing/index.js",
   "product": "./src/core-services/product/index.js",
-  "sMTPEmail": "./src/plugins/email-smtp/index.js",
+  "sMTPEmail": "@reactioncommerce/api-plugin-email-smtp",
   "settings": "@reactioncommerce/api-plugin-settings",
   "shipping": "./src/core-services/shipping/index.js",
   "shippingRates": "./src/plugins/shipping-rates/index.js",
