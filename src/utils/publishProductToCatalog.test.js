@@ -46,55 +46,53 @@ test("publishProductToCatalog adds inventory booleans to catalogProduct", async 
   expect(catalogProduct.variants[0].options[0].isSoldOut).toBe(undefined);
   expect(catalogProduct.variants[0].options[1].isSoldOut).toBe(undefined);
 
-  mockContext.queries.inventoryForProductConfigurations.mockReturnValueOnce(
-    Promise.resolve([
-      {
-        productConfiguration: {
-          productId,
-          productVariantId: "TOP_VARIANT_1"
-        },
-        inventoryInfo: {
-          canBackorder: true,
-          inventoryAvailableToSell: 0,
-          inventoryInStock: 0,
-          inventoryReserved: 0,
-          isBackorder: true,
-          isLowQuantity: true,
-          isSoldOut: true
-        }
+  mockContext.queries.inventoryForProductConfigurations.mockReturnValueOnce(Promise.resolve([
+    {
+      productConfiguration: {
+        productId,
+        productVariantId: "TOP_VARIANT_1"
       },
-      {
-        productConfiguration: {
-          productId,
-          productVariantId: "OPTION_VARIANT_1"
-        },
-        inventoryInfo: {
-          canBackorder: true,
-          inventoryAvailableToSell: 0,
-          inventoryInStock: 0,
-          inventoryReserved: 0,
-          isBackorder: true,
-          isLowQuantity: false,
-          isSoldOut: true
-        }
-      },
-      {
-        productConfiguration: {
-          productId,
-          productVariantId: "OPTION_VARIANT_2"
-        },
-        inventoryInfo: {
-          canBackorder: true,
-          inventoryAvailableToSell: 0,
-          inventoryInStock: 0,
-          inventoryReserved: 0,
-          isBackorder: true,
-          isLowQuantity: true,
-          isSoldOut: true
-        }
+      inventoryInfo: {
+        canBackorder: true,
+        inventoryAvailableToSell: 0,
+        inventoryInStock: 0,
+        inventoryReserved: 0,
+        isBackorder: true,
+        isLowQuantity: true,
+        isSoldOut: true
       }
-    ])
-  );
+    },
+    {
+      productConfiguration: {
+        productId,
+        productVariantId: "OPTION_VARIANT_1"
+      },
+      inventoryInfo: {
+        canBackorder: true,
+        inventoryAvailableToSell: 0,
+        inventoryInStock: 0,
+        inventoryReserved: 0,
+        isBackorder: true,
+        isLowQuantity: false,
+        isSoldOut: true
+      }
+    },
+    {
+      productConfiguration: {
+        productId,
+        productVariantId: "OPTION_VARIANT_2"
+      },
+      inventoryInfo: {
+        canBackorder: true,
+        inventoryAvailableToSell: 0,
+        inventoryInStock: 0,
+        inventoryReserved: 0,
+        isBackorder: true,
+        isLowQuantity: true,
+        isSoldOut: true
+      }
+    }
+  ]));
 
   await publishProductToCatalog(catalogProduct, { context: mockContext });
 
