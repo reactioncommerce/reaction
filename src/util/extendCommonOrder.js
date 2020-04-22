@@ -1,5 +1,42 @@
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { tagsByIds, mergeProductAndVariants } from "./helpers.js";
+import tagsForCatalogProducts from "@reactioncommerce/api-utils/tagsForCatalogProducts.js";
+
+/**
+ * @name mergeProductAndVariants
+ * @summary Merges a product and its variants
+ * @param {Object} productAndVariants - The product and its variants
+ * @returns {Object} - The merged product and variants
+ */
+function mergeProductAndVariants(productAndVariants) {
+  const { product, parentVariant, variant } = productAndVariants;
+
+  // Filter out unnecessary product props
+  const productProps = _.omit(product, [
+    "variants", "media", "metafields", "parcel", " primaryImage", "socialMetadata", "customAttributes"
+  ]);
+
+  // Filter out unnecessary variant props
+  const variantExcludeProps = ["media", "parcel", "primaryImage", "customAttributes"];
+  const variantProps = _.omit(variant, variantExcludeProps);
+
+  // If an option has been added to the cart
+  if (parentVariant) {
+    // Filter out unnecessary parent variant props
+    const parentVariantProps = _.omit(parentVariant, variantExcludeProps);
+
+    return {
+      ...productProps,
+      ...parentVariantProps,
+      ...variantProps
+    };
+  }
+
+  return {
+    ...productProps,
+    ...variantProps
+  };
+}
 
 /**
  * @name extendCommonOrder
@@ -11,14 +48,14 @@ import { tagsByIds, mergeProductAndVariants } from "./helpers.js";
  * @returns {Object|null} shipping restriction attributes for the provided fulfillment group
  */
 export default async function extendCommonOrder(context, commonOrder) {
-  const { collections, getFunctionsOfType, queries } = context;
+  const { collections: { Tags }, getFunctionsOfType, queries } = context;
   const { items: orderItems } = commonOrder;
   const products = [];
 
   // Products in the Catalog collection are the source of truth, therefore use them
   // as the source of data instead of what is coming from the client.
   const catalogProductsAndVariants = await queries.findCatalogProductsAndVariants(context, orderItems);
-  const allProductsTags = await tagsByIds(collections, catalogProductsAndVariants);
+  const allProductsTags = await tagsForCatalogProducts(Tags, catalogProductsAndVariants);
 
   for (const orderLineItem of orderItems) {
     const productAndVariants = catalogProductsAndVariants.find((catProduct) => catProduct.product.productId === orderLineItem.productId);
