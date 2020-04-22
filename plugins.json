@@ -18,7 +18,7 @@
   "navigation": "@reactioncommerce/plugin-navigation",
   "notifications": "@reactioncommerce/api-plugin-notifications",
   "orders": "@reactioncommerce/api-plugin-orders",
-  "payments": "./src/core-services/payments/index.js",
+  "payments": "@reactioncommerce/api-plugin-payments",
   "pricing": "./src/plugins/simple-pricing/index.js",
   "product": "./src/core-services/product/index.js",
   "sMTPEmail": "./src/plugins/email-smtp/index.js",
