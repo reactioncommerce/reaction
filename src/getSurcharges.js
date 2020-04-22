@@ -1,7 +1,6 @@
 import Random from "@reactioncommerce/random";
-import extendCommonOrder from "../../core-services/shipping/util/extendCommonOrder.js"; // TODO: remove cross-plugin import (https://github.com/reactioncommerce/reaction/issues/5633)
+import extendCommonOrder from "./util/extendCommonOrder.js";
 import { surchargeCheck } from "./util/surchargeCheck.js";
-
 
 /**
  * @summary Returns a list of surcharges to apply based on the cart.
