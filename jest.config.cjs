@@ -7,7 +7,7 @@ const jestConfig = require("@reactioncommerce/api-utils/lib/configs/jest.config.
 // Any packages that are published only as ESM need to be listed here
 const externalNodeModules = [
   "@reactioncommerce/api-utils",
-  "@reactioncommerce/api-plugin-carts",
+  "@reactioncommerce/api-plugin-carts"
 ];
 
 jestConfig.transformIgnorePatterns = [
