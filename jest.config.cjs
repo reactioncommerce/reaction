@@ -10,6 +10,7 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-address-validation",
   "@reactioncommerce/api-plugin-carts",
   "@reactioncommerce/api-plugin-catalogs",
+  "@reactioncommerce/api-plugin-discounts",
   "@reactioncommerce/api-plugin-email",
   "@reactioncommerce/api-plugin-email-smtp",
   "@reactioncommerce/api-plugin-email-templates",

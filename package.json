@@ -26,6 +26,7 @@
     "@reactioncommerce/api-plugin-address-validation-test": "~1.0.0",
     "@reactioncommerce/api-plugin-carts": "^1.0.0",
     "@reactioncommerce/api-plugin-catalogs": "~1.0.0",
+    "@reactioncommerce/api-plugin-discounts": "~1.0.0",
     "@reactioncommerce/api-plugin-email": "~1.0.0",
     "@reactioncommerce/api-plugin-email-smtp": "~1.0.0",
     "@reactioncommerce/api-plugin-email-templates": "~1.0.0",

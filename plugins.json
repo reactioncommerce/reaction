@@ -7,7 +7,7 @@
   "cart": "@reactioncommerce/api-plugin-carts",
   "catalogs": "@reactioncommerce/api-plugin-catalogs",
   "discountCodes": "@reactioncommerce/plugin-discount-codes",
-  "discounts": "./src/core-services/discounts/index.js",
+  "discounts": "@reactioncommerce/api-plugin-discounts",
   "email": "@reactioncommerce/api-plugin-email",
   "emailTemplates": "@reactioncommerce/api-plugin-email-templates",
   "examplePayments": "@reactioncommerce/plugin-payments-example",
