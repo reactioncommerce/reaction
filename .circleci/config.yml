@@ -19,17 +19,17 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v3-node-modules-{{ .Branch }}
+            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Install NPM dependencies
           command: npm ci
       - save_cache:
-          key: reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
-          key: reaction-v3-node-modules-{{ .Branch }}
+          key: reaction-v5-node-modules-{{ .Branch }}
           paths:
             - node_modules
 
@@ -49,8 +49,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v3-node-modules-{{ .Branch }}
+            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Lint JavaScript
           command: npm run lint
@@ -61,8 +61,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v3-node-modules-{{ .Branch }}
+            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Lint GraphQL schemas
           command: npm run lint:gql
@@ -73,8 +73,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v3-node-modules-{{ .Branch }}
+            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Run Unit Tests
           command: npm run test:unit
@@ -92,8 +92,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v3-node-modules-{{ .Branch }}
+            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Run Integration Query Tests
           command: MONGO_URL=mongodb://localhost:27017/test npm run test:integration:query
@@ -111,8 +111,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v3-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v3-node-modules-{{ .Branch }}
+            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Run Integration Mutation Tests
           command: MONGO_URL=mongodb://localhost:27017/test npm run test:integration:mutation

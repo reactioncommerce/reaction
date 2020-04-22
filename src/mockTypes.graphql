@@ -58,6 +58,9 @@ input MetafieldInput {
 type Metafield {
   "Fake"
   fake: String
+
+  "Fake"
+  fakeData: FakeData
 }
 
 "Do not use this"
@@ -65,19 +68,6 @@ type FakeData {
   "Do not use this"
   doNotUse: String
 }
-
-"Fake"
-type EmailRecord {
-  "Fake"
-  fake: String
-}
-
-"Fake"
-input EmailRecordInput {
-  "Fake"
-  fake: String
-}
-
 
 "Distance units"
 enum DistanceUnit {
@@ -338,6 +328,9 @@ type lives in `api-plugin-orders`
 type OrderFulfillmentGroup {
   "A fake field to satisfy linting"
   fakeField: String
+
+  "A fake field to satisfy linting"
+  order: Order
 }
 
 """
@@ -356,18 +349,6 @@ type lives in `api-plugin-orders`
 type OrderSummary {
   "A fake field to satisfy linting"
   fakeField: String
-
-  "A fake field to satisfy linting"
-  paymentMethodName: PaymentMethodName
-}
-
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-orders`
-"""
-type Refund {
-  "A fake field to satisfy linting"
-  fakeField: String
 }
 
 # ========================================
@@ -380,14 +361,6 @@ type lives in `api-plugin-shops`
 type Shop {
   "A fake field to satisfy linting"
   fakeField: String
-}
-
-extend type FakeData {
-  "Fake field to satisfy linting"
-  emailRecord(
-    "Fake field to satisfy linting"
-    emailRecordInput: EmailRecordInput
-  ): EmailRecord
 }
 
 # ========================================
@@ -421,4 +394,84 @@ type TagConnection {
 
   "The total number of nodes that match your query"
   totalCount: Int!
+}
+
+# ========================================
+# api-plugin-carts
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type Cart {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type CartItem {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type CartSummary {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+type FulfillmentOption {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  cartItem: CartItem,
+  "Fake field to satisfy linting"
+  cartSummary: CartSummary,
+  "Fake field to satisfy linting"
+  cart(
+    "Fake field to satisfy linting"
+    moneyInput: MoneyInput
+  ): Cart,
+  "Fake field to satisfy linting"
+  shippingParcel: ShippingParcel
+  "Fake field to satisfy linting"
+  nodeEdge: NodeEdge,
+  "Fake field to satisfy linting"
+  imageSizes: ImageSizes,
+  "Fake field to satisfy linting"
+  addressInput: AddressInput,
+  "Fake field to satisfy linting"
+  account: Account,
+  "Fake field to satisfy linting"
+  fulfillmentOption: FulfillmentOption
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-carts`
+"""
+input ProductConfigurationInput {
+  "Fake"
+  fake: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  productConfiguration(
+    "Fake field to satisfy linting"
+    productConfigurationInput: ProductConfigurationInput
+  ): ProductConfiguration
 }
