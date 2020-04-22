@@ -4,11 +4,11 @@ import propertyTypes from "@reactioncommerce/api-utils/propertyTypes.js";
 /**
  * @summary Filter surcharges based on surcharge restriction data
  * @param {Object} surcharge - surcharge to check attributes and destination against
- * @param {Object} extendCommonOrder - details about the purchase a user wants to make.
+ * @param {Object} extendedCommonOrder - details about the purchase a user wants to make.
  * @returns {Bool} true / false as to whether method is still valid after this check
  */
-export async function surchargeCheck(surcharge, extendCommonOrder) {
-  const { items, shippingAddress } = extendCommonOrder;
+export async function surchargeCheck(surcharge, extendedCommonOrder) {
+  const { items, shippingAddress } = extendedCommonOrder;
   const { attributes, destination } = surcharge;
 
   const validSurcharge = items.some((item) => { // eslint-disable-line
