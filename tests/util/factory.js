@@ -31,6 +31,10 @@ import {
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
 import {
+  EmailTemplates
+} from "@reactioncommerce/api-plugin-email-templates/src/simpleSchemas.js";
+
+import {
   NavigationItem,
   NavigationTree,
   NavigationTreeItem
@@ -61,6 +65,10 @@ import {
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
 import {
+  SimpleInventoryCollectionSchema as SimpleInventory
+} from "@reactioncommerce/api-plugin-inventory-simple/src/simpleSchemas.js";
+
+import {
   Sitemap
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
@@ -85,20 +93,12 @@ import {
 } from "../../src/core-services/taxes/simpleSchemas.js";
 
 import {
-  EmailTemplates
-} from "../../src/plugins/email-templates/simpleSchemas.js";
-
-import {
   extendSimplePricingSchemas
 } from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
 import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
 
 import Restriction from "../../src/plugins/shipping-rates/util/restrictionSchema.js";
-
-import {
-  SimpleInventoryCollectionSchema as SimpleInventory
-} from "../../src/plugins/simple-inventory/simpleSchemas.js";
 
 const schemasToAddToFactory = {
   Account,
