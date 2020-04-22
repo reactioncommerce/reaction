@@ -23,6 +23,10 @@ import {
 } from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
 
 import {
+  EmailTemplates
+} from "@reactioncommerce/api-plugin-email-templates/src/simpleSchemas.js";
+
+import {
   NavigationItem,
   NavigationTree,
   NavigationTreeItem
@@ -87,10 +91,6 @@ import {
 import {
   extendTaxesSchemas
 } from "../../src/core-services/taxes/simpleSchemas.js";
-
-import {
-  EmailTemplates
-} from "../../src/plugins/email-templates/simpleSchemas.js";
 
 import {
   extendSimplePricingSchemas
