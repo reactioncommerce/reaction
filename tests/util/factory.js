@@ -12,6 +12,14 @@ import {
 } from "@reactioncommerce/api-plugin-address-validation/src/simpleSchemas.js";
 
 import {
+  Cart,
+  CartAddress,
+  CartInvoice,
+  CartItem,
+  ShipmentQuote
+} from "@reactioncommerce/api-plugin-carts/src/simpleSchemas.js";
+
+import {
   Catalog,
   CatalogProduct,
   CatalogProductOption,
@@ -48,6 +56,11 @@ import {
 } from "@reactioncommerce/api-plugin-orders/src/simpleSchemas.js";
 
 import {
+  Product,
+  ProductVariant
+} from "@reactioncommerce/api-plugin-products/src/simpleSchemas.js";
+
+import {
   Shop
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
@@ -64,21 +77,8 @@ import {
 } from "@reactioncommerce/api-plugin-tags/src/simpleSchemas.js";
 
 import {
-  Cart,
-  CartAddress,
-  CartInvoice,
-  CartItem,
-  ShipmentQuote
-} from "@reactioncommerce/api-plugin-carts/src/simpleSchemas.js";
-
-import {
   extendInventorySchemas
 } from "../../src/core-services/inventory/simpleSchemas.js";
-
-import {
-  Product,
-  ProductVariant
-} from "../../src/core-services/product/simpleSchemas.js";
 
 import {
   Surcharge

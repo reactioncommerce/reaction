@@ -224,179 +224,6 @@ type Account {
 }
 
 # ========================================
-# api-plugin-catalogs
-# ========================================
-"""
-A fake enum to satisfy linting
-enum lives in `api-plugin-catalogs`
-"""
-enum CatalogBooleanFilterName {
-  "A fake enum to satisfy linting"
-  fakeField
-}
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-catalogs`
-"""
-type CatalogProduct {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-catalogs`
-"""
-type CatalogProductVariant {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-catalogs`
-"""
-type SocialMetadata {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-
-extend type FakeData {
-  "Fake field to satisfy linting"
-  catalogProduct: CatalogProduct,
-  "Fake field to satisfy linting"
-  catalogProductVariant: CatalogProductVariant,
-  "Fake field to satisfy linting"
-  catalogBooleanFilterName: CatalogBooleanFilterName
-}
-
-# ========================================
-# api-plugin-settings
-# ========================================
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-settings`
-"""
-type ShopSettings {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-
-extend type FakeData {
-  "Fake field to satisfy linting"
-  shopSettings(
-    "Fake input to satisfy linting"
-    shopSettingsUpdates: ShopSettingsUpdates
-  ): ShopSettings
-}
-
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-settings`
-"""
-input ShopSettingsUpdates {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-
-# ========================================
-# api-plugin-orders
-# ========================================
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-orders`
-"""
-type Order {
-  "A fake field to satisfy linting"
-  fakeField: String
-
-  "A fake field to satisfy linting"
-  obj: JSONObject
-
-  "A fake field to satisfy linting"
-  orderFulfillmentGroup: OrderFulfillmentGroup
-
-  "A fake field to satisfy linting"
-  orderItem: OrderItem
-
-  "A fake field to satisfy linting"
-  orderSummary: OrderSummary
-}
-
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-orders`
-"""
-type OrderFulfillmentGroup {
-  "A fake field to satisfy linting"
-  fakeField: String
-
-  "A fake field to satisfy linting"
-  order: Order
-}
-
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-orders`
-"""
-type OrderItem {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-orders`
-"""
-type OrderSummary {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-
-# ========================================
-# api-plugin-shops
-# ========================================
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-shops`
-"""
-type Shop {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-
-# ========================================
-# api-plugin-tags
-# ========================================
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-tags`
-"""
-input TagSortByField {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-tags`
-"""
-type TagConnection {
-  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
-  edges: [String]
-
-  """
-  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
-  if you know you will not need to paginate the results.
-  """
-  nodes: [String]
-
-  "Information to help a client request the next or previous page"
-  pageInfo: PageInfo!
-
-  "The total number of nodes that match your query"
-  totalCount: Int!
-}
-
-# ========================================
 # api-plugin-carts
 # ========================================
 """
@@ -475,3 +302,243 @@ extend type FakeData {
     productConfigurationInput: ProductConfigurationInput
   ): ProductConfiguration
 }
+
+# ========================================
+# api-plugin-catalogs
+# ========================================
+"""
+A fake enum to satisfy linting
+enum lives in `api-plugin-catalogs`
+"""
+enum CatalogBooleanFilterName {
+  "A fake enum to satisfy linting"
+  fakeField
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-catalogs`
+"""
+type CatalogProduct {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-catalogs`
+"""
+type CatalogProductVariant {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-catalogs`
+"""
+type SocialMetadata {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  catalogProduct: CatalogProduct,
+  "Fake field to satisfy linting"
+  catalogProductVariant: CatalogProductVariant,
+  "Fake field to satisfy linting"
+  catalogBooleanFilterName: CatalogBooleanFilterName
+}
+
+# ========================================
+# api-plugin-orders
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type Order {
+  "A fake field to satisfy linting"
+  fakeField: String
+
+  "A fake field to satisfy linting"
+  obj: JSONObject
+
+  "A fake field to satisfy linting"
+  orderFulfillmentGroup: OrderFulfillmentGroup
+
+  "A fake field to satisfy linting"
+  orderItem: OrderItem
+
+  "A fake field to satisfy linting"
+  orderSummary: OrderSummary
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type OrderFulfillmentGroup {
+  "A fake field to satisfy linting"
+  fakeField: String
+
+  "A fake field to satisfy linting"
+  order: Order
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type OrderItem {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-orders`
+"""
+type OrderSummary {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+
+# ========================================
+# api-plugin-products
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-products`
+"""
+type Product {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-products`
+"""
+type ProductVariant {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-products`
+"""
+type ProductConfiguration {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-products`
+"""
+input ProductVariantInput {
+  "Fake"
+  fake: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  product(
+    "Fake field to satisfy linting"
+    metafieldInput: MetafieldInput,
+    "Fake field to satisfy linting"
+    productVariantInput: ProductVariantInput
+  ): Product,
+  "Fake field to satisfy linting"
+  metafield: Metafield
+  "Fake field to satisfy linting"
+  imageInfo: ImageInfo,
+  "Fake field to satisfy linting"
+  socialMetadata: SocialMetadata,
+  "Fake field to satisfy linting"
+  tagSortByField: TagSortByField,
+  "Fake field to satisfy linting"
+  tagConnection(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: String,
+    "Return only String that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: String,
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: Int,
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: Int
+  ): TagConnection
+}
+
+# ========================================
+# api-plugin-settings
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-settings`
+"""
+type ShopSettings {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  shopSettings(
+    "Fake input to satisfy linting"
+    shopSettingsUpdates: ShopSettingsUpdates
+  ): ShopSettings
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-settings`
+"""
+input ShopSettingsUpdates {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+# ========================================
+# api-plugin-shops
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-shops`
+"""
+type Shop {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+# ========================================
+# api-plugin-tags
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-tags`
+"""
+input TagSortByField {
+  "A fake field to satisfy linting"
+  fakeField: String
+}
+
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-tags`
+"""
+type TagConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [String]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [String]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
