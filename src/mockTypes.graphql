@@ -467,3 +467,11 @@ input ProductConfigurationInput {
   "Fake"
   fake: String
 }
+
+extend type FakeData {
+  "Fake field to satisfy linting"
+  productConfiguration(
+    "Fake field to satisfy linting"
+    productConfigurationInput: ProductConfigurationInput
+  ): ProductConfiguration
+}
