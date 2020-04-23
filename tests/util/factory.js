@@ -82,7 +82,7 @@ import {
 
 import {
   extendInventorySchemas
-} from "../../src/core-services/inventory/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-inventory/src/simpleSchemas.js";
 
 import {
   TaxRates

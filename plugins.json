@@ -13,7 +13,7 @@
   "examplePayments": "@reactioncommerce/plugin-payments-example",
   "files": "@reactioncommerce/api-plugin-files",
   "i18": "@reactioncommerce/api-plugin-i18n",
-  "inventory": "./src/core-services/inventory/index.js",
+  "inventory": "@reactioncommerce/api-plugin-inventory",
   "jobQueue": "@reactioncommerce/api-plugin-job-queue",
   "navigation": "@reactioncommerce/plugin-navigation",
   "notifications": "@reactioncommerce/api-plugin-notifications",
