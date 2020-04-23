@@ -24,7 +24,7 @@
   "sMTPEmail": "@reactioncommerce/api-plugin-email-smtp",
   "settings": "@reactioncommerce/api-plugin-settings",
   "shipments": "@reactioncommerce/api-plugin-shipments",
-  "shippingRates": "./src/plugins/shipping-rates/index.js",
+  "shippingRates": "@reactioncommerce/api-plugin-shipments-flat-rate",
   "shops": "@reactioncommerce/api-plugin-shops",
   "simpleInventory": "@reactioncommerce/api-plugin-inventory-simple",
   "simpleSchema": "@reactioncommerce/api-plugin-simple-schema",
