@@ -73,16 +73,16 @@ import {
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
 import {
+  Surcharge
+} from "@reactioncommerce/api-plugin-surcharges/src/util/surchargeSchema.js";
+
+import {
   Tag
 } from "@reactioncommerce/api-plugin-tags/src/simpleSchemas.js";
 
 import {
   extendInventorySchemas
 } from "../../src/core-services/inventory/simpleSchemas.js";
-
-import {
-  Surcharge
-} from "../../src/plugins/surcharges/util/surchargeSchema.js";
 
 import {
   TaxRates
