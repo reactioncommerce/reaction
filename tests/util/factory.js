@@ -35,6 +35,15 @@ import {
 } from "@reactioncommerce/api-plugin-email-templates/src/simpleSchemas.js";
 
 import {
+  extendInventorySchemas
+} from "@reactioncommerce/api-plugin-inventory/src/simpleSchemas.js";
+
+
+import {
+  SimpleInventoryCollectionSchema as SimpleInventory
+} from "@reactioncommerce/api-plugin-inventory-simple/src/simpleSchemas.js";
+
+import {
   NavigationItem,
   NavigationTree,
   NavigationTreeItem
@@ -69,10 +78,6 @@ import {
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
 import {
-  SimpleInventoryCollectionSchema as SimpleInventory
-} from "@reactioncommerce/api-plugin-inventory-simple/src/simpleSchemas.js";
-
-import {
   Sitemap
 } from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
 
@@ -85,12 +90,8 @@ import {
 } from "@reactioncommerce/api-plugin-tags/src/simpleSchemas.js";
 
 import {
-  extendInventorySchemas
-} from "@reactioncommerce/api-plugin-inventory/src/simpleSchemas.js";
-
-import {
   TaxRates
-} from "../../src/plugins/taxes-rates/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-taxes-flat-rate/src/simpleSchemas.js";
 
 import {
   extendTaxesSchemas
