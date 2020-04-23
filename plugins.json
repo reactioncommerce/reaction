@@ -23,7 +23,7 @@
   "product": "@reactioncommerce/api-plugin-products",
   "sMTPEmail": "@reactioncommerce/api-plugin-email-smtp",
   "settings": "@reactioncommerce/api-plugin-settings",
-  "shipping": "./src/core-services/shipping/index.js",
+  "shipments": "@reactioncommerce/api-plugin-shipments",
   "shippingRates": "./src/plugins/shipping-rates/index.js",
   "shops": "@reactioncommerce/api-plugin-shops",
   "simpleInventory": "@reactioncommerce/api-plugin-inventory-simple",
