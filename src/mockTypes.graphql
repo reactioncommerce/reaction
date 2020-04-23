@@ -448,6 +448,8 @@ extend type FakeData {
     productVariantInput: ProductVariantInput
   ): Product,
   "Fake field to satisfy linting"
+  productVariant: ProductVariant,
+  "Fake field to satisfy linting"
   metafield: Metafield
   "Fake field to satisfy linting"
   imageInfo: ImageInfo,
