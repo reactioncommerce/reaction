@@ -34,6 +34,6 @@
   "systemInfo": "@reactioncommerce/plugin-system-information",
   "tags": "@reactioncommerce/api-plugin-tags",
   "taxes": "./src/core-services/taxes/index.js",
-  "taxesRates": "./src/plugins/taxes-rates/index.js",
+  "taxesRates": "@reactioncommerce/api-plugin-taxes-flat-rate",
   "translations": "@reactioncommerce/plugin-translations"
 }
