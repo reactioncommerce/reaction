@@ -69,33 +69,6 @@ type FakeData {
   doNotUse: String
 }
 
-"Distance units"
-enum DistanceUnit {
-  "Centimeter"
-  cm
-
-  "Foot"
-  ft
-
-  "Inch"
-  in
-}
-
-"Mass units"
-enum MassUnit {
-  "Gram"
-  g
-
-  "Kilogram"
-  kg
-
-  "Pound"
-  lb
-
-  "Ounce"
-  oz
-}
-
 "Fake"
 type ImageSizes {
   "Fake"
@@ -272,8 +245,6 @@ extend type FakeData {
     "Fake field to satisfy linting"
     moneyInput: MoneyInput
   ): Cart,
-  "Fake field to satisfy linting"
-  shippingParcel: ShippingParcel
   "Fake field to satisfy linting"
   nodeEdge: NodeEdge,
   "Fake field to satisfy linting"
@@ -495,6 +466,24 @@ type lives in `api-plugin-settings`
 input ShopSettingsUpdates {
   "A fake field to satisfy linting"
   fakeField: String
+}
+
+# ========================================
+# api-plugin-shipments
+# ========================================
+"""
+A fake type to satisfy linting
+type lives in `api-plugin-shipments`
+"""
+enum FulfillmentType {
+  "An order will be fulfilled digitally, such as by sending a download link"
+  digital
+
+  "An order will be fulfilled by the customer picking it up"
+  pickup
+
+  "An order will be fulfilled by the seller shipping it to the customer"
+  shipping
 }
 
 # ========================================
