@@ -75,6 +75,6 @@ test("an admin user can view tax services", async () => {
     return;
   }
 
-  expect(result.taxServices[0].name).toEqual("custom-rates");
-  expect(result.taxServices[0].pluginName).toEqual("reaction-taxes-rates");
+  expect(result.taxServices[0].name).toBe("custom-rates");
+  expect(result.taxServices[0].pluginName).toBe("taxes-flat-rate");
 });
