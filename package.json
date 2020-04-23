@@ -38,6 +38,7 @@
     "@reactioncommerce/api-plugin-orders": "~1.0.0",
     "@reactioncommerce/api-plugin-payments": "~1.0.0",
     "@reactioncommerce/api-plugin-payments-stripe": "~1.0.0",
+    "@reactioncommerce/api-plugin-pricing-simple": "~1.0.0",
     "@reactioncommerce/api-plugin-products": "~1.0.0",
     "@reactioncommerce/api-plugin-settings": "~1.0.0",
     "@reactioncommerce/api-plugin-shipments": "~1.0.0",
