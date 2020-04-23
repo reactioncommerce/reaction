@@ -44,6 +44,10 @@ import {
 } from "@reactioncommerce/api-plugin-orders/src/simpleSchemas.js";
 
 import {
+  extendSimplePricingSchemas
+} from "@reactioncommerce/api-plugin-pricing-simple/src/simpleSchemas.js";
+
+import {
   Shop
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
@@ -87,10 +91,6 @@ import {
 import {
   EmailTemplates
 } from "../../src/plugins/email-templates/simpleSchemas.js";
-
-import {
-  extendSimplePricingSchemas
-} from "../../src/plugins/simple-pricing/simpleSchemas.js";
 
 import FulfillmentMethod from "../../src/plugins/shipping-rates/util/methodSchema.js";
 
