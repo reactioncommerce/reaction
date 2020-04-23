@@ -30,7 +30,7 @@
   "simpleSchema": "@reactioncommerce/api-plugin-simple-schema",
   "sitemapGenerator": "@reactioncommerce/plugin-sitemap-generator",
   "stripePayments": "@reactioncommerce/api-plugin-payments-stripe",
-  "surcharges": "./src/plugins/surcharges/index.js",
+  "surcharges": "@reactioncommerce/api-plugin-surcharges",
   "systemInfo": "@reactioncommerce/plugin-system-information",
   "tags": "@reactioncommerce/api-plugin-tags",
   "taxes": "./src/core-services/taxes/index.js",
