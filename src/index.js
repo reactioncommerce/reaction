@@ -24,8 +24,8 @@ import {
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Catalog",
-    name: "reaction-catalog",
+    label: "Catalogs",
+    name: "catalogs",
     version: pkg.version,
     i18n,
     collections: {
