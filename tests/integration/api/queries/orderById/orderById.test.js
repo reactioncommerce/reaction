@@ -1,6 +1,7 @@
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 
 jest.setTimeout(300000);
 
@@ -56,11 +57,18 @@ const orderByIdQuery = `query ($id: ID!, $shopId: ID!, $token: String) {
 let testApp;
 let query;
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
+
+    return pluginList;
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
   query = testApp.query(orderByIdQuery);
   await testApp.createUserAndAccount(mockOrdersAccount);
-  await testApp.insertPrimaryShop({ _id: mockShopId, name: shopName });
+  await insertPrimaryShop(testApp.context, { _id: mockShopId, name: shopName });
 });
 
 beforeEach(async () => {

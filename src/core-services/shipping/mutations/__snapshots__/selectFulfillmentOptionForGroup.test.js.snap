@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if there is no fulfillment group with the given ID 1`] = `"Fulfillment group with ID group2 not found in cart with ID cartId"`;
-
-exports[`throws if there is no fulfillment method with the given ID among the options 1`] = `"Fulfillment option with method ID invalid-method not found in cart with ID cartId"`;

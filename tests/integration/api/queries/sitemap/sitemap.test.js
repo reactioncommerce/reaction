@@ -1,6 +1,7 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const SitemapQuery = importAsString("./SitemapQuery.graphql");
 
@@ -21,10 +22,17 @@ const mockSitemap = Factory.Sitemap.makeOne({
 });
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
+
+    return pluginList;
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
 
-  await testApp.insertPrimaryShop({ _id: internalShopId, domains: ["localhost"], name: shopName });
+  await insertPrimaryShop(testApp.context, { _id: internalShopId, domains: ["localhost"], name: shopName });
   await testApp.collections.Sitemaps.insertOne(mockSitemap);
   sitemap = testApp.query(SitemapQuery);
 });

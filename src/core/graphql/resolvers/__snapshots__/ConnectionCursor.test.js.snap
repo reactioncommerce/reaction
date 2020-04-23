@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`has a description 1`] = `
-"
-An opaque string that identifies a particular result within a connection,
-allowing you to request a subset of results before or after that result.
-"
-`;

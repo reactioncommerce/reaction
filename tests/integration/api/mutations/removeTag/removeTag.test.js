@@ -1,8 +1,9 @@
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Logger from "@reactioncommerce/logger";
 import Factory from "/tests/util/factory.js";
-import TestApp from "/tests/util/TestApp.js";
+import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
 
 const RemoveTagMutation = importAsString("./RemoveTagMutation.graphql");
 
@@ -18,9 +19,16 @@ let fakeTag;
 const accountInternalId = "123";
 
 beforeAll(async () => {
-  testApp = new TestApp();
+  testApp = new ReactionTestAPICore();
+  const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
+    // Remove the `files` plugin when testing. Avoids lots of errors.
+    delete pluginList.files;
+
+    return pluginList;
+  });
+  await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
-  shopId = await testApp.insertPrimaryShop();
+  shopId = await insertPrimaryShop(testApp.context);
 
   const adminGroup = Factory.Group.makeOne({
     _id: "adminGroup",

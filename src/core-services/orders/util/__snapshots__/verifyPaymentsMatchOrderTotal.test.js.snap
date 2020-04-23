@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if does not match 1`] = `"Total of all payments must equal order total"`;
