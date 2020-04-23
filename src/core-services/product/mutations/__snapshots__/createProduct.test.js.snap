@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if permission check fails 1`] = `"Access Denied"`;
-
-exports[`throws if the shopId isn't supplied 1`] = `"Shop ID is required"`;

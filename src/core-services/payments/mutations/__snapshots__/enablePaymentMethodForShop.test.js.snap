@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`errors on invalid payment method 1`] = `"Requested payment method is invalid"`;
-
-exports[`errors on invalid shop 1`] = `"Shop not found"`;
-
-exports[`errors on missing arguments 1`] = `"Is enabled is required"`;
-
-exports[`throws if userHasPermission returns false 1`] = `"Requested payment method is invalid"`;
