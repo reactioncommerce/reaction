@@ -1,3 +1,4 @@
+import pkg from "../package.json";
 import i18n from "./i18n/index.js";
 import queries from "./queries/index.js";
 import schemas from "./schemas/index.js";
@@ -17,8 +18,8 @@ import xformCatalogProductVariants from "./utils/xformCatalogProductVariants.js"
 export default async function register(app) {
   await app.registerPlugin({
     label: "Inventory",
-    name: "reaction-inventory",
-    version: app.context.appVersion,
+    name: "inventory",
+    version: pkg.version,
     i18n,
     functionsByType: {
       preStartup: [preStartup],
