@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import surchargeSchema from "../util/surchargeSchema.js";
+import { Surcharge } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String,
@@ -35,7 +35,7 @@ export default async function updateSurchargeMutation(context, input) {
     }
   };
 
-  surchargeSchema.validate(modifier, { modifier: true });
+  Surcharge.validate(modifier, { modifier: true });
 
   const { matchedCount } = await Surcharges.updateOne({
     _id: surchargeId,

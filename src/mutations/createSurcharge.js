@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import surchargeSchema from "../util/surchargeSchema.js";
+import { Surcharge } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String,
@@ -32,7 +32,7 @@ export default async function createSurchargeMutation(context, input) {
   surcharge.shopId = shopId;
   surcharge.createdAt = new Date();
 
-  surchargeSchema.validate(surcharge);
+  Surcharge.validate(surcharge);
 
   const { insertedCount } = await Surcharges.insertOne(surcharge);
   if (insertedCount === 0) throw new ReactionError("server-error", "Unable to create surcharge");
