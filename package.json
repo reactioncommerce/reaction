@@ -43,6 +43,7 @@
     "@reactioncommerce/api-plugin-products": "~1.0.0",
     "@reactioncommerce/api-plugin-settings": "~1.0.0",
     "@reactioncommerce/api-plugin-shipments": "~1.0.0",
+    "@reactioncommerce/api-plugin-shipments-flat-rate": "~1.0.0",
     "@reactioncommerce/api-plugin-shops": "~1.0.0",
     "@reactioncommerce/api-plugin-simple-schema": "~1.0.0",
     "@reactioncommerce/api-plugin-surcharges": "~1.0.1",
