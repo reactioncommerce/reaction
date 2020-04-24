@@ -4,10 +4,12 @@ import surchargeSchema from "../util/surchargeSchema.js";
 
 const inputSchema = new SimpleSchema({
   shopId: String,
-  surcharge: surchargeSchema,
+  surcharge: {
+    type: Object,
+    blackbox: true
+  },
   surchargeId: String
 });
-
 
 /**
  * @method updateSurchargeMutation
@@ -26,15 +28,19 @@ export default async function updateSurchargeMutation(context, input) {
 
   await context.validatePermissions(`reaction:legacy:surcharges:${surchargeId}`, "update", { shopId });
 
-  const { matchedCount } = await Surcharges.updateOne({
-    _id: surchargeId,
-    shopId
-  }, {
+  const modifier = {
     $set: {
       updatedAt: new Date(),
       ...surcharge
     }
-  });
+  };
+
+  surchargeSchema.validate(modifier, { modifier: true });
+
+  const { matchedCount } = await Surcharges.updateOne({
+    _id: surchargeId,
+    shopId
+  }, modifier);
   surcharge._id = surchargeId;
   surcharge.shopId = shopId;
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");

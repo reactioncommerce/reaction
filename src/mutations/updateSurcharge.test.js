@@ -7,12 +7,15 @@ import updateSurchargeMutation from "./updateSurcharge.js";
 mockContext.collections.Surcharges = mockCollection("Surcharges");
 mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
+const createdAt = new Date();
+
 const surcharge = {
   type: "surcharge",
   attributes: [
     { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
     { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
   ],
+  createdAt,
   destination: { region: ["CO", "NY"] },
   amount: 5.99,
   messagesByLanguage: [
@@ -32,6 +35,7 @@ const updatedSurcharge = {
     { property: "vendor", value: "john", propertyType: "string", operator: "eq" },
     { property: "productType", value: "gun", propertyType: "string", operator: "eq" }
   ],
+  createdAt,
   destination: { region: ["NJ", "WY"] },
   amount: {
     amount: 17.99,
@@ -69,6 +73,7 @@ test("update a surcharge", async () => {
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
+      createdAt,
       destination: { region: ["CO", "NY"] },
       amount: 5.99,
       messagesByLanguage: [
