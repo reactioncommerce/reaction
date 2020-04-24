@@ -13,9 +13,6 @@ scalar JSONObject
 "A string used as a connection cursor"
 scalar ConnectionCursor
 
-"An integer which will be auto-adjusted to be greater than 0 and less than 50 if necessary"
-scalar ConnectionLimitInt
-
 extend type FakeData {
   "AddressConnection lint fix"
   addressConnection(
@@ -131,15 +128,6 @@ type AddressEdge {
 
   "The address"
   node: Address
-}
-
-"The order in which the connection results should be sorted, based on the sortBy field."
-enum SortOrder {
-  "ascending"
-  asc
-
-  "descending"
-  desc
 }
 
 "Mutations have side effects, such as mutating data or triggering a task"
@@ -466,36 +454,6 @@ A fake type to satisfy linting
 type lives in `api-plugin-settings`
 """
 input ShopSettingsUpdates {
-  "A fake field to satisfy linting"
-  fakeField: String
-}
-
-# ========================================
-# api-plugin-shipments
-# ========================================
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-shipments`
-"""
-enum FulfillmentType {
-  "An order will be fulfilled digitally, such as by sending a download link"
-  digital
-
-  "An order will be fulfilled by the customer picking it up"
-  pickup
-
-  "An order will be fulfilled by the seller shipping it to the customer"
-  shipping
-}
-
-# ========================================
-# api-plugin-shops
-# ========================================
-"""
-A fake type to satisfy linting
-type lives in `api-plugin-shops`
-"""
-type Shop {
   "A fake field to satisfy linting"
   fakeField: String
 }
