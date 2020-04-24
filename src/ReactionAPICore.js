@@ -9,7 +9,8 @@ import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
 import getAbsoluteUrl from "@reactioncommerce/api-utils/getAbsoluteUrl.js";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import Logger from "@reactioncommerce/logger";
-import appEvents from "./util/appEvents.js";
+import builtInAppEvents from "./util/appEvents.js";
+import checkAppEventsInterface from "./util/checkAppEventsInterface.js";
 import initReplicaSet from "./util/initReplicaSet.js";
 import mongoConnectWithRetry from "./util/mongoConnectWithRetry.js";
 import config from "./config.js";
@@ -37,6 +38,11 @@ const debugLevels = ["DEBUG", "TRACE"];
 
 // When you update this, also update "ReactionAPICore Configuration" in README
 const optionsSchema = new SimpleSchema({
+  "appEvents": {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
   "httpServer": {
     type: Object,
     optional: true,
@@ -105,6 +111,10 @@ export default class ReactionAPICore {
   constructor(options = {}) {
     optionsSchema.validate(options);
 
+    if (options.appEvents) {
+      checkAppEventsInterface(options.appEvents);
+    }
+
     this.options = { ...options };
 
     this.collections = {};
@@ -113,7 +123,7 @@ export default class ReactionAPICore {
 
     this.context = {
       app: this,
-      appEvents,
+      appEvents: options.appEvents || builtInAppEvents,
       appVersion: this.version,
       auth: {},
       collections: this.collections,
@@ -546,7 +556,7 @@ export default class ReactionAPICore {
     }
 
     // (3) Stop app events since the handlers will not have database access after this point
-    appEvents.stop();
+    this.context.appEvents.stop();
 
     // (4) Disconnect from MongoDB database
     await this.disconnectFromMongo();
