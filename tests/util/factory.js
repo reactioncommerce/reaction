@@ -38,7 +38,6 @@ import {
   extendInventorySchemas
 } from "@reactioncommerce/api-plugin-inventory/src/simpleSchemas.js";
 
-
 import {
   SimpleInventoryCollectionSchema as SimpleInventory
 } from "@reactioncommerce/api-plugin-inventory-simple/src/simpleSchemas.js";
@@ -77,14 +76,9 @@ import {
   Shop
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
+import FulfillmentMethod from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/methodSchema.js";
 
-import {
-  FulfillmentMethod
-} from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/methodSchema.js";
-
-import {
-  Restriction
-} from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/restrictionSchema.js";
+import Restriction from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/restrictionSchema.js";
 
 import {
   Sitemap
