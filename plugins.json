@@ -33,7 +33,7 @@
   "surcharges": "@reactioncommerce/api-plugin-surcharges",
   "systemInfo": "@reactioncommerce/plugin-system-information",
   "tags": "@reactioncommerce/api-plugin-tags",
-  "taxes": "./src/core-services/taxes/index.js",
+  "taxes": "@reactioncommerce/api-plugin-taxes",
   "taxesRates": "@reactioncommerce/api-plugin-taxes-flat-rate",
   "translations": "@reactioncommerce/plugin-translations"
 }
