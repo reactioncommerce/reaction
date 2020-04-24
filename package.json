@@ -48,6 +48,7 @@
     "@reactioncommerce/api-plugin-simple-schema": "~1.0.0",
     "@reactioncommerce/api-plugin-surcharges": "~1.0.1",
     "@reactioncommerce/api-plugin-tags": "~1.0.0",
+    "@reactioncommerce/api-plugin-taxes": "~1.0.0",
     "@reactioncommerce/api-plugin-taxes-flat-rate": "~1.0.0",
     "@reactioncommerce/api-utils": "~1.10.0",
     "@reactioncommerce/db-version-check": "~1.0.0",
