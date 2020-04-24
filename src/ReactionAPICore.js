@@ -241,8 +241,25 @@ export default class ReactionAPICore {
                   " but another plugin has already defined a collection with that key");
               }
 
+              // Pass through certain supported collection options
+              const collectionOptions = {};
+              if (collectionConfig.jsonSchema) {
+                collectionOptions.validator = {
+                  $jsonSchema: collectionConfig.jsonSchema
+                };
+              } else if (collectionConfig.validator) {
+                collectionOptions.validator = collectionConfig.validator;
+              }
+
+              if (collectionConfig.validationLevel) {
+                collectionOptions.validationLevel = collectionConfig.validationLevel;
+              }
+              if (collectionConfig.validationAction) {
+                collectionOptions.validationAction = collectionConfig.validationAction;
+              }
+
               // Add the collection instance to `context.collections`
-              this.collections[collectionKey] = this.db.collection(collectionConfig.name);
+              this.collections[collectionKey] = await this.db.createCollection(collectionConfig.name, collectionOptions); // eslint-disable-line no-await-in-loop
 
               // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {

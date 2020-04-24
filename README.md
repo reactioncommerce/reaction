@@ -264,7 +264,7 @@ collections: {
 
 The `collections` object key is where you will access this collection on `context.collections`, and `name` is the collection name in MongoDB. We recommend you make these the same if you can.
 
-The example above will make `context.collections.MyCustomCollection` available in all query and mutation functions, and all functions that receive `context`, such as startup functions. Note that usually MongoDB will not actually create the collection until the first time you insert into it.
+The example above will make `context.collections.MyCustomCollection` available in all query and mutation functions, and all functions that receive `context`, such as startup functions. Note MongoDB may not actually create the collection until the first time you insert into it.
 
 You can optionally add indexes for your MongoDB collection:
 
@@ -280,6 +280,32 @@ collections: {
 ```
 
 Each item in the `indexes` array is an array of arguments that will be passed to the Mongo `createIndex` function. The `background` option is always set to `true` so you need not include that.
+
+There is also experimental support for defining validation options. Add `validator`, `validationLevel`, or `validationAction` options and they will be passed along to the MongoDB library. Refer to [their createCollection documentation](http://mongodb.github.io/node-mongodb-native/3.6/api/Db.html#createCollection).
+
+There is also a convenience syntax that allows you to pass a JSONSchema directly. This:
+
+```js
+collections: {
+  MyCustomCollection: {
+    name: "MyCustomCollection",
+    jsonSchema: someJsonSchema
+  }
+}
+```
+
+Is shorthand for this:
+
+```js
+collections: {
+  MyCustomCollection: {
+    name: "MyCustomCollection",
+    validator: {
+      $jsonSchema: someJsonSchema
+    }
+  }
+}
+```
 
 NOTE: Registering your collections is not required, and in fact it is probably best to NOT register them unless you need to allow other plugins to access your data directly. As long as you do not register them, they remain a private implementation detail that you are free to change without breaking other plugins.
 
