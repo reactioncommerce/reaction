@@ -51,6 +51,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.0.1",
+    "graphql-schema-linter": "^0.2.6",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "semantic-release": "^17.0.4"
@@ -58,6 +59,7 @@
   "scripts": {
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint .",
+    "lint:gql": "graphql-schema-linter ./src/**/*.graphql",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:file": "jest --no-cache --watch --coverage=false"
@@ -65,6 +67,23 @@
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
+    ]
+  },
+  "graphql-schema-linter": {
+    "rules": [
+      "arguments-have-descriptions",
+      "deprecations-have-a-reason",
+      "descriptions-are-capitalized",
+      "enum-values-have-descriptions",
+      "enum-values-sorted-alphabetically",
+      "fields-have-descriptions",
+      "input-object-fields-sorted-alphabetically",
+      "input-object-values-have-descriptions",
+      "relay-connection-types-spec",
+      "relay-page-info-spec",
+      "type-fields-sorted-alphabetically",
+      "types-are-capitalized",
+      "types-have-descriptions"
     ]
   },
   "husky": {
