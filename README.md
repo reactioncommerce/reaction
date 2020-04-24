@@ -198,6 +198,7 @@ The following environment variables are picked up automatically by the `Reaction
 
 The following options can be passed in the first argument of `ReactionAPICore` when initializing an instance.
 
+- **appEvents**: See the "Providing a Custom appEvents Implementation" section.
 - **httpServer**: An HTTP server for GraphQL subscription websocket handlers. In most cases you should omit this and let `ReactionAPICore` create one for you.
 - **mongodb**: Optionally pass in the `mongodb` reference from `import mongodb from "mongodb";`. In most cases you should omit this and let `ReactionAPICore` use its own reference, but if you need to ensure a specific version is used, this allows you to do that.
 - **serveStaticPaths**: An optional array of paths (relative to your project root) that should be served as static files. Each of these is passed to [express.static()](https://expressjs.com/en/starter/static-files.html). If you need more control, you can access `api.expressApp` directly.
@@ -411,6 +412,32 @@ Request properties:
 - `requestHeaders`: An object with all HTTP headers for the current request on it, except with `Authorization` and `Cookie` headers removed for security.
 
 You can always access the app context on `api.context` if you have a reference to the `api` instance, but this will never have any request properties set because there is no request happening.
+
+## Providing a Custom appEvents Implementation
+
+`context.appEvents` is available to all plugins and is used for communication among plugins. The built-in implementation of this is not highly optimized, but you may provide your own implementation to meet your needs.
+
+To override the built-in `appEvents` with your own, pass `appEvents` option when constructing your API instance. The provided object must have 4 function properties named `emit`, `on`, `stop`, and `resume`. Here's an example:
+
+```js
+const appEvents = {
+  async emit(name, ...args) {},
+  on(name, func) {},
+  stop() {},
+  resume() {}
+};
+
+const api = new ReactionAPICore({ appEvents });
+```
+
+- `stop` should stop emission and `resume` should resume emission. Neither takes any arguments.
+- `emit`:
+  - `emit` may or may not return a Promise, but either way the final returned value must be `undefined`
+  - When emission is stopped, `emit` should do nothing
+  - When emission is not stopped, `emit` should call each handler registered by `on` one by one. If a handler returns a Promise, wait until it resolves or rejects before calling the next handler. `emit` itself should not resolve or reject until all handlers have been called and have resolved or rejected.
+  - Any additional `args` passed to `emit` should be passed along to each handler function.
+- `on` registers a handler function to be called by `emit`.
+- Handlers are called only after they are registered. Any events emitted prior to registering a handler are never handled by that handler.
 
 ## Writing Tests Using ReactionTestAPICore
 
