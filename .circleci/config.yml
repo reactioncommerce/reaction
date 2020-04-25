@@ -67,18 +67,6 @@ jobs:
           name: Lint GraphQL schemas
           command: npm run lint:gql
 
-  test-unit:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v5-node-modules-{{ .Branch }}
-      - run:
-          name: Run Unit Tests
-          command: npm run test:unit
-
   test-integration-query:
     <<: *defaults
     docker:
@@ -170,9 +158,6 @@ workflows:
       - graphql-lint:
           requires:
             - install-dependencies
-      - test-unit:
-          requires:
-            - install-dependencies
       - test-integration-query:
           requires:
             - install-dependencies
@@ -185,7 +170,6 @@ workflows:
             - dockerfile-lint
             - eslint
             - graphql-lint
-            - test-unit
             - test-integration-query
             - test-integration-mutation
       - deploy-docs:
@@ -193,7 +177,6 @@ workflows:
             - dockerfile-lint
             - eslint
             - graphql-lint
-            - test-unit
             - test-integration-query
             - test-integration-mutation
           filters:
