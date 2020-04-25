@@ -64,6 +64,7 @@
     "@reactioncommerce/plugin-system-information": "~1.0.0",
     "@reactioncommerce/plugin-translations": "~1.0.0",
     "@reactioncommerce/random": "~1.0.2",
+    "graphql": "~14.6.0",
     "semver": "~6.3.0",
     "sharp": "~0.23.1"
   },
