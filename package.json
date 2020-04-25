@@ -65,7 +65,6 @@
     "@reactioncommerce/plugin-system-information": "~1.0.0",
     "@reactioncommerce/plugin-translations": "~1.0.0",
     "@reactioncommerce/random": "~1.0.2",
-    "@reactioncommerce/reaction-error": "~1.0.1",
     "faker": "~4.1.0",
     "graphql-tools": "~4.0.5",
     "lodash": "~4.17.15",
