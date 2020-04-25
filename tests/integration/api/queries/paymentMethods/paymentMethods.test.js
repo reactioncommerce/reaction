@@ -28,7 +28,6 @@ const mockAdminAccount = Factory.Account.makeOne({
   shopId: internalShopId
 });
 
-
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
   const plugins = await importPluginsJSONFile("../../../../../plugins.json", (pluginList) => {
@@ -40,7 +39,7 @@ beforeAll(async () => {
   await testApp.reactionNodeApp.registerPlugins(plugins);
   await testApp.start();
 
-  await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName, PaymentMethods: ["iou_example"] });
+  await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
   await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);
   paymentMethods = testApp.query(PaymentMethodsQuery);
@@ -74,8 +73,8 @@ test("a shop owner can view a full list of all payment methods", async () => {
     return;
   }
 
-  expect(result.paymentMethods[0].name).toEqual("iou_example");
+  expect(result.paymentMethods[0].name).toEqual("stripe_card");
   expect(result.paymentMethods[0].isEnabled).toEqual(false);
-  expect(result.paymentMethods[1].name).toEqual("stripe_card");
+  expect(result.paymentMethods[1].name).toEqual("iou_example");
   expect(result.paymentMethods[1].isEnabled).toEqual(false);
 });
