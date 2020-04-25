@@ -64,7 +64,6 @@
     "@reactioncommerce/plugin-system-information": "~1.0.0",
     "@reactioncommerce/plugin-translations": "~1.0.0",
     "@reactioncommerce/random": "~1.0.2",
-    "lodash": "~4.17.15",
     "semver": "~6.3.0",
     "sharp": "~0.23.1"
   },
@@ -115,7 +114,6 @@
     "test:integration:mutation": "node --max_old_space_size=4000 --expose-gc ./node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/queries/'",
     "lint": "eslint .",
     "lint:gql": "graphql-schema-linter ./src/**/*.graphql",
-    "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md",
     "version": "echo $npm_package_version"
   },
   "prettier": {
