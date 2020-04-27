@@ -18,6 +18,10 @@ const inputSchema = new SimpleSchema({
     optional: true
   },
   name: String,
+  description: {
+    type: String,
+    optional: true
+  },
   shopId: {
     type: String,
     optional: true
@@ -59,7 +63,15 @@ export default async function createShop(context, input) {
 
   await context.validatePermissions("reaction:legacy:shops", "create", { shopId: null });
 
-  const { currencyCode, defaultLanguage, defaultTimezone, name, shopId, type } = input;
+  const {
+    currencyCode,
+    defaultLanguage,
+    defaultTimezone,
+    name,
+    description,
+    shopId,
+    type
+  } = input;
 
   const domain = rootUrl && new URL(rootUrl).hostname;
   const now = new Date();
@@ -74,35 +86,45 @@ export default async function createShop(context, input) {
     domains: [domain],
     language: defaultLanguage || "en",
     name,
+    description,
     paymentMethods: [],
     shopType: type || "primary",
     slug: getSlug(name),
     timezone: defaultTimezone || "US/Pacific",
-    unitsOfLength: [{
-      uol: "in",
-      label: "Inches",
-      default: true
-    }, {
-      uol: "cm",
-      label: "Centimeters"
-    }, {
-      uol: "ft",
-      label: "Feet"
-    }],
-    unitsOfMeasure: [{
-      uom: "oz",
-      label: "Ounces",
-      default: true
-    }, {
-      uom: "lb",
-      label: "Pounds"
-    }, {
-      uom: "g",
-      label: "Grams"
-    }, {
-      uom: "kg",
-      label: "Kilograms"
-    }],
+    unitsOfLength: [
+      {
+        uol: "in",
+        label: "Inches",
+        default: true
+      },
+      {
+        uol: "cm",
+        label: "Centimeters"
+      },
+      {
+        uol: "ft",
+        label: "Feet"
+      },
+    ],
+    unitsOfMeasure: [
+      {
+        uom: "oz",
+        label: "Ounces",
+        default: true
+      },
+      {
+        uom: "lb",
+        label: "Pounds"
+      },
+      {
+        uom: "g",
+        label: "Grams"
+      },
+      {
+        uom: "kg",
+        label: "Kilograms"
+      },
+    ],
     updatedAt: now
   };
 
@@ -110,7 +132,10 @@ export default async function createShop(context, input) {
 
   // Ensure we never have more than one primary shop
   if (shop.shopType === "primary") {
-    const existingPrimaryShop = await collections.Shops.findOne({ shopType: "primary" }, { projection: { _id: 1 } });
+    const existingPrimaryShop = await collections.Shops.findOne(
+      { shopType: "primary" },
+      { projection: { _id: 1 } }
+    );
     if (existingPrimaryShop) {
       throw new ReactionError("invalid-param", "There may be only one primary shop");
     }
@@ -125,14 +150,20 @@ export default async function createShop(context, input) {
 
   try {
     // Create account groups for the new shop
-    await context.mutations.createAuthGroupsForShop(context.getInternalContext(), newShopId);
+    await context.mutations.createAuthGroupsForShop(
+      context.getInternalContext(),
+      newShopId
+    );
 
     // Give the shop creator "owner" permissions
-    await context.mutations.addAccountToGroupBySlug(context.getInternalContext(), {
-      accountId,
-      groupSlug: "owner",
-      shopId: newShopId
-    });
+    await context.mutations.addAccountToGroupBySlug(
+      context.getInternalContext(),
+      {
+        accountId,
+        groupSlug: "owner",
+        shopId: newShopId
+      }
+    );
 
     // Add AppSettings object into database for the new shop
     await collections.AppSettings.insertOne({
