@@ -104,7 +104,7 @@ export default async function createShop(context, input) {
       {
         uol: "ft",
         label: "Feet"
-      },
+      }
     ],
     unitsOfMeasure: [
       {
@@ -123,7 +123,7 @@ export default async function createShop(context, input) {
       {
         uom: "kg",
         label: "Kilograms"
-      },
+      }
     ],
     updatedAt: now
   };
