@@ -409,6 +409,12 @@ extend type Mutation {
     "Mutation input"
     input: UpdateAccountInput!
   ): UpdateAccountPayload
+
+  "Bulk-update groups for accounts"
+  updateGroupsForAccounts(
+    "Mutation input"
+    input: UpdateGroupsForAccountsInput!
+  ): UpdateGroupsForAccountsPayload
 }
 
 extend type Query {
