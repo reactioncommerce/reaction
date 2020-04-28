@@ -3,7 +3,7 @@
 ####
 
 "A list of the possible property types for surcharges"
-enum SurchargePropertyTypes {
+enum SurchargePropertyType {
   "Boolean"
   bool
 
@@ -97,7 +97,7 @@ type SurchargeAttributeRestrictions {
   property: String
 
   "The type of this property"
-  propertyType: String
+  propertyType: SurchargePropertyType
 
   "The value to check for"
   value: String
@@ -249,7 +249,7 @@ input SurchargeAttributeRestrictionsInput {
   property: String
 
   "The type of this property"
-  propertyType: SurchargePropertyTypes
+  propertyType: SurchargePropertyType
 
   "The value to check for"
   value: String
