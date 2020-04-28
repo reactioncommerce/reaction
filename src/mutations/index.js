@@ -15,6 +15,7 @@ import setAccountDefaultEmail from "./setAccountDefaultEmail.js";
 import updateAccount from "./updateAccount.js";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
 import updateAccountGroup from "./updateAccountGroup.js";
+import updateGroupsForAccounts from "./updateGroupsForAccounts.js";
 
 export default {
   addressBookAdd,
@@ -33,5 +34,6 @@ export default {
   setAccountDefaultEmail,
   updateAccount,
   updateAccountAddressBookEntry,
-  updateAccountGroup
+  updateAccountGroup,
+  updateGroupsForAccounts
 };
