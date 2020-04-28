@@ -100,17 +100,6 @@ input RemoveAccountFromGroupInput {
   groupId: ID!
 }
 
-input UpdateGroupsForAccountsInput {
-  "The account IDs"
-  accountIds: [ID]!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  "The group IDs"
-  groupIds: [ID]!
-}
-
 "Represents an account group"
 type Group implements Node {
   "The group ID"
@@ -216,14 +205,6 @@ type RemoveAccountGroupPayload {
 
   "The removed group"
   group: Group
-}
-
-type UpdateGroupsForAccountsPayload {
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-
-  "The accounts that were modified"
-  accounts: [Account]
 }
 
 extend type Shop {
