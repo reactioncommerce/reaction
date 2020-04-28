@@ -620,7 +620,7 @@ export default class ReactionAPICore {
       });
     }
 
-    Logger.info(`Registered plugin ${plugin.name}`);
+    Logger.info(`Registered plugin ${plugin.name} (${plugin.version || "no version"})`);
   }
 
   /**
