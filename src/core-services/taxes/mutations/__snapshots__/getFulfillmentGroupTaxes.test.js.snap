@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if the calculation function throws 1`] = `"Error while calculating taxes"`;
-
-exports[`throws if the result doesn't match the schema 1`] = `"Error while calculating taxes"`;

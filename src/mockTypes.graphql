@@ -4,9 +4,6 @@
 # ========================================
 # core-api / global
 # ========================================
-"A date and time"
-scalar DateTime
-
 "An object with any fields"
 scalar JSONObject
 
@@ -86,12 +83,6 @@ input MoneyInput {
 }
 
 "Fake"
-type Rate {
-  "Fake"
-  fake: String
-}
-
-"Fake"
 input AddressInput {
   "Fake"
   fake: String
@@ -143,12 +134,6 @@ type Mutation {
 type Query {
   "A test query"
   ping: String!
-}
-
-"Fake"
-type Money {
-  "Fake"
-  fake: String
 }
 
 "Fake"

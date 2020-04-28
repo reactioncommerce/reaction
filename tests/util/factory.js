@@ -93,12 +93,13 @@ import {
 } from "@reactioncommerce/api-plugin-tags/src/simpleSchemas.js";
 
 import {
+  extendTaxesSchemas
+} from "@reactioncommerce/api-plugin-taxes/src/simpleSchemas.js";
+
+import {
   TaxRates
 } from "@reactioncommerce/api-plugin-taxes-flat-rate/src/simpleSchemas.js";
 
-import {
-  extendTaxesSchemas
-} from "../../src/core-services/taxes/simpleSchemas.js";
 
 const schemasToAddToFactory = {
   Account,
