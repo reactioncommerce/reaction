@@ -17,12 +17,12 @@ export async function surchargeCheck(surcharge, extendedCommonOrder) {
       return attributes.every((attribute) => {
         const typeToString = propertyTypes[attribute.propertyType];
         if (typeof typeToString !== "function") {
-          throw new Error(`Surcharge attribute property type is ${attribute.propertyType}, which is not one of these supported types: ${Object.keys(propertyTypes).join(", ")}`);
+          throw new Error(`Surcharge attribute property type is ${attribute.propertyType}, which is not one of these supported types: ${Object.keys(propertyTypes).join(", ")}`); // eslint-disable-line
         }
 
         const matchFn = operators[attribute.operator];
         if (typeof matchFn !== "function") {
-          throw new Error(`Surcharge attribute operator is ${attribute.operator}, which is not one of these supported operators: ${Object.keys(operators).join(", ")}`);
+          throw new Error(`Surcharge attribute operator is ${attribute.operator}, which is not one of these supported operators: ${Object.keys(operators).join(", ")}`); // eslint-disable-line
         }
 
         const propValueInItem = item[attribute.property];
