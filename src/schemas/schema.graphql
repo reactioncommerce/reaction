@@ -2,6 +2,20 @@
 # Custom data types for Surcharges data
 ####
 
+"A list of the possible property types for surcharges"
+enum SurchargePropertyTypes {
+  "Boolean"
+  bool
+
+  "Float"
+  float
+
+  "Integer"
+  int
+
+  "String"
+  string
+}
 
 ###
 # Types
@@ -235,7 +249,7 @@ input SurchargeAttributeRestrictionsInput {
   property: String
 
   "The type of this property"
-  propertyType: String
+  propertyType: SurchargePropertyTypes
 
   "The value to check for"
   value: String
