@@ -1,6 +1,22 @@
-import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import tagsForCatalogProducts from "@reactioncommerce/api-utils/tagsForCatalogProducts.js";
+
+const productExcludeProps = [
+  "customAttributes",
+  "media",
+  "metafields",
+  "parcel",
+  "primaryImage",
+  "socialMetadata",
+  "variants"
+];
+
+const variantExcludeProps = [
+  "customAttributes",
+  "media",
+  "parcel",
+  "primaryImage"
+];
 
 /**
  * @name mergeProductAndVariants
@@ -11,31 +27,34 @@ import tagsForCatalogProducts from "@reactioncommerce/api-utils/tagsForCatalogPr
 function mergeProductAndVariants(productAndVariants) {
   const { product, parentVariant, variant } = productAndVariants;
 
-  // Filter out unnecessary product props
-  const productProps = _.omit(product, [
-    "variants", "media", "metafields", "parcel", " primaryImage", "socialMetadata", "customAttributes"
-  ]);
+  const mergedVariant = {};
 
-  // Filter out unnecessary variant props
-  const variantExcludeProps = ["media", "parcel", "primaryImage", "customAttributes"];
-  const variantProps = _.omit(variant, variantExcludeProps);
+  // Copy product props first so that variant props with the same
+  // name will override these. They are more specific.
+  Object.keys(product).forEach((prop) => {
+    if (!productExcludeProps.includes(prop)) {
+      mergedVariant[prop] = product[prop];
+    }
+  });
 
-  // If an option has been added to the cart
+  // Copy parent variant props next so that variant props with
+  // the same name will override these. They are more specific.
   if (parentVariant) {
-    // Filter out unnecessary parent variant props
-    const parentVariantProps = _.omit(parentVariant, variantExcludeProps);
-
-    return {
-      ...productProps,
-      ...parentVariantProps,
-      ...variantProps
-    };
+    Object.keys(parentVariant).forEach((prop) => {
+      if (!variantExcludeProps.includes(prop)) {
+        mergedVariant[prop] = parentVariant[prop];
+      }
+    });
   }
 
-  return {
-    ...productProps,
-    ...variantProps
-  };
+  // Copy variant props last
+  Object.keys(variant).forEach((prop) => {
+    if (!variantExcludeProps.includes(prop)) {
+      mergedVariant[prop] = variant[prop];
+    }
+  });
+
+  return mergedVariant;
 }
 
 /**

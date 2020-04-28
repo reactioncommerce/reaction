@@ -2,6 +2,20 @@
 # Custom data types for Surcharges data
 ####
 
+"A list of the possible property types for surcharges"
+enum SurchargePropertyType {
+  "Boolean"
+  bool
+
+  "Float"
+  float
+
+  "Integer"
+  int
+
+  "String"
+  string
+}
 
 ###
 # Types
@@ -41,6 +55,9 @@ type Surcharge implements Node {
   "Attribute restrictions."
   attributes: [SurchargeAttributeRestrictions]
 
+  "The date and time at which this surcharge was created"
+  createdAt: DateTime!
+
   "Destination restrictions."
   destination: SurchargeDestinationRestrictions
 
@@ -66,6 +83,9 @@ type Surcharge implements Node {
   The type of this surcharge. Allowed types `surcharge`.
   """
   type: SurchargeTypeEnum!
+
+  "The date and time at which this surcharge was last updated"
+  updatedAt: DateTime
 }
 
 "Attribute Restrictions attached to a Surcharge"
@@ -77,7 +97,7 @@ type SurchargeAttributeRestrictions {
   property: String
 
   "The type of this property"
-  propertyType: String
+  propertyType: SurchargePropertyType
 
   "The value to check for"
   value: String
@@ -229,7 +249,7 @@ input SurchargeAttributeRestrictionsInput {
   property: String
 
   "The type of this property"
-  propertyType: String
+  propertyType: SurchargePropertyType
 
   "The value to check for"
   value: String

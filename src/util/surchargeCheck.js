@@ -15,12 +15,25 @@ export async function surchargeCheck(surcharge, extendedCommonOrder) {
     if (Array.isArray(attributes) && attributes.length) {
       // Item must meet all attributes to be restricted
       return attributes.every((attribute) => {
-        let attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
+        const typeToString = propertyTypes[attribute.propertyType];
+        if (typeof typeToString !== "function") {
+          throw new Error(`Surcharge attribute property type is ${attribute.propertyType}, which is not one of these supported types: ${Object.keys(propertyTypes).join(", ")}`); // eslint-disable-line
+        }
+
+        const matchFn = operators[attribute.operator];
+        if (typeof matchFn !== "function") {
+          throw new Error(`Surcharge attribute operator is ${attribute.operator}, which is not one of these supported operators: ${Object.keys(operators).join(", ")}`); // eslint-disable-line
+        }
+
+        const propValueInItem = item[attribute.property];
 
         // If attribute is an array on the item, use `includes` instead of checking for ===
         // This works for tags, tagIds, and any future attribute that might be an array
-        if (Array.isArray(item[attribute.property])) {
-          attributeFound = item[attribute.property].includes(attribute.value);
+        let attributeFound = false;
+        if (Array.isArray(propValueInItem)) {
+          attributeFound = propValueInItem.includes(attribute.value);
+        } else {
+          attributeFound = matchFn(propValueInItem, typeToString(attribute.value));
         }
 
         if (attributeFound && shippingAddress) {

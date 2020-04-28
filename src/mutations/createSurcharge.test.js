@@ -39,6 +39,7 @@ test("add a surcharge", async () => {
   });
 
   expect(result.surcharge.shopId).toEqual("shop123");
+  expect(result.surcharge.createdAt).toEqual(jasmine.any(Date));
   expect(result.surcharge.amount).toEqual(19.99);
   expect(result.surcharge.messagesByLanguage).toEqual(surchargeMessagesByLanguage);
   expect(result.surcharge.attributes).toEqual(surchargeAttributes);

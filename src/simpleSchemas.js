@@ -1,5 +1,50 @@
 import SimpleSchema from "simpl-schema";
 
+export const SurchargeMessagesByLanguage = new SimpleSchema({
+  content: String,
+  language: String
+});
+
+/**
+ * @name AppliedSurcharge
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} _id
+ * @property {Money} amount
+ * @property {String} cartId optional
+ * @property {String} fulfillmentGroupId optional
+ * @property {String} messagesByLanguage optional
+ * @property {String} reason optional
+ * @property {String} surchargeId optional
+ */
+export const AppliedSurcharge = new SimpleSchema({
+  "_id": String,
+  "amount": Number,
+  "cartId": {
+    type: String,
+    optional: true
+  },
+  "fulfillmentGroupId": {
+    type: String,
+    optional: true
+  },
+  /*
+   * Message is used as a client message to let customers know why this surcharge might apply
+   * It can be saved in various languages
+  */
+  "messagesByLanguage": {
+    type: Array,
+    optional: true
+  },
+  "messagesByLanguage.$": {
+    type: SurchargeMessagesByLanguage
+  },
+  "surchargeId": {
+    type: String,
+    optional: true
+  }
+});
+
 /**
  * @name Attributes
  * @memberof Schemas
@@ -55,6 +100,7 @@ const Message = new SimpleSchema({
 });
 
 export const Surcharge = new SimpleSchema({
+  "_id": String,
   "amount": {
     type: Number
   },
@@ -66,6 +112,7 @@ export const Surcharge = new SimpleSchema({
     optional: true
   },
   "attributes.$": Attributes,
+  "createdAt": Date,
   /*
    * Destinations this surcharge applies to
   */
@@ -92,10 +139,13 @@ export const Surcharge = new SimpleSchema({
     optional: true
   },
   "methodIds.$": String,
+  "shopId": String,
   "type": {
     type: String,
     defaultValue: "surcharge"
+  },
+  "updatedAt": {
+    type: Date,
+    optional: true
   }
 });
-
-export default Surcharge;
