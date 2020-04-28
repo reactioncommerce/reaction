@@ -116,34 +116,6 @@ jobs:
           name: Build and push production Docker image
           command: ${CI_SCRIPTS} docker-build-tag-push . ${DOCKER_REPOSITORY}
 
-  deploy-docs:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          name: Install AWS CLI
-          command: sudo apt-get -y -qq install awscli
-      - run:
-          name: NPM Install JSDoc
-          command: sudo npm install -g jsdoc
-      - run:
-          name: Build JSDoc files
-          command: |
-            jsdoc . \
-              --verbose \
-              --configure .reaction/jsdoc/jsdoc.json \
-              --readme .reaction/jsdoc/templates/static/README.md
-      - run:
-          name: Deploy Doc files to S3
-          command: |
-            if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
-              aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
-            else
-              echo "S3 bucket configuration not found for jsdocs"
-              echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
-              exit 1;
-            fi
-
 workflows:
   version: 2
   build_and_test:
@@ -172,13 +144,3 @@ workflows:
             - graphql-lint
             - test-integration-query
             - test-integration-mutation
-      - deploy-docs:
-          requires:
-            - dockerfile-lint
-            - eslint
-            - graphql-lint
-            - test-integration-query
-            - test-integration-mutation
-          filters:
-            branches:
-              only: /^master$/
