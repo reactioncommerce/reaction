@@ -16,7 +16,7 @@ import updateSitemapTaskForShop from "./jobs/updateSitemapTaskForShop.js";
 export default async function register(app) {
   await app.registerPlugin({
     label: "Sitemap Generator",
-    name: "reaction-sitemap-generator",
+    name: "sitemap-generator",
     version: pkg.version,
     i18n,
     collections: {
