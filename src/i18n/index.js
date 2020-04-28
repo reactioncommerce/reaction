@@ -8,6 +8,7 @@ import fr from "./fr.json";
 import he from "./he.json";
 import hr from "./hr.json";
 import it from "./it.json";
+import mn from "./mn.json";
 import my from "./my.json";
 import nb from "./nb.json";
 import nl from "./nl.json";
@@ -38,6 +39,7 @@ export default {
     ...he,
     ...hr,
     ...it,
+    ...mn,
     ...my,
     ...nb,
     ...nl,
