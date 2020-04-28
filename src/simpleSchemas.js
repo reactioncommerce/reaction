@@ -166,58 +166,6 @@ export const OrderAddress = new SimpleSchema({
 });
 
 /**
- * @name SurchargeMessagesByLanguage
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} content optional
- * @property {String} language optional
- */
-const SurchargeMessagesByLanguage = new SimpleSchema({
-  content: String,
-  language: String
-});
-
-/**
- * @name AppliedSurcharge
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} _id
- * @property {Money} amount
- * @property {String} cartId optional
- * @property {String} fulfillmentGroupId optional
- * @property {String} messagesByLanguage optional
- * @property {String} reason optional
- * @property {String} surchargeId optional
- */
-const AppliedSurcharge = new SimpleSchema({
-  "_id": String,
-  "amount": Number,
-  "cartId": {
-    type: String,
-    optional: true
-  },
-  "fulfillmentGroupId": {
-    type: String,
-    optional: true
-  },
-  /*
-   * Message is used as a client message to let customers know why this surcharge might apply
-   * It can be saved in various languages
-  */
-  "messagesByLanguage": {
-    type: Array,
-    optional: true
-  },
-  "messagesByLanguage.$": {
-    type: SurchargeMessagesByLanguage
-  },
-  "surchargeId": {
-    type: String,
-    optional: true
-  }
-});
-
-/**
  * @name ShippingParcel
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -1146,7 +1094,8 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "surcharges.$": {
-    type: AppliedSurcharge
+    type: Object,
+    blackbox: true
   },
   "totalItemQuantity": {
     type: SimpleSchema.Integer,
