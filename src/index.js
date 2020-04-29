@@ -15,7 +15,7 @@ import startup from "./startup.js";
 export default async function register(app) {
   await app.registerPlugin({
     label: "Simple Authorization",
-    name: "simple-authorization",
+    name: "authorization-simple",
     version: pkg.version,
     collections: {
       roles: {
