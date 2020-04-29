@@ -86,7 +86,7 @@ import {
 
 import {
   Surcharge
-} from "@reactioncommerce/api-plugin-surcharges/src/util/surchargeSchema.js";
+} from "@reactioncommerce/api-plugin-surcharges/src/simpleSchemas.js";
 
 import {
   Tag
