@@ -9,7 +9,7 @@ const { REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL } = config;
 
 const inputSchema = new SimpleSchema({
   email: String,
-  groupId: String,
+  groupIds: String,
   name: String,
   shopId: String
 });
@@ -22,7 +22,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} input.shopId - shop to invite user
- * @param {String} input.groupId - groupId to invite user
+ * @param {String} input.groupIds - groupIds to invite user
  * @param {String} input.email - email of invitee
  * @param {String} input.name - name of invitee
  * @return {Promise<Object>} with boolean of found new account === true || false
@@ -33,7 +33,7 @@ export default async function inviteShopMember(context, input) {
   const { Accounts, AccountInvites, Groups, Shops } = collections;
   const {
     email,
-    groupId,
+    groupIds,
     name,
     shopId
   } = input;
@@ -45,8 +45,19 @@ export default async function inviteShopMember(context, input) {
   const shop = await Shops.findOne({ _id: shopId });
   if (!shop) throw new ReactionError("not-found", "No shop found");
 
-  const group = await Groups.findOne({ _id: groupId });
-  if (!group) throw new ReactionError("not-found", "No group found");
+  const groups = await Groups.find({
+    _id: {
+      $in: groupIds
+    }
+  }).toArray();
+
+  if (!groups) {
+    throw new ReactionError("not-found", "No groups matching the provided IDs were found");
+  }
+
+  if (groups.length !== groupIds.length) {
+    throw new ReactionError("not-found", `Could not find ${groupIds.length - groups.length} of ${groupIds.length} groups provided`)
+  }
 
   const lowercaseEmail = email.toLowerCase();
 
@@ -57,7 +68,7 @@ export default async function inviteShopMember(context, input) {
     // Set the account's permission group for this shop
     await context.mutations.addAccountToGroup(context, {
       accountId: invitedAccount._id,
-      groupId
+      groupIds
     });
 
     return Accounts.findOne({ _id: invitedAccount._id });
@@ -74,7 +85,7 @@ export default async function inviteShopMember(context, input) {
     shopId
   }, {
     $set: {
-      groupId,
+      groupIds,
       invitedByUserId: userFromContext._id
     },
     $setOnInsert: {
