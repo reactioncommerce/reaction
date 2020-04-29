@@ -21,6 +21,7 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-inventory-simple",
   "@reactioncommerce/api-plugin-inventory",
   "@reactioncommerce/api-plugin-job-queue",
+  "@reactioncommerce/api-plugin-navigation",
   "@reactioncommerce/api-plugin-notifications",
   "@reactioncommerce/api-plugin-orders",
   "@reactioncommerce/api-plugin-payments-example",
@@ -41,7 +42,6 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-taxes",
   "@reactioncommerce/api-plugin-translations",
   "@reactioncommerce/api-utils",
-  "@reactioncommerce/plugin-navigation",
   "@reactioncommerce/db-version-check"
 ];
 

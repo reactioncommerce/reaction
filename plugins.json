@@ -32,7 +32,7 @@
   "shipmentsFlatRate": "@reactioncommerce/api-plugin-shipments-flat-rate",
   "taxes": "@reactioncommerce/api-plugin-taxes",
   "taxesFlatRate": "@reactioncommerce/api-plugin-taxes-flat-rate",
-  "navigation": "@reactioncommerce/plugin-navigation",
+  "navigation": "@reactioncommerce/api-plugin-navigation",
   "sitemapGenerator": "@reactioncommerce/api-plugin-sitemap-generator",
   "notifications": "@reactioncommerce/api-plugin-notifications",
   "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test"
