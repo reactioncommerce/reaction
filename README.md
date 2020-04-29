@@ -1,7 +1,7 @@
-# simple-authorization
+# api-plugin-authorization-simple
 
-[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/plugin-simple-authorization.svg)](https://www.npmjs.com/package/@reactioncommerce/plugin-simple-authorization)
-[![CircleCI](https://circleci.com/gh/reactioncommerce/plugin-simple-authorization.svg?style=svg)](https://circleci.com/gh/reactioncommerce/plugin-simple-authorization)
+[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-authorization-simple.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-authorization-simple)
+[![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-authorization-simple.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-authorization-simple)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Summary
@@ -61,7 +61,7 @@ Context is used to pass any extra information to the permissions check. We use i
 Import this package into the [registerPlugins.js](https://github.com/reactioncommerce/reaction/blob/8b3d66d758c8fe0e2ba1df1958767587ddb7a046/src/registerPlugins.js) file in the Reaction API, and then await its `registerPlugin` function:
 
 ```js
-import registerSimpleAuthorizationPlugin from "@reactioncommerce/plugin-simple-authorization/index.js";
+import registerSimpleAuthorizationPlugin from "@reactioncommerce/api-plugin-authorization-simple/index.js";
 await registerSimpleAuthorizationPlugin(app);
 ```
 
