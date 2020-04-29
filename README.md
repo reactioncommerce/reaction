@@ -1,7 +1,7 @@
-# plugin-translations
+# api-plugin-translations
 
-[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/plugin-translations.svg)](https://www.npmjs.com/package/@reactioncommerce/plugin-translations)
-[![CircleCI](https://circleci.com/gh/reactioncommerce/plugin-translations.svg?style=svg)](https://circleci.com/gh/reactioncommerce/plugin-translations)
+[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-translations.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-translations)
+[![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-translations.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-translations)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Summary
