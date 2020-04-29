@@ -41,6 +41,7 @@ const order = Factory.Order.makeOne({
     transactionId: "s9atGoLbagKvQ3pJc"
   },
   shopId,
+  surcharges: [],
   workflow: {
     status: "new"
   }
@@ -49,8 +50,6 @@ const order = Factory.Order.makeOne({
 const orders = Factory.Order.makeMany(10, {
   _id: (iterator) => (iterator + 500).toString(),
   accountId: mockAccount._id,
-  referenceId: (iterator) => (iterator + 123).toString(),
-  shopId,
   payments: {
     _id: (iterator) => (iterator + 33).toString(),
     data: {
@@ -68,6 +67,9 @@ const orders = Factory.Order.makeMany(10, {
     status: "created",
     transactionId: "s9atGoLbagKvQ3pJc"
   },
+  referenceId: (iterator) => (iterator + 123).toString(),
+  shopId,
+  surcharges: [],
   workflow: {
     status: "new"
   }
@@ -76,8 +78,6 @@ const orders = Factory.Order.makeMany(10, {
 const ordersWithDifferentAccount = Factory.Order.makeMany(10, {
   _id: (iterator) => (iterator + 773).toString(),
   accountId: mockDifferentAccount._id,
-  referenceId: (iterator) => (iterator + 11234).toString(),
-  shopId,
   payments: {
     _id: (iterator) => (iterator + 3333).toString(),
     data: {
@@ -95,6 +95,9 @@ const ordersWithDifferentAccount = Factory.Order.makeMany(10, {
     status: "created",
     transactionId: "abc123034k490tjkf"
   },
+  referenceId: (iterator) => (iterator + 11234).toString(),
+  shopId,
+  surcharges: [],
   workflow: {
     status: "new"
   }
@@ -103,8 +106,6 @@ const ordersWithDifferentAccount = Factory.Order.makeMany(10, {
 const canceledOrders = Factory.Order.makeMany(3, {
   _id: (iterator) => (iterator + 777).toString(),
   accountId: mockAccount._id,
-  referenceId: (iterator) => (iterator + 444).toString(),
-  shopId,
   payments: {
     _id: (iterator) => (iterator + 1211).toString(),
     data: {
@@ -122,6 +123,9 @@ const canceledOrders = Factory.Order.makeMany(3, {
     status: "created",
     transactionId: "abc123034k490tjkf"
   },
+  referenceId: (iterator) => (iterator + 444).toString(),
+  shopId,
+  surcharges: [],
   workflow: {
     status: "coreOrderWorkflow/canceled"
   }
