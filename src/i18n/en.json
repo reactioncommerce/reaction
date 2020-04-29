@@ -17,7 +17,7 @@
           "country": "Country",
           "postal": "Postal code",
           "rate": "Rate",
-          "ratePlaceholder": "Example: 0.05 means a 5% tax rate",
+          "ratePlaceholder": "Example: 5 means a 5% tax rate",
           "region": "Region",
           "sourcing": "Sourcing",
           "taxCode": "Tax code"
