@@ -26,7 +26,7 @@
   "paymentsStripe": "@reactioncommerce/api-plugin-payments-stripe",
   "paymentsExample": "@reactioncommerce/plugin-payments-example",
   "discounts": "@reactioncommerce/api-plugin-discounts",
-  "discountCodes": "@reactioncommerce/plugin-discount-codes",
+  "discountCodes": "@reactioncommerce/api-plugin-discounts-codes",
   "surcharges": "@reactioncommerce/api-plugin-surcharges",
   "shipments": "@reactioncommerce/api-plugin-shipments",
   "shipmentsFlatRate": "@reactioncommerce/api-plugin-shipments-flat-rate",

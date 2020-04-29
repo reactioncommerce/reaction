@@ -12,6 +12,7 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-authorization-simple",
   "@reactioncommerce/api-plugin-carts",
   "@reactioncommerce/api-plugin-catalogs",
+  "@reactioncommerce/api-plugin-discounts-codes",
   "@reactioncommerce/api-plugin-discounts",
   "@reactioncommerce/api-plugin-email-smtp",
   "@reactioncommerce/api-plugin-email-templates",
@@ -39,7 +40,6 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-taxes",
   "@reactioncommerce/api-plugin-translations",
   "@reactioncommerce/api-utils",
-  "@reactioncommerce/plugin-discount-codes",
   "@reactioncommerce/plugin-navigation",
   "@reactioncommerce/plugin-payments-example",
   "@reactioncommerce/db-version-check"
