@@ -12,7 +12,7 @@
   "emailSMTP": "@reactioncommerce/api-plugin-email-smtp",
   "emailTemplates": "@reactioncommerce/api-plugin-email-templates",
   "accounts": "@reactioncommerce/api-plugin-accounts",
-  "authentication": "@reactioncommerce/plugin-authentication",
+  "authentication": "@reactioncommerce/api-plugin-authentication",
   "authorization": "@reactioncommerce/api-plugin-authorization-simple",
   "products": "@reactioncommerce/api-plugin-products",
   "catalogs": "@reactioncommerce/api-plugin-catalogs",
