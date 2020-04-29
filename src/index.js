@@ -17,8 +17,8 @@ import startup from "./startup.js";
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Codes",
-    name: "discount-codes",
+    label: "Discount Codes",
+    name: "discounts-codes",
     version: app.context.appVersion,
     i18n,
     functionsByType: {

@@ -1,5 +1,5 @@
 {
-  "name": "@reactioncommerce/plugin-discount-codes",
+  "name": "@reactioncommerce/api-plugin-discounts-codes",
   "description": "Discount codes service for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
@@ -7,12 +7,12 @@
   "engines": {
     "node": ">=12.14.1"
   },
-  "homepage": "https://github.com/reactioncommerce/plugin-discount-codes",
-  "url": "https://github.com/reactioncommerce/plugin-discount-codes",
+  "homepage": "https://github.com/reactioncommerce/api-plugin-discounts-codes",
+  "url": "https://github.com/reactioncommerce/api-plugin-discounts-codes",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/plugin-discount-codes.git"
+    "url": "git+https://github.com/reactioncommerce/api-plugin-discounts-codes.git"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -21,7 +21,7 @@
   },
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/plugin-discount-codes/issues"
+    "url": "https://github.com/reactioncommerce/api-plugin-discounts-codes/issues"
   },
   "sideEffects": false,
   "dependencies": {
