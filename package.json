@@ -1,5 +1,5 @@
 {
-  "name": "@reactioncommerce/plugin-sitemap-generator",
+  "name": "@reactioncommerce/api-plugin-sitemap-generator",
   "description": "Sitemap Generator plugin for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
@@ -7,12 +7,12 @@
   "engines": {
     "node": ">=12.14.1"
   },
-  "homepage": "https://github.com/reactioncommerce/plugin-sitemap-generator",
-  "url": "https://github.com/reactioncommerce/plugin-sitemap-generator",
+  "homepage": "https://github.com/reactioncommerce/api-plugin-sitemap-generator",
+  "url": "https://github.com/reactioncommerce/api-plugin-sitemap-generator",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/plugin-sitemap-generator.git"
+    "url": "git+https://github.com/reactioncommerce/api-plugin-sitemap-generator.git"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -21,7 +21,7 @@
   },
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/plugin-sitemap-generator/issues"
+    "url": "https://github.com/reactioncommerce/api-plugin-sitemap-generator/issues"
   },
   "sideEffects": false,
   "dependencies": {
