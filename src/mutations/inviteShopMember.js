@@ -66,17 +66,27 @@ export default async function inviteShopMember(context, input) {
 
   if (invitedAccount) {
     // Set the account's permission group for this shop
-    await context.mutations.addAccountToGroup(context, {
-      accountId: invitedAccount._id,
+    await context.mutations.updateGroupsForAccounts(context, {
+      accountIds: [invitedAccount._id],
       groupIds
     });
 
     return Accounts.findOne({ _id: invitedAccount._id });
   }
 
-  // This check is part of `addAccountToGroup` mutation for existing users. For new users,
+  const groupShopIds = groups.reduce((allShopIds, group) => {
+    if (!allShopIds.includes(group.shopId)) {
+      allShopIds.push(group.shopId);
+    }
+
+    return allShopIds;
+  }, []);
+
+  // This check is part of `updateGroupsForAccounts` mutation for existing users. For new users,
   // we do it here before creating an invite record and sending the invite email.
-  await context.validatePermissions("reaction:legacy:groups", "manage:accounts", { shopId: group.shopId });
+  for (let groupShopId of groupShopIds) {
+    await context.validatePermissions("reaction:legacy:groups", "manage:accounts", { groupShopId });
+  }
 
   // Create an AccountInvites document. If a person eventually creates an account with this email address,
   // it will be automatically added to this group instead of the default group for this shop.
