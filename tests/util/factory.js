@@ -28,7 +28,7 @@ import {
 
 import {
   DiscountCodes
-} from "@reactioncommerce/plugin-discount-codes/src/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-discounts-codes/src/simpleSchemas.js";
 
 import {
   EmailTemplates
@@ -46,7 +46,7 @@ import {
   NavigationItem,
   NavigationTree,
   NavigationTreeItem
-} from "@reactioncommerce/plugin-navigation/src/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-navigation/src/simpleSchemas.js";
 
 import {
   CommonOrder,

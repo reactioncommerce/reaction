@@ -8,6 +8,7 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-accounts",
   "@reactioncommerce/api-plugin-address-validation-test",
   "@reactioncommerce/api-plugin-address-validation",
+  "@reactioncommerce/api-plugin-authorization-simple",
   "@reactioncommerce/api-plugin-carts",
   "@reactioncommerce/api-plugin-catalogs",
   "@reactioncommerce/api-plugin-discounts",
@@ -42,7 +43,6 @@ const externalNodeModules = [
   "@reactioncommerce/plugin-discount-codes",
   "@reactioncommerce/plugin-navigation",
   "@reactioncommerce/plugin-payments-example",
-  "@reactioncommerce/plugin-simple-authorization",
 ];
 
 const jestConfig = {
