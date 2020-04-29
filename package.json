@@ -51,7 +51,7 @@
     "@reactioncommerce/api-plugin-shipments": "~1.0.0",
     "@reactioncommerce/api-plugin-shops": "~1.0.0",
     "@reactioncommerce/api-plugin-simple-schema": "~1.0.0",
-    "@reactioncommerce/api-plugin-sitemap-generator": "~1.1.0",
+    "@reactioncommerce/api-plugin-sitemap-generator": "~1.2.0",
     "@reactioncommerce/api-plugin-surcharges": "~1.1.0",
     "@reactioncommerce/api-plugin-system-information": "~1.1.0",
     "@reactioncommerce/api-plugin-tags": "~1.0.0",
