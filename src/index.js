@@ -16,7 +16,7 @@ import { NavigationItem, NavigationItemContent, NavigationItemData } from "./sim
 export default async function register(app) {
   await app.registerPlugin({
     label: "Navigation",
-    name: "reaction-navigation",
+    name: "navigation",
     version: pkg.version,
     i18n,
     collections: {
