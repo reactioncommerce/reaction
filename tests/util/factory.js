@@ -82,7 +82,7 @@ import Restriction from "@reactioncommerce/api-plugin-shipments-flat-rate/src/ut
 
 import {
   Sitemap
-} from "@reactioncommerce/plugin-sitemap-generator/src/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-sitemap-generator/src/simpleSchemas.js";
 
 import {
   Surcharge

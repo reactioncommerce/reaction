@@ -7,8 +7,8 @@
   "i18": "@reactioncommerce/api-plugin-i18n",
   "email": "@reactioncommerce/api-plugin-email",
   "addressValidation": "@reactioncommerce/api-plugin-address-validation",
-  "translations": "@reactioncommerce/plugin-translations",
-  "systemInformation": "@reactioncommerce/plugin-system-information",
+  "translations": "@reactioncommerce/api-plugin-translations",
+  "systemInformation": "@reactioncommerce/api-plugin-system-information",
   "emailSMTP": "@reactioncommerce/api-plugin-email-smtp",
   "emailTemplates": "@reactioncommerce/api-plugin-email-templates",
   "accounts": "@reactioncommerce/api-plugin-accounts",
@@ -33,7 +33,7 @@
   "taxes": "@reactioncommerce/api-plugin-taxes",
   "taxesFlatRate": "@reactioncommerce/api-plugin-taxes-flat-rate",
   "navigation": "@reactioncommerce/plugin-navigation",
-  "sitemapGenerator": "@reactioncommerce/plugin-sitemap-generator",
+  "sitemapGenerator": "@reactioncommerce/api-plugin-sitemap-generator",
   "notifications": "@reactioncommerce/api-plugin-notifications",
   "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test"
 }
