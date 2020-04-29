@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Please Use Google Shell Style: https://google.github.io/styleguide/shell.xml
+
+# ---- Start unofficial bash strict mode boilerplate
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -o errexit  # always exit on error
+set -o errtrace # trap errors in functions as well
+set -o pipefail # don't ignore exit codes when piping output
+set -o posix    # more strict failures in subshells
+# set -x          # enable debugging
+
+IFS="$(printf "\n\t")"
+# ---- End unofficial bash strict mode boilerplate
+
+package_name=$1
+package_path=$2
+container_id="$(docker-compose ps -q api)"
+container_copied_packages_path="/home/node/copied-packages"
+container_destination_path="${container_copied_packages_path}/${package_name}"
+
+if [[ -z "${package_path}" ]]; then
+  package_path="../api-plugins/${package_name}"
+fi
+
+echo "Copying ${package_name} package code into container..."
+docker-compose exec api sh -c "mkdir -p ${container_copied_packages_path}"
+docker cp "${package_path}" "${container_id}:${container_destination_path}"
+
+# Then npm link into this project
+echo "Linking package into API..."
+docker-compose exec api sh -c "npm config set prefix /home/node/npm && cd /usr/local/src/app && npm link "${container_destination_path}""
+
+# Fool nodemon into thinking something has changed so that it restarts.
+# Touch first file found in /src with .js extension
+docker-compose exec api sh -c "touch -c $(ls ./src/*.js | head -n1)"
