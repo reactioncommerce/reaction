@@ -14,8 +14,8 @@ import startup from "./startup.js";
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "ExamplePayment",
-    name: "example-paymentmethod",
+    label: "Example Payments",
+    name: "payments-example",
     version: pkg.version,
     i18n,
     graphQL: {
