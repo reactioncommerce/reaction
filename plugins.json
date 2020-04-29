@@ -24,7 +24,7 @@
   "orders": "@reactioncommerce/api-plugin-orders",
   "payments": "@reactioncommerce/api-plugin-payments",
   "paymentsStripe": "@reactioncommerce/api-plugin-payments-stripe",
-  "paymentsExample": "@reactioncommerce/plugin-payments-example",
+  "paymentsExample": "@reactioncommerce/api-plugin-payments-example",
   "discounts": "@reactioncommerce/api-plugin-discounts",
   "discountCodes": "@reactioncommerce/api-plugin-discounts-codes",
   "surcharges": "@reactioncommerce/api-plugin-surcharges",

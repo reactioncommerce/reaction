@@ -40,8 +40,9 @@
     "@reactioncommerce/api-plugin-job-queue": "~1.0.1",
     "@reactioncommerce/api-plugin-notifications": "~1.0.0",
     "@reactioncommerce/api-plugin-orders": "~1.1.0",
-    "@reactioncommerce/api-plugin-payments": "~1.0.0",
+    "@reactioncommerce/api-plugin-payments-example": "~1.1.0",
     "@reactioncommerce/api-plugin-payments-stripe": "~1.0.0",
+    "@reactioncommerce/api-plugin-payments": "~1.0.0",
     "@reactioncommerce/api-plugin-pricing-simple": "~1.0.0",
     "@reactioncommerce/api-plugin-products": "~1.0.0",
     "@reactioncommerce/api-plugin-settings": "~1.0.0",
@@ -62,7 +63,6 @@
     "@reactioncommerce/file-collections-sa-gridfs": "~0.1.0",
     "@reactioncommerce/logger": "~1.1.2",
     "@reactioncommerce/plugin-navigation": "~1.0.2",
-    "@reactioncommerce/plugin-payments-example": "~1.0.0",
     "@reactioncommerce/random": "~1.0.2",
     "graphql": "~14.6.0",
     "semver": "~6.3.0"
