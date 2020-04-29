@@ -1,5 +1,5 @@
 {
-  "name": "@reactioncommerce/plugin-authentication",
+  "name": "@reactioncommerce/api-plugin-authentication",
   "description": "Authentication plugin for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",
@@ -7,12 +7,12 @@
   "engines": {
     "node": ">=12.14.1"
   },
-  "homepage": "https://github.com/reactioncommerce/plugin-authentication",
-  "url": "https://github.com/reactioncommerce/plugin-authentication",
+  "homepage": "https://github.com/reactioncommerce/api-plugin-authentication",
+  "url": "https://github.com/reactioncommerce/api-plugin-authentication",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/plugin-authentication.git"
+    "url": "git+https://github.com/reactioncommerce/api-plugin-authentication.git"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -21,7 +21,7 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/plugin-authentication/issues"
+    "url": "https://github.com/reactioncommerce/api-plugin-authentication/issues"
   },
   "sideEffects": false,
   "dependencies": {
