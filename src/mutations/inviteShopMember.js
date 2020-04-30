@@ -130,6 +130,7 @@ export default async function inviteShopMember(context, input) {
     contactEmail: _.get(shop, "emails[0].address"),
     copyrightDate: new Date().getFullYear(),
     groupNames: formattedGroupNames,
+    hasMultipleGroups: groups.length > 1,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
