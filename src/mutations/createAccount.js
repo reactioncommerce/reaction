@@ -94,7 +94,7 @@ export default async function createAccount(context, input) {
     // find all invites for this email address, for all shops, and add to all groups
     const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
     invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
-    groups = invites.reduce((allGroupIds, groupIds) => [...allGroupIds, ...groupIds], []);
+    groups = invites.reduce((allGroupIds, invite) => [...allGroupIds, ...invite.groupIds], []);
   }
 
   AccountSchema.validate(account);
