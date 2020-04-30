@@ -16,13 +16,13 @@ import { decodeGroupOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Object} InviteShopMemberPayload
  */
 export default async function inviteShopMember(_, { input }, context) {
-  const { email, groupId, name, shopId, clientMutationId = null } = input;
-  const decodedGroupId = decodeGroupOpaqueId(groupId);
+  const { email, groupIds, name, shopId, clientMutationId = null } = input;
+  const decodedGroupIds = groupIds.map((groupId) => decodeGroupOpaqueId(groupId));
   const decodedShopId = decodeShopOpaqueId(shopId);
 
   const account = await context.mutations.inviteShopMember(context, {
     email,
-    groupId: decodedGroupId,
+    groupIds: decodedGroupIds,
     name,
     shopId: decodedShopId
   });

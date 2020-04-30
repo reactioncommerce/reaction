@@ -9,7 +9,8 @@ const { REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL } = config;
 
 const inputSchema = new SimpleSchema({
   email: String,
-  groupIds: String,
+  groupIds: Array,
+  "groupIds.$": String,
   name: String,
   shopId: String
 });
@@ -105,11 +106,30 @@ export default async function inviteShopMember(context, input) {
     upsert: true
   });
 
+  let formattedGroupNames = groups[0].name;
+
+  // Generate a human-readable list of group names.
+  // For example, if we have groups "test1" and "test2", `formattedGroupNames` will be "test1 and test2".
+  // If we have groups "test1", "test2" and "test3", `formattedGroupNames` will be "test1, test2 and test3".
+  if (groups.length > 1) {
+    formattedGroupNames = groups.reduce((sentence, group, index) => {
+      if (index === groups.length - 1) {
+        return `${sentence} and ${group.name}`;
+      }
+
+      if (index === 0) {
+        return group.name;
+      }
+
+      return `${sentence}, ${group.name}`;
+    }, "");
+  }
+
   // Now send them an invitation email
   const dataForEmail = {
     contactEmail: _.get(shop, "emails[0].address"),
     copyrightDate: new Date().getFullYear(),
-    groupName: _.startCase(group.name),
+    groupNames: formattedGroupNames,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
