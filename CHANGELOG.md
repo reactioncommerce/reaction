@@ -1,6 +1,6 @@
 # v3.7.0
 
-Reaction v3.7.0 adds minor features and performance enhancements, fixes bugs, and contains no breaking changes since v3.6.0.
+Reaction v3.7.0 adds minor features and performance enhancements, and contains no breaking changes since v3.6.0.
 
 ## Notable changes
 
