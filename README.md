@@ -24,7 +24,6 @@ This NPM package also provides the `ReactionTestAPICore` class, which you can us
     - [functionsByType](#functionsbytype)
     - [graphQL](#graphql)
     - [mutations and queries](#mutations-and-queries)
-    - [simpleSchemas](#simpleschemas)
 - [App Context](#app-context)
 - [Writing Tests Using ReactionTestAPICore](#writing-tests-using-reactiontestapicore)
 - [Developer Certificate of Origin](#developer-certificate-of-origin)
@@ -229,10 +228,8 @@ Beyond `name` and `label`, the following standard keys can be included in your `
 - `expressMiddleware`
 - `functionsByType`
 - `graphQL`
-- `i18n`
 - `mutations`
 - `queries`
-- `simpleSchemas`
 
 #### auth
 
@@ -354,31 +351,6 @@ More information:
 #### mutations and queries
 
 The `mutations` and `queries` objects are maps of functions that are extended onto `context.mutations` and `context.queries`. These may be functions that are called from GraphQL resolvers of a similar name, or functions that are intended to be called only by other plugin code. Functions that modify data should be registered as `mutations` and all other functions should be registered as `queries`.
-
-#### simpleSchemas
-
-The [SimpleSchema](https://github.com/aldeed/simple-schema-js) package is used by many plugins to validate data, often before inserting or updating MongoDB documents. To allow other plugins to extend these schemas, some plugins register them such that they are accessible in a `preStartup` function.
-
-Here's an example of registering two schemas:
-
-```js
-simpleSchemas: {
-  Cart,
-  CartItem
-}
-```
-
-And a different plugin can then extend them in a `preStartup` function:
-
-```js
-export default function preStartup(context) {
-  context.simpleSchemas.CartItem.extend({
-    additionalCartItemField: String
-  });
-}
-```
-
-(This could be done in a `startup` function, but because startup code sometimes validates against these schemas, it's safer to do it in a `preStartup` function.)
 
 ## App Context
 
