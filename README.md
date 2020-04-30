@@ -10,8 +10,6 @@ SimpleSchema plugin for the [Reaction API](https://github.com/reactioncommerce/r
 
 The [SimpleSchema](https://github.com/aldeed/simple-schema-js) package is used by many plugins to validate data, often before inserting or updating MongoDB documents. To allow other plugins to extend these schemas, some plugins register them such that they are accessible in a `preStartup` function.
 
-simpl-schema
-
 ## Installation
 
 ```sh
