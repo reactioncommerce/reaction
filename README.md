@@ -6,13 +6,29 @@
 
 ## Summary
 
-Simple Schema plugin for the [Reaction API](https://github.com/reactioncommerce/reaction).
+SimpleSchema plugin for the [Reaction API](https://github.com/reactioncommerce/reaction).
 
-This plugin adds support for putting SimpleSchemas on context, so that other plugins can extend them.
+The [SimpleSchema](https://github.com/aldeed/simple-schema-js) package is used by many plugins to validate data, often before inserting or updating MongoDB documents. To allow other plugins to extend these schemas, some plugins register them such that they are accessible in a `preStartup` function.
+
+simpl-schema
+
+## Installation
+
+```sh
+npm install @reactioncommerce/api-plugin-simple-schema
+```
+
+Then add a reference in `plugins.json`, using any key you want. The order in which plugins appear in this file is the order in which they load.
+
+```json
+{
+  simpleSchema: "@reactioncommerce/api-plugin-simple-schema"
+}
+```
 
 ## Usage
 
-If you have a plugin in which you want to allow other plugins to extend one of your schemas, pass it to `registerPlugin`:
+Here's an example of registering a schema:
 
 ```js
 import SimpleSchema from "simpl-schema";
@@ -31,6 +47,8 @@ export default async function register(app) {
 }
 ```
 
+Note that a plugin creating a SimpleSchema instance as in the above example will also need to list the `simpl-schema` NPM package as a dependency.
+
 And on the other side, if you have a plugin that wants to extend some of the schemas provided by other plugins, do it in a `preStartup` function:
 
 ```js
@@ -40,6 +58,10 @@ export default function preStartup(context) {
   });
 }
 ```
+
+This could be done in a `startup` function, but because startup code sometimes validates against these schemas, it's safer to do it in a `preStartup` function.
+
+A plugin that extends schemas but never calls `new SimpleSchema()` anywhere need not list the `simpl-schema` NPM package as a dependency.
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
