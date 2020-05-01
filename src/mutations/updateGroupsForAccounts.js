@@ -51,7 +51,7 @@ export default async function updateGroupsForAccounts(context, input) {
   }
 
   const shopIds = groupsToAssignAccountsTo.reduce((allShopIds, group) => {
-    if (!allShopIds.includes(group.shopId)) {
+    if (group.shopId && !allShopIds.includes(group.shopId)) {
       allShopIds.push(group.shopId);
     }
 
