@@ -42,7 +42,7 @@ export default async function updateGroupsForAccounts(context, input) {
     }
   }).toArray();
 
-  if (!groupsToAssignAccountsTo) {
+  if (groupsToAssignAccountsTo.length === 0) {
     throw new ReactionError("not-found", "No groups matching the provided IDs were found");
   }
 
@@ -68,7 +68,7 @@ export default async function updateGroupsForAccounts(context, input) {
     }
   }).toArray();
 
-  if (!accounts) {
+  if (accounts.length === 0) {
     throw new ReactionError("not-found", "No accounts matching the provided IDs were found");
   }
 
