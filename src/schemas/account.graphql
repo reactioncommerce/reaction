@@ -371,7 +371,7 @@ type UpdateGroupsForAccountsPayload {
   clientMutationId: String
 
   "The accounts that were modified"
-  accounts: [Account]
+  accounts: [Account]!
 }
 
 extend type Mutation {
