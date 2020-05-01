@@ -82,7 +82,8 @@ export default async function updateGroupsForAccounts(context, input) {
     }
   }, {
     $set: {
-      groups: groupIds
+      groups: groupIds,
+      updatedAt: new Date()
     }
   });
 
