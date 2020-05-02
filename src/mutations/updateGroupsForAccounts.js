@@ -78,6 +78,8 @@ export default async function updateGroupsForAccounts(context, input) {
     throw new ReactionError("not-found", `Could not find ${accountIds.length - accounts.length} of ${accountIds.length} groups provided`);
   }
 
+  const updatedAt = new Date();
+
   await Accounts.updateMany({
     _id: {
       $in: accountIds
@@ -85,15 +87,21 @@ export default async function updateGroupsForAccounts(context, input) {
   }, {
     $set: {
       groups: groupIds,
-      updatedAt: new Date()
+      updatedAt
     }
   });
 
-  const updatedAccounts = await Accounts.find({
-    _id: {
-      $in: accountIds
+  const updatedAccounts = accounts.map((account) => {
+    if (accountIds.includes(account._id)) {
+      return {
+        ...account,
+        groups: groupIds,
+        updatedAt
+      };
     }
-  }).toArray();
+
+    return account;
+  });
 
   const afterAccountUpdateEvents = updatedAccounts.map(async (updatedAccount) => {
     await appEvents.emit("afterAccountUpdate", {
