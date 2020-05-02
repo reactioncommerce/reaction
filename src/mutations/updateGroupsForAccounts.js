@@ -50,7 +50,7 @@ export default async function updateGroupsForAccounts(context, input) {
     throw new ReactionError("not-found", `Could not find ${groupIds.length - groupsToAssignAccountsTo.length} of ${groupIds.length} groups provided`);
   }
 
-  for (const group of groupsToAssignAccountsTo) {
+  const checkGroupPermissions = groupsToAssignAccountsTo.map(async (group) => {
     let groupShopId;
 
     if (group.shopId) {
@@ -60,7 +60,9 @@ export default async function updateGroupsForAccounts(context, input) {
     }
 
     await context.validatePermissions("reaction:legacy:groups", "manage:accounts", groupShopId);
-  }
+  });
+
+  await Promise.all(checkGroupPermissions);
 
   const accounts = await Accounts.find({
     _id: {
@@ -93,13 +95,15 @@ export default async function updateGroupsForAccounts(context, input) {
     }
   }).toArray();
 
-  for (let updatedAccount of updatedAccounts) {
+  const afterAccountUpdateEvents = updatedAccounts.map(async (updatedAccount) => {
     await appEvents.emit("afterAccountUpdate", {
       account: updatedAccount,
       updatedBy: userId,
       updatedFields: ["groups"]
     });
-  }
+  });
+
+  await Promise.all(afterAccountUpdateEvents);
 
   // Return the accounts that were updated
   return updatedAccounts;
