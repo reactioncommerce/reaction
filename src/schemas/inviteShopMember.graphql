@@ -6,8 +6,11 @@ input InviteShopMemberInput {
   "The email address of the person to invite"
   email: String!
 
+  "Deprecated — The permission group for this person's new account"
+  groupId: ID
+
   "The permission groups for this person's new account"
-  groupIds: [ID]!
+  groupIds: [ID]
 
   "The invitee's full name"
   name: String!
