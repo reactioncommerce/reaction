@@ -88,12 +88,6 @@ extend type Mutation {
 extend type Query {
   "Returns all pending staff member invitations"
   invitations(
-    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
-
-    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
-
     "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
     first: ConnectionLimitInt,
 
