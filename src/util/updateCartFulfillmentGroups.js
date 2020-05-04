@@ -27,6 +27,11 @@ export default function updateCartFulfillmentGroups(context, cart) {
 
   (cart.items || []).forEach((item) => {
     let { supportedFulfillmentTypes } = item;
+    // Do not re-allocate the item if it is already in the group. Otherwise difficult for other code
+    // to create and manage fulfillment groups
+    const itemAlreadyInTheGroup = currentGroups.find(({ itemIds }) => itemIds && itemIds.includes(item._id));
+    if (itemAlreadyInTheGroup) return;
+
     if (!supportedFulfillmentTypes || supportedFulfillmentTypes.length === 0) {
       supportedFulfillmentTypes = ["shipping"];
     }
