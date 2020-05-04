@@ -12,7 +12,7 @@ export default async function accounts(context, input) {
   const { collections } = context;
   const { AccountInvites } = collections;
 
-  await context.validatePermissions("reaction:legacy:accounts", "read");
+  await context.validatePermissions("reaction:legacy:invitations", "read");
 
   return {
     collection: AccountInvites,

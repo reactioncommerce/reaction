@@ -38,6 +38,15 @@
     "effect": "allow"
   },
   {
+    "description": "Account managers acting on all invitations.",
+    "subjects": [ "reaction:groups:account-managers" ],
+    "resources": [ "reaction:legacy:invitations" ],
+    "actions": [
+      "read"
+    ],
+    "effect": "allow"
+  },
+  {
     "description": "Account owner acting on their account.",
     "subjects": [ "reaction:users:*" ],
     "resources": [ "reaction:legacy:accounts:*" ],
