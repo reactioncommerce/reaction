@@ -1,3 +1,17 @@
+# v3.7.1
+
+Reaction v3.7.1 adds a bug fix and contains no breaking changes since v3.7.0
+
+## Notable changes
+
+### Fix API Docker image
+
+Updates `Dockerfile` to copy new `plugins.json` into the Docker image.
+
+## Fixes
+
+- fix: copy plugins.json into prod image ([#6244](https://github.com/reactioncommerce/reaction/pull/6244))
+
 # v3.7.0
 
 Reaction v3.7.0 adds minor features and performance enhancements, and contains no breaking changes since v3.6.0.
