@@ -9,3 +9,4 @@ RUN cd node_modules/sharp && (node install/libvips && node install/dll-copy && p
 
 # The base image copies /src but we need to copy additional folders in this project
 COPY --chown=node:node ./public ./public
+COPY --chown=node:node ./plugins.json ./plugins.json
