@@ -65,7 +65,8 @@ export default async function updateGroupTotals(context, {
     currencyCode,
     discountTotal,
     group,
-    orderId
+    orderId,
+    surcharges: groupSurcharges
   });
 
   // Build and set the group invoice
