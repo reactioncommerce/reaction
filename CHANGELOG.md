@@ -1,3 +1,66 @@
+# v3.7.1
+
+Reaction v3.7.1 adds a bug fix and contains no breaking changes since v3.7.0
+
+## Notable changes
+
+### Fix API Docker image
+
+Updates `Dockerfile` to copy new `plugins.json` into the Docker image.
+
+## Fixes
+
+- fix: copy plugins.json into prod image ([#6244](https://github.com/reactioncommerce/reaction/pull/6244))
+
+# v3.7.0
+
+Reaction v3.7.0 adds minor features and performance enhancements, and contains no breaking changes since v3.6.0.
+
+## Notable changes
+
+### Moves API Core into its own plugin
+
+API core is now its own plugin which provides the `ReactionAPICore` class. Use this to build a NodeJS microservice that is compatible with the Reaction Commerce platform, or to build your main Reaction Commerce API if you don't want to start by forking this project.
+
+### Finishes moving all plugins into their own npm packages
+
+All remaining plugins which were not moved previous to this release have now been moved out of this project and into their own npm plugins.
+
+## Features
+
+- feat: reaction as library ([#6155](https://github.com/reactioncommerce/reaction/pull/6155))
+
+## Refactors
+
+- refactor: use npm package for taxes plugin ([#6228](https://github.com/reactioncommerce/reaction/pull/6228))
+- refactor: move `shipments-flat-rate` plugin to npm ([#6199](https://github.com/reactioncommerce/reaction/pull/6199))
+- refactor: move `taxes-flat-rate` plugin to npm ([#6198](https://github.com/reactioncommerce/reaction/pull/6198))
+- refactor: use npm package for inventory plugin ([#6226](https://github.com/reactioncommerce/reaction/pull/6226))
+- refactor: use npm package for simple-pricing plugin ([#6225](https://github.com/reactioncommerce/reaction/pull/6225))
+- refactor: move shipments plugin to NPM package ([#6224](https://github.com/reactioncommerce/reaction/pull/6224))
+- refactor: use npm package for files plugin ([#6217](https://github.com/reactioncommerce/reaction/pull/6217))
+- refactor: move surcharges plugin to NPM package ([#6223](https://github.com/reactioncommerce/reaction/pull/6223))
+- refactor: use npm package for products plugin ([#6220](https://github.com/reactioncommerce/reaction/pull/6220))
+- refactor: move discounts plugin to NPM package ([#6216](https://github.com/reactioncommerce/reaction/pull/6216))
+- refactor: use npm package for simple-inventory plugin ([#6222](https://github.com/reactioncommerce/reaction/pull/6222))
+- refactor: move email-smtp plugin to NPM package ([#6218](https://github.com/reactioncommerce/reaction/pull/6218))
+- refactor: move email-templates plugin to NPM pkg ([#6219](https://github.com/reactioncommerce/reaction/pull/6219))
+- refactor: move payments plugin to NPM package ([#6221](https://github.com/reactioncommerce/reaction/pull/6221))
+- refactor: move `payments-stripe` plugin to npm ([#6161](https://github.com/reactioncommerce/reaction/pull/6161))
+- refactor: use npm package for carts plugin ([#6215](https://github.com/reactioncommerce/reaction/pull/6215))
+- refactor: move `email` plugin to npm ([#6200](https://github.com/reactioncommerce/reaction/pull/6200))
+- refactor: move orders plugin to NPM ([#6214](https://github.com/reactioncommerce/reaction/pull/6214))
+- refactor: move `notifications` plugin to npm ([#6211](https://github.com/reactioncommerce/reaction/pull/6211))
+- refactor: move `job-queue` plugin to npm ([#6197](https://github.com/reactioncommerce/reaction/pull/6197))
+- refactor: use npm package for tags plugin ([#6212](https://github.com/reactioncommerce/reaction/pull/6212))
+
+## Chores
+
+- chore: update renamed plugins ([#6236](https://github.com/reactioncommerce/reaction/pull/6236))
+- chore: update plugins ([#6235](https://github.com/reactioncommerce/reaction/pull/6235))
+- chore: remove unused npm packages ([#6229](https://github.com/reactioncommerce/reaction/pull/6229))
+- chore: update api-core ([#6227](https://github.com/reactioncommerce/reaction/pull/6227))
+
 # v3.6.0
 
 Reaction v3.6.0 adds minor features and performance enhancements, fixes bugs, and contains no breaking changes since v3.5.0.
