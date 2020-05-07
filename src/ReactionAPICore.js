@@ -241,8 +241,53 @@ export default class ReactionAPICore {
                   " but another plugin has already defined a collection with that key");
               }
 
-              // Add the collection instance to `context.collections`
-              this.collections[collectionKey] = this.db.collection(collectionConfig.name);
+              // Pass through certain supported collection options
+              const collectionOptions = {};
+              if (collectionConfig.jsonSchema) {
+                collectionOptions.validator = {
+                  $jsonSchema: collectionConfig.jsonSchema
+                };
+              } else if (collectionConfig.validator) {
+                collectionOptions.validator = collectionConfig.validator;
+              }
+
+              if (collectionConfig.validationLevel) {
+                collectionOptions.validationLevel = collectionConfig.validationLevel;
+              }
+              if (collectionConfig.validationAction) {
+                collectionOptions.validationAction = collectionConfig.validationAction;
+              }
+
+              /* eslint-disable promise/no-promise-in-callback */
+
+              // Add the collection instance to `context.collections`.
+              // If the collection already exists, we need to modify it instead of calling
+              // `createCollection`, in order to add validation options.
+              const getCollectionPromise = new Promise((resolve, reject) => {
+                this.db.collection(collectionConfig.name, { strict: true }, (error, collection) => {
+                  if (error) {
+                    // Collection with this name doesn't yet exist
+                    this.db.createCollection(collectionConfig.name, collectionOptions)
+                      .then((newCollection) => {
+                        resolve(newCollection);
+                        return null;
+                      })
+                      .catch(reject);
+                  } else {
+                    // Collection with this name exists, so modify before resolving
+                    this.db.command({ collMod: collectionConfig.name, ...collectionOptions })
+                      .then(() => {
+                        resolve(collection);
+                        return null;
+                      })
+                      .catch(reject);
+                  }
+                });
+              });
+
+              /* eslint-enable promise/no-promise-in-callback */
+
+              this.collections[collectionKey] = await getCollectionPromise; // eslint-disable-line no-await-in-loop
 
               // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {
