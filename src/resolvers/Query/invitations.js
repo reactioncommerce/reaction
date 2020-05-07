@@ -1,5 +1,6 @@
 import getPaginatedResponseFromAggregate from "@reactioncommerce/api-utils/graphql/getPaginatedResponseFromAggregate.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query/invitations
@@ -14,9 +15,17 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
  * @returns {Promise<Object>} Promise containing queried invitations
  */
 export default async function invitations(_, args, context, info) {
-  const { collection, pipeline } = await context.queries.invitationsAggregate(context, args);
+  const { shopIds: encodedShopIds, ...connectionArgs } = args;
 
-  return getPaginatedResponseFromAggregate(collection, pipeline, args, {
+  let shopIds;
+
+  if (Array.isArray(encodedShopIds) && encodedShopIds.length > 0) {
+    shopIds = encodedShopIds.map((shopId) => decodeShopOpaqueId(shopId));
+  }
+
+  const { collection, pipeline } = await context.queries.invitationsAggregate(context, { shopIds });
+
+  return getPaginatedResponseFromAggregate(collection, pipeline, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
     includeTotalCount: wasFieldRequested("totalCount", info)
