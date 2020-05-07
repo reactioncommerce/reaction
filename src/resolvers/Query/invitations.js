@@ -8,13 +8,13 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
  * @summary query the Accounts collection and return a list of invitations
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client
- * @param {String} [args.groupIds] - Array of group IDs
+ * @param {String} [args.shopIds] - Array of shop IDs
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} Promise containing queried invitations
  */
 export default async function invitations(_, args, context, info) {
-  const { collection, pipeline } = await context.queries.invitationsAggregate(context);
+  const { collection, pipeline } = await context.queries.invitationsAggregate(context, args);
 
   return getPaginatedResponseFromAggregate(collection, pipeline, args, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),

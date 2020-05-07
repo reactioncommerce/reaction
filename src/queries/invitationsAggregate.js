@@ -11,6 +11,7 @@
 export default async function accounts(context, input) {
   const { collections } = context;
   const { AccountInvites } = collections;
+  const { shopIds } = input;
 
   await context.validatePermissions("reaction:legacy:invitations", "read");
 
