@@ -6,7 +6,8 @@ input InviteShopMemberInput {
   "The email address of the person to invite"
   email: String!
 
-  "Deprecated — The permission group for this person's new account"
+  "The permission group for this person's new account. DEPRECATED. Use `groupIds` field instead."
+  # @deprecated isn't allowed on input fields yet. See See https://github.com/graphql/graphql-spec/pull/525
   groupId: ID
 
   "The permission groups for this person's new account"
