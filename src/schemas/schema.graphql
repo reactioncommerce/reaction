@@ -148,4 +148,15 @@ extend type Query {
     "The shop slug"
     slug: String!
   ): Shop
+
+  shops(
+    "Return at most this many results. This parameter may be used with the `offset` parameter."
+    first: ConnectionLimitInt
+
+    "Return at most this many results."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+  ): [Shop]
 }
