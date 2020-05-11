@@ -15,8 +15,8 @@ type ShopLogoUrls {
 
 "Storefront route URLs"
 type StorefrontUrls {
-  "Storefront Account Profile URL (can include `:accountId` in string)"
-  storefrontAccountProfileUrl: String
+  "Storefront Shop Profile URL (can include `:ShopId` in string)"
+  storefrontShopProfileUrl: String
 
   "Storefront Home URL"
   storefrontHomeUrl: String
@@ -27,7 +27,7 @@ type StorefrontUrls {
   "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
   storefrontOrderUrl: String
 
-  "Storefront orders URL (can include `:accountId` in string)"
+  "Storefront orders URL (can include `:ShopId` in string)"
   storefrontOrdersUrl: String
 }
 
@@ -78,7 +78,7 @@ type Shop implements Node {
   "An the shop's default address"
   addressBook: [Address]
 
-  "Whether to allow user to checkout without creating an account"
+  "Whether to allow user to checkout without creating an Shop"
   allowGuestCheckout: Boolean
 
   "The base unit of length"
@@ -130,6 +130,40 @@ type Shop implements Node {
   unitsOfMeasure: [UnitOfMeasure]
 }
 
+"""
+Wraps a list of `Shops`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type ShopConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [ShopEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Shop]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+"A connection edge in which each node is an `Shop` object"
+type ShopEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The Shop"
+  node: Shop
+}
+
 extend type Query {
   "Returns the primary shop for the domain"
   primaryShop: Shop
@@ -173,5 +207,5 @@ extend type Query {
 
     "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
     sortBy: GroupSortByField = createdAt
-  ): [Shop]
+  ): ShopConnection
 }
