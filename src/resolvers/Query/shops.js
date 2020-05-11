@@ -19,7 +19,11 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object[]>} Promise that resolves with array of shop objects
  */
 export default async function shops(_, { shopIds, ...connectionArgs }, context, info) {
-  const decodedShopIds = shopIds.map((shopId) => decodeShopOpaqueId(shopId));
+  let decodedShopIds;
+
+  if (Array.isArray(shopIds) && shopIds.length > 0) {
+    decodedShopIds = shopIds.map((shopId) => decodeShopOpaqueId(shopId));
+  }
 
   const query = await context.queries.shops(context, decodedShopIds);
 
