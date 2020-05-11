@@ -10,20 +10,20 @@ export default async function shops(context, shopIds) {
   const { collections } = context;
   const { Shops } = collections;
 
-  // if (Array.isArray(shopIds) && shopIds.length > 0) {
-  //   // make sure we're authorized to read all the requested shopIds
-  //   for (const shopId of shopIds) {
-  //     await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "read", { shopId });
-  //   }
-  //
-  //   return Shops.find({
-  //     _id: {
-  //       $in: shopIds
-  //     }
-  //   });
-  // }
+  if (Array.isArray(shopIds) && shopIds.length > 0) {
+    // make sure we're authorized to read all the requested shopIds
+    for (const shopId of shopIds) {
+      await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "read", { shopId });
+    }
 
-  // await context.validatePermissions("reaction:legacy:shops:*", "read");
+    return Shops.find({
+      _id: {
+        $in: shopIds
+      }
+    });
+  }
+
+  await context.validatePermissions("reaction:legacy:shops", "read", { shopId: null });
 
   return Shops.find();
 }
