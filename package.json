@@ -35,7 +35,7 @@
     "@reactioncommerce/reaction-error": "^1.0.1",
     "accounting-js": "^1.1.1",
     "callsite": "^1.0.0",
-    "graphql": "^14.6.0",
+    "envalid": "^6.0.1",
     "graphql-fields": "^2.0.3",
     "graphql-relay": "^0.6.0",
     "lodash": "^4.17.15",
@@ -43,10 +43,14 @@
     "transliteration": "^2.1.8"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@reactioncommerce/babel-remove-es-create-require": "^1.0.0",
     "@reactioncommerce/eslint-config": "^2.1.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-rewire-exports": "^2.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-import-meta": "^1.0.1",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jest": "^23.8.2",
@@ -55,7 +59,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
-    "jest": "^25.2.3",
+    "graphql": "^15.0.0",
+    "jest": "^26.0.1",
     "semantic-release": "^17.0.4"
   },
   "scripts": {
@@ -64,12 +69,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:file": "jest --no-cache --watch --coverage=false"
-  },
-  "babel": {
-    "plugins": [
-      "rewire-exports",
-      "transform-es2015-modules-commonjs"
-    ]
   },
   "eslintConfig": {
     "extends": "@reactioncommerce",
