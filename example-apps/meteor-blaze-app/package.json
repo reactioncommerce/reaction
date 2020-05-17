@@ -52,6 +52,7 @@
     "@reactioncommerce/file-collections": "../../packages/file-collections",
     "@reactioncommerce/file-collections-sa-base": "../../packages/file-collections-sa-base",
     "@reactioncommerce/file-collections-sa-gridfs": "../../packages/file-collections-sa-gridfs",
+    "file-collections-sa-s3": "../../packages/file-collections-sa-s3",
     "bootstrap": "^3.4.1",
     "content-disposition": "^0.5.2",
     "extend": "~3.0.2",
