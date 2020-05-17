@@ -26,7 +26,7 @@ export default async function createTaxRate(context, input) {
 
   const taxRate = {
     _id: Random.id(),
-    country: country === "" ? null : country,
+    country,
     postal,
     rate,
     region,
