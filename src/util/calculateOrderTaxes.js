@@ -28,6 +28,10 @@ async function getTaxesForShop(collections, order) {
         postal: null,
         region: null,
         country: shippingAddress.country
+      }, {
+        postal: null,
+        region: null,
+        country: null
       }]
     });
   }
@@ -45,6 +49,10 @@ async function getTaxesForShop(collections, order) {
         postal: null,
         region: null,
         country: originAddress.country
+      }, {
+        postal: null,
+        region: null,
+        country: null
       }]
     });
   }
