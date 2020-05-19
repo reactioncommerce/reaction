@@ -3,5 +3,6 @@ import { encodeFulfillmentMethodOpaqueId } from "../../xforms/id.js";
 
 export default {
   _id: (node) => encodeFulfillmentMethodOpaqueId(node._id),
-  shop: resolveShopFromShopId
+  shop: resolveShopFromShopId,
+  isEnabled: (node) => !!node.enabled
 };

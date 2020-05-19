@@ -1,4 +1,4 @@
-import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
+import getPaginatedResponseFromAggregate from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
@@ -15,18 +15,15 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object>} Fulfillment methods
  */
 export default async function flatRateFulfillmentMethods(_, args, context, info) {
-  const {
-    shopId: opaqueShopId,
-    ...connectionArgs
-  } = args;
+  const { shopId: opaqueShopId, ...connectionArgs } = args;
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
-  const query = await context.queries.flatRateFulfillmentMethods(context, {
+  const { collection, pipeline } = await context.queries.flatRateFulfillmentMethods(context, {
     shopId
   });
 
-  return getPaginatedResponse(query, connectionArgs, {
+  return getPaginatedResponseFromAggregate(collection, pipeline, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
     includeTotalCount: wasFieldRequested("totalCount", info)
