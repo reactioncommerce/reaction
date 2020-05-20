@@ -67,6 +67,7 @@
   "scripts": {
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:file": "jest --no-cache --watch --coverage=false"
