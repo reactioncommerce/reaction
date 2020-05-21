@@ -1,4 +1,4 @@
-import getPaginatedResponseFromAggregate from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
+import getPaginatedResponseFromAggregate from "@reactioncommerce/api-utils/graphql/getPaginatedResponseFromAggregate.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
