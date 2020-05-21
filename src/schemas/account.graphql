@@ -166,6 +166,17 @@ input SetAccountDefaultEmailInput {
   email: Email!
 }
 
+input UpdateGroupsForAccountsInput {
+  "The account IDs"
+  accountIds: [ID]!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The group IDs"
+  groupIds: [ID]!
+}
+
 "Represents a single user account"
 type Account implements Node {
   "The account ID"
@@ -355,6 +366,14 @@ type UpdateAccountPayload {
   clientMutationId: String
 }
 
+type UpdateGroupsForAccountsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The accounts that were modified"
+  accounts: [Account]!
+}
+
 extend type Mutation {
   "Add a new address to the `addressBook` field for an account"
   addAccountAddressBookEntry(
@@ -409,6 +428,12 @@ extend type Mutation {
     "Mutation input"
     input: UpdateAccountInput!
   ): UpdateAccountPayload
+
+  "Bulk-update groups for accounts"
+  updateGroupsForAccounts(
+    "Mutation input"
+    input: UpdateGroupsForAccountsInput!
+  ): UpdateGroupsForAccountsPayload
 }
 
 extend type Query {
