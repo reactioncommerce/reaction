@@ -23,7 +23,7 @@ const shopName = "Test Shop";
 const product = Factory.Product.makeOne({
   _id: internalProductId,
   ancestors: [],
-  handle: "test-product",
+  handle: "product1",
   isDeleted: false,
   isVisible: true,
   shopId: internalShopId,
