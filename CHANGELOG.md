@@ -21,6 +21,11 @@ Reaction v3.8.0 adds minor features and performance enhancements, and contains n
 ## Chore
 
 - chore: add package link and unlink scripts ([#6238](https://github.com/reactioncommerce/reaction/pull/6238))
+- chore: fix package link script issues ([#6251](https://github.com/reactioncommerce/reaction/pull/6251))
+
+## Fixes
+
+- chore: fix package link script issues
 
 # v3.7.1
 
