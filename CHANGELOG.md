@@ -1,3 +1,17 @@
+# v3.8.0
+
+Reaction v3.8.0 adds minor features and performance enhancements, and contains no breaking changes since v3.7.1
+
+## Notable changes
+
+### Add package link and unlink scripts for easier testing of plugins
+
+`bin/package-link` and `bin/package-unlink` allow you to test local plugins easily and efficiently, no longer needing you to `npm link` packages or adjust your `docker-compose.yml` file.
+
+## Chore
+
+- chore: add package link and unlink scripts ([#6238](https://github.com/reactioncommerce/reaction/pull/6238))
+
 # v3.7.1
 
 Reaction v3.7.1 adds a bug fix and contains no breaking changes since v3.7.0
