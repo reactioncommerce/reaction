@@ -2,6 +2,7 @@ import { migrationsNamespace } from "./migrationsNamespace.js";
 import migration2 from "./2.js";
 import migration3 from "./3.js";
 import migration4 from "./4.js";
+import migration5 from "./5.js";
 
 export default {
   tracks: [
@@ -10,7 +11,8 @@ export default {
       migrations: {
         2: migration2,
         3: migration3,
-        4: migration4
+        4: migration4,
+        5: migration5
       }
     }
   ]
