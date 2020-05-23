@@ -25,7 +25,7 @@ export default async function shops(_, { shopIds, ...connectionArgs }, context, 
     decodedShopIds = shopIds.map((shopId) => decodeShopOpaqueId(shopId));
   }
 
-  const query = await context.queries.shops(context, decodedShopIds);
+  const query = await context.queries.shops(context, { shopIds: decodedShopIds });
 
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
