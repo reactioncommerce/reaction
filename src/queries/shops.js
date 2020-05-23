@@ -11,7 +11,7 @@ export default async function shops(context, { shopIds } = {}) {
 const { collections } = context;
   const { Shops } = collections;
 
-  if (Array.isArray(shopIds) && shopIds.length > 0) {
+  if (Array.isArray(shopIds)) {
     // make sure we're authorized to read all the requested shopIds
     for (const shopId of shopIds) {
       await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "read", { shopId });
