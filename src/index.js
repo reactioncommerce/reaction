@@ -5,6 +5,10 @@ import policies from "./policies.json";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
+import afterAccountUpdate from "./startup/afterAccountUpdate.js";
+import afterShopCreate from "./startup/afterShopCreate.js";
+import extendAccountSchema from "./preStartup/extendAccountSchema.js";
+import checkDatabaseVersion from "./preStartup/checkDatabaseVersion.js";
 import accountByUserId from "./util/accountByUserId.js";
 import { Account, Group } from "./simpleSchemas.js";
 
@@ -19,6 +23,10 @@ export default async function register(app) {
     name: "accounts",
     version: pkg.version,
     i18n,
+    functionsByType: {
+      preStartup: [extendAccountSchema, checkDatabaseVersion],
+      startup: [afterAccountUpdate, afterShopCreate]
+    },
     collections: {
       Accounts: {
         name: "Accounts",
