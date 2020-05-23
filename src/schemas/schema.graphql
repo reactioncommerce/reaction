@@ -15,8 +15,8 @@ type ShopLogoUrls {
 
 "Storefront route URLs"
 type StorefrontUrls {
-  "Storefront Shop Profile URL (can include `:ShopId` in string)"
-  storefrontShopProfileUrl: String
+  "Storefront Account Profile URL (can include `:accountId` in string)"
+  storefrontAccountProfileUrl: String
 
   "Storefront Home URL"
   storefrontHomeUrl: String
@@ -27,7 +27,7 @@ type StorefrontUrls {
   "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
   storefrontOrderUrl: String
 
-  "Storefront orders URL (can include `:ShopId` in string)"
+  "Storefront orders URL (can include `:accountId` in string)"
   storefrontOrdersUrl: String
 }
 
@@ -78,7 +78,7 @@ type Shop implements Node {
   "An the shop's default address"
   addressBook: [Address]
 
-  "Whether to allow user to checkout without creating an Shop"
+  "Whether to allow user to checkout without creating an account"
   allowGuestCheckout: Boolean
 
   "The base unit of length"
