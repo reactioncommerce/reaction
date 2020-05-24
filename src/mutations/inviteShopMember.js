@@ -12,7 +12,10 @@ const inputSchema = new SimpleSchema({
   groupId: String,
   name: String,
   shopId: String,
-  shouldGetAdminUIAccess: Boolean
+  shouldGetAdminUIAccess: {
+    type: Boolean,
+    optional: true
+  }
 });
 
 /**
@@ -26,6 +29,7 @@ const inputSchema = new SimpleSchema({
  * @param {String} input.groupId - groupId to invite user
  * @param {String} input.email - email of invitee
  * @param {String} input.name - name of invitee
+ * @param {String} [input.shouldGetAdminUIAccess] - Whether the new user should get admin UI access for the shop
  * @return {Promise<Object>} with boolean of found new account === true || false
  */
 export default async function inviteShopMember(context, input) {
@@ -36,7 +40,8 @@ export default async function inviteShopMember(context, input) {
     email,
     groupId,
     name,
-    shopId
+    shopId,
+    shouldGetAdminUIAccess = false
   } = input;
 
   await context.validatePermissions("reaction:legacy:accounts", "invite:group", { shopId });
@@ -76,7 +81,8 @@ export default async function inviteShopMember(context, input) {
   }, {
     $set: {
       groupId,
-      invitedByUserId: userFromContext._id
+      invitedByUserId: userFromContext._id,
+      shouldGetAdminUIAccess
     },
     $setOnInsert: {
       _id: Random.id()

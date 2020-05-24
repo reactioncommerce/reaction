@@ -111,6 +111,17 @@ export default async function createAccount(context, input) {
 
   // Delete any invites that are now finished
   if (invites) {
+    await Promise.all(invites.map((invite) => {
+      if (invite.shouldGetAdminUIAccess) {
+        return context.mutations.grantAdminUIAccess(context, {
+          accountId: account._id,
+          shopId: invite.shopId
+        });
+      }
+
+      return null;
+    }));
+
     await AccountInvites.deleteMany({
       _id: { $in: invites.map((invite) => invite._id) }
     });
