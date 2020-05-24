@@ -13,6 +13,6 @@ export default async function customers(context) {
   await context.validatePermissions("reaction:legacy:accounts", "read");
 
   return Accounts.find({
-    groups: []
+    groups: { $in: [null, []] }
   });
 }
