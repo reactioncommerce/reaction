@@ -423,6 +423,9 @@ extend type Query {
     "Return only accounts in any of these groups"
     groupIds: [ID],
 
+    "Return accounts that aren't in any groups"
+    notInAnyGroups: Boolean,
+
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
 
