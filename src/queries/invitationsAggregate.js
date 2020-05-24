@@ -15,9 +15,7 @@ export default async function accounts(context, { shopIds }) {
   const pipeline = [];
 
   if (Array.isArray(shopIds) && shopIds.length > 0) {
-    await Promise.all(shopIds.map(async (shopId) => {
-      await context.validatePermissions("reaction:legacy:invitations", "read", { shopId });
-    }));
+    await Promise.all(shopIds.map((shopId) => context.validatePermissions("reaction:legacy:groups", "manage:accounts", { shopId })));
 
     pipeline.push({
       $match: {
