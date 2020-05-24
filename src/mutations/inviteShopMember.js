@@ -11,7 +11,8 @@ const inputSchema = new SimpleSchema({
   email: String,
   groupId: String,
   name: String,
-  shopId: String
+  shopId: String,
+  shouldGetAdminUIAccess: Boolean
 });
 
 /**
