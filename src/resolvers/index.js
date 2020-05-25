@@ -2,7 +2,7 @@ import getConnectionTypeResolvers from "@reactioncommerce/api-utils/graphql/getC
 import Account from "./Account/index.js";
 import AddAccountAddressBookEntryPayload from "./AddAccountAddressBookEntryPayload.js";
 import Group from "./Group/index.js";
-import Invitation from "./Invitation.js";
+import Invitation from "./Invitation/index.js";
 import Mutation from "./Mutation/index.js";
 import Query from "./Query/index.js";
 import Shop from "./Shop/index.js";
