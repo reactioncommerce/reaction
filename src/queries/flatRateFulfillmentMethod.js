@@ -14,10 +14,20 @@ export default async function flatRateFulfillmentMethod(context, input) {
   const { Shipping } = collections;
   const { methodId, shopId } = input;
 
-  await context.validatePermissions("reaction:legacy:shippingMethods", "read", { shopId });
-
-  return Shipping.findOne({
-    _id: methodId,
+  await context.validatePermissions("reaction:legacy:shippingMethods", "read", {
     shopId
   });
+
+  const doc = await Shipping.findOne({
+    "methods._id": methodId,
+    shopId
+  });
+  if (!doc) return null;
+
+  // eslint-disable-next-line no-shadow
+  const method = doc.methods.find((method) => method._id === methodId);
+  return {
+    ...method,
+    shopId
+  };
 }

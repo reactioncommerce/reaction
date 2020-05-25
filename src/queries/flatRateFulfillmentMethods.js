@@ -13,7 +13,9 @@ export default async function flatRateFulfillmentMethods(context, input) {
   const { Shipping } = collections;
   const { shopId } = input;
 
-  await context.validatePermissions("reaction:legacy:shippingMethods", "read", { shopId });
+  await context.validatePermissions("reaction:legacy:shippingMethods", "read", {
+    shopId
+  });
 
   // aggregate pipeline to extract fulfillment methods inside shippment
   return {
@@ -30,7 +32,14 @@ export default async function flatRateFulfillmentMethods(context, input) {
       },
       {
         $replaceRoot: {
-          newRoot: "$methods"
+          newRoot: {
+            $mergeObjects: [
+              "$methods",
+              {
+                shopId: "$$ROOT.shopId"
+              }
+            ]
+          }
         }
       }
     ]
