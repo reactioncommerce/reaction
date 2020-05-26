@@ -4,6 +4,49 @@
   "translation": {
     "reaction-accounts": {
       "admin": {
+        "accounts": {
+          "tabs": {
+            "staff": "Staff Members",
+            "customers": "Customers",
+            "invites": "Invitations"
+          },
+          "accountsLabel": "Accounts",
+          "createGroup": "Create Group",
+          "inviteStaffMember": "Invite Staff Member"
+        },
+        "accountsTable": {
+          "header": {
+            "email": "E-mail Address",
+            "name": "Name"
+          },
+          "bulkActions": {
+            "addRemoveGroupsFromAccount": "Add/Remove Groups From Account"
+          }
+        },
+        "invitationsTable": {
+          "header": {
+            "email": "E-mail Address",
+            "invitedBy": "Invited By",
+            "shop": "Shop",
+            "groups": "Groups"
+          }
+        },
+        "groupCards": {
+          "createOrUpdateGroupDialog": {
+            "title": "Create/Update Group",
+            "name": "Name",
+            "slug": "Slug",
+            "description": "Description",
+            "saveFailed": "Failed to create/update group."
+          },
+          "inviteStaffMemberDialog": {
+            "title": "Invite Staff Member",
+            "name": "Full Name",
+            "email": "E-mail Address",
+            "selectGroups": "Groups",
+            "saveFailed": "Failed to invite staff member."
+          }
+        },
         "dashboard": {
           "accountsLabel": "Accounts",
           "accountsTitle": "Accounts",
