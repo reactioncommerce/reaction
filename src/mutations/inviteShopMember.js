@@ -52,7 +52,7 @@ export default async function inviteShopMember(context, input) {
     }
   }).toArray();
 
-  if (!groups) {
+  if (groups.length === 0) {
     throw new ReactionError("not-found", "No groups matching the provided IDs were found");
   }
 
