@@ -21,14 +21,14 @@ export default async function inviteShopMember(_, { input }, context) {
   const { email, groupId, name, shopId, clientMutationId = null } = input;
   let { groupIds } = input;
 
-  // If user is using deprecated `groupId` instead of `groupIds`, populate `groupIds`
-  if (groupId && (!Array.isArray(groupIds) || groupIds.length === 0)) {
-    groupIds = [groupId];
-  }
-
   // If user is passing both `groupId` and `groupIds`, throw an error
   if (groupId && Array.isArray(groupIds) && groupIds.length > 0) {
     throw new ReactionError("invalid-parameter", "Can't specify both groupId and groupIds.");
+  }
+
+  // If user is using deprecated `groupId` instead of `groupIds`, populate `groupIds`
+  if (groupId && (!Array.isArray(groupIds) || groupIds.length === 0)) {
+    groupIds = [groupId];
   }
 
   const decodedGroupIds = groupIds.map((groupId) => decodeGroupOpaqueId(groupId));
