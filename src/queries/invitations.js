@@ -1,14 +1,14 @@
 /**
- * @name accounts
+ * @name invitations
  * @method
  * @memberof Accounts/NoMeteorQueries
- * @summary Returns accounts optionally filtered by group IDs
+ * @summary Returns invitations optionally filtered by shop IDs
  * @param {Object} context - an object containing the per-request state
  * @param {String} input - input for query
  * @param {String} [input.shopIds] - Array of shop IDs to limit the results
  * @returns {Promise} Mongo cursor
  */
-export default async function accounts(context, { shopIds }) {
+export default async function invitations(context, { shopIds }) {
   const { collections } = context;
   const { AccountInvites } = collections;
 
