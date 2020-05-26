@@ -127,6 +127,7 @@ export default async function inviteShopMember(context, input) {
   const dataForEmail = {
     contactEmail: _.get(shop, "emails[0].address"),
     copyrightDate: new Date().getFullYear(),
+    groupName: _.startCase(groups[0].name),
     groupNames: formattedGroupNames,
     hasMultipleGroups: groups.length > 1,
     legalName: _.get(shop, "addressBook[0].company"),
