@@ -3,7 +3,8 @@ import accounts from "./accounts.js";
 import group from "./group.js";
 import groups from "./groups.js";
 import groupsByAccount from "./groupsByAccount.js";
-import invitationsAggregate from "./invitationsAggregate.js";
+import groupsById from "./groupsById.js";
+import invitations from "./invitations.js";
 import userAccount from "./userAccount.js";
 
 export default {
@@ -12,6 +13,7 @@ export default {
   group,
   groups,
   groupsByAccount,
-  invitationsAggregate,
+  groupsById,
+  invitations,
   userAccount
 };
