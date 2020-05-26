@@ -85,9 +85,7 @@ export default async function inviteShopMember(context, input) {
 
   // This check is part of `updateGroupsForAccounts` mutation for existing users. For new users,
   // we do it here before creating an invite record and sending the invite email.
-  for (let groupShopId of groupShopIds) {
-    await context.validatePermissions("reaction:legacy:groups", "manage:accounts", { groupShopId });
-  }
+  await Promise.all(groupShopIds.map((groupShopId) => context.validatePermissions("reaction:legacy:groups", "manage:accounts", { shopId: groupShopId })));
 
   // Create an AccountInvites document. If a person eventually creates an account with this email address,
   // it will be automatically added to this group instead of the default group for this shop.
