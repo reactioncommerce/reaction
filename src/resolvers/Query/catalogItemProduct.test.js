@@ -18,6 +18,7 @@ test("calls queries.catalogItemProduct with a product slug and return a CatalogI
   const result = await catalogItemProductResolver(
     {},
     {
+      shopId: "123",
       slugOrId
     },
     {
@@ -25,7 +26,10 @@ test("calls queries.catalogItemProduct with a product slug and return a CatalogI
     }
   );
 
-  expect(catalogItemProduct).toHaveBeenCalledWith(jasmine.any(Object), { _id: undefined, slug: productSlug });
+  expect(catalogItemProduct).toHaveBeenCalledWith(jasmine.any(Object), {
+    catalogIdOrProductSlug: productSlug,
+    shopId: "123"
+  });
   expect(result).toEqual(mockItem);
 });
 
@@ -39,6 +43,7 @@ test("calls queries.catalogItemProduct with a product id and return a CatalogIte
   const result = await catalogItemProductResolver(
     {},
     {
+      shopId: "123",
       slugOrId
     },
     {
@@ -46,6 +51,9 @@ test("calls queries.catalogItemProduct with a product id and return a CatalogIte
     }
   );
 
-  expect(catalogItemProduct).toHaveBeenCalledWith(jasmine.any(Object), { _id: "123", slug: undefined });
+  expect(catalogItemProduct).toHaveBeenCalledWith(jasmine.any(Object), {
+    catalogIdOrProductSlug: "123",
+    shopId: "123"
+  });
   expect(result).toEqual(mockItem);
 });
