@@ -8,31 +8,29 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * id takes priority if both are provided, throws meteor error if neither
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
- * @param {String} [params._id] - Product id to include
+ * @param {String} [param.catalogIdOrProductSlug] - Catalog item ID or Product slug (handle)
  * @param {String} [param.shopId] - ID of shop that owns the product
- * @param {String} [param.slug] - Product slug (handle)
  * @returns {Object} - A Product from the Catalog
  */
-export default async function catalogItemProduct(context, { _id, shopId, slug } = {}) {
+export default async function catalogItemProduct(context, { catalogIdOrProductSlug, shopId } = {}) {
   const { collections } = context;
   const { Catalog } = collections;
 
-  if (!_id && !slug) {
+  if (!catalogIdOrProductSlug) {
     throw new ReactionError("invalid-param", "You must provide a product slug or product id");
   }
 
-  const query = {
+  return Catalog.findOne({
+    "shopId": shopId,
     "product.isDeleted": { $ne: true },
-    "product.isVisible": true
-  };
-
-  if (shopId) query.shopId = shopId;
-
-  if (_id) {
-    query._id = _id;
-  } else {
-    query["product.slug"] = slug;
-  }
-
-  return Catalog.findOne(query);
+    "product.isVisible": true,
+    "$or": [
+      {
+        _id: catalogIdOrProductSlug
+      },
+      {
+        "product.slug": catalogIdOrProductSlug
+      }
+    ]
+  });
 }
