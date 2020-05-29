@@ -21,7 +21,7 @@ export default async function catalogItemProduct(context, { catalogIdOrProductSl
   }
 
   return Catalog.findOne({
-    "shopId": shopId,
+    shopId,
     "product.isDeleted": { $ne: true },
     "product.isVisible": true,
     "$or": [
