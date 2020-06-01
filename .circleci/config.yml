@@ -14,11 +14,11 @@ jobs:
       - run: npm ci
 
       - save_cache:
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
-          key: v1-dependencies-{{ .Branch }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}
           paths:
             - node_modules
 
@@ -31,8 +31,8 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
-            - v1-dependencies-{{ .Branch }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}
 
       - run: npx semantic-release
 
@@ -45,8 +45,8 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
-            - v1-dependencies-{{ .Branch }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}
 
       - run: npm run lint
 
@@ -59,8 +59,8 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
-            - v1-dependencies-{{ .Branch }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}
 
       - run: npm run test
 
