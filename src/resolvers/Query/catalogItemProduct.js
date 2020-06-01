@@ -16,7 +16,11 @@ export default async function catalogItemProduct(_, args, context) {
   const { shopId: opaqueShopId, slugOrId } = args;
 
   const catalogIdOrProductSlug = decodeCatalogItemOpaqueId(slugOrId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+
+  let shopId;
+  if (opaqueShopId) {
+    shopId = decodeShopOpaqueId(opaqueShopId);
+  }
 
   return context.queries.catalogItemProduct(context, {
     catalogIdOrProductSlug,

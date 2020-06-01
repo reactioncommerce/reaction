@@ -20,8 +20,7 @@ export default async function catalogItemProduct(context, { catalogIdOrProductSl
     throw new ReactionError("invalid-param", "You must provide a product slug or product id");
   }
 
-  return Catalog.findOne({
-    shopId,
+  const query = {
     "product.isDeleted": { $ne: true },
     "product.isVisible": true,
     "$or": [
@@ -32,5 +31,11 @@ export default async function catalogItemProduct(context, { catalogIdOrProductSl
         "product.slug": catalogIdOrProductSlug
       }
     ]
-  });
+  };
+
+  if (shopId) {
+    query.shopId = shopId;
+  }
+
+  return Catalog.findOne(query);
 }
