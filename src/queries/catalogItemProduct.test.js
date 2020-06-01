@@ -14,27 +14,47 @@ beforeEach(() => {
 
 // expect query by product slug
 test("returns a product from the catalog collection by product slug", async () => {
-  const query = { ...mockQueryBase, "product.slug": productSlug };
+  const query = {
+    ...mockQueryBase,
+    shopId: "123",
+    $or: [
+      { _id: productSlug },
+      { "product.slug": productSlug }
+    ]
+  };
   mockContext.collections.Catalog.findOne.mockReturnValueOnce("CATALOGPRODUCT");
-  const result = await catalogItemProduct(mockContext, { slug: productSlug });
+  const result = await catalogItemProduct(mockContext, { catalogIdOrProductSlug: productSlug, shopId: "123" });
   expect(mockContext.collections.Catalog.findOne).toHaveBeenCalledWith(query);
   expect(result).toBe("CATALOGPRODUCT");
 });
 
 // expect query by product _id
 test("returns a product from the catalog collection by product ID", async () => {
-  const query = { ...mockQueryBase, _id: productId };
+  const query = {
+    ...mockQueryBase,
+    shopId: "123",
+    $or: [
+      { _id: productId },
+      { "product.slug": productId }
+    ]
+  };
   mockContext.collections.Catalog.findOne.mockReturnValueOnce("CATALOGPRODUCT");
-  const result = await catalogItemProduct(mockContext, { _id: productId });
+  const result = await catalogItemProduct(mockContext, { catalogIdOrProductSlug: productId, shopId: "123" });
   expect(mockContext.collections.Catalog.findOne).toHaveBeenCalledWith(query);
   expect(result).toBe("CATALOGPRODUCT");
 });
 
 // expect query by id if both slug and id are provided as params
 test("returns a product from the catalog collection by product ID if both slug and ID are provided as params", async () => {
-  const query = { ...mockQueryBase, _id: productId };
+  const query = {
+    ...mockQueryBase,
+    $or: [
+      { _id: productId },
+      { "product.slug": productId }
+    ]
+  };
   mockContext.collections.Catalog.findOne.mockReturnValueOnce("CATALOGPRODUCT");
-  const result = await catalogItemProduct(mockContext, { _id: productId, slug: productSlug });
+  const result = await catalogItemProduct(mockContext, { catalogIdOrProductSlug: productId });
   expect(mockContext.collections.Catalog.findOne).toHaveBeenCalledWith(query);
   expect(result).toBe("CATALOGPRODUCT");
 });
