@@ -14,9 +14,13 @@ jobs:
       - run: npm ci
 
       - save_cache:
+          key: v1-dependencies-{{ checksum "package-lock.json" }}-{{ checksum "package/package-lock.json" }}
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - save_cache:
+          key: v1-dependencies-{{ .Branch }}
+          paths:
+            - node_modules
 
   deploy:
     docker:
@@ -27,9 +31,8 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package-lock.json" }}-{{ checksum "package/package-lock.json" }}
+            - v1-dependencies-{{ .Branch }}
 
       - run: npx semantic-release
 
@@ -42,9 +45,8 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package-lock.json" }}-{{ checksum "package/package-lock.json" }}
+            - v1-dependencies-{{ .Branch }}
 
       - run: npm run lint
 
@@ -57,9 +59,8 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package-lock.json" }}-{{ checksum "package/package-lock.json" }}
+            - v1-dependencies-{{ .Branch }}
 
       - run: npm run test
 
