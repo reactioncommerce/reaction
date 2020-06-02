@@ -8,13 +8,13 @@
  * @returns {Promise<Object>} Products object Promise
  */
 export default async function shops(context, { shopIds } = {}) {
-const { collections } = context;
+  const { collections } = context;
   const { Shops } = collections;
 
   if (Array.isArray(shopIds)) {
     // make sure we're authorized to read all the requested shopIds
     for (const shopId of shopIds) {
-      await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "read", { shopId });
+      await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "read", { shopId }); // eslint-disable-line no-await-in-loop
     }
 
     return Shops.find({
