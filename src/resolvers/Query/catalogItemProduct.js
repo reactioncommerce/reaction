@@ -15,13 +15,7 @@ import { decodeCatalogItemOpaqueId, decodeShopOpaqueId } from "../../xforms/id.j
 export default async function catalogItemProduct(_, args, context) {
   const { shopId: opaqueShopId, slugOrId } = args;
 
-  let productId;
-  let productSlug;
-  try {
-    productId = decodeCatalogItemOpaqueId(slugOrId);
-  } catch (error) {
-    productSlug = slugOrId;
-  }
+  const catalogIdOrProductSlug = decodeCatalogItemOpaqueId(slugOrId);
 
   let shopId;
   if (opaqueShopId) {
@@ -29,8 +23,7 @@ export default async function catalogItemProduct(_, args, context) {
   }
 
   return context.queries.catalogItemProduct(context, {
-    _id: productId,
-    shopId,
-    slug: productSlug
+    catalogIdOrProductSlug,
+    shopId
   });
 }
