@@ -10,17 +10,20 @@ const namespaces = {
   Account: "reaction/account",
   Address: "reaction/address",
   Group: "reaction/group",
+  Invitation: "reaction/invitation",
   Shop: "reaction/shop"
 };
 
 export const encodeAccountOpaqueId = encodeOpaqueId(namespaces.Account);
 export const encodeAddressOpaqueId = encodeOpaqueId(namespaces.Address);
 export const encodeGroupOpaqueId = encodeOpaqueId(namespaces.Group);
+export const encodeInvitationOpaqueId = encodeOpaqueId(namespaces.Invitation);
 export const encodeShopOpaqueId = encodeOpaqueId(namespaces.Shop);
 
 export const decodeAccountOpaqueId = decodeOpaqueIdForNamespace(namespaces.Account);
 export const decodeAddressOpaqueId = decodeOpaqueIdForNamespace(namespaces.Address);
 export const decodeGroupOpaqueId = decodeOpaqueIdForNamespace(namespaces.Group);
+export const decodeInvitationOpaqueId = decodeOpaqueIdForNamespace(namespaces.Invitation);
 export const decodeShopOpaqueId = decodeOpaqueIdForNamespace(namespaces.Shop);
 
 /**
