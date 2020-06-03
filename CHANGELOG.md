@@ -1,3 +1,32 @@
+# v3.8.0
+
+Reaction v3.8.0 adds minor features and performance enhancements, and contains no breaking changes since v3.7.1
+
+## Notable changes
+
+### Add package link and unlink scripts for easier testing of plugins
+
+`bin/package-link` and `bin/package-unlink` allow you to test local plugins easily and efficiently, no longer needing you to `npm link` packages or adjust your `docker-compose.yml` file.
+
+### Update various `api-plugins`
+
+- api-core ([Release notes](https://github.com/reactioncommerce/api-core/releases/tag/1.4.0))
+- api-plugin-accounts ([Release notes](https://github.com/reactioncommerce/api-plugin-accounts/releases/tag/1.3.0))
+- api-plugin-carts ([Release notes](https://github.com/reactioncommerce/api-plugin-carts/releases/tag/1.2.0))
+- api-plugin-orders ([Release notes](https://github.com/reactioncommerce/api-plugin-orders/releases/tag/1.2.0))
+- api-plugin-shops ([Release notes](https://github.com/reactioncommerce/api-plugin-shops/releases/tag/1.0.1))
+- api-plugin-taxes-flat-rate ([Release notes](https://github.com/reactioncommerce/api-plugin-taxes-flat-rate/releases/tag/1.0.1))
+- api-utils ([Release notes](https://github.com/reactioncommerce/api-utils/releases/tag/1.14.0))
+
+## Chore
+
+- chore: add package link and unlink scripts ([#6238](https://github.com/reactioncommerce/reaction/pull/6238))
+- chore: fix package link script issues ([#6251](https://github.com/reactioncommerce/reaction/pull/6251))
+
+## Fixes
+
+- chore: fix package link script issues
+
 # v3.7.1
 
 Reaction v3.7.1 adds a bug fix and contains no breaking changes since v3.7.0
