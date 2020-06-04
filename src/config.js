@@ -1,10 +1,8 @@
 import envalid from "envalid";
 
-const { bool } = envalid;
-
 export default envalid.cleanEnv(process.env, {
-  REACTION_WORKERS_ENABLED: bool({ default: true }),
-  VERBOSE_JOBS: bool({ default: false })
+  REACTION_WORKERS_ENABLED: envalid.bool({ default: true }),
+  VERBOSE_JOBS: envalid.bool({ default: false })
 }, {
   dotEnvPath: null
 });
