@@ -25,7 +25,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.7.3"
+    "@reactioncommerce/api-utils": "^1.14.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
