@@ -25,7 +25,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.9.0",
+    "@reactioncommerce/api-utils": "^1.14.2",
     "@reactioncommerce/data-factory": "~1.0.1",
     "@reactioncommerce/file-collections": "~0.7.0",
     "@reactioncommerce/random": "~1.0.2",
