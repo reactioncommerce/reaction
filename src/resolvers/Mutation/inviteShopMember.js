@@ -31,7 +31,7 @@ export default async function inviteShopMember(_, { input }, context) {
     groupIds = [groupId];
   }
 
-  const decodedGroupIds = groupIds.map((groupId) => decodeGroupOpaqueId(groupId));
+  const decodedGroupIds = groupIds.map((encodedGroupId) => decodeGroupOpaqueId(encodedGroupId));
   const decodedShopId = decodeShopOpaqueId(shopId);
 
   const account = await context.mutations.inviteShopMember(context, {
