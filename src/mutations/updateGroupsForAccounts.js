@@ -2,11 +2,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
 
 const inputSchema = new SimpleSchema({
-  accountIds: {
+  "accountIds": {
     type: Array
   },
   "accountIds.$": String,
-  groupIds: {
+  "groupIds": {
     type: Array
   },
   "groupIds.$": String

@@ -8,11 +8,11 @@ import getCurrentUserName from "../util/getCurrentUserName.js";
 const { REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL } = config;
 
 const inputSchema = new SimpleSchema({
-  email: String,
-  groupIds: Array,
+  "email": String,
+  "groupIds": Array,
   "groupIds.$": String,
-  name: String,
-  shopId: String
+  "name": String,
+  "shopId": String
 });
 
 /**
@@ -57,7 +57,7 @@ export default async function inviteShopMember(context, input) {
   }
 
   if (groups.length !== groupIds.length) {
-    throw new ReactionError("not-found", `Could not find ${groupIds.length - groups.length} of ${groupIds.length} groups provided`)
+    throw new ReactionError("not-found", `Could not find ${groupIds.length - groups.length} of ${groupIds.length} groups provided`);
   }
 
   const lowercaseEmail = email.toLowerCase();
@@ -103,25 +103,6 @@ export default async function inviteShopMember(context, input) {
   }, {
     upsert: true
   });
-
-  let formattedGroupNames = groups[0].name;
-
-  // Generate a human-readable list of group names.
-  // For example, if we have groups "test1" and "test2", `formattedGroupNames` will be "test1 and test2".
-  // If we have groups "test1", "test2" and "test3", `formattedGroupNames` will be "test1, test2 and test3".
-  if (groups.length > 1) {
-    formattedGroupNames = groups.reduce((sentence, group, index) => {
-      if (index === groups.length - 1) {
-        return `${sentence} and ${group.name}`;
-      }
-
-      if (index === 0) {
-        return group.name;
-      }
-
-      return `${sentence}, ${group.name}`;
-    }, "");
-  }
 
   // Now send them an invitation email
   const dataForEmail = {

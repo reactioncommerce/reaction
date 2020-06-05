@@ -96,9 +96,7 @@ export default async function createAccount(context, input) {
     invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
     groups = invites.reduce((allGroupIds, invite) => {
       if (invite.groupIds) {
-        invite.groupIds.forEach((groupId) => {
-          return allGroupIds.add(groupId);
-        });
+        invite.groupIds.forEach((groupId) => allGroupIds.add(groupId));
       }
 
       if (invite.groupId) {
