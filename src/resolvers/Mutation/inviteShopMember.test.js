@@ -26,7 +26,7 @@ test("correctly passes through to internal mutation function", async () => {
 
   expect(mockContext.mutations.inviteShopMember).toHaveBeenCalledWith(mockContext, {
     email: "test@email.com",
-    groupId: "g1",
+    groupIds: ["g1"],
     name: "test name",
     shopId: "s1"
   });
