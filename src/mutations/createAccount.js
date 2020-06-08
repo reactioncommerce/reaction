@@ -78,7 +78,7 @@ export default async function createAccount(context, input) {
     userId
   };
 
-  let groups = [];
+  let groups = new Set();
   let invites;
 
   // if this is the first user created overall, add them to the
@@ -87,27 +87,34 @@ export default async function createAccount(context, input) {
   if (!anyAccount) {
     const accountsManagerGroupId = await ensureAccountsManagerGroup(context);
     const systemManagerGroupId = await ensureSystemManagerGroup(context);
-    groups.push(systemManagerGroupId);
-    groups.push(accountsManagerGroupId);
+    groups.add(systemManagerGroupId);
+    groups.add(accountsManagerGroupId);
   } else {
     // if this isn't the first account see if they were invited by another user
     // find all invites for this email address, for all shops, and add to all groups
     const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
     invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
-    groups = invites.map((invite) => invite.groupId);
+    groups = invites.reduce((allGroupIds, invite) => {
+      if (invite.groupIds) {
+        invite.groupIds.forEach((groupId) => allGroupIds.add(groupId));
+      }
+
+      if (invite.groupId) {
+        allGroupIds.add(invite.groupId);
+      }
+
+      return allGroupIds;
+    }, new Set());
   }
 
   AccountSchema.validate(account);
 
   await Accounts.insertOne(account);
 
-  for (const groupId of groups) {
-    // eslint-disable-next-line no-await-in-loop
-    await context.mutations.addAccountToGroup(context.getInternalContext(), {
-      accountId: account._id,
-      groupId
-    });
-  }
+  await context.mutations.updateGroupsForAccounts(context.getInternalContext(), {
+    accountIds: [account._id],
+    groupIds: Array.from(groups)
+  });
 
   // Delete any invites that are now finished
   if (invites) {
