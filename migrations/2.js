@@ -1,3 +1,10 @@
+/**
+ * @summary migrates the database down one version
+ * @param {Object} args - the arguments
+ * @param {Object} args.db - the DB client
+ * @param {Function} args.progress - a function to set the progress of the operation
+ * @returns {undefined}
+ */
 async function down({ db, progress }) {
   // remove the adminUIShopIds field on accounts where it exists
   await db.collection("Accounts").updateMany({
@@ -13,6 +20,13 @@ async function down({ db, progress }) {
   progress(100);
 }
 
+/**
+ * @summary migrates the database up one version
+ * @param {Object} args - the arguments
+ * @param {Object} args.db - the DB client
+ * @param {Function} args.progress - a function to set the progress of the operation
+ * @returns {undefined}
+ */
 async function up({ db, progress }) {
   // get all accounts without adminUIShopIds assigned, with their corresponding Groups
   const accountsWithoutAdminUIShopIds = await db.collection("Accounts").aggregate([
@@ -48,6 +62,7 @@ async function up({ db, progress }) {
       }
 
       // save the list of shopIds the account is an owner of as adminUIShopIds
+      // eslint-disable-next-line no-await-in-loop
       await db.collection("Accounts").update({ _id: account._id }, {
         $set: {
           adminUIShopIds

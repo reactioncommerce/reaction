@@ -1,4 +1,3 @@
-import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -30,11 +29,9 @@ export default async function updateAdminUIAccess(context, input) {
     throw new ReactionError("not-found", `Could not find ${accountIds.length - accounts.length} of ${accountIds.length} accounts provided`);
   }
 
-  for (const account of accounts) {
-    await context.validatePermissions(`reaction:plugin-admin-ui:admin-ui-access-permissions:${account._id}`, "update", {
-      owner: account.userId
-    });
-  }
+  await Promise.all(accounts.map((account) => context.validatePermissions(`reaction:plugin-admin-ui:admin-ui-access-permissions:${account._id}`, "update", {
+    owner: account.userId
+  })));
 
   const shops = await Shops.find({
     _id: {

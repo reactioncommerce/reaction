@@ -31,7 +31,7 @@ export default async function revokeAdminUIAccess(context, input) {
   }
 
   if (Array.isArray(account.adminUIShopIds) && !account.adminUIShopIds.includes(shopId)) {
-    Logger.warn(`Can't remove ${shopId} from adminUIShopIds on account ${account._id} — this user doesn't have admin UI access for this shop`);
+    Logger.warn(`Can't remove ${shopId} from adminUIShopIds on account ${account._id} — this user doesn't have admin UI access for this shop`);
 
     return account;
   }

@@ -35,7 +35,7 @@ export default async function grantAdminUIAccess(context, input) {
   }
 
   if (Array.isArray(account.adminUIShopIds) && account.adminUIShopIds.includes(shopId)) {
-    Logger.warn(`Can't add ${shopId} to adminUIShopIds for account ${account._id} — this user already has admin UI access for this shop`);
+    Logger.warn(`Can't add ${shopId} to adminUIShopIds for account ${account._id} — this user already has admin UI access for this shop`);
 
     return account;
   }
