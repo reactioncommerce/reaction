@@ -35,7 +35,7 @@ export default [
     title: "Accounts - Invite Shop Member - New User Account",
     name: "accounts/inviteNewShopMember",
     template: inviteNewShopMemberTemplate,
-    subject: "You have been invited to join the group \"{{groupName}}\" in the store \"{{shop.name}}\""
+    subject: "You have been invited to join group{{#if groupNames.[1]}}s{{/if}} {{#each groupNames}}{{#if @last}}{{#if groupNames.[1]}}and {{/if}}{{/if}}{{this}}{{#unless @last}}, {{/unless}}{{else}}{{groupName}}{{/each}} in the store \"{{shop.name}}\""
   },
 
   /*

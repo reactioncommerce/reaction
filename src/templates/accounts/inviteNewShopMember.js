@@ -69,7 +69,7 @@ table[class=wrap1001], td[class=wrap1001] { width:96% !important; margin:0 !impo
                     <td height="20" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                   </tr>
                   <tr>
-                    <td align="left" valign="top" style="font-family: 'Lato', sans-serif; font-size:13px; font-weight:bold; line-height:18px; color:#4d4d4d; letter-spacing: -0.5px;"><span style="font-weight:bold;">{{currentUserName}}</span> from {{shopName}} has invited you to join the group {{groupName}}.</td>
+                    <td align="left" valign="top" style="font-family: 'Lato', sans-serif; font-size:13px; font-weight:bold; line-height:18px; color:#4d4d4d; letter-spacing: -0.5px;"><span style="font-weight:bold;">{{currentUserName}}</span> from {{shopName}} has invited you to join {{#unless groupName}}the{{/unless}} group{{#if groupNames.[1]}}s{{/if}} {{#each groupNames}}{{#if @last}}{{#if groupNames.[1]}}and {{/if}}{{/if}}{{this}}{{#unless @last}}, {{/unless}}{{else}}{{groupName}}{{/each}}.</td>
                   </tr>
                   <tr>
                     <td height="25" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
@@ -95,7 +95,7 @@ table[class=wrap1001], td[class=wrap1001] { width:96% !important; margin:0 !impo
                     <td height="15" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                   </tr>
                   <tr>
-                    <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:17px;">You received this email because you were invited to join a group in the store {{shopName}}. Questions or suggestions? Email us at <a href="mailto:{{contactEmail}}" style="text-decoration:none; color:#1e98d5;">{{contactEmail}}</a></td>
+                    <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:17px;">You received this email because you were invited to join {{#if groupNames.[1]}}groups{{else}}a group{{/if}} in the store {{shopName}}. Questions or suggestions? Email us at <a href="mailto:{{contactEmail}}" style="text-decoration:none; color:#1e98d5;">{{contactEmail}}</a></td>
                   </tr>
                   <!-- Begin Social Icons -->
                   {{#if socialLinks.display}}
