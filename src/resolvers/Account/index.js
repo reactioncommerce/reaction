@@ -2,11 +2,13 @@ import _ from "lodash";
 import getCurrencyDefinitionByCode from "@reactioncommerce/api-utils/getCurrencyDefinitionByCode.js";
 import { encodeAccountOpaqueId } from "../../xforms/id.js";
 import addressBook from "./addressBook.js";
+import adminUIShops from "./adminUIShops.js";
 import groups from "./groups.js";
 
 export default {
   _id: (account) => encodeAccountOpaqueId(account._id),
   addressBook,
+  adminUIShops,
   bio: (account) => account.profile.bio,
   currency: (account) => getCurrencyDefinitionByCode(account.profile && account.profile.currency),
   emailRecords: (account) => account.emails,

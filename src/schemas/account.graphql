@@ -197,6 +197,9 @@ type Account implements Node {
     last: ConnectionLimitInt
   ): AddressConnection
 
+  "A list of shops this user can administer with the admin UI"
+  adminUIShops: [Shop]
+
   "Bio to display on profile"
   bio: String
 
