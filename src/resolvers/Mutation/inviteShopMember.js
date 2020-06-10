@@ -13,12 +13,13 @@ import { decodeGroupOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {String} args.input.groupIds - The permission groups for this person's new account
  * @param {String} args.input.name - The permission group for this person's new account
  * @param {String} args.input.shopId - The ID of the shop to which you want to invite this person
+ * @param {String} [args.input.shouldGetAdminUIAccess] - Whether the new user should get admin UI access for the shop
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
  * @returns {Object} InviteShopMemberPayload
  */
 export default async function inviteShopMember(_, { input }, context) {
-  const { email, groupId, name, shopId, clientMutationId = null } = input;
+  const { email, groupId, name, shopId, shouldGetAdminUIAccess, clientMutationId = null } = input;
   let { groupIds } = input;
 
   // If user is passing both `groupId` and `groupIds`, throw an error
@@ -38,7 +39,8 @@ export default async function inviteShopMember(_, { input }, context) {
     email,
     groupIds: decodedGroupIds,
     name,
-    shopId: decodedShopId
+    shopId: decodedShopId,
+    shouldGetAdminUIAccess
   });
 
   return {

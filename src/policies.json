@@ -82,5 +82,14 @@
       "manage:accounts"
     ],
     "effect": "allow"
+  },
+  {
+    "description": "Shop managers getting admin UI grant/revoke permissions.",
+    "subjects": ["reaction:groups:shop-managers"],
+    "resources": ["reaction:plugin-admin-ui:admin-ui-access-permissions:*"],
+    "actions": [
+      "update"
+    ],
+    "effect": "allow"
   }
 ]
