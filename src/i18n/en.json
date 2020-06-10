@@ -37,7 +37,8 @@
             "name": "Name",
             "slug": "Slug",
             "description": "Description",
-            "saveFailed": "Failed to create/update group."
+            "saveFailed": "Failed to create/update group.",
+            "selectRoles": "Roles"
           },
           "inviteStaffMemberDialog": {
             "title": "Invite Staff Member",
