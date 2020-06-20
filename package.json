@@ -36,7 +36,7 @@
     "@reactioncommerce/reaction-error": "^1.0.1",
     "accounting-js": "^1.1.1",
     "callsite": "^1.0.0",
-    "envalid": "^6.0.1",
+    "envalid": "^6.0.2",
     "graphql-fields": "^2.0.3",
     "graphql-relay": "^0.6.0",
     "lodash": "^4.17.15",
