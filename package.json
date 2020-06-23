@@ -33,7 +33,7 @@
     "@reactioncommerce/reaction-error": "~1.0.1",
     "envalid": "~5.0.0",
     "node-fetch": "~2.6.0",
-    "sharp": "~0.23.1",
+    "sharp": "~0.25.2",
     "simpl-schema": "~1.7.1"
   },
   "devDependencies": {
