@@ -30,7 +30,7 @@
     "@reactioncommerce/nodemailer": "^5.0.5",
     "@reactioncommerce/reaction-error": "^1.0.1",
     "envalid": "^6.0.2",
-    "simpl-schema": "^1.5.7"
+    "simpl-schema": "^1.7.3"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
