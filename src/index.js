@@ -9,7 +9,7 @@ import afterShopCreate from "./startup/afterShopCreate.js";
 import extendAccountSchema from "./preStartup/extendAccountSchema.js";
 import checkDatabaseVersion from "./preStartup/checkDatabaseVersion.js";
 import accountByUserId from "./util/accountByUserId.js";
-import { Account, Group } from "./simpleSchemas.js";
+import { Account, Group, Profile } from "./simpleSchemas.js";
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -60,7 +60,8 @@ export default async function register(app) {
     policies,
     simpleSchemas: {
       Account,
-      Group
+      Group,
+      Profile
     }
   });
 }
