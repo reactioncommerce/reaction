@@ -57,6 +57,5 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
 
   if (matchedCount === 0) throw new ReactionError("server-error", "Unable to create fulfillment method");
 
-  inputMethod._id = method._id;
-  return { method: inputMethod };
+  return { method };
 }
