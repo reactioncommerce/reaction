@@ -19,6 +19,12 @@ container_id="$(docker-compose ps -q api)"
 container_copied_packages_path="/home/node/copied-packages"
 container_destination_path="${container_copied_packages_path}/${package_name}"
 
+# Check and install yalc if necessary
+if ! [[ -x "$(command -v yalc)" ]]; then
+  echo "yalc not installed in container. Installing now.\n"
+  docker-compose exec api sh -c "npm i -g yalc"
+fi
+
 if [[ -z "${package_path}" ]]; then
   package_name_without_org="${package_name/#@reactioncommerce\/}"
   package_path="../api-plugins/${package_name_without_org}"
@@ -27,13 +33,14 @@ if [[ -z "${package_path}" ]]; then
   echo "If this is not correct, specify the correct path as the second argument.\n"
 fi
 
-echo "Copying ${package_name} package code into container..."
+echo "Copying `${package_path}` package code into container..."
 docker-compose exec api sh -c "mkdir -p ${container_destination_path}"
 docker cp "${package_path}/." "${container_id}:${container_destination_path}"
 
-# Then npm link into this project
+# Then yalc link into this project
 echo "Linking package into API..."
-docker-compose exec api sh -c "npm config set prefix /home/node/npm && cd /usr/local/src/app && npm link "${container_destination_path}""
+docker-compose exec api sh -c "cd ${container_destination_path} && yalc push"
+docker-compose exec api sh -c "cd /usr/local/src/app && yalc link "${package_name}""
 
 # Fool nodemon into thinking something has changed so that it restarts.
 # Touch first file found in /src with .js extension
