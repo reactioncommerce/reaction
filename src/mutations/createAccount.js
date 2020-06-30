@@ -111,10 +111,12 @@ export default async function createAccount(context, input) {
 
   await Accounts.insertOne(account);
 
-  await context.mutations.updateGroupsForAccounts(context.getInternalContext(), {
-    accountIds: [account._id],
-    groupIds: Array.from(groups)
-  });
+  if (groups.size > 0) {
+    await context.mutations.updateGroupsForAccounts(context.getInternalContext(), {
+      accountIds: [account._id],
+      groupIds: Array.from(groups)
+    });
+  }
 
   // Delete any invites that are now finished
   if (invites) {

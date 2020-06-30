@@ -42,7 +42,7 @@ export default async function updateGroupsForAccounts(context, input) {
     }
   }).toArray();
 
-  if (groupsToAssignAccountsTo.length === 0) {
+  if (groupsToAssignAccountsTo.length === 0 && groupIds.length > 0) {
     throw new ReactionError("not-found", "No groups matching the provided IDs were found");
   }
 
