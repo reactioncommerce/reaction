@@ -25,7 +25,7 @@ for (let index = 10; index < 40; index += 1) {
     handling: index * 0.5,
     rate: index * 10,
     cost: index * 5,
-    isEnabled: true,
+    enabled: true,
     fulfillmentTypes: ["shipping"],
     group
   };
@@ -83,9 +83,17 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockCustomerAccount);
   await testApp.createUserAndAccount(mockAdminAccount);
 
-  await Promise.all(fulfillmentMethodDocs.map((doc) => (
-    testApp.collections.Shipping.insertOne(doc)
-  )));
+  await testApp.collections.Shipping.insertOne({
+    _id: "123",
+    name: "Default Shipping Provider",
+    shopId: internalShopId,
+    provider: {
+      enabled: true,
+      label: "Flat Rate",
+      name: "flatRates"
+    },
+    methods: fulfillmentMethodDocs
+  });
 });
 
 // There is no need to delete any test data from collections because

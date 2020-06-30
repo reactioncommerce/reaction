@@ -22,7 +22,7 @@ const mockFulfillmentMethodData = {
   handling: 9.5,
   rate: 90,
   cost: 9,
-  isEnabled: true,
+  enabled: true,
   fulfillmentTypes: ["shipping"],
   group: groups[0]
 };
@@ -133,7 +133,14 @@ test("user can delete flat rate fulfillment method if they have `reaction:legacy
 
   expect(result.deleteFlatRateFulfillmentMethod.method).toEqual({
     _id: opaqueMockFulfillmentMethodId,
-    ...mockFulfillmentMethodData
+    name: "mockMethod",
+    label: "Standard mockMethod",
+    handling: 9.5,
+    rate: 90,
+    cost: 9,
+    isEnabled: true,
+    fulfillmentTypes: ["shipping"],
+    group: groups[0]
   });
 });
 
