@@ -24,6 +24,7 @@ fi
 echo "Unlinking package from API..."
 docker-compose exec api sh -c "cd /usr/local/src/app && yalc remove ${package_name}"
 docker-compose exec api sh -c "rm -rf /usr/local/src/app/node_modules/${package_name} && npm i"
+docker-compose exec api sh -c  "cd /usr/local/src/app && yalc update"
 
 # Fool nodemon into thinking something has changed so that it restarts.
 # Touch first file found in /src with .js extension
