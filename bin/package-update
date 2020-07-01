@@ -13,11 +13,6 @@ set -o posix    # more strict failures in subshells
 IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
-if ! [[ -x "$(command -v yalc)" ]]; then
-  echo "yalc not installed in container. Installing now.\n"
-  docker-compose exec api sh -c "npm i -g yalc"
-fi
-
 # Unlink the yalc dependency, remove the package drectory and npm install
 echo "Updating package from API..."
 docker-compose exec api sh -c  "cd /usr/local/src/app && yalc update"
