@@ -31,7 +31,6 @@ if [[ -z "${package_name}" ]]; then
     package_path="$path"
     package_name="$(node -p -e "JSON.parse(process.argv[1]).name" "$(cat ${package_path}/package.json)")"
     is_enabled="$val"
-    # echo $package_name
 
     if [[ $package_name ]]; then
       if [[ $is_enabled == "true" ]]; then
