@@ -25,5 +25,18 @@ export default function isDestinationRestricted(destination, shippingAddress) {
     return true;
   }
 
+  /**
+   * This adds support for address regex match on address1 and address2
+   * It is required to implement basic match against PO Box addresses
+   */
+  if (destination.addressPattern) {
+    const { addressPatternShouldMatch = true } = destination;
+    const fullAddress = [shippingAddress.address1, shippingAddress.address2].join(" ");
+    const addressMatchesPattern = RegExp(destination.addressPattern, "ig").test(fullAddress);
+    if ((addressMatchesPattern && addressPatternShouldMatch) || (!addressMatchesPattern && !addressPatternShouldMatch)) {
+      return true;
+    }
+  }
+
   return false;
 }
