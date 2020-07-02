@@ -68,3 +68,8 @@ client/plugins.less
 server/plugins.js
 
 docker-compose.override.yml
+
+# Yalc
+.yalc/
+yalc.lock
+yalc-packages

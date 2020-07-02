@@ -12,7 +12,7 @@ version: '3.4'
 
 services:
   api:
-    image: reactioncommerce/node-dev:12.14.1-v1
+    image: reactioncommerce/node-dev:12.14.1-v3
     ports:
       - "3000:3000"
       - "9229:9229"
