@@ -5,6 +5,8 @@
     "ns": "reaction-translations",
     "translation": {
       "reaction-translations": {
+        "changesNotSaved": "Hubo un problema al guardar los cambios.",
+        "changesSaved": "Cambios guardados",
         "languages": {
           "select": "Elegir idioma"
         },
@@ -12,33 +14,35 @@
           "select": "Seleccionar moneda"
         },
         "admin": {
+          "landing": {
+            "createFirstShop": "Crea tu primera tienda"
+          },
           "shortcut": {
             "addProductLabel": "Añadir producto",
             "accountsLabel": "Cuentas",
-            "dashboardLabel": "Salpicadero"
+            "dashboardLabel": "Panel principal"
           },
           "dashboard": {
             "i18NLabel": "L10n",
             "i18NTitle": " L10n",
             "i18NDescription": "Herramientas de internacionalización",
-            "routingLabel": "Ruta",
-            "routingTitle": "Ruta",
-            "routingDescription": "Herramientas de ruta",
-            "filtrationLabel": "Filtración",
-            "filtrationDescription": "Filtro de productos para reacción",
-            "coreTitle": "Salpicadero",
+            "routingLabel": "Rutas",
+            "routingTitle": "Rutas",
+            "routingDescription": "Herramientas de rutas",
+            "filtrationLabel": "Filtrado",
+            "filtrationDescription": "Filtrado de productos",
+            "coreTitle": "Panel principal",
             "packageGroupActionsLabel": "Acciones",
-            "packageGroupSettingsLabel": "Ajustes",
-            "themesLabel": "temas",
-            "themesTitle": "temas",
-            "themesDescription": "Temas y componentes de interfaz de usuario"
+            "packageGroupSettingsLabel": "Ajustes"
           },
           "groups": {
+            "addUserError": "No se pudo cambiar el grupo para esta cuenta",
+            "removeUserError": "No se pudo eliminar esta cuenta del grupo",
             "appearance": "Aspecto",
-            "email": "Ajustes del correo electrónico",
+            "email": "Correo electrónico",
             "connect": "Conectar",
             "description": "Descripción",
-            "core": "Core",
+            "core": "Nucleo",
             "remove": "Eliminar",
             "dashboard": "Panel principal",
             "misc": "Variado",
@@ -46,53 +50,208 @@
             "utilities": "Herramientas"
           },
           "settings": {
-            "accountSettingsLabel": "Opciones de cuenta",
-            "accountSettingsTitle": "Iniciar sesión Servicios",
-            "accountSettingsDescription": "De autenticación a través de proveedores sociales",
-            "saveSuccess": "Ajustes actualizan.",
-            "saveFailed": "Error al actualizar la configuración.",
+            "accountSettingsLabel": "Servicios de autenticación",
+            "accountSettingsTitle": "Servicios de autenticación",
+            "accountSettingsDescription": "Autenticación a través de proveedores sociales.",
+            "saveSuccess": "Ajustes actualizados",
+            "saveProcessing": "Guardando Ajustes...",
+            "saveFailed": "Error al actualizar los ajustes.",
             "addShopMemberLabel": "Añadir miembro de la tienda",
             "permissionsSettingsLabel": "Permisos",
-            "localizationAndI18NLabel": "Localización y L10n",
-            "shopSettingsLabel": "tienda",
+            "localizationAndI18NLabel": "Localización e i18n",
+            "settingsLabel": "Ajustes",
+            "shopSettingsLabel": "Tienda",
             "import": "Importar",
-            "general": {
-              "label": "General"
+            "shop": {
+              "header": "Tienda",
+              "allowGuestCheckout": "Permitir compra de invitados",
+              "descriptionLabel": "Descripción",
+              "descriptionPlaceholder": "Ingrese una descripción para la tienda",
+              "emailLabel": "Correo electrónico",
+              "emailPlaceholder": "Ingrese un correo electrónico de contacto de la tienda",
+              "keywordsLabel": "Palabras clave",
+              "keywordsPlaceholder": "Introduzca las palabras clave de la tienda",
+              "label": "Tienda",
+              "nameLabel": "Nombre",
+              "namePlaceholder": "Ingrese un nombre para la tienda",
+              "slugLabel": "Identificador",
+              "slugPlaceholder": "Ingrese un identificador para la tienda"
             },
             "address": {
-              "label": "Dirección"
+              "addNewAddress": "Agregue una nueva dirección",
+              "address1Label": "Calle",
+              "address2Label": "Suite, casillero, etc (opcional)",
+              "cityLabel": "Ciudad",
+              "companyLabel": "Nombre de empresa",
+              "companyPlaceholder": "Ingrese el nombre legal de la empresa",
+              "countryLabel": "País",
+              "editAddress": "Editar la dirección de la tienda",
+              "edit": "Editar",
+              "fullNameLabel": "Nombre completo",
+              "fullNamePlaceholder": "Ingrese el nombre completo del contacto principal de la tienda",
+              "isCommercialLabel": "Esta es una dirección comercial",
+              "initialViewText": "Aún no se ha establecido una dirección física para la tienda.",
+              "label": "Dirección",
+              "phoneLabel": "Teléfono",
+              "postalLabel": "Código postal",
+              "regionLabel": "Región (Estado)"
+            },
+            "payment": {
+              "header": "Pagos"
+            },
+            "taxes": {
+              "header": "Impuestos"
+            },
+            "addressValidation": {
+              "header": "Servicios de validación de direcciones"
+            },
+            "system": {
+              "header": "Información del sistema"
+            },
+            "email": {
+              "header": "Correo electrónico"
+            },
+            "localization": {
+              "header": "Localización"
+            },
+            "emailTemplates": {
+              "header": "Plantillas de correo electrónico"
             },
             "options": {
               "label": "Opciones"
             },
             "openexchangerates": {
-              "refreshPeriod": "Actualizar"
+              "refreshPeriod": "Actualización"
             },
-            "productSettingsLabel": "Configuración del producto",
-            "productDetailsLabel": "detalles del producto",
-            "templateSettingsLabel": "Configuración de plantilla"
+            "productSettingsLabel": "Ajustes del producto",
+            "productDetailsLabel": "Detalles del producto",
+            "settings": "Ajustes",
+            "templateSettingsLabel": "Plantillas de correo electrónico"
           },
           "userAccountDropdown": {
             "profileLabel": "Perfil"
           },
           "alerts": {
-            "shopGeneralSettingsSaved": "Opciones de generales de tienda guardadas.",
-            "shopGeneralSettingsFailed": "Actualización de las opciones generales de la tienda fallida.",
-            "shopAddressSettingsSaved": "Configuración de dirección de la tienda guardada.",
-            "shopAddressSettingsFailed": "Actualización de opciones de dirección de tienda fallida.",
-            "shopExternalServicesSettingsSaved": "Opciones de servicios externos de la tienda guardados.",
-            "shopExternalServicesSettingsFailed": "Actualización de opciones de servicios externos de la tienda fallida.",
-            "shopOptionsSettingsSaved": "Opciones de la tienda guardadas.",
-            "shopOptionsSettingsFailed": "Actualización de opciones de tienda fallida."
+            "shopGeneralSettingsSaved": "Ajustes generales de la tienda guardados.",
+            "shopGeneralSettingsFailed": "Actualización de los ajustes generales de la tienda fallida.",
+            "shopAddressSettingsSaved": "Ajustes de dirección de la tienda guardados.",
+            "shopAddressSettingsFailed": "Actualización de los ajustes de dirección de la tienda fallida.",
+            "shopExternalServicesSettingsSaved": "Ajustes de servicios externos de la tienda guardados.",
+            "shopExternalServicesSettingsFailed": "Actualización de los ajustes de servicios externos de la tienda fallida.",
+            "shopOptionsSettingsSaved": "Ajustes de la tienda guardados.",
+            "shopOptionsSettingsFailed": "Actualización de los ajustes de la tienda fallida."
           },
+          "createProduct": "Crear producto",
+          "showingFilteredProducts": "{{count}} productos encontrados en archivo importado.",
+          "showingFilteredProducts_plural": "Mostrando {{count}} productos encontrados en archivos importados.",
+          "missingFilteredProducts": "No se pudo encontrar {{count}} ID de producto en el catálogo.",
+          "missingFilteredProducts_plural": "No se pudo encontrar {{count}} IDs de productos en el catálogo.",
+          "noProductsFoundText": "No se encontraron IDs de productos en el catálogo.",
+          "productAdmin": {
+            "details": "Detalles",
+            "metadata": "Metadatos",
+            "metafields": "Metacampos",
+            "mediaGallery": "Galería de medios"
+          },
+          "importCard": {
+            "title": "Filtrar productos por archivo",
+            "filterProducts": "Filtrar productos",
+            "import": "Importar",
+            "importHelpText": "Importar archivos .csv con IDs de productos en la primera columna."
+          },
+          "addRemoveTags": {
+            "inputPlaceholder": "Seleccione una o más etiquetas",
+            "invalidSelection": "Por favor seleccione una o más etiquetas",
+            "addConfirmation": "Se agregó la etiqueta {{tags}} a {{count}} producto",
+            "addConfirmation_plural": "Se agregó las etiquetas {{tags}} a {{count}} productos",
+            "removeConfirmation": "Se eliminó las etiquetas {{tags}} a {{count}} producto",
+            "removeConfirmation_plural": "Se eliminó las etiquetas {{tags}} a {{count}} productos",
+            "errorMessage": "Ocurrió un error"
+          },
+          "productTable": {
+            "header": {
+              "order": "Orden",
+              "price": "Precio",
+              "qty": "Cant.",
+              "product": "Producto",
+              "id": "ID",
+              "title": "Título",
+              "visible": "Visible",
+              "published": "Publicado"
+            },
+            "filters": {
+              "placeholder": "Filtrar productos"
+            },
+            "bulkActions": {
+              "actions": "Acciones",
+              "addRemoveTags": "Agregar/eliminar etiquetas",
+              "allProducts": "Todos los productos",
+              "archive": "Archivar",
+              "archiveMessage": "Archivar un producto lo elimina de las vistas de administrador y de cliente.",
+              "archiveMessage_plural": "Archivar productos los elimina de las vistas de administrador y de cliente.",
+              "archiveSuccess": "{{count}} producto ha sido archivado",
+              "archiveSuccess_plural": "{{count}} productos han sido archivados",
+              "archiveTitle_plural": "¿Archivar {{count}} productos?",
+              "archiveTitle": "¿Archivar {{count}} producto?",
+              "duplicate": "Duplicar",
+              "duplicateMessage": "Duplicar el producto seleccionado y sus variantes.",
+              "duplicateMessage_plural": "Duplicar los productos seleccionados y sus variantes.",
+              "duplicateSuccess": "Se duplicó {{count}} producto",
+              "duplicateSuccess_plural": "Se duplicó {{count}} productos",
+              "duplicateTitle_plural": "¿Duplicar {{count}} productos?",
+              "duplicateTitle": "¿Duplicar {{count}} producto?",
+              "error": "Se produjo un error al ejecutar esta operación",
+              "filterByFile": "Filtrar por archivo",
+              "filteredProducts": "Productos filtrados",
+              "makeHidden": "Ocultar",
+              "makeHiddenMessage": "Oculta el producto seleccionado de tu tienda. Estos cambios deberán publicarse para que surtan efecto.",
+              "makeHiddenMessage_plural": "Oculta los productos seleccionados de tu tienda. Estos cambios deberán publicarse para que surtan efecto.",
+              "makeHiddenSuccess": "{{count}} producto ahora está oculto",
+              "makeHiddenSuccess_plural": "{{count}} productos ahora están ocultos",
+              "makeHiddenTitle_plural": "¿Ocultar {{count}} productos?",
+              "makeHiddenTitle": "¿Ocultar {{count}} producto?",
+              "makeVisible": "Hacer visible",
+              "makeVisibleMessage": "Muestra {{count}} producto en tu tienda. Estos cambios deberán publicarse para que surtan efecto.",
+              "makeVisibleMessage_plural": "Muestra {{count}} productos en tu tienda. Estos cambios deberán publicarse para que surtan efecto.",
+              "makeVisibleSuccess": "{{count}} producto ahora es visible",
+              "makeVisibleSuccess_plural": "{{count}} productos ahora son visibles",
+              "makeVisibleTitle_plural": "¿Hacer {{count}} productos visible?",
+              "makeVisibleTitle": "¿Hacer {{count}} producto visible?",
+              "publish": "Publicar",
+              "publishMessage": "¿Publicar cambios pendientes del producto seleccionado en tu tienda?",
+              "publishMessage_plural": "¿Publicar cambios pendientes de los productos seleccionados en tu tienda?",
+              "publishTitle_plural": "¿Publicar {{count}} productos?",
+              "publishTitle": "¿Publicar {{count}} producto?",
+              "published": "{{count}} producto publicado con éxito",
+              "published_plural": "{{count}} productos publicados con éxito",
+              "restore": "Restaurar",
+              "restoreTitle_plural": "¿Restaurar {{count}} productos?",
+              "restoreTitle": "¿Restaurar {{count}} producto?",
+              "selectedCount": "{{count}} seleccionado(s)",
+              "totalCount_plural": "{{count}} productos",
+              "totalCount": "{{count}} producto"
+            }
+          },
+          "products": "Productos",
           "helpText": {
+            "attributeLabel": "La etiqueta de atributo describe la categoría de la variante, por ejemplo, \"Color\" o \"Tamaño\". En la mayoría de los casos, debe ingresar el mismo valor aquí para todas las variantes del mismo nivel.",
             "compareAtPrice": "Precio original o MSRP",
-            "optionInventoryInStock": "Inventario",
-            "optionTitle": "Se muestra en la página de detalles del producto",
+            "optionInventoryAvailableToSell": "Inventario disponible para vender",
+            "optionInventoryInStock": "Inventario en stock",
+            "optionTitle": "El título corto es el valor de la etiqueta del atributo. Por ejemplo, una variante con la etiqueta de atributo \"Color\" podría tener un título corto \"Rojo\". Esto se muestra en una lista de selección en la página de detalles del producto en tu tienda.",
             "price": "Precio de compra",
-            "title": "Se muestra en el carrito, la compra y las órdenes",
+            "title": "El título completo generalmente se muestra en el carrito, al pagar, en los resúmenes de órdenes, y en las facturas. Debe describir completamente la variante configurada. Por ejemplo, si esta es una opción con título corto \"Grande\", su variante principal tiene título corto \"Rojo\", y el título del producto es \"Camiseta elegante\", entonces un buen título podría ser \"Camiseta de lujo - Roja - Grande\".",
             "variantBackorderToggle": "La asignación de órdenes pendientes es ahora controlada por opciones",
-            "variantInventoryInStock": "El inventario de variantes está ahora controlado por opciones"
+            "variantInventoryAvailableToSell": "La cantidad de inventario disponible para vender de variantes se calcula mediante el inventario de opciones",
+            "variantInventoryInStock": "El inventario en stock de variantes está ahora controlado por el inventario de opciones"
+          },
+          "productVariant": {
+            "attributeLabelLabel": "Etiqueta de atributo",
+            "attributeLabelPlaceholder": "Ejemplos: Color, Tamaño",
+            "inventoryAvailableToSell": "Disponible para vender",
+            "inventoryInStock": "En stock",
+            "optionTitlePlaceholder": "Ejemplos: Rojo, Grande",
+            "titlePlaceholder": "Ejemplo: Camiseta de lujo - Roja - Grande"
           },
           "tooltip": {
             "validationError": "Error de validacion"
@@ -122,16 +281,16 @@
           "archived": "Archivado",
           "create": "Crear",
           "close": "Cerrar",
-          "settings": "Opciones",
+          "settings": "Ajustes",
           "loading": "Cargando",
-          "toggle": "Palanca",
-          "toggleEditMode": "Palanca de modo edición",
+          "toggle": "Alternar",
+          "toggleEditMode": "Alternar modo edición",
           "warning": "¡Vaya!",
           "unauthorizedMessage": "No tienes permiso para ver este contenido.",
-          "updateSettings": "Actualizar opciones",
+          "updateSettings": "Actualizar ajustes",
           "monthOptions": "Elegir mes",
           "yearOptions": "Elegir año",
-          "shopSettings": "Opciones de la tienda",
+          "shopSettings": "Ajustes de la tienda",
           "dashboard": "Panel principal",
           "print": "Imprimir",
           "notFound": "No se ha encontrado la página.",
@@ -146,7 +305,9 @@
           "shortcut": {
             "addProductLabel": "Agregar producto",
             "accountsLabel": "Cuentas"
-          }
+          },
+          "visible": "Visible",
+          "hidden": "Oculto"
         },
         "searchSettings": {
           "productSearchSettings": {
@@ -154,32 +315,63 @@
             "includeTitle": "Incluir título",
             "includeDescription": "Incluir descripción",
             "includePageTitle": "Incluir título de la página",
-            "includeDetails": "Incluir información",
+            "includeDetails": "Incluir detaller",
             "includeVendor": "Incluir proveedor"
           },
           "orderSearchSettings": {
-            "panelTitle": "Opciones de búsqueda de pédido"
+            "panelTitle": "Ajustes de búsqueda de pédido"
           },
           "accountSearchSettings": {
-            "panelTitle": "Opciones de búsqueda de la cuenta"
+            "panelTitle": "Ajustes de búsqueda de cuenta"
           },
-          "noSettings": "Ninguna configuración disponible",
-          "settingsSaved": "Parámetros de búsqueda guardados",
-          "settingsfailed": "Actualización de opciones de búsqueda fallida"
+          "noSettings": "No hay ajustes disponibles",
+          "settingsSaved": "Ajustes de búsqueda guardados",
+          "settingsfailed": "Actualización de ajustes de búsqueda fallida"
         },
         "shopSettings": {
-          "localization": "Ubicación",
+          "localization": "Localización",
           "options": "Opciones",
           "paymentMethods": "Métodos de pago",
+          "pluginVersions": {
+            "title": "Versiones de complementos"
+          },
+          "systemInfo": {
+            "apiVersionLabel": "Versión de API",
+            "installedPluginsLabel": "Complementos Instalados",
+            "mongoVersionLabel": "Versión de MongoDB",
+            "title": "Información del Sistema"
+          },
           "externalServices": "Servicios externos",
-          "shopLocalizationSettingsSaved": "Opciones de ubicación de tienda guardadas.",
-          "shopLocalizationSettingsFailed": "Actualización de las opciones de localización de la tienda fallida. ",
-          "shopPaymentMethodsSaved": "Opciones de métodos de pago guardadas.",
-          "shopPaymentMethodsFailed": "Actualización de las opciones de métodos de pago fallida."
+          "shopBrandAssetsSaved": "Archivos de marca de la tienda guardados",
+          "shopBrandAssetsFailed": "Guardado de archivos de marca de la tienda fallido",
+          "shopLocalizationSettingsSaved": "Ajustes de localización de tienda guardados.",
+          "shopLocalizationSettingsFailed": "Actualización de los ajustes de localización de la tienda fallida. ",
+          "shopLogo": {
+            "description": "Cargue archivos de logotipo o proporcione URL para archivos de imagen remotos para usar como logotipos de la tienda. Las URL remotas anularán los logotipos cargados.",
+            "title": "Logotipos",
+            "primaryShopLogoUrlTitle": "URL del logotipo principal",
+            "primaryShopLogoUrlDescription": "Esta es la URL para el logotipo principal de esta tienda, que se utiliza siempre que se vea un logotipo en la interfaz de usuario"
+          },
+          "shopPaymentMethodsSaved": "Ajustes de métodos de pago guardados.",
+          "shopPaymentMethodsFailed": "Actualización de los ajustes de métodos de pago fallida.",
+          "storefrontUrls": {
+            "description": "Use estos campos para proporcionar las URL de tu tienda a varias páginas para usar como enlaces dentro de correos electrónicos.",
+            "storefrontHomeUrlTitle": "URL de página principal",
+            "storefrontHomeUrlDescription": "URL de la página principal de tu tienda",
+            "storefrontOrderUrlTitle": "URL de página de pedido único",
+            "storefrontOrderUrlDescription": "URL de la página de pedido único de su tienda, con las variables `:orderId` y `:token` proporcionadas",
+            "storefrontOrderUrlHelpText": "Para que los enlaces de correo electrónico funcionen, debe proporcionar un `:orderId` y`:token` en este campo. Estos actúan como marcadores de posición que se reemplazan con los datos correctos en su plantilla de correo electrónico cuando se genera un correo electrónico de pedido. Por ejemplo: http://shop.example.com/my-orders/:orderId?token=:token",
+            "storefrontOrdersUrlTitle": "URL de la página de pedidos",
+            "storefrontOrdersUrlDescription": "URL de la página de pedidos de tu tienda",
+            "storefrontAccountProfileUrlTitle": "URL de la página de perfil de cuenta",
+            "storefrontAccountProfileUrlDescription": "URL de la página de inicio del perfil de la cuenta de su tienda",
+            "title": "URLs de tienda",
+            "update": "Actualizar las URLs de la tienda"
+          }
         },
         "notifications": {
           "body": {
-            "noNotifications": "No hay notificaciones aún",
+            "noNotifications": "Aún no hay notificaciones",
             "markAllAsRead": "Marcar todo como leído",
             "recent": "Recientes",
             "viewAll": "Ver todos"
@@ -187,9 +379,9 @@
           "messages": {
             "orderCanceled": "Su pedido ha sido cancelado.",
             "newOrder": "Su pedido se está procesando.",
-            "forAdmin": "Tienes un nuevo orden.",
+            "forAdmin": "Tienes una nuevo orden.",
             "orderDelivered": "Su pedido ha sido entregado.",
-            "orderProcessing": "Tu pedido está siendo procesado.",
+            "orderProcessing": "Su pedido está siendo procesado.",
             "orderShipped": "Su pedido ha sido enviado."
           }
         },
@@ -208,9 +400,9 @@
           "addInventory": "Añadir inventario",
           "barcode": "Código de barras",
           "confirmDeleteBarcode": "¿Seguro que quieres borrar el código de barras?",
-          "details": "Información",
-          "detailsName": "Detallar nombre",
-          "detailsInfo": "Información detallada",
+          "details": "Detalles",
+          "detailsName": "Nombre de detalle",
+          "detailsInfo": "Información de detalle",
           "generate": "Generar",
           "generateBarcodes": "Generar códigos de barras",
           "hideBarcodes": "Ocultar códigos de barras",
@@ -226,8 +418,9 @@
           "addedToCart": "añadido",
           "showBarcodes": "Mostrar código de barras",
           "soldOut": "¡Agotado!",
+          "inStock": "Disponible",
           "backOrder": "Atraso",
-          "limitedSupply": "Oferta limitada",
+          "limitedSupply": "Suministro limitado",
           "publishProductVisible": "{{product}} está ahora visible",
           "publishProductHidden": "{{product}} está ahora oculto",
           "clonedAlert": "{{producto}} clonado",
@@ -253,8 +446,8 @@
           "createTag": "Crear etiqueta"
         },
         "productDetailEdit": {
-          "editOption": "Opción editar",
-          "productSettings": "Opciones de producto",
+          "editOption": "Editar opción",
+          "productSettings": "Ajustes de producto",
           "product": "Producto",
           "size": "Tamaño",
           "title": "Título",
@@ -265,66 +458,82 @@
           "description": "Descripción",
           "originCountry": "País de origen",
           "facebookMsg": "Mensaje de Facebook",
-          "twitterMsg": "TwitterMensaje",
+          "twitterMsg": "Mensaje de Twitter",
           "pinterestMsg": "Mensaje en Pinterest",
           "googleplusMsg": "Mensaje Google+",
           "editVariant": "Editar variante",
           "variantOptions": "Opciones de variante",
           "variantDetails": "Detalles de la variante",
-          "duplicateVariant": "Duplicado",
+          "duplicateVariant": "Duplicar",
           "addVariantOption": "Añadir opción",
-          "addVariantFail": "No se puede crear variante para {{title}}.",
-          "cloneVariantFail": "No es posible clonar variante para {{title}}.",
+          "addVariantFail": "No se pudo crear variante. {{err}}.",
+          "addVariant": "Variante añadida",
+          "archiveProductsFail": "No se pudo archivar el/los producto(s). {{err}}",
+          "archiveProductsSuccess": "Producto(s) archivado(s) con éxito.",
+          "archiveProductVariantsFail": "No se pudo archivar la(s) variante(s) {{err}}",
+          "archiveProductVariantsSuccess": "Variante(s) archivada(s) con éxito.",
+          "cloneProductSuccess": "Producto(s) clonado(s) con éxito.",
+          "cloneProductFail": "No se pudo clonar el/los producto(s). {{err}}",
+          "cloneVariantFail": "No se pudo clonar variante para {{title}}.",
           "removeVariant": "Eliminar",
           "removeVariantConfirm": "¿Seguro que quieres eliminar {{title}}?",
           "restoreVariantConfirm": "¿Seguro que quieres recuperar {{title}} desde la papelera?",
-          "restoreVariantFail": "No se puede restaurar {{title}}.",
+          "restoreVariantFail": "No se pudo restaurar {{title}}.",
+          "restoreVariantSuccess": "{{title}} se ha restaurado con éxito.",
+          "updateProductFieldSuccess": "Producto(s) actualizado(s) con éxito.",
+          "updateProductFieldFail": "No se pudo actualizar el/los producto(s). {{err}}",
           "archiveVariantConfirm": "¿Seguro que quieres archivar {{title}}?",
+          "addProductTagSuccess": "Etiqueta(s) añadida(s) al producto.",
+          "addProductTagFail": "No se pudo añadir la(s) etiqueta(s) a producto. {{err}}",
+          "removeProductTagSuccess": "Etiqueta(s) eliminada(s) del producto.",
+          "removeProductTagFail": "No se pudo eliminar la(s) etiqueta(s) del producto. {{err}}",
           "thisVariant": "esta variante",
           "thisOption": "esta opción",
-          "duplicateProduct": "Producto duplicado",
+          "duplicateProduct": "Duplicar producto",
           "pinProduct": "Fijar producto",
-          "toggleSize": "Tamaño de la palanca",
-          "archiveProduct": "archivo de productos",
-          "restoreProduct": "Recuperar el producto desde la papelera",
+          "toggleSize": "Alternar tamaño",
+          "archiveProduct": "Archivar producto",
+          "restoreProduct": "Restaurar el producto desde el archivo",
           "archiveThisProduct": "¿Archivar este producto?",
           "archiveSelectedProducts": "¿Archivar los productos seleccionados?",
           "publish": "Publicar",
+          "published": "Publicado",
           "moreOptions": "Más opciones",
-          "details": "Información",
+          "details": "Detalles",
           "noSelectedProducts": "No se han seleccionado productos. Usar el ",
           "orShiftCtrlCmd": " o shift|ctrl|cmd + clic en el producto para realizar selección múltiple. Con \"shift\" puedes seleccionar un rango de productos contiguo.",
           "makeVisible": "Hacer visible",
           "hideProduct": "Ocultar producto",
           "productIsVisible": "El producto es visible",
           "productIsNotVisible": "El producto no es visible",
-          "template": "Configuración de plantilla",
-          "templateSelectPlaceholder": "Seleccione una plantilla"
+          "template": "Plantilla",
+          "templateSelectPlaceholder": "Seleccione una plantilla",
+          "metafieldKey": "Llave",
+          "metafieldValue": "Valor"
         },
         "productVariant": {
-          "addVariantOptions": "Añadir opciones para activar 'Agregar al carrito' butto",
-          "inventoryInStock": "Cantidad",
-          "title": "Etiqueta",
+          "addVariantOptions": "Añadir opciones para activar el botón de 'Agregar al carrito'",
+          "title": "Título",
           "price": "Precio",
-          "optionTitle": "Opción",
+          "prices": "Precios",
+          "optionTitle": "Título corto",
           "barcode": "Código de barras",
           "compareAtPrice": "Precio (sugerido por el fabricante)",
-          "fulfillmentService": "Cumplimiento del servicio",
+          "fulfillmentService": "Servicio de cumplimiento",
           "weight": "Peso",
           "length": "Longitud",
           "width": "Anchura",
           "height": "Altura",
           "taxable": "Sujeto a impuestos",
-          "taxCode": "Códigos Tributarios",
-          "taxDescription": "Descripción de Impuestos",
-          "inventoryManagement": "Seguimiento de existencias",
-          "inventoryManagementLabel": "Registrar producto en el sistema del inventario y realizar un seguimiento de su estado",
-          "inventoryPolicy": "Negar cuando no haya existencias",
-          "inventoryPolicyLabel": "No vender la variante del producto cuando no está en stock",
-          "lowInventoryWarningThreshold": "Advertir @",
-          "lowInventoryWarningThresholdLabel": "Advertir a los clientes que el producto está a punto de agotarse cuando la cantidad alcanza el siguiente umbral",
+          "taxCode": "Código tributario",
+          "taxDescription": "Descripción de impuestos",
           "originCountry": "País de origen",
-          "selectTaxCode": "Seleccione Código Tributario"
+          "selectTaxCode": "Seleccione código tributario",
+          "updateVariantSuccess": "Variante de producto actualizada con éxito",
+          "updateVariantFail": "No se pudo actualizar la variante de producto",
+          "updateVariantPricesSuccess": "Precios de variantes actualizados con éxito",
+          "updateVariantPricesFail": "No se pudo actualizar los precios de las variantes",
+          "pricePublishWarning": "Los cambios en los precios se publican al guardar"
         },
         "variantList": {
           "moreOptions": "Hay más opciones disponibles para esta selección.",
@@ -334,11 +543,11 @@
           "enable": "Habilitar",
           "errorDisabling": "Error al deshabilitar el paquete: ",
           "errorEnabling": "Error habilitando el paquete: ",
-          "details": "Información",
+          "details": "Detalles",
           "disable": "Deshabilitar",
           "disableConfirm": "¿Seguro que quieres deshabilitar {{app}}?",
-          "pkgEnabled": "{{app}} está ahora permitida.",
-          "pkgDisabled": "{{app}} está deshabilitada."
+          "pkgEnabled": "{{app}} está ahora habilitanda.",
+          "pkgDisabled": "{{app}} está ahora deshabilitada."
         },
         "gridSettingsPanel": {
           "title": "Configuración de cuadrícula",
@@ -353,8 +562,8 @@
           "coreOrderWorkflow/processing": "Procesando",
           "coreOrderWorkflow/completed": "Completado",
           "coreOrderWorkflow/canceled": "Cancelado",
-          "coreOrderWorkflow/picked": "Escogido",
-          "coreOrderWorkflow/packed": "Lleno",
+          "coreOrderWorkflow/picked": "Recogido",
+          "coreOrderWorkflow/packed": "Empaquetado",
           "coreOrderWorkflow/labeled": "Etiquetado",
           "coreOrderWorkflow/shipped": "Enviado"
         },
@@ -362,14 +571,16 @@
           "discount": "Descuento",
           "head": "Tu carrito",
           "items": "Artículos en el carrito",
+          "orderItems": "Artículos en la orden",
           "subtotal": "Subtotal",
           "shipping": "Envío",
+          "surcharge": "Cargos",
           "tax": "Impuesto",
           "total": "Total"
         },
         "cartDrawerItems": {
           "left": "izquierda",
-          "limitedSupply": "Recursos limitados"
+          "limitedSupply": "Suministro limitado"
         },
         "order": {
           "created": "Creado",
@@ -386,17 +597,17 @@
           "canceledLabel": "Cancelado",
           "refundAmount": "Importe de reembolso",
           "cancelOrder": "¿Desea cancelar este pedido?",
-          "applyRefundToThisOrder": "¿Aplicar reembolso de {{refund}} {{currencySymbol}} a este pedido?",
+          "applyRefundToThisOrder": "¿Aplicar reembolso de {{currencySymbol}}{{refund}} a esta orden?",
           "applyRefundDuringCancelOrder": "Esto le devolverá el total de la orden de {{currencySymbol}}{{invoiceTotal}}",
           "cancelOrderThenRestock": "Sí, y reabastecer",
-          "cancelOrderNoRestock": "Sí, pero no hay reabastecimiento",
+          "cancelOrderNoRestock": "Sí, pero sin reabastecimiento",
           "applyRefund": "Aplicar reembolso",
-          "refunding": "Reembolso",
+          "refunding": "Reembolsando",
           "applyDiscount": "Aplicar descuento",
           "adjustedTotal": "Total ajustado",
           "invalidDiscount": "El descuento no puede ser mayor que el precio total original",
           "fullDiscountWarning": "Aplicar un descuento del 100% evitará/cancelará este pedido con tu proveedor de servicios de pago",
-          "invalidRefund": "El total del reembolso (o reembolsos) no puede ser mayor que el total ajustado",
+          "invalidRefund": "El total del reembolso(s) no puede ser mayor que el total ajustado",
           "processor": "Procesador",
           "placed": "Realizado",
           "on": "en",
@@ -406,7 +617,7 @@
           "destination": "Destino",
           "shipment": "Envío",
           "payment": "Pago",
-          "itemsFrom": "Artículo(s) de",
+          "itemsFrom": "artículo(s) de",
           "filter": {
             "processing": "Procesando",
             "status": "Estado",
@@ -421,13 +632,13 @@
           },
           "capture": "Capturar",
           "capturing": "Captura",
-          "bulkActions": "Acciones masivas",
+          "bulkActions": "Acciones en bloque",
           "selected": "Seleccionado",
-          "picked": "Escogido",
-          "packed": "Lleno",
+          "picked": "Recogido",
+          "packed": "Empaquetado",
           "labeled": "Etiquetado",
           "shipped": "Enviado",
-          "printInvoiceAndPickSheet": "Imprimir factura y hoja de selección",
+          "printInvoiceAndPickSheet": "Imprimir factura y hoja de recolección",
           "generateLabel": "Generar etiqueta",
           "approveBulkOrderAction": "Sí, Definir todo Seleccionar todas las órdenes",
           "approveBulkOrderActionRegression": "Sí, Regresar todas las órdenes seleccionadas",
@@ -441,14 +652,14 @@
         },
         "orderShipping": {
           "shipTo": "Enviar a",
-          "notShipped": "No se ha enviado todavía",
+          "notShipped": "No se ha enviado aún",
           "noTracking": "Sin seguimiento",
           "tracking": "Seguimiento",
           "printLabels": "Imprimir etiquetas",
-          "printShippingLabel": "Envío",
-          "printCustomsLabel": "aduana",
-          "generateTracking": "Generar etiquetas y Seguimiento",
-          "labelError": "Error al crear el envío {{err}} etiqueta",
+          "printShippingLabel": "Imprimir etiqueta de envío",
+          "printCustomsLabel": "Imprimir etiqueta de aduana",
+          "generateTracking": "Generar etiquetas y seguimiento",
+          "labelError": "Error al crear etiqueta de envío {{err}}",
           "carrier": "Carrier",
           "addTracking": "Añadir seguimiento",
           "itemsHaveBeenShipped": "Se han enviado los artículos",
@@ -457,10 +668,11 @@
           "shipped": "Enviado",
           "delivered": "Entregado",
           "shippingNotifyCustomer": "Notificar al cliente que se le enviarán sus productos pronto.",
-          "resendNotification": "Reenviar aviso de envío"
+          "resendNotification": "Reenviar aviso de envío",
+          "noShippingInfo": "No hay información de envío disponible"
         },
         "orderWorkflow": {
-          "orderDetails": "Información de envío",
+          "orderDetails": "Detalles de la orden",
           "invoice": "Factura",
           "lineItems": "Artículos de línea",
           "shipmentTracking": "Seguimiento de envío"
@@ -471,24 +683,24 @@
         },
         "cartCompleted": {
           "thankYou": "¡Gracias!",
-          "itemsFrom": "producto(s) de",
+          "itemsFrom": "artículo(s) de",
           "yourOrderIsNow": "Tu pedido está ahora",
           "summaryMessage": "Gracias por tu pedido.",
-          "submitted": "enviado",
-          "processing": "tratamiento",
-          "completed": "terminado",
+          "submitted": "encargado",
+          "processing": "procesando",
+          "completed": "completado",
           "registerGuest": "¡Hola! Añadir un correo electrónico y recibir actualizaciones de pedidos",
           "trackYourDelivery": "Las actualizaciones sobre pedidos se enviarán a",
           "noOrdersFound": "No se han encontrado pedidos.",
           "adminMessage": "Estás viendo los pedidos como administrador",
-          "yourCart": "Su Carrito",
+          "orderSummary": "Resumen de orden",
           "discountTotal": "Descuento Total",
           "orderTotal": "Total del pedido",
           "fulfilledBy": "Cumplido por",
-          "quantityTotal": "Cantidad Total",
+          "orderItems": "Artículos en la orden",
           "orderSubtotal": "Total parcial",
           "orderShipping": "Envío",
-          "orderTax": "Opciones de impuestos"
+          "orderTax": "Impuestos"
         },
         "checkoutLogin": {
           "welcome": "Bienvenido, nos alegra tenerte aquí.",
@@ -497,27 +709,36 @@
           "guestOrLogin": "Iniciar sesión o realizar compra como invitado",
           "continueAsGuest": "Continuar como invitado",
           "guestMessage": "Puedes realizar la compra sin crear una cuenta. Podrás crear la cuenta más tarde.",
-          "addEmail": "Añadir correo electrónico"
+          "addEmail": "Añadir correo electrónico",
+          "invalidEmail": "Correo electrónico inválido"
         },
         "addressBookGrid": {
           "addAddress": "Añadir dirección",
-          "chooseAddress": "Elegir envío y dirección de facturación",
+          "chooseAddress": "Elegir dirección de envío y facturación",
           "createDefault": "Crear tu dirección predeterminada",
           "edit": "Editar",
           "removeAddress": "Eliminar dirección",
           "selectShippingAddress": "Seleccionar una dirección de envío",
           "selectBillingAddress": "Selecciona una dirección de facturación",
-          "cantRemoveThisAddress": "No se puede eliminar esta dirección: {{err}}"
+          "cantRemoveThisAddress": "No se pudo eliminar esta dirección: {{err}}"
         },
         "addressBookAdd": {
           "addAddress": "Añade una nueva dirección",
           "createAddress": "Crea tu dirección predeterminada",
-          "failedToAddAddress": "No se ha podido acceder: {{err}}",
-          "validatedAddress": "Los cambios realizados en su dirección basan en la validación. Por favor asegúrese de que esto es correcto"
+          "failedToAddAddress": "No se pudo anañir la dirección: {{err}}",
+          "validatedAddress": "Cambios realizados en su dirección basado en la validación. Por favor asegúrese de que esto es correcto",
+          "valildationBypassed": "Ha solicitado omitir la validación de la dirección"
+        },
+        "addressBookReview": {
+          "enteredAddress": "Dirección ingresada",
+          "suggestedAddress": "Dirección sugerida",
+          "useSelectedAddress": "Usar dirección seleccionada",
+          "editAddress": "Editar dirección ingresada",
+          "warning": "La dirección que ingresó puede estar incorrecta o incompleta. Revise nuestras sugerencias a continuación y elija la versión que desea utilizar. Los errores se muestran en rojo."
         },
         "addressBookEdit": {
-          "editAddress": "Editar esta dirección",
-          "addressValidation": "La validación de direcciones",
+          "editAddress": "Editando esta dirección",
+          "addressValidation": "Validación de dirección",
           "reviewAddress": "Para obtener el mejor cumplimiento, valide su dirección",
           "somethingWentWrong": "Algo ha salido mal: {{err}}",
           "enteredAddress": "Dirección introducida",
@@ -526,11 +747,11 @@
         "corePackageConfig": {
           "settings": {
             "public": {
-              "allowGuestCheckout": "Permitir proceso de compra como invitado"
+              "allowGuestCheckout": "Permitir compra como invitado"
             },
             "openexchangerates": {
-              "appId": "ID de la app de tipo de cambio abierto",
-              "refreshPeriod": "Período de actualización del tipo de cambio abierto",
+              "appId": "ID de la app de Open Exchange Rates",
+              "refreshPeriod": "Período de actualización de Open Exchange Rates",
               "refreshPeriodPlaceholder": "p. ej. cada hora"
             },
             "google": {
@@ -625,7 +846,7 @@
         },
         "search": {
           "clearSearch": "Borrar",
-          "searchInputLabel": "Buscar reacción ",
+          "searchInputLabel": "Buscar",
           "suggestedTags": "Etiquetas sugeridas",
           "searchTypeProducts": "Productos",
           "searchTypeAccounts": "Cuentas",
@@ -640,6 +861,9 @@
           }
         },
         "accountsUI": {
+          "promoteExistingAccountConfirm": "¿Quieres promocionar su cuenta existente?",
+          "sendNewInviteConfirm": "¿Quieres enviar una nueva invitación?",
+          "yes": "Si",
           "usersOrders": "Pedidos del usuario",
           "oops": "¡Vaya!",
           "nonExistentAccount": "El usuario que estás buscando no existe.",
@@ -698,10 +922,13 @@
           "addressBook": "Libro de direcciones",
           "info": {
             "emailSent": "Correo electrónico enviado",
+            "emailUpdated": "Correo electrónico actualizado",
             "emailVerified": "Correo electrónico comprobado",
             "passwordChanged": "La contraseña ha cambiado",
             "passwordReset": "Restablecimiento de contraseña",
             "passwordResetSend": "Se ha enviado un correo electrónico con enlace para restablecer la contraseña.",
+            "passwordResetDone": "Restablecimiento de contraseña completo.",
+            "passwordResetDoneText": "Regrese a la aplicación para continuar.",
             "invitationSent": "Invitación enviada",
             "sendInvitation": "Enviar invitación"
           },
@@ -725,6 +952,7 @@
             "errorSendingEmail": "Error al enviar el correo electrónico, posible fallo de configuración.",
             "unableToSendInvitationEmail": "No se ha podido enviar la invitación por correo electrónico.",
             "userWithEmailAlreadyExists": "Ya existe un usuario con esta dirección de correo electrónico.",
+            "inviteAlreadyPending": "Ya hay una invitación pendiente para este usuario",
             "failedToLogout": "No se pudo cerrar la sesión.",
             "invalidLoginToken": "Token de inicio de sesión no válido",
             "loginForbidden": "Se ha impedido el inicio de sesión",
@@ -751,6 +979,8 @@
             "userNotFound": "No se ha encontrado el usuario",
             "verifyEmailLinkExpired": "Comprobar enlace de correo electrónico caducado",
             "verifyEmailLinkIsForUnknownAddress": "El enlace de verificación de correo electrónico corresponde a una dirección desconocida",
+            "verifyTimeout": "Verificación expirada. Probablemente ya has sido verificado con éxito.",
+            "verifyEmailAddressNotFound": "No se pudo verificar la dirección de correo electrónico.",
             "matchFailed": "Coincidencia fallida",
             "unknownError": "Error desconocido"
           }
@@ -780,11 +1010,11 @@
         },
         "templateUpdateForm": {
           "emailTemplates": {
-            "updateEmailTemplate": "plantilla de correo electrónico de actualización"
+            "updateEmailTemplate": "Actualizar plantilla de correo electrónico"
           },
           "reactTemplates": {
-            "updateReactTemplate": "Reaccionar actualización de plantilla",
-            "updateUnavailable": "Reaccionar plantillas no pueden editarse a través de esta interfaz"
+            "updateReactTemplate": "Actualizar plantilla de React",
+            "updateUnavailable": "Las plantillas de React no pueden editarse a través de esta interfaz"
           },
           "alerts": {
             "templateUpdated": "Plantilla actualiza con éxito",
@@ -792,13 +1022,12 @@
           }
         },
         "reactionUI": {
-          "editTheme": "Editar Tema",
-          "duplicateTheme": "Tema duplicado",
-          "duplicateThemeError": "No se ha podido duplicar el tema",
-          "publishThemeError": "`No se pudo publicar {{themeName}} tema",
           "components": {
             "navbar": "Barra de navegación",
             "button": "Botón",
+            "mediaUploader": {
+              "dropFiles": "Arrastre una imagen o haga clic para cargar"
+            },
             "sortableTable": {
               "filterPlaceholder": "Filtrar datos",
               "tableText": {
