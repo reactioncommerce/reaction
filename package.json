@@ -28,7 +28,7 @@
     "@reactioncommerce/api-utils": "^1.14.2",
     "@reactioncommerce/random": "^1.0.2",
     "@reactioncommerce/reaction-error": "^1.0.1",
-    "simpl-schema": "^1.7.1"
+    "simpl-schema": "^1.8.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
