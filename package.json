@@ -34,7 +34,7 @@
     "envalid": "~5.0.0",
     "node-fetch": "~2.6.0",
     "sharp": "~0.25.2",
-    "simpl-schema": "~1.7.1"
+    "simpl-schema": "~1.8.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
