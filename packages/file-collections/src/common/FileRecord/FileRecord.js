@@ -380,8 +380,7 @@ export default class FileRecord extends EventEmitter {
 
   url(options) {
 
-    const { store } = options;
-    const externalUrl = this.externalUrl({ store });
+    const externalUrl = this.externalUrl(options);
     if (externalUrl) return externalUrl;
 
     return getUrlForFileRecord(this, {
