@@ -25,7 +25,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.14.2",
+    "@reactioncommerce/api-utils": "^1.14.4",
     "@reactioncommerce/file-collections": "~0.7.0",
     "@reactioncommerce/file-collections-sa-gridfs": "~0.1.0",
     "@reactioncommerce/logger": "~1.1.2",
