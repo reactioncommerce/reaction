@@ -25,7 +25,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.14.3",
+    "@reactioncommerce/api-utils": "^1.14.4",
     "lodash": "~4.17.15"
   },
   "devDependencies": {
