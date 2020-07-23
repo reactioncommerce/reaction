@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.16.2
+      - image: reactioncommerce/node-dev:12.14.1-v3
 
     working_directory: ~/repo
 
