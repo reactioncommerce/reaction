@@ -379,6 +379,9 @@ export default class FileRecord extends EventEmitter {
   }
 
   url(options) {
+    const externalUrl = this.externalUrl(options);
+    if (externalUrl) return externalUrl;
+
     return getUrlForFileRecord(this, {
       absoluteUrlPrefix: FileRecord.absoluteUrlPrefix,
       prefix: FileRecord.downloadEndpointPrefix,
@@ -432,6 +435,10 @@ export default class FileRecord extends EventEmitter {
 
   name(value, options) {
     return this._getOrSetInfo("name", value, options);
+  }
+
+  externalUrl(value, options) {
+    return this._getOrSetInfo("externalUrl", value, options);
   }
 
   extension(value, options) {

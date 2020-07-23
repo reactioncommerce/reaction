@@ -163,7 +163,7 @@ export default class StorageAdapter extends EventEmitter {
     };
 
     // Listen for "stored" event to know that the specific adapter has finished storing
-    finalDestinationStream.once("stored", ({ fileKey, size, storedAt }) => {
+    finalDestinationStream.once("stored", ({ fileKey, size, storedAt, externalUrl }) => {
       debug(`StorageAdapter writeStream "stored" event handler called for fileKey ${fileKey} in "${store}" store`);
 
       if (!fileKey) throw new Error(`Storage adapter ${store} of type ${this.typeName} did not return a fileKey`);
@@ -173,6 +173,9 @@ export default class StorageAdapter extends EventEmitter {
 
       // And record which adapter stored it
       fileRecord.storageAdapter(this.typeName, { store });
+
+      // set the externalUrl if it's provided
+      if (externalUrl) fileRecord.externalUrl(externalUrl, { store });
 
       // Update the size, as provided by the SA, in case it was changed by stream transformation
       if (typeof size === "number") fileRecord.size(size, { store });
