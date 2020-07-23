@@ -33,7 +33,7 @@
     "envalid": "^6.0.1",
     "graphql": "^15.1.0",
     "lodash": "^4.17.15",
-    "simpl-schema": "^1.7.2"
+    "simpl-schema": "^1.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
