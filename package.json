@@ -32,7 +32,7 @@
     "graphql-fields": "^2.0.3",
     "lodash": "^4.17.15",
     "object-hash": "^2.0.3",
-    "simpl-schema": "^1.7.3"
+    "simpl-schema": "^1.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
