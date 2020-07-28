@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections-sa-base@0.1.1...@reactioncommerce/file-collections-sa-base@0.2.0) (2020-07-28)
+
+
+### Features
+
+* support S3 url ([bf7c054](https://github.com/reactioncommerce/reaction-file-collections/commit/bf7c05402fdf18027477603bebfc4bcff0f6bdee))
+
+
+
+
+
 ## [0.1.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections-sa-base@0.1.0...@reactioncommerce/file-collections-sa-base@0.1.1) (2019-12-17)
 
 **Note:** Version bump only for package @reactioncommerce/file-collections-sa-base

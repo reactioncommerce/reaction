@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.7.3...@reactioncommerce/file-collections@0.8.0) (2020-07-28)
+
+
+### Features
+
+* support S3 url ([bf7c054](https://github.com/reactioncommerce/reaction-file-collections/commit/bf7c05402fdf18027477603bebfc4bcff0f6bdee))
+
+
+
+
+
 ## [0.7.3](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.7.2...@reactioncommerce/file-collections@0.7.3) (2019-12-19)
 
 
