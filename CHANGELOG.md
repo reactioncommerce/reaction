@@ -1,3 +1,19 @@
+# v3.9.0
+
+Reaction v3.9.0 adds minor features and performance enhancements, and contains no breaking changes since v3.8.0
+
+## Chores
+
+chore: update simple authorization plugin ([#6274](https://github.com/reactioncommerce/reaction/pull/6274))
+chore: Update accounts package ([#6269](https://github.com/reactioncommerce/reaction/pull/6269))
+chore: use yalc for package link and unlink ([#6266](https://github.com/reactioncommerce/reaction/pull/6266))
+chore: updated api plugins ([#6265](https://github.com/reactioncommerce/reaction/pull/6265))
+chore: fix package link script issues ([#6251](https://github.com/reactioncommerce/reaction/pull/6251))
+
+## Contributors
+
+Thanks to @loan-laux for contributing to this release! 🎉
+
 # v3.8.0
 
 Reaction v3.8.0 adds minor features and performance enhancements, and contains no breaking changes since v3.7.1
