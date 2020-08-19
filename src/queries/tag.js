@@ -23,7 +23,7 @@ export default async function tag(context, input) {
   });
 
   if (!foundTag) {
-    throw new ReactionError("not-found", "Tag not found");
+    throw new ReactionError("not-found", `Tag ${slugOrId} not found`);
   }
 
   // Check to see if user has `read` permissions for invisible tags
@@ -33,7 +33,7 @@ export default async function tag(context, input) {
 
   // if tag is invisible, only show if `hasInactivePermissions === true` && `shouldIncludeInvisible === true`
   if (foundTag.isVisible === false && (hasInactivePermissions === false || shouldIncludeInvisible === false)) {
-    throw new ReactionError("not-found", "Tag not found");
+    throw new ReactionError("not-found", `Tag ${slugOrId} not found`);
   }
 
   return foundTag;
