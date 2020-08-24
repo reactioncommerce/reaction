@@ -11,6 +11,9 @@
         },
         "settings": {
           "shippingLabel": "Envío"
+        },
+        "shippingSettings": {
+          "header": "Envío"
         }
       },
       "checkoutShipping": {
@@ -75,6 +78,9 @@
           "deliveryBegin": "Este envío.",
           "deliveryEnd": "Entrega Est."
         }
+      },
+      "defaultParcelSize": {
+        "label": "Tamaño del paquete por defecto"
       }
     }
   }
