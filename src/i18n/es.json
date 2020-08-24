@@ -4,10 +4,55 @@
   "translation": {
     "reaction-accounts": {
       "admin": {
+        "accounts": {
+          "tabs": {
+            "staff": "Empleados",
+            "customers": "Clientes",
+            "invites": "Invitaciones"
+          },
+          "accountsLabel": "Cuentas",
+          "createGroup": "Crea un grupo",
+          "inviteStaffMember": "Invitar empleado"
+        },
+        "accountsTable": {
+          "header": {
+            "email": "Dirección de correo electrónico",
+            "name": "Nombre"
+          },
+          "bulkActions": {
+            "addRemoveGroupsFromAccount": "Agregar/Quitar grupos de la cuenta"
+          }
+        },
+        "invitationsTable": {
+          "header": {
+            "email": "Dirección de correo electrónico",
+            "invitedBy": "Invitado por",
+            "shop": "Tienda",
+            "groups": "Grupos"
+          }
+        },
+        "groupCards": {
+          "createOrUpdateGroupDialog": {
+            "title": "Crear/Actualizar grupo",
+            "name": "Nombre",
+            "slug": "Slug",
+            "description": "Descripción",
+            "saveFailed": "No se pudo crear/actualizar el grupo.",
+            "selectRoles": "Roles"
+          },
+          "inviteStaffMemberDialog": {
+            "title": "Invite Staff Member",
+            "name": "Full Name",
+            "email": "E-mail Address",
+            "selectGroups": "Groups",
+            "saveFailed": "Failed to invite staff member."
+          }
+        },
         "dashboard": {
           "accountsLabel": "Cuentas",
           "accountsTitle": "Cuentas",
-          "accountsDescription": "Configuraciones De La Cuenta"
+          "accountsDescription": "Configuraciones De La Cuenta",
+          "manageGroups": "Administrar grupos"
         },
         "settings": {
           "continue": "Continuar",
