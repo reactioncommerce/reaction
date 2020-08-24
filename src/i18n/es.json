@@ -41,17 +41,17 @@
             "selectRoles": "Roles"
           },
           "inviteStaffMemberDialog": {
-            "title": "Invite Staff Member",
-            "name": "Full Name",
-            "email": "E-mail Address",
-            "selectGroups": "Groups",
-            "saveFailed": "Failed to invite staff member."
+            "title": "Invitar empleado",
+            "name": "Nombre Completo",
+            "email": "Dirección de correo electrónico",
+            "selectGroups": "Grupos",
+            "saveFailed": "No se pudo invitar a un miembro del personal."
           }
         },
         "dashboard": {
           "accountsLabel": "Cuentas",
           "accountsTitle": "Cuentas",
-          "accountsDescription": "Configuraciones De La Cuenta",
+          "accountsDescription": "Configuraciones de la cuenta",
           "manageGroups": "Administrar grupos"
         },
         "settings": {
@@ -63,11 +63,11 @@
           "updateGroupSuccess": "Grupo actualizado con éxito",
           "createGroupError": "Error al crear grupo",
           "updateGroupError": "Error al actualizar el grupo",
-          "changeShopOwnerWarn": "Estás a punto de cambiar el dueño de la tienda. El propietario actual será reemplazado",
+          "changeShopOwnerWarn": "Estás a punto de cambiar el propietario de la tienda. El propietario actual será reemplazado",
           "removeUserWarn": "Está a punto de eliminar un usuario de un grupo. El usuario perderá los permisos asociados",
           "accountsSettingsLabel": "Cuentas",
           "accountsSettingsTitle": "Cuentas",
-          "accountsSettingsDescription": "Configuraciones De La Cuenta"
+          "accountsSettingsDescription": "Configuraciones de la Cuenta"
         },
         "groupsInvite": {
           "name": "John Smith",
