@@ -23,7 +23,7 @@
         "isVisible": "Mostrar en el tienda",
         "isVisibleHelpText": "Haga que este elemento de navegación esté disponible en el tienda tanto para clientes como para administradores.",
         "isPrivate": "Acceso solo para administrador",
-        "isPrivateHelpText": "Mostrar solo a los administradores. Se utiliza para organizar cambios en la navegación sin exponerla a los clientes. \"Mostrar en la tienda\" debe revisarse.",
+        "isPrivateHelpText": "Mostrar solo a los administradores. Se utiliza para organizar cambios en la navegación sin exponerla a los clientes. \"Mostrar en la tienda\" debe estar seleccionado.",
         "isSecondary": "Navegación secundaria solamente",
         "isSecondaryHelpText": "Evite que este elemento se muestre como elemento de navegación principal. Es posible que este elemento todavía esté visible en algunas barras de navegación o barras laterales."
       }
