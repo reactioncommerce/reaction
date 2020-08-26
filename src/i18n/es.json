@@ -80,7 +80,7 @@
         }
       },
       "defaultParcelSize": {
-        "label": "Tamaño del paquete por defecto"
+        "label": "Tamaño por defecto del paquete"
       }
     }
   }
