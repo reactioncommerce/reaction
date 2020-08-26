@@ -35,7 +35,7 @@
           "createOrUpdateGroupDialog": {
             "title": "Crear/Actualizar grupo",
             "name": "Nombre",
-            "slug": "Slug",
+            "slug": "Identificador",
             "description": "Descripción",
             "saveFailed": "No se pudo crear/actualizar el grupo.",
             "selectRoles": "Roles"
