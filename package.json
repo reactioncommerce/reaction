@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.10.5",
-    "@babel/runtime-corejs3": "^7.10.5"
+    "@babel/runtime-corejs3": "^7.10.5",
+    "query-string": "6.13.1"
   }
 }
