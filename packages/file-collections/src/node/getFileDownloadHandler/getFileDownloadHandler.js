@@ -1,5 +1,5 @@
 import contentDisposition from "content-disposition";
-import Path from "path-parser";
+import { Path } from "path-parser";
 import debug from "../debug";
 import requestRange from "./requestRange";
 import writeHeadersToResponse from "./writeHeadersToResponse";
