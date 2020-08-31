@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.8.0...@reactioncommerce/file-collections@0.9.0) (2020-08-31)
+
+
+### Bug Fixes
+
+* path parser ([efb0926](https://github.com/reactioncommerce/reaction-file-collections/commit/efb09264ef10ab2343fdf2e735b85162bfa3edcb))
+
+
+### BREAKING CHANGES
+
+* introduced: Path is a named export rather than the default export.
+
+Signed-off-by: jhonsfran <jhonsfran@gmail.com>
+
+
+
+
+
 # [0.8.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.7.3...@reactioncommerce/file-collections@0.8.0) (2020-07-28)
 
 
