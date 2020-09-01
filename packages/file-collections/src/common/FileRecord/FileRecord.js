@@ -1,7 +1,7 @@
 /* global File, Blob */ // eslint-disable-line no-redeclare
 
 import { EventEmitter } from "events";
-import tus from "tus-js-client";
+import * as tus from "tus-js-client";
 import getUrlForFileRecord from "./url";
 
 const isNode = typeof process !== "undefined" &&
