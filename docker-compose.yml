@@ -35,5 +35,15 @@ services:
     volumes:
       - mongo-db4:/data/db
 
+  migration:
+    image: reaction-api-migrations:latest
+    depends_on: 
+      - mongo
+      - api
+    env_file:
+      - ./.env
+    networks: 
+      default:
+      reaction:
 volumes:
   mongo-db4:
