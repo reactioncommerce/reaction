@@ -99,7 +99,7 @@ async function generateSitemapsForShop(context, shopId, urlsPerSitemap) {
   const options = { projection: { _id: 1 } };
   const shouldRegenTagSitemaps = hasNoSitemap || !!(await Tags.findOne(selector, options));
   if (shouldRegenTagSitemaps) {
-    const tagSitemapItems = await getTagSitemapItems(shopId);
+    const tagSitemapItems = await getTagSitemapItems(context, shopId);
     const tagSitemaps = await rebuildPaginatedSitemaps(context, shopId, {
       typeHandle: "tags",
       items: tagSitemapItems,
