@@ -1,12 +1,15 @@
 import accounting from "accounting-js";
 
 /**
+ * @param {String} accountId Account Id
  * @param {Object} [billingAddress] Billing address, if one was collected
  * @param {String} [cartId] The source cart ID, if applicable
  * @param {Object} collections Map of MongoDB collections
  * @param {String} currencyCode The currency code
  * @param {Object} group The order fulfillment group
  * @param {String} orderId The order ID
+ * @param {Number} discountTotal Discount Total
+ * @param {Array} surcharges An array of Surcharges
  * @returns {Object} Valid CommonOrder for the given order group
  */
 export default async function xformOrderGroupToCommonOrder({
@@ -17,7 +20,9 @@ export default async function xformOrderGroupToCommonOrder({
   currencyCode,
   group,
   orderId,
-  discountTotal
+  discountTotal,
+  surcharges = []
+
 }) {
   // ** If you add any data here, be sure to add the same data to the matching xformCartGroupToCommonOrder xform
   const items = group.items.map((item) => ({
@@ -116,6 +121,7 @@ export default async function xformOrderGroupToCommonOrder({
     shippingAddress: address || null,
     shopId,
     sourceType: "order",
-    totals
+    totals,
+    surcharges
   };
 }

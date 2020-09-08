@@ -10,6 +10,7 @@ import xformOrderGroupToCommonOrder from "./xformOrderGroupToCommonOrder.js";
  * @param {Number} discountTotal Calculated discount total
  * @param {Object} group The fulfillment group to be mutated
  * @param {String} orderId ID of existing or new order to which this group will belong
+ * @param {Object} surcharges Surcharges object so it can be passed along
  * @returns {Object} An object with `taxTotal` and `taxableAmount` numeric properties
  */
 export default async function addTaxesToGroup(context, {
@@ -19,7 +20,8 @@ export default async function addTaxesToGroup(context, {
   currencyCode,
   discountTotal,
   group,
-  orderId
+  orderId,
+  surcharges
 }) {
   const { collections, mutations } = context;
 
@@ -31,7 +33,8 @@ export default async function addTaxesToGroup(context, {
     currencyCode,
     group,
     orderId,
-    discountTotal
+    discountTotal,
+    surcharges
   });
 
   // A taxes plugin is expected to add a mutation named `setTaxesOnOrderFulfillmentGroup`.
