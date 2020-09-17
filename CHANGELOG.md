@@ -6,7 +6,7 @@ This release is being coordinated with `reaction-development-platform` and is de
 
 ## Reaction v2 EOL
 
-This will be the final release of Reaction v2 software, and final notice that Reaction v2 is no longer supported as of September 1, 2020. We encourage everyone to upgrade to Reaction v3. Please see the [Upgrading from 2.x](https://docs.reactioncommerce.com/docs/upgrading) guide in our docs.
+This is the final release of Reaction v2 software. As of September 1, 2020, Reaction v2 is no longer supported. We encourage everyone to upgrade to Reaction v3. Please see the [Upgrading from 2.x](https://docs.reactioncommerce.com/docs/upgrading) guide in our docs.
 
 ## Chore
 
