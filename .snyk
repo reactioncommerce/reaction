@@ -1,6 +1,604 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.5
-patch: {}
-# ignores vulnerabilities until expiry date; change duration by modifying expiry date
-ignore:
-
+version: v1.19.0
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - '@reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-core > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-accounts > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-address-validation > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-authorization-simple > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-carts > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-catalogs > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-i18n > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-inventory > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-inventory-simple > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-navigation > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-orders > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-products > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-shipments > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-taxes > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-core > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-accounts > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-address-validation > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-address-validation-test > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-authentication > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-authorization-simple > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-carts > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-catalogs > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-discounts > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-discounts-codes > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-email > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-email-smtp > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-email-templates > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-files > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-i18n > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-inventory > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-inventory-simple > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-job-queue > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-navigation > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-notifications > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-orders > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-payments > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-payments-example > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-payments-stripe > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-pricing-simple > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-products > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-settings > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-shipments > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-shipments-flat-rate > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-shops > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-simple-schema > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-sitemap-generator > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-surcharges > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-system-information > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-taxes > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-taxes-flat-rate > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-translations > @reactioncommerce/api-utils > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-payments-stripe > nock > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-core > diehard > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-block-scoping > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-files > @reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/preset-modules > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-sticky-regex > @babel/helper-regex > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > google-auto-auth > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > split-array-stream > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-optimise-call-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-parameters > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-function-name > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-simple-access > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-template-literals > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-hoist-variables > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-unicode-property-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-dotall-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-named-capturing-groups-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-unicode-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-files > @reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > google-auto-auth > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > google-auto-auth > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-files > @reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-files > @reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > split-array-stream > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > split-array-stream > async > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-module-imports > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-member-expression-to-functions > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/helper-member-expression-to-functions > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/helper-member-expression-to-functions > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-optimise-call-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/helper-optimise-call-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/helper-optimise-call-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-function-name > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-object-rest-spread > @babel/plugin-transform-parameters > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-function-name > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-simple-access > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-unicode-property-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-dotall-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-named-capturing-groups-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-unicode-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/preset-modules > @babel/plugin-proposal-unicode-property-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/preset-modules > @babel/plugin-transform-dotall-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-member-expression-to-functions > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-member-expression-to-functions > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-member-expression-to-functions > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-member-expression-to-functions > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-optimise-call-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-optimise-call-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-optimise-call-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/helper-optimise-call-expression > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-simple-access > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/preset-modules > @babel/plugin-proposal-unicode-property-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/preset-modules > @babel/plugin-transform-dotall-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-annotate-as-pure > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-object-super > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-amd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-systemjs > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-modules-umd > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+    - '@reactioncommerce/api-plugin-tags > @reactioncommerce/data-factory > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash':
+        patched: '2020-09-17T21:41:02.328Z'
+ignore: {}
