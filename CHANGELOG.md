@@ -1,3 +1,21 @@
+# v2.9.3
+
+Reaction v2.9.3 fixes vulnerabilities introduced via npm dependencies, and contains no breaking changes since v2.9.2.
+
+This release is being coordinated with `reaction-development-platform` and is designed to work with `v2.9.3` of `example-storefront` and `reaction-hydra`.
+
+## Reaction v2 EOL
+
+This will be the final release of Reaction v2 software, and final notice that Reaction v2 is no longer supported as of September 1, 2020. We encourage everyone to upgrade to Reaction v3. Please see the [Upgrading from 2.x](https://docs.reactioncommerce.com/docs/upgrading) guide in our docs.
+
+## Chore
+
+- chore: Upgrade mongodb from 3.1.13 to 3.5.5 [#6207](https://github.com/reactioncommerce/reaction/pull/6207)
+- chore: Upgrade: @fortawesome/fontawesome-svg-core, @fortawesome/- chore: free-solid-svg-icons, @fortawesome/react-fontawesome [#6206](https://github.com/reactioncommerce/reaction/pull/6206)
+- chore: Upgrade: apollo-server, apollo-server-express [#6209](https://github.com/reactioncommerce/reaction/pull/6209)
+- chore: Upgrade libphonenumber-js from 1.4.2 to 1.7.48 [#6205](https://github.com/reactioncommerce/reaction/pull/6205)
+- chore: Upgrade @material-ui/core from 4.3.3 to 4.9.7 [#6208](https://github.com/reactioncommerce/reaction/pull/6208)
+
 # v2.9.2
 
 Reaction v2.9.2 fixes a high severity vulnerability introduced via an npm dependency, adds miscellaneous bug fixes and contains no breaking changes since v2.9.1.
