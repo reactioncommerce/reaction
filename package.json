@@ -107,7 +107,7 @@
     "radium": "^0.22.0",
     "ramda": "^0.25.0",
     "react": "16.8.6",
-    "react-animate-height": "2.0.3",
+    "react-animate-height": "2.0.23",
     "react-apollo": "3.0.0",
     "react-autosuggest": "^9.4.3",
     "react-avatar": "^2.5.1",
