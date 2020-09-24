@@ -129,7 +129,7 @@
   },
   "graphql-schema-linter": {
     "customRulePaths": [
-      ".reaction/graphql-linter/rules/*.js"
+      ".reaction/graphql-linter/rules/*.cjs"
     ],
     "rules": [
       "arguments-have-descriptions",
