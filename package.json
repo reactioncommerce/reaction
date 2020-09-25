@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "type": "module",
   "engines": {
-    "node": ">=12.14.1"
+    "node": ">=14.11.0"
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",
@@ -132,7 +132,7 @@
   },
   "graphql-schema-linter": {
     "customRulePaths": [
-      ".reaction/graphql-linter/rules/*.js"
+      ".reaction/graphql-linter/rules/*.cjs"
     ],
     "rules": [
       "arguments-have-descriptions",

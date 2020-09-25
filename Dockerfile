@@ -1,5 +1,7 @@
 # Dockerfile for production builds
-FROM reactioncommerce/node-prod:12.14.1-v1
+FROM reactioncommerce/node-prod:14.11.0-v1
+
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/src/app/node_modules/.bin
 
 # The `node-prod` base image installs NPM deps with --no-scripts.
 # This prevents the `sharp` lib from working because it installs the binaries
