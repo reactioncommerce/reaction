@@ -6,7 +6,9 @@ Reaction v3.10.0 adds minor features and performance enhancements, and contains 
 
 ### Update node from v12.x to v14.x
 
-Update Reaction to current stable node for general maintenance
+Update Reaction to current stable node for general maintenance.
+
+Please note that node's ES Modules support is stable, but still experimental. While we are not aware of any specific breaking changes or issues, some CommonJS/ES Modules refactoring may be necessary in some installations.
 
 ## Features
 
