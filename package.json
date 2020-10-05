@@ -65,8 +65,7 @@
     "@reactioncommerce/logger": "~1.1.3",
     "@reactioncommerce/random": "~1.0.2",
     "graphql": "~14.6.0",
-    "semver": "~6.3.0",
-    "snyk": "^1.398.1"
+    "semver": "~6.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -115,9 +114,7 @@
     "test:integration:mutation": "node --max_old_space_size=4000 --expose-gc ./node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/queries/'",
     "lint": "eslint .",
     "lint:gql": "graphql-schema-linter ./src/**/*.graphql",
-    "version": "echo $npm_package_version",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "version": "echo $npm_package_version"
   },
   "prettier": {
     "arrowParens": "always"
@@ -151,6 +148,5 @@
       "types-are-capitalized",
       "types-have-descriptions"
     ]
-  },
-  "snyk": true
+  }
 }
