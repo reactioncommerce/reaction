@@ -114,6 +114,9 @@ type Shop implements Node {
   "Returns URLs for shop logos"
   shopLogoUrls: ShopLogoUrls
 
+  "Shop's type"
+  shopType: String
+
   "Shop's slug"
   slug: String
 
