@@ -74,8 +74,8 @@ type Invitation implements Node {
   "The groups this person was invited to"
   groups: [Group]!
 
-  "The shop this person was invited to"
-  shop: Shop!
+  "The shop this person was invited to. Optional because we can also invite merchants to create their own shops."
+  shop: Shop
 
   "The admin who invited this person"
   invitedBy: Account
