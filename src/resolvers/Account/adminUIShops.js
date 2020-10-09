@@ -9,6 +9,10 @@
  * @returns {Promise<Object>} A connection object
  */
 export default async function adminUIShops(account, args, context) {
+  if (!account || !account.adminUIShopIds || account.adminUIShopIds.length === 0) {
+    return [];
+  }
+
   const shopCursor = await context.queries.shops(context, { shopIds: account.adminUIShopIds });
 
   return shopCursor.toArray();
