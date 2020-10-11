@@ -117,5 +117,6 @@ export const defaultSystemManagerRoles = [
   "reaction:legacy:groups/read",
   "reaction:legacy:groups/update",
   "reaction:legacy:shops/create",
-  "reaction:legacy:shops/read"
+  "reaction:legacy:shops/read",
+  "reaction:legacy:invitations/read"
 ];
