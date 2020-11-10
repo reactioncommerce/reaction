@@ -53,8 +53,7 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "jest": "^26.1.0",
     "jest-cli": "^26.1.0",
-    "lerna": "^3.22.1",
-    "tus-js-client": "^2.1.1"
+    "lerna": "^3.22.1"
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.10.5",
