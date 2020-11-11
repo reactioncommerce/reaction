@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.2](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.9.1...@reactioncommerce/file-collections@0.9.2) (2020-11-11)
+
+
+### Bug Fixes
+
+* revert to tus-js-client ^1.5.1 ([3cc1d54](https://github.com/reactioncommerce/reaction-file-collections/commit/3cc1d548900e7245db8a22ad5c6383a1cd2e1435))
+
+
+
+
+
 ## [0.9.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.9.0...@reactioncommerce/file-collections@0.9.1) (2020-09-01)
 
 
