@@ -56,6 +56,9 @@ extend type Query {
     "The tag ID"
     tagId: ID!,
 
+    "Regex match query string, for product title"
+    query: String,
+
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
 
