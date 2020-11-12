@@ -9,6 +9,7 @@ import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
  * @param {Object} [params] - an object of all arguments that were sent by the client
  * @param {String} [params.shopId] - Shop id
  * @param {String} [params.tagId] - Tag id
+ * @param {String} [params.query] - Query string
  * @param {Object} context - an object containing the per-request state
  * @returns {Promise<Array<Object>>} TagProducts Connection
  */
@@ -20,7 +21,8 @@ export default async function productsByTagId(_, params, context) {
     last,
     shopId: opaqueShopId,
     sortOrder,
-    tagId: opaqueTagId
+    tagId: opaqueTagId,
+    query
   } = params;
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
@@ -35,6 +37,7 @@ export default async function productsByTagId(_, params, context) {
       sortOrder
     },
     shopId,
-    tagId
+    tagId,
+    query
   });
 }
