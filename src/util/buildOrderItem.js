@@ -91,7 +91,10 @@ export default async function buildOrderItem(context, { currencyCode, inputItem,
     workflow: { status: "new", workflow: ["coreOrderWorkflow/created", "coreItemWorkflow/removedFromInventoryAvailableToSell"] }
   };
 
-  const cartItem = cart.items.find((cItem) => cItem.productId === newItem.productId);
+  let cartItem;
+  if (cart && cart.items.length) {
+    cartItem = cart.items.find((cItem) => cItem.productId === newItem.productId);
+  }
   for (const func of context.getFunctionsOfType("mutateNewOrderItemBeforeCreate")) {
     await func(context, { chosenProduct, chosenVariant, item: newItem, cartItem }); // eslint-disable-line no-await-in-loop
   }
