@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.3](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.9.2...@reactioncommerce/file-collections@0.9.3) (2020-11-13)
+
+
+### Bug Fixes
+
+* Ignore undefined errors from stream.destroy() ([6ee489f](https://github.com/reactioncommerce/reaction-file-collections/commit/6ee489f1c0a4c3c732a9f4bed8dfdcad9d8d7080))
+
+
+
+
+
 ## [0.9.2](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.9.1...@reactioncommerce/file-collections@0.9.2) (2020-11-11)
 
 
