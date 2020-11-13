@@ -7,9 +7,10 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} context an object containing the per-request state
  * @param {String} currencyCode The order currency code
  * @param {Object} inputItem Order item input. See schema.
+ * @param {Object} cart - The cart this order is being built from
  * @returns {Promise<Object>} An order item, matching the schema needed for insertion in the Orders collection
  */
-export default async function buildOrderItem(context, { currencyCode, inputItem }) {
+export default async function buildOrderItem(context, { currencyCode, inputItem, cart }) {
   const { queries } = context;
   const {
     addedAt,
@@ -90,8 +91,9 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
     workflow: { status: "new", workflow: ["coreOrderWorkflow/created", "coreItemWorkflow/removedFromInventoryAvailableToSell"] }
   };
 
+  const cartItem = cart.items.find((cItem) => cItem.productId === newItem.productId);
   for (const func of context.getFunctionsOfType("mutateNewOrderItemBeforeCreate")) {
-    await func(context, { chosenProduct, chosenVariant, item: newItem }); // eslint-disable-line no-await-in-loop
+    await func(context, { chosenProduct, chosenVariant, item: newItem, cartItem }); // eslint-disable-line no-await-in-loop
   }
 
   return newItem;

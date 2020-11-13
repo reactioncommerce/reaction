@@ -175,7 +175,8 @@ export default async function placeOrder(context, input) {
       currencyCode,
       discountTotal,
       inputGroup,
-      orderId
+      orderId,
+      cart
     });
 
     // We save off the first shipping address found, for passing to payment services. They use this
