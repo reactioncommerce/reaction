@@ -200,7 +200,7 @@ export default class StorageAdapter extends EventEmitter {
         })
         .catch((error) => {
           debug("saveCopyInfo error", error);
-          emitError(new Error(`StorageAdapter error saving copy info: ${error.message}`));
+          emitError(new Error(`StorageAdapter error saving copy info: ${error && (error.message || "error is undefined")}`));
         });
     });
 

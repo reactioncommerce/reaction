@@ -132,7 +132,7 @@ export default class RemoteUrlWorker extends EventEmitter {
         const readStream = response.body;
         const writeStream = await store.createWriteStream(fileRecord);
         const promise = new Promise((resolve, reject) => {
-          fileRecord.once("error", reject);
+          fileRecord.once("error", (err) => err && reject(err));
           fileRecord.once("stored", resolve);
           readStream.pipe(writeStream);
         });
