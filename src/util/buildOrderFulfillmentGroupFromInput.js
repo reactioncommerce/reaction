@@ -25,7 +25,8 @@ export default async function buildOrderFulfillmentGroupFromInput(context, {
   currencyCode,
   discountTotal,
   inputGroup,
-  orderId
+  orderId,
+  cart
 }) {
   const { data, items, selectedFulfillmentMethodId, shopId, totalPrice: expectedGroupTotal, type } = inputGroup;
 
