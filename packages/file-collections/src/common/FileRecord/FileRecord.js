@@ -353,7 +353,7 @@ export default class FileRecord extends EventEmitter {
       const writeStream = await store.createWriteStream(cloneRecord, { skipTransform: true });
 
       return new Promise((resolve, reject) => {
-        writeStream.once("error", reject);
+        writeStream.once("error", (err) => err && reject(err));
         writeStream.once("stored", resolve);
         readStream.pipe(writeStream);
       });

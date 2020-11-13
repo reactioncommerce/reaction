@@ -115,7 +115,11 @@ export default class TempFileStoreWorker extends EventEmitter {
         const readStream = tempStore.createReadStream(tempStoreId);
         const writeStream = await store.createWriteStream(fileRecord);
         const promise = new Promise((resolve, reject) => {
-          fileRecord.once("error", reject);
+          // It seems the underlying gridfs stream gets .destroy() called.
+          // That results in an "error" event being emitted but without any arguments.
+          // We need to only reject the promise on legit errors, so we ignore
+          // missing errors
+          fileRecord.once("error", (err) => err && reject(err));
           fileRecord.once("stored", resolve);
           readStream.pipe(writeStream);
         });
@@ -128,7 +132,8 @@ export default class TempFileStoreWorker extends EventEmitter {
         });
       });
     } catch (error) {
-      throw new Error(`Error in TempFileStoreWorker storage loop: ${error.message}`, error);
+      debug("TempFileStoreWorker: error in forEachPromise", error);
+      throw new Error(`Error in TempFileStoreWorker storage loop: ${error && error.message}`, error);
     }
 
     debug(`TempFileStoreWorker: Done storing ${loggingIdentifier} to all stores. Removing tempStoreId prop.`);
