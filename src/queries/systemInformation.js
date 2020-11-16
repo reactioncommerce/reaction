@@ -1,3 +1,5 @@
+import Logger from "@reactioncommerce/logger";
+
 /**
  * @name queries.systemInformation
  * @method
@@ -12,12 +14,20 @@ export default async function systemInformation(context, shopId) {
 
   await context.validatePermissions(`reaction:legacy:shops:${shopId}`, "read", { shopId });
 
-  const mongoAdmin = await db.admin();
-  const mongoInfo = await mongoAdmin.serverStatus();
+  let mongoVersion = "";
+
+  try {
+    const mongoAdmin = await db.admin();
+    const mongoInfo = await mongoAdmin.serverStatus();
+    mongoVersion = mongoInfo.version;
+  } catch (error) {
+    Logger.error(error);
+  }
+
   const plugins = Object.values(context.app.registeredPlugins).filter((plugin) => plugin.version);
   return {
     apiVersion: context.appVersion,
-    mongoVersion: { version: mongoInfo.version },
+    mongoVersion: { version: mongoVersion },
     plugins: plugins.map(({ name, version }) => ({ name, version }))
   };
 }
