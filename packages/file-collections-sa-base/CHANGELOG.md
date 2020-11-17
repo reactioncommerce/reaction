@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections-sa-base@0.2.1...@reactioncommerce/file-collections-sa-base@0.2.2) (2020-11-17)
+
+
+### Bug Fixes
+
+* Prevent error when cloning product variants ([a02ed38](https://github.com/reactioncommerce/reaction-file-collections/commit/a02ed38987e7aeda192a8322afe1306014706152))
+
+
+
+
+
 ## [0.2.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections-sa-base@0.2.0...@reactioncommerce/file-collections-sa-base@0.2.1) (2020-11-13)
 
 
