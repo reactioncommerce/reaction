@@ -84,6 +84,11 @@ export default class StorageAdapter extends EventEmitter {
     }
 
     sourceStream.on("error", (error) => {
+      if (!error) {
+        // This is a spurious error from stream.destroy() and needs to be disregarded.
+        // https://github.com/reactioncommerce/reaction/issues/6310
+        return;
+      }
       const emitted = this.emit("error", error, fileRecord);
       if (!emitted) console.error(error); // eslint-disable-line no-console
 
@@ -156,6 +161,11 @@ export default class StorageAdapter extends EventEmitter {
     }
 
     const emitError = (error) => {
+      if (!error) {
+        // This is a spurious error from stream.destroy() and needs to be disregarded.
+        // https://github.com/reactioncommerce/reaction/issues/6310
+        return;
+      }
       const emitted = this.emit("error", error, fileRecord);
       if (!emitted) console.error(error); // eslint-disable-line no-console
 
