@@ -20,6 +20,10 @@ export default envalid.cleanEnv(process.env, {
     desc: "A valid MongoDB connection string URI, ending with the database name",
     example: "mongodb://localhost:27017/reaction"
   }),
+  MONGO_USE_UNIFIED_TOPOLOGY: bool({
+    default: true,
+    desc: "MongoDB's useUnifiedTopology connection option"
+  }),
   PORT: num({
     default: 3000,
     desc: "The port on which the API server should listen",

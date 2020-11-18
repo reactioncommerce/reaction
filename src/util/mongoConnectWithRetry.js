@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import mongodb from "mongodb";
 import promiseRetry from "promise-retry";
+import config from "../config.js";
 
 const { MongoClient } = mongodb;
 
@@ -24,7 +25,7 @@ export default function mongoConnectWithRetry(url) {
 
     return MongoClient.connect(url, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: config.MONGO_USE_UNIFIED_TOPOLOGY
     }).then((client) => {
       Logger.info(`Connected to MongoDB. Database name: ${client.db().databaseName}`);
       return client;
