@@ -84,7 +84,10 @@ jobs:
             - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Run Integration Query Tests
-          command: MONGO_URL=mongodb://localhost:27017/test npm run test:integration:query
+          environment:
+            MONGO_URL: mongodb://localhost:27017/test
+            MONGO_USE_UNIFIED_TOPOLOGY: false
+          command: npm run test:integration:query
 
   test-integration-mutation:
     <<: *defaults
@@ -103,7 +106,10 @@ jobs:
             - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Run Integration Mutation Tests
-          command: MONGO_URL=mongodb://localhost:27017/test npm run test:integration:mutation
+          environment:
+            MONGO_URL: mongodb://localhost:27017/test
+            MONGO_USE_UNIFIED_TOPOLOGY: false
+          command: npm run test:integration:mutation
 
 
   docker-build-push:
