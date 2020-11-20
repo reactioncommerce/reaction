@@ -14,6 +14,7 @@ import updateGroupTotals from "./updateGroupTotals.js";
  * @param {Number} discountTotal Calculated discount total
  * @param {Object} inputGroup Order fulfillment group input. See schema.
  * @param {String} orderId ID of existing or new order to which this group will belong
+ * @param {Object} cart - the cart this order is being created from
  * @returns {Promise<Object>} The fulfillment group
  */
 export default async function buildOrderFulfillmentGroupFromInput(context, {
@@ -24,7 +25,8 @@ export default async function buildOrderFulfillmentGroupFromInput(context, {
   currencyCode,
   discountTotal,
   inputGroup,
-  orderId
+  orderId,
+  cart
 }) {
   const { data, items, selectedFulfillmentMethodId, shopId, totalPrice: expectedGroupTotal, type } = inputGroup;
 
@@ -39,7 +41,7 @@ export default async function buildOrderFulfillmentGroupFromInput(context, {
   // Build the final order item objects. As part of this, we look up the variant in the system and make sure that
   // the price is what the caller expects it to be.
   if (items) {
-    group.items = await Promise.all(items.map((inputItem) => buildOrderItem(context, { currencyCode, inputItem })));
+    group.items = await Promise.all(items.map((inputItem) => buildOrderItem(context, { currencyCode, inputItem, cart })));
   } else {
     group.items = [];
   }
