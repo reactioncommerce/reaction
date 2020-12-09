@@ -20,6 +20,7 @@ Fixed issues causing image upload to fail.
 
 - chore: Update @reactioncommerce dependencies ([#6296](https://github.com/reactioncommerce/reaction/pull/6296))
 - chore: Update api-plugin-shops ([#6295](https://github.com/reactioncommerce/reaction/pull/6295))
+- chore: update api-plugin-accounts package ([6312](https://github.com/reactioncommerce/reaction/pull/6312))
 
 ## Contributors
 
