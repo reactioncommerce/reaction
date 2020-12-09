@@ -9,7 +9,7 @@ const newGlobalPermissions = [
 /**
  * @summary migrates the database down one version
  * @param {Object} context Migration context
- * @param {Object} context.db MongoDB `Db` instance
+ * @param {Object} context.db MongoDB `db` instance
  * @param {Function} context.progress A function to report progress, takes percent
  *   number as argument.
  * @return {undefined}
@@ -29,7 +29,7 @@ async function down({ db, progress }) {
 /**
  * @summary Performs migration up from previous data version
  * @param {Object} context Migration context
- * @param {Object} context.db MongoDB `Db` instance
+ * @param {Object} context.db MongoDB `db` instance
  * @param {Function} context.progress A function to report progress, takes percent
  *   number as argument.
  * @return {undefined}
