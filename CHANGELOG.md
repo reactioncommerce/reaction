@@ -1,3 +1,31 @@
+# v3.11.0
+
+Reaction v3.11.0 adds minor enhancements, fixes bugs and contains no breaking changes since v3.10.0.
+
+## Notable changes
+
+### Fixed image uploads
+
+Fixed issues causing image upload to fail.
+
+## Fixes
+
+- fix: Get product image uploads working again ([#6309](https://github.com/reactioncommerce/reaction/pull/6309))
+
+## Refactors
+
+- refactor:  preserve symlinks in docker debug npm scripts ([#6302](https://github.com/reactioncommerce/reaction/pull/6302))
+
+## Chores
+
+- chore: Update @reactioncommerce dependencies ([#6296](https://github.com/reactioncommerce/reaction/pull/6296))
+- chore: Update api-plugin-shops ([#6295](https://github.com/reactioncommerce/reaction/pull/6295))
+- chore: update api-plugin-accounts package ([6312](https://github.com/reactioncommerce/reaction/pull/6312))
+
+## Contributors
+
+Thanks to @loan-laux and @balibebas for contributing to this release! 🎉
+
 # v3.10.0
 
 Reaction v3.10.0 adds minor features and performance enhancements, and contains no breaking changes since v3.9.0
