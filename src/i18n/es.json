@@ -4,13 +4,15 @@
   "translation": {
     "reaction-catalog": {
       "admin": {
+        "catalogProductPublishSuccess": "Producto publicado en el catálogo",
+        "catalogCalculateHashError": "Se produjo un error al intentar calcular el hash de este producto.",
         "shortcut": {
-          "catalogLabel": "Catalogar",
-          "catalogTitle": "Catalogar"
+          "catalogLabel": "Catálogo",
+          "catalogTitle": "Catálogo"
         },
         "dashboard": {
-          "catalogLabel": "Catalogar",
-          "catalogTitle": "Catalogar",
+          "catalogLabel": "Catálogo",
+          "catalogTitle": "Catálogo",
           "catalogDescription": "Catálogo del mercado"
         },
         "settings": {
