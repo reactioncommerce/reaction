@@ -22,7 +22,7 @@ export default async function updateAccountGroup(context, input) {
     appEvents,
     collections: { Groups },
     simpleSchemas: { Group },
-    user
+    userId
   } = context;
 
   // we are limiting group method actions to only users within the account managers role
@@ -61,7 +61,7 @@ export default async function updateAccountGroup(context, input) {
 
   await appEvents.emit("afterAccountGroupUpdate", {
     group: updatedGroup,
-    updatedBy: user._id,
+    updatedBy: userId,
     updatedFields: Object.keys(modifier.$set)
   });
 
