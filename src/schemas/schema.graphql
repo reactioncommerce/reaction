@@ -542,6 +542,9 @@ type Order implements Node {
   "The account that placed the order. Some orders are created for anonymous users. Anonymous orders have a null account."
   account: Account
 
+  "Full name(s) involved with payment. Payment can be made by one or more than one person"
+  billingName: String
+
   "The ID of the cart that created this order. Carts are deleted after becoming orders, so this is just a reference."
   cartId: ID
 

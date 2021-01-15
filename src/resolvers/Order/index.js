@@ -6,10 +6,12 @@ import orderSummary from "./orderSummary.js";
 import payments from "./payments.js";
 import refunds from "./refunds.js";
 import totalItemQuantity from "./totalItemQuantity.js";
+import billingName from "./billingName.js";
 
 export default {
   _id: (node) => encodeOrderOpaqueId(node._id),
   account: resolveAccountFromAccountId,
+  billingName: (node) => billingName(node),
   cartId: (node) => encodeCartOpaqueId(node._id),
   displayStatus: (node, { language }, context) => orderDisplayStatus(context, node, language),
   fulfillmentGroups: (node) => node.shipping || [],
