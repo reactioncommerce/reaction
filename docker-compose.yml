@@ -34,7 +34,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo-db4:/data/db
-    healthcheck: # This is hack to run the rs.initiate() after startup.
+    healthcheck: # re-run rs.initiate() after startup if it failed.
       test: test $$(echo "rs.status().ok || rs.initiate().ok" | mongo --quiet) -eq 1
       interval: 10s
       start_period: 30s
