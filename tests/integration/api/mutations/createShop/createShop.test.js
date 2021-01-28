@@ -1,6 +1,6 @@
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
-import Factory from "/tests/util/factory.js";
 import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
+import Factory from "/tests/util/factory.js";
 
 const CreateShopMutation = importAsString("./CreateShopMutation.graphql");
 

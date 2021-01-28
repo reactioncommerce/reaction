@@ -6,7 +6,7 @@ mutation CreateShop($input: CreateShopInput!) {
       shopType
       timezone
       language
-      currency{
+      currency {
         code
       }
     }
