@@ -1,0 +1,14 @@
+mutation CreateShop($input: CreateShopInput!) {
+  createShop(input: $input) {
+    shop {
+      name
+      description
+      shopType
+      timezone
+      language
+      currency {
+        code
+      }
+    }
+  }
+}
