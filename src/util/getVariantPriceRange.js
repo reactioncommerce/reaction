@@ -13,18 +13,27 @@ export default function getVariantPriceRange(variantId, variants) {
   const visibleOptions = variants.filter((option) => option.ancestors.includes(variantId) &&
     option.isVisible && !option.isDeleted);
 
-  const allOptions = variants.filter((option) => option.ancestors.includes(variantId));
+  // all options include visible and hidden options. Deleted options are not considered
+  const allOptions = variants.filter((option) => option.ancestors.includes(variantId) && !option.isDeleted);
 
-  // If the variant has options, but they are not visible return a price range of 0
+
+  // If the variant has options and the options are hidden, return a price range of 0
   if (allOptions.length && visibleOptions.length === 0) {
     return getPriceRange([0]);
   }
 
+  // If a variant has no visible options return price as it is
+  // If price is not an object, get the PriceRange object
   if (visibleOptions.length === 0) {
     const thisVariant = variants.find((option) => option._id === variantId);
-    return getPriceRange([(thisVariant && thisVariant.price) || 0]);
+    const price = (thisVariant && thisVariant.price) || 0;
+    if (typeof thisVariant.price === "object") {
+      return price;
+    }
+    return getPriceRange([price]);
   }
 
+  // If a variant has one or more visible options, calculate price range for all options
   const prices = visibleOptions.map((option) => option.price);
   return getPriceRange(prices);
 }
