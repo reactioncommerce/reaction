@@ -1,3 +1,11 @@
+# v3.11.1
+
+Reaction v3.11.1 adds minor bug fixes and contains no breaking changes since v3.11.0.
+
+## Fixes
+ - fix: write integration test for create shop (#6318)
+ - Run rs.initiate() to start replication on clean mongo boot (#6317)
+
 # v3.11.0
 
 Reaction v3.11.0 adds minor enhancements, fixes bugs and contains no breaking changes since v3.10.0.
