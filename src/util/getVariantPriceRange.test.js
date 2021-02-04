@@ -1,7 +1,7 @@
 import getVariantPriceRange from "./getVariantPriceRange.js";
 
 const internalCatalogProductId = "999";
-const internalVariantIds = ["875", "874", "873"];
+const internalVariantIds = ["875", "874", "873", "885", "884"];
 
 const mockVariants = [
   {
@@ -24,6 +24,20 @@ const mockVariants = [
     isDeleted: false,
     isVisible: true,
     price: 3.99
+  },
+  {
+    _id: internalVariantIds[3],
+    ancestors: [internalCatalogProductId],
+    isDeleted: false,
+    isVisible: true,
+    price: 9.99
+  },
+  {
+    _id: internalVariantIds[4],
+    ancestors: [internalCatalogProductId, internalVariantIds[3]],
+    isDeleted: false,
+    isVisible: false,
+    price: 7.99
   }
 ];
 
@@ -68,6 +82,27 @@ test("expect variant price string if variants have same price", () => {
     range: "5.99",
     max: 5.99,
     min: 5.99
+  };
+  expect(spec).toEqual(success);
+});
+
+test("expect variant with all hidden options to return 0", () => {
+  const spec = getVariantPriceRange(internalVariantIds[3], mockVariants);
+  const success = {
+    range: "0.00",
+    max: 0,
+    min: 0
+  };
+  expect(spec).toEqual(success);
+});
+
+test("expect variant with all deleted options to return its own price", () => {
+  mockVariants[4].isDeleted = true;
+  const spec = getVariantPriceRange(internalVariantIds[3], mockVariants);
+  const success = {
+    range: "9.99",
+    max: 9.99,
+    min: 9.99
   };
   expect(spec).toEqual(success);
 });
