@@ -16,10 +16,11 @@ export default function getProductPriceRange(productId, variants) {
   // If there are no visible variants, set price range to 0
   if (visibleVariants.length === 0) return getPriceRange([0]);
 
-  const variantPrices = [];
+  let variantPrices = [];
   visibleVariants.forEach((variant) => {
     const { min, max } = getVariantPriceRange(variant._id, variants);
     variantPrices.push(min, max);
   });
+  variantPrices = variantPrices.filter((price) => price !== 0);
   return getPriceRange(variantPrices);
 }
