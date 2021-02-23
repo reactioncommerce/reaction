@@ -2,6 +2,7 @@ import pkg from "../package.json";
 import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
+import queries from "./queries/index.js";
 import startup from "./startup.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
@@ -32,6 +33,7 @@ export default async function register(app) {
     },
     mutations,
     policies,
+    queries,
     functionsByType: {
       startup: [startup]
     }
