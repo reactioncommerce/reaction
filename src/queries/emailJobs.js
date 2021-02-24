@@ -4,7 +4,7 @@
  * @memberof Email
  * @summary query the Jobs collection and return email jobs
  * @param {Object} context - an object containing the per-request state
- * @param {String} shopIds - ids of the shops to get emails for
+ * @param {String[]} shopIds - ids of the shops to get emails for
  * @returns {Object} group object
  */
 export default async function emailJobs(context, shopIds) {

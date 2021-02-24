@@ -9,6 +9,9 @@ type EmailJobData {
 
 "An e-mail job"
 type EmailJob {
+    "The ID of the e-mail job"
+    _id: ID!
+
     "The date and time of the last update to the e-mail job"
     updated: DateTime!
 
