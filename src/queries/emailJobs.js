@@ -16,7 +16,7 @@ export default async function emailJobs(context, shopIds) {
   await Promise.all(validatePermissionsForShopIds);
 
   return Jobs.find({
-    type: "sendEmail",
+    "type": "sendEmail",
     "data.shopId": {
       $in: shopIds
     }
