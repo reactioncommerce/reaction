@@ -1005,10 +1005,18 @@
           "columns": {
             "title": "Title",
             "type": "Type",
-            "language": "Language"
+            "language": "Language",
+            "subject": "Subject",
+            "template": "Template"
           }
         },
         "templateUpdateForm": {
+          "placeholders": {
+            "title": "Title",
+            "language": "Language",
+            "subject": "Subject",
+            "template": "Template"
+          },
           "emailTemplates": {
             "updateEmailTemplate": "Update email template"
           },
