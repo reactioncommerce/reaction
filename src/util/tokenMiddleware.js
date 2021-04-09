@@ -14,10 +14,9 @@ import getUserFromAuthToken from "./getUserFromAuthToken.js";
  * @method
  * @memberof GraphQL
  * @summary Express middleware to find user by token.
- * @param {Object} context An object with request-specific state. Just passed through to `getUserFromToken`.
  * @returns {Function} An Express middleware function
  */
-export default function tokenMiddleware(context) {
+export default function tokenMiddleware() {
   return async (req, res, next) => {
     const token = req.headers.authorization;
     if (!token) {
@@ -26,7 +25,7 @@ export default function tokenMiddleware(context) {
     }
 
     try {
-      req.user = await getUserFromAuthToken(token, context);
+      req.user = await getUserFromAuthToken(token);
       next();
     } catch (error) {
       Logger.error(error);
