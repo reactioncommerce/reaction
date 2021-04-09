@@ -29,8 +29,10 @@ const resolverValidationOptions = {
  * @returns {ExpressApp} The express app
  */
 export default function createApolloServer(options = {}) {
-  const { context: contextFromOptions, expressMiddleware, resolvers } = options;
+  const { context: contextFromOptions, expressMiddleware, resolvers, functionsByType } = options;
   const path = options.path || DEFAULT_GRAPHQL_PATH;
+
+  const contextFuncs = functionsByType.graphQLContext ?? [];
 
   // We support passing in typeDef strings.
   // Already executable schema are not supported with federation.
@@ -71,7 +73,8 @@ export default function createApolloServer(options = {}) {
   }
 
   const apolloServer = new ApolloServer({
-    async context({ connection, req }) {
+    async context(session) {
+      const { connection, req } = session;
       const context = { ...contextFromOptions };
 
       // For a GraphQL subscription WebSocket request, there is no `req`
@@ -82,7 +85,19 @@ export default function createApolloServer(options = {}) {
 
       await createDataLoaders(context);
 
-      return context;
+      let customContext = {};
+      /* eslint-disable no-await-in-loop */
+      for (const contextFuncObject of contextFuncs) {
+        const contextFunc = contextFuncObject.func;
+        customContext = {
+          ...customContext,
+          ...await contextFunc(session)
+        };
+      }
+      return {
+        ...context,
+        ...customContext
+      };
     },
     debug: options.debug || false,
     formatError: getErrorFormatter(),
