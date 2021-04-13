@@ -1,12 +1,10 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import config from "../config.js";
-
-const { REACTION_IDENTITY_PUBLIC_PASSWORD_RESET_URL } = config;
 
 const inputSchema = new SimpleSchema({
-  email: String
+  email: String,
+  url: String
 });
 
 /**
@@ -16,22 +14,13 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - GraphQL execution context
  * @param {Object} account - account object that is related to email address
  * @param {String} email - email of account to reset
+ * @param {String} url - the url to be sent in the email
  * @returns {Job} - returns a sendEmail Job instance
  */
-async function sendResetEmail(context, account, email) {
+async function sendResetEmail(context, account, email, url) {
   const {
-    collections: { Shops },
-    mutations: { startIdentityPasswordReset }
+    collections: { Shops }
   } = context;
-
-  if (typeof startIdentityPasswordReset !== "function") {
-    throw new ReactionError("not-supported", "Password reset not supported");
-  }
-
-  const { token } = await startIdentityPasswordReset(context, {
-    email,
-    userId: account.userId
-  });
 
   // Account emails are always sent from the primary shop email and using primary shop
   // email templates.
@@ -53,7 +42,7 @@ async function sendResetEmail(context, account, email) {
     },
     shopName: shop.name,
     // Account Data
-    passwordResetUrl: REACTION_IDENTITY_PUBLIC_PASSWORD_RESET_URL.replace("TOKEN", token)
+    passwordResetUrl: url
   };
 
   // get account profile language for email
@@ -74,6 +63,7 @@ async function sendResetEmail(context, account, email) {
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - Necessary input for mutation. See SimpleSchema.
  * @param {String} input.email - email of account to reset
+ * @param {String} input.url - url to use for password reset
  * @return {Promise<Object>} with email address if found
  */
 export default async function sendResetAccountPasswordEmail(context, input) {
@@ -81,7 +71,8 @@ export default async function sendResetAccountPasswordEmail(context, input) {
   const { collections } = context;
   const { Accounts } = collections;
   const {
-    email
+    email,
+    url
   } = input;
 
   const caseInsensitiveEmail = email.toLowerCase();
@@ -89,7 +80,7 @@ export default async function sendResetAccountPasswordEmail(context, input) {
   const account = await Accounts.findOne({ "emails.address": caseInsensitiveEmail });
   if (!account) throw new ReactionError("not-found", "Account not found");
 
-  await sendResetEmail(context, account, caseInsensitiveEmail);
+  await sendResetEmail(context, account, caseInsensitiveEmail, url);
 
   return email;
 }
