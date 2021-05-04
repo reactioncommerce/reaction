@@ -404,7 +404,8 @@ export default class ReactionAPICore {
       debug: debugLevels.includes(REACTION_LOG_LEVEL),
       expressMiddleware: this.expressMiddleware,
       resolvers,
-      schemas
+      schemas,
+      functionsByType: this.functionsByType
     });
 
     this.apolloServer = apolloServer;
