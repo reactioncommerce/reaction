@@ -1,23 +1,38 @@
+import { makeExecutableSchema } from "apollo-server";
 import pkg from "../package.json";
-import mutations from "./mutations/index.js";
 import tokenMiddleware from "./util/tokenMiddleware.js";
+import getAccounts from "./util/accountServer.js";
 
 /**
- * @summary Import and call this function to add this plugin to your API.
+ * @summary Registers the authentication plugin
  * @param {ReactionAPI} app The ReactionAPI instance
  * @returns {undefined}
  */
 export default async function register(app) {
+  const { accountsGraphQL } = await getAccounts(app);
+  // Make schema from account-js resolvers
+  const schema = makeExecutableSchema({
+    typeDefs: accountsGraphQL.typeDefs,
+    resolvers: accountsGraphQL.resolvers,
+    schemaDirectives: accountsGraphQL.schemaDirectives
+  });
+
   await app.registerPlugin({
     label: "Authentication",
     name: "authentication",
+    autoEnable: true,
     version: pkg.version,
+    functionsByType: {
+      graphQLContext: [({ req }) => accountsGraphQL.context({ req })]
+    },
     collections: {
       users: {
         name: "users"
       }
     },
-    mutations,
+    graphQL: {
+      schemas: [schema]
+    },
     expressMiddleware: [
       {
         route: "graphql",
