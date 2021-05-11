@@ -30,8 +30,8 @@ export default async function catalogItems(context, { searchQuery, shopIds, tagI
   if (tagIds) query["product.tagIds"] = { $in: tagIds };
 
   if (searchQuery) {
-    query["$text"] = {
-      "$search": searchQuery
+    query.$text = {
+      $search: searchQuery
     };
   }
 
