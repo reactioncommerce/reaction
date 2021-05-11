@@ -40,7 +40,8 @@ export default async function register(app) {
           [{ "product._id": 1 }, { unique: true }],
           [{ "product.productId": 1 }, { unique: true }],
           [{ "product.slug": 1 }],
-          [{ "product.tagIds": 1 }]
+          [{ "product.tagIds": 1 }],
+          [{ "$**": "text" }]
         ]
       }
     },

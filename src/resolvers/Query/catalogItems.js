@@ -12,15 +12,16 @@ import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters.js";
  * @summary Get a list of catalogItems
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
+ * @param {String[]} [args.searchQuery] - limit to catalog items matching this text search query
  * @param {String[]} [args.shopIds] - limit to catalog items for these shops
- * @param {String[]} [args.tagIds] - limit to catalog items with this array of tags
+ * @param {String[]} [args.tagIds] - limit to catalog items with this array  of tags
  * @param {Object[]} [args.booleanFilters] - Array of boolean filter objects with `name` and `value`
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} A CatalogItemConnection object
  */
 export default async function catalogItems(_, args, context, info) {
-  const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, booleanFilters, ...connectionArgs } = args;
+  const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, booleanFilters, searchQuery, ...connectionArgs } = args;
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
@@ -41,6 +42,7 @@ export default async function catalogItems(_, args, context, info) {
     return context.queries.catalogItemsAggregate(context, {
       catalogBooleanFilters,
       connectionArgs,
+      searchQuery,
       shopIds,
       tagId
     });
@@ -69,6 +71,7 @@ export default async function catalogItems(_, args, context, info) {
 
   const query = await context.queries.catalogItems(context, {
     catalogBooleanFilters,
+    searchQuery,
     shopIds,
     tagIds
   });
