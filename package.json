@@ -31,7 +31,7 @@
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/reaction-error": "~1.0.1",
     "lodash": "~4.17.15",
-    "simpl-schema": "~1.8.0"
+    "simpl-schema": "~1.10.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
