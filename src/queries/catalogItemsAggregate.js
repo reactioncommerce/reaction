@@ -1,3 +1,4 @@
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import arrayJoinPlusRemainingQuery from "@reactioncommerce/api-utils/arrayJoinPlusRemainingQuery.js";
 
@@ -39,7 +40,7 @@ export default async function catalogItemsAggregate(context, {
 
   if (searchQuery) {
     selector.$text = {
-      $search: searchQuery
+      $search: _.escapeRegExp(searchQuery)
     };
   }
 

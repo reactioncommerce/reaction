@@ -1,3 +1,4 @@
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -31,7 +32,7 @@ export default async function catalogItems(context, { searchQuery, shopIds, tagI
 
   if (searchQuery) {
     query.$text = {
-      $search: searchQuery
+      $search: _.escapeRegExp(searchQuery)
     };
   }
 
