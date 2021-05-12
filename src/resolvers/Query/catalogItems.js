@@ -14,7 +14,7 @@ import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters.js";
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
  * @param {String[]} [args.searchQuery] - limit to catalog items matching this text search query
  * @param {String[]} [args.shopIds] - limit to catalog items for these shops
- * @param {String[]} [args.tagIds] - limit to catalog items with this array  of tags
+ * @param {String[]} [args.tagIds] - limit to catalog items with this array of tags
  * @param {Object[]} [args.booleanFilters] - Array of boolean filter objects with `name` and `value`
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
