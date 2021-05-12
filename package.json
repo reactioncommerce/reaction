@@ -25,7 +25,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.14.2"
+    "@reactioncommerce/api-utils": "^1.16.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
