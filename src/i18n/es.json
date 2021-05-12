@@ -1,0 +1,20 @@
+[{
+  "i18n": "es",
+  "ns": "reaction-address",
+  "translation": {
+    "reaction-address": {
+      "addressValidation": {
+        "addNewItemButtonText": "Agregar servicio de validación de direcciones",
+        "cancelButtonText": "Cancelar",
+        "countryCodesLabel": "Filtro de país",
+        "countryCodesHelpText": "Utilice este servicio solo para direcciones en estos países",
+        "deleteItemButtonText": "Eliminar",
+        "entryFormSubmitButtonText": "Agregar servicio",
+        "helpText": "Agregue uno o más servicios para habilitar la validación de direcciones para esta tienda. Se utilizará el primer servicio que coincida con el filtro de país.",
+        "saveFailed": "Hubo un problema al guardar los cambios.",
+        "serviceNameLabel": "Servicio de validación",
+        "title": "Validación de dirección"
+      }
+    }
+  }
+}]
