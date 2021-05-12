@@ -14,7 +14,7 @@
         "lowInventoryWarningThreshold": "Advertir con",
         "lowInventoryWarningThresholdLabel": "Advierta a los clientes que el producto estará cerca de agotarse cuando la cantidad disponible alcance este umbral",
         "noInventoryTracking": "El inventario se rastrea solo para las variantes que pueden venderse. Seleccione una opción para administrar el inventario.",
-        "recalculateReservedInventory": "Recalculate reserved quantity"
+        "recalculateReservedInventory": "Recalcular cantidad reservada"
       }
     }
   }
