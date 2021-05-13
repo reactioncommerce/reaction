@@ -481,10 +481,7 @@ extend type Query {
     offset: Int,
 
     "Return results sorted in this order"
-    sortOrder: SortOrder = desc,
-
-    "By default, vendors are sorted by when they were last updated, most recently updated first. Set this to sort by one of the other allowed fields"
-    sortBy: CatalogItemSortByField = updatedAt
+    sortOrder: SortOrder = asc
   ): VendorConnection
 }
 

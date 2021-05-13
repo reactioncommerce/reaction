@@ -26,7 +26,7 @@ export default async function vendors(_, args, context, info) {
     tagIds
   });
 
-  return getPaginatedResponseFromAggregate(collection, pipeline, connectionArgs, {
+  return getPaginatedResponseFromAggregate(collection, pipeline, { ...connectionArgs, sortBy: "name" }, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
     includeTotalCount: wasFieldRequested("totalCount", info)
