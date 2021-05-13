@@ -1,3 +1,4 @@
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import arrayJoinPlusRemainingQuery from "@reactioncommerce/api-utils/arrayJoinPlusRemainingQuery.js";
 
@@ -9,6 +10,7 @@ import arrayJoinPlusRemainingQuery from "@reactioncommerce/api-utils/arrayJoinPl
  * @param {Object} context - An object containing the per-request state
  * @param {Object} params - Request parameters
  * @param {Object} [params.catalogBooleanFilters] - Additional filters object to add to the selector
+ * @param {String} params.searchQuery - Optional text search query
  * @param {String[]} [params.shopIds] - Shop IDs to include
  * @param {String} params.tagId - Tag ID
  * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
@@ -16,6 +18,7 @@ import arrayJoinPlusRemainingQuery from "@reactioncommerce/api-utils/arrayJoinPl
 export default async function catalogItemsAggregate(context, {
   connectionArgs,
   catalogBooleanFilters,
+  searchQuery,
   shopIds,
   tagId
 } = {}) {
@@ -33,6 +36,12 @@ export default async function catalogItemsAggregate(context, {
 
   if (shopIds && shopIds.length > 0) {
     selector.shopId = { $in: shopIds };
+  }
+
+  if (searchQuery) {
+    selector.$text = {
+      $search: _.escapeRegExp(searchQuery)
+    };
   }
 
   return arrayJoinPlusRemainingQuery({

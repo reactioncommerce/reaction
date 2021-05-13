@@ -420,6 +420,9 @@ extend type Query {
     "Additional filters to apply"
     booleanFilters: [CatalogBooleanFilter],
 
+    "Optional text search query"
+    searchQuery: String,
+
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,
 
