@@ -21,14 +21,10 @@ export default async function vendors(_, args, context, info) {
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
-  console.log("vendors resolver");
-
   const { collection, pipeline } = await context.queries.vendors(context, {
     shopIds,
     tagIds
   });
-
-  console.log("vendors query", query);
 
   return getPaginatedResponseFromAggregate(collection, pipeline, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),

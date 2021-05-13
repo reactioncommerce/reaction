@@ -10,8 +10,6 @@
  * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function vendors(context, { shopIds, tagIds } = {}) {
-  console.log("vendors query");
-
   const { collections } = context;
   const { Catalog } = collections;
 
@@ -20,19 +18,22 @@ export default async function vendors(context, { shopIds, tagIds } = {}) {
   if (shopIds) query.shopId = { $in: shopIds };
   if (tagIds) query["product.tagIds"] = { $in: tagIds };
 
-  console.log("query", query);
-
-  return Catalog.aggregate([
-    {
-      $group: {
-        _id: "product.vendor"
+  return {
+    collection: Catalog,
+    pipeline: [
+      {
+        $group: {
+          _id: "$product.vendor",
+          name: {
+            $first: "$product.vendor"
+          }
+        }
+      },
+      {
+        $project: {
+          _id: false
+        }
       }
-    },
-    {
-      $project: {
-        _id: false,
-
-      }
-    }
-  ]);
+    ]
+  };
 }

@@ -369,13 +369,18 @@ enum CatalogItemSortByField {
   updatedAt
 }
 
+type Vendor {
+  "The name of the vendor"
+  name: String
+}
+
 "A connection edge in which each node is a String representing a vendor"
 type VendorEdge {
   "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
 
   "The vendor"
-  node: String
+  node: Vendor
 }
 
 """
@@ -394,7 +399,7 @@ type VendorConnection {
   You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
   if you know you will not need to paginate the results.
   """
-  nodes: [String]
+  nodes: [Vendor]
 
   "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
