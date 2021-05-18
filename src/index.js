@@ -14,7 +14,7 @@ import {
   ImageInfo,
   ImageSizes,
   ShippingParcel,
-  SocialMetadata,
+  SocialMetadata
 } from "./simpleSchemas.js";
 
 /**
@@ -53,22 +53,22 @@ export default async function register(app) {
               "product.sku": "text",
               "product.slug": "text",
               "product.title": "text",
-              "product.vendor": "text",
+              "product.vendor": "text"
             },
             {
-              name: "product_search_index",
-            },
-          ],
-        ],
-      },
+              name: "product_search_index"
+            }
+          ]
+        ]
+      }
     },
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForCatalog],
-      startup: [startup],
+      startup: [startup]
     },
     graphQL: {
       resolvers,
-      schemas,
+      schemas
     },
     mutations,
     queries,
@@ -80,7 +80,7 @@ export default async function register(app) {
       CatalogProductOption,
       CatalogProductVariant,
       CatalogProduct,
-      Catalog,
-    },
+      Catalog
+    }
   });
 }
