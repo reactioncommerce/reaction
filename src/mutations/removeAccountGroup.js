@@ -17,7 +17,7 @@ import removeAccountsFromGroup from "../util/removeAccountsFromGroup.js";
  */
 export default async function removeAccountGroup(context, input) {
   const { groupId, shopId } = input;
-  const { appEvents, user } = context;
+  const { appEvents, userId } = context;
   const { Groups } = context.collections;
 
   await context.validatePermissions(`reaction:legacy:groups:${groupId}`, "remove", { shopId });
@@ -51,7 +51,7 @@ export default async function removeAccountGroup(context, input) {
 
   await appEvents.emit("afterAccountGroupDelete", {
     group: deletedGroup,
-    updatedBy: user._id
+    updatedBy: userId
   });
 
   return deletedGroup;
