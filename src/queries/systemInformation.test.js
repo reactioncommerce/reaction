@@ -1,6 +1,11 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import ReactionError from "@reactioncommerce/reaction-error";
+import Logger from "@reactioncommerce/logger";
 import systemInformation from "./systemInformation.js";
+
+jest.mock("@reactioncommerce/logger", () => ({
+  error: jest.fn().mockImplementationOnce(() => {})
+}));
 
 const fakeShopId = "FAKE_SHOP_ID";
 mockContext.appVersion = "1.2.3";
@@ -64,4 +69,27 @@ test("returns system info if user has permission", async () => {
   const result = await systemInformation(mockContext, fakeShopId);
 
   return expect(result).toEqual(expectedResult);
+});
+
+test("returns plugins even when mongoVersion fails to load", async () => {
+  const expectedResult = {
+    apiVersion: "1.2.3",
+    mongoVersion: { version: "" },
+    plugins: [
+      { name: "plugin-a", version: "1.0.0" },
+      { name: "plugin-b", version: "1.1.0" },
+      { name: "plugin-c", version: "1.0.2" },
+      { name: "plugin-d", version: "2.0.0" }
+    ]
+  };
+
+  mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(undefined));
+  mockContext.app.db.admin.mockReturnValueOnce(Promise.resolve(mongoAdmin));
+  mongoAdmin.serverStatus.mockRejectedValueOnce(new Error("Simulate serverStatus() error."));
+  const simulatedError = new Error("Simulate serverStatus() error.");
+
+  const result = await systemInformation(mockContext, fakeShopId);
+
+  expect(result).toEqual(expectedResult);
+  expect(Logger.error).toHaveBeenCalledWith(simulatedError);
 });
