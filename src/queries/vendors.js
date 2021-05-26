@@ -7,7 +7,7 @@
  * @param {Object} params - request parameters
  * @param {String[]} [params.shopIds] - Optional IDs of the shop to get a list of vendors for
  * @param {String[]} [params.tagIds] - Optional IDs of the tags to get a list of vendors for
- * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
+ * @returns {Object} - An aggregation object to be used by `getPaginatedResponseFromAggregate`
  */
 export default async function vendors(context, { shopIds, tagIds } = {}) {
   const { collections } = context;
