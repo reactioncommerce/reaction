@@ -12,4 +12,9 @@ export default async function emailTemplatesStartup(context) {
 
     await seedEmailTemplatesForShop(context, shop._id);
   });
+  // Update templates if they don't already exist.
+  const primaryShopId = await context.queries.primaryShopId(context.getInternalContext());
+  if (primaryShopId) {
+    await seedEmailTemplatesForShop(context, primaryShopId);
+  }
 }
