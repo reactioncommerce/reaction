@@ -7,6 +7,7 @@ mockContext.simpleSchemas = simpleSchemas;
 
 test("creates shop with type primary if there is no existing shop", async () => {
   mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve(null));
+  mockContext.collections.Shops.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
 
   await expect(createShop(mockContext, {
     name: "First shop"
@@ -21,6 +22,7 @@ test("creates shop with type merchant if there is already a primary", async () =
     shopType: "primary",
     name: "First shop"
   });
+  mockContext.collections.Shops.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
 
   await expect(createShop(mockContext, {
     name: "Second shop"
