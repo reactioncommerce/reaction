@@ -1,7 +1,9 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import createShop from "./createShop.js";
+import * as simpleSchemas from "../simpleSchemas.js";
 
 mockContext.mutations.createProduct = jest.fn().mockName("mutations.createProduct");
+mockContext.simpleSchemas = simpleSchemas;
 
 test("creates shop with type primary if there is no existing shop", async () => {
   mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve(null));
