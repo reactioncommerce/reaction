@@ -63,6 +63,11 @@ export default async function createShop(context, input) {
 
   await context.validatePermissions("reaction:legacy:shops", "create", { shopId: null });
 
+  const existingPrimaryShop = await collections.Shops.findOne(
+    { shopType: "primary" },
+    { projection: { _id: 1 } }
+  );
+
   const {
     currencyCode,
     defaultLanguage,
@@ -88,7 +93,6 @@ export default async function createShop(context, input) {
     name,
     description,
     paymentMethods: [],
-    shopType: type || "primary",
     slug: getSlug(name),
     timezone: defaultTimezone || "US/Pacific",
     unitsOfLength: [
@@ -128,17 +132,17 @@ export default async function createShop(context, input) {
     updatedAt: now
   };
 
+  if (!type && existingPrimaryShop) {
+    shop.shopType = "merchant";
+  } else if (!type) {
+    shop.shopType = "primary";
+  }
+
   ShopSchema.validate(shop);
 
   // Ensure we never have more than one primary shop
-  if (shop.shopType === "primary") {
-    const existingPrimaryShop = await collections.Shops.findOne(
-      { shopType: "primary" },
-      { projection: { _id: 1 } }
-    );
-    if (existingPrimaryShop) {
-      throw new ReactionError("invalid-param", "There may be only one primary shop");
-    }
+  if (shop.shopType === "primary" && existingPrimaryShop) {
+    throw new ReactionError("invalid-param", "There may be only one primary shop");
   }
 
   const { result } = await collections.Shops.insertOne(shop);
