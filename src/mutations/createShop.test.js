@@ -1,6 +1,6 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import createShop from "./createShop.js";
 import * as simpleSchemas from "../simpleSchemas.js";
+import createShop from "./createShop.js";
 
 mockContext.mutations.createProduct = jest.fn().mockName("mutations.createProduct");
 mockContext.simpleSchemas = simpleSchemas;
