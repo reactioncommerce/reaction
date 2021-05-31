@@ -35,5 +35,7 @@
   "navigation": "@reactioncommerce/api-plugin-navigation",
   "sitemapGenerator": "@reactioncommerce/api-plugin-sitemap-generator",
   "notifications": "@reactioncommerce/api-plugin-notifications",
-  "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test"
+  "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test",
+  "innox-plugin": "@kxl/rc-plugin-core",
+  "email": "@kxl/rc-plugin-email"
 }

@@ -65,7 +65,9 @@
     "@reactioncommerce/logger": "~1.1.3",
     "@reactioncommerce/random": "~1.0.2",
     "graphql": "~14.6.0",
-    "semver": "~6.3.0"
+    "semver": "~6.3.0",
+    "@kxl/rc-plugin-core": "~0.0.1",
+    "@kxl/rc-plugin-email": "~0.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
