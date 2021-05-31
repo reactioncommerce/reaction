@@ -1,5 +1,41 @@
 # Reaction Commerce
 
+This repo is based on the reaction commerce API: https://github.com/reactioncommerce/reaction
+
+The application contains plugins as NPM packages, the plugins can be native RC plugins or custom plugins. The custom plugins attached to this repository as git modules.
+
+Plugins:
+Those are the repositories of current customize plugins that are being used: https://github.com/KaiserXLabs/inno-reaction-core-plugin https://github.com/KaiserXLabs/inno-reaction-email-plugin
+
+Running the application:
+There are two docker compose files inside the repository:
+
+docker-compose.yaml - using the npm packages from the original reaction docker image package.json file docker-compose.override.yaml - overrides the previous file and mounting the local files into the created container
+
+if docker-compose.override.yaml not exists please run: ln -s docker-compose.dev.yml docker-compose.override.yml
+
+When the docker-compose.override.yaml exists you can start the app by running: docker-compose up [-d]
+
+Linking packages into container during development
+It's possible to link changes into the running container during development of specific plugin for example:
+
+If we would like to make some changes in api-plugins/inno-reaction-core-plugin and to see those changes locally you can do by:
+
+stopping the running container with: docker-compose down
+
+reference the package to your local folder by adding the folder path inside package.json file change: "@kxl/rc-plugin-core": "~0.0.1", to: "@kxl/rc-plugin-core": "file:./api-plugins/inno-reaction-core-plugin"
+
+run the container again with docker-compose up
+
+After the changes been done you can link the changes by doing:
+
+bin/package-link <package name(from the plugins.json) > <package-path> in our case: bin/package-link innox-plugin ./api-plugins/api-plugins/inno-reaction-core-plugin
+
+The container will restart automatically with the current change. When you done working on your plugin run: bin/package-unlink innox-plugin ./api-plugins/api-plugins/inno-reaction-core-plugin In order to unlink the package from the container
+
+updating and registering new packages
+Please see readme inside the plugins.
+
 [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Open Source Helpers](https://www.codetriage.com/reactioncommerce/reaction/badges/users.svg)](https://www.codetriage.com/reactioncommerce/reaction)
 
