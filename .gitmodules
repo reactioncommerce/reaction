@@ -1,6 +1,6 @@
 [submodule "api-plugins/inno-reaction-email-plugin"]
-  path = api-plugins/inno-reaction-email-plugin
-  url = git@github.com:KaiserXLabs/inno-reaction-email-plugin.git
+	path = api-plugins/inno-reaction-email-plugin
+	url = https://github.com/KaiserXLabs/inno-reaction-email-plugin.git
 [submodule "api-plugins/inno-reaction-core-plugin"]
-  path = api-plugins/inno-reaction-core-plugin
-  url = git@github.com:KaiserXLabs/inno-reaction-core-plugin.git
+	path = api-plugins/inno-reaction-core-plugin
+	url = https://github.com/KaiserXLabs/inno-reaction-core-plugin.git
