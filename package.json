@@ -1,11 +1,14 @@
 {
   "name": "reaction-api",
-  "version": "3.11.1",
+  "version": "0.0.0",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
   "engines": {
     "node": ">=14.11.0"
+  },
+  "release": {
+    "branches": ["trunk"]
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",
@@ -101,6 +104,7 @@
     "node-fetch": "~2.6.0",
     "nodemon": "~1.19.2",
     "pinst": "^2.1.4",
+    "semantic-release": "^17.4.3",
     "wait-for-expect": "~3.0.0"
   },
   "scripts": {
