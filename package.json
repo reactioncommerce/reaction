@@ -24,7 +24,7 @@
     "url": "https://github.com/reactioncommerce/api-utils/issues"
   },
   "exports": {
-    "./": {
+    "./*": {
       "require": "./",
       "default": "./lib/"
     },
