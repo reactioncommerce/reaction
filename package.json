@@ -1,23 +1,11 @@
 {
   "name": "reaction-api",
-  "version": "3.11.1",
+  "version": "0.0.0",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
   "engines": {
     "node": ">=14.11.0"
-  },
-  "homepage": "https://github.com/reactioncommerce/reaction",
-  "url": "https://github.com/reactioncommerce/reaction",
-  "email": "reaction@reactioncommerce.com",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/reactioncommerce/reaction.git"
-  },
-  "author": "Reaction Commerce <hello@reactioncommerce.com>",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "release": {
     "branches": [
@@ -58,6 +46,18 @@
         }
       ]
     ]
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "reaction@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git"
+  },
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
     "@reactioncommerce/api-core": "~1.4.2",

@@ -133,7 +133,7 @@ jobs:
       - run:
           name: Build and push production Docker image
           command: |
-            VERSION=$(git describe --abbrev=0 --tags)-test
+            VERSION=$(git describe --abbrev=0 --tags)
             docker build -t ${DOCKER_REPOSITORY}:${VERSION} .
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push ${DOCKER_REPOSITORY}:${VERSION}
@@ -160,17 +160,21 @@ workflows:
             - install-dependencies
       - release:
           context: reaction-publish-semantic-release
+          filters:
+            branches:
+              only:
+                - trunk
           requires:
             - dockerfile-lint
             - eslint
             - graphql-lint
             - test-integration-query
             - test-integration-mutation
+      - docker-build-push:
+          context: reaction-publish-docker
           filters:
             branches:
               only:
                 - trunk
-      - docker-build-push:
-          context: reaction-publish-docker
           requires:
             - release
