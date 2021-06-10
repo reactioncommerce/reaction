@@ -19,6 +19,46 @@
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
+  "release": {
+    "branches": [
+      "trunk"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "sed -i 's/${lastRelease.version}/${nextRelease.version}/g' docker-compose.yml"
+        }
+      ],
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "package-lock.json",
+            "CHANGELOG.md",
+            "docker-compose.yml"
+          ],
+          "message": "chore(release): v${nextRelease.version} [skip ci]"
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "@reactioncommerce/api-core": "~1.4.2",
     "@reactioncommerce/api-plugin-accounts": "~1.6.0",
@@ -75,6 +115,9 @@
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
     "@reactioncommerce/eslint-config": "~2.2.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/exec": "^5.0.0",
+    "@semantic-release/git": "^9.0.0",
     "apollo-link-http": "~1.5.16",
     "apollo-server-testing": "~2.9.6",
     "babel-eslint": "~10.0.3",
@@ -101,6 +144,7 @@
     "node-fetch": "~2.6.0",
     "nodemon": "~1.19.2",
     "pinst": "^2.1.4",
+    "semantic-release": "^17.4.3",
     "wait-for-expect": "~3.0.0"
   },
   "scripts": {
