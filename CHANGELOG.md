@@ -1,3 +1,10 @@
+## [3.12.1](https://github.com/reactioncommerce/reaction/compare/v3.12.0...v3.12.1) (2021-06-11)
+
+
+### Bug Fixes
+
+* update docker-compose on release ([2e88105](https://github.com/reactioncommerce/reaction/commit/2e881055f558e6bcf174ff041de3ba5fcf8aad33))
+
 # v3.11.1
 
 Reaction v3.11.1 adds minor bug fixes and contains no breaking changes since v3.11.0.
