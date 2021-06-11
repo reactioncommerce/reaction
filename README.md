@@ -81,7 +81,7 @@ Use an external GraphQL client to test http://localhost:3000/graphql. GraphQL Pl
 ## Tutorials, docs & developer tools
 
 - [Developer documentation](https://docs.reactioncommerce.com)
-- [Docs: Introduction to Reaction:  Concepts](https://docs.reactioncommerce.com/docs/concepts-intro)
+- [Docs: Introduction to Reaction: Concepts](https://docs.reactioncommerce.com/docs/concepts-intro)
 - [Swag Shop Tutorial](https://docs.reactioncommerce.com/docs/swag-shop-1)
 - [Storefront UI Development Tutorial](https://docs.reactioncommerce.com/docs/storefront-intro)
 - [Storefront Component Library](http://designsystem.reactioncommerce.com/)
@@ -98,13 +98,14 @@ Use an external GraphQL client to test http://localhost:3000/graphql. GraphQL Pl
 
 :star: If you like what you see, star us on GitHub.
 
-Find a bug, a typo, or something that’s not documented well? We’d love for you to [open an issue](https://github.com/reactioncommerce/reaction/issues) telling us what we can improve!
+Find a bug, a typo, or something that’s not documented well? We’d love for you to [open an issue](https://github.com/reactioncommerce/reaction/issues) telling us what we can improve! This project uses [semantic-release](https://semantic-release.gitbook.io/semantic-release/), please use their [commit message format](https://semantic-release.gitbook.io/semantic-release/#commit-message-format).
 
 Want to request a feature? Use our [Reaction Feature Requests repository](https://github.com/reactioncommerce/reaction-feature-requests) to file a request.
 
 We love your pull requests! Check our our [`Good First Issue`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) and [`Help Wanted`](https://github.com/reactioncommerce/reaction/issues?q=label%3A%22help+wanted%22) tags for good issues to tackle.
 
 ### Pull Request guidelines
+
 Pull requests should pass all automated tests, style, and security checks.
 
 Your code should pass all [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/trunk/testing-reaction). Run `docker-compose run --rm reaction npm run test` to run the test suites in containers. If you're adding functionality to Reaction, you should add tests for the added functionality.
@@ -118,6 +119,7 @@ We also request that you follow the our [pull request template](https://docs.rea
 Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/docs/contributing-to-reaction).
 
 ### Developer Certificate of Origin
+
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing-off all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
 
 ```
@@ -133,4 +135,5 @@ We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO
 If you forget to sign-off your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
 
 ### License
+
 Reaction is [GNU GPLv3 Licensed](./LICENSE.md)

@@ -112,25 +112,17 @@ jobs:
           command: npm run test:integration:mutation
 
   release:
-    docker:
-      - image: node:12.14.1
-
-    dependencies:
-      pre:
-        - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
+    <<: *defaults
     steps:
       - checkout
-
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
+            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v5-node-modules-{{ .Branch }}
       - run:
           name: Push the latest version to npm
-          command: npx semantic-release
+          command: |
+            npx semantic-release
 
   docker-build-push:
     <<: *defaults
