@@ -1,3 +1,10 @@
+## [3.12.2](https://github.com/reactioncommerce/reaction/compare/v3.12.1...v3.12.2) (2021-06-11)
+
+
+### Bug Fixes
+
+* push to docker hub without v, get latest tag across all branches ([79a0ece](https://github.com/reactioncommerce/reaction/commit/79a0ece13bec9d713c630cdbd527278bd0ce3348))
+
 ## [3.12.1](https://github.com/reactioncommerce/reaction/compare/v3.12.0...v3.12.1) (2021-06-11)
 
 
