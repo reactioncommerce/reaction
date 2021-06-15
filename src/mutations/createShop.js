@@ -61,7 +61,9 @@ export default async function createShop(context, input) {
     userId
   } = context;
 
-  await context.validatePermissions("reaction:legacy:shops", "create", { shopId: null });
+  await context.validatePermissions("reaction:legacy:shops", "create", {
+    shopId: null
+  });
 
   const existingPrimaryShop = await collections.Shops.findOne(
     { shopType: "primary" },
@@ -136,13 +138,18 @@ export default async function createShop(context, input) {
     shop.shopType = "merchant";
   } else if (!type) {
     shop.shopType = "primary";
+  } else {
+    shop.shopType = type;
   }
 
   ShopSchema.validate(shop);
 
   // Ensure we never have more than one primary shop
   if (shop.shopType === "primary" && existingPrimaryShop) {
-    throw new ReactionError("invalid-param", "There may be only one primary shop");
+    throw new ReactionError(
+      "invalid-param",
+      "There may be only one primary shop"
+    );
   }
 
   const { result } = await collections.Shops.insertOne(shop);
