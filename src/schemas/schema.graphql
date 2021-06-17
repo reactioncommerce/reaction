@@ -19,7 +19,7 @@ input CreateStripePaymentIntentInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  cartId: String
+  cartId: String!
 
   shopId: String!
 
