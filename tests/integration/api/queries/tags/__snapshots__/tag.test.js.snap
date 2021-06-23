@@ -9,7 +9,7 @@ Object {
       "error": "not-found",
       "eventData": Object {},
       "isClientSafe": true,
-      "reason": "Tag not found",
+      "reason": "Tag slug122 not found",
     },
   },
   "locations": Array [
@@ -18,7 +18,7 @@ Object {
       "line": 2,
     },
   ],
-  "message": "Tag not found",
+  "message": "Tag slug122 not found",
   "path": Array [
     "tag",
   ],
@@ -34,7 +34,7 @@ Object {
       "error": "not-found",
       "eventData": Object {},
       "isClientSafe": true,
-      "reason": "Tag not found",
+      "reason": "Tag slug122 not found",
     },
   },
   "locations": Array [
@@ -43,7 +43,7 @@ Object {
       "line": 2,
     },
   ],
-  "message": "Tag not found",
+  "message": "Tag slug122 not found",
   "path": Array [
     "tag",
   ],
