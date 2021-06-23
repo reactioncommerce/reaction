@@ -1,3 +1,10 @@
+# [3.13.0](https://github.com/reactioncommerce/reaction/compare/v3.12.2...v3.13.0) (2021-06-23)
+
+
+### Features
+
+* updating package-lock with latest version ([5a86480](https://github.com/reactioncommerce/reaction/commit/5a8648001c651aca13fa9bb60e5797856c123599))
+
 ## [3.12.2](https://github.com/reactioncommerce/reaction/compare/v3.12.1...v3.12.2) (2021-06-11)
 
 
