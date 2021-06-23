@@ -98,7 +98,7 @@
     "@reactioncommerce/api-plugin-taxes": "^1.1.1",
     "@reactioncommerce/api-plugin-taxes-flat-rate": "^1.0.4",
     "@reactioncommerce/api-plugin-translations": "^1.2.0",
-    "@reactioncommerce/api-utils": "^1.16.0",
+    "@reactioncommerce/api-utils": "^1.16.5",
     "@reactioncommerce/db-version-check": "^1.0.0",
     "@reactioncommerce/file-collections": "^0.9.3",
     "@reactioncommerce/file-collections-sa-gridfs": "^0.1.5",
