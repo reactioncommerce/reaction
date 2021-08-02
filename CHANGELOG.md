@@ -1,3 +1,70 @@
+## [3.13.1](https://github.com/reactioncommerce/reaction/compare/v3.13.0...v3.13.1) (2021-06-24)
+
+
+### Bug Fixes
+
+* sharp is a direct dependency to resolve version issues ([717e6b5](https://github.com/reactioncommerce/reaction/commit/717e6b574aeb784757c3dea11eb020861197cf27))
+
+# [3.13.0](https://github.com/reactioncommerce/reaction/compare/v3.12.2...v3.13.0) (2021-06-23)
+
+
+### Features
+
+* updating package-lock with latest version ([5a86480](https://github.com/reactioncommerce/reaction/commit/5a8648001c651aca13fa9bb60e5797856c123599))
+
+## [3.12.2](https://github.com/reactioncommerce/reaction/compare/v3.12.1...v3.12.2) (2021-06-11)
+
+
+### Bug Fixes
+
+* push to docker hub without v, get latest tag across all branches ([79a0ece](https://github.com/reactioncommerce/reaction/commit/79a0ece13bec9d713c630cdbd527278bd0ce3348))
+
+## [3.12.1](https://github.com/reactioncommerce/reaction/compare/v3.12.0...v3.12.1) (2021-06-11)
+
+
+### Bug Fixes
+
+* update docker-compose on release ([2e88105](https://github.com/reactioncommerce/reaction/commit/2e881055f558e6bcf174ff041de3ba5fcf8aad33))
+
+# v3.11.1
+
+Reaction v3.11.1 adds minor bug fixes and contains no breaking changes since v3.11.0.
+
+## Fixes
+ - fix: write integration test for create shop ([#6318](https://github.com/reactioncommerce/reaction/pull/6318))
+ - Run rs.initiate() to start replication on clean mongo boot ([#6317](https://github.com/reactioncommerce/reaction/pull/6317))
+
+## Chores
+ - chore: adding git hooks for commit-msg ([#6321](https://github.com/reactioncommerce/reaction/pull/6321))
+
+# v3.11.0
+
+Reaction v3.11.0 adds minor enhancements, fixes bugs and contains no breaking changes since v3.10.0.
+
+## Notable changes
+
+### Fixed image uploads
+
+Fixed issues causing image upload to fail.
+
+## Fixes
+
+- fix: Get product image uploads working again ([#6309](https://github.com/reactioncommerce/reaction/pull/6309))
+
+## Refactors
+
+- refactor:  preserve symlinks in docker debug npm scripts ([#6302](https://github.com/reactioncommerce/reaction/pull/6302))
+
+## Chores
+
+- chore: Update @reactioncommerce dependencies ([#6296](https://github.com/reactioncommerce/reaction/pull/6296))
+- chore: Update api-plugin-shops ([#6295](https://github.com/reactioncommerce/reaction/pull/6295))
+- chore: update api-plugin-accounts package ([6312](https://github.com/reactioncommerce/reaction/pull/6312))
+
+## Contributors
+
+Thanks to @loan-laux and @balibebas for contributing to this release! 🎉
+
 # v3.10.0
 
 Reaction v3.10.0 adds minor features and performance enhancements, and contains no breaking changes since v3.9.0
