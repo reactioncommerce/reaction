@@ -1,3 +1,10 @@
+## [3.13.2](https://github.com/reactioncommerce/reaction/compare/v3.13.1...v3.13.2) (2021-08-04)
+
+
+### Bug Fixes
+
+* update api-plugin-files plugin ([fc90dff](https://github.com/reactioncommerce/reaction/commit/fc90dff09713e790e8a92af3aa4bfe471860b76d))
+
 ## [3.13.1](https://github.com/reactioncommerce/reaction/compare/v3.13.0...v3.13.1) (2021-06-24)
 
 
