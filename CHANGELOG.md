@@ -1,3 +1,10 @@
+## [3.13.1](https://github.com/reactioncommerce/reaction/compare/v3.13.0...v3.13.1) (2021-06-24)
+
+
+### Bug Fixes
+
+* sharp is a direct dependency to resolve version issues ([717e6b5](https://github.com/reactioncommerce/reaction/commit/717e6b574aeb784757c3dea11eb020861197cf27))
+
 # [3.13.0](https://github.com/reactioncommerce/reaction/compare/v3.12.2...v3.13.0) (2021-06-23)
 
 
