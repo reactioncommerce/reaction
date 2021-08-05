@@ -25,7 +25,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.16.1",
+    "@reactioncommerce/api-utils": "^1.16.5",
     "faker": "^4.1.0"
   },
   "devDependencies": {
