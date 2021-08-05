@@ -4,7 +4,7 @@
 #
 # See comment in docker-compose.dev.yml if you want to run for development.
 
-version: '3.4'
+version: "3.4"
 
 networks:
   reaction:
@@ -13,7 +13,7 @@ networks:
 
 services:
   api:
-    image: reactioncommerce/reaction:3.11.1
+    image: reactioncommerce/reaction:3.13.2
     depends_on:
       - mongo
     env_file:

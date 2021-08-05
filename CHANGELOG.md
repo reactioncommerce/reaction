@@ -1,3 +1,38 @@
+## [3.13.2](https://github.com/reactioncommerce/reaction/compare/v3.13.1...v3.13.2) (2021-08-04)
+
+
+### Bug Fixes
+
+* update api-plugin-files plugin ([fc90dff](https://github.com/reactioncommerce/reaction/commit/fc90dff09713e790e8a92af3aa4bfe471860b76d))
+
+## [3.13.1](https://github.com/reactioncommerce/reaction/compare/v3.13.0...v3.13.1) (2021-06-24)
+
+
+### Bug Fixes
+
+* sharp is a direct dependency to resolve version issues ([717e6b5](https://github.com/reactioncommerce/reaction/commit/717e6b574aeb784757c3dea11eb020861197cf27))
+
+# [3.13.0](https://github.com/reactioncommerce/reaction/compare/v3.12.2...v3.13.0) (2021-06-23)
+
+
+### Features
+
+* updating package-lock with latest version ([5a86480](https://github.com/reactioncommerce/reaction/commit/5a8648001c651aca13fa9bb60e5797856c123599))
+
+## [3.12.2](https://github.com/reactioncommerce/reaction/compare/v3.12.1...v3.12.2) (2021-06-11)
+
+
+### Bug Fixes
+
+* push to docker hub without v, get latest tag across all branches ([79a0ece](https://github.com/reactioncommerce/reaction/commit/79a0ece13bec9d713c630cdbd527278bd0ce3348))
+
+## [3.12.1](https://github.com/reactioncommerce/reaction/compare/v3.12.0...v3.12.1) (2021-06-11)
+
+
+### Bug Fixes
+
+* update docker-compose on release ([2e88105](https://github.com/reactioncommerce/reaction/commit/2e881055f558e6bcf174ff041de3ba5fcf8aad33))
+
 # v3.11.1
 
 Reaction v3.11.1 adds minor bug fixes and contains no breaking changes since v3.11.0.

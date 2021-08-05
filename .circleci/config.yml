@@ -5,7 +5,7 @@ version: 2
 # typing. See http://yaml.org/type/merge.html for details.
 defaults: &defaults
   environment:
-    CI_SCRIPTS: 'npx --quiet --package @reactioncommerce/ci-scripts@1.6.2'
+    CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
     DOCKER_REPOSITORY: "reactioncommerce/reaction"
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
@@ -122,6 +122,18 @@ jobs:
             MONGO_USE_UNIFIED_TOPOLOGY: false
           command: npm run test:integration:mutation
 
+  release:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v5-node-modules-{{ .Branch }}
+      - run:
+          name: Push the latest version to npm
+          command: |
+            npx semantic-release
 
   docker-build-push:
     <<: *defaults
@@ -131,7 +143,11 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Build and push production Docker image
-          command: ${CI_SCRIPTS} docker-build-tag-push . ${DOCKER_REPOSITORY}
+          command: |
+            VERSION=$(git describe --tags `git rev-list --tags --max-count=1` | cut -c2-100)
+            docker build -t ${DOCKER_REPOSITORY}:${VERSION} .
+            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+            docker push ${DOCKER_REPOSITORY}:${VERSION}
 
 workflows:
   version: 2
@@ -153,11 +169,23 @@ workflows:
       - test-integration-mutation:
           requires:
             - install-dependencies
-      - docker-build-push:
-          context: reaction-publish-docker
+      - release:
+          context: reaction-publish-semantic-release
+          filters:
+            branches:
+              only:
+                - trunk
           requires:
             - dockerfile-lint
             - eslint
             - graphql-lint
             - test-integration-query
             - test-integration-mutation
+      - docker-build-push:
+          context: reaction-publish-docker
+          filters:
+            branches:
+              only:
+                - trunk
+          requires:
+            - release
