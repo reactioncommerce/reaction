@@ -1,7 +1,7 @@
 import mongoConnectWithRetry from "@reactioncommerce/api-core/src/util/mongoConnectWithRetry.js";
 import { Mongo } from "@accounts/mongo";
-import AccountsServer from "@accounts/server";
-import AccountsPassword from "@accounts/password";
+import { AccountsServer } from "@accounts/server";
+import { AccountsPassword } from "@accounts/password";
 import mongoose from "mongoose";
 import { AccountsModule } from "@accounts/graphql-api";
 import config from "../config.js";
@@ -25,9 +25,9 @@ export default async (app) => {
     idProvider: () => mongoose.Types.ObjectId().toString()
   });
 
-  const password = new AccountsPassword.AccountsPassword();
+  const password = new AccountsPassword();
 
-  accountsServer = new AccountsServer.AccountsServer(
+  accountsServer = new AccountsServer(
     {
       siteUrl: STORE_URL,
       db: accountsMongo,
@@ -37,7 +37,10 @@ export default async (app) => {
         const query = text.split("/");
         const token = query[query.length - 1];
         const url = `${STORE_URL}/?resetToken=${token}`;
-        context.mutations.sendResetAccountPasswordEmail(context, { email: to, url });
+        context.mutations.sendResetAccountPasswordEmail(context, {
+          email: to,
+          url
+        });
       },
       emailTemplates: {
         resetPassword: {
