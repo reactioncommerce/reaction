@@ -1,4 +1,3 @@
-import { makeExecutableSchema } from "apollo-server";
 import pkg from "../package.json";
 import tokenMiddleware from "./util/tokenMiddleware.js";
 import getAccounts from "./util/accountServer.js";
@@ -10,12 +9,6 @@ import getAccounts from "./util/accountServer.js";
  */
 export default async function register(app) {
   const { accountsGraphQL } = await getAccounts(app);
-  // Make schema from account-js resolvers
-  const schema = makeExecutableSchema({
-    typeDefs: accountsGraphQL.typeDefs,
-    resolvers: accountsGraphQL.resolvers,
-    schemaDirectives: accountsGraphQL.schemaDirectives
-  });
 
   await app.registerPlugin({
     label: "Authentication",
@@ -31,7 +24,8 @@ export default async function register(app) {
       }
     },
     graphQL: {
-      schemas: [schema]
+      typeDefsObj: [accountsGraphQL.typeDefs],
+      resolvers: accountsGraphQL.resolvers
     },
     expressMiddleware: [
       {
