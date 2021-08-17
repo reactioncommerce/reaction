@@ -19,17 +19,17 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v5-node-modules-{{ .Branch }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Install NPM dependencies
           command: npm ci
       - save_cache:
-          key: reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
-          key: reaction-v5-node-modules-{{ .Branch }}
+          key: reaction-v6-node-modules-{{ .Branch }}
           paths:
             - node_modules
 
@@ -49,8 +49,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v5-node-modules-{{ .Branch }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Lint JavaScript
           command: npm run lint
@@ -61,8 +61,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v5-node-modules-{{ .Branch }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Lint GraphQL schemas
           command: npm run lint:gql
@@ -70,9 +70,9 @@ jobs:
   test-integration-query:
     <<: *defaults
     docker:
-      - image: circleci/node:14-browsers
+      - image: circleci/node:14.11.0-stretch
       # Integration tests need MongoDB server running and accessible on port 27017
-      - image: circleci/mongo:4.4
+      - image: circleci/mongo:4.2.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
@@ -80,19 +80,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v5-node-modules-{{ .Branch }}
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
-            echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
-            sudo apt-get update
-            sudo apt-get install -y mongodb-org-shell
-      - run:
-          name: Configure Replica Set
-          command: |
-            mongo --eval 'rs.initiate()'
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Run Integration Query Tests
           environment:
@@ -113,8 +102,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v5-node-modules-{{ .Branch }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Run Integration Mutation Tests
           environment:
@@ -128,8 +117,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v5-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v5-node-modules-{{ .Branch }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Push the latest version to npm
           command: |
