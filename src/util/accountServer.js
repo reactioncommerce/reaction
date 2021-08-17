@@ -13,7 +13,7 @@ export default async (app) => {
   if (accountsServer && accountsGraphQL) {
     return { accountsServer, accountsGraphQL };
   }
-  const { MONGO_URL, STORE_URL } = config;
+  const { MONGO_URL, STORE_URL, TOKEN_SECRET } = config;
   const { context } = app;
 
   const client = await mongoConnectWithRetry(MONGO_URL);
@@ -30,6 +30,7 @@ export default async (app) => {
   accountsServer = new AccountsServer(
     {
       siteUrl: STORE_URL,
+      tokenSecret: TOKEN_SECRET,
       db: accountsMongo,
       enableAutologin: true,
       ambiguousErrorMessages: false,
