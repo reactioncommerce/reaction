@@ -8,6 +8,7 @@ import getErrorFormatter from "./util/getErrorFormatter.js";
 import createDataLoaders from "./util/createDataLoaders.js";
 
 const require = createRequire(import.meta.url);
+const { mergeTypeDefs } = require("@graphql-tools/merge");
 const { gql, makeExecutableSchema, mergeSchemas } = require("apollo-server");
 const { ApolloServer } = require("apollo-server-express");
 const { buildFederatedSchema } = require("@apollo/federation");
@@ -29,7 +30,13 @@ const resolverValidationOptions = {
  * @returns {ExpressApp} The express app
  */
 export default function createApolloServer(options = {}) {
-  const { context: contextFromOptions, expressMiddleware, resolvers, functionsByType } = options;
+  const {
+    context: contextFromOptions,
+    expressMiddleware,
+    resolvers,
+    functionsByType,
+    typeDefsObj
+  } = options;
   const path = options.path || DEFAULT_GRAPHQL_PATH;
 
   const contextFuncs = functionsByType.graphQLContext ?? [];
@@ -55,12 +62,19 @@ export default function createApolloServer(options = {}) {
 
   if (config.REACTION_APOLLO_FEDERATION_ENABLED) {
     // Build federated schema from typeDefs and resolvers
-    schema = buildFederatedSchema([{
-      typeDefs: gql(typeDefs.join(" ")),
-      resolvers
-    }]);
+    schema = buildFederatedSchema([
+      {
+        typeDefs: gql(typeDefs.join(" ")),
+        resolvers
+      }
+    ]);
   } else {
-    schema = makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions });
+    // merging string typedefs and object typedefs
+    schema = makeExecutableSchema({
+      typeDefs: mergeTypeDefs([...typeDefs, ...typeDefsObj]),
+      resolvers,
+      resolverValidationOptions
+    });
     if (executableSchemas.length) {
       schema = mergeSchemas({ schemas: [schema, ...executableSchemas] });
     }
@@ -91,7 +105,7 @@ export default function createApolloServer(options = {}) {
         const contextFunc = contextFuncObject.func;
         customContext = {
           ...customContext,
-          ...await contextFunc(session)
+          ...(await contextFunc(session))
         };
       }
       return {
@@ -122,10 +136,18 @@ export default function createApolloServer(options = {}) {
     // so that the header is set on 401 responses, too. Otherwise it breaks our 401
     // refresh handling on the clients.
     cors(),
-    ...gqlMiddleware.filter((def) => def.stage === "first").map((def) => def.fn(contextFromOptions)),
-    ...gqlMiddleware.filter((def) => def.stage === "before-authenticate").map((def) => def.fn(contextFromOptions)),
-    ...gqlMiddleware.filter((def) => def.stage === "authenticate").map((def) => def.fn(contextFromOptions)),
-    ...gqlMiddleware.filter((def) => def.stage === "before-response").map((def) => def.fn(contextFromOptions))
+    ...gqlMiddleware
+      .filter((def) => def.stage === "first")
+      .map((def) => def.fn(contextFromOptions)),
+    ...gqlMiddleware
+      .filter((def) => def.stage === "before-authenticate")
+      .map((def) => def.fn(contextFromOptions)),
+    ...gqlMiddleware
+      .filter((def) => def.stage === "authenticate")
+      .map((def) => def.fn(contextFromOptions)),
+    ...gqlMiddleware
+      .filter((def) => def.stage === "before-response")
+      .map((def) => def.fn(contextFromOptions))
   ]);
 
   // Rewrite url to support legacy graphql routes
