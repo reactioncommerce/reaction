@@ -145,7 +145,8 @@ export default class ReactionAPICore {
         userId: null,
         validatePermissions: async () => undefined
       }),
-      getFunctionsOfType: (type) => (this.functionsByType[type] || []).map(({ func }) => func),
+      getFunctionsOfType: (type) =>
+        (this.functionsByType[type] || []).map(({ func }) => func),
       mutations: {},
       queries: {},
       // In a large production app, you may want to use an external pub-sub system.
@@ -166,7 +167,8 @@ export default class ReactionAPICore {
     this.functionsByType = {};
     this.graphQL = {
       resolvers: {},
-      schemas
+      schemas,
+      typeDefsObj: []
     };
 
     _.merge(this.graphQL.resolvers, coreResolvers);
@@ -174,9 +176,12 @@ export default class ReactionAPICore {
     // Passing in `rootUrl` option is mostly for tests. Recommend using ROOT_URL env variable.
     const resolvedRootUrl = options.rootUrl || ROOT_URL;
 
-    this.rootUrl = resolvedRootUrl.endsWith("/") ? resolvedRootUrl : `${resolvedRootUrl}/`;
+    this.rootUrl = resolvedRootUrl.endsWith("/")
+      ? resolvedRootUrl
+      : `${resolvedRootUrl}/`;
     this.context.rootUrl = this.rootUrl;
-    this.context.getAbsoluteUrl = (path) => getAbsoluteUrl(this.context.rootUrl, path);
+    this.context.getAbsoluteUrl = (path) =>
+      getAbsoluteUrl(this.context.rootUrl, path);
 
     this.registeredPlugins = {};
     this.expressMiddleware = [];
@@ -193,9 +198,9 @@ export default class ReactionAPICore {
         functionsByType[type].forEach((func) => {
           const entryWithSameName = this.functionsByType[type].find((existingEntry) => existingEntry.func.name === func.name);
           if (entryWithSameName) {
-            Logger.warn(`Plugin "${pluginName}" registers a function of type "${type}" named "${func.name}", `
-              + `but plugin "${entryWithSameName.pluginName}" has already registered a function of type "${type}" named "${entryWithSameName.func.name}".`
-              + " We recommend you choose a unique and descriptive name for all functions passed to `functionsByType` to help with debugging.");
+            Logger.warn(`Plugin "${pluginName}" registers a function of type "${type}" named "${func.name}", ` +
+                `but plugin "${entryWithSameName.pluginName}" has already registered a function of type "${type}" named "${entryWithSameName.func.name}".` +
+                " We recommend you choose a unique and descriptive name for all functions passed to `functionsByType` to help with debugging.");
           }
 
           this.functionsByType[type].push({ func, pluginName });
@@ -227,18 +232,24 @@ export default class ReactionAPICore {
         if (pluginConfig.collections) {
           // Loop through `collections` object keys
           for (const collectionKey in pluginConfig.collections) {
-            if ({}.hasOwnProperty.call(pluginConfig.collections, collectionKey)) {
+            if (
+              {}.hasOwnProperty.call(pluginConfig.collections, collectionKey)
+            ) {
               const collectionConfig = pluginConfig.collections[collectionKey];
 
               // Validate that the `collections` key value is an object and has `name`
-              if (!collectionConfig || typeof collectionConfig.name !== "string" || collectionConfig.name.length === 0) {
+              if (
+                !collectionConfig ||
+                typeof collectionConfig.name !== "string" ||
+                collectionConfig.name.length === 0
+              ) {
                 throw new Error(`In registerPlugin, collection "${collectionKey}" needs a name property`);
               }
 
               // Validate that the `collections` key hasn't already been taken by another plugin
               if (this.collections[collectionKey]) {
                 throw new Error(`Plugin ${pluginName} defines a collection with key "${collectionKey}" in registerPlugin,` +
-                  " but another plugin has already defined a collection with that key");
+                    " but another plugin has already defined a collection with that key");
               }
 
               // Pass through certain supported collection options
@@ -252,10 +263,12 @@ export default class ReactionAPICore {
               }
 
               if (collectionConfig.validationLevel) {
-                collectionOptions.validationLevel = collectionConfig.validationLevel;
+                collectionOptions.validationLevel =
+                  collectionConfig.validationLevel;
               }
               if (collectionConfig.validationAction) {
-                collectionOptions.validationAction = collectionConfig.validationAction;
+                collectionOptions.validationAction =
+                  collectionConfig.validationAction;
               }
 
               /* eslint-disable promise/no-promise-in-callback */
@@ -264,25 +277,37 @@ export default class ReactionAPICore {
               // If the collection already exists, we need to modify it instead of calling
               // `createCollection`, in order to add validation options.
               const getCollectionPromise = new Promise((resolve, reject) => {
-                this.db.collection(collectionConfig.name, { strict: true }, (error, collection) => {
-                  if (error) {
-                    // Collection with this name doesn't yet exist
-                    this.db.createCollection(collectionConfig.name, collectionOptions)
-                      .then((newCollection) => {
-                        resolve(newCollection);
-                        return null;
-                      })
-                      .catch(reject);
-                  } else {
-                    // Collection with this name exists, so modify before resolving
-                    this.db.command({ collMod: collectionConfig.name, ...collectionOptions })
-                      .then(() => {
-                        resolve(collection);
-                        return null;
-                      })
-                      .catch(reject);
+                this.db.collection(
+                  collectionConfig.name,
+                  { strict: true },
+                  (error, collection) => {
+                    if (error) {
+                      // Collection with this name doesn't yet exist
+                      this.db
+                        .createCollection(
+                          collectionConfig.name,
+                          collectionOptions
+                        )
+                        .then((newCollection) => {
+                          resolve(newCollection);
+                          return null;
+                        })
+                        .catch(reject);
+                    } else {
+                      // Collection with this name exists, so modify before resolving
+                      this.db
+                        .command({
+                          collMod: collectionConfig.name,
+                          ...collectionOptions
+                        })
+                        .then(() => {
+                          resolve(collection);
+                          return null;
+                        })
+                        .catch(reject);
+                    }
                   }
-                });
+                );
               });
 
               /* eslint-enable promise/no-promise-in-callback */
@@ -291,9 +316,11 @@ export default class ReactionAPICore {
 
               // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {
-                const indexingPromises = collectionConfig.indexes.map((indexArgs) => (
-                  collectionIndex(this.collections[collectionKey], ...indexArgs)
-                ));
+                const indexingPromises = collectionConfig.indexes.map((indexArgs) =>
+                  collectionIndex(
+                    this.collections[collectionKey],
+                    ...indexArgs
+                  ));
                 await Promise.all(indexingPromises); // eslint-disable-line no-await-in-loop
               }
             }
@@ -356,13 +383,16 @@ export default class ReactionAPICore {
     // If no migration control record is found, we assume that it's a new
     // database or you have intentionally removed it after running all necessary
     // 2.x migrations.
-    const migrationsControl = await this.db.collection("Migrations").findOne({ _id: "control" });
+    const migrationsControl = await this.db
+      .collection("Migrations")
+      .findOne({ _id: "control" });
     if (migrationsControl && migrationsControl.version < 76) {
       throw new Error(`Detected a migration version (${migrationsControl.version}) for the previous migration system, which is less than 76.` +
-        " This likely means that you have not run all 2.x migrations. You must complete the upgrade to at least 2.7.0 before upgrading to 3.0.0 or higher.");
+          " This likely means that you have not run all 2.x migrations. You must complete the upgrade to at least 2.7.0 before upgrading to 3.0.0 or higher.");
     }
 
-    const preStartupFunctionsRegisteredByPlugins = this.functionsByType.preStartup;
+    const preStartupFunctionsRegisteredByPlugins = this.functionsByType
+      .preStartup;
     if (Array.isArray(preStartupFunctionsRegisteredByPlugins)) {
       // We are intentionally running these in series, in the order in which they were registered
       for (const preStartupFunctionInfo of preStartupFunctionsRegisteredByPlugins) {
@@ -393,18 +423,12 @@ export default class ReactionAPICore {
    */
   initServer() {
     const { httpServer, serveStaticPaths = [] } = this.options;
-    const { resolvers, schemas } = this.graphQL;
 
-    const {
-      apolloServer,
-      expressApp,
-      path
-    } = createApolloServer({
+    const { apolloServer, expressApp, path } = createApolloServer({
       context: this.context,
       debug: debugLevels.includes(REACTION_LOG_LEVEL),
       expressMiddleware: this.expressMiddleware,
-      resolvers,
-      schemas,
+      ...this.graphQL,
       functionsByType: this.functionsByType
     });
 
@@ -417,13 +441,19 @@ export default class ReactionAPICore {
     // HTTP server for GraphQL subscription websocket handlers
     this.httpServer = httpServer || createServer(this.expressApp);
 
-    if (REACTION_APOLLO_FEDERATION_ENABLED && REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
+    if (
+      REACTION_APOLLO_FEDERATION_ENABLED &&
+      REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED
+    ) {
       throw new Error("Subscriptions are not supported with Apollo Federation. Set `REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED=false` to disable subscriptions.");
     }
 
     if (REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
       apolloServer.installSubscriptionHandlers(this.httpServer);
-      this.graphQLServerSubscriptionUrl = getAbsoluteUrl(this.rootUrl.replace("http", "ws"), apolloServer.subscriptionsPath);
+      this.graphQLServerSubscriptionUrl = getAbsoluteUrl(
+        this.rootUrl.replace("http", "ws"),
+        apolloServer.subscriptionsPath
+      );
     }
 
     // Serve files in the /public folder statically
@@ -466,10 +496,13 @@ export default class ReactionAPICore {
           this.serverPort = port;
 
           if (!silent) {
-            Logger.info(`GraphQL listening at ${this.graphQLServerUrl} (port ${port || "unknown"})`);
+            Logger.info(`GraphQL listening at ${this.graphQLServerUrl} (port ${port ||
+                "unknown"})`);
 
             if (this.hasSubscriptionsEnabled) {
-              Logger.info(`GraphQL subscriptions ready at ${this.graphQLServerSubscriptionUrl} (port ${port || "unknown"})`);
+              Logger.info(`GraphQL subscriptions ready at ${
+                this.graphQLServerSubscriptionUrl
+              } (port ${port || "unknown"})`);
             }
           }
 
@@ -493,7 +526,9 @@ export default class ReactionAPICore {
         await this.startServer({ port, silent });
       };
 
-      stopStart.catch((error) => { throw error; });
+      stopStart.catch((error) => {
+        throw error;
+      });
     }, 5000);
   }
 
@@ -632,6 +667,9 @@ export default class ReactionAPICore {
       if (plugin.graphQL.schemas) {
         this.graphQL.schemas.push(...plugin.graphQL.schemas);
       }
+      if (plugin.graphQL.typeDefsObj) {
+        this.graphQL.typeDefsObj.push(...plugin.graphQL.typeDefsObj);
+      }
     }
 
     if (plugin.mutations) {
@@ -654,7 +692,10 @@ export default class ReactionAPICore {
     this._registerFunctionsByType(plugin.functionsByType, plugin.name);
 
     if (Array.isArray(plugin.expressMiddleware)) {
-      this.expressMiddleware.push(...plugin.expressMiddleware.map((def) => ({ ...def, pluginName: plugin.name })));
+      this.expressMiddleware.push(...plugin.expressMiddleware.map((def) => ({
+        ...def,
+        pluginName: plugin.name
+      })));
     }
 
     if (plugin.contextAdditions) {
@@ -687,7 +728,10 @@ export default class ReactionAPICore {
       } else if (typeof plugin === "object") {
         await this.registerPlugin(plugin);
       } else {
-        Logger.error({ name, plugin }, "Plugin is not a function or object and was skipped");
+        Logger.error(
+          { name, plugin },
+          "Plugin is not a function or object and was skipped"
+        );
       }
     }
     /* eslint-enable no-await-in-loop */
