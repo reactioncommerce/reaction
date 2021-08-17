@@ -27,6 +27,7 @@
   "dependencies": {
     "@reactioncommerce/api-utils": "^1.16.5",
     "@reactioncommerce/data-factory": "~1.0.1",
+    "@reactioncommerce/db-version-check": "^1.0.0",
     "@reactioncommerce/file-collections": "~0.9.3",
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/reaction-error": "~1.0.1",
