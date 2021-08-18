@@ -9,7 +9,6 @@ const expectedVersion = 2;
  * @returns {undefined}
  */
 export default async function preStartup(context) {
-
   const setToExpectedIfMissing = async () => {
     const anyAccount = await context.collections.Accounts.findOne();
     const anyGroup = await context.collections.Groups.findOne();
