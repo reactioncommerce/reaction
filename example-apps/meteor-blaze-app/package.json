@@ -47,7 +47,7 @@
     "retainLines": true
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
+    "@babel/runtime": "^7.14.8",
     "@babel/runtime-corejs2": "^7.7.6",
     "@reactioncommerce/file-collections": "../../packages/file-collections",
     "@reactioncommerce/file-collections-sa-base": "../../packages/file-collections-sa-base",
