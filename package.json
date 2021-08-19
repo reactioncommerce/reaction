@@ -92,7 +92,7 @@
     "eslint-plugin-promise": "~4.2.1",
     "eslint-plugin-react": "~7.14.3",
     "eslint-plugin-react-hooks": "~2.0.1",
-    "graphql": "~14.6.0",
+    "graphql": "~14.7.0",
     "graphql-schema-linter": "~0.2.5",
     "husky": "~4.2.3",
     "jest": "~25.2.7"
