@@ -40,7 +40,7 @@
   "dependencies": {
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
-    "node-loggly-bulk": "^2.2.2"
+    "node-loggly-bulk": "^2.2.5"
   },
   "babel": {
     "presets": [
