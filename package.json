@@ -74,7 +74,7 @@
     "@reactioncommerce/api-plugin-email-smtp": "^1.0.3",
     "@reactioncommerce/api-plugin-email-templates": "^1.1.1",
     "@reactioncommerce/api-plugin-files": "^1.0.15",
-    "@reactioncommerce/api-plugin-i18n": "^1.0.3",
+    "@reactioncommerce/api-plugin-i18n": "^1.0.4",
     "@reactioncommerce/api-plugin-inventory": "^1.0.3",
     "@reactioncommerce/api-plugin-inventory-simple": "^1.0.4",
     "@reactioncommerce/api-plugin-job-queue": "^1.0.2",
