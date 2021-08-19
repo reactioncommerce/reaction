@@ -38,7 +38,7 @@
     "watch": "^1.0.2"
   },
   "dependencies": {
-    "bunyan": "^1.8.12",
+    "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
     "node-loggly-bulk": "^2.2.5"
   },
