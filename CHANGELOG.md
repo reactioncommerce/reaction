@@ -1,3 +1,10 @@
+## [3.13.4](https://github.com/reactioncommerce/reaction/compare/v3.13.3...v3.13.4) (2021-08-23)
+
+
+### Bug Fixes
+
+* upgrade @reactioncommerce/api-plugin-i18n from 1.0.3 to 1.0.4 ([3d5a0e0](https://github.com/reactioncommerce/reaction/commit/3d5a0e09c9d7c4ae36199196f63040b06f19aa0c))
+
 ## [3.13.3](https://github.com/reactioncommerce/reaction/compare/v3.13.2...v3.13.3) (2021-08-19)
 
 
