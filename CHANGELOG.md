@@ -1,3 +1,10 @@
+## [3.13.3](https://github.com/reactioncommerce/reaction/compare/v3.13.2...v3.13.3) (2021-08-19)
+
+
+### Bug Fixes
+
+* upgrade graphql from 14.6.0 to 14.7.0 ([a9732d9](https://github.com/reactioncommerce/reaction/commit/a9732d91c42bca3db6d72c8c020e57d7ed0fa7f8))
+
 ## [3.13.2](https://github.com/reactioncommerce/reaction/compare/v3.13.1...v3.13.2) (2021-08-04)
 
 
