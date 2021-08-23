@@ -65,7 +65,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@babel/runtime-corejs2": "^7.10.5",
+    "@babel/runtime-corejs2": "^7.14.8",
     "@reactioncommerce/file-collections-sa-base": "^0.2.2",
     "debug": "^4.3.2",
     "gridfs-stream": "^1.1.1"
