@@ -68,7 +68,7 @@
   "dependencies": {
     "@babel/runtime-corejs2": "^7.10.5",
     "content-disposition": "^0.5.3",
-    "debug": "^4.1.1",
+    "debug": "^4.3.2",
     "extend": "~3.0.2",
     "path-parser": "^6.1.0",
     "query-string": "^6.14.1",
