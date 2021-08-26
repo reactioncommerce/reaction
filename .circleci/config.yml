@@ -1,5 +1,6 @@
-version: 2
-
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.2.4
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
 # typing. See http://yaml.org/type/merge.html for details.
@@ -139,7 +140,10 @@ jobs:
             docker push ${DOCKER_REPOSITORY}:${VERSION}
 
 workflows:
-  version: 2
+  upload-to-codecov:
+    jobs:
+      - checkout
+      - codecov/upload
   build_and_test:
     jobs:
       - install-dependencies
