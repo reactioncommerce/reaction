@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  codecov: codecov/codecov@1.2.4
+  codecov: codecov/codecov@3.0.0
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
 # typing. See http://yaml.org/type/merge.html for details.
@@ -15,7 +15,14 @@ defaults: &defaults
 
 jobs:
   install-dependencies:
-    <<: *defaults
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
+      CODECOV_TOKEN: "5dd1d308-9106-49e7-8712-e23093e240a0"
+    docker:
+    - image: circleci/node:14.11.0-stretch
     steps:
       - checkout
       - restore_cache:
@@ -33,9 +40,16 @@ jobs:
           key: reaction-v6-node-modules-{{ .Branch }}
           paths:
             - node_modules
+      - codecov/upload
 
   dockerfile-lint:
-    <<: *defaults
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
+    docker:
+      - image: circleci/node:14.11.0-stretch
     steps:
       - checkout
       - setup_remote_docker:
@@ -45,7 +59,13 @@ jobs:
           command: ${CI_SCRIPTS} lint-dockerfiles
 
   eslint:
-    <<: *defaults
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
+    docker:
+      - image: circleci/node:14.11.0-stretch
     steps:
       - checkout
       - restore_cache:
@@ -57,7 +77,13 @@ jobs:
           command: npm run lint
 
   graphql-lint:
-    <<: *defaults
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
+    docker:
+      - image: circleci/node:14.11.0-stretch
     steps:
       - checkout
       - restore_cache:
@@ -69,14 +95,16 @@ jobs:
           command: npm run lint:gql
 
   test-integration-query:
-    <<: *defaults
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
     docker:
       - image: circleci/node:14.11.0-stretch
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: circleci/mongo:4.2.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
-        ports:
-          - "27017:27017"
     steps:
       - checkout
       - restore_cache:
@@ -91,14 +119,16 @@ jobs:
           command: npm run test:integration:query
 
   test-integration-mutation:
-    <<: *defaults
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
     docker:
       - image: circleci/node:14.11.0-stretch
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: circleci/mongo:4.2.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
-        ports:
-          - "27017:27017"
     steps:
       - checkout
       - restore_cache:
@@ -113,7 +143,13 @@ jobs:
           command: npm run test:integration:mutation
 
   release:
-    <<: *defaults
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
+    docker:
+      - image: circleci/node:14.11.0-stretch
     steps:
       - checkout
       - restore_cache:
@@ -126,7 +162,13 @@ jobs:
             npx semantic-release
 
   docker-build-push:
-    <<: *defaults
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
+    docker:
+      - image: circleci/node:14.11.0-stretch
     steps:
       - checkout
       - setup_remote_docker:
@@ -140,10 +182,6 @@ jobs:
             docker push ${DOCKER_REPOSITORY}:${VERSION}
 
 workflows:
-  upload-to-codecov:
-    jobs:
-      - checkout
-      - codecov/upload
   build_and_test:
     jobs:
       - install-dependencies
