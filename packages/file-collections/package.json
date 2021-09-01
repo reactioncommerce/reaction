@@ -66,7 +66,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@babel/runtime-corejs2": "^7.10.5",
+    "@babel/runtime-corejs2": "^7.15.3",
     "content-disposition": "^0.5.3",
     "debug": "^4.1.1",
     "extend": "~3.0.2",
