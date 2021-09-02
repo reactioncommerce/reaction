@@ -20,7 +20,6 @@ jobs:
       DOCKER_REPOSITORY: "reactioncommerce/reaction"
       DOCKER_NAMESPACE: "reactioncommerce"
       DOCKER_NAME: "reaction"
-      CODECOV_TOKEN: "5dd1d308-9106-49e7-8712-e23093e240a0"
     docker:
     - image: circleci/node:14.11.0-stretch
     steps:
@@ -184,7 +183,8 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - install-dependencies
+      - install-dependencies:
+          context: codecov
       - dockerfile-lint:
           requires:
             - install-dependencies
