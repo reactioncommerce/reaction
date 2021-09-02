@@ -40,7 +40,16 @@ jobs:
           paths:
             - node_modules
       - codecov/upload
-
+  codecov:
+    environment:
+      CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
+      DOCKER_REPOSITORY: "reactioncommerce/reaction"
+      DOCKER_NAMESPACE: "reactioncommerce"
+      DOCKER_NAME: "reaction"
+    docker:
+    - image: circleci/node:14.11.0-stretch
+    steps:
+      - codecov/upload
   dockerfile-lint:
     environment:
       CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
@@ -182,8 +191,8 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - install-dependencies:
-          context: codecov
+      - install-dependencies
+      - codecov 
       - dockerfile-lint:
           requires:
             - install-dependencies
