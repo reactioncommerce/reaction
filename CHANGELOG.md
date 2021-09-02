@@ -1,3 +1,30 @@
+# [4.0.0](https://github.com/reactioncommerce/reaction/compare/v3.13.4...v4.0.0) (2021-08-25)
+
+
+### Bug Fixes
+
+* config file has new version ([d0b4bec](https://github.com/reactioncommerce/reaction/commit/d0b4becd6d74e031bd4172a699b686c8d15e12b1))
+* updating plugin versions ([a51e782](https://github.com/reactioncommerce/reaction/commit/a51e782a055a632857890ee67eaa733f06a4303b))
+
+
+### Features
+
+* using account-js for auth ([5163324](https://github.com/reactioncommerce/reaction/commit/51633240ead9206aa955845ca7093271dc7c2aee))
+
+
+### BREAKING CHANGES
+
+* hydra and idenity are no longer shipped by default
+
+Signed-off-by: Akarshit Wal <akarshitwal@gmail.com>
+
+## [3.13.4](https://github.com/reactioncommerce/reaction/compare/v3.13.3...v3.13.4) (2021-08-23)
+
+
+### Bug Fixes
+
+* upgrade @reactioncommerce/api-plugin-i18n from 1.0.3 to 1.0.4 ([3d5a0e0](https://github.com/reactioncommerce/reaction/commit/3d5a0e09c9d7c4ae36199196f63040b06f19aa0c))
+
 ## [3.13.3](https://github.com/reactioncommerce/reaction/compare/v3.13.2...v3.13.3) (2021-08-19)
 
 
