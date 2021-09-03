@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "ενημέρωση επιλογές Shop απέτυχε."
           },
           "helpText": {
-            "compareAtPrice": "Αρχική τιμή ή MSRP",
+            "compareAtPrice": "Αρχική τιμή ή MSRP. Ρυθμίστε το μηδέν στη διαγραφή.",
             "optionInventoryInStock": "Καταγραφή εμπορευμάτων",
             "optionTitle": "Εμφανίζεται στη σελίδα λεπτομερειών προϊόντος",
             "price": "Τιμή αγοράς",

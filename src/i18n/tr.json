@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Mağaza seçenekleri güncelleme başarısız oldu."
           },
           "helpText": {
-            "compareAtPrice": "Orijinal fiyat veya MSRP",
+            "compareAtPrice": "Orijinal fiyat veya MSRP. Temizlemek için sıfır ayarla.",
             "optionInventoryInStock": "Envanter",
             "optionTitle": "Ürün Ayrıntı Sayfasında Görüntüleniyor",
             "price": "Alış fiyatı",

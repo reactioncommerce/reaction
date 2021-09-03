@@ -235,7 +235,7 @@
           "products": "Producten",
           "helpText": {
             "attributeLabel": "De attribuut label omschrijft de categorie van een variant, bijvoorbeeld, \"Kleur\" of \"Formaat\". In de meeste gevallen wordt aangeraden om dezelfde waarde in te vullen voor alle varianten op hetzelfde niveau.",
-            "compareAtPrice": "Originele prijs of MSRP",
+            "compareAtPrice": "Originele prijs of MSRP. Stel nul in om te wissen.",
             "optionInventoryAvailableToSell": "Inventaris beschikbaar voor verkoop",
             "optionInventoryInStock": "Inventaris op voorraad",
             "optionTitle": "De korte titel is de waarde voor het attribuut label. Bijvoorbeeld, een variant met het attribuut label \"Kleur\" kan de korte titel hebben \"Rood\". Dit is vaak getoond in een select lijst of knoppen set op een product detail pagina op uw storefront.",

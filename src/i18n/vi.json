@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Cửa hàng tùy chọn cập nhật thất bại."
           },
           "helpText": {
-            "compareAtPrice": "Giá gốc hoặc MSRP",
+            "compareAtPrice": "Giá gốc hoặc MSRP. Đặt 0 thành xóa.",
             "optionInventoryInStock": "Hàng tồn kho",
             "optionTitle": "Hiển thị trên trang chi tiết sản phẩm",
             "price": "Giá mua",

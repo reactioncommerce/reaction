@@ -16,7 +16,7 @@
           "dashboard": {
             "i18NLabel": "i18n",
             "i18NTitle": "i18n",
-            "i18NDescription": "תכניות שירות לאינטרנציונליזציה",
+            "i18NDescription": "תכניות שירות לאינטרנציונליזציה. הגדר אפס כדי לנקות ",
             "routingLabel": "ניתוב",
             "routingTitle": "ניתוב",
             "routingDescription": "תכניות שירות לניתוב",

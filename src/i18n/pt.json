@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Falha ao atualizar as opções da loja."
           },
           "helpText": {
-            "compareAtPrice": "Preço original ou MSRP",
+            "compareAtPrice": "Preço original ou MSRP. Defina zero para limpar.",
             "optionInventoryInStock": "Inventário",
             "optionTitle": "Exibido na página de detalhes do produto",
             "price": "Preço de compra",

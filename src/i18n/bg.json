@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "опции магазин актуализация неуспешно."
           },
           "helpText": {
-            "compareAtPrice": "Оригинална цена или MSRP",
+            "compareAtPrice": "Оригинална цена или MSRP. Задайте нула за изчистване.",
             "optionInventoryInStock": "Складова наличност",
             "optionTitle": "Показва се на страницата с подробности за продукта",
             "price": "Покупна цена",

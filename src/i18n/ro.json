@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Actualizarea opțiunilor magazinului au eșuat."
           },
           "helpText": {
-            "compareAtPrice": "Prețul inițial sau MSRP",
+            "compareAtPrice": "Prețul inițial sau MSRP. Setați zero pentru a șterge.",
             "optionInventoryInStock": "Inventar",
             "optionTitle": "Afișate pe pagina cu detalii a produsului",
             "price": "Pretul de cumparare",

@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "ဆိုင်ရွေးချယ်စရာ update ကိုပျက်ကွက်ခဲ့သည်။"
           },
           "helpText": {
-            "compareAtPrice": "မူရင်းစျေးနှုန်းသို့မဟုတ် MSRP",
+            "compareAtPrice": "မူရင်းစျေးနှုန်းသို့မဟုတ် MSRP. သုညကိုရှင်းရန်သတ်မှတ်ပါ.",
             "optionInventoryInStock": "စာရင်း",
             "optionTitle": "ကုန်ပစ္စည်းအသေးစိတ်စာမျက်နှာပေါ်တွင်ပြသ",
             "price": "ဝယ်ယူစျေးနှုန်း",

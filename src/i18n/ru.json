@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Не удалось изменить настройку. "
           },
           "helpText": {
-            "compareAtPrice": "Исходная цена или MSRP",
+            "compareAtPrice": "Исходная цена или MSRP. Установите ноль, чтобы очистить.",
             "optionInventoryInStock": "Инвентаризация",
             "optionTitle": "Отображается на странице сведений о продукте",
             "price": "Цена",

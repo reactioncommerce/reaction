@@ -235,7 +235,7 @@
           "products": "Productos",
           "helpText": {
             "attributeLabel": "La etiqueta de atributo describe la categoría de la variante, por ejemplo, \"Color\" o \"Tamaño\". En la mayoría de los casos, debe ingresar el mismo valor aquí para todas las variantes del mismo nivel.",
-            "compareAtPrice": "Precio original o MSRP",
+            "compareAtPrice": "Precio original o MSRP. Establecer cero para borrar.",
             "optionInventoryAvailableToSell": "Inventario disponible para vender",
             "optionInventoryInStock": "Inventario en stock",
             "optionTitle": "El título corto es el valor de la etiqueta del atributo. Por ejemplo, una variante con la etiqueta de atributo \"Color\" podría tener un título corto \"Rojo\". Esto se muestra en una lista de selección en la página de detalles del producto en tu tienda.",

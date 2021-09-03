@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Aktualizace možnosti Shop nezdařila."
           },
           "helpText": {
-            "compareAtPrice": "Původní cena nebo MSRP",
+            "compareAtPrice": "Původní cena nebo MSRP. Nastavte nulu na vymazání.",
             "optionInventoryInStock": "Inventář",
             "optionTitle": "Zobrazeno na stránce s podrobnostmi o produktu",
             "price": "Kupní cena",

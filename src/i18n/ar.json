@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "فشل تحديث خيارات الشراء"
           },
           "helpText": {
-            "compareAtPrice": "السعر الأصلي أو مسرب",
+            "compareAtPrice": "السعر الأصلي أو مسرب. اضبط الصفر للمسح",
             "optionInventoryInStock": "المخزون",
             "optionTitle": "عرض في صفحة تفاصيل المنتج",
             "price": "سعر الشراء",

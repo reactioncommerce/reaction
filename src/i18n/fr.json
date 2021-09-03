@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Echec de la mise à jour des options de la boutique."
           },
           "helpText": {
-            "compareAtPrice": "Prix ​​original ou PDSF",
+            "compareAtPrice": "Prix ​​original ou PDSF. Mettre zéro pour effacer.",
             "optionInventoryInStock": "Inventaire",
             "optionTitle": "Affiché sur la page Détail du produit",
             "price": "Prix ​​d'achat",

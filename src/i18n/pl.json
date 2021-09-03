@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Opcje sklepowe aktualizacja nie powiodła się."
           },
           "helpText": {
-            "compareAtPrice": "Cena oryginalna lub MSRP",
+            "compareAtPrice": "Cena oryginalna lub MSRP. Ustaw zero, aby wyczyścić.",
             "optionInventoryInStock": "Inwentarz",
             "optionTitle": "Wyświetlane na stronie szczegółów produktu",
             "price": "Cena zakupu",
