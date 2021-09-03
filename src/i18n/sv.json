@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Shop alternativ uppdatering misslyckades."
           },
           "helpText": {
-            "compareAtPrice": "Ursprungligt pris eller MSRP",
+            "compareAtPrice": "Ursprungligt pris eller MSRP. Sätt noll för att rensa.",
             "optionInventoryInStock": "Lager",
             "optionTitle": "Visas på produktdetaljsida",
             "price": "Köppris",

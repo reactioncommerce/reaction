@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Možnosti Shop posodobitev ni uspela."
           },
           "helpText": {
-            "compareAtPrice": "Originalna cena ali MSRP",
+            "compareAtPrice": "Originalna cena ali MSRP. Za brisanje nastavite ničlo.",
             "optionInventoryInStock": "popis",
             "optionTitle": "Prikazano na strani s podrobnostmi o izdelku",
             "price": "Nakupna cena",

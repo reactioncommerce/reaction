@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Die Aktualisierung der Shop-Optionen ist fehlgeschlagen."
           },
           "helpText": {
-            "compareAtPrice": "Ursprünglicher Preis oder UVP",
+            "compareAtPrice": "Ursprünglicher Preis oder UVP. Setzen Sie Null zum Löschen.",
             "optionInventoryInStock": "Inventar",
             "optionTitle": "Angezeigt auf Produktdetailseite",
             "price": "Kaufpreis",

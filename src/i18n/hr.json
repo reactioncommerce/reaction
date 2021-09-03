@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Opcije Shop ažuriranje nije uspjelo."
           },
           "helpText": {
-            "compareAtPrice": "Izvorna cijena ili MSRP",
+            "compareAtPrice": "Izvorna cijena ili MSRP. Postavite nulu za brisanje.",
             "optionInventoryInStock": "Inventar",
             "optionTitle": "Prikazano na stranici s pojedinostima o proizvodu",
             "price": "Nabavna cijena",

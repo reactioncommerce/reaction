@@ -235,7 +235,7 @@
           "products": "Products",
           "helpText": {
             "attributeLabel": "The attribute label describes the category of variant, for example, \"Color\" or \"Size\". In most cases you should enter the same value here for all variants at the same level.",
-            "compareAtPrice": "Original price or MSRP",
+            "compareAtPrice": "Original price or MSRP. Set zero to clear.",
             "optionInventoryAvailableToSell": "Inventory available to sell",
             "optionInventoryInStock": "Inventory in stock",
             "optionTitle": "The short title is the value for the attribute label. For example, a variant with attribute label \"Color\" might have short title \"Red\". This is usually shown in a select list or button set on a product detail page in your storefront.",

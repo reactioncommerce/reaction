@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "商店选项更新失败。"
           },
           "helpText": {
-            "compareAtPrice": "原价或MSRP",
+            "compareAtPrice": "原价或MSRP。设置零以清除。",
             "optionInventoryInStock": "库存",
             "optionTitle": "显示在产品详细页面上",
             "price": "购买价格",

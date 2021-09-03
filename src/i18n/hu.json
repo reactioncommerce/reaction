@@ -86,7 +86,7 @@
             "shopOptionsSettingsFailed": "Shop lehetőségek sikertelen volt."
           },
           "helpText": {
-            "compareAtPrice": "Eredeti ár vagy MSRP",
+            "compareAtPrice": "Eredeti ár vagy MSRP. Állítsa a nullát törlésre.",
             "optionInventoryInStock": "Leltár",
             "optionTitle": "Megjelenik a termék részletes oldalán",
             "price": "Vételár",
