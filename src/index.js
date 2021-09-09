@@ -18,9 +18,6 @@ export default async function register(app) {
     name: "email",
     version: pkg.version,
     i18n,
-    functionsByType: {
-      preStartup: [checkDatabaseVersion]
-    },
     collections: {
       Emails: {
         name: "Emails",
@@ -39,7 +36,8 @@ export default async function register(app) {
     policies,
     queries,
     functionsByType: {
-      startup: [startup]
+      startup: [startup],
+      preStartup: [checkDatabaseVersion]
     }
   });
 }

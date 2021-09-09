@@ -83,7 +83,7 @@ export default function processEmailJobs(context) {
         $setOnInsert: {
           createdAt
         }
-      }, { 
+      }, {
         upsert: true
       });
 

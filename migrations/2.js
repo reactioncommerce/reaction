@@ -9,11 +9,11 @@ async function up({ db, progress }) {
   progress(0);
 
   const date = new Date(1970, 0, 1);
-  const query = {"createdAt": {$exists : false}, "updatedAt": {$exists : false}};
-  const update = { $set: {"createdAt": date, "updatedAt": date} };
-  const options = { upsert: false, multi:true }
+  const query = { createdAt: { $exists: false }, updatedAt: { $exists: false } };
+  const update = { $set: { createdAt: date, updatedAt: date } };
+  const options = { upsert: false, multi: true };
 
-  await db.collection("Emails").update(query, update, options)
+  await db.collection("Emails").update(query, update, options);
 
   progress(100);
 }
