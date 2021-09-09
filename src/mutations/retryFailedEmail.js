@@ -37,7 +37,8 @@ export default async function retryFailed(context, input) {
   // Set the job status to ready to trigger the Jobs observer to trigger sendEmail
   Emails.update({ _id: emailJobId }, {
     $set: {
-      status: "ready"
+      status: "ready",
+      updatedAt: new Date()
     }
   });
 
