@@ -49,12 +49,12 @@
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",
-  "email": "reaction@reactioncommerce.com",
+  "email": "hello-open-commerce@mailchimp.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/reactioncommerce/reaction.git"
   },
-  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "author": "Reaction Commerce <hello-open-commerce@mailchimp.com>",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction/issues"
