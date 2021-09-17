@@ -80,7 +80,7 @@
     "@reactioncommerce/api-plugin-job-queue": "^1.0.2",
     "@reactioncommerce/api-plugin-navigation": "^1.1.1",
     "@reactioncommerce/api-plugin-notifications": "^1.1.0",
-    "@reactioncommerce/api-plugin-orders": "^1.4.0",
+    "@reactioncommerce/api-plugin-orders": "^1.4.2",
     "@reactioncommerce/api-plugin-payments": "^1.0.1",
     "@reactioncommerce/api-plugin-payments-example": "^1.1.1",
     "@reactioncommerce/api-plugin-payments-stripe": "^1.0.2",
