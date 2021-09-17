@@ -15,9 +15,9 @@
     "url": "git+https://github.com/reactioncommerce/api-plugin-authentication.git"
   },
   "author": {
-    "name": "Reaction Commerce",
+    "name": "Mailchimp Open Commerce",
     "email": "hello-open-commerce@mailchimp.com",
-    "url": "https://reactioncommerce.com"
+    "url": "https://mailchimp.com/developer/open-commerce/"
   },
   "license": "Apache-2.0",
   "bugs": {
