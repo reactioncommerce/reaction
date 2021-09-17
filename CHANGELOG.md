@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/reactioncommerce/reaction/compare/v4.0.0...v4.0.1) (2021-09-17)
+
+
+### Bug Fixes
+
+* upgrade @reactioncommerce/api-plugin-orders from 1.4.0 to 1.4.2 ([b3a8fca](https://github.com/reactioncommerce/reaction/commit/b3a8fcab89f581a3fb7e71d74c425f72349931b3))
+
 # [4.0.0](https://github.com/reactioncommerce/reaction/compare/v3.13.4...v4.0.0) (2021-08-25)
 
 
