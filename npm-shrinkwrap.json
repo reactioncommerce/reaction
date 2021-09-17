@@ -4648,9 +4648,9 @@
       }
     },
     "normalize-url": {
-      "version": "6.0.0",
-      "resolved": "https://registry.npmjs.org/normalize-url/-/normalize-url-6.0.0.tgz",
-      "integrity": "sha512-3nv3dKMucKPEXhx/FEtJQR26ksYdyVlLEP9/dYvYwCbLbP6H8ya94IRf+mB93ec+fndv/Ye8SylWfD7jmN6kSA==",
+      "version": "6.1.0",
+      "resolved": "https://registry.npmjs.org/normalize-url/-/normalize-url-6.1.0.tgz",
+      "integrity": "sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==",
       "dev": true
     },
     "npm": {
