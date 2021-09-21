@@ -32,8 +32,7 @@ export default async function createAccount(context, input) {
     name = null,
     profile,
     shopId = null,
-    userId,
-    clientMutationId = null,
+    userId
   } = input;
 
   await context.validatePermissions("reaction:legacy:accounts", "create", { shopId });
@@ -124,8 +123,5 @@ export default async function createAccount(context, input) {
     createdBy: authUserId
   });
 
-  return {
-    account,
-    clientMutationId
-  };
+  return account;
 }

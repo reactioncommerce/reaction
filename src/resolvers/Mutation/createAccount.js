@@ -13,10 +13,15 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Object} - `object.status` of 200 on success or Error object on failure
  */
 export default async function createAccount(_, { input }, context) {
-  const { shopId } = input;
+  const { shopId, clientMutationId } = input;
   const decodedShopId = decodeShopOpaqueId(shopId);
 
   const transformedInput = { ...input, shopId: decodedShopId };
 
-  return context.mutations.createAccount(context, transformedInput);
+  const account = context.mutations.createAccount(context, transformedInput);
+
+  return {
+    account,
+    clientMutationId
+  }
 }
