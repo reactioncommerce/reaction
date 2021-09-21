@@ -1,4 +1,3 @@
-import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import ensureAccountsManagerGroup from "../util/ensureAccountsManagerGroup.js";
 import ensureSystemManagerGroup from "../util/ensureSystemManagerGroup.js";
@@ -17,7 +16,7 @@ import sendWelcomeEmail from "../util/sendWelcomeEmail.js";
  * @param {String} input.userId - userId account was created from
  * @return {Promise<Object>} with boolean of found new account === true || false
  */
-export default async function createAccount(context, input) { 
+export default async function createAccount(context, input) {
   const {
     appEvents,
     collections: { Accounts, AccountInvites },

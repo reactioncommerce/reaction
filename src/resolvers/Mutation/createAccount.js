@@ -4,7 +4,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @name group/createAccount
  * @method
  * @memberof Group/GraphQL
- * @summary A resolver creates a new account for an existing user 
+ * @summary A resolver creates a new account for an existing user
  * @param {object} _ - Not used
  * @param {object} input - The input supplied from GraphQL
  * @param {String} input.shopId - id of the shop in which the account is to be created
@@ -23,5 +23,5 @@ export default async function createAccount(_, { input }, context) {
   return {
     account,
     clientMutationId
-  }
+  };
 }
