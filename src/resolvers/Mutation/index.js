@@ -1,6 +1,7 @@
 import addAccountAddressBookEntry from "./addAccountAddressBookEntry.js";
 import addAccountEmailRecord from "./addAccountEmailRecord.js";
 import addAccountToGroup from "./addAccountToGroup.js";
+import createAccount from "./createAccount.js";
 import createAccountGroup from "./createAccountGroup.js";
 import grantAdminUIAccess from "./grantAdminUIAccess.js";
 import inviteShopMember from "./inviteShopMember.js";
@@ -21,6 +22,7 @@ export default {
   addAccountAddressBookEntry,
   addAccountEmailRecord,
   addAccountToGroup,
+  createAccount,
   createAccountGroup,
   grantAdminUIAccess,
   inviteShopMember,

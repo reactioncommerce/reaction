@@ -4,28 +4,6 @@ import ensureAccountsManagerGroup from "../util/ensureAccountsManagerGroup.js";
 import ensureSystemManagerGroup from "../util/ensureSystemManagerGroup.js";
 import sendWelcomeEmail from "../util/sendWelcomeEmail.js";
 
-const inputSchema = new SimpleSchema({
-  "emails": Array,
-  "emails.$": {
-    type: Object,
-    blackbox: true
-  },
-  "name": {
-    type: String,
-    optional: true
-  },
-  "profile": {
-    type: Object,
-    blackbox: true,
-    optional: true
-  },
-  "shopId": {
-    type: String,
-    optional: true
-  },
-  "userId": String
-});
-
 /**
  * @name accounts/createAccount
  * @memberof Mutations/Accounts
@@ -39,9 +17,7 @@ const inputSchema = new SimpleSchema({
  * @param {String} input.userId - userId account was created from
  * @return {Promise<Object>} with boolean of found new account === true || false
  */
-export default async function createAccount(context, input) {
-  inputSchema.validate(input);
-
+export default async function createAccount(context, input) { 
   const {
     appEvents,
     collections: { Accounts, AccountInvites },
@@ -56,7 +32,8 @@ export default async function createAccount(context, input) {
     name = null,
     profile,
     shopId = null,
-    userId
+    userId,
+    clientMutationId = null,
   } = input;
 
   await context.validatePermissions("reaction:legacy:accounts", "create", { shopId });
@@ -147,5 +124,8 @@ export default async function createAccount(context, input) {
     createdBy: authUserId
   });
 
-  return account;
+  return {
+    account,
+    clientMutationId
+  };
 }
