@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/reactioncommerce/reaction/compare/v4.0.2...v4.0.3) (2021-09-23)
+
+
+### Bug Fixes
+
+* remove old documentation references ([c50f0ac](https://github.com/reactioncommerce/reaction/commit/c50f0acd5f5c68af7bb36d4dd56bf7d6b4698988))
+
 ## [4.0.2](https://github.com/reactioncommerce/reaction/compare/v4.0.1...v4.0.2) (2021-09-21)
 
 
