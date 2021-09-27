@@ -32,7 +32,7 @@
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/reaction-error": "~1.0.1",
     "envalid": "~5.0.0",
-    "node-fetch": "~2.6.0",
+    "node-fetch": "~2.6.2",
     "sharp": "^0.28.3",
     "simpl-schema": "~1.10.2"
   },
