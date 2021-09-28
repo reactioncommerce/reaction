@@ -63,6 +63,21 @@ jobs:
             MONGO_URL: mongodb://localhost:27017/test
             MONGO_USE_UNIFIED_TOPOLOGY: false
           command: npx --quiet --package @reactioncommerce/ci-scripts@1.12.2 run-integration-tests
+  test:
+    docker:
+      - image: node:12.14.1
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npm run test
+
 workflows:
   version: 2
   build_deploy:
