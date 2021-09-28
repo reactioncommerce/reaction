@@ -28,7 +28,7 @@ export default async function register(app) {
       {
         name: "stripe_payment_intent",
         canRefund: true,
-        displayName: "Stripe",
+        displayName: "Stripe (SCA)",
         functions: {
           capturePayment: stripeCapturePayment,
           createAuthorizedPayment: stripeCreateAuthorizedPayment,
