@@ -1,3 +1,10 @@
+## [4.0.4](https://github.com/reactioncommerce/reaction/compare/v4.0.3...v4.0.4) (2021-09-28)
+
+
+### Bug Fixes
+
+* upgrade @reactioncommerce/api-plugin-carts from 1.2.2 to 1.2.4 ([e0a0ea7](https://github.com/reactioncommerce/reaction/commit/e0a0ea76f334d71ad16f9dcaaaea50f576dbea3e))
+
 ## [4.0.3](https://github.com/reactioncommerce/reaction/compare/v4.0.2...v4.0.3) (2021-09-23)
 
 
