@@ -7,10 +7,12 @@ export default envalid.cleanEnv(
   {
     STRIPE_API_KEY: str({
       desc: "A private Stripe API key",
-      devDefault: testOnly("YOUR_PRIVATE_STRIPE_API_KEY")
+      devDefault: testOnly("YOUR_PRIVATE_STRIPE_API_KEY"),
+      default: "ABC"
     })
   },
   {
     dotEnvPath: null
   }
 );
+

@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:12
+      - image: node:12.14.1
 
     dependencies:
       pre:
@@ -20,7 +20,7 @@ jobs:
 
   deploy:
     docker:
-      - image: node:12
+      - image: node:12.14.1
 
     steps:
       - checkout
@@ -35,7 +35,7 @@ jobs:
 
   lint:
     docker:
-      - image: node:12
+      - image: node:12.14.1
 
     steps:
       - checkout
@@ -47,22 +47,22 @@ jobs:
           - v1-dependencies-
 
       - run: npm run lint
-
-  test:
+  test-integration:
     docker:
-      - image: node:12
-
+      - image: circleci/node:14.11.0-stretch
+      # Integration tests need MongoDB server running and accessible on port 27017
+      - image: circleci/mongo:4.2.0
+        command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
+        ports:
+          - "27017:27017"
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: npm run test
-
+      - run:
+          name: Run Integration Tests
+          environment:
+            MONGO_URL: mongodb://localhost:27017/test
+            MONGO_USE_UNIFIED_TOPOLOGY: false
+          command: npx --quiet --package @reactioncommerce/ci-scripts@1.12.2 run-integration-tests
 workflows:
   version: 2
   build_deploy:
@@ -72,6 +72,9 @@ workflows:
       - lint:
           requires:
             - build
+      - test-integration:
+          requires:
+            - build
       - test:
           requires:
             - build
@@ -79,7 +82,7 @@ workflows:
           context: reaction-publish-semantic-release
           requires:
             - lint
-            - test
+            - test-integration
           filters:
             branches:
               only: trunk
