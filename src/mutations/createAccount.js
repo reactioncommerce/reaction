@@ -1,30 +1,7 @@
-import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import ensureAccountsManagerGroup from "../util/ensureAccountsManagerGroup.js";
 import ensureSystemManagerGroup from "../util/ensureSystemManagerGroup.js";
 import sendWelcomeEmail from "../util/sendWelcomeEmail.js";
-
-const inputSchema = new SimpleSchema({
-  "emails": Array,
-  "emails.$": {
-    type: Object,
-    blackbox: true
-  },
-  "name": {
-    type: String,
-    optional: true
-  },
-  "profile": {
-    type: Object,
-    blackbox: true,
-    optional: true
-  },
-  "shopId": {
-    type: String,
-    optional: true
-  },
-  "userId": String
-});
 
 /**
  * @name accounts/createAccount
@@ -40,8 +17,6 @@ const inputSchema = new SimpleSchema({
  * @return {Promise<Object>} with boolean of found new account === true || false
  */
 export default async function createAccount(context, input) {
-  inputSchema.validate(input);
-
   const {
     appEvents,
     collections: { Accounts, AccountInvites },
