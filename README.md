@@ -8,6 +8,12 @@
 
 Stripe Payments plugin for the [Reaction API](https://github.com/reactioncommerce/reaction) with support for SCA-compliant Stripe Payment Intents API
 
+### Usage
+
+1. Set the `STRIPE_API_KEY` environment variable in reaction API .env file with the private API key from Stripe.
+2. Set the `STRIPE_PUBLIC_API_KEY` environment variable in the example-storefront .env file with the public API key from Stripe.
+3. Restart containers.
+
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
 ```
