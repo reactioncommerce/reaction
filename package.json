@@ -1,5 +1,5 @@
 {
-  "name": "@tedraykov/api-plugin-carts",
+  "name": "@reactioncommerce/api-plugin-carts",
   "description": "Carts plugin for the Reaction API",
   "version": "0.0.0-development",
   "main": "index.js",

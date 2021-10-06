@@ -18,37 +18,37 @@ function ensureAbsoluteUrls(imageInfo, context) {
 /**
  *
  * @method imageURLs
- * @summary Get an ImageInfo object for cart item
+ * @summary Get primary image urls for cart item
  * @param {Object} item -  A cart item
  * @param {Object} context - The per request context
- * @returns {Object} ImageInfo object
+ * @returns {Object} ImageSizes object
  */
 export default async function imageURLs(item, context) {
   const { Media } = context.collections;
-  const { _id: variantId, shopId } = item;
+  const { productId, variantId } = item;
   if (!Media) return {};
 
-  const query = {
-    $and: [
-      {
-        $or: [
-          { "metadata.shopId": shopId },
-          { "metadata.variantId": variantId }
-        ]
-      },
-      { "metadata.workflow": { $nin: ["archived", "unpublished"] } }
-    ]
-  };
+  const media = await Media.find({
+    "$or": [
+      { "metadata.productId": productId },
+      { "metadata.variantId": variantId }
+    ],
+    "metadata.workflow": { $nin: ["archived", "unpublished"] }
+  }, {
+    sort: { "metadata.priority": 1, "uploadedAt": 1 },
+    limit: 1
+  });
 
-  const media = await Media.findOne(query);
+  if (!media || media.length === 0) return {};
+  const primaryImage = media[0];
 
-  if (!media) return {};
+  if (!primaryImage) return {};
 
   return ensureAbsoluteUrls({
-    large: `${media.url({ store: "large" })}`,
-    medium: `${media.url({ store: "medium" })}`,
-    original: `${media.url({ store: "image" })}`,
-    small: `${media.url({ store: "small" })}`,
-    thumbnail: `${media.url({ store: "thumbnail" })}`
+    large: `${primaryImage.url({ store: "large" })}`,
+    medium: `${primaryImage.url({ store: "medium" })}`,
+    original: `${primaryImage.url({ store: "image" })}`,
+    small: `${primaryImage.url({ store: "small" })}`,
+    thumbnail: `${primaryImage.url({ store: "thumbnail" })}`
   }, context);
 }
