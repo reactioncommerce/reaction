@@ -83,18 +83,16 @@ jobs:
             - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
-        name: "Initialize Replica Set"
-        command: |
-          echo "deb http://repo.mongodb.org/apt/debian "$(lsb_release -sc)"/mongodb-org/4.0 main" | sudo tee /etc/apt/sources.list.d/mongodb.list
-          sudo apt-get update
-          sudo apt-get install mongodb-org
-          mongo mongodb://localhost:27017 --eval "rs.initiate()"
-      - run:
           name: Run Integration Query Tests
           environment:
             MONGO_URL: mongodb://localhost:27017/test
             MONGO_USE_UNIFIED_TOPOLOGY: false
-          command: npm run test:integration:query
+          command: |
+            echo "deb http://repo.mongodb.org/apt/debian "$(lsb_release -sc)"/mongodb-org/4.0 main" | sudo tee /etc/apt/sources.list.d/mongodb.list
+            sudo apt-get update
+            sudo apt-get install mongodb-org
+            mongo mongodb://localhost:27017 --eval "rs.initiate()"
+            npm run test:integration:query
 
   test-integration-mutation:
     <<: *defaults
