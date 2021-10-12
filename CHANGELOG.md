@@ -1,3 +1,15 @@
+# [4.1.0](https://github.com/reactioncommerce/reaction/compare/v4.0.4...v4.1.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* test name ([b98ae0a](https://github.com/reactioncommerce/reaction/commit/b98ae0a41d173c8c3dad8c4d971ee9c02422e00b))
+
+
+### Features
+
+* stripe sca plugin ([a321e03](https://github.com/reactioncommerce/reaction/commit/a321e03b92c696cb09ed163fa652bcb81b82e3de))
+
 ## [4.0.4](https://github.com/reactioncommerce/reaction/compare/v4.0.3...v4.0.4) (2021-09-28)
 
 
