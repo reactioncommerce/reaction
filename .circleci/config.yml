@@ -72,7 +72,7 @@ jobs:
     docker:
       - image: circleci/node:14.11.0-stretch
       # Integration tests need MongoDB server running and accessible on port 27017
-      - image: circleci/mongo:4.2.0
+      - image: circleci/mongo:4.0.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
@@ -82,6 +82,13 @@ jobs:
           keys:
             - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - reaction-v6-node-modules-{{ .Branch }}
+      - run:
+        name: "Initialize Replica Set"
+        command: |
+          echo "deb http://repo.mongodb.org/apt/debian "$(lsb_release -sc)"/mongodb-org/4.0 main" | sudo tee /etc/apt/sources.list.d/mongodb.list
+          sudo apt-get update
+          sudo apt-get install mongodb-org
+          mongo mongodb://localhost:27017 --eval "rs.initiate()"
       - run:
           name: Run Integration Query Tests
           environment:
