@@ -26,6 +26,7 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-orders",
   "@reactioncommerce/api-plugin-payments-example",
   "@reactioncommerce/api-plugin-payments-stripe",
+  "@reactioncommerce/api-plugin-payments-stripe-sca",
   "@reactioncommerce/api-plugin-payments",
   "@reactioncommerce/api-plugin-pricing-simple",
   "@reactioncommerce/api-plugin-products",
@@ -42,7 +43,7 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-taxes",
   "@reactioncommerce/api-plugin-translations",
   "@reactioncommerce/api-utils",
-  "@reactioncommerce/db-version-check"
+  "@reactioncommerce/db-version-check",
 ];
 
 const jestConfig = {
@@ -125,7 +126,7 @@ const jestConfig = {
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
     "^/tests/(.*)$": "<rootDir>/tests/$1",
-    "^@reactioncommerce/api-utils/(.*)$": "@reactioncommerce/api-utils/lib/$1"
+    "^@reactioncommerce/api-utils/(.*)$": "@reactioncommerce/api-utils/lib/$1",
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -219,8 +220,8 @@ const jestConfig = {
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
     // Any packages that are published only as ESM need to be listed here
-    `node_modules/(?!(${externalNodeModules.join("|")})/)`
-  ]
+    `node_modules/(?!(${externalNodeModules.join("|")})/)`,
+  ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
