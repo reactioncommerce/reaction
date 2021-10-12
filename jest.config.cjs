@@ -221,7 +221,6 @@ const jestConfig = {
     // Any packages that are published only as ESM need to be listed here
     `node_modules/(?!(${externalNodeModules.join("|")})/)`
   ]
-
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
 
