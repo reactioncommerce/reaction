@@ -83,7 +83,6 @@
     "@reactioncommerce/api-plugin-orders": "^1.4.2",
     "@reactioncommerce/api-plugin-payments": "^1.0.1",
     "@reactioncommerce/api-plugin-payments-example": "^1.1.1",
-    "@reactioncommerce/api-plugin-payments-stripe": "^1.0.4",
     "@reactioncommerce/api-plugin-payments-stripe-sca": "^1.0.2",
     "@reactioncommerce/api-plugin-pricing-simple": "^1.0.3",
     "@reactioncommerce/api-plugin-products": "^1.0.2",
