@@ -19,6 +19,12 @@ yalc_packages_file_name="yalc-packages"
 container_id="$(docker-compose ps -q api)"
 container_copied_packages_path="/home/node/copied-packages"
 
+org_name='@reactioncommerce'
+if [[ $package_name != $org_name* ]]; then
+  echo "ERROR: The organization name does not match. Make sure the first argument is of the format '@reactioncommerce/<api-plugin-name>'"
+  exit 0
+fi
+
 if [[ -z "${package_name}" ]]; then
   if ! [[ -f "$yalc_packages_file_name" ]]; then
     echo "Yalc packages file doesn't exist. Creating..."

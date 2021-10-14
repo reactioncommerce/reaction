@@ -15,6 +15,12 @@ IFS="$(printf "\n\t")"
 
 package_name=$1
 
+org_name='@reactioncommerce'
+if [[ $package_name != $org_name* ]]; then
+  echo "ERROR: The organization name does not match. Make sure the argument is of the format '@reactioncommerce/<api-plugin-name>'"
+  exit 0
+fi
+
 # Unlink the yalc dependency, remove the package drectory and npm install
 echo "Unlinking package from API..."
 docker-compose exec api sh -c "cd /usr/local/src/app && yalc remove ${package_name}"
