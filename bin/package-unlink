@@ -10,10 +10,29 @@ set -o pipefail # don't ignore exit codes when piping output
 set -o posix    # more strict failures in subshells
 # set -x          # enable debugging
 
-IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
 package_name=$1
+
+# validate input
+IFS='/'
+read -a pkgarr <<< "$1"
+org_name=${pkgarr[0]}
+package_name_without_org=${pkgarr[1]}
+if [ -z "$package_name_without_org" ] || [ -z "$org_name" ]; then
+  echo "ERROR: Incorrect input. Please check the format of the first argument. '@<org-name>/<api-plugin-name>'"
+  exit 0
+fi
+
+#check if the package is valid by cross referencing with node_modules
+is_package=$(find node_modules/$org_name -type d -name $package_name_without_org)
+if [ -z "$is_package" ]; then
+  echo "$package_name does not exist"
+  exit 0
+fi
+
+
+IFS="$(printf "\n\t")"
 
 # Unlink the yalc dependency, remove the package drectory and npm install
 echo "Unlinking package from API..."

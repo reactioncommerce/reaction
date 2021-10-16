@@ -1,3 +1,11 @@
+## [4.1.1](https://github.com/reactioncommerce/reaction/compare/v4.1.0...v4.1.1) (2021-10-15)
+
+
+### Bug Fixes
+
+* add check for org name/package name format ([ee176d3](https://github.com/reactioncommerce/reaction/commit/ee176d301dc51a5918fd71df4376ae718fc7dd99))
+* validating arguments ([05bc9c3](https://github.com/reactioncommerce/reaction/commit/05bc9c3860ba3e872fa5ea98ae90e79297013cc5))
+
 # [4.1.0](https://github.com/reactioncommerce/reaction/compare/v4.0.4...v4.1.0) (2021-10-12)
 
 

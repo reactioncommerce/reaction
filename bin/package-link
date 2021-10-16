@@ -10,7 +10,6 @@ set -o pipefail # don't ignore exit codes when piping output
 set -o posix    # more strict failures in subshells
 # set -x          # enable debugging
 
-IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
 package_name=$1
@@ -18,6 +17,26 @@ package_path=$2
 yalc_packages_file_name="yalc-packages"
 container_id="$(docker-compose ps -q api)"
 container_copied_packages_path="/home/node/copied-packages"
+
+# validate input
+IFS='/'
+read -a pkgarr <<< "$1"
+org_name=${pkgarr[0]}
+package_name_without_org=${pkgarr[1]}
+if [ -z "$package_name_without_org" ] || [ -z "$org_name" ]; then
+  echo "ERROR: Incorrect input. Please check the format of the first argument. '@<org-name>/<api-plugin-name>'"
+  exit 0
+fi
+
+#check if the package is valid by cross referencing with node_modules
+is_package=$(find node_modules/$org_name -type d -name $package_name_without_org)
+if [ -z "$is_package" ]; then
+  echo "$package_name does not exist"
+  exit 0
+fi
+
+
+IFS="$(printf "\n\t")"
 
 if [[ -z "${package_name}" ]]; then
   if ! [[ -f "$yalc_packages_file_name" ]]; then
@@ -59,7 +78,6 @@ else
   container_destination_path="${container_copied_packages_path}/${package_name}"
 
   if [[ -z "${package_path}" ]]; then
-    package_name_without_org="${package_name/#@reactioncommerce\/}"
     package_path="../api-plugins/${package_name_without_org}"
     full_package_path="$(cd ${package_path} && pwd)"
     echo "\nUsing local package path ${full_package_path}"
