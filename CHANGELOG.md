@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/reactioncommerce/reaction/compare/v4.1.1...v4.1.2) (2021-10-16)
+
+
+### Bug Fixes
+
+* remove stripe, remain SCA ([53dd2bb](https://github.com/reactioncommerce/reaction/commit/53dd2bb2974d7c71a3fb6dbed4dd6c2b25b9c3c8))
+
 ## [4.1.1](https://github.com/reactioncommerce/reaction/compare/v4.1.0...v4.1.1) (2021-10-15)
 
 
