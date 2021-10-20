@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/reactioncommerce/reaction/compare/v4.1.2...v4.1.3) (2021-10-20)
+
+
+### Bug Fixes
+
+* package.json, package-lock.json & .snyk to reduce vulnerabilities ([55ebb20](https://github.com/reactioncommerce/reaction/commit/55ebb206c4af3a757f4b54027983af2795be6081))
+
 ## [4.1.2](https://github.com/reactioncommerce/reaction/compare/v4.1.1...v4.1.2) (2021-10-16)
 
 
