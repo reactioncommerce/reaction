@@ -106,7 +106,8 @@
     "@reactioncommerce/random": "^1.0.2",
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
-    "sharp": "^0.28.3"
+    "sharp": "^0.28.3",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -168,7 +169,9 @@
     "version": "echo $npm_package_version",
     "postinstall": "is-ci || is-docker || husky install",
     "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "postpublish": "pinst --enable",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "prettier": {
     "arrowParens": "always"
@@ -207,5 +210,6 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
-  }
+  },
+  "snyk": true
 }
