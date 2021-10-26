@@ -24,10 +24,10 @@ if [ -z "$package_name_without_org" ] || [ -z "$org_name" ]; then
   exit 0
 fi
 
-#check if the package is valid by cross referencing with node_modules
-is_package=$(find node_modules/$org_name -type d -name $package_name_without_org)
+#check if the organization name is valid by cross referencing with node_modules
+is_package=$(find node_modules -type d -name $org_name)
 if [ -z "$is_package" ]; then
-  echo "$package_name does not exist"
+  echo "$org_name does not exist"
   exit 0
 fi
 
