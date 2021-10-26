@@ -1,6 +1,6 @@
 {
   "name": "reaction-api",
-  "version": "4.1.3",
+  "version": "4.1.4",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
