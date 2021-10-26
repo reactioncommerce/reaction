@@ -19,6 +19,6 @@ export default async function anonymousCartByCartId(context, { cartId, cartToken
   if (!cartId) {
     throw new ReactionError("invalid-param", "You must provide a cartId");
   }
-  
-  return Cart.findOne({$or:[{_id: cartId},{anonymousAccessToken: hashToken(cartToken)}]});
+
+  return Cart.findOne({ $or: [{ _id: cartId }, { anonymousAccessToken: hashToken(cartToken) }] });
 }
