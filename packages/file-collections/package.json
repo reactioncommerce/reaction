@@ -73,7 +73,7 @@
     "path-parser": "^6.1.0",
     "query-string": "^6.14.1",
     "tus-js-client": "^1.5.1",
-    "tus-node-server": "~0.3.2"
+    "tus-node-server": "~0.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
