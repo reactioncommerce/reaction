@@ -107,7 +107,7 @@
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
     "sharp": "^0.28.3",
-    "@snyk/protect": "latest"
+    "@snyk/protect": "1.749.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
