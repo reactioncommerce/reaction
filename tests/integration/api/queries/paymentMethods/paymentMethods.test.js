@@ -73,8 +73,6 @@ test("a shop owner can view a full list of all payment methods", async () => {
     return;
   }
 
-  expect(result.paymentMethods[0].name).toEqual("stripe_card");
+  expect(result.paymentMethods[0].name).toEqual("stripe_payment_intent");
   expect(result.paymentMethods[0].isEnabled).toEqual(false);
-  expect(result.paymentMethods[1].name).toEqual("iou_example");
-  expect(result.paymentMethods[1].isEnabled).toEqual(false);
 });

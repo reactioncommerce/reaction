@@ -5,9 +5,9 @@ labels: 'bug, needs triage'
 ---
 
 <!--
-Issue tracker is **ONLY** used for reporting bugs. NO NEW FEATURE REQUESTS ACCEPTED. For new features, add an issue in our [Request Feature Request](https://github.com/reactioncommerce/reaction-feature-requests) repository.
+Issue tracker is **ONLY** used for reporting bugs. NO NEW FEATURE REQUESTS ACCEPTED.
 
-Are you looking for help with getting started on Reaction? Please visit our [Reaction documentation](https://docs.reactioncommerce.com/reaction-docs/trunk/getting-started-developing-with-reaction).
+Are you looking for help with getting started on Mailchimp Open Commerce? Please visit our [Open Commerce documentation](https://mailchimp.com/developer/open-commerce/).
 
 
 Prerequisites
