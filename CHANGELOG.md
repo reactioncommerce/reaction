@@ -1,3 +1,44 @@
+## [4.1.4](https://github.com/reactioncommerce/reaction/compare/v4.1.3...v4.1.4) (2021-10-26)
+
+
+### Bug Fixes
+
+* validate org name only ([e37a7c0](https://github.com/reactioncommerce/reaction/commit/e37a7c03ed0ba02221552389193d9edc826c9363))
+
+## [4.1.3](https://github.com/reactioncommerce/reaction/compare/v4.1.2...v4.1.3) (2021-10-20)
+
+
+### Bug Fixes
+
+* package.json, package-lock.json & .snyk to reduce vulnerabilities ([55ebb20](https://github.com/reactioncommerce/reaction/commit/55ebb206c4af3a757f4b54027983af2795be6081))
+
+## [4.1.2](https://github.com/reactioncommerce/reaction/compare/v4.1.1...v4.1.2) (2021-10-16)
+
+
+### Bug Fixes
+
+* remove stripe, remain SCA ([53dd2bb](https://github.com/reactioncommerce/reaction/commit/53dd2bb2974d7c71a3fb6dbed4dd6c2b25b9c3c8))
+
+## [4.1.1](https://github.com/reactioncommerce/reaction/compare/v4.1.0...v4.1.1) (2021-10-15)
+
+
+### Bug Fixes
+
+* add check for org name/package name format ([ee176d3](https://github.com/reactioncommerce/reaction/commit/ee176d301dc51a5918fd71df4376ae718fc7dd99))
+* validating arguments ([05bc9c3](https://github.com/reactioncommerce/reaction/commit/05bc9c3860ba3e872fa5ea98ae90e79297013cc5))
+
+# [4.1.0](https://github.com/reactioncommerce/reaction/compare/v4.0.4...v4.1.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* test name ([b98ae0a](https://github.com/reactioncommerce/reaction/commit/b98ae0a41d173c8c3dad8c4d971ee9c02422e00b))
+
+
+### Features
+
+* stripe sca plugin ([a321e03](https://github.com/reactioncommerce/reaction/commit/a321e03b92c696cb09ed163fa652bcb81b82e3de))
+
 ## [4.0.4](https://github.com/reactioncommerce/reaction/compare/v4.0.3...v4.0.4) (2021-09-28)
 
 

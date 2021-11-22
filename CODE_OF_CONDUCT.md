@@ -8,9 +8,9 @@ Diversity is one of our huge strengths, but it can also lead to communication is
 
 This isn’t an exhaustive list of things that you can’t do. Rather, take it in the spirit in which it’s intended - a guide to make it easier to enrich all of us and the broader communities in which we participate.
 
-This code of conduct applies to all spaces managed by Reaction Commerce. This includes our [development chat room](https://gitter.im/reactioncommerce/reaction), [forums](https://forums.reactioncommerce.com), [blog](https://blog.reactioncommerce.com), mailing lists, [issue tracker](https://github.com/reactioncommerce/reaction/issues), [project boards](https://github.com/reactioncommerce/reaction/projects), Reaction events and meetups, and any other forums or service created by the core project team which the community uses for communication. In addition, violations of this code outside these spaces may affect a person's ability to participate within them.
+This code of conduct applies to all spaces managed by Reaction Commerce. This includes our [discord server](https://discord.gg/Bwm63tBcQY), [issue tracker](https://github.com/reactioncommerce/reaction/issues), [project boards](https://github.com/reactioncommerce/reaction/projects), Reaction events and meetups, and any other forums or service created by the core project team which the community uses for communication. In addition, violations of this code outside these spaces may affect a person's ability to participate within them.
 
-If you believe someone is violating the code of conduct, we ask that you report it by emailing <mailto:conduct@reactioncommerce.com>. For more details, please see our [Reporting Guidelines](https://docs.reactioncommerce.com/reaction-docs/trunk/reporting-guide).
+If you believe someone is violating the code of conduct, we ask that you report it by emailing <mailto:hello-open-commerce@mailchimp.com>.
 
 -   **Be friendly and patient.**
 
@@ -22,17 +22,17 @@ If you believe someone is violating the code of conduct, we ask that you report 
 
 -   **Be careful in the words that you choose.** We are a community of professionals, and we conduct ourselves professionally. Be kind to others. Do not insult or put down other participants. Harassment and other exclusionary behavior aren't acceptable. This includes, but is not limited to:
 
-    -   Violent threats or language directed against another person.
-    -   Discriminatory jokes and language.
-    -   Posting sexually explicit or violent material.
-    -   Posting (or threatening to post) other people's personally identifying information ("doxing").
-    -   Personal insults, especially those using racist or sexist terms.
-    -   Unwelcome sexual attention.
-    -   Advocating for, or encouraging, any of the above behavior.
-    -   Repeated harassment of others. In general, if someone asks you to stop, then stop.
+  -   Violent threats or language directed against another person.
+  -   Discriminatory jokes and language.
+  -   Posting sexually explicit or violent material.
+  -   Posting (or threatening to post) other people's personally identifying information ("doxing").
+  -   Personal insults, especially those using racist or sexist terms.
+  -   Unwelcome sexual attention.
+  -   Advocating for, or encouraging, any of the above behavior.
+  -   Repeated harassment of others. In general, if someone asks you to stop, then stop.
 
 -   **When we disagree, try to understand why.** Disagreements, both social and technical, happen all the time and Reaction is no exception. It is important that we resolve disagreements and differing views constructively. Remember that we’re different. The strength of Reaction comes from its varied community, people from a wide range of backgrounds. Different people have different perspectives on issues. Being unable to understand why someone holds a viewpoint doesn’t mean that they’re wrong. Don’t forget that it is human to err and blaming each other doesn’t get us anywhere. Instead, focus on helping to resolve issues and learning from mistakes.
 
 ## Questions?
 
-If you have questions, please see the [FAQs](https://docs.reactioncommerce.com/reaction-docs/trunk/guideline-faqs). If that doesn't answer your questions, feel free to [contact us](mailto:hello@reactioncommerce.com).
+If you have questions, please visit our [Discord server](https://discord.gg/Bwm63tBcQY) and we'll do our best to help you
