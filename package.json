@@ -1,6 +1,6 @@
 {
   "name": "reaction-api",
-  "version": "4.0.4",
+  "version": "4.1.4",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
@@ -83,7 +83,7 @@
     "@reactioncommerce/api-plugin-orders": "^1.4.2",
     "@reactioncommerce/api-plugin-payments": "^1.0.1",
     "@reactioncommerce/api-plugin-payments-example": "^1.1.1",
-    "@reactioncommerce/api-plugin-payments-stripe": "^1.0.2",
+    "@reactioncommerce/api-plugin-payments-stripe-sca": "^1.0.2",
     "@reactioncommerce/api-plugin-pricing-simple": "^1.0.3",
     "@reactioncommerce/api-plugin-products": "^1.0.2",
     "@reactioncommerce/api-plugin-settings": "^1.0.2",
@@ -106,7 +106,8 @@
     "@reactioncommerce/random": "^1.0.2",
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
-    "sharp": "^0.28.3"
+    "sharp": "^0.28.3",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -168,7 +169,9 @@
     "version": "echo $npm_package_version",
     "postinstall": "is-ci || is-docker || husky install",
     "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "postpublish": "pinst --enable",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "prettier": {
     "arrowParens": "always"
@@ -207,5 +210,6 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
-  }
+  },
+  "snyk": true
 }
