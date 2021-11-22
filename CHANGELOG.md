@@ -1,3 +1,10 @@
+## [4.1.5](https://github.com/reactioncommerce/reaction/compare/v4.1.4...v4.1.5) (2021-11-22)
+
+
+### Bug Fixes
+
+* upgrade @reactioncommerce/api-plugin-address-validation-test from 1.0.1 to 1.0.3 ([f4208a3](https://github.com/reactioncommerce/reaction/commit/f4208a32e9795d756c5b1bc077e2b05a80472025))
+
 ## [4.1.4](https://github.com/reactioncommerce/reaction/compare/v4.1.3...v4.1.4) (2021-10-26)
 
 
