@@ -58,7 +58,7 @@
     "extend": "~3.0.2",
     "gridfs-stream": "^1.1.1",
     "meteor-node-stubs": "^0.4.1",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.6",
     "path-parser": "^4.0.4",
     "query-string": "^5.1.0",
     "sharp": "^0.29.0",
