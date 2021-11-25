@@ -10,7 +10,7 @@ defaults: &defaults
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
   docker:
-    - image: circleci/node:14.11.0-stretch
+    - image: circleci/node:14.18.1-stretch
 
 jobs:
   install-dependencies:
@@ -70,7 +70,7 @@ jobs:
   test-integration-query:
     <<: *defaults
     docker:
-      - image: circleci/node:14.11.0-stretch
+      - image: circleci/node:14.18.1-stretch
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: circleci/mongo:4.0.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
@@ -95,7 +95,7 @@ jobs:
   test-integration-mutation:
     <<: *defaults
     docker:
-      - image: circleci/node:14.11.0-stretch
+      - image: circleci/node:14.18.1-stretch
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: circleci/mongo:4.0.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
