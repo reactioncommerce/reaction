@@ -17,17 +17,19 @@
 # Features
 
 <table>
-<tr><td><strong>Fast</strong></td><td>MongoDB returns data in split seconds, and faster queries mean faster web pages</td></tr>
-<tr><td><strong>Proven</strong></td><td>Open Commerce fuels sites doing 10's of thousands of orders per day</td></tr>
-<tr><td><strong>Composable</strong></td><td>With a flexible plugin system, allows you to pick and choose which integrations work best for you</td></tr>
-<tr><td><strong>Multi-tenant</strong></td><td>Allows you to host multiple shops in the same installation</td></tr>
+<tr><td><strong>Fast</strong></td><td>Returns data in split seconds, and faster queries mean faster web pages</td></tr>
+<tr><td><strong>Proven</strong></td><td>Open Commerce fuels sites doing 10's of thousands of orders per day with 100's of thousands of products</td></tr>
+<tr><td><strong>Composable</strong></td><td>A flexible plugin system allows you to pick and choose which integrations work best for you</td></tr>
+<tr><td><strong>Multi-tenant</strong></td><td>Host multiple shops in the same installation</td></tr>
+<tr><td><strong>Scalable</strong></td><td>Start out with a single server and scale up to hundreds</td></tr>
 <tr><td><strong>Flexible Products</strong></td><td>Allows Products, with options and variants to fit a wide variety of needs</td></tr>
-<tr><td><strong>Inventory</strong></td><td>Track inventory, allow of disallow backorders and more</td></tr>
+<tr><td><strong>Inventory</strong></td><td>Track inventory, allow or disallow backorders and more</td></tr>
 <tr><td><strong>Shipping</strong></td><td>Integrate with a shipping rate provider or build your own custom table</td></tr>
-<tr><td><strong>Taxes</strong></td><td>Integrate with a tax rate provider or build your own custom table</td></tr>
-<tr><td><strong>Fulfillment</strong></td><td>Flexible fulfillment system allows you create your own fulfillment system</td></tr>
-<tr><td><strong>Order Tracking</strong></td><td>View and management your orders in the included admin system</td></tr>
+<tr><td><strong>Taxes</strong></td><td>Integrate with a tax rate provider or build your own custom tax table</td></tr>
+<tr><td><strong>Fulfillment</strong></td><td>Flexible fulfillment system allows you create your own fulfillment methods</td></tr>
+<tr><td><strong>Order Tracking</strong></td><td>View and manage your orders in the included admin system</td></tr>
 <tr><td><strong>Emails</strong></td><td>Customizable templates for Order confirmations and more</td></tr>
+<tr><td><strong>Open</strong></td><td>Fully open source. Never be locked in again</td></tr>
 </table>
 
 
