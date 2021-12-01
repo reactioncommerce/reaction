@@ -28,12 +28,12 @@
     "@reactioncommerce/api-utils": "^1.16.5",
     "@reactioncommerce/file-collections": "~0.9.3",
     "@reactioncommerce/file-collections-sa-gridfs": "~0.1.5",
-    "@reactioncommerce/logger": "~1.1.2",
+    "@reactioncommerce/logger": "~1.1.4",
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/reaction-error": "~1.0.1",
     "envalid": "~5.0.0",
-    "node-fetch": "~2.6.0",
-    "sharp": "^0.29.0",
+    "node-fetch": "~2.6.2",
+    "sharp": "^0.28.3",
     "simpl-schema": "~1.10.2"
   },
   "devDependencies": {
