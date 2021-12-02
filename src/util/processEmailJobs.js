@@ -21,7 +21,8 @@ export default function processEmailJobs(context) {
 
     await Emails.updateOne({ jobId }, {
       $set: {
-        status: "completed"
+        status: "completed",
+        updatedAt: new Date()
       }
     });
 
@@ -43,7 +44,8 @@ export default function processEmailJobs(context) {
 
     await Emails.updateOne({ jobId }, {
       $set: {
-        status: "failed"
+        status: "failed",
+        updatedAt: new Date()
       }
     });
 
@@ -67,7 +69,7 @@ export default function processEmailJobs(context) {
       }
 
       const jobId = job._doc._id;
-
+      const createdAt = new Date();
       await Emails.updateOne({ jobId }, {
         $set: {
           from,
@@ -75,7 +77,11 @@ export default function processEmailJobs(context) {
           subject,
           html,
           status: "processing",
+          updatedAt: createdAt,
           ...optionalEmailFields
+        },
+        $setOnInsert: {
+          createdAt
         }
       }, {
         upsert: true

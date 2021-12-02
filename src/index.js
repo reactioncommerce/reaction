@@ -6,6 +6,7 @@ import queries from "./queries/index.js";
 import startup from "./startup.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
+import checkDatabaseVersion from "./preStartup.js";
 /**
  * @summary Import and call this function to add this plugin to your API.
  * @param {ReactionAPI} app The ReactionAPI instance
@@ -35,7 +36,8 @@ export default async function register(app) {
     policies,
     queries,
     functionsByType: {
-      startup: [startup]
+      startup: [startup],
+      preStartup: [checkDatabaseVersion]
     }
   });
 }
