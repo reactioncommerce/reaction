@@ -61,7 +61,7 @@
     "node-fetch": "^2.6.6",
     "path-parser": "^4.0.4",
     "query-string": "^5.1.0",
-    "sharp": "^0.29.2",
+    "sharp": "^0.29.3",
     "tus-js-client": "^1.5.1",
     "tus-node-server": "~0.3.2"
   },
