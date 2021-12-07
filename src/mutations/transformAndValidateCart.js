@@ -2,7 +2,6 @@ import Logger from "@reactioncommerce/logger";
 import forEachPromise from "@reactioncommerce/api-utils/forEachPromise.js";
 import updateCartFulfillmentGroups from "../util/updateCartFulfillmentGroups.js";
 import xformCartGroupToCommonOrder from "../util/xformCartGroupToCommonOrder.js";
-import { Cart as CartSchema } from "../simpleSchemas.js";
 import { cartTransforms } from "../registration.js";
 
 const logCtx = { name: "cart", file: "transformAndValidateCart" };
@@ -15,6 +14,7 @@ const logCtx = { name: "cart", file: "transformAndValidateCart" };
  * @returns {undefined}
  */
 export default async function transformAndValidateCart(context, cart) {
+  const cartSchema = context.simpleSchemas.Cart;
   updateCartFulfillmentGroups(context, cart);
 
   let commonOrders;
@@ -46,5 +46,5 @@ export default async function transformAndValidateCart(context, cart) {
     Logger.debug({ ...logCtx, cartId: cart._id, ms: Date.now() - startTime }, `Finished ${transformInfo.name} cart transform`);
   });
 
-  CartSchema.validate(cart);
+  cartSchema.validate(cart);
 }
