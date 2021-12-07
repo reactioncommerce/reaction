@@ -46,5 +46,5 @@ export default async function transformAndValidateCart(context, cart) {
     Logger.debug({ ...logCtx, cartId: cart._id, ms: Date.now() - startTime }, `Finished ${transformInfo.name} cart transform`);
   });
 
-  cartSchema.validate(cart)
+  cartSchema.validate(cart);
 }
