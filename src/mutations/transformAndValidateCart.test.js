@@ -12,10 +12,10 @@ const accountCart = {
   currencyCode: "currencyCode",
   createdAt: new Date()
 };
+const expectedResult = { ...accountCart, shipping: [] };
 test("valid account cart", async () => {
   await transformAndValidateCart(mockContext, accountCart);
-  const result = { ...accountCart, shipping: [] };
-  expect(result).toEqual(result);
+  expect(accountCart).toEqual(expectedResult);
 });
 
 
@@ -26,10 +26,10 @@ const anonymousCart = {
   currencyCode: "currencyCode",
   createdAt: new Date()
 };
+const expectedAnonymousResult = { ...anonymousCart, shipping: [] };
 test("valid anonymous cart", async () => {
   await transformAndValidateCart(mockContext, anonymousCart);
-  const result = { ...anonymousCart, shipping: [] };
-  expect(result).toEqual(result);
+  expect(anonymousCart).toEqual(expectedAnonymousResult);
 });
 
 
@@ -61,6 +61,7 @@ test("invalid account cart - no currency code", async () => {
     expect(error.details[0].message).toEqual("Currency code is required");
   }
 });
+
 
 const accountCartInvalidDate = {
   _id: "cartId",
