@@ -14,7 +14,7 @@ const logCtx = { name: "cart", file: "transformAndValidateCart" };
  * @returns {undefined}
  */
 export default async function transformAndValidateCart(context, cart) {
-  const cartSchema = context.simpleSchemas.Cart;
+  const { simpleSchemas: { Cart: cartSchema } } = context;
   updateCartFulfillmentGroups(context, cart);
 
   let commonOrders;
