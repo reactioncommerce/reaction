@@ -142,6 +142,10 @@ export default async function createShop(context, input) {
     shop.shopType = type;
   }
 
+  for (const func of context.getFunctionsOfType("mutateShopBeforeCreate")) {
+    await func(context, shop); // eslint-disable-line no-await-in-loop
+  }
+
   ShopSchema.validate(shop);
 
   // Ensure we never have more than one primary shop
