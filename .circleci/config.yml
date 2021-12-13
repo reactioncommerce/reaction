@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:14.15.0
+      - image: node:14.18.1
 
     dependencies:
       pre:
@@ -28,7 +28,7 @@ jobs:
 
   deploy:
     docker:
-      - image: node:14.15.0
+      - image: node:14.18.1
 
     steps:
       - checkout
