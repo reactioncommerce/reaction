@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-authentication",
   "description": "Authentication plugin for the Reaction API",
-  "version": "0.0.0-development",
+  "version": "2.2.2",
   "main": "index.js",
   "type": "module",
   "engines": {
