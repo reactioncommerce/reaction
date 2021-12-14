@@ -5,9 +5,9 @@
   "main": "./src/index.js",
   "type": "module",
   "private": true,
-    "workspaces": [
-        "packages/*"
-    ],
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "node": ">=14.18.1"
   },
@@ -64,8 +64,8 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@reactioncommerce/api-plugin-payments-example": "^1.1.1",
     "@reactioncommerce/api-core": "^2.0.0",
+    "@reactioncommerce/api-plugin-payments-example": "^1.1.1",
     "@reactioncommerce/api-utils": "^1.16.9",
     "@reactioncommerce/db-version-check": "^1.0.0",
     "@reactioncommerce/file-collections": "^0.9.3",
