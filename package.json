@@ -104,10 +104,10 @@
     "@reactioncommerce/file-collections-sa-gridfs": "^0.1.5",
     "@reactioncommerce/logger": "^1.1.3",
     "@reactioncommerce/random": "^1.0.2",
+    "@snyk/protect": "latest",
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
-    "sharp": "^0.28.3",
-    "@snyk/protect": "latest"
+    "sharp": "^0.28.3"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -142,6 +142,7 @@
     "is-ci": "^2.0.0",
     "is-docker": "^2.1.1",
     "jest": "~25.1.0",
+    "lerna": "^4.0.0",
     "nock": "~11.4.0",
     "node-fetch": "~2.6.0",
     "nodemon": "~1.19.2",
