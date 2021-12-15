@@ -104,10 +104,11 @@
     "@reactioncommerce/file-collections-sa-gridfs": "^0.1.5",
     "@reactioncommerce/logger": "^1.1.3",
     "@reactioncommerce/random": "^1.0.2",
+    "@snyk/protect": "latest",
+    "dotenv": "^10.0.0",
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
-    "sharp": "^0.28.3",
-    "@snyk/protect": "latest"
+    "sharp": "^0.28.3"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
