@@ -114,7 +114,7 @@ test("an admin user can  update global settings", async () => {
       }
     });
   } catch (error) {
-    expect(error).toBeUndefined();
+    expect(error).toMatchSnapshot();
     return;
   }
 
