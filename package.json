@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-accounts",
   "description": "Accounts plugin for the Reaction API",
-  "version": "0.0.0-development",
+  "version": "2.0.2",
   "main": "index.js",
   "type": "module",
   "engines": {

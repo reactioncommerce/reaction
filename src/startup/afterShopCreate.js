@@ -21,10 +21,11 @@ export default async function afterShopCreate(context) {
     if (account === undefined) {
       throw new ReactionError("not-found", `Could not find account for user ${userId} when granting admin UI access for shop ${shop._id}`);
     }
-
-    await context.mutations.grantAdminUIAccess(context, {
-      accountId: account._id,
-      shopId: shop._id
-    });
+    if (shop) {
+      await context.mutations.grantAdminUIAccess(context, {
+        accountId: account._id,
+        shopId: shop._id
+      });
+    }
   });
 }
