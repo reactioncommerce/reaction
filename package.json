@@ -5,19 +5,19 @@
   "main": "index.js",
   "type": "module",
   "engines": {
-    "node": ">=12.14.1"
+    "node": ">=14.18.1"
   },
   "homepage": "https://github.com/reactioncommerce/api-plugin-accounts",
   "url": "https://github.com/reactioncommerce/api-plugin-accounts",
-  "email": "engineering@reactioncommerce.com",
+  "email": "hello-open-commerce@mailchimp.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/api-plugin-accounts.git"
   },
   "author": {
     "name": "Reaction Commerce",
-    "email": "engineering@reactioncommerce.com",
-    "url": "https://reactioncommerce.com"
+    "email": "hello-open-commerce@mailchimp.com",
+    "url": "https://mailchimp.com/developer/open-commerce"
   },
   "license": "GPL-3.0",
   "bugs": {
