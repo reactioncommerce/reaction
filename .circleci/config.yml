@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:14.18.1-v1
+      - image: node:14.18.1
 
     steps:
       - checkout
@@ -16,7 +16,7 @@ jobs:
 
   deploy:
     docker:
-      - image: node:14.18.1-v1
+      - image: node:14.18.1
 
     dependencies:
       pre:
@@ -35,7 +35,7 @@ jobs:
 
   lint:
     docker:
-      - image: node:14.18.1-v1
+      - image: node:14.18.1
 
     steps:
       - checkout
@@ -50,7 +50,7 @@ jobs:
 
   test:
     docker:
-      - image: node:14.18.1-v1
+      - image: node:14.18.1
 
     steps:
       - checkout
