@@ -15,7 +15,7 @@ export function addGlobalSettingDefaults(settings) {
     const value = settings[field];
     if (value === undefined || value === null) {
       const config = globalSettingsSchema[field];
-      if (config && config.defaultValue !== undefined) {
+      if (config !== null && config.defaultValue !== undefined) {
         settings[field] = config.defaultValue;
       }
     }
