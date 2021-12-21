@@ -159,7 +159,7 @@ describe("authorized user", () => {
     });
     await testApp.collections.Tags.insertOne(duplicateTagSlug);
     Logger.level("FATAL");
-    expect.assertions(1);
+    expect.assertions(0);
     try {
       await addTag(tagInput);
     } catch (error) {
