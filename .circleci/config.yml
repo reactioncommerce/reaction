@@ -140,6 +140,7 @@ jobs:
       - run:
           name: Use Lerna to push the latest version of the plugins to npm
           command: |
+            npm install lerna -g
             lerna publish from-package -y
 
   docker-build-push:
