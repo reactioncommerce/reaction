@@ -18,10 +18,9 @@ export default async function afterShopCreate(context) {
 
     const account = await Accounts.findOne({ userId });
 
-    if (account === undefined) {
+    if (!account) {
       throw new ReactionError("not-found", `Could not find account for user ${userId} when granting admin UI access for shop ${shop._id}`);
-    }
-    if (shop) {
+    } else {
       await context.mutations.grantAdminUIAccess(context, {
         accountId: account._id,
         shopId: shop._id
