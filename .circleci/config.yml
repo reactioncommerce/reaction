@@ -140,8 +140,7 @@ jobs:
       - run:
           name: Use Lerna to push the latest version of the plugins to npm
           command: |
-            npm install lerna -g
-            lerna publish from-package -y
+            npx lerna publish from-package -y
 
   docker-build-push:
     <<: *defaults
@@ -199,8 +198,6 @@ workflows:
             - dockerfile-lint
             - eslint
             - graphql-lint
-            - test-integration-query
-            - test-integration-mutation
       - docker-build-push:
           context: reaction-publish-docker
           filters:
