@@ -13,7 +13,7 @@
     "type": "git",
     "url": "https://github.com/reactioncommerce/logger.git"
   },
-  "author": "Mailchimp Open Commerce <hello_open_commerce@mailchimp.com>",
+  "author": "Mailchimp Open Commerce<hello_open_commerce@mailchimp.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/reactioncommerce/logger/issues"
