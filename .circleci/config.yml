@@ -140,7 +140,7 @@ jobs:
       - run:
           name: Use Lerna to push the latest version of the plugins to npm
           command: |
-            lerna publish -y --message="fix: package json update, circleCI test"
+            lerna publish from-package
 
   docker-build-push:
     <<: *defaults
