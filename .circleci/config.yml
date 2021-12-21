@@ -9,6 +9,7 @@ defaults: &defaults
     DOCKER_REPOSITORY: "reactioncommerce/reaction"
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
+    NPM_TOKEN: ${NPM_TOKEN}
   docker:
     - image: circleci/node:14.18.1-stretch
 
@@ -141,9 +142,6 @@ jobs:
           name: Use Lerna to push the latest version of the plugins to npm
           command: |
             npx lerna publish from-package -y
-    dependencies:
-      pre:
-        - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
   docker-build-push:
     <<: *defaults
     steps:
