@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/logger",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Reaction application logging based on Bunyan logger",
   "main": "./dist/main.js",
   "scripts": {
