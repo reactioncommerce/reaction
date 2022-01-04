@@ -24,17 +24,14 @@ test("query anonymous cart", async () => {
 test("query without hashed access token", async () => {
   const cartId = "123";
   const cartToken = "xyz";
-  const cart = {
+  const callingParams = {
     _id: cartId,
     anonymousAccessToken: cartToken
   };
-  const callingParams = {
-    _id: cartId,
-    anonymousAccessToken: (cartToken)
-  };
 
-  mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(cart));
+  mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(null));
 
-  await anonymousCartByCartId(mockContext, { cartId, cartToken });
+  const result = await anonymousCartByCartId(mockContext, { cartId, cartToken });
+  expect(result).toEqual(null);
   expect(mockContext.collections.Cart.findOne).not.toHaveBeenCalledWith(callingParams);
 });
