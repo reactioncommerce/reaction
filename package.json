@@ -58,6 +58,9 @@
     "jest": "^25.1.0",
     "semantic-release": "^17.0.4"
   },
+  "peerDependencies": {
+    "@reactioncommerce/api-plugin-address-validation": "^1.0.0"
+  },
   "scripts": {
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint .",
