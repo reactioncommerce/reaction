@@ -106,7 +106,7 @@
     "@reactioncommerce/random": "^1.0.2",
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
-    "sharp": "^0.28.3",
+    "sharp": "^0.29.3",
     "@snyk/protect": "latest"
   },
   "devDependencies": {
