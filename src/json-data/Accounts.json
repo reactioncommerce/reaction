@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "61b242582258c00013f58f3f",
+    "acceptsMarketing": false,
+    "emails": [
+      {
+        "address": "admin@example.org",
+        "verified": false,
+        "provides": "default"
+      }
+    ],
+    "groups": [
+      "qq9EErKpFkikmZXWY",
+      "CcD3utAAQ8WCATpzM",
+      "vyuzLnDmkspudQSiC"
+    ],
+    "name": null,
+    "profile": {},
+    "shopId": null,
+    "state": "new",
+    "userId": "61b242582258c00013f58f3f",
+    "adminUIShopIds": [
+      "dSZqgQsyp48EpJzor"
+    ]
+  }
+]
