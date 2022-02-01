@@ -1,6 +1,6 @@
 import GroupData from "../json-data/Groups.json";
 
-const now = Date();
+const now = new Date();
 
 /**
  * @summary load Groups data

@@ -5,6 +5,8 @@ import loadGroups from "./loaders/loadGroups.js";
 import loadMigrations from "./loaders/loadMigrations.js";
 import loadRoles from "./loaders/loadRoles.js";
 import loadUsers from "./loaders/loadUsers.js";
+import loadProducts from "./loaders/loadProducts.js";
+import loadMediaFileRecord from "./loaders/loadImages/loadMediaFileRecord.js";
 
 /**
  * @summary run all data loader functions
@@ -19,12 +21,21 @@ export default async function loadSampleData(context) {
     Logger.warn("Not loading sample data because data already exists");
     return false;
   }
+  Logger.info("Load Accounts");
   await loadAccounts(context);
+  Logger.info("Load Groups");
   await loadGroups(context);
   // await loadMigrations(context);
+  Logger.info("Load Roles");
   await loadRoles(context);
+  Logger.info("Load Shops");
   await loadShops(context);
+  Logger.info("Load Users");
   await loadUsers(context);
+  Logger.info("Load Products");
+  await loadProducts(context);
+  Logger.info("Load MediaFileRecord");
+  await loadMediaFileRecord(context);
   // all other load scripts go here
   Logger.info("Loading Sample Data complete");
   return true;

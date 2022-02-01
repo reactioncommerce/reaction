@@ -1,6 +1,6 @@
 import AccountData from "../json-data/Accounts.json";
 
-const now = Date();
+const now = new Date();
 
 /**
  * @summary load Accounts data
