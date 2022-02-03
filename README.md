@@ -6,24 +6,31 @@
 
 ## Summary
 
-This plugin provides Authentication middleware for the Reaction API.
+This plugin provides Authentication middleware for the Reaction API. It relies on token based authentication.
+Utils included in this plugin help connect the [Account-js](https://www.accountsjs.com/) library and the Reaction API via an Auth Token.
 
-Utils included in this plugin help connect the Account-js library and the Reaction API via an Auth Token.
-
-### How it works
+## How it works
 
 This plugin registers the schema and resolvers that are required by account-js.
 
-Whenever a header with name `Authorization` is present in the request, this plugin uses account-js to get the user for that token. Then the user is attached to the `req` object.
+A express middleware is added whose job is to extract the `Authorization` header from the request and uses account-js to get the user for that token. The format should be `Authorization: Bearer <YOUR_ACCESS_TOKEN>`. Then the user is attached to the `req` object.
 
-Also on each request, `accountsGraphQL.context` is called so that it can pass the `user` to the "internal context" of account-js.
+A function is added to `functionByType.graphQLContext` which links the graphQL context used in the api-core with the "internal context" used by account-js. This is needed because account-js also keeps tracks of the tokens and uses a separate GraphQL server.
 
-### Supported actions
+## Supported actions
 
 1. Signup
 2. Login
 3. Change Password
-4. Forgot Password - A email is sent with a reset token url of the form `https://<storefront-url>/?resetToken=<token>`
+4. Forgot Password - A email is sent with a reset token url of the form `https://<STORE_URL>/?resetToken=<token>`
+
+## Environment Variables:
+
+| Variable Name | Description                                                                                                                     | Default Value           |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| STORE_URL     | This is the public link to the storefront (used to redirect)                                                                    | `http://localhost:4000` |
+| MONGO_URL     | MongoDB used to store session & tokens                                                                                          | None                    |
+| TOKEN_SECRET  | [secret](https://www.accountsjs.com/docs/api/server/interfaces/accountsserveroptions#tokensecret) used while creating the token | `UPDATE_THIS_SECRET`    |
 
 ## Developer Certificate of Origin
 
