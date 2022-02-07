@@ -4,11 +4,9 @@ import { Readable } from "stream";
 import Logger from "@reactioncommerce/logger";
 import pkg from "@reactioncommerce/file-collections";
 
-// import * as buffer from "buffer";
 global.Blob = Blob;
 
 const { FileRecord } = pkg;
-
 
 /**
  * @summary load product images from disk to GridFS
@@ -19,7 +17,7 @@ export default async function uploadImages(context) {
   const { collections: { Media } } = context;
   const data = fs.readFileSync("./custom-packages/sample-data/src/images/fatbear.jpg");
   const blob = new Blob([data], { type: "image/jpg" });
-  const fileRecord = FileRecord.fromBlob(blob);
+  const fileRecord = new FileRecord(blob);
   fileRecord.name("fatbear.jpg");
   await Media.insert(fileRecord);
 
