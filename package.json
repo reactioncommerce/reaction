@@ -25,6 +25,7 @@
   "sideEffects": false,
   "dependencies": {
     "@reactioncommerce/api-utils": "^1.16.9",
+    "@reactioncommerce/file-collections": "^0.9.3",
     "@reactioncommerce/logger": "^1.1.5"
   },
   "devDependencies": {

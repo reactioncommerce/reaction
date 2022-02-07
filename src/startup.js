@@ -2,11 +2,11 @@ import Logger from "@reactioncommerce/logger";
 import loadShops from "./loaders/loadShops.js";
 import loadAccounts from "./loaders/loadAccounts.js";
 import loadGroups from "./loaders/loadGroups.js";
-import loadMigrations from "./loaders/loadMigrations.js";
 import loadRoles from "./loaders/loadRoles.js";
 import loadUsers from "./loaders/loadUsers.js";
 import loadProducts from "./loaders/loadProducts.js";
 import loadMediaFileRecord from "./loaders/loadImages/loadMediaFileRecord.js";
+import uploadFile from "./loaders/loadImages/uploadFile.js";
 
 /**
  * @summary run all data loader functions
@@ -36,6 +36,7 @@ export default async function loadSampleData(context) {
   await loadProducts(context);
   Logger.info("Load MediaFileRecord");
   await loadMediaFileRecord(context);
+  await uploadFile(context);
   // all other load scripts go here
   Logger.info("Loading Sample Data complete");
   return true;
