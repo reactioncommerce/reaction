@@ -619,10 +619,10 @@ extend type Query {
     "Filter by visibility"
     isVisible: Boolean
 
-    "Filter by metafield key. It uses `regex` match. To get more accurate searches send the argument as a regex pattern"
+    "Filter by metafield key using `regex` match. To get specific searches send the argument as a regex pattern"
     metafieldKey: String
 
-    "Filter by metafield value. It uses `regex` match. To get more accurate searches send the argument as a regex pattern"
+    "Filter by metafield value using `regex` match. To get specific searches send the argument as a regex pattern"
     metafieldValue: String
 
     "Filter by price range maximum value"
