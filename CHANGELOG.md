@@ -1,3 +1,10 @@
+## [4.1.6](https://github.com/reactioncommerce/reaction/compare/v4.1.5...v4.1.6) (2022-02-14)
+
+
+### Bug Fixes
+
+* upgrade @reactioncommerce/api-plugin-catalogs from 1.1.0 to 1.1.2 ([c379426](https://github.com/reactioncommerce/reaction/commit/c37942647f39459d5082973af75c26a4e42abfb4))
+
 ## [4.1.5](https://github.com/reactioncommerce/reaction/compare/v4.1.4...v4.1.5) (2021-11-22)
 
 
