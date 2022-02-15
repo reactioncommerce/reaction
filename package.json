@@ -1,6 +1,6 @@
 {
   "name": "reaction-api",
-  "version": "4.1.6",
+  "version": "4.1.7",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
@@ -108,7 +108,7 @@
     "dotenv": "^10.0.0",
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
-    "sharp": "^0.28.3"
+    "sharp": "^0.29.3"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
