@@ -77,7 +77,7 @@
     "@reactioncommerce/api-plugin-i18n": "^1.0.4",
     "@reactioncommerce/api-plugin-inventory": "^1.0.3",
     "@reactioncommerce/api-plugin-inventory-simple": "^1.0.4",
-    "@reactioncommerce/api-plugin-job-queue": "^1.0.2",
+    "@reactioncommerce/api-plugin-job-queue": "^1.0.7",
     "@reactioncommerce/api-plugin-navigation": "^1.1.1",
     "@reactioncommerce/api-plugin-notifications": "^1.1.0",
     "@reactioncommerce/api-plugin-orders": "^1.4.2",
