@@ -72,7 +72,7 @@
     "@reactioncommerce/api-plugin-discounts-codes": "^1.2.0",
     "@reactioncommerce/api-plugin-email": "^1.1.0",
     "@reactioncommerce/api-plugin-email-smtp": "^1.0.5",
-    "@reactioncommerce/api-plugin-email-templates": "^1.1.1",
+    "@reactioncommerce/api-plugin-email-templates": "^1.1.7",
     "@reactioncommerce/api-plugin-files": "^1.0.19",
     "@reactioncommerce/api-plugin-i18n": "^1.0.4",
     "@reactioncommerce/api-plugin-inventory": "^1.0.3",
