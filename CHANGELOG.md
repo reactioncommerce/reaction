@@ -1,3 +1,10 @@
+## [4.1.8](https://github.com/reactioncommerce/reaction/compare/v4.1.7...v4.1.8) (2022-03-02)
+
+
+### Bug Fixes
+
+* update sharp to match files ([f4ad49e](https://github.com/reactioncommerce/reaction/commit/f4ad49e9a07a49e1805013b3ec2f503361a80242))
+
 ## [4.1.7](https://github.com/reactioncommerce/reaction/compare/v4.1.6...v4.1.7) (2022-02-14)
 
 
