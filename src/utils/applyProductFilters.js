@@ -119,33 +119,33 @@ export default function applyProductFilters(context, productFilters) {
 
     // filter by details
     if (productFilters.metafieldKey && productFilters.metafieldValue) {
+      let keyCondition;
+      let valueCondition;
+
+      // Set the search condition based on isFuzzySearch flag
       if (productFilters.isFuzzySearch) {
-        selector = {
-          ...selector,
-          metafields: {
-            $elemMatch: {
-              key: {
-                $regex: productFilters.metafieldKey,
-                $options: "i"
-              },
-              value: {
-                $regex: productFilters.metafieldValue,
-                $options: "i"
-              }
-            }
-          }
+        keyCondition = {
+          $regex: productFilters.metafieldKey,
+          $options: "i"
+        };
+        valueCondition = {
+          $regex: productFilters.metafieldValue,
+          $options: "i"
         };
       } else {
-        selector = {
-          ...selector,
-          metafields: {
-            $elemMatch: {
-              key: productFilters.metafieldKey,
-              value: productFilters.metafieldValue
-            }
-          }
-        };
+        keyCondition = productFilters.metafieldKey;
+        valueCondition = productFilters.metafieldValue;
       }
+
+      selector = {
+        ...selector,
+        metafields: {
+          $elemMatch: {
+            key: keyCondition,
+            value: valueCondition
+          }
+        }
+      };
     }
 
     // filter by visibility
