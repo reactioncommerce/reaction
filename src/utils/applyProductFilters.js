@@ -43,6 +43,11 @@ const filters = new SimpleSchema({
   "priceMax": {
     type: Number,
     optional: true
+  },
+  "isFuzzySearch": {
+    type: Boolean,
+    optional: true,
+    defaultValue: true
   }
 });
 
@@ -114,21 +119,34 @@ export default function applyProductFilters(context, productFilters) {
 
     // filter by details
     if (productFilters.metafieldKey && productFilters.metafieldValue) {
-      selector = {
-        ...selector,
-        metafields: {
-          $elemMatch: {
-            key: {
-              $regex: productFilters.metafieldKey,
-              $options: "i"
-            },
-            value: {
-              $regex: productFilters.metafieldValue,
-              $options: "i"
+      if(productFilters.isFuzzySearch) {
+        selector = {
+          ...selector,
+          metafields: {
+            $elemMatch: {
+              key: {
+                $regex: productFilters.metafieldKey,
+                $options: "i"
+              },
+              value: {
+                $regex: productFilters.metafieldValue,
+                $options: "i"
+              }
+            }
+          }
+        };
+      }
+      else {
+        selector = {
+          ...selector,
+          metafields:{
+            $elemMatch:{
+              key:productFilters.metafieldKey, 
+              value:productFilters.metafieldValue
             }
           }
         }
-      };
+      }
     }
 
     // filter by visibility

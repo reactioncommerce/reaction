@@ -619,6 +619,9 @@ extend type Query {
     "Filter by visibility"
     isVisible: Boolean
 
+    "Flag to set metafields search method. Default value true performs a fuzzy search. Explicitly set it to false to perform exact match."
+    isFuzzySearch: Boolean = true
+
     "Filter by metafield key using `regex` match. To get specific searches send the argument as a regex pattern"
     metafieldKey: String
 
