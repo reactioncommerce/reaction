@@ -119,7 +119,7 @@ export default function applyProductFilters(context, productFilters) {
 
     // filter by details
     if (productFilters.metafieldKey && productFilters.metafieldValue) {
-      if(productFilters.isFuzzySearch) {
+      if (productFilters.isFuzzySearch) {
         selector = {
           ...selector,
           metafields: {
@@ -135,17 +135,16 @@ export default function applyProductFilters(context, productFilters) {
             }
           }
         };
-      }
-      else {
+      } else {
         selector = {
           ...selector,
-          metafields:{
-            $elemMatch:{
-              key:productFilters.metafieldKey, 
-              value:productFilters.metafieldValue
+          metafields: {
+            $elemMatch: {
+              key: productFilters.metafieldKey,
+              value: productFilters.metafieldValue
             }
           }
-        }
+        };
       }
     }
 
