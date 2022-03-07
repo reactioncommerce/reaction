@@ -44,10 +44,10 @@ const filters = new SimpleSchema({
     type: Number,
     optional: true
   },
-  "isFuzzySearch": {
+  "isExactMatch": {
     type: Boolean,
     optional: true,
-    defaultValue: true
+    defaultValue: false
   }
 });
 
@@ -123,7 +123,10 @@ export default function applyProductFilters(context, productFilters) {
       let valueCondition;
 
       // Set the search condition based on isFuzzySearch flag
-      if (productFilters.isFuzzySearch) {
+      if (productFilters.isExactMatch) {
+        keyCondition = productFilters.metafieldKey;
+        valueCondition = productFilters.metafieldValue;
+      } else {
         keyCondition = {
           $regex: productFilters.metafieldKey,
           $options: "i"
@@ -132,9 +135,6 @@ export default function applyProductFilters(context, productFilters) {
           $regex: productFilters.metafieldValue,
           $options: "i"
         };
-      } else {
-        keyCondition = productFilters.metafieldKey;
-        valueCondition = productFilters.metafieldValue;
       }
 
       selector = {
