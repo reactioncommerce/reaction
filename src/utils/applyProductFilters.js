@@ -43,6 +43,11 @@ const filters = new SimpleSchema({
   "priceMax": {
     type: Number,
     optional: true
+  },
+  "isExactMatch": {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
   }
 });
 
@@ -114,18 +119,30 @@ export default function applyProductFilters(context, productFilters) {
 
     // filter by details
     if (productFilters.metafieldKey && productFilters.metafieldValue) {
+      let keyCondition;
+      let valueCondition;
+
+      // Set the search condition based on isFuzzySearch flag
+      if (productFilters.isExactMatch) {
+        keyCondition = productFilters.metafieldKey;
+        valueCondition = productFilters.metafieldValue;
+      } else {
+        keyCondition = {
+          $regex: productFilters.metafieldKey,
+          $options: "i"
+        };
+        valueCondition = {
+          $regex: productFilters.metafieldValue,
+          $options: "i"
+        };
+      }
+
       selector = {
         ...selector,
         metafields: {
           $elemMatch: {
-            key: {
-              $regex: productFilters.metafieldKey,
-              $options: "i"
-            },
-            value: {
-              $regex: productFilters.metafieldValue,
-              $options: "i"
-            }
+            key: keyCondition,
+            value: valueCondition
           }
         }
       };
