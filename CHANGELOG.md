@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/reactioncommerce/reaction/compare/v4.1.8...v4.2.0) (2022-03-26)
+
+
+### Features
+
+* updated CircleCI config to also tag image with latest. ([ec745c7](https://github.com/reactioncommerce/reaction/commit/ec745c709d00856b822239dbfdf494c2c7d1b872))
+
 ## [4.1.8](https://github.com/reactioncommerce/reaction/compare/v4.1.7...v4.1.8) (2022-03-02)
 
 
