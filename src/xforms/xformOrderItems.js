@@ -1,3 +1,5 @@
+import imageURLs from "../util/imageURLs.js";
+
 /**
  * @param {Object} context - an object containing the per-request state
  * @param {Object[]} items Array of order fulfillment group items
@@ -6,6 +8,7 @@
 export default async function xformOrderItems(context, items) {
   const xformedItems = items.map((item) => ({
     ...item,
+    imageURLs: imageURLs(context, item),
     productConfiguration: {
       productId: item.productId,
       productVariantId: item.variantId
