@@ -3,6 +3,14 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import Factory from "../tests/factory.js";
 import getDataForOrderEmail from "./getDataForOrderEmail.js";
 
+jest.mock("./imageURLs.js", () => jest.fn().mockImplementation(() => Promise.resolve({
+  large: "large.jpg",
+  medium: "medium.jpg",
+  original: "original.jpg",
+  small: "small.jpg",
+  thumbnail: "thumbnail.jpg"
+})));
+
 mockContext.queries.getPaymentMethodConfigByName = jest.fn().mockName("getPaymentMethodConfigByName").mockImplementation(() => ({
   functions: {
     listRefunds: async () => [{
@@ -18,45 +26,13 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-function setupMocks(mockShop, mockCatalogItem) {
+function setupMocks(mockShop) {
   mockContext.collections.Shops.findOne.mockReturnValueOnce(mockShop);
-  mockContext.collections.Catalog.toArray.mockReturnValueOnce([mockCatalogItem]);
-
-  mockContext.queries.findVariantInCatalogProduct = jest.fn().mockName("findVariantInCatalogProduct");
-  mockContext.queries.findVariantInCatalogProduct.mockReturnValueOnce({
-    catalogProduct: mockCatalogItem.product,
-    variant: mockCatalogItem.product.variants[0]
-  });
 }
 
 test("returns expected data structure (base case)", async () => {
-  const mockCatalogItem = Factory.Catalog.makeOne({
-    isDeleted: false,
-    product: Factory.CatalogProduct.makeOne({
-      isDeleted: false,
-      isVisible: true,
-      variants: Factory.CatalogProductVariant.makeMany(1, {
-        media: [
-          {
-            priority: 1,
-            productId: "mockProductId",
-            variantId: "mockVariantId",
-            URLs: {
-              large: "large.jpg",
-              medium: "medium.jpg",
-              original: "original.jpg",
-              small: "small.jpg",
-              thumbnail: "thumbnail.jpg"
-            }
-          }
-        ],
-        options: null,
-        price: 10
-      })
-    })
-  });
-
   const mockOrder = Factory.Order.makeOne({
+    accountId: "mockAccountId",
     payments: Factory.Payment.makeMany(1, {
       name: "iou_example"
     })
@@ -81,11 +57,18 @@ test("returns expected data structure (base case)", async () => {
     }
   });
 
-  setupMocks(mockShop, mockCatalogItem);
+  const mockAccount = {
+    _id: "mockAccountId",
+    name: "mockName"
+  };
+  mockContext.collections.Accounts.findOne.mockReturnValueOnce(Promise.resolve(mockAccount));
+
+  setupMocks(mockShop);
 
   const data = await getDataForOrderEmail(mockContext, { order: mockOrder });
 
   expect(data).toEqual({
+    account: mockAccount,
     billing: {
       address: {
         address: "mockAddress1 mockAddress2",
@@ -111,6 +94,15 @@ test("returns expected data structure (base case)", async () => {
     combinedItems: [
       {
         ...mockOrder.shipping[0].items[0],
+        imageURLs: {
+          large: "large.jpg",
+          medium: "medium.jpg",
+          original: "original.jpg",
+          small: "small.jpg",
+          thumbnail: "thumbnail.jpg"
+        },
+        productImage: "large.jpg",
+        variantImage: "large.jpg",
         placeholderImage: "https://app.mock/resources/placeholder.gif",
         price: {
           amount: jasmine.any(Number),
@@ -140,6 +132,15 @@ test("returns expected data structure (base case)", async () => {
           items: [
             {
               ...mockOrder.shipping[0].items[0],
+              imageURLs: {
+                large: "large.jpg",
+                medium: "medium.jpg",
+                original: "original.jpg",
+                small: "small.jpg",
+                thumbnail: "thumbnail.jpg"
+              },
+              productImage: "large.jpg",
+              variantImage: "large.jpg",
               placeholderImage: "https://app.mock/resources/placeholder.gif",
               price: {
                 amount: jasmine.any(Number),
@@ -193,32 +194,6 @@ test("returns expected data structure (base case)", async () => {
 });
 
 test("storefrontUrls is optional", async () => {
-  const mockCatalogItem = Factory.Catalog.makeOne({
-    isDeleted: false,
-    product: Factory.CatalogProduct.makeOne({
-      isDeleted: false,
-      isVisible: true,
-      variants: Factory.CatalogProductVariant.makeMany(1, {
-        media: [
-          {
-            priority: 1,
-            productId: "mockProductId",
-            variantId: "mockVariantId",
-            URLs: {
-              large: "large.jpg",
-              medium: "medium.jpg",
-              original: "original.jpg",
-              small: "small.jpg",
-              thumbnail: "thumbnail.jpg"
-            }
-          }
-        ],
-        options: null,
-        price: 10
-      })
-    })
-  });
-
   const mockOrder = Factory.Order.makeOne({
     payments: Factory.Payment.makeMany(1, {
       name: "iou_example"
@@ -229,7 +204,7 @@ test("storefrontUrls is optional", async () => {
     storefrontUrls: {}
   });
 
-  setupMocks(mockShop, mockCatalogItem);
+  setupMocks(mockShop);
 
   const data = await getDataForOrderEmail(mockContext, { order: mockOrder });
   expect(data.homepage).toBeNull();
@@ -237,32 +212,6 @@ test("storefrontUrls is optional", async () => {
 });
 
 test("storefrontUrls does not use :token", async () => {
-  const mockCatalogItem = Factory.Catalog.makeOne({
-    isDeleted: false,
-    product: Factory.CatalogProduct.makeOne({
-      isDeleted: false,
-      isVisible: true,
-      variants: Factory.CatalogProductVariant.makeMany(1, {
-        media: [
-          {
-            priority: 1,
-            productId: "mockProductId",
-            variantId: "mockVariantId",
-            URLs: {
-              large: "large.jpg",
-              medium: "medium.jpg",
-              original: "original.jpg",
-              small: "small.jpg",
-              thumbnail: "thumbnail.jpg"
-            }
-          }
-        ],
-        options: null,
-        price: 10
-      })
-    })
-  });
-
   const mockOrder = Factory.Order.makeOne({
     payments: Factory.Payment.makeMany(1, {
       name: "iou_example"
@@ -276,7 +225,7 @@ test("storefrontUrls does not use :token", async () => {
     }
   });
 
-  setupMocks(mockShop, mockCatalogItem);
+  setupMocks(mockShop);
 
   const data = await getDataForOrderEmail(mockContext, { order: mockOrder });
   expect(data.homepage).toBe(mockShop.storefrontUrls.storefrontHomeUrl);
