@@ -59,7 +59,8 @@
     "semantic-release": "^17.4.7"
   },
   "peerDependencies": {
-    "@reactioncommerce/api-plugin-address-validation": "^1.0.0"
+    "@reactioncommerce/api-plugin-address-validation": "^1.0.0",
+    "@reactioncommerce/api-plugin-tags": "^1.0.0"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
