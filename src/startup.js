@@ -3,8 +3,8 @@ import loadShops from "./loaders/loadShops.js";
 import loadAccounts from "./loaders/loadAccounts.js";
 import loadUsers from "./loaders/loadUsers.js";
 import loadProducts from "./loaders/loadProducts.js";
-import loadMediaFileRecord from "./loaders/loadImages/loadMediaFileRecord.js";
-import uploadFile from "./loaders/loadImages/uploadFile.js";
+// import loadMediaFileRecord from "./loaders/loadImages/loadMediaFileRecord.js";
+// import uploadFile from "./loaders/loadImages/uploadFile.js";
 import loadNavigation from "./loaders/loadNavigation.js";
 import loadShipping from "./loaders/loadShipping.js";
 import config from "./config.js";
@@ -32,7 +32,6 @@ export default async function loadSampleData(context) {
   let user = await loadUsers(context);
   Logger.info("Load Accounts");
   let account = await loadAccounts(context);
-  // await loadMigrations(context);
   Logger.info("Load Shop");
   let newShopId = await loadShops(context, account, user[0]);
   Logger.info("Load Products");
