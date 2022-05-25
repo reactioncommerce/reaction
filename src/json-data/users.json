@@ -3,7 +3,7 @@
     "_id": "61b242582258c00013f58f3f",
     "services": {
       "password": {
-        "bcrypt": "$2a$10$S3VCyY4VuS152nOSvgeRE.vKBAxYsjYhMfL1AHRYcV3.qD9F0R10y"
+        "bcrypt": "$2a$10$K3F3Pc2sxp3gDiEaLQ/Ze.Pfkx7z6lFy.L2xWdSnCPYCdHMzK9OPi"
       }
     },
     "createdAt": 1639072344315,

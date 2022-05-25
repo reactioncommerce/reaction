@@ -3,8 +3,6 @@ import loadShops from "./loaders/loadShops.js";
 import loadAccounts from "./loaders/loadAccounts.js";
 import loadUsers from "./loaders/loadUsers.js";
 import loadProducts from "./loaders/loadProducts.js";
-// import loadMediaFileRecord from "./loaders/loadImages/loadMediaFileRecord.js";
-// import uploadFile from "./loaders/loadImages/uploadFile.js";
 import loadNavigation from "./loaders/loadNavigation.js";
 import loadShipping from "./loaders/loadShipping.js";
 import config from "./config.js";
@@ -40,10 +38,6 @@ export default async function loadSampleData(context) {
   await loadNavigation(context, newShopId);
   Logger.info("Load Shipping");
   await loadShipping(context, newShopId);
-  // Logger.info("Load MediaFileRecord");
-  // await loadMediaFileRecord(context);
-  // await uploadFile(context);
-  // all other load scripts go here
   Logger.info("Loading Sample Data complete");
   return true;
 }
