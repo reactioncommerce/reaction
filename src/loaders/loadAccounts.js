@@ -5,14 +5,9 @@ const now = new Date();
 /**
  * @summary load Accounts data
  * @param {Object} context - The application context
- * @returns {Promise<boolean>} true if success
+ * @returns {Object} Accounts data
  */
 export default async function loadAccounts(context) {
-  const { collections: { Accounts } } = context;
-  AccountData.forEach((account) => {
-    account.createdAt = now;
-    account.updatedAt = now;
-  });
-  Accounts.insertMany(AccountData);
-  return true;
+  let account = await context.mutations.createAccount(context.getInternalContext(), AccountData);
+  return account;
 }

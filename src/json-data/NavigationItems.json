@@ -1,4 +1,86 @@
-[
-{ "_id" : "cgxfRkTC8PgvRFnv8", "draftData" : { "classNames" : null, "content" : [ { "language" : "en", "value" : "Example Navigation" } ], "isUrlRelative" : true, "shouldOpenInNewWindow" : false, "url" : "/" }, "shopId" : "dSZqgQsyp48EpJzor", "data" : { "classNames" : null, "content" : [ { "language" : "en", "value" : "Example Navigation" } ], "isUrlRelative" : true, "shouldOpenInNewWindow" : false, "url" : "/" }, "metadata" : {  }, "createdAt" : { "$date" : "2021-12-20T16:45:28.530+0000" }, "hasUnpublishedChanges" : false },
-{ "_id" : "FaiHr7dLjfgAGJQfb", "draftData" : { "classNames" : null, "content" : [ { "language" : "en", "value" : "Example Tag Page" } ], "isUrlRelative" : true, "shouldOpenInNewWindow" : false, "url" : "/tag/example-tag" }, "shopId" : "dSZqgQsyp48EpJzor", "data" : { "classNames" : null, "content" : [ { "language" : "en", "value" : "Example Tag Page" } ], "isUrlRelative" : true, "shouldOpenInNewWindow" : false, "url" : "/tag/example-tag" }, "metadata" : {  }, "createdAt" : { "$date" : "2021-12-20T16:45:28.535+0000" }, "hasUnpublishedChanges" : false }
-]
+{
+  "MenuOneTopLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Men"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/men"
+    }
+  },
+  "MenuOneSubLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Men's Outdoor"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/men/men-outdoor"
+    }
+  },
+  "MenuOneLeafLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Men's Jacket"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/men/men-outdoor/men-jacket"
+    }
+  },
+  "MenuTwoTopLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Women"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/women"
+    }
+  },
+  "MenuTwoSubLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Women's Outdoor"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/women/women-outdoor"
+    }
+  },
+  "MenuTwoLeafLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Women's Jacket"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/women/women-outdoor/women-jacket"
+    }
+  }
+}

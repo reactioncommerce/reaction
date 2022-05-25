@@ -1,59 +1,11 @@
 [
   {
-    "_id":"dSZqgQsyp48EpJzor",
-    "active":true,
-    "availablePaymentMethods":[
-
-    ],
-    "baseUOL":"in",
-    "baseUOM":"oz",
-    "currency":"USD",
-    "domains":[
-      "localhost"
-    ],
-    "language":"en",
+    "currencyCode":"USD",
+    "defaultLanguage":"en",
+    "defaultTimezone":"US/Pacific",
     "name":"Reaction Outdoor Apparel ",
     "description":null,
-    "paymentMethods":[
-
-    ],
-    "slug":"reaction-outdoor-apparel",
-    "timezone":"US/Pacific",
-    "unitsOfLength":[
-      {
-        "uol":"in",
-        "label":"Inches",
-        "default":true
-      },
-      {
-        "uol":"cm",
-        "label":"Centimeters"
-      },
-      {
-        "uol":"ft",
-        "label":"Feet"
-      }
-    ],
-    "unitsOfMeasure":[
-      {
-        "uom":"oz",
-        "label":"Ounces",
-        "default":true
-      },
-      {
-        "uom":"lb",
-        "label":"Pounds"
-      },
-      {
-        "uom":"g",
-        "label":"Grams"
-      },
-      {
-        "uom":"kg",
-        "label":"Kilograms"
-      }
-    ],
-    "shopType":"primary",
-    "defaultNavigationTreeId":"4kjbbELm39x4LJsmX"
+    "shopId":"myNewShopIDEpJzor",
+    "type": "primary"
   }
 ]

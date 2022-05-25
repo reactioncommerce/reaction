@@ -14,5 +14,5 @@ export default async function loadUsers(context) {
     user.updatedAt = now;
   });
   users.insertMany(UserData);
-  return true;
+  return UserData;
 }

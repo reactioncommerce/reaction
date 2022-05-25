@@ -208,11 +208,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "49.99",
-      "min": 49.99,
-      "max": 49.99
-    },
+    "price": 49.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": 18,
@@ -244,11 +240,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "0.00",
-      "min": 0,
-      "max": 0
-    },
+    "price": 0,
     "isTaxable": true,
     "attributeLabel": "Size",
     "height": 15,
@@ -299,11 +291,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "29.99",
-      "min": 29.99,
-      "max": 29.99
-    },
+    "price": 29.99,
     "isTaxable": true,
     "compareAtPrice": 24.99,
     "attributeLabel": "Size",
@@ -333,11 +321,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "29.99",
-      "min": 29.99,
-      "max": 29.99
-    },
+    "price": 29.99,
     "isTaxable": true,
     "attributeLabel": "Size",
     "height": 15,
@@ -367,11 +351,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "49.99",
-      "min": 49.99,
-      "max": 49.99
-    },
+    "price": 49.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": 15,
@@ -441,11 +421,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "49.99",
-      "min": 49.99,
-      "max": 49.99
-    },
+    "price": 49.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": 13,
@@ -475,11 +451,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "0.00",
-      "min": 0,
-      "max": 0
-    },
+    "price": 0,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": 12,
@@ -621,11 +593,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "79.99",
-      "min": 79.99,
-      "max": 79.99
-    },
+    "price": 79.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": null,
@@ -697,11 +665,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "19.99",
-      "min": 19.99,
-      "max": 19.99
-    },
+    "price": 19.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": null,
@@ -774,11 +738,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "39.99",
-      "min": 39.99,
-      "max": 39.99
-    },
+    "price": 39.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": null,
@@ -919,11 +879,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "89.99",
-      "min": 89.99,
-      "max": 89.99
-    },
+    "price": 89.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": null,
@@ -1213,11 +1169,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "68.99",
-      "min": 68.99,
-      "max": 68.99
-    },
+    "price": 68.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": null,
@@ -1288,11 +1240,7 @@
     "workflow": {
       "status": "new"
     },
-    "price": {
-      "range": "109.99",
-      "min": 109.99,
-      "max": 109.99
-    },
+    "price": 109.99,
     "isTaxable": true,
     "attributeLabel": "Color",
     "height": null,
