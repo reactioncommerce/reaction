@@ -12,7 +12,7 @@ const now = new Date();
  * @returns {Promise<boolean>} true if success
  */
 
-async function publishSampleProducts(productData, context, tagsData) {
+async function publishSampleProducts(productData, context) {
   const { mutations: { publishProducts } } = context;
   for (const product of productData) {
     if (!product.isDeleted && product.isVisible && product.type === "simple") {
@@ -31,7 +31,7 @@ async function publishSampleProducts(productData, context, tagsData) {
  * @param {Object} context - The application context
  * @returns {Promise<boolean>} true if success
  */
-export default async function loadProducts(context, shopId) {
+export default async function loadProducts(context, shopId, tagsData) {
   const { simpleSchemas: { Product: ProductSchema, ProductVariant: ProductVariantSchema }, collections: { Products } } = context;
   const { appEvents } = context;
   const priceField = ['price'];
