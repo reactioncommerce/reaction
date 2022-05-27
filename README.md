@@ -13,7 +13,7 @@ The `Developer Certificate of Origin` and `License` sections can stay as they ar
 ## Login info 
 
 username: admin@example.org
-password: Dm550491!
+password: password
 
 ## Included in this example plugin
 
