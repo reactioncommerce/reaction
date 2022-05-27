@@ -10,7 +10,7 @@
       ],
       "isUrlRelative": true,
       "shouldOpenInNewWindow": false,
-      "url": "/men"
+      "url": "/tag/men"
     }
   },
   "MenuOneSubLevel": {
@@ -24,7 +24,7 @@
       ],
       "isUrlRelative": true,
       "shouldOpenInNewWindow": false,
-      "url": "/men/men-outdoor"
+      "url": "/tag/men-outdoor"
     }
   },
   "MenuOneLeafLevel": {
@@ -38,7 +38,7 @@
       ],
       "isUrlRelative": true,
       "shouldOpenInNewWindow": false,
-      "url": "/men/men-outdoor/men-jacket"
+      "url": "/tag/men-jacket"
     }
   },
   "MenuTwoTopLevel": {
@@ -52,7 +52,7 @@
       ],
       "isUrlRelative": true,
       "shouldOpenInNewWindow": false,
-      "url": "/women"
+      "url": "/tag/women"
     }
   },
   "MenuTwoSubLevel": {
@@ -66,7 +66,7 @@
       ],
       "isUrlRelative": true,
       "shouldOpenInNewWindow": false,
-      "url": "/women/women-outdoor"
+      "url": "/tag/women-outdoor"
     }
   },
   "MenuTwoLeafLevel": {
@@ -80,7 +80,7 @@
       ],
       "isUrlRelative": true,
       "shouldOpenInNewWindow": false,
-      "url": "/women/women-outdoor/women-jacket"
+      "url": "/tag/women-jacket"
     }
   }
 }

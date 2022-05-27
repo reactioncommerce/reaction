@@ -1,0 +1,44 @@
+{
+  "men": {
+    "name": "men",
+    "slug": "men",
+    "displayTitle": "Men",
+    "shopId": "",
+    "isVisible": true
+  },
+  "menOutdoor": {
+    "name": "menOutdoor",
+    "slug": "men-outdoor",
+    "displayTitle": "Men Outdoors",
+    "shopId": "",
+    "isVisible": true
+  },
+  "menJacket": {
+    "name": "menJacket",
+    "slug": "men-jacket",
+    "displayTitle": "Men Jackets",
+    "shopId": "",
+    "isVisible": true
+  },
+  "women": {
+    "name": "women",
+    "slug": "women",
+    "displayTitle": "Women",
+    "shopId": "",
+    "isVisible": true
+  },
+  "womenOutdoor": {
+    "name": "womenOutdoor",
+    "slug": "women-outdoor",
+    "displayTitle": "Women Outdoors",
+    "shopId": "",
+    "isVisible": true
+  },
+  "womenJacket": {
+    "name": "womenJacket",
+    "slug": "women-jacket",
+    "displayTitle": "Women Jackets",
+    "shopId": "",
+    "isVisible": true
+  }
+}

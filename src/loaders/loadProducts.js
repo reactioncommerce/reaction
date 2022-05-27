@@ -1,4 +1,5 @@
 import ProductData from "../json-data/Products.json";
+import TagProductMappingData from "../json-data/TagProductMapping.json";
 import Logger from "@reactioncommerce/logger";
 
 const now = new Date();
@@ -7,10 +8,11 @@ const now = new Date();
  * @summary publishes Products data to catalog
  * @param {Object} context - The application context
  * @param {Object} productData - The product data to publish
+ * @param {Object} tagsData - Tags data to connect to specific pre-decided products
  * @returns {Promise<boolean>} true if success
  */
 
-async function publishSampleProducts(productData, context) {
+async function publishSampleProducts(productData, context, tagsData) {
   const { mutations: { publishProducts } } = context;
   for (const product of productData) {
     if (!product.isDeleted && product.isVisible && product.type === "simple") {
@@ -63,6 +65,15 @@ export default async function loadProducts(context, shopId) {
     await appEvents.emit("afterVariantUpdate", emitEventData);
   }));
 
+  const tagsNames = Object.keys(tagsData);
+  await Promise.all(tagsNames.map(async (tagName) => {
+    await context.mutations.addTagsToProducts(context.getInternalContext(), {
+      productIds: TagProductMappingData[tagName],
+      shopId,
+      tagIds: [tagsData[tagName]._id]
+    })
+  }));
+  
   await publishSampleProducts(ProductData, context);
 
   return true;
