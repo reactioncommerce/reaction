@@ -82,6 +82,12 @@ export default async function loadNavigation(context, shopId) {
   const navItemMenuTwoLeafLevel = await context.mutations.createNavigationItem(context.getInternalContext(), {
     navigationItem: NavigationItemsData.MenuTwoLeafLevel
   });
+  const navItemMenuThreeTopLevel = await context.mutations.createNavigationItem(context.getInternalContext(), {
+    navigationItem: NavigationItemsData.MenuThreeTopLevel
+  });
+  const navItemMenuThreeSubLevel = await context.mutations.createNavigationItem(context.getInternalContext(), {
+    navigationItem: NavigationItemsData.MenuThreeSubLevel
+  });
 
   // Create Navigation item objects with corresponding IDs
   let m1leaf = getNavigationItem(navItemMenuOneLeafLevel._id);
@@ -90,8 +96,11 @@ export default async function loadNavigation(context, shopId) {
   let m2leaf = getNavigationItem(navItemMenuTwoLeafLevel._id);
   let m2sub = getNavigationItem(navItemMenuTwoSubLevel._id);
   let m2top = getNavigationItem(navItemMenuTwoTopLevel._id);
+  let m3sub = getNavigationItem(navItemMenuThreeSubLevel._id);
+  let m3top = getNavigationItem(navItemMenuThreeTopLevel._id);
 
   // Embed the Navigation item objects into the Navigation tree
+  m3top.items = [m3sub];
   m2sub.items = [m2leaf];
   m2top.items = [m2sub];
   m1sub.items = [m1leaf];
@@ -100,9 +109,10 @@ export default async function loadNavigation(context, shopId) {
   // Additional hardcoded setting
   m1top.expanded = true;
   m2top.expanded = true;
+  m3top.expanded = true;
 
   // Creating top level items object
-  let items = [m1top, m2top];
+  let items = [m1top, m2top, m3top];
 
   // Create the tree
   const navigationTreeId = Random.id();

@@ -13,7 +13,7 @@ export default async function loadTags(context, shopId) {
   });
 
   // Hardcoded Sample Tags
-  // Two sections (Men/Women) each with two slugs
+  // Three sections (Men/Women/Unisex) each with two slugs except Unisex
   const tagOutput = {}
   tagOutput.men = await context.mutations.addTag(context.getInternalContext(), TagsData.men);
   tagOutput.menOutdoor = await context.mutations.addTag(context.getInternalContext(), TagsData.menOutdoor);
@@ -21,6 +21,8 @@ export default async function loadTags(context, shopId) {
   tagOutput.women = await context.mutations.addTag(context.getInternalContext(), TagsData.women);
   tagOutput.womenOutdoor = await context.mutations.addTag(context.getInternalContext(), TagsData.womenOutdoor);
   tagOutput.womenJacket = await context.mutations.addTag(context.getInternalContext(), TagsData.womenJacket);
+  tagOutput.unisex = await context.mutations.addTag(context.getInternalContext(), TagsData.unisex);
+  tagOutput.unisexOutdoor = await context.mutations.addTag(context.getInternalContext(), TagsData.unisexOutdoor);
 
   return tagOutput;
 }

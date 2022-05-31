@@ -1,152 +1,5 @@
 [
   {
-    "_id": "DphZa3fxweLRGNNdR",
-    "ancestors": [],
-    "createdAt": {
-      "$date": "2021-12-20T18:46:09.162+0000"
-    },
-    "handle": "",
-    "isDeleted": true,
-    "isVisible": false,
-    "shopId": "dSZqgQsyp48EpJzor",
-    "shouldAppearInSitemap": true,
-    "supportedFulfillmentTypes": [
-      "shipping"
-    ],
-    "title": "",
-    "type": "simple",
-    "updatedAt": {
-      "$date": "2021-12-20T18:46:09.162+0000"
-    },
-    "workflow": {
-      "status": "new"
-    },
-    "price": {
-      "range": "0.00",
-      "min": 0,
-      "max": 0
-    }
-  },
-  {
-    "_id": "5LNa9YsAZagKfmeRg",
-    "ancestors": [
-      "DphZa3fxweLRGNNdR"
-    ],
-    "createdAt": {
-      "$date": "2021-12-20T18:46:09.170+0000"
-    },
-    "isDeleted": true,
-    "isVisible": false,
-    "shopId": "dSZqgQsyp48EpJzor",
-    "type": "variant",
-    "updatedAt": {
-      "$date": "2021-12-20T18:46:09.170+0000"
-    },
-    "workflow": {
-      "status": "new"
-    },
-    "price": 0,
-    "isTaxable": true
-  },
-  {
-    "_id": "WzE53XYiojBc4tkWh",
-    "ancestors": [],
-    "createdAt": {
-      "$date": "2022-01-04T17:35:59.056+0000"
-    },
-    "handle": "",
-    "isDeleted": true,
-    "isVisible": false,
-    "shopId": "dSZqgQsyp48EpJzor",
-    "shouldAppearInSitemap": true,
-    "supportedFulfillmentTypes": [
-      "shipping"
-    ],
-    "title": "",
-    "type": "simple",
-    "updatedAt": {
-      "$date": "2022-01-04T17:35:59.056+0000"
-    },
-    "workflow": {
-      "status": "new"
-    },
-    "price": {
-      "range": "0.00",
-      "min": 0,
-      "max": 0
-    }
-  },
-  {
-    "_id": "BpEvNPSt5eWRmHbci",
-    "ancestors": [
-      "WzE53XYiojBc4tkWh"
-    ],
-    "createdAt": {
-      "$date": "2022-01-04T17:35:59.066+0000"
-    },
-    "isDeleted": true,
-    "isVisible": false,
-    "shopId": "dSZqgQsyp48EpJzor",
-    "type": "variant",
-    "updatedAt": {
-      "$date": "2022-01-04T17:35:59.066+0000"
-    },
-    "workflow": {
-      "status": "new"
-    },
-    "price": 0,
-    "isTaxable": true
-  },
-  {
-    "_id": "Rm2dM4wyAoCGFR8jZ",
-    "ancestors": [],
-    "createdAt": {
-      "$date": "2022-01-04T23:35:54.819+0000"
-    },
-    "handle": "",
-    "isDeleted": true,
-    "isVisible": false,
-    "shopId": "dSZqgQsyp48EpJzor",
-    "shouldAppearInSitemap": true,
-    "supportedFulfillmentTypes": [
-      "shipping"
-    ],
-    "title": "",
-    "type": "simple",
-    "updatedAt": {
-      "$date": "2022-01-04T23:35:54.819+0000"
-    },
-    "workflow": {
-      "status": "new"
-    },
-    "price": {
-      "range": "0.00",
-      "min": 0,
-      "max": 0
-    }
-  },
-  {
-    "_id": "BdcupkhRijtPHqFFw",
-    "ancestors": [
-      "Rm2dM4wyAoCGFR8jZ"
-    ],
-    "createdAt": {
-      "$date": "2022-01-04T23:35:54.826+0000"
-    },
-    "isDeleted": true,
-    "isVisible": false,
-    "shopId": "dSZqgQsyp48EpJzor",
-    "type": "variant",
-    "updatedAt": {
-      "$date": "2022-01-04T23:35:54.826+0000"
-    },
-    "workflow": {
-      "status": "new"
-    },
-    "price": 0,
-    "isTaxable": true
-  },
-  {
     "_id": "DZwLHk4EAzitRni8F",
     "ancestors": [],
     "createdAt": {
@@ -185,10 +38,7 @@
       "$date": "2022-01-21T16:53:32.010+0000"
     },
     "publishedProductHash": "3f262d57850e31fbccd2a6eb6a1bb92b1328a327",
-    "hashtags": [
-      "bpTpKtFBh6MRHHAtd",
-      "RcJPnyTRNRZzm9z55"
-    ]
+    "hashtags": []
   },
   {
     "_id": "Hn4BRaBvLkYffMq36",
@@ -370,7 +220,7 @@
       "$date": "2022-01-05T15:57:35.630+0000"
     },
     "handle": "mens-casual-rugged-jackets",
-    "isDeleted": true,
+    "isDeleted": false,
     "isVisible": true,
     "shopId": "dSZqgQsyp48EpJzor",
     "shouldAppearInSitemap": true,
@@ -411,7 +261,7 @@
     "createdAt": {
       "$date": "2022-01-05T15:57:35.636+0000"
     },
-    "isDeleted": true,
+    "isDeleted": false,
     "isVisible": true,
     "shopId": "dSZqgQsyp48EpJzor",
     "type": "variant",
@@ -441,7 +291,7 @@
     "createdAt": {
       "$date": "2022-01-05T16:35:18.935+0000"
     },
-    "isDeleted": true,
+    "isDeleted": false,
     "isVisible": false,
     "shopId": "dSZqgQsyp48EpJzor",
     "type": "variant",
@@ -462,75 +312,6 @@
     "weight": 3,
     "width": 15,
     "compareAtPrice": 29.99
-  },
-  {
-    "_id": "xFcotdSWbKhqu3Ciz",
-    "ancestors": [],
-    "createdAt": {
-      "$date": "2022-01-05T16:44:33.680+0000"
-    },
-    "handle": "mens-down-puffer-jackets",
-    "isDeleted": true,
-    "isVisible": true,
-    "shopId": "dSZqgQsyp48EpJzor",
-    "shouldAppearInSitemap": true,
-    "supportedFulfillmentTypes": [
-      "shipping"
-    ],
-    "title": "Mens Down Bomber Jackets",
-    "type": "simple",
-    "updatedAt": {
-      "$date": "2022-01-05T18:19:55.771+0000"
-    },
-    "workflow": {
-      "status": "new"
-    },
-    "price": {
-      "range": "0.00",
-      "min": 0,
-      "max": 0
-    },
-    "description": "versatile water-resistant lightweight bomber jacket featuring a full-zip front and stand-up collar",
-    "originCountry": "US",
-    "pageTitle": null,
-    "vendor": "Reaction Outdoor Apparel",
-    "currentProductHash": "73255cfccb286a6f649ebf6831f347790f3086b0",
-    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-down-puffer-jackets",
-    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.facebook.com/mens-down-puffer-jackets",
-    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.facebook.com/mens-down-puffer-jackets",
-    "publishedAt": {
-      "$date": "2022-01-05T18:19:55.771+0000"
-    },
-    "publishedProductHash": "73255cfccb286a6f649ebf6831f347790f3086b0"
-  },
-  {
-    "_id": "oGRGsWA27vx4oHfBw",
-    "ancestors": [
-      "xFcotdSWbKhqu3Ciz"
-    ],
-    "createdAt": {
-      "$date": "2022-01-05T16:44:33.689+0000"
-    },
-    "isDeleted": true,
-    "isVisible": true,
-    "shopId": "dSZqgQsyp48EpJzor",
-    "type": "variant",
-    "updatedAt": {
-      "$date": "2022-01-05T16:50:55.292+0000"
-    },
-    "workflow": {
-      "status": "new"
-    },
-    "price": 0,
-    "isTaxable": true,
-    "attributeLabel": "Color",
-    "height": null,
-    "length": null,
-    "optionTitle": "Black",
-    "originCountry": null,
-    "title": null,
-    "weight": null,
-    "width": null
   },
   {
     "_id": "nsJtEx8hrm5pfMmD7",
@@ -571,9 +352,7 @@
       "$date": "2022-01-21T16:53:31.989+0000"
     },
     "publishedProductHash": "f72b5ffb0915206a8938bcbc7cec086ed551bdc8",
-    "hashtags": [
-      "4L3tWvwHxWejTHFdB"
-    ]
+    "hashtags": []
   },
   {
     "_id": "8fcfWFFLZq3sRK3TD",
@@ -643,9 +422,7 @@
       "$date": "2022-01-21T16:53:31.994+0000"
     },
     "publishedProductHash": "6316b88c10fa3912caba9c3a14d08d2f21544586",
-    "hashtags": [
-      "X9K2LwjH2wShdb98J"
-    ]
+    "hashtags": []
   },
   {
     "_id": "sfnf4bXmDMiWFysq5",
@@ -715,10 +492,7 @@
       "$date": "2022-01-21T16:53:32.001+0000"
     },
     "publishedProductHash": "5dfab4eac5dd41a730151add70f29b979b336eb9",
-    "hashtags": [
-      "AwXyMZ2yvZ4MiY9R4",
-      "avkCL5f3NMwPErYp8"
-    ]
+    "hashtags": []
   },
   {
     "_id": "GXxXSKGYmvW8ATbpj",
@@ -776,7 +550,7 @@
       "min": 49.99,
       "max": 49.99
     },
-    "description": "Lightweight full-length Pursuit Attack tight pants from are a great choice for milder conditions that call for full leg coverage",
+    "description": "Lightweight full-length Pursuit Attack tight pants are a great choice for milder conditions that call for full leg coverage",
     "originCountry": "US",
     "pageTitle": null,
     "vendor": "Reaction Outdoor Apparel",
@@ -857,9 +631,7 @@
     },
     "publishedProductHash": "c9a13c16d2c4bb90cbdd0a1b1ff44d5bccf9efe4",
     "pageTitle": null,
-    "hashtags": [
-      "yz9qTKx2zv3v56PRg"
-    ]
+    "hashtags": []
   },
   {
     "_id": "KfYLHwoMrfJWyJMqG",
@@ -929,9 +701,7 @@
       "$date": "2022-01-21T16:53:31.923+0000"
     },
     "publishedProductHash": "9fa6aa0b40d0dc596cfdeba31262cac6ed7a1ce3",
-    "hashtags": [
-      "BvHAPJxGmeap6g4GS"
-    ]
+    "hashtags": []
   },
   {
     "_id": "mZB2tnYRnJrxqZWee",
@@ -1001,10 +771,7 @@
       "$date": "2022-01-21T16:53:31.896+0000"
     },
     "publishedProductHash": "c9122f7a046bf477b11d4d5a59d39143b1da6ab3",
-    "hashtags": [
-      "5tz6pBsE5a9Nntc4R",
-      "wt95jQzyx4fEkYWKq"
-    ]
+    "hashtags": []
   },
   {
     "_id": "6htQnYHKqqPNDf6yR",
@@ -1074,9 +841,7 @@
       "$date": "2022-01-21T16:53:31.828+0000"
     },
     "publishedProductHash": "a3d313e4afbcc8fd97d28d4f7ff83d7280e6113e",
-    "hashtags": [
-      "CRcCLhPHvgm8u4Eii"
-    ]
+    "hashtags": []
   },
   {
     "_id": "4WNQrD9qGE8iDB7H4",
@@ -1146,10 +911,7 @@
       "$date": "2022-01-21T16:53:31.987+0000"
     },
     "publishedProductHash": "f744503c231f6cfb8d8391d6b14443434d5a63fe",
-    "hashtags": [
-      "RcJPnyTRNRZzm9z55",
-      "3T8EdtETa6xPjsSY5"
-    ]
+    "hashtags": []
   },
   {
     "_id": "4w8kMXBLpKvz9xYFS",
@@ -1210,7 +972,7 @@
     "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/womens-causal-outdoor-jacket",
     "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/womens-causal-outdoor-jacket",
     "currentProductHash": "ed64e2c14eb8042e470ac3472e68a62376d4e90e",
-    "description": "Casual style, easily go with a wide variety of clothes, like dress shirt, open-necked polo shirt, plain T-shirts and jeans",
+    "description": "Casual style, easily goes with a wide variety of clothes, like dress shirt, open-necked polo shirt, plain T-shirts and jeans",
     "originCountry": "US",
     "pageTitle": null,
     "vendor": "Reaction Outdoor Apparel",
@@ -1218,9 +980,7 @@
       "$date": "2022-01-21T16:53:23.789+0000"
     },
     "publishedProductHash": "ed64e2c14eb8042e470ac3472e68a62376d4e90e",
-    "hashtags": [
-      "TxaPESbrzkFdWMd8Z"
-    ]
+    "hashtags": []
   },
   {
     "_id": "ymjmx6wMcu7fB3Mvb",
@@ -1287,9 +1047,7 @@
       "$date": "2022-01-21T16:53:23.723+0000"
     },
     "publishedProductHash": "8cbb96ad2e21ca183920f0bbb8b9762fde359428",
-    "hashtags": [
-      "ZzHijG3deQhugDude"
-    ]
+    "hashtags": []
   },
   {
     "_id": "dCtii9N4iA6YLcEgK",
@@ -1359,10 +1117,7 @@
     "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/women-s-outwear-sportswear-hoodie",
     "pinterestMsg": "Share our listing wth your pinterest on twitter using the link below www.pinterest.com/women-s-outwear-sportswear-hoodie",
     "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/women-s-outwear-sportswear-hoodie",
-    "hashtags": [
-      "AwXyMZ2yvZ4MiY9R4",
-      "avkCL5f3NMwPErYp8"
-    ]
+    "hashtags": []
   },
   {
     "_id": "7KxD39Am8L7WDy6sB",
@@ -1432,10 +1187,7 @@
       "$date": "2022-01-21T16:53:23.731+0000"
     },
     "publishedProductHash": "feee859f7d09fedd030b63fa0ddb69c88119a670",
-    "hashtags": [
-      "yz9qTKx2zv3v56PRg",
-      "26h7ta8xd67dGFFsK"
-    ]
+    "hashtags": []
   },
   {
     "_id": "JPEwhpFG5McpKKLjx",
@@ -1574,9 +1326,7 @@
       "$date": "2022-01-21T16:53:23.733+0000"
     },
     "publishedProductHash": "850f0bdb5027f0c29c15e7eddbd0b3f5ab55875a",
-    "hashtags": [
-      "wt95jQzyx4fEkYWKq"
-    ]
+    "hashtags": []
   },
   {
     "_id": "46AevrgX4CRubhX4h",
@@ -1646,9 +1396,7 @@
       "$date": "2022-01-21T16:53:23.738+0000"
     },
     "publishedProductHash": "3a5499a067bc24ae4579a980a6af172ca4db8b77",
-    "hashtags": [
-      "CRcCLhPHvgm8u4Eii"
-    ]
+    "hashtags": []
   },
   {
     "_id": "B9ncCC5kaGkNu9qC2",
@@ -1718,9 +1466,7 @@
       "$date": "2022-01-21T16:53:23.718+0000"
     },
     "publishedProductHash": "9976b3f0c5e593a86a648215d30dafb85efa2716",
-    "hashtags": [
-      "iMf3axALL9vgT6TXh"
-    ]
+    "hashtags": []
   },
   {
     "_id": "5z9yubahxQZqLCPQH",
@@ -1790,9 +1536,7 @@
       "$date": "2022-01-21T16:53:23.729+0000"
     },
     "publishedProductHash": "37c85bee388b46f7bbc1773719a53725ba028da3",
-    "hashtags": [
-      "f7ibpBperjkzFvLoS"
-    ]
+    "hashtags": []
   },
   {
     "_id": "jYRjB5krMPweP5HyZ",
@@ -1862,9 +1606,7 @@
       "$date": "2022-01-21T16:53:23.730+0000"
     },
     "publishedProductHash": "24e6a31581caa3b4a064f2f8554971d45f6b5560",
-    "hashtags": [
-      "qRxeQtwbbEuvk72ju"
-    ]
+    "hashtags": []
   },
   {
     "_id": "xM7BSt5CZkqom33pP",
@@ -1904,7 +1646,7 @@
     "createdAt": {
       "$date": "2022-01-05T21:35:54.628+0000"
     },
-    "isDeleted": true,
+    "isDeleted": false,
     "isVisible": true,
     "shopId": "dSZqgQsyp48EpJzor",
     "type": "variant",
@@ -2108,7 +1850,7 @@
     "createdAt": {
       "$date": "2022-01-06T16:16:49.609+0000"
     },
-    "isDeleted": true,
+    "isDeleted": false,
     "isVisible": false,
     "shopId": "dSZqgQsyp48EpJzor",
     "type": "variant",
@@ -2137,7 +1879,7 @@
     "createdAt": {
       "$date": "2022-01-06T16:17:46.535+0000"
     },
-    "isDeleted": true,
+    "isDeleted": false,
     "isVisible": false,
     "shopId": "dSZqgQsyp48EpJzor",
     "type": "variant",
