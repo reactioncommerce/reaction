@@ -13,7 +13,7 @@
     "supportedFulfillmentTypes": [
       "shipping"
     ],
-    "title": "Mens Waterproof Outdoor Rain Jacket",
+    "title": "Men's Waterproof Outdoor Rain Jacket",
     "type": "simple",
     "updatedAt": {
       "$date": "2022-01-21T16:53:32.010+0000"
@@ -65,7 +65,7 @@
     "length": 10,
     "optionTitle": "Black",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Black",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black",
     "weight": 2.5,
     "width": 6,
     "compareAtPrice": 24.99,
@@ -97,7 +97,7 @@
     "length": 17,
     "optionTitle": "Small",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Small",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Small",
     "weight": 2,
     "width": 13,
     "compareAtPrice": 24.99
@@ -149,7 +149,7 @@
     "length": 17,
     "optionTitle": "Medium",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Medium",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Medium",
     "weight": 2.5,
     "width": 13
   },
@@ -178,7 +178,7 @@
     "length": 17,
     "optionTitle": "Large",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Large",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Large",
     "weight": 2.5,
     "width": 13,
     "compareAtPrice": 24.99
@@ -208,7 +208,7 @@
     "length": 17,
     "optionTitle": "Blue",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Blue",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Blue",
     "weight": 2.5,
     "width": 13,
     "compareAtPrice": 24.99
@@ -227,7 +227,7 @@
     "supportedFulfillmentTypes": [
       "shipping"
     ],
-    "title": "Mens Casual Rugged Jacket",
+    "title": "Men's Casual Rugged Jacket",
     "type": "simple",
     "updatedAt": {
       "$date": "2022-01-06T18:06:16.207+0000"
@@ -278,7 +278,7 @@
     "length": 17,
     "optionTitle": "Black",
     "originCountry": "US",
-    "title": "Mens Casual Rugged Jackets - Black",
+    "title": "Men's Casual Rugged Jackets - Black",
     "weight": 2.5,
     "width": 15,
     "compareAtPrice": 29.99
@@ -292,7 +292,7 @@
       "$date": "2022-01-05T16:35:18.935+0000"
     },
     "isDeleted": false,
-    "isVisible": false,
+    "isVisible": true,
     "shopId": "dSZqgQsyp48EpJzor",
     "type": "variant",
     "updatedAt": {
@@ -308,7 +308,7 @@
     "length": 17,
     "optionTitle": "White",
     "originCountry": "US",
-    "title": "Mens Casual Rugged Jackets - White",
+    "title": "Men's Casual Rugged Jackets - White",
     "weight": 3,
     "width": 15,
     "compareAtPrice": 29.99
@@ -327,7 +327,7 @@
     "supportedFulfillmentTypes": [
       "shipping"
     ],
-    "title": "Mens Down Bomber Jacket",
+    "title": "Men's Down Bomber Jacket",
     "type": "simple",
     "updatedAt": {
       "$date": "2022-01-21T16:53:31.989+0000"
@@ -379,7 +379,7 @@
     "length": null,
     "optionTitle": "Black",
     "originCountry": null,
-    "title": "Mens Down Bomber Jacket - Black Medium",
+    "title": "Men's Down Bomber Jacket - Black Medium",
     "weight": null,
     "width": null
   },
@@ -397,7 +397,7 @@
     "supportedFulfillmentTypes": [
       "shipping"
     ],
-    "title": "Mens Warm Cotton Shirt",
+    "title": "Men's Warm Cotton Shirt",
     "type": "simple",
     "updatedAt": {
       "$date": "2022-01-21T16:53:31.994+0000"
@@ -484,7 +484,7 @@
     "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/mens-cozy-sportwear-hoodies",
     "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/mens-cozy-sportwear-hoodies",
     "currentProductHash": "5dfab4eac5dd41a730151add70f29b979b336eb9",
-    "description": "Cozy sportswear hoodies is crafted of ultra-soft 100% polyester MTR filament fleece for the perfect amount of warmth.",
+    "description": "Cozy sportswear hoodie is crafted out of ultra-soft 100% polyester MTR filament fleece for the perfect amount of warmth.",
     "originCountry": "US",
     "pageTitle": null,
     "vendor": "Reaction Outdoor Apparel",
@@ -537,7 +537,7 @@
     "supportedFulfillmentTypes": [
       "shipping"
     ],
-    "title": "Mens Warm Superflex Tight",
+    "title": "Men's Warm Superflex Tight",
     "type": "simple",
     "updatedAt": {
       "$date": "2022-01-21T16:53:31.850+0000"
@@ -588,7 +588,7 @@
     "length": null,
     "optionTitle": "White",
     "originCountry": null,
-    "title": "Mens Warm Superflex Tight - White",
+    "title": "Men's Warm Superflex Tight - White",
     "weight": null,
     "width": null
   },
@@ -689,7 +689,7 @@
       "min": 199.99,
       "max": 199.99
     },
-    "description": "Mens terrain reaction terrain hiking shoe features waterproof leather and waterproof membrane construction that keeps your feet cool and dry. and a rubber toe cap for anti-collision.",
+    "description": "Men's reaction terrain hiking shoe features waterproof leather and waterproof membrane construction that keeps your feet cool and dry, and a rubber toe cap for anti-collision.",
     "originCountry": "US",
     "pageTitle": null,
     "vendor": "Reaction Outdoor Apparel",
@@ -1162,7 +1162,7 @@
     "supportedFulfillmentTypes": [
       "shipping"
     ],
-    "title": "Womens Causal Outdoor Running Shoe",
+    "title": "Women's Causal Outdoor Running Shoe",
     "type": "simple",
     "updatedAt": {
       "$date": "2022-01-21T16:53:23.731+0000"
@@ -1388,7 +1388,7 @@
     "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/warm-wool-knitted-hat",
     "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/warm-wool-knitted-hat",
     "currentProductHash": "3a5499a067bc24ae4579a980a6af172ca4db8b77",
-    "description": "Warm knit beanie that is fashionable and equipped with dealing cold hard north american winters",
+    "description": "Warm knit beanie that is fashionable and equipped with dealing the cold north american winters",
     "originCountry": null,
     "pageTitle": null,
     "vendor": null,
@@ -1581,7 +1581,7 @@
     "supportedFulfillmentTypes": [
       "shipping"
     ],
-    "title": "Mens Outdoor Waterproof Swimshorts",
+    "title": "Men's Outdoor Waterproof Swimshorts",
     "type": "simple",
     "updatedAt": {
       "$date": "2022-01-21T16:53:23.730+0000"
@@ -1633,7 +1633,7 @@
     "length": null,
     "optionTitle": "White",
     "originCountry": null,
-    "title": "Mens Outdoor Waterproof Swimshorts",
+    "title": "Men's Outdoor Waterproof Swimshorts",
     "weight": null,
     "width": null
   },
@@ -1662,7 +1662,7 @@
     "length": 17,
     "optionTitle": "Small",
     "originCountry": "US",
-    "title": "Mens Casual Rugged Jacket - Black Small",
+    "title": "Men's Casual Rugged Jacket - Black Small",
     "weight": 2.5,
     "width": 13,
     "compareAtPrice": 29.99
@@ -1692,7 +1692,7 @@
     "length": null,
     "optionTitle": "Small",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Black Small",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Small",
     "weight": null,
     "width": null
   },
@@ -1721,7 +1721,7 @@
     "length": null,
     "optionTitle": "Large",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Black Large",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Large",
     "weight": null,
     "width": null
   },
@@ -1750,7 +1750,7 @@
     "length": null,
     "optionTitle": "Medium",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Black Medium",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Medium",
     "weight": null,
     "width": null
   },
@@ -1779,7 +1779,7 @@
     "length": null,
     "optionTitle": "Small",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Blue Small",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Blue Small",
     "weight": null,
     "width": null
   },
@@ -1808,7 +1808,7 @@
     "length": null,
     "optionTitle": "Medium",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Black Medium",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Medium",
     "weight": null,
     "width": null
   },
@@ -1837,7 +1837,7 @@
     "length": null,
     "optionTitle": "Large",
     "originCountry": "US",
-    "title": "Mens Waterproof Outdoor Rain Jacket - Black Large",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Large",
     "weight": null,
     "width": null
   },
@@ -1851,7 +1851,7 @@
       "$date": "2022-01-06T16:16:49.609+0000"
     },
     "isDeleted": false,
-    "isVisible": false,
+    "isVisible": true,
     "shopId": "dSZqgQsyp48EpJzor",
     "type": "variant",
     "updatedAt": {
@@ -1866,7 +1866,7 @@
     "length": null,
     "optionTitle": "Medium",
     "originCountry": null,
-    "title": "Mens Causal Rugged Jacket - Black Medium",
+    "title": "Men's Causal Rugged Jacket - Black Medium",
     "weight": null,
     "width": null
   },
@@ -1880,7 +1880,7 @@
       "$date": "2022-01-06T16:17:46.535+0000"
     },
     "isDeleted": false,
-    "isVisible": false,
+    "isVisible": true,
     "shopId": "dSZqgQsyp48EpJzor",
     "type": "variant",
     "updatedAt": {
@@ -1895,7 +1895,7 @@
     "length": null,
     "optionTitle": "Small",
     "originCountry": null,
-    "title": "Mens Waterproof Outdoor Rain Jacket - White Small",
+    "title": "Men's Waterproof Outdoor Rain Jacket - White Small",
     "weight": null,
     "width": null
   },
@@ -1924,7 +1924,7 @@
     "length": null,
     "optionTitle": "Medium",
     "originCountry": null,
-    "title": "Mens Down Bomber Jacket - Black Medium",
+    "title": "Men's Down Bomber Jacket - Black Medium",
     "weight": null,
     "width": null
   },
@@ -1952,7 +1952,7 @@
     "height": null,
     "length": null,
     "optionTitle": "Small",
-    "title": "Mens Warm Cotton Shirt",
+    "title": "Men's Warm Cotton Shirt",
     "weight": null,
     "width": null
   },
@@ -1981,7 +1981,7 @@
     "length": null,
     "optionTitle": "Medium",
     "originCountry": null,
-    "title": "Mens Warm Cotton Shirts - Medium",
+    "title": "Men's Warm Cotton Shirts - Medium",
     "weight": null,
     "width": null
   },
@@ -2146,7 +2146,7 @@
     "length": null,
     "optionTitle": "Medium",
     "originCountry": null,
-    "title": "Womens Outdoor Waterproof Rain Jacket - Medium Black",
+    "title": "Women's Outdoor Waterproof Rain Jacket - Medium Black",
     "weight": null,
     "width": null
   },
@@ -2174,7 +2174,7 @@
     "height": null,
     "length": null,
     "optionTitle": "Small",
-    "title": "Womens Causal Outdoor Jacket - Small",
+    "title": "Women's Causal Outdoor Jacket - Small",
     "weight": null,
     "width": null
   },

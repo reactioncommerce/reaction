@@ -2,6 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import loadShops from "./loaders/loadShops.js";
 import loadAccounts from "./loaders/loadAccounts.js";
 import loadUsers from "./loaders/loadUsers.js";
+import loadImages from "./loaders/loadImages.js";
 import loadTags from "./loaders/loadTags.js";
 import loadProducts from "./loaders/loadProducts.js";
 import loadNavigation from "./loaders/loadNavigation.js";
@@ -39,6 +40,8 @@ export default async function loadSampleData(context) {
   await loadProducts(context, newShopId, tagsData);
   Logger.info("Load Navigation");
   await loadNavigation(context, newShopId);
+  Logger.info("Load Images");
+  await loadImages(context, newShopId);
   Logger.info("Load Shipping");
   await loadShipping(context, newShopId);
   Logger.info("Loading Sample Data complete");
