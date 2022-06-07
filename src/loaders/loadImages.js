@@ -103,7 +103,7 @@ export default async function loadImages(context, shopId) {
 
   let topProdIds = [];
   let fileType = "image/jpeg";
-  let folderPath = "./custom-packages/sample-data/src/images/"
+  let folderPath = "./custom-packages/api-plugin-sample-data/src/images/"
 
   let fileList = [];
   try {
