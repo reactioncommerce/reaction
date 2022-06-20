@@ -34,11 +34,11 @@ export default async (app) => {
       db: accountsMongo,
       enableAutologin: true,
       ambiguousErrorMessages: false,
-      sendMail: ({ to, text }) => {
+      sendMail: async ({ to, text }) => {
         const query = text.split("/");
         const token = query[query.length - 1];
         const url = `${STORE_URL}/?resetToken=${token}`;
-        context.mutations.sendResetAccountPasswordEmail(context, {
+        await context.mutations.sendResetAccountPasswordEmail(context, {
           email: to,
           url
         });
