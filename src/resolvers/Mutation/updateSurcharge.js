@@ -1,5 +1,4 @@
 import { decodeFulfillmentMethodOpaqueId, decodeShopOpaqueId, decodeSurchargeOpaqueId } from "../../xforms/id.js";
-import updateSurchargeMutation from "../../mutations/updateSurcharge.js";
 
 /**
  * @name Mutation/updateSurcharge
@@ -28,7 +27,7 @@ export default async function updateSurcharge(parentResult, { input }, context) 
 
   surcharge.methodIds = decodedMethodIds;
 
-  const { surcharge: updatedSurcharge } = await updateSurchargeMutation(context, {
+  const { surcharge: updatedSurcharge } = await context.mutations.updateSurcharge(context, {
     surcharge,
     surchargeId,
     shopId
