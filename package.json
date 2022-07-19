@@ -163,7 +163,7 @@
     "test:integration:file": "jest --runInBand",
     "test:integration:file:watch": "jest --runInBand --watch",
     "test:integration:query": "node --max_old_space_size=4000 --expose-gc ./node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/mutations/'",
-    "test:integration:mutation": "node --max_old_space_size=4000 --expose-gc ./node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/queries/'",
+    "test:integration:mutation": "node --max_old_space_size=4000 --expose-gc ./node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/queries/' -- discountCodes.test.js",
     "lint": "eslint .",
     "lint:gql": "graphql-schema-linter ./src/**/*.graphql",
     "version": "echo $npm_package_version",
