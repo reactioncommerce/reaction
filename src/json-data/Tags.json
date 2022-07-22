@@ -1,0 +1,58 @@
+{
+  "men": {
+    "name": "Men's",
+    "slug": "men",
+    "displayTitle": "Men's",
+    "shopId": "",
+    "isVisible": true
+  },
+  "menOutdoor": {
+    "name": "Men's Outdoor",
+    "slug": "men-outdoor",
+    "displayTitle": "Men's Outdoors",
+    "shopId": "",
+    "isVisible": true
+  },
+  "menJacket": {
+    "name": "Men's Jacket",
+    "slug": "men-jacket",
+    "displayTitle": "Men's Jackets",
+    "shopId": "",
+    "isVisible": true
+  },
+  "women": {
+    "name": "Women's",
+    "slug": "women",
+    "displayTitle": "Women's",
+    "shopId": "",
+    "isVisible": true
+  },
+  "womenOutdoor": {
+    "name": "Women's Outdoor",
+    "slug": "women-outdoor",
+    "displayTitle": "Women's Outdoors",
+    "shopId": "",
+    "isVisible": true
+  },
+  "womenJacket": {
+    "name": "Women's Jacket",
+    "slug": "women-jacket",
+    "displayTitle": "Women's Jackets",
+    "shopId": "",
+    "isVisible": true
+  },
+  "unisex": {
+    "name": "Unisex",
+    "slug": "unisex",
+    "displayTitle": "Unisex",
+    "shopId": "",
+    "isVisible": true
+  },
+  "unisexOutdoor": {
+    "name": "Unisex Outdoor",
+    "slug": "unisex-outdoor",
+    "displayTitle": "Unisex Outdoors",
+    "shopId": "",
+    "isVisible": true
+  }
+}

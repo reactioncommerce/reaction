@@ -1,0 +1,2210 @@
+[
+  {
+    "_id": "DZwLHk4EAzitRni8F",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T15:01:34.445+0000"
+    },
+    "handle": "mens-waterproof-outdoor-rain-jacket",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Men's Waterproof Outdoor Rain Jacket",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:32.010+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "49.99",
+      "min": 49.99,
+      "max": 49.99
+    },
+    "description": "Our new rain jacket is crafted with outdoor-inspired details in a city-ready package. Constructed in a durable three-layer waterproof stretch nylon fabric, our rain jacket will be your first line of defense against the elements.",
+    "originCountry": "US",
+    "currentProductHash": "3f262d57850e31fbccd2a6eb6a1bb92b1328a327",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-waterproof-outdoor-rain-jacket",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/mens-waterproof-outdoor-rain-jacket",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/mens-waterproof-outdoor-rain-jacket",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:32.010+0000"
+    },
+    "publishedProductHash": "3f262d57850e31fbccd2a6eb6a1bb92b1328a327",
+    "hashtags": []
+  },
+  {
+    "_id": "Hn4BRaBvLkYffMq36",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T15:01:34.457+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T15:17:49.155+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": 18,
+    "length": 10,
+    "optionTitle": "Black",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black",
+    "weight": 2.5,
+    "width": 6,
+    "compareAtPrice": 24.99,
+    "taxCode": "USCA",
+    "taxDescription": "California Tax"
+  },
+  {
+    "_id": "q5NESrcGzocz6AELr",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T15:18:10.515+0000"
+    },
+    "isDeleted": false,
+    "isVisible": false,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T15:48:48.151+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 0,
+    "isTaxable": true,
+    "attributeLabel": "Size",
+    "height": 15,
+    "length": 17,
+    "optionTitle": "Small",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Small",
+    "weight": 2,
+    "width": 13,
+    "compareAtPrice": 24.99
+  },
+  {
+    "_id": "qr5a6saFN23xD2Kr8",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F",
+      "q5NESrcGzocz6AELr"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T15:23:13.125+0000"
+    },
+    "isDeleted": false,
+    "isVisible": false,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T15:23:13.125+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 0
+  },
+  {
+    "_id": "22wjPS3SukYnCPXEk",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T15:27:46.909+0000"
+    },
+    "isDeleted": false,
+    "isVisible": false,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T15:48:51.691+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 29.99,
+    "isTaxable": true,
+    "compareAtPrice": 24.99,
+    "attributeLabel": "Size",
+    "height": 15,
+    "length": 17,
+    "optionTitle": "Medium",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Medium",
+    "weight": 2.5,
+    "width": 13
+  },
+  {
+    "_id": "wzuYs6Gddqf94ZeNA",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T15:33:27.007+0000"
+    },
+    "isDeleted": false,
+    "isVisible": false,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T15:48:53.269+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 29.99,
+    "isTaxable": true,
+    "attributeLabel": "Size",
+    "height": 15,
+    "length": 17,
+    "optionTitle": "Large",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Large",
+    "weight": 2.5,
+    "width": 13,
+    "compareAtPrice": 24.99
+  },
+  {
+    "_id": "ynNA5rXKZCHF2uKjq",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T15:38:57.021+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T15:39:37.646+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": 15,
+    "length": 17,
+    "optionTitle": "Blue",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Blue",
+    "weight": 2.5,
+    "width": 13,
+    "compareAtPrice": 24.99
+  },
+  {
+    "_id": "2SMdvdTvigo3xbd7g",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T15:57:35.630+0000"
+    },
+    "handle": "mens-casual-rugged-jackets",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Men's Casual Rugged Jacket",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-06T18:06:16.207+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "0.00",
+      "min": 0,
+      "max": 0
+    },
+    "description": "Our rugged casual jackets are designed with a contrast lining, zippered underarm vents and a cinchable hood, plus patch snap flap pockets to help you (and your belongings) stay dry. You'll also find a hidden chest pocket, perfect for stashing your phone.",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "e90ddbd493d4ab77fb8ff9a44bade5a9e68d60bf",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-casual-rugged-jackets",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.facebook.com/mens-casual-rugged-jackets",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.facebook.com/mens-casual-rugged-jackets",
+    "publishedAt": {
+      "$date": "2022-01-06T18:06:16.207+0000"
+    },
+    "publishedProductHash": "e90ddbd493d4ab77fb8ff9a44bade5a9e68d60bf"
+  },
+  {
+    "_id": "4T5rnTh8fABBLjWth",
+    "ancestors": [
+      "2SMdvdTvigo3xbd7g"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T15:57:35.636+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T16:35:14.441+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": 13,
+    "length": 17,
+    "optionTitle": "Black",
+    "originCountry": "US",
+    "title": "Men's Casual Rugged Jackets - Black",
+    "weight": 2.5,
+    "width": 15,
+    "compareAtPrice": 29.99
+  },
+  {
+    "_id": "rwBQGfBQrF5sdivDG",
+    "ancestors": [
+      "2SMdvdTvigo3xbd7g"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T16:35:18.935+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T16:36:22.010+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 0,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": 12,
+    "length": 17,
+    "optionTitle": "White",
+    "originCountry": "US",
+    "title": "Men's Casual Rugged Jackets - White",
+    "weight": 3,
+    "width": 15,
+    "compareAtPrice": 29.99
+  },
+  {
+    "_id": "nsJtEx8hrm5pfMmD7",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:20:07.724+0000"
+    },
+    "handle": "mens-down-bomber-jackets",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Men's Down Bomber Jacket",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:31.989+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "79.99",
+      "min": 79.99,
+      "max": 79.99
+    },
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-dual-cotton-shirt",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.facebook.com/mens-dual-cotton-shirt",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.facebook.com/mens-dual-cotton-shirt",
+    "currentProductHash": "f72b5ffb0915206a8938bcbc7cec086ed551bdc8",
+    "description": "Versatile water-resistant lightweight bomber jacket featuring a full-zip front and stand-up collar",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:31.989+0000"
+    },
+    "publishedProductHash": "f72b5ffb0915206a8938bcbc7cec086ed551bdc8",
+    "hashtags": []
+  },
+  {
+    "_id": "8fcfWFFLZq3sRK3TD",
+    "ancestors": [
+      "nsJtEx8hrm5pfMmD7"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:20:07.732+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:25:00.420+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 79.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "title": "Men's Down Bomber Jacket - Black Medium",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "sw3wgPMXGFWcKLz4i",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:25:31.584+0000"
+    },
+    "handle": "mens-warm-cotton-shirts",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Men's Warm Cotton Shirt",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:31.994+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "19.99",
+      "min": 19.99,
+      "max": 19.99
+    },
+    "description": "Our cotton shirts are made for durability and are suitable for daily wear, work, club, school, office, holiday and outdoor living",
+    "originCountry": "US",
+    "pageTitle": "mens-warm-cotton-shirts",
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "6316b88c10fa3912caba9c3a14d08d2f21544586",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-warm-cotton-shirts",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/mens-warm-cotton-shirts",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/mens-warm-cotton-shirts",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:31.994+0000"
+    },
+    "publishedProductHash": "6316b88c10fa3912caba9c3a14d08d2f21544586",
+    "hashtags": []
+  },
+  {
+    "_id": "sfnf4bXmDMiWFysq5",
+    "ancestors": [
+      "sw3wgPMXGFWcKLz4i"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:25:31.592+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T18:28:09.318+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 19.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "White",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "ZW5Q2qPQauJ9pyYQz",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:28:22.898+0000"
+    },
+    "handle": "cozy-sportswear-hoodies",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Cozy Sportswear Hoodie",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:32.001+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "39.99",
+      "min": 39.99,
+      "max": 39.99
+    },
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-cozy-sportwear-hoodies",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/mens-cozy-sportwear-hoodies",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/mens-cozy-sportwear-hoodies",
+    "currentProductHash": "5dfab4eac5dd41a730151add70f29b979b336eb9",
+    "description": "Cozy sportswear hoodie is crafted out of ultra-soft 100% polyester MTR filament fleece for the perfect amount of warmth.",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:32.001+0000"
+    },
+    "publishedProductHash": "5dfab4eac5dd41a730151add70f29b979b336eb9",
+    "hashtags": []
+  },
+  {
+    "_id": "GXxXSKGYmvW8ATbpj",
+    "ancestors": [
+      "ZW5Q2qPQauJ9pyYQz"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:28:22.903+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T18:32:56.050+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 39.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "title": "Black",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "C9Cai7zcDoDYBWE2F",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:36:44.130+0000"
+    },
+    "handle": "mens-warm-superflex-tights",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Men's Warm Superflex Tight",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:31.850+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "49.99",
+      "min": 49.99,
+      "max": 49.99
+    },
+    "description": "Lightweight full-length Pursuit Attack tight pants are a great choice for milder conditions that call for full leg coverage",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "930d1f5ba13b4ede3ca4efaea4e60875416c18c7",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-warm-superflex-tights",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/mens-casual-rugged-jackets",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/mens-casual-rugged-jackets",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:31.850+0000"
+    },
+    "publishedProductHash": "930d1f5ba13b4ede3ca4efaea4e60875416c18c7"
+  },
+  {
+    "_id": "Nixnh2DeJaKpMhvHR",
+    "ancestors": [
+      "C9Cai7zcDoDYBWE2F"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:36:44.137+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:38:05.365+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "White",
+    "originCountry": null,
+    "title": "Men's Warm Superflex Tight - White",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "kjP9wQSaK5wJddxDF",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:42:00.782+0000"
+    },
+    "handle": "rugged-outdoor-running-shoes",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Rugged Outdoor Running Shoe",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:31.981+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "89.99",
+      "min": 89.99,
+      "max": 89.99
+    },
+    "description": "Lightweight, breathable and fashionable shoes mesh knit vamp, soft, comfortable and breathable, keeping your feet comfortable even after a long day of work.",
+    "originCountry": "US",
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "c9a13c16d2c4bb90cbdd0a1b1ff44d5bccf9efe4",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-casual-rugged-jackets",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/mens-casual-rugged-jackets",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/mens-casual-rugged-jackets",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:31.981+0000"
+    },
+    "publishedProductHash": "c9a13c16d2c4bb90cbdd0a1b1ff44d5bccf9efe4",
+    "pageTitle": null,
+    "hashtags": []
+  },
+  {
+    "_id": "KfYLHwoMrfJWyJMqG",
+    "ancestors": [
+      "kjP9wQSaK5wJddxDF"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:42:00.788+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T18:44:15.272+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 89.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "Ag9p3GPazJPPYRsgu",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:46:24.085+0000"
+    },
+    "handle": "reaction-waterproof-terrain-hiking-shoe",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Reaction Waterproof Terrain Hiking Shoe",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:31.923+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "199.99",
+      "min": 199.99,
+      "max": 199.99
+    },
+    "description": "Men's reaction terrain hiking shoe features waterproof leather and waterproof membrane construction that keeps your feet cool and dry, and a rubber toe cap for anti-collision.",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "9fa6aa0b40d0dc596cfdeba31262cac6ed7a1ce3",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/reaction-waterproof-terrain-hiking-shoe",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/reaction-waterproof-terrain-hiking-shoe",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/reaction-waterproof-terrain-hiking-shoe",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:31.923+0000"
+    },
+    "publishedProductHash": "9fa6aa0b40d0dc596cfdeba31262cac6ed7a1ce3",
+    "hashtags": []
+  },
+  {
+    "_id": "mZB2tnYRnJrxqZWee",
+    "ancestors": [
+      "Ag9p3GPazJPPYRsgu"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:46:24.092+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T18:49:07.922+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 199.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Brown",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "4Nc7z3A9PyYnnDyPJ",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:49:26.085+0000"
+    },
+    "handle": "assorted-warm-nylon-socks",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Assorted Warm Nylon Socks",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:31.896+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "12.99",
+      "min": 12.99,
+      "max": 12.99
+    },
+    "description": "Men's nylon socks made of High-Quality Moisture-Absorbing Cotton Fiber to Keep Your Feet Dry and Comfortable.",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "c9122f7a046bf477b11d4d5a59d39143b1da6ab3",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/assorted-warm-nylon-socks",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/assorted-warm-nylon-socks",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/assorted-warm-nylon-socks",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:31.896+0000"
+    },
+    "publishedProductHash": "c9122f7a046bf477b11d4d5a59d39143b1da6ab3",
+    "hashtags": []
+  },
+  {
+    "_id": "6htQnYHKqqPNDf6yR",
+    "ancestors": [
+      "4Nc7z3A9PyYnnDyPJ"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:49:26.090+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T18:52:10.510+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 12.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "K2MASTgZLknGeWzQq",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:52:23.344+0000"
+    },
+    "handle": "knitted-winter-hat",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Knitted Winter Beanie",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:31.828+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "14.99",
+      "min": 14.99,
+      "max": 14.99
+    },
+    "description": "Thermal winter knit hats protect your head from cold wind or snow when you go outside in winter.",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "a3d313e4afbcc8fd97d28d4f7ff83d7280e6113e",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/knitted-winter-hat",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/knitted-winter-hat",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/knitted-winter-hat",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:31.828+0000"
+    },
+    "publishedProductHash": "a3d313e4afbcc8fd97d28d4f7ff83d7280e6113e",
+    "hashtags": []
+  },
+  {
+    "_id": "4WNQrD9qGE8iDB7H4",
+    "ancestors": [
+      "K2MASTgZLknGeWzQq"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:52:23.350+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:51:53.654+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 14.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "White",
+    "originCountry": null,
+    "title": "Knitted Winter Beanie",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "wRtFrgByNuias8bs3",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:55:05.689+0000"
+    },
+    "handle": "women-s-outdoor-waterproof-rain-jacket",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Women's Outdoor Waterproof Rain Jacket",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:31.987+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "68.99",
+      "min": 68.99,
+      "max": 68.99
+    },
+    "description": "Our outdoor rain jacket features an adjustable storm hood, draw cord adjustable hem, and zippered hand pockets for ultimate comfort.",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "f744503c231f6cfb8d8391d6b14443434d5a63fe",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/women-s-outdoor-waterproof-rain-jacket",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/women-s-outdoor-waterproof-rain-jacket",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/women-s-outdoor-waterproof-rain-jacket",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:31.987+0000"
+    },
+    "publishedProductHash": "f744503c231f6cfb8d8391d6b14443434d5a63fe",
+    "hashtags": []
+  },
+  {
+    "_id": "4w8kMXBLpKvz9xYFS",
+    "ancestors": [
+      "wRtFrgByNuias8bs3"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:55:05.695+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T18:59:11.684+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 68.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "sfvNtdXTJ4TN66xis",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T18:59:43.714+0000"
+    },
+    "handle": "women-s-casual-outdoor-jacket",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Women's Casual Outdoor Jacket",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.789+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "109.99",
+      "min": 109.99,
+      "max": 109.99
+    },
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/womens-causal-outdoor-jacket",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/womens-causal-outdoor-jacket",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/womens-causal-outdoor-jacket",
+    "currentProductHash": "ed64e2c14eb8042e470ac3472e68a62376d4e90e",
+    "description": "Casual style, easily goes with a wide variety of clothes, like dress shirt, open-necked polo shirt, plain T-shirts and jeans",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.789+0000"
+    },
+    "publishedProductHash": "ed64e2c14eb8042e470ac3472e68a62376d4e90e",
+    "hashtags": []
+  },
+  {
+    "_id": "ymjmx6wMcu7fB3Mvb",
+    "ancestors": [
+      "sfvNtdXTJ4TN66xis"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T18:59:43.721+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T19:02:45.653+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 109.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "dyBCZmh2JXHYChoTm",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T19:03:06.214+0000"
+    },
+    "handle": "women-s-winter-long-sleeve-shirt",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Women's Winter Long-Sleeve Shirt",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.723+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "19.99",
+      "min": 19.99,
+      "max": 19.99
+    },
+    "description": "Long sleeve shirt perfect for daily wear in the winter underneath jacket or other warmers",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "8cbb96ad2e21ca183920f0bbb8b9762fde359428",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.723+0000"
+    },
+    "publishedProductHash": "8cbb96ad2e21ca183920f0bbb8b9762fde359428",
+    "hashtags": []
+  },
+  {
+    "_id": "dCtii9N4iA6YLcEgK",
+    "ancestors": [
+      "dyBCZmh2JXHYChoTm"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T19:03:06.222+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T19:05:07.239+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 19.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "54pP3qoYvWJkAnpKc",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T19:05:29.284+0000"
+    },
+    "handle": "women-s-outwear-sportswear-hoodie",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Women's Outwear Sportswear Hoodie",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.732+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "49.99",
+      "min": 49.99,
+      "max": 49.99
+    },
+    "description": "Midweight fleece with a brushed interior for warmth without the extra bulk or weight.",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "8d609c8b2e351dfc55e49317380c078a9f5e78b1",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.732+0000"
+    },
+    "publishedProductHash": "8d609c8b2e351dfc55e49317380c078a9f5e78b1",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/women-s-outwear-sportswear-hoodie",
+    "pinterestMsg": "Share our listing wth your pinterest on twitter using the link below www.pinterest.com/women-s-outwear-sportswear-hoodie",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/women-s-outwear-sportswear-hoodie",
+    "hashtags": []
+  },
+  {
+    "_id": "7KxD39Am8L7WDy6sB",
+    "ancestors": [
+      "54pP3qoYvWJkAnpKc"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T19:05:29.291+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T19:07:41.041+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "TxMABv3J4GmexcxRp",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T19:08:46.942+0000"
+    },
+    "handle": "womens-causal-outdoor-running-shoe",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Women's Causal Outdoor Running Shoe",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.731+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "149.99",
+      "min": 149.99,
+      "max": 149.99
+    },
+    "description": "Casual running walking tennis gym athletic shoes black fashion sneakers, they are lightweight enough for working, jogging, hiking and other sports",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "feee859f7d09fedd030b63fa0ddb69c88119a670",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/womens-causal-outdoor-running-shoe",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/womens-causal-outdoor-running-shoe",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/womens-causal-outdoor-running-shoe",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.731+0000"
+    },
+    "publishedProductHash": "feee859f7d09fedd030b63fa0ddb69c88119a670",
+    "hashtags": []
+  },
+  {
+    "_id": "JPEwhpFG5McpKKLjx",
+    "ancestors": [
+      "TxMABv3J4GmexcxRp"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T19:08:46.948+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-21T16:42:50.901+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 149.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Grey",
+    "originCountry": "US",
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "g9hy2qdPP9PWAfTJc",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T20:13:26.958+0000"
+    },
+    "handle": "women-s-rugged-outdoor-hiking-boots",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Women's Rugged Outdoor Hiking Boots",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.728+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "199.99",
+      "min": 199.99,
+      "max": 199.99
+    },
+    "description": "Women's hiking shoes made of leather elastic wearable upper sole, waterproof exterior and anti-collision shoes head",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "2e697af52ae7523526475e2d67f3e3296b6a0524",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/women-s-rugged-outdoor-hiking-boots",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/women-s-rugged-outdoor-hiking-boots",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/women-s-rugged-outdoor-hiking-boots",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.728+0000"
+    },
+    "publishedProductHash": "2e697af52ae7523526475e2d67f3e3296b6a0524"
+  },
+  {
+    "_id": "Zv5PMxPrQoXK9Nbke",
+    "ancestors": [
+      "g9hy2qdPP9PWAfTJc"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T20:13:26.966+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T20:15:39.560+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 199.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Brown",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "gEg5ebDGt7ueSfCJ6",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T20:16:41.262+0000"
+    },
+    "handle": "assorted-warm-nylon-socks-copy",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Assorted Warm Nylon Socks",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.733+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "19.99",
+      "min": 19.99,
+      "max": 19.99
+    },
+    "description": "High density cushioning throughout the entire sock for full on comfort and performance.",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "850f0bdb5027f0c29c15e7eddbd0b3f5ab55875a",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/assorted-warm-nylon-socks-copy",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/assorted-warm-nylon-socks-copy",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/assorted-warm-nylon-socks-copy",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.733+0000"
+    },
+    "publishedProductHash": "850f0bdb5027f0c29c15e7eddbd0b3f5ab55875a",
+    "hashtags": []
+  },
+  {
+    "_id": "46AevrgX4CRubhX4h",
+    "ancestors": [
+      "gEg5ebDGt7ueSfCJ6"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T20:16:41.267+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T17:57:09.528+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 19.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black & White",
+    "originCountry": null,
+    "title": "Assorted Warm Nylon Socks - Black & White",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "eGDrpKJ5bWkm8G3H9",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T20:19:09.772+0000"
+    },
+    "handle": "warm-wool-knitted-hat",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Warm Wool Knitted Hat",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.738+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "19.99",
+      "min": 19.99,
+      "max": 19.99
+    },
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/warm-wool-knitted-hat",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/warm-wool-knitted-hat",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/warm-wool-knitted-hat",
+    "currentProductHash": "3a5499a067bc24ae4579a980a6af172ca4db8b77",
+    "description": "Warm knit beanie that is fashionable and equipped with dealing the cold north american winters",
+    "originCountry": null,
+    "pageTitle": null,
+    "vendor": null,
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.738+0000"
+    },
+    "publishedProductHash": "3a5499a067bc24ae4579a980a6af172ca4db8b77",
+    "hashtags": []
+  },
+  {
+    "_id": "B9ncCC5kaGkNu9qC2",
+    "ancestors": [
+      "eGDrpKJ5bWkm8G3H9"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T20:19:09.779+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T17:32:06.620+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 19.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "White",
+    "originCountry": null,
+    "title": "Warm Wool Knitted Hat - White",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "NeuYdurLkgsbdkGtX",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T20:22:19.634+0000"
+    },
+    "handle": "outdoor-waterproof-gloves",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Outdoor Waterproof Gloves",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.718+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "21.99",
+      "min": 21.99,
+      "max": 21.99
+    },
+    "description": "Weatherproof mittens will keep the elements at bay. The black nylon shell, reinforced synthetic leather palm",
+    "originCountry": "US",
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "9976b3f0c5e593a86a648215d30dafb85efa2716",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/outdoor-waterproof-gloves",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/outdoor-waterproof-gloves",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/outdoor-waterproof-gloves",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.718+0000"
+    },
+    "publishedProductHash": "9976b3f0c5e593a86a648215d30dafb85efa2716",
+    "hashtags": []
+  },
+  {
+    "_id": "5z9yubahxQZqLCPQH",
+    "ancestors": [
+      "NeuYdurLkgsbdkGtX"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T20:22:19.642+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T20:25:50.284+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 21.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "Black",
+    "originCountry": null,
+    "title": null,
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "Y9WS2Pg8KQWvzgSft",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T20:26:14.899+0000"
+    },
+    "handle": "women-s-outdoor-thick-wetsuits",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Women's Outdoor Thick Leggings",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.729+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "19.99",
+      "min": 19.99,
+      "max": 19.99
+    },
+    "description": "Leggings designed for water sports like diving, scuba and paddle boarding",
+    "originCountry": null,
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "37c85bee388b46f7bbc1773719a53725ba028da3",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/women-s-outdoor-thick-wetsuits",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/women-s-outwear-sportswear-hoodie",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/women-s-outwear-sportswear-hoodie",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.729+0000"
+    },
+    "publishedProductHash": "37c85bee388b46f7bbc1773719a53725ba028da3",
+    "hashtags": []
+  },
+  {
+    "_id": "jYRjB5krMPweP5HyZ",
+    "ancestors": [
+      "Y9WS2Pg8KQWvzgSft"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T20:26:14.906+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T17:40:07.328+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 19.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "White",
+    "originCountry": null,
+    "title": "Women's Outdoor Thick Leggings - White",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "4WjJMk6GFNgjh4LZe",
+    "ancestors": [],
+    "createdAt": {
+      "$date": "2022-01-05T20:30:42.916+0000"
+    },
+    "handle": "mens-outdoor-waterproof-swimshorts",
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "shouldAppearInSitemap": true,
+    "supportedFulfillmentTypes": [
+      "shipping"
+    ],
+    "title": "Men's Outdoor Waterproof Swimshorts",
+    "type": "simple",
+    "updatedAt": {
+      "$date": "2022-01-21T16:53:23.730+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": {
+      "range": "24.99",
+      "min": 24.99,
+      "max": 24.99
+    },
+    "description": "Waterproof swimshorts that are ideal for swimming and anything outdoors",
+    "originCountry": null,
+    "pageTitle": null,
+    "vendor": "Reaction Outdoor Apparel",
+    "currentProductHash": "24e6a31581caa3b4a064f2f8554971d45f6b5560",
+    "facebookMsg": "Share our listing wth your friends on facebook using the link below www.facebook.com/mens-outdoor-waterproof-swimshorts",
+    "pinterestMsg": "Share our listing wth your friends on pinterest using the link below www.pinterest.com/mens-outdoor-waterproof-swimshorts",
+    "twitterMsg": "Share our listing wth your friends on twitter using the link below www.twitter.com/mens-outdoor-waterproof-swimshorts",
+    "publishedAt": {
+      "$date": "2022-01-21T16:53:23.730+0000"
+    },
+    "publishedProductHash": "24e6a31581caa3b4a064f2f8554971d45f6b5560",
+    "hashtags": []
+  },
+  {
+    "_id": "xM7BSt5CZkqom33pP",
+    "ancestors": [
+      "4WjJMk6GFNgjh4LZe"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T20:30:42.920+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T18:01:35.950+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 24.99,
+    "isTaxable": true,
+    "attributeLabel": "Color",
+    "height": null,
+    "length": null,
+    "optionTitle": "White",
+    "originCountry": null,
+    "title": "Men's Outdoor Waterproof Swimshorts",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "MNv76gyi4Ya5zGLCj",
+    "ancestors": [
+      "2SMdvdTvigo3xbd7g",
+      "4T5rnTh8fABBLjWth"
+    ],
+    "createdAt": {
+      "$date": "2022-01-05T21:35:54.628+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-05T21:37:42.908+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": 15,
+    "length": 17,
+    "optionTitle": "Small",
+    "originCountry": "US",
+    "title": "Men's Casual Rugged Jacket - Black Small",
+    "weight": 2.5,
+    "width": 13,
+    "compareAtPrice": 29.99
+  },
+  {
+    "_id": "4JS386GgmvrxgyooS",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F",
+      "Hn4BRaBvLkYffMq36"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T15:50:33.008+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T15:54:56.478+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Small",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Small",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "MShhiNKGYqyR68ZF7",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F",
+      "Hn4BRaBvLkYffMq36"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T15:51:11.147+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T15:54:58.299+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Large",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Large",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "7av23dQHEywSNxD7m",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F",
+      "Hn4BRaBvLkYffMq36"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T15:53:24.177+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T15:54:59.786+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Medium",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Medium",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "je2NxNaHzghJSFNin",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F",
+      "ynNA5rXKZCHF2uKjq"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T15:54:03.957+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-19T23:43:39.335+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Small",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Blue Small",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "YGQdZoXEcYBMCrfcJ",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F",
+      "ynNA5rXKZCHF2uKjq"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T15:54:20.828+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T15:55:32.251+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Medium",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Medium",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "PuYS2dtPjn2iYiNfT",
+    "ancestors": [
+      "DZwLHk4EAzitRni8F",
+      "ynNA5rXKZCHF2uKjq"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T15:55:12.014+0000"
+    },
+    "isDeleted": false,
+    "isVisible": false,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T18:05:09.967+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Large",
+    "originCountry": "US",
+    "title": "Men's Waterproof Outdoor Rain Jacket - Black Large",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "g2Euw9s7uQ3Ld65s7",
+    "ancestors": [
+      "2SMdvdTvigo3xbd7g",
+      "4T5rnTh8fABBLjWth"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:16:49.609+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:18:06.568+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Medium",
+    "originCountry": null,
+    "title": "Men's Causal Rugged Jacket - Black Medium",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "u8FQaPGXrP47waRtt",
+    "ancestors": [
+      "2SMdvdTvigo3xbd7g",
+      "rwBQGfBQrF5sdivDG"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:17:46.535+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:19:15.655+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 49.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Small",
+    "originCountry": null,
+    "title": "Men's Waterproof Outdoor Rain Jacket - White Small",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "EdWbpk4Evqhps7npy",
+    "ancestors": [
+      "nsJtEx8hrm5pfMmD7",
+      "8fcfWFFLZq3sRK3TD"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:21:40.158+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:23:16.583+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 79.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Medium",
+    "originCountry": null,
+    "title": "Men's Down Bomber Jacket - Black Medium",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "m7nw9mR8YEqAhJ4Y5",
+    "ancestors": [
+      "sw3wgPMXGFWcKLz4i",
+      "sfnf4bXmDMiWFysq5"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:26:24.008+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:26:41.978+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 19.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Small",
+    "title": "Men's Warm Cotton Shirt",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "cDoJisK9KZNvTXKRa",
+    "ancestors": [
+      "sw3wgPMXGFWcKLz4i",
+      "sfnf4bXmDMiWFysq5"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:26:43.482+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:27:13.529+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 19.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Medium",
+    "originCountry": null,
+    "title": "Men's Warm Cotton Shirts - Medium",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "wfqSyjCcYS6cTMEjk",
+    "ancestors": [
+      "ZW5Q2qPQauJ9pyYQz",
+      "GXxXSKGYmvW8ATbpj"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:32:07.709+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:35:32.195+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 39.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Medium",
+    "originCountry": null,
+    "title": "Cozy Sportswear hoodie - Black Medium",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "6hE9t2GXFXSwHYXr2",
+    "ancestors": [
+      "kjP9wQSaK5wJddxDF",
+      "KfYLHwoMrfJWyJMqG"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:39:22.888+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T18:04:02.856+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 89.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "8",
+    "originCountry": null,
+    "title": "Rugged Outdoor Running Shoe - Black 8",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "MnEwkbvApw9bcZJEa",
+    "ancestors": [
+      "kjP9wQSaK5wJddxDF",
+      "KfYLHwoMrfJWyJMqG"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:40:13.762+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T18:04:04.238+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 89.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "9",
+    "originCountry": null,
+    "title": "Rugged Outdoor Running Shoe - Black 9",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "Pxst6whaZuaEDbxZW",
+    "ancestors": [
+      "K2MASTgZLknGeWzQq"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:51:56.045+0000"
+    },
+    "isDeleted": false,
+    "isVisible": false,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:51:56.045+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 0,
+    "isTaxable": true
+  },
+  {
+    "_id": "DesepTuKwKtkPjm6G",
+    "ancestors": [
+      "wRtFrgByNuias8bs3",
+      "4w8kMXBLpKvz9xYFS"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:53:25.099+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:55:40.607+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 68.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Small",
+    "title": "Women's Outdoor Waterproof Rain Jacket - Black Small",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "NMHicDBRXPDbQXjMA",
+    "ancestors": [
+      "wRtFrgByNuias8bs3",
+      "4w8kMXBLpKvz9xYFS"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T16:54:08.543+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T16:55:41.815+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 68.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Medium",
+    "originCountry": null,
+    "title": "Women's Outdoor Waterproof Rain Jacket - Medium Black",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "yxDdv9Z6CkWgY3qA4",
+    "ancestors": [
+      "sfvNtdXTJ4TN66xis",
+      "ymjmx6wMcu7fB3Mvb"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T17:04:24.467+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T17:08:53.163+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 109.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Small",
+    "title": "Women's Causal Outdoor Jacket - Small",
+    "weight": null,
+    "width": null
+  },
+  {
+    "_id": "dPSn6PAvdCdCmqbdY",
+    "ancestors": [
+      "sfvNtdXTJ4TN66xis",
+      "ymjmx6wMcu7fB3Mvb"
+    ],
+    "createdAt": {
+      "$date": "2022-01-06T17:04:55.199+0000"
+    },
+    "isDeleted": false,
+    "isVisible": true,
+    "shopId": "dSZqgQsyp48EpJzor",
+    "type": "variant",
+    "updatedAt": {
+      "$date": "2022-01-06T17:08:54.412+0000"
+    },
+    "workflow": {
+      "status": "new"
+    },
+    "price": 109.99,
+    "attributeLabel": "Size",
+    "height": null,
+    "length": null,
+    "optionTitle": "Medium",
+    "originCountry": null,
+    "title": "Women's Casual Outdoor Jacket - Medium",
+    "weight": null,
+    "width": null
+  }
+]
