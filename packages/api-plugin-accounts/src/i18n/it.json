@@ -1,0 +1,40 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Conti",
+          "accountsTitle": "Conti",
+          "accountsDescription": "Impostazioni dell 'account"
+        },
+        "settings": {
+          "continue": "Continuare",
+          "cancel": "Annulla",
+          "changeOwner": "Cambiare proprietario",
+          "removeUser": "Rimuovi utente",
+          "createGroupSuccess": "Il gruppo è stato creato correttamente",
+          "updateGroupSuccess": "Il gruppo è stato aggiornato correttamente",
+          "createGroupError": "Errore durante la creazione del gruppo",
+          "updateGroupError": "Errore durante l'aggiornamento del gruppo",
+          "changeShopOwnerWarn": "Stai per cambiare il proprietario del negozio. L'attuale proprietario verrà sostituito",
+          "removeUserWarn": "Stai per rimuovere un utente da un gruppo. L'utente perderà le autorizzazioni associate",
+          "accountsSettingsLabel": "Conti",
+          "accountsSettingsTitle": "Conti",
+          "accountsSettingsDescription": "Impostazioni dell 'account"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Non puoi invitare direttamente un utente come proprietario. Promuovere un amministratore esistente",
+          "groupRequired": "È necessario un gruppo per invitare un amministratore",
+          "cannotInvite": "Non puoi invitare al gruppo",
+          "unableToSendInvitationEmail": "Impossibile inviare un'email di invito",
+          "errorSendingInvite": "Si è verificato un errore durante l'invio dell'invito",
+          "NeedToSetUsernameOrEmail": "È necessario specificare un nome utente o un indirizzo email"
+        }
+      }
+    }
+  }
+}]

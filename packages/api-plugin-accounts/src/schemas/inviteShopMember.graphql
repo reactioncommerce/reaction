@@ -1,0 +1,122 @@
+"Input parameters for the inviteShopMember mutation"
+input InviteShopMemberInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The email address of the person to invite"
+  email: String!
+
+  "The permission group for this person's new account. DEPRECATED. Use `groupIds` field instead."
+  # @deprecated isn't allowed on input fields yet. See See https://github.com/graphql/graphql-spec/pull/525
+  groupId: ID
+
+  "The permission groups for this person's new account"
+  groupIds: [ID]
+
+  "The invitee's full name"
+  name: String!
+
+  "The ID of the shop to which you want to invite this person"
+  shopId: ID!
+
+  "Whether the newly invited user should get admin UI access to the shop upon sign-up"
+  shouldGetAdminUIAccess: Boolean
+}
+
+"The response from the `inviteShopMember` mutation"
+type InviteShopMemberPayload {
+  "The account that was successfully created or found and updated by inviting this shop member"
+  account: Account
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"""
+Wraps a list of `Invitation`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type InvitationConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [InvitationEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Invitation]
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+"A connection edge in which each node is an `Invitation` object"
+type InvitationEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+  "The account"
+  node: Invitation
+}
+
+"Represents a single staff member invitation"
+type Invitation implements Node {
+  "The invitation ID"
+  _id: ID!
+
+  "The e-mail address the invitation was sent to"
+  email: String!
+
+  "The groups this person was invited to"
+  groups: [Group]!
+
+  "The shop this person was invited to. Optional because we can also invite merchants to create their own shops."
+  shop: Shop
+
+  "The admin who invited this person"
+  invitedBy: Account
+}
+
+extend type Mutation {
+  """
+  Given a person's email address and name, invite them to create an account for a certain shop,
+  and put them in the provided permission group
+  """
+  inviteShopMember(
+    "Mutation input"
+    input: InviteShopMemberInput!
+  ): InviteShopMemberPayload
+}
+
+extend type Query {
+  "Returns all pending staff member invitations"
+  invitations(
+    "The shop IDs to get invitations for"
+    shopIds: [ID],
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: AccountSortByField = createdAt
+  ): InvitationConnection!
+}

@@ -1,0 +1,54 @@
+input GrantOrRevokeAdminUIAccessInput {
+    "An optional string identifying the mutation call, which will be returned in the response payload"
+    clientMutationId: String
+
+    "The account ID to update"
+    accountId: String!
+
+    "The shop IDs to unassign or assign to the accounts"
+    shopId: String!
+}
+
+input UpdateAdminUIAccessInput {
+    "An optional string identifying the mutation call, which will be returned in the response payload"
+    clientMutationId: String
+
+    "The account IDs to update"
+    accountIds: [String]!
+
+    "The shop IDs to unassign or assign to the accounts"
+    shopIds: [String]!
+}
+
+type GrantOrRevokeAdminUIAccessPayload {
+    "An optional string identifying the mutation call, which will be returned in the response payload"
+    clientMutationId: String
+
+    "The up to date account object"
+    account: Account
+}
+
+type UpdateAdminUIAccessPayload {
+    "An optional string identifying the mutation call, which will be returned in the response payload"
+    clientMutationId: String
+
+    "The up to date account objects"
+    accounts: [Account]
+}
+
+extend type Mutation {
+    "Grant admin UI access for shops to a specific users"
+    grantAdminUIAccess(
+        input: GrantOrRevokeAdminUIAccessInput!
+    ): GrantOrRevokeAdminUIAccessPayload!
+
+    "Revoke admin UI access to shops for specific users"
+    revokeAdminUIAccess(
+        input: GrantOrRevokeAdminUIAccessInput!
+    ): GrantOrRevokeAdminUIAccessPayload!
+
+    "Update admin UI access to shops for specific users"
+    updateAdminUIAccess(
+        input: UpdateAdminUIAccessInput!
+    ): UpdateAdminUIAccessPayload!
+}
