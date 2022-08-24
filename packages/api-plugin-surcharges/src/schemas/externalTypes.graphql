@@ -1,0 +1,113 @@
+# This file should not be imported anywhere. Its purpose is to define all types
+# that are necessary to ensure that `npm run lint:gql` passes. The assumption
+# is that all of these types will be defined either in `api-core` or in another
+# plugin that is a dependency of this plugin, such that when the API package
+# combines all registered schemas, the resulting schema will be valid.
+
+###
+# Types provided by api-core
+###
+
+"A string used as a connection cursor"
+scalar ConnectionCursor
+
+"An integer which will be auto-adjusted to be greater than 0 and less than 50 if necessary"
+scalar ConnectionLimitInt
+
+"A date and time"
+scalar DateTime
+
+"Represents one type of currency"
+type Currency implements Node {
+  "ID"
+  _id: ID!
+}
+
+"Represents some amount of a single currency"
+type Money {
+  "The numeric amount"
+  amount: Float!
+
+  "The currency, for interpreting the `amount`"
+  currency: Currency!
+
+  "The display amount, with any currency symbols and decimal places already added"
+  displayAmount: String!
+}
+
+"Mutations have side effects, such as mutating data or triggering a task"
+type Mutation {
+  "A fake mutation"
+  fake: String
+}
+
+"Objects implementing the Node interface will always have an _id field that is globally unique."
+interface Node {
+  "The ID of the object"
+  _id: ID!
+}
+
+"""
+Pagination information. When requesting pages of results, you can use endCursor or startCursor
+as your before or after parameters for the query you are paging.
+"""
+type PageInfo {
+  "When paginating forwards, the cursor to continue."
+  endCursor: ConnectionCursor
+
+  "When paginating forwards, are there more items?"
+  hasNextPage: Boolean!
+
+  "When paginating backwards, are there more items?"
+  hasPreviousPage: Boolean!
+
+  "When paginating backwards, the cursor to continue."
+  startCursor: ConnectionCursor
+}
+
+"Queries return all requested data, without any side effects"
+type Query {
+  "A fake query"
+  fake: String
+}
+
+"The order in which the connection results should be sorted, based on the sortBy field."
+enum SortOrder {
+  "ascending"
+  asc
+
+  "descending"
+  desc
+}
+
+###
+# Types provided by api-plugin-carts or equivalent
+###
+
+"The cart holds selected items until order is placed."
+type Cart implements Node {
+  "The Cart ID"
+  _id: ID!
+}
+
+"A summary of the totals for this cart"
+type CartSummary {
+  "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`, minus `discountTotal`"
+  total: Money!
+}
+
+###
+# Types provided by api-plugin-orders or equivalent
+###
+
+"An order"
+type Order implements Node {
+  "The Order ID"
+  _id: ID!
+}
+
+"A summary of the totals for this order"
+type OrderSummary {
+  "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`, minus `discountTotal`"
+  total: Money!
+}
