@@ -1,0 +1,45 @@
+"Data for a Stripe payment intent"
+type StripePaymentIntentData {
+  "The Stripe charge ID"
+  chargeId: String!
+
+  "The Stripe customer ID, if a Stripe customer exists for this charge"
+  customerId: String
+}
+
+extend union PaymentData = StripePaymentIntentData
+
+extend enum PaymentMethodName {
+  "Stripe payment method"
+  stripe_payment_intent
+}
+
+"Input for the createStripePaymentIntent mutation"
+input CreateStripePaymentIntentInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  cartId: String!
+
+  shopId: String!
+
+  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
+  cartToken: String
+}
+
+"The response from the `createStripePaymentIntent` mutation"
+type CreateStripePaymentIntentPayload {
+  paymentIntentClientSecret: String
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+extend type Mutation {
+  """
+  Create Stripe payment intent for the current cart and return a token
+  """
+  createStripePaymentIntent(
+    input: CreateStripePaymentIntentInput!
+  ): CreateStripePaymentIntentPayload!
+}
