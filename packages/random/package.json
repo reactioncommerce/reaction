@@ -10,7 +10,8 @@
     "lintfix": "eslint ./src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "watch": "watch 'npm run build' src"
+    "watch": "watch 'npm run build' src",
+    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
   },
   "repository": {
     "type": "git",
@@ -24,12 +25,6 @@
   "homepage": "https://github.com/reactioncommerce/random#readme",
   "devDependencies": {
     "@reactioncommerce/eslint-config": "^1.7.0",
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.2",
-    "babel-jest": "^22.4.3",
-    "babel-plugin-add-module-exports": "^1.0.2",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-2": "^6.24.1",
     "eslint": "^4.19.1",
     "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-jest": "^21.15.0",
@@ -42,8 +37,7 @@
   },
   "babel": {
     "presets": [
-      "env",
-      "stage-2"
+      "@babel/env"
     ],
     "plugins": [
       [

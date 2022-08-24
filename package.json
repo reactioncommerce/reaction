@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start:dev": "npm run start:dev --workspace=apps/reaction",
+    "build": "npm run build -w=packages/logger -w=packages/random",
     "test": "npm run test --ws",
     "test:integration:query": "npm run test:integration:query --workspace=apps/reaction",
     "test:integration:mutation": "npm run test:integration:mutation --workspace=apps/reaction",
@@ -43,6 +44,8 @@
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.10",
     "@babel/eslint-parser": "^7.18.9",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-stage-2": "^7.8.3",
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "babel-plugin-rewire-exports": "^2.3.0",
