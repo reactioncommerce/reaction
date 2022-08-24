@@ -1,3 +1,6 @@
 module.exports = {
-  projects: ["<rootDir>/packages/*"]
+  name: "file-collections",
+  displayName: "file-collections",
+  rootDir: "../..",
+  testMatch: ["<rootDir>/packages/file-collections/**/*.test.js"]
 };

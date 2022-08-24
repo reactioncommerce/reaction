@@ -1,3 +1,4 @@
+dist
 jest.config.js
 .reaction/**/*
 client/plugins.js

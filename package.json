@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start:dev": "npm run start:dev -w=apps/reaction",
-    "build": "npm run build -w=packages/logger -w=packages/random",
+    "start:meteor-blaze-app": "npm run start -w=apps/meteor-blaze-app",
+    "build": "npm run build -w=packages/logger -w=packages/random -w=packages/file-collections -w=packages/file-collections-sa-base -w=packages/file-collections-sa-gridfs",
     "test": "npm run test -ws",
     "test:integration:query": "npm run test:integration:query --workspace=apps/reaction",
     "test:integration:mutation": "npm run test:integration:mutation --workspace=apps/reaction",
