@@ -71,7 +71,7 @@ jobs:
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Lint GraphQL schemas
-          command: npm run lint:gql
+          command: npm run lint:gql -ws
 
   test-unit:
     <<: *defaults
@@ -108,7 +108,7 @@ jobs:
           command: |
             sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
-            npm run test:integration:query -w=apps/reaction
+            npm run test:integration:query
 
   test-integration-mutation:
     <<: *defaults
@@ -133,7 +133,7 @@ jobs:
           command: |
             sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
-            npm run test:integration:mutation -w=apps/reaction
+            npm run test:integration:mutation
 
   release:
     <<: *defaults
