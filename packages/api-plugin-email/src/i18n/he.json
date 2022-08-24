@@ -1,0 +1,76 @@
+[{
+  "i18n": "he",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "logs": {
+          "headers": {
+            "emailLogs": "יומני רישום דוא\"ל",
+            "email": "דוא\"ל",
+            "data": {
+              "subject": "נושא"
+            },
+            "sent": "נשלח",
+            "status": "סטטוס",
+            "updated": "נשלח"
+          },
+          "noEmails": "לא נשלחו הודעות דוא\"ל עדיין",
+          "limit": "כמות",
+          "retry": "נסה שנית",
+          "noneAvailble": "אין זמינויות"
+        },
+        "settings": {
+          "status": "סטטוס",
+          "service": "שירות",
+          "user": "משתמש",
+          "password": "סיסמה",
+          "host": "מארח",
+          "port": "יציאה",
+          "passwordShow": "הצג",
+          "passwordHide": "הסתר"
+        }
+      },
+      "mail": {
+        "headers": {
+          "email": "דוא\"ל",
+          "emailSettings": "הגדרות דוא\"ל",
+          "config": "תצורה",
+          "settings": "ספק דואר",
+          "actions": "פעולות"
+        },
+        "settings": {
+          "selectService": "בחר שירות...",
+          "custom": "התאמה אישית"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "יומני רישום דוא\"ל",
+            "email": "דוא\"ל",
+            "subject": "נושא",
+            "sent": "נשלח",
+            "status": "סטטוס"
+          },
+          "noEmails": "לא נשלחו הודעות דוא\"ל עדיין",
+          "limit": "כמות",
+          "retry": "נסה שנית",
+          "noneAvailble": "אין זמינויות"
+        },
+        "alerts": {
+          "error": "שגיאה: {{error}}",
+          "resendSuccess": "מנסה לשלוח שוב דוא\"ל אל {{email}}",
+          "missingService": "בחר בספק שירות דואר",
+          "userPassRequired": "יש להזין שם משתמש וסיסמה של SMTP עבור {{service}}",
+          "allFieldsRequired": "יש להזין את כל השדות לשירות מותאם אישית!",
+          "portNaN": "היציאה חייבת להיות מספר!",
+          "connectionFailed": "החיבור נכשל!",
+          "saveAnyway": "האם ברצונך לשמור את ההגדרות בכל מקרה?",
+          "saveSuccess": "הגדרות הדואר נשמרו.",
+          "saveFailed": "שמירת הגדרות הדואר נכשלה. {{error}}",
+          "cantSendEmail": "שגיאת שרת: לא ניתן לשלוח התראת דוא\"ל.",
+          "emailSent": "התראת דוא\"ל נשלחה."
+        }
+      }
+    }
+  }
+}]
