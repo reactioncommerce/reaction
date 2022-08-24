@@ -22,8 +22,14 @@ jobs:
             - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
+          name: Install npm version 8
+          command: sudo npm i -g npm@8
+      - run:
+          name: Check npm version
+          command: npm -v
+      - run:
           name: Install NPM dependencies
-          command: npm ci
+          command: npm ci --legacy-peer-deps
       - save_cache:
           key: reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
@@ -67,6 +73,18 @@ jobs:
           name: Lint GraphQL schemas
           command: npm run lint:gql
 
+  test-unit:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ .Branch }}
+      - run:
+          name: Test Unit
+          command: npm run test
+
   test-integration-query:
     <<: *defaults
     docker:
@@ -90,7 +108,7 @@ jobs:
           command: |
             sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
-            npm run test:integration:query
+            npm run test:integration:query -w=apps/reaction
 
   test-integration-mutation:
     <<: *defaults
@@ -115,7 +133,7 @@ jobs:
           command: |
             sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
-            npm run test:integration:mutation
+            npm run test:integration:mutation -w=apps/reaction
 
   release:
     <<: *defaults
@@ -126,9 +144,12 @@ jobs:
             - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run:
           name: Push the latest version to npm
           command: |
-            npx semantic-release
+            npm run release
 
   docker-build-push:
     <<: *defaults
@@ -140,7 +161,7 @@ jobs:
           name: Build and push production Docker image
           command: |
             VERSION=$(git describe --tags `git rev-list --tags --max-count=1` | cut -c2-100)
-            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest .
+            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest ./apps/reaction
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push ${DOCKER_REPOSITORY}:${VERSION}
             docker push ${DOCKER_REPOSITORY}:latest
@@ -159,6 +180,9 @@ workflows:
       - graphql-lint:
           requires:
             - install-dependencies
+      - test-unit:
+          requires:
+            - install-dependencies
       - test-integration-query:
           requires:
             - install-dependencies
@@ -166,7 +190,6 @@ workflows:
           requires:
             - install-dependencies
       - release:
-          context: reaction-publish-semantic-release
           filters:
             branches:
               only:
@@ -175,6 +198,7 @@ workflows:
             - dockerfile-lint
             - eslint
             - graphql-lint
+            - test-unit
             - test-integration-query
             - test-integration-mutation
       - docker-build-push:
@@ -183,5 +207,5 @@ workflows:
             branches:
               only:
                 - trunk
-          requires:
-            - release
+          # requires:
+          #   - release
