@@ -1,0 +1,46 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "ضرائب",
+          "taxesTitle": "ضرائب"
+        },
+        "dashboard": {
+          "taxesLabel": "ضرائب",
+          "taxesTitle": "ضرائب",
+          "taxesDescription": "تهيئة الضرائب"
+        },
+        "taxGrid": {
+          "taxCode": "رمز",
+          "rate": "معدل",
+          "country": "بلد",
+          "region": "منطقة",
+          "postal": "بريدي"
+        },
+        "settings": {
+          "taxSettingsLabel": "إعدادات ضرائب"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "لا توجد معدلات الضرائب الجمركية.",
+          "shopCustomTaxRatesSaved": ". معدل ضرائب مخصصة محفوظة",
+          "shopCustomTaxRatesFailed": ".خطأ في حفظ معدل الضريبة",
+          "shopTaxMethodsSaved": ".حفظ طريقة الضريبة",
+          "shopTaxMethodsAlreadySaved": "تم تحميل تاكسكوديس بالفعل",
+          "shopTaxMethodsFailed": "فشل حفظ طريقة الضرائب",
+          "customRatesLabel": "المعدلات المخصصة",
+          "customRatesDescription": "المعدلات المخصصة",
+          "taxCode": "رقم الضريبة",
+          "taxShipping": "يشمل الشحن",
+          "taxRate": "معدل",
+          "discountsIncluded": "شمل الخصومات",
+          "taxable": "خاضع للضريبة",
+          "nottaxable": "غير خاضع للضريبة",
+          "confirmRateDelete": "تأكيد إلغاء معدل الضرائب"
+        }
+      }
+    }
+  }
+}]

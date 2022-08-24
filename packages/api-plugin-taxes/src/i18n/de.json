@@ -1,0 +1,46 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Steuern",
+          "taxesTitle": "Steuern"
+        },
+        "dashboard": {
+          "taxesLabel": "Steuern",
+          "taxesTitle": "Steuern",
+          "taxesDescription": "Steuer-Konfiguration"
+        },
+        "taxGrid": {
+          "taxCode": "Code",
+          "rate": "Preis",
+          "country": "Land",
+          "region": "Region",
+          "postal": "Post"
+        },
+        "settings": {
+          "taxSettingsLabel": "Steuer-Einstellungen"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Es wurden keine benutzerdefinierten Steuersätze gefunden.",
+          "shopCustomTaxRatesSaved": "Der benutzerdefinierte Steuersatz wurde gespeichert.",
+          "shopCustomTaxRatesFailed": "Fehler beim Speichern des Steuersatzes.",
+          "shopTaxMethodsSaved": "Besteuerungsart speichern.",
+          "shopTaxMethodsAlreadySaved": "Bereits gespeicherte Steuerkennzeichen",
+          "shopTaxMethodsFailed": "Die Besteuerungsart konnte nicht gespeichert werden. ",
+          "customRatesLabel": "Benutzerdefinierte Preise",
+          "customRatesDescription": "Benutzerdefinierte Preise",
+          "taxCode": "Steuercode",
+          "taxShipping": "Versand mit einschließen",
+          "taxRate": "Preis",
+          "discountsIncluded": "Rabatte mit einschließen",
+          "taxable": "Steuerpflichtig",
+          "nottaxable": "Nicht steuerpflichtig",
+          "confirmRateDelete": "Löschen des Steuersatzes bestätigen"
+        }
+      }
+    }
+  }
+}]

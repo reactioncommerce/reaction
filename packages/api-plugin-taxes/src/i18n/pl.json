@@ -1,0 +1,46 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Podatki",
+          "taxesTitle": "Podatki"
+        },
+        "dashboard": {
+          "taxesLabel": "Podatki",
+          "taxesTitle": "Podatki",
+          "taxesDescription": "konfiguracja podatki"
+        },
+        "taxGrid": {
+          "taxCode": "Kod",
+          "rate": "Oceniać",
+          "country": "Kraj",
+          "region": "Region",
+          "postal": "Pocztowy"
+        },
+        "settings": {
+          "taxSettingsLabel": "Ustawienia podatkowe"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Nie znaleziono stawki niestandardowe podatkowe.",
+          "shopCustomTaxRatesSaved": "stawka podatku niestandardowe zapisane.",
+          "shopCustomTaxRatesFailed": "Błąd zapisywania stawki podatkowej.",
+          "shopTaxMethodsSaved": "Zapisane metody podatkowej.",
+          "shopTaxMethodsAlreadySaved": "Kody podatkowe już załadowane",
+          "shopTaxMethodsFailed": "Nieudane zapisywanie sposobu opodatkowania.",
+          "customRatesLabel": "ceny niestandardowe",
+          "customRatesDescription": "ceny niestandardowe",
+          "taxCode": "Kod podatkowy",
+          "taxShipping": "obejmować wysłanie",
+          "taxRate": "Oceniać",
+          "discountsIncluded": "obejmują rabaty",
+          "taxable": "Podlegający opodatkowaniu",
+          "nottaxable": "nie podlegają opodatkowaniu",
+          "confirmRateDelete": "Potwierdź usunięcie stawki podatkowej"
+        }
+      }
+    }
+  }
+}]
