@@ -1,0 +1,35 @@
+[{
+  "language": "Portuguese",
+  "i18n": "pt",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "Pagamentos",
+          "paymentsTitle": "Pagamentos"
+        },
+        "dashboard": {
+          "paymentsLabel": "Pagamentos",
+          "paymentsTitle": "Pagamentos",
+          "paymentsDescription": "configuração de pagamentos"
+        },
+        "settings": {
+          "paymentSettingsLabel": "Configurações de pagamento"
+        },
+        "paymentSettings": {
+          "paymentMethod": "Provedor padrão"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Adicionar pagamento para completar a fim",
+        "processingError": "Houve um problema com o seu pagamento.",
+        "completeYourOrder": "Concluir a sua encomenda",
+        "noPaymentMethods": "Não há métodos de pagamento são configurados.",
+        "contactAdmin": "Entre em contato com o administrador da loja.",
+        "configureNow": "Configurar agora.",
+        "failedToPlaceOrder": "Falha ao colocar ordem."
+      }
+    }
+  }
+}]

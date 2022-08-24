@@ -1,0 +1,35 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "πληρωμές",
+          "paymentsTitle": "πληρωμές"
+        },
+        "dashboard": {
+          "paymentsLabel": "πληρωμές",
+          "paymentsTitle": "πληρωμές",
+          "paymentsDescription": "διαμόρφωση πληρωμές"
+        },
+        "settings": {
+          "paymentSettingsLabel": "Ρυθμίσεις πληρωμής"
+        },
+        "paymentSettings": {
+          "paymentMethod": "προεπιλογή Provider"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Προσθέστε την πληρωμή να ολοκληρώσετε την παραγγελία",
+        "processingError": "Υπήρξε ένα πρόβλημα με την πληρωμή σας.",
+        "completeYourOrder": "Ολοκληρώστε την παραγγελία σας",
+        "noPaymentMethods": "Δεν μέθοδοι πληρωμής ρυθμιστεί.",
+        "contactAdmin": "Επικοινωνήστε με τον διαχειριστή του καταστήματος.",
+        "configureNow": "Διαμορφώστε τώρα.",
+        "failedToPlaceOrder": "Αποτυχία να δώσετε την παραγγελία."
+      }
+    }
+  }
+}]

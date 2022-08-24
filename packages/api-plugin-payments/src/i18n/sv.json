@@ -1,0 +1,35 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "betalningar",
+          "paymentsTitle": "betalningar"
+        },
+        "dashboard": {
+          "paymentsLabel": "betalningar",
+          "paymentsTitle": "betalningar",
+          "paymentsDescription": "betalningskonfiguration"
+        },
+        "settings": {
+          "paymentSettingsLabel": "betalnings~~POS=TRUNC"
+        },
+        "paymentSettings": {
+          "paymentMethod": "default Provider"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Lägg betalning för att slutföra order",
+        "processingError": "Det fanns ett problem med din betalning.",
+        "completeYourOrder": "Slutföra din beställning",
+        "noPaymentMethods": "Inga betalningsmetoder är konfigurerade.",
+        "contactAdmin": "Kontakta butikshanteraren.",
+        "configureNow": "Konfigurera nu.",
+        "failedToPlaceOrder": "Det gick inte att placera order."
+      }
+    }
+  }
+}]

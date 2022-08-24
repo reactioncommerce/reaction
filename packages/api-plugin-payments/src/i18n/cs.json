@@ -1,0 +1,35 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "Platby",
+          "paymentsTitle": "Platby"
+        },
+        "dashboard": {
+          "paymentsLabel": "Platby",
+          "paymentsTitle": "Platby",
+          "paymentsDescription": "konfigurace platby"
+        },
+        "settings": {
+          "paymentSettingsLabel": "Platební Nastavení"
+        },
+        "paymentSettings": {
+          "paymentMethod": "Výchozí Provider"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Přidejte platby k dokončení objednávky",
+        "processingError": "Došlo k potížím s vaší platby.",
+        "completeYourOrder": "Dokončit svou objednávku",
+        "noPaymentMethods": "Žádné platební metody jsou konfigurovány.",
+        "contactAdmin": "Obraťte se na správce obchodu.",
+        "configureNow": "Nakofigurujte.",
+        "failedToPlaceOrder": "Nepodařilo se místo pořadí."
+      }
+    }
+  }
+}]
