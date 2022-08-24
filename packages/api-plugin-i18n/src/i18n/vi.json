@@ -1,0 +1,24 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "shopLocalization": "Nội địa hoá cửa hàng",
+          "enabledCurrencies": "Đơn vị tiền tệ",
+          "enabledLanguages": "Ngôn ngữ",
+          "allOn": "Tất cả Mở",
+          "allOff": "Tất cả đều tắt"
+        },
+        "baseUOM": "Đơn vị cơ sở của Đo",
+        "currency": "base Currency",
+        "currencyTooltip": "tiền tệ mặc định cửa hàng",
+        "language": "cơ sở Ngôn ngữ",
+        "languageTooltip": "Ngôn ngữ này sẽ được sử dụng nếu phát hiện ngôn ngữ thiết bị sẽ được thất bại",
+        "timezone": "Múi giờ",
+        "timezoneOptions": "Chọn múi giờ"
+      }
+    }
+  }
+}]

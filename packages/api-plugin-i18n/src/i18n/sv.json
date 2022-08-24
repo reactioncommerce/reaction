@@ -1,0 +1,24 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "shopLocalization": "Shop Lokalisering",
+          "enabledCurrencies": "Valutor",
+          "enabledLanguages": "språk",
+          "allOn": "alla på",
+          "allOff": "Alla"
+        },
+        "baseUOM": "Base mätenhet",
+        "currency": "basvaluta",
+        "currencyTooltip": "Shop standardvaluta",
+        "language": "Base språk",
+        "languageTooltip": "Detta språk kommer att användas när enheten språkidentifiering kommer att misslyckades",
+        "timezone": "Tidszon",
+        "timezoneOptions": "Välj tidszon"
+      }
+    }
+  }
+}]
