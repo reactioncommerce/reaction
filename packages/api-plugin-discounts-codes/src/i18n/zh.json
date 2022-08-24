@@ -1,0 +1,41 @@
+[{
+  "language": "Chinese",
+  "i18n": "zh",
+  "ns": "discount-codes",
+  "translation": {
+    "discount-codes": {
+      "checkoutPayment": {
+        "applyDiscount": "申请",
+        "discountError": "抱歉，申请折扣的错误。"
+      },
+      "discounts": {
+        "enterItHere": "有代码？在此输入。",
+        "discountLabel": "优惠码",
+        "submitted": "折扣保存并应用",
+        "applied": "应用的",
+        "code": "码",
+        "codeIsExpired": "代码已过期",
+        "codeIsInvalid": "代码无效",
+        "multiShopError": "折扣不能应用于多店铺购物车或订单"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "代码"
+        },
+        "settings": {
+          "codesLabel": "代码",
+          "noCustomDiscountCodesFound": "没有折扣代码中。"
+        },
+        "discountGrid": {
+          "code": "代码",
+          "calculation": {
+            "method": "计算"
+          },
+          "conditions": {
+            "redemptionLimit": "限制"
+          }
+        }
+      }
+    }
+  }
+}]

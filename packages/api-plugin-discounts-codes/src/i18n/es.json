@@ -1,0 +1,81 @@
+[{
+    "language": "Spanish",
+    "i18n": "es",
+    "ns": "discount-codes",
+    "translation": {
+      "discount-codes": {
+        "checkoutPayment": {
+          "applyDiscount": "Aplicar",
+          "discountError": "Ha habido un error al aplicar descuento."
+        },
+        "discounts": {
+          "enterItHere": "¿Tiene un código? Insértelo aquí.",
+          "discountLabel": "Código de descuento",
+          "submitted": "Descuento guardar y aplicar",
+          "applied": "aplicado",
+          "code": "código",
+          "codeIsExpired": "Código ha caducado",
+          "codeIsInvalid": "Código no es válido",
+          "multiShopError": "No se pueden aplicar descuentos a un carrito o pedido de varias tiendas"
+        },
+        "admin": {
+          "paymentSettings": {
+            "codesLabel": "códigos"
+          },
+          "discountCode": {
+            "addDiscount": "Agregar descuento",
+            "addDiscountModalTitle": "Agregar un nuevo código de descuento",
+            "confirmRateDelete": "Confirme la eliminación de la tasa de descuento.",
+            "title": "Códigos de descuento",
+            "noCustomDiscountCodesFound": "No se encontraron códigos de descuento",
+            "failure": "La operación falló",
+            "createSuccess": "Se ha creado correctamente un nuevo código de descuento",
+            "deleteSuccess": "Código de descuento eliminado correctamente",
+            "updateSuccess": "Código de descuento actualizado correctamente",
+            "settingsSaveSuccess": "Configuración guardada correctamente.",
+            "form": {
+              "calculationMethod": "Método de cálculo",
+              "code": "Código de descuento",
+              "codePlaceholder": "Código de descuento",
+              "deleteDialogTitle": "Eliminar código de descuento",
+              "deleteMessage": "¿Está seguro de que desea eliminar este código de descuento?",
+              "discount": "Descuento",
+              "discountPlaceholder": "Valor de descuento, es decir, un valor de 10 se traducirá en un 10% de descuento",
+              "accountLimit": "Límite de cuenta",
+              "accountLimitPlaceholder": "Cuántas veces un usuario puede canjear este descuento",
+              "redemptionLimit": "Límite total",
+              "redemptionLimitPlaceholder": "La cantidad total de veces que se puede canjear este descuento"
+            }
+          },
+          "discountsTable": {
+            "headers": {
+              "code": "Código",
+              "discountMethod": "Método",
+              "discount": "Descuento",
+              "calculation": {
+                "method": "Cálculo"
+              },
+              "conditions": {
+                "accountLimit": "Límite de cuenta",
+                "redemptionLimit": "Límite total"
+              }
+            },
+            "filterPlaceholder": "Filtrar códigos de descuento"
+          },
+          "settings": {
+            "codesLabel": "Códigos",
+            "noCustomDiscountCodesFound": "No se encontraron códigos de descuento."
+          },
+          "discountGrid": {
+            "code": "Código",
+            "calculation": {
+              "method": "Cálculo"
+            },
+            "conditions": {
+              "redemptionLimit": "Límite"
+            }
+          }
+        }
+      }
+    }
+  }]

@@ -1,0 +1,22 @@
+[
+  {
+    "description": "Discount managers acting on specific entities.",
+    "subjects": [ "reaction:groups:discount-managers" ],
+    "resources": [ "reaction:legacy:discounts" ],
+    "actions": [
+      "create",
+      "read"
+    ],
+    "effect": "allow"
+  },
+  {
+    "description": "Discount managers acting on specific entities.",
+    "subjects": [ "reaction:groups:discount-managers" ],
+    "resources": [ "reaction:legacy:discounts:*" ],
+    "actions": [
+      "delete",
+      "update"
+    ],
+    "effect": "allow"
+  }
+]
