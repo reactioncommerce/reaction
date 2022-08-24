@@ -1,0 +1,1 @@
+The files in this folder are a rewrite of the @reactioncommerce/job-queue package with an almost identical API but no Meteor dependencies. This is not expected to be the final solution for background jobs in Reaction, but it is a temporary solution that works fairly well for now.
