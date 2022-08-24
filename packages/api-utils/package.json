@@ -1,18 +1,19 @@
 {
   "name": "@reactioncommerce/api-utils",
   "description": "Utility functions for the Reaction API",
-  "version": "0.0.0-development",
+  "version": "1.16.9",
   "main": "index.js",
   "type": "module",
   "engines": {
-    "node": ">=12.14.1"
+    "node": ">=14.18.1"
   },
-  "homepage": "https://github.com/reactioncommerce/api-utils",
-  "url": "https://github.com/reactioncommerce/api-utils",
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/api-utils.git"
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-utils"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -21,7 +22,7 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/api-utils/issues"
+    "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "exports": {
     "./": {
@@ -70,8 +71,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
     "graphql": "^15.0.0",
-    "jest": "^26.0.1",
-    "semantic-release": "^17.0.4"
+    "jest": "^26.0.1"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
@@ -79,7 +79,8 @@
     "lint:fix": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:file": "jest --no-cache --watch --coverage=false"
+    "test:file": "jest --no-cache --watch --coverage=false",
+    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
   },
   "eslintConfig": {
     "extends": "@reactioncommerce",
@@ -99,12 +100,6 @@
       "es6": true,
       "jasmine": true
     }
-  },
-  "prettier": {
-    "arrowParens": "always"
-  },
-  "release": {
-    "branches": "trunk"
   },
   "publishConfig": {
     "access": "public"

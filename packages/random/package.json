@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/random",
-  "version": "0.0.0-development",
+  "version": "1.0.2",
   "description": "A drop-in replacement for the 'random' Meteor package",
   "browser": "./dist/browser.js",
   "main": "./dist/server.js",
@@ -38,7 +38,6 @@
     "eslint-plugin-react": "^7.7.0",
     "jest": "^22.4.3",
     "rimraf": "^2.6.2",
-    "semantic-release": "^17.2.3",
     "watch": "^1.0.2"
   },
   "babel": {
@@ -58,17 +57,6 @@
   },
   "jest": {
     "testURL": "http://localhost"
-  },
-  "eslintConfig": {
-    "extends": "@reactioncommerce"
-  },
-  "prettier": {
-    "arrowParens": "always"
-  },
-  "release": {
-    "branches": [
-      "trunk"
-    ]
   },
   "publishConfig": {
     "access": "public"

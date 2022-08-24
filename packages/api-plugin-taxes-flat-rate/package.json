@@ -1,18 +1,19 @@
 {
   "name": "@reactioncommerce/api-plugin-taxes-flat-rate",
   "description": "Flat Rate Taxes plugin for the Reaction API",
-  "version": "0.0.0-development",
+  "version": "1.0.8",
   "main": "index.js",
   "type": "module",
   "engines": {
-    "node": ">=12.14.1"
+    "node": ">=14.18.1"
   },
-  "homepage": "https://github.com/reactioncommerce/api-plugin-taxes-flat-rate",
-  "url": "https://github.com/reactioncommerce/api-plugin-taxes-flat-rate",
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/api-plugin-taxes-flat-rate.git"
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-taxes-flat-rate"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -21,7 +22,7 @@
   },
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/api-plugin-taxes-flat-rate/issues"
+    "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "sideEffects": false,
   "dependencies": {
@@ -31,8 +32,6 @@
     "simpl-schema": "^1.12.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
     "@reactioncommerce/eslint-config": "~2.1.0",
@@ -44,31 +43,13 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^2.0.1",
-    "husky": "^4.2.3",
-    "semantic-release": "^17.0.4"
+    "eslint-plugin-react-hooks": "^2.0.1"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
-    "lint:eslint": "eslint ."
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "prettier": {
-    "arrowParens": "always"
-  },
-  "release": {
-    "branches": [
-      "trunk"
-    ]
+    "lint:eslint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
   },
   "publishConfig": {
     "access": "public"

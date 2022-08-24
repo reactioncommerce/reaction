@@ -124,7 +124,7 @@
     "lint": "eslint .",
     "lint:gql": "graphql-schema-linter ./src/**/*.graphql",
     "version": "echo $npm_package_version",
-    "postinstall": "is-ci || is-docker",
+    "postinstall": "is-ci || is-docker || cd ../.. husky install apps/reaction/.husky",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
     "prepare": "npm run snyk-protect",
