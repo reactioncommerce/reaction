@@ -1,0 +1,26 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-sitemap-generator",
+  "translation": {
+    "reaction-sitemap-generator": {
+      "shopSettings": {
+        "refreshSitemapsNow": "Refresh sitemap",
+        "sitemapRefreshInitiated": "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed.",
+        "sitemapRefreshFailed": "Sitemap refresh failed"
+      },
+      "SitemapSettings": {
+        "cardErrorContent": "Unable to load sitemap settings",
+        "cardTitle": "Sitemaps",
+        "refreshPeriodFieldLabel": "Automatically refresh sitemap",
+        "refreshPeriodFieldPlaceholder": "Select a frequency",
+        "viewSitemapButtonText": "View sitemap"
+      },
+      "productDetailEdit": {
+        "shouldAppearInSitemap": "Include in sitemap?",
+        "refreshSitemap": "Refresh sitemap now?",
+        "refreshSitemapYes": "Yes, refresh",
+        "refreshSitemapNo": "No, don't refresh"
+      }
+    }
+  }
+}]
