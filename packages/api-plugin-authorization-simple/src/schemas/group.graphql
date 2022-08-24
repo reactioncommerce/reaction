@@ -1,0 +1,14 @@
+extend input GroupInput {
+  "A list of the account permissions implied by membership in this group"
+  permissions: [String]
+}
+
+extend input UpdateGroupInput {
+  "A list of the account permissions implied by membership in this group"
+  permissions: [String]
+}
+
+extend type Group {
+  "A list of the account permissions implied by membership in this group"
+  permissions: [String]
+}
