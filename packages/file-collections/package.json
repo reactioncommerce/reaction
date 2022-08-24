@@ -1,0 +1,63 @@
+{
+  "name": "reaction-file-collections",
+  "version": "0.0.0-development",
+  "description": "A way to manage file uploads, downloads, and transformed copies in Node/Web apps. Used by Reaction Commerce.",
+  "author": "Reaction Commerce (https://reactioncommerce.com/)",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": "@reactioncommerce",
+    "rules": {
+      "node/no-unsupported-features/es-syntax": "off"
+    },
+    "settings": {
+      "react": {
+        "version": "16.20.0"
+      }
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "build": "lerna run build",
+    "bootstrap": "lerna bootstrap && lerna run build",
+    "clean": "lerna clean --yes",
+    "start": "cd example-apps/meteor-blaze-app && npm i && npm start",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
+    "@babel/plugin-proposal-function-sent": "^7.10.4",
+    "@babel/plugin-proposal-json-strings": "^7.10.4",
+    "@babel/plugin-proposal-numeric-separator": "^7.10.4",
+    "@babel/plugin-proposal-throw-expressions": "^7.10.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@reactioncommerce/eslint-config": "^2.2.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.1.0",
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb-base": "14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.18.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "jest": "^26.1.0",
+    "jest-cli": "^26.1.0",
+    "lerna": "^3.22.1"
+  },
+  "dependencies": {
+    "@babel/runtime-corejs2": "^7.16.0",
+    "@babel/runtime-corejs3": "^7.16.3",
+    "query-string": "6.14.1"
+  }
+}

@@ -1,0 +1,44 @@
+<template name="images">
+  {{#with uploadInfo}}
+    {{#if this.isUploading}}
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{this.percentage}}" aria-valuemin="0" aria-valuemax="100" style="{{progressStyle}}">
+          {{this.percentage}}% ({{this.bytesUploaded}}/{{this.bytesTotal}})
+        </div>
+      </div>
+    {{/if}}
+  {{/with}}
+  <h2>Image Files</h2>
+  <div class="well imageDropArea">
+    <div>
+      <input type="file" multiple class="images">
+    </div>
+    -- OR --
+    <div>
+      <input type="text" placeholder="Enter an image URL" class="js-remoteUrl">
+      <button type="button" class="grabButton">Grab</button>
+    </div>
+  </div>
+  <div class="imageArea clearfix">
+    {{#each uploadedImages}}
+    {{> uploadedImage}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="uploadedImage">
+  <div class="media well pull-left">
+    <a href="{{urlForStore 'images'}}" target="_blank" class="pull-left"><img src="{{urlForStore 'thumbs'}}" alt="" class="img-rounded"></a>
+    <div class="media-body">
+      <h4 class="media-heading">{{this.name}}</h4>
+      <p><em>Original upload: {{this.name}}, {{this.type}}, {{this.size}} bytes</em></p>
+      <p><em>File saved to "images" store: {{nameForStore 'images'}}, {{typeForStore 'images'}}, {{sizeForStore 'images'}} bytes</em></p>
+      <p><em>File saved to "thumbs" store: {{nameForStore 'thumbs'}}, {{typeForStore 'thumbs'}}, {{sizeForStore 'thumbs'}} bytes</em></p>
+      <div class="btn-row">
+        <a href="{{downloadUrlForStore 'images'}}" class="btn btn-default btn-xs" role="button" target="_blank">Download</a>
+        <button type="button" class="js-cloneFile btn btn-default btn-xs">Clone</button>
+        <button type="button" class="js-deleteFile btn btn-danger btn-xs">Delete</button>
+      </div>
+    </div>
+  </div>
+</template>
