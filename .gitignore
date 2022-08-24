@@ -73,3 +73,6 @@ docker-compose.override.yml
 .yalc/
 yalc.lock
 yalc-packages
+
+# Mac
+.DS_Store
