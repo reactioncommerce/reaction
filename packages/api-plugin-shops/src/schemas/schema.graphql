@@ -1,0 +1,214 @@
+"URLs for various shop assets in various sizes"
+type ShopBrandAssets {
+  "URLs for the navigation bar brand logo image"
+  navbarBrandImage: ImageSizes
+
+  "Internal navigation bar brand logo image ID"
+  navbarBrandImageId: String
+}
+
+"Shop logo URLs"
+type ShopLogoUrls {
+  "The primary logo URL for this shop. Setting this overrides any uploaded logo."
+  primaryShopLogoUrl: String
+}
+
+"Storefront route URLs"
+type StorefrontUrls {
+  "Storefront Account Profile URL (can include `:accountId` in string)"
+  storefrontAccountProfileUrl: String
+
+  "Storefront Home URL"
+  storefrontHomeUrl: String
+
+  "Storefront login URL"
+  storefrontLoginUrl: String
+
+  "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
+  storefrontOrderUrl: String
+
+  "Storefront orders URL (can include `:accountId` in string)"
+  storefrontOrdersUrl: String
+}
+
+"Parcel size"
+type ShopParcelSize {
+  "Parcel height"
+  height: Float
+
+  "Parcel length"
+  length: Float
+
+  "Parcel weight"
+  weight: Float
+
+  "Parcel width"
+  width: Float
+}
+
+"Units of length"
+type UnitOfLength {
+  "Whether this unit of length is the default"
+  default: Boolean
+
+  "The name of the unit of length"
+  label: String
+
+  "Unit of length"
+  uol: String
+}
+
+"Units of measure"
+type UnitOfMeasure {
+  "Whether this unit of measure is the default"
+  default: Boolean
+
+  "The name of the unit of measure"
+  label: String
+
+  "Unit of measure"
+  uom: String
+}
+
+"Represents a Reaction shop"
+type Shop implements Node {
+  "The shop ID"
+  _id: ID!
+
+  "An the shop's default address"
+  addressBook: [Address]
+
+  "Whether to allow user to checkout without creating an account"
+  allowGuestCheckout: Boolean
+
+  "The base unit of length"
+  baseUOL: String
+
+  "The base unit of Measure"
+  baseUOM: String
+
+  "URLs for various shop assets in various sizes"
+  brandAssets: ShopBrandAssets
+
+  "The default shop currency"
+  currency: Currency!
+
+  "Default parcel size for this shop"
+  defaultParcelSize: ShopParcelSize
+
+  "Shop description"
+  description: String
+
+  "The shop's default email record"
+  emails: [EmailRecord]
+
+  "Shop's keywords"
+  keywords: String
+
+  "Shop default language"
+  language: String!
+
+  "Shop name"
+  name: String!
+
+  "Returns URLs for shop logos"
+  shopLogoUrls: ShopLogoUrls
+
+  "Shop's type"
+  shopType: String
+
+  "Shop's slug"
+  slug: String
+
+  "Returns URLs for various storefront routes"
+  storefrontUrls: StorefrontUrls
+
+  "Shop default timezone"
+  timezone: String
+
+  "The shop's units of length"
+  unitsOfLength: [UnitOfLength]
+
+  "The shop's units of measure"
+  unitsOfMeasure: [UnitOfMeasure]
+}
+
+"""
+Wraps a list of `Shops`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type ShopConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [ShopEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Shop]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+"A connection edge in which each node is an `Shop` object"
+type ShopEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The Shop"
+  node: Shop
+}
+
+extend type Query {
+  "Returns the primary shop for the domain"
+  primaryShop: Shop
+
+  "Returns the ID of the primary shop for the domain"
+  primaryShopId: ID
+
+  "Returns a shop by ID"
+  shop(
+    "The shop ID"
+    id: ID!
+  ): Shop
+
+  "Returns a shop by slug"
+  shopBySlug(
+    "The shop slug"
+    slug: String!
+  ): Shop
+
+  shops(
+    "Shop IDs to filter by"
+    shopIds: [ID],
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
+    sortBy: GroupSortByField = createdAt
+  ): ShopConnection
+}
