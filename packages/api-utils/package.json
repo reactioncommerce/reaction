@@ -1,0 +1,112 @@
+{
+  "name": "@reactioncommerce/api-utils",
+  "description": "Utility functions for the Reaction API",
+  "version": "0.0.0-development",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=12.14.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/api-utils",
+  "url": "https://github.com/reactioncommerce/api-utils",
+  "email": "engineering@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/api-utils.git"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "engineering@reactioncommerce.com",
+    "url": "https://reactioncommerce.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/api-utils/issues"
+  },
+  "exports": {
+    "./": {
+      "require": "./",
+      "default": "./lib/"
+    },
+    "./graphql/": {
+      "require": "./",
+      "default": "./lib/graphql/"
+    },
+    "./tests/": {
+      "require": "./",
+      "default": "./lib/tests/"
+    }
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@jest/globals": "^26.6.2",
+    "@reactioncommerce/logger": "^1.1.3",
+    "@reactioncommerce/random": "^1.0.2",
+    "@reactioncommerce/reaction-error": "^1.0.1",
+    "accounting-js": "^1.1.1",
+    "callsite": "^1.0.0",
+    "envalid": "^6.0.2",
+    "graphql-fields": "^2.0.3",
+    "graphql-relay": "^0.9.0",
+    "lodash": "^4.17.15",
+    "ramda": "^0.27.0",
+    "transliteration": "^2.1.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@reactioncommerce/babel-remove-es-create-require": "^1.0.0",
+    "@reactioncommerce/eslint-config": "^2.1.1",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-rewire-exports": "^2.0.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-import-meta": "^1.0.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "graphql": "^15.0.0",
+    "jest": "^26.0.1",
+    "semantic-release": "^17.0.4"
+  },
+  "scripts": {
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:file": "jest --no-cache --watch --coverage=false"
+  },
+  "eslintConfig": {
+    "extends": "@reactioncommerce",
+    "settings": {
+      "react": {
+        "version": "latest"
+      }
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "impliedStrict": true
+      }
+    },
+    "env": {
+      "es6": true,
+      "jasmine": true
+    }
+  },
+  "prettier": {
+    "arrowParens": "always"
+  },
+  "release": {
+    "branches": "trunk"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
