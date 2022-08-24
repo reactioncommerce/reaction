@@ -1,0 +1,104 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:14.15.0
+
+    dependencies:
+      pre:
+        - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+    steps:
+      - checkout
+
+      - run: npm ci
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+  deploy:
+    docker:
+      - image: node:14.15.0
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npx semantic-release
+
+  lint-code:
+    docker:
+      - image: node:14.15.0
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npm run lint
+
+  lint-graphql:
+    docker:
+      - image: node:14.15.0
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npm run lint:gql
+
+  test:
+    docker:
+      - image: node:14.15.0
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npm run test
+
+workflows:
+  version: 2
+  build_deploy:
+    jobs:
+      - build:
+          context: reaction-publish-semantic-release
+      - lint-code:
+          requires:
+            - build
+      - lint-graphql:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          context: reaction-publish-semantic-release
+          requires:
+            - lint-code
+            - lint-graphql
+            - test
+          filters:
+            branches:
+              only: trunk
