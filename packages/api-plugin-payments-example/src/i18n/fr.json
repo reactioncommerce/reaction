@@ -1,0 +1,27 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "example-paymentmethod",
+  "translation": {
+    "example-paymentmethod": {
+      "admin": {
+        "shortcut": {
+          "examplePaymentProviderLabel": "Exemple de passerelle de paiement",
+          "examplePaymentProviderTitle": "Exemple de passerelle de paiement"
+        },
+        "dashboard": {
+          "examplePaymentProviderLabel": "Exemple de passerelle de paiement",
+          "examplePaymentProviderTitle": "Exemple de passerelle de paiement",
+          "examplePaymentProviderDescription": "Exemple de passerelle de paiement"
+        },
+        "paymentSettings": {
+          "examplePaymentLabel": "Exemple de passerelle de paiement",
+          "examplePaymentSettingsLabel": "Exemple de passerelle de paiement",
+          "exampleCredentials": "Ceci est un exemple de paramètre de plateforme de paiement.",
+          "apiClientId": "API ID client",
+          "supportedMethodsLabel": "Fonctions supportées par la passerelle de paiement"
+        }
+      }
+    }
+  }
+}]
