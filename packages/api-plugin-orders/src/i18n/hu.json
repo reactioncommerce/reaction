@@ -1,0 +1,97 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "notFound": "A rendelés nem található",
+      "order": {
+        "applyRefundToThisOrder": "Alkalmazza visszatérítés {{currencySymbol}}{{refund}} hogy ebben a sorrendben?",
+        "applyRefundDuringCancelOrder": "Ez visszatéríti a rendelés teljes {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrder": "Szeretné, hogy megszünteti ezt a rendelést?",
+        "cancelOrderLabel": "Rendelés lemondása",
+        "cancelOrderThenRestock": "Igen, és újratelepítésére",
+        "cancelOrderNoRestock": "Igen, de nem az újratelepítés"
+      },
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "rendelés"
+        },
+        "orderRisk": {
+          "high": "Nagy kockázat",
+          "riskCapture": "Rögzítse a rendelést kockázatkezeléssel?",
+          "riskCaptureWarn": "A megbízást díjkötelezettséggel fogja elfoglalni. A folytatás előtt hagyja jóvá."
+        },
+        "dashboard": {
+          "ordersLabel": "rendelés",
+          "ordersTitle": "rendelés",
+          "ordersDescription": "Teljesíteni a megrendeléseket",
+          "clearSearch": "Egyértelmű"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Dátum",
+            "orderId": "Rendelés azonosító",
+            "total": "Összesen",
+            "emailNotFound": "E-mail nem elérhető"
+          },
+          "summary": {
+            "cardTitle": "összefoglalás",
+            "copyOrderLink": "Copy Order link"
+          },
+          "invoice": {
+            "cardTitle": "Számla",
+            "adjustedTotal": "korrigált összesen",
+            "capturedTotal": "elfogott Összesen",
+            "refund": "Visszatérítés",
+            "refundLabel": "Visszatérítésre",
+            "refundItem": "példány",
+            "refundItemAmount": "Összesen",
+            "refundTotal": "Visszatérítés összesen"
+          },
+          "fulfillment": "Teljesítés",
+          "orderDetails": "Rendelési információk",
+          "shipmentTracking": "szállítmány"
+        },
+        "table": {
+          "headers": {
+            "name": "Név",
+            "email": "E-mail",
+            "date": "Dátum",
+            "id": "ID",
+            "total": "Összesen",
+            "shipping": "Szállítás",
+            "status": "Állapot"
+          },
+          "filter": {
+            "status": "Állapot",
+            "dateRange": "Időintervallum",
+            "shippingStatus": "Szállítási állapot",
+            "new": "Új",
+            "captured": "fizetési rögzített",
+            "shipped": "Kiszállított",
+            "completed": "befejezték",
+            "canceled": "Törölve",
+            "refunded": "Visszautalva"
+          },
+          "search": {
+            "clearSearch": "Egyértelmű",
+            "placeholder": "Keresési megbízások"
+          },
+          "data": {
+            "status": {
+              "new": "Új",
+              "coreOrderWorkflow/created": "Alkotó",
+              "coreOrderWorkflow/processing": "Feldolgozás",
+              "coreOrderWorkflow/completed": "befejezték",
+              "coreOrderWorkflow/canceled": "Törölve",
+              "coreOrderWorkflow/picked": "Válogatott",
+              "coreOrderWorkflow/packed": "Csomagolt",
+              "coreOrderWorkflow/labeled": "Jelzett",
+              "coreOrderWorkflow/shipped": "Kiszállított"
+            }
+          }
+        }
+      }
+    }
+  }
+}]

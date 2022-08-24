@@ -1,0 +1,97 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "notFound": "Zamówienie nie zostało znalezione",
+      "order": {
+        "applyRefundToThisOrder": "Zastosuj zwrot {{currencySymbol}}{{refund}} do tego celu?",
+        "applyRefundDuringCancelOrder": "Spowoduje to zwrot całkowitej kwoty zamówienia {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrder": "Czy chcesz anulować zamówienie?",
+        "cancelOrderLabel": "Anuluj zamówienie",
+        "cancelOrderThenRestock": "Tak, i restockuj",
+        "cancelOrderNoRestock": "Tak, ale nie restockuj"
+      },
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "Zamówienia"
+        },
+        "orderRisk": {
+          "high": "Wysokie ryzyko",
+          "riskCapture": "Złożyć zamówienie z opłatą za ryzyko?",
+          "riskCaptureWarn": "Zamierzasz uchwycić zlecenie z ładunkiem. Potwierdź przed kontynuowaniem."
+        },
+        "dashboard": {
+          "ordersLabel": "Zamówienia",
+          "ordersTitle": "Zamówienia",
+          "ordersDescription": "Spełnij swoje zamówienia",
+          "clearSearch": "Wyczyść"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Data",
+            "orderId": "Identyfikator zamówienia",
+            "total": "Kwota",
+            "emailNotFound": "E-mail nie jest dostępny"
+          },
+          "summary": {
+            "cardTitle": "Podsumowanie",
+            "copyOrderLink": "Kopiuj link zamówienia"
+          },
+          "invoice": {
+            "cardTitle": "Faktura",
+            "adjustedTotal": "Skorygowana kwota",
+            "capturedTotal": "Zapłacona kwota",
+            "refund": "Zwrot",
+            "refundLabel": "Zwrot",
+            "refundItem": "Przedmiot",
+            "refundItemAmount": "Kwota",
+            "refundTotal": "Zwrot kosztów"
+          },
+          "fulfillment": "Spełnienie",
+          "orderDetails": "Szczegóły zamówienia",
+          "shipmentTracking": "Wysyłka"
+        },
+        "table": {
+          "headers": {
+            "name": "Nazwa",
+            "email": "Ustawienia poczty e-mail",
+            "date": "Data",
+            "id": "ID",
+            "total": "Kwota",
+            "shipping": "Wysyłka",
+            "status": "Status"
+          },
+          "filter": {
+            "status": "Status",
+            "dateRange": "Zakres dat",
+            "shippingStatus": "Stan wysyłki",
+            "new": "Nowy",
+            "captured": "Płatność Przechwycona",
+            "shipped": "Wysłano",
+            "completed": "Zakończono",
+            "canceled": "Anulowane",
+            "refunded": "Zwrócone"
+          },
+          "search": {
+            "clearSearch": "Wyczyść",
+            "placeholder": "Szukaj zamówień"
+          },
+          "data": {
+            "status": {
+              "new": "Nowy",
+              "coreOrderWorkflow/created": "Nowe",
+              "coreOrderWorkflow/processing": "Przetwarzane",
+              "coreOrderWorkflow/completed": "Zakończone",
+              "coreOrderWorkflow/canceled": "Anulowane",
+              "coreOrderWorkflow/picked": "Odebrane",
+              "coreOrderWorkflow/packed": "Spakowane",
+              "coreOrderWorkflow/labeled": "Oznaczone",
+              "coreOrderWorkflow/shipped": "Wysłane"
+            }
+          }
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,203 @@
+[
+  {
+    "i18n": "es",
+    "ns": "reaction-orders",
+    "translation": {
+      "reaction-orders": {
+        "calculateRefundByItem": "Calcular reembolso por artículo",
+        "fulfillment": "Cumplimiento",
+        "fulfillmentGroupHeader": "Grupo de cumplimiento {{currentGroupCount}} de {{totalGroupsCount}}",
+        "items": "Artículos",
+        "newStatus": "Nuevo estado",
+        "notFound": "Orden no encontrada",
+        "refunds": "Reembolsos",
+        "orderActions": {
+          "markAsPackedDescription": "Marcar todos los artículos en este grupo como \"Empaquetado\"",
+          "markAsPackedLabel": "Marcar como empaquetado(s)",
+          "markAsShippedDescription": "Marcar todos los artículos en este grupo como \"Enviado\"",
+          "markAsShippedLabel": "Marcar como enviado(s)",
+          "updateGroupStatus": "Actualizar estado del grupo"
+        },
+        "orderDetails": "Detalles de la Orden",
+        "order": {
+          "allowShippingRefund": "Permitir que se reembolse el envío",
+          "allPaymentsRefunded": "Todos los pagos han sido reembolsados en su totalidad",
+          "amountToRefund": "Monto a reembolsar",
+          "applyRefund": "Aplicar reembolso",
+          "applyRefundDuringCancelOrder": "Esto reembolsará el total de la orden de {{currencySymbol}}{{invoiceTotal}}",
+          "applyRefundToThisOrder": "¿Aplicar reembolso de {{refund}} a esta orden?",
+          "availableToRefund": "Disponible para reembolsar",
+          "cancelGroup": "¿Desea cancerar este grupo?",
+          "cancelGroupLabel": "¿Cancelar grupo?",
+          "cancelOrder": "¿Desea cancelar esta orden?",
+          "cancelOrderLabel": "Cancelar orden",
+          "cancelOrderNoRestock": "Sí, pero sin reabastecimiento",
+          "cancelOrderThenRestock": "Sí, y reabastecer",
+          "noRefundReason": "No se proporcionó ninguna razón",
+          "order": "Orden",
+          "paymentRefunded": "Pago totalmente reembolsado",
+          "placed": "Realizado",
+          "previousRefunds": "Reembolsos anteriores",
+          "previouslyRefunded": "Reembolsado anteriormente",
+          "reason": "Razón",
+          "reasonForRefund": "Razón para reembolsar",
+          "reasonForRefundFormLabel": "Razón para reembolsar (opcional)",
+          "refund": "Reembolsar",
+          "refundButton": "Reembolsar {{currentRefundAmount}}",
+          "refundedTo": "Reembolsado a",
+          "refunding": "Reembolsando",
+          "refundItemsAlert": "¿Desea reembolsar {{refundItemsQuantity}} artículo(s) con un total de {{refundItemsTotal}}?",
+          "refundItemsApproveAlert": "¿Quiere aprobar este pago y luego reembolsar  {{totalAmount}}?",
+          "refundItemsCaptureAlert": "¿Quiere capturar este pago y luego reembolsar  {{totalAmount}}?",
+          "refundItemsSuccess": "El reembolso se aplicó con éxito",
+          "refundItemsTitle": "Reembolsar Artículos",
+          "refundItemsWait": "El pago aún no se ha capturado",
+          "refundNotSupported": "El método de pago no admite reembolsos",
+          "refundsNotSupported": "Los reembolsos no son compatibles con el(los) método(s) de pago utilizado(s) para esta orden",
+          "refundReason": {
+            "customerRequest": "Solicitud del cliente",
+            "duplicatePayment": "Pago duplicado",
+            "fraudulent": "Fraudulento"
+          },
+          "refundTo": "Reembolsar a",
+          "restockInventory": "¿Reabastecer inventario?",
+          "updateFulfillmentGroupStatusMessage": "¿Desea actualizar el estado de este grupo a {{groupStatus}}",
+          "updateFulfillmentGroupStatusTitle": "Actualizar estado de grupo"
+        },
+        "status": {
+          "new": "Nuevo ",
+          "coreOrderWorkflow/created": "Creado ",
+          "coreOrderWorkflow/processing": "Procesando ",
+          "coreOrderWorkflow/completed": "Completado ",
+          "coreOrderWorkflow/canceled": "Cancelado ",
+          "coreOrderWorkflow/picked": "Recogido ",
+          "coreOrderWorkflow/packed": "Empaquetado ",
+          "coreOrderWorkflow/labeled": "Etiquetado ",
+          "coreOrderWorkflow/shipped": "Enviado ",
+          "multipleStatuses": "Múltiples estados"
+        },
+        "orderCard": {
+          "orderSummary": {
+            "showOrderSummary": "Mostrar resumen de la orden",
+            "title": "Resumen de Orden"
+          }
+        },
+        "shippingAddress": "Dirección de envío",
+        "shippingMethod": "Método de envío",
+        "trackingNumber": "Número de seguimiento",
+        "admin": {
+          "shortcut": {
+            "ordersLabel": "Órdenes"
+          },
+          "orderRisk": {
+            "high": "Alto riesgo",
+            "riskCapture": "¿Capturar orden con riesgo de crédito?",
+            "riskCaptureWarn": "Usted está a punto de capturar la orden con un riesgo de crédito. Confirme antes de continuar."
+          },
+          "dashboard": {
+            "ordersLabel": "Órdenes",
+            "ordersTitle": "Órdenes",
+            "ordersDescription": "Cumplir con sus órdenes",
+            "clearSearch": "Limpiar"
+          },
+          "orderWorkflow": {
+            "ordersList": {
+              "date": "Fecha",
+              "orderId": "ID de orden",
+              "total": "Total",
+              "emailNotFound": "Correo electrónico no disponible"
+            },
+            "summary": {
+              "cardTitle": "Resumen",
+              "copyOrderLink": "Copiar enlace de la orden"
+            },
+            "invoice": {
+              "cardTitle": "Factura",
+              "adjustedTotal": "Total ajustado",
+              "capturedTotal": "Total capturado",
+              "printInvoice": "Imprimir factura",
+              "refund": "Reembolso",
+              "refundLabel": "Para reembolso",
+              "refundItem": "Artículos",
+              "refundItemAmount": "Total",
+              "refundTotal": "Total reembolso"
+            },
+            "fulfillment": "Cumplimiento",
+            "orderDetails": "Detalles de la orden",
+            "shipmentTracking": "Envío",
+            "fulfillmentGroups": {
+              "cancelFulfillmentGroup": "Cancelar grupo",
+              "markAsPacked": "Marcar como empaquetado",
+              "printShippingLabel": "Imprimir etiqueta de envío"
+            }
+          },
+          "table": {
+            "headers": {
+              "customer": "Cliente",
+              "name": "Nombre",
+              "payment": "Pago",
+              "fulfillment": "Cumplimiento",
+              "email": "Correo electrónico",
+              "date": "Fecha",
+              "id": "ID de orden",
+              "total": "Total",
+              "shipping": "Envío",
+              "status": "Estado"
+            },
+            "error": "Ocurrió un error",
+            "filter": {
+              "canceled": "Cancelado",
+              "captured": "Pago capturado",
+              "completed": "Completado",
+              "dateRange": "Rango de fechas",
+              "globalFilter": "Filtrar órdenes",
+              "last30": "Últimos 30 días",
+              "last7": "Últimos 7 días",
+              "new": "Nuevo",
+              "refunded": "Reembolsado",
+              "shipped": "Enviado",
+              "shippingStatus": "Estado del envío",
+              "status": "Estado",
+              "today": "Hoy"
+            },
+            "search": {
+              "clearSearch": "Limpiar",
+              "placeholder": "Buscar órdenes"
+            },
+            "orderStatus": {
+              "coreOrderWorkflow/canceled": "Cancelado",
+              "coreOrderWorkflow/completed": "Completado",
+              "new": "Nuevo",
+              "coreOrderWorkflow/processing": "Procesando"
+            },
+            "paymentStatus": {
+              "completed": "Completado",
+              "created": "Creado"
+            },
+            "fulfillmentStatus": {
+              "coreOrderWorkflow/completed": "Completado",
+              "coreOrderWorkflow/created": "Creado",
+              "coreOrderWorkflow/canceled": "Cancelado",
+              "new": "Nuevo",
+              "coreOrderWorkflow/processing": "Procesando"
+            },
+            "data": {
+              "status": {
+                "new": "Nuevo ",
+                "coreOrderWorkflow/created": "Creado ",
+                "coreOrderWorkflow/processing": "Procesando ",
+                "coreOrderWorkflow/completed": "Completado ",
+                "coreOrderWorkflow/canceled": "Cancelado ",
+                "coreOrderWorkflow/picked": "Recogido ",
+                "coreOrderWorkflow/packed": "Empaquetado ",
+                "coreOrderWorkflow/labeled": "Etiquetado ",
+                "coreOrderWorkflow/shipped": "Enviado ",
+                "multipleStatuses": "Múltiples estados"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

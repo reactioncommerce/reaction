@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if order isn't supplied 1`] = `"Order is required"`;
