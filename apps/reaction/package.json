@@ -7,46 +7,6 @@
   "engines": {
     "node": ">=14.18.1"
   },
-  "release": {
-    "branches": [
-      "trunk"
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/exec",
-        {
-          "prepareCmd": "sed -i 's/${lastRelease.version}/${nextRelease.version}/g' docker-compose.yml"
-        }
-      ],
-      [
-        "@semantic-release/changelog",
-        {
-          "changelogFile": "CHANGELOG.md"
-        }
-      ],
-      [
-        "@semantic-release/npm",
-        {
-          "npmPublish": false
-        }
-      ],
-      "@semantic-release/github",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "package.json",
-            "package-lock.json",
-            "CHANGELOG.md",
-            "docker-compose.yml"
-          ],
-          "message": "chore(release): v${nextRelease.version} [skip ci]"
-        }
-      ]
-    ]
-  },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",
   "email": "reaction@reactioncommerce.com",
@@ -136,9 +96,7 @@
     "eslint-plugin-react": "~7.14.3",
     "eslint-plugin-react-hooks": "~2.0.1",
     "faker": "~4.1.0",
-    "graphql-schema-linter": "~0.2.5",
     "graphql-tools": "~4.0.5",
-    "husky": "^5.0.8",
     "is-ci": "^2.0.0",
     "is-docker": "^2.1.1",
     "jest": "~25.1.0",
@@ -146,7 +104,6 @@
     "node-fetch": "~2.6.0",
     "nodemon": "~1.19.2",
     "pinst": "^2.1.4",
-    "semantic-release": "^17.4.3",
     "wait-for-expect": "~3.0.0"
   },
   "scripts": {
@@ -162,19 +119,16 @@
     "test:integration:watch": "node --max_old_space_size=10000 node_modules/jest/bin/jest --runInBand --watch --testPathIgnorePatterns '<rootDir>/src/'",
     "test:integration:file": "jest --runInBand",
     "test:integration:file:watch": "jest --runInBand --watch",
-    "test:integration:query": "node --max_old_space_size=4000 --expose-gc ./node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/mutations/'",
-    "test:integration:mutation": "node --max_old_space_size=4000 --expose-gc ./node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/queries/'",
+    "test:integration:query": "node --max_old_space_size=4000 --expose-gc ../../node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/mutations/'",
+    "test:integration:mutation": "node --max_old_space_size=4000 --expose-gc ../../node_modules/.bin/jest --logHeapUsage --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/' '<rootDir>/tests/integration/api/queries/'",
     "lint": "eslint .",
     "lint:gql": "graphql-schema-linter ./src/**/*.graphql",
     "version": "echo $npm_package_version",
-    "postinstall": "is-ci || is-docker || husky install",
+    "postinstall": "is-ci || is-docker",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
     "prepare": "npm run snyk-protect",
     "snyk-protect": "snyk-protect"
-  },
-  "prettier": {
-    "arrowParens": "always"
   },
   "nodemonConfig": {
     "delay": "2000",
@@ -206,10 +160,6 @@
       "types-have-descriptions"
     ]
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "snyk": true
+  "snyk": true,
+  "private": true
 }

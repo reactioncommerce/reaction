@@ -1,0 +1,93 @@
+{
+  "name": "reaction",
+  "version": "1.0.0",
+  "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
+  "main": "index.js",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "scripts": {
+    "start:dev": "npm run start:dev --workspace=apps/reaction",
+    "test": "npm run test --ws",
+    "test:integration:query": "npm run test:integration:query --workspace=apps/reaction",
+    "test:integration:mutation": "npm run test:integration:mutation --workspace=apps/reaction",
+    "changeset": "changeset",
+    "release": "changeset publish",
+    "lint": "eslint . --resolve-plugins-relative-to .",
+    "lint:docker": "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 lint-dockerfiles --workspace=apps/reaction",
+    "lint:gql": "npm run lint:gql --ws",
+    "postinstall": "husky install .husky"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "reaction@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git"
+  },
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "@changesets/changelog-github": "^0.4.6",
+    "@changesets/cli": "^2.24.2",
+    "dotenv": "^16.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.10",
+    "@babel/eslint-parser": "^7.18.9",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "babel-plugin-rewire-exports": "^2.3.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-import-meta": "^2.2.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.8.3",
+    "eslint-plugin-node": "^11.1.0",
+    "graphql-schema-linter": "3.0.0",
+    "husky": "^8.0.1"
+  },
+  "graphql-schema-linter": {
+    "customRulePaths": [
+      "apps/reaction/.reaction/graphql-linter/rules/*.cjs"
+    ],
+    "rules": [
+      "arguments-have-descriptions",
+      "defined-types-are-used",
+      "deprecations-have-a-reason",
+      "descriptions-are-capitalized",
+      "enum-values-have-descriptions",
+      "enum-values-sorted-alphabetically",
+      "fields-have-descriptions",
+      "input-object-fields-sorted-alphabetically",
+      "input-object-values-have-descriptions",
+      "relay-connection-arguments-spec-custom",
+      "relay-connection-types-spec",
+      "relay-page-info-spec",
+      "type-fields-sorted-alphabetically",
+      "types-are-capitalized",
+      "types-have-descriptions"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "prettier": {
+    "arrowParens": "always"
+  }
+}
