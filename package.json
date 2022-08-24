@@ -32,6 +32,7 @@
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*"
