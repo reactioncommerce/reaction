@@ -1,0 +1,22 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "Nastavení diskontních"
+        },
+        "shortcut": {
+          "discountsLabel": "slevy",
+          "discountsDescription": "Poskytují propagační akce a slevy."
+        },
+        "dashboard": {
+          "discountsLabel": "slevy",
+          "discountsDescription": "Poskytují propagační akce a slevy."
+        }
+      }
+    }
+  }
+}]

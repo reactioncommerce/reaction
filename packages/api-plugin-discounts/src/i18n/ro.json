@@ -1,0 +1,22 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "Setări discount"
+        },
+        "shortcut": {
+          "discountsLabel": "Reduceri",
+          "discountsDescription": "Oferi promoții și reduceri."
+        },
+        "dashboard": {
+          "discountsLabel": "Reduceri",
+          "discountsDescription": "Oferi promoții și reduceri."
+        }
+      }
+    }
+  }
+}]

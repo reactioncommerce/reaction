@@ -1,0 +1,22 @@
+[{
+  "language": "Hebrew",
+  "i18n": "he",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "הגדרות הנחה"
+        },
+        "shortcut": {
+          "discountsLabel": "הנחות",
+          "discountsDescription": "הצג מבצעים והנחות."
+        },
+        "dashboard": {
+          "discountsLabel": "הנחות",
+          "discountsDescription": "הצג מבצעים והנחות."
+        }
+      }
+    }
+  }
+}]

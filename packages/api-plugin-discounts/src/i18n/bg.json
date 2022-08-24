@@ -1,0 +1,22 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "Настройки за отстъпка"
+        },
+        "shortcut": {
+          "discountsLabel": "Намаления",
+          "discountsDescription": "Осигуряване на промоции и отстъпки."
+        },
+        "dashboard": {
+          "discountsLabel": "Намаления",
+          "discountsDescription": "Осигуряване на промоции и отстъпки."
+        }
+      }
+    }
+  }
+}]
