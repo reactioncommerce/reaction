@@ -1,0 +1,101 @@
+[
+  {
+    "i18n": "es",
+    "ns": "reaction-tags",
+    "translation": {
+      "reaction-tags": {
+        "tagAddedToProduct": "Etiqueta \"{{tagName}}\" añadida al producto",
+        "tagRemovedFromProduct": "Etiqueta \"{{tagName}}\" eliminada del producto",
+        "admin": {
+          "tags": {
+            "tags": "Etiquetas",
+            "tagManagement": "Gestión de etiquetas",
+            "enabled": "Habilitada",
+            "disabled": "Deshabilitada",
+            "enable": "Habilitar",
+            "disable": "Deshabilitar",
+            "delete": "Remover",
+            "visible": "Visible",
+            "makeVisible": "Hacer visible",
+            "makeHidden": "Ocultar",
+            "hidden": "Oculta",
+            "visibleAction": "Hacer {{count}} etiqueta visible a los clientes",
+            "visibleAction_plural": "Hacer {{count}} etiquetas visibles a los clientes",
+            "hiddenAction": "Ocultar {{count}} etiqueta de los clientes",
+            "hiddenAction_plural": "Ocultar {{count}} etiquetas de los clientes",
+            "deleteAction": "Eliminar {{count}} etiqueta",
+            "deleteAction_plural": "Eliminar {{count}} etiquetas",
+            "form": {
+              "name": "Nombre de la etiqueta",
+              "nameHelpText": "El nombre único para la etiqueta",
+              "displayTitle": "Título para mostrar",
+              "displayTitleAndSlug": "Título para mostrar e identificador",
+              "displayTitleHelpText": "El título de etiqueta a mostrar en las páginas de listado de productos.",
+              "displayTitlePlaceholder": "ej. Zapatos de Mujer",
+              "slug": "Identificador",
+              "slugHelpText": "El identificador de etiqueta se convierte automáticamente en un slug seguro para URL al guardar. El valor predeterminado es el nombre de la etiqueta si se deja en blanco.",
+              "slugPlaceholder": "zapatos-mujer",
+              "formTitleNew": "Crear Etiqueta",
+              "formTitleUpdate": "Editar Etiqueta",
+              "heroMediaUrl": "URL de hero-media",
+              "heroMediaUrlPlaceholder": "URL",
+              "heroMediaDeleteConfirm": "¿Remover hero-media?",
+              "uploadImage": "Subir una imagen",
+              "createNew": "Crear una etiqueta",
+              "cancel": "Cancelar",
+              "delete": "Eliminar",
+              "deleteConfirm": "¿Eliminar esta etiqueta?",
+              "submitNew": "Crear Etiqueta",
+              "submitUpdate": "Editar Etiqueta",
+              "saveChanges": "Guardar cambios",
+              "isVisible": "La etiqueta está habilitada en la tienda",
+              "tagDetails": "Detalles de la etiqueta",
+              "metadata": "Metadatos",
+              "products": "Productos",
+              "save": "Guardar",
+              "tagListingHero": "Hero-image de la página de listado de etiquetas",
+              "tagListingHeroHelpText": "Las imágenes con una relación de aspecto de 16:9 o superior funcionan mejor.",
+              "tagMetadata": "Metadatos de la etiqueta",
+              "openGraph": "OpenGraph",
+              "keywords": "Palabras clave",
+              "keywordsPlaceholder": "Palabras clave",
+              "description": "Descripción",
+              "descriptionPlaceholder": "Descripción",
+              "ogTitle": "título [og:title]",
+              "ogTitlePlaceholder": "Título",
+              "ogUrl": "URL [og:url]",
+              "ogUrlPlaceholder": "URL",
+              "ogDescription": "Descripción [og:description]",
+              "ogDescriptionPlaceholder": "Descripción",
+              "ogImageUrl": "URL de imagen [og:image]",
+              "ogImageUrlPlaceholder": "URL",
+              "fbAppId": "Facebook App Id (Optional)",
+              "fbAppIdPlaceholder": "App Id",
+              "ogLocale": "Localización [og:locale]",
+              "ogLocalePlaceholder": "Localización",
+              "id": "ID",
+              "title": "Título",
+              "priority": "Prioridad"
+            },
+            "headers": {
+              "slug": "Identificador",
+              "name": "Etiqueta",
+              "displayTitle": "Título",
+              "status": "Estado"
+            },
+            "tableText": {
+              "noDataMessage": "No se han encontrado resultados",
+              "previousText": "Anterior",
+              "nextText": "Siguiente",
+              "loadingText": "Cargando...",
+              "noDataText": "No se han encontrado resultados",
+              "pageText": "Página",
+              "ofText": "de",
+              "rowsText": "filas"
+            }
+          }
+        }
+      }
+    }
+  }
+]

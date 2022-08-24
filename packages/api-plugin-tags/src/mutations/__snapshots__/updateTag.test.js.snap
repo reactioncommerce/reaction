@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calls mutations.updateTag and throws for non admins 1`] = `"Access Denied"`;
