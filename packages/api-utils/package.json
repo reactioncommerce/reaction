@@ -82,25 +82,6 @@
     "test:file": "jest --no-cache --watch --coverage=false",
     "lint:gql": "echo \"Error: no lint specified\" && exit 0"
   },
-  "eslintConfig": {
-    "extends": "@reactioncommerce",
-    "settings": {
-      "react": {
-        "version": "latest"
-      }
-    },
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "impliedStrict": true
-      }
-    },
-    "env": {
-      "es6": true,
-      "jasmine": true
-    }
-  },
   "publishConfig": {
     "access": "public"
   }
