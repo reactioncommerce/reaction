@@ -1,0 +1,82 @@
+{
+  "name": "@reactioncommerce/api-plugin-files",
+  "description": "Files plugin for the Reaction API",
+  "version": "0.0.0-development",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=12.14.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/api-plugin-files",
+  "url": "https://github.com/reactioncommerce/api-plugin-files",
+  "email": "engineering@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/api-plugin-files.git"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "engineering@reactioncommerce.com",
+    "url": "https://reactioncommerce.com"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/api-plugin-files/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^1.16.7",
+    "@reactioncommerce/file-collections": "~0.9.3",
+    "@reactioncommerce/file-collections-sa-gridfs": "~0.1.5",
+    "@reactioncommerce/logger": "~1.1.4",
+    "@reactioncommerce/random": "~1.0.2",
+    "@reactioncommerce/reaction-error": "~1.0.1",
+    "envalid": "~5.0.0",
+    "node-fetch": "~2.6.2",
+    "sharp": "^0.29.3",
+    "simpl-schema": "~1.10.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1",
+    "@reactioncommerce/eslint-config": "~2.1.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.7.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "husky": "^4.2.3",
+    "semantic-release": "^17.0.4"
+  },
+  "scripts": {
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint ."
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "prettier": {
+    "arrowParens": "always"
+  },
+  "release": {
+    "branches": [
+      "trunk"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
