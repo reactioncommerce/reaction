@@ -9,7 +9,7 @@
   "scripts": {
     "start:dev": "npm run start:dev -w=apps/reaction",
     "start:meteor-blaze-app": "npm run start -w=apps/meteor-blaze-app",
-    "build": "npm run build -w=packages/logger -w=packages/random -w=packages/file-collections -w=packages/file-collections-sa-base -w=packages/file-collections-sa-gridfs",
+    "build:packages": "npm run build -w=packages/logger -w=packages/random -w=packages/file-collections -w=packages/file-collections-sa-base -w=packages/file-collections-sa-gridfs",
     "test": "npm run test -ws",
     "test:integration:query": "npm run test:integration:query --workspace=apps/reaction",
     "test:integration:mutation": "npm run test:integration:mutation --workspace=apps/reaction",
@@ -18,7 +18,7 @@
     "lint": "eslint . --resolve-plugins-relative-to .",
     "lint:docker": "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 lint-dockerfiles --workspace=apps/reaction",
     "lint:gql": "npm run lint:gql -ws",
-    "postinstall": "husky install .husky"
+    "postinstall": "husky install .husky && npm run build:packages"
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",
@@ -50,6 +50,7 @@
     "@babel/preset-stage-2": "^7.8.3",
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
+    "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-rewire-exports": "^2.3.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-plugin-transform-import-meta": "^2.2.0",
