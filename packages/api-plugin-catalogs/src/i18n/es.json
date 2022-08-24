@@ -1,0 +1,29 @@
+[{
+  "i18n": "es",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "catalogProductPublishSuccess": "Producto publicado en el catálogo",
+        "catalogCalculateHashError": "Se produjo un error al intentar calcular el hash de este producto.",
+        "shortcut": {
+          "catalogLabel": "Catálogo",
+          "catalogTitle": "Catálogo"
+        },
+        "dashboard": {
+          "catalogLabel": "Catálogo",
+          "catalogTitle": "Catálogo",
+          "catalogDescription": "Catálogo del mercado"
+        },
+        "settings": {
+          "catalogSettingsLabel": "Ajustes de catálogo",
+          "catalogSettingsTitle": "Ajustes de catálogo",
+          "catalogSettingsDescription": "Catálogo del mercado"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Las revisiones del producto"
+        }
+      }
+    }
+  }
+}]
