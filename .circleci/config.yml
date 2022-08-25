@@ -83,7 +83,9 @@ jobs:
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Test Unit
-          command: npm run test
+          command: | 
+            npm run build:packages
+            npm run test
 
   test-integration-query:
     <<: *defaults
@@ -108,6 +110,7 @@ jobs:
           command: |
             sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
+            npm run build:packages
             npm run test:integration:query -w=apps/reaction
 
   test-integration-mutation:
@@ -133,6 +136,7 @@ jobs:
           command: |
             sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
+            npm run build:packages
             npm run test:integration:mutation -w=apps/reaction
 
   release:
