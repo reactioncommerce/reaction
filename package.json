@@ -1,12 +1,13 @@
 {
-  "name": "reaction-monorepos",
+  "name": "reaction",
   "version": "1.0.0",
-  "description": "",
+  "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "index.js",
   "scripts": {
-    "start:dev": "npm run start:dev --workspace=apps/reaction",
+    "start:dev": "npm run start:dev -w=apps/reaction",
+    "start:meteor-blaze-app": "npm run start -w=apps/meteor-blaze-app",
     "build:packages": "npm run build -w=packages/file-collections -w=packages/file-collections-sa-base -w=packages/file-collections-sa-gridfs -w=packages/logger -w=packages/random",
-    "test": "npm run test -w=packages/api-core",
+    "test": "npm run test --if-present --ws",
     "test:integration:query": "npm run test:integration:query --workspace=apps/reaction",
     "test:integration:mutation": "npm run test:integration:mutation --workspace=apps/reaction",
     "changeset": "changeset",
@@ -14,18 +15,20 @@
     "lint": "eslint . --resolve-plugins-relative-to .",
     "lint:docker": "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 lint-dockerfiles --workspace=apps/reaction",
     "lint:gql": "npm run lint:gql -w=apps/reaction -w=packages/api-core -w=packages/api-plugin-surcharges",
-    "postinstall": "npm run build:packages"
+    "postinstall": "npm run build:packages && is-ci || is-docker || husky install .husky"
   },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "reaction@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vanpho93/reaction-monorepos.git"
+    "url": "https://github.com/reactioncommerce/reaction.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/vanpho93/reaction-monorepos/issues"
+    "url": "https://github.com/reactioncommerce/reaction/issues"
   },
-  "homepage": "https://github.com/vanpho93/reaction-monorepos#readme",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -69,6 +72,14 @@
       "type-fields-sorted-alphabetically",
       "types-are-capitalized",
       "types-have-descriptions"
+    ]
+  },
+  "prettier": {
+    "arrowParens": "always"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
   }
 }
