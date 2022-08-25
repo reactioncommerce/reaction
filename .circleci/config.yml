@@ -23,7 +23,7 @@ jobs:
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Install npm version 8
-          command: sudo npm i -g npm@8
+          command: sudo npm i -g npm@8.1.0
       - run:
           name: Check npm version
           command: npm -v
@@ -59,7 +59,9 @@ jobs:
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Lint JavaScript
-          command: npm run lint
+          command: |
+            npm run build:packages
+            npm run lint
 
   graphql-lint:
     <<: *defaults
