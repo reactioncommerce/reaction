@@ -1,11 +1,13 @@
 module.exports = {
+  root: true,
   extends: "@reactioncommerce",
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: "module",
     ecmaFeatures: {
       impliedStrict: true
-    }
+    },
+    requireConfigFile: false
   },
   env: {
     es6: true,
@@ -17,5 +19,6 @@ module.exports = {
     "node/no-unsupported-features/es-syntax": "off",
     "node/no-unpublished-import": "off",
     "node/no-unpublished-require": "off"
-  }
+  },
+  ignorePatterns: ["node_modules"]
 };
