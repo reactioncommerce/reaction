@@ -5,6 +5,7 @@
   "main": "./dist/main.js",
   "scripts": {
     "build": "rimraf ./dist && babel src --out-dir ./dist",
+    "prepublishOnly": "npm run build",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
     "watch": "watch 'npm run build' src",
