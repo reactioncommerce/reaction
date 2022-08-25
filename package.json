@@ -42,6 +42,7 @@
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.10",
     "@babel/eslint-parser": "^7.18.9",
+    "@commitlint/config-conventional": "^17.0.3",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-rewire-exports": "^2.3.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
