@@ -76,3 +76,6 @@ yalc-packages
 
 # Mac
 .DS_Store
+
+# Build
+dist
