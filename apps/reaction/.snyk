@@ -21,7 +21,7 @@ patch:
         patched: '2020-09-17T21:41:02.328Z'
     - '@reactioncommerce/api-plugin-inventory > lodash':
         patched: '2020-09-17T21:41:02.328Z'
-    - '@brian-demo-050822/api-plugin-inventory-simple > lodash':
+    - '@reactioncommerce/api-plugin-inventory-simple > lodash':
         patched: '2020-09-17T21:41:02.328Z'
     - '@reactioncommerce/api-plugin-navigation > lodash':
         patched: '2020-09-17T21:41:02.328Z'
@@ -67,7 +67,7 @@ patch:
         patched: '2020-09-17T21:41:02.328Z'
     - '@reactioncommerce/api-plugin-inventory > @reactioncommerce/api-utils > lodash':
         patched: '2020-09-17T21:41:02.328Z'
-    - '@brian-demo-050822/api-plugin-inventory-simple > @reactioncommerce/api-utils > lodash':
+    - '@reactioncommerce/api-plugin-inventory-simple > @reactioncommerce/api-utils > lodash':
         patched: '2020-09-17T21:41:02.328Z'
     - '@reactioncommerce/api-plugin-job-queue > @reactioncommerce/api-utils > lodash':
         patched: '2020-09-17T21:41:02.328Z'
