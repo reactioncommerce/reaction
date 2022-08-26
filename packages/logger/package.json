@@ -8,8 +8,7 @@
     "prepublishOnly": "npm run build",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
-    "watch": "watch 'npm run build' src",
-    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
+    "watch": "watch 'npm run build' src"
   },
   "repository": {
     "type": "git",

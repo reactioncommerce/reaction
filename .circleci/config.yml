@@ -29,7 +29,7 @@ jobs:
           command: npm -v
       - run:
           name: Install NPM dependencies
-          command: npm ci --legacy-peer-deps
+          command: npm ci
       - save_cache:
           key: reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
@@ -151,7 +151,7 @@ jobs:
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
       - run:
           name: Push the latest version to npm
           command: |

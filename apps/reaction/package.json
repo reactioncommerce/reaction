@@ -1,51 +1,10 @@
 {
   "name": "@reactioncommerce/reaction-api",
-  "version": "4.2.2",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
   "type": "module",
   "engines": {
     "node": ">=14.18.1"
-  },
-  "release": {
-    "branches": [
-      "trunk"
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/exec",
-        {
-          "prepareCmd": "sed -i 's/${lastRelease.version}/${nextRelease.version}/g' docker-compose.yml"
-        }
-      ],
-      [
-        "@semantic-release/changelog",
-        {
-          "changelogFile": "CHANGELOG.md"
-        }
-      ],
-      [
-        "@semantic-release/npm",
-        {
-          "npmPublish": false
-        }
-      ],
-      "@semantic-release/github",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "package.json",
-            "package-lock.json",
-            "CHANGELOG.md",
-            "docker-compose.yml"
-          ],
-          "message": "chore(release): v${nextRelease.version} [skip ci]"
-        }
-      ]
-    ]
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",

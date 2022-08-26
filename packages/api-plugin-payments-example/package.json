@@ -54,8 +54,7 @@
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint .",
     "test:watch": "jest --watch",
-    "test:file": "jest --no-cache --watch --coverage=false",
-    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
+    "test:file": "jest --no-cache --watch --coverage=false"
   },
   "eslintConfig": {
     "extends": "@reactioncommerce",

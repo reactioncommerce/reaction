@@ -79,8 +79,7 @@
     "lint:fix": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:file": "jest --no-cache --watch --coverage=false",
-    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
+    "test:file": "jest --no-cache --watch --coverage=false"
   },
   "publishConfig": {
     "access": "public"

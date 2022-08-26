@@ -2,8 +2,7 @@
   "name": "reaction-files-example-meteor-blaze-app",
   "private": true,
   "scripts": {
-    "start": "DEBUG=reaction-file-collections meteor run",
-    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
+    "start": "DEBUG=reaction-file-collections meteor run"
   },
   "eslintConfig": {
     "extends": "@reactioncommerce",

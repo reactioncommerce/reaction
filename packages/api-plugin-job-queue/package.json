@@ -50,9 +50,7 @@
   },
   "scripts": {
     "lint": "npm run lint:eslint",
-    "lint:eslint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 0",
-    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
+    "lint:eslint": "eslint ."
   },
   "publishConfig": {
     "access": "public"

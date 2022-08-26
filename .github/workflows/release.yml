@@ -6,6 +6,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -15,14 +16,17 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+
+      - name: Install npm 8.1.0
+        run: npm i -g npm@8.1.0
+
       - name: Install Dependencies
         run: npm install
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Ensure to have this set up under GitHub secrets
+
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
           publish: npm run release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Ensure to have this set up under GitHub secrets
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Ensure to have this set up under GitHub secrets

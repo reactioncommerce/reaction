@@ -11,8 +11,7 @@
     "lintfix": "eslint ./src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "watch": "watch 'npm run build' src",
-    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
+    "watch": "watch 'npm run build' src"
   },
   "repository": {
     "type": "git",

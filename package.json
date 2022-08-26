@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "npm run start:dev -w=apps/reaction",
     "start:meteor-blaze-app": "npm run start -w=apps/meteor-blaze-app",
-    "build:packages": "npm run build -w=packages/file-collections -w=packages/file-collections-sa-base -w=packages/file-collections-sa-gridfs -w=packages/logger -w=packages/random",
+    "build:packages": "npm run build --if-present --ws",
     "test": "npm run test --if-present --ws",
     "test:integration:query": "npm run test:integration:query --workspace=apps/reaction",
     "test:integration:mutation": "npm run test:integration:mutation --workspace=apps/reaction",
@@ -14,7 +14,7 @@
     "release": "changeset publish",
     "lint": "eslint . --resolve-plugins-relative-to .",
     "lint:docker": "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 lint-dockerfiles --workspace=apps/reaction",
-    "lint:gql": "npm run lint:gql -w=apps/reaction -w=packages/api-core -w=packages/api-plugin-surcharges",
+    "lint:gql": "npm run lint:gql --if-present --ws",
     "postinstall": "npm run build:packages && is-ci || is-docker || husky install .husky"
   },
   "homepage": "https://github.com/reactioncommerce/reaction",

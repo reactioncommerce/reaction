@@ -62,8 +62,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "rm -rf dist/** && babel src --out-dir dist --ignore \"**/*.test.js\"",
-    "prepublishOnly": "npm run build",
-    "lint:gql": "echo \"Error: no lint specified\" && exit 0"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.14.8",

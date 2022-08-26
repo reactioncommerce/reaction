@@ -60,6 +60,31 @@ When make completes, three services will be running on localhost:
 
 Go to the complete [installation instructions](https://mailchimp.com/developer/open-commerce/guides/quick-start/#access-the-dashboard-playground-and-storefront) to see how to set up your store
 
+# API development
+
+## What you need
+* NPM >= 7 (support workspaces)
+
+## Clone and Start the source
+```bash
+git clone https://github.com/reactioncommerce/reaction.git
+cd reaction
+npm install
+npm run start:dev
+```
+
+## Development Flow
+
+1. Make some changes in one or more packages.
+2. [Add a changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) in that same PR.
+3. Repeat the process of making changes and adding changesets.
+4. Create PR
+
+## How to release
+
+1. Run `release` action to create `Version PR`. This PR will remove all changeset files, bump up packages versions, update CHANGELOG files.
+2. Merge `Version PR` into trunk, CircleCI will publish all the packages into npm.
+
 # Get involved
 ## Contribute
 
