@@ -1,6 +1,5 @@
 {
   "name": "reaction",
-  "version": "1.0.0",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "index.js",
   "scripts": {
