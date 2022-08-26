@@ -179,10 +179,11 @@ describe("authorized user", () => {
   test("cannot update tag with existing slug", async () => {
     const logLevel = Logger.level();
     const duplicateTagSlug = Factory.Tag.makeOne({
-      slug: "tag-slug"
+      slug: "tag-slug",
+      shopId: internalShopId
     });
     Logger.level("FATAL");
-    // expect.assertions(1);
+    expect.assertions(1);
     try {
       await testApp.collections.Tags.insertOne(duplicateTagSlug);
     } catch (error) {

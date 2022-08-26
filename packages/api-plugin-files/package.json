@@ -32,7 +32,7 @@
     "@reactioncommerce/logger": "~1.1.4",
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/reaction-error": "~1.0.1",
-    "envalid": "^7.3.1",
+    "envalid": "^6.0.2",
     "node-fetch": "~2.6.2",
     "sharp": "^0.30.7",
     "simpl-schema": "~1.10.2"
