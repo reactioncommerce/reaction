@@ -1,14 +1,17 @@
 {
   "name": "@reactioncommerce/reaction-error",
   "description": "Error handling for the Reaction API",
-  "version": "0.0.0-development",
+  "version": "1.0.1",
   "main": "index.js",
-  "homepage": "https://github.com/reactioncommerce/reaction-error",
-  "url": "https://github.com/reactioncommerce/reaction-error",
+  "engines": {
+    "node": ">=14.8.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/reaction-error.git"
+    "url": "git+https://github.com/reactioncommerce/reaction.git"
   },
   "author": {
     "name": "Reaction Commerce",
@@ -17,49 +20,10 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/reaction-error/issues"
+    "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "sideEffects": false,
   "dependencies": {},
-  "devDependencies": {
-    "@reactioncommerce/eslint-config": "^2.1.0",
-    "babel-eslint": "^10.0.3",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "eslint": "^6.4.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.17.0",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^2.0.1",
-    "semantic-release": "^15.13.24"
-  },
-  "scripts": {
-    "build": "echo 'No build step necessary'",
-    "lint": "npm run lint:eslint",
-    "lint:eslint": "eslint ."
-  },
-  "eslintConfig": {
-    "extends": "@reactioncommerce",
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "impliedStrict": true
-      }
-    },
-    "env": {
-      "es6": true,
-      "jasmine": true
-    }
-  },
-  "prettier": {
-    "arrowParens": "always"
-  },
-  "release": {
-    "branch": "trunk"
-  },
   "publishConfig": {
     "access": "public"
   }
