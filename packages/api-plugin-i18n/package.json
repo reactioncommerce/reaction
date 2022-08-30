@@ -31,21 +31,7 @@
   },
   "devDependencies": {
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
-    "@reactioncommerce/data-factory": "~1.0.1",
-    "@reactioncommerce/eslint-config": "~2.1.0",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.4.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^23.7.0",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^2.0.1"
-  },
-  "scripts": {
-    "lint": "npm run lint:eslint",
-    "lint:eslint": "eslint ."
+    "@reactioncommerce/data-factory": "~1.0.1"
   },
   "publishConfig": {
     "access": "public"

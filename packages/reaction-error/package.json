@@ -23,7 +23,6 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "sideEffects": false,
-  "dependencies": {},
   "publishConfig": {
     "access": "public"
   }

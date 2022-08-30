@@ -6,7 +6,6 @@
   "scripts": {
     "build": "rimraf ./dist && babel src --out-dir ./dist",
     "prepublishOnly": "npm run build",
-    "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
     "watch": "watch 'npm run build' src"
   },
@@ -21,14 +20,6 @@
   },
   "homepage": "https://github.com/reactioncommerce/logger#readme",
   "devDependencies": {
-    "@reactioncommerce/eslint-config": "^1.0.1",
-    "eslint": "^4.19.1",
-    "eslint-plugin-import": "^2.10.0",
-    "eslint-plugin-jest": "^21.15.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.7.0",
     "rimraf": "^2.6.2",
     "watch": "^1.0.2"
   },

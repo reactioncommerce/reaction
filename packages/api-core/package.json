@@ -27,7 +27,6 @@
     "test:unit:watch": "jest --maxWorkers=4 --watch",
     "test:unit:file": "jest --no-cache --maxWorkers=4",
     "test:unit:file:watch": "jest --no-cache --maxWorkers=4 --watch",
-    "lint": "eslint .",
     "lint:gql": "graphql-schema-linter ./src/**/*.graphql"
   },
   "keywords": [],
@@ -78,22 +77,10 @@
     "@babel/preset-env": "~7.9.0",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
-    "@reactioncommerce/eslint-config": "~2.1.1",
-    "babel-eslint": "~10.1.0",
-    "babel-jest": "~25.2.6",
     "babel-plugin-rewire-exports": "~2.1.0",
     "babel-plugin-transform-es2015-modules-commonjs": "~6.26.2",
     "babel-plugin-transform-import-meta": "~1.0.1",
-    "eslint": "~6.8.0",
-    "eslint-plugin-import": "~2.18.2",
-    "eslint-plugin-jest": "^24.3.5",
-    "eslint-plugin-jsx-a11y": "~6.2.3",
-    "eslint-plugin-node": "~11.1.0",
-    "eslint-plugin-promise": "~4.2.1",
-    "eslint-plugin-react": "~7.14.3",
-    "eslint-plugin-react-hooks": "~2.0.1",
-    "graphql": "~14.6.0",
-    "jest": "^28.1.3"
+    "graphql": "~14.6.0"
   },
   "peerDependencies": {
     "graphql": "^14.6.0 || ^15.0.0"
