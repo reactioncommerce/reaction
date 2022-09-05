@@ -40,7 +40,7 @@
     "babel-plugin-transform-import-meta": "~1.0.0"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:file": "jest --no-cache --watch --coverage=false"
   },
