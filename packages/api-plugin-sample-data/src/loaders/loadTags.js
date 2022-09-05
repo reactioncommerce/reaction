@@ -7,14 +7,13 @@ import TagsData from "../json-data/Tags.json";
  * @returns {Object} Object with details of the tags created
  */
 export default async function loadTags(context, shopId) {
-
   Object.keys(TagsData).forEach((tagItem) => {
     TagsData[tagItem].shopId = shopId;
   });
 
   // Hardcoded Sample Tags
   // Three sections (Men/Women/Unisex) each with two slugs except Unisex
-  const tagOutput = {}
+  const tagOutput = {};
   tagOutput.men = await context.mutations.addTag(context.getInternalContext(), TagsData.men);
   tagOutput.menOutdoor = await context.mutations.addTag(context.getInternalContext(), TagsData.menOutdoor);
   tagOutput.menJacket = await context.mutations.addTag(context.getInternalContext(), TagsData.menJacket);
