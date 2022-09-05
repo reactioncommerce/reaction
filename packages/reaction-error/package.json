@@ -11,7 +11,8 @@
   "email": "engineering@reactioncommerce.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/reaction.git"
+    "url": "git+https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/reaction-error"
   },
   "author": {
     "name": "Reaction Commerce",

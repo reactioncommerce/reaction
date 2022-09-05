@@ -6,12 +6,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/reactioncommerce/reaction-file-collections.git"
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/file-collections-sa-base"
   },
   "bugs": {
-    "url": "https://github.com/reactioncommerce/reaction-file-collections/issues"
+    "url": "https://github.com/reactioncommerce/reaction/issues"
   },
-  "homepage": "https://github.com/reactioncommerce/reaction-file-collections",
+  "homepage": "https://github.com/reactioncommerce/reaction",
   "files": [
     "dist",
     "LICENSE",
