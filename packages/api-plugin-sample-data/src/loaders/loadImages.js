@@ -9,7 +9,6 @@ const { FileRecord } = pkg;
 import Logger from "@reactioncommerce/logger";
 import ProductsData from "../json-data/Products.json";
 
-
 /**
  * @summary Inserts filerecords into Media collection
  * @param {Object} Media - The Media collection
@@ -23,7 +22,6 @@ async function insertToMedia(Media, fileRecords) {
   }
   return true;
 }
-
 
 /**
  * @summary Creates a mapping between the variantId and it's top level productId from Productsdata.json
@@ -40,7 +38,6 @@ function getVariantProductMapper() {
   return variantProductMapper;
 }
 
-
 /**
  * @summary Creates a mapping between the variantId and the filename
  * @param {String} fileList - The array of file names
@@ -50,7 +47,8 @@ function getVariantIdFileMapper(fileList) {
   const variantIdFileMapper = {};
   fileList.forEach((filename) => {
     const variantId = filename.split(".")[0]; // filename is in the format variantId.descriptive-filename.extn
-    if (variantId) { // Eliminates hidden files starting with '.'
+    if (variantId) {
+      // Eliminates hidden files starting with '.'
       if (variantIdFileMapper[variantId] && variantIdFileMapper[variantId].length > 0) {
         variantIdFileMapper[variantId].push(filename);
       } else {
@@ -61,7 +59,6 @@ function getVariantIdFileMapper(fileList) {
 
   return variantIdFileMapper;
 }
-
 
 /**
  * @summary Inserts filerecords into Media collection
@@ -93,7 +90,6 @@ async function storeFromAttachedBuffer(fileRecord) {
   }
 }
 
-
 /**
  * @summary loads Images for the products
  * @param {Object} context - The application context
@@ -101,17 +97,23 @@ async function storeFromAttachedBuffer(fileRecord) {
  * @returns {Promise<boolean>} true if success
  */
 export default async function loadImages(context, shopId) {
-  const { collections: { Media } } = context;
-  const { mutations: { publishProducts } } = context;
+  const {
+    collections: { Media }
+  } = context;
+  const {
+    mutations: { publishProducts }
+  } = context;
 
   const topProdIds = [];
   const fileType = "image/jpeg";
-  const folderPath = "./custom-packages/api-plugin-sample-data/src/images/";
+  const folderPath = "../../packages/api-plugin-sample-data/src/images/";
 
   let fileList = [];
   try {
     fileList = fs.readdirSync(folderPath);
   } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
     Logger.warn("Error reading image filelist");
   }
 
@@ -154,7 +156,6 @@ export default async function loadImages(context, shopId) {
       fileRecords.push(fileRecord);
     });
   });
-
 
   await insertToMedia(Media, fileRecords);
 
