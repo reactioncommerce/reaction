@@ -20,28 +20,28 @@ export default async function startup(context) {
   extendSchemas(context);
   const { actions: additionalActions, triggers: additionalTriggers } = context.promotions;
   const { simpleSchemas: { Promotions } } = context;
-  // Promotions.extend({
-  //   "actions.$.actionKey": {
-  //     allowedValues: Promotions.getDefinition(
-  //       "actions.$.actionKey",
-  //       ["allowedValues"]
-  //     ).type[0].allowedValues.concat(additionalActions)
-  //   }
-  // });
+  Promotions.extend({
+    "actions.$.actionKey": {
+      allowedValues: Promotions.getDefinition(
+        "actions.$.actionKey",
+        ["allowedValues"]
+      ).type[0].allowedValues.concat(additionalActions)
+    }
+  });
 
-  // Promotions.extend({
-  //   "actions.$.actionKey": {
-  //     allowedValues: additionalActions
-  //   }
-  // });
+  Promotions.extend({
+    "actions.$.actionKey": {
+      allowedValues: additionalActions
+    }
+  });
 
-  // Promotions.extend({
-  //   "triggers.$.triggerKey": {
-  //     allowedValues: Promotions.getDefinition(
-  //       "triggers.$.triggerKey",
-  //       ["allowedValues"]
-  //     ).type[0].allowedValues.concat(additionalTriggers)
-  //   }
-  // });
+  Promotions.extend({
+    "triggers.$.triggerKey": {
+      allowedValues: Promotions.getDefinition(
+        "triggers.$.triggerKey",
+        ["allowedValues"]
+      ).type[0].allowedValues.concat(additionalTriggers)
+    }
+  });
   // console.log("schemas extended", Promotions._schema.offerRule);
 }

@@ -22,11 +22,17 @@ export const OfferRule = new SimpleSchema({
 });
 
 
-export default async function preStartupOffers(context) {
+/**
+ * @summary Extend Promotions schema with offer rules
+ * @param {Object} context - The application context
+ * @return {Object} - The extended schema
+ */
+export default function preStartupOffers(context) {
   const { simpleSchemas: { Promotion } } = context;
   Promotion.extend({
     offerRule: {
       type: OfferRule
     }
   });
+  return Promotion;
 }

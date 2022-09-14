@@ -1,3 +1,8 @@
+/**
+ * @summary Calculate the state the cart was before promotions applied
+ * @param {Object} cart - The cart
+ * @return {*[]} - The previous state
+ */
 function calculatePreviousState(cart) {
   let currentState = [];
   if (!cart.promotionHistory) return currentState;
@@ -11,6 +16,12 @@ function calculatePreviousState(cart) {
   return currentState;
 }
 
+/**
+ * @summary Calculate which promotions should be removed
+ * @param {Array<Object>} currentTriggerState - The current triggers
+ * @param {Array<Object>} qualifiedPromotions - The qualified promotions
+ * @return {Array<Object>} - The promotions that were removed
+ */
 function calculateRemovedPromotions(currentTriggerState, qualifiedPromotions) {
   const currentTriggerStateIdMap = currentTriggerState.map((state) => state._id);
   const qualifiedPromotionsIdMap = qualifiedPromotions.map((state) => state._id);
@@ -20,7 +31,14 @@ function calculateRemovedPromotions(currentTriggerState, qualifiedPromotions) {
   return removedPromotions;
 }
 
-
+/**
+ * @summary handle promotions were applied to see if any promotions need to be removed
+ * @param {Object} context - The application context
+ * @param {Object} cart - The cart
+ * @param {Array<Object>} qualifiedPromotions - An array of the qualified promotions
+ * @param {String} triggerType - The trigger type
+ * @return {Promise<void>} - undefined
+ */
 export default async function handleCartPromotionsAnalysisComplete(context, { cart, qualifiedPromotions, triggerType = "offers" }) {
   const { appEvents } = context;
   // perform analysis of what changed and write our promotion history record
@@ -39,11 +57,7 @@ export default async function handleCartPromotionsAnalysisComplete(context, { ca
     context.mutations.saveCart(context, cart, "promotions");
   }
   const currentState = calculatePreviousState(cart);
-  const currentTriggerState = currentState.filter((state) => {
-    return state.triggers.filter((trigger) => {
-      return trigger.triggerKey === triggerType;
-    });
-  });
+  const currentTriggerState = currentState.filter((state) => state.triggers.filter((trigger) => trigger.triggerKey === triggerType));
   const addedPromotions = qualifiedPromotions.filter((promotion) => {
     const existingPromotion = currentTriggerState.filter((state) => promotion._id === state._id);
     return !existingPromotion;

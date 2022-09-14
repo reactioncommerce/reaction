@@ -1,6 +1,10 @@
 import SimpleSchema from "simpl-schema";
 
-
+/**
+ * @summary extend the cart schema
+ * @param {Object} context - The application context
+ * @returns {Object} the extended schema
+ */
 function extendCartSchema(context) {
   const { simpleSchemas: { Cart, Promotion } } = context; // we get this here rather than importing it to get the extended version
   const CartWarning = new SimpleSchema({
@@ -51,9 +55,14 @@ function extendCartSchema(context) {
       type: CartWarning
     }
   });
+  return Cart;
 }
 
-
+/**
+ * @summary extend the cart schema to add promotions
+ * @param {Object} context - The application context
+ * @returns {undefined} undefined
+ */
 export default function preStartupPromotions(context) {
   extendCartSchema(context);
 }
