@@ -51,6 +51,7 @@ function enhanceCart(context, cart) {
 async function getOfferPromotions(context) {
   const { collections: { Promotions } } = context;
   const offerPromotions = await Promotions.find({ "triggers.triggerKey": "offers", "enabled": true }).toArray();
+  Logger.debug({ ...logCtx, applicableOffers: offerPromotions.length }, "Fetched applicable offers");
   // TODO Check for within date ranges
   return offerPromotions;
 }
@@ -90,5 +91,6 @@ export default async function applyOffersToCart(context, cart) {
   const perfTime = endTime - startTime;
   appEvents.emit("cartPromotionAnalysisComplete", { cart, qualifiedPromotions });
   Logger.info({ perfTime, ...logCtx, qualifiedPromotions }, "Completed analyzing cart for Offers");
+  Logger.debug({ ...logCtx, ...allResults });
   return allResults;
 }

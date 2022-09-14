@@ -1,21 +1,29 @@
 import SimpleSchema from "simpl-schema";
 
-export const Filter = new SimpleSchema({
-  attribute: { // something like product.brand
+const RulesEvent = new SimpleSchema({
+  type: {
     type: String
   },
-  operator: { // eq, neq, etc
-    type: String
+  params: {
+    type: Object,
+    blackbox: true
+  }
+});
+
+export const JSONRulesEngineRule = new SimpleSchema({
+  conditions: {
+    type: Object,
+    blackbox: true
   },
-  value: {
-    type: String
+  event: {
+    type: RulesEvent
   }
 });
 
 const Action = new SimpleSchema({
   actionKey: {
     type: String,
-    allowedValues: ["applyDiscountToCart"]
+    allowedValues: ["noop"]
   },
   actionParameters: {
     type: Object,
@@ -82,7 +90,7 @@ export const Promotion = new SimpleSchema({
     optional: true
   },
   "exclusionFilters.$": {
-    type: Filter
+    type: JSONRulesEngineRule
   },
   "stackAbility": { // defines what other offers it can be defined as
     type: String,

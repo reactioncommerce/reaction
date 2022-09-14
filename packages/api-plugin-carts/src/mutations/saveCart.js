@@ -23,6 +23,12 @@ export default async function saveCart(context, cart, emittedBy) {
       createdBy: userId,
       emittedBy
     });
+  } else {
+    appEvents.emit("afterCartUpdate", {
+      cart,
+      updatedBy: userId,
+      emittedBy
+    });
   }
 
   return cart;
