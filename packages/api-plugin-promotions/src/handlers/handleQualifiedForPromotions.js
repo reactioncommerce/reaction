@@ -9,7 +9,7 @@ const logCtx = { file: "handleQualifiedForPromotion" };
  * @return {boolean} If the promotion can be applied
  */
 function canBeApplied(cart, promotion) {
-  if (!cart.promotions) {
+  if (!cart.appliedPromotions) {
     // no previous promotions, return true
     return true;
   }
@@ -36,11 +36,11 @@ export default async function qualifiedForPromotion(context, params) {
       const { actionKey, actionParameters } = action;
       appEvents.emit("promotionActionTriggered", { actionKey, actionParameters, params });
     }
+    if (cart.appliedPromotions) {
+      cart.appliedPromotions.push(promotion);
+    } else {
+      cart.appliedPromotions = [promotion];
+    }
+    await context.mutations.saveCart(context, cart, "promotions");
   }
-  if (cart.appliedPromotions) {
-    cart.appliedPromotions.push(promotion);
-  } else {
-    cart.appliedPromotions = [promotion];
-  }
-  await context.mutations.saveCart(context, cart, "promotions");
 }
