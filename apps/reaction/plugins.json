@@ -35,5 +35,6 @@
   "navigation": "@reactioncommerce/api-plugin-navigation",
   "sitemapGenerator": "@reactioncommerce/api-plugin-sitemap-generator",
   "notifications": "@reactioncommerce/api-plugin-notifications",
-  "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test"
+  "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test",
+  "sampleData": "@reactioncommerce/api-plugin-sample-data"
 }
