@@ -203,6 +203,7 @@ beforeAll(async () => {
   await publishProducts({ productIds: [opaqueProductId] });
 });
 
+// eslint-disable-next-line require-jsdoc
 export default function getCommonData() {
   return {
     addCartItems,

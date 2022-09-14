@@ -2,7 +2,7 @@ name: Release
 on:
   workflow_dispatch:
     branches:
-      - main
+      - trunk
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -12,21 +12,42 @@ jobs:
         with:
           # This makes action fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          key: reaction-v6-node-modules-${{ hashFiles('package.json') }}-${{ hashFiles('pnpm-lock.yaml') }}
+          path: '**/node_modules'
+
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
         with:
           node-version: 14
 
-      - name: Install npm 8.1.0
-        run: npm i -g npm@8.1.0
+      - name: Install pnpm
+        run: npm i -g pnpm@latest
 
       - name: Install Dependencies
-        run: npm ci --ignore-scripts
+        run: pnpm install --ignore-scripts
 
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
-          publish: npm run release
+          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Ensure to have this set up under GitHub secrets
+
+      - name: Update package-lock.json file
+        env: 
+          CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+          CI_COMMIT_AUTHOR: Continuous Integration
+        run: |
+          npm install --package-lock-only
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "username@users.noreply.github.com"
+          git add package-lock.json
+          git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
+          git push

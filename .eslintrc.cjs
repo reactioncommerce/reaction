@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   extends: "@reactioncommerce",
+  parser: "@babel/eslint-parser",
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: "module",

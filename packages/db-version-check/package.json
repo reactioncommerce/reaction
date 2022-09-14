@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/db-version-check",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "Data version checker function compatible with @reactioncommerce/migrator",
   "main": "./src/main.js",
   "files": [

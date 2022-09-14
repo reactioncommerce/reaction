@@ -12,82 +12,88 @@ defaults: &defaults
   docker:
     - image: circleci/node:14.18.1-stretch
 
+
+install_pnpm: &install_pnpm
+  - run:
+      name: Install pnpm package manager
+      command: sudo npm i -g pnpm@7
+  - run:
+      name: Check pnpm version
+      command: pnpm -v
+
 jobs:
   install-dependencies:
     <<: *defaults
     steps:
       - checkout
+      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
-          name: Install npm version 8
-          command: sudo npm i -g npm@8.1.0
-      - run:
-          name: Check npm version
-          command: npm -v
-      - run:
-          name: Install NPM dependencies
-          command: npm ci
+          name: Install PNPM dependencies
+          command: pnpm install -r
       - save_cache:
-          key: reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
           paths:
             - node_modules
+            - packages
       - save_cache:
           key: reaction-v6-node-modules-{{ .Branch }}
           paths:
             - node_modules
+            - packages
 
   dockerfile-lint:
     <<: *defaults
     steps:
       - checkout
+      - <<: *install_pnpm
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
           name: Lint Dockerfiles
           command: ${CI_SCRIPTS} lint-dockerfiles
-
   eslint:
     <<: *defaults
     steps:
       - checkout
+      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Lint JavaScript
-          command: |
-            npm run build:packages
-            npm run lint
+          command: pnpm run lint
 
   graphql-lint:
     <<: *defaults
     steps:
       - checkout
+      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Lint GraphQL schemas
-          command: npm run lint:gql
+          command: pnpm -r run lint:gql
 
   test-unit:
     <<: *defaults
     steps:
       - checkout
+      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
+      - run: pnpm install -r
       - run:
           name: Test Unit
-          command: | 
-            npm run build:packages
-            npm run test
+          command: pnpm -r run test
 
   test-integration-query:
     <<: *defaults
@@ -100,10 +106,12 @@ jobs:
           - "27017:27017"
     steps:
       - checkout
+      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
+      - run: pnpm install -r
       - run:
           name: Run Integration Query Tests
           environment:
@@ -112,8 +120,7 @@ jobs:
           command: |
             sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
-            npm run build:packages
-            npm run test:integration:query -w=apps/reaction
+            pnpm run test:integration:query
 
   test-integration-mutation:
     <<: *defaults
@@ -126,10 +133,12 @@ jobs:
           - "27017:27017"
     steps:
       - checkout
+      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
+      - run: pnpm install -r
       - run:
           name: Run Integration Mutation Tests
           environment:
@@ -138,24 +147,23 @@ jobs:
           command: |
             sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
-            npm run build:packages
-            npm run test:integration:mutation -w=apps/reaction
+            pnpm run test:integration:mutation 
 
   release:
     <<: *defaults
     steps:
       - checkout
+      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
       - run:
           name: Push the latest version to npm
-          command: |
-            npm run release
+          command: pnpm publish -r
 
   docker-build-push:
     <<: *defaults
