@@ -55,6 +55,7 @@ export default async function handleCartPromotionsAnalysisComplete(context, { ca
     };
     cart.promotionHistory = [historyRecord];
     context.mutations.saveCart(context, cart, "promotions");
+    return cart.promotionHistory;
   }
   const currentState = calculatePreviousState(cart);
   const currentTriggerState = currentState.filter((state) => state.triggers.filter((trigger) => trigger.triggerKey === triggerType));
@@ -62,13 +63,25 @@ export default async function handleCartPromotionsAnalysisComplete(context, { ca
     const existingPromotion = currentTriggerState.filter((state) => promotion._id === state._id);
     return !existingPromotion;
   });
+  const removedPromotions = calculateRemovedPromotions(currentTriggerState, qualifiedPromotions);
   if (addedPromotions.length) {
     appEvents.emit("promotionsAddedToCart", { cart, addedPromotions, triggerType });
   }
 
-
-  const removedPromotions = calculateRemovedPromotions(currentTriggerState, qualifiedPromotions);
   if (removedPromotions.length) {
     appEvents.emit("promotionsRemovedFromCart", { cart, removedPromotions, triggerType });
   }
+  // write the history record
+  const historyRecord = {
+    updatedAt: new Date(),
+    promotionsAdded: addedPromotions,
+    promotionsRemoved: removedPromotions
+  };
+  // remove no-longer-applicable promotions
+  const appliedPromotions = cart.appliedPromotions.filter((promotion) => removedPromotions.map((rp) => rp.id).includes(promotion._id));
+  cart.appliedPromotions = appliedPromotions;
+  cart.appliedPromotions.push(...addedPromotions);
+  cart.promotionHistory.push(historyRecord);
+  context.mutations.saveCart(context, cart, "promotions");
+  return cart.promotionHistory;
 }
