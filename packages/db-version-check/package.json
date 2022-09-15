@@ -11,33 +11,21 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src",
-    "test": "jest src"
+    "test": "jest --passWithNoTests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reactioncommerce/db-version-check.git"
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-taxes"
   },
   "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/db-version-check/issues"
+    "url": "https://github.com/reactioncommerce/reaction/issues"
   },
-  "homepage": "https://github.com/reactioncommerce/db-version-check#readme",
+  "homepage": "https://github.com/reactioncommerce/reaction",
   "dependencies": {},
   "devDependencies": {},
-  "eslintConfig": {
-    "extends": "@reactioncommerce"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "publishConfig": {
     "access": "public"
   },
