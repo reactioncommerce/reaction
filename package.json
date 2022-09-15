@@ -8,17 +8,15 @@
   },
   "engineStrict": true,
   "scripts": {
-    "start:dev": "npm run start:dev -w=apps/reaction",
+    "start:dev": "npm run start:dev -w apps/reaction",
     "start:meteor-blaze-app": "npm run start -w=apps/meteor-blaze-app",
-    "build:packages": "npm run build --if-present --ws",
-    "test": "npm run test --if-presen --passWithNoTests --ws",
-    "test:integration:query": "npm run test:integration:query --workspace=apps/reaction",
-    "test:integration:mutation": "npm run test:integration:mutation --workspace=apps/reaction",
-    "changeset": "changeset",
-    "release": "changeset publish",
-    "lint": "eslint . --resolve-plugins-relative-to .",
+    "build:packages": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "test:integration:query": "pnpm --filter '@reactioncommerce/reaction-api' test:integration:query",
+    "test:integration:mutation": "pnpm --filter '@reactioncommerce/reaction-api' test:integration:mutation",
+    "lint": "eslint -c .eslintrc.cjs .",
     "lint:docker": "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2 lint-dockerfiles --workspace=apps/reaction",
-    "lint:gql": "npm run lint:gql --if-present --ws",
+    "lint:gql": "pnpm -r run lint:gql",
     "postinstall": "npm run build:packages && is-ci || is-docker || husky install .husky"
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
@@ -46,7 +44,10 @@
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.10",
     "@babel/eslint-parser": "^7.18.9",
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6",
+    "@babel/preset-env": "^7.19.0",
     "@commitlint/config-conventional": "^17.0.3",
+    "@reactioncommerce/babel-remove-es-create-require": "^1.0.0",
     "babel-jest": "^29.0.1",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-rewire-exports": "^2.3.0",
@@ -61,7 +62,11 @@
     "eslint-plugin-react": "^7.31.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "graphql-schema-linter": "3.0.0",
-    "jest": "^25.5.4"
+    "husky": "^5.0.8",
+    "is-ci": "^2.0.0",
+    "is-docker": "^2.1.1",
+    "jest": "^25.5.4",
+    "nodemon": "~1.19.2"
   },
   "graphql-schema-linter": {
     "customRulePaths": [
@@ -92,5 +97,11 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "graphql-tools": "4.0.5",
+      "graphql": "14.7.0"
+    }
   }
 }

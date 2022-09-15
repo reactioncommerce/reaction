@@ -18,6 +18,7 @@ let updateTag;
 let mockTagsAccount;
 let tagInput;
 
+// eslint-disable-next-line require-jsdoc
 function createMockTag() {
   return Factory.Tag.makeOne({
     _id: "123",

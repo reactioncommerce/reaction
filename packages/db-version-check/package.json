@@ -1,6 +1,6 @@
 {
   "name": "@reactioncommerce/db-version-check",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "Data version checker function compatible with @reactioncommerce/migrator",
   "main": "./src/main.js",
   "files": [
@@ -9,27 +9,20 @@
     "README.md"
   ],
   "type": "module",
-  "scripts": {
-    "lint": "eslint src",
-    "test": "jest --passWithNoTests"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/reactioncommerce/reaction.git",
-    "directory": "packages/api-plugin-taxes"
+    "url": "git+https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/db-version-check"
   },
   "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
-  "homepage": "https://github.com/reactioncommerce/reaction",
+  "homepage": "https://github.com/reactioncommerce/reaction#readme",
   "dependencies": {},
   "devDependencies": {},
   "publishConfig": {
     "access": "public"
-  },
-  "release": {
-    "branches": ["trunk"]
   }
 }
