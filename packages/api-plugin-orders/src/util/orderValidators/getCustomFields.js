@@ -1,7 +1,3 @@
-import _ from "lodash";
-import Random from "@reactioncommerce/random";
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @method getCustomFields
  * @summary Returns the CustomFields
@@ -10,13 +6,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {Object} order - orderobject
  * @returns {Object[]} customFields
  */
- export default async function getCustomFields(context, customFieldsFromClient, order) {
+export default async function getCustomFields(context, customFieldsFromClient, order) {
   const { getFunctionsOfType } = context;
 
   // Apply custom order data transformations from plugins
   const transformCustomOrderFieldsFuncs = getFunctionsOfType("transformCustomOrderFields");
+  let customFields = { ...(customFieldsFromClient || {}) };
   if (transformCustomOrderFieldsFuncs.length > 0) {
-    let customFields = { ...(customFieldsFromClient || {}) };
     // We need to run each of these functions in a series, rather than in parallel, because
     // each function expects to get the result of the previous. It is recommended to disable `no-await-in-loop`
     // eslint rules when the output of one iteration might be used as input in another iteration, such as this case here.
@@ -24,8 +20,6 @@ import ReactionError from "@reactioncommerce/reaction-error";
     for (const transformCustomOrderFieldsFunc of transformCustomOrderFieldsFuncs) {
       customFields = await transformCustomOrderFieldsFunc({ context, customFields, order }); // eslint-disable-line no-await-in-loop
     }
-    return customFields;
-  } else {
-    return customFieldsFromClient;
   }
+  return customFields;
 }

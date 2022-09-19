@@ -27,8 +27,7 @@ export default async function validateInitialOrderData(context, cleanedInput) {
     }
   }
 
-  // if (!userId && !shop.allowGuestCheckout) {
-  if (!shop.allowGuestCheckout) {
+  if (!userId && !shop.allowGuestCheckout) {
     throw new ReactionError("access-denied", "Guest checkout not allowed");
   }
 
