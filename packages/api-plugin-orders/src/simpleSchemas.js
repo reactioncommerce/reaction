@@ -332,8 +332,8 @@ export const CommonOrder = new SimpleSchema({
   },
   fulfillmentPrices: CommonOrderFulfillmentPrices,
   fulfillmentType: {
-    type: String,
-    allowedValues: ["shipping"]
+    type: String
+    // allowedValues: ["shipping"] // extended in fulfillment plugin with dynamic values for allowedValues
   },
   items: [CommonOrderItem],
   orderId: {
@@ -392,8 +392,8 @@ export const orderFulfillmentGroupInputSchema = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String,
-    allowedValues: ["shipping"]
+    type: String
+    // allowedValues: ["shipping"] // extended in fulfillment plugin with dynamic values for allowedValues
   }
 });
 
@@ -773,7 +773,7 @@ export const OrderItem = new SimpleSchema({
  * @property {String} name Method name
  * @property {Number} rate Rate
  */
-const SelectedFulfillmentOption = new SimpleSchema({
+export const SelectedFulfillmentOption = new SimpleSchema({
   _id: String,
   carrier: {
     type: String,
@@ -853,8 +853,8 @@ export const OrderFulfillmentGroup = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String,
-    allowedValues: ["shipping"]
+    type: String
+    // allowedValues: ["shipping"] // extended in fulfillment plugin with dynamic values for allowedValues
   },
   "updatedAt": {
     type: Date,
