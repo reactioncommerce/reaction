@@ -1,4 +1,4 @@
-
+import { Action, Trigger } from "./simpleSchemas.js";
 /**
  * @summary apply all schema extensions to the Promotions schema
  * @param {Object} context - The application context
@@ -19,25 +19,15 @@ function extendSchemas(context) {
 export default async function startup(context) {
   extendSchemas(context);
   const { actions: additionalActions, triggers: additionalTriggers } = context.promotions;
-  const { simpleSchemas: { Promotion } } = context;
-  // if (additionalActions.length) {
-  //   Promotion.extend({
-  //     "actions.$.actionKey": {
-  //       allowedValues: Promotion.getDefinition(
-  //         "actions.$.actionKey",
-  //         ["allowedValues"]
-  //       ).type[0].allowedValues.concat(additionalActions)
-  //     }
-  //   });
-  // }
+  Action.extend({
+    actionKey: {
+      allowedValues: [...Action.getAllowedValuesForKey("actionKey"), ...additionalActions]
+    }
+  });
 
-  // Promotion.extend({
-  //   "triggers.$.triggerKey": {
-  //     allowedValues: Promotion.getDefinition(
-  //       "triggers.$.triggerKey",
-  //       ["allowedValues"]
-  //     ).type[0].allowedValues.concat(additionalTriggers)
-  //   }
-  // });
-  // console.log("schemas extended", Promotions._schema.offerRule);
+  Trigger.extend({
+    triggerKey: {
+      allowedValues: [...Trigger.getAllowedValuesForKey("triggerKey"), ...additionalTriggers]
+    }
+  });
 }

@@ -20,7 +20,7 @@ export const JSONRulesEngineRule = new SimpleSchema({
   }
 });
 
-const Action = new SimpleSchema({
+export const Action = new SimpleSchema({
   actionKey: {
     type: String,
     allowedValues: ["noop"]
@@ -31,10 +31,10 @@ const Action = new SimpleSchema({
   }
 });
 
-const Trigger = new SimpleSchema({
+export const Trigger = new SimpleSchema({
   triggerKey: {
     type: String,
-    allowedValues: ["offers"]
+    allowedValues: []
   },
   triggerParameters: {
     type: Object,
