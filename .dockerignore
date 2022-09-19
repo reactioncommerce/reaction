@@ -11,6 +11,6 @@
 
 .build.log
 Dockerfile
-.reaction/docker/reaction.*
+apps/reaction/.reaction/docker/reaction.*
 docs
-node_modules
+**/node_modules

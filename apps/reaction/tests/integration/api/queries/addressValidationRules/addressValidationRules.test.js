@@ -8,6 +8,7 @@ const addressValidationRulesQuery = importAsString("./addressValidationRules.gra
 
 jest.setTimeout(300000);
 
+// eslint-disable-next-line require-jsdoc
 function mongoToGql(rules) {
   return rules.map((rule) => ({
     ...rule,

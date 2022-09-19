@@ -83,7 +83,7 @@ input MoneyInput {
 }
 
 "Fake"
-input AddressInput {
+type AddressInput {
   "Fake"
   fake: String
 }
@@ -450,7 +450,7 @@ input ShopSettingsUpdates {
 A fake type to satisfy linting
 type lives in `api-plugin-tags`
 """
-input TagSortByField {
+type TagSortByField {
   "A fake field to satisfy linting"
   fakeField: String
 }
