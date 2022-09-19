@@ -4,6 +4,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "@reactioncommerce/logger";
 import addCartItems from "../util/addCartItems.js";
 
+const cartVersion = "v2"; // Update this for each major change of cart object, v2 => Fulfillment changes
+
 /**
  * @method createCart
  * @summary Create a new cart for a shop with an initial list of items in it.
@@ -61,6 +63,7 @@ export default async function createCart(context, input) {
   const createdAt = new Date();
   const newCart = {
     _id: Random.id(),
+    cartVersion,
     accountId,
     anonymousAccessToken: anonymousAccessToken && hashToken(anonymousAccessToken),
     currencyCode: cartCurrencyCode,

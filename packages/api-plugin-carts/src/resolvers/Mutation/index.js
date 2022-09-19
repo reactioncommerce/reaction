@@ -5,6 +5,7 @@ import removeCartItems from "./removeCartItems.js";
 import setEmailOnAnonymousCart from "./setEmailOnAnonymousCart.js";
 import setShippingAddressOnCart from "./setShippingAddressOnCart.js";
 import updateCartItemsQuantity from "./updateCartItemsQuantity.js";
+import setFulfillmentTypeForItems from "./setFulfillmentTypeForItems.js";
 
 export default {
   addCartItems,
@@ -13,5 +14,6 @@ export default {
   removeCartItems,
   setEmailOnAnonymousCart,
   setShippingAddressOnCart,
+  setFulfillmentTypeForItems,
   updateCartItemsQuantity
 };
