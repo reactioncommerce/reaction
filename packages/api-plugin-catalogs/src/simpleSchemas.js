@@ -468,10 +468,10 @@ export const CatalogProduct = new SimpleSchema({
   },
   "supportedFulfillmentTypes": {
     type: Array,
-    label: "Supported fulfillment types",
-    defaultValue: ["shipping"]
+    label: "Supported fulfillment types"
+    // defaultValue: ["shipping"]
   },
-  "supportedFulfillmentTypes.$": String,
+  "supportedFulfillmentTypes.$": String, // This is extended in fulfillment plugin with dynamic values for allowedValues
   "tagIds": {
     type: Array,
     label: "Hashtags",
