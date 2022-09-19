@@ -4,7 +4,6 @@ import startup from "./startup.js";
 import preStartupPromotions from "./preStartup.js";
 import registerPromotionsHandlers from "./handlers/registerPromotionsHandlers.js";
 import { Promotion } from "./simpleSchemas.js";
-import loadPromotions from "./fixtures/loadPromotions.js";
 import operators from "./operators/index.js";
 
 const require = createRequire(import.meta.url);
@@ -31,7 +30,7 @@ export default async function register(app) {
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForPromotions],
       preStartup: [preStartupPromotions],
-      startup: [startup, registerPromotionsHandlers, loadPromotions]
+      startup: [startup, registerPromotionsHandlers]
     },
     contextAdditions: {
       promotions

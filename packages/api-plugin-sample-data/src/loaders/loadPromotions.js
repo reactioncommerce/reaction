@@ -39,17 +39,15 @@ const promotions = [OrderPromotion];
 /**
  * @summary Load promotions fixtures
  * @param {Object} context - The application context
+ * @param {String} shopId - The shop to load data into
  * @returns {Promise<void>} undefined
  */
-export default async function loadPromotions(context) {
-  const { simpleSchemas: { Promotion: PromotionSchema }, collections: { Promotions, Shops } } = context;
-  const defaultShop = await Shops.findOne({ shopType: "primary" }, { _id: 1 });
-  if (defaultShop) {
-    for (const promotion of promotions) {
-      promotion.shopId = defaultShop._id;
-      PromotionSchema.validate(promotion);
-      // eslint-disable-next-line no-await-in-loop
-      await Promotions.updateOne({ _id: promotion._id }, { $set: promotion }, { upsert: true });
-    }
+export default async function loadPromotions(context, shopId) {
+  const { simpleSchemas: { Promotion: PromotionSchema }, collections: { Promotions } } = context;
+  for (const promotion of promotions) {
+    promotion.shopId = shopId;
+    PromotionSchema.validate(promotion);
+    // eslint-disable-next-line no-await-in-loop
+    await Promotions.updateOne({ _id: promotion._id }, { $set: promotion }, { upsert: true });
   }
 }
