@@ -100,7 +100,7 @@ jobs:
     docker:
       - image: circleci/node:14.18.1-stretch
       # Integration tests need MongoDB server running and accessible on port 27017
-      - image: circleci/mongo:4.0.0
+      - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
@@ -127,7 +127,7 @@ jobs:
     docker:
       - image: circleci/node:14.18.1-stretch
       # Integration tests need MongoDB server running and accessible on port 27017
-      - image: circleci/mongo:4.0.0
+      - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
@@ -175,7 +175,7 @@ jobs:
           name: Build and push production Docker image
           command: |
             VERSION=$(git describe --tags `git rev-list --tags --max-count=1` | cut -c2-100)
-            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest .
+            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./app/reaction/Dockerfile .
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push ${DOCKER_REPOSITORY}:${VERSION}
             docker push ${DOCKER_REPOSITORY}:latest

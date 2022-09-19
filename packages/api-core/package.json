@@ -22,8 +22,7 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "scripts": {
-    "test": "npm run test:unit",
-    "test:unit": "jest --maxWorkers=4",
+    "test": "jest --maxWorkers=4",
     "test:unit:watch": "jest --maxWorkers=4 --watch",
     "test:unit:file": "jest --no-cache --maxWorkers=4",
     "test:unit:file:watch": "jest --no-cache --maxWorkers=4 --watch",

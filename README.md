@@ -63,26 +63,36 @@ Go to the complete [installation instructions](https://mailchimp.com/developer/o
 # API development
 
 ## What you need
-* NPM >= 7 (support workspaces)
+
+* PNPM
 * Docker & docker-compose
 
+## Install PNPM
+```bash
+npm i -g pnpm@latest
+```
+
 ## Clone and Start the source
+
 ```bash
 git clone https://github.com/reactioncommerce/reaction.git
 cd reaction
-npm install
+pnpm install
 cp apps/reaction/.env.example apps/reaction/.env
 ```
+
 Start dev-server with mongo on local:
+
 ```bash
 ## you must change MONGO_URL in the .env to mongodb://localhost:27017/reaction before start
-npm run start:dev
+pnpm run start:dev
 ```
 
-Start dev-server with mongodb on docker 
+Start dev-server with mongodb on docker
+
 ```bash
 docker-compose up -d
-npm run start:dev
+pnpm run start:dev
 ```
 
 ## Development Flow

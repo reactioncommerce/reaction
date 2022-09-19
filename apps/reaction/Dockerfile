@@ -11,7 +11,7 @@ WORKDIR /app
 COPY ./apps/reaction ./apps/reaction
 COPY .npmrc .nvmrc package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-RUN npm i -g pnpm@7
+RUN npm i -g pnpm@7.11.0
 RUN pnpm --filter=@reactioncommerce/reaction-api --prod deploy deps --ignore-scripts
 
 
