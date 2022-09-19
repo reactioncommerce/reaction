@@ -16,6 +16,8 @@ const logCtx = {
   file: "applyOffersToCart.js"
 };
 
+const now = new Date();
+
 /**
  * @summary A cart has qualified for a promotion, time to tell the world
  * @param {Object} context - The application context
@@ -50,9 +52,13 @@ function enhanceCart(context, cart) {
  */
 async function getOfferPromotions(context) {
   const { collections: { Promotions } } = context;
-  const offerPromotions = await Promotions.find({ "triggers.triggerKey": "offers", "enabled": true }).toArray();
+  const offerPromotions = await Promotions.find({
+    "triggers.triggerKey": "offers",
+    "enabled": true,
+    "startDate": { $gt: now },
+    "endDate": { $lt: now }
+  }).toArray();
   Logger.debug({ ...logCtx, applicableOffers: offerPromotions.length }, "Fetched applicable offers");
-  // TODO Check for within date ranges
   return offerPromotions;
 }
 

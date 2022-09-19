@@ -1,3 +1,5 @@
+import accounting from "accounting-js";
+
 /**
  * @summary calculate the merchandise total for a cart
  * @param {Object} context - The application context
@@ -6,6 +8,6 @@
  */
 export default function merchandiseTotal(context, cart) {
   const merchTotal = cart.items.reduce((prev, current) => prev + current.price.amount * current.quantity, 0);
-  cart.merchandiseTotal = merchTotal;
+  cart.merchandiseTotal = Number(accounting.toFixed(merchTotal, 2));
   return cart;
 }

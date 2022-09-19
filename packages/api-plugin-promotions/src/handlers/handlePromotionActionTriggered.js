@@ -1,4 +1,4 @@
-import Logger from "@reactioncommerce/logger";
+import noop from "../actions/noop.js";
 
 /**
  * @summary test action that does nothing but log
@@ -9,6 +9,6 @@ import Logger from "@reactioncommerce/logger";
  */
 export default async function handlePromotionActionTriggered(context, { actionKey, actionParameters, params }) {
   if (actionKey === "noop") {
-    Logger.info("noop action triggered", params, actionParameters);
+    noop(context, actionParameters, params);
   }
 }
