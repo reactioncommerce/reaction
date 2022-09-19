@@ -59,7 +59,7 @@ export default async function createProduct(context, input) {
     isVisible: false,
     shopId,
     shouldAppearInSitemap: true,
-    supportedFulfillmentTypes: ["shipping"],
+    supportedFulfillmentTypes: initialProductData.supportedFulfillmentTypes || [],
     title: "",
     type: "simple",
     updatedAt: createdAt,
