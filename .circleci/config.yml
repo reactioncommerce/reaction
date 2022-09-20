@@ -33,7 +33,7 @@ jobs:
             - reaction-v6-node-modules-{{ .Branch }}
       - run:
           name: Install PNPM dependencies
-          command: pnpm install -r
+          command: pnpm install -r --frozen-lockfile
       - save_cache:
           key: reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
           paths:
@@ -90,7 +90,8 @@ jobs:
           keys:
             - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
-      - run: pnpm install -r
+      - run: pnpm install -r --frozen-lockfile
+      - run: git status
       - run:
           name: Test Unit
           command: pnpm test
@@ -112,6 +113,7 @@ jobs:
             - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
       - run: pnpm install -r
+      - run: git status
       - run:
           name: Run Integration Query Tests
           environment:
@@ -138,7 +140,7 @@ jobs:
           keys:
             - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
             - reaction-v6-node-modules-{{ .Branch }}
-      - run: pnpm install -r
+      - run: pnpm install -r --frozen-lockfile
       - run:
           name: Run Integration Mutation Tests
           environment:
