@@ -1,0 +1,24 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "shopLocalization": "ဆိုင် Localization",
+          "enabledCurrencies": "ငွေကြေး",
+          "enabledLanguages": "ဘာသာစကားများ",
+          "allOn": "အားလုံးတွင်",
+          "allOff": "အားလုံးပိတ်"
+        },
+        "baseUOM": "တိုင်းတာ၏အခြေစိုက်စခန်းယူနစ်",
+        "currency": "base ငွေကြေးစနစ်",
+        "currencyTooltip": "ဆိုင်က default ငွေကြေးကို",
+        "language": "base ဘာသာစကားများ",
+        "languageTooltip": "device ကိုဘာသာစကားထောက်လှမ်းပျက်ကွက်ပါလိမ့်မည်ဆိုပါကဤသည်ဘာသာစကားအသုံးပြုလိမ့်မည်",
+        "timezone": "စံတော်ချိန်",
+        "timezoneOptions": "စံတော်ချိန် Choose"
+      }
+    }
+  }
+}]

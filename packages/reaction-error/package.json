@@ -1,0 +1,30 @@
+{
+  "name": "@reactioncommerce/reaction-error",
+  "description": "Error handling for the Reaction API",
+  "version": "1.0.1",
+  "main": "index.js",
+  "engines": {
+    "node": ">=14.8.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "engineering@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/reaction-error"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "engineering@reactioncommerce.com",
+    "url": "https://reactioncommerce.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

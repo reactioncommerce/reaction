@@ -1,0 +1,46 @@
+"Input for `addTag` mutation"
+input AddTagInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "Title to display to customers"
+  displayTitle: String
+
+  "Hero media URL"
+  heroMediaUrl: String
+
+  "Whether the tag is visible"
+  isVisible: Boolean!
+
+  "Tag metafields"
+  metafields: [MetafieldInput]
+
+  "Unique name of the tag"
+  name: String!
+
+  "The shop that owns the tag"
+  shopId: ID!
+
+  "The tag slug. If left blank, the name will be slugified and saved as the slug"
+  slug: String
+}
+
+"Response payload for `addTag` mutation"
+type AddTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The shop that owns the tag"
+  shopId: ID!
+
+  "The newly-created tag"
+  tag: Tag!
+}
+
+extend type Mutation {
+  "Adds a new tag"
+  addTag(
+    "Mutation input"
+    input: AddTagInput!
+  ): AddTagPayload!
+}

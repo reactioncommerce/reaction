@@ -1,0 +1,211 @@
+"Core info about the original uploaded media file"
+type MediaRecordInfo {
+  "File name"
+  name: String!
+
+  "File size"
+  size: Int!
+
+  "File type"
+  type: String!
+
+  "Date and time at which the file was last updated"
+  updatedAt: DateTime!
+
+  "Date and time at which the file was uploaded"
+  uploadedAt: DateTime!
+}
+
+"Custom metadata for the media record"
+type MediaRecordMetadata {
+  "True if the MediaRecord is archived. This typically means that the media will not show in a storefront but the image file data still exists."
+  isArchived: Boolean!
+
+  "ID of the account that uploaded the file"
+  ownerId: String
+
+  "Priority among media files with similar metadata"
+  priority: Int
+
+  "ID of the related product, if the media is for a product"
+  productId: String
+
+  "ID of the shop that owns the media"
+  shopId: String!
+
+  "A string that identifies where this media will be used, for filtering"
+  type: String
+
+  "ID of the related product variant, if the media is for a product variant"
+  variantId: String
+}
+
+"A FileRecord for a media file"
+type MediaRecord {
+  "MediaRecord ID"
+  _id: ID!
+
+  "Custom metadata for the media record"
+  metadata: MediaRecordMetadata!
+
+  "Core info about the original uploaded file"
+  original: MediaRecordInfo!
+}
+
+"Core info about the original uploaded media file"
+input MediaRecordInfoInput {
+  "File name"
+  name: String!
+
+  "File size"
+  size: Int!
+
+  "ID of the file uploaded to temporary storage"
+  tempStoreId: String!
+
+  "File type"
+  type: String!
+
+  "Date and time at which the file was last updated"
+  updatedAt: DateTime!
+
+  "Date and time at which the file was uploaded"
+  uploadedAt: DateTime!
+}
+
+"Custom metadata for the media record"
+input MediaRecordMetadataInput {
+  "Priority among media files with similar metadata"
+  priority: Int
+
+  "ID of the related product, if the media is for a product"
+  productId: ID
+
+  "A string that identifies where this media will be used, for filtering"
+  type: String
+
+  "ID of the related product variant, if the media is for a product variant"
+  variantId: ID
+}
+
+"A FileRecord for a media file"
+input MediaRecordInput {
+  "Custom metadata for the media record"
+  metadata: MediaRecordMetadataInput!
+
+  "Core info about the original uploaded file"
+  original: MediaRecordInfoInput!
+}
+
+"Input for the archiveMediaRecord mutation"
+input ArchiveMediaRecordInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of MediaRecord to archive"
+  mediaRecordId: ID!
+
+  "ID of shop that owns this MediaRecord"
+  shopId: ID!
+}
+
+"Input for the createMediaRecord mutation"
+input CreateMediaRecordInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The media record to insert, with related file data already fully uploaded to temporary storage"
+  mediaRecord: MediaRecordInput!
+
+  "ID of shop that owns this MediaRecord"
+  shopId: ID!
+}
+
+"Input for the deleteMediaRecord mutation"
+input DeleteMediaRecordInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of MediaRecord to delete"
+  mediaRecordId: ID!
+
+  "ID of shop that owns this MediaRecord"
+  shopId: ID!
+}
+
+"Input for the updateMediaRecordPriority mutation"
+input UpdateMediaRecordPriorityInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of MediaRecord to update"
+  mediaRecordId: ID!
+
+  "New priority value"
+  priority: Int!
+
+  "ID of shop that owns this MediaRecord"
+  shopId: ID!
+}
+
+"Response payload for the archiveMediaRecord mutation"
+type ArchiveMediaRecordPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The archived MediaRecord"
+  mediaRecord: MediaRecord!
+}
+
+"Response payload for the createMediaRecord mutation"
+type CreateMediaRecordPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The created MediaRecord"
+  mediaRecord: MediaRecord!
+}
+
+"Response payload for the deleteMediaRecord mutation"
+type DeleteMediaRecordPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The deleted MediaRecord"
+  mediaRecord: MediaRecord!
+}
+
+"Response payload for the updateMediaRecordPriority mutation"
+type UpdateMediaRecordPriorityPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated MediaRecord"
+  mediaRecord: MediaRecord!
+}
+
+extend type Mutation {
+  "Archive a MediaRecord to hide it without deleting the backing file data"
+  archiveMediaRecord(
+    "Mutation input"
+    input: ArchiveMediaRecordInput!
+  ): ArchiveMediaRecordPayload!
+
+  "Create the MediaRecord for file data after you upload it"
+  createMediaRecord(
+    "Mutation input"
+    input: CreateMediaRecordInput!
+  ): CreateMediaRecordPayload!
+
+  "Delete a MediaRecord to delete both the record and the backing file data"
+  deleteMediaRecord(
+    "Mutation input"
+    input: DeleteMediaRecordInput!
+  ): DeleteMediaRecordPayload!
+
+  "Update the priority metadata for a MediaRecord. Used for sorting product and variant media in the catalog."
+  updateMediaRecordPriority(
+    "Mutation input"
+    input: UpdateMediaRecordPriorityInput!
+  ): UpdateMediaRecordPriorityPayload!
+}

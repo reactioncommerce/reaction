@@ -1,0 +1,39 @@
+{
+  "name": "@reactioncommerce/api-plugin-i18n",
+  "description": "i18n plugin for the Reaction API",
+  "version": "1.0.6",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "engineering@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-i18n"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "engineering@reactioncommerce.com",
+    "url": "https://reactioncommerce.com"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^1.16.5",
+    "lodash": "~4.17.15"
+  },
+  "devDependencies": {
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

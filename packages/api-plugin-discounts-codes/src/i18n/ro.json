@@ -1,0 +1,41 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "discount-codes",
+  "translation": {
+    "discount-codes": {
+      "checkoutPayment": {
+        "applyDiscount": "aplica",
+        "discountError": "Ne pare rău, a apărut o eroare la aplicarea cu discount."
+      },
+      "discounts": {
+        "enterItHere": "Un cod? Introduceți-l aici.",
+        "discountLabel": "Cod de reducere",
+        "submitted": "Reducere salvat și aplicat",
+        "applied": "aplicat",
+        "code": "cod",
+        "codeIsExpired": "Codul este expirat",
+        "codeIsInvalid": "Cod este nevalid",
+        "multiShopError": "Reducerile nu pot fi aplicate unui coș de cumpărături sau unei comenzi multi-shop"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "coduri"
+        },
+        "settings": {
+          "codesLabel": "coduri",
+          "noCustomDiscountCodesFound": "Nu există coduri discount găsite."
+        },
+        "discountGrid": {
+          "code": "Cod",
+          "calculation": {
+            "method": "Calcul"
+          },
+          "conditions": {
+            "redemptionLimit": "Limită"
+          }
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,41 @@
+{
+  "name": "@reactioncommerce/api-plugin-taxes-flat-rate",
+  "description": "Flat Rate Taxes plugin for the Reaction API",
+  "version": "1.0.8",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "engineering@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-taxes-flat-rate"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "engineering@reactioncommerce.com",
+    "url": "https://reactioncommerce.com"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^1.16.9",
+    "@reactioncommerce/random": "^1.0.2",
+    "@reactioncommerce/reaction-error": "^1.0.1",
+    "simpl-schema": "^1.12.0"
+  },
+  "devDependencies": {
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

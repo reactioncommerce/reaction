@@ -1,0 +1,13 @@
+  {
+    "emails": [
+      {
+        "address": "admin@example.org",
+        "verified": false,
+        "provides": "default"
+      }
+    ],
+    "name": null,
+    "profile": {},
+    "shopId": null,
+    "userId": "61b242582258c00013f58f3f"
+  }

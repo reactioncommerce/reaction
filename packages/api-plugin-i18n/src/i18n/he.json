@@ -1,0 +1,20 @@
+[{
+  "i18n": "he",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "enabledLanguages": "שפות"
+        },
+        "baseUOM": "יחידת הכמות הבסיסית",
+        "currency": "מטבע בסיס",
+        "currencyTooltip": "מטבע ברירת המחדל של החנות",
+        "language": "שפת בסיס",
+        "languageTooltip": "ייעשה שימוש בשפה זו אם זיהוי שפת המכשיר ייכשל",
+        "timezone": "אזור זמן",
+        "timezoneOptions": "בחר באזור זמן"
+      }
+    }
+  }
+}]

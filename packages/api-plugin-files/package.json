@@ -1,0 +1,47 @@
+{
+  "name": "@reactioncommerce/api-plugin-files",
+  "description": "Files plugin for the Reaction API",
+  "version": "1.0.19",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "engineering@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-files"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "engineering@reactioncommerce.com",
+    "url": "https://reactioncommerce.com"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^1.16.7",
+    "@reactioncommerce/file-collections": "^0.9.3",
+    "@reactioncommerce/file-collections-sa-gridfs": "~0.1.5",
+    "@reactioncommerce/logger": "~1.1.4",
+    "@reactioncommerce/random": "~1.0.2",
+    "@reactioncommerce/reaction-error": "~1.0.1",
+    "envalid": "^6.0.2",
+    "node-fetch": "~2.6.2",
+    "sharp": "^0.30.7",
+    "simpl-schema": "~1.10.2"
+  },
+  "devDependencies": {
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

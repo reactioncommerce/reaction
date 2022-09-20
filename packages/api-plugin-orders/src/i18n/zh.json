@@ -1,0 +1,97 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "notFound": "未找到订单",
+      "order": {
+        "applyRefundToThisOrder": "申请退还{{currencySymbol}}{{refund}}到这个订单？",
+        "applyRefundDuringCancelOrder": "这将退还{{currencySymbol}}{{invoiceTotal}}的订单总额",
+        "cancelOrder": "你想取消这个订单吗？",
+        "cancelOrderLabel": "取消订单",
+        "cancelOrderThenRestock": "是的，补货",
+        "cancelOrderNoRestock": "是的，但没有补货"
+      },
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "订单"
+        },
+        "orderRisk": {
+          "high": "高风险",
+          "riskCapture": "捕获订单与风险费用？",
+          "riskCaptureWarn": "您即将捕获带有收费风险的订单。继续之前确认。"
+        },
+        "dashboard": {
+          "ordersLabel": "订单",
+          "ordersTitle": "订单",
+          "ordersDescription": "完成订单",
+          "clearSearch": "明确"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "日期",
+            "orderId": "订单ID",
+            "total": "合计",
+            "emailNotFound": "电子邮件不可用"
+          },
+          "summary": {
+            "cardTitle": "概要",
+            "copyOrderLink": "复制订单链接"
+          },
+          "invoice": {
+            "cardTitle": "账单",
+            "adjustedTotal": "调整后的总金额",
+            "capturedTotal": "已收款总额",
+            "refund": "退",
+            "refundLabel": "退款",
+            "refundItem": "项目",
+            "refundItemAmount": "合计",
+            "refundTotal": "退款总额"
+          },
+          "fulfillment": "履行",
+          "orderDetails": "订单详细信息",
+          "shipmentTracking": "发货"
+        },
+        "table": {
+          "headers": {
+            "name": "名字",
+            "email": "电子邮件设置",
+            "date": "日期",
+            "id": "ID",
+            "total": "合计",
+            "shipping": "运输",
+            "status": "状态"
+          },
+          "filter": {
+            "status": "状态",
+            "dateRange": "日期范围",
+            "shippingStatus": "运送状态",
+            "new": "新订单",
+            "captured": "已收款",
+            "shipped": "已出货",
+            "completed": "已完成",
+            "canceled": "已取消",
+            "refunded": "已退款"
+          },
+          "search": {
+            "clearSearch": "明确",
+            "placeholder": "搜索订单"
+          },
+          "data": {
+            "status": {
+              "new": "新",
+              "coreOrderWorkflow/created": "创建",
+              "coreOrderWorkflow/processing": "处理",
+              "coreOrderWorkflow/completed": "已完成",
+              "coreOrderWorkflow/canceled": "取消",
+              "coreOrderWorkflow/picked": "采摘的",
+              "coreOrderWorkflow/packed": "袋装",
+              "coreOrderWorkflow/labeled": "标记",
+              "coreOrderWorkflow/shipped": "运"
+            }
+          }
+        }
+      }
+    }
+  }
+}]

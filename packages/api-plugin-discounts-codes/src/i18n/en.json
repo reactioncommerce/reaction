@@ -1,0 +1,71 @@
+[
+    {
+        "language": "English",
+        "i18n": "en",
+        "ns": "discount-codes",
+        "translation": {
+            "discount-codes": {
+                "checkoutPayment": {
+                    "applyDiscount": "Apply",
+                    "discountError": "Sorry, there was an error applying discount."
+                },
+                "discounts": {
+                    "title": "Discount Codes",
+                    "enterItHere": "Have a code? Enter it here.",
+                    "discountLabel": "Discount Code",
+                    "submitted": "Discount saved and applied",
+                    "applied": "applied",
+                    "code": "code",
+                    "codeIsExpired": "Code is expired",
+                    "codeIsInvalid": "Code is invalid",
+                    "multiShopError": "Discounts cannot be applied to a multi-shop cart or order"
+                },
+                "admin": {
+                    "paymentSettings": {
+                        "codesLabel": "Codes"
+                    },
+                    "discountCode": {
+                        "addDiscount": "Add Discount",
+                        "addDiscountModalTitle": "Add a New Discount Code",
+                        "confirmRateDelete": "Confirm discount rate deletion.",
+                        "title": "Discount Codes",
+                        "noCustomDiscountCodesFound": "No discount codes found",
+                        "failure": "The operation failed",
+                        "createSuccess": "A new discount code has been successfully created",
+                        "deleteSuccess": "Discount code successfully deleted",
+                        "updateSuccess": "Discount code successfully updated",
+                        "settingsSaveSuccess": "Settings saved successfully.",
+                        "form": {
+                            "calculationMethod": "Calculation Method",
+                            "code": "Discount Code",
+                            "codePlaceholder": "Discount code",
+                            "deleteDialogTitle": "Delete Discount Code",
+                            "deleteMessage": "Are you sure you want to delete this discount code?",
+                            "discount": "Discount",
+                            "discountPlaceholder": "Discount value, i.e. a value 10 will translate to 10% off",
+                            "accountLimit": "Account Limit",
+                            "accountLimitPlaceholder": "How many times a user can redeem this discount",
+                            "redemptionLimit": "Total Limit",
+                            "redemptionLimitPlaceholder": "The total number of times this discount can be redeemed"
+                        }
+                    },
+                    "discountsTable": {
+                        "headers": {
+                            "code": "Code",
+                            "discountMethod": "Method",
+                            "discount": "Discount",
+                            "calculation": {
+                                "method": "Calculation"
+                            },
+                            "conditions": {
+                                "accountLimit": "Account Limit",
+                                "redemptionLimit": "Total Limit"
+                            }
+                        },
+                        "filterPlaceholder": "Filter discount codes"
+                    }
+                }
+            }
+        }
+    }
+]

@@ -1,0 +1,22 @@
+[{
+  "language": "German",
+  "i18n": "de",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "Rabatt-Einstellungen"
+        },
+        "shortcut": {
+          "discountsLabel": "Rabatte",
+          "discountsDescription": "Geben Sie Sonderangebote und Rabatte."
+        },
+        "dashboard": {
+          "discountsLabel": "Rabatte",
+          "discountsDescription": "Geben Sie Sonderangebote und Rabatte."
+        }
+      }
+    }
+  }
+}]

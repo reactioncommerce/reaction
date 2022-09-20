@@ -1,0 +1,55 @@
+{
+  "name": "@reactioncommerce/logger",
+  "version": "1.1.5",
+  "description": "Reaction application logging based on Bunyan logger",
+  "main": "./dist/main.js",
+  "scripts": {
+    "build": "rimraf ./dist && babel src --out-dir ./dist",
+    "prepublishOnly": "npm run build",
+    "lintfix": "eslint ./src --fix",
+    "watch": "watch 'npm run build' src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/logger"
+  },
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction#readme",
+  "devDependencies": {
+    "rimraf": "^2.6.2",
+    "watch": "^1.0.2"
+  },
+  "dependencies": {
+    "bunyan": "^1.8.15",
+    "bunyan-format": "^0.2.1",
+    "node-loggly-bulk": "^2.2.5"
+  },
+  "babel": {
+    "presets": [
+      "@babel/env"
+    ],
+    "plugins": [
+      [
+        "add-module-exports",
+        {
+          "addDefaultProperty": true
+        }
+      ]
+    ],
+    "sourceMaps": true
+  },
+  "eslintConfig": {
+    "extends": "@reactioncommerce",
+    "rules": {
+      "node/no-unsupported-features/es-syntax": "off"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

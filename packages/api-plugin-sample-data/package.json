@@ -1,0 +1,51 @@
+{
+  "name": "@reactioncommerce/api-plugin-sample-data",
+  "description": "Plugin that loads sample data for testing/demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction.git",
+  "email": "hello-open-commerce@mailchimp.com",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:reactioncommerce/reaction.git"
+  },
+  "author": {
+    "name": "Mailchimp Open Commerce Engineering",
+    "email": "hello-open-commerce@mailchimp.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^1.16.9",
+    "@reactioncommerce/file-collections": "^0.9.3",
+    "@reactioncommerce/logger": "^1.1.5",
+    "@reactioncommerce/random": "^1.0.2",
+    "envalid": "^7.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1",
+    "babel-plugin-rewire-exports": "^2.0.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-import-meta": "~1.0.0"
+  },
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "test:file": "jest --no-cache --watch --coverage=false"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

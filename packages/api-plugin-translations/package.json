@@ -1,0 +1,61 @@
+{
+  "name": "@reactioncommerce/api-plugin-translations",
+  "description": "Translations plugin for the Reaction API",
+  "version": "1.2.2",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "engineering@reactioncommerce.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-translations"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "engineering@reactioncommerce.com",
+    "url": "https://reactioncommerce.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^1.16.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1"
+  },
+  "eslintConfig": {
+    "extends": "@reactioncommerce",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "impliedStrict": true
+      }
+    },
+    "env": {
+      "es6": true,
+      "jasmine": true
+    },
+    "rules": {
+      "node/no-missing-import": "off",
+      "node/no-missing-require": "off",
+      "node/no-unsupported-features/es-syntax": "off",
+      "node/no-unpublished-import": "off",
+      "node/no-unpublished-require": "off"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

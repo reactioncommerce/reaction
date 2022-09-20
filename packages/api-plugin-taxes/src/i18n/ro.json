@@ -1,0 +1,46 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Impozite",
+          "taxesTitle": "Impozite"
+        },
+        "dashboard": {
+          "taxesLabel": "Impozite",
+          "taxesTitle": "Impozite",
+          "taxesDescription": "Configurare impozitare"
+        },
+        "taxGrid": {
+          "taxCode": "Cod",
+          "rate": "Rată",
+          "country": "Țară",
+          "region": "Regiune",
+          "postal": "Poştal"
+        },
+        "settings": {
+          "taxSettingsLabel": "Setări impozite"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Nu s-au gasit valorile de impozitare personalizată.",
+          "shopCustomTaxRatesSaved": "Rata de impozitarea personalizată a fost salvată.",
+          "shopCustomTaxRatesFailed": "Eroare la salvarea ratei de impozitare.-",
+          "shopTaxMethodsSaved": "Metoda de impozitare a fost salvată.",
+          "shopTaxMethodsAlreadySaved": "Codurile fiscale sunt deja încărcate",
+          "shopTaxMethodsFailed": "Acutualizarea metodei de impozitare a eșuat.",
+          "customRatesLabel": "Tarife personalizate",
+          "customRatesDescription": "Tarife personalizate",
+          "taxCode": "Codul fiscal",
+          "taxShipping": "Includeți transportul",
+          "taxRate": "Rată",
+          "discountsIncluded": "Includeți reduceri ",
+          "taxable": "Impozabil",
+          "nottaxable": "Neimpozabil",
+          "confirmRateDelete": "Confirmați ștergerea ratei de impozitare"
+        }
+      }
+    }
+  }
+}]

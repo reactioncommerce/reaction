@@ -1,0 +1,11 @@
+{
+  "_id": "4YpRpvw7rGBoqnbxg",
+  "name": "globalFlatRateGround",
+  "label": "Global Flat Rate - Ground",
+  "fulfillmentTypes": ["shipping"],
+  "group": "Ground",
+  "cost": 5,
+  "handling": 2,
+  "rate": 9,
+  "isEnabled": true
+}

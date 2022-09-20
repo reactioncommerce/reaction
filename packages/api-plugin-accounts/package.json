@@ -1,0 +1,58 @@
+{
+  "name": "@reactioncommerce/api-plugin-accounts",
+  "description": "Accounts plugin for the Reaction API",
+  "version": "2.0.4",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "hello-open-commerce@mailchimp.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-accounts"
+  },
+  "author": {
+    "name": "Reaction Commerce",
+    "email": "hello-open-commerce@mailchimp.com",
+    "url": "https://mailchimp.com/developer/open-commerce"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^1.16.9",
+    "@reactioncommerce/db-version-check": "^1.0.0",
+    "@reactioncommerce/logger": "^1.1.3",
+    "@reactioncommerce/random": "^1.0.2",
+    "@reactioncommerce/reaction-error": "^1.0.1",
+    "envalid": "^6.0.1",
+    "graphql": "^15.2.0",
+    "graphql-fields": "^2.0.3",
+    "lodash": "^4.17.15",
+    "ramda": "^0.28.0",
+    "simpl-schema": "^1.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1",
+    "babel-plugin-rewire-exports": "^2.0.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-import-meta": "~1.0.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:file": "jest --no-cache --watch --coverage=false"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

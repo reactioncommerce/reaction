@@ -1,0 +1,50 @@
+{
+  "name": "@reactioncommerce/random",
+  "version": "1.0.2",
+  "description": "A drop-in replacement for the 'random' Meteor package",
+  "browser": "./dist/browser.js",
+  "main": "./dist/server.js",
+  "scripts": {
+    "build": "rimraf ./dist && babel src --out-dir ./dist",
+    "prepublishOnly": "npm run build",
+    "lintfix": "eslint ./src --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "watch": "watch 'npm run build' src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/random"
+  },
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction#readme",
+  "devDependencies": {
+    "rimraf": "^2.6.2",
+    "watch": "^1.0.2"
+  },
+  "babel": {
+    "presets": [
+      "@babel/env"
+    ],
+    "plugins": [
+      [
+        "add-module-exports",
+        {
+          "addDefaultProperty": true
+        }
+      ]
+    ],
+    "sourceMaps": true
+  },
+  "jest": {
+    "testURL": "http://localhost"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

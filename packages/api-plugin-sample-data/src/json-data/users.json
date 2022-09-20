@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "61b242582258c00013f58f3f",
+    "services": {
+      "password": {
+        "bcrypt": "$2a$10$S5PiK/jfwGwa//57kGFfXex5Fz0GtWJ8RdrO/3qP3igYY1BHDUUum"
+      }
+    },
+    "createdAt": 1639072344315,
+    "updatedAt": 1639072344315,
+    "emails": [
+      {
+        "address": "admin@example.org",
+        "verified": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "shortcut": {
+          "catalogLabel": "Каталог",
+          "catalogTitle": "Каталог"
+        },
+        "dashboard": {
+          "catalogLabel": "Каталог",
+          "catalogTitle": "Каталог",
+          "catalogDescription": "Торговая площадка Каталог"
+        },
+        "settings": {
+          "catalogSettingsLabel": "Настройки каталога",
+          "catalogSettingsTitle": "Настройки каталога",
+          "catalogSettingsDescription": "Торговая площадка Каталог"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Ревизии продукта"
+        }
+      }
+    }
+  }
+}]

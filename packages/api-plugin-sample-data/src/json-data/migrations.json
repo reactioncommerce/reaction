@@ -1,0 +1,10 @@
+[
+  {
+      "namespace" : "accounts",
+      "version" : "3-0"
+  },
+  {
+      "namespace" : "simple-authorization",
+      "version" : "5-0"
+  }
+]

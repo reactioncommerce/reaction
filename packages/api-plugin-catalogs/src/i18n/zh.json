@@ -1,0 +1,27 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "shortcut": {
+          "catalogLabel": "目录",
+          "catalogTitle": "目录"
+        },
+        "dashboard": {
+          "catalogLabel": "目录",
+          "catalogTitle": "目录",
+          "catalogDescription": "市场目录"
+        },
+        "settings": {
+          "catalogSettingsLabel": "目录设置",
+          "catalogSettingsTitle": "目录设置",
+          "catalogSettingsDescription": "市场目录"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "产品修订"
+        }
+      }
+    }
+  }
+}]

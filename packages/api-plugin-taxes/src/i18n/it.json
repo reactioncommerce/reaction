@@ -1,0 +1,46 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Tasse",
+          "taxesTitle": "Tasse"
+        },
+        "dashboard": {
+          "taxesLabel": "Tasse",
+          "taxesTitle": "Tasse",
+          "taxesDescription": "configurazione fiscale"
+        },
+        "taxGrid": {
+          "taxCode": "Codice",
+          "rate": "Tasso",
+          "country": "Nazione",
+          "region": "Regione",
+          "postal": "postale"
+        },
+        "settings": {
+          "taxSettingsLabel": "Impostazioni fiscali"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Nessun aliquote personalizzato trovato.",
+          "shopCustomTaxRatesSaved": "aliquota fiscale personalizzato salvato.",
+          "shopCustomTaxRatesFailed": "Errore durante il salvataggio aliquota fiscale.",
+          "shopTaxMethodsSaved": "Metodo fiscale salvata.",
+          "shopTaxMethodsAlreadySaved": "I codici fiscali già caricati",
+          "shopTaxMethodsFailed": "Impossibile salvare il metodo fiscale.",
+          "customRatesLabel": "tariffe personalizzate",
+          "customRatesDescription": "tariffe personalizzate",
+          "taxCode": "Codice Fiscale",
+          "taxShipping": "include la spedizione",
+          "taxRate": "Tasso",
+          "discountsIncluded": "Includi sconti",
+          "taxable": "Imponibile",
+          "nottaxable": "non imponibile",
+          "confirmRateDelete": "Confermare fiscale tasso di eliminazione"
+        }
+      }
+    }
+  }
+}]

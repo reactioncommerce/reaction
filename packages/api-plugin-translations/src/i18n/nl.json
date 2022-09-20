@@ -1,0 +1,1054 @@
+[
+  {
+    "language": "Dutch",
+    "i18n": "nl",
+    "ns": "reaction-translations",
+    "translation": {
+      "reaction-translations": {
+        "changesNotSaved": "Er was een probleem met het opslaan van uw wijzigingen",
+        "changesSaved": "Wijzigingen opgeslagen",
+        "languages": {
+          "select": "Selecteer Taal"
+        },
+        "currencies": {
+          "select": "Selecteer valuta"
+        },
+        "admin": {
+          "landing": {
+            "createFirstShop": "Maak uw eerste shop"
+          },
+          "shortcut": {
+            "addProductLabel": "Voeg producten toe",
+            "accountsLabel": "Accounts",
+            "dashboardLabel": "Dashboard"
+          },
+          "dashboard": {
+            "i18NLabel": "i18n",
+            "i18NTitle": "i18n",
+            "i18NDescription": "Internationalisatie utilities",
+            "routingLabel": "Routing",
+            "routingTitle": "Routing",
+            "routingDescription": "Routing utilities",
+            "filtrationLabel": "Filteren",
+            "filtrationDescription": "Producten Filteren",
+            "coreTitle": "Dashboard",
+            "packageGroupActionsLabel": "Acties",
+            "packageGroupSettingsLabel": "Instellingen"
+          },
+          "groups": {
+            "addUserError": "Groeps wijziging voor dit account is niet mogelijk",
+            "removeUserError": "Verwijderen van dit account is niet mogelijk",
+            "appearance": "Uiterlijk",
+            "email": "Email",
+            "connect": "Verbinden",
+            "description": "Omschrijving",
+            "core": "Core",
+            "remove": "Verwijder van Groep",
+            "dashboard": "Dashboard",
+            "misc": "Overige",
+            "paymentMethod": "Betaling Providers",
+            "utilities": "Utilities"
+          },
+          "settings": {
+            "accountSettingsLabel": "Login services",
+            "accountSettingsTitle": "Login services",
+            "accountSettingsDescription": "Authenticatie met social media",
+            "saveSuccess": "Instellingen geüpdatet",
+            "saveProcessing": "Instellingen opslaan...",
+            "saveFailed": "Instellingen opslaan is mislukt.",
+            "addShopMemberLabel": "Voeg shop gebruiker toe",
+            "permissionsSettingsLabel": "Rechten",
+            "localizationAndI18NLabel": "Localisatie en i18n",
+            "settingsLabel": "Instellingen",
+            "shopSettingsLabel": "Shop",
+            "import": "Import",
+            "shop": {
+              "header": "Shop",
+              "allowGuestCheckout": "Sta gast checkout toe",
+              "descriptionLabel": "Omschrijving",
+              "descriptionPlaceholder": "Voeg een omschrijving toe voor de shop",
+              "emailLabel": "Email",
+              "emailPlaceholder": "Voeg een shop contact email toe",
+              "keywordsLabel": "Sleutelwoorden",
+              "keywordsPlaceholder": "Voeg sleutelwoorden toe voor de shop",
+              "label": "Shop",
+              "nameLabel": "Naam",
+              "namePlaceholder": "Voeg een naam toe voor de shop",
+              "slugLabel": "Slug",
+              "slugPlaceholder": "Voeg een slug toe voor de shop"
+            },
+            "address": {
+              "addNewAddress": "Voeg nieuw adres toe",
+              "address1Label": "Straat",
+              "address2Label": "Suite, Postbus etc (optioneel)",
+              "cityLabel": "Stad",
+              "companyLabel": "Bedrijfsnaam",
+              "companyPlaceholder": "Voeg de wettelijke naam toe van het bedrijf",
+              "countryLabel": "Land",
+              "editAddress": "Wijzig het adres van de shop",
+              "edit": "Wijzigen",
+              "fullNameLabel": "Volledige naam",
+              "fullNamePlaceholder": "Voeg de volledige naam van het aanspreek voor de shop toe",
+              "isCommercialLabel": "Dit is een commercieel adres",
+              "initialViewText": "Een fysiek adres voor de shop is nog niet aangemaakt.",
+              "label": "Adres",
+              "phoneLabel": "Telefoon",
+              "postalLabel": "Postcode",
+              "regionLabel": "Regio (Provincie/Staat)"
+            },
+            "payment": {
+              "header": "Betaling"
+            },
+            "taxes": {
+              "header": "Belasting"
+            },
+            "addressValidation": {
+              "header": "Adres Validatie Services"
+            },
+            "system": {
+              "header": "Systeem Informatie"
+            },
+            "email": {
+              "header": "Email"
+            },
+            "localization": {
+              "header": "Localisatie"
+            },
+            "emailTemplates": {
+              "header": "Email Templates"
+            },
+            "options": {
+              "label": "Opties"
+            },
+            "openexchangerates": {
+              "refreshPeriod": "Vernieuwen"
+            },
+            "productSettingsLabel": "Product Instellingen",
+            "productDetailsLabel": "Product Details",
+            "settings": "Instellingen",
+            "templateSettingsLabel": "Email Templates"
+          },
+          "userAccountDropdown": {
+            "profileLabel": "Profiel"
+          },
+          "alerts": {
+            "shopGeneralSettingsSaved": "Shop algemene instellingen opgeslagen.",
+            "shopGeneralSettingsFailed": "Shop algemene instellingen update mislukt.",
+            "shopAddressSettingsSaved": "Shop adres instellingen opgeslagen.",
+            "shopAddressSettingsFailed": "Shop adres instellingen update mislukt.",
+            "shopExternalServicesSettingsSaved": "Shop externe services settings opgeslagen.",
+            "shopExternalServicesSettingsFailed": "Shop externe services settings update mislukt.",
+            "shopOptionsSettingsSaved": "Shop instellingen opgeslagen.",
+            "shopOptionsSettingsFailed": "Shop instellingen update mislukt."
+          },
+          "createProduct": "Voeg product toe",
+          "showingFilteredProducts": "{{count}} producten gevonden op het geimporteerde bestand.",
+          "showingFilteredProducts_plural": "{{count}} gevonden producten worden getoond van geimporteerde bestand(en).",
+          "missingFilteredProducts": "{{count}} product ID kon niet gevonden worden in de catalogus.",
+          "missingFilteredProducts_plural": "{{count}} product IDs konden niet gevonden worden in de catalogus.",
+          "noProductsFoundText": "Geen product IDs konden gevonden worden in de catalogus.",
+          "productAdmin": {
+            "details": "Details",
+            "metadata": "Metadata",
+            "metafields": "Meta velden",
+            "mediaGallery": "Media Gallerij"
+          },
+          "importCard": {
+            "title": "Filter producten op file",
+            "filterProducts": "Filter producten",
+            "import": "Import",
+            "importHelpText": "Import .csv bestanden met de product IDs in de eerste column."
+          },
+          "addRemoveTags": {
+            "inputPlaceholder": "Selecteer een of meer tag(s)",
+            "invalidSelection": "Selecteer aub een of meer tags",
+            "addConfirmation": "Tag {{tags}} toegevoegd aan {{count}} product",
+            "addConfirmation_plural": "Tag {{tags}} toegevoegd aan {{count}} producten",
+            "removeConfirmation": "Tag {{tags}} verwijderd van {{count}} product",
+            "removeConfirmation_plural": "Tag {{tags}} verwijderd van {{count}} producten",
+            "errorMessage": "Er is iets mis gegaan"
+          },
+          "productTable": {
+            "header": {
+              "order": "Order",
+              "price": "Prijs",
+              "qty": "Qty",
+              "product": "Product",
+              "id": "ID",
+              "title": "Titel",
+              "visible": "Zichtbaar",
+              "published": "Gepubliceerd"
+            },
+            "filters": {
+              "placeholder": "Filter producten"
+            },
+            "bulkActions": {
+              "actions": "Acties",
+              "addRemoveTags": "Voeg toe/Verwijder tags",
+              "allProducts": "Alle producten",
+              "archive": "Archiveren",
+              "archiveMessage": "Gearchieveerde product wordt verwijdert van admin en klant schermen.",
+              "archiveMessage_plural": "Gearchieveerde producten worden verwijdert van admin en klant schermen.",
+              "archiveSuccess": "{{count}} product is gearchiveerd",
+              "archiveSuccess_plural": "{{count}} producten zijn gearchiveerd",
+              "archiveTitle_plural": "Archiveer {{count}} producten?",
+              "archiveTitle": "Archiveer {{count}} producten?",
+              "duplicate": "Dupliceer",
+              "duplicateMessage": "Dupliceer het geselecteerde product en de bijbehorende varianten",
+              "duplicateMessage_plural": "Dupliceer de geselecteerde producten en de bijbehorende varianten",
+              "duplicateSuccess": "{{count}} product is gedupliceerd",
+              "duplicateSuccess_plural": "{{count}} producten zijn gedupliceerd",
+              "duplicateTitle_plural": "Dupliceer {{count}} producten?",
+              "duplicateTitle": "Dupliceer {{count}} product?",
+              "error": "Een iets mis gegaan tijdens het uitvoeren van deze taak",
+              "filterByFile": "Filter op file",
+              "filteredProducts": "Gefilterde producten",
+              "makeHidden": "Maak Ontzichtbaar",
+              "makeHiddenMessage": "Verberg het geselecteerde product op uw storefront. Deze wijzigingen moeten gepubliceerd worden om effect te hebben.",
+              "makeHiddenMessage_plural": "Verberg de geselecteerde producten op uw storefront. Deze wijzigingen moeten gepubliceerd worden om effect te hebben.",
+              "makeHiddenSuccess": "{{count}} product is nu verborgen",
+              "makeHiddenSuccess_plural": "{{count}} producten zijn nu verborgen",
+              "makeHiddenTitle_plural": "Verberg {{count}} producten?",
+              "makeHiddenTitle": "Verberg {{count}} product?",
+              "makeVisible": "Maak Zichtbaar",
+              "makeVisibleMessage": "Toon {{count}} product op uw storefront. Deze wijzigingen moeten gepubliceerd worden om effect te hebben.",
+              "makeVisibleMessage_plural": "Toon {{count}} product op uw storefront. Deze wijzigingen moeten gepubliceerd worden om effect te hebben.",
+              "makeVisibleSuccess": "{{count}} product is nu zichtbaar",
+              "makeVisibleSuccess_plural": "{{count}} producten zijn nu zichtbaar",
+              "makeVisibleTitle_plural": "Maak {{count}} producten zichtbaar?",
+              "makeVisibleTitle": "Maak {{count}} product zichtbaar?",
+              "publish": "Publiceer",
+              "publishMessage": "Publiceer wijzigingen van het geselecteerde product in uw storefront?",
+              "publishMessage_plural": "Publiceer wijzigingen van de geselecteerde producten in uw storefront",
+              "publishTitle_plural": "Publiceer {{count}} producten?",
+              "publishTitle": "Publiceer {{count}} product?",
+              "published": "{{count}} product gepubliceerd",
+              "published_plural": "{{count}} producten gepubliceerd",
+              "restore": "Herstel",
+              "restoreTitle_plural": "Herstel {{count}} producten?",
+              "restoreTitle": "Herstel {{count}} product?",
+              "selectedCount": "{{count}} geselecteerd",
+              "totalCount_plural": "{{count}} producten",
+              "totalCount": "{{count}} product"
+            }
+          },
+          "products": "Producten",
+          "helpText": {
+            "attributeLabel": "De attribuut label omschrijft de categorie van een variant, bijvoorbeeld, \"Kleur\" of \"Formaat\". In de meeste gevallen wordt aangeraden om dezelfde waarde in te vullen voor alle varianten op hetzelfde niveau.",
+            "compareAtPrice": "Originele prijs of MSRP. Stel nul in om te wissen.",
+            "optionInventoryAvailableToSell": "Inventaris beschikbaar voor verkoop",
+            "optionInventoryInStock": "Inventaris op voorraad",
+            "optionTitle": "De korte titel is de waarde voor het attribuut label. Bijvoorbeeld, een variant met het attribuut label \"Kleur\" kan de korte titel hebben \"Rood\". Dit is vaak getoond in een select lijst of knoppen set op een product detail pagina op uw storefront.",
+            "price": "Aankoop prijs",
+            "title": "De volledige titel is vaak getoond in de winkelwagen, bij checkout, en order overzichten en facturen. Het is aangreaden om een volledige beschrijving te geven van de gekozen variant. Bijvoorbeeld, als dit een optie met korte titel \"Large\" is, de parent variant heeft een korte titel \"Rood\", en het product titel is \"Fancy T-Shirt\", dan zou een goede titel zijn \"Fancy T-Shirt - Rood - Large\".",
+            "variantBackorderToggle": "Nabestelling toestemming is nu beheerd door instellingen",
+            "variantInventoryAvailableToSell": "Variant inventaris beschikbare hoeveelheid voor verkoop is berkend door opties inventaris",
+            "variantInventoryInStock": "Variant inventaris op vooraad hoeveelheid is berekend door opties inventaris"
+          },
+          "productVariant": {
+            "attributeLabelLabel": "Atribuut label",
+            "attributeLabelPlaceholder": "Bijvoorbeeld: Kleur, Formaat",
+            "inventoryAvailableToSell": "Beschikbaar voor verkoop",
+            "inventoryInStock": "Op voorraad",
+            "optionTitlePlaceholder": "Bijvoorbeeld: Rood, Large",
+            "titlePlaceholder": "Bijvoorbeeld: Fancy T-Shirt - Rood - Large"
+          },
+          "tooltip": {
+            "validationError": "Validatie error"
+          }
+        },
+        "accounts": {
+          "addMember": "Voeg gebruiker toe",
+          "shopMembers": "Shop gebruikers",
+          "guests": "Gasten"
+        },
+        "app": {
+          "add": "Voeg toe",
+          "editMode": "Edit modus",
+          "createContent": "Voeg content toe",
+          "auto": "Automatisch",
+          "save": "Opslaan",
+          "saveAndContinue": "Opslaan en doorgaan",
+          "saveChanges": "Sla wijzigingen op",
+          "selectOne": "(Selecteer één)",
+          "cancel": "Annuleren",
+          "success": "Geslaagd",
+          "error": "Error",
+          "submit": "Toevoegen",
+          "delete": "Verwijderen",
+          "deleted": "Verwijdert",
+          "archive": "Archiveren",
+          "archived": "Gearchiveerd",
+          "create": "Toevoegen",
+          "close": "Sluiten",
+          "settings": "Instellingen",
+          "loading": "Laden",
+          "toggle": "Toggle",
+          "toggleEditMode": "Toggle edit modus",
+          "warning": "Oeps!",
+          "unauthorizedMessage": "U heeft niet de juiste rechten om deze content te zien",
+          "updateSettings": "Update instellingen",
+          "monthOptions": "Kies maand",
+          "yearOptions": "Kies jaar",
+          "shopSettings": "Shop instellingen",
+          "dashboard": "Dashboard",
+          "print": "Afdrukken",
+          "notFound": "Deze pagina was niet gevonden.",
+          "pageNotFound": "Deze pagina was niet gevonden.",
+          "notFoundTitle": "Oeps!",
+          "notFoundError": "Pagina niet gevonden.",
+          "productNotFound": "Dit product was niet gevonden.",
+          "loadMoreProducts": "Laad meer producten",
+          "noProductsFound": "Geen producten gevonden.",
+          "private": "Prive",
+          "public": "Openbaar",
+          "shortcut": {
+            "addProductLabel": "Voeg product toe",
+            "accountsLabel": "Accounts"
+          },
+          "visible": "Zichtbaar",
+          "hidden": "Verborgen"
+        },
+        "searchSettings": {
+          "productSearchSettings": {
+            "panelTitle": "Product zoeken",
+            "includeTitle": "Titel invoegen",
+            "includeDescription": "Omschrijving invoegen",
+            "includePageTitle": "Pagina titel invoegen",
+            "includeDetails": "Details invoegen",
+            "includeVendor": "Verkoper invoegen"
+          },
+          "orderSearchSettings": {
+            "panelTitle": "Order zoek instellingen"
+          },
+          "accountSearchSettings": {
+            "panelTitle": "Account zoek instellingen"
+          },
+          "noSettings": "Geen instellingen op het moment beschikbaar",
+          "settingsSaved": "Zoek instellingen opgeslagen",
+          "settingsfailed": "Zoek instellingen update mislukt"
+        },
+        "shopSettings": {
+          "localization": "Localisatie",
+          "options": "Opties",
+          "paymentMethods": "Betaal methoden",
+          "pluginVersions": {
+            "title": "Plugin Versies"
+          },
+          "systemInfo": {
+            "apiVersionLabel": "API Versie",
+            "installedPluginsLabel": "Geïnstalleerde Plugins",
+            "mongoVersionLabel": "MongoDB Versie",
+            "title": "Systeem Informatie"
+          },
+          "externalServices": "Externe services",
+          "shopBrandAssetsSaved": "Shop branding assets opgeslagen",
+          "shopBrandAssetsFailed": "Shop branding assets mislukt",
+          "shopLocalizationSettingsSaved": "Shop localisatie settings opgeslagen.",
+          "shopLocalizationSettingsFailed": "Shop localisatie settings update mislukt.",
+          "shopLogo": {
+            "description": "Upload logo bestanden of lever URLs aan voor externe afbeelding bestanden voor de store logo's. Externe URLs overschrijven geüploade logo's.",
+            "title": "Shop Logo's",
+            "primaryShopLogoUrlTitle": "Primaire logo URL",
+            "primaryShopLogoUrlDescription": "Dit is de URL voor deze shop's primaire logo, deze wordt gebruikt overal waar een logo wordt getoond in de UI"
+          },
+          "shopPaymentMethodsSaved": "Shop Betaling Methoden instellingen opgeslagen.",
+          "shopPaymentMethodsFailed": "Shop Betaling Methoden instellingen update mislukt.",
+          "storefrontUrls": {
+            "description": "Gebruik deze velden om uw storefront URLs te voorzien op meerdere pagina's voor links in emails.",
+            "storefrontHomeUrlTitle": "Homepagina URL",
+            "storefrontHomeUrlDescription": "URL van uw shops homepagina",
+            "storefrontOrderUrlTitle": "Enkele Order pagina URL",
+            "storefrontOrderUrlDescription": "URL van uw shops enkele order pagina, met `:orderId` en `:token` variabelen toegevoegd",
+            "storefrontOrderUrlHelpText": "Om email links te kunnen gebruiken, moet u `:orderId` en `:token` toevoegen in dit veld. Deze dienen als placeholders die vervangen worden met de juiste informatie in de email template wanneer een order email is gegenereerd. Bijvoorbeeld: http://shop.example.com/my-orders/:orderId?token=:token",
+            "storefrontOrdersUrlTitle": "Orders pagina URL",
+            "storefrontOrdersUrlDescription": "URL van uw shops order pagina",
+            "storefrontAccountProfileUrlTitle": "Account Profiel pagina URL",
+            "storefrontAccountProfileUrlDescription": "URL van uw shops account profiel homepagina",
+            "title": "Storefront Urls",
+            "update": "Update storefront Urls"
+          }
+        },
+        "notifications": {
+          "body": {
+            "noNotifications": "Nog geen notificaties",
+            "markAllAsRead": "Markeer alles als gelezen",
+            "recent": "Recent",
+            "viewAll": "Toon alles"
+          },
+          "messages": {
+            "orderCanceled": "Uw order was geannuleerd.",
+            "newOrder": "Uw order was geaccepteerd.",
+            "forAdmin": "U heeft een nieuwe order.",
+            "orderDelivered": "Uw order is geleverd.",
+            "orderProcessing": "Uw order wordt verwerkt.",
+            "orderShipped": "Uw order is verzonden."
+          }
+        },
+        "header": {
+          "tagsAdd": "Voeg tag toe",
+          "search": "Zoek producten..."
+        },
+        "productDetail": {
+          "productManagement": "Product management",
+          "whenYouAreDone": "wanneer u klaar bent met wijzigen.",
+          "tags": "Tags",
+          "tagsAdd": "Voeg tag toe",
+          "tagExists": "Tag bestaat al, of is leeg.",
+          "tagInUse": "Tag is in gebruik en kan niet verwijdert worden.",
+          "dropFiles": "Sleep bestanden voor upload",
+          "addInventory": "Voeg inventaris toe",
+          "barcode": "Barcode",
+          "confirmDeleteBarcode": "Weet u zeker dat u de barcode wilt verwijderen",
+          "details": "Details",
+          "detailsName": "Detail naam",
+          "detailsInfo": "Detail informatie",
+          "generate": "Genereer",
+          "generateBarcodes": "Genereer barcodes",
+          "hideBarcodes": "Verberg barcodes",
+          "options": "Opties",
+          "addToCart": "Voeg to aan winkelwagen",
+          "chooseOptions": "Kies aub eerst een optie voordat u aan winkelwagen toevoegd",
+          "outOfStock": "Sorry, dit item is niet meer op voorraad!",
+          "productArchiveError": "Er was een error bij het verzenden van {{product}} naar het archief.",
+          "archiveErrorTheProduct": "het product",
+          "publishFirst": "Publiceer product voordat u het toevoegd aan de winkelwagen.",
+          "quantityAbbreviation": "QTY",
+          "selectOption": "Selecteer een optie voordat u het toevoegd aan de winkelwagen.",
+          "addedToCart": "toegevoegd",
+          "showBarcodes": "Toon barcodes",
+          "soldOut": "Uitverkocht!",
+          "inStock": "Op voorraad",
+          "backOrder": "Nalevering",
+          "limitedSupply": "Beperkte voorraad",
+          "publishProductVisible": "{{product}} is nu zichtbaar",
+          "publishProductHidden": "{{product}} is nu verborgen",
+          "clonedAlert": "{{product}} gekopieerd",
+          "clonedAlert_plural": "{{product}} gekopieerd",
+          "archivedAlert": "{{product}} gearchiveerd",
+          "archivedAlert_plural": "{{product}} gearchiveerd",
+          "theProduct": "het product",
+          "theSelectedProducts": "de geselecteerde producten",
+          "startTracking": "Begin tracking",
+          "addBarcode": "Voeg barcode toe",
+          "quantity": "Hoeveelheid",
+          "quantityGreaterThanZero": "Error: Hoeveelheid moet groter zijn dan nul",
+          "notFoundTitle": "Oeps!",
+          "notFoundError": "Dit is niet het product waar u naar zocht."
+        },
+        "tags": {
+          "tagName": "Tag naam",
+          "addTag": "Voeg tag toe",
+          "updateTag": "Update tag",
+          "addGroupTag": "Voeg groep tag toe",
+          "addSubTag": "Voeg sub tag toe",
+          "removeTag": "Verwijder tag",
+          "createTag": "Maak tag aan"
+        },
+        "productDetailEdit": {
+          "editOption": "Wijzig optie",
+          "productSettings": "Product instellingen",
+          "product": "Product",
+          "size": "Formaat",
+          "title": "Titel",
+          "untitledProduct": "Product zonder naam",
+          "parmalink": "Permalink",
+          "pageTitle": "Subtitel",
+          "vendor": "Verkoper",
+          "description": "Omschrijving",
+          "originCountry": "Land van herkomst",
+          "facebookMsg": "Facebook bericht",
+          "twitterMsg": "Twitter bericht",
+          "pinterestMsg": "Pinterest bericht",
+          "googleplusMsg": "Google+ bericht",
+          "editVariant": "Wijzig variant",
+          "variantOptions": "Variant opties",
+          "variantDetails": "Variant details",
+          "duplicateVariant": "Dupliceer",
+          "addVariantOption": "Voeg optie toe",
+          "addVariantFail": "Variant toevoegen mislukt. {{err}}",
+          "addVariant": "Variant toegevoegd",
+          "archiveProductsFail": "Product(en) mislukt om te archiveren. {{err}}",
+          "archiveProductsSuccess": "Product(en) archiveren geslaagd.",
+          "archiveProductVariantsFail": "Variant(en) mislukt om te archiveren. {{err}}",
+          "archiveProductVariantsSuccess": "Variant(en) archiveren geslaagd.",
+          "cloneProductSuccess": "Product(en) kopieren geslaagd.",
+          "cloneProductFail": "Product(en) mislukt om te kopieren. {{err}}",
+          "cloneVariantFail": "Variant(en) mislukt om te kopieren. {{err}}",
+          "removeVariant": "Verwijder",
+          "removeVariantConfirm": "Weet u zeker dat u {{title}} wilt verwijderen?",
+          "restoreVariantConfirm": "Weet u zeker dat u {{title}} wilt herstellen uit het archief?",
+          "restoreVariantFail": "Herstellen voor {{title}} mislukt.",
+          "restoreVariantSuccess": "{{title}} herstellen geslaagd.",
+          "updateProductFieldSuccess": "Product(en) updaten geslaagd.",
+          "updateProductFieldFail": "Product(en) mislukt om te updaten. {{err}}",
+          "archiveVariantConfirm": "Weet u zeker dat u {{title}} wilt archiveren?",
+          "addProductTagSuccess": "Tag(s) toegevoegd aan het product.",
+          "addProductTagFail": "Toevoegen van Tag(s) mislukt. {{err}}",
+          "removeProductTagSuccess": "Tag(s) verwijdert van het product.",
+          "removeProductTagFail": "Verwijderen van Tag(s) op het product mislukt. {{err}}",
+          "thisVariant": "deze variant",
+          "thisOption": "deze optie",
+          "duplicateProduct": "Dupliceer product",
+          "pinProduct": "Pin product",
+          "toggleSize": "Toggle Formaat",
+          "archiveProduct": "Archiveer het product",
+          "restoreProduct": "Herstel het product uit archief",
+          "archiveThisProduct": "Archiveer dit product?",
+          "archiveSelectedProducts": "Archiveer geselecteerde producten?",
+          "publish": "Publiceer",
+          "published": "Gepubliceerd",
+          "moreOptions": "Meer Opties",
+          "details": "Details",
+          "noSelectedProducts": "Geen geselecteerde producten. Gebruik de ",
+          "orShiftCtrlCmd": " of shift|ctrl|cmd + klik op producten om meerdere te selecteren. Met shift selecteerd u een aansluitende bereik van producten.",
+          "makeVisible": "Zichtbaar maken",
+          "hideProduct": "Verberg product",
+          "productIsVisible": "Product is zichtbaar",
+          "productIsNotVisible": "Product is niet zichtbaar",
+          "template": "Template",
+          "templateSelectPlaceholder": "Selecteer een template",
+          "metafieldKey": "Sleutel",
+          "metafieldValue": "Waarde"
+        },
+        "productVariant": {
+          "addVariantOptions": "Voeg opties toe om 'Voeg toe aan winkelwagen' knop beschikbaar te maken",
+          "title": "Titel",
+          "price": "Prijs",
+          "prices": "Prijzen",
+          "optionTitle": "Korte titel",
+          "barcode": "Barcode",
+          "compareAtPrice": "Vergelijk op prijs",
+          "fulfillmentService": "Verwerking service",
+          "weight": "Gewicht",
+          "length": "Lengte",
+          "width": "Breedte",
+          "height": "Hoogte",
+          "taxable": "Belastbaar",
+          "taxCode": "Belasting code",
+          "taxDescription": "Belasting omschrijving",
+          "originCountry": "Land van herkomst",
+          "selectTaxCode": "Selecteer belasting code",
+          "updateVariantSuccess": "Product variant update geslaagd",
+          "updateVariantFail": "Update van de product variant mislukt",
+          "updateVariantPricesSuccess": "Variant Prijzen updates geslaagd",
+          "updateVariantPricesFail": "Update van de variant prijzen mislukt",
+          "pricePublishWarning": "Wijzigingen van de prijzen worden gepubliseerd bij opslaan"
+        },
+        "variantList": {
+          "moreOptions": "Er zijn meer opties beschikbaar voor de huidige selectie.",
+          "createVariant": "Maak variant aan"
+        },
+        "gridPackage": {
+          "enable": "Inschakelen",
+          "errorDisabling": "Error uitschakelen package: ",
+          "errorEnabling": "Error inschakelen package: ",
+          "details": "Details",
+          "disable": "Uitschakelen",
+          "disableConfirm": "Weet u zeker dat u {{app}} wilt uitschakelen?",
+          "pkgEnabled": "{{app}} is nu ingeschakeld.",
+          "pkgDisabled": "{{app}} is nu uitgeschakeld."
+        },
+        "gridSettingsPanel": {
+          "title": "Grid instellingen",
+          "selected": "Geselecteerd"
+        },
+        "cartDrawer": {
+          "empty": "Wij zijn verdrietig. Uw winkelwagen is leeg.",
+          "keepShopping": "Verder met shoppen",
+          "checkout": "Afrekenen",
+          "new": "Nieuw",
+          "coreOrderWorkflow/created": "Aangemaakt",
+          "coreOrderWorkflow/processing": "In behandeling",
+          "coreOrderWorkflow/completed": "Afgerond",
+          "coreOrderWorkflow/canceled": "Geannuleerd",
+          "coreOrderWorkflow/picked": "Picked",
+          "coreOrderWorkflow/packed": "Ingepakt",
+          "coreOrderWorkflow/labeled": "Gelabeld",
+          "coreOrderWorkflow/shipped": "Verzonden"
+        },
+        "cartSubTotals": {
+          "discount": "Korting",
+          "head": "Uw winkelwagen",
+          "items": "Items in winkelwagen",
+          "orderItems": "Items in order",
+          "subtotal": "Sub totaal",
+          "shipping": "Verzending",
+          "surcharge": "Toeslag",
+          "tax": "Belasting",
+          "total": "Totaal"
+        },
+        "cartDrawerItems": {
+          "left": "over",
+          "limitedSupply": "Beperkte voorraad"
+        },
+        "order": {
+          "created": "Aangemaakt",
+          "reference": "Referentie",
+          "cancelInvoice": "Annuleer",
+          "invoice": "Factuur",
+          "ordersNotFound": "Geen orders gevonden",
+          "approveInvoice": "Goedkeuren",
+          "cancelOrderLabel": "Annuleer order",
+          "makeAdjustments": "Maak aanpassingen",
+          "capturePayment": "Ontvang betaling",
+          "paymentCaptured": "Betaling ontvangen",
+          "capturedTotal": "Ontvangen totaal",
+          "canceledLabel": "Geannuleerd",
+          "refundAmount": "Terugbetaling bedrag",
+          "cancelOrder": "Weet u zeker dat u deze order wil annuleren?",
+          "applyRefundToThisOrder": "Betaal {{currencySymbol}}{{refund}} terug aan deze order?",
+          "applyRefundDuringCancelOrder": "Dit zag de order totaal van {{currencySymbol}}{{invoiceTotal}} terug betalen",
+          "cancelOrderThenRestock": "Accepteer, en vul voorraad aan",
+          "cancelOrderNoRestock": "Accepteer, maar vul voorraad niet aan",
+          "applyRefund": "Terugbetaling toepassen",
+          "refunding": "Terugbetalen",
+          "applyDiscount": "Voeg korting toe",
+          "adjustedTotal": "Aangepast totaal",
+          "invalidDiscount": "Korting kan nooit meer zijn dan de originele prijs",
+          "fullDiscountWarning": "Een 100% korting toepassen zal de order verwijderen bij uw betalings provider",
+          "invalidRefund": "Korting(en) kunnen niet groter zijn dan het aangepast totaal",
+          "processor": "Verwerker",
+          "placed": "Geplaatst",
+          "on": "op",
+          "status": "Status",
+          "completed": "Afgerond",
+          "processing": "In behandeling",
+          "destination": "Bestemming",
+          "shipment": "Verzending",
+          "payment": "Betaling",
+          "itemsFrom": "item(s) van",
+          "filter": {
+            "processing": "In behandeling",
+            "status": "Status",
+            "dateRange": "Datum bereik",
+            "shippingStatus": "Verzend status",
+            "new": "Nieuw",
+            "captured": "Ontvangen",
+            "shipped": "Verzonden",
+            "completed": "Afgerond",
+            "canceled": "Geannuleerd",
+            "refunded": "Terugbetaald"
+          },
+          "capture": "Ontvangen",
+          "capturing": "Wordt ontvangen",
+          "bulkActions": "Bulk Acties",
+          "selected": "Geselecteerd",
+          "picked": "Picked",
+          "packed": "Ingepakt",
+          "labeled": "Gelabeld",
+          "shipped": "Verzonden",
+          "printInvoiceAndPickSheet": "Druk factuur en pick sheet af",
+          "generateLabel": "Genereer Label",
+          "approveBulkOrderAction": "Yes, Set Alle Geselecteerde Orders",
+          "approveBulkOrderActionRegression": "Yes, Maak Alle Geselecteerde Orders Ongedaan",
+          "cancelBulkOrderAction": "Nee, Annuleer",
+          "orderAlreadyInState": "{{orderText}} is al {{status}}",
+          "orderSetToState": "{{orderNumber}} {{orderText}} set naar {{status}}",
+          "skippedBulkOrdersAlert": "U heeft geprobeerd {{selectedOrders}} {{orderText}} te wijzigen naar de '{{status}}' status, maar {{numberOfSkippedOrders}} van deze orders {{skippedOrdersText}} zijn niet in de '{{skippedState}}' status geweest en zal alle stappen tot de '{{status}}' status overslaan. Weet u zeker dat u dit wil uitvoeren?",
+          "bulkOrdersRegressionAlert": "U staat op het punt om {{ordersToRegress}} {{orderText}} terug naar de '{{status}}' status te zetten. Weet u zeker dat u deze wijziging wilt doorvoeren?",
+          "paymentCaptureSuccess": "Betalingen ontvangen is geslaagd",
+          "showMore": "Toon meer"
+        },
+        "orderShipping": {
+          "shipTo": "Verzend naar",
+          "notShipped": "Nog niet verzonden",
+          "noTracking": "Geen tracking",
+          "tracking": "Tracking",
+          "printLabels": "Labels",
+          "printShippingLabel": "Druk verzendings label af",
+          "printCustomsLabel": "Druk douane label af",
+          "generateTracking": "Genereer label en tracking",
+          "labelError": "Error bij het aanmaken van een verzendlabel {{err}}",
+          "carrier": "Vervoerder",
+          "addTracking": "Voeg tracking toe",
+          "itemsHaveBeenShipped": "Alle items zijn verzonden",
+          "shipmentEmpty": "Deze verzending heeft geen items",
+          "shipmentPacked": "Alle items zijn ingepakt",
+          "shipped": "Verzonden",
+          "delivered": "Afgeleverd",
+          "shippingNotifyCustomer": "Meld de klant dat zijn/haar product binnenkort zal worden geleverd.",
+          "resendNotification": "Verstuurd verzending notificatie opnieuw",
+          "noShippingInfo": "Geen verzend informatie beschikbaar"
+        },
+        "orderWorkflow": {
+          "orderDetails": "Order details",
+          "invoice": "Factuur",
+          "lineItems": "Line items",
+          "shipmentTracking": "Verzending"
+        },
+        "cartCheckout": {
+          "surprise": "Woah!",
+          "emptyCheckoutCart": "het ziet er naar uit dat uw winkelwagen leeg is!"
+        },
+        "cartCompleted": {
+          "thankYou": "Bedankt!",
+          "itemsFrom": "item(s) van",
+          "yourOrderIsNow": "Uw order is nu",
+          "summaryMessage": "Bedankt voor uw order.",
+          "submitted": "toegevoegd",
+          "processing": "in behandeling",
+          "completed": "afgerond",
+          "registerGuest": "Hallo! Voeg een email toe om updates te krijgen over uw bestelling",
+          "trackYourDelivery": "Order updates zullen verstuurd worden naar",
+          "noOrdersFound": "Geen orders gevonden.",
+          "adminMessage": "U bekijkt orders als een administrator",
+          "orderSummary": "Order Overzicht",
+          "discountTotal": "Korting Totaal",
+          "orderTotal": "Order Totaal",
+          "fulfilledBy": "Verwerkt door",
+          "orderItems": "Items in order",
+          "orderSubtotal": "Subtotaal",
+          "orderShipping": "Verzending",
+          "orderTax": "Belasting"
+        },
+        "checkoutLogin": {
+          "welcome": "Welkom, het is goed om u te zien.",
+          "loginCompleted": "Account afgerond",
+          "createOrLogin": "Maak een account aan of log in",
+          "guestOrLogin": "Log in of betaal als een gast",
+          "continueAsGuest": "Ga verder als gast",
+          "guestMessage": "U kunt betalen zonder het aanmaken van een account. U krijgt later nog een mogelijkheid om uw account aan te maken.",
+          "addEmail": "Voeg email toe",
+          "invalidEmail": "Email is niet correct"
+        },
+        "addressBookGrid": {
+          "addAddress": "Voeg address toe",
+          "chooseAddress": "Kies verzend & factureringsadres",
+          "createDefault": "Kies uw standaard adres",
+          "edit": "Wijzig",
+          "removeAddress": "Verwijder adres",
+          "selectShippingAddress": "Kies een verzend adres",
+          "selectBillingAddress": "Kies een factureringsadres",
+          "cantRemoveThisAddress": "Verwijderen van uw adres is mislukt: {{err}}"
+        },
+        "addressBookAdd": {
+          "addAddress": "Voeg een nieuw adres toe",
+          "createAddress": "Voeg uw standaard adres toe",
+          "failedToAddAddress": "Toevoegen van een adres is mislukt: {{err}}",
+          "validatedAddress": "Wijzigen op basis van validate op uw adres. Controleer deze gegevens alstublieft",
+          "valildationBypassed": "U heeft geprobeerd de adres validatie te negeren"
+        },
+        "addressBookReview": {
+          "enteredAddress": "Ingevuld Adres",
+          "suggestedAddress": "Gesuggereerd Adres",
+          "useSelectedAddress": "Kies geselecteerde adres",
+          "editAddress": "Wijzig gekozen adres",
+          "warning": "Het adres dat u heeft gekozen kan wellicht incorrect of incompleet zijn. Kijk alstublieft naar onze suggesties hieronder en kies welke versie u graag zou willen gebruiken. Errors zijn getoond in het rood."
+        },
+        "addressBookEdit": {
+          "editAddress": "Wijzig dit adres",
+          "addressValidation": "Adres validatie",
+          "reviewAddress": "Valideer alstublieft uw adres voor de beste verwerking",
+          "somethingWentWrong": "Er is iets mis gegaan: {{err}}",
+          "enteredAddress": "Ingevuld adres",
+          "validatedAddress": "Gevalideerd adres"
+        },
+        "corePackageConfig": {
+          "settings": {
+            "public": {
+              "allowGuestCheckout": "Sta betaling als gast toe"
+            },
+            "openexchangerates": {
+              "appId": "Open Exchange Rates App Id",
+              "refreshPeriod": "Open Exchange Rates ververs periode",
+              "refreshPeriodPlaceholder": "bijv. ieder 1 uur"
+            },
+            "google": {
+              "clientId": "Google Client ID",
+              "apiKey": "Google API Key"
+            }
+          }
+        },
+        "shop": {
+          "defaultPaymentMethod": "Default betaal methode",
+          "name": "Naam",
+          "namePlaceholder": "Shop naam",
+          "description": "Omschrijving",
+          "descriptionPlaceholder": "Omschrijf jouw shop voor SEO",
+          "descriptionTooltip": "Meta omschrijving voor SEO",
+          "email": "Email",
+          "emailPlaceholder": "Primaire contact email",
+          "keywords": "Sleutelwoorden",
+          "keywordsPlaceholder": "Meta sleutelwoorden voor SEO",
+          "language": "Basis taal",
+          "addressBook": {
+            "company": "Bedrijf",
+            "companyPlaceholder": "Deze bedrijfsnaam",
+            "country": "Land",
+            "fullName": "Volledige naam",
+            "fullNamePlaceholder": "Uw organisatienaam",
+            "address1": "Adres",
+            "address1Placeholder": "Uw organisatie adres",
+            "address1Tooltip": "Dit adres zal zichtbaar zijn voor uw klanten",
+            "address2": "Adres",
+            "address2Placeholder": "Optionele adressen",
+            "postal": "Postcode",
+            "city": "Stad",
+            "region": "Regio",
+            "phone": "Telefoonnummer",
+            "isShippingDefault": "Maak dit uw standaard verzend adres?",
+            "isBillingDefault": "Maak dit uw standaard verzend adres?",
+            "isCommercial": "Dit is een commercieel adres."
+          }
+        },
+        "address": {
+          "country": "Land",
+          "fullName": "Volledige naam",
+          "address1": "Adres",
+          "address2": "Adres",
+          "postal": "Postcode",
+          "city": "Stad",
+          "region": "Regio",
+          "phone": "Telefoonnummer",
+          "isShippingDefault": "Maak dit uw standaard verzend adres?",
+          "isBillingDefault": "Maak dit uw standaard verzend adres?",
+          "isCommercial": "Dit is een commercieel adres."
+        },
+        "i18nSettings": {
+          "enabledLanguages": "Talen"
+        },
+        "checkoutProgressBar": {
+          "login": "Account",
+          "shippingBilling": "Adres details",
+          "shippingOptions": "Verzend instellingen",
+          "reviewPayment": "Inspecteer",
+          "complete": "Afronden"
+        },
+        "checkoutReview": {
+          "review": "Inspecteer"
+        },
+        "uom": {
+          "OZ": "Ons",
+          "LB": "Ponden",
+          "GR": "Gram",
+          "KG": "Killogram"
+        },
+        "consoleIcon": {
+          "iconTitle": "Bekijk console",
+          "text": "Console"
+        },
+        "createProductIcon": {
+          "iconTitle": "Voeg product toe",
+          "text": "Voeg toe"
+        },
+        "social": {
+          "socialTitle": "Social",
+          "facebook": "Facebook",
+          "google": "Google",
+          "github": "GitHub",
+          "instagram": "Instagram",
+          "meetup": "Meetup",
+          "ok": "Ok",
+          "twitter": "Twitter",
+          "vk": "VK",
+          "weibo": "Weibo"
+        },
+        "search": {
+          "clearSearch": "Verwijder",
+          "searchInputLabel": "Zoek",
+          "suggestedTags": "Voorgestelde tags",
+          "searchTypeProducts": "Producten",
+          "searchTypeAccounts": "Accounts",
+          "searchTypeOrders": "Orders",
+          "accountSearchResults": {
+            "accountId": "Account ID",
+            "shopId": "Shop ID",
+            "firstName": "Voornaam",
+            "lastName": "Achternaam",
+            "phone": "Telefoonnummer",
+            "emails": "Email"
+          }
+        },
+        "accountsUI": {
+          "promoteExistingAccountConfirm": "Wilt u de gewenste account promoveren?",
+          "sendNewInviteConfirm": "Wilt u een nieuwe uitnodiging sturen?",
+          "yes": "Ja",
+          "usersOrders": "Order van Gebruikers",
+          "oops": "Oeps!",
+          "nonExistentAccount": "De gebruiker waar u naar op zoek bent bestaat niet.",
+          "members": "Gebruikers",
+          "manage": "Beheer",
+          "guest": "Gast",
+          "addMember": "Voeg een Gebruiker toe",
+          "add": "voeg toe",
+          "and": "en",
+          "back": "terug",
+          "changePassword": "Verander wachtwoord",
+          "choosePassword": "Kies een wachtwoord",
+          "clickAgree": "Door op registreren te drukken, stemt u in met onze",
+          "configure": "Configureer",
+          "createAccount": "Maak een account aan",
+          "currentPassword": "Huidig wachtwoord",
+          "dontHaveAnAccount": "Heeft u geen account?",
+          "email": "Email",
+          "emailAddress": "Email adres",
+          "emailResetLink": "Email reset link",
+          "forgotPassword": "Reset wachtwoord",
+          "ifYouAlreadyHaveAnAccount": "Als u al een account heeft",
+          "name": "Naam",
+          "newPassword": "Nieuw wachtwoord",
+          "newPasswordAgain": "Nieuw wachtwoord (herhaald)",
+          "optional": "Optioneel",
+          "or": "of",
+          "password": "Wachtwoord",
+          "passwordAgain": "Wachtwoord (herhaald)",
+          "privacyPolicy": "Privacy policy",
+          "remove": "verwijder",
+          "resetYourPassword": "Reset uw wachtwoord",
+          "setPassword": "Set wachtwoord",
+          "sign": "Log",
+          "signIn": "Log in",
+          "signInService": "{{service}} log in",
+          "signin": "log in",
+          "signInWith": "log in met",
+          "signUpWith": "registreer met",
+          "signedIn": "U bent ingelogd.",
+          "signOut": "Log uit",
+          "signUp": "Registreer",
+          "signUpButton": "Regisstreer",
+          "signupCode": "Registratie code",
+          "signUpWithYourEmailAddress": "Registreer met uw email adres",
+          "terms": "Terms of use",
+          "updateYourPassword": "Kies een nieuw wachtwoord",
+          "updatePasswordAndContinue": "Update",
+          "updatedServiceConfiguration": "Updated service configuratie voor {{service}}",
+          "username": "Gebruikersnaam",
+          "usernameOrEmail": "Gebruikersnaam of email",
+          "with": "met",
+          "checkoutAsGuest": "Betaal zonder een account",
+          "role": "Rol",
+          "yourOrders": "uw orders",
+          "addressBook": "Adresboek",
+          "info": {
+            "emailSent": "Email verstuurd",
+            "emailUpdated": "Email geüpdatet",
+            "emailVerified": "Email geverifieerd",
+            "passwordChanged": "Wachtwoord gewijzigd",
+            "passwordReset": "Wachtwoord gereset",
+            "passwordResetSend": "Een Email met een wachtwoord reset link is verstuurd.",
+            "passwordResetDone": "Wachtwoord reset compleet.",
+            "passwordResetDoneText": "U kunt terug gaan naar de app om verder te gaan.",
+            "invitationSent": "Uitnodiging verstuurd",
+            "sendInvitation": "Verstuur uitnodigings"
+          },
+          "error": {
+            "emailRequired": "Email is verplicht.",
+            "passwordRequired": "Wachtwoord is verplicht.",
+            "passwordMustBeAtLeast6CharactersLong": "Wachtwoord moet tenminste 6 characters lang zijn.",
+            "passwordMustContainRequirements": "Wachtwoord moet tenminste 1 nummer of 1 speciale teken bevatten.",
+            "usernameMinLength": "Gebruikersnaam moet tenminste 3 characters lang zijn",
+            "minChar": "6 character minumum wachtwoord.",
+            "pwdsDontMatch": "Wachtwoorden komen niet overeen",
+            "pwOneDigit": "Wachtwoord moet tenminste 1 nummer bevatten.",
+            "pwOneLetter": "Wachtwoord moet tenminste 1 letter bevatten.",
+            "signInRequired": "U moet ingelogd zijn om dat te kunnen doen.",
+            "signupCodeIncorrect": "Registratie code is onjuist.",
+            "signupCodeRequired": "Registration code is verplicht.",
+            "usernameIsEmail": "Gebruikersnaam kan niet een email zijn.",
+            "usernameRequired": "Gebruikersnaam is verplicht.",
+            "emailAlreadyExists": "Email is al in gebruik.",
+            "emailDoesntMatchTheCriteria": "Email voldoet niet aan de criteria.",
+            "errorSendingEmail": "Error bij het versturen van een email, mogelijk een configuratie issue.",
+            "unableToSendInvitationEmail": "Email versturen is mislukt.",
+            "userWithEmailAlreadyExists": "Een gebruiker met dit email bestaat al",
+            "inviteAlreadyPending": "Er staat al een uitnodiging open voor deze gebruiker",
+            "failedToLogout": "Uitloggen mislukt.",
+            "invalidLoginToken": "Onjuiste login token",
+            "loginForbidden": "Login verboden",
+            "serviceUnknown": "Service onbekend",
+            "unrecognizedOptionsForLoginRequest": "Opties voor login aanvraag niet herkend",
+            "userValidationFailed": "Gebruiker validatie mislukt",
+            "usernameAlreadyExists": "Gebruiker bestaat al.",
+            "youAreNotLoggedIn": "U bent niet ingelogd.",
+            "youveBeenLoggedOutByTheServer": "U bent uitgelogd door de server. Log aub weer in.",
+            "yourSessionHasExpired": "Uw sessie is verlopen. Log aub weer in.",
+            "noMatchingLoginAttemptFound": "Geen overeenkomende login poging gevonden",
+            "passwordIsOld": "Wachtwoord is verlopen. Reset uw wachtwoord.",
+            "incorrectPassword": "Onjuist wachtwoord",
+            "invalidEmail": "Onjuiste email",
+            "addressMustBeAValidEMailAddress": "Onjuiste email",
+            "mustBeLoggedIn": "U moet ingelogd zijn",
+            "needToSetUsernameOrEmail": "Setten van gebruikersnaam en email is verplicht",
+            "oldPasswordFormat": "oud wachtwoord formaat",
+            "passwordMayNotBeEmpty": "Wachtwoord mag niet leeg zijn",
+            "signupsForbidden": "Registratie verboden",
+            "tokenExpired": "Token verlopen",
+            "tokenHasInvalidEmailAddress": "Token heeft onjuist email adres",
+            "userHasNoPasswordSet": "Gebruiker heeft geen wachtwoord geset",
+            "userNotFound": "Gebruiker niet gevonden",
+            "verifyEmailLinkExpired": "Verificatie email link is verlopen",
+            "verifyEmailLinkIsForUnknownAddress": "Verificatie email link is voor onbekend adres",
+            "verifyTimeout": "Verificatie timed out. Waarschijnlijk heeft u zich al geverfivieerd.",
+            "verifyEmailAddressNotFound": "Kon email adres niet verifiëren.",
+            "matchFailed": "Mathc mislukt",
+            "unknownError": "Onbekende error"
+          }
+        },
+        "loginServices": {
+          "appId": "App ID",
+          "secret": "Secret",
+          "clientId": "Client ID",
+          "consumerKey": "API key"
+        },
+        "error": {
+          "nameRequired": "Naam is verplicht.",
+          "isRequired": "{{field}} is verplicht.",
+          "mustBeNumber": "{{field}} moet een nummer zijn.",
+          "variantFieldIsRequired": "Variant {{number}} {{field}} is verplicht."
+        },
+        "productGrid": {
+          "noProductsFound": "Geen producten gevonden"
+        },
+        "templateGrid": {
+          "noTemplatesFound": "Geen producten gevonden",
+          "columns": {
+            "title": "Titel",
+            "type": "Type",
+            "language": "Taal"
+          }
+        },
+        "templateUpdateForm": {
+          "emailTemplates": {
+            "updateEmailTemplate": "Update email template"
+          },
+          "reactTemplates": {
+            "updateReactTemplate": "Update React template",
+            "updateUnavailable": "React templates kan niet worden aangepast door dit interface"
+          },
+          "alerts": {
+            "templateUpdated": "Update van de Template geslaagd",
+            "failedToUpdate": "Update van de Template mislukt: {{err}}"
+          }
+        },
+        "reactionUI": {
+          "components": {
+            "navbar": "Nagigatie Bar",
+            "button": "Knop",
+            "mediaUploader": {
+              "dropFiles": "Sleep afbeelding of klik om te uploaden"
+            },
+            "sortableTable": {
+              "filterPlaceholder": "Filter Data",
+              "tableText": {
+                "noDataMessage": "Geen resultaten gevonden",
+                "previousText": "Vorige",
+                "nextText": "Volgende",
+                "loadingText": "Laden...",
+                "noDataText": "Geen resultaten gevonden",
+                "pageText": "Pagina",
+                "ofText": "van",
+                "rowsText": "rijen"
+              }
+            },
+            "mediaGallery": {
+              "deleteImage": "Klik om de afbeelding te verwijderen",
+              "addedImage": "Dit is een nieuwe afbeelding. Publiceer om wijzigen op te slaan.",
+              "removedImage": "Image is verwijderd. Publiceer om wijzigen op te slaan."
+            }
+          }
+        }
+      }
+    }
+  }
+]

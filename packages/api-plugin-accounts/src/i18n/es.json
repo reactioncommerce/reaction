@@ -1,0 +1,85 @@
+[{
+  "i18n": "es",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "accounts": {
+          "tabs": {
+            "staff": "Empleados",
+            "customers": "Clientes",
+            "invites": "Invitaciones"
+          },
+          "accountsLabel": "Cuentas",
+          "createGroup": "Crea un grupo",
+          "inviteStaffMember": "Invitar empleado"
+        },
+        "accountsTable": {
+          "header": {
+            "email": "Dirección de correo electrónico",
+            "name": "Nombre"
+          },
+          "bulkActions": {
+            "addRemoveGroupsFromAccount": "Agregar/Quitar grupos de la cuenta"
+          }
+        },
+        "invitationsTable": {
+          "header": {
+            "email": "Dirección de correo electrónico",
+            "invitedBy": "Invitado por",
+            "shop": "Tienda",
+            "groups": "Grupos"
+          }
+        },
+        "groupCards": {
+          "createOrUpdateGroupDialog": {
+            "title": "Crear/Actualizar grupo",
+            "name": "Nombre",
+            "slug": "Identificador",
+            "description": "Descripción",
+            "saveFailed": "No se pudo crear/actualizar el grupo.",
+            "selectRoles": "Roles"
+          },
+          "inviteStaffMemberDialog": {
+            "title": "Invitar empleado",
+            "name": "Nombre Completo",
+            "email": "Dirección de correo electrónico",
+            "selectGroups": "Grupos",
+            "saveFailed": "No se pudo invitar a un miembro del personal."
+          }
+        },
+        "dashboard": {
+          "accountsLabel": "Cuentas",
+          "accountsTitle": "Cuentas",
+          "accountsDescription": "Configuraciones de la cuenta",
+          "manageGroups": "Administrar grupos"
+        },
+        "settings": {
+          "continue": "Continuar",
+          "cancel": "Cancelar",
+          "changeOwner": "Cambio de propietario",
+          "removeUser": "Eliminar usuario",
+          "createGroupSuccess": "Grupo creado correctamente",
+          "updateGroupSuccess": "Grupo actualizado con éxito",
+          "createGroupError": "Error al crear grupo",
+          "updateGroupError": "Error al actualizar el grupo",
+          "changeShopOwnerWarn": "Estás a punto de cambiar el propietario de la tienda. El propietario actual será reemplazado",
+          "removeUserWarn": "Está a punto de eliminar un usuario de un grupo. El usuario perderá los permisos asociados",
+          "accountsSettingsLabel": "Cuentas",
+          "accountsSettingsTitle": "Cuentas",
+          "accountsSettingsDescription": "Configuraciones de la Cuenta"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "Johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "No puede invitar directamente a un usuario como propietario. Promover un administrador existente",
+          "groupRequired": "Se requiere un grupo para invitar a un administrador",
+          "cannotInvite": "No se puede invitar al grupo",
+          "unableToSendInvitationEmail": "No se puede enviar el correo electrónico de invitación",
+          "errorSendingInvite": "Se ha producido un error al enviar la invitación",
+          "NeedToSetUsernameOrEmail": "Es necesario establecer un nombre de usuario o correo electrónico"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,41 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "discount-codes",
+  "translation": {
+    "discount-codes": {
+      "checkoutPayment": {
+        "applyDiscount": "primijeniti",
+        "discountError": "Žao nam je, došlo je do pogreške primjenjujući popust."
+      },
+      "discounts": {
+        "enterItHere": "Imati kod? Unesite ga ovdje.",
+        "discountLabel": "Kod za popust",
+        "submitted": "Popust spremiti i primijeniti",
+        "applied": "primijenjen",
+        "code": "kodirati",
+        "codeIsExpired": "Kodeks je istekao",
+        "codeIsInvalid": "Kodeks je nevažeća",
+        "multiShopError": "Popusti se ne mogu primijeniti na multi-shop košaricu ili narudžbu"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "Kodovi"
+        },
+        "settings": {
+          "codesLabel": "Kodovi",
+          "noCustomDiscountCodesFound": "Nisu pronađene popusta kodovi."
+        },
+        "discountGrid": {
+          "code": "Kodirati",
+          "calculation": {
+            "method": "računanje"
+          },
+          "conditions": {
+            "redemptionLimit": "Ograničiti"
+          }
+        }
+      }
+    }
+  }
+}]

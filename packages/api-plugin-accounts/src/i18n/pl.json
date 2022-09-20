@@ -1,0 +1,40 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Konta",
+          "accountsTitle": "Konta",
+          "accountsDescription": "Ustawienia konta"
+        },
+        "settings": {
+          "continue": "Kontynuować",
+          "cancel": "Anulować",
+          "changeOwner": "Zmień właściciela",
+          "removeUser": "Usuń Użytkownik",
+          "createGroupSuccess": "Grupa została pomyślnie utworzona",
+          "updateGroupSuccess": "Grupa została zaktualizowana",
+          "createGroupError": "Wystąpił błąd podczas tworzenia grupy",
+          "updateGroupError": "Wystąpił błąd podczas aktualizowania grupy",
+          "changeShopOwnerWarn": "Zamierzasz zmienić właściciela sklepu. Aktualny właściciel zostanie zastąpiony",
+          "removeUserWarn": "Zamierzasz usunąć użytkownika grom grupy. Użytkownik utraci związane z tym uprawnienia",
+          "accountsSettingsLabel": "Konta",
+          "accountsSettingsTitle": "Konta",
+          "accountsSettingsDescription": "Ustawienia konta"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "Johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Nie możesz bezpośrednio zaprosić użytkownika jako właściciela. Promuj istniejącego administratora",
+          "groupRequired": "Grupa musi zaprosić administratora",
+          "cannotInvite": "Nie można zaprosić do grupy",
+          "unableToSendInvitationEmail": "Nie można wysłać e-maila z zaproszeniem",
+          "errorSendingInvite": "Podczas wysyłania zaproszenia wystąpił błąd",
+          "NeedToSetUsernameOrEmail": "Wymagane ustawienie nazwy użytkownika lub adresu email"
+        }
+      }
+    }
+  }
+}]

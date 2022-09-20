@@ -1,0 +1,46 @@
+[
+  {
+    "i18n": "mn",
+    "ns": "reaction-i18n",
+    "translation": {
+      "reaction-i18n": {
+        "admin": {
+          "i18nSettings": {
+            "shopLocalization": "Нутагшуулалт",
+            "enabledCurrencies": "Мөнгөн тэмдэгтүүд",
+            "enabledLanguages": "Хэл",
+            "allOn": "Бүгдийг идэвхитэй болгох",
+            "allOff": "Бүгдийг идэвхигүй болгох",
+            "reloadTranslations": "Орчуулгуудыг шинэчлэх",
+            "reloadStarted": "Шинэчилж байна...",
+            "reloadAllStarted": "Шинэчилж байна...",
+            "reloadSuccess": "Амжилттай шинэчлэгдлээ.",
+            "reloadAllSuccess": "Амжилттай шинэчлэгдлээ.",
+            "reloadError": "Орчуулгуудыг шинэчлэх явцад алдаа гарлаа.",
+            "reloadAllError": "Орчуулгуудыг шинэчлэх явцад алдаа гарлаа."
+          },
+          "baseUOL": "Урт хэмжих нэгж",
+          "baseUOM": "Жин хэмжих нэгж",
+          "uol": {
+            "Inches": "Инч",
+            "Centimeters": "Сантиметер",
+            "Feet": "Тохой"
+          },
+          "uom": {
+            "oz": "Унц",
+            "lb": "Фунт",
+            "g": "Грамм",
+            "kg": "Килограмм"
+          },
+          "currency": "Мөнгөн тэмдэгт",
+          "currencyTooltip": "Сонгогдсон мөнгөн тэмдэгт",
+          "language": "Хэл",
+          "languagePlaceholder": "Хэл",
+          "languageTooltip": "Хэрвээ хэлний сонголтыг тодорхойлох боломжгүй бол энэ хэлийг ашиглана",
+          "timezone": "Цагийн бүс",
+          "timezoneLabel": "Цагийн бүс сонгоно уу"
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,203 @@
+[
+  {
+    "i18n": "de",
+    "ns": "reaction-orders",
+    "translation": {
+      "reaction-orders": {
+        "calculateRefundByItem": "Rückerstattung pro Artikel berechnen",
+        "fulfillment": "Abwicklung",
+        "fulfillmentGroupHeader": "Abwicklungsgruppe {{currentGroupCount}} von {{totalGroupsCount}}",
+        "items": "Positionen",
+        "newStatus": "Neuer Status",
+        "notFound": "Auftrag nicht gefunden",
+        "refunds": "Rückerstattungen",
+        "orderActions": {
+          "markAsPackedDescription": "Alle Positionen der Abwicklungsgruppe als \"Verpackt\" markieren",
+          "markAsPackedLabel": "Als verpackt markieren",
+          "markAsShippedDescription": "Alle Positionen der Abwicklungsgruppe als \"Versendet\" markieren",
+          "markAsShippedLabel": "Als versendet markieren",
+          "updateGroupStatus": "Gruppenstatus ändern"
+        },
+        "orderDetails": "Auftragsdetails",
+        "order": {
+          "allowShippingRefund": "Rückerstattung der Versandkosten erlauben",
+          "allPaymentsRefunded": "Alle Zahlungen wurden vollständig erstattet",
+          "amountToRefund": "Zu erstattender Betrag",
+          "applyRefund": "Rückerstattung ausführen",
+          "applyRefundDuringCancelOrder": "Damit wird die Auftragssumme von {{invoiceTotal}}{{currencySymbol}} zurückerstattet",
+          "applyRefundToThisOrder": "Rückerstattung von {{refund}}{{currencySymbol}} für diese Bestellung ausführen?",
+          "availableToRefund": "Für Rückerstattung verfügbar",
+          "cancelGroup": "Möchten Sie diese Abwicklungsgruppe stornieren?",
+          "cancelGroupLabel": "Abwicklungsgruppe stornieren",
+          "cancelOrder": "Möchten Sie diese Bestellung stornieren?",
+          "cancelOrderLabel": "Bestellung stornieren",
+          "cancelOrderNoRestock": "In den Bestand übernehmen",
+          "cancelOrderThenRestock": "Nicht in den Bestand übernehmen",
+          "noRefundReason": "Keine Begründung",
+          "order": "Bestellung",
+          "paymentRefunded": "Zahlung vollständig erstattet",
+          "placed": "Beauftragt am",
+          "previousRefunds": "Erfolgte Rückerstattungen",
+          "previouslyRefunded": "Bereits erstatteter Betrag",
+          "reason": "Grund",
+          "reasonForRefund": "Grund der Rückerstattung",
+          "reasonForRefundFormLabel": "Grund der Rückerstattung (optional)",
+          "refund": "Erstatten",
+          "refundButton": "{{currentRefundAmount}} erstatten",
+          "refundedTo": "Erstattet an",
+          "refunding": "Wird erstattet",
+          "refundItemsAlert": "Möchten Sie {{refundItemsTotal}} für {{refundItemsQuantity}} Artikel erstatten?",
+          "refundItemsApproveAlert": "Möchten Sie die Zahlung autorisieren und danach {{totalAmount}} erstatten?",
+          "refundItemsCaptureAlert": "Möchten Sie die Zahlung einziehen und danach {{totalAmount}} erstatten?",
+          "refundItemsSuccess": "Rückerstattung erfolgreich ausgeführt",
+          "refundItemsTitle": "Artikel erstatten",
+          "refundItemsWait": "Zahlung wurde noch nicht eingezogen",
+          "refundNotSupported": "Rückerstattungen werden bei dieser Zahlungsart nicht unterstützt",
+          "refundsNotSupported": "Rückerstattungen werden bei der/den Zahlungsart(en) dieser Bestellung nicht unterstützt",
+          "refundReason": {
+            "customerRequest": "Kundenanfrage",
+            "duplicatePayment": "Doppelte Zahlung",
+            "fraudulent": "Betrug"
+          },
+          "refundTo": "Erstatten an",
+          "restockInventory": "In den Bestand zurückführen?",
+          "updateFulfillmentGroupStatusMessage": "Möchten Sie den Status für diese Abwicklungsgruppe in {{groupStatus}} ändern?",
+          "updateFulfillmentGroupStatusTitle": "Abwicklungsgruppenstatus ändern"
+        },
+        "status": {
+          "new": "Neu",
+          "coreOrderWorkflow/created": "Erstellt",
+          "coreOrderWorkflow/processing": "wird bearbeitet",
+          "coreOrderWorkflow/completed": "Abgeschlossen",
+          "coreOrderWorkflow/canceled": "Storniert",
+          "coreOrderWorkflow/picked": "Kommissioniert",
+          "coreOrderWorkflow/packed": "Verpackt",
+          "coreOrderWorkflow/labeled": "Beschriftet",
+          "coreOrderWorkflow/shipped": "Versendet",
+          "multipleStatuses": "Mehrere Status"
+        },
+        "orderCard": {
+          "orderSummary": {
+            "showOrderSummary": "Zusammenfassung anzeigen",
+            "title": "Zusammenfassung"
+          }
+        },
+        "shippingAddress": "Lieferadresse",
+        "shippingMethod": "Versandart",
+        "trackingNumber": "Sendungsverfolgungsnummer",
+        "admin": {
+          "shortcut": {
+            "ordersLabel": "Bestellungen"
+          },
+          "orderRisk": {
+            "high": "Hohes Risiko",
+            "riskCapture": "Zahlung mit Risiko einziehen?",
+            "riskCaptureWarn": "Sie sind dabei, eine Zahlung mit einem Zahlungsrisiko einzuziehen. Bestätigen Sie dies."
+          },
+          "dashboard": {
+            "ordersLabel": "Bestellungen",
+            "ordersTitle": "Bestellungen",
+            "ordersDescription": "Bestellungen abwickeln",
+            "clearSearch": "Zurücksetzen"
+          },
+          "orderWorkflow": {
+            "ordersList": {
+              "date": "Datum",
+              "orderId": "Bestellnummer",
+              "total": "Summe",
+              "emailNotFound": "E-Mail-Adresse nicht verfügbar"
+            },
+            "summary": {
+              "cardTitle": "Zusammenfassung",
+              "copyOrderLink": "Link kopieren"
+            },
+            "invoice": {
+              "cardTitle": "Rechnung",
+              "adjustedTotal": "Angepasste Summe",
+              "capturedTotal": "Eingezogen",
+              "printInvoice": "Rechnung drucken",
+              "refund": "Erstattet",
+              "refundLabel": "Erstattbar",
+              "refundItem": "Artikel",
+              "refundItemAmount": "Summe",
+              "refundTotal": "Rückerstattung Gesamt"
+            },
+            "fulfillment": "Abwicklung",
+            "orderDetails": "Bestellungs-Details",
+            "shipmentTracking": "Versand",
+            "fulfillmentGroups": {
+              "cancelFulfillmentGroup": "Abwicklungsgruppe stornieren",
+              "markAsPacked": "Als verpackt markieren",
+              "printShippingLabel": "Adressetikett drucken"
+            }
+          },
+          "table": {
+            "headers": {
+              "customer": "Kunde",
+              "name": "Name",
+              "payment": "Zahlung",
+              "fulfillment": "Abwicklung",
+              "email": "E-Mail",
+              "date": "Datum",
+              "id": "Bestellnummer",
+              "total": "Summe",
+              "shipping": "Versand",
+              "status": "Status"
+            },
+            "error": "Es ist ein Fehler aufgetreten",
+            "filter": {
+              "canceled": "Storniert",
+              "captured": "Zahlung eingezogen",
+              "completed": "Abgeschlossen",
+              "dateRange": "Datumsbereich",
+              "globalFilter": "Bestellungen filtern",
+              "last30": "Letzte 30 Tage",
+              "last7": "Letzte 7 Tage",
+              "new": "Neu",
+              "refunded": "Erstattet",
+              "shipped": "Versendet",
+              "shippingStatus": "Versandstatus",
+              "status": "Status",
+              "today": "Heute"
+            },
+            "search": {
+              "clearSearch": "Zurücksetzen",
+              "placeholder": "Bestellungen durchsuchen"
+            },
+            "orderStatus": {
+              "coreOrderWorkflow/canceled": "Storniert",
+              "coreOrderWorkflow/completed": "Abgeschlossen",
+              "new": "Neu",
+              "coreOrderWorkflow/processing": "In Bearbeitung"
+            },
+            "paymentStatus": {
+              "completed": "Abgeschlossen",
+              "created": "Angelegt"
+            },
+            "fulfillmentStatus": {
+              "coreOrderWorkflow/completed": "Abgeschlossen",
+              "coreOrderWorkflow/created": "Anelegt",
+              "coreOrderWorkflow/canceled": "Storniert",
+              "new": "Neu",
+              "coreOrderWorkflow/processing": "In Bearbeitung"
+            },
+            "data": {
+              "status": {
+                "new": "Neu",
+                "coreOrderWorkflow/created": "Erstellt",
+                "coreOrderWorkflow/processing": "In Bearbeitung",
+                "coreOrderWorkflow/completed": "Abgeschlossen",
+                "coreOrderWorkflow/canceled": "Storniert",
+                "coreOrderWorkflow/picked": "Kommissioniert",
+                "coreOrderWorkflow/packed": "Verpackt",
+                "coreOrderWorkflow/labeled": "Beschriftet",
+                "coreOrderWorkflow/shipped": "Versendet",
+                "multipleStatuses": "Mehrere Status"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

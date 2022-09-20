@@ -1,0 +1,86 @@
+"The data of the e-mail"
+type EmailJobData {
+    "The address the e-mail was/is being/will be sent to"
+    to: String!
+
+    "The subject of the e-mail"
+    subject: String!
+}
+
+"An e-mail job"
+type EmailJob {
+    "The ID of the e-mail job"
+    _id: ID!
+
+    "To be deprecated. Use updatedAt instead. The date and time of the last update to the e-mail job."
+    updated: DateTime!
+
+    "The status of the e-mail job"
+    status: String!
+
+    "The data of the e-mail"
+    data: EmailJobData!
+
+    "The date and time of the creation of the e-mail job"
+    createdAt: DateTime!
+
+    "The date and time of the last update to the e-mail job"
+    updatedAt: DateTime!
+}
+
+"A connection edge in which each node is an `EmailJob` object"
+type EmailJobEdge {
+    "The cursor that represents this node in the paginated results"
+    cursor: ConnectionCursor!
+
+    "The product"
+    node: EmailJob
+}
+
+"""
+Wraps a list of `EmailJob`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type EmailJobConnection {
+    "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+    edges: [EmailJobEdge]
+
+    """
+    You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+    if you know you will not need to paginate the results.
+    """
+    nodes: [EmailJob]
+
+    "Information to help a client request the next or previous page"
+    pageInfo: PageInfo!
+
+    "The total number of nodes that match your query"
+    totalCount: Int!
+}
+
+extend type Query {
+    "Get e-mail jobs for a given set of shops"
+    emailJobs(
+        "The shop IDs to get e-mail jobs for"
+        shopIds: [ID]!,
+
+        "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+        after: ConnectionCursor,
+
+        "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+        before: ConnectionCursor,
+
+        "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+        first: ConnectionLimitInt,
+
+        "Return at most this many results. This parameter may be used with the `before` parameter."
+        last: ConnectionLimitInt,
+
+        "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+        offset: Int
+    ): EmailJobConnection!
+}

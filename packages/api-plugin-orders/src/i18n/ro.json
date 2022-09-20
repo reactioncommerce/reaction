@@ -1,0 +1,97 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "notFound": "Comanda nu a fost găsită",
+      "order": {
+        "applyRefundToThisOrder": "Aplicați rambursarea {{currencySymbol}}{{refund}} la această comandă?",
+        "applyRefundDuringCancelOrder": "Aceasta va restitui suma totală a comenzii {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrder": "Doriți să anulați această comandă?",
+        "cancelOrderLabel": "Anulați comanda",
+        "cancelOrderThenRestock": "Da, și restock",
+        "cancelOrderNoRestock": "Da, dar fără repopulare"
+      },
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "Istoric comenzi"
+        },
+        "orderRisk": {
+          "high": "Risc ridicat",
+          "riskCapture": "Capturați comanda cu taxă de risc?",
+          "riskCaptureWarn": "Sunteți pe punctul de a capta comanda cu un risc de taxă. Confirmați înainte de a continua."
+        },
+        "dashboard": {
+          "ordersLabel": "Istoric comenzi",
+          "ordersTitle": "Istoric comenzi",
+          "ordersDescription": "Onora comenzile",
+          "clearSearch": "clar"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Data",
+            "orderId": "ID comandă",
+            "total": "Total",
+            "emailNotFound": "E-mailul nu este disponibil"
+          },
+          "summary": {
+            "cardTitle": "Rezumat",
+            "copyOrderLink": "Copiați linkul de comandă"
+          },
+          "invoice": {
+            "cardTitle": "Factură",
+            "adjustedTotal": "Totalul ajustat",
+            "capturedTotal": "Totalul capturat",
+            "refund": "Restituire",
+            "refundLabel": "Pentru rambursare",
+            "refundItem": "articole",
+            "refundItemAmount": "Total",
+            "refundTotal": "Suma totală de rambursare"
+          },
+          "fulfillment": "Onorarea comenzilor",
+          "orderDetails": "Detalii Comandă",
+          "shipmentTracking": "Expediere"
+        },
+        "table": {
+          "headers": {
+            "name": "Nume",
+            "email": "Email",
+            "date": "Data",
+            "id": "ID",
+            "total": "Total",
+            "shipping": "livrare",
+            "status": "Stare"
+          },
+          "filter": {
+            "status": "Stare",
+            "dateRange": "Interval de date",
+            "shippingStatus": "Starea de expediere",
+            "new": "Nou",
+            "captured": "Plată Capturată",
+            "shipped": "Expediat",
+            "completed": "Completă",
+            "canceled": "Anulată",
+            "refunded": "Rambursată"
+          },
+          "search": {
+            "clearSearch": "clar",
+            "placeholder": "Comenzi de căutare"
+          },
+          "data": {
+            "status": {
+              "new": "Nou",
+              "coreOrderWorkflow/created": "Creată",
+              "coreOrderWorkflow/processing": "Prelucrare",
+              "coreOrderWorkflow/completed": "terminat",
+              "coreOrderWorkflow/canceled": "Anulat",
+              "coreOrderWorkflow/picked": "ales",
+              "coreOrderWorkflow/packed": "bătătorit",
+              "coreOrderWorkflow/labeled": "marcat",
+              "coreOrderWorkflow/shipped": "Transportat"
+            }
+          }
+        }
+      }
+    }
+  }
+}]

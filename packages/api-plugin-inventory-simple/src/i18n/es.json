@@ -1,0 +1,21 @@
+[{
+  "i18n": "es",
+  "ns": "reaction-simple-inventory",
+  "translation": {
+    "reaction-simple-inventory": {
+      "productVariant": {
+        "allowBackorder": "Permitir pedido pendiente",
+        "inventoryDisabled": "El seguimiento de inventario está deshabilitado",
+        "inventoryHeading": "Inventario",
+        "inventoryInStock": "Cantidad",
+        "inventoryInStockHelpText": "{{inventoryInStock}} en stock - {{inventoryReserved}} en reserva = {{inventoryAvailableToSell}} disponible",
+        "inventoryMessage": "Si la gestión de inventario está deshabilitada para una variante, los compradores siempre pueden pedir cualquier cantidad. Si la gestión de inventario está habilitada, los compradores solo pueden realizar pedidos hasta la cantidad disponible, a menos que se habilite los pedidos pendientes. Todos los cambios de esta tarjeta tienen efecto inmediato. La publicación no es necesaria.",
+        "isInventoryManagementEnabled": "Gestionar Inventario",
+        "lowInventoryWarningThreshold": "Advertir con",
+        "lowInventoryWarningThresholdLabel": "Advierta a los clientes que el producto estará cerca de agotarse cuando la cantidad disponible alcance este umbral",
+        "noInventoryTracking": "El inventario se rastrea solo para las variantes que pueden venderse. Seleccione una opción para administrar el inventario.",
+        "recalculateReservedInventory": "Recalcular cantidad reservada"
+      }
+    }
+  }
+}]

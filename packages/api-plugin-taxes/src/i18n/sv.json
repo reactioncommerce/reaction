@@ -1,0 +1,46 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "skatter",
+          "taxesTitle": "skatter"
+        },
+        "dashboard": {
+          "taxesLabel": "skatter",
+          "taxesTitle": "skatter",
+          "taxesDescription": "skatte konfiguration"
+        },
+        "taxGrid": {
+          "taxCode": "Kod",
+          "rate": "Betygsätt",
+          "country": "Land",
+          "region": "Område",
+          "postal": "Post"
+        },
+        "settings": {
+          "taxSettingsLabel": "skatte~~POS=TRUNC"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Inga anpassade skattesatser hittades.",
+          "shopCustomTaxRatesSaved": "Anpassade skattesats sparas.",
+          "shopCustomTaxRatesFailed": "Fel vid sparande skattesats.",
+          "shopTaxMethodsSaved": "Sparade skattemetoden.",
+          "shopTaxMethodsAlreadySaved": "Taxkoder som redan laddats",
+          "shopTaxMethodsFailed": "Misslyckades spara skattemetoden.",
+          "customRatesLabel": "anpassade priser",
+          "customRatesDescription": "anpassade priser",
+          "taxCode": "skattelagen",
+          "taxShipping": "inkludera Shipping",
+          "taxRate": "Betygsätt",
+          "discountsIncluded": "inkluderar Rabatter",
+          "taxable": "Beskattningsbar",
+          "nottaxable": "inte skattepliktiga",
+          "confirmRateDelete": "Bekräfta skatte deletion hastighet"
+        }
+      }
+    }
+  }
+}]

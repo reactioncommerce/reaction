@@ -1,0 +1,46 @@
+[
+  {
+    "i18n": "es",
+    "ns": "reaction-i18n",
+    "translation": {
+      "reaction-i18n": {
+        "admin": {
+          "i18nSettings": {
+            "shopLocalization": "Localización de la tienda",
+            "enabledCurrencies": "Monedas",
+            "enabledLanguages": "Idiomas",
+            "allOn": "Todo encendido",
+            "allOff": "Todo apagado",
+            "reloadTranslations": "Recargar traducciones",
+            "reloadStarted": "Recargando traducciones para la tienda actual.",
+            "reloadAllStarted": "Recargando traducciones para todas las tiendas.",
+            "reloadSuccess": "Se han recargado las traducciones para la tienda actual.",
+            "reloadAllSuccess": "Se han recargado las traducciones para todas las tiendas.",
+            "reloadError": "No se pudieron recargar las traducciones para la tienda actual.",
+            "reloadAllError": "No se pudieron recargar las traducciones para todas las tiendas."
+          },
+          "baseUOL": "Unidad Base de Longitud",
+          "baseUOM": "Unidad Base de Medida",
+          "uol": {
+            "Inches": "Pulgadas",
+            "Centimeters": "Centímetros",
+            "Feet": "Pies"
+          },
+          "uom": {
+            "oz": "Onzas",
+            "lb": "Libras",
+            "g": "Gramos",
+            "kg": "Kilogramos"
+          },
+          "currency": "Moneda",
+          "currencyTooltip": "Moneda predeterminada de la tienda",
+          "language": "Idioma",
+          "languagePlaceholder": "Idioma",
+          "languageTooltip": "Este idioma se usará si falla la detección del idioma del dispositivo",
+          "timezone": "Zona horaria",
+          "timezoneLabel": "Elija una zona horaria"
+        }
+      }
+    }
+  }
+]

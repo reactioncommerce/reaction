@@ -1,0 +1,114 @@
+{
+  "MenuOneTopLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Men"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/tag/men"
+    }
+  },
+  "MenuOneSubLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Men's Outdoor"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/tag/men-outdoor"
+    }
+  },
+  "MenuOneLeafLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Men's Jacket"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/tag/men-jacket"
+    }
+  },
+  "MenuTwoTopLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Women"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/tag/women"
+    }
+  },
+  "MenuTwoSubLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Women's Outdoor"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/tag/women-outdoor"
+    }
+  },
+  "MenuTwoLeafLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Women's Jacket"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/tag/women-jacket"
+    }
+  },
+  "MenuThreeTopLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Unisex"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/tag/unisex"
+    }
+  },
+  "MenuThreeSubLevel": {
+    "draftData": {
+      "classNames": null,
+      "content": [
+        {
+          "language": "en",
+          "value": "Unisex Outdoor"
+        }
+      ],
+      "isUrlRelative": true,
+      "shouldOpenInNewWindow": false,
+      "url": "/tag/unisex-outdoor"
+    }
+  }
+}

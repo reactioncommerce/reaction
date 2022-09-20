@@ -2,6 +2,8 @@
 .build.*
 .npm
 .git
+.husky
+.github
 
 # This is necessary so plugins can use git repos as npm deps.
 # Leave this here unless you understand the implications.
@@ -11,6 +13,6 @@
 
 .build.log
 Dockerfile
-.reaction/docker/reaction.*
+apps/reaction/.reaction/docker/reaction.*
 docs
-node_modules
+**/node_modules

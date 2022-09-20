@@ -1,0 +1,40 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Профили",
+          "accountsTitle": "Профили",
+          "accountsDescription": "Настройки на профила"
+        },
+        "settings": {
+          "continue": "Продължавам",
+          "cancel": "Отмени",
+          "changeOwner": "Промяна на собственика",
+          "removeUser": "Премахване на потребителя",
+          "createGroupSuccess": "Групата е създадена успешно",
+          "updateGroupSuccess": "Групата бе актуализирана успешно",
+          "createGroupError": "Грешка при създаване на група",
+          "updateGroupError": "Грешка при актуализирането на групата",
+          "changeShopOwnerWarn": "На път сте да промените собственика на магазина. Сегашният собственик ще бъде заменен",
+          "removeUserWarn": "На път сте да премахнете потребителска група в група. Потребителят ще загуби съответните права",
+          "accountsSettingsLabel": "Профили",
+          "accountsSettingsTitle": "Профили",
+          "accountsSettingsDescription": "Настройки на профила"
+        },
+        "groupsInvite": {
+          "name": "Джон Смит",
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Не можете директно да каните потребител като собственик. Насърчаване на съществуващ администратор",
+          "groupRequired": "Групата трябва да покани администратор",
+          "cannotInvite": "Не можете да каните група",
+          "unableToSendInvitationEmail": "Не може да се изпрати имейл с покана",
+          "errorSendingInvite": "Възникна грешка при изпращане на покана",
+          "NeedToSetUsernameOrEmail": "Трябва да зададете потребителско име и електронна поща."
+        }
+      }
+    }
+  }
+}]
