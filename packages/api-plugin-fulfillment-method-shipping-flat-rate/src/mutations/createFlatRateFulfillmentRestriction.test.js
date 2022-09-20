@@ -3,8 +3,7 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import createFlatRateFulfillmentRestrictionMutation from "./createFlatRateFulfillmentRestriction.js";
 
 mockContext.validatePermissions = jest.fn().mockName("validatePermissions");
-// Create mock context with FlatRateFulfillmentRestrictions collection
-// mockContext.collections.FlatRateFulfillmentRestrictions = mockCollection("FlatRateFulfillmentRestrictions");
+// Create mock context with FulfillmentRestrictions collection
 mockContext.collections.FulfillmentRestrictions = mockCollection("FulfillmentRestrictions");
 mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 

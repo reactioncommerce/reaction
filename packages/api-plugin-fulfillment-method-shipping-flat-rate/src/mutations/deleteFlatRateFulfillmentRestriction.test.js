@@ -3,8 +3,8 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import deleteFlatRateFulfillmentRestrictionMutation from "./deleteFlatRateFulfillmentRestriction.js";
 
 
-// Create mock context with FlatRateFulfillmentRestrictions collection
-mockContext.collections.FlatRateFulfillmentRestrictions = mockCollection("FlatRateFulfillmentRestrictions");
+// Create mock context with FulfillmentRestrictions collection
+mockContext.collections.FulfillmentRestrictions = mockCollection("FulfillmentRestrictions");
 mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
 const value = {
@@ -17,7 +17,7 @@ const value = {
 };
 
 test("delete a flat rate fulfillment restriction", async () => {
-  mockContext.collections.FlatRateFulfillmentRestrictions.findOneAndDelete.mockReturnValueOnce(Promise.resolve({
+  mockContext.collections.FulfillmentRestrictions.findOneAndDelete.mockReturnValueOnce(Promise.resolve({
     ok: 1,
     value
   }));

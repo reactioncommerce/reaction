@@ -2,8 +2,8 @@ import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js"
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import filterShippingMethods from "./filterShippingMethods.js";
 
-// Create mock context with FlatRateFulfillmentRestrictions collection
-mockContext.collections.FlatRateFulfillmentRestrictions = mockCollection("FlatRateFulfillmentRestrictions");
+// Create mock context with FulfillmentRestrictions collection
+mockContext.collections.FulfillmentRestrictions = mockCollection("FulfillmentRestrictions");
 
 // Mock shipping method
 const mockShippingMethod = [
@@ -105,7 +105,7 @@ test("allow method - country on allow list, region / zip not on deny list, no it
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -138,7 +138,7 @@ test("allow method - region on allow list, country / zip not on deny list, no it
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -171,7 +171,7 @@ test("allow method - postal on allow list, country / region not on deny list, no
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -219,7 +219,7 @@ test("allow method - do not allow shipping of `Restricted Vendor` to Canada, all
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -264,7 +264,7 @@ test("allow method - do not allow shipping of `Restricted Vendor` to Hawaii, all
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -309,7 +309,7 @@ test("allow method - do not allow shipping of `Restricted Vendor` to 10001, all 
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -353,7 +353,7 @@ test("allow method - multiple attributes but only 1 meets criteria to deny", asy
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -398,7 +398,7 @@ test("deny method - do not allow shipping of `Restricted Vendor` to United State
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -443,7 +443,7 @@ test("deny method - do not allow shipping of `Restricted Vendor` to California, 
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -488,7 +488,7 @@ test("deny method - do not allow shipping of `Restricted Vendor` to 90405, all o
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -524,7 +524,7 @@ test("deny method - country on deny list, no item restrictions", async () => {
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -561,7 +561,7 @@ test("deny method - region on deny list, no item restrictions", async () => {
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -598,7 +598,7 @@ test("deny method - postal on deny list, no item restrictions", async () => {
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -647,7 +647,7 @@ test("deny method - region on one deny list, but also is not on other deny lists
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -688,7 +688,7 @@ test("deny method - vendor on deny list", async () => {
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -726,7 +726,7 @@ test("deny method - item weight is too high", async () => {
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -764,7 +764,7 @@ test("deny method - item value is less than $100", async () => {
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -808,7 +808,7 @@ test("deny method - multiple attributes - item value is less than $100 AND item 
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 

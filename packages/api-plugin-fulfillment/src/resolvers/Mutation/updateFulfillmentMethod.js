@@ -16,7 +16,7 @@ import updateFulfillmentMethodMutation from "../../mutations/updateFulfillmentMe
  * @returns {Promise<Object>} updateFulfillmentMethodPayload
  */
 export default async function updateFulfillmentMethod(parentResult, { input }, context) {
-  const { shopId: opaqueShopId, clientMutationId = null, fulfillmentTypeId: opaqueFulfillmentTypeId, methodId: opaqueMethodId, method } = input;
+  const { shopId: opaqueShopId, clientMutationId = null, fulfillmentTypeId: opaqueFulfillmentTypeId, methodId: opaqueMethodId, method } = input.groupInfo;
 
   const methodId = decodeFulfillmentMethodOpaqueId(opaqueMethodId);
   const fulfillmentTypeId = decodeFulfillmentGroupOpaqueId(opaqueFulfillmentTypeId);
