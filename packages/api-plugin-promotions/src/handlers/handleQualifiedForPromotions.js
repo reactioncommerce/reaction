@@ -13,8 +13,8 @@ function canBeApplied(cart, promotion) {
     // no previous promotions, return true
     return true;
   }
-  if (promotion.stackAbility === "none") {
-    Logger.info(logCtx, "Cart disqualified from promotion by stackability");
+  if (promotion.stackAbility === "none" && cart.appliedPromotions.length) {
+    Logger.info(logCtx, "Cart disqualified from promotion because stackability is none");
     return false;
   }
   return true;
@@ -42,5 +42,7 @@ export default async function qualifiedForPromotion(context, params) {
       cart.appliedPromotions = [promotion];
     }
     await context.mutations.saveCart(context, cart, "promotions");
+  } else {
+    Logger.info(logCtx, "Cart disqualified by stackability");
   }
 }
