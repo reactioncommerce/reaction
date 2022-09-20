@@ -1,0 +1,91 @@
+{
+  "name": "@reactioncommerce/file-collections-sa-base",
+  "version": "0.2.2",
+  "description": "Base StorageAdapter class for Reaction FileCollections. You should depend on this package and extend the exported class to create a new specific type of StorageAdapter.",
+  "author": "Reaction Commerce (https://reactioncommerce.com/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/file-collections-sa-base"
+  },
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "eslintConfig": {
+    "extends": "@reactioncommerce",
+    "rules": {
+      "node/no-unsupported-features/es-syntax": "off"
+    }
+  },
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "corejs": 2
+        }
+      ],
+      "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-syntax-import-meta",
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-json-strings",
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      "@babel/plugin-proposal-function-sent",
+      "@babel/plugin-proposal-export-namespace-from",
+      "@babel/plugin-proposal-numeric-separator",
+      "@babel/plugin-proposal-throw-expressions"
+    ],
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "8"
+          }
+        }
+      ]
+    ],
+    "sourceMaps": true,
+    "retainLines": true
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "rm -rf dist/** && babel src --out-dir dist --ignore \"**/*.test.js\"",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@babel/runtime-corejs2": "^7.16.3",
+    "debug": "^4.3.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
+    "@babel/plugin-proposal-function-sent": "^7.10.4",
+    "@babel/plugin-proposal-json-strings": "^7.10.4",
+    "@babel/plugin-proposal-numeric-separator": "^7.10.4",
+    "@babel/plugin-proposal-throw-expressions": "^7.10.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "babel-core": "^7.0.0-bridge.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

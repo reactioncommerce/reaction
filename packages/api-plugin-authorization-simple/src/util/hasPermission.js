@@ -1,4 +1,4 @@
-import { createRequire } from "module";
+import { createRequire } from "module"; // eslint-disable-line
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 

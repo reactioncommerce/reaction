@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@2.1.1/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "reactioncommerce/reaction" }],
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "restricted",
+  "baseBranch": "trunk",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+  ]
+}

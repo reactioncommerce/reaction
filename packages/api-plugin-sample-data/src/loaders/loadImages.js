@@ -1,10 +1,13 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-await-in-loop */
 import fs from "fs";
-import path  from 'path';
-import { Readable } from 'stream';
-import pkg from '@reactioncommerce/file-collections';
+import path from "path";
+import { Readable } from "stream";
+import pkg from "@reactioncommerce/file-collections";
+
 const { FileRecord } = pkg;
-import ProductsData from "../json-data/Products.json";
 import Logger from "@reactioncommerce/logger";
+import ProductsData from "../json-data/Products.json";
 
 
 /**
@@ -26,15 +29,16 @@ async function insertToMedia(Media, fileRecords) {
  * @summary Creates a mapping between the variantId and it's top level productId from Productsdata.json
  * @returns {Object} variantProductMapper mapping of variantId and productId
  */
- function getVariantProductMapper() {
-  let variantProductMapper = {};
-  ProductsData.forEach(product => {
-    if (product.ancestors?.length > 0 && product.type === 'variant') {
+function getVariantProductMapper() {
+  const variantProductMapper = {};
+  ProductsData.forEach((product) => {
+    if (product.ancestors?.length > 0 && product.type === "variant") {
+      // eslint-disable-next-line prefer-destructuring
       variantProductMapper[product._id] = product.ancestors[0];
     }
   });
   return variantProductMapper;
-};
+}
 
 
 /**
@@ -42,21 +46,21 @@ async function insertToMedia(Media, fileRecords) {
  * @param {String} fileList - The array of file names
  * @returns {Object} variantProductMapper mapping of variantId and productId
  */
- function getVariantIdFileMapper(fileList) {
-  let variantIdFileMapper = {};
-  fileList.forEach(filename => {
-    let variantId = filename.split(".")[0]  // filename is in the format variantId.descriptive-filename.extn
-    if (variantId) {                        // Eliminates hidden files starting with '.'
+function getVariantIdFileMapper(fileList) {
+  const variantIdFileMapper = {};
+  fileList.forEach((filename) => {
+    const variantId = filename.split(".")[0]; // filename is in the format variantId.descriptive-filename.extn
+    if (variantId) { // Eliminates hidden files starting with '.'
       if (variantIdFileMapper[variantId] && variantIdFileMapper[variantId].length > 0) {
-        variantIdFileMapper[variantId].push(filename)
+        variantIdFileMapper[variantId].push(filename);
       } else {
-        variantIdFileMapper[`${variantId}`] =  [filename];
+        variantIdFileMapper[`${variantId}`] = [filename];
       }
     }
   });
 
   return variantIdFileMapper;
-};
+}
 
 
 /**
@@ -64,7 +68,7 @@ async function insertToMedia(Media, fileRecords) {
  * @param {Object} fileRecord - The fileRecord to be inserted
  * @returns {Promise<boolean>} true if success
  */
- async function storeFromAttachedBuffer(fileRecord) {
+async function storeFromAttachedBuffer(fileRecord) {
   const { stores } = fileRecord.collection.options;
   const bufferData = fileRecord.data;
 
@@ -97,18 +101,17 @@ async function insertToMedia(Media, fileRecords) {
  * @returns {Promise<boolean>} true if success
  */
 export default async function loadImages(context, shopId) {
-
   const { collections: { Media } } = context;
   const { mutations: { publishProducts } } = context;
 
-  let topProdIds = [];
-  let fileType = "image/jpeg";
-  let folderPath = "./custom-packages/api-plugin-sample-data/src/images/"
+  const topProdIds = [];
+  const fileType = "image/jpeg";
+  const folderPath = "./custom-packages/api-plugin-sample-data/src/images/";
 
   let fileList = [];
   try {
     fileList = fs.readdirSync(folderPath);
-  } catch (err){
+  } catch (err) {
     Logger.warn("Error reading image filelist");
   }
 
@@ -117,23 +120,23 @@ export default async function loadImages(context, shopId) {
   const variantIdFileMapper = getVariantIdFileMapper(fileList);
   const variantProductMapper = getVariantProductMapper();
 
-  let fileRecords = [];
+  const fileRecords = [];
   const variantIds = Object.keys(variantIdFileMapper);
-  variantIds.forEach(variantId => {
+  variantIds.forEach((variantId) => {
     const prodId = variantProductMapper[variantId];
     topProdIds.push(prodId);
     const fileNames = variantIdFileMapper[variantId];
 
-    fileNames.forEach(fileName => {
+    fileNames.forEach((fileName) => {
       const filePath = path.join(folderPath, fileName);
-      let metadata = {
+      const metadata = {
         productId: prodId,
-        variantId: variantId,
+        variantId,
         toGrid: 1,
         shopId,
         priority: 0,
         workflow: "published"
-      }
+      };
       const data = fs.readFileSync(filePath);
       const fileSize = data.length;
       const fileRecord = new FileRecord({
@@ -144,17 +147,16 @@ export default async function loadImages(context, shopId) {
           updatedAt: new Date(),
           uploadedAt: new Date()
         }
-      })
+      });
       fileRecord.name(fileName);
-      fileRecord.attachData(data)
+      fileRecord.attachData(data);
       fileRecord.metadata = metadata;
       fileRecords.push(fileRecord);
-    })
-
+    });
   });
 
 
-  await insertToMedia(Media, fileRecords)
+  await insertToMedia(Media, fileRecords);
 
   const uniqueProdIds = [...new Set(topProdIds)];
 

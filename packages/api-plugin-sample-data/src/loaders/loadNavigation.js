@@ -1,7 +1,6 @@
 import Random from "@reactioncommerce/random";
 import NavigationItemsData from "../json-data/NavigationItems.json";
 
-const now = new Date();
 const DEFAULT_NAME = "Main Navigation";
 
 /**
@@ -11,11 +10,11 @@ const DEFAULT_NAME = "Main Navigation";
  */
 function getNavigationItem(navigationItemId) {
   return {
-    "isPrivate": false,
-    "isSecondary": false,
-    "isVisible": true,
-    "navigationItemId": navigationItemId
-  }
+    isPrivate: false,
+    isSecondary: false,
+    isVisible: true,
+    navigationItemId
+  };
 }
 
 /**
@@ -27,19 +26,19 @@ function getNavigationItem(navigationItemId) {
 async function deleteDefaultNavigation(context, shopId) {
   const { collections: { NavigationItems, NavigationTrees } } = context;
   const defaultNavigationItems = await NavigationItems.find({
-    "shopId": shopId
+    shopId
   }).toArray();
   if (defaultNavigationItems.length > 0) {
-    let delItemResp = await NavigationItems.deleteMany({
-      "shopId": shopId
+    await NavigationItems.deleteMany({
+      shopId
     });
   }
   const defaultNavigationTreeItem = await NavigationTrees.find({
-    "shopId": shopId
+    shopId
   }).toArray();
   if (defaultNavigationTreeItem.length > 0) {
-    let delTreeResp = await NavigationTrees.deleteMany({
-      "shopId": shopId
+    await NavigationTrees.deleteMany({
+      shopId
     });
   }
   return true;
@@ -52,7 +51,6 @@ async function deleteDefaultNavigation(context, shopId) {
  * @returns {Promise<boolean>} true if success
  */
 export default async function loadNavigation(context, shopId) {
-
   const { collections: { NavigationTrees, Shops } } = context;
 
   // delete default navigation items & tree
@@ -90,14 +88,14 @@ export default async function loadNavigation(context, shopId) {
   });
 
   // Create Navigation item objects with corresponding IDs
-  let m1leaf = getNavigationItem(navItemMenuOneLeafLevel._id);
-  let m1sub = getNavigationItem(navItemMenuOneSubLevel._id);
-  let m1top = getNavigationItem(navItemMenuOneTopLevel._id);
-  let m2leaf = getNavigationItem(navItemMenuTwoLeafLevel._id);
-  let m2sub = getNavigationItem(navItemMenuTwoSubLevel._id);
-  let m2top = getNavigationItem(navItemMenuTwoTopLevel._id);
-  let m3sub = getNavigationItem(navItemMenuThreeSubLevel._id);
-  let m3top = getNavigationItem(navItemMenuThreeTopLevel._id);
+  const m1leaf = getNavigationItem(navItemMenuOneLeafLevel._id);
+  const m1sub = getNavigationItem(navItemMenuOneSubLevel._id);
+  const m1top = getNavigationItem(navItemMenuOneTopLevel._id);
+  const m2leaf = getNavigationItem(navItemMenuTwoLeafLevel._id);
+  const m2sub = getNavigationItem(navItemMenuTwoSubLevel._id);
+  const m2top = getNavigationItem(navItemMenuTwoTopLevel._id);
+  const m3sub = getNavigationItem(navItemMenuThreeSubLevel._id);
+  const m3top = getNavigationItem(navItemMenuThreeTopLevel._id);
 
   // Embed the Navigation item objects into the Navigation tree
   m3top.items = [m3sub];
@@ -112,7 +110,7 @@ export default async function loadNavigation(context, shopId) {
   m3top.expanded = true;
 
   // Creating top level items object
-  let items = [m1top, m2top, m3top];
+  const items = [m1top, m2top, m3top];
 
   // Create the tree
   const navigationTreeId = Random.id();

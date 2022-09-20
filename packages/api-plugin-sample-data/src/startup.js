@@ -29,13 +29,13 @@ export default async function loadSampleData(context) {
   }
 
   Logger.info("Load Users");
-  let user = await loadUsers(context);
+  const user = await loadUsers(context);
   Logger.info("Load Accounts");
-  let account = await loadAccounts(context);
+  const account = await loadAccounts(context);
   Logger.info("Load Shop");
-  let newShopId = await loadShops(context, account, user[0]);
+  const newShopId = await loadShops(context, account, user[0]);
   Logger.info("Load Tags");
-  let tagsData = await loadTags(context, newShopId);
+  const tagsData = await loadTags(context, newShopId);
   Logger.info("Load Products");
   await loadProducts(context, newShopId, tagsData);
   Logger.info("Load Navigation");

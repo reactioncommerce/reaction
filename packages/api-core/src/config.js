@@ -1,4 +1,7 @@
 import envalid from "envalid";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const { bool, makeValidator, num, str } = envalid;
 

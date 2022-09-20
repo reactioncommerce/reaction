@@ -1,7 +1,5 @@
-import ShopsData from "../json-data/Shops.json";
 import Logger from "@reactioncommerce/logger";
-
-const now = new Date();
+import ShopsData from "../json-data/Shops.json";
 
 
 /**
@@ -11,7 +9,7 @@ const now = new Date();
  * @param {object} user - The user details
  * @returns {object} Custom context object
  */
- function getCustomContext(context, account, user) {
+function getCustomContext(context, account, user) {
   return {
     ...context,
     account,
@@ -27,27 +25,29 @@ const now = new Date();
 /**
  * @summary load a single Shop
  * @param {object} context - The application context
+ * @param {object} account - The account object
+ * @param {object} user - The user object
  * @returns {Promise<Boolean>} true if success
  */
 export default async function loadShops(context, account, user) {
   const { collections: { Shops } } = context;
   const [oneShop] = ShopsData;
   const customContext = getCustomContext(context, account, user);
-  let shop = await context.mutations.createShop(customContext, oneShop);
+  const shop = await context.mutations.createShop(customContext, oneShop);
 
   const shopUpdateObj = {
     shopId: shop._id,
-    allowGuestCheckout : true,
-    emails : [{
-      "address": "no-reply@example.com"
+    allowGuestCheckout: true,
+    emails: [{
+      address: "no-reply@example.com"
     }]
-  }
+  };
   try {
     await context.mutations.updateShop(customContext, shopUpdateObj);
   } catch (error) {
     Logger.warn("Error updating shop with Checkout & Email: ", shop._id);
   }
-    
+
   // Dataloaders are not present in the context at this stage
   // So the below mutation will fail internally while trying to find shopById
   // Hence we need to manually update the shop

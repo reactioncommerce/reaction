@@ -41,7 +41,11 @@ export default async function importPluginsJSONFile(pluginsFile, transformPlugin
       Logger.debug({ pluginPath, pluginRefs });
       throw new Error(`Plugin "${name}" is not set to a string`);
     } else if (/[a-zA-Z@]/.test(pluginPath[0])) {
-      ({ default: plugin } = await import(pluginPath));
+      try {
+        ({ default: plugin } = await import(pluginPath));
+      } catch (err) {
+        ({ default: plugin } = await import(path.join(path.dirname(absolutePluginsFile), "node_modules", pluginPath, "index.js")));
+      }
     } else {
       ({ default: plugin } = await import(path.join(path.dirname(absolutePluginsFile), pluginPath)));
     }

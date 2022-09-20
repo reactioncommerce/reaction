@@ -1,0 +1,41 @@
+name: Release
+on:
+  workflow_dispatch:
+    branches:
+      - trunk
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # This makes action fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          key: reaction-v6-node-modules-${{ hashFiles('package.json') }}-${{ hashFiles('pnpm-lock.yaml') }}
+          path: '**/node_modules'
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install pnpm
+        run: npm i -g pnpm@latest
+
+      - name: Install Dependencies
+        run: pnpm install --ignore-scripts
+
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
