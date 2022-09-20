@@ -55,10 +55,10 @@ async function getOfferPromotions(context) {
   const offerPromotions = await Promotions.find({
     "triggers.triggerKey": "offers",
     "enabled": true,
-    "startDate": { $gt: now },
-    "endDate": { $lt: now }
+    "startDate": { $lt: now },
+    "endDate": { $gt: now }
   }).toArray();
-  Logger.debug({ ...logCtx, applicableOffers: offerPromotions.length }, "Fetched applicable offers");
+  Logger.info({ ...logCtx, applicableOffers: offerPromotions.length }, "Fetched applicable offers");
   return offerPromotions;
 }
 
