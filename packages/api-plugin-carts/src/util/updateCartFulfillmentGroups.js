@@ -73,13 +73,15 @@ function checkAndAddToGroup(currentGroups, fulfillmentType, item) {
  * @param {Object} cart The cart, to be mutated
  * @returns {undefined}
  */
-export default function updateCartFulfillmentGroups(context, cart) {
+export default async function updateCartFulfillmentGroups(context, cart) {
   // Every time the cart is updated, create any missing fulfillment groups as necessary.
   // We need one group per type per shop, containing only the items from that shop.
   // Also make sure that every item is assigned to a fulfillment group.
+  const { collections } = context;
+  const { Fulfillment } = collections;
   const currentGroups = cart.shipping || [];
 
-  (cart.items || []).forEach((item) => {
+  for (const item of (cart.items || [])) {
     const { supportedFulfillmentTypes } = item;
 
     // This is a new optional field that UI can pass in case the user selects fulfillment type
@@ -107,8 +109,16 @@ export default function updateCartFulfillmentGroups(context, cart) {
     // already in a group
     // If selectedFulfillmentType is provided, move the item to that group, else add item to undecided group
     if (!selectedFulfillmentType) selectedFulfillmentType = "undecided";
+
+    // check if the selectedFulfillmentType is an 'enabled' fulfillmentType, if not set is 'undecided'
+    /* eslint-disable no-await-in-loop */
+    const enabledFulfillmentTypeObjs = await Fulfillment.find({ "shopId": item.shopId, "provider.enabled": true }).toArray();
+    /* eslint-enable no-await-in-loop */
+    let enabledFulfillmentTypes = (enabledFulfillmentTypeObjs || []).map((ffType) => ffType.fulfillmentType);
+    enabledFulfillmentTypes = (enabledFulfillmentTypes || []).filter((val) => !!val); // Remove nulls
+    if (!enabledFulfillmentTypes.includes(selectedFulfillmentType)) selectedFulfillmentType = "undecided";
     checkAndAddToGroup(currentGroups, selectedFulfillmentType, item);
-  });
+  }
 
   // Items may also have been removed. Need to remove their IDs from each group.itemIds
   currentGroups.forEach((group) => {

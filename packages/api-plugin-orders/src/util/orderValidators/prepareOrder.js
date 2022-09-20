@@ -186,7 +186,6 @@ export default async function prepareOrder(context, input, flag) {
     }
   }
 
-  // #FIXME #TODO This solution to be reviewed
   const allValidateFuncs = context.getFunctionsOfType("validateOrderMethods");
   // Collect results from validation specific to each fulfillment-method
   for (const group of finalFulfillmentGroups) {

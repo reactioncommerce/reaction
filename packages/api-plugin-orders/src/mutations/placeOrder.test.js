@@ -155,7 +155,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
         },
         shopId: orderInput.shopId,
         totalItemQuantity: 1,
-        type: "shipping",
+        type: "mockType",
         workflow: {
           status: "new",
           workflow: [

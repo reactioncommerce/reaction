@@ -34,9 +34,25 @@ export default async function updateFulfillmentMethodMutation(context, input) {
   // method.enabled = method.isEnabled;
   // delete method.isEnabled;
 
-  // Hardcoded field, each ff-method plugin has to introduce this field for grouping purpose
-  // Schema defined as optional=true for backward compatibility
-  // #FIXME method.fulfillmentMethod & method.fulfillmentTypes should be non-editable;
+  const ffTypeMethodRecord = await Fulfillment.findOne({
+    "_id": fulfillmentTypeId,
+    shopId,
+    "methods._id": methodId
+  });
+  if (!ffTypeMethodRecord) throw new ReactionError("server-error", "Fulfillment Method does not exist");
+
+  // Do not update the fulfillmentType, fulfillmentMethod, group, name & _id fields
+  // Find the matching fulfillmentMethod object and use those values to over-write
+  const currentFulfillmentMethod = (ffTypeMethodRecord.methods || []).find((meth) => meth._id === methodId);
+  if (!currentFulfillmentMethod) throw new ReactionError("server-error", "Fulfillment Method does not exist");
+  const updatedMethod = {
+    ...method,
+    _id: methodId,
+    name: currentFulfillmentMethod.name,
+    group: currentFulfillmentMethod.group,
+    fulfillmentMethod: currentFulfillmentMethod.fulfillmentMethod,
+    fulfillmentType: [ffTypeMethodRecord.fulfillmentType]
+  };
 
   const { matchedCount } = await Fulfillment.updateOne({
     "_id": fulfillmentTypeId,
@@ -44,15 +60,10 @@ export default async function updateFulfillmentMethodMutation(context, input) {
     shopId
   }, {
     $set: {
-      "methods.$": {
-        ...method,
-        _id: methodId
-      }
+      "methods.$": updatedMethod
     }
   });
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
-  inputMethod._id = methodId;
-
-  return { method: inputMethod };
+  return { group: updatedMethod };
 }

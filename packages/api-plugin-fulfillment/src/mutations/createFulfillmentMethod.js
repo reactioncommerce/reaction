@@ -30,6 +30,13 @@ export default async function createFulfillmentMethodMutation(context, input) {
   const ffTypeRecord = await Fulfillment.findOne({ _id: fulfillmentTypeId, shopId });
   if (!ffTypeRecord) throw new ReactionError("server-error", "Unable to create fulfillment method without defined type");
 
+  const ffTypeMethodRecord = await Fulfillment.findOne({
+    _id: fulfillmentTypeId,
+    shopId,
+    methods: { $elemMatch: { name: method.name, fulfillmentMethod: method.fulfillmentMethod } }
+  });
+  if (ffTypeMethodRecord) throw new ReactionError("server-error", "Fulfillment Method already exists");
+
   method._id = Random.id();
   // MongoDB schema still uses `enabled` rather than `isEnabled`
   // method.enabled = method.isEnabled;

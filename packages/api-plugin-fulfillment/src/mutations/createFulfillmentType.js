@@ -14,13 +14,18 @@ export default async function createFulfillmentType(context, input) {
   cleanedInput.provider.name = cleanedInput.name;
 
   if (cleanedInput.method) {
+    cleanedInput.method._id = Random.id();
     cleanedInput.method.fulfillmentTypes = [cleanedInput.fulfillmentType];
   }
   fulfillmentTypeSchema.validate(cleanedInput);
 
   const { collections } = context;
   const { Fulfillment } = collections;
-  const { shopId } = cleanedInput;
+  const { shopId, name, fulfillmentType } = cleanedInput;
+
+  const ffTypeRecord = await Fulfillment.findOne({ name, shopId, fulfillmentType });
+  if (ffTypeRecord) throw new ReactionError("invalid-param", "Fulfillment Type already exists");
+
   await context.validatePermissions("reaction:legacy:fulfillmentTypes", "create", { shopId });
 
   const { insertedCount } = await Fulfillment.insertOne({

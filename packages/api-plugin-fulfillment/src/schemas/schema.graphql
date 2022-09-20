@@ -367,11 +367,11 @@ extend type Mutation {
     input: updateFulfillmentTypeInput!
   ): updateFulfillmentTypePayload!
 
-  "Creates a new Fulfillment Type"
-  createFulfillmentType(
-    "Mutation input"
-    input: createFulfillmentTypeInput!
-  ): createFulfillmentTypePayload!
+  # "Creates a new Fulfillment Type"
+  # createFulfillmentType(
+  #   "Mutation input"
+  #   input: createFulfillmentTypeInput!
+  # ): createFulfillmentTypePayload!
 
   "Updates the provided Fulfillment Method"
   updateFulfillmentMethod(
@@ -379,11 +379,11 @@ extend type Mutation {
     input: updateFulfillmentMethodInput!
   ): updateFulfillmentMethodPayload!
 
-  "Creates a new Fulfillment Method"
-  createFulfillmentMethod(
-    "Mutation input"
-    input: createFulfillmentMethodInput!
-  ): createFulfillmentMethodPayload!
+  # "Creates a new Fulfillment Method"
+  # createFulfillmentMethod(
+  #   "Mutation input"
+  #   input: createFulfillmentMethodInput!
+  # ): createFulfillmentMethodPayload!
 }
 
 extend type Query {

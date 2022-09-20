@@ -35,7 +35,10 @@
     "lodash": "^4.17.21",
     "simpl-schema": "^1.12.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@reactioncommerce/api-plugin-carts": "^1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1"
+  },
   "scripts": {
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint .",
