@@ -27,7 +27,7 @@ export default async function getFulfillmentMethodsWithQuotes(commonOrder, conte
   const fulfillmentTypeInGroup = commonOrder.fulfillmentType;
   if (!fulfillmentTypeInGroup) throw new ReactionError("not-found", "Fulfillment type not found in commonOrder");
 
-  const functionTypesToCall = `getFulfillmentMethodsWithQuotes" + ${fulfillmentTypeInGroup}`;
+  const functionTypesToCall = `getFulfillmentMethodsWithQuotes${fulfillmentTypeInGroup}`;
   const funcs = context.getFunctionsOfType(functionTypesToCall);
 
   if (!funcs || !Array.isArray(funcs) || !funcs.length) throw new ReactionError("not-found", `No methods for Fulfillment type ${fulfillmentTypeInGroup}`);
