@@ -35,32 +35,93 @@
 
 # Getting started
 
-For complete documentation go to [Open Commerce Quickstart](https://mailchimp.com/developer/open-commerce/guides/quick-start/) for all supported operating systems.
+To start working with your own project built on Mailchimp Open Commerce you can start by using our new CLI. The CLI is 
+the quickest and easiest way to develop on Open Commerce. It allows you to create and work with API, Admin, and Storefront projects all via the command line.
 
 ## What you need
- * git
- * [Docker](https://www.docker.com/)
- * [Docker Compose](https://docs.docker.com/compose/)
- * Windows users: [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/install-win10_) and [Docker for WSL](https://docs.docker.com/docker-for-windows/wsl/)
+- We recommend installing [nmv](https://github.com/nvm-sh/nvm)
+- [14.18.1 ≤ Node version < 16](https://nodejs.org/ja/blog/release/v14.18.1/)
+- [Yarn](https://yarnpkg.com/cli/install) (if you want to install the storefront)
+- [Git](https://git-scm.com/)
+- [Docker](https://www.docker.com/get-started/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-## Clone and Start the platform
-```bash
-git clone https://github.com/reactioncommerce/reaction-development-platform.git
-cd reaction-development-platform
-make
+## Install the CLI
+First install the cli by running:
+```
+npm install -g reaction-cli
 ```
 
-Behind the scenes, the make process clones all of the relevant Open Commerce software repositories, sets up each environment, and pulls, builds, and starts each Docker container.
+You can test to see if it has worked here by running:
 
-When make completes, three services will be running on localhost:
-* Open Commerce API (port 3000), including the core plugins. This service also contains the GraphQL playground at localhost:3000/graphql.
-* Example Storefront (port 4000), which is built with Next.js.
-* Admin dashboard (port 4080), used to manage shop settings, accounts, products, and orders.
+```
+reaction help
+```
+
+## Creating a project
+
+You can create your Open Commerce project by running:
+```
+reaction create-project api <your-project-name>
+ ```
+This will create an Open Commerce project in the directory <your-project-name>.
+Once this is complete, run:
+```
+cd <your-project-name> 
+ ```
+Then run:
+```
+npm install 
+```
+Finally run:
+```
+reaction develop api
+  ```
+
+Note: Optionally, from within the project-directory you may issue the above command without mentioning the project type and the CLI would check your package.json for the "projectType" and pick it up from there. This expects that the project itself was built using the latest version of the CLI as explained in the above steps.
+
+Example, instead of the above command, you may skip mentioning 'api' and just run:
+  ```
+  reaction develop
+  ```
+
+This will start the Open Commerce GraphQL server and Mongo Server. Press Ctrl+C to stop.
+
+- A sample custom plugin has been installed, and you should see its output in the logs. (Your Sample Plugin)
+- To add a new plugin based on our plugin template run:
+```
+reaction create-plugin api <your-plugin-name>
+```
+Validate whether the plugin was created in the "custom-packages"
+```
+cd custom-packages
+```
+``` 
+cd <your-plugin-name>
+```
+```
+npm install 
+```
+You now need to change back up to the root:
+```
+cd ../../
+```
+now you can run:
+```
+reaction develop
+```
+This plugin will now be loaded the next time you start Open Commerce.
+
+### Congratulations!! You're ready to start developing with Open Commerce
+
+See the [Complete CLI instructions](https://github.com/reactioncommerce/cli) for how to create your local storefront and admin.
 
 
 Go to the complete [installation instructions](https://mailchimp.com/developer/open-commerce/guides/quick-start/#access-the-dashboard-playground-and-storefront) to see how to set up your store
 
 # API development
+If you are working on core plugins (not developing plugins for your own installation) you should follow these 
+instructions
 
 ## What you need
 
