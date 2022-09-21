@@ -31,8 +31,8 @@ ENV NODE_ENV=production
 ARG NPM_TOKEN
 COPY --from=deps /app/deps /usr/local/src/app
 
-ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/src/app/node_modules/.bin
-
+# hadolint ignore=DL3018
+RUN apk --no-cache add bash curl less tini vim make python2 git g++ glib --repository http://dl-3.alpinelinux.org/alpine/edge/community --repository http://dl-3.alpinelinux.org/alpine/edge/main vips-dev
 # The `node-prod` base image installs NPM deps with --no-scripts.
 # This prevents the `sharp` lib from working because it installs the binaries
 # in a post-install script. We copy their install script here and run it.
