@@ -46,7 +46,7 @@ export default async function loadSampleData(context) {
   Logger.info("Load Shipping");
   await loadShipping(context, newShopId);
   Logger.info("Loading Promotions");
-  await loadPromotions(context);
+  await loadPromotions(context, newShopId);
   Logger.info("Loading Sample Data complete");
   return true;
 }

@@ -2,45 +2,45 @@ import SimpleSchema from "simpl-schema";
 
 const RulesEvent = new SimpleSchema({
   type: {
-    type: String
+    type: String,
   },
   params: {
     type: Object,
-    blackbox: true
-  }
+    blackbox: true,
+  },
 });
 
 export const JSONRulesEngineRule = new SimpleSchema({
   conditions: {
     type: Object,
-    blackbox: true
+    blackbox: true,
   },
   event: {
-    type: RulesEvent
-  }
+    type: RulesEvent,
+  },
 });
 
 export const Action = new SimpleSchema({
   actionKey: {
     type: String,
-    allowedValues: ["noop"]
+    allowedValues: ["noop"],
   },
   actionParameters: {
     type: Object,
-    blackbox: true
-  }
+    blackbox: true,
+  },
 });
 
 export const Trigger = new SimpleSchema({
   triggerKey: {
     type: String,
-    allowedValues: []
+    allowedValues: ["offers"],
   },
   triggerParameters: {
     type: Object,
     blackbox: true,
-    optional: true
-  }
+    optional: true,
+  },
 });
 
 /**
@@ -50,54 +50,57 @@ export const Trigger = new SimpleSchema({
  * @summary Promotions schema
  */
 export const Promotion = new SimpleSchema({
-  "_id": {
-    type: String
+  _id: {
+    type: String,
   },
-  "shopId": {
-    type: String
+  shopId: {
+    type: String,
   },
-  "label": {
-    type: String
+  label: {
+    type: String,
   },
-  "description": {
-    type: String
+  description: {
+    type: String,
   },
-  "enabled": {
+  enabled: {
     type: Boolean,
-    defaultValue: false
+    defaultValue: false,
   },
-  "triggers": {
-    type: Array
+  triggers: {
+    type: Array,
   },
   "triggers.$": {
-    type: Trigger
+    type: Trigger,
   },
-  "actions": {
-    type: Array
+  actions: {
+    type: Array,
   },
   "actions.$": {
-    type: Action
+    type: Action,
   },
-  "startDate": {
-    type: Date
-  },
-  "endDate": { // leaving this empty means it never ends
+  startDate: {
     type: Date,
-    optional: true
   },
-  "exclusionFilters": {
+  endDate: {
+    // leaving this empty means it never ends
+    type: Date,
+    optional: true,
+  },
+  exclusionFilters: {
     type: Array,
-    optional: true
+    optional: true,
   },
   "exclusionFilters.$": {
-    type: JSONRulesEngineRule
+    type: JSONRulesEngineRule,
   },
-  "stackAbility": { // defines what other offers it can be defined as
+  stackAbility: {
+    // defines what other offers it can be defined as
     type: String,
-    allowedValues: ["none", "per-type", "all"]
+    allowedValues: ["none", "per-type", "all"],
   },
-  "reportAsTaxable": { // should we report the discounted amount
+  reportAsTaxable: {
+    // should we report the discounted amount
     type: Boolean,
-    defaultValue: true
-  }
+    defaultValue: true,
+  },
 });
