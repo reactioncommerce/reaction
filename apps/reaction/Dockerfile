@@ -12,7 +12,7 @@ COPY ./apps/reaction ./apps/reaction
 COPY .npmrc .nvmrc package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 RUN npm i -g pnpm@7.11.0
-RUN pnpm --filter=@reactioncommerce/reaction-api --prod deploy deps --ignore-scripts
+RUN pnpm --filter=@reactioncommerce/reaction-api --prod deploy deps --ignore-scripts --prefer-online
 
 
 FROM node:14.18.1-alpine
