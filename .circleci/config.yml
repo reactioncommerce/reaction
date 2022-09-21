@@ -16,10 +16,14 @@ defaults: &defaults
 install_pnpm: &install_pnpm
   - run:
       name: Install pnpm package manager
-      command: sudo npm i -g pnpm@7
+      command: sudo npm i -g pnpm@7.11.0
   - run:
       name: Check pnpm version
       command: pnpm -v
+
+delay_job: &delay_job
+  - run: Wait for packages to be propagated
+    command: sleep 350
 
 jobs:
   install-dependencies:
@@ -154,10 +158,9 @@ jobs:
     steps:
       - checkout
       - <<: *install_pnpm
-      - restore_cache:
-          keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-            - reaction-v6-node-modules-{{ .Branch }}
+      - run:
+          name: Install PNPM dependencies
+          command: pnpm install -r
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
@@ -175,7 +178,7 @@ jobs:
           name: Build and push production Docker image
           command: |
             VERSION=$(git describe --tags `git rev-list --tags --max-count=1` | cut -c2-100)
-            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./app/reaction/Dockerfile .
+            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./apps/reaction/Dockerfile .
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push ${DOCKER_REPOSITORY}:${VERSION}
             docker push ${DOCKER_REPOSITORY}:latest
