@@ -21,10 +21,6 @@ install_pnpm: &install_pnpm
       name: Check pnpm version
       command: pnpm -v
 
-delay_job: &delay_job
-  - run: Wait for packages to be propagated
-    command: sleep 350
-
 jobs:
   install-dependencies:
     <<: *defaults
@@ -171,6 +167,9 @@ jobs:
   docker-build-push:
     <<: *defaults
     steps:
+      - run:
+          name: Wait for packages to be propagated
+          command: sleep 350
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
