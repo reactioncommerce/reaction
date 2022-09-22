@@ -35,9 +35,7 @@ export const promotions = {
   actions: [],
   schemaExtensions: [],
   operators: {}, // operators used for rule evaluations
-  methods: {}, // discount calculation methods,
-  processors: {},
-  actions: {}
+  methods: {} // discount calculation methods
 };
 
 /**
@@ -45,7 +43,7 @@ export const promotions = {
  * @param {Object} pluginPromotions - Extensions passed in via child plugins
  * @returns {undefined} undefined
  */
-export function registerPluginHandlerForPromotions({ promotions: pluginPromotions, ...context }) {
+export function registerPluginHandlerForPromotions({ promotions: pluginPromotions }) {
   if (pluginPromotions) {
     const { triggers, actions, schemaExtensions, operators, methods } = pluginPromotions;
     if (triggers) {

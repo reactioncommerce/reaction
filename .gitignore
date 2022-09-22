@@ -79,3 +79,7 @@ yalc-packages
 
 # Build
 dist
+
+# Editor
+.vscode
+.idea

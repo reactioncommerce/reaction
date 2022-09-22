@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { createRequire } from "module";
 import { Action, Trigger } from "./simpleSchemas.js";
+import noop from "./actions/noop.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -9,7 +10,7 @@ const { name, version } = pkg;
 const logCtx = {
   name,
   version,
-  file: "startup.js"
+  file: "startup.js",
 };
 
 /**
@@ -33,7 +34,8 @@ function extendSchemas(context) {
  * @returns {Promise<void>} undefined
  */
 export default async function startup(context) {
-  console.log(context)
+  promotionContext.registerAction("noop", noop);
+
   extendSchemas(context);
   const { actions: additionalActions, triggers: additionalTriggers } = context.promotions;
   Action.extend({
@@ -68,7 +70,6 @@ async function getPromotions(context) {
     collections: { Promotions },
   } = context;
   const promotions = await Promotions.find({
-    // "triggers.triggerKey": "offers",
     enabled: true,
     // "startDate": { $lt: now },
     // "endDate": { $gt: now }
@@ -79,5 +80,23 @@ async function getPromotions(context) {
 
 async function applyPromotionsToCart(context, cart) {
   const promotions = await getPromotions(context);
-  console.log("applyPromotionsToCart");
+
+  for (let promotion of promotions) {
+    const { triggers, actions } = promotion;
+    const trigger = triggers[0];
+    const { triggerKey, triggerParameters } = trigger;
+    const triggerFn = context.promotionContext.triggers[triggerKey];
+    if (triggerFn) {
+      const shouldApply = await triggerFn(context, cart, triggerParameters);
+      if (shouldApply) {
+        for (let action of actions) {
+          const { actionKey, actionParameters } = action;
+          const actionFn = context.promotionContext.actions[actionKey];
+          if (actionFn) {
+            await actionFn(context, cart, actionParameters);
+          }
+        }
+      }
+    }
+  }
 }

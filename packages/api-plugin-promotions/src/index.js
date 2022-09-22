@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 import { promotions, registerPluginHandlerForPromotions } from "./registration.js";
+import { promotionContext } from "./promotionContext.js";
 import startup from "./startup.js";
 import preStartupPromotions from "./preStartup.js";
 import registerPromotionsHandlers from "./handlers/registerPromotionsHandlers.js";
@@ -33,17 +34,8 @@ export default async function register(app) {
       startup: [startup, registerPromotionsHandlers],
     },
     contextAdditions: {
-      promotions: {
-        ...promotions,
-        registerProcessor: (processorName, func) => {
-          app.context.promotion.processors[processorName] = func;
-        },
-        registerAction: (actionName, func) => {
-          app.context.promotion.action[actionName] = func;
-        }
-      },
-      promotionProcessors: {},
-      promotionActions: {}
+      promotions,
+      promotionContext,
     },
     promotions: {
       operators,
