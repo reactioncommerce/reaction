@@ -167,9 +167,9 @@ jobs:
   docker-build-push:
     <<: *defaults
     steps:
-      - run:
-          name: Wait for packages to be propagated
-          command: sleep 350
+      # - run:
+      #     name: Wait for packages to be propagated
+      #     command: sleep 350
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
@@ -177,10 +177,10 @@ jobs:
           name: Build and push production Docker image
           command: |
             VERSION=$(git describe --tags `git rev-list --tags --max-count=1` | cut -c2-100)
-            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./apps/reaction/Dockerfile .
-            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-            docker push ${DOCKER_REPOSITORY}:${VERSION}
-            docker push ${DOCKER_REPOSITORY}:latest
+            docker build --no-cache -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./apps/reaction/Dockerfile .
+            # docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+            # docker push ${DOCKER_REPOSITORY}:${VERSION}
+            # docker push ${DOCKER_REPOSITORY}:latest
 
 workflows:
   version: 2
@@ -196,32 +196,32 @@ workflows:
       - graphql-lint:
           requires:
             - install-dependencies
-      - test-unit:
-          requires:
-            - install-dependencies
-      - test-integration-query:
-          requires:
-            - install-dependencies
-      - test-integration-mutation:
-          requires:
-            - install-dependencies
-      - release:
-          filters:
-            branches:
-              only:
-                - trunk
-          requires:
-            - dockerfile-lint
-            - eslint
-            - graphql-lint
-            - test-unit
-            - test-integration-query
-            - test-integration-mutation
+      # - test-unit:
+      #     requires:
+      #       - install-dependencies
+      # - test-integration-query:
+      #     requires:
+      #       - install-dependencies
+      # - test-integration-mutation:
+      #     requires:
+      #       - install-dependencies
+      # - release:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - trunk
+      #     requires:
+      #       - dockerfile-lint
+      #       - eslint
+      #       - graphql-lint
+      #       - test-unit
+      #       - test-integration-query
+      #       - test-integration-mutation
       - docker-build-push:
           context: reaction-publish-docker
-          filters:
-            branches:
-              only:
-                - trunk
-          requires:
-            - release
+          # filters:
+          #   branches:
+          #     only:
+          #       - trunk
+          # requires:
+          #   - release
