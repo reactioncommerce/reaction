@@ -170,7 +170,7 @@ workflows:
           filters:
             branches:
               only:
-                - trunk
+                - hotfix/release
           requires:
             - dockerfile-lint
             - eslint
@@ -182,6 +182,6 @@ workflows:
           filters:
             branches:
               only:
-                - trunk
+                - hotfix/release
           requires:
             - release
