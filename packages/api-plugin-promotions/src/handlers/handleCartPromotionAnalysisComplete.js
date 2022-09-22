@@ -11,7 +11,7 @@ import _ from "lodash";
 export default async function handleCartPromotionsAnalysisComplete(context, { cart, qualifiedPromotions, triggerType = "offers" }) {
   const { appEvents } = context;
   // perform analysis of what changed and write our promotion history record
-  if (!cart.promotionHistory && qualifiedPromotions.length) {
+  if (!cart.appliedPromotions && qualifiedPromotions.length) {
     const addedPromotions = [];
     const removedPromotions = [];
     qualifiedPromotions.forEach((promotion) => {
@@ -24,9 +24,9 @@ export default async function handleCartPromotionsAnalysisComplete(context, { ca
     };
     cart.promotionHistory = [historyRecord];
     context.mutations.saveCart(context, cart, "promotions");
-    return cart.promotionHistory;
+    return cart;
   }
-  const currentState = cart.appliedPromotions;
+  const currentState = cart.appliedPromotions || [];
   const currentTriggerState = currentState.filter((state) => state.triggers.filter((trigger) => trigger.triggerKey === triggerType));
   const addedPromotions = _.differenceBy(qualifiedPromotions, currentTriggerState, "_id");
   const removedPromotions = _.differenceBy(currentTriggerState, qualifiedPromotions, "_id");

@@ -53,10 +53,10 @@ function enhanceCart(context, cart) {
 async function getOfferPromotions(context) {
   const { collections: { Promotions } } = context;
   const offerPromotions = await Promotions.find({
-    "triggers.triggerKey": "offers",
+    // "triggers.triggerKey": "offers",
     "enabled": true,
-    "startDate": { $lt: now },
-    "endDate": { $gt: now }
+    // "startDate": { $lt: now },
+    // "endDate": { $gt: now }
   }).toArray();
   Logger.info({ ...logCtx, applicableOffers: offerPromotions.length }, "Fetched applicable offers");
   return offerPromotions;

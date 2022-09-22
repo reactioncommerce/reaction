@@ -21,22 +21,32 @@ export default async function register(app) {
     version: pkg.version,
     collections: {
       Promotions: {
-        name: "Promotions"
-      }
+        name: "Promotions",
+      },
     },
     simpleSchemas: {
-      Promotion
+      Promotion,
     },
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForPromotions],
       preStartup: [preStartupPromotions],
-      startup: [startup, registerPromotionsHandlers]
+      startup: [startup, registerPromotionsHandlers],
     },
     contextAdditions: {
-      promotions
+      promotions: {
+        ...promotions,
+        registerProcessor: (processorName, func) => {
+          app.context.promotion.processors[processorName] = func;
+        },
+        registerAction: (actionName, func) => {
+          app.context.promotion.action[actionName] = func;
+        }
+      },
+      promotionProcessors: {},
+      promotionActions: {}
     },
     promotions: {
-      operators
-    }
+      operators,
+    },
   });
 }

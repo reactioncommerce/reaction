@@ -1,5 +1,5 @@
 import { createRequire } from "module";
-import registerCartHandlers from "./handlers/registerCarthandlers.js";
+import registerCartHandler from "./registerCartHandler.js";
 import preStartupOffers from "./startup/preStartup.js";
 
 const require = createRequire(import.meta.url);
@@ -17,7 +17,7 @@ export default async function register(app) {
     version: pkg.version,
     functionsByType: {
       preStartup: [preStartupOffers],
-      startup: [registerCartHandlers]
+      startup: [registerCartHandler]
     },
     promotions: {
       triggers: ["offers"],
