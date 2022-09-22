@@ -121,14 +121,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - reaction-v6-node-modules-{{ .Branch }}
-      - run:
-          name: Push the latest version to npm
-          command: |
-            npx semantic-release
 
   docker-build-push:
     <<: *defaults
