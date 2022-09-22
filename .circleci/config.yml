@@ -167,17 +167,24 @@ jobs:
   docker-build-push:
     <<: *defaults
     steps:
+      - checkout
+      - run:
+          name: Check should build new image
+          command: |
+            VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
+            if curl --silent -f --head -lL https://hub.docker.com/v2/repositories/${DOCKER_REPOSITORY}/tags/${VERSION}/ > /dev/null; then
+              circleci-agent step halt
+            fi
       - run:
           name: Wait for packages to be propagated
           command: sleep 350
-      - checkout
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
           name: Build and push production Docker image
           command: |
-            VERSION=$(git describe --tags `git rev-list --tags --max-count=1` | cut -c2-100)
-            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./apps/reaction/Dockerfile .
+            VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
+            docker build --no-cache -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./apps/reaction/Dockerfile .
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push ${DOCKER_REPOSITORY}:${VERSION}
             docker push ${DOCKER_REPOSITORY}:latest
@@ -206,6 +213,7 @@ workflows:
           requires:
             - install-dependencies
       - release:
+          context: reaction-publish-semantic-release
           filters:
             branches:
               only:
