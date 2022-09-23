@@ -54,7 +54,7 @@ export default async function addShipmentMethodToGroup(context, {
   }
 
   // group.shipmentMethod = {
-  return {
+  const output = {
     _id: selectedFulfillmentMethod.method._id,
     carrier: selectedFulfillmentMethod.method.carrier,
     currencyCode,
@@ -62,7 +62,11 @@ export default async function addShipmentMethodToGroup(context, {
     group: selectedFulfillmentMethod.method.group,
     name: selectedFulfillmentMethod.method.name,
     handling: selectedFulfillmentMethod.handlingPrice,
-    methodAdditionalData: selectedFulfillmentMethod.method.methodAdditionalData,
     rate: selectedFulfillmentMethod.rate
   };
+  // Include methodAdditionalData only if available
+  if (selectedFulfillmentMethod?.method?.methodAdditionalData) {
+    output.methodAdditionalData = selectedFulfillmentMethod.method.methodAdditionalData;
+  }
+  return output;
 }
