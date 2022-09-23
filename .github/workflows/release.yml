@@ -3,8 +3,13 @@ on:
   workflow_dispatch:
     branches:
       - trunk
+permissions: {}
 jobs:
   release:
+    permissions:
+      contents: write # to create release (changesets/action)
+      pull-requests: write # to create pull request (changesets/action)
+
     runs-on: ubuntu-latest
 
     steps:
