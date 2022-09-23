@@ -9,7 +9,7 @@
  * @param {String} input.fulfillmentTypeId - The fulfillmentType id of the fulfillment type
  * @returns {Promise<Object>} Mongo cursor
  */
-export default async function getFulfillmentTypes(context, input) {
+export default async function getFulfillmentMethods(context, input) {
   const { collections } = context;
   const { Fulfillment } = collections;
   const { shopId, fulfillmentTypeId } = input;
