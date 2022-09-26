@@ -1,7 +1,7 @@
 # Dockerfile for production builds
 # syntax=docker/dockerfile:1.4
 
-FROM node:14.18.1-alpine as deps
+FROM node:14.20.0-alpine as deps
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add bash curl less tini vim make python2 git g++ glib
@@ -14,7 +14,7 @@ COPY .npmrc .nvmrc package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN npm i -g pnpm@7.11.0
 RUN pnpm --filter=@reactioncommerce/reaction-api --prod deploy deps --ignore-scripts
 
-FROM node:14.18.1-alpine
+FROM node:14.20.0-alpine
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add bash curl less tini vim make python2 git g++ glib
