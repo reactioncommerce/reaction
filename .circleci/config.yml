@@ -181,10 +181,34 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Build and push production Docker image
+          name: Build production Docker image
           command: |
             VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
-            docker build --no-cache -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./apps/reaction/Dockerfile .
+            docker build -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./apps/reaction/Dockerfile .
+      - run:
+          name: Copy env file
+          command: |
+            cp ./apps/reaction/.env.example ./.env
+            echo "STORE_URL=http://localhost:4000" >> .env
+      - run:
+          name: Create reaction.localhost network
+          command: docker network create "reaction.localhost" || true
+      - run:
+          name: Run image
+          command: docker-compose up -d
+      - run:
+          name: Wait for image run completed
+          command: sleep 30
+      - run:
+          name: Test new docker image
+          command: |
+            docker exec project_api_1 curl --retry 5 --fail -X POST 'http://localhost:3000/graphql' \
+                --header 'Content-Type: application/json' \
+                --data-raw '{"query":"query ping { ping }","variables":{}}'
+      - run:
+          name: Push production Docker image
+          command: |
+            VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push ${DOCKER_REPOSITORY}:${VERSION}
             docker push ${DOCKER_REPOSITORY}:latest
