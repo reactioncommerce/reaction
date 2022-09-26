@@ -177,7 +177,7 @@ jobs:
             fi
       - run:
           name: Wait for packages to be propagated
-          command: sleep 350
+          command: sleep 1
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
