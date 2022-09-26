@@ -6,7 +6,7 @@ import imageURLs from "../util/imageURLs.js";
  * @returns {Object[]} Same array with GraphQL-only props added
  */
 export default async function xformOrderItems(context, items) {
-  const xformedItems = Promise.all(items.map(async (item) => ({
+  const xformedItems = await Promise.all(items.map(async (item) => ({
     ...item,
     imageURLs: await imageURLs(context, item),
     productConfiguration: {
