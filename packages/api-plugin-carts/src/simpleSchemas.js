@@ -582,8 +582,8 @@ export const Shipment = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String
-    // allowedValues: ["shipping"], // extended with dynamic values in fulfillment plugin startup
+    type: String,
+    allowedValues: ["undecided"] // extended with dynamic values in fulfillment plugin startup
     // defaultValue: "shipping"
   },
   "parcel": {
@@ -748,6 +748,7 @@ export const CartItem = new SimpleSchema({
   "updatedAt": Date,
   "selectedFulfillmentType": {
     type: String,
+    allowedValues: ["undecided"], // extended with dynamic values in fulfillment plugin startup
     optional: true
   },
   "supportedFulfillmentTypes": {
@@ -755,7 +756,8 @@ export const CartItem = new SimpleSchema({
     optional: true
   },
   "supportedFulfillmentTypes.$": {
-    type: String
+    type: String,
+    allowedValues: ["undecided"] // extended with dynamic values in fulfillment plugin startup
   },
   "variantId": {
     type: String,

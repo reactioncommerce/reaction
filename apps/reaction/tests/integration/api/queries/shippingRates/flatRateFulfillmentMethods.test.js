@@ -27,6 +27,7 @@ for (let index = 10; index < 40; index += 1) {
     cost: index * 5,
     enabled: true,
     fulfillmentTypes: ["shipping"],
+    fulfillmentMethod: "flatRate",
     group
   };
 
@@ -37,7 +38,7 @@ const adminGroup = Factory.Group.makeOne({
   _id: "adminGroup",
   createdBy: null,
   name: "admin",
-  permissions: ["reaction:legacy:shippingMethods/read"],
+  permissions: ["reaction:legacy:fulfillmentMethods/read"],
   slug: "admin",
   shopId: internalShopId
 });
@@ -83,9 +84,11 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockCustomerAccount);
   await testApp.createUserAndAccount(mockAdminAccount);
 
-  await testApp.collections.Shipping.insertOne({
+  // await testApp.collections.Shipping.insertOne({
+  await testApp.collections.Fulfillment.insertOne({
     _id: "123",
     name: "Default Shipping Provider",
+    fulfillmentType: "shipping",
     shopId: internalShopId,
     provider: {
       enabled: true,
