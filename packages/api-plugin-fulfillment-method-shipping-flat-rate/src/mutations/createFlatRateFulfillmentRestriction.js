@@ -23,7 +23,8 @@ export default async function createFlatRateFulfillmentRestrictionMutation(conte
   const { collections } = context;
   const { FulfillmentRestrictions } = collections;
 
-  await context.validatePermissions("reaction:legacy:shippingRestrictions", "create", { shopId });
+  // await context.validatePermissions("reaction:legacy:shippingRestrictions", "create", { shopId });
+  await context.validatePermissions("reaction:legacy:fulfillmentRestrictions", "create", { shopId });
 
   restriction._id = Random.id();
   restriction.shopId = shopId;

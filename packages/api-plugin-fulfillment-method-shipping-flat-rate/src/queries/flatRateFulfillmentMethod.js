@@ -14,7 +14,7 @@ export default async function flatRateFulfillmentMethod(context, input) {
   const { Fulfillment } = collections;
   const { methodId, shopId } = input;
 
-  await context.validatePermissions("reaction:legacy:shippingMethods", "read", { shopId });
+  // await context.validatePermissions("reaction:legacy:shippingMethods", "read", { shopId });
   await context.validatePermissions("reaction:legacy:fulfillmentMethods", "read", { shopId });
 
   const doc = await Fulfillment.findOne({
