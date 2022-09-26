@@ -177,7 +177,7 @@ jobs:
             fi
       - run:
           name: Wait for packages to be propagated
-          command: sleep 350
+          command: sleep 1
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
@@ -217,43 +217,43 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - install-dependencies
-      - dockerfile-lint:
-          requires:
-            - install-dependencies
-      - eslint:
-          requires:
-            - install-dependencies
-      - graphql-lint:
-          requires:
-            - install-dependencies
-      - test-unit:
-          requires:
-            - install-dependencies
-      - test-integration-query:
-          requires:
-            - install-dependencies
-      - test-integration-mutation:
-          requires:
-            - install-dependencies
-      - release:
-          context: reaction-publish-semantic-release
-          filters:
-            branches:
-              only:
-                - trunk
-          requires:
-            - dockerfile-lint
-            - eslint
-            - graphql-lint
-            - test-unit
-            - test-integration-query
-            - test-integration-mutation
+      # - install-dependencies
+      # - dockerfile-lint:
+      #     requires:
+      #       - install-dependencies
+      # - eslint:
+      #     requires:
+      #       - install-dependencies
+      # - graphql-lint:
+      #     requires:
+      #       - install-dependencies
+      # - test-unit:
+      #     requires:
+      #       - install-dependencies
+      # - test-integration-query:
+      #     requires:
+      #       - install-dependencies
+      # - test-integration-mutation:
+      #     requires:
+      #       - install-dependencies
+      # - release:
+      #     context: reaction-publish-semantic-release
+      #     filters:
+      #       branches:
+      #         only:
+      #           - trunk
+      #     requires:
+      #       - dockerfile-lint
+      #       - eslint
+      #       - graphql-lint
+      #       - test-unit
+      #       - test-integration-query
+      #       - test-integration-mutation
       - docker-build-push:
           context: reaction-publish-docker
-          filters:
-            branches:
-              only:
-                - trunk
-          requires:
-            - release
+          # filters:
+          #   branches:
+          #     only:
+          #       - trunk
+          # requires:
+          #   - release
