@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-orders",
   "description": "Orders plugin for the Reaction API",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "main": "index.js",
   "type": "module",
   "engines": {
