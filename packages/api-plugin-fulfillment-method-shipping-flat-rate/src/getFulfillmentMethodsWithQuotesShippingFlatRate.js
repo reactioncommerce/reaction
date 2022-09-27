@@ -80,7 +80,7 @@ export default async function getFulfillmentMethodsWithQuotesShippingFlatRate(co
         if (!method.carrier) {
           method.carrier = carrier;
         }
-        method.methodAdditionalData = {
+        method.methodAdditionalData = { // currently hard coded as a dummy entry, replace with a function
           gqlType: "flatRateData",
           flatRateData: 321
         };

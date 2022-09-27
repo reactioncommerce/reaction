@@ -73,12 +73,14 @@ const mockShippingMethod = {
     label: "Flat Rate",
     name: "flatRates"
   },
+  fulfillmentType: "shipping",
   methods: [
     {
       cost: 2.5,
       fulfillmentTypes: [
         "shipping"
       ],
+      fulfillmentMethod: "flatRate",
       group: "Ground",
       handling: 1.5,
       label: "Standard mockMethod",

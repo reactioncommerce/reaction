@@ -68,3 +68,66 @@ export const fulfillmentTypeSchema = new SimpleSchema({
     type: FulfillmentMethodSchema
   }
 });
+
+/**
+ * @summary Extend the schema with updated allowedValues
+ * @param {Object} schemas Schemas from context passed in
+ * @param {String[]} allFulfillmentTypesArray Array of all fulfillment types
+ * @returns {undefined}
+ */
+export function extendFulfillmentSchemas(schemas, allFulfillmentTypesArray) {
+  const schemaProductExtension = {
+    "supportedFulfillmentTypes.$": {
+      allowedValues: allFulfillmentTypesArray
+    }
+  };
+  schemas.Product.extend(schemaProductExtension);
+
+  const schemaCatalogProductExtension = {
+    "supportedFulfillmentTypes.$": {
+      allowedValues: allFulfillmentTypesArray
+    }
+  };
+  schemas.CatalogProduct.extend(schemaCatalogProductExtension);
+
+  const schemaShipmentExtension = {
+    type: {
+      allowedValues: allFulfillmentTypesArray
+    }
+  };
+  schemas.Shipment.extend(schemaShipmentExtension);
+
+  const schemaCartItemExtension = {
+    "selectedFulfillmentType": {
+      allowedValues: allFulfillmentTypesArray
+    },
+    "supportedFulfillmentTypes.$": {
+      allowedValues: allFulfillmentTypesArray
+    }
+  };
+  schemas.CartItem.extend(schemaCartItemExtension);
+
+  const schemaExtension = {
+    type: {
+      allowedValues: allFulfillmentTypesArray
+    }
+  };
+  const schemaExtensionCommonOrder = {
+    fulfillmentType: {
+      allowedValues: allFulfillmentTypesArray
+    }
+  };
+  schemas.CommonOrder.extend(schemaExtensionCommonOrder);
+  schemas.orderFulfillmentGroupInputSchema.extend(schemaExtension);
+  schemas.OrderFulfillmentGroup.extend(schemaExtension);
+
+  const schemaExtensionMethodAdditionalData = {
+    methodAdditionalData: {
+      type: SimpleSchema.oneOf(MethodEmptyData),
+      optional: true,
+      label: "Method specific additional data"
+    }
+  };
+  schemas.SelectedFulfillmentOption.extend(schemaExtensionMethodAdditionalData);
+  schemas.ShippingMethod.extend(schemaExtensionMethodAdditionalData);
+}

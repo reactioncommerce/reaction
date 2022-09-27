@@ -20,7 +20,35 @@ const mockShipmentMethod = {
   handling: 0,
   label: "mockLabel",
   name: "mockName",
+  fulfillmentMethod: "flatRate",
   rate: 3.99
+};
+
+const mockFulfillmentEntry = {
+  _id: "mockShippingMethod",
+  name: "Default Shipping Provider",
+  provider: {
+    enabled: true,
+    label: "Flat Rate",
+    name: "flatRates"
+  },
+  fulfillmentType: "shipping",
+  methods: [
+    {
+      cost: 2.5,
+      fulfillmentTypes: [
+        "shipping"
+      ],
+      fulfillmentMethod: "flatRate",
+      group: "Ground",
+      handling: 1.5,
+      label: "Standard mockMethod",
+      name: "mockMethod",
+      rate: 1,
+      _id: "METHOD_ID",
+      enabled: true
+    }
+  ]
 };
 
 const mockInvoice = Factory.OrderInvoice.makeOne({
@@ -60,6 +88,10 @@ beforeAll(async () => {
 
   await testApp.start();
   shopId = await insertPrimaryShop(testApp.context);
+
+  // Add shipping methods
+  mockFulfillmentEntry.shopId = shopId;
+  await testApp.collections.Fulfillment.insertOne(mockFulfillmentEntry);
 
   const adminGroup = Factory.Group.makeOne({
     _id: "adminGroup",
@@ -131,6 +163,7 @@ test("user with `reaction:legacy:orders/move:item` permission can split an order
           ...mockShipmentMethod,
           currencyCode: "USD"
         },
+        type: "shipping",
         shopId,
         totalItemQuantity: 3
       })
