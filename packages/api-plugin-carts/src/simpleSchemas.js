@@ -582,8 +582,8 @@ export const Shipment = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String,
-    allowedValues: ["undecided"] // extended with dynamic values in fulfillment plugin startup
+    type: String
+    // allowedValues: ["undecided"] // extended with dynamic values in fulfillment plugin startup
     // defaultValue: "shipping"
   },
   "parcel": {
