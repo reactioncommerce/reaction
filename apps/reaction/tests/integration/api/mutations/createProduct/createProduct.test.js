@@ -37,7 +37,8 @@ const expectedProduct = {
     { service: "pinterest", message: "" },
     { service: "twitter", message: "" }
   ],
-  supportedFulfillmentTypes: ["shipping"],
+  // supportedFulfillmentTypes: ["shipping"], // we no longer add default value here
+  supportedFulfillmentTypes: [],
   tagIds: [],
   title: "",
   updatedAt: jasmine.any(String),
