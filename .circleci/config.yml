@@ -10,46 +10,42 @@ defaults: &defaults
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
   docker:
-    - image: circleci/node:14.18.1-stretch
-
+    - image: cimg/node:14.20.0
 
 install_pnpm: &install_pnpm
   - run:
       name: Install pnpm package manager
       command: sudo npm i -g pnpm@7.11.0
+
+pnpm_install: &pnpm_install
   - run:
-      name: Check pnpm version
-      command: pnpm -v
+      name: Install PNPM dependencies
+      command: pnpm install -r
 
 jobs:
   install-dependencies:
     <<: *defaults
     steps:
       - checkout
-      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-            - reaction-v6-node-modules-{{ .Branch }}
-      - run:
-          name: Install PNPM dependencies
-          command: pnpm install -r
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ .Branch }}
+      - <<: *install_pnpm
+      - <<: *pnpm_install
       - save_cache:
-          key: reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+          key: reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
           paths:
             - node_modules
-            - packages
       - save_cache:
-          key: reaction-v6-node-modules-{{ .Branch }}
+          key: reaction-v7-node-modules-{{ .Branch }}
           paths:
             - node_modules
-            - packages
 
   dockerfile-lint:
     <<: *defaults
     steps:
       - checkout
-      - <<: *install_pnpm
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
@@ -59,11 +55,12 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-            - reaction-v6-node-modules-{{ .Branch }}
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ .Branch }}
+      - <<: *install_pnpm
+      - <<: *pnpm_install
       - run:
           name: Lint JavaScript
           command: pnpm run lint
@@ -72,11 +69,12 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-            - reaction-v6-node-modules-{{ .Branch }}
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ .Branch }}
+      - <<: *install_pnpm
+      - <<: *pnpm_install
       - run:
           name: Lint GraphQL schemas
           command: pnpm -r run lint:gql
@@ -85,12 +83,12 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-            - reaction-v6-node-modules-{{ .Branch }}
-      - run: pnpm install -r
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ .Branch }}
+      - <<: *install_pnpm
+      - <<: *pnpm_install
       - run:
           name: Test Unit
           command: pnpm test
@@ -98,7 +96,7 @@ jobs:
   test-integration-query:
     <<: *defaults
     docker:
-      - image: circleci/node:14.18.1-stretch
+      - image: cimg/node:14.20.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
@@ -106,26 +104,26 @@ jobs:
           - "27017:27017"
     steps:
       - checkout
-      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-            - reaction-v6-node-modules-{{ .Branch }}
-      - run: pnpm install -r
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ .Branch }}
+      - <<: *install_pnpm
+      - <<: *pnpm_install
       - run:
           name: Run Integration Query Tests
           environment:
             MONGO_URL: mongodb://localhost:27017/test
             MONGO_USE_UNIFIED_TOPOLOGY: false
           command: |
-            sudo apt-get install -y mongodb
+            sudo apt update && sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
             pnpm run test:integration:query
 
   test-integration-mutation:
     <<: *defaults
     docker:
-      - image: circleci/node:14.18.1-stretch
+      - image: cimg/node:14.20.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
@@ -133,19 +131,19 @@ jobs:
           - "27017:27017"
     steps:
       - checkout
-      - <<: *install_pnpm
       - restore_cache:
           keys:
-            - reaction-v6-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-            - reaction-v6-node-modules-{{ .Branch }}
-      - run: pnpm install -r
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ .Branch }}
+      - <<: *install_pnpm
+      - <<: *pnpm_install
       - run:
           name: Run Integration Mutation Tests
           environment:
             MONGO_URL: mongodb://localhost:27017/test
             MONGO_USE_UNIFIED_TOPOLOGY: false
           command: |
-            sudo apt-get install -y mongodb
+            sudo apt update && sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
             pnpm run test:integration:mutation
 
@@ -154,9 +152,7 @@ jobs:
     steps:
       - checkout
       - <<: *install_pnpm
-      - run:
-          name: Install PNPM dependencies
-          command: pnpm install -r
+      - <<: *pnpm_install
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
@@ -181,10 +177,34 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Build and push production Docker image
+          name: Build production Docker image
           command: |
             VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
             docker build --no-cache -t ${DOCKER_REPOSITORY}:${VERSION} -t ${DOCKER_REPOSITORY}:latest -f ./apps/reaction/Dockerfile .
+      - run:
+          name: Copy env file
+          command: |
+            cp ./apps/reaction/.env.example ./.env
+            echo "STORE_URL=http://localhost:4000" >> .env
+      - run:
+          name: Create reaction.localhost network
+          command: docker network create "reaction.localhost" || true
+      - run:
+          name: Run image
+          command: docker-compose up -d
+      - run:
+          name: Wait for image run completed
+          command: sleep 30
+      - run:
+          name: Test new docker image
+          command: |
+            docker exec project-api-1 curl --retry 5 --fail -X POST 'http://localhost:3000/graphql' \
+                --header 'Content-Type: application/json' \
+                --data-raw '{"query":"query ping { ping }","variables":{}}'
+      - run:
+          name: Push production Docker image
+          command: |
+            VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
             docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push ${DOCKER_REPOSITORY}:${VERSION}
             docker push ${DOCKER_REPOSITORY}:latest
