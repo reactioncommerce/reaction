@@ -386,8 +386,8 @@ export const Product = new SimpleSchema({
     type: Array
   },
   "supportedFulfillmentTypes.$": {
-    type: String,
-    allowedValues: ["undecided"] // This is extended in fulfillment plugin with dynamic values for allowedValues
+    type: String
+    // allowedValues: ["undecided"] // This is extended in fulfillment plugin with dynamic values for allowedValues
   },
   "template": {
     type: String,

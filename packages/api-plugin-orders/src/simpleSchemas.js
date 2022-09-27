@@ -332,8 +332,8 @@ export const CommonOrder = new SimpleSchema({
   },
   fulfillmentPrices: CommonOrderFulfillmentPrices,
   fulfillmentType: {
-    type: String,
-    allowedValues: ["undecided"] // extended in fulfillment plugin with dynamic values for allowedValues
+    type: String
+    // allowedValues: ["undecided"] // extended in fulfillment plugin with dynamic values for allowedValues
   },
   items: [CommonOrderItem],
   orderId: {
@@ -392,8 +392,8 @@ export const orderFulfillmentGroupInputSchema = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String,
-    allowedValues: ["undecided"] // extended in fulfillment plugin with dynamic values for allowedValues
+    type: String
+    // allowedValues: ["undecided"] // extended in fulfillment plugin with dynamic values for allowedValues
   }
 });
 
@@ -853,8 +853,8 @@ export const OrderFulfillmentGroup = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String,
-    allowedValues: ["undecided"] // extended in fulfillment plugin with dynamic values for allowedValues
+    type: String
+    // allowedValues: ["undecided"] // extended in fulfillment plugin with dynamic values for allowedValues
   },
   "updatedAt": {
     type: Date,

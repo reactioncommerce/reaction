@@ -472,8 +472,8 @@ export const CatalogProduct = new SimpleSchema({
     // defaultValue: ["shipping"]
   },
   "supportedFulfillmentTypes.$": {
-    type: String,
-    allowedValues: ["undecided"] // This is extended in fulfillment plugin with dynamic values for allowedValues
+    type: String
+    // allowedValues: ["undecided"] // This is extended in fulfillment plugin with dynamic values for allowedValues
   },
   "tagIds": {
     type: Array,
