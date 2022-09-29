@@ -1,6 +1,44 @@
 import SimpleSchema from "simpl-schema";
 
+const dateRangeFilter = new SimpleSchema({
+  start: {
+    type: Date,
+    optional: false
+  },
+  end: {
+    type: Date,
+    optional: false
+  }
+});
+
+const dateFilter = new SimpleSchema({
+  eq: {
+    type: Date,
+    optional: true
+  },
+  before: {
+    type: Date,
+    optional: true
+  },
+  after: {
+    type: Date,
+    optional: true
+  },
+  between: {
+    type: dateRangeFilter,
+    optional: true
+  }
+});
+
 const filters = new SimpleSchema({
+  "createdAt": {
+    type: dateFilter,
+    optional: true
+  },
+  "updatedAt": {
+    type: dateFilter,
+    optional: true
+  },
   "productIds": {
     type: Array,
     optional: true
@@ -70,6 +108,78 @@ export default function applyProductFilters(context, productFilters) {
   };
 
   if (productFilters) {
+    // Filter by createdAt
+    if (productFilters.createdAt) {
+      const createdAtSelectors = [];
+      if (productFilters.createdAt.eq) {
+        createdAtSelectors.push({
+          createdAt: productFilters.createdAt.eq
+        });
+      }
+      if (productFilters.createdAt.before) {
+        createdAtSelectors.push({
+          createdAt: {
+            $lt: productFilters.createdAt.before
+          }
+        });
+      }
+      if (productFilters.createdAt.after) {
+        createdAtSelectors.push({
+          createdAt: {
+            $gt: productFilters.createdAt.after
+          }
+        });
+      }
+      if (productFilters.createdAt.between) {
+        const { start, end } = productFilters.createdAt.between;
+        createdAtSelectors.push({
+          createdAt: {
+            $gte: start,
+            $lte: end
+          }
+        });
+      }
+      if (createdAtSelectors.length) {
+        selector.$and = [...(selector.$and || []), ...createdAtSelectors];
+      }
+    }
+
+    // Filter by updatedAt
+    if (productFilters.updatedAt) {
+      const updatedAtSelectors = [];
+      if (productFilters.updatedAt.eq) {
+        updatedAtSelectors.push({
+          updatedAt: productFilters.updatedAt.eq
+        });
+      }
+      if (productFilters.updatedAt.before) {
+        updatedAtSelectors.push({
+          updatedAt: {
+            $lt: productFilters.updatedAt.before
+          }
+        });
+      }
+      if (productFilters.updatedAt.after) {
+        updatedAtSelectors.push({
+          updatedAt: {
+            $gt: productFilters.updatedAt.after
+          }
+        });
+      }
+      if (productFilters.updatedAt.between) {
+        const { start, end } = productFilters.updatedAt.between;
+        updatedAtSelectors.push({
+          updatedAt: {
+            $gte: start,
+            $lte: end
+          }
+        });
+      }
+      if (updatedAtSelectors.length) {
+        selector.$and = [...(selector.$and || []), ...updatedAtSelectors];
+      }
+    }
+
     // filter by productIds
     if (productFilters.productIds) {
       selector = {
