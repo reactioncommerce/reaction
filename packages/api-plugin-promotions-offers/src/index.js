@@ -1,6 +1,8 @@
 import { createRequire } from "module";
 import preStartupOffers from "./preStartup.js";
-import startupOffers from "./startup.js";
+import handlers from "./handlers/index.js";
+import actions from "./actions/index.js";
+import enhancers from "./enhancers/index.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -16,12 +18,14 @@ export default async function register(app) {
     name: pkg.name,
     version: pkg.version,
     functionsByType: {
-      preStartup: [preStartupOffers],
-      startup: [startupOffers]
+      preStartup: [preStartupOffers]
     },
     promotions: {
       triggers: ["offers"],
-      schemaExtensions: []
+      schemaExtensions: [],
+      triggerHandlers: handlers,
+      actionHandlers: actions,
+      enhancers
     }
   });
 }

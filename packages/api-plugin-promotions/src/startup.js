@@ -52,31 +52,36 @@ function enhanceCart(context, enhancers, cart) {
  * @param {Object} cart - The cart to apply promotions to
  * @returns {Object} - The cart with promotions applied
  */
-async function applyPromotionsToCart(context, cart) {
+async function applyExplicitPromotions(context, cart) {
   const promotions = await getPromotions(context);
+  const { promotions: pluginPromotions } = context;
 
-  const { enhancers } = context.promotionContext;
-  const enhancedCart = enhanceCart(context, enhancers, cart);
+  const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
 
+  const addedPromotions = []
   for (const promotion of promotions) {
     const { triggers, actions } = promotion;
-    const trigger = triggers[0];
-    const triggerFn = context.promotionContext.triggers[trigger.triggerKey];
-    if (triggerFn) {
-      // eslint-disable-next-line no-await-in-loop
-      const shouldApply = await triggerFn(context, enhancedCart, promotion);
-      if (shouldApply) {
-        for (const action of actions) {
-          const { actionKey, actionParameters } = action;
-          const actionFn = context.promotionContext.actions[actionKey];
-          if (actionFn) {
-            // eslint-disable-next-line no-await-in-loop
-            await actionFn(context, enhancedCart, actionParameters);
+    for (const trigger of triggers) {
+      const triggerFn = pluginPromotions.triggerHandlers[trigger.triggerKey];
+      if (triggerFn) {
+        // eslint-disable-next-line no-await-in-loop
+        const shouldApply = await triggerFn(context, enhancedCart, promotion);
+        if (shouldApply) {
+          for (const action of actions) {
+            const { actionKey, actionParameters } = action;
+            const actionFn = pluginPromotions.actionHandlers[actionKey];
+            if (actionFn) {
+              // eslint-disable-next-line no-await-in-loop
+              await actionFn(context, enhancedCart, actionParameters);
+            }
           }
+          break;
         }
       }
     }
   }
+
+  context.mutations.saveCart(context, enhanceCart, "promotions");
 }
 
 /**
@@ -88,14 +93,14 @@ export default async function startupPromotions(context) {
   context.appEvents.on("afterCartCreate", async (args) => {
     const { cart, emittedBy } = args;
     if (emittedBy !== "promotions") {
-      await applyPromotionsToCart(context, cart);
+      await applyExplicitPromotions(context, cart);
     }
   });
 
   context.appEvents.on("afterCartUpdate", async (args) => {
     const { cart, emittedBy } = args;
     if (emittedBy !== "promotions") {
-      await applyPromotionsToCart(context, cart);
+      await applyExplicitPromotions(context, cart);
     }
   });
 }
