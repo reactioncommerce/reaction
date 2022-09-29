@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import { Action, Trigger } from "./simpleSchemas.js";
-import noop from "./actions/noop.js";
 
 /**
  * @summary apply all schema extensions to the Promotions schema
@@ -81,8 +80,6 @@ function extendCartSchema(context) {
  * @returns {undefined} undefined
  */
 export default function preStartupPromotions(context) {
-  context.promotionContext.registerAction("noop", noop);
-
   extendSchemas(context);
   extendCartSchema(context);
 
