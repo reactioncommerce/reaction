@@ -19,6 +19,8 @@ export default async function tags(
   context,
   shopId,
   {
+    createdAt,
+    updatedAt,
     filter,
     shouldIncludeDeleted = false,
     isTopLevel,
@@ -38,6 +40,78 @@ export default async function tags(
   });
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
+
+  // Filter by createdAt
+  if (createdAt) {
+    const createdAtPredicates = [];
+    if (createdAt.eq) {
+      createdAtPredicates.push({
+        createdAt: createdAt.eq
+      });
+    }
+    if (createdAt.before) {
+      createdAtPredicates.push({
+        createdAt: {
+          $lt: createdAt.before
+        }
+      });
+    }
+    if (createdAt.after) {
+      createdAtPredicates.push({
+        createdAt: {
+          $gt: createdAt.after
+        }
+      });
+    }
+    if (createdAt.between) {
+      const { start, end } = createdAt.between;
+      createdAtPredicates.push({
+        createdAt: {
+          $gte: start,
+          $lte: end
+        }
+      });
+    }
+    if (createdAtPredicates.length) {
+      query.$and = [...(query.$and || []), ...createdAtPredicates];
+    }
+  }
+
+  // Filter by updatedAt
+  if (updatedAt) {
+    const updatedAtPredicates = [];
+    if (updatedAt.eq) {
+      updatedAtPredicates.push({
+        updatedAt: updatedAt.eq
+      });
+    }
+    if (updatedAt.before) {
+      updatedAtPredicates.push({
+        updatedAt: {
+          $lt: updatedAt.before
+        }
+      });
+    }
+    if (updatedAt.after) {
+      updatedAtPredicates.push({
+        updatedAt: {
+          $gt: updatedAt.after
+        }
+      });
+    }
+    if (updatedAt.between) {
+      const { start, end } = updatedAt.between;
+      updatedAtPredicates.push({
+        updatedAt: {
+          $gte: start,
+          $lte: end
+        }
+      });
+    }
+    if (updatedAtPredicates.length) {
+      query.$and = [...(query.$and || []), ...updatedAtPredicates];
+    }
+  }
 
   // Use `filter` to filter out results on the server
   if (filter) {
