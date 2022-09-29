@@ -1,5 +1,3 @@
 import noop from "./noop.js";
 
-export default {
-  noop
-};
+export default [{ key: "noop", handler: noop }];
