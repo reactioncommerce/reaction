@@ -1,17 +1,28 @@
 import SimpleSchema from "simpl-schema";
+import _ from "lodash";
 
 const PromotionsDeclaration = new SimpleSchema({
   "triggers": {
-    type: Array
+    type: Array,
   },
   "triggers.$": {
-    type: String
+    type: Object,
+    blackbox: true
   },
   "actions": {
-    type: Array
+    type: Array,
+    blackbox: true
   },
   "actions.$": {
-    type: String
+    type: Object,
+    blackbox: true
+  },
+  "enhancers": {
+    type: Array,
+    optional: true
+  },
+  "enhancers.$": {
+    type: Function
   },
   "schemaExtensions": {
     type: Array
@@ -27,22 +38,7 @@ const PromotionsDeclaration = new SimpleSchema({
   "methods": {
     type: Object,
     blackbox: true
-  },
-  "enhancers": {
-    type: Array,
-    optional: true
-  },
-  "enhancers.$": {
-    type: Function,
-  },
-  "triggerHandlers": {
-    type: Object,
-    blackbox: true
-  },
-  "actionHandlers": {
-    type: Object,
-    blackbox: true
-  },
+  }
 });
 
 export const promotions = {
@@ -51,9 +47,7 @@ export const promotions = {
   enhancers: [], // enhancers for promotion data,
   schemaExtensions: [],
   operators: {}, // operators used for rule evaluations
-  methods: {}, // discount calculation methods
-  triggerHandlers: {}, // trigger handlers
-  actionHandlers: {} // action handlers
+  methods: {} // discount calculation methods
 };
 
 /**
@@ -63,22 +57,15 @@ export const promotions = {
  */
 export function registerPluginHandlerForPromotions({ promotions: pluginPromotions }) {
   if (pluginPromotions) {
-    console.log("Promotion plugin: ", pluginPromotions);
-    const { triggers, actions, enhancers, triggerHandlers, actionHandlers, schemaExtensions, operators, methods } = pluginPromotions;
+    const { triggers, actions, enhancers, schemaExtensions, operators, methods } = pluginPromotions;
     if (triggers) {
-      promotions.triggers = promotions.triggers.concat(triggers);
+      promotions.triggers = _.uniqBy(promotions.triggers.concat(triggers), "key");
     }
     if (actions) {
-      promotions.actions = promotions.actions.concat(actions);
+      promotions.actions = _.uniqBy(promotions.actions.concat(actions), "key");
     }
     if (enhancers) {
       promotions.enhancers = promotions.enhancers.concat(enhancers);
-    }
-    if (triggerHandlers) {
-      promotions.triggerHandlers = { ...promotions.triggerHandlers, ...triggerHandlers };
-    }
-    if (actionHandlers) {
-      promotions.actionHandlers = { ...promotions.actionHandlers, ...actionHandlers };
     }
     if (schemaExtensions) {
       promotions.schemaExtensions = promotions.schemaExtensions.concat(schemaExtensions);
