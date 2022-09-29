@@ -29,6 +29,7 @@ export default function preStartupOffers(context) {
   const {
     simpleSchemas: { Promotion }
   } = context;
+
   Promotion.extend({
     offerRule: {
       type: OfferRule
