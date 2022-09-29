@@ -1,6 +1,6 @@
 import enhancers from "./enhancers/index.js";
 import handlers from "./handlers/index.js";
-import noop from "./actions/noop";
+import noop from "./actions/noop.js";
 
 /**
  * @summary handle cart events
