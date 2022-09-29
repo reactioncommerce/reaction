@@ -103,6 +103,31 @@ enum TagSortByField {
   updatedAt
 }
 
+
+"Range operator for DateTime fields"
+input TagDateRange {
+  "The start of the date range"
+  start: DateTime!
+
+  "The end of the date range"
+  end: DateTime!
+}
+
+"Operators for filtering on a DateTime field"
+input TagDateOperators {
+  "The value must be equal to the given value"
+  eq: DateTime
+
+  "The value must be greater than the given value"
+  before: DateTime
+
+  "The value must be greater than or equal to the given value"
+  after: DateTime
+
+  "The value must be between the given values"
+  between: ProductDateRange
+}
+
 "A connection edge in which each node is a `Tag` object"
 type TagEdge implements NodeEdge {
   "The cursor that represents this node in the paginated results"
@@ -140,6 +165,12 @@ type TagConnection {
 extend type Query {
   "Returns a paged list of tags for a shop. You must include a shopId when querying."
   tags(
+    "Filter by created timestamp"
+    createdAt: TagDateOperators
+
+    "Filter by updated at timestamp"
+    updatedAt: TagDateOperators
+
     "Only tags associated with this shop will be returned"
     shopId: ID!,
 
