@@ -16,11 +16,12 @@ const logCtx = {
 /**
  * @summary apply all offers to the cart
  * @param {String} context - The application context
- * @param {Object} cart - The cart to apply offers to
- * @param {Object} promotion - The parameters to pass to the trigger
+ * @param {Object} enhancedCart - The cart to apply offers to
+ * @param {Object} promotion - The promotion to pass to the trigger
+ * @param {Object} triggerParameters - The parameters to pass to the trigger
  * @returns {Promise<boolean>} - The answer with offers applied
  */
-export default async function offerTriggerHandler(context, cart, promotion) {
+export default async function offerTriggerHandler(context, enhancedCart, promotion, triggerParameters) {
   const {
     promotions: { operators }
   } = context;
@@ -30,7 +31,7 @@ export default async function offerTriggerHandler(context, cart, promotion) {
     engine.addOperator(operatorKey, operators[operatorKey]);
   });
   engine.addRule(promotion.offerRule);
-  const facts = { cart };
+  const facts = { cart: enhancedCart };
 
   // eslint-disable-next-line no-await-in-loop
   const results = await engine.run(facts);

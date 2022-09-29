@@ -1,4 +1,4 @@
-import SimpleSchema from "simpl-schema";
+import _ from 'lodash'
 import { Action, Trigger } from "./simpleSchemas.js";
 
 /**
@@ -9,10 +9,10 @@ import { Action, Trigger } from "./simpleSchemas.js";
 function extendSchemas(context) {
   const {
     promotions: { schemaExtensions },
-    simpleSchemas: { Promotions }
+    simpleSchemas: { Promotion }
   } = context;
   schemaExtensions.forEach((extension) => {
-    Promotions.extend(extension);
+    Promotion.extend(extension);
   });
 }
 
@@ -22,53 +22,17 @@ function extendSchemas(context) {
  * @returns {Object} the extended schema
  */
 function extendCartSchema(context) {
-  const { simpleSchemas: { Cart, Promotion } } = context; // we get this here rather than importing it to get the extended version
-  const CartWarning = new SimpleSchema({
-    promotion: {
-      type: Promotion
-    },
-    rejectionReason: {
-      type: String,
-      allowedValues: ["cannot-be-combined", "expired"]
-    }
-  });
-  const PromotionUpdateRecord = new SimpleSchema({
-    "updatedAt": Date,
-    "promotionsAdded": {
-      type: Array
-    },
-    "promotionsAdded.$": {
-      type: Promotion
-    },
-    "promotionsRemoved": {
-      type: Array
-    },
-    "promotionsRemoved.$": {
-      type: Promotion
-    }
-  });
+  const {
+    simpleSchemas: { Cart, Promotion }
+  } = context; // we get this here rather than importing it to get the extended version
 
   Cart.extend({
-    "promotionHistory": {
-      type: Array,
-      optional: true
-    },
-    "promotionHistory.$": {
-      type: PromotionUpdateRecord
-    },
     "appliedPromotions": {
       type: Array,
       optional: true
     },
     "appliedPromotions.$": {
       type: Promotion
-    },
-    "promotionMessages": {
-      type: Array,
-      optional: true
-    },
-    "promotionMessages.$": {
-      type: CartWarning
     }
   });
   return Cart;
@@ -84,15 +48,17 @@ export default function preStartupPromotions(context) {
   extendCartSchema(context);
 
   const { actions: additionalActions, triggers: additionalTriggers } = context.promotions;
+  const triggerKeys = _.map(additionalTriggers, "key");
+  const actionKeys = _.map(additionalActions, "key");
   Action.extend({
     actionKey: {
-      allowedValues: [...Action.getAllowedValuesForKey("actionKey"), ...additionalActions]
+      allowedValues: [...Action.getAllowedValuesForKey("actionKey"), ...actionKeys]
     }
   });
 
   Trigger.extend({
     triggerKey: {
-      allowedValues: [...Trigger.getAllowedValuesForKey("triggerKey"), ...additionalTriggers]
+      allowedValues: [...Trigger.getAllowedValuesForKey("triggerKey"), ...triggerKeys]
     }
   });
 }

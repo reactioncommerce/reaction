@@ -1,6 +1,6 @@
 import { createRequire } from "module";
-import preStartupOffers from "./preStartup.js";
-import handlers from "./handlers/index.js";
+import { offerRule } from "./simpleSchemas.js";
+import triggers from "./triggers/index.js";
 import actions from "./actions/index.js";
 import enhancers from "./enhancers/index.js";
 
@@ -17,15 +17,11 @@ export default async function register(app) {
     label: pkg.label,
     name: pkg.name,
     version: pkg.version,
-    functionsByType: {
-      preStartup: [preStartupOffers]
-    },
     promotions: {
-      triggers: ["offers"],
-      schemaExtensions: [],
-      triggerHandlers: handlers,
-      actionHandlers: actions,
-      enhancers
+      triggers,
+      actions,
+      enhancers,
+      schemaExtensions: [offerRule]
     }
   });
 }
