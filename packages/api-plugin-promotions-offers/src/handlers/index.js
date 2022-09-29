@@ -1,5 +1,7 @@
+import noopTriggerHandler from "./noopTriggerHandler.js";
 import offerTriggerHandler from "./offerTriggerHandler.js";
 
 export default {
-  offerTriggerHandler
+  offers: offerTriggerHandler,
+  noop: noopTriggerHandler
 };
