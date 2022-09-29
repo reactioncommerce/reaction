@@ -167,6 +167,7 @@ importers:
       '@reactioncommerce/api-plugin-pricing-simple': 1.0.7
       '@reactioncommerce/api-plugin-products': 1.3.1
       '@reactioncommerce/api-plugin-promotions': 1.0.0
+      '@reactioncommerce/api-plugin-promotions-coupons': 1.0.0
       '@reactioncommerce/api-plugin-promotions-offers': 1.0.0
       '@reactioncommerce/api-plugin-settings': 1.0.7
       '@reactioncommerce/api-plugin-shipments': 1.0.3
@@ -229,6 +230,7 @@ importers:
       '@reactioncommerce/api-plugin-pricing-simple': link:../../packages/api-plugin-pricing-simple
       '@reactioncommerce/api-plugin-products': link:../../packages/api-plugin-products
       '@reactioncommerce/api-plugin-promotions': link:../../packages/api-plugin-promotions
+      '@reactioncommerce/api-plugin-promotions-coupons': link:../../packages/api-plugin-promotions-coupons
       '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
@@ -1013,6 +1015,26 @@ importers:
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
+      json-rules-engine: 6.1.2
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-promotions-coupons:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      accounting-js: ^1.1.1
+      json-rules-engine: ^6.1.2
+      lodash: ^4.17.21
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      accounting-js: 1.1.1
       json-rules-engine: 6.1.2
       lodash: 4.17.21
       simpl-schema: 1.12.3
