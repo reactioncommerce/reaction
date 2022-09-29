@@ -37,7 +37,7 @@ export default async function register(app) {
     },
     promotions: {
       operators,
-      actionsHandlers: actions
+      actions
     }
   });
 }
