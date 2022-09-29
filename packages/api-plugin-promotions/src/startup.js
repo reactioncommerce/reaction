@@ -1,4 +1,5 @@
 import applyImplicitPromotions from "./handlers/applyImplicitPromotions.js";
+import applyExplicitCoupons from './handlers/applyExplicitCoupons.js'
 
 /**
  * @summary Perform various scaffolding tasks on startup
@@ -19,4 +20,9 @@ export default async function startupPromotions(context) {
       await applyImplicitPromotions(context, cart);
     }
   });
+
+  context.appEvents.on('applyCouponToCart', async (args) => {
+    const {cart, promotions} = args;
+    await applyExplicitCoupons(context, cart, promotions);
+  })
 }
