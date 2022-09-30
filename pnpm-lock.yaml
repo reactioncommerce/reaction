@@ -4665,7 +4665,6 @@ packages:
     dependencies:
       '@sinonjs/commons': 1.8.3
     dev: false
-
   /@snyk/protect/1.1017.0:
     resolution: {integrity: sha512-6WHVyRUBba7Q/e6BAbn3+J3SSvBQU0Ps9YItg9Z/B7w91JusSCq6P4KTNt66AZxHwQ1X2iUbIWrkNEIpKuXePQ==}
     engines: {node: '>=10'}
