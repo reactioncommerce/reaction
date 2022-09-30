@@ -197,7 +197,7 @@ importers:
       node-fetch: ~2.6.0
       pinst: ^2.1.4
       semver: ~6.3.0
-      sharp: ^0.29.3
+      sharp: ^0.30.5
       wait-for-expect: ~3.0.0
     dependencies:
       '@reactioncommerce/api-core': link:../../packages/api-core
@@ -245,10 +245,10 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1012.0
+      '@snyk/protect': 1.1017.0
       graphql: 14.7.0
       semver: 6.3.0
-      sharp: 0.29.3
+      sharp: 0.30.7
     devDependencies:
       '@reactioncommerce/data-factory': 1.0.1
       '@reactioncommerce/eslint-config': 2.2.2_ihki3xsivcrciip6mkoznh225e
@@ -4666,8 +4666,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1012.0:
-    resolution: {integrity: sha512-FetJA4igmHDYLcxq0dvSolgCWBAWvut1lhY8aDbwZDw+dMd7sXkjb4Dl1F7XzRDqUt3wjfyb73OJjSAn1ADZHg==}
+  /@snyk/protect/1.1017.0:
+    resolution: {integrity: sha512-6WHVyRUBba7Q/e6BAbn3+J3SSvBQU0Ps9YItg9Z/B7w91JusSCq6P4KTNt66AZxHwQ1X2iUbIWrkNEIpKuXePQ==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -6213,6 +6213,7 @@ packages:
 
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: true
@@ -8494,6 +8495,7 @@ packages:
 
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: true
     optional: true
 
