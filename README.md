@@ -41,10 +41,11 @@ the quickest and easiest way to develop on Open Commerce. It allows you to creat
 ## What you need
 - We recommend installing [nmv](https://github.com/nvm-sh/nvm)
 - [14.18.1 ≤ Node version < 16](https://nodejs.org/ja/blog/release/v14.18.1/)
-- [Yarn](https://yarnpkg.com/cli/install) (if you want to install the storefront)
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/get-started/)
 - [Docker Compose](https://docs.docker.com/compose/)
+
+  In addition, you need to have your system setup for [SSH authentication with GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 
 ## Install the CLI
 First install the cli by running:
@@ -65,22 +66,22 @@ You can create your Open Commerce project by running:
 reaction create-project api <your-project-name>
  ```
 This will create an Open Commerce project in the directory <your-project-name>.
-Once this is complete, run:
+Once this is complete, navigate to the project directory:
 ```
 cd <your-project-name> 
  ```
-Then run:
+Install the project dependencies:
 ```
 npm install 
 ```
-Finally run:
+Finally, start the server in development mode:
 ```
 reaction develop api
   ```
 
 Note: Optionally, from within the project-directory you may issue the above command without mentioning the project type and the CLI would check your package.json for the "projectType" and pick it up from there. This expects that the project itself was built using the latest version of the CLI as explained in the above steps.
 
-Example, instead of the above command, you may skip mentioning 'api' and just run:
+Example, instead of the above command, you may skip mentioning 'api' and just use:
   ```
   reaction develop
   ```
@@ -92,7 +93,7 @@ This will start the Open Commerce GraphQL server and Mongo Server. Press Ctrl+C 
 ```
 reaction create-plugin api <your-plugin-name>
 ```
-Validate whether the plugin was created in the "custom-packages"
+Validate whether the plugin was created in the `custom-packages`
 ```
 cd custom-packages
 ```
@@ -125,8 +126,9 @@ instructions
 
 ## What you need
 
-* PNPM
-* Docker & docker-compose
+- [pnpm](https://pnpm.io/)
+- [Docker](https://www.docker.com/get-started/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Install PNPM
 ```bash
@@ -173,7 +175,7 @@ pnpm run start:dev
 
 :star: If you like what you see, star us on GitHub.
 
-Find a bug, a typo, or something that’s not documented well? We’d love for you to [open an issue](https://github.com/reactioncommerce/reaction/issues) telling us what we can improve! This project uses [semantic-release](https://semantic-release.gitbook.io/semantic-release/), please use their [commit message format](https://semantic-release.gitbook.io/semantic-release/#commit-message-format).
+Find a bug, a typo, or something that’s not documented well? We’d love for you to [open an issue](https://github.com/reactioncommerce/reaction/issues) telling us what we can improve! This project uses [commitlint](https://commitlint.js.org/), please use their [commit message format](https://www.conventionalcommits.org/en/v1.0.0/#summary).
 
 We love your pull requests! Check out our [`Good First Issue`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) and [`Help Wanted`](https://github.com/reactioncommerce/reaction/issues?q=label%3A%22help+wanted%22) tags for good issues to tackle.
 Check out our [contributors guide](CONTRIBUTING.md) for more information
