@@ -40,15 +40,17 @@ export default async function addTagsToProducts(context, input) {
 
   const results = await executeBulkOperation(Products, operations, totalProducts);
 
-  for (const tagId of tagIds) {
-    await appEvents.emit(
-      "afterAddTagsToProducts",
-      {
-        tagId,
-        productIds
-      }
-    );
-  }
+  await Promise.all(
+    tagIds.map(tagId => {
+      appEvents.emit(
+        "afterAddTagsToProducts",
+        {
+          tagId,
+          productIds
+        }
+      );
+    })
+  );
 
   return results;
 }

@@ -41,16 +41,17 @@ export default async function removeTagsFromProducts(context, input) {
 
   const results = await executeBulkOperation(Products, operations, totalProducts);
 
-  for (const tagId of tagIds) {
-
-    await appEvents.emit(
-      "afterRemoveTagsFromProducts",
-      {
-        tagId,
-        productIds
-      }
-    );
-  }
+  await Promise.all(
+    tagIds.map(tagId => {
+      appEvents.emit(
+        "afterRemoveTagsFromProducts",
+        {
+          tagId,
+          productIds
+        }
+      );
+    })
+  );
 
   return results;
 }
