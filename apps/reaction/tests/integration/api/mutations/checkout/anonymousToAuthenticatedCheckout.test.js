@@ -298,9 +298,7 @@ describe("as an anonymous user", () => {
     const mockFulfillmentMethodId = "mockMethod";
     const opaqueMockFulfillmentMethodId = encodeOpaqueId("reaction/fulfillmentMethod", mockFulfillmentMethodId);
 
-    // const option = result.updateFulfillmentOptionsForGroup.cart.checkout.fulfillmentGroups[0].availableFulfillmentOptions[0];
-    // With the new feature enabling multiple Fulfillment methods
-    // we need to find out the exact method we are looking for
+    // From the multiple Fulfillment methods, find out the exact method we are looking for
     const options = result.updateFulfillmentOptionsForGroup.cart.checkout.fulfillmentGroups[0].availableFulfillmentOptions;
     const option = options.find((opt) => opt.fulfillmentMethod._id === opaqueMockFulfillmentMethodId);
     opaqueFulfillmentMethodId = option.fulfillmentMethod._id;

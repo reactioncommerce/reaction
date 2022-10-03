@@ -19,7 +19,7 @@ export default async function fulfillmentMethodShippingUPSStartup(context) {
     // await context.validatePermissions("reaction:legacy:fulfillmentTypes", "read", { shopId });
 
     const shippingRecord = await Fulfillment.findOne({ fulfillmentType: "shipping", shopId });
-    if (!shippingRecord) throw new ReactionError("server-error", "Unable to create fulfillment method Shipping-UPS without defined type");
+    if (!shippingRecord) throw new ReactionError("not-configured", "Unable to create fulfillment method Shipping-UPS without defined type");
 
     const fulfillmentTypeId = shippingRecord._id;
     method.name = "ups";

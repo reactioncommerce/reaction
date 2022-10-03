@@ -31,17 +31,14 @@ export default async function getFulfillmentMethodsWithQuotesPickupStore(context
     }
   }
 
-  // This is now a flag in Fulfillment collection
-  // const { isShippingRatesFulfillmentEnabled } = await context.queries.appSettings(context, commonOrder.shopId);
-  // if (!isShippingRatesFulfillmentEnabled) {
-  //   return [rates, retrialTargets];
-  // }
-
   const pickupDocs = await Fulfillment.find({
     "shopId": commonOrder.shopId,
     "fulfillmentType": fulfillmentTypeName,
     "provider.enabled": true
   }).toArray();
+  if (!pickupDocs || !pickupDocs.length) {
+    return [rates, retrialTargets];
+  }
 
   const initialNumOfRates = rates.length;
 

@@ -25,8 +25,8 @@ export default async function updateFulfillmentMethodMutation(context, input) {
   const { Fulfillment } = collections;
   const method = { ...inputMethod };
 
-  if (!fulfillmentTypeId) throw new ReactionError("invalid-param", "Fulfillment Type ID to be updated not provided");
-  if (!methodId) throw new ReactionError("invalid-param", "Method ID to be updated not provided");
+  if (!fulfillmentTypeId) throw new ReactionError("invalid-parameter", "Fulfillment Type ID to be updated not provided");
+  if (!methodId) throw new ReactionError("invalid-parameter", "Method ID to be updated not provided");
 
   await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "update", { shopId });
 
@@ -63,7 +63,7 @@ export default async function updateFulfillmentMethodMutation(context, input) {
       "methods.$": updatedMethod
     }
   });
-  if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
+  if (matchedCount === 0) throw new ReactionError("not-found", "Fulfillment type to be updated not found");
 
   return { group: updatedMethod };
 }

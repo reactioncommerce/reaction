@@ -209,17 +209,17 @@ type updateFulfillmentTypePayload {
 
 
 
-"Provider info input"
-input ProviderInfoInput{
-  "Name of the provider"
-  name: String!
+# "Provider info input"
+# input ProviderInfoInput{
+#   "Name of the provider"
+#   name: String!
   
-  "Label of the provider"
-  label: String!
+#   "Label of the provider"
+#   label: String!
 
-  "Flag defining enabled/disabled status"
-  enabled: Boolean
-}
+#   "Flag defining enabled/disabled status"
+#   enabled: Boolean
+# }
 "Method info input"
 input MethodInfoInput{
   "Name of the provider"
@@ -252,82 +252,82 @@ input MethodInfoInput{
   "FulfillmentMethod"
   fulfillmentMethod: String
 }
-"The updated group infofrom updateFulfillmentType"
-input createFulfillmentTypeInfoInput {
-  "The updated group name"
-  name: String!
+# "The updated group infofrom updateFulfillmentType"
+# input createFulfillmentTypeInfoInput {
+#   "The updated group name"
+#   name: String!
 
-  "Shop Id"
-  shopId: String!
+#   "Shop Id"
+#   shopId: String!
 
-  "The group which was updated"
-  fulfillmentType: String!
+#   "The group which was updated"
+#   fulfillmentType: String!
 
-  "The displayMessageType"
-  displayMessageType: String
+#   "The displayMessageType"
+#   displayMessageType: String
 
-  "Details of fulfillment type provider"
-  provider: ProviderInfoInput!
+#   "Details of fulfillment type provider"
+#   provider: ProviderInfoInput!
 
-  "Method info"
-  methods: [MethodInfoInput]
-}
-"Input needed to create a fulfillment type"
-input createFulfillmentTypeInput {
-  "Group Info Fulfillment Type"
-  groupInfo: createFulfillmentTypeInfoInput!
+#   "Method info"
+#   methods: [MethodInfoInput]
+# }
+# "Input needed to create a fulfillment type"
+# input createFulfillmentTypeInput {
+#   "Group Info Fulfillment Type"
+#   groupInfo: createFulfillmentTypeInfoInput!
 
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-}
-# "Info of the fulfillment type created"
-type createFulfillmentTypePayloadInfo {
-  "Name"
-  name: String!
+#   "An optional string identifying the mutation call, which will be returned in the response payload"
+#   clientMutationId: String
+# }
+# # "Info of the fulfillment type created"
+# type createFulfillmentTypePayloadInfo {
+#   "Name"
+#   name: String!
 
-  "Fulfillment Type"
-  fulfillmentType: String!
-}
-"The response from the `createFulfillmentType` mutation"
-type createFulfillmentTypePayload {
-  "The inserted Group"
-  group: createFulfillmentTypePayloadInfo!
+#   "Fulfillment Type"
+#   fulfillmentType: String!
+# }
+# "The response from the `createFulfillmentType` mutation"
+# type createFulfillmentTypePayload {
+#   "The inserted Group"
+#   group: createFulfillmentTypePayloadInfo!
 
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-}
-
-
+#   "The same string you sent with the mutation params, for matching mutation calls with their responses"
+#   clientMutationId: String
+# }
 
 
 
-"The updated group infofrom updateFulfillmentMethod"
-input createFulfillmentMethodInfo {
-  "Shop Id"
-  shopId: String!
 
-  "The group which was updated"
-  fulfillmentTypeId: String!
 
-  "Method info"
-  method: MethodInfoInput
-}
+# "The updated group infofrom updateFulfillmentMethod"
+# input createFulfillmentMethodInfo {
+#   "Shop Id"
+#   shopId: String!
 
-"Input needed to create a fulfillment method"
-input createFulfillmentMethodInput {
-  "Group Info Fulfillment Method"
-  groupInfo: createFulfillmentMethodInfo!
+#   "The group which was updated"
+#   fulfillmentTypeId: String!
 
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-}
-type createFulfillmentMethodPayload {
-  "The inserted Group"
-  group: FulfillmentMethodObj!
+#   "Method info"
+#   method: MethodInfoInput
+# }
 
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-}
+# "Input needed to create a fulfillment method"
+# input createFulfillmentMethodInput {
+#   "Group Info Fulfillment Method"
+#   groupInfo: createFulfillmentMethodInfo!
+
+#   "An optional string identifying the mutation call, which will be returned in the response payload"
+#   clientMutationId: String
+# }
+# type createFulfillmentMethodPayload {
+#   "The inserted Group"
+#   group: FulfillmentMethodObj!
+
+#   "The same string you sent with the mutation params, for matching mutation calls with their responses"
+#   clientMutationId: String
+# }
 
 
 

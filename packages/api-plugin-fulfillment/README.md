@@ -6,14 +6,9 @@
 
 ## Summary
 
-This plugin provides the base for all fulfillment types and the fulfillment methods under each type. More info to be added.
+This plugin provides the base for all fulfillment types and the fulfillment methods under each type.
 
 ## Included in this fulfillment plugin
-
-### `.circleci/`
-
-Adds CI scripts that enable Circle CI to run tests, lint, and semantic release your project. The `semantic-release` portions of the script are commented out, and should be uncommented in a PR once your plugin is ready to be released.
-
 ### `src/`
 
 The `src` folder is where all the plugin files resides.
@@ -21,11 +16,6 @@ The `src` folder is where all the plugin files resides.
 ### `.gitignore`
 
 A basic `gitignore` file
-
-### `.nvmrc`
-
-`.nvmrc` sets your plugin to use Node v14.18.1
-
 ### `babel.config.cjs`
 
 If your plugin includes linting and tests, this file is required to allow esmodules to run correctly.

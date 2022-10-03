@@ -15,7 +15,6 @@ export default async function flatRateFulfillmentMethods(context, input) {
   const fulfillmentTypeName = "shipping";
   const fulfillmentMethodName = "flatRate";
 
-  // await context.validatePermissions("reaction:legacy:shippingMethods", "read", { shopId });
   await context.validatePermissions("reaction:legacy:fulfillmentMethods", "read", { shopId });
 
   // aggregate pipeline to extract fulfillment methods inside shippment

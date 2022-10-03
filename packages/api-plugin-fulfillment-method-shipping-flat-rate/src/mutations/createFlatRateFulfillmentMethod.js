@@ -24,7 +24,6 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
   const { Fulfillment } = collections;
   const method = { ...inputMethod };
 
-  // await context.validatePermissions("reaction:legacy:shippingMethods", "create", { shopId });
   await context.validatePermissions("reaction:legacy:fulfillmentMethods", "create", { shopId });
 
   const shippingRecord = await Fulfillment.findOne({ fulfillmentType: "shipping", shopId });

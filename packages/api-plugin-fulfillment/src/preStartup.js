@@ -14,7 +14,7 @@ export default async function fulfillmentPreStartup(context) {
 
   if (!allFulfillmentTypesArray || allFulfillmentTypesArray.length === 0) {
     Logger.warn(logCtx, "No fulfillment types available");
-    throw new ReactionError("invalid", "No fulfillment types available");
+    throw new ReactionError("not-configured", "No fulfillment types available");
   }
 
   extendFulfillmentSchemas(context.simpleSchemas, allFulfillmentTypesArray);

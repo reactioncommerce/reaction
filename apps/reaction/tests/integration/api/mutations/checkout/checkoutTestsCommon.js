@@ -188,7 +188,6 @@ beforeAll(async () => {
 
   // Add shipping methods
   mockShippingMethod.shopId = internalShopId;
-  // await testApp.collections.Shipping.insertOne(mockShippingMethod);
   await testApp.collections.Fulfillment.insertOne(mockShippingMethod);
 
   // Add Tags and products

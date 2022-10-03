@@ -53,7 +53,6 @@ export default async function addShipmentMethodToGroup(context, {
       " Fetch updated fulfillment options and try creating the order again with a valid method.", eventData);
   }
 
-  // group.shipmentMethod = {
   const output = {
     _id: selectedFulfillmentMethod.method._id,
     carrier: selectedFulfillmentMethod.method.carrier,

@@ -84,7 +84,6 @@ beforeAll(async () => {
   await testApp.createUserAndAccount(mockCustomerAccount);
   await testApp.createUserAndAccount(mockAdminAccount);
 
-  // await testApp.collections.Shipping.insertOne({
   await testApp.collections.Fulfillment.insertOne({
     _id: "123",
     name: "Default Shipping Provider",

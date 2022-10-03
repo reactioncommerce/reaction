@@ -8,11 +8,11 @@
 
 This plugin Implements Shipping-UPS as a fulfillment method under the type shipping.
 
-## Included in this example plugin
+## Included in this fulfillment-method-shipping-ups plugin
 
 ### `src/`
 
-The `src` folder contains all the plugin files. An `index.js` with a bear-bones `registerPlugin` is included.
+The `src` folder contains all the plugin files.
 
 ### `.gitignore`
 

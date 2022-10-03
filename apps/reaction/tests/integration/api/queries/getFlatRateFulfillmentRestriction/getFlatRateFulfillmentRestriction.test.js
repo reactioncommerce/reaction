@@ -57,7 +57,6 @@ beforeAll(async () => {
   await testApp.start();
 
   await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
-  // await testApp.collections.FlatRateFulfillmentRestrictions.insertOne(mockFulfillmentRestriction);
   await testApp.collections.FulfillmentRestrictions.insertOne(mockFulfillmentRestriction);
   await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.createUserAndAccount(mockAdminAccount);

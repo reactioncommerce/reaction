@@ -17,8 +17,6 @@ export default function xformOrderFulfillmentGroupSelectedOption(fulfillmentOpti
       displayName: fulfillmentOption.label || fulfillmentOption.name,
       group: fulfillmentOption.group || null,
       name: fulfillmentOption.name,
-      // For now, this is always shipping. Revisit when adding download, pickup, etc. types - done
-      // fulfillmentTypes: ["shipping"]
       fulfillmentTypes: [fulfillmentType],
       methodAdditionalData: fulfillmentOption.methodAdditionalData || { gqlType: "emptyData", emptyData: false }
     },

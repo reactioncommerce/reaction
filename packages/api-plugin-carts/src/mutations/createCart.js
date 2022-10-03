@@ -2,9 +2,8 @@ import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "@reactioncommerce/logger";
+import { cartVersion } from "../cartVersion.js";
 import addCartItems from "../util/addCartItems.js";
-
-const cartVersion = "v2"; // Update this for each major change of cart object, v2 => Fulfillment changes
 
 /**
  * @method createCart

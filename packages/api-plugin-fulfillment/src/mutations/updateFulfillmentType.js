@@ -31,9 +31,9 @@ export default async function updateFulfillmentType(context, input) {
   const { collections } = context;
   const { Fulfillment } = collections;
 
-  if (!shopId) throw new ReactionError("invalid-param", "Shop ID to be updated not provided");
-  if (!fulfillmentGroupId) throw new ReactionError("invalid-param", "FulfillmentType ID to be updated not provided");
-  if (!name) throw new ReactionError("invalid-param", "FulfillmentType Name to be updated not provided");
+  if (!shopId) throw new ReactionError("invalid-parameter", "Shop ID to be updated not provided");
+  if (!fulfillmentGroupId) throw new ReactionError("invalid-parameter", "FulfillmentType ID to be updated not provided");
+  if (!name) throw new ReactionError("invalid-parameter", "FulfillmentType Name to be updated not provided");
 
   await context.validatePermissions(`reaction:legacy:fulfillmentTypes:${fulfillmentGroupId}`, "update", { shopId });
 

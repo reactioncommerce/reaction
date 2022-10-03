@@ -20,14 +20,13 @@ export default async function deleteFlatRateFulfillmentMethodMutation(context, i
   const { collections } = context;
   const { Fulfillment } = collections;
 
-  // await context.validatePermissions(`reaction:legacy:shippingMethods:${methodId}`, "delete", { shopId });
   await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "delete", { shopId });
 
   const shippingRecord = await Fulfillment.findOne({
     "methods._id": methodId,
     shopId
   });
-  if (!shippingRecord) throw new ReactionError("not-found", "Not found");
+  if (!shippingRecord) throw new ReactionError("not-found", "Shipping method not found");
 
   const { matchedCount } = await Fulfillment.updateOne({
     "methods._id": methodId,
@@ -39,7 +38,7 @@ export default async function deleteFlatRateFulfillmentMethodMutation(context, i
       }
     }
   });
-  if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
+  if (matchedCount === 0) throw new ReactionError("server-error", "Unable to update the Shipping method");
 
   const method = shippingRecord.methods.find((meth) => meth._id === methodId);
   return { method };

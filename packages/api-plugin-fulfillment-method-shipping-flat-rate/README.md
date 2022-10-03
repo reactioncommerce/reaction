@@ -8,7 +8,7 @@
 
 This plugin provides the functionalities of a sample fulfillment method flat-rate under the fulfillment type of shipping.
 
-## Included in this example plugin
+## Included in this fulfillment-method-shipping-flat-rate plugin
 
 ### `src/`
 

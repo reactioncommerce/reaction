@@ -6,15 +6,15 @@
 
 ## Summary
 
-This plugin implements fulfillment type pickup plugin for [Reaction API](https://github.com/reactioncommerce/reaction).
+This plugin implements fulfillment type pickup plugin for [Reaction API](https://github.com/reactioncommerce/reaction). A sample Fulfillment method under 'pickup' is implemented via plugin api-plugin-fulfillment-method-pickup-store.
 
 The `Developer Certificate of Origin` and `License` sections can stay as they are, assuming `Apache 2` license is used (our preferred license). All other sections of this README should be updated to reflect your plugin.
 
-## Included in this example plugin
+## Included in this fulfillment-type-pickup plugin
 
 ### `src/`
 
-The `src` folder is where you'll put all the plugin files. An `index.js` with a bear-bones `registerPlugin` is included.
+The `src` folder is where you'll put all the plugin files.
 
 ### `.gitignore`
 

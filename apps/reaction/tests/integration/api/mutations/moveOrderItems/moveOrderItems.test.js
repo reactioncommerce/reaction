@@ -74,7 +74,7 @@ beforeAll(async () => {
   testApp.registerPlugin({
     name: "moveOrderItems.test.js",
     functionsByType: {
-      getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+      getFulfillmentMethodsWithQuotesshipping: [getFulfillmentMethodsWithQuotes]
     }
   });
 

@@ -82,7 +82,7 @@ beforeAll(async () => {
   testApp.registerPlugin({
     name: "splitOrderItem.test.js",
     functionsByType: {
-      getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+      getFulfillmentMethodsWithQuotesshipping: [getFulfillmentMethodsWithQuotes]
     }
   });
 

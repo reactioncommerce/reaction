@@ -35,19 +35,20 @@ export default async function getFulfillmentMethodsWithQuotesShippingFlatRate(co
     }
   }
 
-  // TODO Re-visit in phase-2 implementation
-  // TODO Since Shipping is no longer the only default fulfillment type, this should ideally be removed
-  // const { isShippingRatesFulfillmentEnabled } = await context.queries.appSettings(context, commonOrder.shopId);
+  const { isShippingRatesFulfillmentEnabled } = await context.queries.appSettings(context, commonOrder.shopId);
+  if (!isShippingRatesFulfillmentEnabled) {
+    return [rates, retrialTargets];
+  }
 
-  // if (!isShippingRatesFulfillmentEnabled) {
-  //   return [rates, retrialTargets];
-  // }
-
+  // Above validation is retained for backward compatibility. Below validation is go-forward way
   const shippingRateDocs = await Fulfillment.find({
     "shopId": commonOrder.shopId,
     "fulfillmentType": fulfillmentTypeName,
     "provider.enabled": true
   }).toArray();
+  if (!shippingRateDocs || !shippingRateDocs.length) {
+    return [rates, retrialTargets];
+  }
 
   const initialNumOfRates = rates.length;
 

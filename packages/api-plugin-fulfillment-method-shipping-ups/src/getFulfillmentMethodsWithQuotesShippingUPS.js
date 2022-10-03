@@ -30,19 +30,14 @@ export default async function getFulfillmentMethodsWithQuotesShippingUPS(context
     }
   }
 
-  // TODO This has to be a flag in Fulfillment collection
-  // const { isShippingRatesFulfillmentEnabled } = await context.queries.appSettings(context, commonOrder.shopId);
-
-  // if (!isShippingRatesFulfillmentEnabled) {
-  //   return [rates, retrialTargets];
-  // }
-
   const shippingRateDocs = await Fulfillment.find({
     "shopId": commonOrder.shopId,
     "fulfillmentType": fulfillmentTypeName,
     "provider.enabled": true
   }).toArray();
-
+  if (!shippingRateDocs || !shippingRateDocs.length) {
+    return [rates, retrialTargets];
+  }
   const initialNumOfRates = rates.length;
 
   const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {

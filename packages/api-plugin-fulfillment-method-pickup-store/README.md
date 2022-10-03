@@ -8,11 +8,11 @@
 
 This plugin Implements Store pickup as a fulfillment method under the type pickup.
 
-## Included in this example plugin
+## Included in this fulfillment-method-pickup-store plugin
 ß
 ### `src/`
 
-The `src` folder contains all the plugin files. An `index.js` with a bear-bones `registerPlugin` is included.
+The `src` folder contains all the plugin files.
 
 ### `.gitignore`
 

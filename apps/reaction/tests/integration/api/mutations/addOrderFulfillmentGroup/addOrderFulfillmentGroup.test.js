@@ -86,7 +86,7 @@ beforeAll(async () => {
   testApp.registerPlugin({
     name: "addOrderFulfillmentGroup.test.js",
     functionsByType: {
-      getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+      getFulfillmentMethodsWithQuotesshipping: [getFulfillmentMethodsWithQuotes]
     }
   });
 

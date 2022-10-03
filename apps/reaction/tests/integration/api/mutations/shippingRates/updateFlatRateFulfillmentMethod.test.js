@@ -87,7 +87,6 @@ beforeAll(async () => {
   await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.collections.Groups.insertOne(customerGroup);
 
-  // await testApp.collections.Shipping.insertOne({
   await testApp.collections.Fulfillment.insertOne({
     methods: [mockFulfillmentMethod],
     shopId: internalShopId

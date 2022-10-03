@@ -24,8 +24,7 @@ export default async function updateFlatRateFulfillmentMethodMutation(context, i
   const { Fulfillment } = collections;
   const method = { ...inputMethod };
 
-  if (!methodId) throw new ReactionError("invalid-param", "Method ID to be updated not provided");
-  // await context.validatePermissions(`reaction:legacy:shippingMethods:${methodId}`, "update", { shopId });
+  if (!methodId) throw new ReactionError("invalid-parameter", "Method ID to be updated not provided");
   await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "update", { shopId });
 
   // MongoDB schema still uses `enabled` rather than `isEnabled`

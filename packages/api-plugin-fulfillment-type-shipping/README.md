@@ -6,15 +6,15 @@
 
 ## Summary
 
-This plugin implements 'shipping' as one of the fulfillment type.
+This plugin implements 'shipping' as one of the fulfillment type. Fulfillment methods under 'shipping' is implemented via plugins like api-plugin-fulfillment-method-shipping-flat-rate and api-plugin-fulfillment-method-shipping-ups.
 
 The `Developer Certificate of Origin` and `License` sections can stay as they are, assuming `Apache 2` license is used (our preferred license). All other sections of this README should be updated to reflect your plugin.
 
-## Included in this plugin
+## Included in this fulfillment-type-shipping plugin
 
 ### `src/`
 
-The `src` folder is where you'll put all the plugin files. An `index.js` with a bear-bones `registerPlugin` is included.
+The `src` folder is where you'll put all the plugin files.
 
 ### `.gitignore`
 

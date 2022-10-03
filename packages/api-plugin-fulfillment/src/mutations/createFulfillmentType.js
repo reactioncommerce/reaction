@@ -24,7 +24,7 @@ export default async function createFulfillmentType(context, input) {
   const { shopId, name, fulfillmentType } = cleanedInput;
 
   const ffTypeRecord = await Fulfillment.findOne({ name, shopId, fulfillmentType });
-  if (ffTypeRecord) throw new ReactionError("invalid-param", "Fulfillment Type already exists");
+  if (ffTypeRecord) throw new ReactionError("invalid-parameter", "Fulfillment Type already exists");
 
   await context.validatePermissions("reaction:legacy:fulfillmentTypes", "create", { shopId });
 

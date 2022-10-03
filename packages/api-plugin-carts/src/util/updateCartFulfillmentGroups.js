@@ -82,31 +82,24 @@ export default async function updateCartFulfillmentGroups(context, cart) {
   const currentGroups = cart.shipping || [];
 
   for (const item of (cart.items || [])) {
-    const { supportedFulfillmentTypes } = item;
+    let { supportedFulfillmentTypes } = item;
 
     // This is a new optional field that UI can pass in case the user selects fulfillment type
     // for each item in the product details page instead of waiting till checkout
     let { selectedFulfillmentType } = item;
 
-    // Do not re-allocate the item if it is already in the group. Otherwise difficult for other code
-    // to create and manage fulfillment groups
-    // Commenting out the below check since the item by default (if no fulfillment type is provided) will be assigned to 'undecided' group
-    // and later 'setFulfillmentTypeForItems' mutation can re-assign the group by passing an updated 'selectedFulfillmentType'.
-    // const itemAlreadyInTheGroup = currentGroups.find(({ itemIds }) => itemIds && itemIds.includes(item._id));
-    // if (itemAlreadyInTheGroup) return;
-
     if (!supportedFulfillmentTypes || supportedFulfillmentTypes.length === 0) {
-      // supportedFulfillmentTypes = ["shipping"];
-      // we no longer default to shipping as fulfillment type
-      throw new ReactionError("not-found", "Product does not have any supported FulfillmentTypes");
+      if (!cart.cartVersion) {
+        supportedFulfillmentTypes = ["shipping"]; // we use 'shipping' as default fulfillment type for old v1 carts (prior to fulfillment types)
+      } else {
+        throw new ReactionError("not-found", "Product does not have any supported FulfillmentTypes");
+      }
     }
 
     if (selectedFulfillmentType && !supportedFulfillmentTypes.includes(selectedFulfillmentType)) {
       throw new ReactionError("not-found", "Selected fulfillmentType is not supported by the Product");
     }
 
-    // Out of the current groups, returns the one that this item should be in by default, if it isn't
-    // already in a group
     // If selectedFulfillmentType is provided, move the item to that group, else add item to undecided group
     if (!selectedFulfillmentType) selectedFulfillmentType = "undecided";
 
@@ -117,6 +110,7 @@ export default async function updateCartFulfillmentGroups(context, cart) {
     let enabledFulfillmentTypes = (enabledFulfillmentTypeObjs || []).map((ffType) => ffType.fulfillmentType);
     enabledFulfillmentTypes = (enabledFulfillmentTypes || []).filter((val) => !!val); // Remove nulls
     if (!enabledFulfillmentTypes.includes(selectedFulfillmentType)) selectedFulfillmentType = "undecided";
+
     checkAndAddToGroup(currentGroups, selectedFulfillmentType, item);
   }
 
