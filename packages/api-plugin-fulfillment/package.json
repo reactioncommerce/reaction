@@ -32,6 +32,7 @@
     "@reactioncommerce/api-utils": "^1.16.9",
     "@reactioncommerce/reaction-error": "^1.0.1",
     "@reactioncommerce/random": "^1.0.2",
+    "@reactioncommerce/db-version-check": "^1.0.0",
     "lodash": "^4.17.21",
     "simpl-schema": "^1.12.2"
   },
