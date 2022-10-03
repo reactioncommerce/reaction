@@ -15,6 +15,7 @@ export default async function addTagsToProducts(context, input) {
   const { productIds, shopId, tagIds } = input;
   const { collections: { Products } } = context;
   const totalProducts = productIds.length;
+  const { appEvents } = context;
 
   for (const _id of productIds) {
     // TODO(pod-auth): figure out a better way to loop through this
@@ -38,6 +39,16 @@ export default async function addTagsToProducts(context, input) {
   }));
 
   const results = await executeBulkOperation(Products, operations, totalProducts);
+
+  for (const tagId of tagIds) {
+    await appEvents.emit(
+      "afterAddTagsToProducts",
+      {
+        tagId,
+        productIds
+      }
+    );
+  }
 
   return results;
 }
