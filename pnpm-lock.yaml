@@ -166,6 +166,8 @@ importers:
       '@reactioncommerce/api-plugin-payments-stripe-sca': ^1.0.2
       '@reactioncommerce/api-plugin-pricing-simple': ^1.0.3
       '@reactioncommerce/api-plugin-products': ^1.0.2
+      '@reactioncommerce/api-plugin-promotions': ^1.0.0
+      '@reactioncommerce/api-plugin-promotions-offers': ^1.0.0
       '@reactioncommerce/api-plugin-settings': ^1.0.2
       '@reactioncommerce/api-plugin-shipments': ^1.0.1
       '@reactioncommerce/api-plugin-shipments-flat-rate': ^1.0.4
@@ -226,6 +228,8 @@ importers:
       '@reactioncommerce/api-plugin-payments-stripe-sca': link:../../packages/api-plugin-payments-stripe-sca
       '@reactioncommerce/api-plugin-pricing-simple': link:../../packages/api-plugin-pricing-simple
       '@reactioncommerce/api-plugin-products': link:../../packages/api-plugin-products
+      '@reactioncommerce/api-plugin-promotions': link:../../packages/api-plugin-promotions
+      '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
       '@reactioncommerce/api-plugin-shipments-flat-rate': link:../../packages/api-plugin-shipments-flat-rate
@@ -245,7 +249,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1013.0
+      '@snyk/protect': 1.1020.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -4704,8 +4708,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1013.0:
-    resolution: {integrity: sha512-w67p3tncQPJjhrdsLxcDh2PhJEcU2eRkYhZO6nbSZipGmznPovveFw24BTYRsefGPhiAMPP7gbjGVVRL1rTrdg==}
+  /@snyk/protect/1.1020.0:
+    resolution: {integrity: sha512-Uncxecj9mtEVlaEFVojpNOu6wZ3Om4cpvDDB25FcyOd0o+buru57GKNCMT89G2UC35dKpz6FOYyn1/gXNQZqIQ==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
