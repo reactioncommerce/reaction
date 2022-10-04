@@ -11,8 +11,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function removeTag(context, input) {
   const { shopId, tagId } = input;
-  const { Tags } = context.collections;
-  const { appEvents } = context;
+  const { appEvents, collections: { Tags } } = context;
 
   await context.validatePermissions(`reaction:legacy:tags:${tagId}`, "delete", { shopId });
 
