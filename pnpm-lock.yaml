@@ -228,6 +228,8 @@ importers:
       '@reactioncommerce/api-plugin-payments-stripe-sca': link:../../packages/api-plugin-payments-stripe-sca
       '@reactioncommerce/api-plugin-pricing-simple': link:../../packages/api-plugin-pricing-simple
       '@reactioncommerce/api-plugin-products': link:../../packages/api-plugin-products
+      '@reactioncommerce/api-plugin-promotions': link:../../packages/api-plugin-promotions
+      '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
       '@reactioncommerce/api-plugin-shipments-flat-rate': link:../../packages/api-plugin-shipments-flat-rate

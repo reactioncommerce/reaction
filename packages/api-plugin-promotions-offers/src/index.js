@@ -1,7 +1,5 @@
 import { createRequire } from "module";
-import { offerRule } from "./simpleSchemas.js";
 import triggers from "./triggers/index.js";
-import actions from "./actions/index.js";
 import enhancers from "./enhancers/index.js";
 
 const require = createRequire(import.meta.url);
@@ -19,9 +17,7 @@ export default async function register(app) {
     version: pkg.version,
     promotions: {
       triggers,
-      actions,
-      enhancers,
-      schemaExtensions: [offerRule]
+      enhancers
     }
   });
 }

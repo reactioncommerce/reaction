@@ -3,8 +3,7 @@ import { promotions, registerPluginHandlerForPromotions } from "./registration.j
 import startupPromotions from "./startup.js";
 import preStartupPromotions from "./preStartup.js";
 import { Promotion } from "./simpleSchemas.js";
-import operators from "./operators/index.js";
-import actions from './actions/index.js';
+import actions from "./actions/index.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -36,7 +35,6 @@ export default async function register(app) {
       promotions
     },
     promotions: {
-      operators,
       actions
     }
   });

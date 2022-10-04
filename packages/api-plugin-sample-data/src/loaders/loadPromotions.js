@@ -1,39 +1,39 @@
 const now = new Date();
 
-
 const OrderPromotion = {
   _id: "orderPromotion",
+  type: "implicit",
   label: "5 percent off your entire order when you spend more then $200",
   description: "5 percent off your entire order when you spend more then $200",
   enabled: true,
-  triggers: [{ triggerKey: "offers" }],
-  offerRule: {
-    name: "5 percent off your entire order when you spend more then $200",
-    conditions: {
-      any: [{
-        fact: "cart",
-        path: "$.merchandiseTotal",
-        operator: "greaterThanInclusive",
-        value: 200
-      }]
-    },
-    event: { // define the event to fire when the conditions evaluate truthy
-      type: "triggerAction",
-      params: {
-        promotionId: "orderPromotion"
+  triggers: [
+    {
+      triggerKey: "offers",
+      triggerParameters: {
+        name: "5 percent off your entire order when you spend more then $200",
+        conditions: {
+          any: [
+            {
+              fact: "cart",
+              path: "$.merchandiseTotal",
+              operator: "greaterThanInclusive",
+              value: 200
+            }
+          ]
+        }
       }
     }
-  },
-  actions: [{
-    actionKey: "noop",
-    actionParameters: {}
-  }],
+  ],
+  actions: [
+    {
+      actionKey: "noop",
+      actionParameters: {}
+    }
+  ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "none",
-  reportAsTaxable: true
+  stackAbility: "none"
 };
-
 
 const promotions = [OrderPromotion];
 
@@ -44,7 +44,10 @@ const promotions = [OrderPromotion];
  * @returns {Promise<void>} undefined
  */
 export default async function loadPromotions(context, shopId) {
-  const { simpleSchemas: { Promotion: PromotionSchema }, collections: { Promotions } } = context;
+  const {
+    simpleSchemas: { Promotion: PromotionSchema },
+    collections: { Promotions }
+  } = context;
   for (const promotion of promotions) {
     promotion.shopId = shopId;
     PromotionSchema.validate(promotion);
