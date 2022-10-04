@@ -14,6 +14,7 @@ async function up({ db, progress }) {
   ];
 
   const newShopPermissions = [
+    "reaction:legacy:fulfillmentTypes/update:settings",
     "reaction:legacy:fulfillmentRestrictions/create",
     "reaction:legacy:fulfillmentRestrictions/delete",
     "reaction:legacy:fulfillmentRestrictions/read",
