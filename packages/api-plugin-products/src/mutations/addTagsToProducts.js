@@ -13,9 +13,8 @@ import executeBulkOperation from "../utils/executeBulkOperation.js";
  */
 export default async function addTagsToProducts(context, input) {
   const { productIds, shopId, tagIds } = input;
-  const { collections: { Products } } = context;
+  const { appEvents, collections: { Products } } = context;
   const totalProducts = productIds.length;
-  const { appEvents } = context;
 
   for (const _id of productIds) {
     // TODO(pod-auth): figure out a better way to loop through this
