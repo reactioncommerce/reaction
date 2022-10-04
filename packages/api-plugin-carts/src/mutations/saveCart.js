@@ -5,7 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  *   validates, and upserts to database.
  * @param {Object} context - App context
  * @param {Object} cart - The cart to transform and insert or replace
- * @param {Boolean} emittedBy - Who emitted the event
+ * @param {String} emittedBy - Who emitted the event
  * @returns {Object} Transformed and saved cart
  */
 export default async function saveCart(context, cart, emittedBy) {

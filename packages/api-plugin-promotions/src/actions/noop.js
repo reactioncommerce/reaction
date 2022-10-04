@@ -7,6 +7,11 @@ import Logger from "@reactioncommerce/logger";
  * @param {Object} actionParameters - The parameters to pass to the action
  * @return {void}
  */
-export default function noop(context, enhancedCart, { promotion, actionParameters }) {
+export function noop(context, enhancedCart, { actionParameters }) {
   Logger.info(actionParameters, "No-op action triggered");
 }
+
+export default {
+  key: "noop",
+  handler: noop
+};

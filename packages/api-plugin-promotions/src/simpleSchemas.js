@@ -1,25 +1,5 @@
 import SimpleSchema from "simpl-schema";
 
-const RulesEvent = new SimpleSchema({
-  type: {
-    type: String
-  },
-  params: {
-    type: Object,
-    blackbox: true
-  }
-});
-
-export const JSONRulesEngineRule = new SimpleSchema({
-  conditions: {
-    type: Object,
-    blackbox: true
-  },
-  event: {
-    type: RulesEvent
-  }
-});
-
 export const Action = new SimpleSchema({
   actionKey: {
     type: String,
@@ -38,8 +18,7 @@ export const Trigger = new SimpleSchema({
   },
   triggerParameters: {
     type: Object,
-    blackbox: true,
-    optional: true
+    blackbox: true
   }
 });
 
@@ -52,6 +31,10 @@ export const Trigger = new SimpleSchema({
 export const Promotion = new SimpleSchema({
   "_id": {
     type: String
+  },
+  "type": {
+    type: String,
+    allowedValues: ["implicit", "explicit"]
   },
   "shopId": {
     type: String
@@ -81,23 +64,14 @@ export const Promotion = new SimpleSchema({
   "startDate": {
     type: Date
   },
-  "endDate": { // leaving this empty means it never ends
+  "endDate": {
+    // leaving this empty means it never ends
     type: Date,
     optional: true
   },
-  "exclusionFilters": {
-    type: Array,
-    optional: true
-  },
-  "exclusionFilters.$": {
-    type: JSONRulesEngineRule
-  },
-  "stackAbility": { // defines what other offers it can be defined as
+  "stackAbility": {
+    // defines what other offers it can be defined as
     type: String,
     allowedValues: ["none", "per-type", "all"]
-  },
-  "reportAsTaxable": { // should we report the discounted amount
-    type: Boolean,
-    defaultValue: true
   }
 });
