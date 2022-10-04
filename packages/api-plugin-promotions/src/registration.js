@@ -3,7 +3,7 @@ import _ from "lodash";
 
 const PromotionsDeclaration = new SimpleSchema({
   "triggers": {
-    type: Array,
+    type: Array
   },
   "triggers.$": {
     type: Object,
@@ -34,10 +34,6 @@ const PromotionsDeclaration = new SimpleSchema({
   "operators": {
     type: Object,
     blackbox: true
-  },
-  "methods": {
-    type: Object,
-    blackbox: true
   }
 });
 
@@ -46,8 +42,7 @@ export const promotions = {
   actions: [],
   enhancers: [], // enhancers for promotion data,
   schemaExtensions: [],
-  operators: {}, // operators used for rule evaluations
-  methods: {} // discount calculation methods
+  operators: {} // operators used for rule evaluations
 };
 
 /**
@@ -57,7 +52,7 @@ export const promotions = {
  */
 export function registerPluginHandlerForPromotions({ promotions: pluginPromotions }) {
   if (pluginPromotions) {
-    const { triggers, actions, enhancers, schemaExtensions, operators, methods } = pluginPromotions;
+    const { triggers, actions, enhancers, schemaExtensions, operators } = pluginPromotions;
     if (triggers) {
       promotions.triggers = _.uniqBy(promotions.triggers.concat(triggers), "key");
     }
@@ -72,9 +67,6 @@ export function registerPluginHandlerForPromotions({ promotions: pluginPromotion
     }
     if (operators) {
       promotions.operators = { ...promotions.operators, ...operators };
-    }
-    if (methods) {
-      promotions.methods = { ...promotions.methods, ...methods };
     }
   }
   PromotionsDeclaration.validate(promotions);

@@ -1,3 +1,3 @@
-import noop from "./noop.js";
+import noopAction from "./noop.js";
 
-export default [{ key: "noop", handler: noop }];
+export default [noopAction];
