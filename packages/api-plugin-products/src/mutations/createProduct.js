@@ -49,6 +49,13 @@ export default async function createProduct(context, input) {
     throw new ReactionError("invalid-param", "Creating a deleted product is not allowed");
   }
 
+  const { defaultFulfillmentTypesForShop } = await context.queries.appSettings(context, shopId);
+  const { supportedFulfillmentTypes } = initialProductData;
+  let combinedSupportedFulfillmentTypes = [];
+  if (defaultFulfillmentTypesForShop) combinedSupportedFulfillmentTypes = [...defaultFulfillmentTypesForShop];
+  if (supportedFulfillmentTypes) combinedSupportedFulfillmentTypes = [...combinedSupportedFulfillmentTypes, ...supportedFulfillmentTypes];
+  combinedSupportedFulfillmentTypes = [...new Set(combinedSupportedFulfillmentTypes)];
+
   const createdAt = new Date();
   const newProduct = {
     _id: newProductId,
@@ -59,7 +66,6 @@ export default async function createProduct(context, input) {
     isVisible: false,
     shopId,
     shouldAppearInSitemap: true,
-    supportedFulfillmentTypes: initialProductData.supportedFulfillmentTypes || [],
     title: "",
     type: "simple",
     updatedAt: createdAt,
@@ -68,6 +74,8 @@ export default async function createProduct(context, input) {
     },
     ...initialProductData
   };
+  // Adding this outside to ensure that this is not over-written by the original initialProductData.supportedFulfillmentTypes
+  newProduct.supportedFulfillmentTypes = combinedSupportedFulfillmentTypes || [];
 
   // Apply custom transformations from plugins.
   for (const customFunc of context.getFunctionsOfType("mutateNewProductBeforeCreate")) {
