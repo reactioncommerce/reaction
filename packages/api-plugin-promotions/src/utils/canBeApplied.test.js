@@ -45,3 +45,16 @@ test("should return false when the 2nd promotion has stackAbility is none", () =
   };
   expect(canBeApplied(cart.appliedPromotions, secondPromotion)).toBe(false);
 });
+
+test("should return true when the promotions have stack ability", () => {
+  promotion.stackAbility = "all";
+  const cart = {
+    _id: "cartId",
+    appliedPromotions: [promotion]
+  };
+  const secondPromotion = {
+    ...promotion,
+    _id: "promotion 2"
+  };
+  expect(canBeApplied(cart.appliedPromotions, secondPromotion)).toBe(true);
+});
