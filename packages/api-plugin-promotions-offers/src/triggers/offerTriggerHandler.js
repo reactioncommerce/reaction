@@ -32,10 +32,14 @@ export async function offerTriggerHandler(context, enhancedCart, { triggerParame
   Object.keys(operators).forEach((operatorKey) => {
     engine.addOperator(operatorKey, operators[operatorKey]);
   });
-  engine.addRule(triggerParameters);
+  engine.addRule({
+    ...triggerParameters,
+    event: {
+      type: "rulesCheckPassed"
+    }
+  });
   const facts = { cart: enhancedCart };
 
-  // eslint-disable-next-line no-await-in-loop
   const results = await engine.run(facts);
   const { failureResults } = results;
   Logger.debug({ ...logCtx, ...results });
