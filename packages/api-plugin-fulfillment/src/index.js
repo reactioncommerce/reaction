@@ -1,4 +1,5 @@
 import { createRequire } from "module";
+import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
@@ -21,6 +22,7 @@ export default async function register(app) {
     label: "Fulfillment",
     name: "fulfillment",
     version: pkg.version,
+    i18n,
     collections: {
       FulfillmentRestrictions: {
         name: "FulfillmentRestrictions",

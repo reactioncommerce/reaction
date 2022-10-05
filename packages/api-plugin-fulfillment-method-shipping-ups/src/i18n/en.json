@@ -1,0 +1,23 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shipping-ups",
+  "translation": {
+    "reaction-shipping-ups": {
+      "admin": {
+        "shippingSettings": {
+          "header": "Shipping",
+          "methodLabel": "UPS",
+          "rateSaved": "Fulfillment method saved",
+          "rateFailed": "Fulfillment method update failed",
+          "noUPSRatesFound": "No UPS fulfillment methods found"
+        },
+        "shippingGrid": {
+          "name": "Name",
+          "group": "Group",
+          "rate": "Rate",
+          "label": "Label"
+        }
+      }
+    }
+  }
+}]

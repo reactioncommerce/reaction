@@ -1,6 +1,7 @@
 import { createRequire } from "module";
 import getFulfillmentMethodsWithQuotesShippingFlatRate from "./getFulfillmentMethodsWithQuotesShippingFlatRate.js";
 import validateOrderMethodsflatRate from "./util/validateOrderMethodsflatrate.js";
+import i18n from "./i18n/index.js";
 import resolvers from "./resolvers/index.js";
 import mutations from "./mutations/index.js";
 import policies from "./policies.json";
@@ -29,6 +30,7 @@ export default async function register(app) {
     label: "Fulfillment Method Shipping Flat Rate",
     name: "fulfillment-method-shipping-flat-rate",
     version: pkg.version,
+    i18n,
     graphQL: {
       resolvers,
       schemas

@@ -1,0 +1,23 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "ENHETSTAXA",
+          "confirmRateDelete": "Radera frekvens?",
+          "rateSaved": "Schablonbelopp sparas.",
+          "rateFailed": "Platt uppdateringsfrekvens misslyckades.",
+          "noRatesFound": "Det finns inga priser hittades."
+        },
+        "shippingGrid": {
+          "name": "Namn",
+          "group": "Grupp",
+          "rate": "Betygsätt",
+          "label": "Etikett"
+        }
+      }
+    }
+  }
+}]
