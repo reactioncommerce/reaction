@@ -1,6 +1,5 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
-import _ from "lodash";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -14,7 +13,7 @@ const logCtx = {
 
 /**
  * @summary check if a promotion can be applied to a cart
- * @param {Object} cart - The cart to check
+ * @param {Array<Object>} appliedPromotions - The promotions that have been applied to the cart
  * @param {Object} promotion - The promotion to check
  * @returns {Boolean} - Whether the promotion can be applied to the cart
  */
