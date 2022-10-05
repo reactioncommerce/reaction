@@ -12,16 +12,17 @@ jobs:
         with:
           # This makes action fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
+
       - name: Get tag version
         id: get-tag-version
         run: |
           VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
-          NEW_TAG=v$VERSION
+          NEW_TAG=@reactioncommerce@reaction-api$VERSION
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
           echo '::set-output name=newTag::'$NEW_TAG
           echo "New tag is $NEW_TAG"
 
-      - name: Check should create new tag
+      - name: Check should release
         id: should-create-tag
         run: |
           echo ${{ steps.get-tag-version.outputs.NEW_TAG }}
@@ -31,14 +32,25 @@ jobs:
             echo '::set-output name=TAG_EXISTS::false'
           fi
 
-      - name: Create and push new tag
+      - name: Use Node.js 14.x
+        if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Create new tag
         if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
         run: |
-            git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
-            git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-            git tag -a $NEW_TAG -m "chore(release): $NEW_TAG [skip ci]"
-            git push origin $NEW_TAG
-            echo "Pushed new tag with version $NEW_TAG"
+          npm i -g pnpm@7
+          pnpm install -r
+          pnpm changeset tag
+
+      - name: Push tags
+        if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
+        run: |
+          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+          git push origin --tags
 
       - name: Extract release notes
         if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
