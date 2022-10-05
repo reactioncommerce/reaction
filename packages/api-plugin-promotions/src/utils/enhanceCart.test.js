@@ -5,7 +5,7 @@ const testEnhancer = jest.fn().mockImplementation((context, cart) => {
   cart.enhancedCartValue = "test";
 });
 
-test.only("should return the enhanced cart", async () => {
+test("should return the enhanced cart", async () => {
   const cart = {
     _id: "cartId"
   };
