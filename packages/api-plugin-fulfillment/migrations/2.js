@@ -1,4 +1,4 @@
-const COLL_FF_SOURCE = "Shipments";
+const COLL_FF_SOURCE = "Shipping";
 const COLL_FF_DEST = "Fulfillment";
 const COLL_FFR_SOURCE = "FlatRateFulfillmentRestrictions";
 const COLL_FFR_DEST = "FulfillmentRestrictions";
@@ -32,10 +32,12 @@ async function down({ db, progress }) {
 async function up({ db, progress }) {
   progress(0);
 
-  await db.collections(COLL_FF_SOURCE).aggregate([{ $match: {} }, { $out: COLL_FF_DEST }]);
+  const shippingCopyResp = await db.collection(COLL_FF_SOURCE).aggregate([{ $match: {} }, { $out: COLL_FF_DEST }]).next();
+  if (shippingCopyResp) throw new Error("Error in copying Shipping collection"); // above command returns null if successful
   progress(50);
 
-  await db.collections(COLL_FFR_SOURCE).aggregate([{ $match: {} }, { $out: COLL_FFR_DEST }]);
+  const flatRateRestCopyResp = await db.collection(COLL_FFR_SOURCE).aggregate([{ $match: {} }, { $out: COLL_FFR_DEST }]).next();
+  if (flatRateRestCopyResp) throw new Error("Error in copying FlatRateFulfillmentRestrictions collection"); // above command returns null if successful
   progress(100);
 }
 
