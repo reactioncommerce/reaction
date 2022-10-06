@@ -1,5 +1,6 @@
 {
   "name": "reaction-files-example-meteor-blaze-app",
+  "version": "1.0.0-development",
   "private": true,
   "scripts": {
     "start": "DEBUG=reaction-file-collections meteor run"
