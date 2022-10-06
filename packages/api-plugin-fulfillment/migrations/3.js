@@ -45,8 +45,8 @@ async function up({ db, progress }) {
   operations.push(ffTypeUpdate);
   operations.push(ffMethodUpdate);
 
-  await db.collections(COLL_DEST).bulkWrite(operations);
-
+  const bulkWriteResp = await db.collection(COLL_DEST).bulkWrite(operations);
+  if (bulkWriteResp.writeErrors && bulkWriteResp.writeErrors.length) throw new Error("Error while updating Fulfillment collection");
   progress(100);
 }
 
