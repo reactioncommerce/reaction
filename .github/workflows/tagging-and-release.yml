@@ -12,25 +12,10 @@ jobs:
         with:
           # This makes action fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
-
-      - name: Get tag version
-        id: get-tag-version
+      - name: Set git user
         run: |
-          VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
-          NEW_TAG=@reactioncommerce@reaction-api$VERSION
-          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
-          echo '::set-output name=newTag::'$NEW_TAG
-          echo "New tag is $NEW_TAG"
-
-      - name: Check should release
-        id: should-create-tag
-        run: |
-          echo ${{ steps.get-tag-version.outputs.NEW_TAG }}
-          if [ $(git tag -l "$NEW_TAG") ]; then
-            echo '::set-output name=TAG_EXISTS::true'
-          else
-            echo '::set-output name=TAG_EXISTS::false'
-          fi
+          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
 
       - name: Use Node.js 14.x
         if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
@@ -38,19 +23,39 @@ jobs:
         with:
           node-version: 14
 
-      - name: Create new tag
-        if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
+      - name: Generate packages tags
         run: |
-          npm i -g pnpm@7
-          pnpm install -r
+          npm i -g pnpm@latest
+          pnpm install -r --ignore-scripts
           pnpm changeset tag
 
-      - name: Push tags
+      - name: Get tag version
+        id: get-tag-version
+        run: |
+          VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
+          NEW_TAG=v$VERSION
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+          echo '::set-output name=newTag::'$NEW_TAG
+          echo "New tag is $NEW_TAG"
+
+      - name: Check should create release tag
+        id: should-create-tag
+        run: |
+          if [ $(git tag -l "$NEW_TAG") ]; then
+            echo '::set-output name=TAG_EXISTS::true'
+          else
+            echo '::set-output name=TAG_EXISTS::false'
+          fi
+
+      - name: Create release tag
         if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
         run: |
-          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
-          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-          git push origin --tags
+          git tag -a $NEW_TAG -m "chore(release): $NEW_TAG [skip ci]"
+          git push origin $NEW_TAG
+          echo "Create release tag success: $NEW_TAG"
+
+      - name: Push tags
+        run: git push origin --tags
 
       - name: Extract release notes
         if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'

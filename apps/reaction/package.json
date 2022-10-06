@@ -1,5 +1,5 @@
 {
-  "name": "@reactioncommerce/reaction-api",
+  "name": "reaction",
   "version": "4.2.2",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "./src/index.js",
