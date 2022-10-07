@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 import { promotions, registerPluginHandlerForPromotions } from "./registration.js";
+import mutations from "./mutations/index.js";
 import startupPromotions from "./startup.js";
 import preStartupPromotions from "./preStartup.js";
 import { Promotion } from "./simpleSchemas.js";
@@ -36,6 +37,7 @@ export default async function register(app) {
     },
     promotions: {
       actions
-    }
+    },
+    mutations
   });
 }
