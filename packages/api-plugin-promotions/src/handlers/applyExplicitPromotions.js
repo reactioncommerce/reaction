@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import enhanceCart from "../utils/enhanceCart.js";
 import canBeApplied from "../utils/canBeApplied.js";
+import applyAction from "./applyAction.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -66,7 +67,7 @@ export default async function applyExplicitCoupons(context, cart, promotions) {
 
   const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
-  const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
+  const actionHandleByKey = _.keyBy(context.promotions.actions, "key");
 
   const appliedPromotions = Array.isArray(cart.appliedPromotions) ? cart.appliedPromotions : [];
   const promotionMessages = Array.isArray(cart.promotionMessages) ? cart.promotionMessages : [];
@@ -85,31 +86,21 @@ export default async function applyExplicitCoupons(context, cart, promotions) {
       continue;
     }
 
-    const couponTrigger = promotion.triggers.find((trigger) => trigger.triggerKey === "coupons");
-    const { actions } = promotion;
+    for (const trigger of promotion.triggers) {
+      const { triggerKey, triggerParameters } = trigger;
+      const triggerFn = triggerHandleByKey[triggerKey];
+      if (!triggerFn) continue;
 
-    const { triggerKey, triggerParameters } = couponTrigger;
-    const triggerFn = triggerHandleByKey[triggerKey];
-    if (!triggerFn) continue;
-
-    // eslint-disable-next-line no-await-in-loop
-    const shouldApply = await triggerFn.handler(context, enhancedCart, { promotion, triggerParameters });
-    if (!shouldApply) {
-      promotionMessages.push({ promotion, rejectionReason: "cannot-be-combined" });
-      continue;
-    }
-
-    for (const action of actions) {
-      const { actionKey, actionParameters } = action;
-      const actionFn = actionHandleByKey[actionKey];
-      if (actionFn) {
-        // eslint-disable-next-line no-await-in-loop
-        await actionFn.handler(context, enhancedCart, { promotion, actionParameters });
+      const shouldApply = await triggerFn.handler(context, enhancedCart, { promotion, triggerParameters });
+      if (!shouldApply) {
+        return false;
       }
+
+      await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
+      break;
     }
-    appliedPromotions.push(promotion);
-    break;
   }
+
   cart.appliedPromotions = appliedPromotions;
   cart.promotionMessages = removeMessageWhenPromotionApplied(promotionMessages, appliedPromotions);
 
@@ -117,5 +108,5 @@ export default async function applyExplicitCoupons(context, cart, promotions) {
     { ...logCtx, cartId: cart._id, promotionsCount: appliedPromotions.length, promotionMessagesCount: promotionMessages.length },
     "Applied coupons to cart"
   );
-  context.mutations.saveCart(context, cart, "promotions");
+  return context.mutations.saveCart(context, cart, "promotions");
 }

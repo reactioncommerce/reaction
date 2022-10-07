@@ -15,7 +15,7 @@ export default async function applyCouponToCart(_, { input }, context) {
   const decodedCartId = decodeCartOpaqueId(cartId);
   const decodePromotionIds = promotionIds.map((promotionId) => decodePromotionOpaqueId(promotionId));
 
-  const cart = await context.mutations.applyCouponToCart(context, { cartId: decodedCartId, promotionIds: decodePromotionIds });
+  const cart = await context.mutations.applyExplicitPromotions(context, { cartId: decodedCartId, promotionIds: decodePromotionIds });
 
   return { cart };
 }

@@ -1,5 +1,4 @@
 import { createRequire } from "module";
-import mutations from "./mutations/index.js";
 import schemas from "./schemas/index.js";
 import resolvers from "./resolvers/index.js";
 import triggers from "./triggers/index.js";
@@ -25,7 +24,6 @@ export default async function register(app) {
     graphQL: {
       resolvers,
       schemas
-    },
-    mutations
+    }
   });
 }

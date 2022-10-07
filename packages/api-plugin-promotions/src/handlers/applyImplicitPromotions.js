@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
+import applyAction from "./applyAction.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -44,32 +45,23 @@ export default async function applyImplicitPromotions(context, cart) {
 
   const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
-  const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
+  const actionHandleByKey = _.keyBy(context.promotions.actions, "key");
 
   const appliedPromotions = [];
   for (const promotion of promotions) {
     if (!canBeApplied(appliedPromotions, promotion)) {
       continue;
     }
-
-    const { triggers, actions } = promotion;
-    for (const trigger of triggers) {
+    for (const trigger of promotion.triggers) {
       const { triggerKey, triggerParameters } = trigger;
       const triggerFn = triggerHandleByKey[triggerKey];
       if (!triggerFn) continue;
 
       // eslint-disable-next-line no-await-in-loop
       const shouldApply = await triggerFn.handler(context, enhancedCart, { promotion, triggerParameters });
-      if (!shouldApply) continue;
+      if (!shouldApply) return false;
 
-      for (const action of actions) {
-        const { actionKey, actionParameters } = action;
-        const actionFn = actionHandleByKey[actionKey];
-        if (!actionFn) continue;
-
-        // eslint-disable-next-line no-await-in-loop
-        await actionFn.handler(context, enhancedCart, { promotion, actionParameters });
-      }
+      await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
       appliedPromotions.push(promotion);
       break;
     }

@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import applyExplicitCoupons from "../handlers/applyExplicitPromotions.js";
 
 const inputSchema = new SimpleSchema({
   "cartId": String,
@@ -10,7 +11,7 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @method applyCouponToCart
+ * @method applyExplicitPromotions
  * @summary Apply a coupon code to a cart
  * @param {Object} context
  * @param {Object} input
@@ -18,12 +19,10 @@ const inputSchema = new SimpleSchema({
  * @param {Array<String>} input.promotionIds - Array of promotion IDs to apply to the cart
  * @returns {Promise<Object>} with cart
  */
-export default async function applyCouponToCart(context, input) {
+export default async function applyExplicitPromotions(context, input) {
   inputSchema.validate(input);
 
-  const now = new Date();
   const {
-    appEvents,
     collections: { Cart, Promotions }
   } = context;
   const { cartId, promotionIds } = input;
@@ -33,25 +32,17 @@ export default async function applyCouponToCart(context, input) {
     throw new ReactionError("not-found", "Cart not found");
   }
 
+  const now = new Date();
   const promotions = await Promotions.find({
     _id: { $in: promotionIds },
+    enabled: true,
     type: "explicit",
-    startDate: { $lte: now },
-    triggers: {
-      $elemMatch: {
-        triggerKey: "coupons"
-      }
-    }
+    startDate: { $lte: now }
   }).toArray();
 
   if (promotions.length !== promotionIds.length) {
     throw new ReactionError("not-found", "Some promotions are not available");
   }
 
-  appEvents.emit("applyCouponToCart", {
-    cart,
-    promotions
-  });
-
-  return cart;
+  return applyExplicitCoupons(context, cart, promotions);
 }
