@@ -18,16 +18,21 @@ jobs:
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
 
       - name: Use Node.js 14.x
-        if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
         uses: actions/setup-node@v2
         with:
           node-version: 14
 
-      - name: Generate packages tags
+      - name: Install dependencies
         run: |
           npm i -g pnpm@latest
           pnpm install -r --ignore-scripts
-          pnpm changeset tag
+
+      - name: Release apps and packages
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get tag version
         id: get-tag-version
@@ -36,7 +41,7 @@ jobs:
           NEW_TAG=v$VERSION
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
           echo '::set-output name=newTag::'$NEW_TAG
-          echo "New tag is $NEW_TAG"
+          echo "New release tag is $NEW_TAG"
 
       - name: Check should create release tag
         id: should-create-tag
@@ -54,8 +59,8 @@ jobs:
           git push origin $NEW_TAG
           echo "Create release tag success: $NEW_TAG"
 
-      - name: Push tags
-        run: git push origin --tags
+      - name: Push release tag
+        run: git push origin $NEW_TAG
 
       - name: Extract release notes
         if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
