@@ -1,8 +1,8 @@
 import { createRequire } from "module";
 import schemas from "./schemas/index.js";
+import mutations from "./mutations/index.js";
 import resolvers from "./resolvers/index.js";
 import triggers from "./triggers/index.js";
-import actions from "./actions/index.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -18,12 +18,12 @@ export default async function register(app) {
     name: pkg.name,
     version: pkg.version,
     promotions: {
-      triggers,
-      actions
+      triggers
     },
     graphQL: {
       resolvers,
       schemas
-    }
+    },
+    mutations
   });
 }

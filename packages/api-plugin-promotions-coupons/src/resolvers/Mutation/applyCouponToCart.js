@@ -1,4 +1,4 @@
-import { decodeCartOpaqueId, decodePromotionOpaqueId } from "../../xforms/id.js";
+import { decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
  * @method applyCouponToCart
@@ -6,16 +6,15 @@ import { decodeCartOpaqueId, decodePromotionOpaqueId } from "../../xforms/id.js"
  * @param {Object} _ unused
  * @param {Object} args.input - The input arguments
  * @param {Object} args.input.cartId - The cart ID
- * @param {Object} args.input.promotionIds - The promotion IDs
+ * @param {Object} args.input.couponCode - The promotion IDs
  * @param {Object} context - The application context
  * @returns {Promise<Object>} with updated cart
  */
 export default async function applyCouponToCart(_, { input }, context) {
-  const { cartId, promotionIds } = input;
+  const { cartId, couponCode } = input;
   const decodedCartId = decodeCartOpaqueId(cartId);
-  const decodePromotionIds = promotionIds.map((promotionId) => decodePromotionOpaqueId(promotionId));
 
-  const cart = await context.mutations.applyExplicitPromotions(context, { cartId: decodedCartId, promotionIds: decodePromotionIds });
+  const appliedCart = await context.mutations.applyCouponToCart(context, { cartId: decodedCartId, couponCode });
 
-  return { cart };
+  return { cart: appliedCart };
 }
