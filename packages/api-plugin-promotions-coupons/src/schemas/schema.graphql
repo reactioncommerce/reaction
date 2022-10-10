@@ -1,12 +1,12 @@
 input ApplyCouponToCartInput {
   cartId: String!
-  promotionIds: [String]!
+  couponCode: String!
 }
 
-type ApplyCouponToCartOutput {
-  cart: Cart!
+type ApplyCouponToCartPayload {
+  cart: Cart
 }
 
-extend type Mutation {
-  applyCouponToCart(input: ApplyCouponToCartInput): ApplyCouponToCartOutput
+type Mutation {
+  applyCouponToCart(input: ApplyCouponToCartInput): ApplyCouponToCartPayload
 }

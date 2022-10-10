@@ -1,5 +1,5 @@
-import applyExplicitPromotions from "./applyExplicitPromotions.js";
+import applyExplicitPromotionToCart from "./applyExplicitPromotionToCart.js";
 
 export default {
-  applyExplicitPromotions
+  applyExplicitPromotionToCart
 };

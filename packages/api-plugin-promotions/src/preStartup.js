@@ -22,16 +22,6 @@ function extendSchemas(context) {
 function extendCartSchema(context) {
   const { simpleSchemas: { Cart, Promotion } } = context; // we get this here rather than importing it to get the extended version
 
-  const CartWarning = new SimpleSchema({
-    promotion: {
-      type: Promotion
-    },
-    rejectionReason: {
-      type: String,
-      allowedValues: ["cannot-be-combined", "expired"]
-    }
-  });
-
   Cart.extend({
     "appliedPromotions": {
       type: Array,
@@ -39,13 +29,6 @@ function extendCartSchema(context) {
     },
     "appliedPromotions.$": {
       type: Promotion
-    },
-    "promotionMessages": {
-      type: Array,
-      optional: true
-    },
-    "promotionMessages.$": {
-      type: CartWarning
     }
   });
   return Cart;
