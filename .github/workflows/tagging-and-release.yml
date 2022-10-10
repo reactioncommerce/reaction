@@ -38,32 +38,32 @@ jobs:
         id: get-tag-version
         run: |
           VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
-          NEW_TAG=v$VERSION
-          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
-          echo '::set-output name=newTag::'$NEW_TAG
-          echo "New release tag is $NEW_TAG"
+          REACTION_APP_NEW_TAG=v$VERSION
+          echo "REACTION_APP_NEW_TAG=$REACTION_APP_NEW_TAG" >> $GITHUB_ENV
+          echo '::set-output name=newTag::'$REACTION_APP_NEW_TAG
+          echo "New release tag is $REACTION_APP_NEW_TAG"
 
       - name: Check should create release tag
         id: should-create-tag
         run: |
-          if [ $(git tag -l "$NEW_TAG") ]; then
-            echo '::set-output name=TAG_EXISTS::true'
+          if [ $(git tag -l "$REACTION_APP_NEW_TAG") ]; then
+            echo '::set-output name=REACTION_APP_TAG_EXISTS::true'
           else
-            echo '::set-output name=TAG_EXISTS::false'
+            echo '::set-output name=REACTION_APP_TAG_EXISTS::false'
           fi
 
       - name: Create release tag
-        if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
+        if: steps.should-create-tag.outputs.REACTION_APP_TAG_EXISTS == 'false'
         run: |
-          git tag -a $NEW_TAG -m "chore(release): $NEW_TAG [skip ci]"
-          git push origin $NEW_TAG
-          echo "Create release tag success: $NEW_TAG"
+          git tag -a $REACTION_APP_NEW_TAG -m "chore(release): $REACTION_APP_NEW_TAG [skip ci]"
+          git push origin $REACTION_APP_NEW_TAG
+          echo "Create release tag success: $REACTION_APP_NEW_TAG"
 
       - name: Push release tag
-        run: git push origin $NEW_TAG
+        run: git push origin $REACTION_APP_NEW_TAG
 
       - name: Extract release notes
-        if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
+        if: steps.should-create-tag.outputs.REACTION_APP_TAG_EXISTS == 'false'
         id: extract-release-notes
         uses: ffurrer2/extract-release-notes@v1
         with:
@@ -71,7 +71,7 @@ jobs:
 
       - name: Create Release
         id: create_release
-        if: steps.should-create-tag.outputs.TAG_EXISTS == 'false'
+        if: steps.should-create-tag.outputs.REACTION_APP_TAG_EXISTS == 'false'
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
