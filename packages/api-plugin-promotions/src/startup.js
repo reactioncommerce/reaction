@@ -1,4 +1,4 @@
-import applyImplicitPromotions from "./handlers/applyImplicitPromotions.js";
+import applyImplicitPromotions from "./handlers/applyPromotions.js";
 
 /**
  * @summary Perform various scaffolding tasks on startup

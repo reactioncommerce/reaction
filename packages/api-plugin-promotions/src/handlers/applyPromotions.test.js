@@ -1,5 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import applyImplicitPromotions from "./applyImplicitPromotions.js";
+import applyImplicitPromotions from "./applyPromotions.js";
 
 const testTrigger = jest.fn().mockReturnValue(Promise.resolve(true));
 const testAction = jest.fn();
