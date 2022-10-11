@@ -40,7 +40,7 @@ export default async function removeTagsFromProducts(context, input) {
 
   const results = await executeBulkOperation(Products, operations, totalProducts);
 
-  await Promise.all(tagIds.map((tagId) => appEvents.emit("afterRemoveTagsFromProducts", { tagId, productIds })));
+  await Promise.all(tagIds.map((tagId) => appEvents.emit("afterRemoveTagsFromProducts", { tagId, productIds, shopId })));
 
   return results;
 }
