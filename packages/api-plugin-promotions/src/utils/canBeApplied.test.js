@@ -7,7 +7,7 @@ const promotion = {
   stackAbility: "none"
 };
 
-test("should return true when the cart don't have promotion are applied", () => {
+test("should return true when the cart don't have promotion already applied", () => {
   const cart = {
     _id: "cartId"
   };
@@ -46,7 +46,7 @@ test("should return false when the 2nd promotion has stackAbility is none", () =
   expect(canBeApplied(cart.appliedPromotions, secondPromotion)).toBe(false);
 });
 
-test("should return true when the promotions have stack ability", () => {
+test("should return true when stack ability is set to all", () => {
   promotion.stackAbility = "all";
   const cart = {
     _id: "cartId",
