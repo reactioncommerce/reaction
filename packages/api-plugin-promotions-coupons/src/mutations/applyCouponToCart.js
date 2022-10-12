@@ -11,8 +11,8 @@ const inputSchema = new SimpleSchema({
 /**
  * @method applyExplicitPromotion
  * @summary Apply a coupon code to a cart
- * @param {Object} context
- * @param {Object} input
+ * @param {Object} context - The application context
+ * @param {Object} input - The input
  * @param {String} input.cartId - The cart id
  * @param {Array<String>} input.promotion - The promotion to apply
  * @returns {Promise<Object>} with cart
@@ -20,9 +20,7 @@ const inputSchema = new SimpleSchema({
 export default async function applyCouponToCart(context, input) {
   inputSchema.validate(input);
 
-  const {
-    collections: { Cart, Promotions }
-  } = context;
+  const { collections: { Cart, Promotions } } = context;
   const { cartId, couponCode } = input;
 
   const cart = await Cart.findOne({ _id: cartId });
@@ -32,11 +30,11 @@ export default async function applyCouponToCart(context, input) {
 
   const now = new Date();
   const promotion = await Promotions.findOne({
-    enabled: true,
-    type: "explicit",
-    startDate: { $lte: now },
-    'triggers.triggerKey': 'coupons',
-    'triggers.triggerParameters.couponCode': couponCode
+    "enabled": true,
+    "type": "explicit",
+    "startDate": { $lte: now },
+    "triggers.triggerKey": "coupons",
+    "triggers.triggerParameters.couponCode": couponCode
   });
 
   if (!promotion) {

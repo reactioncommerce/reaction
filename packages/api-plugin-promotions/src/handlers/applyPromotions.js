@@ -38,10 +38,10 @@ async function getImplicitPromotions(context) {
  * @summary apply promotions to a cart
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
- * @param {Object} promotion - The promotion to apply
+ * @param {Object} explicitPromotion - The explicit promotion to apply
  * @returns {Object} - The cart with promotions applied
  */
-export default async function applyPromotions(context, cart, promotion = undefined) {
+export default async function applyPromotions(context, cart, explicitPromotion = undefined) {
   const promotions = await getImplicitPromotions(context);
   const { promotions: pluginPromotions } = context;
 
@@ -53,8 +53,8 @@ export default async function applyPromotions(context, cart, promotion = undefin
   const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["type", "explicit"]);
 
   const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
-  if (promotion) {
-    unqualifiedPromotions.push(promotion);
+  if (explicitPromotion) {
+    unqualifiedPromotions.push(explicitPromotion);
   }
 
   for (const promotion of unqualifiedPromotions) {
@@ -75,6 +75,7 @@ export default async function applyPromotions(context, cart, promotion = undefin
       const shouldApply = await triggerFn.handler(context, enhancedCart, { promotion, triggerParameters });
       if (!shouldApply) continue;
 
+      // eslint-disable-next-line no-await-in-loop
       await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
       appliedPromotions.push(promotion);
       break;

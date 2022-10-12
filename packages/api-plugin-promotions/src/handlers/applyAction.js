@@ -5,6 +5,7 @@
  * @param {Object} enhancedCart - The cart to apply promotions to
  * @param {Object} params.promotion - The promotion to apply
  * @param {Object} params.actionParameters - The parameters for the action
+ * @returns {void}
  */
 export default async function applyAction(context, enhancedCart, { promotion, actionHandleByKey }) {
   for (const action of promotion.actions) {

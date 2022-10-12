@@ -1,4 +1,3 @@
-import SimpleSchema from "simpl-schema";
 import _ from "lodash";
 import { Action, Trigger } from "./simpleSchemas.js";
 
