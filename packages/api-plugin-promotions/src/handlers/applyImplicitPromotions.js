@@ -21,9 +21,7 @@ const logCtx = {
  */
 async function getImplicitPromotions(context) {
   const now = new Date();
-  const {
-    collections: { Promotions }
-  } = context;
+  const { collections: { Promotions } } = context;
   const promotions = await Promotions.find({
     enabled: true,
     type: "implicit",

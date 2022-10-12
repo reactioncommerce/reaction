@@ -7,10 +7,7 @@ import { Action, Trigger } from "./simpleSchemas.js";
  * @returns {undefined} undefined
  */
 function extendSchemas(context) {
-  const {
-    promotions: { schemaExtensions },
-    simpleSchemas: { Promotion }
-  } = context;
+  const { promotions: { schemaExtensions }, simpleSchemas: { Promotion } } = context;
   schemaExtensions.forEach((extension) => {
     Promotion.extend(extension);
   });
@@ -22,9 +19,7 @@ function extendSchemas(context) {
  * @returns {Object} the extended schema
  */
 function extendCartSchema(context) {
-  const {
-    simpleSchemas: { Cart, Promotion }
-  } = context; // we get this here rather than importing it to get the extended version
+  const { simpleSchemas: { Cart, Promotion } } = context; // we get this here rather than importing it to get the extended version
 
   Cart.extend({
     "appliedPromotions": {
