@@ -51,6 +51,6 @@ async function up({ db, progress }) {
 }
 
 export default {
-  down: "impossible", // We are not tracking the updated documents, hence cannot revert
+  down: "unnecessary", // The newly created collections would get dropped in stage2
   up
 };
