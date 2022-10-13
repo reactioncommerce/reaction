@@ -14,10 +14,10 @@ const COLL_FFR_DEST = "FulfillmentRestrictions";
 async function down({ db, progress }) {
   progress(0);
 
-  await db.collections(COLL_FF_DEST).drop();
+  await db.collection(COLL_FF_DEST).drop();
   progress(50);
 
-  await db.collections(COLL_FFR_DEST).drop();
+  await db.collection(COLL_FFR_DEST).drop();
   progress(100);
 }
 
