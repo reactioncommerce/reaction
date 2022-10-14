@@ -1,7 +1,7 @@
 import { CouponTriggerParameters } from "../simpleSchemas.js";
 
 /**
- * @summary a no-op function for testing of promotions
+ * @summary Trigger handler for coupon
  * @param {Object} context - The application context
  * @param {Object} enhancedCart - The cart to apply promotions to
  * @param {Object} trigger - The parameters to pass to the trigger
