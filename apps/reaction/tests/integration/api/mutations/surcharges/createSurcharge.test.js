@@ -151,7 +151,7 @@ test("an authorized user can create a surcharge with amount as 0", async () => {
   expect(result.createSurcharge.surcharge.destination).toEqual(surchargeDestination);
 });
 
-test("an authorized user can create a surcharge with amount undefined", async () => {
+test("an authorized user cannot create a surcharge with amount undefined", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   try {
