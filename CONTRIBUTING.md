@@ -10,7 +10,7 @@ We've already attracted a small, dedicated team of open source contributors, and
 
 If you haven't already, get MOC running locally.
 
-Instructions are [here](/developer/open-commerce/guides/quick-start) for Windows, Mac OSX and Linux.
+Instructions are [here](https://www.mailchimp.com/developer/open-commerce/guides/quick-start) for Windows, Mac OSX and Linux.
 
 ### Step 2: Find or open an issue
 
