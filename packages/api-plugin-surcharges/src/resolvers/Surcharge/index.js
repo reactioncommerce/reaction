@@ -5,7 +5,7 @@ import getSurchargeMessageForLanguage from "../../util/getSurchargeMessageForLan
 export default {
   _id: (node) => encodeSurchargeOpaqueId(node._id),
   shopId: (node) => encodeShopOpaqueId(node.shopId),
-  amount: (node, _, context) => node.amount && xformSurchargeAmount(context, node.shopId, node.amount),
+  amount: (node, _, context) => node.amount !== undefined && xformSurchargeAmount(context, node.shopId, node.amount),
   message: (node, { language }) => node.messagesByLanguage &&
     node.messagesByLanguage.length &&
     getSurchargeMessageForLanguage(language, node.messagesByLanguage),
