@@ -1,10 +1,16 @@
 name: Tagging And Release
 on:
-  push:
-    branches:
-      - trunk
+  pull_request:
+    types:
+      - closed
+
+permissions: {}
+
 jobs:
   tagging-and-release:
+    if: github.event.pull_request.merged == true && github.base_ref == 'trunk' && github.head_ref == 'changeset-release/trunk'
+    permissions:
+      contents: write # to create release (changesets/action)
     runs-on: ubuntu-latest
 
     steps:
