@@ -100,9 +100,15 @@ export default async function updateCartFulfillmentGroups(context, cart) {
       throw new ReactionError("not-found", "Selected fulfillmentType is not supported by the Product");
     }
 
-    // If selectedFulfillmentType is provided, move the item to that group, else add item to undecided group
-    if (!selectedFulfillmentType) selectedFulfillmentType = "undecided";
-
+    // When selectedFulfillmentType is not available, if the product only supports ONE fulfillment type, use that
+    // If more than one fulfillment type is available, then add item to undecided group
+    if (!selectedFulfillmentType) {
+      if (supportedFulfillmentTypes.length === 1) {
+        ([selectedFulfillmentType] = supportedFulfillmentTypes);
+      } else {
+        selectedFulfillmentType = "undecided";
+      }
+    }
     // check if the selectedFulfillmentType is an 'enabled' fulfillmentType, if not set is 'undecided'
     /* eslint-disable no-await-in-loop */
     const enabledFulfillmentTypeObjs = await Fulfillment.find({ "shopId": item.shopId, "provider.enabled": true }).toArray();
