@@ -39,5 +39,6 @@
   "fulfillmentMethodShippingFlatRate": "../../packages/api-plugin-fulfillment-method-shipping-flat-rate/index.js",
   "fulfillmentMethodShippingUPS": "../../packages/api-plugin-fulfillment-method-shipping-ups/index.js",
   "fulfillmentTypePickup": "../../packages/api-plugin-fulfillment-type-pickup/index.js",
-  "fulfillmentMethodPickupStore": "../../packages/api-plugin-fulfillment-method-pickup-store/index.js"
+  "fulfillmentMethodPickupStore": "../../packages/api-plugin-fulfillment-method-pickup-store/index.js",
+  "sampleData": "../../packages/api-plugin-sample-data/index.js"
 }

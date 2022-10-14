@@ -2,14 +2,14 @@ extend type ShopSettings {
   """
   List of fulfillment types that will be added to each new product by default
   """
-  defaultFulfillmentTypesForShop: [FulfillmentType]
+  baseFulfillmentTypesForShop: [FulfillmentType]
 }
 
 extend input ShopSettingsUpdates {
   """
   The input for default fulfillment type for shop should be one of the installed fulfillment type plugin
   """
-  defaultFulfillmentTypesForShop: [FulfillmentType]
+  baseFulfillmentTypesForShop: [FulfillmentType]
 }
 
 "Allowed fulfillment types, extended by fulfillment-type plugins"

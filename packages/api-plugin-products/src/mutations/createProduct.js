@@ -49,10 +49,12 @@ export default async function createProduct(context, input) {
     throw new ReactionError("invalid-param", "Creating a deleted product is not allowed");
   }
 
-  const { defaultFulfillmentTypesForShop } = await context.queries.appSettings(context, shopId);
+  // Include the base/shop-level fulfillment types for all products
+  // if user has provided additional fulfillment types, include them also
+  const { baseFulfillmentTypesForShop } = await context.queries.appSettings(context, shopId);
   const { supportedFulfillmentTypes } = initialProductData;
   let combinedSupportedFulfillmentTypes = [];
-  if (defaultFulfillmentTypesForShop) combinedSupportedFulfillmentTypes = [...defaultFulfillmentTypesForShop];
+  if (baseFulfillmentTypesForShop) combinedSupportedFulfillmentTypes = [...baseFulfillmentTypesForShop];
   if (supportedFulfillmentTypes) combinedSupportedFulfillmentTypes = [...combinedSupportedFulfillmentTypes, ...supportedFulfillmentTypes];
   combinedSupportedFulfillmentTypes = [...new Set(combinedSupportedFulfillmentTypes)];
 

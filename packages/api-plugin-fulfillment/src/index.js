@@ -56,17 +56,16 @@ export default async function register(app) {
       MethodEmptyData
     },
     shopSettingsConfig: {
-      defaultFulfillmentTypesForShop: {
+      baseFulfillmentTypesForShop: {
         permissionsThatCanEdit: ["reaction:legacy:fulfillmentTypes/update:settings"],
         simpleSchema: {
           type: {
-            "defaultFulfillmentTypesForShop": {
+            "baseFulfillmentTypesForShop": {
               type: Array,
               optional: true
             },
-            "defaultFulfillmentTypesForShop.$": {
-              type: String,
-              optional: true
+            "baseFulfillmentTypesForShop.$": {
+              type: String
             }
           }
         }
