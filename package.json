@@ -1,5 +1,5 @@
 {
-  "name": "reaction",
+  "name": "reaction-monorepo",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "index.js",
   "engines": {

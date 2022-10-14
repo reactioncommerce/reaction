@@ -20,7 +20,7 @@ jobs:
           cache-name: cache-node-modules
         with:
           key: reaction-v6-node-modules-${{ hashFiles('package.json') }}-${{ hashFiles('pnpm-lock.yaml') }}
-          path: '**/node_modules'
+          path: "**/node_modules"
 
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
@@ -33,9 +33,20 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --ignore-scripts
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Create Release Pull Request
         uses: changesets/action@v1
-        with:
-          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update pnpm-lock.yaml
+        run: pnpm install --no-frozen-lockfile --lockfile-only
+
+      - name: Commit new pnpm-lock.yaml
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "pnpm-lock.yaml"
+          message: "feat: update pnpm-lock"
+          new_branch: changeset-release/trunk
+          committer_name: github-actions[bot]
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          pathspec_error_handling: ignore
