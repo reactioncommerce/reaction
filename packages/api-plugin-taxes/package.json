@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
-    "@reactioncommerce/api-plugin-carts": "^1.0.0",
+    "@reactioncommerce/api-plugin-carts": "^2.0.0",
     "@reactioncommerce/api-plugin-orders": "^1.0.0",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
