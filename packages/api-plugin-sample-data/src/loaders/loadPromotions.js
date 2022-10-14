@@ -38,14 +38,14 @@ const OrderPromotion = {
 const CouponPromotion = {
   _id: "couponPromotion",
   type: "explicit",
-  label: "15 percent off your entire order when you spend more then $100",
-  description: "15 percent off your entire order when you spend more then $100",
+  label: "Specific coupon code",
+  description: "Specific coupon code",
   enabled: true,
   triggers: [
     {
       triggerKey: "coupons",
       triggerParameters: {
-        name: "15 percent off your entire order when you spend more then $100",
+        name: "Specific coupon code",
         couponCode: "CODE"
       }
     }
