@@ -1,16 +1,17 @@
-# [4.2.0](https://github.com/reactioncommerce/reaction/compare/v4.1.8...v4.2.0) (2022-03-26)
+# reaction
+
+## 4.2.0
+
+### Minor Changes
+
+- updated CircleCI config to also tag image with latest. ([ec745c7](https://github.com/reactioncommerce/reaction/commit/ec745c709d00856b822239dbfdf494c2c7d1b872))
 
 
-### Features
-
-* updated CircleCI config to also tag image with latest. ([ec745c7](https://github.com/reactioncommerce/reaction/commit/ec745c709d00856b822239dbfdf494c2c7d1b872))
-
-## [4.1.8](https://github.com/reactioncommerce/reaction/compare/v4.1.7...v4.1.8) (2022-03-02)
-
+## 4.1.8
 
 ### Bug Fixes
 
-* update sharp to match files ([f4ad49e](https://github.com/reactioncommerce/reaction/commit/f4ad49e9a07a49e1805013b3ec2f503361a80242))
+- update sharp to match files ([f4ad49e](https://github.com/reactioncommerce/reaction/commit/f4ad49e9a07a49e1805013b3ec2f503361a80242))
 
 ## [4.1.7](https://github.com/reactioncommerce/reaction/compare/v4.1.6...v4.1.7) (2022-02-14)
 
