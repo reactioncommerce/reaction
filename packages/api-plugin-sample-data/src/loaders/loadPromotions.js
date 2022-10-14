@@ -35,7 +35,33 @@ const OrderPromotion = {
   stackAbility: "none"
 };
 
-const promotions = [OrderPromotion];
+const CouponPromotion = {
+  _id: "couponPromotion",
+  type: "explicit",
+  label: "Specific coupon code",
+  description: "Specific coupon code",
+  enabled: true,
+  triggers: [
+    {
+      triggerKey: "coupons",
+      triggerParameters: {
+        name: "Specific coupon code",
+        couponCode: "CODE"
+      }
+    }
+  ],
+  actions: [
+    {
+      actionKey: "noop",
+      actionParameters: {}
+    }
+  ],
+  startDate: now,
+  endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
+  stackAbility: "all"
+};
+
+const promotions = [OrderPromotion, CouponPromotion];
 
 /**
  * @summary Load promotions fixtures

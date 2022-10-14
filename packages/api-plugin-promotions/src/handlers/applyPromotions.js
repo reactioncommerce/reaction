@@ -3,6 +3,8 @@ import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
+import isPromotionExpired from "../utils/isPromotionExpired.js";
+import applyAction from "./applyAction.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -36,24 +38,35 @@ async function getImplicitPromotions(context) {
  * @summary apply promotions to a cart
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
+ * @param {Object} explicitPromotion - The explicit promotion to apply
  * @returns {Object} - The cart with promotions applied
  */
-export default async function applyImplicitPromotions(context, cart) {
+export default async function applyPromotions(context, cart, explicitPromotion = undefined) {
   const promotions = await getImplicitPromotions(context);
   const { promotions: pluginPromotions } = context;
 
   const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
-  const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
+  const actionHandleByKey = _.keyBy(context.promotions.actions, "key");
 
   const appliedPromotions = [];
-  for (const promotion of promotions) {
+  const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["type", "explicit"]);
+
+  const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
+  if (explicitPromotion) {
+    unqualifiedPromotions.push(explicitPromotion);
+  }
+
+  for (const promotion of unqualifiedPromotions) {
+    if (isPromotionExpired(promotion)) {
+      continue;
+    }
+
     if (!canBeApplied(appliedPromotions, promotion)) {
       continue;
     }
 
-    const { triggers, actions } = promotion;
-    for (const trigger of triggers) {
+    for (const trigger of promotion.triggers) {
       const { triggerKey, triggerParameters } = trigger;
       const triggerFn = triggerHandleByKey[triggerKey];
       if (!triggerFn) continue;
@@ -62,19 +75,16 @@ export default async function applyImplicitPromotions(context, cart) {
       const shouldApply = await triggerFn.handler(context, enhancedCart, { promotion, triggerParameters });
       if (!shouldApply) continue;
 
-      for (const action of actions) {
-        const { actionKey, actionParameters } = action;
-        const actionFn = actionHandleByKey[actionKey];
-        if (!actionFn) continue;
-
-        // eslint-disable-next-line no-await-in-loop
-        await actionFn.handler(context, enhancedCart, { promotion, actionParameters });
-      }
+      // eslint-disable-next-line no-await-in-loop
+      await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
       appliedPromotions.push(promotion);
       break;
     }
   }
 
   cart.appliedPromotions = appliedPromotions;
-  context.mutations.saveCart(context, cart, "promotions");
+
+  Logger.info({ ...logCtx, appliedPromotions: appliedPromotions.length }, "Applied promotions successfully");
+
+  return context.mutations.saveCart(context, cart, "promotions");
 }

@@ -1,0 +1,12 @@
+input ApplyCouponToCartInput {
+  cartId: String!
+  couponCode: String!
+}
+
+type ApplyCouponToCartPayload {
+  cart: Cart
+}
+
+type Mutation {
+  applyCouponToCart(input: ApplyCouponToCartInput): ApplyCouponToCartPayload
+}
