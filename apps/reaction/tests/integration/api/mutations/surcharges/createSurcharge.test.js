@@ -168,8 +168,7 @@ test("an authorized user cannot create a surcharge with amount undefined", async
       }
     });
   } catch (error) {
-    //expect error to be thrown
+    // expect error to be thrown
     expect(error);
   }
-  
 });
