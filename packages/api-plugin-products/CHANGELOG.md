@@ -1,5 +1,11 @@
 # @reactioncommerce/api-plugin-products
 
+## 1.3.0
+
+### Minor Changes
+
+- [#6551](https://github.com/reactioncommerce/reaction/pull/6551) [`72b77f6ef`](https://github.com/reactioncommerce/reaction/commit/72b77f6ef4baf84dd437f86fe7f81b3f9ac2647a) Thanks [@vishalmalu](https://github.com/vishalmalu)! - Added shopId to payload for afterAddTagsToProducts & afterRemoveTagsFromProducts events
+
 ## 1.2.0
 
 ### Minor Changes
