@@ -69,5 +69,6 @@ export default async function createHandle(context, productHandle, productId, sh
     handle = await createHandle(context, handle, productId, shopId);
   }
 
+  
   return handle;
 }
