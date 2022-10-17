@@ -26,8 +26,9 @@ export default async function canBeApplied(context, appliedPromotions, promotion
   for (const qualifier of qualifiers) {
     // eslint-disable-next-line no-await-in-loop
     const { qualifies, reason } = await qualifier(context, appliedPromotions, promotion);
+    if (qualifies) continue;
     Logger.info({ ...logCtx, reason, promotion }, "Promotion disqualified");
-    if (!qualifies) return { qualifies, reason };
+    return { qualifies, reason };
   }
   return { qualifies: true, reason: "" };
 }
