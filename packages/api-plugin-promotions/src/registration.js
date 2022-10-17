@@ -77,7 +77,7 @@ export function registerPluginHandlerForPromotions({ promotions: pluginPromotion
       promotions.operators = { ...promotions.operators, ...operators };
     }
     if (qualifiers) {
-      promotions.enhancers = promotions.enhancers.concat(qualifiers);
+      promotions.qualifiers = promotions.qualifiers.concat(qualifiers);
     }
   }
   PromotionsDeclaration.validate(promotions);
