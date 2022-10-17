@@ -39,7 +39,7 @@ const PromotionsDeclaration = new SimpleSchema({
     type: Array,
     optional: true
   },
-  "qualifier.$": {
+  "qualifiers.$": {
     type: Function
   }
 });
