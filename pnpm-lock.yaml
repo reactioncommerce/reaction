@@ -234,7 +234,7 @@ importers:
       '@reactioncommerce/api-plugin-sitemap-generator': link:../../packages/api-plugin-sitemap-generator
       '@reactioncommerce/api-plugin-surcharges': 1.1.8_graphql@14.7.0
       '@reactioncommerce/api-plugin-system-information': link:../../packages/api-plugin-system-information
-      '@reactioncommerce/api-plugin-tags': link:../../packages/api-plugin-tags
+      '@reactioncommerce/api-plugin-tags': 1.2.0_graphql@14.7.0
       '@reactioncommerce/api-plugin-taxes': link:../../packages/api-plugin-taxes
       '@reactioncommerce/api-plugin-taxes-flat-rate': link:../../packages/api-plugin-taxes-flat-rate
       '@reactioncommerce/api-plugin-translations': link:../../packages/api-plugin-translations
@@ -4758,6 +4758,10 @@ packages:
       simpl-schema: 1.12.3
     transitivePeerDependencies:
       - supports-color
+
+  /@reactioncommerce/db-version-check/1.0.0:
+    resolution: {integrity: sha512-68ypfiCvdsmMaLmzNpXjN52SmgyHHO2IjLOscBbqBlvq/rFCVLLxV5/WkiFnedmNesFoXCfwYhyGWyjwaqicuw==}
+    dev: false
 
   /@reactioncommerce/eslint-config/2.2.2_ihki3xsivcrciip6mkoznh225e:
     resolution: {integrity: sha512-E4BlfLmQBr5Sjt3LP9tAbgCKXZ2rQ4/Lpvle6khHUcuh33NcuBEInN+uStY6koPHAvnKgwn6MZ0LTYzVnKwSVA==}
@@ -12575,6 +12579,10 @@ packages:
   /quick-lru/4.0.1:
     resolution: {integrity: sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==}
     engines: {node: '>=8'}
+    dev: false
+
+  /ramda/0.27.2:
+    resolution: {integrity: sha512-SbiLPU40JuJniHexQSAgad32hfwd+DRUdwF2PlVuI5RZD0/vahUco7R8vD86J/tcEKKF9vZrUVwgtmGCqlCKyA==}
     dev: false
 
   /ramda/0.28.0:
