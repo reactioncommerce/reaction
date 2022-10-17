@@ -34,6 +34,13 @@ const PromotionsDeclaration = new SimpleSchema({
   "operators": {
     type: Object,
     blackbox: true
+  },
+  "qualifiers": {
+    type: Array,
+    optional: true
+  },
+  "qualifier.$": {
+    type: Function
   }
 });
 
@@ -42,7 +49,8 @@ export const promotions = {
   actions: [],
   enhancers: [], // enhancers for promotion data,
   schemaExtensions: [],
-  operators: {} // operators used for rule evaluations
+  operators: {}, // operators used for rule evaluations
+  qualifiers: []
 };
 
 /**
@@ -52,7 +60,7 @@ export const promotions = {
  */
 export function registerPluginHandlerForPromotions({ promotions: pluginPromotions }) {
   if (pluginPromotions) {
-    const { triggers, actions, enhancers, schemaExtensions, operators } = pluginPromotions;
+    const { triggers, actions, enhancers, schemaExtensions, operators, qualifiers } = pluginPromotions;
     if (triggers) {
       promotions.triggers = _.uniqBy(promotions.triggers.concat(triggers), "key");
     }
@@ -67,6 +75,9 @@ export function registerPluginHandlerForPromotions({ promotions: pluginPromotion
     }
     if (operators) {
       promotions.operators = { ...promotions.operators, ...operators };
+    }
+    if (qualifiers) {
+      promotions.enhancers = promotions.enhancers.concat(qualifiers);
     }
   }
   PromotionsDeclaration.validate(promotions);
