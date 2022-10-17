@@ -62,7 +62,9 @@ export default async function applyPromotions(context, cart, explicitPromotion =
       continue;
     }
 
-    if (!canBeApplied(appliedPromotions, promotion)) {
+    // eslint-disable-next-line no-await-in-loop
+    const { qualifies } = await canBeApplied(context, appliedPromotions, promotion);
+    if (!qualifies) {
       continue;
     }
 
