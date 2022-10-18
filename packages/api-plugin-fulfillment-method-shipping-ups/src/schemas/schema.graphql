@@ -1,0 +1,7 @@
+"Additional data from Shipping UPS"
+type upsData {
+  gqlType: String
+  upsData: String
+}
+
+extend union AdditionalData = upsData
