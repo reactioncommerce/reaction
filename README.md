@@ -39,7 +39,7 @@ To start working with your own project built on Mailchimp Open Commerce you can 
 the quickest and easiest way to develop on Open Commerce. It allows you to create and work with API, Admin, and Storefront projects all via the command line.
 
 ## What you need
-- We recommend installing [nmv](https://github.com/nvm-sh/nvm)
+- We recommend installing [nvm](https://github.com/nvm-sh/nvm)
 - [14.18.1 ≤ Node version < 16](https://nodejs.org/ja/blog/release/v14.18.1/)
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/get-started/)
