@@ -79,3 +79,4 @@ yalc-packages
 
 # Build
 dist
+.idea
