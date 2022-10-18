@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { CouponTriggerParameters } from "../simpleSchemas.js";
 
 /**
@@ -8,7 +9,8 @@ import { CouponTriggerParameters } from "../simpleSchemas.js";
  * @returns {Boolean} - Whether the promotion can be applied to the cart
  */
 export async function couponTriggerHandler(context, enhancedCart, { triggerParameters }) {
-  return triggerParameters.couponCode === "code";
+  // TODO: add the logic to check ownership or limitation of the coupon
+  return true;
 }
 
 export default {
