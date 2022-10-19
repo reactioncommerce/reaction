@@ -1,12 +1,21 @@
+"Input for the applyCouponToCart mutation"
 input ApplyCouponToCartInput {
+  "The ID of the Cart"
   cartId: String!
+
+  "The coupon code to apply"
   couponCode: String!
 }
 
+"The response for the applyCouponToCart mutation"
 type ApplyCouponToCartPayload {
   cart: Cart
 }
 
-type Mutation {
-  applyCouponToCart(input: ApplyCouponToCartInput): ApplyCouponToCartPayload
+extend type Mutation {
+  "Apply a coupon to a cart"
+  applyCouponToCart(
+    "The applyCouponToCart mutation input"
+    input: ApplyCouponToCartInput
+  ): ApplyCouponToCartPayload
 }
