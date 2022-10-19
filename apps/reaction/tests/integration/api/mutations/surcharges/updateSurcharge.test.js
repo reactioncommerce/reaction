@@ -2,6 +2,7 @@ import importAsString from "@reactioncommerce/api-utils/importAsString.js";
 import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimaryShop.js";
 import Factory from "/tests/util/factory.js";
 import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/api-core";
+import Logger from "@reactioncommerce/logger";
 
 const CreateSurchargeMutation = importAsString("./CreateSurchargeMutation.graphql");
 const UpdateSurchargeMutation = importAsString("./UpdateSurchargeMutation.graphql");
@@ -114,10 +115,12 @@ test("an authorized user can update a surcharge", async () => {
       }
     });
   } catch (error) {
+    Logger.error(error);
     expect(error).toBeUndefined();
   }
 
-  expect(result.updateSurcharge.surcharge.shopId).toEqual(opaqueShopId);
+  Logger.trace({result }, "Printing result");
+  expect(result.updatedSurcharge.updateSurcharge.surcharge.shopId).toEqual(opaqueShopId);
   expect(result.updateSurcharge.surcharge.amount.amount).toEqual(29.99);
   expect(result.updateSurcharge.surcharge.messagesByLanguage).toEqual([surchargeMessagesByLanguage[0]]);
   expect(result.updateSurcharge.surcharge.attributes).toEqual([surchargeAttributes[1]]);
