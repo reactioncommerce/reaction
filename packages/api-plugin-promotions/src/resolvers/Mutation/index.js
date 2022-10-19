@@ -1,5 +1,7 @@
-import promotion from "./promotion.js";
+import updatePromotion from "./updatePromotion.js";
+import createPromotion from "./createPromotion.js";
 
 export default {
-  promotion
+  updatePromotion,
+  createPromotion
 };

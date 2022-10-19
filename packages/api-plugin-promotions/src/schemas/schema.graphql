@@ -16,6 +16,24 @@ type Action {
   actionParameters: JSONObject
 }
 
+"The trigger that will set a promotion into motion"
+input TriggerInput {
+  "The key that defines this action"
+  triggerKey: String!
+
+  "Parameters that define the trigger"
+  triggerParameters: JSONObject
+}
+
+"The action to be taken when a promotion is triggered"
+input ActionInput {
+  "The key that defines this action"
+  actionKey: String!
+
+  "Parameters to be passed to the action"
+  actionParameters: JSONObject
+}
+
 enum PromotionType {
   implicit
   explicit
@@ -60,7 +78,7 @@ type Promotion {
   endDate: Date
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
-  stackability: Stackability
+  stackAbility: Stackability
 }
 
 "A connection edge in which each node is a `Promotion` object"
@@ -97,23 +115,96 @@ input PromotionFilter {
   endDate: Date
 }
 
+input PromotionCreateInput {
+  "Whether the promotion is implicit or explicit"
+  type: PromotionType!
+
+  "The id of the shop that this promotion resides"
+  shopId: String!
+
+  "The short description of the promotion"
+  label: String!
+
+  "A longer detailed description of the promotion"
+  description: String!
+
+  "Whether the promotion is current active"
+  enabled: Boolean!
+
+  "The triggers for this Promotion"
+  triggers: [TriggerInput!]
+
+  "The actions to be taken when the promotion is triggered"
+  actions: [ActionInput!]
+
+  "The date that the promotion begins"
+  startDate: Date!
+
+  "The date that the promotion end (empty means it never ends)"
+  endDate: Date
+
+  "Definition of how this promotion can be combined (none, per-type, or all)"
+  stackAbility: Stackability
+}
+
+"This is identical to the PromotionCreate except it includes the _id"
+input PromotionUpdateInput {
+  "The unique ID of the promotion"
+  _id: String!
+
+  "Whether the promotion is implicit or explicit"
+  type: PromotionType!
+
+  "The id of the shop that this promotion resides"
+  shopId: String!
+
+  "The short description of the promotion"
+  label: String!
+
+  "A longer detailed description of the promotion"
+  description: String!
+
+  "Whether the promotion is current active"
+  enabled: Boolean!
+
+  "The triggers for this Promotion"
+  triggers: [TriggerInput!]
+
+  "The actions to be taken when the promotion is triggered"
+  actions: [ActionInput!]
+
+  "The date that the promotion begins"
+  startDate: Date!
+
+  "The date that the promotion end (empty means it never ends)"
+  endDate: Date
+
+  "Definition of how this promotion can be combined (none, per-type, or all)"
+  stackAbility: Stackability
+}
 
 
-input PromotionInput {
+
+
+input PromotionQueryInput {
   _id: String!
 
   shopId: String!
 }
 
 extend type Mutation {
-  promotion(
-    input: PromotionInput
+  createPromotion(
+    input: PromotionCreateInput
   ): Promotion
+
+  updatePromotion(
+    input: PromotionUpdateInput
+  ): Boolean!
 }
 
 extend type Query {
   promotion(
-    input: PromotionInput
+    input: PromotionQueryInput
   ): Promotion
 }
 

@@ -11,7 +11,8 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
  * @returns {Promise<Object>} Products
  */
 export default async function promotions(_, args, context, info) {
-  const { shopId, enabled, startDate, endDate, ...connectionArgs } = args;
+  const { input } = args;
+  const { shopId, enabled, startDate, endDate, ...connectionArgs } = input;
 
   const query = await context.queries.promotions(context, {
     shopId,
