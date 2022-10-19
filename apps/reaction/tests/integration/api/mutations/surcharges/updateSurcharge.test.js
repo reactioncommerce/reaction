@@ -106,6 +106,7 @@ test("an authorized user can update a surcharge", async () => {
         shopId: opaqueShopId,
         surchargeId: createdSurchargeOpaqueId,
         surcharge: {
+          createdAt: new Date(),
           amount: 29.99,
           messagesByLanguage: [surchargeMessagesByLanguage[0]],
           type: "surcharge",
@@ -119,8 +120,8 @@ test("an authorized user can update a surcharge", async () => {
     expect(error).toBeUndefined();
   }
 
-  Logger.trace({result }, "Printing result");
-  expect(result.updatedSurcharge.updateSurcharge.surcharge.shopId).toEqual(opaqueShopId);
+  Logger.trace({ result }, "Printing result");
+  expect(result.updateSurcharge.surcharge.shopId).toEqual(opaqueShopId);
   expect(result.updateSurcharge.surcharge.amount.amount).toEqual(29.99);
   expect(result.updateSurcharge.surcharge.messagesByLanguage).toEqual([surchargeMessagesByLanguage[0]]);
   expect(result.updateSurcharge.surcharge.attributes).toEqual([surchargeAttributes[1]]);
