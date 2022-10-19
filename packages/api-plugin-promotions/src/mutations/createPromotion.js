@@ -1,3 +1,5 @@
+import Random from "@reactioncommerce/random";
+
 /**
  * @summary create promotion
  * @param {Object} context - The application context
@@ -5,5 +7,11 @@
  * @return {Promise<Object>} - The created promotion
  */
 export default async function createPromotion(context, promotion) {
-  return true;
+  const { collections: { Promotions }, simpleSchemas: { Promotion: PromotionSchema } } = context;
+  promotion._id = Random.id();
+  PromotionSchema.validate(promotion);
+  const results = await Promotions.insertOne(promotion);
+  const { insertedCount, insertedId } = results;
+  promotion._id = insertedId;
+  return { success: insertedCount === 1, promotion };
 }

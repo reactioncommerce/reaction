@@ -13,7 +13,7 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
 export default async function promotions(_, args, context, info) {
   const { input } = args;
   const { shopId, enabled, startDate, endDate, ...connectionArgs } = input;
-
+  await context.validatePermissions("reaction:legacy:promotions", "read", { shopId });
   const query = await context.queries.promotions(context, {
     shopId,
     enabled,
