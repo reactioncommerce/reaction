@@ -6,6 +6,9 @@ import preStartupPromotions from "./preStartup.js";
 import { Promotion } from "./simpleSchemas.js";
 import actions from "./actions/index.js";
 import qualifiers from "./qualifiers/index.js";
+import schemas from "./schemas/index.js";
+import queries from "./queries/index.js";
+import resolvers from "./resolvers/index.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -20,6 +23,10 @@ export default async function register(app) {
     label: pkg.label,
     name: pkg.name,
     version: pkg.version,
+    graphQL: {
+      schemas,
+      resolvers
+    },
     collections: {
       Promotions: {
         name: "Promotions"
@@ -40,6 +47,7 @@ export default async function register(app) {
       actions,
       qualifiers
     },
-    mutations
+    mutations,
+    queries
   });
 }
