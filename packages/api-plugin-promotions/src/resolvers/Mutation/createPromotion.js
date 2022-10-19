@@ -5,8 +5,8 @@
  * @param {Object} context - The application context
  * @return {Promise<boolean>} - true if success
  */
-export default async function promotion(_, args, context) {
-  const { input: { _id, promotion: updatePromotion }, collections: { Promotions } } = context;
-  const results = Promotions.updateOne({ _id }, { $set: updatePromotion });
+export default async function createPromotion(_, args, context) {
+  const { input: { _id, promotion: updatedPromotion }, collections: { Promotions } } = context;
+  const results = Promotions.updateOne({ _id }, { $set: updatedPromotion });
   return !!results;
 }
