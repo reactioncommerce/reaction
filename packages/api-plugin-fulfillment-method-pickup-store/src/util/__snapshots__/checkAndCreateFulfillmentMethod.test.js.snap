@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should throw error and NOT call createFulfillmentMethod mutation 1`] = `"Unable to create fulfillment method Pickup-Store without defined type"`;
