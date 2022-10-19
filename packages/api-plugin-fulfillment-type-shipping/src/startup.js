@@ -1,4 +1,5 @@
-import Random from "@reactioncommerce/random";
+import ReactionError from "@reactioncommerce/reaction-error";
+import checkAndCreateFulfillmentType from "./checkAndCreateFulfillmentType.js";
 
 /**
  * @summary Called on startup to create the root entry of this fulfillment type in Fulfillment collection
@@ -7,9 +8,6 @@ import Random from "@reactioncommerce/random";
  * @returns {undefined}
  */
 export default async function fulfillmentTypeShippingStartup(context) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
-
   context.appEvents.on("afterShopCreate", async (payload) => {
     const { shop } = payload;
     const shopId = shop._id;
@@ -17,21 +15,9 @@ export default async function fulfillmentTypeShippingStartup(context) {
     // We do not have validatePermissions in context during this startup stage, hence commenting below
     // await context.validatePermissions("reaction:legacy:fulfillmentTypes", "read", { shopId });
 
-    const shippingRecord = await Fulfillment.findOne({ fulfillmentType: "shipping", shopId });
-    if (!shippingRecord) {
-      const groupInfo = {
-        _id: Random.id(),
-        name: "Shipping Provider",
-        shopId,
-        provider: {
-          enabled: true,
-          label: "Shipping",
-          name: "shipping"
-        },
-        fulfillmentType: "shipping"
-      };
-
-      await context.mutations.createFulfillmentType(context.getInternalContext(), groupInfo);
+    const insertSuccess = await checkAndCreateFulfillmentType(context, shopId);
+    if (!insertSuccess) {
+      throw new ReactionError("server-error", "Error in creating fulfillment type");
     }
   });
 }
