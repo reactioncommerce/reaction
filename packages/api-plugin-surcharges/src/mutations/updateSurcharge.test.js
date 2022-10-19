@@ -51,11 +51,9 @@ const newSurcharge = {
 };
 
 test("update a surcharge", async () => {
-  mockContext.collections.Surcharges.updateOne.mockReturnValueOnce(Promise.resolve({
-    matchedCount: 1
-  }));
-  mockContext.collections.Surcharges.findOne.mockReturnValueOnce(Promise.resolve({
-    updatedSurcharge
+  mockContext.collections.Surcharges.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    matchedCount: 1,
+    value: updatedSurcharge
   }));
 
   const result = await updateSurchargeMutation(mockContext, {
@@ -64,5 +62,5 @@ test("update a surcharge", async () => {
     shopId: "shop123"
   });
 
-  expect(result.updatedSurcharge).toEqual(updatedSurcharge);
+  expect(result.surcharge).toEqual(updatedSurcharge);
 });
