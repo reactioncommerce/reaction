@@ -9,6 +9,7 @@
 export default async function promotion(_, args, context) {
   const { input } = args;
   const { shopId, _id } = input;
+  await context.validatePermissions("reaction:legacy:promotions", "read", { shopId });
   return context.queries.promotion(context, {
     shopId, _id
   });
