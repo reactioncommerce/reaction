@@ -1,3 +1,4 @@
+import _ from "lodash";
 import operators from "@reactioncommerce/api-utils/operators.js";
 import propertyTypes from "@reactioncommerce/api-utils/propertyTypes.js";
 import isDestinationRestricted from "./isDestinationRestricted.js";
@@ -25,12 +26,13 @@ export async function attributeDenyCheck(methodRestrictions, method, hydratedOrd
 
       // Item must meet all attributes to be restricted
       return attributes.every((attribute) => {
-        let attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
+        const attributePropertyValue = _.get(item, attribute.property);
+        let attributeFound = operators[attribute.operator](attributePropertyValue, propertyTypes[attribute.propertyType](attribute.value));
 
         // If attribute is an array on the item, use `includes` instead of checking for ===
         // This works for tags, tagIds, and any future attribute that might be an array
-        if (Array.isArray(item[attribute.property])) {
-          attributeFound = item[attribute.property].includes(attribute.value);
+        if (Array.isArray(attributePropertyValue)) {
+          attributeFound = attributePropertyValue.includes(attribute.value);
         }
 
         if (attributeFound) {
