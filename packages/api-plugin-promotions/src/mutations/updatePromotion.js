@@ -11,5 +11,5 @@ export default async function updatePromotion(context, { shopId, promotion }) {
   const { _id } = promotion;
   const results = await Promotions.updateOne({ _id, shopId }, { $set: promotion });
   const { modifiedCount } = results;
-  return !!modifiedCount;
+  return { success: !!modifiedCount, promotion };
 }
