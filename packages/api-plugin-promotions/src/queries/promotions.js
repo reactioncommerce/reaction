@@ -7,8 +7,6 @@
 export default async function promotions(context, input) {
   const { shopId, enabled, startDate, endDate } = input;
   const { collections: { Promotions } } = context;
-
-
   await context.validatePermissions("reaction:legacy:promotions", "read", { shopId });
   const filter = {
     shopId
