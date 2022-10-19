@@ -106,7 +106,6 @@ test("an authorized user can update a surcharge", async () => {
         shopId: opaqueShopId,
         surchargeId: createdSurchargeOpaqueId,
         surcharge: {
-          createdAt: new Date(),
           amount: 29.99,
           messagesByLanguage: [surchargeMessagesByLanguage[0]],
           type: "surcharge",
