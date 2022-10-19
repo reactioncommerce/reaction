@@ -183,23 +183,31 @@ input PromotionUpdateInput {
   stackAbility: Stackability
 }
 
+type PromotionUpdateCreatePayload {
+  "Was the operation a success"
+  success: Boolean!
 
+  "The updated or created promotion"
+  promotion: Promotion
+}
 
 
 input PromotionQueryInput {
+  "The unique ID of the promotion"
   _id: String!
 
+  "The unique ID of the shop"
   shopId: String!
 }
 
 extend type Mutation {
   createPromotion(
     input: PromotionCreateInput
-  ): Promotion
+  ): PromotionUpdateCreatePayload
 
   updatePromotion(
     input: PromotionUpdateInput
-  ): Boolean!
+  ): PromotionUpdateCreatePayload
 }
 
 extend type Query {
