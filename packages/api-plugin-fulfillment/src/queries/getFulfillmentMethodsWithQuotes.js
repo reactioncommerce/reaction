@@ -5,6 +5,21 @@ import extendCommonOrder from "../util/extendCommonOrder.js";
 const logCtx = { name: "fulfillment", file: "getFulfillmentWithQuotes" };
 
 /**
+ * @name getTitleCaseOfWord
+ * @method
+ * @summary converts the given word to Title case
+ * @param {String} inputWord - input word
+ * @returns {String} return Title case of word
+ * @private
+ */
+function getTitleCaseOfWord(inputWord) {
+  let outWord = String(inputWord);
+  outWord = outWord.toLowerCase();
+  outWord = outWord.charAt(0).toUpperCase() + outWord.slice(1);
+  return outWord;
+}
+
+/**
  * @name getFulfillmentMethodsWithQuotes
  * @method
  * @summary Just gets rates, without updating anything
@@ -27,7 +42,8 @@ export default async function getFulfillmentMethodsWithQuotes(commonOrder, conte
   const fulfillmentTypeInGroup = commonOrder.fulfillmentType;
   if (!fulfillmentTypeInGroup) throw new ReactionError("not-found", "Fulfillment type not found in commonOrder");
 
-  const functionTypesToCall = `getFulfillmentMethodsWithQuotes${fulfillmentTypeInGroup}`;
+  const fulfillmentTypeTitleCase = getTitleCaseOfWord(fulfillmentTypeInGroup);
+  const functionTypesToCall = `getFulfillmentMethodsWithQuotes${fulfillmentTypeTitleCase}`;
   const funcs = context.getFunctionsOfType(functionTypesToCall);
 
   if (!funcs || !Array.isArray(funcs) || !funcs.length) throw new ReactionError("not-found", `No methods for Fulfillment type ${fulfillmentTypeInGroup}`);
