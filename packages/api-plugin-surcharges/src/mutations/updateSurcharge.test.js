@@ -30,7 +30,7 @@ const updatedSurcharge = {
   ]
 };
 
-const newSubcharge = {
+const newSurcharge = {
   type: "surcharge",
   attributes: [
     { property: "vendor", value: "john", propertyType: "string", operator: "eq" },
@@ -51,14 +51,16 @@ const newSubcharge = {
 };
 
 test("update a surcharge", async () => {
-  mockContext.collections.Surcharges.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1,
-    value: updatedSurcharge
+  mockContext.collections.Surcharges.updateOne.mockReturnValueOnce(Promise.resolve({
+    matchedCount: 1
+  }));
+  mockContext.collections.Surcharges.findOne.mockReturnValueOnce(Promise.resolve({
+    updatedSurcharge
   }));
 
   const result = await updateSurchargeMutation(mockContext, {
     surchargeId: "surcharge123",
-    surcharge: newSubcharge,
+    surcharge: newSurcharge,
     shopId: "shop123"
   });
 
