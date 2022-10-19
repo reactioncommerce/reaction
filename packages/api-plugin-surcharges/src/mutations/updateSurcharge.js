@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import Logger from "@reactioncommerce/logger";
 import { Surcharge } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
@@ -26,6 +27,10 @@ export default async function updateSurchargeMutation(context, input) {
   const { collections } = context;
   const { Surcharges } = collections;
 
+  Logger.trace({ surcharge }, "Print surchage");
+  Logger.trace({ surchargeId }, "Print surchageId");
+  Logger.trace({ shopId }, "Print shopId");
+
   await context.validatePermissions(`reaction:legacy:surcharges:${surchargeId}`, "update", { shopId });
 
   const modifier = {
@@ -40,9 +45,14 @@ export default async function updateSurchargeMutation(context, input) {
   const { matchedCount } = await Surcharges.updateOne({
     _id: surchargeId, shopId
   }, modifier);
+
+  Logger.trace({ matchedCount }, "Print updated count");
+
   if (matchedCount === 0) throw new ReactionError("not-found", "Unable to update surcharge");
 
   const updatedSurcharge = await Surcharges.findOne({ _id: surchargeId, shopId });
+
+  Logger.trace({ updatedSurcharge }, "Print updated surcharge");
 
   return updatedSurcharge;
 }
