@@ -38,5 +38,6 @@
   "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test",
   "promotions": "@reactioncommerce/api-plugin-promotions",
   "promotionsOffers": "@reactioncommerce/api-plugin-promotions-offers",
-  "promotionsCoupons": "@reactioncommerce/api-plugin-promotions-coupons"
+  "promotionsCoupons": "@reactioncommerce/api-plugin-promotions-coupons",
+  "sample-data": "../../packages/api-plugin-sample-data/index.js"
 }

@@ -1,0 +1,124 @@
+"The trigger that will set a promotion into motion"
+type Trigger {
+  "The key that defines this action"
+  triggerKey: String!
+
+  "Parameters that define the trigger"
+  triggerParameters: JSONObject
+}
+
+"The action to be taken when a promotion is triggered"
+type Action {
+  "The key that defines this action"
+  actionKey: String!
+
+  "Parameters to be passed to the action"
+  actionParameters: JSONObject
+}
+
+enum PromotionType {
+  implicit
+  explicit
+}
+
+enum Stackability {
+  all
+  none
+  type
+}
+
+"A record representing a particular promotion"
+type Promotion {
+  "The unique ID of the promotion"
+  _id: String!
+
+  "Whether the promotion is implicit or explicit"
+  type: PromotionType!
+
+  "The id of the shop that this promotion resides"
+  shopId: String!
+
+  "The short description of the promotion"
+  label: String!
+
+  "A longer detailed description of the promotion"
+  description: String!
+
+  "Whether the promotion is current active"
+  enabled: Boolean!
+
+  "The triggers for this Promotion"
+  triggers: [Trigger!]
+
+  "The actions to be taken when the promotion is triggered"
+  actions: [Action!]
+
+  "The date that the promotion begins"
+  startDate: Date!
+
+  "The date that the promotion end (empty means it never ends)"
+  endDate: Date
+
+  "Definition of how this promotion can be combined (none, per-type, or all)"
+  stackability: Stackability
+}
+
+"A connection edge in which each node is a `Promotion` object"
+type PromotionEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The product"
+  node: Promotion
+}
+
+
+type PromotionConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [PromotionEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Promotion]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+input PromotionFilter {
+  shopId: String!
+  enabled: Boolean
+  startDate: Date
+  endDate: Date
+}
+
+
+
+input PromotionInput {
+  _id: String!
+
+  shopId: String!
+}
+
+extend type Mutation {
+  promotion(
+    input: PromotionInput
+  ): Promotion
+}
+
+extend type Query {
+  promotion(
+    input: PromotionInput
+  ): Promotion
+}
+
+extend type Query {
+  promotions(
+    input: PromotionFilter
+  ): PromotionConnection
+}
