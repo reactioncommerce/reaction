@@ -245,7 +245,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1032.0
+      '@snyk/protect': 1.1035.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -694,45 +694,25 @@ importers:
       '@reactioncommerce/api-plugin-carts': link:../api-plugin-carts
       '@reactioncommerce/data-factory': 1.0.1
 
-  packages/api-plugin-fulfillment-method-shipping-flat-rate:
+  packages/api-plugin-fulfillment-method-pickup-store:
     specifiers:
       '@reactioncommerce/api-utils': ^1.16.9
-      '@reactioncommerce/logger': ^1.1.3
-      '@reactioncommerce/random': ~1.0.2
+      '@reactioncommerce/logger': ^1.1.4
       '@reactioncommerce/reaction-error': ^1.0.1
       simpl-schema: ^1.12.2
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/logger': link:../logger
-      '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
       simpl-schema: 1.12.3
 
-  packages/api-plugin-fulfillment-method-shipping-ups:
+  packages/api-plugin-fulfillment-type-pickup:
     specifiers:
       '@reactioncommerce/api-utils': ^1.16.9
-      '@reactioncommerce/reaction-error': ^1.0.1
-      simpl-schema: ^1.12.2
-    dependencies:
-      '@reactioncommerce/api-utils': link:../api-utils
-      '@reactioncommerce/reaction-error': link:../reaction-error
-      simpl-schema: 1.12.3
-
-  packages/api-plugin-fulfillment-type-shipping:
-    specifiers:
-      '@reactioncommerce/api-utils': ^1.16.9
-      '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ~1.0.2
-      '@reactioncommerce/reaction-error': ^1.0.1
-      lodash: ^4.17.21
-      simpl-schema: ^1.12.2
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
-      '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
-      '@reactioncommerce/reaction-error': link:../reaction-error
-      lodash: 4.17.21
-      simpl-schema: 1.12.3
 
   packages/api-plugin-i18n:
     specifiers:
@@ -4727,8 +4707,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1032.0:
-    resolution: {integrity: sha512-C6EvuhDycvmyMCmhjC/KAV1z3aykVGKrYhGRI5u5Buzz27HgjHhB4DSC3MDpyljpahtAkCS/E7pAwo9zP3m4bA==}
+  /@snyk/protect/1.1035.0:
+    resolution: {integrity: sha512-8s1HygVBFDmNn7HdDTslb8LyLBKdtexexl8lsbR4W1o0/JgXDxOSEztTRakVdONFOnlRNbS3DtEBvVRdHiYFVg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
