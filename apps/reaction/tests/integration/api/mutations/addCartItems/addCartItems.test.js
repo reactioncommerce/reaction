@@ -79,7 +79,17 @@ beforeAll(async () => {
     anonymousAccessToken: hashToken(cartToken),
     shipping: null,
     items: [],
-    workflow: null
+    workflow: null,
+    discounts: [
+      {
+        actionKey: "mockActionKey",
+        promotionId: "mockPromotionId",
+        rules: { conditions: {}, event: { type: "mockType", params: {} } },
+        discountCalculationType: "fixed",
+        discountValue: 25124,
+        dateApplied: new Date()
+      }
+    ]
   });
   opaqueCartId = encodeOpaqueId("reaction/cart", mockCart._id);
   await testApp.collections.Cart.insertOne(mockCart);
