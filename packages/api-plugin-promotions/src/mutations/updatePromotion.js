@@ -1,3 +1,5 @@
+import validateTriggerParams from "./validateTriggerParams.js";
+
 /**
  * @summary update a single promotion
  * @param {Object} context - The application context
@@ -8,6 +10,7 @@
 export default async function updatePromotion(context, { shopId, promotion }) {
   const { collections: { Promotions }, simpleSchemas: { Promotion: PromotionSchema } } = context;
   PromotionSchema.validate(promotion);
+  validateTriggerParams(context, promotion);
   const { _id } = promotion;
   const results = await Promotions.updateOne({ _id, shopId }, { $set: promotion });
   const { modifiedCount } = results;
