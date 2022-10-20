@@ -13,7 +13,7 @@ import executeBulkOperation from "../utils/executeBulkOperation.js";
  */
 export default async function addTagsToProducts(context, input) {
   const { productIds, shopId, tagIds } = input;
-  const { collections: { Products } } = context;
+  const { appEvents, collections: { Products } } = context;
   const totalProducts = productIds.length;
 
   for (const _id of productIds) {
@@ -38,6 +38,8 @@ export default async function addTagsToProducts(context, input) {
   }));
 
   const results = await executeBulkOperation(Products, operations, totalProducts);
+
+  await Promise.all(tagIds.map((tagId) => appEvents.emit("afterAddTagsToProducts", { tagId, productIds, shopId })));
 
   return results;
 }

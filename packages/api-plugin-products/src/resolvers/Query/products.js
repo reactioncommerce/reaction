@@ -16,6 +16,8 @@ import { decodeProductOpaqueId, decodeShopOpaqueId, decodeTagOpaqueId } from "..
  */
 export default async function products(_, args, context, info) {
   const {
+    createdAt,
+    updatedAt,
     productIds: opaqueProductIds,
     shopIds: opaqueShopIds,
     tagIds: opaqueTagIds,
@@ -35,6 +37,8 @@ export default async function products(_, args, context, info) {
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
   const query = await context.queries.products(context, {
+    createdAt,
+    updatedAt,
     productIds,
     shopIds,
     tagIds,

@@ -12,7 +12,7 @@ COPY ./apps/reaction ./apps/reaction
 COPY .npmrc .nvmrc package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 RUN npm i -g pnpm@7.11.0
-RUN pnpm --filter=@reactioncommerce/reaction-api --prod deploy deps --ignore-scripts
+RUN pnpm --filter=reaction --prod deploy deps --ignore-scripts
 
 # hadolint ignore=DL3003,SC2015
 RUN cd deps/node_modules/sharp && npm run install
