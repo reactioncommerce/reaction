@@ -36,6 +36,9 @@ export default async function getFulfillmentMethodsWithQuotes(commonOrder, conte
     }
   }
 
+  const discountFunctions = context.getFunctionsOfType("applyDiscountsToRates");
+  const discountPromises = discountFunctions.map((rateFunction) => rateFunction(context, commonOrderExtended, rates));
+  await Promise.all(discountPromises);
   Logger.debug("getFulfillmentMethodsWithQuotes returning rates", rates);
   return rates;
 }
