@@ -32,7 +32,7 @@ const adminGroup = Factory.Group.makeOne({
   _id: "adminGroup",
   createdBy: null,
   name: "admin",
-  permissions: ["reaction:legacy:shippingRestrictions/create"],
+  permissions: ["reaction:legacy:fulfillmentRestrictions/create"],
   slug: "admin",
   shopId: internalShopId
 });
@@ -81,7 +81,7 @@ test("shop owner cannot update flat rate fulfillment restriction if not logged i
   }
 });
 
-test("user with `reaction:legacy:shippingMethods/create` permissions can update flat rate fulfillment restriction", async () => {
+test("user with `reaction:legacy:fulfillmentMethods/create` permissions can update flat rate fulfillment restriction", async () => {
   let result;
   await testApp.setLoggedInUser(mockOwnerAccount);
 

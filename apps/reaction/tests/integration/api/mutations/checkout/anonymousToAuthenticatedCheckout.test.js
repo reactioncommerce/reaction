@@ -122,6 +122,7 @@ describe("as an anonymous user", () => {
               productId: opaqueProductId,
               productVariantId: opaqueCartProductVariantId
             },
+            selectedFulfillmentType: "shipping",
             quantity: 1
           }
         }
@@ -294,7 +295,12 @@ describe("as an anonymous user", () => {
       return;
     }
 
-    const option = result.updateFulfillmentOptionsForGroup.cart.checkout.fulfillmentGroups[0].availableFulfillmentOptions[0];
+    const mockFulfillmentMethodId = "mockMethod";
+    const opaqueMockFulfillmentMethodId = encodeOpaqueId("reaction/fulfillmentMethod", mockFulfillmentMethodId);
+
+    // From the multiple Fulfillment methods, find out the exact method we are looking for
+    const options = result.updateFulfillmentOptionsForGroup.cart.checkout.fulfillmentGroups[0].availableFulfillmentOptions;
+    const option = options.find((opt) => opt.fulfillmentMethod._id === opaqueMockFulfillmentMethodId);
     opaqueFulfillmentMethodId = option.fulfillmentMethod._id;
 
     expect(option).toEqual({
