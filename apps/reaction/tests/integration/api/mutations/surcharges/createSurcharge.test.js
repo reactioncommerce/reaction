@@ -122,3 +122,53 @@ test("an authorized user can create a surcharge", async () => {
   expect(result.createSurcharge.surcharge.attributes).toEqual(surchargeAttributes);
   expect(result.createSurcharge.surcharge.destination).toEqual(surchargeDestination);
 });
+
+test("an authorized user can create a surcharge with amount as 0", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+  let result;
+
+  try {
+    result = await createSurcharge({
+      createSurchargeInput: {
+        shopId: opaqueShopId,
+        surcharge: {
+          amount: 0,
+          messagesByLanguage: surchargeMessagesByLanguage,
+          type: "surcharge",
+          attributes: surchargeAttributes,
+          destination: surchargeDestination
+        }
+      }
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+  }
+
+  expect(result.createSurcharge.surcharge.shopId).toEqual(opaqueShopId);
+  expect(result.createSurcharge.surcharge.amount.amount).toEqual(0);
+  expect(result.createSurcharge.surcharge.messagesByLanguage).toEqual(surchargeMessagesByLanguage);
+  expect(result.createSurcharge.surcharge.attributes).toEqual(surchargeAttributes);
+  expect(result.createSurcharge.surcharge.destination).toEqual(surchargeDestination);
+});
+
+test("an authorized user cannot create a surcharge with amount undefined", async () => {
+  await testApp.setLoggedInUser(mockAdminAccount);
+
+  try {
+    await createSurcharge({
+      createSurchargeInput: {
+        shopId: opaqueShopId,
+        surcharge: {
+          amount: undefined,
+          messagesByLanguage: surchargeMessagesByLanguage,
+          type: "surcharge",
+          attributes: surchargeAttributes,
+          destination: surchargeDestination
+        }
+      }
+    });
+  } catch (error) {
+    // expect error to be thrown
+    expect(error);
+  }
+});
