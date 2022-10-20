@@ -19,7 +19,35 @@ const mockShipmentMethod = {
   handling: 0,
   label: "mockLabel",
   name: "mockName",
+  fulfillmentMethod: "flatRate",
   rate: 3.99
+};
+
+const mockFulfillmentEntry = {
+  _id: "mockShippingMethod",
+  name: "Default Shipping Provider",
+  provider: {
+    enabled: true,
+    label: "Flat Rate",
+    name: "flatRates"
+  },
+  fulfillmentType: "shipping",
+  methods: [
+    {
+      cost: 2.5,
+      fulfillmentTypes: [
+        "shipping"
+      ],
+      fulfillmentMethod: "flatRate",
+      group: "Ground",
+      handling: 1.5,
+      label: "Standard mockMethod",
+      name: "mockMethod",
+      rate: 1,
+      _id: "METHOD_ID",
+      enabled: true
+    }
+  ]
 };
 
 beforeAll(async () => {
@@ -46,12 +74,16 @@ beforeAll(async () => {
   testApp.registerPlugin({
     name: "moveOrderItems.test.js",
     functionsByType: {
-      getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+      getFulfillmentMethodsWithQuotesShipping: [getFulfillmentMethodsWithQuotes]
     }
   });
 
   await testApp.start();
   shopId = await insertPrimaryShop(testApp.context);
+
+  // Add shipping methods
+  mockFulfillmentEntry.shopId = shopId;
+  await testApp.collections.Fulfillment.insertOne(mockFulfillmentEntry);
 
   catalogItem = Factory.Catalog.makeOne({
     isDeleted: false,
@@ -124,6 +156,7 @@ test("user who placed an order can move an order item", async () => {
       ...mockShipmentMethod,
       currencyCode: "USD"
     },
+    type: "shipping",
     shopId
   });
 
@@ -138,6 +171,7 @@ test("user who placed an order can move an order item", async () => {
       ...mockShipmentMethod,
       currencyCode: "USD"
     },
+    type: "shipping",
     shopId
   });
 
