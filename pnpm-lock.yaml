@@ -245,7 +245,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1032.0
+      '@snyk/protect': 1.1035.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -1148,12 +1148,14 @@ importers:
       babel-plugin-rewire-exports: ^2.0.0
       babel-plugin-transform-es2015-modules-commonjs: ^6.26.2
       babel-plugin-transform-import-meta: ~1.0.0
+      lodash: ^4.17.15
       simpl-schema: ^1.12.0
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
+      lodash: 4.17.21
       simpl-schema: 1.12.3
     devDependencies:
       '@babel/core': 7.19.0
@@ -4727,8 +4729,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1032.0:
-    resolution: {integrity: sha512-C6EvuhDycvmyMCmhjC/KAV1z3aykVGKrYhGRI5u5Buzz27HgjHhB4DSC3MDpyljpahtAkCS/E7pAwo9zP3m4bA==}
+  /@snyk/protect/1.1035.0:
+    resolution: {integrity: sha512-8s1HygVBFDmNn7HdDTslb8LyLBKdtexexl8lsbR4W1o0/JgXDxOSEztTRakVdONFOnlRNbS3DtEBvVRdHiYFVg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
