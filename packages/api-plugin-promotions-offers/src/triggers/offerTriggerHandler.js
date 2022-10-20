@@ -24,9 +24,7 @@ const logCtx = {
  * @returns {Promise<boolean>} - The answer with offers applied
  */
 export async function offerTriggerHandler(context, enhancedCart, { triggerParameters }) {
-  const {
-    promotions: { operators }
-  } = context;
+  const { promotions: { operators } } = context;
 
   const engine = new Engine();
   Object.keys(operators).forEach((operatorKey) => {

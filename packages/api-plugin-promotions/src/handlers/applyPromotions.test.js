@@ -34,12 +34,21 @@ test("should save cart with implicit promotions are applied", async () => {
     .fn()
     .mockName("saveCart")
     .mockResolvedValueOnce({ ...cart });
+  mockContext.simpleSchemas = {
+    Cart: { clean: jest.fn() }
+  };
 
-  await applyImplicitPromotions(mockContext, { ...cart });
+  await applyImplicitPromotions(mockContext, cart);
 
-  expect(testTrigger).toHaveBeenCalledWith(mockContext, cart, { promotion: testPromotion, triggerParameters: { name: "test trigger" } });
-  expect(testAction).toHaveBeenCalledWith(mockContext, cart, { promotion: testPromotion, actionParameters: undefined });
-  expect(testEnhancer).toHaveBeenCalledWith(mockContext, cart);
+  expect(testTrigger).toBeCalledWith(mockContext, expect.objectContaining(cart), {
+    promotion: testPromotion,
+    triggerParameters: { name: "test trigger" }
+  });
+  expect(testAction).toBeCalledWith(mockContext, expect.objectContaining(cart), {
+    promotion: testPromotion,
+    actionParameters: undefined
+  });
+  expect(testEnhancer).toBeCalledWith(mockContext, expect.objectContaining(cart));
 
   const expectedCart = { ...cart, appliedPromotions: [testPromotion] };
   expect(mockContext.mutations.saveCart).toHaveBeenCalledWith(mockContext, expectedCart, "promotions");
@@ -50,7 +59,11 @@ test("should save cart with implicit promotions are not applied when promotions 
     _id: "cartId"
   };
   mockContext.collections.Promotions = {
-    find: () => ({ toArray: jest.fn().mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackAbility: "all" }]) })
+    find: () => ({
+      toArray: jest
+        .fn()
+        .mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackAbility: "all" }])
+    })
   };
 
   mockContext.promotions = { ...pluginPromotion, triggers: [] };
@@ -58,6 +71,9 @@ test("should save cart with implicit promotions are not applied when promotions 
     .fn()
     .mockName("saveCart")
     .mockResolvedValueOnce({ ...cart });
+  mockContext.simpleSchemas = {
+    Cart: { clean: jest.fn() }
+  };
 
   await applyImplicitPromotions(mockContext, { ...cart });
 
