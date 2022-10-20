@@ -42,8 +42,10 @@ export default async function xformOrderGroupToCommonOrder({
     taxCode: item.taxCode,
     title: item.title,
     variantId: item.variantId,
-    variantTitle: item.variantTitle
+    variantTitle: item.variantTitle,
+    discounts: item.discounts
   }));
+  // TODO: rather than hardcoding in discounts, is there some way to extend this dymaically maybe in an `extendCommonOrder` sort of way
 
   const { address, shipmentMethod, shopId, type: fulfillmentType } = group;
   const shop = await collections.Shops.findOne({ _id: shopId });
@@ -79,6 +81,7 @@ export default async function xformOrderGroupToCommonOrder({
   const groupItemTotal = +accounting.toFixed(group.items.reduce((sum, item) => (sum + item.subtotal), 0), 3);
   // orderItemTotal will need to be updated to be the actual total when we eventually have more than one group available
   const orderItemTotal = groupItemTotal;
+
 
   const totals = {
     groupDiscountTotal: {
@@ -122,6 +125,7 @@ export default async function xformOrderGroupToCommonOrder({
     shopId,
     sourceType: "order",
     totals,
-    surcharges
+    surcharges,
+    discounts: group.discounts
   };
 }

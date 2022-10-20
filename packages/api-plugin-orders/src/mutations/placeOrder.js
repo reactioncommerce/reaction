@@ -126,6 +126,7 @@ export default async function placeOrder(context, input) {
     ordererPreferredLanguage,
     shopId
   } = orderInput;
+
   const { accountId, appEvents, collections, getFunctionsOfType, userId } = context;
   const { Orders, Cart } = collections;
 
@@ -145,14 +146,19 @@ export default async function placeOrder(context, input) {
   }
 
 
-  // We are mixing concerns a bit here for now. This is for backwards compatibility with current
-  // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
-  // any discounts on the related cart here.
-  let discounts = [];
+  fulfillmentGroups.forEach((group) => {
+    const matchingCartGroup = cart.shipping.find((shipping) => shipping._id === group._id);
+    if (matchingCartGroup) {
+      group.discounts = matchingCartGroup.discounts;
+    }
+  });
+
+
+  let discounts;
   let discountTotal = 0;
   if (cart) {
     const discountsResult = await context.queries.getDiscountsTotalForCart(context, cart);
-    ({ discounts } = discountsResult);
+    discounts = discountsResult.discounts;
     discountTotal = discountsResult.total;
   }
 
@@ -218,6 +224,7 @@ export default async function placeOrder(context, input) {
     createdAt: now,
     currencyCode,
     discounts,
+    discount: discountTotal,
     email,
     ordererPreferredLanguage: ordererPreferredLanguage || null,
     payments,

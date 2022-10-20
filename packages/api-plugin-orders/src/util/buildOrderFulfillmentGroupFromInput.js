@@ -29,13 +29,13 @@ export default async function buildOrderFulfillmentGroupFromInput(context, {
   cart
 }) {
   const { data, items, selectedFulfillmentMethodId, shopId, totalPrice: expectedGroupTotal, type } = inputGroup;
-
   const group = {
     _id: Random.id(),
     address: data ? data.shippingAddress : null,
     shopId,
     type,
-    workflow: { status: "new", workflow: ["new"] }
+    workflow: { status: "new", workflow: ["new"] },
+    discounts: inputGroup.discounts
   };
 
   // Build the final order item objects. As part of this, we look up the variant in the system and make sure that
@@ -53,7 +53,6 @@ export default async function buildOrderFulfillmentGroupFromInput(context, {
   // Add some more properties for convenience
   group.itemIds = group.items.map((item) => item._id);
   group.totalItemQuantity = group.items.reduce((sum, item) => sum + item.quantity, 0);
-
   const {
     groupSurcharges,
     groupSurchargeTotal,

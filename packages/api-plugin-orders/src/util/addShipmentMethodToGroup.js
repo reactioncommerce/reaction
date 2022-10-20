@@ -25,7 +25,6 @@ export default async function addShipmentMethodToGroup(context, {
   selectedFulfillmentMethodId
 }) {
   const { collections, queries } = context;
-
   const commonOrder = await xformOrderGroupToCommonOrder({
     accountId,
     billingAddress,
@@ -59,6 +58,7 @@ export default async function addShipmentMethodToGroup(context, {
     group: selectedFulfillmentMethod.method.group,
     name: selectedFulfillmentMethod.method.name,
     handling: selectedFulfillmentMethod.handlingPrice,
-    rate: selectedFulfillmentMethod.rate
+    rate: selectedFulfillmentMethod.rate,
+    undiscountedRate: selectedFulfillmentMethod.rate
   };
 }

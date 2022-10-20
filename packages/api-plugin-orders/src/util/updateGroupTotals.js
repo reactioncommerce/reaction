@@ -3,6 +3,7 @@ import addShipmentMethodToGroup from "./addShipmentMethodToGroup.js";
 import addTaxesToGroup from "./addTaxesToGroup.js";
 import compareExpectedAndActualTotals from "./compareExpectedAndActualTotals.js";
 import getSurchargesForGroup from "./getSurchargesForGroup.js";
+import getDiscountsForGroup from "./getDiscountsForGroup.js";
 
 /**
  * @summary Call this with a fulfillment group when the items, item quantities, or
@@ -57,6 +58,20 @@ export default async function updateGroupTotals(context, {
     selectedFulfillmentMethodId
   });
 
+  const {
+    groupDiscounts,
+    groupDiscountTotal
+  } = await getDiscountsForGroup(context, {
+    accountId,
+    billingAddress,
+    cartId,
+    currencyCode,
+    discountTotal,
+    group,
+    orderId,
+    selectedFulfillmentMethodId
+  });
+
   // Calculate and set taxes. Mutates group object in addition to returning the totals.
   const { taxTotal, taxableAmount } = await addTaxesToGroup(context, {
     accountId,
@@ -73,20 +88,18 @@ export default async function updateGroupTotals(context, {
   addInvoiceToGroup({
     currencyCode,
     group,
-    groupDiscountTotal: discountTotal,
+    groupDiscountTotal,
     groupSurchargeTotal,
     taxableAmount,
     taxTotal
   });
-
   if (expectedGroupTotal) {
     // For now we expect that the client has NOT included discounts in the expected total it sent.
     // Note that we don't currently know which parts of `discountTotal` go with which fulfillment groups.
     // This needs to be rewritten soon for discounts to work when there are multiple fulfillment groups.
     // Probably the client should be sending all applied discount IDs and amounts in the order input (by group),
     // and include total discount in `groupInput.totalPrice`, and then we simply verify that they are valid here.
-    const expectedTotal = Math.max(expectedGroupTotal - discountTotal, 0);
-
+    const expectedTotal = Math.max(expectedGroupTotal, 0);
     // Compare expected and actual totals to make sure client sees correct calculated price
     // Error if we calculate total price differently from what the client has shown as the preview.
     // It's important to keep this after adding and verifying the shipmentMethod and order item prices.

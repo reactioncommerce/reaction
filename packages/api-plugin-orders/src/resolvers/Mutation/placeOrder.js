@@ -2,7 +2,8 @@ import {
   decodeCartOpaqueId,
   decodeFulfillmentMethodOpaqueId,
   decodeOrderItemsOpaqueIds,
-  decodeShopOpaqueId
+  decodeShopOpaqueId,
+  decodeFulfillmentGroupOpaqueId
 } from "../../xforms/id.js";
 
 /**
@@ -21,12 +22,12 @@ import {
 export default async function placeOrder(parentResult, { input }, context) {
   const { clientMutationId = null, order, payments } = input;
   const { cartId: opaqueCartId, fulfillmentGroups, shopId: opaqueShopId } = order;
-
   const cartId = opaqueCartId ? decodeCartOpaqueId(opaqueCartId) : null;
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
   const transformedFulfillmentGroups = fulfillmentGroups.map((group) => ({
     ...group,
+    _id: decodeFulfillmentGroupOpaqueId(group._id),
     items: decodeOrderItemsOpaqueIds(group.items),
     selectedFulfillmentMethodId: decodeFulfillmentMethodOpaqueId(group.selectedFulfillmentMethodId),
     shopId: decodeShopOpaqueId(group.shopId)

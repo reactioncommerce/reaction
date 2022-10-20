@@ -48,6 +48,7 @@ const Metafield = new SimpleSchema({
   }
 });
 
+
 /**
  * @name OrderAddress
  * @memberof Schemas
@@ -375,6 +376,7 @@ export const orderItemInputSchema = new SimpleSchema({
 });
 
 export const orderFulfillmentGroupInputSchema = new SimpleSchema({
+  "_id": String,
   "data": {
     type: Object,
     blackbox: true,
@@ -624,18 +626,6 @@ const Workflow = new SimpleSchema({
 });
 
 /**
- * @name OrderDiscount
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Number} amount Amount of discount applied to the order
- * @property {String} discountId Discount ID
- */
-const OrderDiscount = new SimpleSchema({
-  amount: Number,
-  discountId: String
-});
-
-/**
  * @name OrderItemAttribute
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -773,7 +763,7 @@ export const OrderItem = new SimpleSchema({
  * @property {String} name Method name
  * @property {Number} rate Rate
  */
-const SelectedFulfillmentOption = new SimpleSchema({
+export const SelectedFulfillmentOption = new SimpleSchema({
   _id: String,
   carrier: {
     type: String,
@@ -1045,11 +1035,6 @@ export const Order = new SimpleSchema({
     blackbox: true,
     optional: true
   },
-  "discounts": {
-    type: Array,
-    optional: true
-  },
-  "discounts.$": OrderDiscount,
   "documents": {
     type: Array,
     optional: true

@@ -663,6 +663,9 @@ input OrderFulfillmentGroupDataInput {
 
 "Input for an `OrderFulfillmentGroup`"
 input OrderFulfillmentGroupInput {
+  "The id of the fulfillment group"
+  _id: ID!
+
   "Information needed by the selected fulfillment method to properly fulfill the order"
   data: OrderFulfillmentGroupDataInput
 

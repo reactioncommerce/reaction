@@ -16,7 +16,8 @@ export default async function buildOrderItem(context, { currencyCode, inputItem,
     addedAt,
     price,
     productConfiguration,
-    quantity
+    quantity,
+    discounts
   } = inputItem;
   const { productId, productVariantId } = productConfiguration;
 
@@ -65,6 +66,7 @@ export default async function buildOrderItem(context, { currencyCode, inputItem,
   });
 
   const now = new Date();
+
   const newItem = {
     _id: Random.id(),
     addedAt: addedAt || now,
@@ -98,6 +100,5 @@ export default async function buildOrderItem(context, { currencyCode, inputItem,
   for (const func of context.getFunctionsOfType("mutateNewOrderItemBeforeCreate")) {
     await func(context, { chosenProduct, chosenVariant, item: newItem, cartItem }); // eslint-disable-line no-await-in-loop
   }
-
   return newItem;
 }

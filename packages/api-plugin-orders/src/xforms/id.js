@@ -5,6 +5,7 @@ const namespaces = {
   Account: "reaction/account",
   Cart: "reaction/cart",
   FulfillmentMethod: "reaction/fulfillmentMethod",
+  FulfillmentGroup: "reaction/fulfillmentGroup",
   Order: "reaction/order",
   OrderFulfillmentGroup: "reaction/orderFulfillmentGroup",
   OrderItem: "reaction/orderItem",
@@ -34,6 +35,7 @@ export const decodePaymentOpaqueId = decodeOpaqueIdForNamespace(namespaces.Payme
 export const decodeProductOpaqueId = decodeOpaqueIdForNamespace(namespaces.Product);
 export const decodeRefundOpaqueId = decodeOpaqueIdForNamespace(namespaces.Refund);
 export const decodeShopOpaqueId = decodeOpaqueIdForNamespace(namespaces.Shop);
+export const decodeFulfillmentGroupOpaqueId = decodeOpaqueIdForNamespace(namespaces.FulfillmentGroup);
 
 /**
  * @param {Object[]} items Array of OrderItemInput
