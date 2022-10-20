@@ -45,9 +45,9 @@ async function getImplicitPromotions(context, shopId) {
  */
 export default async function applyPromotions(context, cart, explicitPromotion = undefined) {
   const promotions = await getImplicitPromotions(context, cart.shopId);
-  const { promotions: pluginPromotions } = context;
+  const { promotions: pluginPromotions, simpleSchemas: { Cart } } = context;
 
-  const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
+  let enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
   const actionHandleByKey = _.keyBy(context.promotions.actions, "key");
 
@@ -80,15 +80,19 @@ export default async function applyPromotions(context, cart, explicitPromotion =
       if (!shouldApply) continue;
 
       // eslint-disable-next-line no-await-in-loop
-      await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
+      const results = await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
+      if (results && results.updatedCart) {
+        enhancedCart = results.updatedCart;
+      }
       appliedPromotions.push(promotion);
       break;
     }
   }
 
-  cart.appliedPromotions = appliedPromotions;
+  enhancedCart.appliedPromotions = appliedPromotions;
+  Cart.clean(enhancedCart, { mutate: true });
 
   Logger.info({ ...logCtx, appliedPromotions: appliedPromotions.length }, "Applied promotions successfully");
 
-  return context.mutations.saveCart(context, cart, "promotions");
+  return context.mutations.saveCart(context, enhancedCart, "promotions");
 }
