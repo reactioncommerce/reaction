@@ -7,7 +7,6 @@
  */
 export default async function promotion(context, { shopId, _id }) {
   const { collections: { Promotions } } = context;
-  await context.validatePermissions("reaction:legacy:promotions", "read", { shopId });
   const singlePromotion = await Promotions.findOne({ shopId, _id });
   return singlePromotion;
 }
