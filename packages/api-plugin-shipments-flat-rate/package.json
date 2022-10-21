@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-shipments-flat-rate",
   "description": "Flat Rate Shipments plugin for the Reaction API",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "index.js",
   "type": "module",
   "engines": {
