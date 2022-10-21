@@ -1,5 +1,13 @@
 # reaction
 
+## 4.2.4
+
+### Patch Changes
+
+- Updated dependencies [[`b48825c43`](https://github.com/reactioncommerce/reaction/commit/b48825c43f1d72347e2173cf09c1a363638ae173), [`769c2185b`](https://github.com/reactioncommerce/reaction/commit/769c2185b8bb39bc0a3682b37ac8efd16aa77712)]:
+  - @reactioncommerce/api-plugin-products@1.3.1
+  - @reactioncommerce/api-plugin-shipments-flat-rate@1.0.10
+
 ## 4.2.3
 
 ### Patch Changes
