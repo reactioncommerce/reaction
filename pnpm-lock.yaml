@@ -140,53 +140,53 @@ importers:
 
   apps/reaction:
     specifiers:
-      '@reactioncommerce/api-core': ^2.0.0
-      '@reactioncommerce/api-plugin-accounts': ^2.0.0
-      '@reactioncommerce/api-plugin-address-validation': ^1.3.1
-      '@reactioncommerce/api-plugin-address-validation-test': ^1.0.3
-      '@reactioncommerce/api-plugin-authentication': ^2.2.3
-      '@reactioncommerce/api-plugin-authorization-simple': ^1.3.1
-      '@reactioncommerce/api-plugin-carts': ^1.2.4
-      '@reactioncommerce/api-plugin-catalogs': ^1.1.2
-      '@reactioncommerce/api-plugin-discounts': ^1.0.1
-      '@reactioncommerce/api-plugin-discounts-codes': ^1.2.0
-      '@reactioncommerce/api-plugin-email': ^1.1.0
-      '@reactioncommerce/api-plugin-email-smtp': ^1.0.5
-      '@reactioncommerce/api-plugin-email-templates': ^1.1.1
-      '@reactioncommerce/api-plugin-files': ^1.0.19
-      '@reactioncommerce/api-plugin-i18n': ^1.0.4
-      '@reactioncommerce/api-plugin-inventory': ^1.0.3
-      '@reactioncommerce/api-plugin-inventory-simple': ^1.0.4
-      '@reactioncommerce/api-plugin-job-queue': ^1.0.2
-      '@reactioncommerce/api-plugin-navigation': ^1.1.1
-      '@reactioncommerce/api-plugin-notifications': ^1.1.0
-      '@reactioncommerce/api-plugin-orders': ^1.4.2
-      '@reactioncommerce/api-plugin-payments': ^1.0.1
-      '@reactioncommerce/api-plugin-payments-example': ^1.1.1
-      '@reactioncommerce/api-plugin-payments-stripe-sca': ^1.0.2
-      '@reactioncommerce/api-plugin-pricing-simple': ^1.0.3
-      '@reactioncommerce/api-plugin-products': ^1.0.2
-      '@reactioncommerce/api-plugin-settings': ^1.0.2
-      '@reactioncommerce/api-plugin-shipments': ^1.0.1
-      '@reactioncommerce/api-plugin-shipments-flat-rate': ^1.0.4
-      '@reactioncommerce/api-plugin-shops': ^1.2.1
-      '@reactioncommerce/api-plugin-simple-schema': ^1.0.3
-      '@reactioncommerce/api-plugin-sitemap-generator': ^1.2.2
-      '@reactioncommerce/api-plugin-surcharges': ^1.1.7
-      '@reactioncommerce/api-plugin-system-information': ^1.1.3
-      '@reactioncommerce/api-plugin-tags': ^1.1.1
-      '@reactioncommerce/api-plugin-taxes': ^1.1.1
-      '@reactioncommerce/api-plugin-taxes-flat-rate': ^1.0.4
-      '@reactioncommerce/api-plugin-translations': ^1.2.0
-      '@reactioncommerce/api-utils': ^1.16.5
+      '@reactioncommerce/api-core': 2.0.1
+      '@reactioncommerce/api-plugin-accounts': 2.0.4
+      '@reactioncommerce/api-plugin-address-validation': 1.3.3
+      '@reactioncommerce/api-plugin-address-validation-test': 1.0.3
+      '@reactioncommerce/api-plugin-authentication': 2.2.5
+      '@reactioncommerce/api-plugin-authorization-simple': 1.3.2
+      '@reactioncommerce/api-plugin-carts': 1.3.5
+      '@reactioncommerce/api-plugin-catalogs': 1.1.2
+      '@reactioncommerce/api-plugin-discounts': 1.0.4
+      '@reactioncommerce/api-plugin-discounts-codes': 1.2.4
+      '@reactioncommerce/api-plugin-email': 1.1.5
+      '@reactioncommerce/api-plugin-email-smtp': 1.0.8
+      '@reactioncommerce/api-plugin-email-templates': 1.1.7
+      '@reactioncommerce/api-plugin-files': 1.0.19
+      '@reactioncommerce/api-plugin-i18n': 1.0.6
+      '@reactioncommerce/api-plugin-inventory': 1.0.5
+      '@reactioncommerce/api-plugin-inventory-simple': 1.0.6
+      '@reactioncommerce/api-plugin-job-queue': 1.0.7
+      '@reactioncommerce/api-plugin-navigation': 1.1.2
+      '@reactioncommerce/api-plugin-notifications': 1.1.4
+      '@reactioncommerce/api-plugin-orders': 1.4.5
+      '@reactioncommerce/api-plugin-payments': 1.0.5
+      '@reactioncommerce/api-plugin-payments-example': 1.1.2
+      '@reactioncommerce/api-plugin-payments-stripe-sca': 1.0.2
+      '@reactioncommerce/api-plugin-pricing-simple': 1.0.7
+      '@reactioncommerce/api-plugin-products': 1.3.0
+      '@reactioncommerce/api-plugin-settings': 1.0.7
+      '@reactioncommerce/api-plugin-shipments': 1.0.3
+      '@reactioncommerce/api-plugin-shipments-flat-rate': 1.0.9
+      '@reactioncommerce/api-plugin-shops': 1.3.0
+      '@reactioncommerce/api-plugin-simple-schema': 1.0.3
+      '@reactioncommerce/api-plugin-sitemap-generator': 1.2.3
+      '@reactioncommerce/api-plugin-surcharges': 1.1.7
+      '@reactioncommerce/api-plugin-system-information': 1.1.4
+      '@reactioncommerce/api-plugin-tags': 1.2.0
+      '@reactioncommerce/api-plugin-taxes': 1.1.3
+      '@reactioncommerce/api-plugin-taxes-flat-rate': 1.0.8
+      '@reactioncommerce/api-plugin-translations': 1.2.2
+      '@reactioncommerce/api-utils': 1.16.9
       '@reactioncommerce/data-factory': ~1.0.1
-      '@reactioncommerce/db-version-check': ^1.0.0
+      '@reactioncommerce/db-version-check': 1.0.0
       '@reactioncommerce/eslint-config': ~2.2.0
-      '@reactioncommerce/file-collections': ^0.9.3
-      '@reactioncommerce/file-collections-sa-gridfs': ^0.1.5
-      '@reactioncommerce/logger': ^1.1.3
-      '@reactioncommerce/nodemailer': ^5.0.5
-      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/file-collections': 0.9.3
+      '@reactioncommerce/file-collections-sa-gridfs': 0.1.5
+      '@reactioncommerce/logger': 1.1.5
+      '@reactioncommerce/nodemailer': 5.0.5
+      '@reactioncommerce/random': 1.0.2
       '@snyk/protect': latest
       apollo-link-http: ~1.5.16
       apollo-server-testing: ~2.9.6
@@ -245,7 +245,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1035.0
+      '@snyk/protect': 1.1038.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -4639,7 +4639,7 @@ packages:
     dependencies:
       eslint: 8.23.1
       eslint-plugin-import: 2.25.4_eslint@8.23.1
-      eslint-plugin-jest: 26.9.0_2ex7m26yair3ztqnyc2u7licva
+      eslint-plugin-jest: 26.9.0_eslint@8.23.1
       eslint-plugin-jsx-a11y: 6.5.1_eslint@8.23.1
       eslint-plugin-node: 11.1.0_eslint@8.23.1
       eslint-plugin-promise: 6.0.1_eslint@8.23.1
@@ -4668,8 +4668,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1035.0:
-    resolution: {integrity: sha512-8s1HygVBFDmNn7HdDTslb8LyLBKdtexexl8lsbR4W1o0/JgXDxOSEztTRakVdONFOnlRNbS3DtEBvVRdHiYFVg==}
+  /@snyk/protect/1.1038.0:
+    resolution: {integrity: sha512-68GuFnFVcQz6eFwTwN9jBbiLY1OWIFL+qHwxa3TBA4+kliOPVeBrfQ49vyGR0o5WAR1ZgTWn8+3b/OLkRe2SXg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -4964,6 +4964,26 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
+  /@typescript-eslint/typescript-estree/5.37.0:
+    resolution: {integrity: sha512-JkFoFIt/cx59iqEDSgIGnQpCTRv96MQnXCYvJi7QhBC24uyuzbD8wVbajMB1b9x4I0octYFJ3OwjAwNqk1AjDA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/types': 5.37.0
+      '@typescript-eslint/visitor-keys': 5.37.0
+      debug: 4.3.4
+      globby: 11.1.0
+      is-glob: 4.0.3
+      semver: 7.3.7
+      tsutils: 3.21.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@typescript-eslint/typescript-estree/5.37.0_typescript@2.9.2:
     resolution: {integrity: sha512-JkFoFIt/cx59iqEDSgIGnQpCTRv96MQnXCYvJi7QhBC24uyuzbD8wVbajMB1b9x4I0octYFJ3OwjAwNqk1AjDA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -4985,7 +5005,7 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/utils/5.37.0_2ex7m26yair3ztqnyc2u7licva:
+  /@typescript-eslint/utils/5.37.0_eslint@8.23.1:
     resolution: {integrity: sha512-jUEJoQrWbZhmikbcWSMDuUSxEE7ID2W/QCV/uz10WtQqfOuKZUqFGjqLJ+qhDd17rjgp+QJPqTdPIBWwoob2NQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -4994,7 +5014,7 @@ packages:
       '@types/json-schema': 7.0.11
       '@typescript-eslint/scope-manager': 5.37.0
       '@typescript-eslint/types': 5.37.0
-      '@typescript-eslint/typescript-estree': 5.37.0_typescript@2.9.2
+      '@typescript-eslint/typescript-estree': 5.37.0
       eslint: 8.23.1
       eslint-scope: 5.1.1
       eslint-utils: 3.0.0_eslint@8.23.1
@@ -7768,7 +7788,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-jest/26.9.0_2ex7m26yair3ztqnyc2u7licva:
+  /eslint-plugin-jest/26.9.0_eslint@8.23.1:
     resolution: {integrity: sha512-TWJxWGp1J628gxh2KhaH1H1paEdgE2J61BBF1I59c6xWeL5+D1BzMxGDN/nXAfX+aSkR5u80K+XhskK6Gwq9ng==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -7781,7 +7801,7 @@ packages:
       jest:
         optional: true
     dependencies:
-      '@typescript-eslint/utils': 5.37.0_2ex7m26yair3ztqnyc2u7licva
+      '@typescript-eslint/utils': 5.37.0_eslint@8.23.1
       eslint: 8.23.1
     transitivePeerDependencies:
       - supports-color
@@ -13843,6 +13863,15 @@ packages:
 
   /tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
+
+  /tsutils/3.21.0:
+    resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
+    engines: {node: '>= 6'}
+    peerDependencies:
+      typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
+    dependencies:
+      tslib: 1.14.1
+    dev: true
 
   /tsutils/3.21.0_typescript@2.9.2:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
