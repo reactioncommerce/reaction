@@ -37,13 +37,12 @@ export default async function updateSurchargeMutation(context, input) {
 
   Surcharge.validate(modifier, { modifier: true });
 
-  const { matchedCount } = await Surcharges.updateOne({
-    _id: surchargeId,
-    shopId
-  }, modifier);
-  surcharge._id = surchargeId;
-  surcharge.shopId = shopId;
+  const { matchedCount, value: updatedSurcharge } = await Surcharges.findOneAndUpdate(
+    { _id: surchargeId, shopId },
+    modifier,
+    { returnOriginal: false }
+  );
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
-  return { surcharge };
+  return { surcharge: updatedSurcharge };
 }
