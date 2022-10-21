@@ -1,10 +1,16 @@
 "Input for the applyCouponToCart mutation"
 input ApplyCouponToCartInput {
+
+  shopId: ID!
+
   "The ID of the Cart"
-  cartId: String!
+  cartId: ID!
 
   "The coupon code to apply"
   couponCode: String!
+
+  "Cart token, if anonymous"
+  token: String
 }
 
 "The response for the applyCouponToCart mutation"
