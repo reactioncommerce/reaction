@@ -27,13 +27,13 @@ test("should save cart with implicit promotions are applied", async () => {
     _id: "cartId"
   };
   mockContext.collections.Promotions = {
-    find: () => ({ toArray: jest.fn().mockReturnValueOnce(Promise.resolve([testPromotion])) })
+    find: () => ({ toArray: jest.fn().mockResolvedValueOnce([testPromotion]) })
   };
   mockContext.promotions = pluginPromotion;
   mockContext.mutations.saveCart = jest
     .fn()
     .mockName("saveCart")
-    .mockReturnValueOnce(Promise.resolve({ ...cart }));
+    .mockResolvedValueOnce({ ...cart });
 
   await applyImplicitPromotions(mockContext, { ...cart });
 
@@ -50,14 +50,14 @@ test("should save cart with implicit promotions are not applied when promotions 
     _id: "cartId"
   };
   mockContext.collections.Promotions = {
-    find: () => ({ toArray: jest.fn().mockReturnValueOnce(Promise.resolve([testPromotion, { ...testPromotion, _id: "test id 2", stackAbility: "all" }])) })
+    find: () => ({ toArray: jest.fn().mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackAbility: "all" }]) })
   };
 
   mockContext.promotions = { ...pluginPromotion, triggers: [] };
   mockContext.mutations.saveCart = jest
     .fn()
     .mockName("saveCart")
-    .mockReturnValueOnce(Promise.resolve({ ...cart }));
+    .mockResolvedValueOnce({ ...cart });
 
   await applyImplicitPromotions(mockContext, { ...cart });
 
