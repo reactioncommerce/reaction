@@ -19,7 +19,7 @@ const logCtx = {
 /**
  * @summary get all implicit promotions
  * @param {Object} context - The application context
- * @returns {Array<Object>} - An array of promotions
+ * @returns {Promise<Array<Object>>} - An array of promotions
  */
 async function getImplicitPromotions(context) {
   const now = new Date();
@@ -39,7 +39,7 @@ async function getImplicitPromotions(context) {
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
  * @param {Object} explicitPromotion - The explicit promotion to apply
- * @returns {Object} - The cart with promotions applied
+ * @returns {Promise<Object>} - The cart with promotions applied
  */
 export default async function applyPromotions(context, cart, explicitPromotion = undefined) {
   const promotions = await getImplicitPromotions(context);

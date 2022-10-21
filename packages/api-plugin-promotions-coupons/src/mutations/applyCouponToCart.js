@@ -1,11 +1,18 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import Logger from "@reactioncommerce/logger";
+import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import _ from "lodash";
 import isPromotionExpired from "../utils/isPromotionExpired.js";
 
 const inputSchema = new SimpleSchema({
+  shopId: String,
   cartId: String,
-  couponCode: String
+  couponCode: String,
+  cartToken: {
+    type: String,
+    optional: true
+  }
 });
 
 /**
@@ -20,11 +27,31 @@ const inputSchema = new SimpleSchema({
 export default async function applyCouponToCart(context, input) {
   inputSchema.validate(input);
 
-  const { collections: { Cart, Promotions } } = context;
-  const { cartId, couponCode } = input;
+  const { collections: { Cart, Promotions, Accounts }, userId } = context;
+  const { shopId, cartId, couponCode, cartToken } = input;
 
-  const cart = await Cart.findOne({ _id: cartId });
+  const selector = { shopId };
+
+  if (cartId) {
+    selector._id = cartId;
+  }
+
+  if (cartToken) {
+    selector.anonymousAccessToken = hashToken(cartToken);
+  } else {
+    const account = (userId && (await Accounts.findOne({ userId }))) || null;
+
+    if (!account) {
+      Logger.error(`Cart not found for user with ID ${userId}`);
+      throw new ReactionError("not-found", "Cart not found");
+    }
+
+    selector.accountId = account._id;
+  }
+
+  const cart = await Cart.findOne(selector);
   if (!cart) {
+    Logger.error(`Cart not found for user with ID ${userId}`);
     throw new ReactionError("not-found", "Cart not found");
   }
 
@@ -38,14 +65,17 @@ export default async function applyCouponToCart(context, input) {
   });
 
   if (!promotion) {
+    Logger.error(`The promotion not found with coupon code ${couponCode}`);
     throw new ReactionError("not-found", "The coupon is not available");
   }
 
   if (isPromotionExpired(promotion)) {
+    Logger.error(`The coupon code ${couponCode} is expired`);
     throw new ReactionError("coupon-expired", "The coupon is expired");
   }
 
   if (_.find(cart.appliedPromotions, { _id: promotion._id })) {
+    Logger.error(`The coupon code ${couponCode} is already applied`);
     throw new Error("coupon-already-exists", "The coupon already applied on the cart");
   }
 
