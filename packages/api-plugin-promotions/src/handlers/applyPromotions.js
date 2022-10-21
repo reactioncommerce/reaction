@@ -19,12 +19,14 @@ const logCtx = {
 /**
  * @summary get all implicit promotions
  * @param {Object} context - The application context
+ * @param {String} shopId - The shop ID
  * @returns {Promise<Array<Object>>} - An array of promotions
  */
-async function getImplicitPromotions(context) {
+async function getImplicitPromotions(context, shopId) {
   const now = new Date();
   const { collections: { Promotions } } = context;
   const promotions = await Promotions.find({
+    shopId,
     enabled: true,
     type: "implicit",
     startDate: { $lt: now },
@@ -42,7 +44,7 @@ async function getImplicitPromotions(context) {
  * @returns {Promise<Object>} - The cart with promotions applied
  */
 export default async function applyPromotions(context, cart, explicitPromotion = undefined) {
-  const promotions = await getImplicitPromotions(context);
+  const promotions = await getImplicitPromotions(context, cart.shopId);
   const { promotions: pluginPromotions } = context;
 
   const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
