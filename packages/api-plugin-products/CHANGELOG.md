@@ -1,5 +1,11 @@
 # @reactioncommerce/api-plugin-products
 
+## 1.3.1
+
+### Patch Changes
+
+- [#6565](https://github.com/reactioncommerce/reaction/pull/6565) [`b48825c43`](https://github.com/reactioncommerce/reaction/commit/b48825c43f1d72347e2173cf09c1a363638ae173) Thanks [@smriti0710](https://github.com/smriti0710)! - awaited the recursive createHandle call
+
 ## 1.3.0
 
 ### Minor Changes
