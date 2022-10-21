@@ -22,7 +22,14 @@ export default async function register(app) {
     version: pkg.version,
     collections: {
       Promotions: {
-        name: "Promotions"
+        name: "Promotions",
+        indexes: [
+          [{ shopId: 1, type: 1, enable: 1, startDate: 1, endDate: 1 }, { name: "c2__shopId__type__enable__startDate_endDate" }],
+          [
+            { "shopId": 1, "type": 1, "enable": 1, "triggers.triggerKey": 1, "triggers.triggerParameters.couponCode": 1, "startDate": 1 },
+            { name: "c2_shopId__type__enable__triggerKey__couponCode__startDate" }
+          ]
+        ]
       }
     },
     simpleSchemas: {

@@ -23,7 +23,7 @@ test("should call applyExplicitPromotionToCart mutation", async () => {
   mockContext.collections.Promotions = {
     findOne: jest.fn().mockResolvedValueOnce(promotion)
   };
-  mockContext.mutations.applyExplicitPromotionToCart = jest.fn().mockName("applyExplicitPromotionToCart").mockResolvedValueOnce(Promise.resolve(cart));
+  mockContext.mutations.applyExplicitPromotionToCart = jest.fn().mockName("applyExplicitPromotionToCart").mockResolvedValueOnce(cart);
 
   await applyCouponToCart(mockContext, {
     shopId: "_shopId",
