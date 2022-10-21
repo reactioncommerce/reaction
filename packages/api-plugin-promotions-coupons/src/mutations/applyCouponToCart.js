@@ -57,6 +57,7 @@ export default async function applyCouponToCart(context, input) {
 
   const now = new Date();
   const promotion = await Promotions.findOne({
+    shopId,
     "enabled": true,
     "type": "explicit",
     "startDate": { $lte: now },
