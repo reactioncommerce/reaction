@@ -166,7 +166,6 @@ importers:
       '@reactioncommerce/api-plugin-payments-stripe-sca': 1.0.2
       '@reactioncommerce/api-plugin-pricing-simple': 1.0.7
       '@reactioncommerce/api-plugin-products': 1.3.1
-      '@reactioncommerce/api-plugin-sample-data': 1.0.0
       '@reactioncommerce/api-plugin-settings': 1.0.7
       '@reactioncommerce/api-plugin-shipments': 1.0.3
       '@reactioncommerce/api-plugin-shipments-flat-rate': 1.0.10
@@ -227,7 +226,6 @@ importers:
       '@reactioncommerce/api-plugin-payments-stripe-sca': link:../../packages/api-plugin-payments-stripe-sca
       '@reactioncommerce/api-plugin-pricing-simple': link:../../packages/api-plugin-pricing-simple
       '@reactioncommerce/api-plugin-products': link:../../packages/api-plugin-products
-      '@reactioncommerce/api-plugin-sample-data': link:../../packages/api-plugin-sample-data
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
       '@reactioncommerce/api-plugin-shipments-flat-rate': link:../../packages/api-plugin-shipments-flat-rate
@@ -1464,12 +1462,10 @@ importers:
       '@reactioncommerce/file-collections-sa-base': ^0.2.2
       babel-core: ^7.0.0-bridge.0
       debug: ^4.3.2
-      gridfs-stream: ^1.1.1
     dependencies:
       '@babel/runtime-corejs2': 7.19.0
       '@reactioncommerce/file-collections-sa-base': link:../file-collections-sa-base
       debug: 4.3.4
-      gridfs-stream: 1.1.1
     devDependencies:
       '@babel/cli': 7.18.10_@babel+core@7.19.0
       '@babel/core': 7.19.0
