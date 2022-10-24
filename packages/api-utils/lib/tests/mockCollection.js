@@ -40,6 +40,7 @@ export default function mockCollection(collectionName) {
       matchedCount: 1,
       modifiedCount: 1
     })),
-    updateMany: jest.fn().mockName(`${collectionName}.updateMany`)
+    updateMany: jest.fn().mockName(`${collectionName}.updateMany`),
+    replaceOne: jest.fn().mockName(`${collectionName}.replaceOne`)
   };
 }
