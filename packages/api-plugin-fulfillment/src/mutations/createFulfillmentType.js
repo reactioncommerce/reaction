@@ -11,6 +11,7 @@ import { fulfillmentTypeSchema } from "../simpleSchemas.js";
  */
 export default async function createFulfillmentType(context, input) {
   const cleanedInput = fulfillmentTypeSchema.clean(input);
+  if (!cleanedInput.provider) cleanedInput.provider = {};
   cleanedInput.provider.name = cleanedInput.name;
 
   if (cleanedInput.method) {
