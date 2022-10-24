@@ -86,6 +86,9 @@
     "@babel/preset-env": "^7.10.4",
     "babel-core": "^7.0.0-bridge.0"
   },
+  "peerDependencies": {
+    "mongodb": "4.4.1"
+  },
   "publishConfig": {
     "access": "public"
   }

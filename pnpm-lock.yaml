@@ -1462,10 +1462,12 @@ importers:
       '@reactioncommerce/file-collections-sa-base': ^0.2.2
       babel-core: ^7.0.0-bridge.0
       debug: ^4.3.2
+      mongodb: 4.4.1
     dependencies:
       '@babel/runtime-corejs2': 7.19.0
       '@reactioncommerce/file-collections-sa-base': link:../file-collections-sa-base
       debug: 4.3.4
+      mongodb: 4.4.1
     devDependencies:
       '@babel/cli': 7.18.10_@babel+core@7.19.0
       '@babel/core': 7.19.0
