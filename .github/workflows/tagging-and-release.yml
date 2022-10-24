@@ -22,7 +22,6 @@ jobs:
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
         with:
@@ -32,14 +31,6 @@ jobs:
         run: |
           npm i -g pnpm@latest
           pnpm install -r --ignore-scripts
-
-      - name: Release apps and packages
-        uses: changesets/action@v1
-        with:
-          publish: pnpm changeset tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Get tag version
         id: get-tag-version
         run: |
@@ -47,9 +38,9 @@ jobs:
           REACTION_APP_NEW_TAG=v$VERSION
           echo "REACTION_APP_NEW_TAG=$REACTION_APP_NEW_TAG" >> $GITHUB_ENV
           echo '::set-output name=newTag::'$REACTION_APP_NEW_TAG
+          echo '::set-output name=version::'$VERSION
           echo "New release tag is $REACTION_APP_NEW_TAG"
-
-      - name: Check should create release tag
+      - name: Check should create release
         id: should-create-tag
         run: |
           if [ $(git tag -l "$REACTION_APP_NEW_TAG") ]; then
@@ -57,33 +48,37 @@ jobs:
           else
             echo '::set-output name=REACTION_APP_TAG_EXISTS::false'
           fi
-
-      - name: Create release tag
+      - name: Release apps and packages
         if: steps.should-create-tag.outputs.REACTION_APP_TAG_EXISTS == 'false'
-        run: |
-          git tag -a $REACTION_APP_NEW_TAG -m "chore(release): $REACTION_APP_NEW_TAG [skip ci]"
-          git push origin $REACTION_APP_NEW_TAG
-          echo "Create release tag success: $REACTION_APP_NEW_TAG"
-
-      - name: Push release tag
-        run: git push origin $REACTION_APP_NEW_TAG
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract release notes
         if: steps.should-create-tag.outputs.REACTION_APP_TAG_EXISTS == 'false'
         id: extract-release-notes
-        uses: ffurrer2/extract-release-notes@v1
+        uses: cardinalby/git-get-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          changelog_file: apps/reaction/CHANGELOG.md
+          tag: "reaction@${{ steps.get-tag-version.outputs.version }}"
+          doNotFailIfNotFound: true
+
+      - name: Create tag
+        if: steps.extract-release-notes.outputs.body != ''
+        run: |
+          git tag -a $REACTION_APP_NEW_TAG -m "chore(release): $REACTION_APP_NEW_TAG [skip ci]"
+          git push origin $REACTION_APP_NEW_TAG
+          echo "Create tag success: $REACTION_APP_NEW_TAG"
 
       - name: Create Release
-        id: create_release
-        if: steps.should-create-tag.outputs.REACTION_APP_TAG_EXISTS == 'false'
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        if: steps.extract-release-notes.outputs.body != ''
+        uses: softprops/action-gh-release@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: ${{ steps.extract-release-notes.outputs.body }}
           tag_name: ${{ steps.get-tag-version.outputs.newTag }}
-          release_name: ${{ steps.get-tag-version.outputs.newTag }}
-          body: ${{ steps.extract-release-notes.outputs.release_notes }}
           draft: false
           prerelease: false
