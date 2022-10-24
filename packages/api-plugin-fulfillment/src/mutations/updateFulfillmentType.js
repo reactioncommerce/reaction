@@ -28,8 +28,7 @@ export default async function updateFulfillmentType(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { fulfillmentGroupId, shopId, name, enabled, label, displayMessageType } = cleanedInput;
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
 
   if (!shopId) throw new ReactionError("invalid-parameter", "Shop ID to be updated not provided");
   if (!fulfillmentGroupId) throw new ReactionError("invalid-parameter", "FulfillmentType ID to be updated not provided");
