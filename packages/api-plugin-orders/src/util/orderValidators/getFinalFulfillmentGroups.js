@@ -7,11 +7,12 @@ import compareExpectedAndActualTotals from "../compareExpectedAndActualTotals.js
 import getSurchargesForGroup from "../getSurchargesForGroup.js";
 
 /**
- * @summary Create all authorized payments for a potential order
+ * @summary Create fulfillment groups for a potential order
  * @param {Object} context - The application context
  * @param {Object} inputData - The input data
  * @param {String} orderId ID of existing or new order to which this group will belong
  * @param {String} [accountId] ID of account that is placing or already did place the order
+ * @param {Object} [additionalItems] Additional items if any
  * @param {Object} [billingAddress] The primary billing address for the order, if known
  * @param {String} [cartId] ID of the cart from which the order is being placed, if applicable
  * @param {String} currencyCode Currency code for all money values
