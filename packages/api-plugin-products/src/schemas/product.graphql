@@ -544,6 +544,30 @@ enum ProductSortByField {
   updatedAt
 }
 
+"Range operator for DateTime fields"
+input ProductDateRange {
+  "The start of the date range"
+  start: DateTime!
+
+  "The end of the date range"
+  end: DateTime!
+}
+
+"Operators for filtering on a DateTime field"
+input ProductDateOperators {
+  "The value must be equal to the given value"
+  eq: DateTime
+
+  "The value must be greater than the given value"
+  before: DateTime
+
+  "The value must be greater than or equal to the given value"
+  after: DateTime
+
+  "The value must be between the given values"
+  between: ProductDateRange
+}
+
 extend type Mutation {
   "Archive products"
   archiveProducts(
@@ -613,6 +637,12 @@ extend type Query {
 
   "Query for a list of Products"
   products(
+    "Filter by created timestamp"
+    createdAt: ProductDateOperators
+
+    "Filter by updated at timestamp"
+    updatedAt: ProductDateOperators
+
     "Filter by archived"
     isArchived: Boolean
 

@@ -4,6 +4,8 @@ import applyProductFilters from "./applyProductFilters";
 
 describe("Test metafields search methods", () => {
   const mockProductFilters = {
+    createdAt: undefined,
+    updatedAt: undefined,
     productIds: undefined,
     shopIds: ["mockShopId"],
     tagIds: undefined,
