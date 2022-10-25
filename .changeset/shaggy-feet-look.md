@@ -1,5 +1,5 @@
 ---
-"@reactioncommerce/api-utils": patch
+"@reactioncommerce/api-utils": minor
 ---
 
 feat: add replaceOne to mockCollection
