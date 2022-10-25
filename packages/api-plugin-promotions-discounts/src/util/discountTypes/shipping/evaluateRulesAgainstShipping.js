@@ -1,5 +1,4 @@
 import { Engine } from "json-rules-engine";
-import discountMethods from "../../../methods/index.js";
 
 /**
  * @summary Check if a shipment quote matches a discount rule
@@ -31,7 +30,7 @@ function applyDiscounts(context, shipmentQuote, discounts) {
   let totalDiscount = 0;
   const amountBeforeDiscounts = shipmentQuote.method.undiscountedRate;
   discounts.forEach((discount) => {
-    const calculationMethod = discountMethods[discount.discountCalculationType];
+    const calculationMethod = context.discountCalculationMethods[discount.discountCalculationType];
     const discountAmount = calculationMethod(discount.discountValue, amountBeforeDiscounts);
     totalDiscount += discountAmount;
   });

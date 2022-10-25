@@ -1,7 +1,6 @@
 import { createRequire } from "module";
 import { Engine } from "json-rules-engine";
 import Logger from "@reactioncommerce/logger";
-import discountMethods from "../../../methods/index.js";
 
 const require = createRequire(import.meta.url);
 
@@ -41,7 +40,7 @@ function recalculateSubtotal(context, item) {
   let totalDiscount = 0;
   const amountBeforeDiscounts = item.price.amount * item.quantity;
   item.discounts.forEach((discount) => {
-    const calculationMethod = discountMethods[discount.discountCalculationType];
+    const calculationMethod = context.discountCalculationMethods[discount.discountCalculationType];
     const discountAmount = calculationMethod(discount.discountValue, amountBeforeDiscounts);
     totalDiscount += discountAmount;
   });

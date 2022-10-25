@@ -45,7 +45,7 @@ async function getImplicitPromotions(context, shopId) {
  */
 export default async function applyPromotions(context, cart, explicitPromotion = undefined) {
   const promotions = await getImplicitPromotions(context, cart.shopId);
-  const { promotions: pluginPromotions } = context;
+  const { promotions: pluginPromotions, collections } = context;
 
   const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
@@ -86,9 +86,10 @@ export default async function applyPromotions(context, cart, explicitPromotion =
     }
   }
 
-  cart.appliedPromotions = appliedPromotions;
+  const updateCart = await collections.Cart.findOne({ _id: cart._id });
+  updateCart.appliedPromotions = appliedPromotions;
 
   Logger.info({ ...logCtx, appliedPromotions: appliedPromotions.length }, "Applied promotions successfully");
 
-  return context.mutations.saveCart(context, cart, "promotions");
+  return context.mutations.saveCart(context, updateCart, "promotions");
 }

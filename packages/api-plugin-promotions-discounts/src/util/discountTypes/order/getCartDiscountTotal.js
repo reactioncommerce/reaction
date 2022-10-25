@@ -1,5 +1,4 @@
 import accounting from "accounting-js";
-import discountMethods from "../../../methods/index.js";
 
 /**
  * @summary Calculate the total discount amount for an order
@@ -20,8 +19,8 @@ function calculateMerchandiseTotal(cart) {
 export default function getCartDiscountTotal(context, cart) {
   let totalDiscountAmount = 0;
   const merchandiseTotal = calculateMerchandiseTotal(cart);
-  for (const thisDiscount of cart.discounts) {
-    const appliedDiscount = discountMethods[thisDiscount.discountCalculationType](thisDiscount.discountValue, merchandiseTotal);
+  for (const { discountCalculationType, discountValue } of cart.discounts) {
+    const appliedDiscount = context.discountCalculationMethods[discountCalculationType](discountValue, merchandiseTotal);
     totalDiscountAmount += appliedDiscount;
   }
   return Number(accounting.toFixed(totalDiscountAmount, 3));

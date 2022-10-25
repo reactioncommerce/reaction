@@ -11,14 +11,21 @@ export default function addDiscountToOrderItem(context, { item, cartItem }) {
   if (typeof item.subtotal === "object") {
     if (!item.subtotal.undiscountedAmount) {
       item.subtotal.undiscountedAmount = item.subtotal.amount;
-      const itemTotal = calculateDiscountedItemPrice(context, { price: item.price.amount, quantity: item.quantity, discounts: cartItem ? cartItem.discounts : [] });
+      const itemTotal = calculateDiscountedItemPrice(context, {
+        price: item.price.amount,
+        quantity: item.quantity,
+        discounts: cartItem ? cartItem.discounts : []
+      });
       item.subtotal.amount = itemTotal;
     }
   } else {
-    item.undiscountedAmount = item.amount || 0;
-    const itemTotal = calculateDiscountedItemPrice(context, { price: item.price.amount, quantity: item.quantity, discounts: cartItem ? cartItem.discounts : [] });
+    item.undiscountedAmount = item.subtotal || 0;
+    const itemTotal = calculateDiscountedItemPrice(context, {
+      price: item.price.amount,
+      quantity: item.quantity,
+      discounts: cartItem ? cartItem.discounts : []
+    });
     item.subtotal = itemTotal;
-    
   }
   item.discounts = cartItem ? cartItem.discounts : [];
   return item;

@@ -170,6 +170,7 @@ importers:
       '@reactioncommerce/api-plugin-promotions-coupons': 1.0.0
       '@reactioncommerce/api-plugin-promotions-discounts': 1.0.0
       '@reactioncommerce/api-plugin-promotions-offers': 1.0.0
+      '@reactioncommerce/api-plugin-sample-data': 1.0.0
       '@reactioncommerce/api-plugin-settings': 1.0.7
       '@reactioncommerce/api-plugin-shipments': 1.0.3
       '@reactioncommerce/api-plugin-shipments-flat-rate': 1.0.10
@@ -234,6 +235,7 @@ importers:
       '@reactioncommerce/api-plugin-promotions-coupons': link:../../packages/api-plugin-promotions-coupons
       '@reactioncommerce/api-plugin-promotions-discounts': link:../../packages/api-plugin-promotions-discounts
       '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
+      '@reactioncommerce/api-plugin-sample-data': link:../../packages/api-plugin-sample-data
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
       '@reactioncommerce/api-plugin-shipments-flat-rate': link:../../packages/api-plugin-shipments-flat-rate

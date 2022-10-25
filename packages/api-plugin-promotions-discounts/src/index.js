@@ -2,6 +2,7 @@ import { createRequire } from "module";
 import queries from "./queries/index.js";
 import setDiscountsOnCart from "./util/setDiscountsOnCart.js";
 import actions from "./actions/index.js";
+import methods from "./methods/index.js";
 import addDiscountToOrderItem from "./util/discountTypes/item/addDiscountToOrderItem.js";
 import getCartDiscountTotal from "./util/discountTypes/order/getCartDiscountTotal.js";
 import getItemDiscountTotal from "./util/discountTypes/item/getItemDiscountTotal.js";
@@ -10,6 +11,7 @@ import getGroupDiscountTotal from "./util/discountTypes/shipping/getGroupDisount
 import applyDiscountsToRates from "./util/discountTypes/shipping/applyDiscountsToRates.js";
 import preStartup from "./preStartup.js";
 import recalculateDiscounts from "./xforms/recalculateDiscounts.js";
+import { discountCalculationMethods, registerDiscountCalculationMethod } from "./registration.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -26,6 +28,7 @@ export default async function register(app) {
     version: pkg.version,
     queries,
     functionsByType: {
+      registerPluginHandler: [registerDiscountCalculationMethod],
       preStartup: [preStartup],
       mutateNewOrderItemBeforeCreate: [addDiscountToOrderItem],
       calculateDiscountTotal: [getCartDiscountTotal, getItemDiscountTotal, getShippingDiscountTotal],
@@ -46,8 +49,12 @@ export default async function register(app) {
         }
       ]
     },
+    contextAdditions: {
+      discountCalculationMethods
+    },
     promotions: {
       actions
-    }
+    },
+    discountCalculationMethods: methods
   });
 }
