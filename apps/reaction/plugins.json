@@ -35,5 +35,8 @@
   "navigation": "@reactioncommerce/api-plugin-navigation",
   "sitemapGenerator": "@reactioncommerce/api-plugin-sitemap-generator",
   "notifications": "@reactioncommerce/api-plugin-notifications",
-  "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test"
+  "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test",
+  "promotions": "@reactioncommerce/api-plugin-promotions",
+  "promotionsOffers": "@reactioncommerce/api-plugin-promotions-offers",
+  "promotionsCoupons": "@reactioncommerce/api-plugin-promotions-coupons"
 }
