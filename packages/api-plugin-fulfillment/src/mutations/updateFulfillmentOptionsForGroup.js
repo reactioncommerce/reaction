@@ -13,7 +13,8 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @name getShipmentQuotesQueryStatus
+ * @method getShipmentQuotesQueryStatus
+ * @summary returns formatted quotes and queryStatus using the rates as input
  * @param  {Array} rates    Rate array
  * @returns {Object} An object with `shipmentQuotes` and `shipmentQuotesQueryStatus` on it
  * @private

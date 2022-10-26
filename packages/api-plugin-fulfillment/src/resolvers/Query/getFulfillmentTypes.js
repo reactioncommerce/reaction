@@ -12,7 +12,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {String} args.shopId - Shop ID to get records for
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
- * @returns {Promise<Object>} Fulfillment methods
+ * @returns {Promise<Object>} Fulfillment types under the Shop
  */
 export default async function getFulfillmentTypes(_, args, context, info) {
   const { shopId: opaqueShopId, ...connectionArgs } = args;

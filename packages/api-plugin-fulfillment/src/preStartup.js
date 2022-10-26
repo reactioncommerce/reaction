@@ -10,7 +10,7 @@ const logCtx = { name: "fulfillment", file: "preStartup" };
  * @returns {undefined}
  */
 export default async function fulfillmentPreStartup(context) {
-  const allFulfillmentTypesArray = context.allRegisteredFulfillmentTypes?.registeredFulfillmentTypes;
+  const allFulfillmentTypesArray = context.fulfillment?.registeredFulfillmentTypes;
 
   if (!allFulfillmentTypesArray || allFulfillmentTypesArray.length === 0) {
     Logger.warn(logCtx, "No fulfillment types available");
