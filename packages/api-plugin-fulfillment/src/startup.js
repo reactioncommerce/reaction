@@ -5,8 +5,7 @@
  * @returns {undefined}
  */
 export default async function fulfillmentTypeUndecidedStartup(context) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
 
   context.appEvents.on("afterShopCreate", async (payload) => {
     const { shop } = payload;

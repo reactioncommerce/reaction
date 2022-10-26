@@ -9,7 +9,7 @@ const FulfillmentTypeDeclaration = new SimpleSchema({
   }
 });
 
-export const allRegisteredFulfillmentTypes = {
+export const fulfillment = {
   registeredFulfillmentTypes: ["undecided"]
 };
 
@@ -20,8 +20,8 @@ export const allRegisteredFulfillmentTypes = {
  */
 export function registerPluginHandlerForFulfillmentTypes({ registeredFulfillmentTypes }) {
   if (registeredFulfillmentTypes) {
-    allRegisteredFulfillmentTypes.registeredFulfillmentTypes = allRegisteredFulfillmentTypes.registeredFulfillmentTypes.concat(registeredFulfillmentTypes);
+    fulfillment.registeredFulfillmentTypes = fulfillment.registeredFulfillmentTypes.concat(registeredFulfillmentTypes);
   }
 
-  FulfillmentTypeDeclaration.validate(allRegisteredFulfillmentTypes);
+  FulfillmentTypeDeclaration.validate(fulfillment);
 }

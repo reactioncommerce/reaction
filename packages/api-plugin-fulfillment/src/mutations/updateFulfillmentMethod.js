@@ -11,9 +11,13 @@ const inputSchema = new SimpleSchema({
 
 /**
  * @method updateFulfillmentMethodMutation
- * @summary updates a flat rate fulfillment method
+ * @summary updates Fulfillment method
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - Input (see SimpleSchema)
+ * @param {Object} input - Input object
+ * @param {FulfillmentMethodSchema} input.method - fulfillment method object
+ * @param {String} input.fulfillmentTypeId - id of fulfillment type
+ * @param {String} input.methodId - ff-method Id
+ * @param {String} input.shopId - Shop Id
  * @returns {Promise<Object>} An object with a `method` property containing the updated method
  */
 export default async function updateFulfillmentMethodMutation(context, input) {
@@ -21,18 +25,13 @@ export default async function updateFulfillmentMethodMutation(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { method: inputMethod, methodId, fulfillmentTypeId, shopId } = cleanedInput;
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const method = { ...inputMethod };
 
   if (!fulfillmentTypeId) throw new ReactionError("invalid-parameter", "Fulfillment Type ID to be updated not provided");
   if (!methodId) throw new ReactionError("invalid-parameter", "Method ID to be updated not provided");
 
   await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "update", { shopId });
-
-  // MongoDB schema still uses `enabled` rather than `isEnabled`
-  // method.enabled = method.isEnabled;
-  // delete method.isEnabled;
 
   const ffTypeMethodRecord = await Fulfillment.findOne({
     "_id": fulfillmentTypeId,

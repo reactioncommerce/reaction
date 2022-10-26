@@ -20,7 +20,13 @@ const inputSchema = new SimpleSchema({
  * @method updateFulfillmentType
  * @summary updates the selected fulfillment type
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - Input (see SimpleSchema)
+ * @param {Object} input - Input object
+ * @param {String} input.fulfillmentGroupId - fulfillment tpe id of group
+ * @param {String} input.shopId - Shop Id
+ * @param {String} input.name - name of fulfillment type
+ * @param {Boolean} input.enabled - status of ff-type
+ * @param {String} input.label - label of ff-type
+ * @param {String} input.displayMessageType - optional display message for UI
  * @returns {Promise<Object>} An object with the updated type
  */
 export default async function updateFulfillmentType(context, input) {

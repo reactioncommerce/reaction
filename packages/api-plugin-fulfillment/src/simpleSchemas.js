@@ -16,7 +16,22 @@ export const MethodEmptyData = new SimpleSchema({
   }
 });
 
-
+/**
+ * @name FulfillmentMethodSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Defines Schema for Fulfillment Method
+ * @property {Number} cost - optional cost
+ * @property {String[]} fulfillmentTypes - fulfillment type retained for backward compatibility
+ * @property {String} group - Group to which fulfillment method belong
+ * @property {Number} handling - handling charges
+ * @property {Boolean} enabled - status of fulfillment method
+ * @property {String} label - displayed on the UI
+ * @property {String} name - name of the fulfillment method, user editable
+ * @property {String} fulfillmentMethod - used by application, not user editable
+ * @property {String} displayMessageMethod - used to display additional message on UI specific to ff-method
+ * @property {Number} rate - ratefor themethod
+ */
 export const FulfillmentMethodSchema = new SimpleSchema({
   "cost": {
     type: Number,
@@ -43,13 +58,34 @@ export const FulfillmentMethodSchema = new SimpleSchema({
   "rate": Number
 });
 
+/**
+ * @name ProviderSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Defines Schema for Provider details inside Fulfillment Type
+ * @property {Boolean} enabled - status of fulfillment method
+ * @property {String} label - displayed on the UI
+ * @property {String} name - name of the fulfillment type, user editable
+ */
 const ProviderSchema = new SimpleSchema({
   enabled: Boolean,
   label: String,
   name: String
 });
 
-export const fulfillmentTypeSchema = new SimpleSchema({
+/**
+ * @name FulfillmentTypeSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Defines Schema for Fulfillment Type
+ * @property {String} name - name of the fulfillment type, user editable
+ * @property {String} shopId - Shop ID
+ * @property {ProviderSchema} provider - Provider details
+ * @property {String} fulfillmentType - fulfillmentType, not user editable
+ * @property {String} displayMessageType - used to display additional message on UI specific to ff-type
+ * @property {FulfillmentMethodSchema[]} methods - array of ff-methods under this ff-type
+ */
+export const FulfillmentTypeSchema = new SimpleSchema({
   "name": String,
   "shopId": String,
   "provider": {

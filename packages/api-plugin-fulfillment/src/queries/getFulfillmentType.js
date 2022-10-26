@@ -7,11 +7,10 @@
  * @param {Object} input - Request input
  * @param {String} input.fulfillmentTypeId - The fulfillment type id
  * @param {String} input.shopId - The shop id of the fulfillment type
- * @returns {Promise<Object>} Mongo cursor
+ * @returns {Promise<Object>} Object
  */
 export default async function getFulfillmentType(context, input) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const { fulfillmentTypeId, shopId } = input;
 
   await context.validatePermissions("reaction:legacy:fulfillmentTypes", "read", { shopId });
