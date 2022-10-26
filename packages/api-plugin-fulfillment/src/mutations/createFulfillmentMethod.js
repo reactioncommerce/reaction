@@ -13,7 +13,16 @@ const inputSchema = new SimpleSchema({
  * @method createFulfillmentMethodMutation
  * @summary Creates a fulfillment method
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - Input (see SimpleSchema)
+ * @param {Object} input - Input
+ * @param {Number} cost - optional cost
+ * @param {String[]} fulfillmentTypes - fulfillment type retained for backward compatibility
+ * @param {String} group - Group to which fulfillment method belong
+ * @param {Number} handling - handling charges
+ * @param {Boolean} enabled - status of fulfillment method
+ * @param {String} label - displayed on the UI
+ * @param {String} fulfillmentMethod - used by application, not user editable
+ * @param {String} displayMessageMethod - used to display additional message on UI specific to ff-method
+ * @param {Number} rate - ratefor themethod
  * @returns {Promise<Object>} An object with a `method` property containing the created method
  */
 export default async function createFulfillmentMethodMutation(context, input) {
@@ -33,15 +42,11 @@ export default async function createFulfillmentMethodMutation(context, input) {
   const ffTypeMethodRecord = await Fulfillment.findOne({
     _id: fulfillmentTypeId,
     shopId,
-    methods: { $elemMatch: { name: method.name, fulfillmentMethod: method.fulfillmentMethod } }
+    methods: { $elemMatch: { fulfillmentMethod: method.fulfillmentMethod } }
   });
   if (ffTypeMethodRecord) throw new ReactionError("server-error", "Fulfillment Method already exists");
 
   method._id = Random.id();
-  // MongoDB schema still uses `enabled` rather than `isEnabled`
-  // method.enabled = method.isEnabled;
-  // delete method.isEnabled;
-
   method.fulfillmentTypes = [ffTypeRecord.fulfillmentType];
 
   const { matchedCount } = await Fulfillment.updateOne({

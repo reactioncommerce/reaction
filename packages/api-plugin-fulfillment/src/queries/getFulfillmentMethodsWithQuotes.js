@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import extendCommonOrder from "../util/extendCommonOrder.js";
 
-const logCtx = { name: "fulfillment", file: "getFulfillmentWithQuotes" };
+const logCtx = { name: "fulfillment", file: "getFulfillmentMethodsWithQuotes" };
 
 /**
  * @name getTitleCaseOfWord

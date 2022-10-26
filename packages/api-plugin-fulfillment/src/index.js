@@ -6,7 +6,7 @@ import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 import preStartup from "./preStartup.js";
 import { MethodEmptyData } from "./simpleSchemas.js";
-import { allRegisteredFulfillmentTypes, registerPluginHandlerForFulfillmentTypes } from "./registration.js";
+import { fulfillment, registerPluginHandlerForFulfillmentTypes } from "./registration.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -31,10 +31,8 @@ export default async function register(app) {
       Fulfillment: {
         name: "Fulfillment",
         indexes: [
-          // Create indexes. We set specific names for backwards compatibility
-          // with indexes created by the aldeed:schema-index Meteor package.
-          [{ name: 1 }, { name: "c2_name" }],
-          [{ shopId: 1 }, { name: "c2_shopId" }]
+          [{ name: 1 }],
+          [{ shopId: 1 }]
         ]
       }
     },
@@ -50,7 +48,7 @@ export default async function register(app) {
       startup: [startup]
     },
     contextAdditions: {
-      allRegisteredFulfillmentTypes
+      fulfillment
     },
     simpleSchemas: {
       MethodEmptyData
