@@ -3,7 +3,7 @@ import prepareOrder from "../util/orderValidators/prepareOrder.js";
 /**
  * @name validateOrder
  * @method
- * @memberof Order/NoMeteorQueries
+ * @memberof Order
  * @summary Validates if the input order details is valid and ready for order processing
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - order details, refer inputSchema
