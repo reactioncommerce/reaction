@@ -10,8 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function validateInitialOrderData(context, cleanedInput) {
   const { order: orderInput } = cleanedInput;
   const { cartId, shopId } = orderInput;
-  const { collections, userId } = context;
-  const { Cart } = collections;
+  const { collections: { Cart }, userId } = context;
 
   if (!shopId) throw new ReactionError("invalid-param", "ShopID not found in order data", { field: "ShopId", value: shopId });
 

@@ -184,13 +184,15 @@ export default async function prepareOrder(context, input, flag) {
 
   const allValidateFuncs = context.getFunctionsOfType("validateOrderMethods");
   // Collect results from validation specific to each fulfillment-method
-  for (const group of finalFulfillmentGroups) {
-    const requiredMethodFunctionName = `validateOrderMethods${group.shipmentMethod.name}`;
-    const requiredMethodFunction = allValidateFuncs.find((fn) => fn.name === requiredMethodFunctionName);
+  if (allValidateFuncs && Array.isArray(allValidateFuncs) && allValidateFuncs.length) {
+    for (const group of finalFulfillmentGroups) {
+      const requiredMethodFunctionObject = allValidateFuncs.find((fn) => fn.key === group.shipmentMethod.name);
+      const requiredMethodFunction = requiredMethodFunctionObject ? requiredMethodFunctionObject.handler : undefined;
 
-    if (requiredMethodFunction) {
-      // eslint-disable-next-line no-await-in-loop
-      await requiredMethodFunction(context, orderInput, validationResults);
+      if (requiredMethodFunction) {
+        // eslint-disable-next-line no-await-in-loop
+        await requiredMethodFunction(context, orderInput, validationResults);
+      }
     }
   }
 
