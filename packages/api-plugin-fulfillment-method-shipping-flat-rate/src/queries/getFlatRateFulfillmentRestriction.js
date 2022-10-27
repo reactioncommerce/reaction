@@ -1,7 +1,7 @@
 /**
  * @name getFlatRateFulfillmentRestriction
  * @method
- * @memberof Fulfillment/NoMeteorQueries
+ * @memberof Fulfillment
  * @summary Query the FulfillmentRestrictions collection for restrictions with the provided shopId
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
@@ -9,8 +9,7 @@
  * @returns {Promise<Object>|undefined} - A restrictions document, if one is found
  */
 export default async function getFlatRateFulfillmentRestriction(context, { restrictionId, shopId } = {}) {
-  const { collections } = context;
-  const { FulfillmentRestrictions } = collections;
+  const { collections: { FulfillmentRestrictions } } = context;
 
   await context.validatePermissions(`reaction:legacy:fulfillmentRestrictions:${restrictionId}`, "read", { shopId });
 

@@ -1,44 +1,12 @@
 # api-plugin-fulfillment-type-shipping
 
-[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-fulfillment-type-shipping.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-fulfillment-type-shipping)
-[![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-fulfillment-type-shipping.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-fulfillment-type-shipping)
+This is a fulfillment-type plugin which which works along with the base `api-plugin-fulfillment` and other fulfillment-method plugins (like flat-rate-shipping, dynamic-rate-shipping etc). This plugin provides the basic updates needed to establish the fulfillment-type.
 
+Each of the newly introduced fulfillment-method plugins under this fulfillment-type (shipping) would need to bee implemented as separate plugins. 
 
-## Summary
-
-This plugin implements 'shipping' as one of the fulfillment type. Fulfillment methods under 'shipping' is implemented via plugins like api-plugin-fulfillment-method-shipping-flat-rate and api-plugin-fulfillment-method-shipping-ups.
-
-The `Developer Certificate of Origin` and `License` sections can stay as they are, assuming `Apache 2` license is used (our preferred license). All other sections of this README should be updated to reflect your plugin.
-
-## Included in this fulfillment-type-shipping plugin
-
-### `src/`
-
-The `src` folder is where you'll put all the plugin files.
-
-### `.gitignore`
-
-A basic `gitignore` file
-
-### `babel.config.cjs`
-
-If your plugin includes linting and tests, this file is required to allow esmodules to run correctly.
-
-### `jest.config.cjs`
-
-If your plugin includes tests, this file is required to allow esmodules to run correctly. You'll need to update the `transformIgnorePatterns` and `moduleNameMapper` sections to include any esmodule `npm` packages used in your plugin.
-
-### `License.md`
-
-If your plugin uses `Apache 2` licensing, you can leave this file as-is. If another type of licensing is used, you need to update this file, and the README, accordingly.
-
-### `package.json`
-
-The provided `package.json` is set up to install all needed packages and config for linting, testing, and semantic-release. You'll need to update the `name`, `description`, and add any new dependencies your plugin files use.
-
-### `index.js`
-
-The entrypoint file for your npm package, will most likely just export your plugin registration from the `src` folder.
+This plugins does the following:
+* Registers the 'shipping' as a ff-type via registeredFulfillmentTypes: ["shipping"]
+* Inserts the default entry for shipping ff-type in Fulfillment collection
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:

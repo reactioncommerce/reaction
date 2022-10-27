@@ -7,11 +7,10 @@
  * @param {Object} input - Request input
  * @param {String} input.methodId - The fulfillment method id
  * @param {String} input.shopId - The shop id of the fulfillment method
- * @returns {Promise<Object>} Mongo cursor
+ * @returns {Promise<Object>} Object
  */
 export default async function flatRateFulfillmentMethod(context, input) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const { methodId, shopId } = input;
 
   await context.validatePermissions("reaction:legacy:fulfillmentMethods", "read", { shopId });

@@ -1,11 +1,11 @@
-import { MethodUPSData } from "./simpleSchemas.js";
+import { MethodDynamicRateData } from "./simpleSchemas.js";
 
 /**
  * @summary Called on preStartup to extend schemas
  * @param {Object} context Startup context
  * @returns {undefined}
  */
-export default async function fulfillmentMethodShippingUPSPreStartup(context) {
+export default async function fulfillmentMethodShippingDynamicRatePreStartup(context) {
   const { simpleSchemas: { ShippingMethod, SelectedFulfillmentOption } } = context;
 
   ShippingMethod.extend({
@@ -13,7 +13,7 @@ export default async function fulfillmentMethodShippingUPSPreStartup(context) {
       type: ShippingMethod.getDefinition(
         "methodAdditionalData",
         ["type"]
-      ).type[0].type.extend(MethodUPSData)
+      ).type[0].type.extend(MethodDynamicRateData)
     }
   });
 
@@ -22,7 +22,7 @@ export default async function fulfillmentMethodShippingUPSPreStartup(context) {
       type: SelectedFulfillmentOption.getDefinition(
         "methodAdditionalData",
         ["type"]
-      ).type[0].type.extend(MethodUPSData)
+      ).type[0].type.extend(MethodDynamicRateData)
     }
   });
 }

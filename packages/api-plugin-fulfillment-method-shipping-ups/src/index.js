@@ -1,10 +1,10 @@
 import { createRequire } from "module";
-import { MethodUPSData } from "./simpleSchemas.js";
+import { MethodDynamicRateData } from "./simpleSchemas.js";
 import preStartup from "./preStartup.js";
 import startup from "./startup.js";
 import schemas from "./schemas/index.js";
-import getFulfillmentMethodsWithQuotesShippingUPS from "./getFulfillmentMethodsWithQuotesShippingUPS.js";
-import validateOrderMethodsups from "./util/validateOrderMethodsups.js";
+import getFulfillmentMethodsWithQuotesShippingDynamicRate from "./getFulfillmentMethodsWithQuotesShippingDynamicRate.js";
+import validateOrderMethodsDynamicRate from "./util/validateOrderMethodsDynamicRate.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -16,21 +16,20 @@ const pkg = require("../package.json");
  */
 export default async function register(app) {
   await app.registerPlugin({
-    label: "Fulfillment Method Shipping UPS",
-    name: "fulfillment-method-shipping-ups",
+    label: "Fulfillment Method Shipping Dynamic Rate",
+    name: "fulfillment-method-shipping-dynamic-rate",
     version: pkg.version,
     graphQL: {
       schemas
     },
     simpleSchemas: {
-      MethodUPSData
+      MethodDynamicRateData
     },
     functionsByType: {
       preStartup: [preStartup],
       startup: [startup],
-      validateOrderMethods: [validateOrderMethodsups],
-      getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotesShippingUPS],
-      getFulfillmentMethodsWithQuotesShipping: [getFulfillmentMethodsWithQuotesShippingUPS]
+      validateOrderMethods: [{ key: "dynamicRate", handler: validateOrderMethodsDynamicRate }],
+      getFulfillmentMethodsWithQuotes: [{ key: "shipping", handler: getFulfillmentMethodsWithQuotesShippingDynamicRate }]
     }
   });
 }

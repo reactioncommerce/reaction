@@ -7,7 +7,7 @@ import checkAndCreateFulfillmentMethod from "./util/checkAndCreateFulfillmentMet
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default async function fulfillmentMethodShippingUPSStartup(context) {
+export default async function fulfillmentMethodShippingDynamicRateStartup(context) {
   context.appEvents.on("afterShopCreate", async (payload) => {
     const { shop } = payload;
     const shopId = shop._id;

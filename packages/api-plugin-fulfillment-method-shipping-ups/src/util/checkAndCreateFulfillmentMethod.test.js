@@ -18,15 +18,15 @@ test("should call createFulfillmentMethod mutation", async () => {
     fulfillmentType: "shipping"
   };
   const method = {
-    name: "ups",
-    label: "Shipping via UPS",
+    name: "dynamicRate",
+    label: "Shipping using DynamicRate",
     fulfillmentTypes: ["shipping"],
     group: "Ground",
     cost: 0,
     handling: 0,
     rate: 0,
     enabled: true,
-    fulfillmentMethod: "ups",
+    fulfillmentMethod: "dynamicRate",
     displayMessageMethod: "Placeholder for display message"
   };
 
@@ -55,15 +55,15 @@ test("should throw error and NOT call createFulfillmentMethod mutation", async (
   const shopId = "SHOP_ID";
   const fulfillmentTypeId = fulfillment._id;
   const method = {
-    name: "ups",
-    label: "Shipping via UPS",
+    name: "dynamicRate",
+    label: "Shipping using DynamicRate",
     fulfillmentTypes: ["shipping"],
     group: "Ground",
     cost: 0,
     handling: 0,
     rate: 0,
     enabled: true,
-    fulfillmentMethod: "ups",
+    fulfillmentMethod: "dynamicRate",
     displayMessageMethod: "Placeholder for display message"
   };
 

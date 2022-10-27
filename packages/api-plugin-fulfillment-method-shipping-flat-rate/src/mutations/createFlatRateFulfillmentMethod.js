@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import methodSchema from "../util/methodSchema.js";
+import { methodSchema } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   method: methodSchema,
@@ -9,19 +9,18 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @method createFlatRateFulfillmentMethodMutation
+ * @method createFlatRateFulfillmentMethod
  * @summary Creates a flat rate fulfillment method
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
  * @returns {Promise<Object>} An object with a `method` property containing the created method
  */
-export default async function createFlatRateFulfillmentMethodMutation(context, input) {
+export default async function createFlatRateFulfillmentMethod(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
   const { method: inputMethod, shopId } = cleanedInput;
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const method = { ...inputMethod };
 
   await context.validatePermissions("reaction:legacy:fulfillmentMethods", "create", { shopId });

@@ -20,8 +20,7 @@ const fulfillmentMethodName = "flatRate";
  * @private
  */
 export default async function getFulfillmentMethodsWithQuotesShippingFlatRate(context, commonOrder, previousQueryResults = []) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const [rates = [], retrialTargets = []] = previousQueryResults;
   const currentMethodInfo = { packageName };
 

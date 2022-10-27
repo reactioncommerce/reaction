@@ -17,8 +17,7 @@ export default async function deleteFlatRateFulfillmentRestriction(context, inpu
   inputSchema.validate(input);
 
   const { restrictionId, shopId } = input;
-  const { collections } = context;
-  const { FulfillmentRestrictions } = collections;
+  const { collections: { FulfillmentRestrictions } } = context;
 
   await context.validatePermissions(`reaction:legacy:fulfillmentRestrictions:${restrictionId}`, "delete", { shopId });
 

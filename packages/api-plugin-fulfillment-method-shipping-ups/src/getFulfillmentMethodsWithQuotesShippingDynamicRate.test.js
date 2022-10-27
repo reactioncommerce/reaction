@@ -1,5 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import getFulfillmentMethodsWithQuotesShippingUPS from "./getFulfillmentMethodsWithQuotesShippingUPS.js";
+import getFulfillmentMethodsWithQuotesShippingDynamicRate from "./getFulfillmentMethodsWithQuotesShippingDynamicRate.js";
 
 test("should return previousResults if Shipping is not among FailedRequests", async () => {
   const commonOrder = {
@@ -12,7 +12,7 @@ test("should return previousResults if Shipping is not among FailedRequests", as
       }
     ]
   ];
-  const result = await getFulfillmentMethodsWithQuotesShippingUPS(mockContext, commonOrder, previousResults);
+  const result = await getFulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
   expect(result).toEqual(previousResults);
 });
 
@@ -36,7 +36,7 @@ test("should return previousResults if not fulfillment records enabled", async (
   mockContext.collections.Fulfillment = {
     find: jest.fn(() => ({ toArray: () => [] }))
   };
-  const result = await getFulfillmentMethodsWithQuotesShippingUPS(mockContext, commonOrder, previousResults);
+  const result = await getFulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
   expect(result).toEqual(previousResults);
 });
 
@@ -74,9 +74,9 @@ test("should return rates witout error", async () => {
       fulfillmentTypes: ["shipping"],
       group: "Ground",
       enabled: true,
-      label: "UPS",
-      name: "ups",
-      fulfillmentMethod: "ups",
+      label: "Dynamic Rate",
+      name: "dynamicRate",
+      fulfillmentMethod: "dynamicRate",
       displayMessageMethod: "Sample display message"
     }]
   };
@@ -93,14 +93,14 @@ test("should return rates witout error", async () => {
       ],
       group: "Ground",
       enabled: true,
-      label: "UPS",
-      name: "ups",
-      fulfillmentMethod: "ups",
+      label: "Dynamic Rate",
+      name: "dynamicRate",
+      fulfillmentMethod: "dynamicRate",
       displayMessageMethod: "Sample display message",
-      carrier: "UPS",
+      carrier: "DynamicRate",
       methodAdditionalData: {
-        gqlType: "upsData",
-        upsData: "This is additional STRING data from Shipping - UPS"
+        gqlType: "dynamicRateData",
+        dynamicRateData: "This is additional STRING data from Shipping - DynamicRate"
       }
     },
     rate: 10,
@@ -112,6 +112,6 @@ test("should return rates witout error", async () => {
   mockContext.collections.Fulfillment = {
     find: jest.fn(() => ({ toArray: () => [shippingDoc] }))
   };
-  const result = await getFulfillmentMethodsWithQuotesShippingUPS(mockContext, commonOrder, previousResults);
+  const result = await getFulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
   expect(result).toEqual(expectedResult);
 });

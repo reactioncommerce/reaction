@@ -1,8 +1,8 @@
-import calculateUPSRate from "./util/calculateUPSRate.js";
+import calculateDynamicRate from "./util/calculateDynamicRate.js";
 
-const packageName = "fulfillment-method-shipping-ups";
+const packageName = "fulfillment-method-shipping-dynamic-rate";
 const fulfillmentTypeName = "shipping";
-const fulfillmentMethodName = "ups";
+const fulfillmentMethodName = "dynamicRate";
 
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
@@ -17,9 +17,8 @@ const fulfillmentMethodName = "ups";
  * shipping rates.
  * @private
  */
-export default async function getFulfillmentMethodsWithQuotesShippingUPS(context, commonOrder, previousQueryResults = []) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+export default async function getFulfillmentMethodsWithQuotesShippingDynamicRate(context, commonOrder, previousQueryResults = []) {
+  const { collections: { Fulfillment } } = context;
   const [rates = [], retrialTargets = []] = previousQueryResults;
   const currentMethodInfo = { packageName };
 
@@ -40,11 +39,11 @@ export default async function getFulfillmentMethodsWithQuotesShippingUPS(context
   }
   const initialNumOfRates = rates.length;
 
-  const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {
+  shippingRateDocs.map(async (doc) => {
     const carrier = doc.provider.label;
     const currentPluginMethods = doc.methods.filter((method) => ((method.fulfillmentMethod === (fulfillmentMethodName)) && (method.enabled)));
     for (const method of currentPluginMethods) {
-      const updatedMethod = calculateUPSRate(method, commonOrder);
+      const updatedMethod = calculateDynamicRate(method, commonOrder);
       rates.push({
         carrier,
         handlingPrice: updatedMethod.handling,
@@ -55,13 +54,12 @@ export default async function getFulfillmentMethodsWithQuotesShippingUPS(context
       });
     }
   });
-  await Promise.all(awaitedShippingRateDocs);
 
   if (rates.length === initialNumOfRates) {
     const errorDetails = {
       requestStatus: "error",
       shippingProvider: packageName,
-      message: "UPS shipping did not return any shipping methods."
+      message: "Dynamic Rate shipping did not return any shipping methods."
     };
     rates.push(errorDetails);
     retrialTargets.push(currentMethodInfo);

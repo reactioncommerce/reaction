@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import restrictionSchema from "../util/restrictionSchema.js";
+import { restrictionSchema } from "../simpleSchemas.js";
 
 const inputSchema = new SimpleSchema({
   restrictionId: String,
@@ -10,19 +10,18 @@ const inputSchema = new SimpleSchema({
 
 
 /**
- * @method updateFlatRateFulfillmentRestrictionMutation
+ * @method updateFlatRateFulfillmentRestriction
  * @summary updates a flat rate fulfillment method
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
  * @returns {Promise<Object>} An object with a `restriction` property containing the updated method
  */
-export default async function updateFlatRateFulfillmentRestrictionMutation(context, input) {
+export default async function updateFlatRateFulfillmentRestriction(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
   const { restriction, restrictionId, shopId } = cleanedInput;
-  const { collections } = context;
-  const { FulfillmentRestrictions } = collections;
+  const { collections: { FulfillmentRestrictions } } = context;
 
   await context.validatePermissions(`reaction:legacy:fulfillmentRestrictions:${restrictionId}`, "update", { shopId });
 
