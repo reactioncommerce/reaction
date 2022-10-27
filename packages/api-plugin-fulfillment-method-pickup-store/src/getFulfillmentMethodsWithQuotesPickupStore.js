@@ -19,8 +19,7 @@ const logCtx = { name: "fulfillment-method-pickup-store", file: "getFulfillmentM
  * @private
  */
 export default async function getFulfillmentMethodsWithQuotesPickupStore(context, commonOrder, previousQueryResults = []) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const [rates = [], retrialTargets = []] = previousQueryResults;
   const currentMethodInfo = { packageName };
 
@@ -42,7 +41,7 @@ export default async function getFulfillmentMethodsWithQuotesPickupStore(context
 
   const initialNumOfRates = rates.length;
 
-  const awaitedPickupDocs = pickupDocs.map(async (doc) => {
+  pickupDocs.map(async (doc) => {
     const carrier = doc.provider.label;
     const currentPluginMethods = doc.methods.filter((method) => ((method.name === fulfillmentMethodName) && (method.enabled)));
 
@@ -59,7 +58,6 @@ export default async function getFulfillmentMethodsWithQuotesPickupStore(context
       });
     }
   });
-  await Promise.all(awaitedPickupDocs);
 
   if (rates.length === initialNumOfRates) {
     const errorDetails = {

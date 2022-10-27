@@ -3,7 +3,6 @@ import checkAndCreateFulfillmentMethod from "./util/checkAndCreateFulfillmentMet
 /**
  * @summary Called on startup to create the root entry of this fulfillment type in Fulfillment collection
  * @param {Object} context Startup context
- * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
 export default async function fulfillmentMethodPickupStoreStartup(context) {
