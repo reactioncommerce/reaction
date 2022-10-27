@@ -30,8 +30,7 @@ export default async function createFulfillmentMethodMutation(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { method: inputMethod, fulfillmentTypeId, shopId } = cleanedInput;
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const method = { ...inputMethod };
 
   await context.validatePermissions("reaction:legacy:fulfillmentMethods", "create", { shopId });

@@ -9,8 +9,7 @@
  * @returns {Promise<Object>} Mongo cursor
  */
 export default async function getFulfillmentTypes(context, input) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const { shopId } = input;
 
   await context.validatePermissions("reaction:legacy:fulfillmentTypes", "read", { shopId });
