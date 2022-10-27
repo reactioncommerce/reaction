@@ -4,7 +4,7 @@ import fulfillmentMethodPickupStoreStartup from "./startup.js";
 import { MethodStoreData } from "./simpleSchemas.js";
 import schemas from "./schemas/index.js";
 import getFulfillmentMethodsWithQuotesPickupStore from "./getFulfillmentMethodsWithQuotesPickupStore.js";
-import validateOrderMethodsstore from "./util/validateOrderMethodsstore.js";
+import validateOrderMethodsStore from "./util/validateOrderMethodsStore.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -28,9 +28,8 @@ export default async function register(app) {
     functionsByType: {
       preStartup: [fulfillmentMethodPickupStorePreStartup],
       startup: [fulfillmentMethodPickupStoreStartup],
-      validateOrderMethods: [validateOrderMethodsstore],
-      getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotesPickupStore],
-      getFulfillmentMethodsWithQuotesPickup: [getFulfillmentMethodsWithQuotesPickupStore]
+      validateOrderMethods: [{ key: "store", handler: validateOrderMethodsStore }],
+      getFulfillmentMethodsWithQuotes: [{ key: "pickup", handler: getFulfillmentMethodsWithQuotesPickupStore }]
     }
   });
 }

@@ -6,8 +6,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Boolean} true if entry exist or insert success else false
  */
 export default async function checkAndCreateFulfillmentMethod(context, shopId) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
 
   const pickupRecord = await Fulfillment.findOne({ fulfillmentType: "pickup", shopId });
   if (!pickupRecord) throw new ReactionError("server-error", "Unable to create fulfillment method Pickup-Store without defined type");
