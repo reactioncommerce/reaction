@@ -47,6 +47,21 @@ export default async function applyPromotions(context, cart, explicitPromotion =
   const promotions = await getImplicitPromotions(context, cart.shopId);
   const { promotions: pluginPromotions, collections } = context;
 
+  cart.discounts = [];
+  cart.discount = 0;
+  cart.items = cart.items.map((item) => {
+    item.discounts = [];
+    item.subtotal = {
+      amount: item.subtotal.undiscountedAmount || item.subtotal.amount,
+      currencyCode: item.subtotal.currencyCode
+    };
+    return item;
+  });
+  // todo: add reset logic for the shipping
+  // cart.shipping = cart.shipping.map((shipping) => ({ ...shipping, discounts: [] }));
+
+  await context.mutations.saveCart(context, cart, "promotions");
+
   const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
   const actionHandleByKey = _.keyBy(context.promotions.actions, "key");

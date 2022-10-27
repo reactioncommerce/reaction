@@ -1,6 +1,7 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
-import getCartDiscountTotal from "./getCartDiscountTotal.js";
+import getCartDiscountAmount from "./getCartDiscountAmount.js";
+import splitDiscountForCartItems from "./splitDiscountForCartItems.js";
 
 const require = createRequire(import.meta.url);
 
@@ -16,15 +17,21 @@ const logCtx = {
 /**
  * @summary Map discount record to cart discount
  * @param {Object} discount - Discount record
+ * @param {Array<Object>} discountedItems - The items that were discounted
+ * @param {Number} discountedAmount - The total amount discounted
  * @returns {Object} Cart discount record
  */
-function createDiscountRecord(discount) {
+function createDiscountRecord(discount, discountedItems, discountedAmount) {
   const itemDiscount = {
     actionKey: discount.actionKey,
     promotionId: discount.promotionId,
+    discountType: discount.discountType,
     discountCalculationType: discount.discountCalculationType,
     discountValue: discount.discountValue,
-    dateApplied: new Date()
+    dateApplied: new Date(),
+    discountedItemType: "item",
+    discountedAmount,
+    discountedItems
   };
   return itemDiscount;
 }
@@ -44,8 +51,16 @@ export default async function applyOrderDiscountToCart(context, discount, cart) 
     Logger.warn(logCtx, "Not adding discount because it already exists");
     return { cart };
   }
-  cart.discounts.push(createDiscountRecord(discount));
-  const discountTotal = getCartDiscountTotal(context, cart);
-  cart.discount = discountTotal;
+
+  const discountAmount = getCartDiscountAmount(context, cart, discount);
+  const discountedItems = splitDiscountForCartItems(discountAmount, cart.items);
+
+  cart.discounts.push(createDiscountRecord(discount, discountedItems, discountAmount));
+
+  for (const cartItem of cart.items) {
+    const itemDiscount = discountedItems.find((item) => item._id === cartItem._id);
+    cartItem.discounts.push(createDiscountRecord(discount, undefined, itemDiscount.amount));
+  }
+
   return { cart };
 }

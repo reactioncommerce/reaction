@@ -47,6 +47,10 @@ async function extendCartSchemas(context) {
     "subtotal.undiscountedAmount": {
       type: Number,
       optional: true
+    },
+    "subtotal.discount": {
+      type: Number,
+      optional: true
     }
   });
 

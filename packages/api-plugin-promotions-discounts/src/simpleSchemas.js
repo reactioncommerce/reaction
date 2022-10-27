@@ -82,21 +82,43 @@ export const Discount = new SimpleSchema({
   }
 });
 
+export const CartDiscountedItem = new SimpleSchema({
+  _id: String,
+  amount: Number
+});
+
 export const CartDiscount = new SimpleSchema({
-  actionKey: String,
-  promotionId: String,
-  rules: {
+  "actionKey": String,
+  "promotionId": String,
+  "rules": {
     // because shipping discounts are evaluated later, they need to have inclusion rules on them
     type: Rules,
     optional: true
   },
-  discountCalculationType: String, // types provided by this plugin are flat, percentage and fixed
-  discountValue: Number,
-  dateApplied: {
+  "discountType": String,
+  "discountCalculationType": String, // types provided by this plugin are flat, percentage and fixed
+  "discountValue": Number,
+  "dateApplied": {
     type: Date
   },
-  dateExpires: {
+  "dateExpires": {
     type: Date,
     optional: true
+  },
+  "discountedItemType": {
+    type: String,
+    allowedValues: ["order", "item", "shipping"],
+    optional: true
+  },
+  "discountedAmount": {
+    type: Number,
+    optional: true
+  },
+  "discountedItems": {
+    type: Array,
+    optional: true
+  },
+  "discountedItems.$": {
+    type: CartDiscountedItem
   }
 });

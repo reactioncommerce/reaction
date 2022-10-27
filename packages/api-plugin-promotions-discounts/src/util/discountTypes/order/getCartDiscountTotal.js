@@ -6,7 +6,7 @@ import accounting from "accounting-js";
  * @returns {Number} The total discount amount
  */
 function calculateMerchandiseTotal(cart) {
-  const itemsTotal = cart.items.reduce((previousValue, currentValue) => previousValue + currentValue.subtotal.amount, 0);
+  const itemsTotal = cart.items.reduce((previousValue, currentValue) => previousValue + (currentValue.price.amount * currentValue.quantity), 0);
   return itemsTotal;
 }
 

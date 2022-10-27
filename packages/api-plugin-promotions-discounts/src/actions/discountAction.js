@@ -87,9 +87,9 @@ async function discountAction(context, enhancedCart, { promotion, actionParamete
 
   Logger.info({ actionParameters, cartId: cart._id, ...logCtx }, "applying discount to cart");
 
-  const { cart: updatedCart } = await functionMap[discountType](context, actionParameters, cart);
+  const { cart: modifiedCart } = await functionMap[discountType](context, actionParameters, cart);
 
-  await context.mutations.saveCart(context, updatedCart, "promotions");
+  await context.mutations.saveCart(context, modifiedCart, "promotions");
   Logger.info(logCtx, "Completed applying Discount to Cart");
 }
 

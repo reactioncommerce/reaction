@@ -17,36 +17,20 @@ const logCtx = {
  * @summary Create a discount object for a cart item
  * @param {Object} item - The cart item
  * @param {Object} discount - The discount to create
+ * @param {Number} discountedAmount - The amount discounted
  * @returns {Object} - The cart item discount object
  */
-function createItemDiscount(item, discount) {
+function createItemDiscount(item, discount, discountedAmount) {
   const itemDiscount = {
     actionKey: discount.actionKey,
     promotionId: discount.promotionId,
+    discountType: discount.discountType,
     discountCalculationType: discount.discountCalculationType,
     discountValue: discount.discountValue,
-    dateApplied: new Date()
+    dateApplied: new Date(),
+    discountedAmount
   };
   return itemDiscount;
-}
-
-/**
- * @summary Recalculate the item subtotal
- * @param {Object} context - The application context
- * @param {Object} item - The cart item
- * @returns {void} undefined
- */
-function recalculateSubtotal(context, item) {
-  let totalDiscount = 0;
-  const amountBeforeDiscounts = item.price.amount * item.quantity;
-  item.discounts.forEach((discount) => {
-    const calculationMethod = context.discountCalculationMethods[discount.discountCalculationType];
-    const discountAmount = calculationMethod(discount.discountValue, amountBeforeDiscounts);
-    totalDiscount += discountAmount;
-  });
-  if (totalDiscount < item.subtotal.amount) {
-    item.subtotal.amount = amountBeforeDiscounts - totalDiscount;
-  }
 }
 
 /**
@@ -65,7 +49,6 @@ async function addDiscountToItem(context, discount, { item }) {
   }
   const cartDiscount = createItemDiscount(item, discount);
   item.discounts.push(cartDiscount);
-  recalculateSubtotal(context, item);
 }
 
 /**

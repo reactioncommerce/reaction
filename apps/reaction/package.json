@@ -50,7 +50,6 @@
     "@reactioncommerce/api-plugin-promotions-coupons": "1.0.0",
     "@reactioncommerce/api-plugin-promotions-discounts": "1.0.0",
     "@reactioncommerce/api-plugin-promotions-offers": "1.0.0",
-    "@reactioncommerce/api-plugin-sample-data": "1.0.0",
     "@reactioncommerce/api-plugin-settings": "1.0.7",
     "@reactioncommerce/api-plugin-shipments": "1.0.3",
     "@reactioncommerce/api-plugin-shipments-flat-rate": "1.0.10",

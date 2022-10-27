@@ -1,3 +1,4 @@
+import recalculateCartItemSubtotal from "./discountTypes/item/recalculateCartItemSubtotal.js";
 import getCartDiscountTotal from "./discountTypes/order/getCartDiscountTotal.js";
 
 /**
@@ -17,4 +18,8 @@ export default async function setDiscountsOnCart(context, cart) {
   });
   const discountTotal = getCartDiscountTotal(context, cart);
   cart.discount = discountTotal;
+
+  for (const item of cart.items) {
+    recalculateCartItemSubtotal(context, item);
+  }
 }

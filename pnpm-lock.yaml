@@ -170,7 +170,6 @@ importers:
       '@reactioncommerce/api-plugin-promotions-coupons': 1.0.0
       '@reactioncommerce/api-plugin-promotions-discounts': 1.0.0
       '@reactioncommerce/api-plugin-promotions-offers': 1.0.0
-      '@reactioncommerce/api-plugin-sample-data': 1.0.0
       '@reactioncommerce/api-plugin-settings': 1.0.7
       '@reactioncommerce/api-plugin-shipments': 1.0.3
       '@reactioncommerce/api-plugin-shipments-flat-rate': 1.0.10
@@ -235,7 +234,6 @@ importers:
       '@reactioncommerce/api-plugin-promotions-coupons': link:../../packages/api-plugin-promotions-coupons
       '@reactioncommerce/api-plugin-promotions-discounts': link:../../packages/api-plugin-promotions-discounts
       '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
-      '@reactioncommerce/api-plugin-sample-data': link:../../packages/api-plugin-sample-data
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
       '@reactioncommerce/api-plugin-shipments-flat-rate': link:../../packages/api-plugin-shipments-flat-rate
@@ -255,7 +253,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1041.0
+      '@snyk/protect': 1.1044.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -4754,8 +4752,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1041.0:
-    resolution: {integrity: sha512-i6V3S1jO9B00Wb2EOoVhvi0XvRXF3BGaceeglTeRfGVtiKSklhUZjweKFtoI8Y5iSNL6lWHXfUscS8Qn7kdg1A==}
+  /@snyk/protect/1.1044.0:
+    resolution: {integrity: sha512-Wi6zmOMsyM2FRlxvqLo3opf7SDvcpWWR3RGJVHPVg6uh7VByAYrKome1zl8WRUaBr4qfEpL0jJLFKaBkHYUlAg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
