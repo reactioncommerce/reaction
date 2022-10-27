@@ -7,18 +7,17 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @method deleteFlatRateFulfillmentMethodMutation
+ * @method deleteFlatRateFulfillmentMethod
  * @summary deletes a flat rate fulfillment method
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
  * @returns {Promise<Object>} An object with a `method` property containing the deleted method
  */
-export default async function deleteFlatRateFulfillmentMethodMutation(context, input) {
+export default async function deleteFlatRateFulfillmentMethod(context, input) {
   inputSchema.validate(input);
 
   const { methodId, shopId } = input;
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
 
   await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "delete", { shopId });
 

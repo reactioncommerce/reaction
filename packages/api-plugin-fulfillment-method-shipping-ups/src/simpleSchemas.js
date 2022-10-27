@@ -1,16 +1,16 @@
 import SimpleSchema from "simpl-schema";
 
 /**
- * @name MethodUPSData
+ * @name MethodDynamicRateData
  * @memberof Schemas
  * @type {SimpleSchema}
- * @summary Defines UPS additional data
+ * @summary Defines Dynamic Rate additional data
  * @property {String} gqlType Defines the method type
- * @property {String} upsData UPS Data fields
+ * @property {String} dynamicRateData Dynamic Rate Data fields
  */
-export const MethodUPSData = new SimpleSchema({
+export const MethodDynamicRateData = new SimpleSchema({
   gqlType: String,
-  upsData: {
+  dynamicRateData: {
     type: String,
     optional: true
   }

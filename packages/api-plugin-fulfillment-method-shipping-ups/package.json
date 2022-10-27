@@ -1,7 +1,7 @@
 {
-  "name": "@reactioncommerce/api-plugin-fulfillment-method-shipping-ups",
-  "description": "Implements Shipping-UPS as a fulfillment method under the type shipping",
-  "label": "Fulfillment Method Shipping UPS",
+  "name": "@reactioncommerce/api-plugin-fulfillment-method-shipping-dynamic-rate",
+  "description": "Implements Shipping-Dynamic Rate as a fulfillment method under the type shipping",
+  "label": "Fulfillment Method Shipping Dynamic Rate",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -15,7 +15,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git",
-    "directory": "packages/api-plugin-fulfillment-method-shipping-ups"
+    "directory": "packages/api-plugin-fulfillment-method-shipping-dynamic-rate"
   },
   "author": {
     "name": "Mailchimp Open Commerce",

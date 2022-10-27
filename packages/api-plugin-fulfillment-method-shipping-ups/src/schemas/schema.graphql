@@ -1,7 +1,7 @@
-"Additional data from Shipping UPS"
-type upsData {
+"Additional data from Shipping Dynamic Rate"
+type dynamicRateData {
   gqlType: String
-  upsData: String
+  dynamicRateData: String
 }
 
-extend union AdditionalData = upsData
+extend union AdditionalData = dynamicRateData

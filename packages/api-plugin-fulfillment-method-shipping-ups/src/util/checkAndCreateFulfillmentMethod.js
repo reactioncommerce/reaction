@@ -6,23 +6,22 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Boolean} true if entry exist or insert success else false
  */
 export default async function checkAndCreateFulfillmentMethod(context, shopId) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
 
   const shippingRecord = await Fulfillment.findOne({ fulfillmentType: "shipping", shopId });
-  if (!shippingRecord) throw new ReactionError("server-error", "Unable to create fulfillment method Shipping-UPS without defined type");
+  if (!shippingRecord) throw new ReactionError("server-error", "Unable to create fulfillment method Shipping-DynamicRate without defined type");
 
   const fulfillmentTypeId = shippingRecord._id;
   const method = {
-    name: "ups",
-    label: "Shipping via UPS",
+    name: "dynamicRate",
+    label: "Shipping using DynamicRate",
     fulfillmentTypes: ["shipping"],
     group: "Ground",
     cost: 0,
     handling: 0,
     rate: 0,
     enabled: true,
-    fulfillmentMethod: "ups",
+    fulfillmentMethod: "dynamicRate",
     displayMessageMethod: "Placeholder for display message"
   };
 

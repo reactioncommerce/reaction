@@ -360,6 +360,46 @@ test("allow method - multiple attributes but only 1 meets criteria to deny", asy
   expect(allowedMethods).toEqual(mockShippingMethod);
 });
 
+test("allow method - address pattern provided matches, when no match for country", async () => {
+  // Shipping Location: US, CA, 90405
+
+  const mockMethodRestrictions = [
+    {
+      _id: "allow001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "allow",
+      destination: {
+        country: [
+          "USA"
+        ],
+        addressPattern: "California",
+        addressPatternShouldMatch: true
+      }
+    },
+    {
+      _id: "deny001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "deny",
+      destination: {
+        region: [
+          "AK",
+          "HI"
+        ]
+      }
+    }
+  ];
+
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+
+  const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
+
+  expect(allowedMethods).toEqual(mockShippingMethod);
+});
+
 
 /*
  * Tests with location restrictions AND attribute restrictions that deny method

@@ -5,7 +5,7 @@ import deleteFlatRateFulfillmentMethodMutation from "../../mutations/deleteFlatR
  * @name Mutation/deleteFlatRateFulfillmentMethod
  * @method
  * @memberof Fulfillment/GraphQL
- * @summary resolver for the deleteFlatRateFulfillmentMethod GraphQL mutation
+ * @summary resolver for the deleteFlatRateFulfillment GraphQL mutation
  * @param {Object} parentResult - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client
  * @param {String} args.input.methodId - The ID of the method you want to delete

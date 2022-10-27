@@ -1,42 +1,16 @@
-# api-plugin-fulfillment-method-shipping-ups
+# api-plugin-fulfillment-method-shipping-dynamic-rate
 
-[![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-fulfillment-method-shipping-ups.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-fulfillment-method-shipping-ups)
-[![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-fulfillment-method-shipping-ups.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-fulfillment-method-shipping-ups)
+This is a fulfillment-method plugin which which works along with the base `api-plugin-fulfillment` and the ff-type plugin `api-plugin-fulfillment-type-shipping`. This plugin actually implements all the functionality associated with this fulfillment-method. It can work along-side other fulfillment-methods under the same ff-type.
+
+This main features/functionalities of this plugin includes the following:
+* getFulfillmentMethodsWithQuotesShippingDynamicRate - returns the quote or equivalent details for the method when called from base ff plugin
+* preStartup - extends the union of "methodAdditionalData" with data structure specific to Dynamic Rate
+* startup - Inserts the required ff-method entry into Fulfillment collection
+* util/checkAndCreateFulfillmentMethod - confirms existing ff-type entry and adds a new ff-method under it.
+* util/calculateDynamicRateRate - dummy function to simulate api providing dynamic rate specific info while returning quotes.
+* util/validateOrderMethodsDynamicRate - dummy function to simulate dynamic rate specific validations done. Called by prepareOrder.js
 
 
-## Summary
-
-This plugin Implements Shipping-UPS as a fulfillment method under the type shipping.
-
-## Included in this fulfillment-method-shipping-ups plugin
-
-### `src/`
-
-The `src` folder contains all the plugin files.
-
-### `.gitignore`
-
-A basic `gitignore` file
-
-### `babel.config.cjs`
-
-If your plugin includes linting and tests, this file is required to allow esmodules to run correctly.
-
-### `jest.config.cjs`
-
-If your plugin includes tests, this file is required to allow esmodules to run correctly. You'll need to update the `transformIgnorePatterns` and `moduleNameMapper` sections to include any esmodule `npm` packages used in your plugin.
-
-### `License.md`
-
-If your plugin uses `Apache 2` licensing, you can leave this file as-is. If another type of licensing is used, you need to update this file, and the README, accordingly.
-
-### `package.json`
-
-The provided `package.json` is set up to install all needed packages and config for linting, testing, and semantic-release. You'll need to update the `name`, `description`, and add any new dependencies your plugin files use.
-
-### `index.js`
-
-The entrypoint file for your npm package, will most likely just export your plugin registration from the `src` folder.
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:

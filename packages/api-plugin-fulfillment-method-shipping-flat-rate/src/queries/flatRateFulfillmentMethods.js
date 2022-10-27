@@ -9,8 +9,7 @@
  * @returns {Promise<Object>} Mongo cursor
  */
 export default async function flatRateFulfillmentMethods(context, input) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const { shopId } = input;
   const fulfillmentTypeName = "shipping";
   const fulfillmentMethodName = "flatRate";

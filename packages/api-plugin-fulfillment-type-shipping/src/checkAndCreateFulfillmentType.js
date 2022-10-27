@@ -6,8 +6,7 @@
  * @returns {Boolean} true if entry exist or insert success else false
  */
 export default async function checkAndCreateFulfillmentType(context, shopId) {
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
 
   const shippingRecord = await Fulfillment.findOne({ fulfillmentType: "shipping", shopId });
   if (!shippingRecord) {

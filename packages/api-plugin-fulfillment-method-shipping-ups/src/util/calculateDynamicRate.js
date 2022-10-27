@@ -3,11 +3,11 @@
  * @param {Object} currentOrder - Current order which provide required details to perform rate calculation
  * @returns {Object} methodData - additional data
  */
-function getUPSData() {
+function getDynamicRateData() {
   // currentOrder details could be passed in here and used as input to obtain any external data
   return {
-    gqlType: "upsData",
-    upsData: "This is additional STRING data from Shipping - UPS"
+    gqlType: "dynamicRateData",
+    dynamicRateData: "This is additional STRING data from Shipping - DynamicRate"
   };
 }
 /**
@@ -16,7 +16,7 @@ function getUPSData() {
  * @param {Object} currentOrder - Current order which provide required details to perform rate calculation
  * @returns {Object} updatedMethod - with the rate details populated
  */
-export default function calculateUPSRate(method, currentOrder) {
+export default function calculateDynamicRate(method, currentOrder) {
   // Collect order specific details for calculating the rates
   // const { items, shippingAddress } = currentOrder;
 
@@ -26,8 +26,8 @@ export default function calculateUPSRate(method, currentOrder) {
   const updatedMethod = method;
   updatedMethod.rate = 10;
   updatedMethod.handling = 20;
-  updatedMethod.carrier = "UPS";
-  updatedMethod.methodAdditionalData = getUPSData(currentOrder);
+  updatedMethod.carrier = "DynamicRate";
+  updatedMethod.methodAdditionalData = getDynamicRateData(currentOrder);
 
   return updatedMethod;
 }
