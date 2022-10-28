@@ -35,7 +35,7 @@
     "envalid": "^6.0.2",
     "node-fetch": "~2.6.2",
     "sharp": "^0.30.7",
-    "simpl-schema": "~1.10.2"
+    "simpl-schema": "~1.13.1"
   },
   "devDependencies": {
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
