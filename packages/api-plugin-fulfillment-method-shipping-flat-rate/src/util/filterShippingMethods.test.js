@@ -900,7 +900,7 @@ test("deny method - nested attribute - subtotal.amount is less than $100, item r
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
@@ -938,7 +938,7 @@ test("deny method - nested attributes - parcel.weight is greater than 50, no ite
     }
   ];
 
-  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+  mockContext.collections.FulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
