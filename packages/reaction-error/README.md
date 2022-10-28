@@ -1,6 +1,5 @@
 # reaction-error
 
-
 [![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/reaction-error.svg)](https://www.npmjs.com/package/@reactioncommerce/reaction-error)
 [![CircleCI](https://circleci.com/gh/reactioncommerce/reaction-error.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction-error)
 

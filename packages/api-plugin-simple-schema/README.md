@@ -19,7 +19,7 @@ Then add a reference in `plugins.json`, using any key you want. The order in whi
 
 ```json
 {
-  simpleSchema: "@reactioncommerce/api-plugin-simple-schema"
+  "simpleSchema": "@reactioncommerce/api-plugin-simple-schema"
 }
 ```
 
@@ -38,8 +38,8 @@ export default async function register(app) {
   await app.registerPlugin({
     // ...
     simpleSchemas: {
-      Product: ProductSchema
-    }
+      Product: ProductSchema,
+    },
   });
 }
 ```
@@ -51,7 +51,7 @@ And on the other side, if you have a plugin that wants to extend some of the sch
 ```js
 export default function preStartup(context) {
   context.simpleSchemas.Product.extend({
-    price: PriceRange
+    price: PriceRange,
   });
 }
 ```
@@ -61,7 +61,9 @@ This could be done in a `startup` function, but because startup code sometimes v
 A plugin that extends schemas but never calls `new SimpleSchema()` anywhere need not list the `simpl-schema` NPM package as a dependency.
 
 ## Developer Certificate of Origin
+
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+
 ```
 Signed-off-by: Jane Doe <jane.doe@example.com>
 ```
@@ -76,17 +78,16 @@ If you forget to sign your commits, the DCO bot will remind you and give you det
 
 ## License
 
-   Copyright 2020 Reaction Commerce
+Copyright 2020 Reaction Commerce
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
        http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

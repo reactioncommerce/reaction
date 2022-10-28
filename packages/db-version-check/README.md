@@ -32,11 +32,13 @@ const ok = await doesDatabaseVersionMatch({
     // so we can assume all our data will be at the latest version
     // and mark it as such in the database.
     return !anyAccount;
-  }
+  },
 });
 
 if (!ok) {
-  throw new Error('Database needs migrating. The "my-package-name" namespace must be at version 2.');
+  throw new Error(
+    'Database needs migrating. The "my-package-name" namespace must be at version 2.'
+  );
 }
 ```
 
@@ -50,7 +52,9 @@ To ensure that all contributors follow the correct message convention, each time
 The `@reactioncommerce/db-version-check` package is automatically published by CI when commits are merged or pushed to the `trunk` branch.
 
 ## Developer Certificate of Origin
+
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing-off all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+
 ```
 Signed-off-by: Jane Doe <jane.doe@example.com>
 ```
@@ -64,6 +68,7 @@ We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO
 If you forget to sign-off your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
 
 ## License
+
 Copyright 2020 Reaction Commerce
 
 Licensed under the Apache License, Version 2.0 (the "License");

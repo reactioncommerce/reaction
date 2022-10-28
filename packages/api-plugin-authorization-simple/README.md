@@ -15,17 +15,21 @@ A secondary function, `userHasPermission`, is also available on the `context`. T
 
 ## Usage
 
-`permissions` are attached to account `Groups`, initially by being copied from [defaultRoles.js](https://github.com/reactioncommerce/reaction/blob/trunk/src/core-services/account/util/defaultRoles.js) on startup. Each account can belong to as may groups as needed (including not belonging to any group), and is granted *all* `permissions` from *all* the groups they belong to. This package provides the function `permissionsByUserId` which does the work to build a list of all the `permissions` the user is granted.
+`permissions` are attached to account `Groups`, initially by being copied from [defaultRoles.js](https://github.com/reactioncommerce/reaction/blob/trunk/src/core-services/account/util/defaultRoles.js) on startup. Each account can belong to as may groups as needed (including not belonging to any group), and is granted _all_ `permissions` from _all_ the groups they belong to. This package provides the function `permissionsByUserId` which does the work to build a list of all the `permissions` the user is granted.
 
 ### Checking permissions
 
 The `validatePermissions` function (and `userHasPermission`) takes three parameters: `resource`, `action`, and `context`. For example, this call is checking to see if the current user has permission to `cancel an item` on this particular order:
 
 ```js
-await context.validatePermissions(`reaction:legacy:orders:${order._id}`, "cancel:item", {
-  shopId: order.shopId,
-  owner: order.accountId
-});
+await context.validatePermissions(
+  `reaction:legacy:orders:${order._id}`,
+  "cancel:item",
+  {
+    shopId: order.shopId,
+    owner: order.accountId,
+  }
+);
 ```
 
 #### Resource
@@ -37,7 +41,7 @@ For our purposes in Reaction code:
 - `organization` will always be `reaction`.
 - `system` is the service or group of services that provide the resource we want to access control. It will always be `legacy` if the code lives within the Reaction API project, and will be the package name (i.e. `simple-authorization`) if the code live outside of the Reaction API project.
 - `entity` is the actual data entity to access control, such as an `orders`. Entity names are always plural.
-- `id`  is the actual ID of a data entity to access control. This is for super granular Policies and will most of the time be omitted or described with just a * meaning "all IDs".
+- `id` is the actual ID of a data entity to access control. This is for super granular Policies and will most of the time be omitted or described with just a \* meaning "all IDs".
 
 #### Action
 
@@ -57,6 +61,7 @@ Context is used to pass any extra information to the permissions check. We use i
 - `validatePermissions` ([See code here](https://github.com/reactioncommerce/reaction/blob/8b3d66d758c8fe0e2ba1df1958767587ddb7a046/src/core/util/buildContext.js#L46-L49)), is created from the value of `context.userHasPermission`, If `userHasPermissions === true`, `validatePermissions` does nothing, and lets the rest of the function continue to run. If `userHasPermission === false`, `validatePermissions` throws an `Access Denied` error.
 
 ## Using this package
+
 Import this package into the [registerPlugins.js](https://github.com/reactioncommerce/reaction/blob/8b3d66d758c8fe0e2ba1df1958767587ddb7a046/src/registerPlugins.js) file in the Reaction API, and then await its `registerPlugin` function:
 
 ```js
@@ -65,7 +70,9 @@ await registerSimpleAuthorizationPlugin(app);
 ```
 
 ## Developer Certificate of Origin
+
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+
 ```
 Signed-off-by: Jane Doe <jane.doe@example.com>
 ```
@@ -79,16 +86,17 @@ We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO
 If you forget to sign your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
 
 ## License
-   Copyright 2020 Reaction Commerce
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Copyright 2020 Reaction Commerce
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
        http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
