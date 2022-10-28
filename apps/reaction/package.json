@@ -68,7 +68,7 @@
     "@snyk/protect": "latest",
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
-    "sharp": "^0.29.3"
+    "sharp": "^0.30.5"
   },
   "devDependencies": {
     "@reactioncommerce/data-factory": "~1.0.1",
