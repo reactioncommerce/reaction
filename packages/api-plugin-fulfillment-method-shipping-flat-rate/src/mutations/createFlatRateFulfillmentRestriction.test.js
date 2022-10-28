@@ -8,7 +8,6 @@ mockContext.collections.FulfillmentRestrictions = mockCollection("FulfillmentRes
 mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
 test("add a flat rate fulfillment restriction", async () => {
-  // mockContext.collections.FlatRateFulfillmentRestrictions.insertOne.mockReturnValueOnce(Promise.resolve({}));
   mockContext.collections.FulfillmentRestrictions.insertOne.mockReturnValueOnce(Promise.resolve({}));
 
   const result = await createFlatRateFulfillmentRestrictionMutation(mockContext, {
