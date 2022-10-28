@@ -172,13 +172,13 @@ importers:
       '@reactioncommerce/api-plugin-shops': 1.3.0
       '@reactioncommerce/api-plugin-simple-schema': 1.0.3
       '@reactioncommerce/api-plugin-sitemap-generator': 1.2.3
-      '@reactioncommerce/api-plugin-surcharges': 1.1.7
+      '@reactioncommerce/api-plugin-surcharges': 1.1.8
       '@reactioncommerce/api-plugin-system-information': 1.1.4
       '@reactioncommerce/api-plugin-tags': 1.2.0
       '@reactioncommerce/api-plugin-taxes': 1.1.3
       '@reactioncommerce/api-plugin-taxes-flat-rate': 1.0.8
       '@reactioncommerce/api-plugin-translations': 1.2.2
-      '@reactioncommerce/api-utils': 1.16.9
+      '@reactioncommerce/api-utils': 1.17.0
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/db-version-check': 1.0.0
       '@reactioncommerce/eslint-config': ~2.2.0
@@ -245,7 +245,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1038.0
+      '@snyk/protect': 1.1044.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -1206,7 +1206,7 @@ importers:
     specifiers:
       '@babel/core': ^7.7.7
       '@babel/preset-env': ^7.7.7
-      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/api-utils': ^1.17.0
       '@reactioncommerce/babel-remove-es-create-require': ~1.0.0
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/random': ^1.0.2
@@ -4820,8 +4820,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1038.0:
-    resolution: {integrity: sha512-68GuFnFVcQz6eFwTwN9jBbiLY1OWIFL+qHwxa3TBA4+kliOPVeBrfQ49vyGR0o5WAR1ZgTWn8+3b/OLkRe2SXg==}
+  /@snyk/protect/1.1044.0:
+    resolution: {integrity: sha512-Wi6zmOMsyM2FRlxvqLo3opf7SDvcpWWR3RGJVHPVg6uh7VByAYrKome1zl8WRUaBr4qfEpL0jJLFKaBkHYUlAg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
