@@ -44,11 +44,9 @@ if (!ok) {
 
 To ensure that all contributors follow the correct message convention, each time you commit your message will be validated with the [commitlint](https://www.npmjs.com/package/@commitlint/cli) package, enabled by the [husky](https://www.npmjs.com/package/husky) Git hooks manager.
 
-Examples of commit messages: https://github.com/semantic-release/semantic-release
-
 ## Publication to NPM
 
-The `@reactioncommerce/db-version-check` package is automatically published by CI when commits are merged or pushed to the `trunk` branch. This is done using [semantic-release](https://www.npmjs.com/package/semantic-release), which also determines version bumps based on conventional Git commit messages.
+The `@reactioncommerce/db-version-check` package is automatically published by CI when commits are merged or pushed to the `trunk` branch.
 
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing-off all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
