@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getCartById from "../util/getCartById.js";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -30,7 +29,7 @@ export default async function selectFulfillmentOptionForGroup(context, input) {
 
   const { cartId, cartToken, fulfillmentGroupId, fulfillmentMethodId } = cleanedInput;
 
-  const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
+  const cart = await context.queries.getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 
   const fulfillmentGroup = (cart.shipping || []).find((group) => group._id === fulfillmentGroupId);
   if (!fulfillmentGroup) throw new ReactionError("not-found", `Fulfillment group with ID ${fulfillmentGroupId} not found in cart with ID ${cartId}`);
