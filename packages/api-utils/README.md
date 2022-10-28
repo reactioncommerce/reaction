@@ -2,7 +2,6 @@
 
 [![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-utils.svg)](https://www.npmjs.com/package/@reactioncommerce/api-utils)
 [![CircleCI](https://circleci.com/gh/reactioncommerce/api-utils.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-utils)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 Utility functions for the Reaction API.
 
@@ -27,6 +26,3 @@ Refer to [package docs](https://github.com/reactioncommerce/api-utils/tree/trunk
 ## Releases
 
 This NPM package is published automatically on every push to the `trunk` branch. Be sure to use proper Git commit messages so that the version will be bumped properly and release notes can be automatically generated.
-
-- Refer to https://github.com/semantic-release/semantic-release#commit-message-format
-- To avoid triggering a release, such as for a README-only change, include `[skip release]` in your commit message.
