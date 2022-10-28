@@ -73,4 +73,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* Set up lerna and semantic-release ([5f38fe1](https://github.com/reactioncommerce/reaction-file-collections/commit/5f38fe1))
+* Set up lerna ([5f38fe1](https://github.com/reactioncommerce/reaction-file-collections/commit/5f38fe1))
