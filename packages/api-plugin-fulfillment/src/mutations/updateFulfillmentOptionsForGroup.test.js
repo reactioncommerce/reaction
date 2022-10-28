@@ -2,7 +2,7 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import Factory from "../tests/factory.js";
 import updateFulfillmentOptionsForGroup from "./updateFulfillmentOptionsForGroup.js";
 
-jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
+mockContext.queries.getCartById = jest.fn().mockName("getCartById").mockReturnValueOnce(Promise.resolve({
   _id: "cartId",
   items: [{
     _id: "123",
@@ -21,7 +21,7 @@ jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promis
     itemIds: ["123"],
     type: "shipping"
   }]
-})));
+}));
 
 const fakeCart = Factory.Cart.makeOne();
 const fakeQuote = Factory.ShipmentQuote.makeOne();

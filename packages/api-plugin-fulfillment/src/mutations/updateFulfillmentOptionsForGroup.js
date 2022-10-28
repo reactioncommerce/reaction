@@ -1,7 +1,6 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getCartById from "../util/getCartById.js";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -66,7 +65,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
 
   const { cartId, cartToken, fulfillmentGroupId } = cleanedInput;
 
-  const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
+  const cart = await context.queries.getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 
   // This is done by `saveCart`, too, but we need to do it before every call to `getCommonOrderForCartGroup`
   // to avoid errors in the case where a product has been deleted since the last time this cart was saved.
