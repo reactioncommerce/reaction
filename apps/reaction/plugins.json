@@ -31,7 +31,7 @@
   "fulfillment": "@reactioncommerce/api-plugin-fulfillment",
   "fulfillmentTypeShipping": "@reactioncommerce/api-plugin-fulfillment-type-shipping",
   "fulfillmentMethodShippingFlatRate": "@reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate",
-  "fulfillmentMethodShippingUPS": "@reactioncommerce/api-plugin-fulfillment-method-shipping-ups",
+  "fulfillmentMethodShippingDynamicRate": "@reactioncommerce/api-plugin-fulfillment-method-shipping-dynamic-rate",
   "fulfillmentTypePickup": "@reactioncommerce/api-plugin-fulfillment-type-pickup",
   "fulfillmentMethodPickupStore": "@reactioncommerce/api-plugin-fulfillment-method-pickup-store",
   "taxes": "@reactioncommerce/api-plugin-taxes",
