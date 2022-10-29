@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import checkAndCreateFulfillmentMethod from "./util/checkAndCreateFulfillmentMethod";
+import checkAndCreateFulfillmentMethod from "./util/checkAndCreateFulfillmentMethod.js";
 /**
  * @summary Called on startup to create the root entry of this fulfillment type in Fulfillment collection
  * @param {Object} context Startup context
