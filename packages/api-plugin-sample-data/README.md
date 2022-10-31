@@ -2,7 +2,6 @@
 
 [![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-example.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-example)
 [![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-example.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-example)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Summary
 
@@ -386,7 +385,7 @@ password: password
 
 ### `.circleci/`
 
-Adds CI scripts that enable Circle CI to run tests, lint, and semantic release your project. The `semantic-release` portions of the script are commented out, and should be uncommented in a PR once your plugin is ready to be released.
+Adds CI scripts that enable Circle CI to run tests and lint your project.
 
 ### `src/`
 
@@ -414,7 +413,7 @@ If your plugin uses `Apache 2` licensing, you can leave this file as-is. If anot
 
 ### `package.json`
 
-The provided `package.json` is set up to install all needed packages and config for linting, testing, and semantic-release. You'll need to update the `name`, `description`, and add any new dependencies your plugin files use.
+The provided `package.json` is set up to install all needed packages and config for linting and testing. You'll need to update the `name`, `description`, and add any new dependencies your plugin files use.
 
 ### `index.js`
 
