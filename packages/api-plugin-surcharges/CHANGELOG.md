@@ -1,5 +1,14 @@
 # @reactioncommerce/api-plugin-surcharges
 
+## 1.1.8
+
+### Patch Changes
+
+- [#6576](https://github.com/reactioncommerce/reaction/pull/6576) [`bb93339fb`](https://github.com/reactioncommerce/reaction/commit/bb93339fb4da5b1cb131a9e0bf50e502433d519d) Thanks [@sushmitha-malae](https://github.com/sushmitha-malae)! - Fixed Update surcharge mutation to return the whole item from db
+
+- Updated dependencies [[`8c5645764`](https://github.com/reactioncommerce/reaction/commit/8c5645764a746ce4171747072eacfe87bf62abe3)]:
+  - @reactioncommerce/api-utils@1.17.0
+
 ## 1.1.7
 
 ### Patch Changes
