@@ -1,20 +1,22 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import selectFulfillmentOptionForGroup from "./selectFulfillmentOptionForGroup.js";
 
-mockContext.queries.getCartById = jest.fn().mockName("getCartById").mockReturnValueOnce(Promise.resolve({
-  _id: "cartId",
-  shipping: [{
-    _id: "group1",
-    itemIds: ["123"],
-    shipmentQuotes: [{
-      rate: 0,
-      method: {
-        _id: "valid-method"
-      }
-    }],
-    type: "shipping"
-  }]
-}));
+beforeEach(() => {
+  mockContext.queries.getCartById = jest.fn().mockName("getCartById").mockReturnValueOnce(Promise.resolve({
+    _id: "cartId",
+    shipping: [{
+      _id: "group1",
+      itemIds: ["123"],
+      shipmentQuotes: [{
+        rate: 0,
+        method: {
+          _id: "valid-method"
+        }
+      }],
+      type: "shipping"
+    }]
+  }));
+});
 
 beforeAll(() => {
   if (!mockContext.mutations.saveCart) {
