@@ -2,26 +2,6 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import Factory from "../tests/factory.js";
 import updateFulfillmentOptionsForGroup from "./updateFulfillmentOptionsForGroup.js";
 
-mockContext.queries.getCartById = jest.fn().mockName("getCartById").mockReturnValueOnce(Promise.resolve({
-  _id: "cartId",
-  items: [{
-    _id: "123",
-    price: {
-      amount: 19.99
-    },
-    priceWhenAdded: {
-      amount: 19.99
-    },
-    subtotal: {
-      amount: 19.99
-    }
-  }],
-  shipping: [{
-    _id: "group1",
-    itemIds: ["123"],
-    type: "shipping"
-  }]
-}));
 
 const fakeCart = Factory.Cart.makeOne();
 const fakeQuote = Factory.ShipmentQuote.makeOne();
@@ -43,6 +23,27 @@ beforeAll(() => {
 
 beforeEach(() => {
   mockGetFulfillmentMethodsWithQuotes.mockClear();
+
+  mockContext.queries.getCartById = jest.fn().mockName("getCartById").mockReturnValueOnce(Promise.resolve({
+    _id: "cartId",
+    items: [{
+      _id: "123",
+      price: {
+        amount: 19.99
+      },
+      priceWhenAdded: {
+        amount: 19.99
+      },
+      subtotal: {
+        amount: 19.99
+      }
+    }],
+    shipping: [{
+      _id: "group1",
+      itemIds: ["123"],
+      type: "shipping"
+    }]
+  }));
 });
 
 test("updates cart properly for empty rates", async () => {
