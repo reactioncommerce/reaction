@@ -6,7 +6,8 @@
   <a href="https://mailchimp.com/developer/open-commerce/">Open Commerce Website</a> |
   <a href="https://twitter.com/getreaction">Twitter</a> |
   <a href="https://mailchimp.com/developer/open-commerce/">Documentation</a> |
-  <a href="https://discord.gg/Bwm63tBcQY">Discord</a>
+  <a href="https://discord.gg/Bwm63tBcQY">Discord</a> |
+  <a href="https://github.com/reactioncommerce/reaction/discussions">Discussions</a>
 </h4>
 
 [Mailchimp Open Commerce](https://mailchimp.com/developer/open-commerce/) is an API-first, headless commerce platform built using Node.js, MongoDB, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
