@@ -45,6 +45,7 @@ beforeAll(async () => {
         actionKey: "mockActionKey",
         promotionId: "mockPromotionId",
         rules: { conditions: {}, event: { type: "mockType", params: {} } },
+        discountType: "order",
         discountCalculationType: "fixed",
         discountValue: 25124,
         dateApplied: new Date()
