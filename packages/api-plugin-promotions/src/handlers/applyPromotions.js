@@ -47,7 +47,6 @@ export default async function applyPromotions(context, cart, explicitPromotion =
   const promotions = await getImplicitPromotions(context, cart.shopId);
   const { promotions: pluginPromotions, simpleSchemas: { Cart } } = context;
 
-  let enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
   const actionHandleByKey = _.keyBy(context.promotions.actions, "key");
 
@@ -59,6 +58,7 @@ export default async function applyPromotions(context, cart, explicitPromotion =
     unqualifiedPromotions.push(explicitPromotion);
   }
 
+  let enhancedCart = cart;
   for (const promotion of unqualifiedPromotions) {
     if (isPromotionExpired(promotion)) {
       continue;
@@ -69,6 +69,9 @@ export default async function applyPromotions(context, cart, explicitPromotion =
     if (!qualifies) {
       continue;
     }
+
+    // eslint-disable-next-line no-await-in-loop
+    enhancedCart = await enhanceCart(context, pluginPromotions.enhancers, enhancedCart);
 
     for (const trigger of promotion.triggers) {
       const { triggerKey, triggerParameters } = trigger;
