@@ -14,6 +14,8 @@ const logCtx = {
   file: "offerTriggerHandler.js"
 };
 
+const defaultFacts = [{ fact: "eligibleItems", handlerName: "getEligibleItems" }];
+
 /**
  * @summary apply all offers to the cart
  * @param {String} context - The application context
@@ -24,7 +26,10 @@ const logCtx = {
  * @returns {Promise<boolean>} - The answer with offers applied
  */
 export async function offerTriggerHandler(context, enhancedCart, { triggerParameters }) {
-  const { promotions: { operators } } = context;
+  const {
+    promotions: { operators },
+    promotionOfferFacts
+  } = context;
 
   const engine = new Engine();
   Object.keys(operators).forEach((operatorKey) => {
@@ -36,7 +41,13 @@ export async function offerTriggerHandler(context, enhancedCart, { triggerParame
       type: "rulesCheckPassed"
     }
   });
+
   const facts = { cart: enhancedCart };
+
+  const allFacts = [...defaultFacts, ...(triggerParameters.facts || [])];
+  for (const { fact, handlerName, fromFact } of allFacts) {
+    engine.addFact(fact, async (params, almanac) => promotionOfferFacts[handlerName](context, { ...triggerParameters, rulePrams: params, fromFact }, almanac));
+  }
 
   const results = await engine.run(facts);
   const { failureResults } = results;
