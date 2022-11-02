@@ -90,11 +90,6 @@ export const CartDiscountedItem = new SimpleSchema({
 export const CartDiscount = new SimpleSchema({
   "actionKey": String,
   "promotionId": String,
-  "rules": {
-    // because shipping discounts are evaluated later, they need to have inclusion rules on them
-    type: Rules,
-    optional: true
-  },
   "discountType": String,
   "discountCalculationType": String, // types provided by this plugin are flat, percentage and fixed
   "discountValue": Number,

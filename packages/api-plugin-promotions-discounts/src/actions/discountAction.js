@@ -61,9 +61,13 @@ export const discountActionParameters = new SimpleSchema({
     type: Number
   },
   condition: {
-    type: Conditions
+    type: Conditions,
+    optional: true
   },
-  rules: {
+  inclusionRules: {
+    type: Rules
+  },
+  exclusionRules: {
     type: Rules,
     optional: true
   }
@@ -87,7 +91,7 @@ export async function discountActionHandler(context, cart, { promotion, actionPa
   const { cart: updatedCart } = await functionMap[discountType](context, actionParameters, cart);
 
   Logger.info(logCtx, "Completed applying Discount to Cart");
-  return updatedCart;
+  return { updatedCart };
 }
 
 export default {

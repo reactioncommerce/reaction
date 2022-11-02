@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
+import getEligibleItems from "../../../utils/getEligibleItems.js";
 import getCartDiscountAmount from "./getCartDiscountAmount.js";
 import splitDiscountForCartItems from "./splitDiscountForCartItems.js";
 
@@ -39,27 +40,30 @@ export function createDiscountRecord(discount, discountedItems, discountedAmount
 /**
  * @summary Apply the order discount to the cart
  * @param {Object} context - The application context
- * @param {Object} discount - The discount to apply
+ * @param {Object} discountParameters - The discount to apply
  * @param {Object} cart - The cart to apply the discount to
  * @returns {Promise<Object>} The updated cart
  */
-export default async function applyOrderDiscountToCart(context, discount, cart) {
+export default async function applyOrderDiscountToCart(context, discountParameters, cart) {
   cart.discounts = cart.discounts || [];
   const existingDiscount = cart.discounts
-    .find((cartDiscount) => discount.actionKey === cartDiscount.actionKey && discount.promotionId === cartDiscount.promotionId);
+    .find((cartDiscount) => discountParameters.actionKey === cartDiscount.actionKey && discountParameters.promotionId === cartDiscount.promotionId);
   if (existingDiscount) {
     Logger.warn(logCtx, "Not adding discount because it already exists");
     return { cart };
   }
 
-  const discountAmount = getCartDiscountAmount(context, cart, discount);
-  const discountedItems = splitDiscountForCartItems(discountAmount, cart.items);
+  const discountAmount = getCartDiscountAmount(context, cart, discountParameters);
+  const filteredItems = await getEligibleItems(context, cart.items, discountParameters);
+  const discountedItems = splitDiscountForCartItems(discountAmount, filteredItems);
 
-  cart.discounts.push(createDiscountRecord(discount, discountedItems, discountAmount));
+  cart.discounts.push(createDiscountRecord(discountParameters, discountedItems, discountAmount));
 
-  for (const cartItem of cart.items) {
-    const itemDiscount = discountedItems.find((item) => item._id === cartItem._id);
-    cartItem.discounts.push(createDiscountRecord(discount, undefined, itemDiscount.amount));
+  for (const discountedItem of discountedItems) {
+    const cartItem = cart.items.find((item) => item._id === discountedItem._id);
+    if (cart.items.find((item) => item._id === discountedItem._id)) {
+      cartItem.discounts.push(createDiscountRecord(discountParameters, undefined, discountedItem.amount));
+    }
   }
 
   return { cart };
