@@ -8,7 +8,7 @@ import accounting from "accounting-js";
  */
 export default function recalculateCartItemSubtotal(context, item) {
   let totalDiscount = 0;
-  const undiscountedAmount = item.price.amount * item.quantity;
+  const undiscountedAmount = Number(accounting.toFixed(item.price.amount * item.quantity, 2));
 
   item.discounts.forEach((discount) => {
     const { discountedAmount, discountCalculationType, discountValue, discountType } = discount;

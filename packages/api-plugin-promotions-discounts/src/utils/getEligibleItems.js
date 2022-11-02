@@ -1,18 +1,17 @@
-import createEngine from "../utils/engineHelpers.js";
+import createEngine from "./engineHelpers.js";
 
 /**
  * @summary return items from the cart that meet inclusion criteria
  * @param {Object} context - The application context
- * @param {Object} params - the cart to evaluate for eligible items
- * @param {Object} almanac - the rule to evaluate against
+ * @param {Array<Object>} items - The cart items to evaluate for eligible items
+ * @param {Object} parameters - The parameters to evaluate against
  * @return {Promise<Array<Object>>} - An array of eligible cart items
  */
-export default async function getEligibleItems(context, params, almanac) {
-  const cart = await almanac.factValue("cart");
+export default async function getEligibleItems(context, items, parameters) {
   const eligibleItems = [];
-  if (params.inclusionRule) {
-    const engine = createEngine(context, params.inclusionRule);
-    for (const item of cart.items) {
+  if (parameters.inclusionRule) {
+    const engine = createEngine(context, parameters.inclusionRule);
+    for (const item of items) {
       const facts = { item };
 
       // eslint-disable-next-line no-await-in-loop
@@ -23,12 +22,12 @@ export default async function getEligibleItems(context, params, almanac) {
       }
     }
   } else {
-    eligibleItems.push(...cart.items);
+    eligibleItems.push(...items);
   }
 
   const filteredItems = [];
-  if (eligibleItems.length > 0 && params.exclusionRule) {
-    const engine = createEngine(context, params.exclusionRule);
+  if (eligibleItems.length > 0 && parameters.exclusionRule) {
+    const engine = createEngine(context, parameters.exclusionRule);
     for (const item of eligibleItems) {
       const facts = { item };
       // eslint-disable-next-line no-await-in-loop

@@ -58,7 +58,7 @@ export default async function applyPromotions(context, cart, explicitPromotion =
     unqualifiedPromotions.push(explicitPromotion);
   }
 
-  let enhancedCart = cart;
+  const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   for (const promotion of unqualifiedPromotions) {
     if (isPromotionExpired(promotion)) {
       continue;
@@ -70,9 +70,6 @@ export default async function applyPromotions(context, cart, explicitPromotion =
       continue;
     }
 
-    // eslint-disable-next-line no-await-in-loop
-    enhancedCart = await enhanceCart(context, pluginPromotions.enhancers, enhancedCart);
-
     for (const trigger of promotion.triggers) {
       const { triggerKey, triggerParameters } = trigger;
       const triggerFn = triggerHandleByKey[triggerKey];
@@ -83,10 +80,10 @@ export default async function applyPromotions(context, cart, explicitPromotion =
       if (!shouldApply) continue;
 
       // eslint-disable-next-line no-await-in-loop
-      const results = await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
-      if (results && results.updatedCart) {
-        enhancedCart = results.updatedCart;
-      }
+      await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
+      // if (results && results.updatedCart) {
+      //   enhancedCart = results.updatedCart;
+      // }
       appliedPromotions.push(promotion);
       break;
     }

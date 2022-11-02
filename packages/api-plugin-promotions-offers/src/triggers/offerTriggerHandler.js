@@ -1,6 +1,6 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
-import { Engine } from "json-rules-engine";
+import createEngine from "../utils/engineHelpers.js";
 import { OfferTriggerParameters } from "../simpleSchemas.js";
 
 const require = createRequire(import.meta.url);
@@ -26,21 +26,9 @@ const defaultFacts = [{ fact: "eligibleItems", handlerName: "getEligibleItems" }
  * @returns {Promise<boolean>} - The answer with offers applied
  */
 export async function offerTriggerHandler(context, enhancedCart, { triggerParameters }) {
-  const {
-    promotions: { operators },
-    promotionOfferFacts
-  } = context;
+  const { promotionOfferFacts } = context;
 
-  const engine = new Engine();
-  Object.keys(operators).forEach((operatorKey) => {
-    engine.addOperator(operatorKey, operators[operatorKey]);
-  });
-  engine.addRule({
-    ...triggerParameters,
-    event: {
-      type: "rulesCheckPassed"
-    }
-  });
+  const engine = createEngine(context, triggerParameters);
 
   const facts = { cart: enhancedCart };
 
