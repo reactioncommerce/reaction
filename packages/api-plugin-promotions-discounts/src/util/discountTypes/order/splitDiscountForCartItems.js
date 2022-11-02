@@ -8,10 +8,9 @@ import accounting from "accounting-js";
  */
 export default function splitDiscountForCartItems(totalDiscount, cartItems) {
   const totalItemPrice = cartItems.reduce((acc, item) => acc + item.subtotal.amount, 0);
-  const discountForEachItem = {};
-  cartItems.forEach((item) => {
+  const discountForEachItems = cartItems.map((item) => {
     const discount = (item.subtotal.amount / totalItemPrice) * totalDiscount;
-    discountForEachItem[item._id] = Number(accounting.toFixed(discount, 2));
+    return { _id: item._id, amount: Number(accounting.toFixed(discount, 2)) };
   });
-  return Object.keys(discountForEachItem).map((key) => ({ _id: key, amount: discountForEachItem[key] }));
+  return discountForEachItems;
 }

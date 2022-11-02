@@ -1,6 +1,6 @@
 import { createRequire } from "module";
-import { Engine } from "json-rules-engine";
 import Logger from "@reactioncommerce/logger";
+import getEligibleItems from "../../../utils/getEligibleItems.js";
 
 const require = createRequire(import.meta.url);
 
@@ -61,35 +61,12 @@ export async function addDiscountToItem(context, discount, { item }) {
 export default async function applyItemDiscountToCart(context, discountParameters, cart) {
   const allResults = [];
   const discountedItems = [];
-  const { promotions: { operators } } = context;
-  if (discountParameters.rules) {
-    const engine = new Engine();
-    engine.addRule({
-      ...discountParameters.rules,
-      event: {
-        type: "rulesCheckPassed"
-      }
-    });
-    Object.keys(operators).forEach((operatorKey) => {
-      engine.addOperator(operatorKey, operators[operatorKey]);
-    });
 
-    for (const item of cart.items) {
-      // eslint-disable-next-line no-unused-vars
-      engine.on("success", (event, almanac, ruleResult) => {
-        discountedItems.push(item);
-        addDiscountToItem(context, discountParameters, { item });
-      });
-      const facts = { item };
-      // eslint-disable-next-line no-await-in-loop
-      const results = await engine.run(facts);
-      allResults.push(results);
-    }
-  } else {
-    for (const item of cart.items) {
-      discountedItems.push(item);
-      addDiscountToItem(context, discountParameters, { item });
-    }
+  const filteredItems = await getEligibleItems(context, cart.items, discountParameters);
+
+  for (const item of filteredItems) {
+    addDiscountToItem(context, discountParameters, { item });
+    discountedItems.push(item);
   }
 
   if (discountedItems.length) {
