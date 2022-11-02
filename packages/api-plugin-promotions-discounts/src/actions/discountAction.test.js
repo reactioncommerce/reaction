@@ -55,22 +55,3 @@ test("should call discount shipping function when discountType parameters is shi
   discountAction.handler(context, cart, params);
   expect(applyShippingDiscountToCart).toHaveBeenCalledWith(context, params.actionParameters, cart);
 });
-
-test("should return updatedCart when action is completed", async () => {
-  const modifiedCart = {
-    _id: "modifiedCartId"
-  };
-  applyItemDiscountToCart.mockResolvedValueOnce({
-    cart: modifiedCart
-  });
-  const context = {};
-  const cart = {};
-  const params = {
-    promotion: {},
-    actionParameters: {
-      discountType: "item"
-    }
-  };
-  const updatedCart = await discountAction.handler(context, cart, params);
-  expect(updatedCart).toEqual(modifiedCart);
-});
