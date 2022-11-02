@@ -9,7 +9,7 @@
           "methodLabel": "Store",
           "rateSaved": "Fulfillment method saved",
           "rateFailed": "Fulfillment method update failed",
-          "noUPSRatesFound": "No Store pickup fulfillment methods found"
+          "noRatesFound": "No Store pickup fulfillment methods found"
         },
         "pickupGrid": {
           "name": "Name",

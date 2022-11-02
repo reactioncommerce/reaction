@@ -1,15 +1,15 @@
 [{
   "i18n": "en",
-  "ns": "reaction-shipping-ups",
+  "ns": "reaction-shipping-dynamic-rate",
   "translation": {
-    "reaction-shipping-ups": {
+    "reaction-shipping-dynamic-rate": {
       "admin": {
         "shippingSettings": {
           "header": "Shipping",
-          "methodLabel": "UPS",
+          "methodLabel": "Dynamic Rate",
           "rateSaved": "Fulfillment method saved",
           "rateFailed": "Fulfillment method update failed",
-          "noUPSRatesFound": "No UPS fulfillment methods found"
+          "noRatesFound": "No dynamic rate fulfillment methods found"
         },
         "shippingGrid": {
           "name": "Name",
