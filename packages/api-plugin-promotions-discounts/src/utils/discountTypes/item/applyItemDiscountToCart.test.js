@@ -18,15 +18,17 @@ test("createItemDiscount should return correct discount item object", () => {
 
   const discount = {
     actionKey: "test",
-    promotionId: "promotion1",
-    discountType: "test",
-    discountCalculationType: "test",
-    discountValue: 10
+    promotion: {
+      _id: "promotion1"
+    },
+    actionParameters: {
+      discountType: "test",
+      discountCalculationType: "test",
+      discountValue: 10
+    }
   };
 
-  const discountedAmount = 2;
-
-  const itemDiscount = applyItemDiscountToCart.createItemDiscount(item, discount, discountedAmount);
+  const itemDiscount = applyItemDiscountToCart.createItemDiscount(item, discount);
 
   expect(itemDiscount).toEqual({
     actionKey: "test",
@@ -34,21 +36,22 @@ test("createItemDiscount should return correct discount item object", () => {
     discountType: "test",
     discountCalculationType: "test",
     discountValue: 10,
-    dateApplied: expect.any(Date),
-    discountedAmount: 2
+    dateApplied: expect.any(Date)
   });
 });
 
 test("addDiscountToItem should add discount to item", () => {
-  const discount = {
+  const parameters = {
     actionKey: "test",
-    promotionId: "promotion1",
-    discountType: "test",
-    discountCalculationType: "test",
-    discountValue: 10
+    promotion: {
+      _id: "promotion1"
+    },
+    actionParameters: {
+      discountType: "test",
+      discountCalculationType: "test",
+      discountValue: 10
+    }
   };
-
-  jest.spyOn(applyItemDiscountToCart, "createItemDiscount").mockReturnValue(discount);
 
   const item = {
     _id: "item1",
@@ -65,11 +68,9 @@ test("addDiscountToItem should add discount to item", () => {
     discounts: []
   };
 
-  const discountedAmount = 2;
+  const itemDiscount = applyItemDiscountToCart.createItemDiscount(item, parameters);
 
-  const itemDiscount = applyItemDiscountToCart.createItemDiscount(item, discount, discountedAmount);
-
-  applyItemDiscountToCart.addDiscountToItem({}, discount, { item });
+  applyItemDiscountToCart.addDiscountToItem({}, parameters, { item });
 
   expect(item.discounts).toEqual([
     {
@@ -102,10 +103,14 @@ test("should return cart with applied discount when parameters not include rule"
 
   const discountParameters = {
     actionKey: "test",
-    promotionId: "promotion1",
-    discountType: "test",
-    discountCalculationType: "test",
-    discountValue: 10
+    promotion: {
+      _id: "promotion1"
+    },
+    actionParameters: {
+      discountType: "test",
+      discountCalculationType: "test",
+      discountValue: 10
+    }
   };
 
   jest.spyOn(applyItemDiscountToCart, "addDiscountToItem").mockImplementation(() => {});
@@ -118,7 +123,6 @@ test("should return cart with applied discount when parameters not include rule"
 
   expect(result).toEqual({
     cart,
-    allResults: [],
     discountedItems: [item]
   });
 });
@@ -144,22 +148,26 @@ test("should return cart with applied discount when parameters include rule", as
     items: [item]
   };
 
-  const discountParameters = {
+  const parameters = {
     actionKey: "test",
-    promotionId: "promotion1",
-    discountType: "test",
-    discountCalculationType: "test",
-    discountValue: 10,
-    rules: {
-      conditions: {
-        any: [
-          {
-            fact: "item",
-            path: "$.quantity",
-            operator: "greaterThanInclusive",
-            value: 1
-          }
-        ]
+    promotion: {
+      _id: "promotion1"
+    },
+    actionParameters: {
+      discountType: "test",
+      discountCalculationType: "test",
+      discountValue: 10,
+      inclusionRule: {
+        conditions: {
+          any: [
+            {
+              fact: "item",
+              path: "$.quantity",
+              operator: "greaterThanInclusive",
+              value: 1
+            }
+          ]
+        }
       }
     }
   };
@@ -170,11 +178,10 @@ test("should return cart with applied discount when parameters include rule", as
     operators: {}
   };
 
-  const result = await applyItemDiscountToCart.default(mockContext, discountParameters, cart);
+  const result = await applyItemDiscountToCart.default(mockContext, parameters, cart);
 
   expect(result).toEqual({
     cart,
-    allResults: expect.any(Object),
     discountedItems: [item]
   });
 });

@@ -1,9 +1,9 @@
 import { createRequire } from "module";
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
-import applyItemDiscountToCart from "../util/discountTypes/item/applyItemDiscountToCart.js";
-import applyShippingDiscountToCart from "../util/discountTypes/shipping/applyShippingDiscountToCart.js";
-import applyOrderDiscountToCart from "../util/discountTypes/order/applyOrderDiscountToCart.js";
+import applyItemDiscountToCart from "../utils/discountTypes/item/applyItemDiscountToCart.js";
+import applyShippingDiscountToCart from "../utils/discountTypes/shipping/applyShippingDiscountToCart.js";
+import applyOrderDiscountToCart from "../utils/discountTypes/order/applyOrderDiscountToCart.js";
 
 const require = createRequire(import.meta.url);
 
@@ -21,25 +21,6 @@ const functionMap = {
   shipping: applyShippingDiscountToCart,
   order: applyOrderDiscountToCart
 };
-
-const Conditions = new SimpleSchema({
-  maxUses: {
-    // total number of uses
-    type: Number,
-    defaultValue: 1
-  },
-  maxUsesPerAccount: {
-    // Max uses per account
-    type: SimpleSchema.Integer,
-    defaultValue: 1,
-    optional: true
-  },
-  maxUsersPerOrder: {
-    // Max uses per order
-    type: Number,
-    defaultValue: 1
-  }
-});
 
 export const Rules = new SimpleSchema({
   conditions: {
@@ -60,10 +41,6 @@ export const discountActionParameters = new SimpleSchema({
   discountValue: {
     type: Number
   },
-  condition: {
-    type: Conditions,
-    optional: true
-  },
   inclusionRules: {
     type: Rules
   },
@@ -76,19 +53,15 @@ export const discountActionParameters = new SimpleSchema({
  * @summary Apply a percentage promotion to the cart
  * @param {Object} context - The application context
  * @param {Object} cart - The enhanced cart to apply promotions to
- * @param {Object} params.promotion - The promotion to apply
- * @param {Object} params.actionParameters - The parameters to pass to the action
+ * @param {Object} params - The action parameters
  * @returns {Promise<void>} undefined
  */
-export async function discountActionHandler(context, cart, { promotion, actionParameters }) {
-  const { discountType } = actionParameters;
+export async function discountActionHandler(context, cart, params) {
+  const { discountType } = params.actionParameters;
 
-  actionParameters.promotionId = promotion._id;
-  actionParameters.actionKey = "discounts";
+  Logger.info({ params, cartId: cart._id, ...logCtx }, "applying discount to cart");
 
-  Logger.info({ actionParameters, cartId: cart._id, ...logCtx }, "applying discount to cart");
-
-  const { cart: updatedCart } = await functionMap[discountType](context, actionParameters, cart);
+  const { cart: updatedCart } = await functionMap[discountType](context, params, cart);
 
   Logger.info(logCtx, "Completed applying Discount to Cart");
   return { updatedCart };
