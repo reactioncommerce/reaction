@@ -34,7 +34,10 @@ export async function offerTriggerHandler(context, enhancedCart, { triggerParame
 
   const allFacts = [...defaultFacts, ...(triggerParameters.facts || [])];
   for (const { fact, handlerName, fromFact } of allFacts) {
-    engine.addFact(fact, async (params, almanac) => promotionOfferFacts[handlerName](context, { ...triggerParameters, rulePrams: params, fromFact }, almanac));
+    engine.addFact(fact, (params, almanac) => {
+      const factParams = { ...triggerParameters, rulePrams: params, fromFact };
+      return promotionOfferFacts[handlerName](context, factParams, almanac);
+    });
   }
 
   const results = await engine.run(facts);
