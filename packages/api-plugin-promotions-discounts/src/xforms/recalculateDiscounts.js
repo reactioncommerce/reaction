@@ -1,4 +1,4 @@
-import addDiscountToOrderItem from "../util/discountTypes/item/addDiscountToOrderItem.js";
+import addDiscountToOrderItem from "../utils/discountTypes/item/addDiscountToOrderItem.js";
 
 /**
  * @summary Recalculates discounts on an order

@@ -16,21 +16,22 @@ const logCtx = {
 /**
  * @summary Add the discount to the shipping record
  * @param {Object} context - The application context
- * @param {Object} discount - The discount to apply
+ * @param {Object} params - The parameters to apply
  * @param {Object} param.shipping - The shipping record to apply the discount to
  * @returns {Promise<void>} undefined
  */
-async function addDiscountToShipping(context, discount, { shipping }) {
+async function addDiscountToShipping(context, params, { shipping }) {
   for (const shippingRecord of shipping) {
     if (shippingRecord.discounts) {
+      const { promotion: { _id: promotionId }, actionKey } = params;
       const existingDiscount = shippingRecord.discounts
-        .find((itemDiscount) => discount.actionKey === itemDiscount.actionKey && discount.promotionId === itemDiscount.promotionId);
+        .find((itemDiscount) => actionKey === itemDiscount.actionKey && promotionId === itemDiscount.promotionId);
       if (existingDiscount) {
         Logger.warn(logCtx, "Not adding discount because it already exists");
         return;
       }
     }
-    const cartDiscount = createShippingDiscount(shippingRecord, discount);
+    const cartDiscount = createShippingDiscount(shippingRecord, params);
     if (shippingRecord.discounts) {
       shippingRecord.discounts.push(cartDiscount);
     } else {
@@ -42,16 +43,17 @@ async function addDiscountToShipping(context, discount, { shipping }) {
 /**
  * @summary Create a discount object for a shipping record
  * @param {Object} item - The cart item
- * @param {Object} discount - The discount to create
+ * @param {Object} params - The action parameters
  * @returns {Object} - The shipping discount object
  */
-function createShippingDiscount(item, discount) {
+function createShippingDiscount(item, params) {
+  const { promotion: { _id }, actionParameters, actionKey } = params;
   const shippingDiscount = {
-    actionKey: discount.actionKey,
-    promotionId: discount.promotionId,
-    rules: discount.rules,
-    discountCalculationType: discount.discountCalculationType,
-    discountValue: discount.discountValue,
+    actionKey,
+    promotionId: _id,
+    rules: actionParameters.rules,
+    discountCalculationType: actionParameters.discountCalculationType,
+    discountValue: actionParameters.discountValue,
     dateApplied: new Date()
   };
   return shippingDiscount;
@@ -60,14 +62,14 @@ function createShippingDiscount(item, discount) {
 /**
  * @summary Apply a shipping discount to a cart
  * @param {Object} context - The application context
- * @param {Object} discount - The discount to apply
+ * @param {Object} params - The parameters to apply
  * @param {Object} cart - The cart to apply the discount to
  * @returns {Promise<Object>} The updated cart
  */
-export default async function applyShippingDiscountToCart(context, discount, cart) {
+export default async function applyShippingDiscountToCart(context, params, cart) {
   Logger.info(logCtx, "Applying shipping discount");
   const { shipping } = cart;
-  await addDiscountToShipping(context, discount, { shipping });
+  await addDiscountToShipping(context, params, { shipping });
 
   // Check existing shipping quotes and discount them
   Logger.info("Check existing shipping quotes and discount them");
