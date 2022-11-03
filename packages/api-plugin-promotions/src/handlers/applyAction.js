@@ -9,11 +9,10 @@
  */
 export default async function applyAction(context, enhancedCart, { promotion, actionHandleByKey }) {
   for (const action of promotion.actions) {
-    const { actionKey, actionParameters } = action;
-    const actionFn = actionHandleByKey[actionKey];
+    const actionFn = actionHandleByKey[action.actionKey];
     if (!actionFn) continue;
 
     // eslint-disable-next-line no-await-in-loop
-    await actionFn.handler(context, enhancedCart, { promotion, actionParameters });
+    await actionFn.handler(context, enhancedCart, { promotion, ...action });
   }
 }

@@ -1,11 +1,11 @@
-import applyItemDiscountToCart from "../util/discountTypes/item/applyItemDiscountToCart.js";
-import applyOrderDiscountToCart from "../util/discountTypes/order/applyOrderDiscountToCart.js";
-import applyShippingDiscountToCart from "../util/discountTypes/shipping/applyShippingDiscountToCart.js";
+import applyItemDiscountToCart from "../utils/discountTypes/item/applyItemDiscountToCart.js";
+import applyOrderDiscountToCart from "../utils/discountTypes/order/applyOrderDiscountToCart.js";
+import applyShippingDiscountToCart from "../utils/discountTypes/shipping/applyShippingDiscountToCart.js";
 import discountAction, { discountActionHandler, discountActionParameters } from "./discountAction.js";
 
-jest.mock("../util/discountTypes/item/applyItemDiscountToCart.js", () => jest.fn());
-jest.mock("../util/discountTypes/order/applyOrderDiscountToCart.js", () => jest.fn());
-jest.mock("../util/discountTypes/shipping/applyShippingDiscountToCart.js", () => jest.fn());
+jest.mock("../utils/discountTypes/item/applyItemDiscountToCart.js", () => jest.fn());
+jest.mock("../utils/discountTypes/order/applyOrderDiscountToCart.js", () => jest.fn());
+jest.mock("../utils/discountTypes/shipping/applyShippingDiscountToCart.js", () => jest.fn());
 
 beforeEach(() => jest.resetAllMocks());
 
@@ -27,7 +27,7 @@ test("should call discount item function when discountType parameters is item", 
     }
   };
   discountAction.handler(context, cart, params);
-  expect(applyItemDiscountToCart).toHaveBeenCalledWith(context, params.actionParameters, cart);
+  expect(applyItemDiscountToCart).toHaveBeenCalledWith(context, params, cart);
 });
 
 test("should call discount order function when discountType parameters is order", () => {
@@ -40,7 +40,7 @@ test("should call discount order function when discountType parameters is order"
     }
   };
   discountAction.handler(context, cart, params);
-  expect(applyOrderDiscountToCart).toHaveBeenCalledWith(context, params.actionParameters, cart);
+  expect(applyOrderDiscountToCart).toHaveBeenCalledWith(context, params, cart);
 });
 
 test("should call discount shipping function when discountType parameters is shipping", () => {
@@ -53,5 +53,5 @@ test("should call discount shipping function when discountType parameters is shi
     }
   };
   discountAction.handler(context, cart, params);
-  expect(applyShippingDiscountToCart).toHaveBeenCalledWith(context, params.actionParameters, cart);
+  expect(applyShippingDiscountToCart).toHaveBeenCalledWith(context, params, cart);
 });

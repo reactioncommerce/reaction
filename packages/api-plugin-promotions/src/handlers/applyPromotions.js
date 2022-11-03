@@ -81,9 +81,6 @@ export default async function applyPromotions(context, cart, explicitPromotion =
 
       // eslint-disable-next-line no-await-in-loop
       await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
-      // if (results && results.updatedCart) {
-      //   enhancedCart = results.updatedCart;
-      // }
       appliedPromotions.push(promotion);
       break;
     }
