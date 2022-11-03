@@ -77,8 +77,7 @@ export default async function updateCartFulfillmentGroups(context, cart) {
   // Every time the cart is updated, create any missing fulfillment groups as necessary.
   // We need one group per type per shop, containing only the items from that shop.
   // Also make sure that every item is assigned to a fulfillment group.
-  const { collections } = context;
-  const { Fulfillment } = collections;
+  const { collections: { Fulfillment } } = context;
   const currentGroups = cart.shipping || [];
 
   for (const item of (cart.items || [])) {
