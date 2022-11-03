@@ -52,7 +52,17 @@ const mockHydratedOrderItems = {
   variantId: "tMkp5QwZog5ihYTfG",
   weight: 50,
   width: 10,
-  tags: [Array]
+  tags: [Array],
+  subtotal: {
+    amount: 12.99,
+    currencyCode: "USD"
+  },
+  parcel: {
+    height: 10,
+    weight: 50,
+    width: 10,
+    length: 10
+  }
 };
 
 const mockHydratedOrder = {
@@ -853,4 +863,84 @@ test("deny method - multiple attributes - item value is less than $100 AND item 
   const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
 
   expect(allowedMethods).toEqual([]);
+});
+
+
+/*
+* Tests with nested item/attribute restrictions
+*/
+test("deny method - nested attribute - subtotal.amount is less than $100, item restricted", async () => {
+  const mockMethodRestrictions = [
+    {
+      _id: "allow001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "allow",
+      destination: {
+        country: [
+          "US"
+        ]
+      }
+    },
+    {
+      _id: "deny001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "deny",
+      attributes: [
+        {
+          property: "subtotal.amount",
+          value: 100,
+          propertyType: "int",
+          operator: "lt"
+        }
+      ]
+    }
+  ];
+
+  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+
+  const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
+
+  expect(allowedMethods).toEqual([]);
+});
+
+test("deny method - nested attributes - parcel.weight is greater than 50, no item restrictions", async () => {
+  const mockMethodRestrictions = [
+    {
+      _id: "allow001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "allow",
+      destination: {
+        country: [
+          "US"
+        ]
+      }
+    },
+    {
+      _id: "deny001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "deny",
+      attributes: [
+        {
+          property: "parcel.weight",
+          value: 50,
+          propertyType: "int",
+          operator: "gt"
+        }
+      ]
+    }
+  ];
+
+  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+
+  const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
+
+  expect(allowedMethods).toEqual(mockShippingMethod);
 });

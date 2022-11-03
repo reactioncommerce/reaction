@@ -225,10 +225,10 @@ importers:
       '@reactioncommerce/api-plugin-payments-example': link:../../packages/api-plugin-payments-example
       '@reactioncommerce/api-plugin-payments-stripe-sca': link:../../packages/api-plugin-payments-stripe-sca
       '@reactioncommerce/api-plugin-pricing-simple': link:../../packages/api-plugin-pricing-simple
-      '@reactioncommerce/api-plugin-products': link:../../packages/api-plugin-products
+      '@reactioncommerce/api-plugin-products': 1.3.1_graphql@14.7.0
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
-      '@reactioncommerce/api-plugin-shipments-flat-rate': link:../../packages/api-plugin-shipments-flat-rate
+      '@reactioncommerce/api-plugin-shipments-flat-rate': 1.0.10_graphql@14.7.0
       '@reactioncommerce/api-plugin-shops': link:../../packages/api-plugin-shops
       '@reactioncommerce/api-plugin-simple-schema': link:../../packages/api-plugin-simple-schema
       '@reactioncommerce/api-plugin-sitemap-generator': link:../../packages/api-plugin-sitemap-generator
@@ -700,12 +700,14 @@ importers:
       '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ~1.0.2
       '@reactioncommerce/reaction-error': ^1.0.1
+      lodash: ^4.17.15
       simpl-schema: ^1.12.2
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
+      lodash: 4.17.21
       simpl-schema: 1.12.3
 
   packages/api-plugin-fulfillment-method-shipping-ups:
@@ -4654,6 +4656,54 @@ packages:
   /@protobufjs/utf8/1.1.0:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
+  /@reactioncommerce/api-plugin-products/1.3.1_graphql@14.7.0:
+    resolution: {integrity: sha512-lnjj9QkRlibsBUOZAgGNi9S13dbZogTouaZ59/+fiIlYJDrSOJ1x4yylGdWMZ6W7K2PvWoZvXk1YrzGopnCflQ==}
+    engines: {node: '>=14.18.1'}
+    dependencies:
+      '@reactioncommerce/api-utils': 1.16.9_graphql@14.7.0
+      '@reactioncommerce/logger': 1.1.5
+      '@reactioncommerce/random': 1.0.2
+      '@reactioncommerce/reaction-error': 1.0.1
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
+  /@reactioncommerce/api-plugin-shipments-flat-rate/1.0.10_graphql@14.7.0:
+    resolution: {integrity: sha512-XilxXESaBQa6v1ChSTduYg8kCTYElI9jy6lWevrfjkRjquSlA/sNZmZOMSkRW0tdZhZMCnAboH+C2r/62IDHBg==}
+    engines: {node: '>=14.18.1'}
+    dependencies:
+      '@reactioncommerce/api-utils': 1.16.9_graphql@14.7.0
+      '@reactioncommerce/logger': 1.1.5
+      '@reactioncommerce/random': 1.0.2
+      '@reactioncommerce/reaction-error': 1.0.1
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
+  /@reactioncommerce/api-utils/1.16.9_graphql@14.7.0:
+    resolution: {integrity: sha512-9jB684K3GISSkkTeiMIniYiFgAtHL1AosSD2GPVpGSpFIUVbEL93e8owEadSIugmJt8yOb3m1+YdThW+kvXlzQ==}
+    engines: {node: '>=12.14.1'}
+    dependencies:
+      '@jest/globals': 26.6.2
+      '@reactioncommerce/logger': 1.1.5
+      '@reactioncommerce/random': 1.0.2
+      '@reactioncommerce/reaction-error': 1.0.1
+      accounting-js: 1.1.1
+      callsite: 1.0.0
+      envalid: 6.0.2
+      graphql-fields: 2.0.3
+      graphql-relay: 0.9.0_graphql@14.7.0
+      lodash: 4.17.21
+      ramda: 0.27.2
+      transliteration: 2.3.5
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
   /@reactioncommerce/babel-remove-es-create-require/1.0.0_@babel+core@7.19.0:
     resolution: {integrity: sha512-yR1vMj76hK5D9/VcXjFpk2OMoYpQdbvEgGcJ79cEzTL/jkFwIs53Zl6PNBjcC608P8qHl5eypEYRwG7CCGLzwQ==}
     peerDependencies:
@@ -4709,9 +4759,25 @@ packages:
       eslint-plugin-you-dont-need-lodash-underscore: 6.12.0
     dev: true
 
+  /@reactioncommerce/logger/1.1.5:
+    resolution: {integrity: sha512-fG6wohv9NoX6ZjNzs0YcFRFxHyndO4VitMCrbz+8HrnM7LNJtQRzrUcR58RptagYixZ4GyiHY6WhmIfrMpNvLw==}
+    dependencies:
+      bunyan: 1.8.15
+      bunyan-format: 0.2.1
+      node-loggly-bulk: 2.2.5
+    dev: false
+
   /@reactioncommerce/nodemailer/5.0.5:
     resolution: {integrity: sha512-u4ontTETlROmLglkMDyouMXlX62NXOGfOUAd75Ilk3W4tcsRjRXX+g5C5B4mBCCcJB0wHn1yh/a4pOYkn81vUQ==}
     engines: {node: '>=4.0.0'}
+    dev: false
+
+  /@reactioncommerce/random/1.0.2:
+    resolution: {integrity: sha512-02eARZh6FQ45tEXXZUwnz90XWQasLpnV140CcuOl/L3dhEL4Emu2oCZemVhKvNb2JMmm5vOG2Y0CUb12xAx73w==}
+    dev: false
+
+  /@reactioncommerce/reaction-error/1.0.1:
+    resolution: {integrity: sha512-l1HyDTFw4m1j8EPWNA/bbF2GZZaLYQjwmgniSjjM1cgnhfjCqeLywi501oPkmH8E84Jh0EH+4ADhNCcZ4m4gug==}
     dev: false
 
   /@sinclair/typebox/0.24.41:
@@ -12419,6 +12485,10 @@ packages:
   /quick-lru/4.0.1:
     resolution: {integrity: sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==}
     engines: {node: '>=8'}
+    dev: false
+
+  /ramda/0.27.2:
+    resolution: {integrity: sha512-SbiLPU40JuJniHexQSAgad32hfwd+DRUdwF2PlVuI5RZD0/vahUco7R8vD86J/tcEKKF9vZrUVwgtmGCqlCKyA==}
     dev: false
 
   /ramda/0.28.0:
