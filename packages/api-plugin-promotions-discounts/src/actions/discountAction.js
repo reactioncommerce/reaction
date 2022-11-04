@@ -1,9 +1,9 @@
 import { createRequire } from "module";
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
-import applyItemDiscountToCart from "../utils/discountTypes/item/applyItemDiscountToCart.js";
-import applyShippingDiscountToCart from "../utils/discountTypes/shipping/applyShippingDiscountToCart.js";
-import applyOrderDiscountToCart from "../utils/discountTypes/order/applyOrderDiscountToCart.js";
+import applyItemDiscountToCart from "../discountTypes/item/applyItemDiscountToCart.js";
+import applyShippingDiscountToCart from "../discountTypes/shipping/applyShippingDiscountToCart.js";
+import applyOrderDiscountToCart from "../discountTypes/order/applyOrderDiscountToCart.js";
 
 const require = createRequire(import.meta.url);
 
@@ -49,6 +49,31 @@ export const discountActionParameters = new SimpleSchema({
     optional: true
   }
 });
+
+/**
+ * @summary Clean up the discount on the cart
+ * @param {Object} context - The application context
+ * @param {Object} cart - The cart to clean up the discount on
+ * @return {void} undefined
+ */
+export async function discountActionCleanup(context, cart) {
+  cart.discounts = [];
+  cart.discount = 0;
+  cart.items = cart.items.map((item) => {
+    item.discounts = [];
+    item.subtotal = {
+      amount: item.price.amount * item.quantity,
+      currencyCode: item.subtotal.currencyCode
+    };
+    return item;
+  });
+
+  // todo: add reset logic for the shipping
+  // cart.shipping = cart.shipping.map((shipping) => ({ ...shipping, discounts: [] }));
+
+  return cart;
+}
+
 /**
  * @summary Apply a percentage promotion to the cart
  * @param {Object} context - The application context
@@ -70,5 +95,6 @@ export async function discountActionHandler(context, cart, params) {
 export default {
   key: "discounts",
   handler: discountActionHandler,
-  paramSchema: discountActionParameters
+  paramSchema: discountActionParameters,
+  cleanup: discountActionCleanup
 };

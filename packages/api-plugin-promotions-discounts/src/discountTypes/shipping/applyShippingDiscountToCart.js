@@ -4,7 +4,7 @@ import evaluateRulesAgainstShipping from "./evaluateRulesAgainstShipping.js";
 
 const require = createRequire(import.meta.url);
 
-const pkg = require("../../../../package.json");
+const pkg = require("../../../package.json");
 
 const { name, version } = pkg;
 const logCtx = {

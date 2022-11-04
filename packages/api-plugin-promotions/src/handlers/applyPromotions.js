@@ -4,7 +4,6 @@ import _ from "lodash";
 import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
 import isPromotionExpired from "../utils/isPromotionExpired.js";
-import applyAction from "./applyAction.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -48,7 +47,7 @@ export default async function applyPromotions(context, cart, explicitPromotion =
   const { promotions: pluginPromotions, simpleSchemas: { Cart } } = context;
 
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
-  const actionHandleByKey = _.keyBy(context.promotions.actions, "key");
+  const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
 
   const appliedPromotions = [];
   const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["type", "explicit"]);
@@ -58,7 +57,12 @@ export default async function applyPromotions(context, cart, explicitPromotion =
     unqualifiedPromotions.push(explicitPromotion);
   }
 
-  const enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
+  for (const { cleanup } of pluginPromotions.actions) {
+    // eslint-disable-next-line no-await-in-loop
+    cleanup && await cleanup(context, cart);
+  }
+
+  let enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   for (const promotion of unqualifiedPromotions) {
     if (isPromotionExpired(promotion)) {
       continue;
@@ -80,7 +84,14 @@ export default async function applyPromotions(context, cart, explicitPromotion =
       if (!shouldApply) continue;
 
       // eslint-disable-next-line no-await-in-loop
-      await applyAction(context, enhancedCart, { promotion, actionHandleByKey });
+      for (const action of promotion.actions) {
+        const actionFn = actionHandleByKey[action.actionKey];
+        if (!actionFn) continue;
+
+        // eslint-disable-next-line no-await-in-loop
+        await actionFn.handler(context, enhancedCart, { promotion, ...action });
+        enhancedCart = enhanceCart(context, pluginPromotions.enhancers, enhancedCart);
+      }
       appliedPromotions.push(promotion);
       break;
     }
