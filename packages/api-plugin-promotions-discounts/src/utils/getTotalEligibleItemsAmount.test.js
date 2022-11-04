@@ -4,13 +4,13 @@ test("calculates the merchandise total for a cart", () => {
   const cart = {
     items: [
       {
-        price: {
+        subtotal: {
           amount: 10
         },
         quantity: 1
       },
       {
-        price: {
+        subtotal: {
           amount: 20
         },
         quantity: 2

@@ -13,10 +13,7 @@ export default function recalculateCartItemSubtotal(context, item) {
   item.discounts.forEach((discount) => {
     const { discountedAmount, discountCalculationType, discountValue, discountType } = discount;
     const calculationMethod = context.discountCalculationMethods[discountCalculationType];
-    const discountAmount =
-      discountType === "order"
-        ? discountedAmount
-        : Number(accounting.toFixed(calculationMethod(discountValue, undiscountedAmount), 2));
+    const discountAmount = discountType === "order" ? discountedAmount : Number(accounting.toFixed(calculationMethod(discountValue, undiscountedAmount), 2));
 
     totalDiscount += discountAmount;
     discount.discountedAmount = discountAmount;

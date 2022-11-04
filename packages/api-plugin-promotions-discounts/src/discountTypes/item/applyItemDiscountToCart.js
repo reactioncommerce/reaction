@@ -1,10 +1,13 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
-import getEligibleItems from "../../../utils/getEligibleItems.js";
+
+import getEligibleItems from "../../utils/getEligibleItems.js";
+import recalculateCartItemSubtotal from "../../utils/recalculateCartItemSubtotal.js";
+import getTotalDiscountOnCart from "../../utils/getTotalDiscountOnCart.js";
 
 const require = createRequire(import.meta.url);
 
-const pkg = require("../../../../package.json");
+const pkg = require("../../../package.json");
 
 const { name, version } = pkg;
 const logCtx = {
@@ -15,41 +18,20 @@ const logCtx = {
 
 /**
  * @summary Create a discount object for a cart item
- * @param {Object} item - The cart item
  * @param {Object} params - The action parameters
  * @param {Number} discountedAmount - The amount discounted
  * @returns {Object} - The cart item discount object
  */
-export function createItemDiscount(item, params) {
-  const { promotion: { _id }, actionParameters, actionKey } = params;
+export function createItemDiscount(params) {
+  const { promotion, actionParameters } = params;
   const itemDiscount = {
-    actionKey,
-    promotionId: _id,
+    promotionId: promotion._id,
     discountType: actionParameters.discountType,
     discountCalculationType: actionParameters.discountCalculationType,
     discountValue: actionParameters.discountValue,
     dateApplied: new Date()
   };
   return itemDiscount;
-}
-
-/**
- * @summary Add the discount to the cart item
- * @param {Object} context - The application context
- * @param {Object} params - The params to apply
- * @param {Object} params.item - The cart item to apply the discount to
- * @returns {Promise<void>} undefined
- */
-export async function addDiscountToItem(context, params, { item }) {
-  const { promotion: { _id }, actionKey } = params;
-  const existingDiscount = item.discounts
-    .find((itemDiscount) => actionKey === itemDiscount.actionKey && _id === itemDiscount.promotionId);
-  if (existingDiscount) {
-    Logger.warn(logCtx, "Not adding discount because it already exists");
-    return;
-  }
-  const cartDiscount = createItemDiscount(item, params);
-  item.discounts.push(cartDiscount);
 }
 
 /**
@@ -65,9 +47,13 @@ export default async function applyItemDiscountToCart(context, params, cart) {
   const filteredItems = await getEligibleItems(context, cart.items, params.actionParameters);
 
   for (const item of filteredItems) {
-    addDiscountToItem(context, params, { item });
+    const cartDiscount = createItemDiscount(params);
+    item.discounts.push(cartDiscount);
     discountedItems.push(item);
+    recalculateCartItemSubtotal(context, item);
   }
+
+  cart.discount = getTotalDiscountOnCart(cart);
 
   if (discountedItems.length) {
     Logger.info(logCtx, "Saved Discount to cart");
