@@ -13,5 +13,6 @@ export function noop(context, enhancedCart, { actionParameters }) {
 
 export default {
   key: "noop",
-  handler: noop
+  handler: noop,
+  cleanup: () => {}
 };

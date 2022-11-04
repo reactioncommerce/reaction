@@ -116,3 +116,88 @@ test("should apply order discount to cart", async () => {
   const discountedItems = cart.items.map((item) => ({ _id: item._id, amount: 1 }));
   expect(cart.discounts).toEqual([{ ...orderDiscountItem, dateApplied: expect.any(Date), discountedItems }]);
 });
+
+
+test(" get should return correct discount amount", () => {
+  const cart = {
+    _id: "cart1",
+    items: [
+      {
+        _id: "item1",
+        price: {
+          amount: 12
+        },
+        quantity: 1,
+        subtotal: {
+          amount: 10,
+          currencyCode: "USD",
+          discount: 2,
+          undiscountedAmount: 12
+        }
+      }
+    ],
+    subtotal: {
+      amount: 10,
+      currencyCode: "USD",
+      discount: 2,
+      undiscountedAmount: 12
+    }
+  };
+
+  const discount = {
+    discountCalculationType: "fixed",
+    discountValue: 10
+  };
+
+  mockContext.discountCalculationMethods = {
+    fixed: jest.fn().mockReturnValue(10)
+  };
+
+  const discountAmount = getCartDiscountAmount(mockContext, cart, discount);
+  expect(discountAmount).toEqual(10);
+});
+
+test("should split discount for cart items", () => {
+  const totalDiscount = 10;
+  const cartItems = [
+    {
+      _id: "item1",
+      price: {
+        amount: 12
+      },
+      quantity: 1,
+      subtotal: {
+        amount: 10,
+        currencyCode: "USD",
+        discount: 2,
+        undiscountedAmount: 12
+      }
+    },
+    {
+      _id: "item2",
+      price: {
+        amount: 12
+      },
+      quantity: 1,
+      subtotal: {
+        amount: 10,
+        currencyCode: "USD",
+        discount: 2,
+        undiscountedAmount: 12
+      }
+    }
+  ];
+
+  const discountForEachItem = applyOrderDiscountToCart.splitDiscountForCartItems(totalDiscount, cartItems);
+  expect(discountForEachItem).toEqual([
+    {
+      _id: "item1",
+      amount: 5
+    },
+    {
+      _id: "item2",
+      amount: 5
+    }
+  ]);
+});
+

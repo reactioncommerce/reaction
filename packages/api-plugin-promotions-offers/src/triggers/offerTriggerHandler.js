@@ -14,7 +14,11 @@ const logCtx = {
   file: "offerTriggerHandler.js"
 };
 
-const defaultFacts = [{ fact: "eligibleItems", handlerName: "getEligibleItems" }];
+const defaultFacts = [
+  { fact: "eligibleItems", handlerName: "getEligibleItems" },
+  { fact: "totalItemAmount", handlerName: "totalItemAmount" },
+  { fact: "totalItemCount", handlerName: "totalItemCount" }
+];
 
 /**
  * @summary apply all offers to the cart
@@ -32,8 +36,7 @@ export async function offerTriggerHandler(context, enhancedCart, { triggerParame
 
   const facts = { cart: enhancedCart };
 
-  const allFacts = [...defaultFacts, ...(triggerParameters.facts || [])];
-  for (const { fact, handlerName, fromFact } of allFacts) {
+  for (const { fact, handlerName, fromFact } of defaultFacts) {
     engine.addFact(fact, (params, almanac) => {
       const factParams = { ...triggerParameters, rulePrams: params, fromFact };
       return promotionOfferFacts[handlerName](context, factParams, almanac);

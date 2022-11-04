@@ -112,6 +112,10 @@ async function extendOrderSchemas(context) {
     }
   });
   OrderItem.extend({
+    "discount": {
+      type: Number,
+      optional: true
+    },
     "discounts": {
       type: Array,
       label: "Item Discounts",
