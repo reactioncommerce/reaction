@@ -6,11 +6,6 @@
  * @returns {Promise<number>} - The total amount of a discount or promotion
  */
 export default async function totalItemCount(context, params, almanac) {
-  let calculationItems = [];
-  if (params.fromFact) {
-    calculationItems = await almanac.factValue(params.fromFact);
-  } else {
-    calculationItems = await almanac.factValue("cart").then((cart) => cart.items);
-  }
-  return calculationItems.reduce((sum, item) => sum + item.quantity, 0);
+  const eligibleItems = await almanac.factValue("eligibleItems");
+  return eligibleItems.reduce((sum, item) => sum + item.quantity, 0);
 }

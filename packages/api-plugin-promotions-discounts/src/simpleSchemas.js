@@ -1,39 +1,9 @@
 import SimpleSchema from "simpl-schema";
 
-const Conditions = new SimpleSchema({
-  maxUses: {
-    // total number of uses
-    type: Number,
-    defaultValue: 1
-  },
-  maxUsesPerAccount: {
-    // Max uses per account
-    type: SimpleSchema.Integer,
-    defaultValue: 1,
-    optional: true
-  },
-  maxUsersPerOrder: {
-    // Max uses per order
-    type: Number,
-    defaultValue: 1
-  }
-});
-
-const Event = new SimpleSchema({
-  type: String,
-  params: {
-    type: Object,
-    optional: true
-  }
-});
-
 export const Rules = new SimpleSchema({
   conditions: {
     type: Object,
     blackbox: true
-  },
-  event: {
-    type: Event
   }
 });
 
@@ -75,10 +45,6 @@ export const Discount = new SimpleSchema({
   exclusionRules: {
     type: Rules,
     optional: true
-  },
-  conditions: {
-    type: Conditions,
-    optional: true
   }
 });
 
@@ -88,7 +54,6 @@ export const CartDiscountedItem = new SimpleSchema({
 });
 
 export const CartDiscount = new SimpleSchema({
-  "actionKey": String,
   "promotionId": String,
   "discountType": String,
   "discountCalculationType": String, // types provided by this plugin are flat, percentage and fixed

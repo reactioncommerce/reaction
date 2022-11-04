@@ -23,5 +23,7 @@ export function registerPluginHandlerForCart({ name, cart }) {
 
     cartTransforms.push(...transforms);
     cartTransforms.sort((prev, next) => prev.priority - next.priority);
+
+    console.log(cartTransforms);
   }
 }
