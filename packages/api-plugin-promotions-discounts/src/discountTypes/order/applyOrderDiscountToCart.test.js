@@ -34,7 +34,6 @@ test("createDiscountRecord should create discount record", () => {
   const discountRecord = applyOrderDiscountToCart.createDiscountRecord(parameters, discountedItems, 2);
 
   expect(discountRecord).toEqual({
-    actionKey: "test",
     promotionId: "promotion1",
     discountType: "item",
     discountCalculationType: "fixed",
@@ -100,16 +99,16 @@ test("should apply order discount to cart", async () => {
   const orderDiscountItem = applyOrderDiscountToCart.createDiscountRecord(parameters, cart.items, 2);
 
   expect(cart.items[0].subtotal).toEqual({
-    amount: 10,
+    amount: 11,
     currencyCode: "USD",
-    discount: 2,
+    discount: 1,
     undiscountedAmount: 12
   });
 
   expect(cart.items[1].subtotal).toEqual({
-    amount: 10,
+    amount: 11,
     currencyCode: "USD",
-    discount: 2,
+    discount: 1,
     undiscountedAmount: 12
   });
 
@@ -117,32 +116,22 @@ test("should apply order discount to cart", async () => {
   expect(cart.discounts).toEqual([{ ...orderDiscountItem, dateApplied: expect.any(Date), discountedItems }]);
 });
 
-
 test(" get should return correct discount amount", () => {
-  const cart = {
-    _id: "cart1",
-    items: [
-      {
-        _id: "item1",
-        price: {
-          amount: 12
-        },
-        quantity: 1,
-        subtotal: {
-          amount: 10,
-          currencyCode: "USD",
-          discount: 2,
-          undiscountedAmount: 12
-        }
+  const items = [
+    {
+      _id: "item1",
+      price: {
+        amount: 12
+      },
+      quantity: 1,
+      subtotal: {
+        amount: 10,
+        currencyCode: "USD",
+        discount: 2,
+        undiscountedAmount: 12
       }
-    ],
-    subtotal: {
-      amount: 10,
-      currencyCode: "USD",
-      discount: 2,
-      undiscountedAmount: 12
     }
-  };
+  ];
 
   const discount = {
     discountCalculationType: "fixed",
@@ -153,8 +142,8 @@ test(" get should return correct discount amount", () => {
     fixed: jest.fn().mockReturnValue(10)
   };
 
-  const discountAmount = getCartDiscountAmount(mockContext, cart, discount);
-  expect(discountAmount).toEqual(10);
+  const totalCartDiscountAmount = applyOrderDiscountToCart.getCartTotalAmount(mockContext, items, discount);
+  expect(totalCartDiscountAmount).toEqual(10);
 });
 
 test("should split discount for cart items", () => {
@@ -200,4 +189,3 @@ test("should split discount for cart items", () => {
     }
   ]);
 });
-
