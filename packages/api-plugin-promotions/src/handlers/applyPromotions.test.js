@@ -45,8 +45,8 @@ test("should save cart with implicit promotions are applied", async () => {
     triggerParameters: { name: "test trigger" }
   });
   expect(testAction).toBeCalledWith(mockContext, expect.objectContaining(cart), {
-    promotion: testPromotion,
-    actionParameters: undefined
+    actionKey: "test",
+    promotion: testPromotion
   });
   expect(testEnhancer).toBeCalledWith(mockContext, expect.objectContaining(cart));
 
@@ -60,9 +60,7 @@ test("should save cart with implicit promotions are not applied when promotions 
   };
   mockContext.collections.Promotions = {
     find: () => ({
-      toArray: jest
-        .fn()
-        .mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackAbility: "all" }])
+      toArray: jest.fn().mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackAbility: "all" }])
     })
   };
 

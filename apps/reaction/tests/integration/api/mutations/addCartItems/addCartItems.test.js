@@ -82,7 +82,6 @@ beforeAll(async () => {
     workflow: null,
     discounts: [
       {
-        actionKey: "mockActionKey",
         promotionId: "mockPromotionId",
         discountType: "order",
         discountCalculationType: "fixed",
