@@ -82,8 +82,9 @@ test("should add custom fact when facts provided on parameters", async () => {
 
   await offerTriggerHandler(mockContext, enhancedCart, { triggerParameters: parameters });
 
-  expect(mockAddFact).toHaveBeenCalledWith("eligibleItems", expect.any(Function));
-  expect(mockAddFact).toHaveBeenCalledWith("testFact", expect.any(Function));
+  expect(mockAddFact).toHaveBeenNthCalledWith(1, "eligibleItems", expect.any(Function));
+  expect(mockAddFact).toHaveBeenNthCalledWith(2, "totalItemAmount", expect.any(Function));
+  expect(mockAddFact).toHaveBeenNthCalledWith(3, "totalItemCount", expect.any(Function));
 });
 
 test("should not add custom fact when not provided on parameters", async () => {

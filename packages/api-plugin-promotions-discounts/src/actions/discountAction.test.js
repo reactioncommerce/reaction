@@ -1,11 +1,11 @@
-import applyItemDiscountToCart from "../utils/discountTypes/item/applyItemDiscountToCart.js";
-import applyOrderDiscountToCart from "../utils/discountTypes/order/applyOrderDiscountToCart.js";
-import applyShippingDiscountToCart from "../utils/discountTypes/shipping/applyShippingDiscountToCart.js";
+import applyItemDiscountToCart from "../discountTypes/item/applyItemDiscountToCart.js";
+import applyOrderDiscountToCart from "../discountTypes/order/applyOrderDiscountToCart.js";
+import applyShippingDiscountToCart from "../discountTypes/shipping/applyShippingDiscountToCart.js";
 import discountAction, { discountActionCleanup, discountActionHandler, discountActionParameters } from "./discountAction.js";
 
-jest.mock("../utils/discountTypes/item/applyItemDiscountToCart.js", () => jest.fn());
-jest.mock("../utils/discountTypes/order/applyOrderDiscountToCart.js", () => jest.fn());
-jest.mock("../utils/discountTypes/shipping/applyShippingDiscountToCart.js", () => jest.fn());
+jest.mock("../discountTypes/item/applyItemDiscountToCart.js", () => jest.fn());
+jest.mock("../discountTypes/order/applyOrderDiscountToCart.js", () => jest.fn());
+jest.mock("../discountTypes/shipping/applyShippingDiscountToCart.js", () => jest.fn());
 
 beforeEach(() => jest.resetAllMocks());
 
@@ -13,7 +13,8 @@ test("discountAction should be a object", () => {
   expect(discountAction).toEqual({
     key: "discounts",
     handler: discountActionHandler,
-    paramSchema: discountActionParameters
+    paramSchema: discountActionParameters,
+    cleanup: discountActionCleanup
   });
 });
 
@@ -57,7 +58,7 @@ test("should call discount shipping function when discountType parameters is shi
 });
 
 describe("cleanup", () => {
-  test("should reset the cart discount state", () => {
+  test("should reset the cart discount state", async () => {
     const cart = {
       discounts: [{ _id: "discount1" }],
       discount: 10,
@@ -79,7 +80,7 @@ describe("cleanup", () => {
       ]
     };
 
-    const updatedCart = discountActionCleanup({}, cart);
+    const updatedCart = await discountActionCleanup({}, cart);
 
     expect(updatedCart).toEqual({
       discounts: [],
