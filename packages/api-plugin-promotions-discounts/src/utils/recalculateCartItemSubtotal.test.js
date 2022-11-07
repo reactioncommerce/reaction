@@ -36,9 +36,9 @@ describe("recalculateCartItemSubtotal", () => {
     recalculateCartItemSubtotal(mockContext, item);
 
     expect(item.subtotal).toEqual({
-      amount: 10,
+      amount: 2,
       currencyCode: "USD",
-      discount: 2,
+      discount: 10,
       undiscountedAmount: 12
     });
   });
