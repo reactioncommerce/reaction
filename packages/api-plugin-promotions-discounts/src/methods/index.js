@@ -5,7 +5,7 @@
  * @returns {Number} The discount amount
  */
 function percentage(discountValue, price) {
-  return price * (discountValue / 100);
+  return price * (1 - discountValue / 100);
 }
 
 /**

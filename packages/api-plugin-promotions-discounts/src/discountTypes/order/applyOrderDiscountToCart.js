@@ -1,4 +1,4 @@
-import accounting from "accounting-js";
+import formatMoney from "../../utils/formatMoney.js";
 import getEligibleItems from "../../utils/getEligibleItems.js";
 import getTotalEligibleItemsAmount from "../../utils/getTotalEligibleItemsAmount.js";
 import getTotalDiscountOnCart from "../../utils/getTotalDiscountOnCart.js";
@@ -33,11 +33,11 @@ export function createDiscountRecord(params, discountedItems, discountedAmount) 
  * @param {Object} discount - The discount to calculate the discount amount for
  * @returns {Number} - The discount amount
  */
-export function getCartTotalAmount(context, items, discount) {
+export function getCartDiscountAmount(context, items, discount) {
   const merchandiseTotal = getTotalEligibleItemsAmount(items);
   const { discountCalculationType, discountValue } = discount;
-  const appliedDiscount = context.discountCalculationMethods[discountCalculationType](discountValue, merchandiseTotal);
-  return Number(accounting.toFixed(appliedDiscount, 2));
+  const cartDiscountedAmount = context.discountCalculationMethods[discountCalculationType](discountValue, merchandiseTotal);
+  return merchandiseTotal - Number(formatMoney(cartDiscountedAmount));
 }
 
 /**
@@ -50,7 +50,7 @@ export function splitDiscountForCartItems(totalDiscount, cartItems) {
   const totalItemPrice = cartItems.reduce((acc, item) => acc + item.subtotal.amount, 0);
   const discountForEachItems = cartItems.map((item) => {
     const discount = (item.subtotal.amount / totalItemPrice) * totalDiscount;
-    return { _id: item._id, amount: Number(accounting.toFixed(discount, 2)) };
+    return { _id: item._id, amount: Number(formatMoney(discount)) };
   });
   return discountForEachItems;
 }
@@ -67,10 +67,10 @@ export default async function applyOrderDiscountToCart(context, params, cart) {
   const { actionParameters } = params;
 
   const filteredItems = await getEligibleItems(context, cart.items, actionParameters);
-  const discountAmount = getCartTotalAmount(context, filteredItems, actionParameters);
-  const discountedItems = splitDiscountForCartItems(discountAmount, filteredItems);
+  const discountedAmount = getCartDiscountAmount(context, filteredItems, actionParameters);
+  const discountedItems = splitDiscountForCartItems(discountedAmount, filteredItems);
 
-  cart.discounts.push(createDiscountRecord(params, discountedItems, discountAmount));
+  cart.discounts.push(createDiscountRecord(params, discountedItems, discountedAmount));
 
   for (const discountedItem of discountedItems) {
     const cartItem = cart.items.find(({ _id }) => _id === discountedItem._id);

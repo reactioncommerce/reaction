@@ -4,9 +4,6 @@
  * @returns {Number} The total discount amount
  */
 export default function getTotalEligibleItemsAmount(items) {
-  const itemsTotal = items.reduce(
-    (previousValue, currentValue) => previousValue + currentValue.subtotal.amount * currentValue.quantity,
-    0
-  );
+  const itemsTotal = items.reduce((previousValue, currentValue) => previousValue + currentValue.subtotal.amount, 0);
   return itemsTotal;
 }

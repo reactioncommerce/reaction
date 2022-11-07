@@ -16,5 +16,5 @@ test("calculates the merchandise total for a cart", () => {
     }
   ];
 
-  expect(getTotalEligibleItemsAmount(items)).toEqual(50);
+  expect(getTotalEligibleItemsAmount(items)).toEqual(30);
 });
