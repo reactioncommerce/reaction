@@ -99,24 +99,24 @@ test("should apply order discount to cart", async () => {
   const orderDiscountItem = applyOrderDiscountToCart.createDiscountRecord(parameters, cart.items, 2);
 
   expect(cart.items[0].subtotal).toEqual({
-    amount: 11,
+    amount: 3,
     currencyCode: "USD",
-    discount: 1,
+    discount: 9,
     undiscountedAmount: 12
   });
 
   expect(cart.items[1].subtotal).toEqual({
-    amount: 11,
+    amount: 3,
     currencyCode: "USD",
-    discount: 1,
+    discount: 9,
     undiscountedAmount: 12
   });
 
-  const discountedItems = cart.items.map((item) => ({ _id: item._id, amount: 1 }));
-  expect(cart.discounts).toEqual([{ ...orderDiscountItem, dateApplied: expect.any(Date), discountedItems }]);
+  const discountedItems = cart.items.map((item) => ({ _id: item._id, amount: 9 }));
+  expect(cart.discounts).toEqual([{ ...orderDiscountItem, discountedAmount: 18, dateApplied: expect.any(Date), discountedItems }]);
 });
 
-test(" get should return correct discount amount", () => {
+test("getCartDiscountAmount get should return correct discount amount", () => {
   const items = [
     {
       _id: "item1",
@@ -126,24 +126,21 @@ test(" get should return correct discount amount", () => {
       quantity: 1,
       subtotal: {
         amount: 10,
-        currencyCode: "USD",
-        discount: 2,
-        undiscountedAmount: 12
+        currencyCode: "USD"
       }
     }
   ];
 
   const discount = {
     discountCalculationType: "fixed",
-    discountValue: 10
+    discountValue: 5
   };
 
   mockContext.discountCalculationMethods = {
-    fixed: jest.fn().mockReturnValue(10)
+    fixed: jest.fn().mockReturnValue(5)
   };
 
-  const totalCartDiscountAmount = applyOrderDiscountToCart.getCartTotalAmount(mockContext, items, discount);
-  expect(totalCartDiscountAmount).toEqual(10);
+  expect(applyOrderDiscountToCart.getCartDiscountAmount(mockContext, items, discount)).toEqual(5);
 });
 
 test("should split discount for cart items", () => {

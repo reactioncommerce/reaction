@@ -1,4 +1,4 @@
-import accounting from "accounting-js";
+import formatMoney from "./formatMoney.js";
 
 /**
  * @summary Get the total amount of all items in the cart
@@ -14,5 +14,5 @@ export default function getTotalDiscountOnCart(cart) {
 
   // TODO: Add the logic to calculate the total discount on shipping
 
-  return Number(accounting.toFixed(totalDiscount, 2));
+  return Number(formatMoney(totalDiscount));
 }
