@@ -6,6 +6,8 @@
  * @return {Object} - The mutated cart item
  */
 export default function addDiscountToOrderItem(context, { item, cartItem }) {
+  if (!cartItem) return item;
+
   if (typeof item.subtotal === "object") {
     item.subtotal = cartItem.subtotal;
   } else {
