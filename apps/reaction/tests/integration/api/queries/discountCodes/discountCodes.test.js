@@ -110,7 +110,7 @@ beforeAll(async () => {
 // test file gets its own test database.
 afterAll(() => testApp.stop());
 
-test.skip("throws access-denied when getting discount codes if not an admin", async () => {
+test("throws access-denied when getting discount codes if not an admin", async () => {
   await testApp.setLoggedInUser(mockCustomerAccount);
 
   try {
@@ -122,7 +122,7 @@ test.skip("throws access-denied when getting discount codes if not an admin", as
   }
 });
 
-test.skip("returns discount records if user is an admin", async () => {
+test("returns discount records if user is an admin", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const result = await discountCodes({
@@ -136,7 +136,7 @@ test.skip("returns discount records if user is an admin", async () => {
 });
 
 
-test.skip("returns discount records on second page if user is an admin", async () => {
+test("returns discount records on second page if user is an admin", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const result = await discountCodes({

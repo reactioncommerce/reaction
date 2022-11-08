@@ -1,3 +1,4 @@
+import _ from "lodash";
 import formatMoney from "../../utils/formatMoney.js";
 import getEligibleItems from "../../utils/getEligibleItems.js";
 import getTotalEligibleItemsAmount from "../../utils/getTotalEligibleItemsAmount.js";
@@ -37,21 +38,28 @@ export function getCartDiscountAmount(context, items, discount) {
   const merchandiseTotal = getTotalEligibleItemsAmount(items);
   const { discountCalculationType, discountValue } = discount;
   const cartDiscountedAmount = context.discountCalculationMethods[discountCalculationType](discountValue, merchandiseTotal);
-  return merchandiseTotal - Number(formatMoney(cartDiscountedAmount));
+  return Number(formatMoney(merchandiseTotal - cartDiscountedAmount));
 }
 
 /**
  * @summary Splits a discount across all cart items
- * @param {Number} totalDiscount - The total discount to split
+ * @param {Number} discountAmount - The total discount to split
  * @param {Array<Object>} cartItems - The cart items to split the discount across
  * @returns {void} undefined
  */
-export function splitDiscountForCartItems(totalDiscount, cartItems) {
-  const totalItemPrice = cartItems.reduce((acc, item) => acc + item.subtotal.amount, 0);
-  const discountForEachItems = cartItems.map((item) => {
-    const discount = (item.subtotal.amount / totalItemPrice) * totalDiscount;
-    return { _id: item._id, amount: Number(formatMoney(discount)) };
+export function splitDiscountForCartItems(discountAmount, cartItems) {
+  const totalAmount = _.sumBy(cartItems, "subtotal.amount");
+  let discounted = 0;
+  const discountForEachItems = cartItems.map((item, index) => {
+    if (index !== cartItems.length - 1) {
+      const discount = formatMoney((item.subtotal.amount / totalAmount) * discountAmount);
+      discounted += discount;
+      return { _id: item._id, amount: discount };
+    }
+
+    return { _id: item._id, amount: formatMoney(discountAmount - discounted) };
   });
+
   return discountForEachItems;
 }
 
