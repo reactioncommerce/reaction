@@ -149,10 +149,11 @@ export default async function placeOrder(context, input) {
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
   // any discounts on the related cart here.
   let discounts = [];
+  let appliedPromotions = [];
   let discountTotal = 0;
   if (cart) {
     const discountsResult = await context.queries.getDiscountsTotalForCart(context, cart);
-    ({ discounts } = discountsResult);
+    ({ discounts, appliedPromotions } = discountsResult);
     discountTotal = discountsResult.total;
   }
 
@@ -229,7 +230,8 @@ export default async function placeOrder(context, input) {
     workflow: {
       status: "new",
       workflow: ["new"]
-    }
+    },
+    appliedPromotions
   };
 
   if (fullToken) {
