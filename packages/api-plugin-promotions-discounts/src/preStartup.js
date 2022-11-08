@@ -86,7 +86,7 @@ async function extendCartSchemas(context) {
  * @returns {Promise<void>} undefined
  */
 async function extendOrderSchemas(context) {
-  const { simpleSchemas: { Order, OrderFulfillmentGroup, OrderItem, CommonOrder, SelectedFulfillmentOption } } = context;
+  const { simpleSchemas: { Order, OrderFulfillmentGroup, OrderItem, CommonOrder, SelectedFulfillmentOption, Promotion } } = context;
   Order.extend({
     // this is here for backwards compatibility with old discounts
     discount: {
@@ -111,6 +111,17 @@ async function extendOrderSchemas(context) {
       label: "Order Discount"
     }
   });
+
+  Order.extend({
+    "appliedPromotions": {
+      type: Array,
+      optional: true
+    },
+    "appliedPromotions.$": {
+      type: Promotion
+    }
+  });
+
   OrderItem.extend({
     "discount": {
       type: Number,
