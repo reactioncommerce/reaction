@@ -7,6 +7,9 @@ import getDiscountsTotalForCart from "../queries/getDiscountsTotalForCart.js";
  * @returns {undefined}
  */
 export default async function setDiscountsOnCart(context, cart) {
-  const { total } = await getDiscountsTotalForCart(context, cart);
-  cart.discount = total;
+  // check if promotion discounts are enabled
+  if (!context.discountCalculationMethods) {
+    const { total } = await getDiscountsTotalForCart(context, cart);
+    cart.discount = total;
+  }
 }

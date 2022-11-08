@@ -1,3 +1,4 @@
+import _ from "lodash";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import * as applyOrderDiscountToCart from "./applyOrderDiscountToCart.js";
 
@@ -185,4 +186,51 @@ test("should split discount for cart items", () => {
       amount: 5
     }
   ]);
+});
+
+test("the total discounted items should be equal total discount amount", () => {
+  const totalDiscount = 10;
+  const cartItems = [
+    {
+      _id: "item1",
+      quantity: 1,
+      subtotal: {
+        amount: 10,
+        currencyCode: "USD"
+      }
+    },
+    {
+      _id: "item2",
+      quantity: 1,
+      subtotal: {
+        amount: 10,
+        currencyCode: "USD"
+      }
+    },
+    {
+      _id: "item3",
+      quantity: 1,
+      subtotal: {
+        amount: 10,
+        currencyCode: "USD"
+      }
+    }
+  ];
+
+  const discountForEachItem = applyOrderDiscountToCart.splitDiscountForCartItems(totalDiscount, cartItems);
+  expect(discountForEachItem).toEqual([
+    {
+      _id: "item1",
+      amount: 3.33
+    },
+    {
+      _id: "item2",
+      amount: 3.33
+    },
+    {
+      _id: "item3",
+      amount: 3.34
+    }
+  ]);
+  expect(_.sumBy(discountForEachItem, "amount")).toEqual(totalDiscount);
 });

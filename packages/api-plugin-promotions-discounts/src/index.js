@@ -2,8 +2,6 @@ import { createRequire } from "module";
 import actions from "./actions/index.js";
 import methods from "./methods/index.js";
 import queries from "./queries/index.js";
-import getGroupDiscountTotal from "./discountTypes/shipping/getGroupDisountTotal.js";
-import applyDiscountsToRates from "./discountTypes/shipping/applyDiscountsToRates.js";
 import addDiscountToOrderItem from "./utils/addDiscountToOrderItem.js";
 import preStartup from "./preStartup.js";
 import { discountCalculationMethods, registerDiscountCalculationMethod } from "./registration.js";
@@ -26,9 +24,7 @@ export default async function register(app) {
       registerPluginHandler: [registerDiscountCalculationMethod],
       preStartup: [preStartup],
       mutateNewOrderItemBeforeCreate: [addDiscountToOrderItem],
-      calculateDiscountTotal: [getTotalDiscountOnCart],
-      getGroupDiscounts: [getGroupDiscountTotal],
-      applyDiscountsToRates: [applyDiscountsToRates]
+      calculateDiscountTotal: [getTotalDiscountOnCart]
     },
     queries,
     contextAdditions: {
