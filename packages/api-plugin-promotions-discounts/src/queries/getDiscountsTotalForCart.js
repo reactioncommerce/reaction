@@ -7,6 +7,7 @@
  */
 export default async function getDiscountsTotalForCart(context, cart) {
   const discounts = cart.discounts || [];
+  const appliedPromotions = cart.appliedPromotions || [];
 
   for (const cartItem of cart.items) {
     if (cartItem.discounts) {
@@ -18,6 +19,7 @@ export default async function getDiscountsTotalForCart(context, cart) {
 
   return {
     discounts,
+    appliedPromotions,
     total: cart.discount
   };
 }
