@@ -6,5 +6,5 @@ import accounting from "accounting-js";
  * @returns {String} The formatted amount
  */
 export default function formatMoney(amount) {
-  return accounting.toFixed(amount, 2);
+  return Number(accounting.toFixed(amount, 2));
 }
