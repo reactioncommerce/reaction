@@ -76,7 +76,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
  */
 export default async function xformCartCheckout(collections, cart) {
   // itemTotal is qty * amount for each item, summed
-  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + item.subtotal.amount), 0);
+  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + (item.price.amount * item.quantity)), 0);
 
   // shippingTotal is shipmentMethod.rate for each item, summed
   // handlingTotal is shipmentMethod.handling for each item, summed
