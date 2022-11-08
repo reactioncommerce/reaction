@@ -11,12 +11,11 @@ const OrderPromotion = {
     {
       triggerKey: "offers",
       triggerParameters: {
-        name: "5 percent off your entire order when you spend more then $200",
+        name: "50 percent off your entire order when you spend more then $200",
         conditions: {
-          any: [
+          all: [
             {
-              fact: "cart",
-              path: "$.merchandiseTotal",
+              fact: "totalItemAmount",
               operator: "greaterThanInclusive",
               value: 200
             }
@@ -27,13 +26,55 @@ const OrderPromotion = {
   ],
   actions: [
     {
-      actionKey: "noop",
-      actionParameters: {}
+      actionKey: "discounts",
+      actionParameters: {
+        discountType: "order",
+        discountCalculationType: "percentage",
+        discountValue: 50
+      }
     }
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "none"
+  stackAbility: "all"
+};
+
+const OrderItemPromotion = {
+  _id: "itemPromotion",
+  type: "implicit",
+  label: "50 percent off your entire order when you spend more then $200",
+  description: "50 percent off your entire order when you spend more then $200",
+  enabled: true,
+  triggers: [
+    {
+      triggerKey: "offers",
+      triggerParameters: {
+        name: "50 percent off your entire order when you spend more then $200",
+        conditions: {
+          all: [
+            {
+              fact: "totalItemAmount",
+              operator: "greaterThanInclusive",
+              value: 200
+            }
+          ]
+        }
+      }
+    }
+  ],
+  actions: [
+    {
+      actionKey: "discounts",
+      actionParameters: {
+        discountType: "item",
+        discountCalculationType: "percentage",
+        discountValue: 50
+      }
+    }
+  ],
+  startDate: now,
+  endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
+  stackAbility: "all"
 };
 
 const CouponPromotion = {
@@ -63,7 +104,7 @@ const CouponPromotion = {
   stackAbility: "all"
 };
 
-const promotions = [OrderPromotion, CouponPromotion];
+const promotions = [OrderPromotion, OrderItemPromotion, CouponPromotion];
 
 /**
  * @summary Load promotions fixtures
