@@ -9,6 +9,8 @@ import validateTriggerParams from "./validateTriggerParams.js";
  */
 export default async function updatePromotion(context, { shopId, promotion }) {
   const { collections: { Promotions }, simpleSchemas: { Promotion: PromotionSchema } } = context;
+  const now = new Date();
+  promotion.updatedAt = now;
   PromotionSchema.validate(promotion);
   validateTriggerParams(context, promotion);
   const { _id } = promotion;

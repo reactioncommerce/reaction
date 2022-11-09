@@ -6,6 +6,7 @@ import preStartupPromotions from "./preStartup.js";
 import { Promotion } from "./simpleSchemas.js";
 import actions from "./actions/index.js";
 import qualifiers from "./qualifiers/index.js";
+import promotionTypes from "./promotionTypes/index.js";
 import schemas from "./schemas/index.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
@@ -52,7 +53,8 @@ export default async function register(app) {
     },
     promotions: {
       actions,
-      qualifiers
+      qualifiers,
+      promotionTypes
     },
     mutations,
     queries

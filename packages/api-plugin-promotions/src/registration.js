@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import _ from "lodash";
+import { PromotionType } from "./simpleSchemas.js";
 
 const PromotionsDeclaration = new SimpleSchema({
   "triggers": {
@@ -41,6 +42,12 @@ const PromotionsDeclaration = new SimpleSchema({
   },
   "qualifiers.$": {
     type: Function
+  },
+  "promotionTypes": {
+    type: Array
+  },
+  "promotionTypes.$": {
+    type: PromotionType
   }
 });
 
@@ -50,7 +57,8 @@ export const promotions = {
   enhancers: [], // enhancers for promotion data,
   schemaExtensions: [],
   operators: {}, // operators used for rule evaluations
-  qualifiers: []
+  qualifiers: [],
+  promotionTypes: []
 };
 
 /**
@@ -60,7 +68,7 @@ export const promotions = {
  */
 export function registerPluginHandlerForPromotions({ promotions: pluginPromotions }) {
   if (pluginPromotions) {
-    const { triggers, actions, enhancers, schemaExtensions, operators, qualifiers } = pluginPromotions;
+    const { triggers, actions, enhancers, schemaExtensions, operators, qualifiers, promotionTypes } = pluginPromotions;
     if (triggers) {
       promotions.triggers = _.uniqBy(promotions.triggers.concat(triggers), "key");
     }
@@ -78,6 +86,9 @@ export function registerPluginHandlerForPromotions({ promotions: pluginPromotion
     }
     if (qualifiers) {
       promotions.qualifiers = promotions.qualifiers.concat(qualifiers);
+    }
+    if (promotionTypes) {
+      promotions.promotionTypes = promotions.promotionTypes.concat(promotionTypes);
     }
   }
   PromotionsDeclaration.validate(promotions);
