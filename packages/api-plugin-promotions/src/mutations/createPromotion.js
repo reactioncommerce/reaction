@@ -8,9 +8,15 @@ import validateTriggerParams from "./validateTriggerParams.js";
  * @return {Promise<Object>} - The created promotion
  */
 export default async function createPromotion(context, promotion) {
-  const { collections: { Promotions }, simpleSchemas: { Promotion: PromotionSchema } } = context;
+  const { collections: { Promotions }, simpleSchemas: { Promotion: PromotionSchema }, promotions } = context;
   promotion._id = Random.id();
   promotion.referenceId = await context.mutations.incrementSequence(context, promotion.shopId, "Promotions");
+  const now = new Date();
+  const { triggerKey } = promotions.triggers[0];
+  const trigger = promotions.triggers.find((tr) => tr.triggerKey === triggerKey);
+  promotion.triggerType = trigger.triggerType;
+  promotion.createdAt = now;
+  promotion.updatedAt = now;
   PromotionSchema.validate(promotion);
   validateTriggerParams(context, promotion);
   const results = await Promotions.insertOne(promotion);
