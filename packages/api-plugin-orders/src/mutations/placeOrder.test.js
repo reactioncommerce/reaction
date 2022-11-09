@@ -171,7 +171,8 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     workflow: {
       status: "new",
       workflow: ["new"]
-    }
+    },
+    appliedPromotions: []
   });
 
   expect(token).toEqual(jasmine.any(String));

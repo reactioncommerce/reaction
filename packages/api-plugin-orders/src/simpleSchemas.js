@@ -1114,6 +1114,15 @@ export const Order = new SimpleSchema({
     type: Workflow,
     optional: true,
     defaultValue: {}
+  },
+  "appliedPromotions": {
+    type: Array,
+    optional: true,
+    defaultValue: []
+  },
+  "appliedPromotions.$": {
+    type: Object,
+    blackbox: true
   }
 });
 
