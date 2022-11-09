@@ -50,5 +50,5 @@ export default {
   key: "offers",
   handler: offerTriggerHandler,
   paramSchema: OfferTriggerParameters,
-  triggerType: "implicit"
+  type: "implicit"
 };
