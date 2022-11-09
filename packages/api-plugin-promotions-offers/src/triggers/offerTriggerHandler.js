@@ -49,5 +49,6 @@ export async function offerTriggerHandler(context, enhancedCart, { triggerParame
 export default {
   key: "offers",
   handler: offerTriggerHandler,
-  paramSchema: OfferTriggerParameters
+  paramSchema: OfferTriggerParameters,
+  triggerType: "implicit"
 };

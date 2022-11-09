@@ -1,9 +1,12 @@
 import SimpleSchema from "simpl-schema";
+import promotionTypes from "./promotionTypes/index.js";
+
+const promotionTypeKeys = promotionTypes.map((pt) => pt.name);
 
 export const Action = new SimpleSchema({
   actionKey: {
     type: String,
-    allowedValues: ["noop"]
+    allowedValues: ["noop", "discount"]
   },
   actionParameters: {
     type: Object,
@@ -22,6 +25,21 @@ export const Trigger = new SimpleSchema({
   }
 });
 
+export const PromotionType = new SimpleSchema({
+  name: {
+    type: String
+  },
+  action: {
+    type: Action,
+    optional: true
+  },
+  trigger: {
+    type: Trigger,
+    optional: true
+  }
+});
+
+
 /**
  * @name Promotion
  * @memberof Schemas
@@ -32,7 +50,7 @@ export const Promotion = new SimpleSchema({
   "_id": {
     type: String
   },
-  "type": {
+  "triggerType": {
     type: String,
     allowedValues: ["implicit", "explicit"]
   },
@@ -76,5 +94,11 @@ export const Promotion = new SimpleSchema({
     // defines what other offers it can be defined as
     type: String,
     allowedValues: ["none", "per-type", "all"]
+  },
+  "createdAt": {
+    type: Date
+  },
+  "updatedAt": {
+    type: Date
   }
 });
