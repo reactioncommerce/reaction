@@ -2,7 +2,8 @@ const now = new Date();
 
 const OrderPromotion = {
   _id: "orderPromotion",
-  type: "implicit",
+  triggerType: "implicit",
+  promotionType: "order-discount",
   label: "5 percent off your entire order when you spend more then $200",
   description: "5 percent off your entire order when you spend more then $200",
   enabled: true,
@@ -37,7 +38,8 @@ const OrderPromotion = {
 
 const CouponPromotion = {
   _id: "couponPromotion",
-  type: "explicit",
+  triggerType: "implicit",
+  promotionType: "order-discount",
   label: "Specific coupon code",
   description: "Specific coupon code",
   enabled: true,
