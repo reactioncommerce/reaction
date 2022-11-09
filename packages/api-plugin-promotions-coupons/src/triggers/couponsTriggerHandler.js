@@ -17,5 +17,5 @@ export default {
   key: "coupons",
   handler: couponTriggerHandler,
   paramSchema: CouponTriggerParameters,
-  triggerType: "explicit"
+  type: "explicit"
 };
