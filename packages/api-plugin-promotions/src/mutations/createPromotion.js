@@ -13,7 +13,7 @@ export default async function createPromotion(context, promotion) {
   const now = new Date();
   const { triggerKey } = promotions.triggers[0];
   const trigger = promotions.triggers.find((tr) => tr.triggerKey === triggerKey);
-  promotion.triggerType = trigger.triggerType;
+  promotion.triggerType = trigger.type;
   promotion.createdAt = now;
   promotion.updatedAt = now;
   PromotionSchema.validate(promotion);
