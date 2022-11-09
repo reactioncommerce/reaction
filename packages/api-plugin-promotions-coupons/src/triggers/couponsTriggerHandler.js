@@ -16,5 +16,6 @@ export async function couponTriggerHandler(context, enhancedCart, { triggerParam
 export default {
   key: "coupons",
   handler: couponTriggerHandler,
-  paramSchema: CouponTriggerParameters
+  paramSchema: CouponTriggerParameters,
+  triggerType: "explicit"
 };
