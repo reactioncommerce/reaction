@@ -87,7 +87,7 @@ const offerTrigger = {
   key: "offers",
   handler: () => {},
   paramSchema: OfferTriggerParameters,
-  triggerType: "explicit"
+  type: "explicit"
 };
 
 
