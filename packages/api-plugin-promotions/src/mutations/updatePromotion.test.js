@@ -2,14 +2,24 @@ import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js"
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
-import { Promotion, Trigger } from "../simpleSchemas.js";
+import { Promotion as PromotionSchema, Promotion, Trigger } from "../simpleSchemas.js";
 import updatePromotion from "./updatePromotion.js";
 
+const now = new Date();
+
 const triggerKeys = ["offers"];
+const promotionTypes = ["coupon"];
 
 Trigger.extend({
   triggerKey: {
     allowedValues: [...Trigger.getAllowedValuesForKey("triggerKey"), ...triggerKeys]
+  }
+});
+
+
+PromotionSchema.extend({
+  promotionType: {
+    allowedValues: [...PromotionSchema.getAllowedValuesForKey("promotionType"), ...promotionTypes]
   }
 });
 
@@ -21,12 +31,12 @@ const insertResults = {
 };
 mockContext.collections.Promotions.insertOne = () => insertResults;
 
-const now = new Date();
 
 const OrderPromotion = {
   _id: "orderPromotion",
   shopId: "testShop",
-  type: "implicit",
+  promotionType: "coupon",
+  triggerType: "explicit",
   label: "5 percent off your entire order when you spend more then $200",
   description: "5 percent off your entire order when you spend more then $200",
   enabled: true,
@@ -56,7 +66,9 @@ const OrderPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "none"
+  stackAbility: "none",
+  createdAt: now,
+  updatedAt: now
 };
 
 mockContext.simpleSchemas = {
@@ -74,7 +86,8 @@ export const OfferTriggerParameters = new SimpleSchema({
 const offerTrigger = {
   key: "offers",
   handler: () => {},
-  paramSchema: OfferTriggerParameters
+  paramSchema: OfferTriggerParameters,
+  type: "explicit"
 };
 
 

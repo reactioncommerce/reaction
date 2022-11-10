@@ -28,7 +28,7 @@ async function getImplicitPromotions(context, shopId) {
   const promotions = await Promotions.find({
     shopId,
     enabled: true,
-    type: "implicit",
+    triggerType: "implicit",
     startDate: { $lt: now },
     endDate: { $gt: now }
   }).toArray();

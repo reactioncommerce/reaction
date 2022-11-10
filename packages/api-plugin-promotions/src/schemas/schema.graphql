@@ -34,15 +34,15 @@ input ActionInput {
   actionParameters: JSONObject
 }
 
-enum PromotionType {
-  implicit
-  explicit
-}
-
 enum Stackability {
   all
   none
   type
+}
+
+enum TriggerType {
+  implicit
+  explicit
 }
 
 "A record representing a particular promotion"
@@ -50,8 +50,11 @@ type Promotion {
   "The unique ID of the promotion"
   _id: String!
 
-  "Whether the promotion is implicit or explicit"
-  type: PromotionType!
+  "What type of promotion is this"
+  promotionType: String!
+
+  "What type of trigger this promotion uses"
+  triggerType: TriggerType!
 
   "The id of the shop that this promotion resides"
   shopId: String!
@@ -79,6 +82,12 @@ type Promotion {
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
   stackAbility: Stackability
+
+  "When was this record created"
+  createdAt: Date!
+
+  "When was this record last updated"
+  updatedAt: Date!
 }
 
 "A connection edge in which each node is a `Promotion` object"
@@ -116,11 +125,12 @@ input PromotionFilter {
 }
 
 input PromotionCreateInput {
-  "Whether the promotion is implicit or explicit"
-  type: PromotionType!
 
   "The id of the shop that this promotion resides"
   shopId: String!
+
+  "What type of promotion this is for stackability purposes"
+  promotionType: String!
 
   "The short description of the promotion"
   label: String!
@@ -152,11 +162,14 @@ input PromotionUpdateInput {
   "The unique ID of the promotion"
   _id: String!
 
-  "Whether the promotion is implicit or explicit"
-  type: PromotionType!
-
   "The id of the shop that this promotion resides"
   shopId: String!
+
+  "What type of trigger this uses"
+  triggerType: TriggerType!
+
+  "What type of promotion this is for stackability purposes"
+  promotionType: String!
 
   "The short description of the promotion"
   label: String!
