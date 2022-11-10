@@ -2,7 +2,7 @@ import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginat
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
 
 /**
- * @summary Query for a list of products
+ * @summary Query for a list of promotions
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.shopId - id of user to query
@@ -11,15 +11,9 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
  * @returns {Promise<Object>} Products
  */
 export default async function promotions(_, args, context, info) {
-  const { input } = args;
-  const { shopId, enabled, startDate, endDate, ...connectionArgs } = input;
+  const { shopId, filter, ...connectionArgs } = args;
   await context.validatePermissions("reaction:legacy:promotions", "read", { shopId });
-  const query = await context.queries.promotions(context, {
-    shopId,
-    enabled,
-    startDate,
-    endDate
-  });
+  const query = await context.queries.promotions(context, shopId, filter);
 
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),

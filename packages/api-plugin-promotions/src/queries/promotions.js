@@ -1,22 +1,19 @@
 /**
  * @summary return a possibly filtered list of promotions
  * @param {Object} context - The application context
- * @param {Object} input - The filters
+ * @param {String} shopId - The shopId to query for
+ * @param {Object} filter - optional filter parameters
  * @return {Promise<Promotions>} - A list of promotions
  */
-export default async function promotions(context, input) {
-  const { shopId, enabled, startDate, endDate } = input;
+export default async function promotions(context, shopId, filter) {
+  const { enabled } = filter;
   const { collections: { Promotions } } = context;
-  const filter = {
-    shopId
-  };
+
 
   // because enabled could be false we need to check for undefined
   if (typeof enabled !== "undefined") {
     filter.enabled = enabled;
   }
-
-  if (startDate) filter.startDate = startDate;
-  if (endDate) filter.endDate = endDate;
+  filter.shopId = shopId;
   return Promotions.find(filter);
 }
