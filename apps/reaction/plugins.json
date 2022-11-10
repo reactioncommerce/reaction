@@ -4,6 +4,7 @@
   "files": "@reactioncommerce/api-plugin-files",
   "shops": "@reactioncommerce/api-plugin-shops",
   "settings": "@reactioncommerce/api-plugin-settings",
+  "sequences": "@reactioncommerce/api-plugin-sequences",
   "i18": "@reactioncommerce/api-plugin-i18n",
   "email": "@reactioncommerce/api-plugin-email",
   "addressValidation": "@reactioncommerce/api-plugin-address-validation",

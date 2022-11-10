@@ -1096,6 +1096,25 @@ importers:
       babel-plugin-transform-es2015-modules-commonjs: 6.26.2
       babel-plugin-transform-import-meta: 1.0.1_@babel+core@7.19.0
 
+  packages/api-plugin-sequences:
+    specifiers:
+      '@babel/core': ^7.7.7
+      '@babel/preset-env': ^7.7.7
+      '@reactioncommerce/api-utils': ^1.16.7
+      '@reactioncommerce/babel-remove-es-create-require': ~1.0.0
+      '@reactioncommerce/data-factory': ~1.0.1
+      '@reactioncommerce/reaction-error': ~1.0.1
+      simpl-schema: ^3.0.1
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      simpl-schema: 3.0.1
+    devDependencies:
+      '@babel/core': 7.19.0
+      '@babel/preset-env': 7.19.0_@babel+core@7.19.0
+      '@reactioncommerce/babel-remove-es-create-require': 1.0.0_@babel+core@7.19.0
+      '@reactioncommerce/data-factory': 1.0.1
+
   packages/api-plugin-settings:
     specifiers:
       '@babel/core': ^7.7.7
