@@ -1,5 +1,5 @@
 /**
- * @name getFulfillmentTypes
+ * @name fulfillmentTypes
  * @method
  * @memberof Fulfillment/Queries
  * @summary Query the Fulfillment collection for a list of fulfillment types
@@ -8,7 +8,7 @@
  * @param {String} input.shopId - The shop id of the fulfillment types
  * @returns {Promise<Object>} Mongo cursor
  */
-export default async function getFulfillmentTypes(context, input) {
+export default async function fulfillmentTypes(context, input) {
   const { collections: { Fulfillment } } = context;
   const { shopId } = input;
 

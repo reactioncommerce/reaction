@@ -165,8 +165,9 @@ test("updates cart properly for success rates", async () => {
 });
 
 test("throws if there is no fulfillment group with the given ID", async () => {
+  const expectedError = "Fulfillment group with ID group2 not found in cart with ID cartId";
   await expect(updateFulfillmentOptionsForGroup(mockContext, {
     cartId: "cartId",
     fulfillmentGroupId: "group2"
-  })).rejects.toThrowErrorMatchingSnapshot();
+  })).rejects.toThrow(expectedError);
 });

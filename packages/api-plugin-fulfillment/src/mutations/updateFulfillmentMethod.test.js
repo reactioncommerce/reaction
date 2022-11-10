@@ -22,7 +22,8 @@ test("throws if required fields are not supplied", async () => {
     }
   };
 
-  await expect(updateFulfillmentMethodMutation(mockContext, fulfillmentMethodInput)).rejects.toThrowErrorMatchingSnapshot();
+  const expectedError = "Method ID is required";
+  await expect(updateFulfillmentMethodMutation(mockContext, fulfillmentMethodInput)).rejects.toThrow(expectedError);
 });
 
 test("throws if the fulfillmentType does not exists", async () => {
@@ -116,11 +117,10 @@ test("should update an existing fulfillment method", async () => {
   };
 
   const expectedOutput = {
-    group: {
+    method: {
       _id: "fulfillmentMethodId01",
       enabled: true,
       fulfillmentMethod: "ups",
-      fulfillmentType: ["Shipping"],
       fulfillmentTypes: ["Shipping"],
       group: "Ground",
       handling: 99,

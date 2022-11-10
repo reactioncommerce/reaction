@@ -5,13 +5,13 @@ enum FulfillmentType {
 }
 
 "Default empty object for additionalData"
-type emptyData {
+type EmptyData {
   gqlType: String
   emptyData: Boolean
 }
 
 "Union of Additional Data fields"
-union AdditionalData = emptyData
+union AdditionalData = EmptyData
 
 """
 A single fulfillment method. Fulfillment methods are shown to shoppers along with a quote for them,
@@ -175,9 +175,6 @@ input updateFulfillmentTypeInputInfo {
 input updateFulfillmentTypeInput {
   "The shop to which this group belongs"
   groupInfo: updateFulfillmentTypeInputInfo!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 "The updated group info from updateFulfillmentType"
 type updateFulfillmentTypeGroup {
@@ -194,15 +191,12 @@ type updateFulfillmentTypeGroup {
   label: String!
 
   "Flag defining enabled/disabled status"
-  enabled: Boolean
+  enabled: Boolean!
 }
 "The response from the `updateFulfillmentType` mutation"
 type updateFulfillmentTypePayload {
   "The updated Group"
   group: updateFulfillmentTypeGroup!
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
 }
 
 
@@ -258,16 +252,10 @@ input updateFulfillmentMethodInfo {
 input updateFulfillmentMethodInput {
   "Group Info Fulfillment Method"
   groupInfo: updateFulfillmentMethodInfo!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 type updateFulfillmentMethodPayload {
   "The inserted Group"
-  group: FulfillmentMethodObj!
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
+  method: FulfillmentMethodObj!
 }
 
 extend type Mutation {
@@ -286,7 +274,7 @@ extend type Mutation {
 
 extend type Query {
   "Get a fulfillment type"
-  getFulfillmentType(
+  fulfillmentType(
     "Fulfillment type id"
     fulfillmentTypeId: ID!
 
@@ -295,7 +283,7 @@ extend type Query {
   ): FulfillmentTypeObj!
 
   "Get all fulfillment types"
-  getFulfillmentTypes(
+  fulfillmentTypes(
     "Shop ID"
     shopId: ID!
 
@@ -316,7 +304,7 @@ extend type Query {
   ): FulfillmentTypeObjConnection!
 
   "Get all fulfillment methods for the given type"
-  getFulfillmentMethods(
+  fulfillmentMethods(
     "Shop ID"
     shopId: ID!
 

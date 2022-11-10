@@ -2,14 +2,20 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 const inputSchema = new SimpleSchema({
-  fulfillmentGroupId: String,
+  fulfillmentTypeId: String,
   shopId: String,
-  name: String,
+  name: {
+    type: String,
+    optional: true
+  },
   enabled: {
     type: Boolean,
-    defaultValue: true
+    optional: true
   },
-  label: String,
+  label: {
+    type: String,
+    optional: true
+  },
   displayMessageType: {
     type: String,
     optional: true
@@ -21,7 +27,7 @@ const inputSchema = new SimpleSchema({
  * @summary updates the selected fulfillment type
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input object
- * @param {String} input.fulfillmentGroupId - fulfillment tpe id of group
+ * @param {String} input.fulfillmentTypeId - fulfillment tpe id of group
  * @param {String} input.shopId - Shop Id
  * @param {String} input.name - name of fulfillment type
  * @param {Boolean} input.enabled - status of ff-type
@@ -33,28 +39,32 @@ export default async function updateFulfillmentType(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
-  const { fulfillmentGroupId, shopId, name, enabled, label, displayMessageType } = cleanedInput;
+  const { fulfillmentTypeId, shopId, name, enabled, label, displayMessageType } = cleanedInput;
   const { collections: { Fulfillment } } = context;
 
-  if (!shopId) throw new ReactionError("invalid-parameter", "Shop ID to be updated not provided");
-  if (!fulfillmentGroupId) throw new ReactionError("invalid-parameter", "FulfillmentType ID to be updated not provided");
-  if (!name) throw new ReactionError("invalid-parameter", "FulfillmentType Name to be updated not provided");
+  await context.validatePermissions(`reaction:legacy:fulfillmentTypes:${fulfillmentTypeId}`, "update", { shopId });
 
-  await context.validatePermissions(`reaction:legacy:fulfillmentTypes:${fulfillmentGroupId}`, "update", { shopId });
+  const updatedAt = new Date();
+  const providerObject = {};
+  const updateObject = {};
+  if (enabled) providerObject.enabled = enabled;
+  if (name) providerObject.name = name;
+  if (label) providerObject.label = label;
+  if (Object.keys(providerObject).length) {
+    updateObject.provider = providerObject;
+  }
+  if (displayMessageType) updateObject.displayMessageType = displayMessageType;
+  if (name) updateObject.name = name;
 
-  const { matchedCount } = await Fulfillment.updateOne({
-    _id: fulfillmentGroupId,
-    shopId
-  }, {
-    $set: {
-      name,
-      "provider.enabled": enabled,
-      "provider.name": name,
-      "provider.label": label,
-      displayMessageType
-    }
-  });
-  if (matchedCount === 0) throw new ReactionError("not-found", "Fulfillment type to update not found");
-
+  if (Object.keys(updateObject).length) {
+    updateObject.updatedAt = updatedAt;
+    const { matchedCount } = await Fulfillment.updateOne({
+      _id: fulfillmentTypeId,
+      shopId
+    }, {
+      $set: updateObject
+    });
+    if (matchedCount === 0) throw new ReactionError("not-found", "Fulfillment type to update not found");
+  }
   return { group: cleanedInput };
 }

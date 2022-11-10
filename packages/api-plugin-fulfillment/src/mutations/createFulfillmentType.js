@@ -12,18 +12,21 @@ import { FulfillmentTypeSchema } from "../simpleSchemas.js";
  * @param {ProviderSchema} input.provider - Provider details
  * @param {String} input.fulfillmentType - fulfillment type
  * @param {String} input.displayMessageType - displayMessage for fulfillment type
- * @param {FulfillmentMethodSchema[]} input.methods - ff-method array
  * @returns {Promise<Object>} An object with the updated type
  */
 export default async function createFulfillmentType(context, input) {
   const cleanedInput = FulfillmentTypeSchema.clean(input);
-  if (!cleanedInput.provider) cleanedInput.provider = {};
-  cleanedInput.provider.name = cleanedInput.name;
+  if (cleanedInput.provider) cleanedInput.provider.name = cleanedInput.name;
 
-  if (cleanedInput.method) {
-    cleanedInput.method._id = Random.id();
-    cleanedInput.method.fulfillmentTypes = [cleanedInput.fulfillmentType];
+  // Although allowed by schema, we do not add the ff-method while creating a new ff-type
+  // FulfillmentMethods are expected to be added using the mutation createFulfillmentMethod
+  // (as it makes sense to add a new ff-method only by a new plugin implementation).
+  if (cleanedInput.methods) {
+    delete cleanedInput.methods;
   }
+  const createdAt = new Date();
+  cleanedInput.createdAt = createdAt;
+  cleanedInput.updatedAt = createdAt;
   FulfillmentTypeSchema.validate(cleanedInput);
 
   const { collections: { Fulfillment } } = context;

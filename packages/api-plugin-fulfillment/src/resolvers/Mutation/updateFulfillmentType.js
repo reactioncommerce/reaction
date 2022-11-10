@@ -1,4 +1,3 @@
-import { decodeShopOpaqueId, decodeFulfillmentGroupOpaqueId } from "../../xforms/id.js";
 import updateFulfillmentTypeMutation from "../../mutations/updateFulfillmentType.js";
 /**
  * @name Mutation/updateFulfillmentType
@@ -11,16 +10,13 @@ import updateFulfillmentTypeMutation from "../../mutations/updateFulfillmentType
  * @param {String} args.input.shopId - The ShopId to which the fulfillment group belongs
  * @param {String} args.input.name - The fulfillment group name to be updated
  * @param {String} args.input.enabled - Flag to enable/disable group
- * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
  * @returns {Promise<Object>} updateFulfillmentTypePayload
  */
 export default async function updateFulfillmentType(parentResult, { input }, context) {
-  const { groupInfo, clientMutationId = null } = input;
-  const { shopId: opaqueShopId, fulfillmentGroupId: opaqueFulfillmentGroupId } = groupInfo;
+  const { groupInfo } = input;
+  const { shopId, fulfillmentGroupId } = groupInfo;
 
-  const fulfillmentGroupId = decodeFulfillmentGroupOpaqueId(opaqueFulfillmentGroupId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
   const { group } = await updateFulfillmentTypeMutation(context, {
     ...groupInfo,
     shopId,
@@ -28,7 +24,6 @@ export default async function updateFulfillmentType(parentResult, { input }, con
   });
 
   return {
-    group,
-    clientMutationId
+    group
   };
 }
