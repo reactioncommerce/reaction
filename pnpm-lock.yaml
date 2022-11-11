@@ -231,6 +231,7 @@ importers:
       '@reactioncommerce/api-plugin-promotions': link:../../packages/api-plugin-promotions
       '@reactioncommerce/api-plugin-promotions-coupons': link:../../packages/api-plugin-promotions-coupons
       '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
+      '@reactioncommerce/api-plugin-sequences': link:../../packages/api-plugin-sequences
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
       '@reactioncommerce/api-plugin-shipments-flat-rate': link:../../packages/api-plugin-shipments-flat-rate
@@ -1103,11 +1104,17 @@ importers:
       '@reactioncommerce/api-utils': ^1.16.7
       '@reactioncommerce/babel-remove-es-create-require': ~1.0.0
       '@reactioncommerce/data-factory': ~1.0.1
+      '@reactioncommerce/random': ^1.0.2
       '@reactioncommerce/reaction-error': ~1.0.1
+      dotenv: ^16.0.1
+      envalid: ^7.3.1
       simpl-schema: ^3.0.1
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
+      dotenv: 16.0.2
+      envalid: 7.3.1
       simpl-schema: 3.0.1
     devDependencies:
       '@babel/core': 7.19.0
