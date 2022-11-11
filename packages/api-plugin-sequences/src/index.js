@@ -1,9 +1,9 @@
 import { createRequire } from "module";
-import getNextSequence from "./util/getNextSequence.js";
+import { Sequences, registerPluginHandlerForSequences } from "./registration.js";
+import startupSequences from "./startup.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
-
 
 /**
  * @summary Import and call this function to add this plugin to your API.
@@ -21,8 +21,17 @@ export default async function register(app) {
         indexes: [[{ shopId: 1, entity: 1 }, { unique: true }]]
       }
     },
+    contextAdditions: {
+      Sequences
+    },
+    Sequences: [
+      {
+        entity: "Promotions"
+      }
+    ],
     functionsByType: {
-      getNextSequence: [getNextSequence]
+      registerPluginHandler: [registerPluginHandlerForSequences],
+      startup: [startupSequences]
     }
   });
 }
