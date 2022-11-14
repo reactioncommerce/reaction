@@ -40,15 +40,7 @@ beforeAll(async () => {
     shipping: null,
     items: [],
     workflow: null,
-    discounts: [
-      {
-        promotionId: "mockPromotionId",
-        discountType: "order",
-        discountCalculationType: "fixed",
-        discountValue: 25124,
-        dateApplied: new Date()
-      }
-    ]
+    discounts: []
   });
 
   opaqueCartId = encodeOpaqueId("reaction/cart", mockCart._id);
@@ -78,6 +70,7 @@ test("anonymous cart query works after a related catalog product is hidden", asy
     isDeleted: false,
     isVisible: true,
     product: Factory.CatalogProduct.makeOne({
+      title: "Test Product",
       productId: "1",
       isDeleted: false,
       isVisible: true,
@@ -139,6 +132,7 @@ test("anonymous cart query works after a related catalog product is deleted", as
     isDeleted: false,
     isVisible: true,
     product: Factory.CatalogProduct.makeOne({
+      title: "Test Product",
       productId: "2",
       isDeleted: false,
       isVisible: true,
