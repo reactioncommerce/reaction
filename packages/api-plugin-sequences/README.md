@@ -1,4 +1,4 @@
-# api-plugin-settings
+# api-plugin-sequences
 
 [![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-sequences.svg)](https://www.npmjs.
 com/package/@reactioncommerce/api-plugin-sequences)
@@ -14,7 +14,7 @@ Provides functionality for auto-incrementing integer IDs which is not natively s
 You can define a new sequence by declaring it in the `Sequences` of your plugin registraion
 
 ```javascript
-    Sequences: [
+    sequenceConfig: [
       {
         entity: "Promotions"
       }
