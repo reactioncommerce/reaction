@@ -27,6 +27,7 @@ const insertResults = {
   insertedId: "myId"
 };
 mockContext.collections.Promotions.insertOne = () => insertResults;
+mockContext.mutations.incrementSequence = () => 1;
 
 const now = new Date();
 
