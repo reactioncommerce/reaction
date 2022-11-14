@@ -57,7 +57,7 @@ export default async function register(app) {
       qualifiers,
       promotionTypes
     },
-    Sequences: [
+    sequenceConfigs: [
       {
         entity: "Promotions"
       }

@@ -1,4 +1,4 @@
-export const Sequences = [];
+export const sequenceConfigs = [];
 
 /**
  * @summary aggregate various passed in pieces together
@@ -7,6 +7,6 @@ export const Sequences = [];
  */
 export function registerPluginHandlerForSequences({ Sequences: sequences }) {
   if (sequences) {
-    Sequences.push(...sequences);
+    sequenceConfigs.push(...sequences);
   }
 }
