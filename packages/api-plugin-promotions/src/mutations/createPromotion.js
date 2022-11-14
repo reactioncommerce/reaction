@@ -16,6 +16,7 @@ export default async function createPromotion(context, promotion) {
   promotion.triggerType = trigger.type;
   promotion.createdAt = now;
   promotion.updatedAt = now;
+  promotion.referenceId = await context.mutations.incrementSequence(context, promotion.shopId, "Promotions");
   PromotionSchema.validate(promotion);
   validateTriggerParams(context, promotion);
   const results = await Promotions.insertOne(promotion);
