@@ -23,7 +23,6 @@ PromotionSchema.extend({
   }
 });
 
-
 mockContext.collections.Promotions = mockCollection("Promotions");
 const insertResults = {
   insertedCount: 1,
@@ -34,8 +33,10 @@ mockContext.collections.Promotions.insertOne = () => insertResults;
 
 const OrderPromotion = {
   _id: "orderPromotion",
+  referenceId: 123,
   shopId: "testShop",
   promotionType: "coupon",
+  name: "Order Promotion",
   triggerType: "explicit",
   label: "5 percent off your entire order when you spend more then $200",
   description: "5 percent off your entire order when you spend more then $200",
