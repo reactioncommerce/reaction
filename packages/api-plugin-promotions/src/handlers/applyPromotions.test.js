@@ -30,31 +30,27 @@ test("should save cart with implicit promotions are applied", async () => {
     find: () => ({ toArray: jest.fn().mockResolvedValueOnce([testPromotion]) })
   };
   mockContext.promotions = pluginPromotion;
-  mockContext.mutations.saveCart = jest
-    .fn()
-    .mockName("saveCart")
-    .mockResolvedValueOnce({ ...cart });
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() }
   };
 
   await applyImplicitPromotions(mockContext, cart);
 
-  expect(testTrigger).toBeCalledWith(mockContext, expect.objectContaining(cart), {
+  expect(testTrigger).toBeCalledWith(mockContext, expect.objectContaining({ _id: cart._id }), {
     promotion: testPromotion,
     triggerParameters: { name: "test trigger" }
   });
-  expect(testAction).toBeCalledWith(mockContext, expect.objectContaining(cart), {
+  expect(testAction).toBeCalledWith(mockContext, expect.objectContaining({ _id: cart._id }), {
     actionKey: "test",
     promotion: testPromotion
   });
-  expect(testEnhancer).toBeCalledWith(mockContext, expect.objectContaining(cart));
+  expect(testEnhancer).toBeCalledWith(mockContext, expect.objectContaining({ _id: cart._id }));
 
   const expectedCart = { ...cart, appliedPromotions: [testPromotion] };
-  expect(mockContext.mutations.saveCart).toHaveBeenCalledWith(mockContext, expectedCart, "promotions");
+  expect(cart).toEqual(expectedCart);
 });
 
-test("should save cart with implicit promotions are not applied when promotions don't contain trigger", async () => {
+test("should update cart with implicit promotions are not applied when promotions don't contain trigger", async () => {
   const cart = {
     _id: "cartId"
   };
@@ -65,19 +61,15 @@ test("should save cart with implicit promotions are not applied when promotions 
   };
 
   mockContext.promotions = { ...pluginPromotion, triggers: [] };
-  mockContext.mutations.saveCart = jest
-    .fn()
-    .mockName("saveCart")
-    .mockResolvedValueOnce({ ...cart });
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() }
   };
 
-  await applyImplicitPromotions(mockContext, { ...cart });
+  await applyImplicitPromotions(mockContext, cart);
 
   expect(testTrigger).not.toHaveBeenCalled();
   expect(testAction).not.toHaveBeenCalled();
 
   const expectedCart = { ...cart, appliedPromotions: [] };
-  expect(mockContext.mutations.saveCart).toHaveBeenCalledWith(mockContext, expectedCart, "promotions");
+  expect(cart).toEqual(expectedCart);
 });
