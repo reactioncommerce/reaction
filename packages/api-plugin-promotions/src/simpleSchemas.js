@@ -58,6 +58,9 @@ export const Promotion = new SimpleSchema({
     type: String, // this is the key to the promotion type object
     allowedValues: promotionTypeKeys
   },
+  "referenceId": {
+    type: SimpleSchema.Integer
+  },
   "shopId": {
     type: String
   },

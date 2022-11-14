@@ -56,6 +56,9 @@ type Promotion {
   "What type of trigger this promotion uses"
   triggerType: TriggerType!
 
+  "An integer ID for user reference"
+  referenceId: Int!
+
   "The id of the shop that this promotion resides"
   shopId: String!
 
