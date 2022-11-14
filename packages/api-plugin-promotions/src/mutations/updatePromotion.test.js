@@ -34,6 +34,7 @@ mockContext.collections.Promotions.insertOne = () => insertResults;
 
 const OrderPromotion = {
   _id: "orderPromotion",
+  referenceId: 123,
   shopId: "testShop",
   promotionType: "coupon",
   triggerType: "explicit",
