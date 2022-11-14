@@ -67,6 +67,9 @@ export const Promotion = new SimpleSchema({
   "label": {
     type: String
   },
+  "name": {
+    type: String
+  },
   "description": {
     type: String
   },
