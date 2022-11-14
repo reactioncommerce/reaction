@@ -36,6 +36,9 @@ export const Promotion = new SimpleSchema({
     type: String,
     allowedValues: ["implicit", "explicit"]
   },
+  "referenceId": {
+    type: SimpleSchema.Integer
+  },
   "shopId": {
     type: String
   },
