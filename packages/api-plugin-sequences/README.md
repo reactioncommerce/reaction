@@ -9,6 +9,32 @@ com/gh/reactioncommerce/api-plugin-sequences)
 
 Provides functionality for auto-incrementing integer IDs which is not natively supported by Mongo
 
+## Usage
+
+You can define a new sequence by declaring it in the `Sequences` of your plugin registraion
+
+```javascript
+    Sequences: [
+      {
+        entity: "Promotions"
+      }
+    ]
+```
+
+This will create a sequence starting with 1000000 which can be incremented (returning the next to use) by calling
+`context.mutations.incrementSequence(context, shopId, "YOUR_ENTITY_NAME")`;
+
+If you wish to define the starting sequence you can do that by declaring an env var like:
+
+```bash
+SEQUENCE_INITIAL_VALUES={"Promotions":999}
+```
+
+Where you declare a one-line JSON object which contains any entities you want use a sequence for.
+
+Sequences will be created on start-up and should be available to use immediately.
+
+
 ## Developer Certificate of Origin
 We use the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
 ```
