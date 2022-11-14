@@ -24,11 +24,6 @@ export default async function register(app) {
     contextAdditions: {
       Sequences
     },
-    Sequences: [
-      {
-        entity: "Promotions"
-      }
-    ],
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForSequences],
       startup: [startupSequences]

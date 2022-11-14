@@ -53,6 +53,9 @@ type Promotion {
   "Whether the promotion is implicit or explicit"
   type: PromotionType!
 
+  "An integer ID for user reference"
+  referenceId: Int!
+
   "The id of the shop that this promotion resides"
   shopId: String!
 
