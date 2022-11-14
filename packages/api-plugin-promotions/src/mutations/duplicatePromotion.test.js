@@ -1,5 +1,6 @@
 import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import SimpleSchema from "simpl-schema";
 import { Promotion as PromotionSchema, Promotion, Trigger } from "../simpleSchemas.js";
 import duplicatePromotion from "./duplicatePromotion.js";
 import { ExistingOrderPromotion } from "./fixtures/orderPromotion.js";
@@ -31,6 +32,29 @@ mockContext.mutations.incrementSequence = () => 1000000;
 mockContext.simpleSchemas = {
   Promotion
 };
+
+export const OfferTriggerParameters = new SimpleSchema({
+  name: String,
+  conditions: {
+    type: Object,
+    blackbox: true
+  }
+});
+
+const offerTrigger = {
+  key: "offers",
+  handler: () => {},
+  paramSchema: OfferTriggerParameters,
+  type: "implicit"
+};
+
+
+mockContext.promotions = {
+  triggers: [
+    offerTrigger
+  ]
+};
+
 
 test("duplicates existing promotions and creates new one", async () => {
   try {
