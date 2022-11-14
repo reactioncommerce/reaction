@@ -1,5 +1,5 @@
 import { createRequire } from "module";
-import { Sequences, registerPluginHandlerForSequences } from "./registration.js";
+import { sequenceConfigs, registerPluginHandlerForSequences } from "./registration.js";
 import startupSequences from "./startup.js";
 import mutations from "./mutations/index.js";
 
@@ -23,7 +23,7 @@ export default async function register(app) {
       }
     },
     contextAdditions: {
-      Sequences
+      sequenceConfigs
     },
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForSequences],
