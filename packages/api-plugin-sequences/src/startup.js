@@ -11,11 +11,11 @@ const { SEQUENCE_INITIAL_VALUES } = config;
  */
 export default async function startupSequences(context) {
   const session = context.app.mongoClient.startSession();
-  const { Sequences, collections: { Sequences: SequenceCollection, Shops } } = context;
+  const { sequenceConfigs, collections: { Sequences: SequenceCollection, Shops } } = context;
   const allShops = await Shops.find().toArray();
   for (const shop of allShops) {
     const { _id: shopId } = shop;
-    for (const sequence of Sequences) {
+    for (const sequence of sequenceConfigs) {
       const { entity } = sequence;
       try {
         await session.withTransaction(async () => {
