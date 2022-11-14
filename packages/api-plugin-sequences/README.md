@@ -1,4 +1,4 @@
-# api-plugin-settings
+# api-plugin-sequences
 
 [![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-sequences.svg)](https://www.npmjs.
 com/package/@reactioncommerce/api-plugin-sequences)
