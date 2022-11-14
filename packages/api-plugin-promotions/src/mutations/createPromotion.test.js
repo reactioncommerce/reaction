@@ -4,6 +4,7 @@ import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import { Promotion as PromotionSchema, Promotion, Trigger } from "../simpleSchemas.js";
 import createPromotion from "./createPromotion.js";
+import { CreateOrderPromotion } from "./fixtures/orderPromotion.js";
 
 const triggerKeys = ["offers"];
 const promotionTypes = ["coupon"];
@@ -103,7 +104,7 @@ test("will not insert a record if it fails simple-schema validation", async () =
 });
 
 test("will not insert a record with no triggers", async () => {
-  const promotion = _.cloneDeep(OrderPromotion);
+  const promotion = _.cloneDeep(CreateOrderPromotion);
   promotion.triggers = [
     {
       triggerKey: "offers",
@@ -120,7 +121,7 @@ test("will not insert a record with no triggers", async () => {
 });
 
 test("will not insert a record if trigger parameters are incorrect", async () => {
-  const promotion = _.cloneDeep(OrderPromotion);
+  const promotion = _.cloneDeep(CreateOrderPromotion);
   promotion.triggers = [];
   try {
     await createPromotion(mockContext, promotion);
@@ -131,7 +132,7 @@ test("will not insert a record if trigger parameters are incorrect", async () =>
 
 
 test("will insert a record if it passes validation", async () => {
-  const promotionToInsert = OrderPromotion;
+  const promotionToInsert = CreateOrderPromotion;
   try {
     const { success } = await createPromotion(mockContext, promotionToInsert);
     expect(success).toBeTruthy();

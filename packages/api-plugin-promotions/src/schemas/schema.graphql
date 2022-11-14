@@ -129,14 +129,17 @@ input PromotionFilter {
 
 input PromotionCreateInput {
 
-  "The id of the shop that this promotion resides"
+  "The id of the shop that this promotion resides in"
   shopId: String!
 
   "What type of promotion this is for stackability purposes"
   promotionType: String!
 
-  "The short description of the promotion"
+  "The short description of the promotion visible to the customer"
   label: String!
+
+  "The short description of the promotion"
+  name: String!
 
   "A longer detailed description of the promotion"
   description: String!
@@ -160,6 +163,11 @@ input PromotionCreateInput {
   stackAbility: Stackability
 }
 
+input PromotionDuplicateInput {
+  "The id of the promotion to duplicate"
+  promotionId: String!
+}
+
 "This is identical to the PromotionCreate except it includes the _id"
 input PromotionUpdateInput {
   "The unique ID of the promotion"
@@ -175,6 +183,9 @@ input PromotionUpdateInput {
   promotionType: String!
 
   "The short description of the promotion"
+  name: String!
+
+  "The short description of the promotion visible to the customer"
   label: String!
 
   "A longer detailed description of the promotion"
@@ -219,6 +230,10 @@ input PromotionQueryInput {
 extend type Mutation {
   createPromotion(
     input: PromotionCreateInput
+  ): PromotionUpdateCreatePayload
+
+  duplicatePromotion(
+    input: PromotionDuplicateInput
   ): PromotionUpdateCreatePayload
 
   updatePromotion(
