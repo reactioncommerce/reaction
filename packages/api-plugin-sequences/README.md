@@ -14,7 +14,7 @@ Provides functionality for auto-incrementing integer IDs which is not natively s
 You can define a new sequence by declaring it in the `Sequences` of your plugin registraion
 
 ```javascript
-    Sequences: [
+    sequenceConfig: [
       {
         entity: "Promotions"
       }
