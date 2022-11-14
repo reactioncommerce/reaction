@@ -1,7 +1,6 @@
 import { createRequire } from "module";
 import { promotions, registerPluginHandlerForPromotions } from "./registration.js";
 import mutations from "./mutations/index.js";
-import startupPromotions from "./startup.js";
 import preStartupPromotions from "./preStartup.js";
 import { Promotion } from "./simpleSchemas.js";
 import actions from "./actions/index.js";
@@ -10,6 +9,7 @@ import promotionTypes from "./promotionTypes/index.js";
 import schemas from "./schemas/index.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
+import applyPromotions from "./handlers/applyPromotions.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -45,11 +45,19 @@ export default async function register(app) {
     },
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForPromotions],
-      preStartup: [preStartupPromotions],
-      startup: [startupPromotions]
+      preStartup: [preStartupPromotions]
     },
     contextAdditions: {
       promotions
+    },
+    cart: {
+      transforms: [
+        {
+          name: "applyPromotionsToCart",
+          fn: applyPromotions,
+          priority: 99
+        }
+      ]
     },
     promotions: {
       actions,

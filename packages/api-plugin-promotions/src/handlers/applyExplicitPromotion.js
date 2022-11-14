@@ -1,5 +1,3 @@
-import applyPromotions from "./applyPromotions.js";
-
 /**
  * @summary apply explicit promotion to a cart
  * @param {Object} context - The application context
@@ -8,5 +6,9 @@ import applyPromotions from "./applyPromotions.js";
  * @returns {Object} - The cart with promotions applied and applied promotions
  */
 export default async function applyExplicitPromotion(context, cart, promotion) {
-  return applyPromotions(context, cart, promotion);
+  if (!Array.isArray(cart.appliedPromotions)) {
+    cart.appliedPromotions = [];
+  }
+  cart.appliedPromotions.push(promotion);
+  await context.mutations.saveCart(context, cart);
 }

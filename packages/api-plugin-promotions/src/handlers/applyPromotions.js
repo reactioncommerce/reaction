@@ -39,10 +39,9 @@ async function getImplicitPromotions(context, shopId) {
  * @summary apply promotions to a cart
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
- * @param {Object} explicitPromotion - The explicit promotion to apply
- * @returns {Promise<Object>} - The cart with promotions applied
+ * @returns {Promise<void>} - undefined
  */
-export default async function applyPromotions(context, cart, explicitPromotion = undefined) {
+export default async function applyPromotions(context, cart) {
   const promotions = await getImplicitPromotions(context, cart.shopId);
   const { promotions: pluginPromotions, simpleSchemas: { Cart } } = context;
 
@@ -50,12 +49,9 @@ export default async function applyPromotions(context, cart, explicitPromotion =
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
 
   const appliedPromotions = [];
-  const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["type", "explicit"]);
+  const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]);
 
   const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
-  if (explicitPromotion) {
-    unqualifiedPromotions.push(explicitPromotion);
-  }
 
   for (const { cleanup } of pluginPromotions.actions) {
     // eslint-disable-next-line no-await-in-loop
@@ -99,8 +95,7 @@ export default async function applyPromotions(context, cart, explicitPromotion =
 
   enhancedCart.appliedPromotions = appliedPromotions;
   Cart.clean(enhancedCart, { mutate: true });
+  Object.assign(cart, enhancedCart);
 
   Logger.info({ ...logCtx, appliedPromotions: appliedPromotions.length }, "Applied promotions successfully");
-
-  return context.mutations.saveCart(context, enhancedCart, "promotions");
 }
