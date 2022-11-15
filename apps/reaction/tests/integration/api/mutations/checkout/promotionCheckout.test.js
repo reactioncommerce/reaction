@@ -194,7 +194,7 @@ describe("Promotions", () => {
     latestCartSummary = result.selectFulfillmentOptionForGroup.cart.checkout.summary;
   });
 
-  test("place order with discounted amount", async () => {
+  test("place an order with discount and get the correct values", async () => {
     let result;
 
     const paymentMethods = await availablePaymentMethods({

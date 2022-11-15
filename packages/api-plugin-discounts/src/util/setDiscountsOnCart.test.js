@@ -2,7 +2,7 @@ import setDiscountsOnCart from "./setDiscountsOnCart.js";
 
 jest.mock("../queries/getDiscountsTotalForCart.js", () => jest.fn().mockReturnValue({ total: 10 }));
 
-test("should set discounts on cart when discountCalculationMethods doesn't existd", async () => {
+test("should set discounts on cart when discountCalculationMethods doesn't exist", async () => {
   const context = {};
   const cart = {
     _id: "cart1",
