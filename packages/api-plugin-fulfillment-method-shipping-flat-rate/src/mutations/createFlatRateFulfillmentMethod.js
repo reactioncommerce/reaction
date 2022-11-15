@@ -29,9 +29,9 @@ export default async function createFlatRateFulfillmentMethod(context, input) {
   if (!shippingRecord) throw new ReactionError("server-error", "Unable to create fulfillment method without defined type");
 
   method._id = Random.id();
-  // MongoDB schema still uses `enabled` rather than `isEnabled`
-  method.enabled = method.isEnabled;
-  delete method.isEnabled;
+  // `isEnabled` has been marked @deprecated and will be removed in next release. 'enabled' is the replacement field
+  if (!method.enabled) method.enabled = method.isEnabled; // if user not yet using new field, continue to collect it from old field
+  if (method.isEnabled) delete method.isEnabled;
 
   // Hardcoded field, each ff-method plugin has to introduce this field for grouping purpose
   // Schema defined as optional=true for backward compatibility

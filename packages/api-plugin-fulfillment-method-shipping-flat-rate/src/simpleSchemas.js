@@ -29,6 +29,10 @@ export const methodSchema = new SimpleSchema({
   "group": String,
   "handling": Number,
   "isEnabled": Boolean,
+  "enabled": {
+    type: Boolean,
+    optional: true
+  },
   "label": String,
   "name": String,
   "fulfillmentMethod": {

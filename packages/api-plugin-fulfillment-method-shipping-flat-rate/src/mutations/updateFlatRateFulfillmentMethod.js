@@ -26,9 +26,9 @@ export default async function updateFlatRateFulfillmentMethod(context, input) {
   if (!methodId) throw new ReactionError("invalid-parameter", "Method ID to be updated not provided");
   await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "update", { shopId });
 
-  // MongoDB schema still uses `enabled` rather than `isEnabled`
-  method.enabled = method.isEnabled;
-  delete method.isEnabled;
+  // `isEnabled` has been marked @deprecated and will be removed in next release. 'enabled' is the replacement field
+  if (!method.enabled) method.enabled = method.isEnabled; // if user not yet using new field, continue to collect it from old field
+  if (method.isEnabled) delete method.isEnabled;
 
   // Hardcoded field, each ff-method plugin has to introduce this field for grouping purpose
   // Schema defined as optional=true for backward compatibility

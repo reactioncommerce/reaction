@@ -83,7 +83,10 @@ type FlatRateFulfillmentMethod implements Node {
   handling: Float!
 
   "Include this as a fulfillment option shown to shoppers during checkout?"
-  isEnabled: Boolean!
+  isEnabled: Boolean! @deprecated(reason: "Use `enabled`")
+
+  "Replacement field for the deprecated `isEnabled`, matches with the database definition"
+  enabled: Boolean
 
   "The name of this method, for display in the user interface"
   label: String!
@@ -122,7 +125,10 @@ input FlatRateFulfillmentMethodInput {
   handling: Float!
 
   "Include this as a fulfillment option shown to shoppers during checkout?"
-  isEnabled: Boolean!
+  isEnabled: Boolean! @deprecated(reason: "Use `enabled`")
+
+  "Replacement field for the deprecated `isEnabled`, matches with the database definition"
+  enabled: Boolean
 
   "The name of this method, for display in the user interface"
   label: String!
