@@ -4,8 +4,8 @@ const OrderPromotion = {
   _id: "orderPromotion",
   triggerType: "implicit",
   promotionType: "order-discount",
-  label: "5 percent off your entire order when you spend more then $200",
-  description: "5 percent off your entire order when you spend more then $200",
+  label: "50 percent off your entire order when you spend more then $200",
+  description: "50 percent off your entire order when you spend more then $200",
   enabled: true,
   triggers: [
     {
@@ -36,26 +36,29 @@ const OrderPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "all"
+  stackAbility: "all",
+  createdAt: new Date(),
+  updatedAt: new Date()
 };
 
 const OrderItemPromotion = {
   _id: "itemPromotion",
-  type: "implicit",
-  label: "50 percent off your entire order when you spend more then $200",
-  description: "50 percent off your entire order when you spend more then $200",
+  triggerType: "implicit",
+  promotionType: "item-discount",
+  label: "50 percent off your entire order when you spend more then $500",
+  description: "50 percent off your entire order when you spend more then $500",
   enabled: true,
   triggers: [
     {
       triggerKey: "offers",
       triggerParameters: {
-        name: "50 percent off your entire order when you spend more then $200",
+        name: "50 percent off your entire order when you spend more then $500",
         conditions: {
           all: [
             {
               fact: "totalItemAmount",
               operator: "greaterThanInclusive",
-              value: 200
+              value: 500
             }
           ]
         }
@@ -74,12 +77,14 @@ const OrderItemPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "all"
+  stackAbility: "all",
+  createdAt: new Date(),
+  updatedAt: new Date()
 };
 
 const CouponPromotion = {
   _id: "couponPromotion",
-  triggerType: "implicit",
+  triggerType: "explicit",
   promotionType: "order-discount",
   label: "Specific coupon code",
   description: "Specific coupon code",
@@ -101,7 +106,9 @@ const CouponPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "all"
+  stackAbility: "all",
+  createdAt: new Date(),
+  updatedAt: new Date()
 };
 
 const promotions = [OrderPromotion, OrderItemPromotion, CouponPromotion];
