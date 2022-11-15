@@ -253,7 +253,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1054.0
+      '@snyk/protect': 1.1058.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -4754,8 +4754,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1054.0:
-    resolution: {integrity: sha512-N2kpUyvbC5T43zm9f7aPXflDN7droj5CQ+yJNCIxyq5EsubX5+7r7muRMLDBVyaBF8SEuMciKalqhDah50r36A==}
+  /@snyk/protect/1.1058.0:
+    resolution: {integrity: sha512-8AIRMlaoAY1yEk7+4RDV957Pszt/UEVhr2qdC7PTFa1mELb9/fNwqJ2KTBMhBKarSFEZrM5ZWPe91ogHIT49+Q==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
