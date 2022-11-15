@@ -1,10 +1,9 @@
 import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import { Promotion as PromotionSchema, Promotion, Trigger } from "../simpleSchemas.js";
-import createPromotion from "./createPromotion.js";
-import { CreateOrderPromotion } from "./fixtures/orderPromotion.js";
+import duplicatePromotion from "./duplicatePromotion.js";
+import { ExistingOrderPromotion } from "./fixtures/orderPromotion.js";
 
 const triggerKeys = ["offers"];
 const promotionTypes = ["coupon"];
@@ -21,14 +20,15 @@ PromotionSchema.extend({
   }
 });
 
-
 mockContext.collections.Promotions = mockCollection("Promotions");
 const insertResults = {
   insertedCount: 1,
   insertedId: "myId"
 };
 mockContext.collections.Promotions.insertOne = () => insertResults;
+mockContext.collections.Promotions.findOne = () => ExistingOrderPromotion;
 mockContext.mutations.incrementSequence = () => 1000000;
+
 mockContext.simpleSchemas = {
   Promotion
 };
@@ -55,48 +55,14 @@ mockContext.promotions = {
   ]
 };
 
-test("will not insert a record if it fails simple-schema validation", async () => {
-  const promotion = {};
-  try {
-    await createPromotion(mockContext, promotion);
-  } catch (error) {
-    expect(error.error).toEqual("validation-error");
-  }
-});
 
-test("will not insert a record with no triggers", async () => {
-  const promotion = _.cloneDeep(CreateOrderPromotion);
-  promotion.triggers = [
-    {
-      triggerKey: "offers",
-      triggerParameters: {
-        name: "5 percent off your entire order when you spend more then $200"
-      }
-    }
-  ];
+test("duplicates existing promotions and creates new one", async () => {
   try {
-    await createPromotion(mockContext, promotion);
-  } catch (error) {
-    expect(error.error).toEqual("validation-error");
-  }
-});
-
-test("will not insert a record if trigger parameters are incorrect", async () => {
-  const promotion = _.cloneDeep(CreateOrderPromotion);
-  promotion.triggers = [];
-  try {
-    await createPromotion(mockContext, promotion);
-  } catch (error) {
-    expect(error.error).toEqual("validation-error");
-  }
-});
-
-
-test("will insert a record if it passes validation", async () => {
-  const promotionToInsert = CreateOrderPromotion;
-  try {
-    const { success } = await createPromotion(mockContext, promotionToInsert);
+    const { success, promotion } = await duplicatePromotion(mockContext, ExistingOrderPromotion._id);
     expect(success).toBeTruthy();
+    expect(promotion.name).toEqual("Copy of Order Promotion");
+    expect(promotion.referenceId).toEqual(1000000);
+    expect(promotion._id).not.toEqual("orderPromotion");
   } catch (error) {
     expect(error).toBeUndefined();
   }
