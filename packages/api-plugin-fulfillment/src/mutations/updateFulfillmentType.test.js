@@ -39,6 +39,6 @@ test("should update an existing fulfillment type", async () => {
   const result = await updateFulfillmentTypeMutation(mockContext, fulfillmentTypeInput);
 
   expect(result).toEqual({
-    group: expectedOutput
+    fulfillmentType: expectedOutput
   });
 });

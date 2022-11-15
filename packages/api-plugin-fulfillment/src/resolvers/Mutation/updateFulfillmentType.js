@@ -6,24 +6,24 @@ import updateFulfillmentTypeMutation from "../../mutations/updateFulfillmentType
  * @summary resolver for the updateFulfillmentType GraphQL mutation
  * @param {Object} parentResult - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client
- * @param {String} args.input.fulfillmentGroupId - The fulfillment group to be updated
- * @param {String} args.input.shopId - The ShopId to which the fulfillment group belongs
- * @param {String} args.input.name - The fulfillment group name to be updated
- * @param {String} args.input.enabled - Flag to enable/disable group
+ * @param {String} args.input.fulfillmentTypeInfo.fulfillmentTypeId - The id of the fulfillment type to be updated
+ * @param {String} args.input.fulfillmentTypeInfo.shopId - The ShopId to which the fulfillment type belongs
+ * @param {String} args.input.fulfillmentTypeInfo.name - The name of fulfillment type to be updated
+ * @param {String} args.input.fulfillmentTypeInfo.enabled - Flag to enable/disable type
  * @param {Object} context - an object containing the per-request state
  * @returns {Promise<Object>} updateFulfillmentTypePayload
  */
 export default async function updateFulfillmentType(parentResult, { input }, context) {
-  const { groupInfo } = input;
-  const { shopId, fulfillmentGroupId } = groupInfo;
+  const { fulfillmentTypeInfo } = input;
+  const { shopId, fulfillmentTypeId } = fulfillmentTypeInfo;
 
-  const { group } = await updateFulfillmentTypeMutation(context, {
-    ...groupInfo,
+  const { fulfillmentType } = await updateFulfillmentTypeMutation(context, {
+    ...fulfillmentTypeInfo,
     shopId,
-    fulfillmentGroupId
+    fulfillmentTypeId
   });
 
   return {
-    group
+    fulfillmentType
   };
 }

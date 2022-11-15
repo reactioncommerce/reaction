@@ -43,5 +43,5 @@ export default async function createFulfillmentType(context, input) {
   });
   if (insertedCount === 0) throw new ReactionError("server-error", "Unable to create fulfillment type");
 
-  return { group: { name: cleanedInput.name, fulfillmentType: cleanedInput.fulfillmentType } };
+  return { fulfillmentType: { name: cleanedInput.name, fulfillmentType: cleanedInput.fulfillmentType } };
 }

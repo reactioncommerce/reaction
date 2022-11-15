@@ -62,7 +62,7 @@ test("add a new fulfillment type", async () => {
   const result = await createFulfillmentTypeMutation(mockContext, fulfillmentTypeInput);
 
   expect(result).toEqual({
-    group: {
+    fulfillmentType: {
       name: "fulfillmentType123",
       fulfillmentType: "shipping"
     }

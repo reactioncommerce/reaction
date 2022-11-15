@@ -27,7 +27,7 @@ const inputSchema = new SimpleSchema({
  * @summary updates the selected fulfillment type
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input object
- * @param {String} input.fulfillmentTypeId - fulfillment tpe id of group
+ * @param {String} input.fulfillmentTypeId - id of the fulfillment type
  * @param {String} input.shopId - Shop Id
  * @param {String} input.name - name of fulfillment type
  * @param {Boolean} input.enabled - status of ff-type
@@ -66,5 +66,5 @@ export default async function updateFulfillmentType(context, input) {
     });
     if (matchedCount === 0) throw new ReactionError("not-found", "Fulfillment type to update not found");
   }
-  return { group: cleanedInput };
+  return { fulfillmentType: cleanedInput };
 }

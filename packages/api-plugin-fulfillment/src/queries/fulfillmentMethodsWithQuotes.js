@@ -1,3 +1,4 @@
+import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import extendCommonOrder from "../util/extendCommonOrder.js";
@@ -31,7 +32,7 @@ export default async function fulfillmentMethodsWithQuotes(commonOrder, context)
   const ffTypeFuncObjects = allFuncsArray.filter((func) => fulfillmentTypeInGroup === func.key);
   const funcs = ffTypeFuncObjects.map((func) => func.handler);
 
-  if (!funcs || !Array.isArray(funcs) || !funcs.length) throw new ReactionError("not-found", `No methods for Fulfillment type ${fulfillmentTypeInGroup}`);
+  if (_.isEmpty(funcs)) throw new ReactionError("not-found", `No methods for Fulfillment type ${fulfillmentTypeInGroup}`);
 
   let promises = funcs.map((rateFunction) => rateFunction(context, commonOrderExtended, [rates, retrialTargets]));
   await Promise.all(promises);
