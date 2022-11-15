@@ -25,7 +25,7 @@ test("createItemDiscount should return correct discount item object", () => {
   });
 });
 
-test("should return cart with applied discount when parameters not include rule", async () => {
+test("should return cart with applied discount when parameters do not include rule", async () => {
   const item = {
     _id: "item1",
     price: {

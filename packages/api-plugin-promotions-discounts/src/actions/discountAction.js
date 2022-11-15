@@ -88,7 +88,7 @@ export async function discountActionHandler(context, cart, params) {
 
   const { cart: updatedCart } = await functionMap[discountType](context, params, cart);
 
-  Logger.info(logCtx, "Completed applying Discount to Cart");
+  Logger.info({ ...logCtx, ...params.actionParameters, cartId: cart._id, cartDiscount: cart.discount }, "Completed applying Discount to Cart");
   return { updatedCart };
 }
 
