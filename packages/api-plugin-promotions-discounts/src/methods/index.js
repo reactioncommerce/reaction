@@ -9,7 +9,7 @@ function percentage(discountValue, price) {
 }
 
 /**
- * @summary Calculates the discount amount for the fixed discount type
+ * @summary Calculates the discount amount for the flat discount type
  * @param {Number} discountValue - The discount value
  * @returns {Number} The discount amount
  */
