@@ -234,3 +234,66 @@ test("the total discounted items should be equal total discount amount", () => {
   ]);
   expect(_.sumBy(discountForEachItem, "amount")).toEqual(totalDiscount);
 });
+
+test("should apply order discount to cart with discountMaxValue when estimate discount higher than discountMaxValue", async () => {
+  const cart = {
+    _id: "cart1",
+    items: [
+      {
+        _id: "item1",
+        price: {
+          amount: 12
+        },
+        quantity: 1,
+        subtotal: {
+          amount: 12,
+          currencyCode: "USD"
+        },
+        discounts: []
+      },
+      {
+        _id: "item2",
+        price: {
+          amount: 12
+        },
+        quantity: 2,
+        subtotal: {
+          amount: 24,
+          currencyCode: "USD"
+        },
+        discounts: []
+      }
+    ]
+  };
+
+  const parameters = {
+    actionKey: "test",
+    promotion: { _id: "promotion1" },
+    actionParameters: {
+      discountType: "order",
+      discountCalculationType: "fixed",
+      discountValue: 10,
+      discountMaxValue: 5
+    }
+  };
+
+  mockContext.discountCalculationMethods = {
+    fixed: jest.fn().mockReturnValue(10)
+  };
+
+  await applyOrderDiscountToCart.default(mockContext, parameters, cart);
+
+  expect(cart.items[0].subtotal).toEqual({
+    amount: 10.33,
+    currencyCode: "USD",
+    discount: 1.67,
+    undiscountedAmount: 12
+  });
+
+  expect(cart.items[1].subtotal).toEqual({
+    amount: 20.67,
+    currencyCode: "USD",
+    discount: 3.33,
+    undiscountedAmount: 24
+  });
+});
