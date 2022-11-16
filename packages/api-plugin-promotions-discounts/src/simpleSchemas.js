@@ -58,6 +58,10 @@ export const CartDiscount = new SimpleSchema({
   "discountType": String,
   "discountCalculationType": String, // types provided by this plugin are flat, percentage and fixed
   "discountValue": Number,
+  "discountMaxUnits": {
+    type: Number,
+    optional: true
+  },
   "dateApplied": {
     type: Date
   },

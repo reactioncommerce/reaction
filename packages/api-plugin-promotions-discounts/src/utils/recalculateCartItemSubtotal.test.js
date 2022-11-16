@@ -80,3 +80,42 @@ describe("recalculateCartItemSubtotal", () => {
     });
   });
 });
+
+test("should recalculate the item subtotal with discountMaxUnits", () => {
+  const item = {
+    _id: "item1",
+    price: {
+      amount: 12
+    },
+    quantity: 3,
+    subtotal: {
+      amount: 36,
+      currencyCode: "USD"
+    },
+    discounts: []
+  };
+
+  const discount = {
+    actionKey: "test",
+    promotionId: "promotion1",
+    discountType: "item",
+    discountCalculationType: "percentage",
+    discountValue: 50,
+    discountMaxUnits: 1
+  };
+
+  item.discounts.push(discount);
+
+  mockContext.discountCalculationMethods = {
+    percentage: jest.fn().mockImplementation((discountValue, price) => price * (1 - discountValue / 100))
+  };
+
+  recalculateCartItemSubtotal(mockContext, item);
+
+  expect(item.subtotal).toEqual({
+    amount: 30,
+    currencyCode: "USD",
+    discount: 6,
+    undiscountedAmount: 36
+  });
+});
