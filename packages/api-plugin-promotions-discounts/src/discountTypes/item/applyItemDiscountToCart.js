@@ -29,6 +29,7 @@ export function createItemDiscount(params) {
     discountType: actionParameters.discountType,
     discountCalculationType: actionParameters.discountCalculationType,
     discountValue: actionParameters.discountValue,
+    discountMaxUnits: actionParameters.discountMaxUnits,
     dateApplied: new Date()
   };
   return itemDiscount;

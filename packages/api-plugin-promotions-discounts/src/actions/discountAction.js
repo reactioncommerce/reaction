@@ -41,6 +41,10 @@ export const discountActionParameters = new SimpleSchema({
   discountValue: {
     type: Number
   },
+  discountMaxUnits: {
+    type: Number,
+    optional: true
+  },
   inclusionRules: {
     type: Rules
   },
