@@ -35,10 +35,10 @@ export function createDiscountRecord(params, discountedItems, discountedAmount) 
  * @returns {Number} - The discount amount
  */
 export function getCartDiscountAmount(context, items, discount) {
-  const merchandiseTotal = getTotalEligibleItemsAmount(items);
+  const totalEligibleItemsAmount = getTotalEligibleItemsAmount(items);
   const { discountCalculationType, discountValue } = discount;
-  const cartDiscountedAmount = context.discountCalculationMethods[discountCalculationType](discountValue, merchandiseTotal);
-  return Number(formatMoney(merchandiseTotal - cartDiscountedAmount));
+  const cartDiscountedAmount = context.discountCalculationMethods[discountCalculationType](discountValue, totalEligibleItemsAmount);
+  return Number(formatMoney(totalEligibleItemsAmount - cartDiscountedAmount));
 }
 
 /**
