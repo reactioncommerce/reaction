@@ -19,7 +19,7 @@ export default async function deleteFlatRateFulfillmentMethod(context, input) {
   const { methodId, shopId } = input;
   const { collections: { Fulfillment } } = context;
 
-  await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "delete", { shopId });
+  await context.validatePermissions("reaction:legacy:fulfillmentMethods", "delete", { shopId });
 
   const shippingRecord = await Fulfillment.findOne({
     "methods._id": methodId,

@@ -24,7 +24,7 @@ export default async function updateFlatRateFulfillmentMethod(context, input) {
   const method = { ...inputMethod };
 
   if (!methodId) throw new ReactionError("invalid-parameter", "Method ID to be updated not provided");
-  await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "update", { shopId });
+  await context.validatePermissions("reaction:legacy:fulfillmentMethods", "update", { shopId });
 
   // `isEnabled` has been marked @deprecated and will be removed in next release. 'enabled' is the replacement field
   if (!method.enabled) method.enabled = method.isEnabled; // if user not yet using new field, continue to collect it from old field
