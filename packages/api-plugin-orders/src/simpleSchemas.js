@@ -773,7 +773,7 @@ export const OrderItem = new SimpleSchema({
  * @property {String} name Method name
  * @property {Number} rate Rate
  */
-const SelectedFulfillmentOption = new SimpleSchema({
+export const SelectedFulfillmentOption = new SimpleSchema({
   _id: String,
   carrier: {
     type: String,
@@ -1114,6 +1114,15 @@ export const Order = new SimpleSchema({
     type: Workflow,
     optional: true,
     defaultValue: {}
+  },
+  "appliedPromotions": {
+    type: Array,
+    optional: true,
+    defaultValue: []
+  },
+  "appliedPromotions.$": {
+    type: Object,
+    blackbox: true
   }
 });
 

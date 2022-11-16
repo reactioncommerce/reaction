@@ -1,6 +1,6 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
-import { Engine } from "json-rules-engine";
+import createEngine from "../utils/engineHelpers.js";
 import { OfferTriggerParameters } from "../simpleSchemas.js";
 
 const require = createRequire(import.meta.url);
@@ -14,6 +14,12 @@ const logCtx = {
   file: "offerTriggerHandler.js"
 };
 
+const defaultFacts = [
+  { fact: "eligibleItems", handlerName: "getEligibleItems" },
+  { fact: "totalItemAmount", handlerName: "totalItemAmount" },
+  { fact: "totalItemCount", handlerName: "totalItemCount" }
+];
+
 /**
  * @summary apply all offers to the cart
  * @param {String} context - The application context
@@ -24,21 +30,18 @@ const logCtx = {
  * @returns {Promise<boolean>} - The answer with offers applied
  */
 export async function offerTriggerHandler(context, enhancedCart, { triggerParameters }) {
-  const {
-    promotions: { operators }
-  } = context;
+  const { promotionOfferFacts } = context;
 
-  const engine = new Engine();
-  Object.keys(operators).forEach((operatorKey) => {
-    engine.addOperator(operatorKey, operators[operatorKey]);
-  });
-  engine.addRule({
-    ...triggerParameters,
-    event: {
-      type: "rulesCheckPassed"
-    }
-  });
+  const engine = createEngine(context, triggerParameters);
+
   const facts = { cart: enhancedCart };
+
+  for (const { fact, handlerName, fromFact } of defaultFacts) {
+    engine.addFact(fact, (params, almanac) => {
+      const factParams = { ...triggerParameters, rulePrams: params, fromFact };
+      return promotionOfferFacts[handlerName](context, factParams, almanac);
+    });
+  }
 
   const results = await engine.run(facts);
   const { failureResults } = results;

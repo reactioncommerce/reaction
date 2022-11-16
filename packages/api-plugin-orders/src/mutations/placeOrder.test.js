@@ -49,6 +49,8 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     rate: 0
   }]);
 
+  mockContext.queries.getDiscountsTotalForCart = jest.fn().mockName("getDiscountsTotalForCart");
+
   mockContext.queries.shopById = jest.fn().mockName("shopById");
   mockContext.queries.shopById.mockReturnValueOnce([{
     availablePaymentMethods: ["PAYMENT1"]
@@ -171,7 +173,8 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     workflow: {
       status: "new",
       workflow: ["new"]
-    }
+    },
+    appliedPromotions: []
   });
 
   expect(token).toEqual(jasmine.any(String));

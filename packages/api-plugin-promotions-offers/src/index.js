@@ -1,6 +1,8 @@
 import { createRequire } from "module";
 import triggers from "./triggers/index.js";
 import enhancers from "./enhancers/index.js";
+import facts from "./facts/index.js";
+import { promotionOfferFacts, registerPromotionOfferFacts } from "./registration.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -15,9 +17,16 @@ export default async function register(app) {
     label: pkg.label,
     name: pkg.name,
     version: pkg.version,
+    functionsByType: {
+      registerPluginHandler: [registerPromotionOfferFacts]
+    },
+    contextAdditions: {
+      promotionOfferFacts
+    },
     promotions: {
       triggers,
       enhancers
-    }
+    },
+    promotionOfferFacts: facts
   });
 }

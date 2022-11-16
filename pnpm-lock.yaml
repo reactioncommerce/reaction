@@ -168,6 +168,7 @@ importers:
       '@reactioncommerce/api-plugin-products': 1.3.1
       '@reactioncommerce/api-plugin-promotions': 1.0.0
       '@reactioncommerce/api-plugin-promotions-coupons': 1.0.0
+      '@reactioncommerce/api-plugin-promotions-discounts': 1.0.0
       '@reactioncommerce/api-plugin-promotions-offers': 1.0.0
       '@reactioncommerce/api-plugin-sequences': 1.0.0
       '@reactioncommerce/api-plugin-settings': 1.0.7
@@ -232,6 +233,7 @@ importers:
       '@reactioncommerce/api-plugin-products': link:../../packages/api-plugin-products
       '@reactioncommerce/api-plugin-promotions': link:../../packages/api-plugin-promotions
       '@reactioncommerce/api-plugin-promotions-coupons': link:../../packages/api-plugin-promotions-coupons
+      '@reactioncommerce/api-plugin-promotions-discounts': link:../../packages/api-plugin-promotions-discounts
       '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
       '@reactioncommerce/api-plugin-sequences': link:../../packages/api-plugin-sequences
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
@@ -253,7 +255,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1044.0
+      '@snyk/protect': 1.1058.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -1031,6 +1033,26 @@ importers:
       json-rules-engine: ^6.1.2
       lodash: ^4.17.21
       simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      accounting-js: 1.1.1
+      json-rules-engine: 6.1.2
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-promotions-discounts:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.7
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      accounting-js: ^1.1.1
+      json-rules-engine: ^6.1.2
+      lodash: ^4.17.15
+      simpl-schema: ^1.12.3
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/logger': link:../logger
@@ -4759,8 +4781,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1044.0:
-    resolution: {integrity: sha512-Wi6zmOMsyM2FRlxvqLo3opf7SDvcpWWR3RGJVHPVg6uh7VByAYrKome1zl8WRUaBr4qfEpL0jJLFKaBkHYUlAg==}
+  /@snyk/protect/1.1058.0:
+    resolution: {integrity: sha512-8AIRMlaoAY1yEk7+4RDV957Pszt/UEVhr2qdC7PTFa1mELb9/fNwqJ2KTBMhBKarSFEZrM5ZWPe91ogHIT49+Q==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false

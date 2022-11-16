@@ -211,7 +211,7 @@ const ShippoShippingMethod = new SimpleSchema({
  * @property {String} carrier optional
  * @property {ShippoShippingMethod} settings optional
  */
-const ShippingMethod = new SimpleSchema({
+export const ShippingMethod = new SimpleSchema({
   "_id": {
     type: String,
     label: "Shipment Method Id"
@@ -532,7 +532,7 @@ export const CartInvoice = new SimpleSchema({
  * @property {String} customsLabelUrl For customs printable label
  * @property {ShippoShipment} shippo For Shippo specific properties
  */
-const Shipment = new SimpleSchema({
+export const Shipment = new SimpleSchema({
   "_id": {
     type: String,
     label: "Shipment Id"

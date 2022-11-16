@@ -100,6 +100,10 @@ import {
   TaxRates
 } from "@reactioncommerce/api-plugin-taxes-flat-rate/src/simpleSchemas.js";
 
+import {
+  Promotion
+} from "@reactioncommerce/api-plugin-promotions/src/simpleSchemas.js";
+
 
 const schemasToAddToFactory = {
   Account,
@@ -141,7 +145,8 @@ const schemasToAddToFactory = {
   Sitemap,
   Surcharge,
   Tag,
-  TaxRates
+  TaxRates,
+  Promotion
 };
 
 // Extend before creating factories in case some of the added fields
