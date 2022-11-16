@@ -6,9 +6,7 @@
  * @return {Promise<Promotions>} - A list of promotions
  */
 export default async function promotions(context, shopId, filter) {
-  const {
-    collections: { Promotions }
-  } = context;
+  const { collections: { Promotions } } = context;
 
   const selector = { shopId };
 
