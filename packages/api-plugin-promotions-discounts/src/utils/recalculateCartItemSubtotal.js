@@ -12,7 +12,7 @@ export default function recalculateCartItemSubtotal(context, item) {
   item.subtotal.amount = undiscountedAmount;
 
   item.discounts.forEach((discount) => {
-    const { discountedAmount, discountCalculationType, discountValue, discountType, discountMaxUnits } = discount;
+    const { discountedAmount, discountCalculationType, discountValue, discountType, discountMaxValue, discountMaxUnits } = discount;
     const calculationMethod = context.discountCalculationMethods[discountCalculationType];
 
     // eslint-disable-next-line require-jsdoc
@@ -27,12 +27,25 @@ export default function recalculateCartItemSubtotal(context, item) {
     }
 
     const itemDiscountedAmount = getItemDiscountedAmount();
-    const discountAmount = discountType === "order" ? discountedAmount : item.subtotal.amount - itemDiscountedAmount;
+
+    // eslint-disable-next-line require-jsdoc
+    function getDiscountAmount() {
+      if (discountType === "order") return discountedAmount;
+
+      const discountAmount = formatMoney(item.subtotal.amount - itemDiscountedAmount);
+      if (typeof discountMaxValue === "number" && discountMaxValue > 0) {
+        return Math.min(discountAmount, discountMaxValue);
+      }
+      return discountAmount;
+    }
+
+    const discountAmount = getDiscountAmount();
 
     totalDiscount += discountAmount;
     discount.discountedAmount = discountAmount;
-    item.subtotal.amount = Number(formatMoney(undiscountedAmount - totalDiscount));
+    item.subtotal.amount = formatMoney(undiscountedAmount - totalDiscount);
   });
+
   item.subtotal.discount = totalDiscount;
   item.subtotal.undiscountedAmount = undiscountedAmount;
 }

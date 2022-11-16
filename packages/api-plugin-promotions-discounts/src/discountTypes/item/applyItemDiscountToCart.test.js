@@ -10,7 +10,8 @@ test("createItemDiscount should return correct discount item object", () => {
     actionParameters: {
       discountType: "test",
       discountCalculationType: "test",
-      discountValue: 10
+      discountValue: 10,
+      discountMaxValue: 10
     }
   };
 
@@ -21,6 +22,7 @@ test("createItemDiscount should return correct discount item object", () => {
     discountType: "test",
     discountCalculationType: "test",
     discountValue: 10,
+    discountMaxValue: 10,
     dateApplied: expect.any(Date)
   });
 });
@@ -34,9 +36,7 @@ test("should return cart with applied discount when parameters do not include ru
     quantity: 1,
     subtotal: {
       amount: 10,
-      currencyCode: "USD",
-      discount: 2,
-      undiscountedAmount: 12
+      currencyCode: "USD"
     },
     discounts: []
   };
@@ -83,9 +83,7 @@ test("should return cart with applied discount when parameters include rule", as
     quantity: 2,
     subtotal: {
       amount: 10,
-      currencyCode: "USD",
-      discount: 2,
-      undiscountedAmount: 12
+      currencyCode: "USD"
     },
     discounts: []
   };

@@ -29,6 +29,7 @@ export function createItemDiscount(params) {
     discountType: actionParameters.discountType,
     discountCalculationType: actionParameters.discountCalculationType,
     discountValue: actionParameters.discountValue,
+    discountMaxValue: actionParameters.discountMaxValue,
     discountMaxUnits: actionParameters.discountMaxUnits,
     dateApplied: new Date()
   };
@@ -48,8 +49,8 @@ export default async function applyItemDiscountToCart(context, params, cart) {
   const filteredItems = await getEligibleItems(context, cart.items, params.actionParameters);
 
   for (const item of filteredItems) {
-    const cartDiscount = createItemDiscount(params);
-    item.discounts.push(cartDiscount);
+    const itemDiscount = createItemDiscount(params);
+    item.discounts.push(itemDiscount);
     discountedItems.push(item);
     recalculateCartItemSubtotal(context, item);
   }
