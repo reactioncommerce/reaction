@@ -42,7 +42,7 @@ export default async function updateFulfillmentType(context, input) {
   const { fulfillmentTypeId, shopId, name, enabled, label, displayMessageType } = cleanedInput;
   const { collections: { Fulfillment } } = context;
 
-  await context.validatePermissions(`reaction:legacy:fulfillmentTypes:${fulfillmentTypeId}`, "update", { shopId });
+  await context.validatePermissions("reaction:legacy:fulfillmentTypes", "update", { shopId });
 
   const updatedAt = new Date();
   const providerObject = {};

@@ -29,7 +29,7 @@ export default async function updateFulfillmentMethodMutation(context, input) {
   const { collections: { Fulfillment } } = context;
   const method = { ...inputMethod };
 
-  await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "update", { shopId });
+  await context.validatePermissions("reaction:legacy:fulfillmentMethods", "update", { shopId });
 
   const ffTypeMethodRecord = await Fulfillment.findOne({
     "_id": fulfillmentTypeId,
