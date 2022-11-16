@@ -102,7 +102,6 @@ type PromotionEdge {
   node: Promotion
 }
 
-
 type PromotionConnection {
   "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [PromotionEdge]
@@ -120,15 +119,24 @@ type PromotionConnection {
   totalCount: Int!
 }
 
+input PromotionDateOperators {
+  "The value must be equal to the given value"
+  eq: Date
+
+  "The value must be greater than the given value"
+  before: Date
+
+  "The value must be greater than or equal to the given value"
+  after: Date
+}
+
 input PromotionFilter {
-  shopId: String!
   enabled: Boolean
-  startDate: Date
-  endDate: Date
+  startDate: PromotionDateOperators
+  endDate: PromotionDateOperators
 }
 
 input PromotionCreateInput {
-
   "The id of the shop that this promotion resides in"
   shopId: String!
 
@@ -218,7 +226,6 @@ type PromotionUpdateCreatePayload {
   promotion: Promotion
 }
 
-
 input PromotionQueryInput {
   "The unique ID of the promotion"
   _id: String!
@@ -228,26 +235,18 @@ input PromotionQueryInput {
 }
 
 extend type Mutation {
-  createPromotion(
-    input: PromotionCreateInput
-  ): PromotionUpdateCreatePayload
+  createPromotion(input: PromotionCreateInput): PromotionUpdateCreatePayload
 
   duplicatePromotion(
     input: PromotionDuplicateInput
   ): PromotionUpdateCreatePayload
 
-  updatePromotion(
-    input: PromotionUpdateInput
-  ): PromotionUpdateCreatePayload
+  updatePromotion(input: PromotionUpdateInput): PromotionUpdateCreatePayload
 }
 
 extend type Query {
-  promotion(
-    input: PromotionQueryInput
-  ): Promotion
+  promotion(input: PromotionQueryInput): Promotion
 }
-
-
 
 extend type Query {
   promotions(
@@ -255,25 +254,24 @@ extend type Query {
     shopId: ID!
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
+    after: ConnectionCursor
 
     "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
+    before: ConnectionCursor
 
     "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
-    first: ConnectionLimitInt,
+    first: ConnectionLimitInt
 
     "Return at most this many results. This parameter may be used with the `before` parameter."
-    last: ConnectionLimitInt,
+    last: ConnectionLimitInt
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
-    offset: Int,
+    offset: Int
 
     filter: PromotionFilter
 
     sortBy: String
 
     sortOrder: String
-
   ): PromotionConnection!
 }
