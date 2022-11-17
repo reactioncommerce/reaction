@@ -73,6 +73,11 @@ export const Promotion = new SimpleSchema({
     type: Boolean,
     defaultValue: false
   },
+  "state": {
+    type: String,
+    allowedValues: ["created", "active", "completed", "archived"],
+    defaultValue: "created"
+  },
   "triggers": {
     type: Array
   },
