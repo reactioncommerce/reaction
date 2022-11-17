@@ -3,7 +3,7 @@ import { MethodDynamicRateData } from "./simpleSchemas.js";
 import preStartup from "./preStartup.js";
 import startup from "./startup.js";
 import schemas from "./schemas/index.js";
-import getFulfillmentMethodsWithQuotesShippingDynamicRate from "./getFulfillmentMethodsWithQuotesShippingDynamicRate.js";
+import fulfillmentMethodsWithQuotesShippingDynamicRate from "./fulfillmentMethodsWithQuotesShippingDynamicRate.js";
 import validateOrderMethodsDynamicRate from "./util/validateOrderMethodsDynamicRate.js";
 
 const require = createRequire(import.meta.url);
@@ -29,7 +29,7 @@ export default async function register(app) {
       preStartup: [preStartup],
       startup: [startup],
       validateOrderMethods: [{ key: "dynamicRate", handler: validateOrderMethodsDynamicRate }],
-      getFulfillmentMethodsWithQuotes: [{ key: "shipping", handler: getFulfillmentMethodsWithQuotesShippingDynamicRate }]
+      fulfillmentMethodsWithQuotes: [{ key: "shipping", handler: fulfillmentMethodsWithQuotesShippingDynamicRate }]
     }
   });
 }

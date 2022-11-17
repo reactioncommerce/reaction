@@ -1,5 +1,3 @@
-import { decodeFulfillmentRestrictionOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
-
 /**
  * @name Query/getFlatRateFulfillmentRestriction
  * @method
@@ -10,13 +8,9 @@ import { decodeFulfillmentRestrictionOpaqueId, decodeShopOpaqueId } from "../../
  * @param {String} args.shopId - The shop that owns this restriction
  * @param {Object} context - an object containing the per-request state
  * @returns {Promise<Object>|undefined} A Restriction object
- * @deprecated since version 5.0, use flatRateFulfillmentRestriction instead
  */
 export default async function getFlatRateFulfillmentRestriction(parentResult, args, context) {
   const { restrictionId, shopId } = args;
 
-  return context.queries.getFlatRateFulfillmentRestriction(context, {
-    restrictionId: decodeFulfillmentRestrictionOpaqueId(restrictionId),
-    shopId: decodeShopOpaqueId(shopId)
-  });
+  return context.queries.getFlatRateFulfillmentRestriction(context, { restrictionId, shopId });
 }

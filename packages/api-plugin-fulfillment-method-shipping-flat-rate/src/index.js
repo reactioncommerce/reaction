@@ -1,5 +1,5 @@
 import { createRequire } from "module";
-import getFulfillmentMethodsWithQuotesShippingFlatRate from "./getFulfillmentMethodsWithQuotesShippingFlatRate.js";
+import fulfillmentMethodsWithQuotesShippingFlatRate from "./fulfillmentMethodsWithQuotesShippingFlatRate.js";
 import validateOrderMethodsFlatRate from "./util/validateOrderMethodsFlatRate.js";
 import resolvers from "./resolvers/index.js";
 import mutations from "./mutations/index.js";
@@ -42,7 +42,7 @@ export default async function register(app) {
     functionsByType: {
       preStartup: [fulfillmentMethodShippingFlatRatePreStartup],
       validateOrderMethods: [{ key: "flatRate", handler: validateOrderMethodsFlatRate }],
-      getFulfillmentMethodsWithQuotes: [{ key: "shipping", handler: getFulfillmentMethodsWithQuotesShippingFlatRate }]
+      fulfillmentMethodsWithQuotes: [{ key: "shipping", handler: fulfillmentMethodsWithQuotesShippingFlatRate }]
     },
     shopSettingsConfig: {
       isShippingRatesFulfillmentEnabled: {

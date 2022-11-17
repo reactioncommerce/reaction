@@ -1,7 +1,5 @@
-import flatRateFulfillmentRestrictions from "./flatRateFulfillmentRestrictions";
-
 /**
- * @name getFlatRateFulfillmentRestrictions
+ * @name flatRateFulfillmentRestrictions
  * @method
  * @memberof Fulfillment
  * @summary Query the FulfillmentRestrictions collection for restrictions with the provided shopId
@@ -9,8 +7,13 @@ import flatRateFulfillmentRestrictions from "./flatRateFulfillmentRestrictions";
  * @param {Object} params - request parameters
  * @param {String} params.shopId - Shop ID for the shop that owns the restrictions
  * @returns {Promise<Object>|undefined} - A restrictions document, if one is found
- * @deprecated since version 5.0, use flatRateFulfillmentRestrictions instead
  */
-export default async function getFlatRateFulfillmentRestrictions(context, { shopId } = {}) {
-  return flatRateFulfillmentRestrictions(context, { shopId });
+export default async function flatRateFulfillmentRestrictions(context, { shopId } = {}) {
+  const { collections: { FulfillmentRestrictions } } = context;
+
+  await context.validatePermissions("reaction:legacy:fulfillmentRestrictions", "read", { shopId });
+
+  return FulfillmentRestrictions.find({
+    shopId
+  });
 }

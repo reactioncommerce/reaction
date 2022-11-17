@@ -10,7 +10,9 @@ const inputSchema = new SimpleSchema({
  * @method deleteFlatRateFulfillmentRestriction
  * @summary deletes a flat rate fulfillment restriction
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - Input (see SimpleSchema)
+ * @param {Object} input - Input
+ * @param {String} input.restrictionId - RestrictionId Id to be deleted
+ * @param {String} input.shopId - Shop Id
  * @returns {Promise<Object>} An object with a `restriction` property containing the deleted restriction
  */
 export default async function deleteFlatRateFulfillmentRestriction(context, input) {

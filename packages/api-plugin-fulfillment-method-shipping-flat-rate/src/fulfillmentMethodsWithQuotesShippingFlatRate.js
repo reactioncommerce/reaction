@@ -19,12 +19,12 @@ const fulfillmentMethodName = "flatRate";
  * shipping rates.
  * @private
  */
-export default async function getFulfillmentMethodsWithQuotesShippingFlatRate(context, commonOrder, previousQueryResults = []) {
+export default async function fulfillmentMethodsWithQuotesShippingFlatRate(context, commonOrder, previousQueryResults = []) {
   const { collections: { Fulfillment } } = context;
   const [rates = [], retrialTargets = []] = previousQueryResults;
   const currentMethodInfo = { packageName };
 
-  logCtx.file = "src/getFulfillmentMethodsWithQuotesShippingFlatRate.js";
+  logCtx.file = "src/fulfillmentMethodsWithQuotesShippingFlatRate.js";
 
   if (retrialTargets.length > 0) {
     const isNotAmongFailedRequests = retrialTargets.every((target) => target.packageName !== packageName);

@@ -10,7 +10,9 @@ const inputSchema = new SimpleSchema({
  * @method deleteFlatRateFulfillmentMethod
  * @summary deletes a flat rate fulfillment method
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - Input (see SimpleSchema)
+ * @param {Object} input - Input
+ * @param {String} input.methoId - Method Id to be deleted
+ * @param {String} input.shopId - Shop Id
  * @returns {Promise<Object>} An object with a `method` property containing the deleted method
  */
 export default async function deleteFlatRateFulfillmentMethod(context, input) {

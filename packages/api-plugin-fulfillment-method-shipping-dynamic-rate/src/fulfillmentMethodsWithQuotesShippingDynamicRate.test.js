@@ -1,5 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import getFulfillmentMethodsWithQuotesShippingDynamicRate from "./getFulfillmentMethodsWithQuotesShippingDynamicRate.js";
+import fulfillmentMethodsWithQuotesShippingDynamicRate from "./fulfillmentMethodsWithQuotesShippingDynamicRate.js";
 
 test("should return previousResults if Shipping is not among FailedRequests", async () => {
   const commonOrder = {
@@ -12,7 +12,7 @@ test("should return previousResults if Shipping is not among FailedRequests", as
       }
     ]
   ];
-  const result = await getFulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
+  const result = await fulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
   expect(result).toEqual(previousResults);
 });
 
@@ -36,7 +36,7 @@ test("should return previousResults if not fulfillment records enabled", async (
   mockContext.collections.Fulfillment = {
     find: jest.fn(() => ({ toArray: () => [] }))
   };
-  const result = await getFulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
+  const result = await fulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
   expect(result).toEqual(previousResults);
 });
 
@@ -112,6 +112,6 @@ test("should return rates witout error", async () => {
   mockContext.collections.Fulfillment = {
     find: jest.fn(() => ({ toArray: () => [shippingDoc] }))
   };
-  const result = await getFulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
+  const result = await fulfillmentMethodsWithQuotesShippingDynamicRate(mockContext, commonOrder, previousResults);
   expect(result).toEqual(expectedResult);
 });

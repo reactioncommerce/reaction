@@ -12,7 +12,18 @@ const inputSchema = new SimpleSchema({
  * @method createFlatRateFulfillmentMethod
  * @summary Creates a flat rate fulfillment method
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - Input (see SimpleSchema)
+ * @param {Object} input - Input object
+ * @param {String} input.shopId - Shop Id
+ * @param {Number} input.method.cost - Cost
+ * @param {String} input.method.group - Group name (free / ground)
+ * @param {Number} input.method.handling - Handling price
+ * @param {Boolean} input.method.isEnabled - Status
+ * @param {Boolean} input.method.enabled - Status
+ * @param {String} input.method.label - Display label of method
+ * @param {String} input.method.name - Name of method
+ * @param {String} input.method.fulfillmentMethod - Fulfullment method name non-editable
+ * @param {String[]} input.method.fulfillmentTypes - Array of Fulfullment type
+ * @param {Number} input.method.rate - Rate of method
  * @returns {Promise<Object>} An object with a `method` property containing the created method
  */
 export default async function createFlatRateFulfillmentMethod(context, input) {

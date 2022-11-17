@@ -10,14 +10,13 @@ const fulfillmentMethodName = "dynamicRate";
  * @param {Object} commonOrder - details about the purchase a user wants to make.
  * @param {Array} [previousQueryResults] - an array of shipping rates and
  * info about failed calls to the APIs of some shipping methods providers
- * e.g Shippo.
  * @returns {Array} - an array that contains two arrays: the first array will
  * be an updated list of shipping rates, and the second will contain info for
  * retrying this specific package if any errors occurred while retrieving the
  * shipping rates.
  * @private
  */
-export default async function getFulfillmentMethodsWithQuotesShippingDynamicRate(context, commonOrder, previousQueryResults = []) {
+export default async function fulfillmentMethodsWithQuotesShippingDynamicRate(context, commonOrder, previousQueryResults = []) {
   const { collections: { Fulfillment } } = context;
   const [rates = [], retrialTargets = []] = previousQueryResults;
   const currentMethodInfo = { packageName };
