@@ -8,6 +8,6 @@
 export default async function duplicatePromotion(_, { input }, context) {
   const { promotionId, shopId } = input;
   await context.validatePermissions("reaction:legacy:promotions", "create", { shopId });
-  const duplicatePromotionResults = await context.mutations.duplicatePromotion(context, promotionId);
+  const duplicatePromotionResults = await context.mutations.duplicatePromotion(context, { shopId, promotionId });
   return duplicatePromotionResults;
 }

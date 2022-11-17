@@ -15,6 +15,7 @@ export default async function createPromotion(context, promotion) {
   const { triggerKey } = promotions.triggers[0];
   const trigger = promotions.triggers.find((tr) => tr.triggerKey === triggerKey);
   promotion.triggerType = trigger.type;
+  promotion.state = "created";
   promotion.createdAt = now;
   promotion.updatedAt = now;
   PromotionSchema.validate(promotion);

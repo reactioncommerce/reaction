@@ -7,6 +7,7 @@ const OrderPromotion = {
   label: "50 percent off your entire order when you spend more then $200",
   description: "50 percent off your entire order when you spend more then $200",
   enabled: true,
+  state: "created",
   triggers: [
     {
       triggerKey: "offers",
@@ -48,6 +49,7 @@ const OrderItemPromotion = {
   label: "50 percent off your entire order when you spend more then $500",
   description: "50 percent off your entire order when you spend more then $500",
   enabled: true,
+  state: "created",
   triggers: [
     {
       triggerKey: "offers",
