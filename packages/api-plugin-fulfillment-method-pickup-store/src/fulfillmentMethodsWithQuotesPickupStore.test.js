@@ -1,5 +1,5 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
-import getFulfillmentMethodsWithQuotesPickupStore from "./getFulfillmentMethodsWithQuotesPickupStore.js";
+import fulfillmentMethodsWithQuotesPickupStore from "./fulfillmentMethodsWithQuotesPickupStore.js";
 
 test("should return previousResults if pickup is not among FailedRequests", async () => {
   const commonOrder = {
@@ -12,7 +12,7 @@ test("should return previousResults if pickup is not among FailedRequests", asyn
       }
     ]
   ];
-  const result = await getFulfillmentMethodsWithQuotesPickupStore(mockContext, commonOrder, previousResults);
+  const result = await fulfillmentMethodsWithQuotesPickupStore(mockContext, commonOrder, previousResults);
   expect(result).toEqual(previousResults);
 });
 
@@ -36,7 +36,7 @@ test("should return previousResults if not fulfillment records enabled", async (
   mockContext.collections.Fulfillment = {
     find: jest.fn(() => ({ toArray: () => [] }))
   };
-  const result = await getFulfillmentMethodsWithQuotesPickupStore(mockContext, commonOrder, previousResults);
+  const result = await fulfillmentMethodsWithQuotesPickupStore(mockContext, commonOrder, previousResults);
   expect(result).toEqual(previousResults);
 });
 
@@ -123,6 +123,6 @@ test("should return rates witout error", async () => {
   mockContext.collections.Fulfillment = {
     find: jest.fn(() => ({ toArray: () => [pickupDoc] }))
   };
-  const result = await getFulfillmentMethodsWithQuotesPickupStore(mockContext, commonOrder, previousResults);
+  const result = await fulfillmentMethodsWithQuotesPickupStore(mockContext, commonOrder, previousResults);
   expect(result).toEqual(expectedResult);
 });

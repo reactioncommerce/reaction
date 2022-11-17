@@ -4,7 +4,7 @@ import collectStoreDetails from "./util/collectStoreDetails.js";
 const packageName = "fulfillment-method-pickup-store";
 const fulfillmentTypeName = "pickup";
 const fulfillmentMethodName = "store";
-const logCtx = { name: "fulfillment-method-pickup-store", file: "getFulfillmentMethodsWithQuotesPickupStore" };
+const logCtx = { name: "fulfillment-method-pickup-store", file: "fulfillmentMethodsWithQuotesPickupStore" };
 
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
@@ -18,7 +18,7 @@ const logCtx = { name: "fulfillment-method-pickup-store", file: "getFulfillmentM
  * shipping rates.
  * @private
  */
-export default async function getFulfillmentMethodsWithQuotesPickupStore(context, commonOrder, previousQueryResults = []) {
+export default async function fulfillmentMethodsWithQuotesPickupStore(context, commonOrder, previousQueryResults = []) {
   const { collections: { Fulfillment } } = context;
   const [rates = [], retrialTargets = []] = previousQueryResults;
   const currentMethodInfo = { packageName };
@@ -70,6 +70,6 @@ export default async function getFulfillmentMethodsWithQuotesPickupStore(context
     return [rates, retrialTargets];
   }
 
-  Logger.debug({ ...logCtx, rates }, "Store getFulfillmentMethodsWithQuotesPickupStore");
+  Logger.debug({ ...logCtx, rates }, "Store fulfillmentMethodsWithQuotesPickupStore");
   return [rates, retrialTargets];
 }

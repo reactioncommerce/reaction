@@ -1,14 +1,14 @@
 "Additional data fields from Store"
-type storeFields {
+type StoreFields {
   storeId: String
   storeAddress: String
   storeTiming: String
 }
 
 "Additional Store data - Pickup"
-type storeData {
+type StoreData {
   gqlType: String
-  storeData: [storeFields]
+  storeData: [StoreFields]
 }
 
-extend union AdditionalData = storeData
+extend union AdditionalData = StoreData

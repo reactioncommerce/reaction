@@ -5,7 +5,7 @@
  * @param {Object[]} validationResults - Validation results collected till now
  * @returns {Object[]} validationResults - with the validation details populated
  */
-export default function validateOrderMethodsstore(context, commonOrder, validationResults = []) {
+export default function validateOrderMethodsStore(context, commonOrder, validationResults = []) {
 // This is a dummy code to demo how validation results could be returned.
 // Commenting out since the placeOrder will fail if the error record is pushed.
 

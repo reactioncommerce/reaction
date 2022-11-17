@@ -83,7 +83,6 @@ test("should throw error and NOT call createFulfillmentMethod mutation", async (
   };
   mockContext.mutations.createFulfillmentMethod = jest.fn().mockName("createFulfillmentMethod").mockReturnValueOnce(Promise.resolve(method));
 
-  await expect(checkAndCreateFulfillmentMethod(mockContext, { shopId, fulfillmentTypeId, method })).rejects.toThrowErrorMatchingSnapshot();
-  // await checkAndCreateFulfillmentMethod(mockContext, { shopId, fulfillmentTypeId, method });
-  // expect(mockContext.mutations.createFulfillmentMethod).toHaveBeenCalled();
+  const expectedError = "Unable to create fulfillment method Pickup-Store without defined type";
+  await expect(checkAndCreateFulfillmentMethod(mockContext, { shopId, fulfillmentTypeId, method })).rejects.toThrowError(expectedError);
 });

@@ -3,7 +3,7 @@
 This is a fulfillment-method plugin which which works along with the base `api-plugin-fulfillment` and the ff-type plugin `api-plugin-fulfillment-type-pickup`. This plugin actually implements all the functionality associated with this fulfillment-method. It can work along-side other fulfillment-methods under the same ff-type.
 
 This main features/functionalities of this plugin includes the following:
-* getFulfillmentMethodsWithQuotesPickupStore - returns the quote or equivalent details for the method when called from base ff plugin
+* fulfillmentMethodsWithQuotesPickupStore - returns the quote or equivalent details for the method when called from base ff plugin
 * preStartup - extends the union of "methodAdditionalData" with data structure specific to Store
 * startup - Inserts the required ff-method entry into Fulfillment collection
 * util/checkAndCreateFulfillmentMethod - confirms existing ff-type entry and adds a new ff-method under it.
