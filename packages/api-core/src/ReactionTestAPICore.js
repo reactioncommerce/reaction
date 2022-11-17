@@ -10,7 +10,6 @@ const DEFAULT_MONGO_URL = "mongodb://localhost:27017/test";
 
 const require = createRequire(import.meta.url);
 const { gql } = require("apollo-server");
-const { createTestClient } = require("apollo-server-testing");
 
 class ReactionTestAPICore {
   constructor(options = {}) {
@@ -25,13 +24,13 @@ class ReactionTestAPICore {
     }
 
     this.mutate = (mutation) => async (variables) => {
-      const result = await this.graphClient.mutate({ mutation: gql(mutation), variables });
+      const result = await this.reactionNodeApp.apolloServer.executeOperation({ query: gql(mutation), variables });
       if (result.errors) throw result.errors;
       return result.data;
     };
 
     this.query = (query) => async (variables) => {
-      const result = await this.graphClient.query({ query: gql(query), variables });
+      const result = await this.reactionNodeApp.apolloServer.executeOperation({ query: gql(query), variables });
       if (result.errors) throw result.errors;
       return result.data;
     };
@@ -141,8 +140,6 @@ class ReactionTestAPICore {
       Logger.error(error, "Error starting app in ReactionTestAPICore");
       throw error;
     }
-
-    this.graphClient = createTestClient(this.reactionNodeApp.apolloServer);
   }
 
   async stop() {
