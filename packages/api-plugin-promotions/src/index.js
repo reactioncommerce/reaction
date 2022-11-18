@@ -10,6 +10,7 @@ import schemas from "./schemas/index.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import applyPromotions from "./handlers/applyPromotions.js";
+import startupPromotions from "./startup.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -46,7 +47,8 @@ export default async function register(app) {
     },
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForPromotions],
-      preStartup: [preStartupPromotions]
+      preStartup: [preStartupPromotions],
+      startup: [startupPromotions]
     },
     contextAdditions: {
       promotions
