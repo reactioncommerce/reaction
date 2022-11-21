@@ -19,6 +19,7 @@ export function createDiscountRecord(params, discountedItems, discountedAmount) 
     discountType: actionParameters.discountType,
     discountCalculationType: actionParameters.discountCalculationType,
     discountValue: actionParameters.discountValue,
+    discountMaxValue: actionParameters.discountMaxValue,
     dateApplied: new Date(),
     discountedItemType: "item",
     discountedAmount,
@@ -36,9 +37,13 @@ export function createDiscountRecord(params, discountedItems, discountedAmount) 
  */
 export function getCartDiscountAmount(context, items, discount) {
   const totalEligibleItemsAmount = getTotalEligibleItemsAmount(items);
-  const { discountCalculationType, discountValue } = discount;
+  const { discountCalculationType, discountValue, discountMaxValue } = discount;
   const cartDiscountedAmount = context.discountCalculationMethods[discountCalculationType](discountValue, totalEligibleItemsAmount);
-  return Number(formatMoney(totalEligibleItemsAmount - cartDiscountedAmount));
+  const discountAmount = formatMoney(totalEligibleItemsAmount - cartDiscountedAmount);
+  if (typeof discountMaxValue === "number" && discountMaxValue > 0) {
+    return Math.min(discount.discountMaxValue, discountAmount);
+  }
+  return discountAmount;
 }
 
 /**
