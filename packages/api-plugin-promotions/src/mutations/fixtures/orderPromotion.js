@@ -34,7 +34,10 @@ export const CreateOrderPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "none"
+  stackAbility: {
+    key: "all",
+    parameters: {}
+  }
 };
 
 export const ExistingOrderPromotion = {
@@ -74,7 +77,10 @@ export const ExistingOrderPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "none",
+  stackAbility: {
+    key: "all",
+    parameters: {}
+  },
   createdAt: now,
   updatedAt: now
 };

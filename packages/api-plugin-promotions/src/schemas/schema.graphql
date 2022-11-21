@@ -16,6 +16,14 @@ type Action {
   actionParameters: JSONObject
 }
 
+type Stackability {
+  "The key that defines this stackability"
+  key: String!
+
+  "Parameters to be passed to the stackability"
+  parameters: JSONObject
+}
+
 "The trigger that will set a promotion into motion"
 input TriggerInput {
   "The key that defines this action"
@@ -34,10 +42,12 @@ input ActionInput {
   actionParameters: JSONObject
 }
 
-enum Stackability {
-  all
-  none
-  type
+input StackabilityInput {
+  "The key that defines this stackability"
+  key: String!
+
+  "Parameters to be passed to the stackability"
+  parameters: JSONObject
 }
 
 enum TriggerType {
@@ -178,7 +188,7 @@ input PromotionCreateInput {
   endDate: Date
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
-  stackAbility: Stackability
+  stackAbility: StackabilityInput
 }
 
 input PromotionDuplicateArchiveInput {
@@ -228,7 +238,7 @@ input PromotionUpdateInput {
   endDate: Date
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
-  stackAbility: Stackability
+  stackAbility: StackabilityInput
 }
 
 type PromotionUpdatedPayload {

@@ -39,6 +39,16 @@ export const PromotionType = new SimpleSchema({
   }
 });
 
+export const StackAbility = new SimpleSchema({
+  key: {
+    type: String,
+    allowedValues: []
+  },
+  parameters: {
+    type: Object,
+    blackbox: true
+  }
+});
 
 /**
  * @name Promotion
@@ -103,9 +113,7 @@ export const Promotion = new SimpleSchema({
     optional: true
   },
   "stackAbility": {
-    // defines what other offers it can be defined as
-    type: String,
-    allowedValues: ["none", "per-type", "all"]
+    type: StackAbility
   },
   "createdAt": {
     type: Date

@@ -23,7 +23,8 @@ export function createDiscountRecord(params, discountedItems, discountedAmount) 
     dateApplied: new Date(),
     discountedItemType: "item",
     discountedAmount,
-    discountedItems
+    discountedItems,
+    stackAbility: promotion.stackAbility
   };
   return itemDiscount;
 }
@@ -95,5 +96,7 @@ export default async function applyOrderDiscountToCart(context, params, cart) {
 
   cart.discount = getTotalDiscountOnCart(cart);
 
-  return { cart };
+  const affected = discountedItems.length > 0;
+
+  return { cart, affected };
 }

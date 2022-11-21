@@ -1,5 +1,8 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import checkStackAbility from "../utils/checkStackAbility.js";
 import applyImplicitPromotions from "./applyPromotions.js";
+
+jest.mock("../utils/checkStackAbility.js", () => jest.fn());
 
 const testTrigger = jest.fn().mockReturnValue(Promise.resolve(true));
 const testAction = jest.fn();
@@ -8,14 +11,18 @@ const testEnhancer = jest.fn().mockImplementation((context, cart) => cart);
 const pluginPromotion = {
   triggers: [{ key: "test", handler: testTrigger }],
   actions: [{ key: "test", handler: testAction }],
-  enhancers: [testEnhancer]
+  enhancers: [testEnhancer],
+  qualifiers: []
 };
 
 const testPromotion = {
   _id: "test id",
   actions: [{ actionKey: "test" }],
   triggers: [{ triggerKey: "test", triggerParameters: { name: "test trigger" } }],
-  stackAbility: "none"
+  stackAbility: {
+    key: "none",
+    parameters: {}
+  }
 };
 
 beforeEach(() => {
@@ -33,6 +40,8 @@ test("should save cart with implicit promotions are applied", async () => {
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() }
   };
+  checkStackAbility.mockReturnValueOnce(true);
+  testAction.mockReturnValue({ affected: true });
 
   await applyImplicitPromotions(mockContext, cart);
 
@@ -60,7 +69,7 @@ test("should update cart with implicit promotions are not applied when promotion
     })
   };
 
-  mockContext.promotions = { ...pluginPromotion, triggers: [] };
+  mockContext.promotions = { ...pluginPromotion, triggers: [], qualifiers: [] };
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() }
   };
