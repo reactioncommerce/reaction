@@ -4,6 +4,8 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import setPromotionState from "./setPromotionState.js";
 
+jest.setTimeout(30000);
+
 let con;
 let mongoServer;
 let db;
