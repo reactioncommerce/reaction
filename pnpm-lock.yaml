@@ -35,6 +35,7 @@ importers:
       is-ci: ^2.0.0
       is-docker: ^2.1.1
       jest: ^25.5.4
+      mongodb-memory-server: ^8.10.0
       nodemon: ~1.19.2
     dependencies:
       '@changesets/changelog-github': 0.4.6
@@ -65,6 +66,7 @@ importers:
       is-ci: 2.0.0
       is-docker: 2.2.1
       jest: 25.5.4
+      mongodb-memory-server: 8.10.0
       nodemon: 1.19.4
 
   apps/meteor-blaze-app:
@@ -1013,7 +1015,6 @@ importers:
       '@reactioncommerce/reaction-error': ^1.0.1
       json-rules-engine: ^6.1.2
       lodash: ^4.17.21
-      mongodb-memory-server: ^8.10.0
       node-cache: ^5.1.2
       simpl-schema: ^1.12.2
     dependencies:
@@ -1025,8 +1026,6 @@ importers:
       lodash: 4.17.21
       node-cache: 5.1.2
       simpl-schema: 1.12.3
-    devDependencies:
-      mongodb-memory-server: 8.10.0
 
   packages/api-plugin-promotions-coupons:
     specifiers:
@@ -12341,19 +12340,11 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /mongodb-connection-string-url/2.5.3:
-    resolution: {integrity: sha512-f+/WsED+xF4B74l3k9V/XkTVj5/fxFH2o5ToKXd8Iyi5UhM+sO9u0Ape17Mvl/GkZaFtM0HQnzAG5OTmhKw+tQ==}
-    dependencies:
-      '@types/whatwg-url': 8.2.2
-      whatwg-url: 11.0.0
-    dev: false
-
   /mongodb-connection-string-url/2.5.4:
     resolution: {integrity: sha512-SeAxuWs0ez3iI3vvmLk/j2y+zHwigTDKQhtdxTgt5ZCOQQS5+HW4g45/Xw5vzzbn7oQXCNQ24Z40AkJsizEy7w==}
     dependencies:
       '@types/whatwg-url': 8.2.2
       whatwg-url: 11.0.0
-    dev: true
 
   /mongodb-memory-server-core/8.10.0:
     resolution: {integrity: sha512-otLYpVARSBXh1zaMRHet2MiUi+rl7rUQe9eXxDAPunC70ZhoGjxIvbQOsVA+n6o09UlxbupWjE4pUu8Ezq7zYQ==}
@@ -12459,8 +12450,8 @@ packages:
     dependencies:
       bson: 4.7.0
       denque: 2.1.0
-      mongodb-connection-string-url: 2.5.3
-      socks: 2.7.0
+      mongodb-connection-string-url: 2.5.4
+      socks: 2.7.1
     optionalDependencies:
       saslprep: 1.0.3
     dev: false
@@ -14262,21 +14253,12 @@ packages:
       - supports-color
     dev: true
 
-  /socks/2.7.0:
-    resolution: {integrity: sha512-scnOe9y4VuiNUULJN72GrM26BNOjVsfPXI+j+98PkyEfsIXroa5ofyjT+FzGvn/xHs73U2JtoBYAVx9Hl4quSA==}
-    engines: {node: '>= 10.13.0', npm: '>= 3.0.0'}
-    dependencies:
-      ip: 2.0.0
-      smart-buffer: 4.2.0
-    dev: false
-
   /socks/2.7.1:
     resolution: {integrity: sha512-7maUZy1N7uo6+WVEX6psASxtNlKaNVMlGQKkG/63nEDdLOWNbiUMoLK7X4uYoLhQstau72mLgfEWcXcwsaHbYQ==}
     engines: {node: '>= 10.13.0', npm: '>= 3.0.0'}
     dependencies:
       ip: 2.0.0
       smart-buffer: 4.2.0
-    dev: true
 
   /source-map-resolve/0.5.3:
     resolution: {integrity: sha512-Htz+RnsXWk5+P2slx5Jh3Q66vhQj1Cllm0zvnaY98+NFx+Dv2CF/f5O/t8x+KaNdrdIAsruNzoh/KpialbqAnw==}
