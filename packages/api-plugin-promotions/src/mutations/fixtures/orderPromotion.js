@@ -7,6 +7,7 @@ export const CreateOrderPromotion = {
   label: "5 percent off your entire order when you spend more then $200",
   description: "5 percent off your entire order when you spend more then $200",
   enabled: true,
+  state: "active",
   triggers: [
     {
       triggerKey: "offers",
@@ -46,6 +47,7 @@ export const ExistingOrderPromotion = {
   label: "5 percent off your entire order when you spend more then $200",
   description: "5 percent off your entire order when you spend more then $200",
   enabled: true,
+  state: "active",
   triggers: [
     {
       triggerKey: "offers",
@@ -72,6 +74,8 @@ export const ExistingOrderPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "none"
+  stackAbility: "none",
+  createdAt: now,
+  updatedAt: now
 };
 

@@ -45,6 +45,13 @@ enum TriggerType {
   explicit
 }
 
+enum PromotionState {
+  created
+  active
+  completed
+  archived
+}
+
 "A record representing a particular promotion"
 type Promotion {
   "The unique ID of the promotion"
@@ -70,6 +77,9 @@ type Promotion {
 
   "Whether the promotion is current active"
   enabled: Boolean!
+
+  "What is the current state of the promotion"
+  state: PromotionState!
 
   "The triggers for this Promotion"
   triggers: [Trigger!]
@@ -171,8 +181,11 @@ input PromotionCreateInput {
   stackAbility: Stackability
 }
 
-input PromotionDuplicateInput {
-  "The id of the promotion to duplicate"
+input PromotionDuplicateArchiveInput {
+  "shopId"
+  shopId: String!
+
+  "The id of the promotion to duplicate or archive"
   promotionId: String!
 }
 
@@ -218,7 +231,7 @@ input PromotionUpdateInput {
   stackAbility: Stackability
 }
 
-type PromotionUpdateCreatePayload {
+type PromotionUpdatedPayload {
   "Was the operation a success"
   success: Boolean!
 
@@ -235,17 +248,25 @@ input PromotionQueryInput {
 }
 
 extend type Mutation {
+  "Create a new promotion"
   createPromotion(
     input: PromotionCreateInput
-  ): PromotionUpdateCreatePayload
+  ): PromotionUpdatedPayload
 
+  "Create a new promotion based on an existing promotion"
   duplicatePromotion(
-    input: PromotionDuplicateInput
-  ): PromotionUpdateCreatePayload
+    input: PromotionDuplicateArchiveInput
+  ): PromotionUpdatedPayload
 
+  "Mark a promotion as archived"
+  archivePromotion(
+    input: PromotionDuplicateArchiveInput
+  ): PromotionUpdatedPayload
+
+  "Update values on promotion"
   updatePromotion(
     input: PromotionUpdateInput
-  ): PromotionUpdateCreatePayload
+  ): PromotionUpdatedPayload
 }
 
 extend type Query {

@@ -14,6 +14,7 @@ export default async function createPromotion(context, promotion) {
   const { triggerKey } = promotions.triggers[0];
   const trigger = promotions.triggers.find((tr) => tr.triggerKey === triggerKey);
   promotion.triggerType = trigger.type;
+  promotion.state = "created";
   promotion.createdAt = now;
   promotion.updatedAt = now;
   promotion.referenceId = await context.mutations.incrementSequence(context, promotion.shopId, "Promotions");

@@ -31,6 +31,7 @@
     "@reactioncommerce/reaction-error": "^1.0.1",
     "json-rules-engine": "^6.1.2",
     "lodash": "^4.17.21",
+    "node-cache": "^5.1.2",
     "simpl-schema": "^1.12.2"
   },
   "scripts": {
