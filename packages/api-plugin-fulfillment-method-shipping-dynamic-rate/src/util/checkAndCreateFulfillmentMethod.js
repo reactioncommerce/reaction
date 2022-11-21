@@ -1,9 +1,9 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 /**
- * @summary Called on startup to create the root entry of this fulfillment type in Fulfillment collection
+ * @summary Finds the corresponding ff-type and calls mutation to insert the ff-method
  * @param {Object} context Startup context
  * @param {String} shopId Shop ID
- * @returns {Boolean} true if entry exist or insert success else false
+ * @returns {Object} method which was inserted
  */
 export default async function checkAndCreateFulfillmentMethod(context, shopId) {
   const { collections: { Fulfillment } } = context;

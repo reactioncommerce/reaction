@@ -38,7 +38,7 @@ export default async function fulfillmentMethodsWithQuotesShippingDynamicRate(co
   }
   const initialNumOfRates = rates.length;
 
-  shippingRateDocs.map(async (doc) => {
+  shippingRateDocs.forEach(async (doc) => {
     const carrier = doc.provider.label;
     const currentPluginMethods = doc.methods.filter((method) => ((method.fulfillmentMethod === (fulfillmentMethodName)) && (method.enabled)));
     for (const method of currentPluginMethods) {
