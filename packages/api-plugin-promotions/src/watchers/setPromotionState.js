@@ -53,6 +53,7 @@ async function markCompleted(context) {
     const shopTime = shopTimes[shop];
     // eslint-disable-next-line no-await-in-loop
     const { modifiedCount } = await Promotions.updateMany({
+      shopId: shop,
       state: "active",
       endDate: { $lt: shopTime }
     }, { $set: { state: "completed" } });
@@ -64,12 +65,11 @@ async function markCompleted(context) {
 /**
  * @summary capture and change all promotion records who's state should have changed
  * @param {Object} context - The application context
- * @param {Object} jobData - extra data from the job control package
- * @return {Promise<void>} - undefined
+ * @return {Promise<Object>} - quantities marked active and completed
  */
-export default async function setPromotionState(context, jobData) {
-  Logger.info("jobData", jobData);
+export default async function setPromotionState(context) {
   const totalMadeActive = await markActive(context);
   const totalMarkedCompleted = await markCompleted(context);
   Logger.info({ ...logCtx, totalMarkedCompleted, totalMadeActive }, "Scanned promotions for changing state");
+  return { totalMarkedCompleted, totalMadeActive };
 }
