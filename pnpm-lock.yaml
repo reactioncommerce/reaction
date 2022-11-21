@@ -255,7 +255,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1058.0
+      '@snyk/protect': 1.1061.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
