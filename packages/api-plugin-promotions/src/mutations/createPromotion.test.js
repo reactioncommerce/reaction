@@ -2,12 +2,13 @@ import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js"
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
-import { Promotion as PromotionSchema, Promotion, Trigger } from "../simpleSchemas.js";
+import { Promotion as PromotionSchema, Promotion, Trigger, StackAbility } from "../simpleSchemas.js";
 import createPromotion from "./createPromotion.js";
 import { CreateOrderPromotion } from "./fixtures/orderPromotion.js";
 
 const triggerKeys = ["offers"];
 const promotionTypes = ["coupon"];
+const stackAbilities = ["all", "none"];
 
 Trigger.extend({
   triggerKey: {
@@ -21,6 +22,11 @@ PromotionSchema.extend({
   }
 });
 
+StackAbility.extend({
+  key: {
+    allowedValues: [...StackAbility.getAllowedValuesForKey("key"), ...stackAbilities]
+  }
+});
 
 mockContext.collections.Promotions = mockCollection("Promotions");
 const insertResults = {

@@ -70,7 +70,7 @@ test("should return cart with applied discount when parameters do not include ru
 
   expect(result).toEqual({
     cart,
-    discountedItems: [item]
+    affected: true
   });
 });
 
@@ -129,6 +129,86 @@ test("should return cart with applied discount when parameters include rule", as
 
   expect(result).toEqual({
     cart,
-    discountedItems: [item]
+    affected: true
   });
+});
+
+test("canBeApplyDiscountToItem: should return true when item don't have any discounts", () => {
+  const item = {
+    _id: "item1",
+    discounts: []
+  };
+
+  const discountItem = {
+    discountType: "test",
+    discountCalculationType: "test",
+    discountValue: 10
+  };
+
+  const result = applyItemDiscountToCart.canBeApplyDiscountToItem(item, discountItem);
+
+  expect(result).toBe(true);
+});
+
+test("canBeApplyDiscountToItem: should return true when item has only discount order type", () => {
+  const item = {
+    discounts: [
+      {
+        discountType: "order"
+      }
+    ]
+  };
+  const result = applyItemDiscountToCart.canBeApplyDiscountToItem(item);
+
+  expect(result).toBe(true);
+});
+
+test("canBeApplyDiscountToItem: should return false when applied discount shouldStackWithOtherItemLevelDiscounts is false", () => {
+  const item = {
+    discounts: [
+      {
+        discountType: "item",
+        shouldStackWithOtherItemLevelDiscounts: false
+      }
+    ]
+  };
+  const result = applyItemDiscountToCart.canBeApplyDiscountToItem(item);
+
+  expect(result).toBe(false);
+});
+
+test("canBeApplyDiscountToItem: should return false when discount shouldStackWithOtherItemLevelDiscounts is false", () => {
+  const item = {
+    discounts: [
+      {
+        discountType: "item",
+        shouldStackWithOtherItemLevelDiscounts: true
+      }
+    ]
+  };
+  const discountItem = {
+    discountType: "item",
+    shouldStackWithOtherItemLevelDiscounts: false
+  };
+  const result = applyItemDiscountToCart.canBeApplyDiscountToItem(item, discountItem);
+
+  expect(result).toBe(false);
+});
+
+test("canBeApplyDiscountToItem: should return true when discount and applied discount have shouldStackWithOtherItemLevelDiscounts is true", () => {
+  const item = {
+    discounts: [
+      {
+        discountType: "item",
+        shouldStackWithOtherItemLevelDiscounts: true
+      }
+    ]
+  };
+  const discountItem = {
+    discountType: "item",
+    shouldStackWithOtherItemLevelDiscounts: true
+  };
+  const result = applyItemDiscountToCart.canBeApplyDiscountToItem(item, discountItem);
+
+  expect(result).toBe(true);
 });
