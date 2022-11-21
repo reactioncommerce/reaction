@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+// eslint-disable-next-line node/no-extraneous-import
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import setPromotionState from "./setPromotionState.js";
