@@ -66,6 +66,7 @@
     "is-ci": "^2.0.0",
     "is-docker": "^2.1.1",
     "jest": "^25.5.4",
+    "mongodb-memory-server": "^8.10.0",
     "nodemon": "~1.19.2"
   },
   "graphql-schema-linter": {
