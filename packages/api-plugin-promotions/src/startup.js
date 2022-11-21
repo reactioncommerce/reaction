@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import setPromotionState from "./utils/setPromotionState.js";
+import setPromotionState from "./watchers/setPromotionState.js";
 
 /**
  * @summary create promotion state working and job
@@ -23,7 +23,7 @@ export default async function startupPromotions(context) {
     priority: "normal",
     // Schedule is optional if you just need to run it once.
     // Set to any text that later.js can parse.
-    schedule: "every 1 minutes",
+    schedule: "every 30 seconds",
     // Set cancelRepeats to true if you want to cancel all other pending jobs with the same type
     cancelRepeats: true
   });
