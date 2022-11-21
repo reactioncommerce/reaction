@@ -34,6 +34,9 @@
     "node-cache": "^5.1.2",
     "simpl-schema": "^1.12.2"
   },
+  "devDependencies": {
+    "mongodb-memory-server": "^8.10.0"
+  },
   "scripts": {
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint .",
