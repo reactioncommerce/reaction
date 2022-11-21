@@ -8,9 +8,9 @@
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>} archiveProduct payload
  */
-export default async function updatePromotion(_, { input }, context) {
+export default async function archivePromotion(_, { input }, context) {
   const { promotionId, shopId } = input;
-  // await context.validatePermissions("reaction:legacy:promotions", "update", { shopId });
+  await context.validatePermissions("reaction:legacy:promotions", "update", { shopId });
   const updatedPromotion = await context.mutations.archivePromotion(context, { shopId, promotionId });
   return updatedPromotion;
 }
