@@ -1,9 +1,10 @@
+/* eslint-disable no-await-in-loop */
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
-import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
 import isPromotionExpired from "../utils/isPromotionExpired.js";
+import checkStackAbility from "../utils/checkStackAbility.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -47,6 +48,7 @@ export default async function applyPromotions(context, cart) {
 
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
+  const stackAbilityByKey = _.keyBy(pluginPromotions.stackAbilities, "key");
 
   const appliedPromotions = [];
   const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]);
@@ -54,7 +56,6 @@ export default async function applyPromotions(context, cart) {
   const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
 
   for (const { cleanup } of pluginPromotions.actions) {
-    // eslint-disable-next-line no-await-in-loop
     cleanup && await cleanup(context, cart);
   }
 
@@ -64,10 +65,9 @@ export default async function applyPromotions(context, cart) {
       continue;
     }
 
-    // eslint-disable-next-line no-await-in-loop
-    const { qualifies } = await canBeApplied(context, appliedPromotions, promotion);
-    if (!qualifies) {
-      continue;
+    if (promotion.stackAbility) {
+      const canBeApplied = await checkStackAbility(context, enhancedCart, { appliedPromotions, promotion, stackAbilityByKey });
+      if (!canBeApplied) continue;
     }
 
     for (const trigger of promotion.triggers) {
@@ -75,20 +75,19 @@ export default async function applyPromotions(context, cart) {
       const triggerFn = triggerHandleByKey[triggerKey];
       if (!triggerFn) continue;
 
-      // eslint-disable-next-line no-await-in-loop
       const shouldApply = await triggerFn.handler(context, enhancedCart, { promotion, triggerParameters });
       if (!shouldApply) continue;
 
-      // eslint-disable-next-line no-await-in-loop
+      let affected = false;
       for (const action of promotion.actions) {
         const actionFn = actionHandleByKey[action.actionKey];
         if (!actionFn) continue;
 
-        // eslint-disable-next-line no-await-in-loop
-        await actionFn.handler(context, enhancedCart, { promotion, ...action });
+        const result = await actionFn.handler(context, enhancedCart, { promotion, ...action });
+        ({ affected } = result);
         enhancedCart = enhanceCart(context, pluginPromotions.enhancers, enhancedCart);
       }
-      appliedPromotions.push(promotion);
+      affected && appliedPromotions.push(promotion);
       break;
     }
   }
