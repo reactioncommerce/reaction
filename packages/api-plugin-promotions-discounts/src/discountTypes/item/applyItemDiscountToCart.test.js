@@ -163,12 +163,12 @@ test("canBeApplyDiscountToItem: should return true when item has only discount o
   expect(result).toBe(true);
 });
 
-test("canBeApplyDiscountToItem: should return false when applied discount shouldStackWithOtherItemLevelDiscounts is false", () => {
+test("canBeApplyDiscountToItem: should return false when applied discount neverStackWithOtherItemLevelDiscounts is true", () => {
   const item = {
     discounts: [
       {
         discountType: "item",
-        shouldStackWithOtherItemLevelDiscounts: false
+        neverStackWithOtherItemLevelDiscounts: true
       }
     ]
   };
@@ -177,36 +177,36 @@ test("canBeApplyDiscountToItem: should return false when applied discount should
   expect(result).toBe(false);
 });
 
-test("canBeApplyDiscountToItem: should return false when discount shouldStackWithOtherItemLevelDiscounts is false", () => {
+test("canBeApplyDiscountToItem: should return false when discount neverStackWithOtherItemLevelDiscounts is false", () => {
   const item = {
     discounts: [
       {
         discountType: "item",
-        shouldStackWithOtherItemLevelDiscounts: true
+        neverStackWithOtherItemLevelDiscounts: true
       }
     ]
   };
   const discountItem = {
     discountType: "item",
-    shouldStackWithOtherItemLevelDiscounts: false
+    neverStackWithOtherItemLevelDiscounts: false
   };
   const result = applyItemDiscountToCart.canBeApplyDiscountToItem(item, discountItem);
 
   expect(result).toBe(false);
 });
 
-test("canBeApplyDiscountToItem: should return true when discount and applied discount have shouldStackWithOtherItemLevelDiscounts is true", () => {
+test("canBeApplyDiscountToItem: should return true when discount and applied discount have neverStackWithOtherItemLevelDiscounts is false", () => {
   const item = {
     discounts: [
       {
         discountType: "item",
-        shouldStackWithOtherItemLevelDiscounts: true
+        neverStackWithOtherItemLevelDiscounts: false
       }
     ]
   };
   const discountItem = {
     discountType: "item",
-    shouldStackWithOtherItemLevelDiscounts: true
+    neverStackWithOtherItemLevelDiscounts: false
   };
   const result = applyItemDiscountToCart.canBeApplyDiscountToItem(item, discountItem);
 

@@ -56,10 +56,10 @@ export const discountActionParameters = new SimpleSchema({
     type: Rules,
     optional: true
   },
-  shouldStackWithOtherItemLevelDiscounts: {
+  neverStackWithOtherItemLevelDiscounts: {
     type: Boolean,
     optional: true,
-    defaultValue: true
+    defaultValue: false
   }
 });
 

@@ -89,7 +89,7 @@ export const CartDiscount = new SimpleSchema({
   "discountedItems.$": {
     type: CartDiscountedItem
   },
-  "shouldStackWithOtherItemLevelDiscounts": {
+  "neverStackWithOtherItemLevelDiscounts": {
     type: Boolean,
     defaultValue: true
   }
