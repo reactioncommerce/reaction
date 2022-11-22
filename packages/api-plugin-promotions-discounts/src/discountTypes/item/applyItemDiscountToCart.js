@@ -34,7 +34,7 @@ export function createItemDiscount(params) {
     discountMaxUnits: actionParameters.discountMaxUnits,
     dateApplied: new Date(),
     stackability: promotion.stackability,
-    shouldStackWithOtherItemLevelDiscounts: actionParameters.shouldStackWithOtherItemLevelDiscounts
+    neverStackWithOtherItemLevelDiscounts: actionParameters.neverStackWithOtherItemLevelDiscounts
   };
   return itemDiscount;
 }
@@ -48,8 +48,11 @@ export function createItemDiscount(params) {
 export function canBeApplyDiscountToItem(item, discount) {
   const itemDiscounts = _.filter(item.discounts || [], ({ discountType }) => discountType === "item");
   if (itemDiscounts.length === 0) return true;
-  if (itemDiscounts[0].shouldStackWithOtherItemLevelDiscounts === false) return false;
-  if (discount.shouldStackWithOtherItemLevelDiscounts === false) return false;
+
+  const containsItemsNeverStackWithOrderItem = _.some(itemDiscounts, "neverStackWithOtherItemLevelDiscounts");
+  if (containsItemsNeverStackWithOrderItem) return false;
+
+  if (discount.neverStackWithOtherItemLevelDiscounts) return false;
   return true;
 }
 
