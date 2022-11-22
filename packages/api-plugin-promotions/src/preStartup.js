@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Action, Trigger, Promotion as PromotionSchema, StackAbility } from "./simpleSchemas.js";
+import { Action, Trigger, Promotion as PromotionSchema, Stackability } from "./simpleSchemas.js";
 
 /**
  * @summary apply all schema extensions to the Promotions schema
@@ -41,11 +41,11 @@ function extendCartSchema(context) {
 export default function preStartupPromotions(context) {
   extendSchemas(context);
   extendCartSchema(context);
-  const { actions: additionalActions, triggers: additionalTriggers, promotionTypes, stackAbilities } = context.promotions;
+  const { actions: additionalActions, triggers: additionalTriggers, promotionTypes, stackabilities } = context.promotions;
   const triggerKeys = _.map(additionalTriggers, "key");
   const actionKeys = _.map(additionalActions, "key");
   const promotionTypeKeys = Object.keys(promotionTypes);
-  const stackAbilitiesKeys = _.map(stackAbilities, "key");
+  const stackabilityKeys = _.map(stackabilities, "key");
   Action.extend({
     actionKey: {
       allowedValues: [...Action.getAllowedValuesForKey("actionKey"), ...actionKeys]
@@ -64,9 +64,9 @@ export default function preStartupPromotions(context) {
     }
   });
 
-  StackAbility.extend({
+  Stackability.extend({
     key: {
-      allowedValues: [...StackAbility.getAllowedValuesForKey("key"), ...stackAbilitiesKeys]
+      allowedValues: [...Stackability.getAllowedValuesForKey("key"), ...stackabilityKeys]
     }
   });
 }

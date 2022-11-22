@@ -1,7 +1,7 @@
 import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import SimpleSchema from "simpl-schema";
-import { Promotion as PromotionSchema, Promotion, Trigger, StackAbility } from "../simpleSchemas.js";
+import { Promotion as PromotionSchema, Promotion, Trigger, Stackability } from "../simpleSchemas.js";
 import duplicatePromotion from "./duplicatePromotion.js";
 import { ExistingOrderPromotion } from "./fixtures/orderPromotion.js";
 
@@ -21,9 +21,9 @@ PromotionSchema.extend({
   }
 });
 
-StackAbility.extend({
+Stackability.extend({
   key: {
-    allowedValues: [...StackAbility.getAllowedValuesForKey("key"), ...stackAbilities]
+    allowedValues: [...Stackability.getAllowedValuesForKey("key"), ...stackAbilities]
   }
 });
 
