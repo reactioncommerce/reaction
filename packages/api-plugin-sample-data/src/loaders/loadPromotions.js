@@ -40,7 +40,7 @@ const OrderPromotion = {
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
   createdAt: new Date(),
   updatedAt: new Date(),
-  stackAbility: {
+  stackability: {
     key: "all",
     parameters: {}
   }
@@ -84,7 +84,7 @@ const OrderItemPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: {
+  stackability: {
     key: "all",
     parameters: {}
   },
@@ -116,7 +116,7 @@ const CouponPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: {
+  stackability: {
     key: "all",
     parameters: {}
   },

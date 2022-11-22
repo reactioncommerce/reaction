@@ -36,10 +36,18 @@ const PromotionsDeclaration = new SimpleSchema({
     type: Object,
     blackbox: true
   },
-  "stackAbilities": {
+  "qualifiers": {
+    type: Array,
+    optional: true
+  },
+  "qualifiers.$": {
+    type: Object,
+    blackbox: true
+  },
+  "stackabilities": {
     type: Array
   },
-  "stackAbilities.$": {
+  "stackabilities.$": {
     type: Object,
     blackbox: true
   },
@@ -57,8 +65,9 @@ export const promotions = {
   enhancers: [], // enhancers for promotion data,
   schemaExtensions: [],
   operators: {}, // operators used for rule evaluations
+  qualifiers: [],
   promotionTypes: [],
-  stackAbilities: []
+  stackabilities: []
 };
 
 /**
@@ -68,7 +77,7 @@ export const promotions = {
  */
 export function registerPluginHandlerForPromotions({ promotions: pluginPromotions }) {
   if (pluginPromotions) {
-    const { triggers, actions, enhancers, schemaExtensions, operators, stackAbilities, promotionTypes } = pluginPromotions;
+    const { triggers, actions, enhancers, schemaExtensions, operators, qualifiers, stackabilities, promotionTypes } = pluginPromotions;
     if (triggers) {
       promotions.triggers = _.uniqBy(promotions.triggers.concat(triggers), "key");
     }
@@ -84,8 +93,11 @@ export function registerPluginHandlerForPromotions({ promotions: pluginPromotion
     if (operators) {
       promotions.operators = { ...promotions.operators, ...operators };
     }
-    if (stackAbilities) {
-      promotions.stackAbilities = _.uniqBy(promotions.stackAbilities.concat(stackAbilities), "key");
+    if (qualifiers) {
+      promotions.qualifiers = promotions.qualifiers.concat(qualifiers);
+    }
+    if (stackabilities) {
+      promotions.stackabilities = _.uniqBy(promotions.stackabilities.concat(stackabilities), "key");
     }
     if (promotionTypes) {
       promotions.promotionTypes = promotions.promotionTypes.concat(promotionTypes);

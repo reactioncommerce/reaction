@@ -104,7 +104,7 @@ type Promotion {
   endDate: Date
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
-  stackAbility: Stackability
+  stackability: Stackability
 
   "When was this record created"
   createdAt: Date!
@@ -188,7 +188,7 @@ input PromotionCreateInput {
   endDate: Date
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
-  stackAbility: StackabilityInput
+  stackability: StackabilityInput
 }
 
 input PromotionDuplicateArchiveInput {
@@ -238,7 +238,7 @@ input PromotionUpdateInput {
   endDate: Date
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
-  stackAbility: StackabilityInput
+  stackability: StackabilityInput
 }
 
 type PromotionUpdatedPayload {

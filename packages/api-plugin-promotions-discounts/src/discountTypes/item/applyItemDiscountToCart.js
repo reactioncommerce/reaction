@@ -33,7 +33,7 @@ export function createItemDiscount(params) {
     discountMaxValue: actionParameters.discountMaxValue,
     discountMaxUnits: actionParameters.discountMaxUnits,
     dateApplied: new Date(),
-    stackAbility: promotion.stackAbility,
+    stackability: promotion.stackability,
     shouldStackWithOtherItemLevelDiscounts: actionParameters.shouldStackWithOtherItemLevelDiscounts
   };
   return itemDiscount;

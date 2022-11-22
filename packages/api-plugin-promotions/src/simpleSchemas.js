@@ -39,7 +39,7 @@ export const PromotionType = new SimpleSchema({
   }
 });
 
-export const StackAbility = new SimpleSchema({
+export const Stackability = new SimpleSchema({
   key: {
     type: String,
     allowedValues: []
@@ -112,8 +112,8 @@ export const Promotion = new SimpleSchema({
     type: Date,
     optional: true
   },
-  "stackAbility": {
-    type: StackAbility
+  "stackability": {
+    type: Stackability
   },
   "createdAt": {
     type: Date

@@ -24,7 +24,7 @@ export function createDiscountRecord(params, discountedItems, discountedAmount) 
     discountedItemType: "item",
     discountedAmount,
     discountedItems,
-    stackAbility: promotion.stackAbility
+    stackability: promotion.stackability
   };
   return itemDiscount;
 }

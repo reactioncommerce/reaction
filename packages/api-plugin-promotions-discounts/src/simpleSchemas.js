@@ -88,16 +88,9 @@ export const CartDiscount = new SimpleSchema({
   },
   "discountedItems.$": {
     type: CartDiscountedItem
-<<<<<<< Updated upstream
-  },
-  "stackAbility": {
-    type: StackAbility,
-    optional: true
   },
   "shouldStackWithOtherItemLevelDiscounts": {
     type: Boolean,
     defaultValue: true
-=======
->>>>>>> Stashed changes
   }
 });
