@@ -38,7 +38,7 @@ const OrderPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "none"
+  stackability: "none"
 };
 
 export const OfferTriggerParameters = new SimpleSchema({

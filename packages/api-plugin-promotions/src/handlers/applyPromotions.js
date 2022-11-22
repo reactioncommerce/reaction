@@ -2,9 +2,9 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
+import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
 import isPromotionExpired from "../utils/isPromotionExpired.js";
-import checkStackAbility from "../utils/checkStackAbility.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -48,7 +48,6 @@ export default async function applyPromotions(context, cart) {
 
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
-  const stackAbilityByKey = _.keyBy(pluginPromotions.stackAbilities, "key");
 
   const appliedPromotions = [];
   const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]);
@@ -65,9 +64,9 @@ export default async function applyPromotions(context, cart) {
       continue;
     }
 
-    if (promotion.stackAbility) {
-      const canBeApplied = await checkStackAbility(context, enhancedCart, { appliedPromotions, promotion, stackAbilityByKey });
-      if (!canBeApplied) continue;
+    const { qualifies } = await canBeApplied(context, cart, { appliedPromotions, promotion });
+    if (!qualifies) {
+      continue;
     }
 
     for (const trigger of promotion.triggers) {
