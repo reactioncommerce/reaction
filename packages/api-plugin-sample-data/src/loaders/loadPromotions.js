@@ -32,7 +32,7 @@ const OrderPromotion = {
         discountType: "order",
         discountCalculationType: "percentage",
         discountValue: 50,
-        shouldStackWithOtherItemLevelDiscounts: false
+        neverStackWithOtherItemLevelDiscounts: false
       }
     }
   ],
@@ -78,7 +78,7 @@ const OrderItemPromotion = {
         discountType: "item",
         discountCalculationType: "percentage",
         discountValue: 50,
-        shouldStackWithOtherItemLevelDiscounts: false
+        neverStackWithOtherItemLevelDiscounts: false
       }
     }
   ],
