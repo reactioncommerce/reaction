@@ -6,11 +6,6 @@
 
 version: "3.9"
 
-networks:
-  reaction:
-    name: reaction.localhost
-    external: true
-
 services:
   api:
     image: reactioncommerce/reaction:4.2.7
@@ -28,8 +23,7 @@ services:
     image: mongo:5.0
     command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
     networks:
-      - default
-      - reaction
+      default:
     ports:
       - "27017:27017"
     volumes:
@@ -38,6 +32,13 @@ services:
       test: test $$(echo "rs.status().ok || rs.initiate().ok" | mongo --quiet) -eq 1
       interval: 10s
       start_period: 30s
+
+  redis:
+    image: redis:7
+    networks:
+      default:
+    ports:
+      - "6379:6379"
 
 volumes:
   mongo-db4:
