@@ -1,4 +1,5 @@
 import { createRequire } from "module";
+import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 
 import getEligibleItems from "../../utils/getEligibleItems.js";
@@ -31,9 +32,28 @@ export function createItemDiscount(params) {
     discountValue: actionParameters.discountValue,
     discountMaxValue: actionParameters.discountMaxValue,
     discountMaxUnits: actionParameters.discountMaxUnits,
-    dateApplied: new Date()
+    dateApplied: new Date(),
+    stackability: promotion.stackability,
+    neverStackWithOtherItemLevelDiscounts: actionParameters.neverStackWithOtherItemLevelDiscounts
   };
   return itemDiscount;
+}
+
+/**
+ * @summary Check if the item is eligible for the discount
+ * @param {Object} item - The cart item
+ * @param {Object} discount - The discount object
+ * @returns {Boolean} - Whether the item is eligible for the discount
+ */
+export function canBeApplyDiscountToItem(item, discount) {
+  const itemDiscounts = _.filter(item.discounts || [], ({ discountType }) => discountType === "item");
+  if (itemDiscounts.length === 0) return true;
+
+  const containsItemsNeverStackWithOrderItem = _.some(itemDiscounts, "neverStackWithOtherItemLevelDiscounts");
+  if (containsItemsNeverStackWithOrderItem) return false;
+
+  if (discount.neverStackWithOtherItemLevelDiscounts) return false;
+  return true;
 }
 
 /**
@@ -49,10 +69,13 @@ export default async function applyItemDiscountToCart(context, params, cart) {
   const filteredItems = await getEligibleItems(context, cart.items, params.actionParameters);
 
   for (const item of filteredItems) {
-    const itemDiscount = createItemDiscount(params);
-    item.discounts.push(itemDiscount);
-    discountedItems.push(item);
-    recalculateCartItemSubtotal(context, item);
+    const cartDiscount = createItemDiscount(params);
+    const shouldAppliedDiscount = canBeApplyDiscountToItem(item, cartDiscount);
+    if (shouldAppliedDiscount) {
+      item.discounts.push(cartDiscount);
+      discountedItems.push(item);
+      recalculateCartItemSubtotal(context, item);
+    }
   }
 
   cart.discount = getTotalDiscountOnCart(cart);
@@ -61,5 +84,7 @@ export default async function applyItemDiscountToCart(context, params, cart) {
     Logger.info(logCtx, "Saved Discount to cart");
   }
 
-  return { cart, discountedItems };
+  const affected = discountedItems.length > 0;
+
+  return { cart, affected };
 }

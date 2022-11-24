@@ -88,5 +88,9 @@ export const CartDiscount = new SimpleSchema({
   },
   "discountedItems.$": {
     type: CartDiscountedItem
+  },
+  "neverStackWithOtherItemLevelDiscounts": {
+    type: Boolean,
+    defaultValue: true
   }
 });

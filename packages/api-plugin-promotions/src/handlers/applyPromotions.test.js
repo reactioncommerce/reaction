@@ -1,5 +1,8 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
+import canBeApplied from "../utils/canBeApplied.js";
 import applyImplicitPromotions from "./applyPromotions.js";
+
+jest.mock("../utils/canBeApplied.js", () => jest.fn());
 
 const testTrigger = jest.fn().mockReturnValue(Promise.resolve(true));
 const testAction = jest.fn();
@@ -8,14 +11,18 @@ const testEnhancer = jest.fn().mockImplementation((context, cart) => cart);
 const pluginPromotion = {
   triggers: [{ key: "test", handler: testTrigger }],
   actions: [{ key: "test", handler: testAction }],
-  enhancers: [testEnhancer]
+  enhancers: [testEnhancer],
+  qualifiers: []
 };
 
 const testPromotion = {
   _id: "test id",
   actions: [{ actionKey: "test" }],
   triggers: [{ triggerKey: "test", triggerParameters: { name: "test trigger" } }],
-  stackAbility: "none"
+  stackability: {
+    key: "none",
+    parameters: {}
+  }
 };
 
 beforeEach(() => {
@@ -33,6 +40,8 @@ test("should save cart with implicit promotions are applied", async () => {
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() }
   };
+  canBeApplied.mockReturnValueOnce({ qualifies: true });
+  testAction.mockReturnValue({ affected: true });
 
   await applyImplicitPromotions(mockContext, cart);
 
@@ -56,14 +65,15 @@ test("should update cart with implicit promotions are not applied when promotion
   };
   mockContext.collections.Promotions = {
     find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackAbility: "all" }])
+      toArray: jest.fn().mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackability: { key: "all", parameters: {} } }])
     })
   };
 
-  mockContext.promotions = { ...pluginPromotion, triggers: [] };
+  mockContext.promotions = { ...pluginPromotion, triggers: [], qualifiers: [] };
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() }
   };
+  canBeApplied.mockReturnValue({ qualifies: true });
 
   await applyImplicitPromotions(mockContext, cart);
 

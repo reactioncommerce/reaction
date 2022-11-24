@@ -4,10 +4,11 @@ import mutations from "./mutations/index.js";
 import preStartupPromotions from "./preStartup.js";
 import { Promotion } from "./simpleSchemas.js";
 import actions from "./actions/index.js";
-import qualifiers from "./qualifiers/index.js";
 import promotionTypes from "./promotionTypes/index.js";
 import schemas from "./schemas/index.js";
 import queries from "./queries/index.js";
+import qualifiers from "./qualifiers/index.js";
+import stackabilities from "./stackabilities/index.js";
 import resolvers from "./resolvers/index.js";
 import applyPromotions from "./handlers/applyPromotions.js";
 import startupPromotions from "./startup.js";
@@ -65,6 +66,7 @@ export default async function register(app) {
     promotions: {
       actions,
       qualifiers,
+      stackabilities,
       promotionTypes
     },
     sequenceConfigs: [

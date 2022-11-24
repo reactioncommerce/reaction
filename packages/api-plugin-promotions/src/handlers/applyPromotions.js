@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
@@ -54,7 +55,6 @@ export default async function applyPromotions(context, cart) {
   const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
 
   for (const { cleanup } of pluginPromotions.actions) {
-    // eslint-disable-next-line no-await-in-loop
     cleanup && await cleanup(context, cart);
   }
 
@@ -64,8 +64,7 @@ export default async function applyPromotions(context, cart) {
       continue;
     }
 
-    // eslint-disable-next-line no-await-in-loop
-    const { qualifies } = await canBeApplied(context, appliedPromotions, promotion);
+    const { qualifies } = await canBeApplied(context, cart, { appliedPromotions, promotion });
     if (!qualifies) {
       continue;
     }
@@ -75,20 +74,19 @@ export default async function applyPromotions(context, cart) {
       const triggerFn = triggerHandleByKey[triggerKey];
       if (!triggerFn) continue;
 
-      // eslint-disable-next-line no-await-in-loop
       const shouldApply = await triggerFn.handler(context, enhancedCart, { promotion, triggerParameters });
       if (!shouldApply) continue;
 
-      // eslint-disable-next-line no-await-in-loop
+      let affected = false;
       for (const action of promotion.actions) {
         const actionFn = actionHandleByKey[action.actionKey];
         if (!actionFn) continue;
 
-        // eslint-disable-next-line no-await-in-loop
-        await actionFn.handler(context, enhancedCart, { promotion, ...action });
+        const result = await actionFn.handler(context, enhancedCart, { promotion, ...action });
+        ({ affected } = result);
         enhancedCart = enhanceCart(context, pluginPromotions.enhancers, enhancedCart);
       }
-      appliedPromotions.push(promotion);
+      affected && appliedPromotions.push(promotion);
       break;
     }
   }
