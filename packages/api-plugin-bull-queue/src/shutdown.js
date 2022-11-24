@@ -11,12 +11,13 @@ export default function jobQueueShutdown(context) {
   return new Promise((resolve, reject) => {
     try {
       const queues = context.bullQueue.jobQueues;
-      for (const queue of queues) {
-        queue.close().then(() => {
-          console.log("done");
-        }).catch((error) => console.error(error));
+      if (queues.length) {
+        for (const queue of queues) {
+          queue.close().then(() => {
+            console.log("done");
+          }).catch((error) => console.error(error));
+        }
       }
-
     } catch (error) {
       reject(error);
     }

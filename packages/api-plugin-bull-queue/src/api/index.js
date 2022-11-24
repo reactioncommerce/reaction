@@ -1,4 +1,5 @@
 import addJob from "./addJob.js";
+import addDelayedJob from "./addDelayedJob.js";
 import cancelJobs from "./cancelJobs.js";
 import clean from "./clean.js";
 import createQueue from "./createQueue.js";
@@ -11,6 +12,7 @@ import scheduleJob from "./scheduleJob.js";
 
 export default {
   addJob,
+  addDelayedJob,
   cancelJobs,
   clean,
   createQueue,

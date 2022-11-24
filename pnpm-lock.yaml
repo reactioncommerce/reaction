@@ -504,10 +504,12 @@ importers:
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ^1.0.2
+      lodash: ^4.17.15
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
+      lodash: 4.17.21
     devDependencies:
       '@reactioncommerce/babel-remove-es-create-require': 1.0.0_@babel+core@7.19.0
       '@reactioncommerce/data-factory': 1.0.1
