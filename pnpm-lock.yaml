@@ -494,6 +494,7 @@ importers:
       babel-plugin-rewire-exports: ^2.0.0
       babel-plugin-transform-es2015-modules-commonjs: ^6.26.2
       babel-plugin-transform-import-meta: ~1.0.0
+      graphql-subscriptions: ^2.0.0
       lodash: ^4.17.15
       simpl-schema: ^1.12.0
     dependencies:
@@ -504,6 +505,7 @@ importers:
       '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
       accounting-js: 1.1.1
+      graphql-subscriptions: 2.0.0_graphql@16.6.0
       lodash: 4.17.21
       simpl-schema: 1.12.3
     devDependencies:
@@ -9138,6 +9140,15 @@ packages:
       iterall: 1.3.0
     dev: false
 
+  /graphql-subscriptions/2.0.0_graphql@16.6.0:
+    resolution: {integrity: sha512-s6k2b8mmt9gF9pEfkxsaO1lTxaySfKoEJzEfmwguBbQ//Oq23hIXCfR1hm4kdh5hnR20RdwB+s3BCb+0duHSZA==}
+    peerDependencies:
+      graphql: ^15.7.2 || ^16.0.0
+    dependencies:
+      graphql: 16.6.0
+      iterall: 1.3.0
+    dev: false
+
   /graphql-tag/2.12.6_graphql@15.8.0:
     resolution: {integrity: sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==}
     engines: {node: '>=10'}
@@ -9197,7 +9208,6 @@ packages:
   /graphql/16.6.0:
     resolution: {integrity: sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
-    dev: true
 
   /gridfs-stream/1.1.1:
     resolution: {integrity: sha512-EcELdPIjC7tpZUiZA/8trfmszLbcsZlFyDQ8DhMtyJIMDmuLi5Vzt/056OO6FqfvY/zwiTCo1eZAqwtqrhBGMQ==}
