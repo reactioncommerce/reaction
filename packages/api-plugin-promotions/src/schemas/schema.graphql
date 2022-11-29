@@ -82,6 +82,9 @@ type Promotion {
   "The short description of the promotion"
   label: String!
 
+  "The short description of the promotion"
+  name: String!
+
   "A longer detailed description of the promotion"
   description: String!
 
