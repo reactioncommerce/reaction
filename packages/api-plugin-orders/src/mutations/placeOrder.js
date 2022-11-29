@@ -142,6 +142,11 @@ export default async function placeOrder(context, input) {
     if (!cart) {
       throw new ReactionError("not-found", "Cart not found while trying to place order");
     }
+
+    const allCartMessageAreAcknowledged = _.every((cart.messages || []), (message) => !message.requiresReadAcknowledgement || message.acknowledged);
+    if (!allCartMessageAreAcknowledged) {
+      throw new ReactionError("invalid-cart", "Cart messages should be acknowledged before placing order");
+    }
   }
 
 
