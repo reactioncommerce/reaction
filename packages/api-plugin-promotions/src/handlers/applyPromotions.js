@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
+import Random from "@reactioncommerce/random";
 import _ from "lodash";
 import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
@@ -37,6 +38,25 @@ async function getImplicitPromotions(context, shopId) {
 }
 
 /**
+ * @summary create the cart message
+ * @param {String} params.title - The message title
+ * @param {String} params.message - The message body
+ * @param {String} params.severity - The message severity
+ * @returns {Object} - The cart message
+ */
+export function createCartMessage({ title, message, severity = "info", ...params }) {
+  return {
+    _id: Random.id(),
+    title,
+    message,
+    severity,
+    acknowledged: false,
+    requiresReadAcknowledgement: true,
+    ...params
+  };
+}
+
+/**
  * @summary apply promotions to a cart
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
@@ -52,20 +72,47 @@ export default async function applyPromotions(context, cart) {
   const appliedPromotions = [];
   const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]);
 
+  const currentCartMessages = cart.messages || [];
+  const cartMessages = [];
+
   const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
 
   for (const { cleanup } of pluginPromotions.actions) {
     cleanup && await cleanup(context, cart);
   }
 
+  const canAddToCartMessages = (promotion) => promotion.triggerType === "explicit" && !_.includes(currentCartMessages, "metaFields.promotionId", promotion._id);
+
   let enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   for (const promotion of unqualifiedPromotions) {
     if (isPromotionExpired(promotion)) {
+      Logger.info({ ...logCtx, promotionId: promotion._id }, "Promotion is expired, skipping");
+      if (canAddToCartMessages(promotion)) {
+        cartMessages.push(createCartMessage({
+          title: "The promotion has expired",
+          subject: "promotion",
+          severity: "warning",
+          metaFields: {
+            promotionId: promotion._id
+          }
+        }));
+      }
       continue;
     }
 
-    const { qualifies } = await canBeApplied(context, cart, { appliedPromotions, promotion });
+    const { qualifies, reason } = await canBeApplied(context, cart, { appliedPromotions, promotion });
     if (!qualifies) {
+      if (canAddToCartMessages(promotion)) {
+        cartMessages.push(createCartMessage({
+          title: "The promotion cannot be applied",
+          subject: "promotion",
+          message: reason,
+          severity: "warning",
+          metaFields: {
+            promotionId: promotion._id
+          }
+        }));
+      }
       continue;
     }
 
@@ -75,23 +122,54 @@ export default async function applyPromotions(context, cart) {
       if (!triggerFn) continue;
 
       const shouldApply = await triggerFn.handler(context, enhancedCart, { promotion, triggerParameters });
-      if (!shouldApply) continue;
+      if (!shouldApply) {
+        Logger.info({ ...logCtx, promotionId: promotion._id }, "The promotion is not eligible, skipping");
+        if (canAddToCartMessages(promotion)) {
+          cartMessages.push(createCartMessage({
+            title: "The promotion is not eligible",
+            subject: "promotion",
+            severity: "warning",
+            metaFields: {
+              promotionId: promotion._id
+            }
+          }));
+        }
+        continue;
+      }
 
       let affected = false;
+      let rejectedReason;
       for (const action of promotion.actions) {
         const actionFn = actionHandleByKey[action.actionKey];
         if (!actionFn) continue;
 
         const result = await actionFn.handler(context, enhancedCart, { promotion, ...action });
-        ({ affected } = result);
+        ({ affected, reason: rejectedReason } = result);
         enhancedCart = enhanceCart(context, pluginPromotions.enhancers, enhancedCart);
       }
-      affected && appliedPromotions.push(promotion);
+
+      if (affected) {
+        appliedPromotions.push(promotion);
+        continue;
+      }
+
+      if (canAddToCartMessages(promotion)) {
+        cartMessages.push(createCartMessage({
+          title: "The promotion was not affected",
+          subject: "promotion",
+          message: rejectedReason,
+          severity: "warning",
+          metaFields: {
+            promotionId: promotion._id
+          }
+        }));
+      }
       break;
     }
   }
 
   enhancedCart.appliedPromotions = appliedPromotions;
+  enhancedCart.messages = cartMessages;
   Cart.clean(enhancedCart, { mutate: true });
   Object.assign(cart, enhancedCart);
 
