@@ -297,3 +297,29 @@ test("should apply order discount to cart with discountMaxValue when estimate di
     undiscountedAmount: 24
   });
 });
+
+test("should return affected is false with reason when have no items are discounted", async () => {
+  const cart = {
+    _id: "cart1",
+    items: []
+  };
+
+  const parameters = {
+    actionKey: "test",
+    promotion: { _id: "promotion1" },
+    actionParameters: {
+      discountType: "order",
+      discountCalculationType: "fixed",
+      discountValue: 10,
+      discountMaxValue: 5
+    }
+  };
+
+  mockContext.discountCalculationMethods = {
+    fixed: jest.fn().mockReturnValue(0)
+  };
+
+  const result = await applyOrderDiscountToCart.default(mockContext, parameters, cart);
+  expect(result.affected).toBe(false);
+  expect(result.reason).toEqual("No items were discounted");
+});
