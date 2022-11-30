@@ -5,7 +5,6 @@ import { useServer } from "graphql-ws/lib/use/ws";
 import cors from "cors";
 import express from "express";
 import bodyParser from "body-parser";
-import { ApolloServerPluginLandingPageDisabled, ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import config from "./config.js";
 import buildContext from "./util/buildContext.js";
 import getErrorFormatter from "./util/getErrorFormatter.js";
@@ -13,9 +12,12 @@ import createDataLoaders from "./util/createDataLoaders.js";
 
 const require = createRequire(import.meta.url);
 const { mergeTypeDefs } = require("@graphql-tools/merge");
-const { gql } = require("apollo-server");
 const { makeExecutableSchema, mergeSchemas } = require("@graphql-tools/schema");
-const { ApolloServer } = require("apollo-server-express");
+const { ApolloServer } = require("@apollo/server");
+const gql = require("graphql-tag");
+const { expressMiddleware: apolloExpressMiddleware } = require("@apollo/server/express4");
+const { ApolloServerPluginDrainHttpServer } = require("@apollo/server/plugin/drainHttpServer");
+const { ApolloServerPluginLandingPageLocalDefault } = require("@apollo/server/plugin/landingPage/default");
 const { buildFederatedSchema } = require("@apollo/federation");
 
 const DEFAULT_GRAPHQL_PATH = "/graphql";
@@ -137,11 +139,15 @@ export default async function createApolloServer(options = {}) {
       };
     },
     debug: options.debug || false,
+    typeDefs,
+    resolvers,
+    includeStacktraceInErrorResponses: options.debug || false,
     formatError: getErrorFormatter(),
     schema,
     subscriptions,
     introspection: config.GRAPHQL_INTROSPECTION_ENABLED,
     plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
       // Proper shutdown for the WebSocket server.
       {
         async serverWillStart() {
@@ -152,14 +158,16 @@ export default async function createApolloServer(options = {}) {
           };
         }
       },
-      config.GRAPHQL_PLAYGROUND_ENABLED ? ApolloServerPluginLandingPageLocalDefault({ embed: true }) : ApolloServerPluginLandingPageDisabled()
+      config.GRAPHQL_PLAYGROUND_ENABLED ? ApolloServerPluginLandingPageLocalDefault() : undefined
     ]
   });
+
+  await apolloServer.start();
 
   const gqlMiddleware = expressMiddleware.filter((def) => def.route === "graphql" || def.route === "all");
 
   // GraphQL endpoint, enhanced with JSON body parser
-  app.use.apply(app, [
+  app.use(
     path,
     // set a higher limit for data transfer, which can help with GraphQL mutations
     // `express` default is 100kb
@@ -182,8 +190,33 @@ export default async function createApolloServer(options = {}) {
       .map((def) => def.fn(contextFromOptions)),
     ...gqlMiddleware
       .filter((def) => def.stage === "before-response")
-      .map((def) => def.fn(contextFromOptions))
-  ]);
+      .map((def) => def.fn(contextFromOptions)),
+
+    // Apollo Server middleware
+    apolloExpressMiddleware(apolloServer, {
+      context: async ({ req, res }) => {
+        const context = { ...contextFromOptions };
+        // Express middleware should have already set req.user if there is one
+        await buildContext(context, req);
+
+        await createDataLoaders(context);
+
+        let customContext = {};
+        /* eslint-disable no-await-in-loop */
+        for (const contextFuncObject of contextFuncs) {
+          const contextFunc = contextFuncObject.func;
+          customContext = {
+            ...customContext,
+            ...(await contextFunc({ res, req }))
+          };
+        }
+        return {
+          ...context,
+          ...customContext
+        };
+      }
+    })
+  );
 
   // Rewrite url to support legacy graphql routes
   app.all(/\/graphql-\w+/, (req, res) => {
@@ -195,9 +228,6 @@ export default async function createApolloServer(options = {}) {
     // `request.user` and `context.user` won't be set.
     app.handle(req, res);
   });
-
-  await apolloServer.start();
-  apolloServer.applyMiddleware({ app, cors: true, path });
 
   return {
     apolloServer,

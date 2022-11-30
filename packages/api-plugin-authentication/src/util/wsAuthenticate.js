@@ -14,8 +14,10 @@ export default async function wsAuthenticate(ctx, msg, args) {
   if (!connectionParams.Authorization) return context;
 
   const user = await getUserFromAuthToken(connectionParams.Authorization);
-  context.user = user;
-  context.userId = user._id;
+  if (user) {
+    context.user = user;
+    context.userId = user._id;
+  }
 
   return context;
 }
