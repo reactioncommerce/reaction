@@ -1,4 +1,5 @@
 import cuid from "cuid";
+import { unwrapResolverError } from "@apollo/server/errors";
 import { Logger } from "./logger.js"; // using Logger indirectly so that the unit tests can mock it
 
 /**
@@ -11,8 +12,9 @@ import { Logger } from "./logger.js"; // using Logger indirectly so that the uni
  * @returns {Function} The error formatter function
  */
 function getErrorFormatter() {
-  return (err) => {
-    const { originalError } = err;
+  return (formattedError, error) => {
+    const originalError = unwrapResolverError(error);
+    const err = formattedError;
 
     // Generate an ID that can be used to correlate client errors with this server error
     err.errorId = cuid();
@@ -70,6 +72,8 @@ function getErrorFormatter() {
 
       default:
     }
+
+    err.extensions.exception = { ...originalError };
 
     return err;
   };
