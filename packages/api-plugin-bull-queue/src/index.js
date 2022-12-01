@@ -1,5 +1,4 @@
 import pkg from "../package.json";
-import { registerPluginHandlerForBullQueue } from "./registration.js";
 import shutdown from "./shutdown.js";
 import api from "./api/index.js";
 
@@ -14,7 +13,6 @@ export default async function register(app) {
     name: "bull-job-queue",
     version: pkg.version,
     functionsByType: {
-      registerPluginHandler: [registerPluginHandlerForBullQueue],
       shutdown: [shutdown]
     },
     contextAdditions: {
