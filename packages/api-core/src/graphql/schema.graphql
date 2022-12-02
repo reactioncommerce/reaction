@@ -45,11 +45,14 @@ enum LogOpTypes{
 
 "Relational Operator Types for filtering"
 enum RelOpTypes{
+  "Begins With used with String types"
+  beginsWith
+
+  "Ends With used with String types"
+  endsWith
+
   "Equal"
   eq
-
-  "Not Equal"
-  ne
 
   "Greater Than"
   gt
@@ -57,20 +60,17 @@ enum RelOpTypes{
   "Greater Than or Equal"
   gte
 
+  "In"
+  in
+
   "Less Than"
   lt
 
   "Less Than or Equal"
   lte
 
-  "Begins With used with String types"
-  beginsWith
-
-  "Ends With used with String types"
-  endsWith
-
-  "In"
-  in
+  "Not Equal"
+  ne
 
   "Not In"
   nin
@@ -84,67 +84,76 @@ enum FilterLevels {
   "Use Filter with 1 level"
   ONE
 
-  "Use Filter with 2 levels"
-  TWO
-
   "Use Filter with 3 levels"
   THREE
+
+  "Use Filter with 2 levels"
+  TWO
 }
 
 "Single Condition for filterSearch"
 input SingleConditionInput {
-  "Field name"
-	key : String!
-
-  "Value to filter if it is String input"
-	stringValue: String
-
-  "Value to filter if it is Int input"
-  intValue: Int
-
-  "Value to filter if it is Float input"
-  floatValue: Float
-
   "Value to filter if it is Boolean input"
   boolValue: Boolean
+
+  "Flag to set if the regex is case insensitive"
+	caseSensitive: Boolean
 
   "Value to filter if it is Date input"
   dateValue: DateTime
 
-  "Value to filter if it is String Array input"
-  stringArrayValue: [String]
+  "Value to filter if it is Float Array input" 
+  floatArrayValue: [Float]
+
+  "Value to filter if it is Float input"
+  floatValue: Float
 
   "Value to filter if it is Int Array input" 
   intArrayValue: [Int]
 
-  "Value to filter if it is Float Array input" 
-  floatArrayValue: [Float]
+  "Value to filter if it is Int input"
+  intValue: Int
 
-  "Relational Operator to join the key and value"  
-	relOper: RelOpTypes!
+  "Field name"
+	key : String!
 
   "Logical NOT operator to negate the condition"
   logNOT: Boolean
 
-  "Flag to set if the regex is case insensitive"
-	caseSensitive: Boolean
+  "Relational Operator to join the key and value"  
+	relOper: RelOpTypes!
+
+  "Value to filter if it is String Array input"
+  stringArrayValue: [String]
+
+  "Value to filter if it is String input"
+	stringValue: String
 }
 
 "Filter search with Three levels of input"
 input FilterThreeLevelInput {
+  "Array of conditions where all have to be true ($and)"
   all: [FilterTwoLevelInput]
+
+  "Array of conditions where any have to be true ($or)"
   any: [FilterTwoLevelInput]
 }
 
 "Filter search with Two levels of input"
 input FilterTwoLevelInput {
+  "Array of conditions where all have to be true ($and)"
   all: [FilterOneLevelInput]
+
+  "Array of conditions where any have to be true ($or)"
   any: [FilterOneLevelInput]
 }
 
 "Filter search with One level of input"
 input FilterOneLevelInput {
+  "Array of conditions where all have to be true ($and)"
   all: [SingleConditionInput]
+
+  "Array of conditions where any have to be true ($or)"
   any: [SingleConditionInput]
 }
 
