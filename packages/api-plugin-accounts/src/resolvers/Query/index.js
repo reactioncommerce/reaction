@@ -5,8 +5,12 @@ import group from "./group.js";
 import groups from "./groups.js";
 import invitations from "./invitations.js";
 import viewer from "./viewer.js";
+import filterSearchAccounts from "./filterSearchAccounts.js";
+import filterSearchCustomers from "./filterSearchCustomers.js";
 
 export default {
+  filterSearchAccounts,
+  filterSearchCustomers,
   account,
   accounts,
   customers,

@@ -34,6 +34,121 @@ enum MassUnit {
   oz
 }
 
+"Logical Operator Types for filtering"
+enum LogOpTypes{
+  "AND"
+  AND
+
+  "OR"
+  OR
+}
+
+"Relational Operator Types for filtering"
+enum RelOpTypes{
+  "Equal"
+  eq
+
+  "Not Equal"
+  ne
+
+  "Greater Than"
+  gt
+
+  "Greater Than or Equal"
+  gte
+
+  "Less Than"
+  lt
+
+  "Less Than or Equal"
+  lte
+
+  "Begins With used with String types"
+  beginsWith
+
+  "Ends With used with String types"
+  endsWith
+
+  "In"
+  in
+
+  "Not In"
+  nin
+
+  "Regex"
+  regex
+}
+
+"Flag to specify the number of levels used in Filter Search"
+enum FilterLevels {
+  "Use Filter with 1 level"
+  ONE
+
+  "Use Filter with 2 levels"
+  TWO
+
+  "Use Filter with 3 levels"
+  THREE
+}
+
+"Single Condition for filterSearch"
+input SingleConditionInput {
+  "Field name"
+	key : String!
+
+  "Value to filter if it is String input"
+	stringValue: String
+
+  "Value to filter if it is Int input"
+  intValue: Int
+
+  "Value to filter if it is Float input"
+  floatValue: Float
+
+  "Value to filter if it is Boolean input"
+  boolValue: Boolean
+
+  "Value to filter if it is Date input"
+  dateValue: DateTime
+
+  "Value to filter if it is String Array input"
+  stringArrayValue: [String]
+
+  "Value to filter if it is Int Array input" 
+  intArrayValue: [Int]
+
+  "Value to filter if it is Float Array input" 
+  floatArrayValue: [Float]
+
+  "Relational Operator to join the key and value"  
+	relOper: RelOpTypes!
+
+  "Logical NOT operator to negate the condition"
+  logNOT: Boolean
+
+  "Flag to set if the regex is case insensitive"
+	caseSensitive: Boolean
+}
+
+"Filter search with Three levels of input"
+input FilterThreeLevelInput {
+  all: [FilterTwoLevelInput]
+  any: [FilterTwoLevelInput]
+}
+
+"Filter search with Two levels of input"
+input FilterTwoLevelInput {
+  all: [FilterOneLevelInput]
+  any: [FilterOneLevelInput]
+}
+
+"Filter search with One level of input"
+input FilterOneLevelInput {
+  all: [SingleConditionInput]
+  any: [SingleConditionInput]
+}
+
+
 "A list of URLs for various sizes of an image"
 type ImageSizes {
   "Use this URL to get a large resolution file for this image"
