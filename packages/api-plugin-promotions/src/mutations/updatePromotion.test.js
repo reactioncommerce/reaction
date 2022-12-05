@@ -34,7 +34,7 @@ const updateResults = {
   modifiedCount: 1,
   promotion: ExistingOrderPromotion
 };
-mockContext.collections.Promotions.updateOne = () => updateResults;
+mockContext.collections.Promotions.findOneAndUpdate = () => updateResults;
 mockContext.simpleSchemas = {
   Promotion
 };
