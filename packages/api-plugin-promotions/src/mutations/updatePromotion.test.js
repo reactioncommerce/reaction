@@ -32,9 +32,9 @@ Stackability.extend({
 mockContext.collections.Promotions = mockCollection("Promotions");
 const updateResults = {
   modifiedCount: 1,
-  promotion: ExistingOrderPromotion
+  value: ExistingOrderPromotion
 };
-mockContext.collections.Promotions.updateOne = () => updateResults;
+mockContext.collections.Promotions.findOneAndUpdate = () => updateResults;
 mockContext.simpleSchemas = {
   Promotion
 };
@@ -62,7 +62,7 @@ mockContext.promotions = {
 };
 
 test("will not update a record if it fails simple-schema validation", async () => {
-  const promotion = {};
+  const promotion = { stackability: "all" };
   try {
     await updatePromotion(mockContext, { shopId: promotion.shopId, promotion });
   } catch (error) {
