@@ -62,7 +62,7 @@ mockContext.promotions = {
 };
 
 test("will not update a record if it fails simple-schema validation", async () => {
-  const promotion = {};
+  const promotion = { stackability: "all" };
   try {
     await updatePromotion(mockContext, { shopId: promotion.shopId, promotion });
   } catch (error) {
