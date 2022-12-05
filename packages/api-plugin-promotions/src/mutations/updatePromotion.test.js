@@ -32,7 +32,7 @@ Stackability.extend({
 mockContext.collections.Promotions = mockCollection("Promotions");
 const updateResults = {
   modifiedCount: 1,
-  promotion: ExistingOrderPromotion
+  value: ExistingOrderPromotion
 };
 mockContext.collections.Promotions.findOneAndUpdate = () => updateResults;
 mockContext.simpleSchemas = {
