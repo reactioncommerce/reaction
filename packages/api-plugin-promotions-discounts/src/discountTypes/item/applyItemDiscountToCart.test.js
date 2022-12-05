@@ -102,7 +102,7 @@ test("should return cart with applied discount when parameters include rule", as
       discountType: "test",
       discountCalculationType: "test",
       discountValue: 10,
-      inclusionRule: {
+      inclusionRules: {
         conditions: {
           any: [
             {

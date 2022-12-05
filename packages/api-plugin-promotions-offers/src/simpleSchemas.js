@@ -13,11 +13,11 @@ export const OfferTriggerParameters = new SimpleSchema({
     type: Object,
     blackbox: true
   },
-  inclusionRule: {
+  inclusionRules: {
     type: Rules,
     optional: true
   },
-  exclusionRule: {
+  exclusionRules: {
     type: Rules,
     optional: true
   }
