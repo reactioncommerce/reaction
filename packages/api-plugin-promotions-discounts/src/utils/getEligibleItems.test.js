@@ -15,7 +15,7 @@ test("should return eligible items if inclusion rule is provided", async () => {
     { _id: "3", brand: "EOM" }
   ];
   const parameters = {
-    inclusionRule: {
+    inclusionRules: {
       conditions: {
         all: [
           {
@@ -42,7 +42,7 @@ test("should remove ineligible items if exclusion rule is provided", async () =>
     { _id: "3", brand: "EOM" }
   ];
   const parameters = {
-    exclusionRule: {
+    exclusionRules: {
       conditions: {
         all: [
           {

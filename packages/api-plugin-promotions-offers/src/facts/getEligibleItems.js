@@ -8,9 +8,9 @@ import createEngine from "../utils/engineHelpers.js";
  * @return {Promise<Array<Object>>} - An array of eligible cart items
  */
 export default async function getEligibleItems(context, params, almanac) {
-  const getCheckMethod = (inclusionRule, exclusionRule) => {
-    const includeEngine = inclusionRule ? createEngine(context, inclusionRule) : null;
-    const excludeEngine = exclusionRule ? createEngine(context, exclusionRule) : null;
+  const getCheckMethod = (inclusionRules, exclusionRules) => {
+    const includeEngine = inclusionRules ? createEngine(context, inclusionRules) : null;
+    const excludeEngine = exclusionRules ? createEngine(context, exclusionRules) : null;
 
     return async (item) => {
       if (includeEngine) {
@@ -30,7 +30,7 @@ export default async function getEligibleItems(context, params, almanac) {
     };
   };
 
-  const checkerMethod = getCheckMethod(params.inclusionRule, params.exclusionRule);
+  const checkerMethod = getCheckMethod(params.inclusionRules, params.exclusionRules);
 
   const cart = await almanac.factValue("cart");
   const eligibleItems = [];

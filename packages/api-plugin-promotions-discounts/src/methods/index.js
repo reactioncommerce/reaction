@@ -24,6 +24,7 @@ function flat(discountValue) {
  * @returns {Number} The discount amount
  */
 function fixed(discountValue, price) {
+  if (discountValue > price) return 0;
   const amountToDiscount = Math.abs(discountValue - price);
   return amountToDiscount;
 }
