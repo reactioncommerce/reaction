@@ -15,7 +15,7 @@ export default async function updatePromotion(context, { shopId, promotion }) {
   PromotionSchema.validate(modifier, { modifier: true });
   validateTriggerParams(context, promotion);
   const { _id } = promotion;
-  const results = await Promotions.findOneAndUpdate({ _id, shopId }, modifier, { returnOriginal: false });
+  const results = await Promotions.findOneAndUpdate({ _id, shopId }, modifier, { returnDocument: "after" });
   const { modifiedCount, value } = results;
   return { success: !!modifiedCount, promotion: value };
 }
