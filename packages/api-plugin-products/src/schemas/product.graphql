@@ -625,22 +625,13 @@ extend type Mutation {
 }
 
 extend type Query {
-  # "filterSearch Query for list of Products"
+  "Query to get a filtered list of Products"
   filterSearchProducts(
     "Shop ID"
     shopId: ID!,
 
-    "fliterSearch Conditions with 3 levels"
-    filter3level: FilterThreeLevelInput,
-
-    "fliterSearch Conditions with 2 levels"
-    filter2level: FilterTwoLevelInput,
-
-    "fliterSearch Conditions with 1 level"
-    filter1level: FilterOneLevelInput,
-
-    "fliterSearch level used specifier"
-    level: FilterLevels!,  
+    "Input Conditions for fliter (use either 'any' or 'all' not both)"
+    conditions: FilterConditionsInput,
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
     after: ConnectionCursor,

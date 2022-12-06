@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import _ from "lodash";
+import collectCollectionFields from "./collectCollectionFields.js";
 
 const SingleConditionSchema = new SimpleSchema({
   "key": {
@@ -46,11 +47,11 @@ const SingleConditionSchema = new SimpleSchema({
   "floatArrayValue.$": {
     type: Number
   },
-  "relOper": {
+  "relationalOperator": {
     type: String,
     allowedValues: ["eq", "ne", "gt", "gte", "lt", "lte", "in", "nin", "regex", "beginsWith", "endsWith"]
   },
-  "logNOT": {
+  "logicalNOT": {
     type: Boolean,
     optional: true
   },
@@ -60,7 +61,7 @@ const SingleConditionSchema = new SimpleSchema({
   }
 });
 
-const FilterOneLevelSchema = new SimpleSchema({
+const ConditionsSchema = new SimpleSchema({
   "any": {
     type: Array,
     optional: true
@@ -77,64 +78,46 @@ const FilterOneLevelSchema = new SimpleSchema({
   }
 });
 
-const FilterTwoLevelSchema = new SimpleSchema({
+const ConditionsArraySchema = new SimpleSchema({
   "any": {
     type: Array,
     optional: true
   },
   "any.$": {
-    type: FilterOneLevelSchema
+    type: ConditionsSchema
   },
   "all": {
     type: Array,
     optional: true
   },
   "all.$": {
-    type: FilterOneLevelSchema
+    type: ConditionsSchema
   }
 });
-
-const FilterThreeLevelSchema = new SimpleSchema({
-  "any": {
-    type: Array,
-    optional: true
-  },
-  "any.$": {
-    type: FilterTwoLevelSchema
-  },
-  "all": {
-    type: Array,
-    optional: true
-  },
-  "all.$": {
-    type: FilterTwoLevelSchema
-  }
-});
-
 
 const validCombos = {
   "SimpleSchema.String": {
-    relOper: ["eq", "ne", "in", "nin", "regex", "beginsWith", "endsWith"],
+    relationalOperator: ["eq", "ne", "in", "nin", "regex", "beginsWith", "endsWith"],
     typeOf: ["string"]
   },
   "SimpleSchema.Integer": {
-    relOper: ["eq", "ne", "gt", "gte", "lt", "lte", "in", "nin"],
+    relationalOperator: ["eq", "ne", "gt", "gte", "lt", "lte", "in", "nin"],
     typeOf: ["number"]
   },
   "SimpleSchema.Number": {
-    relOper: ["eq", "ne", "gt", "gte", "lt", "lte", "in", "nin"],
+    relationalOperator: ["eq", "ne", "gt", "gte", "lt", "lte", "in", "nin"],
     typeOf: ["number"]
   },
   "SimpleSchema.Array": {
-    relOper: ["in", "nin", "eq", "ne"],
+    relationalOperator: ["in", "nin", "eq", "ne"],
     typeOf: ["array"]
   },
   "SimpleSchema.Boolean": {
-    relOper: ["eq", "ne"],
+    relationalOperator: ["eq", "ne"],
     typeOf: ["boolean"]
   },
   "SimpleSchema.Date": {
-    relOper: ["eq", "ne", "gt", "gte", "lt", "lte"],
+    relationalOperator: ["eq", "ne", "gt", "gte", "lt", "lte"],
     typeOf: ["date"]
   }
 };
@@ -144,7 +127,7 @@ const REL_OPS_KEYS = ["any", "all"];
 const FIELD_KEYS = [
   "key", "stringValue", "boolValue", "intValue", "floatValue", "dateValue",
   "stringArrayValue", "intArrayValue", "floatArrayValue",
-  "relOper", "caseSensitive", "logNOT"
+  "relationalOperator", "caseSensitive", "logicalNOT"
 ];
 
 const keyMap = {
@@ -268,34 +251,6 @@ function collectAtomicFilters(filter) {
 }
 
 /**
- * @name collectCollectionFields
- * @method
- * @memberof GraphQL/Filter
- * @summary collects all the fields of the specific collection along with metadata
- * @param {Object} context - an object containing the per-request state
- * @param {String} collectionName - name of the collection
- * @returns {Object} - Object with each field as key and type as value
- */
-function collectCollectionFields(context, collectionName) { // #TODO: Move this out as a common endpoint
-  const currentSchema = context.simpleSchemas[collectionName];
-  const mergedSchemaObject = currentSchema.mergedSchema();
-  const allKeys = Object.keys(mergedSchemaObject);
-  const returnFieldTypes = {};
-  allKeys.forEach((element) => {
-    const definitionObj = currentSchema.getDefinition(element);
-    const definition = definitionObj.type[0].type;
-    if (!SimpleSchema.isSimpleSchema(definition)) { // skip SimpleSchema definition names
-      if (typeof definition === "function") {
-        returnFieldTypes[element] = `SimpleSchema.${definition.name}`;
-      } else {
-        returnFieldTypes[element] = definition;
-      }
-    }
-  });
-  return returnFieldTypes;
-}
-
-/**
  * @name countInputValueFields
  * @method
  * @memberof GraphQL/Filter
@@ -326,8 +281,8 @@ function validateConditions(allConditions, allCollectionFields) {
   for (const condition of allConditions) {
     const {
       key, stringValue, intValue, floatValue, boolValue, dateValue,
-      stringArrayValue, intArrayValue, floatArrayValue, relOper
-    } = condition; // logNOT, caseSensitive are optional
+      stringArrayValue, intArrayValue, floatArrayValue, relationalOperator
+    } = condition; // logicalNOT, caseSensitive are optional
     const expectedValueType = allCollectionFields[key];
 
     const inputValuesObject = { stringValue, intValue, floatValue, boolValue, dateValue, stringArrayValue, intArrayValue, floatArrayValue };
@@ -354,8 +309,8 @@ function validateConditions(allConditions, allCollectionFields) {
       throw new Error(`Key '${key}' expects dateValue`);
     } // array can be compared with any of the above types, skipping this check
 
-    if (validCombos[expectedValueType].relOper.indexOf(relOper) === -1) {
-      throw new Error(`Invalid relational operator '${relOper}' for : ${expectedValueType}`);
+    if (validCombos[expectedValueType].relationalOperator.indexOf(relationalOperator) === -1) {
+      throw new Error(`Invalid relational operator '${relationalOperator}' for : ${expectedValueType}`);
     }
 
     if (expectedValueType === "SimpleSchema.Array" && stringArrayValue?.length === 0 && intArrayValue?.length === 0 && floatArrayValue?.length === 0) {
@@ -380,8 +335,8 @@ function validateConditions(allConditions, allCollectionFields) {
  * @param {String[]} [condition.stringArrayValue] The value in String Array format
  * @param {Number[]} [condition.intArrayValue] The value in Integer Array format
  * @param {Number[]} [condition.floatArrayValue] The value in Integer Array format
- * @param {String} condition.relOper The relational operator to use
- * @param {String} condition.logNOT Whether to negate the condition
+ * @param {String} condition.relationalOperator The relational operator to use
+ * @param {String} condition.logicalNOT Whether to negate the condition
  * @param {String} condition.caseSensitive Whether regex search is caseSensitive
  * @returns {Object} The MongoDB query
  */
@@ -389,14 +344,14 @@ function simpleConditionToQuery(condition) {
   const {
     key, stringValue, intValue, floatValue, boolValue, dateValue,
     stringArrayValue, intArrayValue, floatArrayValue,
-    relOper, logNOT, caseSensitive
+    relationalOperator, logicalNOT, caseSensitive
   } = condition;
   const query = {};
   const valueToUse = stringValue || intValue || floatValue || boolValue || dateValue ||
   stringArrayValue || intArrayValue || floatArrayValue;
 
   let tempQuery;
-  switch (relOper) {
+  switch (relationalOperator) {
     case "eq":
       if (boolValue !== undefined) {
         tempQuery = { $eq: boolValue };
@@ -450,10 +405,10 @@ function simpleConditionToQuery(condition) {
       }
       break;
     default:
-      throw new Error(`Invalid relational operator: ${relOper}`);
+      throw new Error(`Invalid relational operator: ${relationalOperator}`);
   }
 
-  query[key] = logNOT ? { $not: tempQuery } : tempQuery;
+  query[key] = logicalNOT ? { $not: tempQuery } : tempQuery;
 
   return query;
 }
@@ -500,7 +455,7 @@ function processArrayElements(element) {
 }
 
 /**
- * @name newProcessFilterConditions
+ * @name processFilterConditions
  * @method
  * @memberof GraphQL/Filter
  * @summary This function is recursively called for all compound conditions
@@ -508,7 +463,7 @@ function processArrayElements(element) {
  * @param {Object} filterCondition - filter condition to be processed
  * @returns {Boolean} - final query object
  */
-function newProcessFilterConditions(filterCondition) {
+function processFilterConditions(filterCondition) {
   const isCompoundCondition = checkIfCompoundCondition(filterCondition);
 
   let returnObject;
@@ -518,7 +473,7 @@ function newProcessFilterConditions(filterCondition) {
     const subConditions = filterCondition[singleKey];
     const subQueryArray = [];
     for (const subCondition of subConditions) {
-      const subQuery = newProcessFilterConditions(subCondition);
+      const subQuery = processFilterConditions(subCondition);
       subQueryArray.push(subQuery);
     }
     const key = keyMap[singleKey];
@@ -549,14 +504,14 @@ function generateQuery(filterQuery, shopId) {
 
   const keysTopLevel = Object.keys(filterQuery);
   if (keysTopLevel.length !== 1) {
-    throw new Error("filterQuery must have exactly one key");
+    throw new Error("Filter condition must have exactly one key at top level");
   }
   const topLevelKey = keysTopLevel[0];
   if (!REL_OPS_KEYS.includes(topLevelKey)) {
     throw new Error(`Invalid top level key: ${topLevelKey}. Expected one of: ${REL_OPS_KEYS.join(", ")}`);
   }
 
-  const selectorObject = newProcessFilterConditions(filterQuery);
+  const selectorObject = processFilterConditions(filterQuery);
 
   // If a shopId was provided, add it
   if (shopId) {
@@ -573,46 +528,18 @@ function generateQuery(filterQuery, shopId) {
  * @summary Query the Products collection for a list of products
  * @param {Object} context - an object containing the per-request state
  * @param {String} collectionName - Collection against which to run the query
- * @param {Object} filter1level - an object containing ONE level of filters to apply
- * @param {Object} filter2level - an object containing TWO levels of filters to apply
- * @param {Object} filter3level - an object containing THREE levels of filters to apply
- * @param {Object} level - number of levels used in filter object
+ * @param {Object} conditions - the conditions for the filter
  * @param {String} shopId - shopID to filter by
  * @returns {Promise<Object>} Products object Promise
  */
-export default function generateFilterQuery(context, collectionName, filter1level, filter2level, filter3level, level, shopId) {
-  let filterQuery;
-  switch (level) {
-    case "ONE":
-      if (!filter1level) {
-        throw new Error("filter1level is required when level ONE is used");
-      }
-      FilterOneLevelSchema.validate(filter1level);
-      filterQuery = filter1level;
-      break;
-    case "TWO":
-      if (!filter2level) {
-        throw new Error("filter2level is required when level TWO is used");
-      }
-      FilterTwoLevelSchema.validate(filter2level);
-      filterQuery = filter2level;
-      break;
-    case "THREE":
-      if (!filter3level) {
-        throw new Error("filter3level is required when level THREE is used");
-      }
-      FilterThreeLevelSchema.validate(filter3level);
-      filterQuery = filter3level;
-      break;
-    default:
-      throw new Error("Invalid level");
-  }
+export default function generateFilterQuery(context, collectionName, conditions, shopId) {
+  ConditionsArraySchema.validate(conditions);
 
-  const allConditions = collectAtomicFilters(filterQuery);
+  const allConditions = collectAtomicFilters(conditions);
   const allCollectionFields = collectCollectionFields(context, collectionName);
   validateConditions(allConditions, allCollectionFields);
 
-  const selector = generateQuery(filterQuery, shopId);
+  const selector = generateQuery(conditions, shopId);
   return {
     filterQuery: selector
   };

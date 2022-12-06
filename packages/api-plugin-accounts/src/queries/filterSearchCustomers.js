@@ -6,14 +6,11 @@ import generateFilterQuery from "@reactioncommerce/api-utils/lib/generateFilterQ
  * @memberof GraphQL/Customers
  * @summary Query the Accounts collection for a list of customers/accounts
  * @param {Object} context - an object containing the per-request state
- * @param {Object} filter1level - an object containing ONE level of filters to apply
- * @param {Object} filter2level - an object containing TWO levels of filters to apply
- * @param {Object} filter3level - an object containing THREE levels of filters to apply
- * @param {String} level - number of levels used in filter object
+ * @param {Object} conditions - object containing the filter conditions
  * @param {String} shopId - shopID to filter by
  * @returns {Promise<Object>} Accounts object Promise
  */
-export default async function filterSearchCustomers(context, filter1level, filter2level, filter3level, level, shopId) {
+export default async function filterSearchCustomers(context, conditions, shopId) {
   const { collections: { Accounts } } = context;
 
   if (!shopId) {
@@ -21,7 +18,7 @@ export default async function filterSearchCustomers(context, filter1level, filte
   }
   await context.validatePermissions("reaction:legacy:accounts", "read", { shopId });
 
-  const { filterQuery } = generateFilterQuery(context, "Account", filter1level, filter2level, filter3level, level, shopId);
+  const { filterQuery } = generateFilterQuery(context, "Account", conditions, shopId);
 
   filterQuery.groups = { $in: [null, []] }; // filter out non-customer accounts
   return Accounts.find(filterQuery);

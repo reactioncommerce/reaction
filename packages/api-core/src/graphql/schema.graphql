@@ -44,7 +44,7 @@ enum LogOpTypes{
 }
 
 "Relational Operator Types for filtering"
-enum RelOpTypes{
+enum RelationalOperatorTypes{
   "Begins With used with String types"
   beginsWith
 
@@ -91,7 +91,7 @@ enum FilterLevels {
   TWO
 }
 
-"Single Condition for filterSearch"
+"Single Condition for filterSearch, use exactly one of the optional input value type"
 input SingleConditionInput {
   "Value to filter if it is Boolean input"
   boolValue: Boolean
@@ -118,10 +118,10 @@ input SingleConditionInput {
 	key : String!
 
   "Logical NOT operator to negate the condition"
-  logNOT: Boolean
+  logicalNOT: Boolean
 
   "Relational Operator to join the key and value"  
-	relOper: RelOpTypes!
+	relationalOperator: RelationalOperatorTypes!
 
   "Value to filter if it is String Array input"
   stringArrayValue: [String]
@@ -130,31 +130,22 @@ input SingleConditionInput {
 	stringValue: String
 }
 
-"Filter search with Three levels of input"
-input FilterThreeLevelInput {
-  "Array of conditions where all have to be true ($and)"
-  all: [FilterTwoLevelInput]
-
-  "Array of conditions where any have to be true ($or)"
-  any: [FilterTwoLevelInput]
-}
-
-"Filter search with Two levels of input"
-input FilterTwoLevelInput {
-  "Array of conditions where all have to be true ($and)"
-  all: [FilterOneLevelInput]
-
-  "Array of conditions where any have to be true ($or)"
-  any: [FilterOneLevelInput]
-}
-
-"Filter search with One level of input"
-input FilterOneLevelInput {
-  "Array of conditions where all have to be true ($and)"
+"Filter search with One level of conditions (use either 'any' or 'all' not both)"
+input ConditionsArray {
+  "Array of single-conditions"
   all: [SingleConditionInput]
 
-  "Array of conditions where any have to be true ($or)"
+  "Array of single-conditions"
   any: [SingleConditionInput]
+}
+
+"Filter search with nested conditions of input (use either 'any' or 'all' not both)"
+input FilterConditionsInput {
+  "Array holding Nested conditions (use either 'any' or 'all' not both)"
+  all: [ConditionsArray]
+
+  "Array holding Nested conditions (use either 'any' or 'all' not both)"
+  any: [ConditionsArray]
 }
 
 
