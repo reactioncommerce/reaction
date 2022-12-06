@@ -112,13 +112,13 @@ test("createCartMessage should return correct cart message", () => {
 });
 
 describe("cart message", () => {
-  test("should have promotion expired message when explicit promotion is expired", async () => {
+  test("should have promotion expired message when promotion is expired", async () => {
     isPromotionExpired.mockReturnValue(true);
 
     const promotion = {
       ...testPromotion,
       _id: "promotionId",
-      triggerType: "explicit"
+      triggerType: "implicit"
     };
     const cart = {
       _id: "cartId",
@@ -127,7 +127,7 @@ describe("cart message", () => {
 
     mockContext.collections.Promotions = {
       find: () => ({
-        toArray: jest.fn().mockResolvedValueOnce([])
+        toArray: jest.fn().mockResolvedValueOnce([promotion])
       })
     };
 
@@ -141,14 +141,14 @@ describe("cart message", () => {
     expect(cart.messages[0].title).toEqual("The promotion has expired");
   });
 
-  test("should have promotion can't be applied message when explicit promotion can't be applied", async () => {
+  test("should have promotion can't be applied message when promotion can't be applied", async () => {
     canBeApplied.mockReturnValue({ qualifies: false, reason: "Can't be combine" });
     isPromotionExpired.mockReturnValue(false);
 
     const promotion = {
       ...testPromotion,
       _id: "promotionId",
-      triggerType: "explicit"
+      triggerType: "implicit"
     };
     const cart = {
       _id: "cartId",
@@ -157,7 +157,7 @@ describe("cart message", () => {
 
     mockContext.collections.Promotions = {
       find: () => ({
-        toArray: jest.fn().mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackability: { key: "all", parameters: {} } }])
+        toArray: jest.fn().mockResolvedValue([testPromotion, promotion])
       })
     };
 
@@ -180,7 +180,7 @@ test("should have promotion is not eligible message when explicit promotion is n
   const promotion = {
     ...testPromotion,
     _id: "promotionId",
-    triggerType: "explicit"
+    triggerType: "implicit"
   };
   const cart = {
     _id: "cartId",
@@ -189,7 +189,7 @@ test("should have promotion is not eligible message when explicit promotion is n
 
   mockContext.collections.Promotions = {
     find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([])
+      toArray: jest.fn().mockResolvedValueOnce([promotion])
     })
   };
 
@@ -212,7 +212,7 @@ test("should have promotion was not affected message when implicit promotion is 
   const promotion = {
     ...testPromotion,
     _id: "promotionId",
-    triggerType: "explicit"
+    triggerType: "implicit"
   };
   const cart = {
     _id: "cartId",
@@ -221,7 +221,7 @@ test("should have promotion was not affected message when implicit promotion is 
 
   mockContext.collections.Promotions = {
     find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([])
+      toArray: jest.fn().mockResolvedValueOnce([promotion])
     })
   };
 
@@ -251,13 +251,15 @@ test("should not have promotion message when the promotion already message added
   const cart = {
     _id: "cartId",
     appliedPromotions: [promotion],
-    messages: [{
-      title: "The promotion has expired",
-      subject: "promotion",
-      metaFields: {
-        promotionId: "promotionId"
+    messages: [
+      {
+        title: "The promotion has expired",
+        subject: "promotion",
+        metaFields: {
+          promotionId: "promotionId"
+        }
       }
-    }]
+    ]
   };
 
   mockContext.collections.Promotions = {
