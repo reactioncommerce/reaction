@@ -72,8 +72,7 @@ export default async function applyPromotions(context, cart) {
   const appliedPromotions = [];
   const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]);
 
-  const currentCartMessages = cart.messages || [];
-  const cartMessages = [];
+  const cartMessages = cart.messages || [];
 
   const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
 
@@ -81,7 +80,7 @@ export default async function applyPromotions(context, cart) {
     cleanup && await cleanup(context, cart);
   }
 
-  const canAddToCartMessages = (promotion) => promotion.triggerType === "explicit" && !_.includes(currentCartMessages, "metaFields.promotionId", promotion._id);
+  const canAddToCartMessages = (promotion) => promotion.triggerType === "explicit" && !_.includes(cartMessages, "metaFields.promotionId", promotion._id);
 
   let enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   for (const promotion of unqualifiedPromotions) {
