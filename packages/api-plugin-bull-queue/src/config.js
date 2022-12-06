@@ -8,7 +8,9 @@ export default envalid.cleanEnv(process.env, {
   JOBS_SERVER_REMOVE_ON_FAIL: envalid.bool({ default: false }),
   JOBS_SERVER_DEFAULT_ATTEMPTS: envalid.num({ default: 5 }),
   JOBS_SERVER_BACKOFF_MS: envalid.num({ default: 5000 }),
-  JOBS_SERVER_BACKOFF_STRATEGY: envalid.str({ default: "exponential" })
+  JOBS_SERVER_BACKOFF_STRATEGY: envalid.str({ default: "exponential" }),
+  JOBS_SERVER_REMOVE_COMPLETED_JOBS_AFTER: envalid.str({ default: "3 days" }),
+  JOBS_SERVER_REMOVE_FAILED_JOBS_AFTER: envalid.str({ default: "30 days" })
 }, {
   dotEnvPath: null
 });
