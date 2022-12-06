@@ -142,7 +142,7 @@ test("should return affected is false with reason when have no items are discoun
     },
     quantity: 1,
     subtotal: {
-      amount: 10,
+      amount: 12,
       currencyCode: "USD"
     },
     discounts: []
@@ -162,7 +162,7 @@ test("should return affected is false with reason when have no items are discoun
       discountType: "test",
       discountCalculationType: "test",
       discountValue: 10,
-      inclusionRule: {
+      inclusionRules: {
         conditions: {
           any: [
             {
