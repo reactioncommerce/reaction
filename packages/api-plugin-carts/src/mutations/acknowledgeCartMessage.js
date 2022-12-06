@@ -5,12 +5,12 @@ import ReactionError from "@reactioncommerce/reaction-error";
 /**
  * @name acknowledgeCartMessage
  * @method
- * @summary Query the Cart collection for a cart with the provided accountId and shopId
+ * @summary Mutations to acknowledge a cart message
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} params - request parameters
- * @param {String} [params.accountId] - An account ID
- * @param {String} [params.shopId] - A shop ID
+ * @param {String} [params.cartId] - The cart ID
  * @param {String} [params.messageId] - A cart message ID
+ * @param {String} [params.cartToken] - The cart token, if the cart is anonymous
  * @returns {Promise<Object>|undefined} A Cart document, if one is found
  */
 export default async function acknowledgeCartMessage(context, { cartId, messageId, cartToken } = {}) {
