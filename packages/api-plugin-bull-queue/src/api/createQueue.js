@@ -24,7 +24,7 @@ const { REDIS_SERVER } = config;
  * @param {Function} processorFn - The processor function to use for jobs in the queue
  * @return {Object} - An instance of BullMQ
  */
-export default function createQueue(context, queueName, options, processorFn) {
+export default function createQueue(context, queueName, options = {}, processorFn) {
   Logger.info({ queueName, ...logCtx }, "Creating queue");
   if (!options.url) options.url = REDIS_SERVER;
   const newQueue = new Queue(queueName, options.url, options);

@@ -1,4 +1,4 @@
-import processEmailJobs from "./util/processEmailJobs.js";
+import returnEmailProcessor from "./util/returnEmailProcessor.js";
 
 /**
  * @summary Called on startup
@@ -6,7 +6,7 @@ import processEmailJobs from "./util/processEmailJobs.js";
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function emailStartup(context) {
-  processEmailJobs(context);
+export default async function emailStartup(context) {
+  const { bullQueue } = context;
+  bullQueue.createQueue(context, "sendEmail", {}, returnEmailProcessor(context));
 }
-
