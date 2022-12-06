@@ -30,8 +30,7 @@ async function getImplicitPromotions(context, shopId) {
     shopId,
     enabled: true,
     triggerType: "implicit",
-    startDate: { $lt: now },
-    endDate: { $gt: now }
+    startDate: { $lt: now }
   }).toArray();
   Logger.info({ ...logCtx, applicablePromotions: promotions.length }, "Fetched applicable promotions");
   return promotions;
@@ -83,7 +82,7 @@ export default async function applyPromotions(context, cart) {
   const canAddToCartMessages = (promotion) => {
     if (_.find(cartMessages, { metaFields: { promotionId: promotion._id } })) return false;
     if (promotion.triggerType === "explicit") return true;
-    return _.find(cart.appliedPromotions, { _id: promotion._id }) !== undefined;
+    return _.find(cart.appliedPromotions || [], { _id: promotion._id }) !== undefined;
   };
 
   let enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
@@ -172,7 +171,14 @@ export default async function applyPromotions(context, cart) {
   }
 
   enhancedCart.appliedPromotions = appliedPromotions;
-  enhancedCart.messages = cartMessages;
+
+  // Remove messages that are no longer relevant
+  const cleanedMessages = _.filter(cartMessages, (message) => {
+    if (message.subject !== "promotion") return true;
+    return _.find(appliedPromotions, { _id: message.metaFields.promotionId, triggerType: "implicit" }) === undefined;
+  });
+
+  enhancedCart.messages = cleanedMessages;
   Cart.clean(enhancedCart, { mutate: true });
   Object.assign(cart, enhancedCart);
 
