@@ -28,7 +28,7 @@
   "dependencies": {
     "@reactioncommerce/api-utils": "^1.16.9",
     "@reactioncommerce/logger": "^1.1.3",
-    "@reactioncommerce/nodemailer": "^5.0.5",
+    "nodemailer": "^6.8.0",
     "@reactioncommerce/reaction-error": "^1.0.1",
     "envalid": "^6.0.2",
     "simpl-schema": "^1.12.0"
