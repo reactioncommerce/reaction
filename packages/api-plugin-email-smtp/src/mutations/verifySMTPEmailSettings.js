@@ -1,5 +1,5 @@
 import SimpleSchema from "simpl-schema";
-import nodemailer from "@reactioncommerce/nodemailer";
+import nodemailer from "nodemailer";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { SMTPConfig } from "../config.js";
 
