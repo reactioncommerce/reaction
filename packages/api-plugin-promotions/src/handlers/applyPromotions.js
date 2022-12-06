@@ -80,7 +80,11 @@ export default async function applyPromotions(context, cart) {
     cleanup && await cleanup(context, cart);
   }
 
-  const canAddToCartMessages = (promotion) => promotion.triggerType === "explicit" && !_.includes(cartMessages, "metaFields.promotionId", promotion._id);
+  const canAddToCartMessages = (promotion) => {
+    if (_.find(cartMessages, { metaFields: { promotionId: promotion._id } })) return false;
+    if (promotion.triggerType === "explicit") return true;
+    return _.find(cart.appliedPromotions, { _id: promotion._id }) !== undefined;
+  };
 
   let enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   for (const promotion of unqualifiedPromotions) {
