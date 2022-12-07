@@ -21,9 +21,13 @@ const logCtx = {
  * @return {Boolean} - true if success
  */
 export default async function scheduleJob(context, queueName, jobData, schedule) {
+  if (typeof jobData !== "object" || typeof schedule !== "string") {
+    Logger.error(logCtx, "Invalid parameters supplied to scheduleJob");
+    return false;
+  }
   if (context.bullQueue.jobQueues[queueName]) {
     const thisQueue = context.bullQueue.jobQueues[queueName];
-    await thisQueue.add(jobData, schedule);
+    await thisQueue.add(jobData, { repeat: { cron: schedule } });
     return true;
   }
   Logger.error({ queueName, ...logCtx }, "Could not schedule job as the queue was not found");

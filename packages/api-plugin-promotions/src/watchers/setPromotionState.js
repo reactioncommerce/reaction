@@ -19,13 +19,14 @@ const logCtx = {
  * @return {Promise<number>} - The total number of records updated
  */
 async function markActive(context) {
-  const { collections: { Promotions } } = context;
+  const { appEvents, collections: { Promotions } } = context;
   const shopTimes = await getCurrentShopTime(context);
   let totalUpdated = 0;
+  const updatePromises = [];
   for (const shop of Object.keys(shopTimes)) {
     const shopTime = shopTimes[shop];
     // eslint-disable-next-line no-await-in-loop
-    const { modifiedCount } = await Promotions.updateMany({
+    const toMarkActive = await Promotions.find({
       shopId: shop,
       state: "created",
       enabled: true,
@@ -34,9 +35,16 @@ async function markActive(context) {
         { endDate: { $gt: shopTime } },
         { endDate: null }
       ]
-    }, { $set: { state: "active" } });
-    totalUpdated += modifiedCount;
+    }).toArray();
+    for (const promotion of toMarkActive) {
+      appEvents.emit("promotionActive", promotion._id);
+      totalUpdated += 1;
+      const updatePromise = Promotions.updateOne({ _id: promotion._id }, { $set: { state: "active" } });
+      updatePromises.push(updatePromise);
+      totalUpdated += 1;
+    }
   }
+  await Promise.all(updatePromises);
   return totalUpdated;
 }
 
@@ -46,30 +54,50 @@ async function markActive(context) {
  * @return {Promise<number>} - The total number of records updated
  */
 async function markCompleted(context) {
-  const { collections: { Promotions } } = context;
+  const { appEvents, collections: { Promotions } } = context;
   const shopTimes = await getCurrentShopTime(context);
   let totalUpdated = 0;
+  const updatePromises = [];
   for (const shop of Object.keys(shopTimes)) {
     const shopTime = shopTimes[shop];
     // eslint-disable-next-line no-await-in-loop
-    const { modifiedCount } = await Promotions.updateMany({
+    const toMarkCompleted = await Promotions.find({
       shopId: shop,
       state: "active",
       endDate: { $lt: shopTime }
-    }, { $set: { state: "completed" } });
-    totalUpdated += modifiedCount;
+    }).toArray();
+    for (const promotion of toMarkCompleted) {
+      appEvents.emit("promotionCompleted", promotion._id);
+      totalUpdated += 1;
+      const updatePromise = Promotions.updateOne({ _id: promotion._id }, { $set: { state: "completed" } });
+      updatePromises.push(updatePromise);
+    }
   }
+  await Promise.all(updatePromises);
   return totalUpdated;
 }
 
 /**
- * @summary capture and change all promotion records who's state should have changed
+ * @summary return closure of markPromotion states with context enclosed
  * @param {Object} context - The application context
- * @return {Promise<Object>} - quantities marked active and completed
+ * @return {Function} - quantities marked active and completed
  */
-export default async function setPromotionState(context) {
-  const totalMadeActive = await markActive(context);
-  const totalMarkedCompleted = await markCompleted(context);
-  Logger.info({ ...logCtx, totalMarkedCompleted, totalMadeActive }, "Scanned promotions for changing state");
-  return { totalMarkedCompleted, totalMadeActive };
+export default function setPromotionState(context) {
+  /**
+   * @summary scan all promotions for any that need to change state
+   * @return {Promise<Object|Number>} - Either an object of completed record counts, or error
+   */
+  async function markPromotionStates() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const totalMadeActive = await markActive(context);
+        const totalMarkedCompleted = await markCompleted(context);
+        Logger.info({ ...logCtx, totalMarkedCompleted, totalMadeActive }, "Scanned promotions for changing state");
+        resolve({ totalMarkedCompleted, totalMadeActive });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  return markPromotionStates;
 }

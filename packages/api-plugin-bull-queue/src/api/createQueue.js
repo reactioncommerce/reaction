@@ -34,9 +34,13 @@ const { REDIS_SERVER } = config;
  * @param {String} queueName - The name of the queue to create, this name is used elsewhere to reference the queue
  * @param {Object} options - Any additional options to pass to the instance
  * @param {Function} processorFn - The processor function to use for jobs in the queue
- * @return {Object} - An instance of a BullMQ queue
+ * @return {Object|Boolean} - An instance of a BullMQ queue
  */
 export default function createQueue(context, queueName, options = defaultOptions, processorFn) {
+  if (typeof queueName !== "string" || typeof options !== "object" || typeof processorFn !== "function") {
+    Logger.error(logCtx, "Invalid parameters provided to create queue");
+    return false;
+  }
   Logger.info({ queueName, ...logCtx }, "Creating queue");
   if (!options.url) options.url = REDIS_SERVER;
   const newQueue = new Queue(queueName, options.url, options);
