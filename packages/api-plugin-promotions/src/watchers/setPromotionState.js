@@ -22,7 +22,6 @@ async function markActive(context) {
   const { appEvents, collections: { Promotions } } = context;
   const shopTimes = await getCurrentShopTime(context);
   let totalUpdated = 0;
-  const updatePromises = [];
   for (const shop of Object.keys(shopTimes)) {
     const shopTime = shopTimes[shop];
     // eslint-disable-next-line no-await-in-loop
@@ -37,14 +36,15 @@ async function markActive(context) {
       ]
     }).toArray();
     for (const promotion of toMarkActive) {
-      appEvents.emit("promotionActive", promotion._id);
-      totalUpdated += 1;
-      const updatePromise = Promotions.updateOne({ _id: promotion._id }, { $set: { state: "active" } });
-      updatePromises.push(updatePromise);
-      totalUpdated += 1;
+      const { modifiedCount } = Promotions.updateOne({ _id: promotion._id }, { $set: { state: "active" } });
+      if (modifiedCount === 1) {
+        appEvents.emit("promotionActivated", promotion);
+        totalUpdated += 1;
+      } else {
+        Logger.error({ promotionId: promotion._id, ...logCtx }, "Error updating promotion record to active");
+      }
     }
   }
-  await Promise.all(updatePromises);
   return totalUpdated;
 }
 
@@ -57,7 +57,6 @@ async function markCompleted(context) {
   const { appEvents, collections: { Promotions } } = context;
   const shopTimes = await getCurrentShopTime(context);
   let totalUpdated = 0;
-  const updatePromises = [];
   for (const shop of Object.keys(shopTimes)) {
     const shopTime = shopTimes[shop];
     // eslint-disable-next-line no-await-in-loop
@@ -67,20 +66,22 @@ async function markCompleted(context) {
       endDate: { $lt: shopTime }
     }).toArray();
     for (const promotion of toMarkCompleted) {
-      appEvents.emit("promotionCompleted", promotion._id);
-      totalUpdated += 1;
-      const updatePromise = Promotions.updateOne({ _id: promotion._id }, { $set: { state: "completed" } });
-      updatePromises.push(updatePromise);
+      const { modifiedCount } = Promotions.updateOne({ _id: promotion._id }, { $set: { state: "completed" } });
+      if (modifiedCount === 1) {
+        appEvents.emit("promotionCompleted", promotion);
+        totalUpdated += 1;
+      } else {
+        Logger.error({ promotionId: promotion._id, ...logCtx }, "Error updating promotion record to completed");
+      }
     }
   }
-  await Promise.all(updatePromises);
   return totalUpdated;
 }
 
 /**
  * @summary return closure of markPromotion states with context enclosed
  * @param {Object} context - The application context
- * @return {Function} - quantities marked active and completed
+ * @return {Function} - markPromotionsStates function with context enclosed
  */
 export default function setPromotionState(context) {
   /**
