@@ -102,6 +102,9 @@ jobs:
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
+      - image: redis
+        ports:
+          - "6379:6379"
     steps:
       - checkout
       - restore_cache:
@@ -129,6 +132,9 @@ jobs:
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
+      - image: redis
+        ports:
+          - "6379:6379"
     steps:
       - checkout
       - restore_cache:
