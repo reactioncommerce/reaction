@@ -34,16 +34,7 @@ enum MassUnit {
   oz
 }
 
-"Logical Operator Types for filtering"
-enum LogOpTypes{
-  "AND"
-  AND
-
-  "OR"
-  OR
-}
-
-"Relational Operator Types for filtering"
+"Relational Operator Types used in filtering inside a single condition"
 enum RelationalOperatorTypes{
   "Begins With used with String types"
   beginsWith
@@ -79,25 +70,13 @@ enum RelationalOperatorTypes{
   regex
 }
 
-"Flag to specify the number of levels used in Filter Search"
-enum FilterLevels {
-  "Use Filter with 1 level"
-  ONE
-
-  "Use Filter with 3 levels"
-  THREE
-
-  "Use Filter with 2 levels"
-  TWO
-}
-
 "Single Condition for filterSearch, use exactly one of the optional input value type"
 input SingleConditionInput {
   "Value to filter if it is Boolean input"
   boolValue: Boolean
 
   "Flag to set if the regex is case insensitive"
-	caseSensitive: Boolean
+  caseSensitive: Boolean
 
   "Value to filter if it is Date input"
   dateValue: DateTime
@@ -120,8 +99,8 @@ input SingleConditionInput {
   "Logical NOT operator to negate the condition"
   logicalNOT: Boolean
 
-  "Relational Operator to join the key and value"  
-	relationalOperator: RelationalOperatorTypes!
+  "Relational Operator to join the key and value"
+  relationalOperator: RelationalOperatorTypes!
 
   "Value to filter if it is String Array input"
   stringArrayValue: [String]

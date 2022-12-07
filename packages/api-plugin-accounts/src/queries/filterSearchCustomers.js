@@ -1,4 +1,4 @@
-import generateFilterQuery from "@reactioncommerce/api-utils/lib/generateFilterQuery.js";
+import generateFilterQuery from "@reactioncommerce/api-utils/generateFilterQuery.js";
 
 /**
  * @name filterSearchCustomers
