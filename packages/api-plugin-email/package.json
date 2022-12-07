@@ -29,7 +29,8 @@
     "@reactioncommerce/api-utils": "^1.16.9",
     "@reactioncommerce/db-version-check": "^1.0.0",
     "@reactioncommerce/logger": "^1.1.3",
-    "@reactioncommerce/random": "~1.0.2"
+    "@reactioncommerce/random": "~1.0.2",
+    "envalid": "^6.0.1"
   },
   "devDependencies": {
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
