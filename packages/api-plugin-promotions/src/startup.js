@@ -1,6 +1,9 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
 import setPromotionState from "./watchers/setPromotionState.js";
+import config from "./config.js";
+
+const { REACTION_WORKERS_ENABLED } = config;
 
 
 const require = createRequire(import.meta.url);
@@ -17,11 +20,15 @@ const logCtx = {
 /**
  * @summary create promotion state working and job
  * @param {Object} context - The application context
- * @return {Promise<{job: Job, workerInstance: Job}>} - worker instance and job
+ * @return {Boolean} - true if success
  */
 export default async function startupPromotions(context) {
+  if (!REACTION_WORKERS_ENABLED) {
+    return false;
+  }
   const { bullQueue } = context;
-  bullQueue.createQueue(context, "setPromotionState", {}, setPromotionState(context));
-  bullQueue.scheduleJob(context, "setPromotionState", {}, "*/5 * * * *");
+  await bullQueue.createQueue(context, "setPromotionState", {}, setPromotionState(context));
+  await bullQueue.scheduleJob(context, "setPromotionState", {}, "*/5 * * * *");
   Logger.info(logCtx, "Add setPromotionState queue and job");
+  return true;
 }

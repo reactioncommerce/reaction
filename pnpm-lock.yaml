@@ -620,11 +620,13 @@ importers:
       '@reactioncommerce/db-version-check': ^1.0.0
       '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ~1.0.2
+      envalid: ^6.0.1
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/db-version-check': link:../db-version-check
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
+      envalid: 6.0.2
     devDependencies:
       '@reactioncommerce/babel-remove-es-create-require': 1.0.0_@babel+core@7.19.0
       '@reactioncommerce/data-factory': 1.0.1
@@ -1038,6 +1040,7 @@ importers:
       '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ^1.0.2
       '@reactioncommerce/reaction-error': ^1.0.1
+      envalid: ^6.0.1
       json-rules-engine: ^6.1.2
       lodash: ^4.17.21
       node-cache: ^5.1.2
@@ -1047,6 +1050,7 @@ importers:
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
+      envalid: 6.0.2
       json-rules-engine: 6.1.2
       lodash: 4.17.21
       node-cache: 5.1.2
