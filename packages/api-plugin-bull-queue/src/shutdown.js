@@ -28,6 +28,7 @@ export default function bullQueueShutdown(context) {
           queue.close().then(() => Logger.info(logCtx, "Closed queue")).catch((error) => Logger.error(logCtx, error));
         }
       }
+      resolve();
     } catch (error) {
       reject(error);
     }
