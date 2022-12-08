@@ -8,14 +8,19 @@
 export default async function promotions(context, shopId, filter) {
   const { collections: { Promotions } } = context;
 
-  const selector = { shopId };
+  const selector = { shopId, state: { $ne: "archived" } };
 
   if (filter) {
-    const { enabled, startDate, endDate } = filter;
+    const { enabled, startDate, endDate, state } = filter;
     // because enabled could be false we need to check for undefined
     if (typeof enabled !== "undefined") {
       selector.enabled = enabled;
     }
+
+    if (state || (state === "archived" && await context.userHasPermission("reaction:legacy:promotions", "read:archived", { shopId }))) {
+      selector.state = { $eq: state };
+    }
+
     if (startDate && startDate.eq) {
       selector.startDate = { $eq: startDate.eq };
     }
@@ -23,6 +28,7 @@ export default async function promotions(context, shopId, filter) {
     if (startDate && startDate.before) {
       selector.startDate = { ...selector.startDate, $lt: startDate.before };
     }
+
     if (startDate && startDate.after) {
       selector.startDate = { ...selector.startDate, $gt: startDate.after };
     }
