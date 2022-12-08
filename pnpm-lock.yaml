@@ -195,7 +195,6 @@ importers:
       '@snyk/protect': latest
       apollo-link-http: ~1.5.16
       apollo-server-testing: ~2.9.6
-      bull: 4.10.1
       faker: ~4.1.0
       graphql: 14.7.0
       graphql-tools: 4.0.5
