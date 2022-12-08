@@ -71,7 +71,6 @@
     "@reactioncommerce/nodemailer": "5.0.5",
     "@reactioncommerce/random": "1.0.2",
     "@snyk/protect": "latest",
-    "bull": "4.10.1",
     "graphql": "~14.7.0",
     "semver": "~6.3.0",
     "sharp": "^0.30.7"

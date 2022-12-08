@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { SMTPConfig } from "../config.js";
 
+
 /**
  * @name sendSMTPEmail
  * @summary Responds to the "sendEmail" app event to send an email via SMTP
@@ -14,11 +15,10 @@ export default async function sendSMTPEmail(context, { job, sendEmailCompleted, 
   const { to, shopId, ...otherEmailFields } = job;
   const transport = nodemailer.createTransport(SMTPConfig);
 
-  await transport.sendMail({ to, shopId, ...otherEmailFields }, (error) => {
-    if (error) {
-      sendEmailFailed(job, `Email job failed: ${error.toString()}`);
-    } else {
-      sendEmailCompleted(job, `Successfully sent email to ${to}`);
-    }
-  });
+  try {
+    await transport.sendMail({ to, shopId, ...otherEmailFields });
+    sendEmailCompleted(job, `Successfully sent email to ${to}`);
+  } catch (error) {
+    sendEmailFailed(job, `Email job failed: ${error.toString()}`);
+  }
 }

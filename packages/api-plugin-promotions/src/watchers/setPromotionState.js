@@ -89,16 +89,10 @@ export default function setPromotionState(context) {
    * @return {Promise<Object|Number>} - Either an object of completed record counts, or error
    */
   async function markPromotionStates() {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const totalMadeActive = await markActive(context);
-        const totalMarkedCompleted = await markCompleted(context);
-        Logger.info({ ...logCtx, totalMarkedCompleted, totalMadeActive }, "Scanned promotions for changing state");
-        resolve({ totalMarkedCompleted, totalMadeActive });
-      } catch (error) {
-        reject(error);
-      }
-    });
+    const totalMadeActive = await markActive(context);
+    const totalMarkedCompleted = await markCompleted(context);
+    Logger.info({ ...logCtx, totalMarkedCompleted, totalMadeActive }, "Scanned promotions for changing state");
+    return { totalMarkedCompleted, totalMadeActive };
   }
   return markPromotionStates;
 }

@@ -43,7 +43,7 @@ const defaultConfig = {
 export default function addJob(context, queueName, jobData, options = defaultConfig) {
   Logger.info({ queueName, ...logCtx }, "Added job to queue");
   if (context.bullQueue.jobQueues[queueName]) {
-    Logger.info({ queueName, ...logCtx }, "Adding job");
+    Logger.info({ queueName, ...logCtx }, "Added job");
     return context.bullQueue.jobQueues[queueName].add(jobData, options);
   }
   Logger.error(logCtx, "Cannot add job to queue as it does not exist. You must call createQueue first");
