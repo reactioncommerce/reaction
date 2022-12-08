@@ -99,7 +99,7 @@ importers:
       node-fetch: ^2.6.6
       path-parser: ^4.0.4
       query-string: ^5.1.0
-      sharp: ^0.29.3
+      sharp: ^0.30.7
       tus-js-client: ^1.5.1
       tus-node-server: ~0.3.2
     dependencies:
@@ -117,7 +117,7 @@ importers:
       node-fetch: 2.6.7
       path-parser: 4.2.0
       query-string: 5.1.1
-      sharp: 0.29.3
+      sharp: 0.30.7
       tus-js-client: 1.8.0
       tus-node-server: 0.3.2
     devDependencies:
@@ -197,7 +197,7 @@ importers:
       node-fetch: ~2.6.0
       pinst: ^2.1.4
       semver: ~6.3.0
-      sharp: ^0.29.3
+      sharp: ^0.30.7
       wait-for-expect: ~3.0.0
     dependencies:
       '@reactioncommerce/api-core': link:../../packages/api-core
@@ -245,10 +245,10 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1044.0
+      '@snyk/protect': 1.1069.0
       graphql: 14.7.0
       semver: 6.3.0
-      sharp: 0.29.3
+      sharp: 0.30.7
     devDependencies:
       '@reactioncommerce/data-factory': 1.0.1
       '@reactioncommerce/eslint-config': 2.2.2_ihki3xsivcrciip6mkoznh225e
@@ -4668,8 +4668,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1044.0:
-    resolution: {integrity: sha512-Wi6zmOMsyM2FRlxvqLo3opf7SDvcpWWR3RGJVHPVg6uh7VByAYrKome1zl8WRUaBr4qfEpL0jJLFKaBkHYUlAg==}
+  /@snyk/protect/1.1069.0:
+    resolution: {integrity: sha512-LowUeB/+tyEoCwriA/+RkZUIolZcXVVcid5mkFtTpM/lZUVmPNt7gpNHExBPc4l1gzJu21uUjBxG5mf5R+ScmQ==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -7308,12 +7308,6 @@ packages:
   /detect-indent/6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
-    dev: false
-
-  /detect-libc/1.0.3:
-    resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
-    engines: {node: '>=0.10'}
-    hasBin: true
     dev: false
 
   /detect-libc/2.0.1:
@@ -11563,10 +11557,6 @@ packages:
       semver: 7.3.7
     dev: false
 
-  /node-addon-api/4.3.0:
-    resolution: {integrity: sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==}
-    dev: false
-
   /node-addon-api/5.0.0:
     resolution: {integrity: sha512-CvkDw2OEnme7ybCykJpVcKH+uAOLV2qLqiyla128dN9TkEWfrYmxG6C2boDe5KcNQqZF3orkqzGgOMvZ/JNekA==}
     dev: false
@@ -12973,21 +12963,6 @@ packages:
     dependencies:
       inherits: 2.0.4
       safe-buffer: 5.2.1
-
-  /sharp/0.29.3:
-    resolution: {integrity: sha512-fKWUuOw77E4nhpyzCCJR1ayrttHoFHBT2U/kR/qEMRhvPEcluG4BKj324+SCO1e84+knXHwhJ1HHJGnUt4ElGA==}
-    engines: {node: '>=12.13.0'}
-    requiresBuild: true
-    dependencies:
-      color: 4.2.3
-      detect-libc: 1.0.3
-      node-addon-api: 4.3.0
-      prebuild-install: 7.1.1
-      semver: 7.3.7
-      simple-get: 4.0.1
-      tar-fs: 2.1.1
-      tunnel-agent: 0.6.0
-    dev: false
 
   /sharp/0.30.7:
     resolution: {integrity: sha512-G+MY2YW33jgflKPTXXptVO28HvNOo9G3j0MybYAHeEmby+QuD2U98dT6ueht9cv/XDqZspSpIhoSW+BAKJ7Hig==}
