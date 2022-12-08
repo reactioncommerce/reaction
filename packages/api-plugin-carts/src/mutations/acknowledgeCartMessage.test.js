@@ -23,11 +23,11 @@ test("Should update cart message success when accountId is provided", async () =
     accountId,
     Cart: {
       findOne: jest.fn().mockName("collections.Cart.findOne").mockResolvedValue(cart),
-      updateOne: jest
+      findOneAndUpdate: jest
         .fn()
-        .mockName("collections.Cart.updateOne")
+        .mockName("collections.Cart.findOneAndUpdate")
         // eslint-disable-next-line id-length
-        .mockResolvedValue({ result: { n: 1 } })
+        .mockResolvedValue({ value: cart })
     }
   };
 
@@ -54,11 +54,11 @@ test("should update cart message success when anonymousAccessToken is provided",
   mockContext.collections = {
     Cart: {
       findOne: jest.fn().mockName("collections.Cart.findOne").mockResolvedValue(cart),
-      updateOne: jest
+      findOneAndUpdate: jest
         .fn()
-        .mockName("collections.Cart.updateOne")
+        .mockName("collections.Cart.findOneAndUpdate")
         // eslint-disable-next-line id-length
-        .mockResolvedValue({ result: { n: 1 } })
+        .mockResolvedValue({ value: cart })
     }
   };
 
@@ -80,8 +80,8 @@ test("should throw error when accountId and cartToken are not provided", async (
   try {
     await acknowledgeCartMessage(mockContext, { cartId, messageId, cartToken });
   } catch (error) {
-    expect(error.error).toEqual("not-found");
-    expect(error.message).toEqual("Cart not found");
+    expect(error.error).toEqual("invalid-params");
+    expect(error.message).toEqual("Cart token not provided");
   }
 });
 
@@ -99,8 +99,8 @@ test("should throw error when cart is not found", async () => {
   try {
     await acknowledgeCartMessage(mockContext, { cartId, messageId, cartToken });
   } catch (error) {
-    expect(error.error).toEqual("not-found");
-    expect(error.message).toEqual("Cart not found");
+    expect(error.error).toEqual("invalid-params");
+    expect(error.message).toEqual("Cart token not provided");
   }
 });
 
@@ -120,9 +120,9 @@ test("should throw error when cart message is not found", async () => {
   mockContext.collections = {
     Cart: {
       findOne: jest.fn().mockName("collections.Cart.findOne").mockResolvedValue(cart),
-      updateOne: jest
+      findOneAndUpdate: jest
         .fn()
-        .mockName("collections.Cart.updateOne")
+        .mockName("collections.Cart.findOneAndUpdate")
         // eslint-disable-next-line id-length
         .mockResolvedValue({ result: { n: 0 } })
     }
@@ -151,9 +151,9 @@ test("should throw error when cart message does not require acknowledgement", as
   mockContext.collections = {
     Cart: {
       findOne: jest.fn().mockName("collections.Cart.findOne").mockResolvedValue(cart),
-      updateOne: jest
+      findOneAndUpdate: jest
         .fn()
-        .mockName("collections.Cart.updateOne")
+        .mockName("collections.Cart.findOneAndUpdate")
         // eslint-disable-next-line id-length
         .mockResolvedValue({ result: { n: 0 } })
     }
@@ -182,9 +182,9 @@ test("should throw error when can't update cart message", async () => {
   mockContext.collections = {
     Cart: {
       findOne: jest.fn().mockName("collections.Cart.findOne").mockResolvedValue(cart),
-      updateOne: jest
+      findOneAndUpdate: jest
         .fn()
-        .mockName("collections.Cart.updateOne")
+        .mockName("collections.Cart.findOneAndUpdate")
         // eslint-disable-next-line id-length
         .mockResolvedValue({ result: { n: 0 } })
     }
