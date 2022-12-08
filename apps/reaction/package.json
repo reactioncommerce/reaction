@@ -29,6 +29,7 @@
     "@reactioncommerce/api-plugin-address-validation-test": "1.0.3",
     "@reactioncommerce/api-plugin-authentication": "2.2.5",
     "@reactioncommerce/api-plugin-authorization-simple": "1.3.2",
+    "@reactioncommerce/api-plugin-bull-queue": "1.0.0",
     "@reactioncommerce/api-plugin-carts": "1.3.5",
     "@reactioncommerce/api-plugin-catalogs": "1.1.2",
     "@reactioncommerce/api-plugin-discounts": "1.0.4",

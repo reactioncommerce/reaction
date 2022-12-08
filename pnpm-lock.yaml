@@ -148,6 +148,7 @@ importers:
       '@reactioncommerce/api-plugin-address-validation-test': 1.0.3
       '@reactioncommerce/api-plugin-authentication': 2.2.5
       '@reactioncommerce/api-plugin-authorization-simple': 1.3.2
+      '@reactioncommerce/api-plugin-bull-queue': 1.0.0
       '@reactioncommerce/api-plugin-carts': 1.3.5
       '@reactioncommerce/api-plugin-catalogs': 1.1.2
       '@reactioncommerce/api-plugin-discounts': 1.0.4
@@ -208,6 +209,7 @@ importers:
       '@reactioncommerce/api-plugin-address-validation-test': link:../../packages/api-plugin-address-validation-test
       '@reactioncommerce/api-plugin-authentication': link:../../packages/api-plugin-authentication
       '@reactioncommerce/api-plugin-authorization-simple': link:../../packages/api-plugin-authorization-simple
+      '@reactioncommerce/api-plugin-bull-queue': link:../../packages/api-plugin-bull-queue
       '@reactioncommerce/api-plugin-carts': link:../../packages/api-plugin-carts
       '@reactioncommerce/api-plugin-catalogs': link:../../packages/api-plugin-catalogs
       '@reactioncommerce/api-plugin-discounts': link:../../packages/api-plugin-discounts
