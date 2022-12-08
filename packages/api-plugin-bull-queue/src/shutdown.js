@@ -25,7 +25,9 @@ export default function bullQueueShutdown(context) {
       const queues = context.bullQueue.jobQueues;
       if (queues.length) {
         for (const queue of queues) {
-          queue.close().then(() => Logger.info(logCtx, "Closed queue")).catch((error) => Logger.error(logCtx, error));
+          queue.close()
+            .then(() => Logger.info(logCtx, "Closed queue"))
+            .catch((error) => Logger.error(logCtx, error));
         }
       }
       resolve();
