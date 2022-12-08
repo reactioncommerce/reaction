@@ -187,13 +187,13 @@ importers:
       '@reactioncommerce/file-collections': 0.9.3
       '@reactioncommerce/file-collections-sa-gridfs': 0.1.5
       '@reactioncommerce/logger': 1.1.5
-      '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': 1.0.2
       '@snyk/protect': latest
       faker: ~4.1.0
       graphql: 16.6.0
       nock: ~11.4.0
       node-fetch: ~2.6.0
+      nodemailer: ^6.8.0
       pinst: ^2.1.4
       semver: ~6.3.0
       sharp: ^0.30.7
@@ -250,7 +250,6 @@ importers:
       '@reactioncommerce/file-collections': link:../../packages/file-collections
       '@reactioncommerce/file-collections-sa-gridfs': link:../../packages/file-collections-sa-gridfs
       '@reactioncommerce/logger': link:../../packages/logger
-      '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
       '@snyk/protect': 1.1081.0
       graphql: 16.6.0
