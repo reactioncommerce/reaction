@@ -157,6 +157,7 @@ input PromotionFilter {
   enabled: Boolean
   startDate: PromotionDateOperators
   endDate: PromotionDateOperators
+  state: PromotionState
 }
 
 input PromotionCreateInput {
