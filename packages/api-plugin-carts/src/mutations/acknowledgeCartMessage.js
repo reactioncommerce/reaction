@@ -24,7 +24,7 @@ export default async function acknowledgeCartMessage(context, { cartId, messageI
   } else {
     // Anonymous cart
     if (!cartToken) {
-      throw new ReactionError("not-found", "Cart not found");
+      throw new ReactionError("invalid-params", "Cart token not provided");
     }
 
     selector = { _id: cartId, anonymousAccessToken: hashToken(cartToken) };
@@ -45,12 +45,15 @@ export default async function acknowledgeCartMessage(context, { cartId, messageI
     throw new ReactionError("invalid-param", "Message does not require acknowledgement");
   }
 
-  message.acknowledged = true;
+  const { value } = await Cart.findOneAndUpdate(
+    { "_id": cart._id, "messages._id": messageId },
+    { $set: { "messages.$.acknowledged": true } },
+    { returnDocument: "after" }
+  );
 
-  const { result } = await Cart.updateOne({ _id: cart._id }, { $set: { messages: cartMessages } });
-  if (result.n !== 1) {
+  if (!value) {
     throw new ReactionError("server-error", "Unable to update cart");
   }
 
-  return { cart };
+  return { cart: value };
 }
