@@ -195,7 +195,6 @@ importers:
       '@snyk/protect': latest
       apollo-link-http: ~1.5.16
       apollo-server-testing: ~2.9.6
-      bull: 4.10.1
       faker: ~4.1.0
       graphql: 14.7.0
       graphql-tools: 4.0.5
@@ -256,8 +255,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1068.0
-      bull: 4.10.1
+      '@snyk/protect': 1.1069.0
       graphql: 14.7.0
       semver: 6.3.0
       sharp: 0.29.3
@@ -4862,8 +4860,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1068.0:
-    resolution: {integrity: sha512-5xJMV7jQNlqXplTZtyq9XpDjnIARzMLBx/yLoCR4rTDIbgQQ6ufH0GpwLWbg8IsYq4NvIelMmyxrEH3vxPDoig==}
+  /@snyk/protect/1.1069.0:
+    resolution: {integrity: sha512-LowUeB/+tyEoCwriA/+RkZUIolZcXVVcid5mkFtTpM/lZUVmPNt7gpNHExBPc4l1gzJu21uUjBxG5mf5R+ScmQ==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
