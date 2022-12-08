@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-bull-queue",
   "description": "Job Queue plugin for the Reaction API",
-  "version": "1.0.7",
+  "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {
