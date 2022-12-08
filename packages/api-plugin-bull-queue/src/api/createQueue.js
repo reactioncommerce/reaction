@@ -18,8 +18,10 @@ const logCtx = {
 
 const {
   JOBS_SERVER_REMOVE_COMPLETED_JOBS_AFTER,
-  JOBS_SERVER_REMOVE_FAILED_JOBS_AFTER
+  JOBS_SERVER_REMOVE_FAILED_JOBS_AFTER,
+  REACTION_WORKERS_ENABLED
 } = config;
+
 
 const defaultOptions = {
   removeOnComplete: { age: ms(JOBS_SERVER_REMOVE_COMPLETED_JOBS_AFTER) },
@@ -42,10 +44,12 @@ export default function createQueue(context, queueName, options = defaultOptions
     return false;
   }
   Logger.info({ queueName, ...logCtx }, "Creating queue");
-  if (!options.url) options.url = REDIS_SERVER;
-  const newQueue = new Queue(queueName, options.url, options);
+  const newQueue = new Queue(queueName, options.url ?? REDIS_SERVER, options);
   context.bullQueue.jobQueues[queueName] = newQueue;
-  newQueue.process((job) => processorFn(job.data));
+  if (REACTION_WORKERS_ENABLED) { // If workers are not enabled, allow adding jobs to queue but don't process them
+    newQueue.process((job) => processorFn(job.data, job));
+  }
+
   newQueue.on("error", (error) => {
     Logger.error({ error, queueName, ...logCtx }, "Error processing background job");
   });
