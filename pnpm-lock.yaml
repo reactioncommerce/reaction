@@ -190,7 +190,6 @@ importers:
       '@reactioncommerce/file-collections': 0.9.3
       '@reactioncommerce/file-collections-sa-gridfs': 0.1.5
       '@reactioncommerce/logger': 1.1.5
-      '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': 1.0.2
       '@snyk/protect': latest
       apollo-link-http: ~1.5.16
@@ -200,6 +199,7 @@ importers:
       graphql-tools: 4.0.5
       nock: ~11.4.0
       node-fetch: ~2.6.0
+      nodemailer: ^6.8.0
       pinst: ^2.1.4
       semver: ~6.3.0
       sharp: ^0.29.3
@@ -253,10 +253,10 @@ importers:
       '@reactioncommerce/file-collections': link:../../packages/file-collections
       '@reactioncommerce/file-collections-sa-gridfs': link:../../packages/file-collections-sa-gridfs
       '@reactioncommerce/logger': link:../../packages/logger
-      '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
       '@snyk/protect': 1.1069.0
       graphql: 14.7.0
+      nodemailer: 6.8.0
       semver: 6.3.0
       sharp: 0.29.3
     devDependencies:
@@ -4839,11 +4839,6 @@ packages:
       eslint-plugin-react-hooks: 4.3.0_eslint@8.23.1
       eslint-plugin-you-dont-need-lodash-underscore: 6.12.0
     dev: true
-
-  /@reactioncommerce/nodemailer/5.0.5:
-    resolution: {integrity: sha512-u4ontTETlROmLglkMDyouMXlX62NXOGfOUAd75Ilk3W4tcsRjRXX+g5C5B4mBCCcJB0wHn1yh/a4pOYkn81vUQ==}
-    engines: {node: '>=4.0.0'}
-    dev: false
 
   /@sinclair/typebox/0.24.41:
     resolution: {integrity: sha512-TJCgQurls4FipFvHeC+gfAzb+GGstL0TDwYJKQVtTeSvJIznWzP7g3bAd5gEBlr8+bIxqnWS9VGVWREDhmE8jA==}
