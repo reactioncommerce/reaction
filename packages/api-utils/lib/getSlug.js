@@ -13,5 +13,5 @@ const { slugify } = require("transliteration");
  * @returns {String} slugified string
  */
 export default function getSlug(slugString) {
-  return (typeof slugString === "string" && slugify(slugString)) || "";
+  return (typeof slugString === "string" && slugify(slugString, { allowedChars: "a-zA-Z0-9-/" })) || "";
 }
