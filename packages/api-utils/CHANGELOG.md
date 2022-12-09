@@ -1,5 +1,11 @@
 # @reactioncommerce/api-utils
 
+## 1.17.1
+
+### Patch Changes
+
+- [#6691](https://github.com/reactioncommerce/reaction/pull/6691) [`8392ba163`](https://github.com/reactioncommerce/reaction/commit/8392ba163a402ba0528f5658bd2f206cb9433eee) Thanks [@tedraykov](https://github.com/tedraykov)! - Support `/` in the getSlug utility function
+
 ## 1.17.0
 
 ### Minor Changes
