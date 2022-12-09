@@ -10,7 +10,7 @@
  */
 export default async function archivePromotion(_, { input }, context) {
   const { promotionId, shopId } = input;
-  await context.validatePermissions("reaction:legacy:promotions", "archive", { shopId });
+  await context.validatePermissions("reaction:legacy:promotions", "update", { shopId });
 
   const updatedPromotion = await context.mutations.archivePromotion(context, { shopId, promotionId });
   return updatedPromotion;
