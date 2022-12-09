@@ -178,7 +178,7 @@ importers:
       '@reactioncommerce/api-plugin-taxes': 1.1.3
       '@reactioncommerce/api-plugin-taxes-flat-rate': 1.0.8
       '@reactioncommerce/api-plugin-translations': 1.2.2
-      '@reactioncommerce/api-utils': 1.17.0
+      '@reactioncommerce/api-utils': 1.17.1
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/db-version-check': 1.0.0
       '@reactioncommerce/eslint-config': ~2.2.0
