@@ -13,3 +13,9 @@ it("should slugify a latin text with / (backslash)", () => {
   const slugified = getSlug(text, allowedCharacters);
   expect(slugified).toEqual("men/jacket");
 });
+
+it("should slugify with a mix of slash and others", () => {
+  const text = "extremely tall men/jacket";
+  const slugified = getSlug(text, allowedCharacters);
+  expect(slugified).toEqual("extremely-tall-men/jacket");
+});
