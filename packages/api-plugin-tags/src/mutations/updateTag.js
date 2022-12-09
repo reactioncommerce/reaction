@@ -41,6 +41,7 @@ export default async function updateTag(context, input) {
   await context.validatePermissions(`reaction:legacy:tags:${tagId}`, "update", { shopId });
 
   const metafields = [];
+  const allowedCharacters = "a-zA-Z0-9-/";
 
   // Filter out blank meta fields
   Array.isArray(input.metafields) && input.metafields.forEach((field) => {
@@ -55,7 +56,7 @@ export default async function updateTag(context, input) {
   }
 
   const params = {
-    slug: getSlug(slug),
+    slug: getSlug(slug, allowedCharacters),
     name: input.name,
     displayTitle: input.displayTitle,
     isVisible: input.isVisible,
