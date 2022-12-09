@@ -1,5 +1,12 @@
 # reaction
 
+## 4.2.6
+
+### Patch Changes
+
+- Updated dependencies [[`8392ba163`](https://github.com/reactioncommerce/reaction/commit/8392ba163a402ba0528f5658bd2f206cb9433eee)]:
+  - @reactioncommerce/api-utils@1.17.1
+
 ## 4.2.5
 
 ### Patch Changes
