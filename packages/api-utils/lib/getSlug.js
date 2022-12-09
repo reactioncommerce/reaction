@@ -4,7 +4,7 @@ const require = createRequire(import.meta.url);
 
 const { slugify } = require("transliteration");
 
-const standardSlug = "a-zA-Z0-9-";
+const standardSlug = "a-zA-Z0-9-_.~'";
 
 /**
  * @name getSlug
@@ -12,7 +12,7 @@ const standardSlug = "a-zA-Z0-9-";
  * @see https://www.npmjs.com/package/transliteration
  * @memberof Utils
  * @param {String} slugString - string to slugify
- * @param {String|Boolean} allowedChars - specify extra characters that are not removed by slugify
+ * @param {String} [allowedChars=a-zA-Z0-9-_.~'] - specify extra characters that are not removed by slugify
  * @returns {String} slugified string
  */
 export default function getSlug(slugString, allowedChars = standardSlug) {
