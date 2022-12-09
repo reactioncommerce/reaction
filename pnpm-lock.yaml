@@ -174,11 +174,11 @@ importers:
       '@reactioncommerce/api-plugin-sitemap-generator': 1.2.3
       '@reactioncommerce/api-plugin-surcharges': 1.1.8
       '@reactioncommerce/api-plugin-system-information': 1.1.4
-      '@reactioncommerce/api-plugin-tags': 1.2.0
+      '@reactioncommerce/api-plugin-tags': 1.2.1
       '@reactioncommerce/api-plugin-taxes': 1.1.3
       '@reactioncommerce/api-plugin-taxes-flat-rate': 1.0.8
       '@reactioncommerce/api-plugin-translations': 1.2.2
-      '@reactioncommerce/api-utils': 1.17.0
+      '@reactioncommerce/api-utils': 1.17.1
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/db-version-check': 1.0.0
       '@reactioncommerce/eslint-config': ~2.2.0
@@ -1215,7 +1215,7 @@ importers:
     specifiers:
       '@babel/core': ^7.7.7
       '@babel/preset-env': ^7.7.7
-      '@reactioncommerce/api-utils': ^1.16.7
+      '@reactioncommerce/api-utils': ^1.17.1
       '@reactioncommerce/babel-remove-es-create-require': ~1.0.0
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/db-version-check': ^1.0.0
