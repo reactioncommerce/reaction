@@ -103,7 +103,7 @@ export default function applyProductFilters(context, productFilters) {
 
   // Init default selector - Everyone can see products that fit this selector
   let selector = {
-    ancestors: [], // Lookup top-level products
+    ancestors: { $size: 0 }, // Lookup top-level products
     isDeleted: { $ne: true } // by default, we don't publish deleted products
   };
 
