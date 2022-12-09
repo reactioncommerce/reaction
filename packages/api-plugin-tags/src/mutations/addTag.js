@@ -24,13 +24,14 @@ export default async function addTag(context, input) {
     slug = slugInput;
   }
 
+  const allowedCharacters = "a-zA-Z0-9-/";
   const now = new Date();
   const tag = {
     _id: Random.id(),
     isDeleted: false,
     isTopLevel: false,
     isVisible,
-    slug: getSlug(slug),
+    slug: getSlug(slug, allowedCharacters),
     metafields,
     name,
     displayTitle,
