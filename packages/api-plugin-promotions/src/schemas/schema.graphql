@@ -282,11 +282,15 @@ extend type Mutation {
   ): PromotionUpdatedPayload
 
   "Update values on promotion"
-  updatePromotion(input: PromotionUpdateInput): PromotionUpdatedPayload
+  updatePromotion(
+    input: PromotionUpdateInput
+  ): PromotionUpdatedPayload
 }
 
 extend type Query {
-  promotion(input: PromotionQueryInput): Promotion
+  promotion(
+    input: PromotionQueryInput
+  ): Promotion
 }
 
 extend type Query {
