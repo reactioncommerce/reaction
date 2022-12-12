@@ -149,8 +149,14 @@ input PromotionDateOperators {
   "The value must be less than the given value"
   before: Date
 
-  "The value must be greater than or equal to the given value"
+  "The value must be greater than the given value"
   after: Date
+
+  "The value must be less than or equal to the given value"
+  beforeInclusive: Date
+
+  "The value must be greater than or equal to the given value"
+  afterInclusive: Date
 }
 
 input PromotionFilter {
@@ -263,9 +269,7 @@ input PromotionQueryInput {
 
 extend type Mutation {
   "Create a new promotion"
-  createPromotion(
-    input: PromotionCreateInput
-  ): PromotionUpdatedPayload
+  createPromotion(input: PromotionCreateInput): PromotionUpdatedPayload
 
   "Create a new promotion based on an existing promotion"
   duplicatePromotion(
@@ -278,15 +282,11 @@ extend type Mutation {
   ): PromotionUpdatedPayload
 
   "Update values on promotion"
-  updatePromotion(
-    input: PromotionUpdateInput
-  ): PromotionUpdatedPayload
+  updatePromotion(input: PromotionUpdateInput): PromotionUpdatedPayload
 }
 
 extend type Query {
-  promotion(
-    input: PromotionQueryInput
-  ): Promotion
+  promotion(input: PromotionQueryInput): Promotion
 }
 
 extend type Query {

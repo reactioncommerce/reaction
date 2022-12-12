@@ -17,16 +17,30 @@ export default async function promotions(context, shopId, filter) {
       selector.enabled = enabled;
     }
 
-    if (state || (state === "archived" && await context.userHasPermission("reaction:legacy:promotions", "read:archived", { shopId }))) {
-      selector.state = { $eq: state };
+    if (state) {
+      const allowed =
+        state === "archived"
+          ? await context.userHasPermission("reaction:legacy:promotions", "read:archived", { shopId })
+          : true;
+      if (allowed) {
+        selector.state = { $eq: state };
+      }
     }
 
     if (startDate && startDate.eq) {
       selector.startDate = { $eq: startDate.eq };
     }
 
+    if (startDate && startDate.beforeInclusive) {
+      selector.startDate = { ...selector.startDate, $lte: startDate.beforeInclusive };
+    }
+
     if (startDate && startDate.before) {
       selector.startDate = { ...selector.startDate, $lt: startDate.before };
+    }
+
+    if (startDate && startDate.afterInclusive) {
+      selector.startDate = { ...selector.startDate, $gte: startDate.afterInclusive };
     }
 
     if (startDate && startDate.after) {
@@ -37,9 +51,18 @@ export default async function promotions(context, shopId, filter) {
       selector.endDate = { $eq: endDate.eq };
     }
 
+    if (endDate && endDate.beforeInclusive) {
+      selector.endDate = { ...selector.endDate, $lte: endDate.beforeInclusive };
+    }
+
     if (endDate && endDate.before) {
       selector.endDate = { ...selector.endDate, $lt: endDate.before };
     }
+
+    if (endDate && endDate.afterInclusive) {
+      selector.endDate = { ...selector.endDate, $gte: endDate.afterInclusive };
+    }
+
     if (endDate && endDate.after) {
       selector.endDate = { ...selector.endDate, $gt: endDate.after };
     }
