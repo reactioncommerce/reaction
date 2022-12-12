@@ -1,0 +1,43 @@
+# This docker-compose file is used to run the project's published image
+#
+# Usage: docker-compose up [-d]
+#
+# See comment in docker-compose.dev.yml if you want to run for development.
+
+version: "3.9"
+
+networks:
+  reaction:
+    name: reaction.localhost
+    external: true
+
+services:
+  api:
+    image: reactioncommerce/reaction:REACTION_VERSION
+    depends_on:
+      - mongo
+    env_file:
+      - ./.env
+    networks:
+      - default
+      - reaction
+    ports:
+      - "3000:3000"
+
+  mongo:
+    image: mongo:4.2.0
+    command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
+    networks:
+      - default
+      - reaction
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-db4:/data/db
+    healthcheck: # re-run rs.initiate() after startup if it failed.
+      test: test $$(echo "rs.status().ok || rs.initiate().ok" | mongo --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+
+volumes:
+  mongo-db4:
