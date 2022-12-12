@@ -190,8 +190,13 @@ jobs:
           name: Create reaction.localhost network
           command: docker network create "reaction.localhost" || true
       - run:
+          name: Update docker-compose.circleci.yml with new reaction image version
+          command: |
+            VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
+            sed -i -e "s/REACTION_VERSION/$VERSION/g" ./docker-compose.circleci.yml
+      - run:
           name: Run image
-          command: docker-compose up -d
+          command: docker-compose -f ./docker-compose.circleci.yml up -d
       - run:
           name: Wait for image run completed
           command: sleep 30
