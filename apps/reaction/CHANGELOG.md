@@ -1,5 +1,12 @@
 # reaction
 
+## 4.2.7
+
+### Patch Changes
+
+- Updated dependencies [[`ef310ac1e`](https://github.com/reactioncommerce/reaction/commit/ef310ac1e18d1a698646e9babe2f5b4dc18946af)]:
+  - @reactioncommerce/api-plugin-files@1.1.0
+
 ## 4.2.6
 
 ### Patch Changes
