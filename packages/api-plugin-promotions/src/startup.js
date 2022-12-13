@@ -20,7 +20,7 @@ const logCtx = {
  */
 export default async function startupPromotions(context) {
   const { bullQueue } = context;
-  await bullQueue.createQueue(context, "setPromotionState", {}, setPromotionState(context));
+  await bullQueue.createQueue(context, "setPromotionState", { jobName: "checkForChangedStates" }, setPromotionState(context));
   await bullQueue.scheduleJob(context, "setPromotionState", "checkForChangedStates", {}, "*/5 * * * *");
   Logger.info(logCtx, "Add setPromotionState queue and job");
   return true;
