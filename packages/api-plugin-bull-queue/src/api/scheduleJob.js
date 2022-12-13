@@ -32,7 +32,7 @@ export default async function scheduleJob(context, queueName, jobName, jobData, 
     const repeatableJobs = await thisQueue.getRepeatableJobs();
     const jobToRemove = repeatableJobs.find((jbName) => jobName === jbName.name);
     if (jobToRemove) {
-      await thisQueue.removeRepeatable(jobToRemove);
+      await thisQueue.removeRepeatableByKey(jobToRemove.key);
       Logger.info({ queueName, jobName, ...logCtx }, "Removed repeatable job");
     }
     await thisQueue.add(jobName, jobData, { repeat: { cron: schedule } });
