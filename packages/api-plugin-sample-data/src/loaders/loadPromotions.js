@@ -2,8 +2,10 @@ const now = new Date();
 
 const OrderPromotion = {
   _id: "orderPromotion",
+  referenceId: 1,
   triggerType: "implicit",
   promotionType: "order-discount",
+  name: "50 percent off over $100",
   label: "50 percent off your entire order when you spend more then $200",
   description: "50 percent off your entire order when you spend more then $200",
   enabled: true,
@@ -48,8 +50,10 @@ const OrderPromotion = {
 
 const OrderItemPromotion = {
   _id: "itemPromotion",
+  referenceId: 2,
   triggerType: "implicit",
   promotionType: "item-discount",
+  name: "50 percent off when item is over $500",
   label: "50 percent off your entire order when you spend more then $500",
   description: "50 percent off your entire order when you spend more then $500",
   enabled: true,
@@ -94,11 +98,14 @@ const OrderItemPromotion = {
 
 const CouponPromotion = {
   _id: "couponPromotion",
+  referenceId: 3,
+  name: "Enter code CODE for special offers",
   triggerType: "explicit",
   promotionType: "order-discount",
   label: "Specific coupon code",
   description: "Specific coupon code",
   enabled: true,
+  state: "created",
   triggers: [
     {
       triggerKey: "coupons",
