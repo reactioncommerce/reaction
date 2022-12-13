@@ -18,13 +18,7 @@ export default async function promotions(context, shopId, filter) {
     }
 
     if (state) {
-      const allowed =
-        state === "archived"
-          ? await context.userHasPermission("reaction:legacy:promotions", "read:archived", { shopId })
-          : true;
-      if (allowed) {
-        selector.state = { $eq: state };
-      }
+      selector.state = { $eq: state };
     }
 
     if (startDate && startDate.eq) {
