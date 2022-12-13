@@ -12,12 +12,18 @@ import { decodeCartOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object>|undefined} A Cart object
  */
 export default async function acknowledgeCartMessage(parentResult, { input }, context) {
+  const { appEvents, userId = null } = context;
   const { cartId, messageId, clientMutationId = null, cartToken } = input;
 
   const { cart } = await context.mutations.acknowledgeCartMessage(context, {
     cartId: decodeCartOpaqueId(cartId),
     messageId,
     cartToken
+  });
+
+  appEvents.emit("afterCartUpdate", {
+    cart,
+    updatedBy: userId
   });
 
   return {
