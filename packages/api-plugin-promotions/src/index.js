@@ -12,6 +12,7 @@ import stackabilities from "./stackabilities/index.js";
 import resolvers from "./resolvers/index.js";
 import applyPromotions from "./handlers/applyPromotions.js";
 import startupPromotions from "./startup.js";
+import registerOffersHandlers from "./handlers/registerHandlers.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -49,7 +50,7 @@ export default async function register(app) {
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForPromotions],
       preStartup: [preStartupPromotions],
-      startup: [startupPromotions]
+      startup: [startupPromotions, registerOffersHandlers]
     },
     contextAdditions: {
       promotions
