@@ -12,6 +12,6 @@ export default async function updatePromotion(_, { input }, context) {
   const promotion = input;
   const { shopId } = input;
   await context.validatePermissions("reaction:legacy:promotions", "update", { shopId });
-  const updatedPromotion = await context.mutations.updatePromotion(context, promotion);
+  const updatedPromotion = await context.mutations.updatePromotion(context, { promotion, shopId });
   return updatedPromotion;
 }

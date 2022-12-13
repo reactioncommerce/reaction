@@ -1,4 +1,6 @@
+/* eslint-disable no-await-in-loop */
 import { createRequire } from "module";
+import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 
 const require = createRequire(import.meta.url);
@@ -12,16 +14,31 @@ const logCtx = {
 };
 
 /**
- * @summary does promotion meet stackability requirements
+ * @summary check if a promotion is applicable to a cart
  * @param {Object} context - The application context
- * @param {Array<Object>} appliedPromotions - The promotions already applied
- * @param {Object} promotion - The promotions we are trying to apply
- * @return {{reason: string, qualifies: boolean}} - If it qualifies and if it doesn't why not
+ * @param {Object} cart - The cart we are trying to apply the promotion to
+ * @param {Array<Object>} params.appliedThe - The promotions already applied
+ * @param {Object} params.promotion - The promotion we are trying to apply
+ * @returns {{reason: string, qualifies: boolean}} - Whether the promotion can be applied to the cart
  */
-export default function stackable(context, appliedPromotions, promotion) {
-  if (appliedPromotions[0].stackAbility === "none" || promotion.stackAbility === "none") {
-    Logger.info(logCtx, "Cart disqualified from promotion because stack ability is none");
-    return { qualifies: false, reason: "Cart disqualified from promotion because stack ability is none" };
+export default async function stackable(context, cart, { appliedPromotions, promotion }) {
+  const { promotions } = context;
+  const stackabilityByKey = _.keyBy(promotions.stackabilities, "key");
+
+  for (const appliedPromotion of appliedPromotions) {
+    if (!appliedPromotion.stackability) continue;
+
+    const stackabilityHandler = stackabilityByKey[promotion.stackability.key];
+    const appliedStackabilityHandler = stackabilityByKey[appliedPromotion.stackability.key];
+
+    const stackabilityResult = await stackabilityHandler.handler(context, cart, { promotion, appliedPromotion });
+    const appliedStackabilityResult = await appliedStackabilityHandler.handler(context, cart, { promotion: appliedPromotion, appliedPromotion: promotion });
+
+    if (!stackabilityResult || !appliedStackabilityResult) {
+      Logger.info(logCtx, "Cart disqualified from promotion because stackability is not stackable");
+      return { qualifies: false, reason: "Cart disqualified from promotion because stackability is not stackable" };
+    }
   }
+
   return { qualifies: true, reason: "" };
 }

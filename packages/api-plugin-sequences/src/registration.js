@@ -5,7 +5,7 @@ export const sequenceConfigs = [];
  * @param {Object} pluginPromotions - Extensions passed in via child plugins
  * @returns {undefined} undefined
  */
-export function registerPluginHandlerForSequences({ Sequences: sequences }) {
+export function registerPluginHandlerForSequences({ sequenceConfigs: sequences }) {
   if (sequences) {
     sequenceConfigs.push(...sequences);
   }

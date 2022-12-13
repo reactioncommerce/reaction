@@ -31,15 +31,19 @@ const OrderPromotion = {
       actionParameters: {
         discountType: "order",
         discountCalculationType: "percentage",
-        discountValue: 50
+        discountValue: 50,
+        neverStackWithOtherItemLevelDiscounts: false
       }
     }
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "all",
   createdAt: new Date(),
-  updatedAt: new Date()
+  updatedAt: new Date(),
+  stackability: {
+    key: "all",
+    parameters: {}
+  }
 };
 
 const OrderItemPromotion = {
@@ -73,13 +77,17 @@ const OrderItemPromotion = {
       actionParameters: {
         discountType: "item",
         discountCalculationType: "percentage",
-        discountValue: 50
+        discountValue: 50,
+        neverStackWithOtherItemLevelDiscounts: false
       }
     }
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "all",
+  stackability: {
+    key: "all",
+    parameters: {}
+  },
   createdAt: new Date(),
   updatedAt: new Date()
 };
@@ -108,7 +116,10 @@ const CouponPromotion = {
   ],
   startDate: now,
   endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackAbility: "all",
+  stackability: {
+    key: "all",
+    parameters: {}
+  },
   createdAt: new Date(),
   updatedAt: new Date()
 };

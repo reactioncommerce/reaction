@@ -2,12 +2,13 @@ import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js"
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
-import { Promotion as PromotionSchema, Promotion, Trigger } from "../simpleSchemas.js";
+import { Promotion as PromotionSchema, Promotion, Trigger, Stackability } from "../simpleSchemas.js";
 import updatePromotion from "./updatePromotion.js";
 import { ExistingOrderPromotion } from "./fixtures/orderPromotion.js";
 
 const triggerKeys = ["offers"];
 const promotionTypes = ["coupon"];
+const stackAbilities = ["all", "none"];
 
 Trigger.extend({
   triggerKey: {
@@ -22,12 +23,18 @@ PromotionSchema.extend({
   }
 });
 
+Stackability.extend({
+  key: {
+    allowedValues: [...Stackability.getAllowedValuesForKey("key"), ...stackAbilities]
+  }
+});
+
 mockContext.collections.Promotions = mockCollection("Promotions");
 const updateResults = {
   modifiedCount: 1,
-  promotion: ExistingOrderPromotion
+  value: ExistingOrderPromotion
 };
-mockContext.collections.Promotions.updateOne = () => updateResults;
+mockContext.collections.Promotions.findOneAndUpdate = () => updateResults;
 mockContext.simpleSchemas = {
   Promotion
 };
@@ -55,7 +62,7 @@ mockContext.promotions = {
 };
 
 test("will not update a record if it fails simple-schema validation", async () => {
-  const promotion = {};
+  const promotion = { stackability: "all" };
   try {
     await updatePromotion(mockContext, { shopId: promotion.shopId, promotion });
   } catch (error) {

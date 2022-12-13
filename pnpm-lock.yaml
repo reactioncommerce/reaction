@@ -99,7 +99,7 @@ importers:
       node-fetch: ^2.6.6
       path-parser: ^4.0.4
       query-string: ^5.1.0
-      sharp: ^0.29.3
+      sharp: ^0.30.7
       tus-js-client: ^1.5.1
       tus-node-server: ~0.3.2
     dependencies:
@@ -117,7 +117,7 @@ importers:
       node-fetch: 2.6.7
       path-parser: 4.2.0
       query-string: 5.1.1
-      sharp: 0.29.3
+      sharp: 0.30.7
       tus-js-client: 1.8.0
       tus-node-server: 0.3.2
     devDependencies:
@@ -154,7 +154,7 @@ importers:
       '@reactioncommerce/api-plugin-email': 1.1.5
       '@reactioncommerce/api-plugin-email-smtp': 1.0.8
       '@reactioncommerce/api-plugin-email-templates': 1.1.7
-      '@reactioncommerce/api-plugin-files': 1.0.19
+      '@reactioncommerce/api-plugin-files': 1.1.0
       '@reactioncommerce/api-plugin-i18n': 1.0.6
       '@reactioncommerce/api-plugin-inventory': 1.0.5
       '@reactioncommerce/api-plugin-inventory-simple': 1.0.6
@@ -180,11 +180,11 @@ importers:
       '@reactioncommerce/api-plugin-sitemap-generator': 1.2.3
       '@reactioncommerce/api-plugin-surcharges': 1.1.8
       '@reactioncommerce/api-plugin-system-information': 1.1.4
-      '@reactioncommerce/api-plugin-tags': 1.2.0
+      '@reactioncommerce/api-plugin-tags': 1.2.1
       '@reactioncommerce/api-plugin-taxes': 1.1.3
       '@reactioncommerce/api-plugin-taxes-flat-rate': 1.0.8
       '@reactioncommerce/api-plugin-translations': 1.2.2
-      '@reactioncommerce/api-utils': 1.17.0
+      '@reactioncommerce/api-utils': 1.17.1
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/db-version-check': 1.0.0
       '@reactioncommerce/eslint-config': ~2.2.0
@@ -203,7 +203,7 @@ importers:
       nodemailer: ^6.8.0
       pinst: ^2.1.4
       semver: ~6.3.0
-      sharp: ^0.29.3
+      sharp: ^0.30.7
       wait-for-expect: ~3.0.0
     dependencies:
       '@reactioncommerce/api-core': link:../../packages/api-core
@@ -260,7 +260,7 @@ importers:
       graphql: 14.7.0
       nodemailer: 6.8.0
       semver: 6.3.0
-      sharp: 0.29.3
+      sharp: 0.30.7
     devDependencies:
       '@reactioncommerce/data-factory': 1.0.1
       '@reactioncommerce/eslint-config': 2.2.2_ihki3xsivcrciip6mkoznh225e
@@ -1361,7 +1361,7 @@ importers:
     specifiers:
       '@babel/core': ^7.7.7
       '@babel/preset-env': ^7.7.7
-      '@reactioncommerce/api-utils': ^1.16.7
+      '@reactioncommerce/api-utils': ^1.17.1
       '@reactioncommerce/babel-remove-es-create-require': ~1.0.0
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/db-version-check': ^1.0.0
@@ -4833,7 +4833,7 @@ packages:
     dependencies:
       eslint: 8.23.1
       eslint-plugin-import: 2.25.4_eslint@8.23.1
-      eslint-plugin-jest: 26.9.0_2ex7m26yair3ztqnyc2u7licva
+      eslint-plugin-jest: 26.9.0_eslint@8.23.1
       eslint-plugin-jsx-a11y: 6.5.1_eslint@8.23.1
       eslint-plugin-node: 11.1.0_eslint@8.23.1
       eslint-plugin-promise: 6.0.1_eslint@8.23.1
@@ -5153,6 +5153,26 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
+  /@typescript-eslint/typescript-estree/5.37.0:
+    resolution: {integrity: sha512-JkFoFIt/cx59iqEDSgIGnQpCTRv96MQnXCYvJi7QhBC24uyuzbD8wVbajMB1b9x4I0octYFJ3OwjAwNqk1AjDA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/types': 5.37.0
+      '@typescript-eslint/visitor-keys': 5.37.0
+      debug: 4.3.4
+      globby: 11.1.0
+      is-glob: 4.0.3
+      semver: 7.3.8
+      tsutils: 3.21.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@typescript-eslint/typescript-estree/5.37.0_typescript@2.9.2:
     resolution: {integrity: sha512-JkFoFIt/cx59iqEDSgIGnQpCTRv96MQnXCYvJi7QhBC24uyuzbD8wVbajMB1b9x4I0octYFJ3OwjAwNqk1AjDA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -5174,7 +5194,7 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/utils/5.37.0_2ex7m26yair3ztqnyc2u7licva:
+  /@typescript-eslint/utils/5.37.0_eslint@8.23.1:
     resolution: {integrity: sha512-jUEJoQrWbZhmikbcWSMDuUSxEE7ID2W/QCV/uz10WtQqfOuKZUqFGjqLJ+qhDd17rjgp+QJPqTdPIBWwoob2NQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -5183,7 +5203,7 @@ packages:
       '@types/json-schema': 7.0.11
       '@typescript-eslint/scope-manager': 5.37.0
       '@typescript-eslint/types': 5.37.0
-      '@typescript-eslint/typescript-estree': 5.37.0_typescript@2.9.2
+      '@typescript-eslint/typescript-estree': 5.37.0
       eslint: 8.23.1
       eslint-scope: 5.1.1
       eslint-utils: 3.0.0_eslint@8.23.1
@@ -7533,12 +7553,6 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /detect-libc/1.0.3:
-    resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
-    engines: {node: '>=0.10'}
-    hasBin: true
-    dev: false
-
   /detect-libc/2.0.1:
     resolution: {integrity: sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==}
     engines: {node: '>=8'}
@@ -7991,7 +8005,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-jest/26.9.0_2ex7m26yair3ztqnyc2u7licva:
+  /eslint-plugin-jest/26.9.0_eslint@8.23.1:
     resolution: {integrity: sha512-TWJxWGp1J628gxh2KhaH1H1paEdgE2J61BBF1I59c6xWeL5+D1BzMxGDN/nXAfX+aSkR5u80K+XhskK6Gwq9ng==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -8004,7 +8018,7 @@ packages:
       jest:
         optional: true
     dependencies:
-      '@typescript-eslint/utils': 5.37.0_2ex7m26yair3ztqnyc2u7licva
+      '@typescript-eslint/utils': 5.37.0_eslint@8.23.1
       eslint: 8.23.1
     transitivePeerDependencies:
       - supports-color
@@ -11882,10 +11896,6 @@ packages:
       semver: 7.3.8
     dev: false
 
-  /node-addon-api/4.3.0:
-    resolution: {integrity: sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==}
-    dev: false
-
   /node-addon-api/5.0.0:
     resolution: {integrity: sha512-CvkDw2OEnme7ybCykJpVcKH+uAOLV2qLqiyla128dN9TkEWfrYmxG6C2boDe5KcNQqZF3orkqzGgOMvZ/JNekA==}
     dev: false
@@ -13340,21 +13350,6 @@ packages:
       inherits: 2.0.4
       safe-buffer: 5.2.1
 
-  /sharp/0.29.3:
-    resolution: {integrity: sha512-fKWUuOw77E4nhpyzCCJR1ayrttHoFHBT2U/kR/qEMRhvPEcluG4BKj324+SCO1e84+knXHwhJ1HHJGnUt4ElGA==}
-    engines: {node: '>=12.13.0'}
-    requiresBuild: true
-    dependencies:
-      color: 4.2.3
-      detect-libc: 1.0.3
-      node-addon-api: 4.3.0
-      prebuild-install: 7.1.1
-      semver: 7.3.7
-      simple-get: 4.0.1
-      tar-fs: 2.1.1
-      tunnel-agent: 0.6.0
-    dev: false
-
   /sharp/0.30.7:
     resolution: {integrity: sha512-G+MY2YW33jgflKPTXXptVO28HvNOo9G3j0MybYAHeEmby+QuD2U98dT6ueht9cv/XDqZspSpIhoSW+BAKJ7Hig==}
     engines: {node: '>=12.13.0'}
@@ -14225,6 +14220,15 @@ packages:
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
     dev: false
+
+  /tsutils/3.21.0:
+    resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
+    engines: {node: '>= 6'}
+    peerDependencies:
+      typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
+    dependencies:
+      tslib: 1.14.1
+    dev: true
 
   /tsutils/3.21.0_typescript@2.9.2:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
