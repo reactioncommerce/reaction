@@ -88,9 +88,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:taxRates/update",
   "reaction:legacy:promotions/create",
   "reaction:legacy:promotions/read",
-  "reaction:legacy:promotions/update",
-  "reaction:legacy:promotions/read:archived",
-  "reaction:legacy:promotions/archive"
+  "reaction:legacy:promotions/update"
 ];
 
 export const defaultShopOwnerRoles = [
