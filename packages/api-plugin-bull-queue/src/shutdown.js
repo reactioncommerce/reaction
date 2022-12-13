@@ -16,23 +16,21 @@ const logCtx = {
  * @name shutdown
  * @summary Called on shutdown
  * @param {Object} context App context
- * @returns {undefined}
+ * @returns {undefined} undefined
  */
-export default function bullQueueShutdown(context) {
-  Logger.info("Shutting down bull queue jobs server");
-  return new Promise((resolve, reject) => {
-    try {
-      const queues = context.bullQueue.jobQueues;
-      if (queues.length) {
-        for (const queue of queues) {
-          queue.close()
-            .then(() => Logger.info(logCtx, "Closed queue"))
-            .catch((error) => Logger.error(logCtx, error));
-        }
+export default async function bullQueueShutdown(context) {
+  Logger.info(logCtx, "Shutting down bull queue jobs server");
+  try {
+    const queues = context.bullQueue.jobQueues;
+    if (queues.length) {
+      for (const queue of queues) {
+        queue.close()
+          .then(() => Logger.debug(logCtx, "Closed queue"))
+          .catch((error) => Logger.error(logCtx, error));
       }
-      resolve();
-    } catch (error) {
-      reject(error);
     }
-  });
+    Logger.info(logCtx, "Shutdown complete");
+  } catch (error) {
+    Logger.error(error);
+  }
 }
