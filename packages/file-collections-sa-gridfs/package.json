@@ -87,7 +87,7 @@
     "babel-core": "^7.0.0-bridge.0"
   },
   "peerDependencies": {
-    "mongodb": "4.4.1"
+    "mongodb": ">= 4.4.1 < 5"
   },
   "publishConfig": {
     "access": "public"
