@@ -7,6 +7,6 @@ import handlePromotionChangedState from "./handlePromotionChangedState.js";
  */
 export default function registerOffersHandlers(context) {
   const { appEvents } = context;
-  appEvents.on("promotionActivated", (args) => handlePromotionChangedState(context, args));
-  appEvents.on("promotionCompleted", (args) => handlePromotionChangedState(context, args));
+  appEvents.on("promotionActivated", () => handlePromotionChangedState(context));
+  appEvents.on("promotionCompleted", () => handlePromotionChangedState(context));
 }
