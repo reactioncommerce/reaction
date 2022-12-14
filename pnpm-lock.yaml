@@ -488,7 +488,8 @@ importers:
       '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ^1.0.2
       bull: 4.10.1
-      envalid: ^6.0.2
+      dotenv: ^16.0.3
+      envalid: ^7.3.1
       ms: 2.1.3
       simpl-schema: ^1.12.0
     dependencies:
@@ -496,7 +497,8 @@ importers:
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
       bull: 4.10.1
-      envalid: 6.0.2
+      dotenv: 16.0.3
+      envalid: 7.3.1
       ms: 2.1.3
       simpl-schema: 1.12.3
     devDependencies:
@@ -7629,6 +7631,11 @@ packages:
 
   /dotenv/16.0.2:
     resolution: {integrity: sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
     dev: false
 
