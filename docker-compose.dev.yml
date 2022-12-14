@@ -15,5 +15,20 @@ services:
       interval: 10s
       start_period: 30s
 
+  redis:
+    image: redis:7
+    networks:
+      default:
+    ports:
+      - "6379:6379"
+
+  maildev:
+    image: maildev/maildev
+    networks:
+      default:
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
 volumes:
   mongo-db4:

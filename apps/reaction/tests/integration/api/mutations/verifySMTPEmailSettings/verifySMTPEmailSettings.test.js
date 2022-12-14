@@ -5,7 +5,7 @@ import { importPluginsJSONFile, ReactionTestAPICore } from "@reactioncommerce/ap
 
 const VerifySMTPEmailSettingsMutation = importAsString("./verifySMTPEmailSettings.graphql");
 
-jest.mock("@reactioncommerce/nodemailer", () =>
+jest.mock("nodemailer", () =>
   ({
     __esModule: true,
     default: {

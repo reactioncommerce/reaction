@@ -1,5 +1,6 @@
-import nodemailer from "@reactioncommerce/nodemailer";
+import nodemailer from "nodemailer";
 import { SMTPConfig } from "../config.js";
+
 
 /**
  * @name sendSMTPEmail
@@ -11,15 +12,13 @@ import { SMTPConfig } from "../config.js";
  * @returns {undefined} Calls one of the callbacks with a return
  */
 export default async function sendSMTPEmail(context, { job, sendEmailCompleted, sendEmailFailed }) {
-  const { to, shopId, ...otherEmailFields } = job.data;
-
+  const { to, shopId, ...otherEmailFields } = job;
   const transport = nodemailer.createTransport(SMTPConfig);
 
-  transport.sendMail({ to, shopId, ...otherEmailFields }, (error) => {
-    if (error) {
-      sendEmailFailed(job, `Email job failed: ${error.toString()}`);
-    } else {
-      sendEmailCompleted(job, `Successfully sent email to ${to}`);
-    }
-  });
+  try {
+    await transport.sendMail({ to, shopId, ...otherEmailFields });
+    sendEmailCompleted(job, `Successfully sent email to ${to}`);
+  } catch (error) {
+    sendEmailFailed(job, `Email job failed: ${error.toString()}`);
+  }
 }

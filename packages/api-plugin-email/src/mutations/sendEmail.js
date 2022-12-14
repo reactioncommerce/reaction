@@ -19,7 +19,7 @@ import getShopLogo from "../util/getShopLogo.js";
  * @returns {Boolean} returns job object
  */
 export default async function sendEmail(context, options) {
-  const { backgroundJobs, collections } = context;
+  const { collections, bullQueue } = context;
   const { Shops } = collections;
 
   const { to } = options;
@@ -75,12 +75,5 @@ export default async function sendEmail(context, options) {
     jobData.subject = subject;
   }
 
-  return backgroundJobs.scheduleJob({
-    type: "sendEmail",
-    data: jobData,
-    retry: {
-      retries: 5,
-      wait: 3 * 60000
-    }
-  });
+  await bullQueue.addJob(context, "sendEmail", jobData);
 }
