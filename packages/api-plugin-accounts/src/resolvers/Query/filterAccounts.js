@@ -4,8 +4,8 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
 /**
  * @name Query/accounts
  * @method
- * @memberof Customers/Query
- * @summary Query for a list of customers
+ * @memberof Accounts/Query
+ * @summary Query for a list of accounts
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.shopId - id of shop to query
@@ -14,14 +14,14 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} Accounts
  */
-export default async function filterSearchCustomers(_, args, context, info) {
+export default async function filterAccounts(_, args, context, info) {
   const {
     shopId,
     conditions,
     ...connectionArgs
   } = args;
 
-  const query = await context.queries.filterSearchCustomers(context, conditions, shopId);
+  const query = await context.queries.filterAccounts(context, conditions, shopId);
 
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),

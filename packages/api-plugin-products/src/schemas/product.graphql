@@ -626,7 +626,7 @@ extend type Mutation {
 
 extend type Query {
   "Query to get a filtered list of Products"
-  filterSearchProducts(
+  filterProducts(
     "Shop ID"
     shopId: ID!,
 

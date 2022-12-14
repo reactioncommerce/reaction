@@ -1,16 +1,16 @@
 import generateFilterQuery from "@reactioncommerce/api-utils/generateFilterQuery.js";
 
 /**
- * @name filterSearchCustomers
+ * @name filterAccounts
  * @method
- * @memberof GraphQL/Customers
+ * @memberof GraphQL/Accounts
  * @summary Query the Accounts collection for a list of customers/accounts
  * @param {Object} context - an object containing the per-request state
  * @param {Object} conditions - object containing the filter conditions
  * @param {String} shopId - shopID to filter by
  * @returns {Promise<Object>} Accounts object Promise
  */
-export default async function filterSearchCustomers(context, conditions, shopId) {
+export default async function filterAccounts(context, conditions, shopId) {
   const { collections: { Accounts } } = context;
 
   if (!shopId) {
@@ -20,6 +20,5 @@ export default async function filterSearchCustomers(context, conditions, shopId)
 
   const { filterQuery } = generateFilterQuery(context, "Account", conditions, shopId);
 
-  filterQuery.groups = { $in: [null, []] }; // filter out non-customer accounts
   return Accounts.find(filterQuery);
 }

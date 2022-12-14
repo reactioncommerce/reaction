@@ -1,7 +1,7 @@
 import generateFilterQuery from "@reactioncommerce/api-utils/generateFilterQuery.js";
 
 /**
- * @name filterSearchOrders
+ * @name filterOrders
  * @method
  * @memberof GraphQL/Orders
  * @summary Query the Orders collection for a list of orders
@@ -10,7 +10,7 @@ import generateFilterQuery from "@reactioncommerce/api-utils/generateFilterQuery
  * @param {String} shopId - shopID to filter by
  * @returns {Promise<Object>} Orders object Promise
  */
-export default async function filterSearchOrders(context, conditions, shopId) {
+export default async function filterOrders(context, conditions, shopId) {
   const { collections: { Orders } } = context;
 
   if (!shopId) {

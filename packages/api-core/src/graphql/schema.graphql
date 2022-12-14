@@ -36,13 +36,13 @@ enum MassUnit {
 
 "Relational Operator Types used in filtering inside a single condition"
 enum RelationalOperatorTypes{
-  "Begins With used with String types"
+  "Begins With used with String types to filter based on the beginning of the string"
   beginsWith
 
-  "Ends With used with String types"
+  "Ends With used with String types to filter based on the end of the string"
   endsWith
 
-  "Equal"
+  "Equal to"
   eq
 
   "Greater Than"
@@ -51,7 +51,7 @@ enum RelationalOperatorTypes{
   "Greater Than or Equal"
   gte
 
-  "In"
+  "In used with Array types to filter based on the array containing the value"
   in
 
   "Less Than"
@@ -60,20 +60,20 @@ enum RelationalOperatorTypes{
   "Less Than or Equal"
   lte
 
-  "Not Equal"
+  "Not Equal to"
   ne
 
-  "Not In"
+  "Not In used with Array types to filter based on the array not containing the value"
   nin
 
-  "Regex"
+  "Regex used with String types to filter based on the regex pattern"
   regex
 }
 
-"Single Condition for filterSearch, use exactly one of the optional input value type"
+"Single Condition for filter, use exactly one of the optional input value type"
 input SingleConditionInput {
   "Value to filter if it is Boolean input"
-  boolValue: Boolean
+  booleanValue: Boolean
 
   "Flag to set if the regex is case insensitive"
   caseSensitive: Boolean
@@ -87,17 +87,17 @@ input SingleConditionInput {
   "Value to filter if it is Float input"
   floatValue: Float
 
-  "Value to filter if it is Int Array input" 
-  intArrayValue: [Int]
+  "Value to filter if it is Integer Array input" 
+  integerArrayValue: [Int]
 
-  "Value to filter if it is Int input"
-  intValue: Int
+  "Value to filter if it is Integer input"
+  integerValue: Int
 
   "Field name"
-	key : String!
+  key: String!
 
   "Logical NOT operator to negate the condition"
-  logicalNOT: Boolean
+  logicalNot: Boolean
 
   "Relational Operator to join the key and value"
   relationalOperator: RelationalOperatorTypes!
@@ -106,10 +106,10 @@ input SingleConditionInput {
   stringArrayValue: [String]
 
   "Value to filter if it is String input"
-	stringValue: String
+  stringValue: String
 }
 
-"Filter search with One level of conditions (use either 'any' or 'all' not both)"
+"Filter with One level of conditions (use either 'any' or 'all' not both)"
 input ConditionsArray {
   "Array of single-conditions"
   all: [SingleConditionInput]
@@ -118,7 +118,7 @@ input ConditionsArray {
   any: [SingleConditionInput]
 }
 
-"Filter search with nested conditions of input (use either 'any' or 'all' not both)"
+"Filter with nested conditions of input (use either 'any' or 'all' not both)"
 input FilterConditionsInput {
   "Array holding Nested conditions (use either 'any' or 'all' not both)"
   all: [ConditionsArray]

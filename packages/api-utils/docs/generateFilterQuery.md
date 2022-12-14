@@ -10,110 +10,57 @@ As seen in the format below,
 * The `SingleConditionInput` object has the fields which define a single condition to filter on.
 <br>
 * The `all` key is equivalent of the `$and` operator in MongoDB and the `any` key is equivalent of the `$or` operator in MongoDB.
-* In the `SingleConditionInput` object, mandatory fields are the `key`, `relationalOperator` and exactly any ONE of the value fields. The `key` is the field name to filter on. The `relationalOperator` is the relational operator to use to filter on the field (predefined as enum values). The `stringValue`, `intValue`, `floatValue`, `boolValue`, `dateValue`, `stringArrayValue`, `intArrayValue`, `floatArrayValue` are the values to filter on (use exactly one of this) depending on the key.
-* Finally there are two more optional fields `caseSensitive` and `logicalNOT`. The `caseSensitive` is a boolean flag to set if the regex is case sensitive. The `logicalNOT` is a boolean flag to set if the condition is to be negated.
+* In the `SingleConditionInput` object, mandatory fields are the `key`, `relationalOperator` and exactly any ONE of the value fields. The `key` is the field name to filter on. The `relationalOperator` is the relational operator to use to filter on the field (predefined as enum values). The `stringValue`, `integerValue`, `floatValue`, `booleanValue`, `dateValue`, `stringArrayValue`, `integerArrayValue`, `floatArrayValue` are the values to filter on (use exactly one of this) depending on the key.
+* Finally there are two more optional fields `caseSensitive` and `logicalNot`. The `caseSensitive` is a boolean flag to set if the regex is case sensitive. The `logicalNot` is a boolean flag to set if the condition is to be negated.
 
 FilterConditionsInput format below (from GraphQL Schemas). __Example__ follows the format below:
 
 
 ```graphql
 
-"Filter search with nested conditions of input (use either 'any' or 'all' not both)"
 input FilterConditionsInput {
-  "Array holding Nested conditions (use either 'any' or 'all' not both)"
   all: [ConditionsArray]
 
-  "Array holding Nested conditions (use either 'any' or 'all' not both)"
   any: [ConditionsArray]
 }
 
 
-"Filter search with One level of conditions (use either 'any' or 'all' not both)"
 input ConditionsArray {
-  "Array of single-conditions"
   all: [SingleConditionInput]
 
-  "Array of single-conditions"
   any: [SingleConditionInput]
 }
 
 
-"Single Condition for filterSearch, use exactly one of the optional input value type"
 input SingleConditionInput {
-  "Value to filter if it is Boolean input"
-  boolValue: Boolean
-
-  "Flag to set if the regex is case insensitive"
+  booleanValue: Boolean
   caseSensitive: Boolean
-
-  "Value to filter if it is Date input"
   dateValue: DateTime
-
-  "Value to filter if it is Float Array input" 
   floatArrayValue: [Float]
-
-  "Value to filter if it is Float input"
   floatValue: Float
-
-  "Value to filter if it is Int Array input" 
-  intArrayValue: [Int]
-
-  "Value to filter if it is Int input"
-  intValue: Int
-
-  "Field name"
-  key : String!
-
-  "Logical NOT operator to negate the condition"
-  logicalNOT: Boolean
-
-  "Relational Operator to join the key and value"
+  integerArrayValue: [Int]
+  integerValue: Int
+  key: String!
+  logicalNot: Boolean
   relationalOperator: RelationalOperatorTypes!
-
-  "Value to filter if it is String Array input"
   stringArrayValue: [String]
-
-  "Value to filter if it is String input"
   stringValue: String
 }
 
 
-"Relational Operator Types used in filtering inside a single condition"
 enum RelationalOperatorTypes{
-  "Begins With used with String types"
   beginsWith
-
-  "Ends With used with String types"
   endsWith
-
-  "Equal"
   eq
-
-  "Greater Than"
   gt
-
-  "Greater Than or Equal"
   gte
-
-  "In"
   in
-
-  "Less Than"
   lt
-
-  "Less Than or Equal"
   lte
-
-  "Not Equal"
   ne
-
-  "Not In"
   nin
-
-  "Regex"
   regex
 }
-
 
 ```
 
@@ -133,7 +80,7 @@ const conditions = {
               key: "handle",
               stringValue: "mens-waterproof-outdoor-rain-jacket",
               relationalOperator: eq,
-              logicalNOT: false
+              logicalNot: false
             }
           ]
         }
@@ -145,5 +92,5 @@ const conditions = {
   return Products.find(filterQuery);
 ```
 
-Please refer to readme in the respective plugins for more detailed examples (example: Products).
+Please refer to readme in the respective plugins for more detailed examples (example: api-plugin-products).
 

@@ -1,6 +1,6 @@
 extend type Query {
   "Query to get a filtered list of Orders"
-  filterSearchOrders(
+  filterOrders(
     "Shop ID"
     shopId: ID!,
 

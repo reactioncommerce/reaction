@@ -66,7 +66,7 @@ test("returns the correct Query when single condition is given", () => {
           key: "handle",
           stringValue: "mens-waterproof-outdoor-rain-jacket",
           relationalOperator: "eq",
-          logicalNOT: false
+          logicalNot: false
         }
       ]
     }]
@@ -101,13 +101,13 @@ test("returns the correct Query when two conditions are given", () => {
             key: "handle",
             stringValue: "mens-waterproof-outdoor-rain-jacket",
             relationalOperator: "eq",
-            logicalNOT: false
+            logicalNot: false
           },
           {
             key: "_id",
             stringValue: "DZwLHk4EAzitRni8F",
             relationalOperator: "eq",
-            logicalNOT: false
+            logicalNot: false
           }
         ]
       }
@@ -150,13 +150,13 @@ test("returns the correct Query when multiple conditions are given", () => {
             key: "handle",
             stringValue: "mens-waterproof-outdoor-rain-jacket",
             relationalOperator: "eq",
-            logicalNOT: false
+            logicalNot: false
           },
           {
             key: "title",
             stringValue: "men",
             relationalOperator: "beginsWith",
-            logicalNOT: false,
+            logicalNot: false,
             caseSensitive: false
           }
         ]
@@ -167,19 +167,19 @@ test("returns the correct Query when multiple conditions are given", () => {
             key: "_id",
             stringArrayValue: ["DZwLHk4EAzitRni8F", "Hn4BRaBvLkYffMq36"],
             relationalOperator: "in",
-            logicalNOT: false
+            logicalNot: false
           },
           {
             key: "isDeleted",
             boolValue: false,
             relationalOperator: "eq",
-            logicalNOT: false
+            logicalNot: false
           },
           {
             key: "workflow.status",
             stringValue: "new",
             relationalOperator: "eq",
-            logicalNOT: false
+            logicalNot: false
           }
         ]
       },
@@ -189,13 +189,13 @@ test("returns the correct Query when multiple conditions are given", () => {
             key: "price.min",
             floatValue: 19.99,
             relationalOperator: "gte",
-            logicalNOT: false
+            logicalNot: false
           },
           {
             key: "type",
             stringValue: "simple",
             relationalOperator: "eq",
-            logicalNOT: false
+            logicalNot: false
           }
         ]
       }

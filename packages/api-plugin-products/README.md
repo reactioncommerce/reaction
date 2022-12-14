@@ -10,7 +10,7 @@ Products plugin for the [Reaction API](https://github.com/reactioncommerce/react
 
 ### Example on how to use Filter Conditions
 
-We have a query endpoint defined in this plugin which allows us to query products collection based on the input GraphQL conditions object. This query endpoint is defined as `filterSearchProducts.js` and it calls the `generateFilterQuery` function from the `api-utils` plugin to generate the MongoDB filter query.
+We have a query endpoint defined in this plugin which allows us to query products collection based on the input GraphQL conditions object. This query endpoint is defined as `filterProducts.js` and it calls the `generateFilterQuery` function from the `api-utils` plugin to generate the MongoDB filter query.
 
 The `generateFilterQuery` function expects the input GraphQL conditions object to be in the format of the `FilterConditionsInput` input type defined in the GraphQL Schemas (in api-core plugin) along with other parameters like `context`, `collectionName` and `shopId`.
 
@@ -32,7 +32,7 @@ const conditions = {
               key: "handle",
               stringValue: "mens-waterproof-outdoor-rain-jacket",
               relationalOperator: eq,
-              logicalNOT: false
+              logicalNot: false
             }
           ]
         }
@@ -61,13 +61,13 @@ const conditions = {
               key: "handle",
               stringValue: "mens-waterproof-outdoor-rain-jacket",
               relationalOperator: eq,
-              logicalNOT: false
+              logicalNot: false
             }, 
             {
               key: "title",
               stringValue: "men",
               relationalOperator: beginsWith,
-              logicalNOT: false
+              logicalNot: false
               caseSensitive: false
             }
           ]
@@ -105,13 +105,13 @@ const conditions = {
               key: "handle",
               stringValue: "mens-waterproof-outdoor-rain-jacket",
               relationalOperator: eq,
-              logicalNOT: false
+              logicalNot: false
             }, 
             {
               key: "title",
               stringValue: "men",
               relationalOperator: beginsWith,
-              logicalNOT: false
+              logicalNot: false
               caseSensitive: false
             }
           ]
@@ -122,19 +122,19 @@ const conditions = {
               key: "_id",
               stringArrayValue: ["DZwLHk4EAzitRni8F", "Hn4BRaBvLkYffMq36"],
               relationalOperator: in,
-              logicalNOT: false
+              logicalNot: false
             },
             {
               key: "isDeleted",
-              boolValue: false,
+              booleanValue: false,
               relationalOperator: eq,
-              logicalNOT: false
+              logicalNot: false
             },
             {
               key: "workflow.status",
               stringValue: "new",
               relationalOperator: eq,
-              logicalNOT: false
+              logicalNot: false
             }
           ]
         },
@@ -144,13 +144,13 @@ const conditions = {
               key: "price.min",
               floatValue: 19.99,
               relationalOperator: gte,
-              logicalNOT: false
+              logicalNot: false
             },
             {
               key: "type",
               stringValue: "simple",
               relationalOperator: eq,
-              logicalNOT: false
+              logicalNot: false
             }
           ]
         }

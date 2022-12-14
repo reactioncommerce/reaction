@@ -10,7 +10,7 @@ const SingleConditionSchema = new SimpleSchema({
     type: String,
     optional: true
   },
-  "intValue": {
+  "integerValue": {
     type: SimpleSchema.Integer,
     optional: true
   },
@@ -18,7 +18,7 @@ const SingleConditionSchema = new SimpleSchema({
     type: Number,
     optional: true
   },
-  "boolValue": {
+  "booleanValue": {
     type: Boolean,
     optional: true
   },
@@ -33,11 +33,11 @@ const SingleConditionSchema = new SimpleSchema({
   "stringArrayValue.$": {
     type: String
   },
-  "intArrayValue": {
+  "integerArrayValue": {
     type: Array,
     optional: true
   },
-  "intArrayValue.$": {
+  "integerArrayValue.$": {
     type: SimpleSchema.Integer
   },
   "floatArrayValue": {
@@ -51,7 +51,7 @@ const SingleConditionSchema = new SimpleSchema({
     type: String,
     allowedValues: ["eq", "ne", "gt", "gte", "lt", "lte", "in", "nin", "regex", "beginsWith", "endsWith"]
   },
-  "logicalNOT": {
+  "logicalNot": {
     type: Boolean,
     optional: true
   },
@@ -125,9 +125,9 @@ const validCombos = {
 const REL_OPS_KEYS = ["any", "all"];
 
 const FIELD_KEYS = [
-  "key", "stringValue", "boolValue", "intValue", "floatValue", "dateValue",
-  "stringArrayValue", "intArrayValue", "floatArrayValue",
-  "relationalOperator", "caseSensitive", "logicalNOT"
+  "key", "stringValue", "booleanValue", "integerValue", "floatValue", "dateValue",
+  "stringArrayValue", "integerArrayValue", "floatArrayValue",
+  "relationalOperator", "caseSensitive", "logicalNot"
 ];
 
 const keyMap = {
@@ -280,12 +280,12 @@ function countInputValueFields(inputValue) {
 function validateConditions(allConditions, allCollectionFields) {
   for (const condition of allConditions) {
     const {
-      key, stringValue, intValue, floatValue, boolValue, dateValue,
-      stringArrayValue, intArrayValue, floatArrayValue, relationalOperator
-    } = condition; // logicalNOT, caseSensitive are optional
+      key, stringValue, integerValue, floatValue, booleanValue, dateValue,
+      stringArrayValue, integerArrayValue, floatArrayValue, relationalOperator
+    } = condition; // logicalNot, caseSensitive are optional
     const expectedValueType = allCollectionFields[key];
 
-    const inputValuesObject = { stringValue, intValue, floatValue, boolValue, dateValue, stringArrayValue, intArrayValue, floatArrayValue };
+    const inputValuesObject = { stringValue, integerValue, floatValue, booleanValue, dateValue, stringArrayValue, integerArrayValue, floatArrayValue };
     const inputValuesCount = countInputValueFields(inputValuesObject);
     if (inputValuesCount > 1) {
       throw new Error(`Only one value must be provided for the condition with key: ${key}`);
@@ -299,12 +299,12 @@ function validateConditions(allConditions, allCollectionFields) {
     // if expectedValueType does not match the type of value, throw error
     if (expectedValueType === "SimpleSchema.String" && stringValue === undefined && stringArrayValue === undefined) {
       throw new Error(`Key '${key}' expects either stringValue & stringArrayValue`);
-    } else if (expectedValueType === "SimpleSchema.Integer" && intValue === undefined && intArrayValue === undefined) {
-      throw new Error(`Key '${key}' expects either intValue & intArrayValue`);
+    } else if (expectedValueType === "SimpleSchema.Integer" && integerValue === undefined && integerArrayValue === undefined) {
+      throw new Error(`Key '${key}' expects either integerValue & integerArrayValue`);
     } else if (expectedValueType === "SimpleSchema.Number" && floatValue === undefined && floatArrayValue === undefined) {
       throw new Error(`Key '${key}' expects either floatValue & floatArrayValue`);
-    } else if (expectedValueType === "SimpleSchema.Boolean" && boolValue === undefined) {
-      throw new Error(`Key '${key}' expects boolValue`);
+    } else if (expectedValueType === "SimpleSchema.Boolean" && booleanValue === undefined) {
+      throw new Error(`Key '${key}' expects booleanValue`);
     } else if (expectedValueType === "SimpleSchema.Date" && dateValue === undefined) {
       throw new Error(`Key '${key}' expects dateValue`);
     } // array can be compared with any of the above types, skipping this check
@@ -313,7 +313,7 @@ function validateConditions(allConditions, allCollectionFields) {
       throw new Error(`Invalid relational operator '${relationalOperator}' for : ${expectedValueType}`);
     }
 
-    if (expectedValueType === "SimpleSchema.Array" && stringArrayValue?.length === 0 && intArrayValue?.length === 0 && floatArrayValue?.length === 0) {
+    if (expectedValueType === "SimpleSchema.Array" && stringArrayValue?.length === 0 && integerArrayValue?.length === 0 && floatArrayValue?.length === 0) {
       throw new Error("Array value cannot be empty");
     }
   }
@@ -328,40 +328,40 @@ function validateConditions(allConditions, allCollectionFields) {
  * @param {Object} condition The condition to convert
  * @param {String} condition.key The key to convert
  * @param {String} condition.stringValue The value in String format
- * @param {Number} condition.intValue The value in Integer format
+ * @param {Number} condition.integerValue The value in Integer format
  * @param {Number} condition.floatValue The value in Integer format
- * @param {Boolean} condition.boolValue The value in Boolean format
+ * @param {Boolean} condition.booleanValue The value in Boolean format
  * @param {String} condition.dateValue The value in Date/String format
  * @param {String[]} [condition.stringArrayValue] The value in String Array format
- * @param {Number[]} [condition.intArrayValue] The value in Integer Array format
+ * @param {Number[]} [condition.integerArrayValue] The value in Integer Array format
  * @param {Number[]} [condition.floatArrayValue] The value in Integer Array format
  * @param {String} condition.relationalOperator The relational operator to use
- * @param {String} condition.logicalNOT Whether to negate the condition
+ * @param {String} condition.logicalNot Whether to negate the condition
  * @param {String} condition.caseSensitive Whether regex search is caseSensitive
  * @returns {Object} The MongoDB query
  */
 function simpleConditionToQuery(condition) {
   const {
-    key, stringValue, intValue, floatValue, boolValue, dateValue,
-    stringArrayValue, intArrayValue, floatArrayValue,
-    relationalOperator, logicalNOT, caseSensitive
+    key, stringValue, integerValue, floatValue, booleanValue, dateValue,
+    stringArrayValue, integerArrayValue, floatArrayValue,
+    relationalOperator, logicalNot, caseSensitive
   } = condition;
   const query = {};
-  const valueToUse = stringValue || intValue || floatValue || boolValue || dateValue ||
-  stringArrayValue || intArrayValue || floatArrayValue;
+  const valueToUse = stringValue || integerValue || floatValue || booleanValue || dateValue ||
+  stringArrayValue || integerArrayValue || floatArrayValue;
 
   let tempQuery;
   switch (relationalOperator) {
     case "eq":
-      if (boolValue !== undefined) {
-        tempQuery = { $eq: boolValue };
+      if (booleanValue !== undefined) {
+        tempQuery = { $eq: booleanValue };
       } else {
         tempQuery = { $eq: valueToUse };
       }
       break;
     case "ne":
-      if (boolValue !== undefined) {
-        tempQuery = { $ne: boolValue };
+      if (booleanValue !== undefined) {
+        tempQuery = { $ne: booleanValue };
       } else {
         tempQuery = { $ne: valueToUse };
       }
@@ -408,7 +408,7 @@ function simpleConditionToQuery(condition) {
       throw new Error(`Invalid relational operator: ${relationalOperator}`);
   }
 
-  query[key] = logicalNOT ? { $not: tempQuery } : tempQuery;
+  query[key] = logicalNot ? { $not: tempQuery } : tempQuery;
 
   return query;
 }
@@ -492,7 +492,7 @@ function processFilterConditions(filterCondition) {
  * @name generateQuery
  * @method
  * @memberof GraphQL/Filter
- * @summary Builds a selector for Products collection, given a set of filters
+ * @summary Builds a selector for given collection, given a set of filters
  * @param {Object} filterQuery - an object containing the filters to apply
  * @param {String} shopId - the shop ID
  * @returns {Object} - selector
@@ -522,15 +522,15 @@ function generateQuery(filterQuery, shopId) {
 }
 
 /**
- * @name filterSearchProducts
+ * @name generateFilterQuery
  * @method
  * @memberof GraphQL/Filter
- * @summary Query the Products collection for a list of products
+ * @summary Generates a filter Query for the collection in params based on incoming conditions
  * @param {Object} context - an object containing the per-request state
  * @param {String} collectionName - Collection against which to run the query
  * @param {Object} conditions - the conditions for the filter
  * @param {String} shopId - shopID to filter by
- * @returns {Promise<Object>} Products object Promise
+ * @returns {Object} Filter query object
  */
 export default function generateFilterQuery(context, collectionName, conditions, shopId) {
   ConditionsArraySchema.validate(conditions);

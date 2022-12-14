@@ -497,7 +497,7 @@ extend type Query {
   ): Account
 
   "Query to get a filtered list of Accounts"
-  filterSearchAccounts(
+  filterAccounts(
     "Shop ID"
     shopId: ID!,
 
@@ -527,7 +527,7 @@ extend type Query {
   ): AccountConnection
 
   "Query to get a filtered list of Customers"
-  filterSearchCustomers(
+  filterCustomers(
     "Shop ID"
     shopId: ID!,
 
