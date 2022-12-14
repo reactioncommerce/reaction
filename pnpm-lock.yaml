@@ -256,8 +256,8 @@ importers:
       '@reactioncommerce/file-collections-sa-gridfs': link:../../packages/file-collections-sa-gridfs
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1069.0
       bull: 4.10.1
+      '@snyk/protect': 1.1071.0
       graphql: 14.7.0
       nodemailer: 6.8.0
       semver: 6.3.0
@@ -486,7 +486,8 @@ importers:
       '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ^1.0.2
       bull: 4.10.1
-      envalid: ^6.0.2
+      dotenv: ^16.0.3
+      envalid: ^7.3.1
       ms: 2.1.3
       simpl-schema: ^1.12.0
     dependencies:
@@ -494,7 +495,8 @@ importers:
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
       bull: 4.10.1
-      envalid: 6.0.2
+      dotenv: 16.0.3
+      envalid: 7.3.1
       ms: 2.1.3
       simpl-schema: 1.12.3
     devDependencies:
@@ -4858,8 +4860,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1069.0:
-    resolution: {integrity: sha512-LowUeB/+tyEoCwriA/+RkZUIolZcXVVcid5mkFtTpM/lZUVmPNt7gpNHExBPc4l1gzJu21uUjBxG5mf5R+ScmQ==}
+  /@snyk/protect/1.1071.0:
+    resolution: {integrity: sha512-/xoAhWLeMBEVW3mHufGPx6WrhJBy98qmJ+0jhTwdz3qerr93kk4e4dj3N6ZGI9zeBQ3+E1tPxKcC74CcmzQdhg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -7623,6 +7625,11 @@ packages:
 
   /dotenv/16.0.2:
     resolution: {integrity: sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
     dev: false
 
