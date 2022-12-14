@@ -63,7 +63,8 @@ export default function createQueue(context, queueName, options = defaultOptions
   });
 
   newQueue.on("failed", (job, err) => {
-    Logger.error({ ...err, ...logCtx }, "Job process failed");
+    const error = JSON.stringify(err);
+    Logger.error({ error, ...logCtx }, "Job process failed");
   });
   return newQueue;
 }
