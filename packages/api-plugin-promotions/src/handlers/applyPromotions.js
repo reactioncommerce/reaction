@@ -59,7 +59,7 @@ export function createCartMessage({ title, message, severity = "info", ...params
  * @summary apply promotions to a cart
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
- * @returns {Promise<void>} - undefined
+ * @returns {Promise<Object>} - mutated cart
  */
 export default async function applyPromotions(context, cart) {
   const promotions = await getImplicitPromotions(context, cart.shopId);
@@ -183,4 +183,5 @@ export default async function applyPromotions(context, cart) {
   Object.assign(cart, enhancedCart);
 
   Logger.info({ ...logCtx, appliedPromotions: appliedPromotions.length }, "Applied promotions successfully");
+  return cart;
 }
