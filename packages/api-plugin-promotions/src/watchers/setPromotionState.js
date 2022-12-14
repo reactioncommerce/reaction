@@ -36,9 +36,11 @@ async function markActive(context) {
       ]
     }).toArray();
     for (const promotion of toMarkActive) {
-      const { modifiedCount } = Promotions.updateOne({ _id: promotion._id }, { $set: { state: "active" } });
+      // eslint-disable-next-line no-await-in-loop
+      const { modifiedCount } = await Promotions.updateOne({ _id: promotion._id }, { $set: { state: "active" } });
       if (modifiedCount === 1) {
         appEvents.emit("promotionActivated", promotion);
+        Logger.info({ promotionId: promotion._id, ...logCtx }, "Promotion made active");
         totalUpdated += 1;
       } else {
         Logger.error({ promotionId: promotion._id, ...logCtx }, "Error updating promotion record to active");
