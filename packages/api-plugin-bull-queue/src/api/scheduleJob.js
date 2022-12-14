@@ -23,7 +23,7 @@ const logCtx = {
  * @return {Boolean} - true if success
  */
 export default async function scheduleJob(context, queueName, jobName, jobData, schedule) {
-  if (typeof jobData !== "object" || typeof schedule !== "string") {
+  if (typeof jobData !== "object" || typeof schedule !== "string" || typeof queueName !== "string" || typeof jobName !== "string") {
     Logger.error(logCtx, "Invalid parameters supplied to scheduleJob");
     return false;
   }
