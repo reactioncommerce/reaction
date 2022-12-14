@@ -42,6 +42,7 @@ export function extendSimplePricingSchemas(schemas) {
     CatalogProduct,
     CatalogProductOption,
     CatalogProductVariant,
+    CartItem,
     Product,
     ProductVariant
   } = schemas;
@@ -67,6 +68,21 @@ export function extendSimplePricingSchemas(schemas) {
       defaultValue: 0.00,
       min: 0,
       optional: true
+    },
+    priceType: {
+      type: String,
+      optional: true,
+      allowedValues: ["full", "clearance", "sale"],
+      defaultValue: "full"
+    }
+  });
+
+  CartItem.extend({
+    priceType: {
+      type: String,
+      optional: true,
+      allowedValues: ["full", "clearance", "sale"],
+      defaultValue: "full"
     }
   });
 
