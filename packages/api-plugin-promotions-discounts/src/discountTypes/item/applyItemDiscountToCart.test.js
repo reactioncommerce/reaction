@@ -133,6 +133,67 @@ test("should return cart with applied discount when parameters include rule", as
   });
 });
 
+
+test("should return affected is false with reason when have no items are discounted", async () => {
+  const item = {
+    _id: "item1",
+    price: {
+      amount: 12
+    },
+    quantity: 1,
+    subtotal: {
+      amount: 12,
+      currencyCode: "USD"
+    },
+    discounts: []
+  };
+
+  const cart = {
+    _id: "cart1",
+    items: [item]
+  };
+
+  const parameters = {
+    actionKey: "test",
+    promotion: {
+      _id: "promotion1"
+    },
+    actionParameters: {
+      discountType: "test",
+      discountCalculationType: "test",
+      discountValue: 10,
+      inclusionRules: {
+        conditions: {
+          any: [
+            {
+              fact: "item",
+              path: "$.quantity",
+              operator: "greaterThanInclusive",
+              value: 2
+            }
+          ]
+        }
+      }
+    }
+  };
+
+  mockContext.promotions = {
+    operators: {}
+  };
+
+  mockContext.discountCalculationMethods = {
+    test: jest.fn().mockReturnValue(10)
+  };
+
+  const result = await applyItemDiscountToCart.default(mockContext, parameters, cart);
+
+  expect(result).toEqual({
+    cart,
+    affected: false,
+    reason: "No items were discounted"
+  });
+});
+
 test("canBeApplyDiscountToItem: should return true when item don't have any discounts", () => {
   const item = {
     _id: "item1",

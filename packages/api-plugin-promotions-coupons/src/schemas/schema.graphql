@@ -9,6 +9,9 @@ input ApplyCouponToCartInput {
   "The coupon code to apply"
   couponCode: String!
 
+  "The account ID of the user who is applying the coupon"
+  accountId: ID
+
   "Cart token, if anonymous"
   token: String
 }

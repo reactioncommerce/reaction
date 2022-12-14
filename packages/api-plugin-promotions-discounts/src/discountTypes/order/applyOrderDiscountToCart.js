@@ -97,6 +97,7 @@ export default async function applyOrderDiscountToCart(context, params, cart) {
   cart.discount = getTotalDiscountOnCart(cart);
 
   const affected = discountedItems.length > 0;
+  const reason = !affected ? "No items were discounted" : undefined;
 
-  return { cart, affected };
+  return { cart, affected, reason };
 }
