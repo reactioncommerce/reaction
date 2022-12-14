@@ -171,7 +171,7 @@ test("returns the correct Query when multiple conditions are given", () => {
           },
           {
             key: "isDeleted",
-            boolValue: false,
+            booleanValue: false,
             relationalOperator: "eq",
             logicalNot: false
           },
