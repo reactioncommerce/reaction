@@ -13,6 +13,7 @@ import setEmailOnAnonymousCart from "./setEmailOnAnonymousCart.js";
 import setShippingAddressOnCart from "./setShippingAddressOnCart.js";
 import transformAndValidateCart from "./transformAndValidateCart.js";
 import updateCartItemsQuantity from "./updateCartItemsQuantity.js";
+import acknowledgeCartMessage from "./acknowledgeCartMessage.js";
 
 export default {
   addCartItems,
@@ -29,5 +30,6 @@ export default {
   setEmailOnAnonymousCart,
   setShippingAddressOnCart,
   transformAndValidateCart,
-  updateCartItemsQuantity
+  updateCartItemsQuantity,
+  acknowledgeCartMessage
 };

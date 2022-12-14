@@ -41,7 +41,6 @@ const defaultConfig = {
  * @return {Promise<Object>|{Boolean}} - The job instance or false
  */
 export default function addJob(context, queueName, jobData, options = defaultConfig) {
-  Logger.info({ queueName, ...logCtx }, "Added job to queue");
   if (context.bullQueue.jobQueues[queueName]) {
     Logger.info({ queueName, ...logCtx }, "Added job");
     return context.bullQueue.jobQueues[queueName].add(jobData, options);

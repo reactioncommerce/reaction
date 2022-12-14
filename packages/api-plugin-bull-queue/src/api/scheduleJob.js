@@ -23,7 +23,7 @@ const logCtx = {
  * @return {Boolean} - true if success
  */
 export default async function scheduleJob(context, queueName, jobName, jobData, schedule) {
-  if (typeof jobData !== "object" || typeof schedule !== "string") {
+  if (typeof jobData !== "object" || typeof schedule !== "string" || typeof queueName !== "string" || typeof jobName !== "string") {
     Logger.error(logCtx, "Invalid parameters supplied to scheduleJob");
     return false;
   }
@@ -32,7 +32,7 @@ export default async function scheduleJob(context, queueName, jobName, jobData, 
     const repeatableJobs = await thisQueue.getRepeatableJobs();
     const jobToRemove = repeatableJobs.find((jbName) => jobName === jbName.name);
     if (jobToRemove) {
-      await thisQueue.removeRepeatable(jobToRemove);
+      await thisQueue.removeRepeatableByKey(jobToRemove.key);
       Logger.info({ queueName, jobName, ...logCtx }, "Removed repeatable job");
     }
     await thisQueue.add(jobName, jobData, { repeat: { cron: schedule } });

@@ -47,11 +47,24 @@ export default function createQueue(context, queueName, options = defaultOptions
   const newQueue = new Queue(queueName, options.url ?? REDIS_SERVER, options);
   context.bullQueue.jobQueues[queueName] = newQueue;
   if (REACTION_WORKERS_ENABLED) { // If workers are not enabled, allow adding jobs to queue but don't process them
-    newQueue.process((job) => processorFn(job.data, job));
+    if (options.jobName) {
+      newQueue.process(options.jobName, (job) => processorFn(job.data, job));
+    } else {
+      newQueue.process((job) => processorFn(job.data, job));
+    }
   }
 
   newQueue.on("error", (error) => {
     Logger.error({ error, queueName, ...logCtx }, "Error processing background job");
+  });
+
+  newQueue.on("stalled", (job) => {
+    Logger.error({ queueName, options, job, ...logCtx }, "Job stalled");
+  });
+
+  newQueue.on("failed", (job, err) => {
+    const error = JSON.stringify(err);
+    Logger.error({ error, ...logCtx }, "Job process failed");
   });
   return newQueue;
 }
