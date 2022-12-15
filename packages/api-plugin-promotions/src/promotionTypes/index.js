@@ -1,7 +1,7 @@
 const OrderDiscount = {
   name: "order-discount",
   action: {
-    actionKey: "discount",
+    actionKey: "discounts",
     actionParameters: {
       discountType: "order"
     }
@@ -11,7 +11,7 @@ const OrderDiscount = {
 const ItemDiscount = {
   name: "item-discount",
   action: {
-    actionKey: "discount",
+    actionKey: "discounts",
     actionParameters: {
       discountType: "item"
     }
@@ -21,7 +21,7 @@ const ItemDiscount = {
 const ShippingDiscount = {
   name: "shipping-discount",
   action: {
-    actionKey: "discount",
+    actionKey: "discounts",
     actionParameters: {
       discountType: "shipping"
     }
