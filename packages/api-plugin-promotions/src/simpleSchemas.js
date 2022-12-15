@@ -6,7 +6,7 @@ const promotionTypeKeys = promotionTypes.map((pt) => pt.name);
 export const Action = new SimpleSchema({
   actionKey: {
     type: String,
-    allowedValues: ["noop", "discount"]
+    allowedValues: ["noop", "discounts"]
   },
   actionParameters: {
     type: Object,
