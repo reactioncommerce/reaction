@@ -20,7 +20,7 @@ const logCtx = {
  */
 async function getCarts(context) {
   const { collections: { Cart } } = context;
-  const cartsCursor = await Cart.find({}, { cartId: 1 });
+  const cartsCursor = await Cart.find({}, { _id: 1 });
   return cartsCursor;
 }
 
