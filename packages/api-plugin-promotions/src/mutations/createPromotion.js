@@ -11,7 +11,8 @@ export default async function createPromotion(context, promotion) {
   const { collections: { Promotions }, simpleSchemas: { Promotion: PromotionSchema }, promotions } = context;
   promotion._id = Random.id();
   const now = new Date();
-  const { triggerKey } = promotion.triggers[0];
+  const [firstTrigger] = promotion.triggers; // currently support only one trigger
+  const { triggerKey } = firstTrigger;
   const trigger = promotions.triggers.find((tr) => tr.key === triggerKey);
   promotion.triggerType = trigger.type;
   promotion.state = "created";
