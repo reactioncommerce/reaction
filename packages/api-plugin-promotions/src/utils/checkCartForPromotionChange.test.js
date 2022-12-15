@@ -18,8 +18,8 @@ mockContext.mutations = {
 };
 
 
-mockContext.collections.Carts = mockCollection("Carts");
-mockContext.collections.Carts.findOne.mockReturnValue(Promise.resolve(existingCart));
+mockContext.collections.Cart = mockCollection("Carts");
+mockContext.collections.Cart.findOne.mockReturnValue(Promise.resolve(existingCart));
 
 test("should trigger a saveCart mutation when promotions are completely different", async () => {
   const updatedCart = {
@@ -29,7 +29,7 @@ test("should trigger a saveCart mutation when promotions are completely differen
     }]
   };
   applyPromotions.mockImplementation(() => updatedCart);
-  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Carts, "cartId");
+  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Cart, "cartId");
   expect(updated).toBeTruthy();
   expect(reason).toEqual("new or missing promotion");
 });
@@ -43,14 +43,21 @@ test("should trigger a saveCart mutation when promotions are slightly different"
     }]
   };
   applyPromotions.mockImplementation(() => updatedCart);
-  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Carts, "cartId");
+  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Cart, "cartId");
   expect(updated).toBeTruthy();
   expect(reason).toEqual("promotions not equal");
 });
 
 test("should not trigger a saveCart mutation when the cart has not changed", async () => {
   applyPromotions.mockImplementation(() => existingCart);
-  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Carts, "cartId");
+  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Cart, "cartId");
+  expect(updated).toBeFalsy();
+  expect(reason).toBeNull();
+});
+
+test("should not trigger a saveCart mutation when only the updatedAt date changed", async () => {
+  applyPromotions.mockImplementation(() => existingCart);
+  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Cart, "cartId");
   expect(updated).toBeFalsy();
   expect(reason).toBeNull();
 });

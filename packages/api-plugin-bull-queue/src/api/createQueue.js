@@ -54,7 +54,8 @@ export default function createQueue(context, queueName, options = defaultOptions
     }
   }
 
-  newQueue.on("error", (error) => {
+  newQueue.on("error", (err) => {
+    const error = `${err}`; // need to turn this info a string
     Logger.error({ error, queueName, ...logCtx }, "Error processing background job");
   });
 
@@ -63,7 +64,7 @@ export default function createQueue(context, queueName, options = defaultOptions
   });
 
   newQueue.on("failed", (job, err) => {
-    const error = JSON.stringify(err);
+    const error = `${err}`; // need to turn this info a string
     Logger.error({ error, ...logCtx }, "Job process failed");
   });
   return newQueue;
