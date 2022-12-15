@@ -12,7 +12,7 @@ const { name, version } = pkg;
 const logCtx = {
   name,
   version,
-  file: "checkForPromotionChange.js"
+  file: "checkCartForPromotionChange.js"
 };
 
 
