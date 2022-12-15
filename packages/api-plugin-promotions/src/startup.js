@@ -22,7 +22,7 @@ const logCtx = {
 export default async function startupPromotions(context) {
   const { bullQueue } = context;
   await bullQueue.createQueue(context, "setPromotionState", { jobName: "checkForChangedStates" }, setPromotionState(context));
-  await bullQueue.scheduleJob(context, "setPromotionState", "checkForChangedStates", {}, "*/1 * * * *");
+  await bullQueue.scheduleJob(context, "setPromotionState", "checkForChangedStates", {}, "*/5 * * * *");
   Logger.info(logCtx, "Add setPromotionState queue and job");
   await bullQueue.createQueue(context, "checkExistingCarts", {}, checkCartForPromotionChange(context));
   return true;

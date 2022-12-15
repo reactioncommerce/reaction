@@ -10,33 +10,33 @@ const { name, version } = pkg;
 const logCtx = {
   name,
   version,
-  file: "handlePromotionActivated.js"
+  file: "handlePromotionChangedState.js"
 };
 
 /**
- * @summary get all the registered carts
+ * @summary get all the carts
  * @param {Object} context - The application context
- * @return {Promise<Array<String>>} - An array of cart ids
+ * @return {Promise<Object>} - A cursor of existing carts
  */
 async function getCarts(context) {
   const { collections: { Cart } } = context;
-  const registeredCartsCursor = await Cart.find({}, { cartId: 1 });
-  return registeredCartsCursor;
+  const cartsCursor = await Cart.find({}, { cartId: 1 });
+  return cartsCursor;
 }
 
 /**
- * @summary when a promotion becomes active, process all the existing carts
+ * @summary when a promotion becomes active, create multiple jobs the existing carts
  * @param {Object} context - The application context
- * @return {Promise<{ anonymousCarts, registeredCarts }>} the lists of carts to reprocess
+ * @return {Promise<Object>} The total number of carts processed
  */
 export default async function handlePromotionChangedState(context) {
-  Logger.info(logCtx, "Reprocessing all old carts for promotion has changed state");
+  Logger.info(logCtx, "Reprocessing all existing carts because promotion has changed state");
   const { bullQueue } = context;
   const cartsCursor = await getCarts(context);
   const carts = [];
   let totalCarts = 0;
   cartsCursor.forEach((cart) => {
-    carts.push(cart._id);
+    carts.push(cart._id); // we don't push the whole cart because it can't be completely serialized
     if (carts.length >= 500) {
       bullQueue.addJob(context, "checkExistingCarts", carts);
       totalCarts += carts.length;
