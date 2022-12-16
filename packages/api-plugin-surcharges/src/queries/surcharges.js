@@ -12,6 +12,8 @@ export default async function surcharges(context, { shopId } = {}) {
   const { collections } = context;
   const { Surcharges } = collections;
 
+  await context.validatePermissions("reaction:legacy:surcharges", "read", { shopId });
+
   return Surcharges.find({
     shopId
   });
