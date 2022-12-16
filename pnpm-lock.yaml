@@ -1331,7 +1331,7 @@ importers:
       graphql-relay: ^0.9.0
       lodash: ^4.17.15
       ramda: ^0.28.0
-      simpl-schema: ^3.4.0
+      simpl-schema: ^1.12.0
       transliteration: ^2.1.9
     dependencies:
       '@jest/globals': 26.6.2
@@ -1345,7 +1345,7 @@ importers:
       graphql-relay: 0.9.0_graphql@14.7.0
       lodash: 4.17.21
       ramda: 0.28.0
-      simpl-schema: 3.4.0
+      simpl-schema: 1.12.3
       transliteration: 2.3.5
     devDependencies:
       '@babel/core': 7.19.0
@@ -11336,11 +11336,6 @@ packages:
   /mongo-object/0.1.4:
     resolution: {integrity: sha512-QtYk0gupWEn2+iB+DDRt1L+WbcNYvJRaHdih/dcqthOa1DbnREUGSs2WGcW478GNYpElflo/yybZXu0sTiRXHg==}
 
-  /mongo-object/3.0.0:
-    resolution: {integrity: sha512-dDF7V0k+55s6YOjrF294GrE5s81z6RHR/YNkXj9mKcAK9hlL0Os0FRHtpinDHCqhEqImdLJUosIJ5lbYsCwbfA==}
-    engines: {node: '>=14.16'}
-    dev: false
-
   /mongodb-connection-string-url/2.5.3:
     resolution: {integrity: sha512-f+/WsED+xF4B74l3k9V/XkTVj5/fxFH2o5ToKXd8Iyi5UhM+sO9u0Ape17Mvl/GkZaFtM0HQnzAG5OTmhKw+tQ==}
     dependencies:
@@ -13041,14 +13036,6 @@ packages:
       clone: 2.1.2
       message-box: 0.2.7
       mongo-object: 0.1.4
-
-  /simpl-schema/3.4.0:
-    resolution: {integrity: sha512-TUwGiWaRR6SnUYM/ULmVmBIsLsdWMe8QzJqsvhu8ztr+HWZFTY+VVQy03BjRhJ8o4vL9CSazxWrMiARJ4vtYMQ==}
-    engines: {node: '>=14.16', npm: '>=8'}
-    dependencies:
-      clone: 2.1.2
-      mongo-object: 3.0.0
-    dev: false
 
   /simple-concat/1.0.1:
     resolution: {integrity: sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==}
