@@ -15,47 +15,32 @@ const logCtx = {
   file: "checkCartForPromotionChange.js"
 };
 
+/**
+ * @summary normalize promotions arrays for comparison
+ * @param {Array<{Object}>} promotions - The array of promotions to normalize
+ * @return {Array<{Object}>} - Normalized array of promotions
+ */
+function normalizePromotions(promotions) {
+  _.chain(promotions).sortBy("_id").map((promotion) => _.omit(promotion, "updatedAt")).value();
+  return promotions;
+}
 
 /**
  * @summary check if the cart promotion state has changed
  * @param {Object} context - The application context
  * @param {Object} Cart - The carts collection from the context
  * @param {String} cartId - The id of the cart to check
- * @return {Promise<{reason: null, updated: boolean, cart: *}|{reason: string, updated: boolean, cart: *}>} - Whether its changed and how
+ * @return {Promise<Object>} - Whether its changed, and the updated cart
  */
-export async function checkForChangedCart(context, Cart, cartId) {
-  let updated = false;
-  let reason = null;
-  // eslint-disable-next-line no-await-in-loop
+export async function hasChanged(context, Cart, cartId) {
   const cart = await Cart.findOne({ _id: cartId });
-  // eslint-disable-next-line no-await-in-loop
+  const originalCartClone = _.cloneDeep(cart);
   const cartToMutate = _.cloneDeep(cart); // can't pass in cart since applyPromotion mutates
   const updatedCart = await applyPromotions(context, cartToMutate);
-  if (cart.appliedPromotions || updatedCart.appliedPromotions) {
-    if (!updatedCart.appliedPromotions) updatedCart.appliedPromotions = [];
-    if (!cart.appliedPromotions) cart.appliedPromotions = [];
-    if (cart.appliedPromotions.length !== updatedCart.appliedPromotions.length) {
-      updated = true;
-      reason = "different number of promotions";
-    } else {
-      // length didn't change, so now we need to check each item
-      for (const promotion of cart.appliedPromotions) {
-        delete promotion.updatedAt;
-        const samePromotion = updatedCart.appliedPromotions.find((pr) => pr._id === promotion._id);
-        if (!samePromotion) {
-          updated = true; reason = "new or missing promotion";
-          return { updated, reason, cart };
-        }
-        delete samePromotion.updatedAt;
-        const isEqual = _.isEqual(promotion, samePromotion);
-        if (!isEqual) {
-          updated = true;
-          reason = "promotions not equal";
-        }
-      }
-    }
-  }
-  return { updated, reason, cart };
+  updatedCart.appliedPromotions = normalizePromotions(updatedCart.appliedPromotions);
+  originalCartClone.appliedPromotions = normalizePromotions(cart.appliedPromotions);
+  const updated = !_.isEqual(originalCartClone.appliedPromotions, updatedCart.appliedPromotions);
+  return { updated, cart };
 }
 
 /**
@@ -75,7 +60,7 @@ export default function wrapper(context) {
     const { collections: { Cart } } = context;
     for (const cartId of arrayOfCartIds) {
       // eslint-disable-next-line no-await-in-loop
-      const { updated, cart } = await checkForChangedCart(context, Cart, cartId);
+      const { updated, cart } = await hasChanged(context, Cart, cartId);
       if (updated) { // something about promotions on the cart have changed so trigger a full update
         context.mutations.saveCart(context, cart);
         totalModified += 1;
