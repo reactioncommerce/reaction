@@ -14,6 +14,7 @@ const shopName = "Test Shop";
 let testApp;
 let surcharges;
 let mockSurcharges;
+let mockAdminAccount;
 
 beforeAll(async () => {
   testApp = new ReactionTestAPICore();
@@ -32,6 +33,22 @@ beforeAll(async () => {
     amount: 10
   });
   await testApp.collections.Surcharges.insertMany(mockSurcharges);
+
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:surcharges/read"],
+    slug: "admin",
+    shopId: internalShopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
+  mockAdminAccount = Factory.Account.makeOne({
+    groups: [adminGroup._id]
+  });
+  await testApp.createUserAndAccount(mockAdminAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
   surcharges = testApp.query(SurchargesQuery);
 });
 

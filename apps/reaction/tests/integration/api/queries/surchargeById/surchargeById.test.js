@@ -15,6 +15,7 @@ const opaqueSurchargeId = encodeOpaqueId("reaction/surcharge", internalSurcharge
 const shopName = "Test Shop";
 let testApp;
 let surchargeById;
+let mockAdminAccount;
 
 const mockSurcharge = Factory.Surcharge.makeOne({
   _id: internalSurchargeId,
@@ -35,6 +36,23 @@ beforeAll(async () => {
 
   await insertPrimaryShop(testApp.context, { _id: internalShopId, name: shopName });
   await testApp.collections.Surcharges.insertOne(mockSurcharge);
+
+  const adminGroup = Factory.Group.makeOne({
+    _id: "adminGroup",
+    createdBy: null,
+    name: "admin",
+    permissions: ["reaction:legacy:surcharges/read"],
+    slug: "admin",
+    shopId: internalShopId
+  });
+  await testApp.collections.Groups.insertOne(adminGroup);
+
+  mockAdminAccount = Factory.Account.makeOne({
+    groups: [adminGroup._id]
+  });
+  await testApp.createUserAndAccount(mockAdminAccount);
+  await testApp.setLoggedInUser(mockAdminAccount);
+
   surchargeById = testApp.query(SurchargeByIdQuery);
 });
 
