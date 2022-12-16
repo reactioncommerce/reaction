@@ -1,7 +1,8 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js";
+import _ from "lodash";
 import applyPromotions from "../handlers/applyPromotions.js";
-import { checkForChangedCart } from "./checkCartForPromotionChange.js";
+import { hasChanged } from "./checkCartForPromotionChange.js";
 
 const existingCart = {
   appliedPromotions: [{
@@ -29,9 +30,8 @@ test("should trigger a saveCart mutation when promotions are completely differen
     }]
   };
   applyPromotions.mockImplementation(() => updatedCart);
-  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Cart, "cartId");
+  const { updated } = await hasChanged(mockContext, mockContext.collections.Cart, "cartId");
   expect(updated).toBeTruthy();
-  expect(reason).toEqual("new or missing promotion");
 });
 
 test("should trigger a saveCart mutation when promotions are slightly different", async () => {
@@ -43,21 +43,20 @@ test("should trigger a saveCart mutation when promotions are slightly different"
     }]
   };
   applyPromotions.mockImplementation(() => updatedCart);
-  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Cart, "cartId");
+  const { updated } = await hasChanged(mockContext, mockContext.collections.Cart, "cartId");
   expect(updated).toBeTruthy();
-  expect(reason).toEqual("promotions not equal");
 });
 
 test("should not trigger a saveCart mutation when the cart has not changed", async () => {
   applyPromotions.mockImplementation(() => existingCart);
-  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Cart, "cartId");
+  const { updated } = await hasChanged(mockContext, mockContext.collections.Cart, "cartId");
   expect(updated).toBeFalsy();
-  expect(reason).toBeNull();
 });
 
 test("should not trigger a saveCart mutation when only the updatedAt date changed", async () => {
+  const updatedAtCart = _.cloneDeep(existingCart);
+  updatedAtCart.appliedPromotions[0].updatedAt = new Date("1970-January-01");
   applyPromotions.mockImplementation(() => existingCart);
-  const { updated, reason } = await checkForChangedCart(mockContext, mockContext.collections.Cart, "cartId");
+  const { updated } = await hasChanged(mockContext, mockContext.collections.Cart, "cartId");
   expect(updated).toBeFalsy();
-  expect(reason).toBeNull();
 });
