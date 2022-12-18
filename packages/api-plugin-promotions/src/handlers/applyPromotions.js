@@ -6,6 +6,7 @@ import _ from "lodash";
 import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
 import isPromotionExpired from "../utils/isPromotionExpired.js";
+import getCurrentShopTime from "../utils/getCurrentShopTime.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
@@ -77,16 +78,17 @@ function getCustomCurrentTime(context) {
  * @returns {Promise<Date>} - The current time
  */
 export async function getCurrentTime(context, shopId) {
-  const now = new Date();
+  const shopTimes = await getCurrentShopTime(context);
+  const currentShopTime = shopTimes[shopId];
   const customCurrentTime = getCustomCurrentTime(context);
 
-  if (!customCurrentTime) return now;
-  if (!(await context.userHasPermission("reaction:legacy:promotions", "preview", { shopId }))) return now;
+  if (!customCurrentTime) return currentShopTime;
+  if (!(await context.userHasPermission("reaction:legacy:promotions", "preview", { shopId }))) return currentShopTime;
 
   const currentTime = new Date(customCurrentTime);
   if (currentTime.toString() === "Invalid Date") {
     Logger.warn("Invalid custom current time provided. Returning system time.");
-    return now;
+    return currentShopTime;
   }
   return currentTime;
 }
@@ -98,9 +100,9 @@ export async function getCurrentTime(context, shopId) {
  * @returns {Promise<Object>} - mutated cart
  */
 export default async function applyPromotions(context, cart) {
+  const { promotions: pluginPromotions, simpleSchemas: { Cart, CartPromotionItem } } = context;
   const currentTime = await getCurrentTime(context, cart.shopId);
   const promotions = await getImplicitPromotions(context, cart.shopId, currentTime);
-  const { promotions: pluginPromotions, simpleSchemas: { Cart, CartPromotionItem } } = context;
 
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
@@ -138,7 +140,7 @@ export default async function applyPromotions(context, cart) {
       continue;
     }
 
-    if (isPromotionExpired(promotion)) {
+    if (isPromotionExpired(currentTime, promotion)) {
       Logger.info({ ...logCtx, promotionId: promotion._id }, "Promotion is expired, skipping");
       if (canAddToCartMessages(promotion)) {
         cartMessages.push(createCartMessage({

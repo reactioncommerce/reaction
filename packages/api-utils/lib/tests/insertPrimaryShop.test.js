@@ -48,7 +48,7 @@ const expectedShopBase = {
   language: "en",
   languages: [{ label: "mockLabel", i18n: "mockI18n", enabled: false }],
   public: "mockPublic",
-  timezone: "mockTimezone",
+  timezone: "US/Pacific",
   baseUOL: "mockBaseUOL",
   unitsOfLength: [
     {

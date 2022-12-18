@@ -55,6 +55,46 @@ beforeAll(async () => {
     groups: ["adminGroup"],
     shopId: internalShopId
   });
+
+  const shop = await testApp.collections.Shops.findOne({ _id: decodeOpaqueIdForNamespace("reaction/shop")(opaqueShopId) });
+
+  const now = new Date(new Date().toLocaleString("en-US", { timeZone: shop.timezone }));
+
+  mockPromotion = Factory.Promotion.makeOne({
+    actions: [
+      {
+        actionKey: "discounts",
+        actionParameters: {
+          discountType: "order",
+          discountCalculationType: "percentage",
+          discountValue: 50
+        }
+      }
+    ],
+    triggers: [
+      {
+        triggerKey: "offers",
+        triggerParameters: {
+          name: "50 percent off your entire order when you spend more then $100",
+          conditions: {
+            all: [
+              {
+                fact: "totalItemAmount",
+                operator: "greaterThanInclusive",
+                value: 100
+              }
+            ]
+          }
+        }
+      }
+    ],
+    triggerType: "implicit",
+    promotionType: "order-discount",
+    startDate: now,
+    endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
+    enabled: true,
+    shopId: decodeOpaqueIdForNamespace("reaction/shop")(opaqueShopId)
+  });
   await testApp.createUserAndAccount(mockAdminAccount);
 
   await testApp.collections.Sequences.insertOne({

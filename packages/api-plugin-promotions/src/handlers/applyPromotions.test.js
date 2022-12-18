@@ -2,10 +2,12 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import Random from "@reactioncommerce/random";
 import canBeApplied from "../utils/canBeApplied.js";
 import isPromotionExpired from "../utils/isPromotionExpired.js";
+import getCurrentShopTime from "../utils/getCurrentShopTime.js";
 import applyPromotions, { createCartMessage, getCurrentTime } from "./applyPromotions.js";
 
 jest.mock("../utils/canBeApplied.js", () => jest.fn());
 jest.mock("../utils/isPromotionExpired.js", () => jest.fn());
+jest.mock("../utils/getCurrentShopTime.js", () => jest.fn().mockReturnValue(Promise.resolve({ shopId: new Date() })));
 
 const testTrigger = jest.fn().mockReturnValue(Promise.resolve(true));
 const testAction = jest.fn();
@@ -319,6 +321,8 @@ describe("cart message", () => {
 test("getCurrentTime should return system time when user doesn't have preview permission", async () => {
   const shopId = "shopId";
   const date = new Date();
+
+  getCurrentShopTime.mockReturnValue(Promise.resolve({ shopId: date }));
 
   mockContext.userHasPermission.mockReturnValue(false);
 
