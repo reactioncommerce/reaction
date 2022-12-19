@@ -7,8 +7,12 @@ import groupsByAccount from "./groupsByAccount.js";
 import groupsById from "./groupsById.js";
 import invitations from "./invitations.js";
 import userAccount from "./userAccount.js";
+import filterAccounts from "./filterAccounts.js";
+import filterCustomers from "./filterCustomers.js";
 
 export default {
+  filterAccounts,
+  filterCustomers,
   accountByUserId,
   accounts,
   customers,
