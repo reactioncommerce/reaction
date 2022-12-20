@@ -5,22 +5,22 @@ const OrderPromotion = {
   referenceId: 1,
   triggerType: "implicit",
   promotionType: "order-discount",
-  name: "50 percent off over $100",
-  label: "50 percent off your entire order when you spend more then $200",
-  description: "50 percent off your entire order when you spend more then $200",
-  enabled: true,
+  name: "5 percent off over $100",
+  label: "5 percent off your entire order when you spend more then $10",
+  description: "5 percent off your entire order when you spend more then $10",
+  enabled: false,
   state: "created",
   triggers: [
     {
       triggerKey: "offers",
       triggerParameters: {
-        name: "50 percent off your entire order when you spend more then $200",
+        name: "5 percent off your entire order when you spend more then $10",
         conditions: {
           all: [
             {
               fact: "totalItemAmount",
               operator: "greaterThanInclusive",
-              value: 200
+              value: 10
             }
           ]
         }
@@ -33,7 +33,7 @@ const OrderPromotion = {
       actionParameters: {
         discountType: "order",
         discountCalculationType: "percentage",
-        discountValue: 50,
+        discountValue: 5,
         neverStackWithOtherItemLevelDiscounts: false
       }
     }
@@ -48,90 +48,11 @@ const OrderPromotion = {
   }
 };
 
-const OrderItemPromotion = {
-  _id: "itemPromotion",
-  referenceId: 2,
-  triggerType: "implicit",
-  promotionType: "item-discount",
-  name: "50 percent off when item is over $500",
-  label: "50 percent off your entire order when you spend more then $500",
-  description: "50 percent off your entire order when you spend more then $500",
-  enabled: true,
-  state: "created",
-  triggers: [
-    {
-      triggerKey: "offers",
-      triggerParameters: {
-        name: "50 percent off your entire order when you spend more then $500",
-        conditions: {
-          all: [
-            {
-              fact: "totalItemAmount",
-              operator: "greaterThanInclusive",
-              value: 500
-            }
-          ]
-        }
-      }
-    }
-  ],
-  actions: [
-    {
-      actionKey: "discounts",
-      actionParameters: {
-        discountType: "item",
-        discountCalculationType: "percentage",
-        discountValue: 50,
-        neverStackWithOtherItemLevelDiscounts: false
-      }
-    }
-  ],
-  startDate: now,
-  endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackability: {
-    key: "all",
-    parameters: {}
-  },
-  createdAt: new Date(),
-  updatedAt: new Date()
-};
-
-const CouponPromotion = {
-  _id: "couponPromotion",
-  referenceId: 3,
-  name: "Enter code CODE for special offers",
-  triggerType: "explicit",
-  promotionType: "order-discount",
-  label: "Specific coupon code",
-  description: "Specific coupon code",
-  enabled: true,
-  state: "created",
-  triggers: [
-    {
-      triggerKey: "coupons",
-      triggerParameters: {
-        name: "Specific coupon code",
-        couponCode: "CODE"
-      }
-    }
-  ],
-  actions: [
-    {
-      actionKey: "noop",
-      actionParameters: {}
-    }
-  ],
-  startDate: now,
-  endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-  stackability: {
-    key: "all",
-    parameters: {}
-  },
-  createdAt: new Date(),
-  updatedAt: new Date()
-};
-
-const promotions = [OrderPromotion, OrderItemPromotion, CouponPromotion];
+const promotions = new Array(10).fill(OrderPromotion).map((promotion, index) => ({
+  ...promotion,
+  _id: `orderPromotion${index}`,
+  referenceId: index,
+}));
 
 /**
  * @summary Load promotions fixtures
