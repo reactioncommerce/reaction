@@ -35,11 +35,11 @@ export default async function register(app) {
       Promotions: {
         name: "Promotions",
         indexes: [
-          [{ shopId: 1, type: 1, enabled: 1, startDate: 1, endDate: 1 }, { name: "shopId__type__enabled__startDate_endDate" }],
+          [{ shopId: 1, triggerType: 1, enabled: 1, state: 1, startDate: 1 }, { name: "shopId__triggerType__enabled__state__startDate" }],
           [{ shopId: 1, referenceId: 1 }, { unique: true }],
           [
-            { "shopId": 1, "type": 1, "enabled": 1, "triggers.triggerKey": 1, "triggers.triggerParameters.couponCode": 1, "startDate": 1 },
-            { name: "shopId__type__enabled__triggerKey__couponCode__startDate" }
+            { "shopId": 1, "triggerType": 1, "enabled": 1, "triggers.triggerKey": 1, "triggers.triggerParameters.couponCode": 1, "startDate": 1 },
+            { name: "shopId__triggerType__enabled__triggerKey__couponCode__startDate" }
           ]
         ]
       }

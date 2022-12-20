@@ -21,17 +21,24 @@ const logCtx = {
  * @summary get all implicit promotions
  * @param {Object} context - The application context
  * @param {String} shopId - The shop ID
+ * @param {Date} currentTime - The current time
  * @returns {Promise<Array<Object>>} - An array of promotions
  */
-async function getImplicitPromotions(context, shopId) {
-  const now = new Date();
+async function getImplicitPromotions(context, shopId, currentTime) {
   const { collections: { Promotions } } = context;
-  const promotions = await Promotions.find({
+
+  const selector = {
     shopId,
     enabled: true,
     triggerType: "implicit",
-    startDate: { $lt: now }
-  }).toArray();
+    startDate: { $lte: currentTime },
+    state: {
+      $in: ["created", "active"]
+    }
+  };
+
+  const promotions = await Promotions.find(selector).toArray();
+
   Logger.info({ ...logCtx, applicablePromotions: promotions.length }, "Fetched applicable promotions");
   return promotions;
 }
@@ -56,14 +63,45 @@ export function createCartMessage({ title, message, severity = "info", ...params
 }
 
 /**
+ * @summary get custom current time from header
+ * @param {Object} context - The application context
+ * @returns {String|undefined} - The custom current time
+ */
+function getCustomCurrentTime(context) {
+  return context.session?.req?.headers["x-custom-current-promotion-time"];
+}
+
+/**
+ * @summary get the current time
+ * @param {Object} context - The application context
+ * @param {String} shopId - The shop ID
+ * @returns {Promise<Date>} - The current time
+ */
+export async function getCurrentTime(context, shopId) {
+  const now = new Date();
+  const customCurrentTime = getCustomCurrentTime(context);
+
+  if (!customCurrentTime) return now;
+  if (!(await context.userHasPermission("reaction:legacy:promotions", "review", { shopId }))) return now;
+
+  const currentTime = new Date(customCurrentTime);
+  if (currentTime.toString() === "Invalid Date") {
+    Logger.warn("Invalid custom current time provided. Returning system time.");
+    return now;
+  }
+  return currentTime;
+}
+
+/**
  * @summary apply promotions to a cart
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
  * @returns {Promise<Object>} - mutated cart
  */
 export default async function applyPromotions(context, cart) {
-  const promotions = await getImplicitPromotions(context, cart.shopId);
+  const currentTime = await getCurrentTime(context, cart.shopId);
   const { promotions: pluginPromotions, simpleSchemas: { Cart } } = context;
+  const promotions = await getImplicitPromotions(context, cart.shopId, currentTime);
 
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");

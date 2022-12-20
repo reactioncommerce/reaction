@@ -2,7 +2,7 @@ import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import Random from "@reactioncommerce/random";
 import canBeApplied from "../utils/canBeApplied.js";
 import isPromotionExpired from "../utils/isPromotionExpired.js";
-import applyPromotions, { createCartMessage } from "./applyPromotions.js";
+import applyPromotions, { createCartMessage, getCurrentTime } from "./applyPromotions.js";
 
 jest.mock("../utils/canBeApplied.js", () => jest.fn());
 jest.mock("../utils/isPromotionExpired.js", () => jest.fn());
@@ -279,4 +279,39 @@ test("should not have promotion message when the promotion already message added
   await applyPromotions(mockContext, cart);
 
   expect(cart.messages.length).toEqual(1);
+});
+
+test("getCurrentTime should return system time when user doesn't have review permission", async () => {
+  const shopId = "shopId";
+  const date = new Date();
+
+  mockContext.userHasPermission.mockReturnValue(false);
+
+  const time = await getCurrentTime(mockContext, shopId);
+
+  expect(time).toEqual(date);
+});
+
+test("getCurrentTime should return custom time when user has review permission", async () => {
+  const shopId = "shopId";
+  const customTime = "2023-01-01T00:00:00.000Z";
+
+  mockContext.session = {
+    req: {
+      headers: { "x-custom-current-promotion-time": customTime }
+    }
+  };
+  mockContext.collections = {
+    Promotions: {
+      find: jest.fn().mockReturnValue({
+        toArray: jest.fn().mockReturnValue([])
+      })
+    }
+  };
+
+  mockContext.userHasPermission.mockReturnValue(true);
+
+  const time = await getCurrentTime(mockContext, shopId);
+
+  expect(time).toEqual(new Date(customTime));
 });
