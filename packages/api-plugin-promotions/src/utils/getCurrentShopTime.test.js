@@ -21,5 +21,5 @@ test("returns time for local timezone for all shops", async () => {
   const dt2 = currentShopTime.shop2;
   let diff = (dt1.getTime() - dt2.getTime()) / 1000;
   diff /= (60 * 60);
-  expect(diff).toEqual(-3);
+  expect(Number(diff.toFixed(3))).toEqual(-3);
 });
