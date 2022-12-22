@@ -102,6 +102,9 @@ jobs:
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
+      - image: redis
+        ports:
+          - "6379:6379"
     steps:
       - checkout
       - restore_cache:
@@ -129,6 +132,9 @@ jobs:
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
+      - image: redis
+        ports:
+          - "6379:6379"
     steps:
       - checkout
       - restore_cache:
@@ -167,8 +173,8 @@ jobs:
       - run:
           name: Check should build new image
           command: |
-            VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
-            if curl --silent -f --head -lL https://hub.docker.com/v2/repositories/${DOCKER_REPOSITORY}/tags/${VERSION}/ > /dev/null; then
+            head_commit=$(git log -1 --oneline | grep -m 1 releases)
+            if [[ $head_commit != *"/releases/docker-image"* ]]; then
               circleci-agent step halt
             fi
       - run:
@@ -189,6 +195,7 @@ jobs:
             echo "ROOT_URL=http://localhost:3000" >> .env
             echo "STORE_URL=http://localhost:4000" >> .env
             echo "STRIPE_API_KEY=YOUR_PRIVATE_STRIPE_API_KEY" >> .env
+            echo "REDIS_SERVER=redis://127.0.0.1:6379" >> .env
       - run:
           name: Create reaction.localhost network
           command: docker network create "reaction.localhost" || true
@@ -260,4 +267,9 @@ workflows:
               only:
                 - trunk
           requires:
-            - release
+            - dockerfile-lint
+            - eslint
+            - graphql-lint
+            - test-unit
+            - test-integration-query
+            - test-integration-mutation
