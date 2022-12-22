@@ -25,7 +25,8 @@ const testPromotion = {
   stackability: {
     key: "none",
     parameters: {}
-  }
+  },
+  enabled: true
 };
 
 beforeEach(() => {

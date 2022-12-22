@@ -25,6 +25,10 @@ const opaqueProductId = encodeProductOpaqueId(999);
 const internalTagIds = ["923", "924"];
 const internalVariantIds = ["875", "874", "925"];
 
+const internalProductTwoId = "888";
+const opaqueProductTwoId = encodeProductOpaqueId(888);
+const internalVariantTwoIds = ["889", "890"];
+
 const shopName = "Test Shop";
 
 const mockProduct = {
@@ -65,6 +69,35 @@ const mockOptionTwo = {
   price: 29.99
 };
 
+const mockProductTwo = {
+  _id: internalProductTwoId,
+  ancestors: [],
+  title: "Fake Product two",
+  isDeleted: false,
+  isVisible: true,
+  supportedFulfillmentTypes: ["shipping"],
+  vendor: "Nike"
+};
+
+const mockVariantTwo = {
+  _id: internalVariantTwoIds[0],
+  ancestors: [internalProductTwoId],
+  attributeLabel: "Variant",
+  title: "Fake Product Two Variant",
+  isDeleted: false,
+  isVisible: true
+};
+
+const mockOptionTwoOne = {
+  _id: internalVariantTwoIds[1],
+  ancestors: [internalProductTwoId, internalVariantTwoIds[0]],
+  attributeLabel: "Option",
+  title: "Fake Product Two Option One",
+  isDeleted: false,
+  isVisible: true,
+  price: 19.99
+};
+
 const mockShippingMethod = {
   _id: "mockShippingMethod",
   name: "Default Shipping Provider",
@@ -76,9 +109,7 @@ const mockShippingMethod = {
   methods: [
     {
       cost: 2.5,
-      fulfillmentTypes: [
-        "shipping"
-      ],
+      fulfillmentTypes: ["shipping"],
       group: "Ground",
       handling: 1.5,
       label: "Standard mockMethod",
@@ -149,9 +180,7 @@ beforeAll(async () => {
 
   const {
     createShop: {
-      shop: {
-        _id: newShopId
-      }
+      shop: { _id: newShopId }
     }
   } = await createShop({
     input: {
@@ -193,14 +222,20 @@ beforeAll(async () => {
   mockVariant.shopId = internalShopId;
   mockOptionOne.shopId = internalShopId;
   mockOptionTwo.shopId = internalShopId;
+  mockProductTwo.shopId = internalShopId;
+  mockVariantTwo.shopId = internalShopId;
+  mockOptionTwoOne.shopId = internalShopId;
   await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insertOne({ _id, shopId: internalShopId, slug: `slug${_id}` })));
   await testApp.collections.Products.insertOne(mockProduct);
   await testApp.collections.Products.insertOne(mockVariant);
   await testApp.collections.Products.insertOne(mockOptionOne);
   await testApp.collections.Products.insertOne(mockOptionTwo);
+  await testApp.collections.Products.insertOne(mockProductTwo);
+  await testApp.collections.Products.insertOne(mockVariantTwo);
+  await testApp.collections.Products.insertOne(mockOptionTwoOne);
 
   // Publish products to the catalog
-  await publishProducts({ productIds: [opaqueProductId] });
+  await publishProducts({ productIds: [opaqueProductId, opaqueProductTwoId] });
 });
 
 // eslint-disable-next-line require-jsdoc
@@ -213,7 +248,9 @@ export default function getCommonData() {
     encodeProductOpaqueId,
     internalShopId,
     internalVariantIds,
+    internalVariantTwoIds,
     opaqueProductId,
+    opaqueProductTwoId,
     opaqueShopId,
     placeOrder,
     publishProducts,
