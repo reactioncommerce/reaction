@@ -93,7 +93,6 @@ test("should insert a new coupon and results created results", async () => {
       find: jest.fn().mockReturnValue({
         toArray: jest.fn().mockResolvedValueOnce([])
       }),
-      findOne: jest.fn().mockResolvedValueOnce(Promise.resolve(null)),
       insertOne: jest.fn().mockResolvedValueOnce(Promise.resolve({ insertedId: "123", insertedCount: 1 }))
     },
     Promotions: {

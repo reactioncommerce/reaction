@@ -2,6 +2,7 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
+import ReactionError from "@reactioncommerce/reaction-error";
 import _ from "lodash";
 import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
@@ -96,9 +97,12 @@ export default async function applyPromotions(context, cart) {
 
   const unqualifiedPromotions = promotions.concat(_.map(explicitPromotions, (promotion) => {
     const existsPromotion = _.find(cart.appliedPromotions || [], { _id: promotion._id });
-    if (existsPromotion) promotion.relatedCoupon = existsPromotion.relatedCoupon;
+    if (existsPromotion) promotion.relatedCoupon = existsPromotion.relatedCoupon || undefined;
+    if (typeof existsPromotion?.newlyAdded !== "undefined") promotion.newlyAdded = existsPromotion.newlyAdded;
     return promotion;
   }));
+
+  const newlyAddedPromotionId = _.find(unqualifiedPromotions, "newlyAdded")?._id;
 
   for (const { cleanup } of pluginPromotions.actions) {
     cleanup && await cleanup(context, cart);
@@ -195,7 +199,13 @@ export default async function applyPromotions(context, cart) {
     }
   }
 
-  enhancedCart.appliedPromotions = appliedPromotions;
+  // If a explicit promotion was just applied, throw an error so that the client can display the message
+  if (newlyAddedPromotionId) {
+    const message = _.find(cartMessages, ({ metaFields }) => metaFields.promotionId === newlyAddedPromotionId);
+    if (message) throw new ReactionError("invalid-params", message.message);
+  }
+
+  enhancedCart.appliedPromotions = _.map(appliedPromotions, (promotion) => _.omit(promotion, "newlyAdded"));
 
   // Remove messages that are no longer relevant
   const cleanedMessages = _.filter(cartMessages, (message) => {

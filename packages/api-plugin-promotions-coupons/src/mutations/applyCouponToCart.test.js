@@ -159,6 +159,73 @@ test("should throw error when more than one coupon have same code", async () => 
   })).rejects.toThrow(expectedError);
 });
 
+test("should throw error if promotion expired", async () => {
+  const cart = { _id: "cartId" };
+  const promotion = {
+    _id: "promotionId",
+    type: "explicit"
+  };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId"
+  };
+  mockContext.collections.Promotions = {
+    findOne: jest.fn().mockResolvedValueOnce(promotion)
+  };
+  mockContext.collections.Cart = {
+    findOne: jest.fn().mockResolvedValueOnce(cart)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon])
+    })
+  };
+
+  const expectedError = new ReactionError("not-found", "The coupon CODE is not found");
+
+  expect(applyCouponToCart(mockContext, {
+    shopId: "_shopId",
+    cartId: "_id",
+    couponCode: "CODE",
+    cartToken: "anonymousToken"
+  })).rejects.toThrow(expectedError);
+});
+
+test("should throw error when more than one coupon have same code", async () => {
+  const cart = { _id: "cartId" };
+  const promotion = {
+    _id: "promotionId",
+    type: "explicit"
+  };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId"
+  };
+
+  mockContext.collections.Promotions = {
+    findOne: jest.fn().mockResolvedValueOnce(promotion)
+  };
+  mockContext.collections.Cart = {
+    findOne: jest.fn().mockResolvedValueOnce(cart)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon, coupon])
+    })
+  };
+
+  const expectedError = new ReactionError("not-found", "The coupon have duplicate with other promotion. Please contact admin for more information");
+
+  expect(applyCouponToCart(mockContext, {
+    shopId: "_shopId",
+    cartId: "_id",
+    couponCode: "CODE",
+    cartToken: "anonymousToken"
+  })).rejects.toThrow(expectedError);
+});
+
 test("should throw error if promotion already exists on the cart", async () => {
   const now = new Date();
   const cart = {

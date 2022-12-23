@@ -9,7 +9,10 @@ export default async function applyExplicitPromotion(context, cart, promotion) {
   if (!Array.isArray(cart.appliedPromotions)) {
     cart.appliedPromotions = [];
   }
-  cart.appliedPromotions.push(promotion);
+  cart.appliedPromotions.push({
+    ...promotion,
+    newlyAdded: true
+  });
   const updatedCart = await context.mutations.saveCart(context, cart);
   return updatedCart;
 }
