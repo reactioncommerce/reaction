@@ -67,7 +67,7 @@
     "express": "^4.17.1",
     "graphql-iso-date": "^3.6.1",
     "lodash": "^4.17.15",
-    "mongodb": "3.6.2",
+    "mongodb": "4.4.1",
     "promise-retry": "^1.1.1",
     "simpl-schema": "^1.7.0"
   },
