@@ -82,7 +82,7 @@ export async function getCurrentTime(context, shopId) {
   const customCurrentTime = getCustomCurrentTime(context);
 
   if (!customCurrentTime) return now;
-  if (!(await context.userHasPermission("reaction:legacy:promotions", "review", { shopId }))) return now;
+  if (!(await context.userHasPermission("reaction:legacy:promotions", "preview", { shopId }))) return now;
 
   const currentTime = new Date(customCurrentTime);
   if (currentTime.toString() === "Invalid Date") {

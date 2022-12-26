@@ -89,7 +89,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:promotions/create",
   "reaction:legacy:promotions/read",
   "reaction:legacy:promotions/update",
-  "reaction:legacy:promotions/review"
+  "reaction:legacy:promotions/preview"
 ];
 
 export const defaultShopOwnerRoles = [
