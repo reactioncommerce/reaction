@@ -281,7 +281,7 @@ test("should not have promotion message when the promotion already message added
   expect(cart.messages.length).toEqual(1);
 });
 
-test("getCurrentTime should return system time when user doesn't have review permission", async () => {
+test("getCurrentTime should return system time when user doesn't have preview permission", async () => {
   const shopId = "shopId";
   const date = new Date();
 
@@ -292,7 +292,7 @@ test("getCurrentTime should return system time when user doesn't have review per
   expect(time).toEqual(date);
 });
 
-test("getCurrentTime should return custom time when user has review permission", async () => {
+test("getCurrentTime should return custom time when user has preview permission", async () => {
   const shopId = "shopId";
   const customTime = "2023-01-01T00:00:00.000Z";
 
