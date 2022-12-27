@@ -99,6 +99,67 @@ input CouponFilter {
   userId: ID
 }
 
+"The input for the createStandardCoupon mutation"
+input CreateStandardCouponInput {
+  "The shop ID"
+  shopId: ID!
+  
+  "The promotion ID"
+  promotionId: ID!
+
+  "The coupon code"
+  code: String!
+
+  "Can use this coupon in the store"
+  canUseInStore: Boolean!
+  
+  "The number of times this coupon can be used per user"
+  maxUsageTimesPerUser: Int
+
+  "The number of times this coupon can be used"
+  maxUsageTimes: Int
+}
+
+input CouponQueryInput {
+  "The unique ID of the coupon"
+  _id: String!
+
+  "The unique ID of the shop"
+  shopId: String!
+}
+
+input CouponFilter {
+  "The expiration date of the coupon"
+  expirationDate: Date
+
+  "The related promotion ID"
+  promotionId: ID
+
+  "The coupon code"
+  code: String
+
+  "The coupon name"
+  userId: ID
+}
+
+"Input for the removeCouponFromCart mutation"
+input RemoveCouponFromCartInput {
+
+  shopId: ID!
+
+  "The ID of the Cart"
+  cartId: ID!
+
+  "The promotion that contains the coupon to remove"
+  promotionId: ID!
+
+  "The account ID of the user who is applying the coupon"
+  accountId: ID
+
+  "Cart token, if anonymous"
+  token: String
+}
+
 "The response for the applyCouponToCart mutation"
 type ApplyCouponToCartPayload {
   cart: Cart
@@ -107,6 +168,11 @@ type ApplyCouponToCartPayload {
 type StandardCouponPayload {
   success: Boolean!
   coupon: Coupon!
+}
+
+"The response for the removeCouponFromCart mutation"
+type RemoveCouponFromCartPayload {
+  cart: Cart
 }
 
 "A connection edge in which each node is a `Coupon` object"
@@ -176,9 +242,15 @@ extend type Mutation {
     input: ApplyCouponToCartInput
   ): ApplyCouponToCartPayload
 
-"Create a standard coupon mutation"
+  "Create a standard coupon mutation"
   createStandardCoupon(
     "The createStandardCoupon mutation input"
     input: CreateStandardCouponInput
   ): StandardCouponPayload
+
+  "Remove a coupon from a cart"
+  removeCouponFromCart(
+    "The removeCouponFromCart mutation input"
+    input: RemoveCouponFromCartInput
+  ): RemoveCouponFromCartPayload
 }
