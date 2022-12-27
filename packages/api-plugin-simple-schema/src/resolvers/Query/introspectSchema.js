@@ -1,5 +1,5 @@
 /**
- * @name Query/queryFields
+ * @name Query/introspectSchema
  * @method
  * @memberof SimpleSchema/GraphQL
  * @summary accept the input schema name and return JSON schema
@@ -10,8 +10,8 @@
  * @param {Object} context - an object containing the per-request state
  * @returns {Promise<Object>} JSON schema object
  */
-export default async function shop(_, args, context) {
+export default async function introspectSchema(_, args, context) {
   const { shopId, schemaName } = args;
-  const returnJsonSchema = await context.queries.queryFields(context, { shopId, schemaName });
+  const returnJsonSchema = await context.queries.introspectSchema(context, { shopId, schemaName });
   return { schemaName, schema: returnJsonSchema };
 }

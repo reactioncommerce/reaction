@@ -46,7 +46,7 @@ function updateJsonSchema(jsonSchema) {
 }
 
 /**
- * @name queryFields
+ * @name introspectSchema
  * @summary Extract the Schema of the required collection from context, convert to Json and return
  * @param {Object} context - an object containing the per-request state
  * @param {Object} args - an object of all arguments that were sent by the client
@@ -54,7 +54,7 @@ function updateJsonSchema(jsonSchema) {
  * @param {String} [args.schemaName] - schemaName to query
  * @returns {Promise<Object>} JSON Schema object Promise
  */
-export default async function queryFields(context, { shopId, schemaName } = {}) {
+export default async function introspectSchema(context, { shopId, schemaName } = {}) {
   const validationString = "reaction:legacy:simpleSchema";
   inputSchema.validate({ shopId, schemaName });
 
