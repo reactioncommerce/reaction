@@ -58,4 +58,3 @@ jobs:
           branch: "releases/docker-image-${{ steps.get-docker-version.outputs.NEW_DOCKER_IMAGE_VERSION }}"
           commit-message: "feat: update docker-compose file to ${{ steps.get-docker-version.outputs.NEW_DOCKER_IMAGE_VERSION }} [Docker Release]"
           signoff: true
-          committer: $(git --no-pager log --format=format:'%an' -n 1) <$(git --no-pager log --format=format:'%ae' -n 1)>
