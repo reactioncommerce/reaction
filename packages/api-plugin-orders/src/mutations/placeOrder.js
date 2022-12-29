@@ -7,6 +7,7 @@ import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAcc
 import buildOrderFulfillmentGroupFromInput from "../util/buildOrderFulfillmentGroupFromInput.js";
 import verifyPaymentsMatchOrderTotal from "../util/verifyPaymentsMatchOrderTotal.js";
 import { Order as OrderSchema, orderInputSchema, Payment as PaymentSchema, paymentInputSchema } from "../simpleSchemas.js";
+import { customOrderValidators } from "../registration.js";
 
 const inputSchema = new SimpleSchema({
   "order": orderInputSchema,
@@ -288,6 +289,11 @@ export default async function placeOrder(context, input) {
 
   // Validate and save
   OrderSchema.validate(order);
+
+  for (const customOrderValidateFunc of customOrderValidators) {
+    await customOrderValidateFunc.fn(context, order); // eslint-disable-line no-await-in-loop
+  }
+
   await Orders.insertOne(order);
 
   await appEvents.emit("afterOrderCreate", { createdBy: userId, order });

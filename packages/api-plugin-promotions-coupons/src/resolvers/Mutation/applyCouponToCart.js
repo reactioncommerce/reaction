@@ -1,5 +1,3 @@
-import { decodeCartOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
-
 /**
  * @method applyCouponToCart
  * @summary Apply a coupon to the cart
@@ -11,16 +9,6 @@ import { decodeCartOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object>} with updated cart
  */
 export default async function applyCouponToCart(_, { input }, context) {
-  const { shopId, cartId, couponCode, token } = input;
-  const decodedCartId = decodeCartOpaqueId(cartId);
-  const decodedShopId = decodeShopOpaqueId(shopId);
-
-  const appliedCart = await context.mutations.applyCouponToCart(context, {
-    shopId: decodedShopId,
-    cartId: decodedCartId,
-    cartToken: token,
-    couponCode
-  });
-
+  const appliedCart = await context.mutations.applyCouponToCart(context, input);
   return { cart: appliedCart };
 }
