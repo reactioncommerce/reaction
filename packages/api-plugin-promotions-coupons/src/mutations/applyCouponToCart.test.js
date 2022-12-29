@@ -17,11 +17,21 @@ test("should call applyExplicitPromotionToCart mutation", async () => {
     type: "explicit",
     endDate: new Date(now.setMonth(now.getMonth() + 1))
   };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId"
+  };
   mockContext.collections.Cart = {
     findOne: jest.fn().mockResolvedValueOnce(cart)
   };
   mockContext.collections.Promotions = {
     findOne: jest.fn().mockResolvedValueOnce(promotion)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon])
+    })
   };
   mockContext.mutations.applyExplicitPromotionToCart = jest.fn().mockName("applyExplicitPromotionToCart").mockResolvedValueOnce(cart);
 
@@ -32,7 +42,15 @@ test("should call applyExplicitPromotionToCart mutation", async () => {
     cartToken: "anonymousToken"
   });
 
-  expect(mockContext.mutations.applyExplicitPromotionToCart).toHaveBeenCalledWith(mockContext, cart, promotion);
+  const expectedPromotion = {
+    ...promotion,
+    relatedCoupon: {
+      couponId: "couponId",
+      couponCode: "CODE"
+    }
+  };
+
+  expect(mockContext.mutations.applyExplicitPromotionToCart).toHaveBeenCalledWith(mockContext, cart, expectedPromotion);
 });
 
 test("should throw error if cart not found", async () => {
@@ -50,13 +68,22 @@ test("should throw error if cart not found", async () => {
 
 test("should throw error if promotion not found", async () => {
   const cart = { _id: "cartId" };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId"
+  };
 
   mockContext.collections.Promotions = {
     findOne: jest.fn().mockResolvedValueOnce(undefined)
   };
-
   mockContext.collections.Cart = {
     findOne: jest.fn().mockResolvedValueOnce(cart)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon])
+    })
   };
 
   const expectedError = new ReactionError("not-found", "The coupon is not available");
@@ -69,25 +96,62 @@ test("should throw error if promotion not found", async () => {
   })).rejects.toThrow(expectedError);
 });
 
-test("should throw error if promotion expired", async () => {
-  const now = new Date();
+test("should throw error if coupon not found", async () => {
   const cart = { _id: "cartId" };
   const promotion = {
     _id: "promotionId",
-    type: "explicit",
-    endDate: new Date(now.setMonth(now.getMonth() - 1))
+    type: "explicit"
   };
+
   mockContext.collections.Promotions = {
     findOne: jest.fn().mockResolvedValueOnce(promotion)
   };
-
   mockContext.collections.Cart = {
     findOne: jest.fn().mockResolvedValueOnce(cart)
   };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([])
+    })
+  };
 
-  const expectedError = new ReactionError("coupon-expired", "The coupon is expired");
+  const expectedError = new ReactionError("not-found", "The coupon CODE is not found");
 
-  await expect(applyCouponToCart(mockContext, {
+  expect(applyCouponToCart(mockContext, {
+    shopId: "_shopId",
+    cartId: "_id",
+    couponCode: "CODE",
+    cartToken: "anonymousToken"
+  })).rejects.toThrow(expectedError);
+});
+
+test("should throw error when more than one coupon have same code", async () => {
+  const cart = { _id: "cartId" };
+  const promotion = {
+    _id: "promotionId",
+    type: "explicit"
+  };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId"
+  };
+
+  mockContext.collections.Promotions = {
+    findOne: jest.fn().mockResolvedValueOnce(promotion)
+  };
+  mockContext.collections.Cart = {
+    findOne: jest.fn().mockResolvedValueOnce(cart)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon, coupon])
+    })
+  };
+
+  const expectedError = new ReactionError("not-found", "The coupon have duplicate with other promotion. Please contact admin for more information");
+
+  expect(applyCouponToCart(mockContext, {
     shopId: "_shopId",
     cartId: "_id",
     couponCode: "CODE",
@@ -110,16 +174,91 @@ test("should throw error if promotion already exists on the cart", async () => {
     type: "explicit",
     endDate: new Date(now.setMonth(now.getMonth() + 1))
   };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId"
+  };
   mockContext.collections.Cart = {
     findOne: jest.fn().mockResolvedValueOnce(cart)
   };
   mockContext.collections.Promotions = {
     findOne: jest.fn().mockResolvedValueOnce(promotion)
   };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon])
+    })
+  };
 
-  const expectedError = new Error("coupon-already-exists", "The coupon already applied on the cart");
+  const expectedError = new Error("The coupon already applied on the cart");
 
   await expect(applyCouponToCart(mockContext, {
+    shopId: "_shopId",
+    cartId: "_id",
+    couponCode: "CODE",
+    cartToken: "anonymousToken"
+  })).rejects.toThrow(expectedError);
+});
+
+test("should throw error when coupon is expired", async () => {
+  const cart = {
+    _id: "cartId"
+  };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId",
+    maxUsageTimes: 10,
+    usedCount: 10
+  };
+
+  mockContext.collections.Cart = {
+    findOne: jest.fn().mockResolvedValueOnce(cart)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon])
+    })
+  };
+
+  const expectedError = new ReactionError("not-found", "The coupon is expired");
+
+  expect(applyCouponToCart(mockContext, {
+    shopId: "_shopId",
+    cartId: "_id",
+    couponCode: "CODE",
+    cartToken: "anonymousToken"
+  })).rejects.toThrow(expectedError);
+});
+
+test("should throw an error when the coupon reaches the maximum usage limit per user", async () => {
+  const cart = {
+    _id: "cartId"
+  };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId",
+    maxUsageTimesPerUser: 1,
+    usedCount: 1
+  };
+
+  mockContext.collections.Cart = {
+    findOne: jest.fn().mockResolvedValueOnce(cart)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon])
+    })
+  };
+  mockContext.collections.CouponLogs = {
+    findOne: jest.fn().mockResolvedValueOnce({ _id: "couponLogId", usedCount: 1 })
+  };
+
+  const expectedError = new ReactionError("not-found", "The coupon is expired");
+
+  expect(applyCouponToCart(mockContext, {
     shopId: "_shopId",
     cartId: "_id",
     couponCode: "CODE",
@@ -137,9 +276,13 @@ test("should query cart with anonymous token when the input provided cartToken",
   mockContext.collections.Cart = {
     findOne: jest.fn().mockResolvedValueOnce(cart)
   };
-
   mockContext.collections.Promotions = {
     findOne: jest.fn().mockResolvedValueOnce(promotion)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([])
+    })
   };
 
   applyCouponToCart(mockContext, { shopId: "_shopId", cartId: "_id", couponCode: "CODE", cartToken: "anonymousToken" });
@@ -157,6 +300,11 @@ test("should query cart with accountId when request is authenticated user", asyn
     _id: "promotionId",
     type: "explicit"
   };
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId"
+  };
   mockContext.collections.Cart = {
     findOne: jest.fn().mockResolvedValueOnce(cart)
   };
@@ -165,6 +313,11 @@ test("should query cart with accountId when request is authenticated user", asyn
   };
   mockContext.collections.Promotions = {
     findOne: jest.fn().mockResolvedValueOnce(promotion)
+  };
+  mockContext.collections.Coupons = {
+    find: jest.fn().mockReturnValue({
+      toArray: jest.fn().mockResolvedValueOnce([coupon])
+    })
   };
 
   mockContext.userId = "_userId";

@@ -12,6 +12,6 @@ test("should call applyCouponToCart mutation", async () => {
     shopId: "_shopId",
     cartId: "_id",
     couponCode: "CODE",
-    cartToken: "anonymousToken"
+    token: "anonymousToken"
   });
 });

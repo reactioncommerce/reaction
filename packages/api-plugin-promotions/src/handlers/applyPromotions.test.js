@@ -22,6 +22,7 @@ const testPromotion = {
   _id: "test id",
   actions: [{ actionKey: "test" }],
   triggers: [{ triggerKey: "test", triggerParameters: { name: "test trigger" } }],
+  triggerType: "implicit",
   stackability: {
     key: "none",
     parameters: {}
@@ -37,14 +38,21 @@ test("should save cart with implicit promotions are applied", async () => {
     _id: "cartId"
   };
   mockContext.collections.Promotions = {
-    find: () => ({ toArray: jest.fn().mockResolvedValueOnce([testPromotion]) })
+    find: ({ triggerType }) => ({
+      toArray: jest.fn().mockImplementation(() => {
+        if (triggerType === "implicit") {
+          return [testPromotion];
+        }
+        return [];
+      })
+    })
   };
   mockContext.promotions = pluginPromotion;
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() }
   };
-  canBeApplied.mockReturnValueOnce({ qualifies: true });
-  testAction.mockReturnValue({ affected: true });
+  canBeApplied.mockResolvedValue({ qualifies: true });
+  testAction.mockResolvedValue({ affected: true });
 
   await applyPromotions(mockContext, cart);
 

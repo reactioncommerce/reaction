@@ -37,6 +37,26 @@ async function getImplicitPromotions(context, shopId) {
 }
 
 /**
+ * @summary get all explicit promotions by Ids
+ * @param {Object} context - The application context
+ * @param {String} shopId - The shop ID
+ * @param {Array<string>} promotionIds - The promotion IDs
+ * @returns {Promise<Array<Object>>} - An array of promotions
+ */
+async function getExplicitPromotionsByIds(context, shopId, promotionIds) {
+  const now = new Date();
+  const { collections: { Promotions } } = context;
+  const promotions = await Promotions.find({
+    _id: { $in: promotionIds },
+    shopId,
+    enabled: true,
+    triggerType: "explicit",
+    startDate: { $lt: now }
+  }).toArray();
+  return promotions;
+}
+
+/**
  * @summary create the cart message
  * @param {String} params.title - The message title
  * @param {String} params.message - The message body
@@ -69,11 +89,16 @@ export default async function applyPromotions(context, cart) {
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
 
   const appliedPromotions = [];
-  const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]);
+  const appliedExplicitPromotionsIds = _.map(_.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]), "_id");
+  const explicitPromotions = await getExplicitPromotionsByIds(context, cart.shopId, appliedExplicitPromotionsIds);
 
   const cartMessages = cart.messages || [];
 
-  const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
+  const unqualifiedPromotions = promotions.concat(_.map(explicitPromotions, (promotion) => {
+    const existsPromotion = _.find(cart.appliedPromotions || [], { _id: promotion._id });
+    if (existsPromotion) promotion.relatedCoupon = existsPromotion.relatedCoupon;
+    return promotion;
+  }));
 
   for (const { cleanup } of pluginPromotions.actions) {
     cleanup && await cleanup(context, cart);
