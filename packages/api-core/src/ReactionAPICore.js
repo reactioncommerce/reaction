@@ -1,9 +1,10 @@
+/* eslint-disable no-extra-bind */
 import { createServer } from "http";
 import { createRequire } from "module";
 import diehard from "diehard";
 import express from "express";
 import _ from "lodash";
-import mongodb from "mongodb";
+import * as mongodb from "mongodb";
 import SimpleSchema from "simpl-schema";
 import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
 import getAbsoluteUrl from "@reactioncommerce/api-utils/getAbsoluteUrl.js";
@@ -276,43 +277,9 @@ export default class ReactionAPICore {
               // Add the collection instance to `context.collections`.
               // If the collection already exists, we need to modify it instead of calling
               // `createCollection`, in order to add validation options.
-              const getCollectionPromise = new Promise((resolve, reject) => {
-                this.db.collection(
-                  collectionConfig.name,
-                  { strict: true },
-                  (error, collection) => {
-                    if (error) {
-                      // Collection with this name doesn't yet exist
-                      this.db
-                        .createCollection(
-                          collectionConfig.name,
-                          collectionOptions
-                        )
-                        .then((newCollection) => {
-                          resolve(newCollection);
-                          return null;
-                        })
-                        .catch(reject);
-                    } else {
-                      // Collection with this name exists, so modify before resolving
-                      this.db
-                        .command({
-                          collMod: collectionConfig.name,
-                          ...collectionOptions
-                        })
-                        .then(() => {
-                          resolve(collection);
-                          return null;
-                        })
-                        .catch(reject);
-                    }
-                  }
-                );
-              });
-
-              /* eslint-enable promise/no-promise-in-callback */
-
-              this.collections[collectionKey] = await getCollectionPromise; // eslint-disable-line no-await-in-loop
+              // eslint-disable-next-line no-await-in-loop
+              this.collections[collectionKey] = await this.getCollection(collectionConfig, collectionOptions);
+              this.applyMongoV3BackwardCompatible(this.collections[collectionKey]);
 
               // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {
@@ -328,6 +295,111 @@ export default class ReactionAPICore {
         }
       }
     }
+  }
+
+  /**
+   * @summary Get legacy collection object
+   * @param {Object} collectionConfig - The collection config
+   * @param {Object} collectionOptions - The collection options
+   * @returns {Object} - legacy collection
+   */
+  async getCollection(collectionConfig, collectionOptions) {
+    try {
+      return this.db.collection(collectionConfig.name, collectionOptions);
+    } catch {
+      return this.db
+        .command({ collMod: collectionConfig.name, ...collectionOptions });
+    }
+  }
+
+  /**
+   * @summary Apply MongoV3 backward compatible
+   * @param {Object} collection - The legacy collection object
+   * @returns {undefined} Nothing
+   */
+  applyMongoV3BackwardCompatible(collection) {
+    const prevFind = collection.find.bind(collection);
+    collection.find = ((...args) => {
+      const result = prevFind(...args);
+      result.cmd = { query: result[Reflect.ownKeys(result).find((symbol) => String(symbol) === "Symbol(filter)")] };
+      result.options = { db: collection.s.db };
+      result.ns = `${collection.s.namespace.db}.${collection.s.namespace.collection}`;
+      return result;
+    }).bind(collection);
+
+    const acknowledgedToOk = (acknowledged) => (acknowledged ? 1 : 0);
+
+    const prevDeleteOne = collection.deleteOne.bind(collection);
+    collection.deleteOne = (async (...args) => {
+      const response = await prevDeleteOne(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.deletedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    collection.removeOne = collection.deleteOne.bind(collection);
+
+    const prevUpdateMany = collection.updateMany.bind(collection);
+    collection.updateMany = (async (...args) => {
+      const response = await prevUpdateMany(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.modifiedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    const prevInsertOne = collection.insertOne.bind(collection);
+    collection.insertOne = (async (...args) => {
+      const response = await prevInsertOne(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.acknowledged ? 1 : 0, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    const prevFindOneAndUpdate = collection.findOneAndUpdate.bind(collection);
+    collection.findOneAndUpdate = (async (...args) => {
+      const options = args[2];
+      if (options && typeof options.returnOriginal !== "undefined") {
+        args[2].returnDocument = options.returnOriginal ? mongodb.ReturnDocument.BEFORE : mongodb.ReturnDocument.AFTER;
+      }
+      const response = await prevFindOneAndUpdate(...args);
+      return { ...response, modifiedCount: response.lastErrorObject.n };
+    }).bind(collection);
+
+    const prevReplaceOne = collection.replaceOne.bind(collection);
+    collection.replaceOne = (async (...args) => {
+      const response = await prevReplaceOne(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.modifiedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    const prevUpdateOne = collection.updateOne.bind(collection);
+    collection.updateOne = (async (...args) => {
+      const response = await prevUpdateOne(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.modifiedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    const prevBulkWrite = collection.bulkWrite.bind(collection);
+    collection.bulkWrite = (async (...args) => {
+      const response = await prevBulkWrite(...args);
+      const {
+        nInserted,
+        nUpserted,
+        nMatched,
+        nModified,
+        nRemoved
+      } = response.result;
+      return {
+        ...response,
+        nInserted,
+        nUpserted,
+        nMatched,
+        nModified,
+        nRemoved,
+        insertedCount: nInserted,
+        matchedCount: nMatched,
+        modifiedCount: nModified,
+        deletedCount: nRemoved,
+        upsertedCount: nUpserted
+      };
+    }).bind(collection);
   }
 
   /**
