@@ -53,7 +53,7 @@ input ApplyCouponToCartInput {
   accountId: ID
 
   "Cart token, if anonymous"
-  token: String
+  cartToken: String
 }
 
 "The input for the createStandardCoupon mutation"

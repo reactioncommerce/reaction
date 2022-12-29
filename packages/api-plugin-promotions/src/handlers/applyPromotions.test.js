@@ -22,6 +22,7 @@ const testPromotion = {
   _id: "test id",
   actions: [{ actionKey: "test" }],
   triggers: [{ triggerKey: "test", triggerParameters: { name: "test trigger" } }],
+  triggerType: "implicit",
   stackability: {
     key: "none",
     parameters: {}
@@ -37,14 +38,21 @@ test("should save cart with implicit promotions are applied", async () => {
     _id: "cartId"
   };
   mockContext.collections.Promotions = {
-    find: () => ({ toArray: jest.fn().mockResolvedValueOnce([testPromotion]) })
+    find: ({ triggerType }) => ({
+      toArray: jest.fn().mockImplementation(() => {
+        if (triggerType === "implicit") {
+          return [testPromotion];
+        }
+        return [];
+      })
+    })
   };
   mockContext.promotions = pluginPromotion;
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() }
   };
-  canBeApplied.mockReturnValueOnce({ qualifies: true });
-  testAction.mockReturnValue({ affected: true });
+  canBeApplied.mockResolvedValue({ qualifies: true });
+  testAction.mockResolvedValue({ affected: true });
 
   await applyPromotions(mockContext, cart);
 
@@ -279,4 +287,53 @@ test("should not have promotion message when the promotion already message added
   await applyPromotions(mockContext, cart);
 
   expect(cart.messages.length).toEqual(1);
+});
+
+test("throw error when explicit promotion is newly applied and conflict with other", async () => {
+  isPromotionExpired.mockReturnValue(false);
+  canBeApplied.mockReturnValue({ qualifies: false });
+
+  const promotion = {
+    ...testPromotion,
+    _id: "promotionId",
+    triggerType: "implicit"
+  };
+  const secondPromotion = {
+    ...testPromotion,
+    _id: "promotionId2",
+    triggerType: "explicit",
+    newlyApplied: true,
+    relatedCoupon: {
+      couponCode: "couponCode",
+      couponId: "couponId"
+    },
+    stackability: {
+      key: "none",
+      parameters: {}
+    }
+  };
+  const cart = {
+    _id: "cartId",
+    appliedPromotions: [promotion, secondPromotion]
+  };
+
+  mockContext.collections.Promotions = {
+    find: () => ({
+      toArray: jest.fn().mockResolvedValueOnce([promotion, secondPromotion])
+    })
+  };
+
+  testTrigger.mockReturnValue(Promise.resolve(true));
+  testAction.mockReturnValue(Promise.resolve({ affected: true }));
+
+  mockContext.promotions = { ...pluginPromotion };
+  mockContext.simpleSchemas = {
+    Cart: { clean: jest.fn() }
+  };
+
+  try {
+    await applyPromotions(mockContext, cart);
+  } catch (error) {
+    expect(error.error).toEqual("invalid-params");
+  }
 });

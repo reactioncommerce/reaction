@@ -4,6 +4,7 @@ import mutations from "./mutations/index.js";
 import policies from "./policies.json";
 import preStartup from "./preStartup.js";
 import queries from "./queries/index.js";
+import { registerPluginHandlerForOrder } from "./registration.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import { Order, OrderFulfillmentGroup, OrderItem, CommonOrder, SelectedFulfillmentOption } from "./simpleSchemas.js";
@@ -42,6 +43,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
+      registerPluginHandler: [registerPluginHandlerForOrder],
       getDataForOrderEmail: [getDataForOrderEmail],
       preStartup: [preStartup],
       startup: [startup]

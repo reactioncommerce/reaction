@@ -2,6 +2,7 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
+import ReactionError from "@reactioncommerce/reaction-error";
 import _ from "lodash";
 import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
@@ -33,6 +34,26 @@ async function getImplicitPromotions(context, shopId) {
     startDate: { $lt: now }
   }).toArray();
   Logger.info({ ...logCtx, applicablePromotions: promotions.length }, "Fetched applicable promotions");
+  return promotions;
+}
+
+/**
+ * @summary get all explicit promotions by Ids
+ * @param {Object} context - The application context
+ * @param {String} shopId - The shop ID
+ * @param {Array<string>} promotionIds - The promotion IDs
+ * @returns {Promise<Array<Object>>} - An array of promotions
+ */
+async function getExplicitPromotionsByIds(context, shopId, promotionIds) {
+  const now = new Date();
+  const { collections: { Promotions } } = context;
+  const promotions = await Promotions.find({
+    _id: { $in: promotionIds },
+    shopId,
+    enabled: true,
+    triggerType: "explicit",
+    startDate: { $lt: now }
+  }).toArray();
   return promotions;
 }
 
@@ -69,11 +90,19 @@ export default async function applyPromotions(context, cart) {
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
 
   const appliedPromotions = [];
-  const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]);
+  const appliedExplicitPromotionsIds = _.map(_.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]), "_id");
+  const explicitPromotions = await getExplicitPromotionsByIds(context, cart.shopId, appliedExplicitPromotionsIds);
 
   const cartMessages = cart.messages || [];
 
-  const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
+  const unqualifiedPromotions = promotions.concat(_.map(explicitPromotions, (promotion) => {
+    const existsPromotion = _.find(cart.appliedPromotions || [], { _id: promotion._id });
+    if (existsPromotion) promotion.relatedCoupon = existsPromotion.relatedCoupon || undefined;
+    if (typeof existsPromotion?.newlyAdded !== "undefined") promotion.newlyAdded = existsPromotion.newlyAdded;
+    return promotion;
+  }));
+
+  const newlyAddedPromotionId = _.find(unqualifiedPromotions, "newlyAdded")?._id;
 
   for (const { cleanup } of pluginPromotions.actions) {
     cleanup && await cleanup(context, cart);
@@ -170,7 +199,13 @@ export default async function applyPromotions(context, cart) {
     }
   }
 
-  enhancedCart.appliedPromotions = appliedPromotions;
+  // If a explicit promotion was just applied, throw an error so that the client can display the message
+  if (newlyAddedPromotionId) {
+    const message = _.find(cartMessages, ({ metaFields }) => metaFields.promotionId === newlyAddedPromotionId);
+    if (message) throw new ReactionError("invalid-params", message.message);
+  }
+
+  enhancedCart.appliedPromotions = _.map(appliedPromotions, (promotion) => _.omit(promotion, "newlyAdded"));
 
   // Remove messages that are no longer relevant
   const cleanedMessages = _.filter(cartMessages, (message) => {

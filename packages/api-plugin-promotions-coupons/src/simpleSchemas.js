@@ -45,3 +45,32 @@ export const Coupon = new SimpleSchema({
     type: Date
   }
 });
+
+export const CouponLog = new SimpleSchema({
+  "_id": String,
+  "couponId": String,
+  "promotionId": String,
+  "orderId": {
+    type: String,
+    optional: true
+  },
+  "accountId": {
+    type: String,
+    optional: true
+  },
+  "usedCount": {
+    type: Number,
+    defaultValue: 0
+  },
+  "createdAt": {
+    type: Date
+  },
+  "usedLogs": {
+    type: Array,
+    optional: true
+  },
+  "usedLogs.$": {
+    type: Object,
+    blackbox: true
+  }
+});
