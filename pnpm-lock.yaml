@@ -11686,8 +11686,8 @@ packages:
     dependencies:
       bson: 4.7.0
       denque: 2.1.0
-      mongodb-connection-string-url: 2.5.3
-      socks: 2.7.0
+      mongodb-connection-string-url: 2.5.4
+      socks: 2.7.1
     optionalDependencies:
       saslprep: 1.0.3
     dev: false
