@@ -22,7 +22,7 @@ export default async function importPluginsJSONFile(pluginsFile, transformPlugin
     absolutePluginsFile = path.join(path.dirname(callerFileName), pluginsFile);
   }
 
-  let { default: pluginRefs } = await import(absolutePluginsFile);
+  let { default: pluginRefs } = await import(`${absolutePluginsFile}`, { assert: { type: "json" } } );
 
   if (typeof transformPlugins === "function") {
     // allow plugins to be added and removed

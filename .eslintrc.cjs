@@ -10,6 +10,7 @@ module.exports = {
     },
     requireConfigFile: false
   },
+  plugins: ["@babel/plugin-syntax-import-assertions"],
   env: {
     es6: true,
     jasmine: true
