@@ -1,4 +1,4 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import { getHasPermissionFunctionForUser } from "./util/hasPermission.js";
 import permissionsByUserId from "./util/permissionsByUserId.js";
 import preStartup from "./preStartup.js";
