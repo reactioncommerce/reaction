@@ -1,4 +1,4 @@
-import UserData from "../json-data/users.json";
+import UserData from "../json-data/users.json" assert { type: "json" };
 
 const now = new Date();
 
