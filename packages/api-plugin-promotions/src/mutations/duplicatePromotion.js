@@ -17,6 +17,7 @@ export default async function duplicatePromotion(context, { shopId, promotionId 
   newPromotion._id = Random.id();
   newPromotion.createdAt = now;
   newPromotion.updatedAt = now;
+  newPromotion.state = "created";
   newPromotion.name = `Copy of ${existingPromotion.name}`;
   newPromotion.referenceId = await context.mutations.incrementSequence(context, newPromotion.shopId, "Promotions");
   PromotionSchema.validate(newPromotion);
