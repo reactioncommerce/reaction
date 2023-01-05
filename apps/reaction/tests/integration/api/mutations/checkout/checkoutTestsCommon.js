@@ -15,6 +15,7 @@ const SelectFulfillmentOptionForGroupMutation = importAsString("./SelectFulfillm
 const SetShippingAddressOnCartMutation = importAsString("./SetShippingAddressOnCartMutation.graphql");
 const UpdateCartItemsQuantityMutation = importAsString("./UpdateCartItemsQuantityMutation.graphql");
 const UpdateFulfillmentOptionsForGroupMutation = importAsString("./UpdateFulfillmentOptionsForGroupMutation.graphql");
+const CreatePromotionMutation = importAsString("./CreatePromotionMutation.graphql");
 
 jest.setTimeout(300000);
 
@@ -125,6 +126,7 @@ let addCartItems;
 let availablePaymentMethods;
 let createCart;
 let createShop;
+let createPromotion;
 let internalShopId;
 let opaqueShopId;
 let placeOrder;
@@ -158,6 +160,7 @@ beforeAll(async () => {
   setShippingAddressOnCart = testApp.mutate(SetShippingAddressOnCartMutation);
   updateCartItemsQuantity = testApp.mutate(UpdateCartItemsQuantityMutation);
   updateFulfillmentOptionsForGroup = testApp.mutate(UpdateFulfillmentOptionsForGroupMutation);
+  createPromotion = testApp.mutate(CreatePromotionMutation);
 
   const shopCreateGroup = Factory.Group.makeOne({
     _id: "shopCreateGroup",
@@ -188,18 +191,18 @@ beforeAll(async () => {
     }
   });
 
+  opaqueShopId = newShopId;
+  internalShopId = decodeOpaqueIdForNamespace("reaction/shop", newShopId);
+
   const adminGroup = Factory.Group.makeOne({
     _id: "adminGroup",
     createdBy: null,
     name: "admin",
-    permissions: ["reaction:legacy:products/publish"],
+    permissions: ["reaction:legacy:products/publish", "reaction:legacy:promotions/create"],
     slug: "admin",
-    shopId: newShopId
+    shopId: internalShopId
   });
   await testApp.collections.Groups.insertOne(adminGroup);
-
-  opaqueShopId = newShopId;
-  internalShopId = decodeOpaqueIdForNamespace("reaction/shop", newShopId);
 
   // Set other shop settings
   await testApp.collections.Shops.updateOne(
@@ -245,6 +248,7 @@ export default function getCommonData() {
     availablePaymentMethods,
     createCart,
     createShop,
+    createPromotion,
     encodeProductOpaqueId,
     internalShopId,
     internalVariantIds,

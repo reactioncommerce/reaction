@@ -1,5 +1,6 @@
 export const fixedDiscountPromotion = {
   name: "$10 off when you spend more than $100",
+  label: "Order promotion",
   description: "$10 off when you spend more than $100",
   actions: [
     {
@@ -28,7 +29,6 @@ export const fixedDiscountPromotion = {
       }
     }
   ],
-  triggerType: "implicit",
   promotionType: "order-discount",
   enabled: true,
   stackability: {
