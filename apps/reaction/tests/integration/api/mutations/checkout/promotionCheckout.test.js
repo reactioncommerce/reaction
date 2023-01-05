@@ -10,6 +10,7 @@ const SetEmailOnAnonymousCart = importAsString("../checkout/SetEmailOnAnonymousC
 let anonymousCartByCartQuery;
 let availablePaymentMethods;
 let createCart;
+let createPromotion;
 let updateCartItemsQuantity;
 let encodeProductOpaqueId;
 let internalVariantIds;
@@ -17,6 +18,7 @@ let internalVariantTwoIds;
 let opaqueProductId;
 let opaqueProductTwoId;
 let opaqueShopId;
+let internalShopId;
 let placeOrder;
 let selectFulfillmentOptionForGroup;
 let setEmailOnAnonymousCart;
@@ -24,17 +26,20 @@ let setShippingAddressOnCart;
 let testApp;
 let updateFulfillmentOptionsForGroup;
 let mockPromotion;
+let mockAdminAccount;
 
 beforeAll(async () => {
   ({
     availablePaymentMethods,
     createCart,
+    createPromotion,
     encodeProductOpaqueId,
     internalVariantIds,
     internalVariantTwoIds,
     opaqueProductId,
     opaqueProductTwoId,
     opaqueShopId,
+    internalShopId,
     placeOrder,
     selectFulfillmentOptionForGroup,
     setShippingAddressOnCart,
@@ -46,16 +51,18 @@ beforeAll(async () => {
   anonymousCartByCartQuery = testApp.mutate(AnonymousCartByCartIdQuery);
   setEmailOnAnonymousCart = testApp.mutate(SetEmailOnAnonymousCart);
 
-  const now = new Date();
-  mockPromotion = Factory.Promotion.makeOne({
-    ...fixedDiscountPromotion,
-    startDate: now,
-    endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-    enabled: true,
-    shopId: decodeOpaqueIdForNamespace("reaction/shop")(opaqueShopId)
+  mockAdminAccount = Factory.Account.makeOne({
+    groups: ["adminGroup"],
+    shopId: internalShopId
   });
+  await testApp.createUserAndAccount(mockAdminAccount);
 
-  await testApp.collections.Promotions.insertOne(mockPromotion);
+  await testApp.collections.Sequences.insertOne({
+    _id: "mockSequenceId",
+    shopId: internalShopId,
+    entity: "Promotions",
+    value: 100000
+  });
 });
 
 // There is no need to delete any test data from collections because
@@ -94,6 +101,39 @@ describe("Promotions", () => {
     phone: "5555555555",
     postal: "97878",
     region: "CA"
+  };
+
+  const removeAllPromotions = async () => {
+    await testApp.setLoggedInUser(mockAdminAccount);
+    await testApp.collections.Promotions.remove({});
+    await testApp.clearLoggedInUser();
+  };
+
+  const createTestPromotion = (overlay = {}) => {
+    test("create new promotion", async () => {
+      await testApp.setLoggedInUser(mockAdminAccount);
+
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 1);
+      const endDate = new Date(startDate.getTime() + 1000 * 60 * 60 * 24 * 7);
+
+      mockPromotion = {
+        ...fixedDiscountPromotion,
+        startDate: startDate.toISOString().substring(0, 10),
+        endDate: endDate.toISOString().substring(0, 10),
+        enabled: true,
+        shopId: internalShopId,
+        ...overlay
+      };
+      try {
+        const result = await createPromotion({ input: mockPromotion });
+        mockPromotion._id = result.createPromotion.promotion._id;
+      } catch (error) {
+        expect(error).toBeUndefined();
+      }
+
+      await testApp.clearLoggedInUser();
+    });
   };
 
   const createTestCart = ({ quantity = 6 }) => {
@@ -219,12 +259,16 @@ describe("Promotions", () => {
   };
 
   describe("when a promotion is applied to an order with fixed promotion", () => {
+    afterAll(async () => {
+      await removeAllPromotions();
+    });
+
+    createTestPromotion();
     createCartAndPlaceOrder({ quantity: 6 });
 
     test("placed order get the correct values", async () => {
       const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
       const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
-
       expect(newOrder.shipping[0].invoice.total).toEqual(112.44);
       expect(newOrder.shipping[0].invoice.discounts).toEqual(10);
       expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
@@ -239,13 +283,21 @@ describe("Promotions", () => {
   });
 
   describe("when a promotion is applied to an order percentage discount", () => {
-    beforeAll(async () => {
-      mockPromotion.actions[0].actionParameters = {
-        discountType: "order",
-        discountCalculationType: "percentage",
-        discountValue: 10
-      };
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+    afterAll(async () => {
+      await removeAllPromotions();
+    });
+
+    createTestPromotion({
+      actions: [
+        {
+          actionKey: "discounts",
+          actionParameters: {
+            discountType: "order",
+            discountCalculationType: "percentage",
+            discountValue: 10
+          }
+        }
+      ]
     });
 
     createCartAndPlaceOrder({ quantity: 6 });
@@ -275,20 +327,30 @@ describe("Promotions", () => {
   });
 
   describe("when a promotion applied via inclusion criteria", () => {
-    beforeAll(async () => {
-      mockPromotion.triggers[0].triggerParameters.inclusionRules = {
-        conditions: {
-          all: [
-            {
-              fact: "item",
-              path: "$.productVendor",
-              operator: "equal",
-              value: "Nike"
-            }
-          ]
+    afterAll(async () => {
+      await removeAllPromotions();
+    });
+
+    const triggerParameters = { ...fixedDiscountPromotion.triggers[0].triggerParameters };
+    triggerParameters.inclusionRules = {
+      conditions: {
+        all: [
+          {
+            fact: "item",
+            path: "$.productVendor",
+            operator: "equal",
+            value: "Nike"
+          }
+        ]
+      }
+    };
+    createTestPromotion({
+      triggers: [
+        {
+          triggerKey: "offers",
+          triggerParameters
         }
-      };
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+      ]
     });
 
     test("create a new cart", async () => {
@@ -314,8 +376,8 @@ describe("Promotions", () => {
       const cart = await testApp.collections.Cart.findOne({ _id: cartId });
 
       const total = cart.items.reduce((acc, item) => acc + item.subtotal.amount, 0);
-      expect(total).toEqual(107.95);
-      expect(cart.discount).toEqual(11.99);
+      expect(total).toEqual(109.94);
+      expect(cart.discount).toEqual(10);
       expect(cart.appliedPromotions[0]._id).toEqual(mockPromotion._id);
       expect(cart.appliedPromotions).toHaveLength(1);
       expect(cart.discounts).toHaveLength(1);
@@ -344,23 +406,33 @@ describe("Promotions", () => {
     });
   });
 
-  describe("when a promotion isn't applied via exclusion criteria", () => {
-    beforeAll(async () => {
-      mockPromotion.triggers[0].triggerParameters.inclusionRules = {
-        conditions: {
-          all: [
-            {
-              fact: "item",
-              path: "$.productVendor",
-              operator: "equal",
-              value: "Nike"
-            }
-          ]
-        }
-      };
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+  describe("when a promotion isn't applied via inclusion criteria", () => {
+    afterAll(async () => {
+      await removeAllPromotions();
     });
 
+    const triggerParameters = { ...fixedDiscountPromotion.triggers[0].triggerParameters };
+    triggerParameters.inclusionRules = {
+      conditions: {
+        all: [
+          {
+            fact: "item",
+            path: "$.productVendor",
+            operator: "equal",
+            value: "Nike"
+          }
+        ]
+      }
+    };
+
+    createTestPromotion({
+      triggers: [
+        {
+          triggerKey: "offers",
+          triggerParameters
+        }
+      ]
+    });
     createTestCart({ quantity: 6 });
 
     test("placed order get the correct values", async () => {
@@ -376,21 +448,31 @@ describe("Promotions", () => {
   });
 
   describe("when a promotion isn't applied by exclusion criteria", () => {
-    beforeAll(async () => {
-      delete mockPromotion.triggers[0].triggerParameters.inclusionRules;
-      mockPromotion.triggers[0].triggerParameters.exclusionRules = {
-        conditions: {
-          all: [
-            {
-              fact: "item",
-              path: "$.productVendor",
-              operator: "equal",
-              value: "Nike"
-            }
-          ]
+    afterAll(async () => {
+      await removeAllPromotions();
+    });
+
+    const triggerParameters = { ...fixedDiscountPromotion.triggers[0].triggerParameters };
+    triggerParameters.exclusionRules = {
+      conditions: {
+        all: [
+          {
+            fact: "item",
+            path: "$.productVendor",
+            operator: "equal",
+            value: "Nike"
+          }
+        ]
+      }
+    };
+
+    createTestPromotion({
+      triggers: [
+        {
+          triggerKey: "offers",
+          triggerParameters
         }
-      };
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+      ]
     });
 
     test("create a new cart", async () => {
@@ -424,12 +506,11 @@ describe("Promotions", () => {
   });
 
   describe("cart shouldn't contains any promotion when qualified promotion is change to disabled", () => {
-    beforeAll(async () => {
-      delete mockPromotion.triggers[0].triggerParameters.inclusionRules;
-      delete mockPromotion.triggers[0].triggerParameters.exclusionRules;
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+    afterAll(async () => {
+      await removeAllPromotions();
     });
 
+    createTestPromotion();
     createTestCart({ quantity: 6 });
 
     test("created cart: should have the correct values", async () => {
@@ -440,8 +521,7 @@ describe("Promotions", () => {
     });
 
     test("disable the promotion", async () => {
-      mockPromotion.enabled = false;
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: { enabled: false } });
     });
 
     test("make cart update", async () => {
@@ -460,19 +540,28 @@ describe("Promotions", () => {
 
       expect(cart.appliedPromotions).toHaveLength(0);
       expect(cart.messages).toHaveLength(1);
+
+      await removeAllPromotions();
     });
   });
 
   describe("cart applied promotion with 10% but max discount is $20", () => {
-    beforeAll(async () => {
-      mockPromotion.enabled = true;
-      mockPromotion.actions[0].actionParameters = {
-        discountType: "order",
-        discountCalculationType: "percentage",
-        discountValue: 10,
-        discountMaxValue: 20
-      };
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+    afterAll(async () => {
+      await removeAllPromotions();
+    });
+
+    createTestPromotion({
+      actions: [
+        {
+          actionKey: "discounts",
+          actionParameters: {
+            discountType: "order",
+            discountCalculationType: "percentage",
+            discountValue: 10,
+            discountMaxValue: 20
+          }
+        }
+      ]
     });
 
     createTestCart({ quantity: 20 });
@@ -493,8 +582,7 @@ describe("Promotions", () => {
     test("make promotion expired", async () => {
       const now = new Date();
       now.setDate(now.getDate() - 1);
-      mockPromotion.endDate = now;
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: { endDate: now } });
     });
 
     test("make cart update", async () => {
@@ -517,23 +605,13 @@ describe("Promotions", () => {
   });
 
   describe("Stackability: shouldn't stack with other promotion when stackability is none", () => {
-    beforeAll(async () => {
-      mockPromotion.enabled = true;
-      mockPromotion.stackability.key = "none";
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
+    afterAll(async () => {
+      await removeAllPromotions();
     });
 
-    beforeAll(async () => {
-      const now = new Date();
-      const mockPromotionTwo = Factory.Promotion.makeOne({
-        ...fixedDiscountPromotion,
-        startDate: now,
-        endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-        enabled: true,
-        shopId: decodeOpaqueIdForNamespace("reaction/shop")(opaqueShopId)
-      });
-
-      await testApp.collections.Promotions.insertOne(mockPromotionTwo);
+    createTestPromotion();
+    createTestPromotion({
+      stackability: { key: "none", parameters: {} }
     });
 
     createTestCart({ quantity: 20 });
@@ -547,29 +625,13 @@ describe("Promotions", () => {
   });
 
   describe("Stackability: should applied with other promotions when stackability is all", () => {
-    beforeAll(async () => {
-      const now = new Date();
-      mockPromotion.stackability.key = "all";
-      mockPromotion.endDate = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7);
-      await testApp.collections.Promotions.updateOne({ _id: mockPromotion._id }, { $set: mockPromotion });
-
-      const mockPromotionTwo = Factory.Promotion.makeOne({
-        ...fixedDiscountPromotion,
-        startDate: now,
-        endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
-        enabled: true,
-        shopId: decodeOpaqueIdForNamespace("reaction/shop")(opaqueShopId)
-      });
-
-      await testApp.collections.Promotions.insertOne(mockPromotionTwo);
-    });
-
+    createTestPromotion();
+    createTestPromotion();
     createTestCart({ quantity: 20 });
 
     test("created cart: should have the correct values", async () => {
       const cartId = decodeOpaqueIdForNamespace("reaction/cart")(opaqueCartId);
       const cart = await testApp.collections.Cart.findOne({ _id: cartId });
-
       expect(cart.appliedPromotions).toHaveLength(2);
     });
   });
