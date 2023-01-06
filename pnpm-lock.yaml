@@ -4861,8 +4861,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1081.0:
-    resolution: {integrity: sha512-V+4DJPLorQph9j78PB3qpxOEREzXHJN/txg2Cxn2EGw+7IWOPPeLgUb4jO+tjVVmqMYmrvohMDQKErcjIxVqVg==}
+  /@snyk/protect/1.1071.0:
+    resolution: {integrity: sha512-/xoAhWLeMBEVW3mHufGPx6WrhJBy98qmJ+0jhTwdz3qerr93kk4e4dj3N6ZGI9zeBQ3+E1tPxKcC74CcmzQdhg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
