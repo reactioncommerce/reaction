@@ -243,6 +243,9 @@ input PromotionUpdateInput {
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
   stackability: StackabilityInput
+
+  "What is the current state of the promotion"
+  state: PromotionState
 }
 
 type PromotionUpdatedPayload {
