@@ -29,7 +29,7 @@
     "@reactioncommerce/api-utils": "^1.16.7",
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/db-version-check": "^1.0.0",
-    "simpl-schema": "^3.4.0"
+    "simpl-schema": "^3.4.1"
   },
   "scripts": {
     "test": "jest",

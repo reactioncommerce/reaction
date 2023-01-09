@@ -1143,12 +1143,12 @@ importers:
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/db-version-check': ^1.0.0
       '@reactioncommerce/random': ~1.0.2
-      simpl-schema: ^3.4.0
+      simpl-schema: ^3.4.1
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/db-version-check': link:../db-version-check
       '@reactioncommerce/random': link:../random
-      simpl-schema: 3.4.0
+      simpl-schema: 3.4.1
     devDependencies:
       '@reactioncommerce/babel-remove-es-create-require': 1.0.0_@babel+core@7.19.0
       '@reactioncommerce/data-factory': 1.0.1
@@ -11342,9 +11342,9 @@ packages:
   /mongo-object/0.1.4:
     resolution: {integrity: sha512-QtYk0gupWEn2+iB+DDRt1L+WbcNYvJRaHdih/dcqthOa1DbnREUGSs2WGcW478GNYpElflo/yybZXu0sTiRXHg==}
 
-  /mongo-object/3.0.0:
-    resolution: {integrity: sha512-dDF7V0k+55s6YOjrF294GrE5s81z6RHR/YNkXj9mKcAK9hlL0Os0FRHtpinDHCqhEqImdLJUosIJ5lbYsCwbfA==}
-    engines: {node: '>=14.16'}
+  /mongo-object/3.0.1:
+    resolution: {integrity: sha512-EbiwWHvKOF9xhIzuwaqknwPISdkHMipjMs6DiJFicupgBBLEhUs0OOro9MuPkFogB17DZlsV4KJhhxfqZ7ZRMQ==}
+    engines: {node: '>=14.16', npm: '>=8'}
     dev: false
 
   /mongodb-connection-string-url/2.5.3:
@@ -13035,12 +13035,12 @@ packages:
       message-box: 0.2.7
       mongo-object: 0.1.4
 
-  /simpl-schema/3.4.0:
-    resolution: {integrity: sha512-TUwGiWaRR6SnUYM/ULmVmBIsLsdWMe8QzJqsvhu8ztr+HWZFTY+VVQy03BjRhJ8o4vL9CSazxWrMiARJ4vtYMQ==}
+  /simpl-schema/3.4.1:
+    resolution: {integrity: sha512-ud8kcF5BduR7VkL9A+3I/BTk2hOl+BWEetr0kQVo9t60QMLYJFmbMF3PAdeHjqqRvynazCZncZvOMG/G0gWCtA==}
     engines: {node: '>=14.16', npm: '>=8'}
     dependencies:
       clone: 2.1.2
-      mongo-object: 3.0.0
+      mongo-object: 3.0.1
     dev: false
 
   /simple-concat/1.0.1:

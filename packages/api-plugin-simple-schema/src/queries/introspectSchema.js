@@ -67,7 +67,7 @@ export default async function introspectSchema(context, { shopId, schemaName } =
 
   const currentSchema = context.simpleSchemas[schemaName];
   if (!currentSchema) {
-    throw new Error("Invalid collection name");
+    throw new Error("Invalid schema name");
   }
 
   const jsonSchema = toJsonSchema(currentSchema);
