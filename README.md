@@ -171,6 +171,12 @@ pnpm run start:dev
 1. Run `release` action to create `Version PR`. This PR will remove all changeset files, bump up packages versions, update CHANGELOG files.
 2. Merge `Version PR` into trunk, CircleCI will publish all the packages into npm.
 
+## Prerelease flows
+1. All PRs will be merged into `prerelease` branch before triggering `PRERELEASE` action.
+2. Before merging PRs into `prerelease` branch, please make sure that all the changesets are added.
+3. Manually trigger `PRERELEASE` action to create `Version Packages (next)` PR. This PR will remove all changeset files, bump up packages versions as `1.0.0-next.{number}`, update CHANGELOG files.
+4. Merge `Version Packages (next)` PR into `prerelease` branch, action will publish all the packages into npm.
+
 # Get involved
 ## Contribute
 
