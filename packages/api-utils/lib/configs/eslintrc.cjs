@@ -1,5 +1,6 @@
 module.exports = {
   extends: "@reactioncommerce",
+  parser: "@babel/eslint-parser",
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: "module",
@@ -7,6 +8,7 @@ module.exports = {
       impliedStrict: true
     }
   },
+  plugins: ["@babel/plugin-syntax-import-assertions"],
   env: {
     es6: true,
     jasmine: true
