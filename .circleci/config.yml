@@ -10,7 +10,7 @@ defaults: &defaults
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
   docker:
-    - image: cimg/node:18.12.1
+    - image: cimg/node:18.10.0
 
 install_pnpm: &install_pnpm
   - run:
@@ -96,7 +96,7 @@ jobs:
   test-integration-query:
     <<: *defaults
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:18.10.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
@@ -123,7 +123,7 @@ jobs:
   test-integration-mutation:
     <<: *defaults
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:18.10.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
