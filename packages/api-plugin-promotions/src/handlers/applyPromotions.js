@@ -29,7 +29,6 @@ async function getImplicitPromotions(context, shopId, currentTime) {
 
   const selector = {
     shopId,
-    enabled: true,
     triggerType: "implicit",
     startDate: { $lte: currentTime },
     state: {
@@ -125,6 +124,18 @@ export default async function applyPromotions(context, cart) {
 
   let enhancedCart = enhanceCart(context, pluginPromotions.enhancers, cart);
   for (const promotion of unqualifiedPromotions) {
+    if (!promotion.enabled && canAddToCartMessages(promotion)) {
+      cartMessages.push(createCartMessage({
+        title: "The promotion no longer available",
+        subject: "promotion",
+        severity: "warning",
+        metaFields: {
+          promotionId: promotion._id
+        }
+      }));
+      continue;
+    }
+
     if (isPromotionExpired(promotion)) {
       Logger.info({ ...logCtx, promotionId: promotion._id }, "Promotion is expired, skipping");
       if (canAddToCartMessages(promotion)) {
