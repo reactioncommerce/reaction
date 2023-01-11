@@ -5,12 +5,14 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: "module",
+    babelOptions: {
+      plugins: ["@babel/plugin-syntax-import-assertions"]
+    },
     ecmaFeatures: {
       impliedStrict: true
     },
     requireConfigFile: false
   },
-  plugins: ["@babel/plugin-syntax-import-assertions"],
   env: {
     es6: true,
     jasmine: true
