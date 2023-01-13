@@ -101,10 +101,10 @@ type Promotion {
   actions: [Action!]
 
   "The date that the promotion begins"
-  startDate: Date!
+  startDate: DateTime!
 
   "The date that the promotion end (empty means it never ends)"
-  endDate: Date
+  endDate: DateTime
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
   stackability: Stackability
@@ -186,10 +186,10 @@ input PromotionCreateInput {
   actions: [ActionInput!]
 
   "The date that the promotion begins"
-  startDate: Date!
+  startDate: DateTime!
 
   "The date that the promotion end (empty means it never ends)"
-  endDate: Date
+  endDate: DateTime
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
   stackability: StackabilityInput
@@ -236,10 +236,10 @@ input PromotionUpdateInput {
   actions: [ActionInput!]
 
   "The date that the promotion begins"
-  startDate: Date!
+  startDate: DateTime!
 
   "The date that the promotion end (empty means it never ends)"
-  endDate: Date
+  endDate: DateTime
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
   stackability: StackabilityInput
