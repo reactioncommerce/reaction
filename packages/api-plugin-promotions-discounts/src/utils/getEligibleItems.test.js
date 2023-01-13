@@ -31,6 +31,7 @@ test("should return eligible items if inclusion rule is provided", async () => {
   mockContext.promotions = {
     operators: { test: jest.fn() }
   };
+  mockContext.promotionOfferFacts = { test: jest.fn() };
   const eligibleItems = await getEligibleItems(mockContext, items, parameters);
   expect(eligibleItems).toEqual([{ _id: "1", brand: "No1 Brand" }]);
 });
@@ -58,6 +59,8 @@ test("should remove ineligible items if exclusion rule is provided", async () =>
   mockContext.promotions = {
     operators: { test: jest.fn() }
   };
+  mockContext.promotionOfferFacts = { test: jest.fn() };
+
   const filteredItems = await getEligibleItems(mockContext, items, parameters);
   expect(filteredItems).toEqual([{ _id: "1", brand: "No1 Brand" }]);
 });

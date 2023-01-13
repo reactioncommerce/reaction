@@ -7,6 +7,7 @@ import addDiscountToOrderItem from "./utils/addDiscountToOrderItem.js";
 import preStartup from "./preStartup.js";
 import { discountCalculationMethods, registerDiscountCalculationMethod } from "./registration.js";
 import getTotalDiscountOnCart from "./utils/getTotalDiscountOnCart.js";
+import facts from "./facts/index.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -35,6 +36,7 @@ export default async function register(app) {
       actions,
       stackabilities
     },
-    discountCalculationMethods: methods
+    discountCalculationMethods: methods,
+    promotionOfferFacts: facts
   });
 }
