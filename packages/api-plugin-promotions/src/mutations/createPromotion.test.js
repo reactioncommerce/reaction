@@ -54,10 +54,56 @@ const offerTrigger = {
   type: "implicit"
 };
 
+const discountActionParameters = new SimpleSchema({
+  discountType: {
+    type: String,
+    allowedValues: ["item", "order", "shipping"]
+  },
+  discountCalculationType: {
+    type: String,
+    allowedValues: ["flat", "fixed", "percentage"]
+  },
+  discountValue: {
+    type: Number
+  },
+  discountMaxValue: {
+    type: Number,
+    optional: true
+  },
+  discountMaxUnits: {
+    type: Number,
+    optional: true
+  },
+  inclusionRules: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
+  exclusionRules: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
+  neverStackWithOtherItemLevelDiscounts: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
+  }
+});
+
+const discountAction = {
+  key: "discounts",
+  handler: () => {},
+  paramSchema: discountActionParameters
+};
+
 
 mockContext.promotions = {
   triggers: [
     offerTrigger
+  ],
+  actions: [
+    discountAction
   ]
 };
 

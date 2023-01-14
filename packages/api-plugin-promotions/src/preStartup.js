@@ -41,7 +41,7 @@ function extendCartSchema(context) {
 export default function preStartupPromotions(context) {
   extendSchemas(context);
   extendCartSchema(context);
-  const { actions: additionalActions, triggers: additionalTriggers, promotionTypes, stackabilities } = context.promotions;
+  const { actions: additionalActions, triggers: additionalTriggers, promotionTypes, stackabilities, allowOperators, operators } = context.promotions;
   const triggerKeys = _.map(additionalTriggers, "key");
   const actionKeys = _.map(additionalActions, "key");
   const promotionTypeKeys = Object.keys(promotionTypes);
@@ -69,4 +69,7 @@ export default function preStartupPromotions(context) {
       allowedValues: [...Stackability.getAllowedValuesForKey("key"), ...stackabilityKeys]
     }
   });
+
+  const newAddedOperatorKeys = Object.keys(operators);
+  allowOperators.push(...newAddedOperatorKeys);
 }
