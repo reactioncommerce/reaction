@@ -28,8 +28,12 @@ export const CreateOrderPromotion = {
   ],
   actions: [
     {
-      actionKey: "noop",
-      actionParameters: {}
+      actionKey: "discounts",
+      actionParameters: {
+        discountType: "order",
+        discountCalculationType: "percentage",
+        discountValue: 5
+      }
     }
   ],
   startDate: now,

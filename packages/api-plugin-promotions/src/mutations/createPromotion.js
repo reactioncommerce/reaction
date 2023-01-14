@@ -1,4 +1,5 @@
 import Random from "@reactioncommerce/random";
+import validateActionParams from "./validateActionParams.js";
 import validateTriggerParams from "./validateTriggerParams.js";
 
 /**
@@ -11,8 +12,11 @@ export default async function createPromotion(context, promotion) {
   const { collections: { Promotions }, simpleSchemas: { Promotion: PromotionSchema }, promotions } = context;
   promotion._id = Random.id();
   promotion.referenceId = await context.mutations.incrementSequence(context, promotion.shopId, "Promotions");
+
   PromotionSchema.validate(promotion);
   validateTriggerParams(context, promotion);
+  validateActionParams(context, promotion);
+
   const results = await Promotions.insertOne(promotion);
   const { insertedCount, insertedId } = results;
   promotion._id = insertedId;

@@ -1,9 +1,64 @@
 import SimpleSchema from "simpl-schema";
 
-export const Rules = new SimpleSchema({
-  conditions: {
+const allowOperators = [
+  "equal",
+  "notEqual",
+  "lessThan",
+  "lessThanInclusive",
+  "greaterThan",
+  "greaterThanInclusive",
+  "in",
+  "notIn",
+  "contains",
+  "doesNotContain"
+];
+
+export const ConditionRule = new SimpleSchema({
+  "fact": {
+    type: String,
+    allowedValues: ["cart", "item"]
+  },
+  "operator": {
+    type: String,
+    allowedValues: allowOperators
+  },
+  "path": {
+    type: String,
+    optional: true
+  },
+  "value": {
+    type: SimpleSchema.oneOf(String, Number, Boolean, Array)
+  },
+  "value.$": {
+    type: SimpleSchema.oneOf(String, Number, Boolean)
+  },
+  "params": {
     type: Object,
-    blackbox: true
+    blackbox: true,
+    optional: true
+  }
+});
+
+export const RuleExpression = new SimpleSchema({
+  "all": {
+    type: Array,
+    optional: true
+  },
+  "all.$": {
+    type: ConditionRule
+  },
+  "any": {
+    type: Array,
+    optional: true
+  },
+  "any.$": {
+    type: ConditionRule
+  }
+});
+
+export const DiscountActionCondition = new SimpleSchema({
+  conditions: {
+    type: RuleExpression
   }
 });
 
@@ -40,10 +95,10 @@ export const Discount = new SimpleSchema({
     type: Number
   },
   inclusionRules: {
-    type: Rules
+    type: DiscountActionCondition
   },
   exclusionRules: {
-    type: Rules,
+    type: DiscountActionCondition,
     optional: true
   }
 });
