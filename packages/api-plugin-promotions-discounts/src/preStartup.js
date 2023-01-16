@@ -1,5 +1,5 @@
 import SimpleSchema from "simpl-schema";
-import { CartDiscount } from "./simpleSchemas.js";
+import { CartDiscount, ConditionRule } from "./simpleSchemas.js";
 
 const discountSchema = new SimpleSchema({
   // this is here for backwards compatibility with old discounts
@@ -180,4 +180,17 @@ async function extendOrderSchemas(context) {
 export default async function preStartupDiscounts(context) {
   await extendCartSchemas(context);
   await extendOrderSchemas(context);
+
+  const { promotionOfferFacts, promotions: { allowOperators } } = context;
+
+  const promotionFactKeys = Object.keys(promotionOfferFacts);
+
+  ConditionRule.extend({
+    fact: {
+      allowedValues: ConditionRule.getAllowedValuesForKey("fact").concat(promotionFactKeys)
+    },
+    operator: {
+      allowedValues: allowOperators
+    }
+  });
 }

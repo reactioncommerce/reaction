@@ -4,6 +4,7 @@ import Logger from "@reactioncommerce/logger";
 import applyItemDiscountToCart from "../discountTypes/item/applyItemDiscountToCart.js";
 import applyShippingDiscountToCart from "../discountTypes/shipping/applyShippingDiscountToCart.js";
 import applyOrderDiscountToCart from "../discountTypes/order/applyOrderDiscountToCart.js";
+import { DiscountActionCondition } from "../simpleSchemas.js";
 
 const require = createRequire(import.meta.url);
 
@@ -21,13 +22,6 @@ const functionMap = {
   shipping: applyShippingDiscountToCart,
   order: applyOrderDiscountToCart
 };
-
-export const Rules = new SimpleSchema({
-  conditions: {
-    type: Object,
-    blackbox: true
-  }
-});
 
 export const discountActionParameters = new SimpleSchema({
   discountType: {
@@ -50,10 +44,11 @@ export const discountActionParameters = new SimpleSchema({
     optional: true
   },
   inclusionRules: {
-    type: Rules
+    type: DiscountActionCondition,
+    optional: true
   },
   exclusionRules: {
-    type: Rules,
+    type: DiscountActionCondition,
     optional: true
   },
   neverStackWithOtherItemLevelDiscounts: {
@@ -100,7 +95,6 @@ export async function discountActionHandler(context, cart, params) {
   Logger.info({ params, cartId: cart._id, ...logCtx }, "applying discount to cart");
 
   const { cart: updatedCart, affected, reason } = await functionMap[discountType](context, params, cart);
-
 
   Logger.info({ ...logCtx, ...params.actionParameters, cartId: cart._id, cartDiscount: cart.discount }, "Completed applying Discount to Cart");
   return { updatedCart, affected, reason };

@@ -3,6 +3,8 @@ import triggers from "./triggers/index.js";
 import enhancers from "./enhancers/index.js";
 import facts from "./facts/index.js";
 import { promotionOfferFacts, registerPromotionOfferFacts } from "./registration.js";
+import { ConditionRule } from "./simpleSchemas.js";
+import preStartupPromotionOffer from "./preStartup.js";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -18,6 +20,7 @@ export default async function register(app) {
     name: pkg.name,
     version: pkg.version,
     functionsByType: {
+      preStartup: [preStartupPromotionOffer],
       registerPluginHandler: [registerPromotionOfferFacts]
     },
     contextAdditions: {
@@ -27,6 +30,9 @@ export default async function register(app) {
       triggers,
       enhancers
     },
-    promotionOfferFacts: facts
+    promotionOfferFacts: facts,
+    simpleSchemas: {
+      ConditionRule
+    }
   });
 }
