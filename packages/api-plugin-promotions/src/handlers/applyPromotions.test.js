@@ -172,114 +172,147 @@ describe("cart message", () => {
     expect(cart.messages[0].title).toEqual("The promotion cannot be applied");
     expect(cart.messages[0].message).toEqual("Can't be combine");
   });
-});
 
-test("should have promotion is not eligible message when explicit promotion is not eligible", async () => {
-  isPromotionExpired.mockReturnValue(false);
-  canBeApplied.mockReturnValue({ qualifies: true });
+  test("should have promotion no longer available message when promotion is disabled", async () => {
+    isPromotionExpired.mockReturnValue(false);
 
-  const promotion = {
-    ...testPromotion,
-    _id: "promotionId",
-    triggerType: "implicit"
-  };
-  const cart = {
-    _id: "cartId",
-    appliedPromotions: [promotion]
-  };
+    const promotion = {
+      ...testPromotion,
+      _id: "promotionId",
+      triggerType: "implicit",
+      enabled: false
+    };
+    mockContext.collections.Promotions = {
+      find: () => ({ toArray: jest.fn().mockResolvedValueOnce([promotion]) })
+    };
+    const cart = {
+      _id: "cartId",
+      appliedPromotions: [promotion]
+    };
 
-  mockContext.collections.Promotions = {
-    find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([promotion])
-    })
-  };
+    mockContext.collections.Promotions = {
+      find: () => ({
+        toArray: jest.fn().mockResolvedValueOnce([promotion])
+      })
+    };
 
-  testTrigger.mockReturnValue(Promise.resolve(false));
+    mockContext.promotions = { ...pluginPromotion, triggers: [], qualifiers: [] };
+    mockContext.simpleSchemas = {
+      Cart: { clean: jest.fn() }
+    };
 
-  mockContext.promotions = { ...pluginPromotion };
-  mockContext.simpleSchemas = {
-    Cart: { clean: jest.fn() }
-  };
+    await applyPromotions(mockContext, cart);
 
-  await applyPromotions(mockContext, cart);
+    expect(cart.messages[0].title).toEqual("The promotion no longer available");
+  });
 
-  expect(cart.messages[0].title).toEqual("The promotion is not eligible");
-});
+  test("should have promotion is not eligible message when explicit promotion is not eligible", async () => {
+    isPromotionExpired.mockReturnValue(false);
+    canBeApplied.mockReturnValue({ qualifies: true });
 
-test("should have promotion was not affected message when implicit promotion is not affected in the action", async () => {
-  isPromotionExpired.mockReturnValue(false);
-  canBeApplied.mockReturnValue({ qualifies: true });
+    const promotion = {
+      ...testPromotion,
+      _id: "promotionId",
+      triggerType: "implicit"
+    };
+    const cart = {
+      _id: "cartId",
+      appliedPromotions: [promotion]
+    };
 
-  const promotion = {
-    ...testPromotion,
-    _id: "promotionId",
-    triggerType: "implicit"
-  };
-  const cart = {
-    _id: "cartId",
-    appliedPromotions: [promotion]
-  };
+    mockContext.collections.Promotions = {
+      find: () => ({
+        toArray: jest.fn().mockResolvedValueOnce([promotion])
+      })
+    };
 
-  mockContext.collections.Promotions = {
-    find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([promotion])
-    })
-  };
+    testTrigger.mockReturnValue(Promise.resolve(false));
 
-  testTrigger.mockReturnValue(Promise.resolve(true));
-  testAction.mockReturnValue(Promise.resolve({ affected: false, reason: "Not affected" }));
+    mockContext.promotions = { ...pluginPromotion };
+    mockContext.simpleSchemas = {
+      Cart: { clean: jest.fn() }
+    };
 
-  mockContext.promotions = { ...pluginPromotion };
-  mockContext.simpleSchemas = {
-    Cart: { clean: jest.fn() }
-  };
+    await applyPromotions(mockContext, cart);
 
-  await applyPromotions(mockContext, cart);
+    expect(cart.messages[0].title).toEqual("The promotion is not eligible");
+  });
 
-  expect(cart.messages[0].title).toEqual("The promotion was not affected");
-  expect(cart.messages[0].message).toEqual("Not affected");
-});
+  test("should have promotion was not affected message when implicit promotion is not affected in the action", async () => {
+    isPromotionExpired.mockReturnValue(false);
+    canBeApplied.mockReturnValue({ qualifies: true });
 
-test("should not have promotion message when the promotion already message added", async () => {
-  isPromotionExpired.mockReturnValue(false);
-  canBeApplied.mockReturnValue({ qualifies: true });
+    const promotion = {
+      ...testPromotion,
+      _id: "promotionId",
+      triggerType: "implicit"
+    };
+    const cart = {
+      _id: "cartId",
+      appliedPromotions: [promotion]
+    };
 
-  const promotion = {
-    ...testPromotion,
-    _id: "promotionId",
-    triggerType: "explicit"
-  };
-  const cart = {
-    _id: "cartId",
-    appliedPromotions: [promotion],
-    messages: [
-      {
-        title: "The promotion has expired",
-        subject: "promotion",
-        metaFields: {
-          promotionId: "promotionId"
+    mockContext.collections.Promotions = {
+      find: () => ({
+        toArray: jest.fn().mockResolvedValueOnce([promotion])
+      })
+    };
+
+    testTrigger.mockReturnValue(Promise.resolve(true));
+    testAction.mockReturnValue(Promise.resolve({ affected: false, reason: "Not affected" }));
+
+    mockContext.promotions = { ...pluginPromotion };
+    mockContext.simpleSchemas = {
+      Cart: { clean: jest.fn() }
+    };
+
+    await applyPromotions(mockContext, cart);
+
+    expect(cart.messages[0].title).toEqual("The promotion was not affected");
+    expect(cart.messages[0].message).toEqual("Not affected");
+  });
+
+  test("should not have promotion message when the promotion already message added", async () => {
+    isPromotionExpired.mockReturnValue(false);
+    canBeApplied.mockReturnValue({ qualifies: true });
+
+    const promotion = {
+      ...testPromotion,
+      _id: "promotionId",
+      triggerType: "explicit"
+    };
+    const cart = {
+      _id: "cartId",
+      appliedPromotions: [promotion],
+      messages: [
+        {
+          title: "The promotion has expired",
+          subject: "promotion",
+          metaFields: {
+            promotionId: "promotionId"
+          }
         }
-      }
-    ]
-  };
+      ]
+    };
 
-  mockContext.collections.Promotions = {
-    find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([])
-    })
-  };
+    mockContext.collections.Promotions = {
+      find: () => ({
+        toArray: jest.fn().mockResolvedValueOnce([])
+      })
+    };
 
-  testTrigger.mockReturnValue(Promise.resolve(true));
-  testAction.mockReturnValue(Promise.resolve({ affected: false, reason: "Not affected" }));
+    testTrigger.mockReturnValue(Promise.resolve(true));
+    testAction.mockReturnValue(Promise.resolve({ affected: false, reason: "Not affected" }));
 
-  mockContext.promotions = { ...pluginPromotion };
-  mockContext.simpleSchemas = {
-    Cart: { clean: jest.fn() }
-  };
+    mockContext.promotions = { ...pluginPromotion };
+    mockContext.simpleSchemas = {
+      Cart: { clean: jest.fn() }
+    };
 
-  await applyPromotions(mockContext, cart);
+    await applyPromotions(mockContext, cart);
 
-  expect(cart.messages.length).toEqual(1);
+    expect(cart.messages.length).toEqual(1);
+  });
 });
 
 test("getCurrentTime should return system time when user doesn't have preview permission", async () => {
@@ -315,4 +348,31 @@ test("getCurrentTime should return custom time when user has preview permission"
   const time = await getCurrentTime(mockContext, shopId);
 
   expect(time).toEqual(new Date(customTime));
+});
+
+test("shouldn't apply promotion when promotion is not enabled", async () => {
+  const promotion = {
+    ...testPromotion,
+    _id: "promotionId",
+    enabled: false
+  };
+  const cart = {
+    _id: "cartId",
+    appliedPromotions: []
+  };
+
+  mockContext.collections.Promotions = {
+    find: () => ({
+      toArray: jest.fn().mockResolvedValueOnce([promotion])
+    })
+  };
+
+  mockContext.promotions = { ...pluginPromotion };
+  mockContext.simpleSchemas = {
+    Cart: { clean: jest.fn() }
+  };
+
+  await applyPromotions(mockContext, cart);
+
+  expect(cart.appliedPromotions.length).toEqual(0);
 });
