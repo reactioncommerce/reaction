@@ -2,7 +2,7 @@
   "name": "@reactioncommerce/api-plugin-promotions-coupons",
   "description": "A way to apply promotions to the cart based on flexible rules",
   "label": "Promotions - Coupons",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
   "main": "index.js",
   "type": "module",
