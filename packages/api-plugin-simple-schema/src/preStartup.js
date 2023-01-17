@@ -1,4 +1,5 @@
 import checkAndSeedDb from "./util/checkAndSeedDb.js";
+import dbVersionCheck from "./util/dbVersionCheck.js";
 
 /**
  * @summary Called before startup
@@ -7,4 +8,5 @@ import checkAndSeedDb from "./util/checkAndSeedDb.js";
  */
 export default async function simpleSchemaPreStartup(context) {
   await checkAndSeedDb(context);
+  await dbVersionCheck(context);
 }
