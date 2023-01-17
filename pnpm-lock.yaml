@@ -247,7 +247,7 @@ importers:
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1081.0
+      '@snyk/protect': 1.1087.0
       graphql: 16.6.0
       semver: 6.3.0
       sharp: 0.30.7
@@ -264,6 +264,7 @@ importers:
     specifiers:
       '@apollo/federation': ^0.38.1
       '@apollo/server': ^4.2.1
+      '@apollo/server-plugin-landing-page-graphql-playground': ^4.0.0
       '@babel/core': ~7.9.0
       '@babel/preset-env': ~7.9.0
       '@graphql-tools/merge': ^8.3.12
@@ -301,6 +302,7 @@ importers:
     dependencies:
       '@apollo/federation': 0.38.1_graphql@16.6.0
       '@apollo/server': 4.3.0_graphql@16.6.0
+      '@apollo/server-plugin-landing-page-graphql-playground': 4.0.0_@apollo+server@4.3.0
       '@graphql-tools/merge': 8.3.14_graphql@16.6.0
       '@graphql-tools/schema': 9.0.12_graphql@16.6.0
       '@reactioncommerce/api-utils': link:../api-utils
@@ -1724,6 +1726,16 @@ packages:
       graphql: 16.6.0
     dev: false
 
+  /@apollo/server-plugin-landing-page-graphql-playground/4.0.0_@apollo+server@4.3.0:
+    resolution: {integrity: sha512-PBDtKI/chJ+hHeoJUUH9Kuqu58txQl00vUGuxqiC9XcReulIg7RjsyD0G1u3drX4V709bxkL5S0nTeXfRHD0qA==}
+    engines: {node: '>=14.0'}
+    peerDependencies:
+      '@apollo/server': ^4.0.0
+    dependencies:
+      '@apollo/server': 4.3.0_graphql@16.6.0
+      '@apollographql/graphql-playground-html': 1.6.29
+    dev: false
+
   /@apollo/server/4.3.0_graphql@16.6.0:
     resolution: {integrity: sha512-M30z/hExJtvqGE4UFJTa0W7FoRPPXmEjrrHK16+v63hE+deH1gYiXq0MdXKvMdoQhQQqnv09jo9mDDEpMBJvjg==}
     engines: {node: '>=14.16.0'}
@@ -1884,6 +1896,12 @@ packages:
   /@apollo/utils.withrequired/2.0.0:
     resolution: {integrity: sha512-+djpTu6AEE/A1etryZs9tmXRyDY6XXGe3G29MS/LB09uHq3pcl3n4Q5lvDTL5JWKuJixrulg5djePLDAooG8dQ==}
     engines: {node: '>=14'}
+    dev: false
+
+  /@apollographql/graphql-playground-html/1.6.29:
+    resolution: {integrity: sha512-xCcXpoz52rI4ksJSdOCxeOCn2DLocxwHf9dVT/Q90Pte1LX+LY+91SFtJF3KXVHH8kEin+g1KKCQPKBjZJfWNA==}
+    dependencies:
+      xss: 1.0.14
     dev: false
 
   /@ardatan/aggregate-error/0.0.6:
@@ -4949,8 +4967,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1081.0:
-    resolution: {integrity: sha512-V+4DJPLorQph9j78PB3qpxOEREzXHJN/txg2Cxn2EGw+7IWOPPeLgUb4jO+tjVVmqMYmrvohMDQKErcjIxVqVg==}
+  /@snyk/protect/1.1087.0:
+    resolution: {integrity: sha512-BQeiQ/RVaT+xtMTPJoliAPqvLDFI62jUtdLhVO3zQa53T+dZLAlMzDoI9zjW5G2djlJsWUYnfHGNdkmMEMHdYQ==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -6825,6 +6843,10 @@ packages:
     dependencies:
       delayed-stream: 1.0.0
 
+  /commander/2.20.3:
+    resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
+    dev: false
+
   /commander/3.0.2:
     resolution: {integrity: sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==}
     dev: true
@@ -7063,6 +7085,10 @@ packages:
   /crypto-random-string/2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
     engines: {node: '>=8'}
+    dev: false
+
+  /cssfilter/0.0.10:
+    resolution: {integrity: sha512-FAaLDaplstoRsDR8XGYH51znUN0UY7nMc6Z9/fvE8EXGwvJE9hu7W2vHwx1+bd6gCYnln9nLbzxFTrcO9YQDZw==}
     dev: false
 
   /cssom/0.3.8:
@@ -14561,6 +14587,15 @@ packages:
   /xmlchars/2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
     dev: true
+
+  /xss/1.0.14:
+    resolution: {integrity: sha512-og7TEJhXvn1a7kzZGQ7ETjdQVS2UfZyTlsEdDOqvQF7GoxNfY+0YLCzBy1kPdsDDx4QuNAonQPddpsn6Xl/7sw==}
+    engines: {node: '>= 0.10.0'}
+    hasBin: true
+    dependencies:
+      commander: 2.20.3
+      cssfilter: 0.0.10
+    dev: false
 
   /xtend/2.1.2:
     resolution: {integrity: sha512-vMNKzr2rHP9Dp/e1NQFnLQlwlhp9L/LfvnsVdHxN1f+uggyVI3i08uD14GPvCToPkdsRfyPqIyYGmIk58V98ZQ==}

@@ -18,6 +18,7 @@ const gql = require("graphql-tag");
 const { expressMiddleware: apolloExpressMiddleware } = require("@apollo/server/express4");
 const { ApolloServerPluginDrainHttpServer } = require("@apollo/server/plugin/drainHttpServer");
 const { ApolloServerPluginLandingPageLocalDefault } = require("@apollo/server/plugin/landingPage/default");
+const { ApolloServerPluginLandingPageGraphQLPlayground } = require("@apollo/server-plugin-landing-page-graphql-playground");
 const { buildFederatedSchema } = require("@apollo/federation");
 
 const DEFAULT_GRAPHQL_PATH = "/graphql";
@@ -158,7 +159,7 @@ export default async function createApolloServer(options = {}) {
           };
         }
       },
-      config.GRAPHQL_PLAYGROUND_ENABLED ? ApolloServerPluginLandingPageLocalDefault() : undefined
+      config.GRAPHQL_PLAYGROUND_ENABLED ? ApolloServerPluginLandingPageGraphQLPlayground() : undefined
     ]
   });
 

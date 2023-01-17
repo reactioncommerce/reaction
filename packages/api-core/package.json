@@ -49,6 +49,7 @@
   "dependencies": {
     "@apollo/federation": "^0.38.1",
     "@apollo/server": "^4.2.1",
+    "@apollo/server-plugin-landing-page-graphql-playground": "^4.0.0",
     "@graphql-tools/merge": "^8.3.12",
     "@graphql-tools/schema": "^9.0.10",
     "@reactioncommerce/api-utils": "^1.12.0",
