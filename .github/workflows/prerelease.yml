@@ -1,0 +1,142 @@
+name: PRERELEASE
+on:
+  workflow_dispatch:
+    branches:
+      - prerelease
+  pull_request:
+    types:
+      - closed
+
+permissions: {}
+jobs:
+  version:
+    if: github.event_name == 'workflow_dispatch' && github.base_ref == 'prerelease'
+    permissions:
+      contents: write # to create release (changesets/action)
+      pull-requests: write # to create pull request (changesets/action)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          key: reaction-v6-node-modules-${{ hashFiles('package.json') }}-${{ hashFiles('pnpm-lock.yaml') }}
+          path: "**/node_modules"
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install pnpm
+        run: npm i -g pnpm@latest
+
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts
+
+      - name: Enter prerelease mode
+        run: pnpm changeset pre enter next || true
+
+      - name: Check should create release
+        id: should-create-release
+        run: |
+          if [[ $(cat ./.changeset/pre.json | grep -m 1 mode | sed 's/[^a-z]//g') == *"pre"* ]]; then
+            echo "RESULT=true" >> $GITHUB_OUTPUT
+          else
+            echo "RESULT=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        if: steps.should-create-release.outputs.RESULT == 'true'
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Update pnpm-lock.yaml
+        id: update-lock-file
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          pnpm install --ignore-scripts --lockfile-only
+          if [[ $(git status --porcelain | grep -m 1 pnpm-lock.yaml | sed 's/[^a-z]\-//g') == *"pnpm-lock.yaml"* ]]; then
+            echo "IS_CHANGED=true" >> $GITHUB_OUTPUT
+          else
+            echo "IS_CHANGED=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Commit pnpm-lock.yaml
+        if: steps.update-lock-file.outputs.IS_CHANGED == 'true'
+        run: |
+          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+          git add pnpm-lock.yaml
+          git commit -m "chore: update pnpm-lock.yaml" -s
+          git push -u origin changeset-release/prerelease
+  release:
+    if: github.event.pull_request.merged == true && github.base_ref == 'prerelease' && github.head_ref == 'changeset-release/prerelease'
+    permissions:
+      contents: write # to create release (changesets/action)
+      pull-requests: write # to create pull request (changesets/action)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install pnpm
+        run: npm i -g pnpm@latest
+
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts
+
+      - name: Enter prerelease mode
+        run: pnpm changeset pre enter next || true
+
+      - name: Check should create release
+        id: should-create-release
+        run: |
+          if [[ $(cat ./.changeset/pre.json | grep -m 1 mode | sed 's/[^a-z]//g') == *"pre"* ]]; then
+            echo "RESULT=true" >> $GITHUB_OUTPUT
+          else
+            echo "RESULT=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        if: steps.should-create-release.outputs.RESULT == 'true'
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Exit prerelease mode
+        id: exit-prerelease-mode
+        run: |
+          rm ./.changeset/pre.json
+          if [[ $(git status --porcelain | grep -m 1 pre.json | sed 's/[^a-z]\-//g') == *"pre.json"* ]]; then
+            echo "IS_CHANGED=true" >> $GITHUB_OUTPUT
+          else
+            echo "IS_CHANGED=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit pre.json
+        if: steps.exit-prerelease-mode.outputs.IS_CHANGED == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .changeset/pre.json
+          git commit -m "chore: exit prerelease mode" -s
+          git push origin prerelease
