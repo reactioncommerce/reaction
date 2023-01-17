@@ -125,6 +125,8 @@ test("should return cart with applied discount when parameters include rule", as
     test: jest.fn().mockReturnValue(10)
   };
 
+  mockContext.promotionOfferFacts = { test: jest.fn() };
+
   const result = await applyItemDiscountToCart.default(mockContext, parameters, cart);
 
   expect(result).toEqual({
@@ -184,6 +186,8 @@ test("should return affected is false with reason when have no items are discoun
   mockContext.discountCalculationMethods = {
     test: jest.fn().mockReturnValue(10)
   };
+
+  mockContext.promotionOfferFacts = { test: jest.fn() };
 
   const result = await applyItemDiscountToCart.default(mockContext, parameters, cart);
 

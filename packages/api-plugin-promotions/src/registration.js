@@ -56,7 +56,9 @@ const PromotionsDeclaration = new SimpleSchema({
   },
   "promotionTypes.$": {
     type: PromotionType
-  }
+  },
+  "allowOperators": Array,
+  "allowOperators.$": String
 });
 
 export const promotions = {
@@ -67,7 +69,19 @@ export const promotions = {
   operators: {}, // operators used for rule evaluations
   qualifiers: [],
   promotionTypes: [],
-  stackabilities: []
+  stackabilities: [],
+  allowOperators: [
+    "equal",
+    "notEqual",
+    "lessThan",
+    "lessThanInclusive",
+    "greaterThan",
+    "greaterThanInclusive",
+    "in",
+    "notIn",
+    "contains",
+    "doesNotContain"
+  ]
 };
 
 /**

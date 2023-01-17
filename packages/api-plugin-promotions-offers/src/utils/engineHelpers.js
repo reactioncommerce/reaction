@@ -7,8 +7,17 @@ import { Engine } from "json-rules-engine";
  * @returns {Object} Engine - The engine with the operators added
  */
 export default function createEngine(context, rules) {
+  const { promotionOfferFacts, promotions: { operators } } = context;
+
   const engine = new Engine();
-  const { promotions: { operators } } = context;
+
+  Object.keys(promotionOfferFacts).forEach((factKey) => {
+    engine.addFact(factKey, (params, almanac) => {
+      const factParams = { ...rules, ruleParams: params };
+      return promotionOfferFacts[factKey](context, factParams, almanac);
+    });
+  });
+
   Object.keys(operators).forEach((operatorKey) => {
     engine.addOperator(operatorKey, operators[operatorKey]);
   });
