@@ -119,8 +119,8 @@ describe("Promotions", () => {
 
       mockPromotion = {
         ...fixedDiscountPromotion,
-        startDate: startDate.toUTCString(),
-        endDate: endDate.toUTCString(),
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
         enabled: true,
         shopId: internalShopId,
         ...overlay
