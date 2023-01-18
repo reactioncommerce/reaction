@@ -110,7 +110,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       attributes,
       compareAtPrice: null,
       isTaxable: chosenVariant.isTaxable || false,
-      metafields,
+      metafields: metafields || catalogProduct.metafields,
       optionTitle: chosenVariant.optionTitle,
       parcel: chosenVariant.parcel,
       // This one will be kept updated by event handler watching for
