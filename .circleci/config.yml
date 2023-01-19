@@ -91,6 +91,7 @@ jobs:
       - <<: *pnpm_install
       - run:
           name: Test Unit
+          no_output_timeout: 30m
           command: pnpm test
 
   test-integration-query:
