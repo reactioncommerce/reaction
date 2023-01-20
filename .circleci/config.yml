@@ -10,7 +10,7 @@ defaults: &defaults
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
   docker:
-    - image: cimg/node:18.10.0
+    - image: cimg/node:16.10.0
 
 install_pnpm: &install_pnpm
   - run:
