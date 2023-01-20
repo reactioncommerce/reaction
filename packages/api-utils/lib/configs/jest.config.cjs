@@ -12,6 +12,10 @@ module.exports = {
   // The test environment that will be used for testing
   testEnvironment: "node",
 
+  // Additional settings for the test environment
+  logHeapUsage: true,
+  workerIdleMemoryLimit: '1GB',
+
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
     // Any packages that are published only as ESM need to be listed here
