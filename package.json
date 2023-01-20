@@ -3,7 +3,7 @@
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "main": "index.js",
   "engines": {
-    "node": ">=16.10.0",
+    "node": ">=18.10.0",
     "npm": ">=7"
   },
   "engineStrict": true,

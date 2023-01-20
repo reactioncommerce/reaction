@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "type": "module",
   "engines": {
-    "node": ">=16.10.0"
+    "node": ">=18.10.0"
   },
   "homepage": "https://github.com/reactioncommerce/reaction",
   "url": "https://github.com/reactioncommerce/reaction",
