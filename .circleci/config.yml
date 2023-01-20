@@ -97,7 +97,7 @@ jobs:
   test-integration-query:
     <<: *defaults
     docker:
-      - image: cimg/node:18.10.0
+      - image: cimg/node:16.10.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
@@ -124,7 +124,7 @@ jobs:
   test-integration-mutation:
     <<: *defaults
     docker:
-      - image: cimg/node:18.10.0
+      - image: cimg/node:16.10.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
