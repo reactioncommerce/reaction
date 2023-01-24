@@ -1,0 +1,21 @@
+"The input for the cartUpdated subscription"
+input CartUpdatedInput {
+  "The cart ID"
+  cartId: ID!,
+
+  "The cart account ID"
+  accountId: ID
+
+  "The cart anonymous token"
+  cartToken: String
+}
+
+####################
+ # Subscriptions
+ ####################
+extend type Subscription {
+  "Subscribe to changes to cart"
+  cartUpdated(
+    input: CartUpdatedInput!
+  ): Cart!
+}
