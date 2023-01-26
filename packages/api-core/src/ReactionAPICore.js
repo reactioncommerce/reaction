@@ -691,10 +691,22 @@ export default class ReactionAPICore {
 
     if (plugin.graphQL) {
       if (plugin.graphQL.resolvers) {
+        if (!this.hasSubscriptionsEnabled && plugin.graphQL.resolvers.Subscription) {
+          Logger.info(`Plugin "${plugin.name}" registered a GraphQL Subscription resolver, but subscriptions are disabled. Skipping.`);
+          delete plugin.graphQL.resolvers.Subscription;
+        }
         _.merge(this.graphQL.resolvers, plugin.graphQL.resolvers);
       }
       if (plugin.graphQL.schemas) {
-        this.graphQL.schemas.push(...plugin.graphQL.schemas);
+        if (this.hasSubscriptionsEnabled) {
+          this.graphQL.schemas.push(...plugin.graphQL.schemas);
+        } else {
+          const filteredSchemas = plugin.graphQL.schemas.filter((schema) => !schema.includes("type Subscription"));
+          if (filteredSchemas.length !== plugin.graphQL.schemas.length) {
+            Logger.info("Plugin registered GraphQL schemas with Subscription types, but subscriptions are disabled. Skipping.");
+          }
+          this.graphQL.schemas.push(...filteredSchemas);
+        }
       }
       if (plugin.graphQL.typeDefsObj) {
         this.graphQL.typeDefsObj.push(...plugin.graphQL.typeDefsObj);

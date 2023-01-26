@@ -5,11 +5,12 @@ import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionAPICore from "./ReactionAPICore.js";
 import buildContext from "./util/buildContext.js";
+import createDataLoaders from "./util/createDataLoaders.js";
 
 const DEFAULT_MONGO_URL = "mongodb://localhost:27017/test";
 
 const require = createRequire(import.meta.url);
-const { gql } = require("apollo-server");
+const gql = require("graphql-tag");
 
 class ReactionTestAPICore {
   constructor(options = {}) {
@@ -24,15 +25,45 @@ class ReactionTestAPICore {
     }
 
     this.mutate = (mutation) => async (variables) => {
-      const result = await this.reactionNodeApp.apolloServer.executeOperation({ query: gql(mutation), variables });
-      if (result.errors) throw result.errors;
-      return result.data;
+      const { body } = await this.reactionNodeApp.apolloServer.executeOperation(
+        { query: gql(mutation), variables },
+        { contextValue: await this.getContext() }
+      );
+      if (body.singleResult.errors) throw this.cleanupErrors(body.singleResult.errors);
+      return body.singleResult.data;
     };
 
     this.query = (query) => async (variables) => {
-      const result = await this.reactionNodeApp.apolloServer.executeOperation({ query: gql(query), variables });
-      if (result.errors) throw result.errors;
-      return result.data;
+      this.reactionNodeApp.expressApp.c;
+      const { body } = await this.reactionNodeApp.apolloServer.executeOperation(
+        { query: gql(query), variables },
+        { contextValue: await this.getContext() }
+      );
+      if (body.singleResult.errors) throw this.cleanupErrors(body.singleResult.errors);
+      return body.singleResult.data;
+    };
+  }
+
+  async getContext() {
+    const contextFuncs = this.reactionNodeApp.functionsByType.graphQLContext ?? [];
+    const context = { ...this.reactionNodeApp.context };
+    // Express middleware should have already set req.user if there is one
+    await buildContext(context);
+
+    await createDataLoaders(context);
+
+    let customContext = {};
+    /* eslint-disable no-await-in-loop */
+    for (const contextFuncObject of contextFuncs) {
+      const contextFunc = contextFuncObject.func;
+      customContext = {
+        ...customContext,
+        ...(await contextFunc({ res: {} }))
+      };
+    }
+    return {
+      ...context,
+      ...customContext
     };
   }
 
@@ -140,6 +171,14 @@ class ReactionTestAPICore {
       Logger.error(error, "Error starting app in ReactionTestAPICore");
       throw error;
     }
+  }
+
+  cleanupErrors(errors) {
+    return errors.map((error) => {
+      delete error.errorId;
+      delete error.type;
+      return error;
+    });
   }
 
   async stop() {
