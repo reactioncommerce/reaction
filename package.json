@@ -100,7 +100,7 @@
   },
   "pnpm": {
     "overrides": {
-      "graphql": "15.8.0"
+      "graphql": "16.6.0"
     }
   }
 }

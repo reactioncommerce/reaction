@@ -1,4 +1,3 @@
-import Grid from "gridfs-stream";
 import StorageAdapter from "@reactioncommerce/file-collections-sa-base";
 import debug from "./debug";
 
@@ -25,7 +24,7 @@ export default class GridFSStore extends StorageAdapter {
 
     this.chunkSize = chunkSize;
     this.collectionName = `${collectionPrefix}${name}`.trim();
-    this.grid = Grid(db, mongodb);
+    this.grid = new mongodb.GridFSBucket(db);
     this.mongodb = mongodb;
   }
 
@@ -42,37 +41,34 @@ export default class GridFSStore extends StorageAdapter {
   }
 
   _getReadStream(fileKey, { start: startPos, end: endPos } = {}) {
-    const opts = { _id: fileKey._id, root: this.collectionName };
+    const opts = {};
 
     // Add range if this should be a partial read
     if (typeof startPos === "number" && typeof endPos === "number") {
-      opts.range = { startPos, endPos };
+      opts.start = startPos;
+      opts.end = endPos;
     }
 
     debug("GridFSStore _getReadStream opts:", opts);
 
-    return this.grid.createReadStream(opts);
+    const _id = new this.mongodb.ObjectId(fileKey._id);
+    return this.grid.openDownloadStream(_id, opts);
   }
 
   _getWriteStream(fileKey, options = {}) {
     const opts = {
-      chunk_size: this.chunkSize, // eslint-disable-line camelcase
-      content_type: "application/octet-stream", // eslint-disable-line camelcase
-      filename: fileKey.filename,
-      mode: "w", // overwrite any existing data
-      root: this.collectionName,
+      chunkSizeBytes: this.chunkSize,
+      contentType: "application/octet-stream",
       ...options
     };
 
-    if (fileKey._id) opts._id = fileKey._id;
-
     debug("GridFSStore _getWriteStream opts:", opts);
 
-    const writeStream = this.grid.createWriteStream(opts);
+    const writeStream = this.grid.openUploadStream(fileKey.filename, opts);
 
-    writeStream.on("close", (file) => {
+    writeStream.on("finish", (file) => {
       if (!file) {
-        // gridfs-stream will emit "close" without passing a file
+        // gridfs will emit "finish" without passing a file
         // if there is an error. We can simply exit here because
         // the "error" listener will also be called in this case.
         return;
