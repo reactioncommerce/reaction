@@ -1,4 +1,5 @@
 import Random from "@reactioncommerce/random";
+import ReactionError from "@reactioncommerce/reaction-error";
 import validateActionParams from "./validateActionParams.js";
 import validateTriggerParams from "./validateTriggerParams.js";
 
@@ -16,6 +17,7 @@ export default async function createPromotion(context, promotion) {
     const [firstTrigger] = promotion.triggers; // currently support only one trigger
     const { triggerKey } = firstTrigger;
     const trigger = promotions.triggers.find((tr) => tr.key === triggerKey);
+    if (!trigger) throw new ReactionError("invalid-params", `No trigger found with key ${triggerKey}`);
     promotion.triggerType = trigger.type;
   }
   promotion.state = "created";
