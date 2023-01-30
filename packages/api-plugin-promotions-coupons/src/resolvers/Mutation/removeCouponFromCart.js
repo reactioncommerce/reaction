@@ -1,5 +1,5 @@
 /**
- * @method applyCouponToCart
+ * @method removeCouponFromCart
  * @summary Apply a coupon to the cart
  * @param {Object} _ unused
  * @param {Object} args.input - The input arguments
@@ -8,7 +8,7 @@
  * @param {Object} context - The application context
  * @returns {Promise<Object>} with updated cart
  */
-export default async function applyCouponToCart(_, { input }, context) {
-  const appliedCart = await context.mutations.applyCouponToCart(context, input);
-  return { cart: appliedCart };
+export default async function removeCouponFromCart(_, { input }, context) {
+  const updatedCart = await context.mutations.removeCouponFromCart(context, input);
+  return { cart: updatedCart };
 }
