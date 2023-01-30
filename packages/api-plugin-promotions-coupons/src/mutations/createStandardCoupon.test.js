@@ -11,6 +11,34 @@ test("throws if validation check fails", async () => {
   }
 });
 
+test("throws error when coupon code already created", async () => {
+  const input = { code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
+  const coupon = { _id: "123", code: "CODE", promotionId: "promotionId" };
+  const promotion = { _id: "promotionId" };
+  mockContext.collections = {
+    Promotions: {
+      findOne: jest.fn().mockResolvedValueOnce(Promise.resolve(promotion)),
+      find: jest.fn().mockReturnValue({
+        toArray: jest.fn().mockResolvedValueOnce(Promise.resolve([promotion]))
+      })
+    },
+    Coupons: {
+      findOne: jest.fn().mockResolvedValueOnce(Promise.resolve(coupon)),
+      find: jest.fn().mockReturnValue({
+        toArray: jest.fn().mockResolvedValueOnce(Promise.resolve([coupon]))
+      }),
+      // eslint-disable-next-line id-length
+      insertOne: jest.fn().mockResolvedValueOnce(Promise.resolve({ insertedId: "123", result: { n: 1 } }))
+    }
+  };
+
+  try {
+    await createStandardCoupon(mockContext, input);
+  } catch (error) {
+    expect(error.message).toEqual("Coupon code already created");
+  }
+});
+
 test("throws error when promotion does not exist", async () => {
   const input = { code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
   mockContext.collections = {
