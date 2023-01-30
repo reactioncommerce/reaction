@@ -1,4 +1,5 @@
 import Random from "@reactioncommerce/random";
+import ReactionError from "@reactioncommerce/reaction-error";
 import validateActionParams from "./validateActionParams.js";
 import validateTriggerParams from "./validateTriggerParams.js";
 
