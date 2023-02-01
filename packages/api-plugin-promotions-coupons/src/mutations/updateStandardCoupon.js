@@ -41,7 +41,7 @@ export default async function updateStandardCoupon(context, input) {
   const { collections: { Coupons, Promotions } } = context;
   const { shopId, _id: couponId } = input;
 
-  const coupon = await Coupons.findOne({ _id: couponId, shopId });
+  const coupon = await Coupons.findOne({ _id: couponId, shopId, isArchived: { $ne: true } });
   if (!coupon) throw new ReactionError("not-found", "Coupon not found");
 
   const promotion = await Promotions.findOne({ _id: coupon.promotionId, shopId });
@@ -53,7 +53,7 @@ export default async function updateStandardCoupon(context, input) {
   }
 
   if (input.code && coupon.code !== input.code) {
-    const existsCoupons = await Coupons.find({ code: input.code, shopId, _id: { $ne: coupon._id } }).toArray();
+    const existsCoupons = await Coupons.find({ code: input.code, shopId, _id: { $ne: coupon._id }, isArchived: { $ne: true } }).toArray();
     if (existsCoupons.length > 0) {
       const promotionIds = _.map(existsCoupons, "promotionId");
       const promotions = await Promotions.find({ _id: { $in: promotionIds } }).toArray();
