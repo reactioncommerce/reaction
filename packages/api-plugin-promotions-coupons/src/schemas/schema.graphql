@@ -11,6 +11,9 @@ type Coupon {
   "The coupon owner ID"
   userId: ID
 
+  "The coupon name"
+  name: String!
+
   "The coupon code"
   code: String!
 
@@ -64,48 +67,8 @@ input CreateStandardCouponInput {
   "The promotion ID"
   promotionId: ID!
 
-  "The coupon code"
-  code: String!
-
-  "Can use this coupon in the store"
-  canUseInStore: Boolean!
-  
-  "The number of times this coupon can be used per user"
-  maxUsageTimesPerUser: Int
-
-  "The number of times this coupon can be used"
-  maxUsageTimes: Int
-}
-
-input CouponQueryInput {
-  "The unique ID of the coupon"
-  _id: String!
-
-  "The unique ID of the shop"
-  shopId: String!
-}
-
-input CouponFilter {
-  "The expiration date of the coupon"
-  expirationDate: Date
-
-  "The related promotion ID"
-  promotionId: ID
-
-  "The coupon code"
-  code: String
-
   "The coupon name"
-  userId: ID
-}
-
-"The input for the createStandardCoupon mutation"
-input CreateStandardCouponInput {
-  "The shop ID"
-  shopId: ID!
-  
-  "The promotion ID"
-  promotionId: ID!
+  name: String!
 
   "The coupon code"
   code: String!
