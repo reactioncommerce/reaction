@@ -52,6 +52,11 @@ export const Coupon = new SimpleSchema({
     type: Number,
     defaultValue: 0
   },
+  isArchived: {
+    type: Boolean,
+    defaultValue: false,
+    optional: true
+  },
   createdAt: {
     type: Date
   },

@@ -11,7 +11,7 @@ export default async function coupons(context, shopId, filter) {
   const selector = { shopId };
 
   if (filter) {
-    const { expirationDate, promotionId, code, userId } = filter;
+    const { expirationDate, promotionId, code, userId, isArchived } = filter;
 
     if (expirationDate) {
       selector.expirationDate = { $gte: expirationDate };
@@ -27,6 +27,10 @@ export default async function coupons(context, shopId, filter) {
 
     if (userId) {
       selector.userId = userId;
+    }
+
+    if (typeof isArchived === "boolean") {
+      selector.isArchived = isArchived;
     }
   }
 
