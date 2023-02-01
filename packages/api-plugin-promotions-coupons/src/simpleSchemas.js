@@ -1,14 +1,28 @@
 import SimpleSchema from "simpl-schema";
 
+export const CouponTriggerCondition = new SimpleSchema({
+  conditions: {
+    type: Object
+  }
+});
+
 export const CouponTriggerParameters = new SimpleSchema({
-  name: String,
-  couponCode: {
-    type: String
+  conditions: {
+    type: Object
+  },
+  inclusionRules: {
+    type: CouponTriggerCondition,
+    optional: true
+  },
+  exclusionRules: {
+    type: CouponTriggerCondition,
+    optional: true
   }
 });
 
 export const Coupon = new SimpleSchema({
   _id: String,
+  name: String,
   code: String,
   shopId: String,
   promotionId: String,

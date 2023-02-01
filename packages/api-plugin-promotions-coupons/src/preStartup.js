@@ -1,5 +1,6 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
+import { CouponTriggerCondition, CouponTriggerParameters } from "./simpleSchemas.js";
 
 /**
  * @summary This is a preStartup function that is called before the app starts up.
@@ -7,7 +8,15 @@ import SimpleSchema from "simpl-schema";
  * @returns {undefined}
  */
 export default async function preStartupPromotionCoupon(context) {
-  const { simpleSchemas: { Cart, Promotion }, promotions: pluginPromotions } = context;
+  const { simpleSchemas: { Cart, Promotion, RuleExpression }, promotions: pluginPromotions } = context;
+
+  CouponTriggerCondition.extend({
+    conditions: RuleExpression
+  });
+
+  CouponTriggerParameters.extend({
+    conditions: RuleExpression
+  });
 
   // because we're reusing the offer trigger, we need to promotion-discounts plugin to be installed first
   const offerTrigger = pluginPromotions.triggers.find((trigger) => trigger.key === "offers");
