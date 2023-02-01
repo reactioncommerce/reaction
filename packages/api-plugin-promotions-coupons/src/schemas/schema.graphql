@@ -83,6 +83,51 @@ input CreateStandardCouponInput {
   maxUsageTimes: Int
 }
 
+"Input for the updateStandardCoupon mutation"
+input UpdateStandardCouponInput {
+  "The coupon ID"
+  _id: ID!
+  
+  "The shop ID"
+  shopId: ID!
+  
+  "The coupon name"
+  name: String
+
+  "The coupon code"
+  code: String
+
+  "Can use this coupon in the store"
+  canUseInStore: Boolean
+  
+  "The number of times this coupon can be used per user"
+  maxUsageTimesPerUser: Int
+
+  "The number of times this coupon can be used"
+  maxUsageTimes: Int
+}
+
+"The input for the createStandardCoupon mutation"
+input CreateStandardCouponInput {
+  "The shop ID"
+  shopId: ID!
+  
+  "The promotion ID"
+  promotionId: ID!
+
+  "The coupon code"
+  code: String!
+
+  "Can use this coupon in the store"
+  canUseInStore: Boolean!
+  
+  "The number of times this coupon can be used per user"
+  maxUsageTimesPerUser: Int
+
+  "The number of times this coupon can be used"
+  maxUsageTimes: Int
+}
+
 input CouponQueryInput {
   "The unique ID of the coupon"
   _id: String!
@@ -209,6 +254,12 @@ extend type Mutation {
   createStandardCoupon(
     "The createStandardCoupon mutation input"
     input: CreateStandardCouponInput
+  ): StandardCouponPayload
+
+  "Update a standard coupon mutation"
+  updateStandardCoupon(
+    "The updateStandardCoupon mutation input"
+    input: UpdateStandardCouponInput
   ): StandardCouponPayload
 
   "Remove a coupon from a cart"

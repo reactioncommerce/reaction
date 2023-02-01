@@ -80,7 +80,8 @@ test("throws error when coupon code already exists in promotion window", async (
   try {
     await createStandardCoupon(mockContext, input);
   } catch (error) {
-    expect(error.message).toEqual("A coupon code CODE already exists in this promotion window");
+    // eslint-disable-next-line max-len
+    expect(error.message).toEqual("A promotion with this coupon code is already set to be active during part of this promotion window. Please either adjust your coupon code or your Promotion Start and End Dates");
   }
 });
 

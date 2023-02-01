@@ -43,7 +43,11 @@ export default async function createStandardCoupon(context, input) {
 
     for (const existsPromotion of promotions) {
       if (existsPromotion.startDate <= promotion.startDate && existsPromotion.endDate >= promotion.endDate) {
-        throw new ReactionError("invalid-params", `A coupon code ${code} already exists in this promotion window`);
+        throw new ReactionError(
+          "invalid-params",
+          // eslint-disable-next-line max-len
+          "A promotion with this coupon code is already set to be active during part of this promotion window. Please either adjust your coupon code or your Promotion Start and End Dates"
+        );
       }
     }
   }
