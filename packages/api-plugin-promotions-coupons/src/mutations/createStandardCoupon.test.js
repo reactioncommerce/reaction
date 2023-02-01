@@ -12,7 +12,7 @@ test("throws if validation check fails", async () => {
 });
 
 test("throws error when coupon code already created", async () => {
-  const input = { code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
+  const input = { name: "test", code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
   const coupon = { _id: "123", code: "CODE", promotionId: "promotionId" };
   const promotion = { _id: "promotionId" };
   mockContext.collections = {
@@ -40,7 +40,7 @@ test("throws error when coupon code already created", async () => {
 });
 
 test("throws error when promotion does not exist", async () => {
-  const input = { code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
+  const input = { name: "test", code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
   mockContext.collections = {
     Coupons: {
       findOne: jest.fn().mockResolvedValueOnce(Promise.resolve(null))
@@ -59,7 +59,7 @@ test("throws error when promotion does not exist", async () => {
 
 test("throws error when coupon code already exists in promotion window", async () => {
   const now = new Date();
-  const input = { code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
+  const input = { name: "test", code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
   const promotion = { _id: "123", startDate: now, endDate: now };
   const existsPromotion = { _id: "1234", startDate: now, endDate: now };
   const coupon = { _id: "123", code: "CODE", promotionId: "123" };
@@ -86,7 +86,7 @@ test("throws error when coupon code already exists in promotion window", async (
 
 test("should insert a new coupon and return the created results", async () => {
   const now = new Date();
-  const input = { code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
+  const input = { name: "test", code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
   const promotion = { _id: "123", endDate: now };
 
   mockContext.collections = {
@@ -112,6 +112,7 @@ test("should insert a new coupon and return the created results", async () => {
     coupon: {
       _id: "123",
       canUseInStore: true,
+      name: "test",
       code: "CODE",
       createdAt: jasmine.any(Date),
       expirationDate: now,

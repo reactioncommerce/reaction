@@ -7,6 +7,7 @@ import { Coupon } from "../simpleSchemas.js";
 const inputSchema = new SimpleSchema({
   shopId: String,
   promotionId: String,
+  name: String,
   code: String,
   canUseInStore: Boolean,
   maxUsageTimesPerUser: {
@@ -50,6 +51,7 @@ export default async function createStandardCoupon(context, input) {
   const now = new Date();
   const coupon = {
     _id: Random.id(),
+    name: input.name,
     code: input.code,
     shopId,
     promotionId,

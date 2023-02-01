@@ -22,6 +22,7 @@ export const CouponTriggerParameters = new SimpleSchema({
 
 export const Coupon = new SimpleSchema({
   _id: String,
+  name: String,
   code: String,
   shopId: String,
   promotionId: String,
