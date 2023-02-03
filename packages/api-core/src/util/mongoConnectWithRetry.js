@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import mongodb from "mongodb";
+import * as mongodb from "mongodb";
 import promiseRetry from "promise-retry";
 import config from "../config.js";
 
