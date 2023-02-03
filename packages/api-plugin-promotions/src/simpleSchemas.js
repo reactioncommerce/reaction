@@ -77,7 +77,8 @@ export const Promotion = new SimpleSchema({
     type: String
   },
   "description": {
-    type: String
+    type: String,
+    optional: true
   },
   "enabled": {
     type: Boolean,
