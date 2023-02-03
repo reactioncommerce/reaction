@@ -1,20 +1,15 @@
-import { HttpLink } from "apollo-link-http";
-import {
-  makeExecutableSchema,
-  makeRemoteExecutableSchema
-} from "graphql-tools";
-import fetch from "node-fetch";
 import nock from "nock";
 import { ReactionTestAPICore } from "@reactioncommerce/api-core";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import makeRemoteExecutableSchema from "../../util/makeRemoteExecutableSchema";
 
 // This is used in URLs for testing,
 // but we never actually start a service on this port.
 // Don't have to worry about conflicts.
 const baseUrl = "http://localhost:65123";
-const link = new HttpLink({ uri: baseUrl, fetch });
 const schemaSDL = "type Query { unitTestRemoteGraphql: Float }";
 const exSchema = makeExecutableSchema({ typeDefs: schemaSDL });
-const schema = makeRemoteExecutableSchema({ schema: exSchema, link });
+const schema = makeRemoteExecutableSchema({ baseUrl, schema: exSchema });
 
 const testApp = new ReactionTestAPICore();
 
