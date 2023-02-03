@@ -1,12 +1,7 @@
 import Random from "@reactioncommerce/random";
 
 const newPermissions = [
-  "reaction:legacy:simpleSchema/introspect:*",
-  "reaction:legacy:simpleSchema/introspect:Cart",
-  "reaction:legacy:simpleSchema/introspect:Product",
-  "reaction:legacy:simpleSchema/introspect:Order",
-  "reaction:legacy:simpleSchema/introspect:Account",
-  "reaction:legacy:simpleSchema/introspect:Promotion"
+  "reaction:legacy:simpleSchema/introspect"
 ];
 
 
@@ -20,9 +15,11 @@ export default async function checkAndSeedDb(context) {
   const { collections: { roles: Roles, Groups } } = context;
   const allGroups = await Groups.find({}).toArray();
 
-  for (let index = 0; index < allGroups.length; index += 1) {
-    const currentGroup = allGroups[index];
-    if (!(currentGroup.slug === "shop manager" || currentGroup.slug === "owner")) { // consider only these two groups for this migration
+  for (const currentGroup of allGroups) {
+    if (!(
+      currentGroup.slug === "shop manager" ||
+      currentGroup.slug === "system-manager" ||
+      currentGroup.slug === "owner")) { // adding permission only for these three groups for this migration
       const currentPerms = currentGroup.permissions;
       let permsToAdd = [];
 

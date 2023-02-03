@@ -10,8 +10,8 @@ type IntrospectSchemaPayload {
 extend type Query {
   "Query the fields of a schema"
   introspectSchema(
-    "The shop ID of the schema"
-    shopId: ID!,
+    "The (optional) shop ID to use for checking shop specific permissions"
+    shopId: ID,
 
     "A string identifying the schema Name, which will be returned in the response payload"
     schemaName: String!

@@ -4,12 +4,7 @@ import { migrationsNamespace } from "../../migrations/migrationsNamespace.js";
 const expectedVersion = 2;
 
 const simpleSchemaIntrospectPermissions = [
-  "reaction:legacy:simpleSchema/introspect:*",
-  "reaction:legacy:simpleSchema/introspect:Cart",
-  "reaction:legacy:simpleSchema/introspect:Product",
-  "reaction:legacy:simpleSchema/introspect:Order",
-  "reaction:legacy:simpleSchema/introspect:Account",
-  "reaction:legacy:simpleSchema/introspect:Promotion"
+  "reaction:legacy:simpleSchema/introspect"
 ];
 
 /**
@@ -20,11 +15,8 @@ const simpleSchemaIntrospectPermissions = [
 export default async function dbVersionCheck(context) {
   const setToExpectedIfMissing = async () => {
     // Check if atleast one of the simpleSchema introspect permissions exist in the roles collection
-    const allRoles = await context.collections.roles.find({}).toArray();
-    let rolesFound = false;
-    if (allRoles && Array.isArray(allRoles) && allRoles.length) {
-      rolesFound = allRoles.some((role) => simpleSchemaIntrospectPermissions.includes(role.name));
-    }
+    const existingRole = await context.collections.roles.findOne({ name: { $in: simpleSchemaIntrospectPermissions } });
+    const rolesFound = !!existingRole;
 
     // We are not checking for the existence of the permissions in the groups collection
     // as they could be customised by the specific implementation
