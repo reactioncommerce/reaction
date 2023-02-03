@@ -36,7 +36,7 @@ export default async function hasPermission(context, resource, action, authConte
   // Parse the provided data to create the permission name to check against (<organization>:<system>:<entity>/<action>)
   const permissionName = `${resource.split(":").splice(0, 3).join(":")}/${action}`;
   const resourceElementsArray = resource.split(":");
-  const resourceSpecificPermissionName = (Arrar.isArray(resourceElementsArray) && resourceElementsArray.length === 4) 
+  const resourceSpecificPermissionName = (Array.isArray(resourceElementsArray) && resourceElementsArray.length === 4)
     ? `${resourceElementsArray.join(":")}/${action}` : "";
 
   // make sure shopId is a non-empty string (if provided)
