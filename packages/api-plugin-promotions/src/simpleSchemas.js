@@ -123,3 +123,14 @@ export const Promotion = new SimpleSchema({
     type: Date
   }
 });
+
+export const CartPromotionItem = new SimpleSchema({
+  _id: String,
+  name: String,
+  label: String,
+  description: String,
+  triggerType: {
+    type: String,
+    allowedValues: ["implicit", "explicit"]
+  }
+});

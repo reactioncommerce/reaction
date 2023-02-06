@@ -140,6 +140,29 @@ type Promotion {
   updatedAt: Date!
 }
 
+"A applied promotion on the cart"
+type CartPromotionItem {
+  "The unique ID of the promotion"
+  _id: ID!
+
+  "The short description of the promotion"
+  name: String!
+
+  "The short description of the promotion"
+  label: String!
+
+  "A longer detailed description of the promotion"
+  description: String!
+
+  "What type of trigger this promotion uses"
+  triggerType: TriggerType!
+}
+
+extend type Cart {
+  "The promotions that have been applied to this cart"
+  appliedPromotions: [CartPromotionItem]
+}
+
 "A connection edge in which each node is a `Promotion` object"
 type PromotionEdge {
   "The cursor that represents this node in the paginated results"
