@@ -75,7 +75,7 @@ test("throws error when the related promotion is in promotion window", async () 
   try {
     await updateStandardCoupon(mockContext, input);
   } catch (error) {
-    expect(error.message).toEqual("This coupon cannot be edited because the promotion is on the window time");
+    expect(error.message).toEqual("Cannot update a coupon for a promotion that has already started");
   }
 });
 

@@ -49,7 +49,7 @@ export default async function updateStandardCoupon(context, input) {
 
   const now = new Date();
   if (promotion.startDate <= now) {
-    throw new ReactionError("invalid-params", "This coupon cannot be edited because the promotion is on the window time");
+    throw new ReactionError("invalid-params", "Cannot update a coupon for a promotion that has already started");
   }
 
   if (input.code && coupon.code !== input.code) {
