@@ -4,12 +4,7 @@ const COLLECTION_ROLES = "roles";
 const COLLECTION_GROUPS = "Groups";
 
 const newPermissions = [
-  "reaction:legacy:simpleSchema/introspect:*",
-  "reaction:legacy:simpleSchema/introspect:Cart",
-  "reaction:legacy:simpleSchema/introspect:Product",
-  "reaction:legacy:simpleSchema/introspect:Order",
-  "reaction:legacy:simpleSchema/introspect:Account",
-  "reaction:legacy:simpleSchema/introspect:Promotion"
+  "reaction:legacy:simpleSchema/introspect"
 ];
 
 /**
@@ -25,7 +20,7 @@ async function down({ db, progress }) {
   const allGroups = await db.collection(COLLECTION_GROUPS).find({}).toArray();
   const affectedGroups = [];
   allGroups.forEach((group) => {
-    if (group.slug === "shop manager" || group.slug === "owner") { // consider only these two groups for this migration
+    if (group.slug === "shop manager" || group.slug === "owner" || group.slug === "system-manager") { // only these three groups for this migration
       const perms = group.permissions;
       if (perms && Array.isArray(perms) && perms.length) {
         const found = newPermissions.some((elem) => perms.includes(elem));
@@ -74,7 +69,7 @@ async function up({ db, progress }) {
 
   for (let index = 0; index < allGroups.length; index += 1) {
     const currentGroup = allGroups[index];
-    if (!(currentGroup.slug === "shop manager" || currentGroup.slug === "owner")) { // consider only these two groups for this migration
+    if (!(currentGroup.slug === "shop manager" || currentGroup.slug === "owner" || currentGroup.slug === "system-manager")) { // only these three groups for this migration
       progress(Math.floor(((index + 1) / (allGroups.length * 2)) * 100));
       continue;
     }

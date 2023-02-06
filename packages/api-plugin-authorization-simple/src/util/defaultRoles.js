@@ -70,12 +70,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:shippingRestrictions/update",
   "reaction:legacy:shops/read",
   "reaction:legacy:shops/update",
-  "reaction:legacy:simpleSchema/introspect:*",
-  "reaction:legacy:simpleSchema/introspect:Cart",
-  "reaction:legacy:simpleSchema/introspect:Product",
-  "reaction:legacy:simpleSchema/introspect:Order",
-  "reaction:legacy:simpleSchema/introspect:Account",
-  "reaction:legacy:simpleSchema/introspect:Promotion",
+  "reaction:legacy:simpleSchema/introspect",
   "reaction:legacy:sitemaps/update:settings",
   "reaction:legacy:surcharges/create",
   "reaction:legacy:surcharges/delete",
@@ -124,5 +119,6 @@ export const defaultSystemManagerRoles = [
   "reaction:legacy:groups/update",
   "reaction:legacy:shops/create",
   "reaction:legacy:shops/read",
+  "reaction:legacy:simpleSchema/introspect",
   "reaction:legacy:invitations/read"
 ];

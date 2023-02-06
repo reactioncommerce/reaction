@@ -16,10 +16,10 @@ export default async function checkAndSeedDb(context) {
   const allGroups = await Groups.find({}).toArray();
 
   for (const currentGroup of allGroups) {
-    if (!(
+    if (
       currentGroup.slug === "shop manager" ||
       currentGroup.slug === "system-manager" ||
-      currentGroup.slug === "owner")) { // adding permission only for these three groups for this migration
+      currentGroup.slug === "owner") { // adding permission only for these three groups for this migration
       const currentPerms = currentGroup.permissions;
       let permsToAdd = [];
 
