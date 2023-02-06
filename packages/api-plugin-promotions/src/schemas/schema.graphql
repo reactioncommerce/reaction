@@ -110,7 +110,7 @@ type Promotion {
   name: String!
 
   "A longer detailed description of the promotion"
-  description: String!
+  description: String
 
   "Whether the promotion is current active"
   enabled: Boolean!
@@ -198,7 +198,7 @@ input PromotionCreateInput {
   name: String!
 
   "A longer detailed description of the promotion"
-  description: String!
+  description: String
 
   "Whether the promotion is current active"
   enabled: Boolean!
@@ -248,7 +248,7 @@ input PromotionUpdateInput {
   label: String!
 
   "A longer detailed description of the promotion"
-  description: String!
+  description: String
 
   "Whether the promotion is current active"
   enabled: Boolean!
