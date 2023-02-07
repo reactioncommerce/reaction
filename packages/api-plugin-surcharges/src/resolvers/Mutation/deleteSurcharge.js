@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeSurchargeOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,8 +17,8 @@ import { decodeShopOpaqueId, decodeSurchargeOpaqueId } from "../../xforms/id.js"
 export default async function deleteSurcharge(parentResult, { input }, context) {
   const { clientMutationId = null, surchargeId: opaqueSurchargeId, shopId: opaqueShopId } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-  const surchargeId = decodeSurchargeOpaqueId(opaqueSurchargeId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
+  const surchargeId = isOpaqueId(opaqueSurchargeId) ? decodeSurchargeOpaqueId(opaqueSurchargeId) : opaqueSurchargeId;
 
   const { surcharge } = await context.mutations.deleteSurcharge(context, {
     surchargeId,

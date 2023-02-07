@@ -1,5 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,7 +17,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  */
 export default async function navigationItemsByShopId(_, args, context, info) {
   const { shopId, ...connectionArgs } = args;
-  const decodedShopId = decodeShopOpaqueId(shopId);
+  const decodedShopId = isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId;
 
   const query = await context.queries.navigationItemsByShopId(context, decodedShopId);
 

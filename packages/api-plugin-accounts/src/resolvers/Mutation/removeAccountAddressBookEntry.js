@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId, decodeAddressOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -15,8 +16,8 @@ import { decodeAccountOpaqueId, decodeAddressOpaqueId } from "../../xforms/id.js
  */
 export default async function removeAccountAddressBookEntry(_, { input }, context) {
   const { accountId, addressId, clientMutationId = null } = input;
-  const decodedAccountId = decodeAccountOpaqueId(accountId);
-  const decodedAddressId = decodeAddressOpaqueId(addressId);
+  const decodedAccountId = isOpaqueId(accountId) ? decodeAccountOpaqueId(accountId) : accountId;
+  const decodedAddressId = isOpaqueId(addressId) ? decodeAddressOpaqueId(addressId) : addressId;
 
   const removedAddress = await context.mutations.removeAccountAddressBookEntry(context, {
     addressId: decodedAddressId,

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -21,7 +22,7 @@ export default async function createNavigationItem(parentResult, { input }, cont
   const newNavigationItem = await context.mutations.createNavigationItem(context, {
     navigationItem: {
       ...navigationItem,
-      shopId: decodeShopOpaqueId(navigationItem.shopId)
+      shopId: isOpaqueId(navigationItem.shopId) ? decodeShopOpaqueId(navigationItem.shopId) : navigationItem.shopId
     }
   });
 

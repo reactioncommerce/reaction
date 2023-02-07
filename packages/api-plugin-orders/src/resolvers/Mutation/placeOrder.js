@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import {
   decodeCartOpaqueId,
   decodeFulfillmentMethodOpaqueId,
@@ -22,14 +23,18 @@ export default async function placeOrder(parentResult, { input }, context) {
   const { clientMutationId = null, order, payments } = input;
   const { cartId: opaqueCartId, fulfillmentGroups, shopId: opaqueShopId } = order;
 
-  const cartId = opaqueCartId ? decodeCartOpaqueId(opaqueCartId) : null;
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  let cartId = null;
+  if (opaqueCartId) {
+    cartId = isOpaqueId(opaqueCartId) ? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
+  }
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const transformedFulfillmentGroups = fulfillmentGroups.map((group) => ({
     ...group,
     items: decodeOrderItemsOpaqueIds(group.items),
-    selectedFulfillmentMethodId: decodeFulfillmentMethodOpaqueId(group.selectedFulfillmentMethodId),
-    shopId: decodeShopOpaqueId(group.shopId)
+    selectedFulfillmentMethodId: isOpaqueId(group.selectedFulfillmentMethodId) ?
+      decodeFulfillmentMethodOpaqueId(group.selectedFulfillmentMethodId) : group.selectedFulfillmentMethodId,
+    shopId: isOpaqueId(group.shopId) ? decodeShopOpaqueId(group.shopId) : group.shopId
   }));
 
   const { orders, token } = await context.mutations.placeOrder(context, {

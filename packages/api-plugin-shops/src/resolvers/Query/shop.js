@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -12,7 +13,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object>} shop object
  */
 export default async function shop(_, { id }, context) {
-  const dbShopId = decodeShopOpaqueId(id);
+  const dbShopId = isOpaqueId(id) ? decodeShopOpaqueId(id) : id;
 
   return context.queries.shopById(context, dbShopId);
 }

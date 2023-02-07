@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -17,8 +18,8 @@ import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
 export default async function removeCartItems(parentResult, { input }, context) {
   const { cartId: opaqueCartId, clientMutationId = null, cartItemIds: opaqueCartItemIds, cartToken } = input;
 
-  const cartId = decodeCartOpaqueId(opaqueCartId);
-  const cartItemIds = opaqueCartItemIds.map(decodeCartItemOpaqueId);
+  const cartId = isOpaqueId(opaqueCartId) ? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
+  const cartItemIds = opaqueCartItemIds.map((opaqueCartItemId) => (isOpaqueId(opaqueCartItemId) ? decodeCartItemOpaqueId(opaqueCartItemId) : opaqueCartItemId));
 
   const { cart } = await context.mutations.removeCartItems(context, {
     cartId,

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeNavigationItemOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,8 +21,8 @@ export default async function deleteNavigationItem(parentResult, { input }, cont
     shopId: opaqueShopId
   } = input;
 
-  const navigationItemId = decodeNavigationItemOpaqueId(opaqueNavigationItemId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const navigationItemId = isOpaqueId(opaqueNavigationItemId) ? decodeNavigationItemOpaqueId(opaqueNavigationItemId) : opaqueNavigationItemId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const deletedNavigationItem = await context.mutations.deleteNavigationItem(context, {
     navigationItemId,
