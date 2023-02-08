@@ -1170,7 +1170,7 @@ importers:
       '@reactioncommerce/reaction-error': link:../reaction-error
       dotenv: 16.0.2
       envalid: 7.3.1
-      simpl-schema: 3.0.1
+      simpl-schema: 3.4.1
     devDependencies:
       '@babel/core': 7.19.0
       '@babel/preset-env': 7.19.0_@babel+core@7.19.0
