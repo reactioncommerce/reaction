@@ -1,0 +1,19 @@
+"The response from the `introspectSchema` query"
+type IntrospectSchemaPayload {
+  "The schema name"
+  schemaName: String!
+
+  "The JSONObject schema for the schema"
+  schema: JSONObject
+}
+
+extend type Query {
+  "Query the fields of a schema"
+  introspectSchema(
+    "The (optional) shop ID to use for checking shop specific permissions"
+    shopId: ID,
+
+    "A string identifying the schema Name, which will be returned in the response payload"
+    schemaName: String!
+  ): IntrospectSchemaPayload!
+}
