@@ -110,8 +110,7 @@ const CouponPromotion = {
     {
       triggerKey: "coupons",
       triggerParameters: {
-        name: "Specific coupon code",
-        couponCode: "CODE"
+        conditions: {}
       }
     }
   ],
@@ -121,12 +120,21 @@ const CouponPromotion = {
       actionParameters: {}
     }
   ],
-  startDate: now,
-  endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
+  startDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
   stackability: {
     key: "all",
     parameters: {}
   },
+  createdAt: new Date(),
+  updatedAt: new Date()
+};
+
+const Coupon = {
+  _id: "couponId",
+  code: "CODE",
+  name: "20% OFF coupon",
+  promotionId: CouponPromotion._id,
+  canUseInStore: false,
   createdAt: new Date(),
   updatedAt: new Date()
 };
@@ -142,7 +150,7 @@ const promotions = [OrderPromotion, OrderItemPromotion, CouponPromotion];
 export default async function loadPromotions(context, shopId) {
   const {
     simpleSchemas: { Promotion: PromotionSchema },
-    collections: { Promotions }
+    collections: { Promotions, Coupons }
   } = context;
   for (const promotion of promotions) {
     promotion.shopId = shopId;
@@ -150,4 +158,7 @@ export default async function loadPromotions(context, shopId) {
     // eslint-disable-next-line no-await-in-loop
     await Promotions.updateOne({ _id: promotion._id }, { $set: promotion }, { upsert: true });
   }
+
+  Coupon.shopId = shopId;
+  await Coupons.updateOne({ _id: Coupon._id }, { $set: Coupon }, { upsert: true });
 }
