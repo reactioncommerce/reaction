@@ -258,7 +258,7 @@ importers:
       '@reactioncommerce/file-collections-sa-gridfs': link:../../packages/file-collections-sa-gridfs
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1096.0
+      '@snyk/protect': 1.1100.0
       graphql: 16.6.0
       nodemailer: 6.8.0
       semver: 6.3.0
@@ -1176,7 +1176,7 @@ importers:
       '@reactioncommerce/reaction-error': link:../reaction-error
       dotenv: 16.0.2
       envalid: 7.3.1
-      simpl-schema: 3.0.1
+      simpl-schema: 3.4.1
     devDependencies:
       '@babel/core': 7.19.0
       '@babel/preset-env': 7.19.0_@babel+core@7.19.0
@@ -5149,8 +5149,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1096.0:
-    resolution: {integrity: sha512-E0hkw5TY8rIygL2uohywBrW72f1x/g36mHdMxS9UzLB9DHLDudJJYHMwJfdjl6dW7cuuTVauv8TDQireMkjOVw==}
+  /@snyk/protect/1.1100.0:
+    resolution: {integrity: sha512-nbdLbao8fqrgeWwO+RQj3Bdz0qoSeuYElHNjmH0fMiKJ1/MxR8tcma8P2xHXkDW6wYbYlUznf8gGhxAXDBe+wg==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -9286,7 +9286,7 @@ packages:
       graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       graphql: 14.7.0
-      tslib: 2.4.0
+      tslib: 2.4.1
     dev: false
 
   /graphql-tag/2.12.6_graphql@16.6.0:
@@ -14216,6 +14216,7 @@ packages:
 
   /tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
+    dev: true
 
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
