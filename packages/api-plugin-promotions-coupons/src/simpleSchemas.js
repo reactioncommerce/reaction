@@ -62,6 +62,10 @@ export const Coupon = new SimpleSchema({
   },
   updatedAt: {
     type: Date
+  },
+  discountId: {
+    type: String,
+    optional: true
   }
 });
 

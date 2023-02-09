@@ -1,6 +1,10 @@
 import _ from "lodash";
 import SimpleSchema from "simpl-schema";
+import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
+import { migrationsNamespace } from "../migrations/migrationsNamespace.js";
 import { CouponTriggerCondition, CouponTriggerParameters } from "./simpleSchemas.js";
+
+const expectedVersion = 2;
 
 /**
  * @summary This is a preStartup function that is called before the app starts up.
@@ -39,4 +43,23 @@ export default async function preStartupPromotionCoupon(context) {
   Cart.extend({
     "appliedPromotions.$": copiedPromotion
   });
+
+  const setToExpectedIfMissing = async () => {
+    const anyDiscount = await context.collections.Discounts.findOne();
+    return !anyDiscount;
+  };
+  const ok = await doesDatabaseVersionMatch({
+    // `db` is a Db instance from the `mongodb` NPM package,
+    // such as what is returned when you do `client.db()`
+    db: context.app.db,
+    // These must match one of the namespaces and versions
+    // your package exports in the `migrations` named export
+    expectedVersion,
+    namespace: migrationsNamespace,
+    setToExpectedIfMissing
+  });
+
+  if (!ok) {
+    throw new Error(`Database needs migrating. The "${migrationsNamespace}" namespace must be at version ${expectedVersion}. See docs for more information on migrations: https://github.com/reactioncommerce/api-migrations`);
+  }
 }

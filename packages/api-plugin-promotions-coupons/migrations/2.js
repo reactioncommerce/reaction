@@ -166,7 +166,7 @@ async function up({ db, progress }) {
   try {
     await migrationDiscounts(db);
   } catch (err) {
-    throw new Error("Failed to migrate discounts", err.message);
+    throw new Error(`Failed to migrate discounts: ${err.message}`);
   }
 
   progress(50);
@@ -187,7 +187,26 @@ async function up({ db, progress }) {
  *   number as argument.
  * @return {undefined}
  */
-async function down({ progress }) {
+async function down({ db, progress }) {
+  const coupons = await db.collection("Coupons").find(
+    { discountId: { $exists: true } },
+    { _id: 1, promotionId: 1 }
+  ).toArray();
+
+  const couponIds = coupons.map((coupon) => coupon._id);
+  await db.collection("Coupons").remove({ _id: { $in: couponIds } });
+
+  const promotionIds = coupons.map((coupon) => coupon.promotionId);
+  await db.collection("Promotions").remove({ _id: { $in: promotionIds } });
+
+  const carts = await db.collection("Cart").find({ version: 2 }, { _id: 1 }).toArray();
+  for (const { _id } of carts) {
+    const cart = await db.collection("Cart").findOne({ _id });
+    cart.appliedPromotions.length = 0;
+    cart.version = 1;
+    await db.collection("Cart").updateOne({ _id: cart._id }, { $set: cart });
+  }
+
   progress(100);
 }
 
