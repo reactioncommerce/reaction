@@ -8,7 +8,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "start:dev": "pnpm --filter=reaction run start:dev",
+    "start:dev": "npm run start:dev -w apps/reaction",
     "start:meteor-blaze-app": "npm run start -w=apps/meteor-blaze-app",
     "build:packages": "pnpm -r run build",
     "test": "pnpm -r run test",
