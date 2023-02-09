@@ -138,6 +138,12 @@ type Promotion {
 
   "When was this record last updated"
   updatedAt: Date!
+
+  "Call to Action message a customer sees in the storefront PDP to encourage customers to use the promotion"
+  callToActionMessage: String
+
+  "URL to the Terms and Conditions so that customers can get more information about the promotion"
+  termsAndConditionsUrl: String
 }
 
 "A applied promotion on the cart"
@@ -240,6 +246,12 @@ input PromotionCreateInput {
 
   "Definition of how this promotion can be combined (none, per-type, or all)"
   stackability: StackabilityInput
+
+  "Call to Action message a customer sees in the storefront PDP to encourage customers to use the promotion"
+  callToActionMessage: String
+
+  "URL to the Terms and Conditions so that customers can get more information about the promotion"
+  termsAndConditionsUrl: String
 }
 
 input PromotionDuplicateArchiveInput {
@@ -293,6 +305,12 @@ input PromotionUpdateInput {
 
   "What is the current state of the promotion"
   state: PromotionState
+
+  "Call to Action message a customer sees in the storefront PDP to encourage customers to use the promotion"
+  callToActionMessage: String
+
+  "URL to the Terms and Conditions so that customers can get more information about the promotion"
+  termsAndConditionsUrl: String
 }
 
 type PromotionUpdatedPayload {

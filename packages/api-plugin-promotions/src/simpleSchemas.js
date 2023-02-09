@@ -117,6 +117,14 @@ export const Promotion = new SimpleSchema({
   },
   "updatedAt": {
     type: Date
+  },
+  "callToActionMessage": {
+    type: String,
+    optional: true
+  },
+  "termsAndConditionsUrl": {
+    type: String,
+    optional: true
   }
 });
 
