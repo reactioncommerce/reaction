@@ -8,6 +8,7 @@ import loadProducts from "./loaders/loadProducts.js";
 import loadNavigation from "./loaders/loadNavigation.js";
 import loadShipping from "./loaders/loadShipping.js";
 import loadPromotions from "./loaders/loadPromotions.js";
+import loadSequences from "./loaders/loadSequences.js";
 import config from "./config.js";
 
 /**
@@ -47,6 +48,8 @@ export default async function loadSampleData(context) {
   await loadShipping(context, newShopId);
   Logger.info("Loading Promotions");
   await loadPromotions(context, newShopId);
+  Logger.info("Loading Sequences");
+  await loadSequences(context, newShopId);
   Logger.info("Loading Sample Data complete");
   return true;
 }
