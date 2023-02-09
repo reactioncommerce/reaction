@@ -5151,6 +5151,7 @@ packages:
 
   /@snyk/protect/1.1096.0:
     resolution: {integrity: sha512-E0hkw5TY8rIygL2uohywBrW72f1x/g36mHdMxS9UzLB9DHLDudJJYHMwJfdjl6dW7cuuTVauv8TDQireMkjOVw==}
+    engines: {node: '>=10'}
     hasBin: true
     dev: false
 
