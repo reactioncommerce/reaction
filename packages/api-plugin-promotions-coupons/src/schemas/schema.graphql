@@ -29,6 +29,9 @@ type Coupon {
   "The number of times this coupon has been used"
   usedCount: Int
 
+  "The coupon is archived"
+  isArchived: Boolean
+
   "Coupon created time"
   createdAt: Date!
 
@@ -107,27 +110,6 @@ input UpdateStandardCouponInput {
   maxUsageTimes: Int
 }
 
-"The input for the createStandardCoupon mutation"
-input CreateStandardCouponInput {
-  "The shop ID"
-  shopId: ID!
-  
-  "The promotion ID"
-  promotionId: ID!
-
-  "The coupon code"
-  code: String!
-
-  "Can use this coupon in the store"
-  canUseInStore: Boolean!
-  
-  "The number of times this coupon can be used per user"
-  maxUsageTimesPerUser: Int
-
-  "The number of times this coupon can be used"
-  maxUsageTimes: Int
-}
-
 input CouponQueryInput {
   "The unique ID of the coupon"
   _id: String!
@@ -148,6 +130,9 @@ input CouponFilter {
 
   "The coupon name"
   userId: ID
+
+  "The coupon is archived"
+  isArchived: Boolean
 }
 
 "Input for the removeCouponFromCart mutation"
@@ -166,6 +151,15 @@ input RemoveCouponFromCartInput {
 
   "Cart token, if anonymous"
   token: String
+}
+
+"The input for the archiveCoupon mutation"
+input ArchiveCouponInput {
+  "The coupon ID"
+  couponId: ID!
+
+  "The shop ID"
+  shopId: ID!
 }
 
 "The response for the applyCouponToCart mutation"
@@ -260,6 +254,12 @@ extend type Mutation {
   updateStandardCoupon(
     "The updateStandardCoupon mutation input"
     input: UpdateStandardCouponInput
+  ): StandardCouponPayload
+
+  "Archive coupon mutation"
+  archiveCoupon(
+    "The archiveCoupon mutation input"
+    input: ArchiveCouponInput
   ): StandardCouponPayload
 
   "Remove a coupon from a cart"

@@ -36,7 +36,7 @@ export default async function createStandardCoupon(context, input) {
   const promotion = await Promotions.findOne({ _id: promotionId, shopId });
   if (!promotion) throw new ReactionError("not-found", "Promotion not found");
 
-  const existsCoupons = await Coupons.find({ code, shopId }).toArray();
+  const existsCoupons = await Coupons.find({ code, shopId, isArchived: { $ne: true } }).toArray();
   if (existsCoupons.length > 0) {
     const promotionIds = _.map(existsCoupons, "promotionId");
     const promotions = await Promotions.find({ _id: { $in: promotionIds } }).toArray();
