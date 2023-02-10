@@ -136,7 +136,7 @@ async function migrateCart(db) {
   const carts = await db.collection("Cart").find({}, { _id: 1 }).toArray();
 
   for (const { _id } of carts) {
-    const cart = await db.findOne({ _id });
+    const cart = await db.collection("Cart").findOne({ _id });
     if (cart.version && cart.version === 2) continue;
 
     if (!cart.billing) continue;
@@ -174,7 +174,7 @@ async function up({ db, progress }) {
   try {
     await migrateCart(db);
   } catch (err) {
-    throw new Error("Failed to migrate cart", err.message);
+    throw new Error(`Failed to migrate cart: ${err.message}`);
   }
   progress(100);
 }
