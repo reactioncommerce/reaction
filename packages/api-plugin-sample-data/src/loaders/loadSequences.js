@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import Random from "@reactioncommerce/random";
 import config from "../config.js";
 
@@ -15,13 +16,15 @@ export default async function loadSequences(context, shopId) {
 
   for (const sequence of sequenceConfigs) {
     const { entity } = sequence;
-    const startingValue = SEQUENCE_INITIAL_VALUES[entity] || 1000000;
-    // eslint-disable-next-line no-await-in-loop
-    await Sequences.insertOne({
-      _id: Random.id(),
-      shopId,
-      entity,
-      value: startingValue
-    });
+    const existingSequence = await Sequences.findOne({ shopId, entity });
+    if (!existingSequence) {
+      const startingValue = SEQUENCE_INITIAL_VALUES[entity] || 1000000;
+      await Sequences.insertOne({
+        _id: Random.id(),
+        shopId,
+        entity,
+        value: startingValue
+      });
+    }
   }
 }
