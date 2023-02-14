@@ -132,7 +132,10 @@ export const CartPromotionItem = new SimpleSchema({
   _id: String,
   name: String,
   label: String,
-  description: String,
+  description: {
+    type: String,
+    optional: true
+  },
   triggerType: {
     type: String,
     allowedValues: ["implicit", "explicit"]
