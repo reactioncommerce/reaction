@@ -81,7 +81,8 @@ export const Promotion = new SimpleSchema({
     type: String
   },
   "description": {
-    type: String
+    type: String,
+    optional: true
   },
   "enabled": {
     type: Boolean,
@@ -120,5 +121,27 @@ export const Promotion = new SimpleSchema({
   },
   "updatedAt": {
     type: Date
+  },
+  "callToActionMessage": {
+    type: String,
+    optional: true
+  },
+  "termsAndConditionsUrl": {
+    type: String,
+    optional: true
+  }
+});
+
+export const CartPromotionItem = new SimpleSchema({
+  _id: String,
+  name: String,
+  label: String,
+  description: {
+    type: String,
+    optional: true
+  },
+  triggerType: {
+    type: String,
+    allowedValues: ["implicit", "explicit"]
   }
 });

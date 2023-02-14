@@ -461,6 +461,17 @@ input SetEmailOnAnonymousCartInput {
   email: String!
 }
 
+input CartUpdatedInput {
+  "The cart ID"
+  cartId: ID!,
+
+  "The cart account ID"
+  accountId: ID
+
+  "The cart anonymous token"
+  cartToken: String
+}
+
 "Input for the `acknowledgeCartMessage` mutation call"
 input AcknowledgeCartMessageInput {
   "The cart ID"
@@ -663,4 +674,14 @@ extend type Mutation {
     "Mutation input"
     input: AcknowledgeCartMessageInput!
   ): AcknowledgeCartMessagePayload!
+}
+
+####################
+ # Subscriptions
+ ####################
+extend type Subscription {
+  "Subscribe to changes to cart"
+  cartUpdated(
+    input: CartUpdatedInput!
+  ): Cart!
 }

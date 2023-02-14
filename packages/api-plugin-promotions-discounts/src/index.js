@@ -2,6 +2,7 @@ import { createRequire } from "module";
 import actions from "./actions/index.js";
 import methods from "./methods/index.js";
 import queries from "./queries/index.js";
+import schemas from "./schemas/index.js";
 import stackabilities from "./stackabilities/index.js";
 import addDiscountToOrderItem from "./utils/addDiscountToOrderItem.js";
 import preStartup from "./preStartup.js";
@@ -27,6 +28,9 @@ export default async function register(app) {
       preStartup: [preStartup],
       mutateNewOrderItemBeforeCreate: [addDiscountToOrderItem],
       calculateDiscountTotal: [getTotalDiscountOnCart]
+    },
+    graphQL: {
+      schemas
     },
     queries,
     contextAdditions: {

@@ -19,7 +19,7 @@ function extendSchemas(context) {
  * @returns {Object} the extended schema
  */
 function extendCartSchema(context) {
-  const { simpleSchemas: { Cart, Promotion } } = context; // we get this here rather then importing it to get the extended version
+  const { simpleSchemas: { Cart, CartPromotionItem } } = context; // we get this here rather then importing it to get the extended version
 
   Cart.extend({
     "version": {
@@ -31,7 +31,7 @@ function extendCartSchema(context) {
       optional: true
     },
     "appliedPromotions.$": {
-      type: Promotion
+      type: CartPromotionItem
     }
   });
   return Cart;

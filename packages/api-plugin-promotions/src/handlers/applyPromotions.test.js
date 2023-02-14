@@ -50,7 +50,8 @@ test("should save cart with implicit promotions are applied", async () => {
   };
   mockContext.promotions = pluginPromotion;
   mockContext.simpleSchemas = {
-    Cart: { clean: jest.fn() }
+    Cart: { clean: jest.fn() },
+    CartPromotionItem: { clean: jest.fn() }
   };
   canBeApplied.mockResolvedValue({ qualifies: true });
   testAction.mockResolvedValue({ affected: true });

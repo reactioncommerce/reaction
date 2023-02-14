@@ -120,8 +120,8 @@ export async function getCurrentTime(context, shopId) {
  */
 export default async function applyPromotions(context, cart) {
   const currentTime = await getCurrentTime(context, cart.shopId);
-  const { promotions: pluginPromotions, simpleSchemas: { Cart } } = context;
   const promotions = await getImplicitPromotions(context, cart.shopId, currentTime);
+  const { promotions: pluginPromotions, simpleSchemas: { Cart, CartPromotionItem } } = context;
 
   const triggerHandleByKey = _.keyBy(pluginPromotions.triggers, "key");
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
@@ -231,7 +231,9 @@ export default async function applyPromotions(context, cart) {
       }
 
       if (affected) {
-        appliedPromotions.push(promotion);
+        const affectedPromotion = _.cloneDeep(promotion);
+        CartPromotionItem.clean(affectedPromotion);
+        appliedPromotions.push(affectedPromotion);
         continue;
       }
 
