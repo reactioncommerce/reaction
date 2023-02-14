@@ -42,8 +42,9 @@ export default async function startupSequences(context) {
   for (const shop of allShops) {
     const { _id: shopId } = shop;
     try {
-      // eslint-disable-next-line no-return-await
-      await session.withTransaction(async () => await createShopSequence(context, shopId));
+      await session.withTransaction(async () => {
+        await createShopSequence(context, shopId);
+      });
     } catch (error) {
       // eslint-disable-next-line no-await-in-loop
       await session.endSession();
@@ -54,6 +55,7 @@ export default async function startupSequences(context) {
   }
 
   const { appEvents } = context;
-  // eslint-disable-next-line no-return-await
-  appEvents.on("afterShopCreate", async ({ shop }) => await createShopSequence(context, shop._id));
+  appEvents.on("afterShopCreate", async ({ shop }) => {
+    await createShopSequence(context, shop._id);
+  });
 }
