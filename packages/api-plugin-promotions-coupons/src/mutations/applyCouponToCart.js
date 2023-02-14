@@ -60,7 +60,8 @@ export default async function applyCouponToCart(context, input) {
     $or: [
       { expirationDate: { $gte: now } },
       { expirationDate: null }
-    ]
+    ],
+    isArchived: { $ne: true }
   }).toArray();
   if (coupons.length > 1) {
     throw new ReactionError("invalid-params", "The coupon have duplicate with other promotion. Please contact admin for more information");
