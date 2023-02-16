@@ -55,6 +55,11 @@ export const discountActionParameters = new SimpleSchema({
     type: Boolean,
     optional: true,
     defaultValue: false
+  },
+  neverStackWithOtherShippingDiscounts: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
   }
 });
 
@@ -76,8 +81,15 @@ export async function discountActionCleanup(context, cart) {
     return item;
   });
 
-  // todo: add reset logic for the shipping
-  // cart.shipping = cart.shipping.map((shipping) => ({ ...shipping, discounts: [] }));
+  for (const shipping of cart.shipping) {
+    shipping.discounts = [];
+    const { shipmentMethod } = shipping;
+    if (shipmentMethod) {
+      shipmentMethod.shippingPrice = shipmentMethod.handling + shipmentMethod.rate;
+      shipmentMethod.discount = 0;
+      shipmentMethod.undiscountedRate = 0;
+    }
+  }
 
   return cart;
 }

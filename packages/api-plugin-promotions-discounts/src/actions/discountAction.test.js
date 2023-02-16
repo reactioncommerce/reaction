@@ -77,6 +77,17 @@ describe("cleanup", () => {
             undiscountedAmount: 12
           }
         }
+      ],
+      shipping: [
+        {
+          _id: "shipping1",
+          shipmentMethod: {
+            shippingPrice: 9,
+            discount: 2,
+            handling: 2,
+            rate: 9
+          }
+        }
       ]
     };
 
@@ -96,6 +107,19 @@ describe("cleanup", () => {
           subtotal: {
             amount: 12,
             currencyCode: "USD"
+          }
+        }
+      ],
+      shipping: [
+        {
+          _id: "shipping1",
+          discounts: [],
+          shipmentMethod: {
+            discount: 0,
+            handling: 2,
+            rate: 9,
+            shippingPrice: 11,
+            undiscountedRate: 0
           }
         }
       ]

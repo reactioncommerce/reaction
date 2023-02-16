@@ -15,7 +15,11 @@ export default async function getDiscountsTotalForCart(context, cart) {
     }
   }
 
-  // TODO: add discounts from shipping
+  for (const shipping of cart.shipping) {
+    if (Array.isArray(shipping.discounts)) {
+      discounts.push(...shipping.discounts);
+    }
+  }
 
   return {
     discounts,
