@@ -8,6 +8,6 @@
  */
 export default async function getPreviewPromotionCoupon(promotion, args, context) {
   const { collections: { Coupons } } = context;
-  const coupon = await Coupons.findOne({ promotionId: promotion._id });
+  const coupon = await Coupons.findOne({ promotionId: promotion._id, isArchived: { $ne: true } });
   return coupon;
 }
