@@ -78,7 +78,8 @@ test("should apply order discount to cart", async () => {
         },
         discounts: []
       }
-    ]
+    ],
+    shipping: []
   };
 
   const parameters = {
@@ -263,7 +264,8 @@ test("should apply order discount to cart with discountMaxValue when estimate di
         },
         discounts: []
       }
-    ]
+    ],
+    shipping: []
   };
 
   const parameters = {
@@ -301,7 +303,8 @@ test("should apply order discount to cart with discountMaxValue when estimate di
 test("should return affected is false with reason when have no items are discounted", async () => {
   const cart = {
     _id: "cart1",
-    items: []
+    items: [],
+    shipping: []
   };
 
   const parameters = {

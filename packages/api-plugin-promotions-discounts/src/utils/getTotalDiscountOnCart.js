@@ -12,7 +12,10 @@ export default function getTotalDiscountOnCart(cart) {
     totalDiscount += item.subtotal.discount || 0;
   }
 
-  // TODO: Add the logic to calculate the total discount on shipping
+  if (!Array.isArray(cart.shipping)) cart.shipping = [];
+  for (const shipping of cart.shipping) {
+    totalDiscount += shipping.shipmentMethod?.discount || 0;
+  }
 
   return Number(formatMoney(totalDiscount));
 }

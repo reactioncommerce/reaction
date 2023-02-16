@@ -39,8 +39,11 @@ type CartDiscount {
   " The items that were discounted. Only available if `discountedItemType` is `item`."
   discountedItems: [CartDiscountedItem]
 
-  "Should this discount be applied before other discounts?"
+  "Should this discount be applied before other item discounts?"
   neverStackWithOtherItemLevelDiscounts: Boolean
+
+  "Should this discount be applied before other shipping discounts?"
+  neverStackWithOtherShippingDiscounts: Boolean
 }
 
 extend type Cart {
@@ -87,6 +90,19 @@ extend type OrderItem {
 }
 
 extend type OrderFulfillmentGroup {
+  "The array of discounts applied to the fulfillment group."
+  discounts: [CartDiscount]
+}
+
+extend type FulfillmentMethod {
+  "The total discount amount of the fulfillment method. "
+  discount: Float
+
+  "The total undiscounted rate of the fulfillment method. "
+  undiscountedRate: Float
+}
+
+extend type FulfillmentGroup {
   "The array of discounts applied to the fulfillment group."
   discounts: [CartDiscount]
 }

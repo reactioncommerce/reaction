@@ -22,7 +22,7 @@ const discountSchema = new SimpleSchema({
  * @returns {Promise<void>} undefined
  */
 async function extendCartSchemas(context) {
-  const { simpleSchemas: { Cart, CartItem, Shipment, ShippingMethod, ShipmentQuote } } = context;
+  const { simpleSchemas: { Cart, CartItem, Shipment, ShippingMethod } } = context;
   Cart.extend(discountSchema);
   Cart.extend({
     "discounts": {
@@ -69,13 +69,14 @@ async function extendCartSchemas(context) {
     undiscountedRate: {
       type: Number,
       optional: true
-    }
-  });
-
-  ShipmentQuote.extend({
-    undiscountedRate: {
+    },
+    discount: {
       type: Number,
       optional: true
+    },
+    shippingPrice: {
+      type: Number,
+      defaultValue: 0
     }
   });
 }
