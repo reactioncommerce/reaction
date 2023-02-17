@@ -22,7 +22,7 @@ export default function requestRange(headers, fileSize) {
   }
 
   const defaultRange = {
-    end: fileSize - 1,
+    end: fileSize,
     len: fileSize,
     partial: false,
     size: fileSize,
