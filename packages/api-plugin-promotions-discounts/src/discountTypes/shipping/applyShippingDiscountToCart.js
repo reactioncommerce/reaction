@@ -6,6 +6,7 @@ import recalculateShippingDiscount from "../../utils/recalculateShippingDiscount
 import getTotalDiscountOnCart from "../../utils/getTotalDiscountOnCart.js";
 import formatMoney from "../../utils/formatMoney.js";
 import getEligibleShipping from "../../utils/getEligibleIShipping.js";
+import calculateDiscountAmount from "../../utils/calculateDiscountAmount.js";
 
 const require = createRequire(import.meta.url);
 
@@ -49,10 +50,9 @@ export function createDiscountRecord(params, discountedItem) {
  * @returns {Number} - The discount amount
  */
 export function getTotalShippingDiscount(context, totalShippingPrice, actionParameters) {
-  const { discountCalculationType, discountValue, discountMaxValue } = actionParameters;
-  const calculationMethod = context.discountCalculationMethods[discountCalculationType];
+  const { discountMaxValue } = actionParameters;
 
-  const total = formatMoney(calculationMethod(discountValue, totalShippingPrice));
+  const total = calculateDiscountAmount(context, totalShippingPrice, actionParameters);
   if (typeof discountMaxValue === "number" && discountMaxValue > 0) {
     return Math.min(total, discountMaxValue);
   }
