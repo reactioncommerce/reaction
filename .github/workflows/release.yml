@@ -55,3 +55,4 @@ jobs:
           committer_name: github-actions[bot]
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
           pathspec_error_handling: ignore
+          commit: --signoff
