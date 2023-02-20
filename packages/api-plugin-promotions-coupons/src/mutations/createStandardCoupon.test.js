@@ -14,7 +14,7 @@ test("throws if validation check fails", async () => {
 test("throws error when coupon code already created", async () => {
   const input = { name: "test", code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
   const coupon = { _id: "123", code: "CODE", promotionId: "promotionId" };
-  const promotion = { _id: "promotionId" };
+  const promotion = { _id: "promotionId", triggerType: "explicit" };
   mockContext.collections = {
     Promotions: {
       findOne: jest.fn().mockResolvedValueOnce(Promise.resolve(promotion)),
@@ -57,11 +57,30 @@ test("throws error when promotion does not exist", async () => {
   }
 });
 
+test("throws error when promotion is not explicit", async () => {
+  const input = { name: "test", code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
+  const promotion = { _id: "123", triggerType: "automatic" };
+  mockContext.collections = {
+    Coupons: {
+      findOne: jest.fn().mockResolvedValueOnce(Promise.resolve(null))
+    },
+    Promotions: {
+      findOne: jest.fn().mockResolvedValueOnce(Promise.resolve(promotion))
+    }
+  };
+
+  try {
+    await createStandardCoupon(mockContext, input);
+  } catch (error) {
+    expect(error.message).toEqual("Coupon can only be created for explicit promotions");
+  }
+});
+
 test("throws error when coupon code already exists in promotion window", async () => {
   const now = new Date();
   const input = { name: "test", code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
-  const promotion = { _id: "123", startDate: now, endDate: now };
-  const existsPromotion = { _id: "1234", startDate: now, endDate: now };
+  const promotion = { _id: "123", startDate: now, endDate: now, triggerType: "explicit" };
+  const existsPromotion = { _id: "1234", startDate: now, endDate: now, triggerType: "explicit" };
   const coupon = { _id: "123", code: "CODE", promotionId: "123" };
   mockContext.collections = {
     Coupons: {
@@ -88,7 +107,7 @@ test("throws error when coupon code already exists in promotion window", async (
 test("should insert a new coupon and return the created results", async () => {
   const now = new Date();
   const input = { name: "test", code: "CODE", shopId: "123", promotionId: "123", canUseInStore: true };
-  const promotion = { _id: "123", endDate: now };
+  const promotion = { _id: "123", endDate: now, triggerType: "explicit" };
 
   mockContext.collections = {
     Coupons: {
