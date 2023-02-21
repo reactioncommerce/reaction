@@ -25,24 +25,24 @@ test("should recalculate shipping discount", async () => {
           rate: 9,
           shippingPrice: 11
         },
-        handling: 2,
-        rate: 9
+        rate: 9,
+        handlingPrice: 2
       }
     ]
   };
 
   mockContext.discountCalculationMethods = {
-    fixed: jest.fn().mockReturnValue(2)
+    fixed: jest.fn().mockReturnValue(0)
   };
 
   recalculateShippingDiscount(mockContext, shipping);
 
   expect(shipping.shipmentMethod).toEqual({
     _id: "method1",
-    discount: 7,
+    discount: 9,
     handling: 2,
-    rate: 7,
-    shippingPrice: 7,
+    rate: 0,
+    shippingPrice: 2,
     undiscountedRate: 9
   });
 });

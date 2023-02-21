@@ -25,20 +25,20 @@ export default function recalculateShippingDiscount(context, shipping) {
     const undiscountedRate = shipmentMethod.rate;
     const { discountMaxValue } = discount;
 
-    const discountRate = calculateDiscountAmount(context, undiscountedRate, discount);
+    const discountedRate = calculateDiscountAmount(context, undiscountedRate, discount);
 
     // eslint-disable-next-line require-jsdoc
     function getDiscountedRate() {
-      const discountedRate = formatMoney(undiscountedRate - discountRate);
+      const discountRate = formatMoney(undiscountedRate - discountedRate);
       if (typeof discountMaxValue === "number" && discountMaxValue > 0) {
-        return Math.min(discountedRate, discountMaxValue);
+        return Math.min(discountRate, discountMaxValue);
       }
-      return discountedRate;
+      return discountRate;
     }
 
-    const discountedRate = getDiscountedRate();
+    const discountRate = getDiscountedRate();
 
-    totalDiscount += discountedRate;
+    totalDiscount += discountRate;
     discount.discountedAmount = discountedRate;
     shipmentMethod.rate = discountedRate;
   });

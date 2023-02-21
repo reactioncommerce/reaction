@@ -54,7 +54,7 @@ test("should apply shipping discount to cart", async () => {
               rate: 9,
               shippingPrice: 11
             },
-            handling: 2,
+            handlingPrice: 2,
             rate: 9
           }
         ],
@@ -77,7 +77,7 @@ test("should apply shipping discount to cart", async () => {
   };
 
   mockContext.discountCalculationMethods = {
-    fixed: jest.fn().mockReturnValue(2)
+    fixed: jest.fn().mockReturnValue(0)
   };
 
   const { cart: updatedCart, affected } = await applyShippingDiscountToCart.default(mockContext, parameters, cart);
@@ -85,10 +85,10 @@ test("should apply shipping discount to cart", async () => {
   expect(affected).toEqual(true);
   expect(updatedCart.shipping[0].shipmentMethod).toEqual({
     _id: "method1",
-    discount: 7,
+    discount: 9,
     handling: 2,
-    rate: 7,
-    shippingPrice: 7,
+    rate: 0,
+    shippingPrice: 2,
     undiscountedRate: 9
   });
   expect(updatedCart.shipping[0].discounts).toHaveLength(1);
