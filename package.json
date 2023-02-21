@@ -66,7 +66,8 @@
     "husky": "^5.0.8",
     "is-ci": "^2.0.0",
     "is-docker": "^2.1.1",
-    "jest": "^25.5.4",
+    "jest": "^29.4.3",
+    "jest-jasmine2": "^29.4.3",
     "nodemon": "~1.19.2"
   },
   "graphql-schema-linter": {
