@@ -24,8 +24,8 @@ export default async function duplicatePromotion(context, { shopId, promotionId 
   PromotionSchema.validate(newPromotion);
   validateTriggerParams(context, newPromotion);
   const results = await Promotions.insertOne(newPromotion);
-  const { insertedCount } = results;
-  if (!insertedCount) {
+  const { insertedId } = results;
+  if (!insertedId) {
     return {
       success: false,
       errors: [{
