@@ -3,7 +3,6 @@ import { createRequire } from "module";
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import recalculateShippingDiscount from "../../utils/recalculateShippingDiscount.js";
-import getTotalDiscountOnCart from "../../utils/getTotalDiscountOnCart.js";
 import formatMoney from "../../utils/formatMoney.js";
 import getEligibleShipping from "../../utils/getEligibleIShipping.js";
 import calculateDiscountAmount from "../../utils/calculateDiscountAmount.js";
@@ -45,14 +44,14 @@ export function createDiscountRecord(params, discountedItem) {
 /**
  * @summary Get the discount amount for a discount item
  * @param {Object} context - The application context
- * @param {Number} totalShippingPrice - The total shipping price
+ * @param {Number} totalShippingRate - The total shipping price
  * @param {Object} actionParameters - The action parameters
  * @returns {Number} - The discount amount
  */
-export function getTotalShippingDiscount(context, totalShippingPrice, actionParameters) {
+export function getTotalShippingDiscount(context, totalShippingRate, actionParameters) {
   const { discountMaxValue } = actionParameters;
 
-  const total = calculateDiscountAmount(context, totalShippingPrice, actionParameters);
+  const total = calculateDiscountAmount(context, totalShippingRate, actionParameters);
   if (typeof discountMaxValue === "number" && discountMaxValue > 0) {
     return Math.min(total, discountMaxValue);
   }
@@ -62,16 +61,16 @@ export function getTotalShippingDiscount(context, totalShippingPrice, actionPara
 /**
  * @summary Splits a discount across all shipping
  * @param {Array<Object>} cartShipping - The shipping to split the discount across
- * @param {Number} totalShippingPrice - The total shipping price
+ * @param {Number} totalShippingRate - The total shipping price
  * @param {Number} discountAmount - The total discount to split
  * @returns {Array<Object>} undefined
  */
-export function splitDiscountForShipping(cartShipping, totalShippingPrice, discountAmount) {
+export function splitDiscountForShipping(cartShipping, totalShippingRate, discountAmount) {
   let discounted = 0;
   const discountedShipping = cartShipping.map((shipping, index) => {
     if (index !== cartShipping.length - 1) {
-      const shippingPrice = shipping.shipmentMethod.rate + shipping.shipmentMethod.handling;
-      const discount = formatMoney((shippingPrice / totalShippingPrice) * discountAmount);
+      const rate = shipping.shipmentMethod.rate || 0;
+      const discount = formatMoney((rate / totalShippingRate) * discountAmount);
       discounted += discount;
       return { _id: shipping._id, amount: discount };
     }
@@ -82,18 +81,18 @@ export function splitDiscountForShipping(cartShipping, totalShippingPrice, disco
 }
 
 /**
- * @summary Get the total shipping price
- * @param {Array<Object>} cartShipping - The shipping array to get the total price for
- * @returns {Number} - The total shipping price
+ * @summary Get the total shipping rate
+ * @param {Array<Object>} cartShipping - The shipping array to get the total rate for
+ * @returns {Number} - The total shipping rate
  */
-export function getTotalShippingPrice(cartShipping) {
-  const totalPrice = cartShipping
+export function getTotalShippingRate(cartShipping) {
+  const totalRate = cartShipping
     .map((shipping) => {
       if (!shipping.shipmentMethod) return 0;
-      return shipping.shipmentMethod.shippingPrice;
+      return shipping.shipmentMethod.rate || 0;
     })
     .reduce((sum, price) => sum + price, 0);
-  return totalPrice;
+  return totalRate;
 }
 
 /**
@@ -124,8 +123,8 @@ export default async function applyShippingDiscountToCart(context, params, cart)
   if (!cart.shipping) cart.shipping = [];
   const { actionParameters } = params;
   const filteredShipping = await getEligibleShipping(context, cart.shipping, params.actionParameters);
-  const totalShippingPrice = getTotalShippingPrice(filteredShipping);
-  const totalShippingDiscount = getTotalShippingDiscount(context, totalShippingPrice, actionParameters);
+  const totalShippingRate = getTotalShippingRate(filteredShipping);
+  const totalShippingDiscount = getTotalShippingDiscount(context, totalShippingRate, actionParameters);
   const discountedItems = splitDiscountForShipping(filteredShipping, totalShippingDiscount, totalShippingDiscount);
 
   for (const discountedItem of discountedItems) {
@@ -141,8 +140,6 @@ export default async function applyShippingDiscountToCart(context, params, cart)
     shipping.discounts.push(shippingDiscount);
     recalculateShippingDiscount(context, shipping);
   }
-
-  cart.discount = getTotalDiscountOnCart(cart);
 
   if (discountedItems.length) {
     Logger.info(logCtx, "Saved Discount to cart");

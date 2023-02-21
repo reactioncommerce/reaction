@@ -16,6 +16,18 @@ test("should recalculate shipping discount", async () => {
         discountCalculationType: "fixed",
         discountValue: 10
       }
+    ],
+    shipmentQuotes: [
+      {
+        method: {
+          _id: "method1",
+          handling: 2,
+          rate: 9,
+          shippingPrice: 11
+        },
+        handling: 2,
+        rate: 9
+      }
     ]
   };
 
@@ -27,10 +39,10 @@ test("should recalculate shipping discount", async () => {
 
   expect(shipping.shipmentMethod).toEqual({
     _id: "method1",
-    discount: 9,
+    discount: 7,
     handling: 2,
-    rate: 9,
-    shippingPrice: 2,
-    undiscountedRate: 11
+    rate: 7,
+    shippingPrice: 7,
+    undiscountedRate: 9
   });
 });
