@@ -46,6 +46,18 @@ test("should apply shipping discount to cart", async () => {
           rate: 9,
           shippingPrice: 11
         },
+        shipmentQuotes: [
+          {
+            method: {
+              _id: "method1",
+              handling: 2,
+              rate: 9,
+              shippingPrice: 11
+            },
+            handling: 2,
+            rate: 9
+          }
+        ],
         discounts: []
       }
     ],
@@ -73,16 +85,16 @@ test("should apply shipping discount to cart", async () => {
   expect(affected).toEqual(true);
   expect(updatedCart.shipping[0].shipmentMethod).toEqual({
     _id: "method1",
-    discount: 9,
+    discount: 7,
     handling: 2,
-    rate: 9,
-    shippingPrice: 2,
-    undiscountedRate: 11
+    rate: 7,
+    shippingPrice: 7,
+    undiscountedRate: 9
   });
   expect(updatedCart.shipping[0].discounts).toHaveLength(1);
 });
 
-test("getTotalShippingPrice should return total shipping price", () => {
+test("getTotalShippingRate should return total shipping price", () => {
   const cart = {
     shipping: [
       {
@@ -95,16 +107,16 @@ test("getTotalShippingPrice should return total shipping price", () => {
       {
         shipmentMethod: {
           rate: 10,
-          handling: 1,
-          shippingPrice: 11
+          handling: 2,
+          shippingPrice: 12
         }
       }
     ]
   };
 
-  const totalShippingPrice = applyShippingDiscountToCart.getTotalShippingPrice(cart.shipping);
+  const totalShippingRate = applyShippingDiscountToCart.getTotalShippingRate(cart.shipping);
 
-  expect(totalShippingPrice).toEqual(22);
+  expect(totalShippingRate).toEqual(19);
 });
 
 test("getTotalShippingDiscount should return total shipping discount", () => {
@@ -124,8 +136,8 @@ test("getTotalShippingDiscount should return total shipping discount", () => {
 });
 
 test("splitDiscountForShipping should split discount for shipping", () => {
-  const totalShippingPrice = 22;
-  const totalShippingDiscount = 10;
+  const totalShippingRate = 22;
+  const totalDiscountRate = 10;
 
   const cart = {
     _id: "cart1",
@@ -133,7 +145,7 @@ test("splitDiscountForShipping should split discount for shipping", () => {
       {
         _id: "shipping1",
         shipmentMethod: {
-          rate: 9,
+          rate: 11,
           handling: 2
         }
       },
@@ -147,7 +159,7 @@ test("splitDiscountForShipping should split discount for shipping", () => {
     ]
   };
 
-  const shippingDiscounts = applyShippingDiscountToCart.splitDiscountForShipping(cart.shipping, totalShippingPrice, totalShippingDiscount);
+  const shippingDiscounts = applyShippingDiscountToCart.splitDiscountForShipping(cart.shipping, totalShippingRate, totalDiscountRate);
 
   expect(shippingDiscounts).toEqual([
     {

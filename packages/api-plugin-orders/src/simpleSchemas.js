@@ -793,6 +793,11 @@ export const SelectedFulfillmentOption = new SimpleSchema({
   rate: {
     type: Number,
     min: 0
+  },
+  discount: {
+    type: Number,
+    min: 0,
+    optional: true
   }
 });
 

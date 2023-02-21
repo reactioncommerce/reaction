@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+import calculateDiscountAmount from "./calculateDiscountAmount.js";
 import formatMoney from "./formatMoney.js";
 
 /**
@@ -8,33 +10,39 @@ import formatMoney from "./formatMoney.js";
  */
 export default function recalculateShippingDiscount(context, shipping) {
   let totalDiscount = 0;
-  const { shipmentMethod } = shipping;
-  if (!shipmentMethod) return;
+  const { shipmentMethod, shipmentQuotes } = shipping;
+  if (!shipmentMethod || shipmentQuotes.length === 0) return;
 
-  const undiscountedAmount = formatMoney(shipmentMethod.shippingPrice);
+  const selectedShipmentQuote = shipmentQuotes.find((quote) => quote.method._id === shipmentMethod._id);
+  if (!selectedShipmentQuote) throw ReactionError("not-found", "Shipment quote not found in the cart");
+
+  const rate = selectedShipmentQuote.rate || 0;
+  const handling = selectedShipmentQuote.handlingPrice || 0;
+  shipmentMethod.rate = rate;
+  shipmentMethod.undiscountedRate = rate;
 
   shipping.discounts.forEach((discount) => {
-    const { discountCalculationType, discountValue, discountMaxValue } = discount;
-    const calculationMethod = context.discountCalculationMethods[discountCalculationType];
+    const undiscountedRate = shipmentMethod.rate;
+    const { discountMaxValue } = discount;
 
-    const shippingDiscountAmount = formatMoney(calculationMethod(discountValue, undiscountedAmount));
+    const discountRate = calculateDiscountAmount(context, undiscountedRate, discount);
 
     // eslint-disable-next-line require-jsdoc
-    function getDiscountAmount() {
-      const discountAmount = formatMoney(undiscountedAmount - shippingDiscountAmount);
+    function getDiscountedRate() {
+      const discountedRate = formatMoney(undiscountedRate - discountRate);
       if (typeof discountMaxValue === "number" && discountMaxValue > 0) {
-        return Math.min(discountAmount, discountMaxValue);
+        return Math.min(discountedRate, discountMaxValue);
       }
-      return discountAmount;
+      return discountedRate;
     }
 
-    const discountAmount = getDiscountAmount();
+    const discountedRate = getDiscountedRate();
 
-    totalDiscount += discountAmount;
-    discount.discountedAmount = discountAmount;
+    totalDiscount += discountedRate;
+    discount.discountedAmount = discountedRate;
+    shipmentMethod.rate = discountedRate;
   });
 
+  shipmentMethod.shippingPrice = shipmentMethod.rate + handling;
   shipmentMethod.discount = totalDiscount;
-  shipmentMethod.shippingPrice = undiscountedAmount - totalDiscount;
-  shipmentMethod.undiscountedRate = undiscountedAmount;
 }

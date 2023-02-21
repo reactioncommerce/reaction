@@ -45,10 +45,16 @@ export default async function addShipmentMethodToGroup(context, {
     throw new ReactionError("invalid", errorResult.message);
   }
 
+  const { shipmentMethod: { rate: shipmentRate, undiscountedRate, discount, _id: shipmentMethodId } = {} } = group;
   const selectedFulfillmentMethod = rates.find((rate) => selectedFulfillmentMethodId === rate.method._id);
-  if (!selectedFulfillmentMethod) {
+  const hasShipmentMethodObject = shipmentMethodId && shipmentMethodId !== selectedFulfillmentMethodId;
+  if (!selectedFulfillmentMethod || hasShipmentMethodObject) {
     throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
       " Fetch updated fulfillment options and try creating the order again with a valid method.");
+  }
+
+  if (undiscountedRate && undiscountedRate !== selectedFulfillmentMethod.rate) {
+    throw new ReactionError("invalid", "The selected fulfillment method has mismatch shipment rate.");
   }
 
   group.shipmentMethod = {
@@ -59,6 +65,7 @@ export default async function addShipmentMethodToGroup(context, {
     group: selectedFulfillmentMethod.method.group,
     name: selectedFulfillmentMethod.method.name,
     handling: selectedFulfillmentMethod.handlingPrice,
-    rate: selectedFulfillmentMethod.rate
+    rate: shipmentRate || selectedFulfillmentMethod.rate,
+    discount: discount || 0
   };
 }
