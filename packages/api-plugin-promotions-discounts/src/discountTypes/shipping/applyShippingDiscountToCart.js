@@ -6,6 +6,7 @@ import recalculateShippingDiscount from "../../utils/recalculateShippingDiscount
 import formatMoney from "../../utils/formatMoney.js";
 import getEligibleShipping from "../../utils/getEligibleIShipping.js";
 import calculateDiscountAmount from "../../utils/calculateDiscountAmount.js";
+import recalculateQuoteDiscount from "../../utils/recalculateQuoteDiscount.js";
 
 const require = createRequire(import.meta.url);
 
@@ -113,6 +114,38 @@ export function canBeApplyDiscountToShipping(shipping, discount) {
 }
 
 /**
+ * @summary Estimate the shipment quote discount
+ * @param {Object} context - The application context
+ * @param {object} cart - The cart to apply the discount to
+ * @param {Object} params - The parameters to apply
+ * @returns {Promise<Boolean>} - Has affected shipping
+ */
+export async function estimateShipmentQuoteDiscount(context, cart, params) {
+  const { actionParameters, promotion } = params;
+  const filteredItems = await getEligibleShipping(context, cart.shipping, {
+    ...actionParameters,
+    estimateShipmentQuote: true
+  });
+
+  const shipmentQuotes = cart.shipping[0]?.shipmentQuotes || [];
+
+  for (const item of filteredItems) {
+    const shipmentQuote = shipmentQuotes.find((quote) => quote.method._id === item.method._id);
+    if (!shipmentQuote) continue;
+
+    const canBeDiscounted = canBeApplyDiscountToShipping(shipmentQuote, promotion);
+    if (!canBeDiscounted) continue;
+
+    if (!shipmentQuote.discounts) shipmentQuote.discounts = [];
+    shipmentQuote.discounts.push(createDiscountRecord(params, item));
+
+    recalculateQuoteDiscount(context, shipmentQuote, actionParameters);
+  }
+
+  return filteredItems.length > 0;
+}
+
+/**
  * @summary Add the discount to the shipping record
  * @param {Object} context - The application context
  * @param {Object} params - The parameters to apply
@@ -120,9 +153,13 @@ export function canBeApplyDiscountToShipping(shipping, discount) {
  * @returns {Promise<void>} undefined
  */
 export default async function applyShippingDiscountToCart(context, params, cart) {
-  if (!cart.shipping) cart.shipping = [];
   const { actionParameters } = params;
-  const filteredShipping = await getEligibleShipping(context, cart.shipping, params.actionParameters);
+
+  if (!cart.shipping) cart.shipping = [];
+
+  await estimateShipmentQuoteDiscount(context, cart, params);
+
+  const filteredShipping = await getEligibleShipping(context, cart.shipping, actionParameters);
   const totalShippingRate = getTotalShippingRate(filteredShipping);
   const totalShippingDiscount = getTotalShippingDiscount(context, totalShippingRate, actionParameters);
   const discountedItems = splitDiscountForShipping(filteredShipping, totalShippingDiscount, totalShippingDiscount);

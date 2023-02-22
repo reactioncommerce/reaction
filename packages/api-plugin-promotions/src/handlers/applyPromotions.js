@@ -112,6 +112,13 @@ export default async function applyPromotions(context, cart) {
 
   const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
 
+  // sort to move shipping discounts to the end
+  unqualifiedPromotions.sort((promA, promB) => {
+    if (_.some(promA.actions, (action) => action.actionParameters.discountType === "shipping")) return 1;
+    if (_.some(promB.actions, (action) => action.actionParameters.discountType === "shipping")) return -1;
+    return 0;
+  });
+
   for (const { cleanup } of pluginPromotions.actions) {
     cleanup && await cleanup(context, cart);
   }

@@ -81,13 +81,26 @@ export async function discountActionCleanup(context, cart) {
     return item;
   });
 
+  // eslint-disable-next-line require-jsdoc
+  function resetMethod(method) {
+    method.rate = method.undiscountedRate || method.rate;
+    method.discount = 0;
+    method.shippingPrice = method.rate + (method.handlingPrice || method.handling);
+    method.undiscountedRate = 0;
+  }
+
   for (const shipping of cart.shipping) {
     shipping.discounts = [];
-    const { shipmentMethod } = shipping;
-    if (shipmentMethod) {
-      shipmentMethod.shippingPrice = shipmentMethod.handling + shipmentMethod.rate;
-      shipmentMethod.discount = 0;
-      shipmentMethod.undiscountedRate = 0;
+
+    if (!shipping.shipmentQuotes) shipping.shipmentQuotes = [];
+    shipping.shipmentQuotes.forEach((quote) => {
+      resetMethod(quote.method);
+      resetMethod(quote);
+      quote.discounts = [];
+    });
+
+    if (shipping.shipmentMethod) {
+      resetMethod(shipping.shipmentMethod);
     }
   }
 

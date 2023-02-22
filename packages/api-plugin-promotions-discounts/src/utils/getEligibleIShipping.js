@@ -32,12 +32,23 @@ export default async function getEligibleShipping(context, shipping, params) {
 
   const checkerMethod = getCheckMethod(params.inclusionRules, params.exclusionRules);
 
-  const eligibleShipping = [];
-  for (const shippingItem of shipping) {
-    // eslint-disable-next-line no-await-in-loop
-    if (await checkerMethod(shippingItem)) {
-      eligibleShipping.push(shippingItem);
+  const eligibleItems = [];
+  if (params.estimateShipmentQuote) {
+    const shipmentQuotes = shipping[0]?.shipmentQuotes || [];
+    for (const quote of shipmentQuotes) {
+      // eslint-disable-next-line no-await-in-loop
+      if (await checkerMethod({ ...quote, shipmentMethod: quote.method || {} })) {
+        eligibleItems.push(quote);
+      }
+    }
+  } else {
+    for (const shippingItem of shipping) {
+      // eslint-disable-next-line no-await-in-loop
+      if (await checkerMethod(shippingItem)) {
+        eligibleItems.push(shippingItem);
+      }
     }
   }
-  return eligibleShipping;
+
+  return eligibleItems;
 }
