@@ -3,7 +3,8 @@ version: 2
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
 # typing. See http://yaml.org/type/merge.html for details.
-defaults: &defaults
+defaults:
+  &defaults
   environment:
     CI_SCRIPTS: "npx --quiet --package @reactioncommerce/ci-scripts@1.6.2"
     DOCKER_REPOSITORY: "reactioncommerce/reaction"
@@ -12,12 +13,14 @@ defaults: &defaults
   docker:
     - image: cimg/node:14.20.0
 
-install_pnpm: &install_pnpm
+install_pnpm:
+  &install_pnpm
   - run:
       name: Install pnpm package manager
       command: sudo npm i -g pnpm@7.11.0
 
-pnpm_install: &pnpm_install
+pnpm_install:
+  &pnpm_install
   - run:
       name: Install PNPM dependencies
       command: pnpm install -r
@@ -29,12 +32,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum
+              "pnpm-lock.yaml" }}
             - reaction-v7-node-modules-{{ .Branch }}
       - <<: *install_pnpm
       - <<: *pnpm_install
       - save_cache:
-          key: reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+          key: reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum
+            "pnpm-lock.yaml" }}
           paths:
             - node_modules
       - save_cache:
@@ -57,7 +62,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum
+              "pnpm-lock.yaml" }}
             - reaction-v7-node-modules-{{ .Branch }}
       - <<: *install_pnpm
       - <<: *pnpm_install
@@ -71,7 +77,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum
+              "pnpm-lock.yaml" }}
             - reaction-v7-node-modules-{{ .Branch }}
       - <<: *install_pnpm
       - <<: *pnpm_install
@@ -85,7 +92,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum
+              "pnpm-lock.yaml" }}
             - reaction-v7-node-modules-{{ .Branch }}
       - <<: *install_pnpm
       - <<: *pnpm_install
@@ -106,7 +114,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum
+              "pnpm-lock.yaml" }}
             - reaction-v7-node-modules-{{ .Branch }}
       - <<: *install_pnpm
       - <<: *pnpm_install
@@ -133,7 +142,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+            - reaction-v7-node-modules-{{ checksum "package.json" }}-{{ checksum
+              "pnpm-lock.yaml" }}
             - reaction-v7-node-modules-{{ .Branch }}
       - <<: *install_pnpm
       - <<: *pnpm_install
@@ -146,6 +156,8 @@ jobs:
             sudo apt update && sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
             pnpm run test:integration:mutation
+    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass
+    resource_class: large
 
   release:
     <<: *defaults
