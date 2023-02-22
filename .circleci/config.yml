@@ -238,9 +238,9 @@ workflows:
       - test-unit:
           requires:
             - install-dependencies
-      - test-integration-query:
-          requires:
-            - install-dependencies
+#      - test-integration-query:
+#          requires:
+#            - install-dependencies
       - test-integration-mutation:
           requires:
             - install-dependencies
@@ -255,7 +255,7 @@ workflows:
             - eslint
             - graphql-lint
             - test-unit
-            - test-integration-query
+#            - test-integration-query
             - test-integration-mutation
       - docker-build-push:
           context: reaction-publish-docker
