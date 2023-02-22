@@ -25,7 +25,7 @@ services:
       - "3000:3000"
 
   mongo:
-    image: mongo:4.2.0
+    image: mongo:5.0
     command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
     networks:
       - default
