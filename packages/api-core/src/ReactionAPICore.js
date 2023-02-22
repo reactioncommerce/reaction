@@ -348,8 +348,9 @@ export default class ReactionAPICore {
     const prevInsertOne = collection.insertOne.bind(collection);
     collection.insertOne = (async (...args) => {
       const response = await prevInsertOne(...args);
+      const insertedCount = response.acknowledged ? 1 : 0;
       // eslint-disable-next-line id-length
-      return { ...response, result: { n: response.acknowledged ? 1 : 0, ok: acknowledgedToOk(response.acknowledged) } };
+      return { ...response, insertedCount, result: { n: insertedCount, ok: acknowledgedToOk(response.acknowledged) } };
     }).bind(collection);
 
     const prevFindOneAndUpdate = collection.findOneAndUpdate.bind(collection);
