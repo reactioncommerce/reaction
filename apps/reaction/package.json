@@ -90,7 +90,7 @@
     "inspect:docker": "NODE_ENV=development nodemon --preserve-symlinks --experimental-modules --experimental-json-modules --inspect=0.0.0.0:9229 ./src/index.js",
     "inspect-brk:docker": "NODE_ENV=development nodemon --preserve-symlinks --experimental-modules --experimental-json-modules --inspect-brk=0.0.0.0:9229 ./src/index.js",
     "check-node-version": "node ./src/checkNodeVersion.cjs",
-    "test:integration": "node node_modules/jest/bin/jest --runInBand --forceExit --testPathIgnorePatterns '<rootDir>/src/'",
+    "test:integration": "node node_modules/jest/bin/jest --forceExit --testPathIgnorePatterns '<rootDir>/src/'",
     "test:integration:watch": "node node_modules/jest/bin/jest --runInBand --watch --testPathIgnorePatterns '<rootDir>/src/'",
     "test:integration:file": "jest --runInBand",
     "test:integration:file:watch": "jest --runInBand --watch",
