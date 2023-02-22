@@ -16,8 +16,8 @@ export default function recalculateShippingDiscount(context, shipping) {
   const selectedShipmentQuote = shipmentQuotes.find((quote) => quote.method._id === shipmentMethod._id);
   if (!selectedShipmentQuote) throw ReactionError("not-found", "Shipment quote not found in the cart");
 
-  const rate = selectedShipmentQuote.rate || 0;
-  const handling = selectedShipmentQuote.handlingPrice || 0;
+  const rate = selectedShipmentQuote.method.rate || 0;
+  const handling = selectedShipmentQuote.method.handling || 0;
   shipmentMethod.rate = rate;
   shipmentMethod.undiscountedRate = rate;
 
