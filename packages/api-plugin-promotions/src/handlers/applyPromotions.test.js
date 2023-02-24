@@ -20,7 +20,7 @@ const pluginPromotion = {
 
 const testPromotion = {
   _id: "test id",
-  actions: [{ actionKey: "test" }],
+  actions: [{ actionKey: "test", actionParameters: { discountType: "order" } }],
   triggers: [{ triggerKey: "test", triggerParameters: { name: "test trigger" } }],
   stackability: {
     key: "none",
@@ -56,7 +56,8 @@ test("should save cart with implicit promotions are applied", async () => {
   });
   expect(testAction).toBeCalledWith(mockContext, expect.objectContaining({ _id: cart._id }), {
     actionKey: "test",
-    promotion: testPromotion
+    promotion: testPromotion,
+    actionParameters: { discountType: "order" }
   });
   expect(testEnhancer).toBeCalledWith(mockContext, expect.objectContaining({ _id: cart._id }));
 
