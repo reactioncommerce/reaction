@@ -16,17 +16,18 @@ export default function recalculateShippingDiscount(context, shipping) {
   const selectedShipmentQuote = shipmentQuotes.find((quote) => quote.method._id === shipmentMethod._id);
   if (!selectedShipmentQuote) throw ReactionError("not-found", "Shipment quote not found in the cart");
 
-  const rate = selectedShipmentQuote.method.rate || 0;
-  const handling = selectedShipmentQuote.method.handling || 0;
+  const { method } = selectedShipmentQuote;
+  const rate = method.undiscountedRate || method.rate;
+  const handling = method.handling || 0;
   shipmentMethod.rate = rate;
   shipmentMethod.undiscountedRate = rate;
 
   shipping.discounts.forEach((discount) => {
     const undiscountedRate = shipmentMethod.rate;
-    const { discountMaxValue } = discount;
 
     const discountedRate = calculateDiscountAmount(context, undiscountedRate, discount);
 
+    const { discountMaxValue } = discount;
     // eslint-disable-next-line require-jsdoc
     function getDiscountedRate() {
       const discountRate = formatMoney(undiscountedRate - discountedRate);
@@ -40,7 +41,7 @@ export default function recalculateShippingDiscount(context, shipping) {
 
     totalDiscount += discountRate;
     discount.discountedAmount = discountedRate;
-    shipmentMethod.rate = discountedRate;
+    shipmentMethod.rate = formatMoney(undiscountedRate - discountRate);
   });
 
   shipmentMethod.shippingPrice = shipmentMethod.rate + handling;
