@@ -16,10 +16,9 @@ export default function recalculateQuoteDiscount(context, quote) {
 
   quote.discounts.forEach((discount) => {
     const quoteRate = quote.rate;
-    const { discountMaxValue } = discount;
-
     const discountedRate = calculateDiscountAmount(context, quoteRate, discount);
 
+    const { discountMaxValue } = discount;
     // eslint-disable-next-line require-jsdoc
     function getDiscountedRate() {
       const discountRate = formatMoney(quoteRate - discountedRate);
@@ -32,8 +31,8 @@ export default function recalculateQuoteDiscount(context, quote) {
     const discountRate = getDiscountedRate();
 
     totalDiscount += discountRate;
-    discount.discountedAmount = discountedRate;
-    quote.rate = discountedRate;
+    discount.discountedAmount = discountRate;
+    quote.rate = formatMoney(quoteRate - discountRate);
   });
 
   quote.discount = totalDiscount;
