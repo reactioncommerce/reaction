@@ -635,4 +635,25 @@ describe("Promotions", () => {
       expect(cart.appliedPromotions).toHaveLength(2);
     });
   });
+
+  describe("shipping promotion", () => {
+    afterAll(async () => {
+      await removeAllPromotions();
+    });
+
+    createTestPromotion({
+      actions: [
+        {
+          actionKey: "discounts",
+          actionParameters: {
+            discountType: "shipping",
+            discountCalculationType: "percentage",
+            discountValue: 50
+          }
+        }
+      ]
+    });
+
+    createCartAndPlaceOrder({ quantity: 20 });
+  });
 });

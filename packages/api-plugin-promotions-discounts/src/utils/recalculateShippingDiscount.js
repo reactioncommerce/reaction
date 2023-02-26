@@ -40,7 +40,7 @@ export default function recalculateShippingDiscount(context, shipping) {
     const discountRate = getDiscountedRate();
 
     totalDiscount += discountRate;
-    discount.discountedAmount = discountedRate;
+    discount.discountedAmount = discountRate;
     shipmentMethod.rate = formatMoney(undiscountedRate - discountRate);
   });
 

@@ -162,7 +162,7 @@ export default async function applyShippingDiscountToCart(context, params, cart)
   const filteredShipping = await getEligibleShipping(context, cart.shipping, actionParameters);
   const totalShippingRate = getTotalShippingRate(filteredShipping);
   const totalShippingDiscount = getTotalShippingDiscount(context, totalShippingRate, actionParameters);
-  const discountedItems = splitDiscountForShipping(filteredShipping, totalShippingDiscount, totalShippingDiscount);
+  const discountedItems = splitDiscountForShipping(filteredShipping, totalShippingRate, totalShippingDiscount);
 
   for (const discountedItem of discountedItems) {
     const shipping = filteredShipping.find((item) => item._id === discountedItem._id);
