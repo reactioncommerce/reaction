@@ -258,7 +258,7 @@ importers:
       '@reactioncommerce/file-collections-sa-gridfs': link:../../packages/file-collections-sa-gridfs
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1096.0
+      '@snyk/protect': 1.1105.0
       graphql: 16.6.0
       nodemailer: 6.8.0
       semver: 6.3.0
@@ -5151,8 +5151,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1096.0:
-    resolution: {integrity: sha512-E0hkw5TY8rIygL2uohywBrW72f1x/g36mHdMxS9UzLB9DHLDudJJYHMwJfdjl6dW7cuuTVauv8TDQireMkjOVw==}
+  /@snyk/protect/1.1105.0:
+    resolution: {integrity: sha512-wIRSrm7DcIqpi6JPEKsxenpSXOBj+z5sCUGN0O9YBZV57FYBxhlkOS0I9k6hvKhUmzcPeQ2zbgmGCTbOzhc6zw==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -14222,6 +14222,7 @@ packages:
 
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+    dev: false
 
   /tsutils/3.21.0_typescript@2.9.2:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
