@@ -104,9 +104,7 @@ describe("Promotions", () => {
   };
 
   const removeAllPromotions = async () => {
-    await testApp.setLoggedInUser(mockAdminAccount);
-    await testApp.collections.Promotions.remove({});
-    await testApp.clearLoggedInUser();
+    await testApp.collections.Promotions.deleteMany({});
   };
 
   const createTestPromotion = (overlay = {}) => {
@@ -625,6 +623,10 @@ describe("Promotions", () => {
   });
 
   describe("Stackability: should applied with other promotions when stackability is all", () => {
+    afterAll(async () => {
+      await removeAllPromotions();
+    });
+
     createTestPromotion();
     createTestPromotion();
     createTestCart({ quantity: 20 });
@@ -654,6 +656,23 @@ describe("Promotions", () => {
       ]
     });
 
-    createCartAndPlaceOrder({ quantity: 20 });
+    createCartAndPlaceOrder({ quantity: 6 });
+
+    test("placed order get the correct values", async () => {
+      const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
+      const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
+      expect(newOrder.shipping[0].invoice.total).toEqual(121.94);
+      expect(newOrder.shipping[0].invoice.discounts).toEqual(0);
+      expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
+      expect(newOrder.shipping[0].invoice.shipping).toEqual(2);
+      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(0.5);
+      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(0.5);
+      expect(newOrder.shipping[0].shipmentMethod.handling).toEqual(1.5);
+
+      expect(newOrder.shipping[0].items[0].quantity).toEqual(6);
+
+      expect(newOrder.appliedPromotions[0]._id).toEqual(mockPromotion._id);
+      expect(newOrder.discounts).toHaveLength(1);
+    });
   });
 });
