@@ -258,7 +258,7 @@ importers:
       '@reactioncommerce/file-collections-sa-gridfs': link:../../packages/file-collections-sa-gridfs
       '@reactioncommerce/logger': link:../../packages/logger
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1096.0
+      '@snyk/protect': 1.1109.0
       graphql: 16.6.0
       nodemailer: 6.8.0
       semver: 6.3.0
@@ -5149,8 +5149,9 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1096.0:
-    resolution: {integrity: sha512-E0hkw5TY8rIygL2uohywBrW72f1x/g36mHdMxS9UzLB9DHLDudJJYHMwJfdjl6dW7cuuTVauv8TDQireMkjOVw==}
+  /@snyk/protect/1.1109.0:
+    resolution: {integrity: sha512-AR2RO6B4LsGUTtTnRDxmDhb8EKrTMhRg3RnxQD/uP1RHFsBLNnilQrAeC0qHldrbG9k4qMmE/300aLSd+UGHiw==}
+    engines: {node: '>=10'}
     hasBin: true
     dev: false
 
