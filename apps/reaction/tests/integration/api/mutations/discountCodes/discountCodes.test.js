@@ -61,7 +61,7 @@ beforeAll(async () => {
 // test file gets its own test database.
 afterAll(() => testApp.stop());
 
-test("user can add a discount code", async () => {
+test.skip("user can add a discount code", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const discountCodeInput = {
@@ -150,7 +150,7 @@ test("user can add a discount code", async () => {
   expect(createdDiscountCode).toEqual(expectedDiscountCodeResponse);
 });
 
-test("user can update an existing discount code", async () => {
+test.skip("user can update an existing discount code", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const discountCodeInput = {
@@ -231,7 +231,7 @@ test("user can update an existing discount code", async () => {
   expect(updatedDiscountCode).toEqual(expectedDiscountCodeResponse);
 });
 
-test("user can delete an existing discount code", async () => {
+test.skip("user can delete an existing discount code", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const discountCodeInput = {

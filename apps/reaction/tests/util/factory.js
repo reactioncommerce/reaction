@@ -27,10 +27,6 @@ import {
 } from "@reactioncommerce/api-plugin-catalogs/src/simpleSchemas.js";
 
 import {
-  DiscountCodes
-} from "@reactioncommerce/api-plugin-discounts-codes/src/simpleSchemas.js";
-
-import {
   EmailTemplates
 } from "@reactioncommerce/api-plugin-email-templates/src/simpleSchemas.js";
 
@@ -119,7 +115,6 @@ const schemasToAddToFactory = {
   CatalogProductVariant,
   CommonOrder,
   CommonOrderItem,
-  Discounts: DiscountCodes,
   Email,
   EmailTemplates,
   FulfillmentMethod,
