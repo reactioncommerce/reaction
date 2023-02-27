@@ -71,6 +71,7 @@ export const Coupon = new SimpleSchema({
 
 export const CouponLog = new SimpleSchema({
   "_id": String,
+  "shopId": String,
   "couponId": String,
   "promotionId": String,
   "orderId": {

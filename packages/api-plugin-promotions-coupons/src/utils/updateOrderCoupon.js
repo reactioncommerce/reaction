@@ -44,11 +44,13 @@ export default async function updateOrderCoupon(context, order) {
     if (!couponLog) {
       await CouponLogs.insertOne({
         _id: Random.id(),
+        shopId: order.shopId,
         couponId,
+        orderId: order._id,
         promotionId: promotion._id,
         accountId: order.accountId,
-        createdAt: new Date(),
-        usedCount: 1
+        usedCount: 1,
+        createdAt: new Date()
       });
       continue;
     }
