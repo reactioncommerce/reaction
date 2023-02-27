@@ -120,7 +120,8 @@ describe("cleanup", () => {
             rate: 9,
             shippingPrice: 11,
             undiscountedRate: 0
-          }
+          },
+          shipmentQuotes: []
         }
       ]
     });
