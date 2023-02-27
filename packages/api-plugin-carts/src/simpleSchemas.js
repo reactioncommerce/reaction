@@ -211,7 +211,7 @@ const ShippoShippingMethod = new SimpleSchema({
  * @property {String} carrier optional
  * @property {ShippoShippingMethod} settings optional
  */
-const ShippingMethod = new SimpleSchema({
+export const ShippingMethod = new SimpleSchema({
   "_id": {
     type: String,
     label: "Shipment Method Id"
@@ -532,7 +532,7 @@ export const CartInvoice = new SimpleSchema({
  * @property {String} customsLabelUrl For customs printable label
  * @property {ShippoShipment} shippo For Shippo specific properties
  */
-const Shipment = new SimpleSchema({
+export const Shipment = new SimpleSchema({
   "_id": {
     type: String,
     label: "Shipment Id"
@@ -621,6 +621,36 @@ const Money = new SimpleSchema({
   amount: {
     type: Number,
     min: 0
+  }
+});
+
+const CartMessages = new SimpleSchema({
+  _id: String,
+  title: String,
+  message: {
+    type: String,
+    optional: true
+  },
+  severity: {
+    type: String,
+    allowedValues: ["info", "warning", "error"],
+    defaultValue: "info"
+  },
+  acknowledged: {
+    type: Boolean,
+    defaultValue: false
+  },
+  subject: {
+    type: String,
+    optional: true
+  },
+  metaFields: {
+    type: Object,
+    blackbox: true
+  },
+  requiresReadAcknowledgement: {
+    type: Boolean,
+    defaultValue: false
   }
 });
 
@@ -855,5 +885,12 @@ export const Cart = new SimpleSchema({
   "updatedAt": {
     type: Date,
     optional: true
+  },
+  "messages": {
+    type: Array,
+    optional: true
+  },
+  "messages.$": {
+    type: CartMessages
   }
 });

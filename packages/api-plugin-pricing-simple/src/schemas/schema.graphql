@@ -80,6 +80,17 @@ type ProductPriceRange {
   range: String
 }
 
+enum PriceType {
+  "The full price of the product"
+  full
+
+  "The price that was permanently marked down to move"
+  clearance
+
+  "Temporarily on sale (e.g. Black Friday or Mother's Day sale) but return to full price"
+  sale
+}
+
 extend type CatalogProduct {
   "Price and related information, per currency"
   pricing: [ProductPricingInfo]!
@@ -88,6 +99,9 @@ extend type CatalogProduct {
 extend type CatalogProductVariant {
   "Price and related information, per currency"
   pricing: [ProductPricingInfo]!
+
+  "The type of price for this variant"
+  priceType: PriceType
 }
 
 extend type Product {
@@ -107,6 +121,14 @@ extend type ProductVariant {
 
   "Pricing information"
   pricing: ProductPricingInfo!
+
+  "The type of price for this variant"
+  priceType: PriceType
+}
+
+extend type CartItem {
+  "The price type of the product"
+  priceType: PriceType
 }
 
 extend input ProductVariantInput {
@@ -117,12 +139,18 @@ extend input ProductVariantInput {
   "Variant price. DEPRECATED. Use the `updateProductVariantPrices` mutation to set product variant prices."
   # @deprecated isn't allowed on input fields yet. See See https://github.com/graphql/graphql-spec/pull/525
   price: Float
+
+  "The type of price for product variant"
+  priceType: PriceType
 }
 
 "Input for the `updateProductVariantField` mutation"
 input UpdateProductVariantPricesInput  {
   "Prices to update"
   prices: ProductVariantPricesInput!
+
+  "The type of price for product variant"
+  priceType: PriceType
 
   "ID of shop that owns the variant to update"
   shopId: ID!

@@ -106,7 +106,7 @@ export default async function loadImages(context, shopId) {
 
   const topProdIds = [];
   const fileType = "image/jpeg";
-  const folderPath = "./custom-packages/api-plugin-sample-data/src/images/";
+  const folderPath = "../../packages/api-plugin-sample-data/src/images/";
 
   let fileList = [];
   try {

@@ -4,6 +4,7 @@
   "files": "@reactioncommerce/api-plugin-files",
   "shops": "@reactioncommerce/api-plugin-shops",
   "settings": "@reactioncommerce/api-plugin-settings",
+  "sequences": "@reactioncommerce/api-plugin-sequences",
   "i18": "@reactioncommerce/api-plugin-i18n",
   "email": "@reactioncommerce/api-plugin-email",
   "addressValidation": "@reactioncommerce/api-plugin-address-validation",
@@ -25,8 +26,6 @@
   "payments": "@reactioncommerce/api-plugin-payments",
   "paymentsStripeSCA": "@reactioncommerce/api-plugin-payments-stripe-sca",
   "paymentsExample": "@reactioncommerce/api-plugin-payments-example",
-  "discounts": "@reactioncommerce/api-plugin-discounts",
-  "discountCodes": "@reactioncommerce/api-plugin-discounts-codes",
   "surcharges": "@reactioncommerce/api-plugin-surcharges",
   "shipments": "@reactioncommerce/api-plugin-shipments",
   "shipmentsFlatRate": "@reactioncommerce/api-plugin-shipments-flat-rate",
@@ -35,5 +34,10 @@
   "navigation": "@reactioncommerce/api-plugin-navigation",
   "sitemapGenerator": "@reactioncommerce/api-plugin-sitemap-generator",
   "notifications": "@reactioncommerce/api-plugin-notifications",
-  "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test"
+  "addressValidationTest": "@reactioncommerce/api-plugin-address-validation-test",
+  "promotions": "@reactioncommerce/api-plugin-promotions",
+  "promotionsCoupons": "@reactioncommerce/api-plugin-promotions-coupons",
+  "promotionsDiscounts": "@reactioncommerce/api-plugin-promotions-discounts",
+  "promotionsOffers": "@reactioncommerce/api-plugin-promotions-offers",
+  "bullJobQueue": "@reactioncommerce/api-plugin-bull-queue"
 }

@@ -1,0 +1,30 @@
+"Input for the applyCouponToCart mutation"
+input ApplyCouponToCartInput {
+
+  shopId: ID!
+
+  "The ID of the Cart"
+  cartId: ID!
+
+  "The coupon code to apply"
+  couponCode: String!
+
+  "The account ID of the user who is applying the coupon"
+  accountId: ID
+
+  "Cart token, if anonymous"
+  token: String
+}
+
+"The response for the applyCouponToCart mutation"
+type ApplyCouponToCartPayload {
+  cart: Cart
+}
+
+extend type Mutation {
+  "Apply a coupon to a cart"
+  applyCouponToCart(
+    "The applyCouponToCart mutation input"
+    input: ApplyCouponToCartInput
+  ): ApplyCouponToCartPayload
+}

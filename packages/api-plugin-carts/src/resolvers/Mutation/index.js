@@ -5,6 +5,7 @@ import removeCartItems from "./removeCartItems.js";
 import setEmailOnAnonymousCart from "./setEmailOnAnonymousCart.js";
 import setShippingAddressOnCart from "./setShippingAddressOnCart.js";
 import updateCartItemsQuantity from "./updateCartItemsQuantity.js";
+import acknowledgeCartMessage from "./acknowledgeCartMessage.js";
 
 export default {
   addCartItems,
@@ -13,5 +14,6 @@ export default {
   removeCartItems,
   setEmailOnAnonymousCart,
   setShippingAddressOnCart,
-  updateCartItemsQuantity
+  updateCartItemsQuantity,
+  acknowledgeCartMessage
 };

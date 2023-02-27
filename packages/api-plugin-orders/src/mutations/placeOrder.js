@@ -142,6 +142,11 @@ export default async function placeOrder(context, input) {
     if (!cart) {
       throw new ReactionError("not-found", "Cart not found while trying to place order");
     }
+
+    const allCartMessageAreAcknowledged = _.every((cart.messages || []), (message) => !message.requiresReadAcknowledgement || message.acknowledged);
+    if (!allCartMessageAreAcknowledged) {
+      throw new ReactionError("invalid-cart", "Cart messages should be acknowledged before placing order");
+    }
   }
 
 
@@ -149,10 +154,11 @@ export default async function placeOrder(context, input) {
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
   // any discounts on the related cart here.
   let discounts = [];
+  let appliedPromotions = [];
   let discountTotal = 0;
   if (cart) {
     const discountsResult = await context.queries.getDiscountsTotalForCart(context, cart);
-    ({ discounts } = discountsResult);
+    ({ discounts, appliedPromotions } = discountsResult);
     discountTotal = discountsResult.total;
   }
 
@@ -229,7 +235,8 @@ export default async function placeOrder(context, input) {
     workflow: {
       status: "new",
       workflow: ["new"]
-    }
+    },
+    appliedPromotions
   };
 
   if (fullToken) {

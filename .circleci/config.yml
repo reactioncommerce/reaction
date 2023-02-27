@@ -102,6 +102,9 @@ jobs:
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
+      - image: redis
+        ports:
+          - "6379:6379"
     steps:
       - checkout
       - restore_cache:
@@ -129,6 +132,9 @@ jobs:
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
+      - image: redis
+        ports:
+          - "6379:6379"
     steps:
       - checkout
       - restore_cache:
@@ -189,6 +195,7 @@ jobs:
             echo "ROOT_URL=http://localhost:3000" >> .env
             echo "STORE_URL=http://localhost:4000" >> .env
             echo "STRIPE_API_KEY=YOUR_PRIVATE_STRIPE_API_KEY" >> .env
+            echo "REDIS_SERVER=redis://127.0.0.1:6379" >> .env
       - run:
           name: Create reaction.localhost network
           command: docker network create "reaction.localhost" || true

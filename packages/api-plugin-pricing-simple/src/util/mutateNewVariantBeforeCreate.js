@@ -5,4 +5,5 @@
  */
 export default function mutateNewVariantBeforeCreateForSimplePricing(variant) {
   if (!variant.price) variant.price = 0;
+  if (!variant.priceType) variant.priceType = "full";
 }

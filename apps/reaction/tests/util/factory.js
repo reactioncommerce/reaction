@@ -27,10 +27,6 @@ import {
 } from "@reactioncommerce/api-plugin-catalogs/src/simpleSchemas.js";
 
 import {
-  DiscountCodes
-} from "@reactioncommerce/api-plugin-discounts-codes/src/simpleSchemas.js";
-
-import {
   EmailTemplates
 } from "@reactioncommerce/api-plugin-email-templates/src/simpleSchemas.js";
 
@@ -100,6 +96,10 @@ import {
   TaxRates
 } from "@reactioncommerce/api-plugin-taxes-flat-rate/src/simpleSchemas.js";
 
+import {
+  Promotion
+} from "@reactioncommerce/api-plugin-promotions/src/simpleSchemas.js";
+
 
 const schemasToAddToFactory = {
   Account,
@@ -115,7 +115,6 @@ const schemasToAddToFactory = {
   CatalogProductVariant,
   CommonOrder,
   CommonOrderItem,
-  Discounts: DiscountCodes,
   Email,
   EmailTemplates,
   FulfillmentMethod,
@@ -141,7 +140,8 @@ const schemasToAddToFactory = {
   Sitemap,
   Surcharge,
   Tag,
-  TaxRates
+  TaxRates,
+  Promotion
 };
 
 // Extend before creating factories in case some of the added fields

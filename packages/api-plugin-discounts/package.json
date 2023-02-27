@@ -34,5 +34,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:file": "jest --no-cache --watch --coverage=false"
   }
 }

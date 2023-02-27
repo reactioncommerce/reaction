@@ -49,6 +49,8 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     rate: 0
   }]);
 
+  mockContext.queries.getDiscountsTotalForCart = jest.fn().mockName("getDiscountsTotalForCart");
+
   mockContext.queries.shopById = jest.fn().mockName("shopById");
   mockContext.queries.shopById.mockReturnValueOnce([{
     availablePaymentMethods: ["PAYMENT1"]
@@ -171,8 +173,57 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     workflow: {
       status: "new",
       workflow: ["new"]
-    }
+    },
+    appliedPromotions: []
   });
 
   expect(token).toEqual(jasmine.any(String));
+});
+
+test("should throw invalid-cart error when the a cart message is not acknowledged", async () => {
+  mockContext.accountId = null;
+
+  const selectedFulfillmentMethodId = "METHOD_ID";
+
+  mockContext.queries.shopById = jest.fn().mockName("shopById").mockReturnValueOnce([{
+    availablePaymentMethods: ["PAYMENT1"]
+  }]);
+
+  const cart = {
+    _id: "cartId",
+    messages: [
+      { _id: "testId", requiresReadAcknowledgement: true, acknowledged: false }
+    ]
+  };
+
+  mockContext.collections = {
+    Cart: {
+      findOne: jest.fn().mockName("findOne").mockResolvedValue(cart)
+    }
+  };
+
+  const orderInput = Factory.orderInputSchema.makeOne({
+    billingAddress: null,
+    cartId: "cartId",
+    currencyCode: "USD",
+    email: "valid@email.address",
+    ordererPreferredLanguage: "en",
+    fulfillmentGroups: Factory.orderFulfillmentGroupInputSchema.makeMany(1, {
+      items: Factory.orderItemInputSchema.makeMany(1, {
+        quantity: 1,
+        price: 0
+      }),
+      selectedFulfillmentMethodId,
+      totalPrice: 0
+    })
+  });
+
+  try {
+    await placeOrder(mockContext, {
+      order: orderInput
+    });
+  } catch (error) {
+    expect(error.error).toBe("invalid-cart");
+    expect(error.message).toBe("Cart messages should be acknowledged before placing order");
+  }
 });
