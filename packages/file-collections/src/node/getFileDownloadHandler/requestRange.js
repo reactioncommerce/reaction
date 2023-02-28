@@ -57,7 +57,7 @@ export default function requestRange(headers, fileSize) {
 
   // Fix invalid (non-numeric) ranges
   if (String(startByte) !== start) startByte = 0;
-  if ((String(endByte) !== end) || endByte === 0) endByte = fileSize - 1;
+  if ((String(endByte) !== end) || endByte === 0) endByte = fileSize;
 
   if (start >= end) {
     return {
@@ -66,7 +66,7 @@ export default function requestRange(headers, fileSize) {
     };
   }
 
-  const partSize = (endByte - startByte) + 1;
+  const partSize = endByte - startByte;
   return {
     end,
     len: partSize,
