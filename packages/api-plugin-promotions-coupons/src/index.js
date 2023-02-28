@@ -33,6 +33,7 @@ export default async function register(app) {
         name: "CouponLogs",
         indexes: [
           [{ couponId: 1 }],
+          [{ orderId: 1 }],
           [{ promotionId: 1 }],
           [{ couponId: 1, accountId: 1 }, { unique: true }]
         ]

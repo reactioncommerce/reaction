@@ -42,9 +42,39 @@ type Coupon {
   discountId: ID
 }
 
+type CouponLog {
+  _id: ID!
+
+  "The shop ID"
+  shopId: ID!
+
+  "The coupon ID"
+  couponId: ID!
+
+  "The order ID"
+  orderId: ID
+
+  "The promotion ID"
+  promotionId: ID!
+
+  "The coupon owner ID"
+  accountId: ID
+
+  "The coupon code"
+  usedCount: Int
+
+  "The time the coupon was used"
+  createdAt: Date
+}
+
 extend type Promotion {
   "The coupon code"
   coupon: Coupon
+}
+
+extend type Order {
+  "The coupon log for this order that was applied"
+  couponLog: CouponLog
 }
 
 "Input for the applyCouponToCart mutation"
@@ -138,6 +168,28 @@ input CouponFilter {
   isArchived: Boolean
 }
 
+input CouponLogQueryInput {
+  "The unique ID of the coupon log"
+  _id: String!
+
+  "The unique ID of the shop"
+  shopId: String!
+}
+
+input CouponLogFilter {
+  "The coupon ID"
+  couponId: ID
+
+  "The related promotion ID"
+  promotionId: ID
+
+  "The orderId"
+  orderId: ID
+
+  "The account ID of the user who is applying the coupon"
+  accountId: ID
+}
+
 "Input for the removeCouponFromCart mutation"
 input RemoveCouponFromCartInput {
 
@@ -206,6 +258,32 @@ type CouponConnection {
   totalCount: Int!
 }
 
+"A connection edge in which each node is a `CouponLog` object"
+type CouponLogEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The coupon log node"
+  node: CouponLog
+}
+
+type CouponLogConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [CouponEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [CouponLog]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
 extend type Query {
   "Get a coupon"
   coupon(
@@ -238,6 +316,38 @@ extend type Query {
 
     sortOrder: String
   ): CouponConnection
+
+  "Get a coupon log"
+  couponLog(
+    input: CouponLogQueryInput
+  ): CouponLog
+
+  "Get list of coupon logs"
+  couponLogs(
+    "The coupon ID"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    filter: CouponLogFilter
+
+    sortBy: String
+
+    sortOrder: String
+  ): CouponLogConnection
 }
 
 extend type Mutation {
