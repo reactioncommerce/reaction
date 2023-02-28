@@ -255,7 +255,7 @@ export default async function applyPromotions(context, cart) {
   // If a explicit promotion was just applied, throw an error so that the client can display the message
   if (newlyAddedPromotionId) {
     const message = _.find(cartMessages, ({ metaFields }) => metaFields.promotionId === newlyAddedPromotionId);
-    if (message) throw new ReactionError("invalid-params", message.message);
+    if (message) throw new ReactionError("invalid-params", message.message || message.title);
   }
 
   enhancedCart.appliedPromotions = _.map(appliedPromotions, (promotion) => _.omit(promotion, "newlyAdded"));

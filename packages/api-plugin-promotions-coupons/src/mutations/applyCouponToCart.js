@@ -41,7 +41,7 @@ export default async function applyCouponToCart(context, input) {
     const account = (userId && (await Accounts.findOne({ userId }))) || null;
 
     if (!account) {
-      Logger.error(`Cart not found for user with ID ${account._id}`);
+      Logger.error(`Cart not found for user with ID ${userId}`);
       throw new ReactionError("invalid-params", "Cart not found");
     }
 
