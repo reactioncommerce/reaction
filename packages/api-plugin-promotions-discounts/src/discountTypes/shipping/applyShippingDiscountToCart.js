@@ -78,7 +78,7 @@ export function splitDiscountForShipping(cartShipping, totalShippingRate, discou
     return { _id: shipping._id, amount: formatMoney(discountAmount - discounted) };
   });
 
-  return discountedShipping;
+  return discountedShipping.filter((shipping) => shipping.amount > 0);
 }
 
 /**
@@ -129,6 +129,7 @@ export async function estimateShipmentQuoteDiscount(context, cart, params) {
 
   const shipmentQuotes = cart.shipping[0]?.shipmentQuotes || [];
 
+  let affectedItemsLength = 0;
   for (const item of filteredItems) {
     const shipmentQuote = shipmentQuotes.find((quote) => quote.method._id === item.method._id);
     if (!shipmentQuote) continue;
@@ -139,10 +140,11 @@ export async function estimateShipmentQuoteDiscount(context, cart, params) {
     if (!shipmentQuote.discounts) shipmentQuote.discounts = [];
     shipmentQuote.discounts.push(createDiscountRecord(params, item));
 
+    affectedItemsLength += 1;
     recalculateQuoteDiscount(context, shipmentQuote, actionParameters);
   }
 
-  return filteredItems.length > 0;
+  return affectedItemsLength > 0;
 }
 
 /**
@@ -156,17 +158,20 @@ export default async function applyShippingDiscountToCart(context, params, cart)
   const { actionParameters } = params;
 
   if (!cart.shipping) cart.shipping = [];
+  if (!cart.appliedPromotions) cart.appliedPromotions = [];
 
-  await estimateShipmentQuoteDiscount(context, cart, params);
+  const isEstimateAffected = await estimateShipmentQuoteDiscount(context, cart, params);
 
   const filteredShipping = await getEligibleShipping(context, cart.shipping, actionParameters);
   const totalShippingRate = getTotalShippingRate(filteredShipping);
   const totalShippingDiscount = getTotalShippingDiscount(context, totalShippingRate, actionParameters);
   const discountedItems = splitDiscountForShipping(filteredShipping, totalShippingRate, totalShippingDiscount);
 
+  let discountedShippingCount = 0;
   for (const discountedItem of discountedItems) {
     const shipping = filteredShipping.find((item) => item._id === discountedItem._id);
     if (!shipping) continue;
+
 
     const canBeDiscounted = canBeApplyDiscountToShipping(shipping, params.promotion);
     if (!canBeDiscounted) continue;
@@ -174,16 +179,18 @@ export default async function applyShippingDiscountToCart(context, params, cart)
     if (!shipping.discounts) shipping.discounts = [];
 
     const shippingDiscount = createDiscountRecord(params, discountedItem);
+
     shipping.discounts.push(shippingDiscount);
+
     recalculateShippingDiscount(context, shipping);
+    discountedShippingCount += 1;
   }
 
-  if (discountedItems.length) {
+  const affected = discountedShippingCount > 0;
+  if (affected) {
     Logger.info(logCtx, "Saved Discount to cart");
   }
 
-  const affected = discountedItems.length > 0;
   const reason = !affected ? "No shippings were discounted" : undefined;
-
-  return { cart, affected, reason };
+  return { cart, affected, reason, temporaryAffected: isEstimateAffected };
 }

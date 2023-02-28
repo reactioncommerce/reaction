@@ -24,8 +24,9 @@ const logCtx = {
 export default async function stackable(context, cart, { appliedPromotions, promotion }) {
   const { promotions } = context;
   const stackabilityByKey = _.keyBy(promotions.stackabilities, "key");
+  const permanentPromotions = appliedPromotions.filter((appliedPromotion) => !appliedPromotion.isTemporary);
 
-  for (const appliedPromotion of appliedPromotions) {
+  for (const appliedPromotion of permanentPromotions) {
     if (!appliedPromotion.stackability) continue;
 
     const stackabilityHandler = stackabilityByKey[promotion.stackability.key];
