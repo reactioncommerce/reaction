@@ -61,7 +61,7 @@ test("should save cart with implicit promotions are applied", async () => {
   });
   expect(testEnhancer).toBeCalledWith(mockContext, expect.objectContaining({ _id: cart._id }));
 
-  const expectedCart = { ...cart, appliedPromotions: [testPromotion] };
+  const expectedCart = { ...cart, appliedPromotions: [{ ...testPromotion, isTemporary: false }] };
   expect(cart).toEqual(expectedCart);
 });
 
@@ -145,7 +145,8 @@ describe("cart message", () => {
   });
 
   test("should have promotion can't be applied message when promotion can't be applied", async () => {
-    canBeApplied.mockReturnValue({ qualifies: false, reason: "Can't be combine" });
+    testAction.mockResolvedValue({ affected: true });
+    canBeApplied.mockResolvedValue({ qualifies: false, reason: "Can't be combine" });
     isPromotionExpired.mockReturnValue(false);
 
     const promotion = {
@@ -164,7 +165,7 @@ describe("cart message", () => {
       })
     };
 
-    mockContext.promotions = { ...pluginPromotion, triggers: [], qualifiers: [] };
+    mockContext.promotions = { ...pluginPromotion, qualifiers: [] };
     mockContext.simpleSchemas = {
       Cart: { clean: jest.fn() }
     };
@@ -377,4 +378,64 @@ test("shouldn't apply promotion when promotion is not enabled", async () => {
   await applyPromotions(mockContext, cart);
 
   expect(cart.appliedPromotions.length).toEqual(0);
+});
+
+test("temporary should apply shipping discount with isTemporary flag when affected but shipmentMethod is not selected", async () => {
+  const promotion = {
+    ...testPromotion,
+    _id: "promotionId",
+    enabled: true
+  };
+  const cart = {
+    _id: "cartId",
+    appliedPromotions: [],
+    shipping: [
+      {
+        _id: "shippingId",
+        shopId: "shopId",
+        shipmentQuotes: [
+          {
+            carrier: "Flat Rate",
+            handlingPrice: 2,
+            method: {
+              name: "globalFlatRateGround",
+              cost: 5,
+              handling: 2,
+              rate: 5,
+              _id: "CiHcHJXEeGF9t9z3a",
+              carrier: "Flat Rate",
+              discount: 4,
+              shippingPrice: 7,
+              undiscountedRate: 9
+            },
+            rate: 5,
+            shippingPrice: 7,
+            discount: 4,
+            undiscountedRate: 9
+          }
+        ]
+      }
+    ]
+  };
+
+  testAction.mockResolvedValue({ affected: false, temporaryAffected: true });
+
+  mockContext.collections.Promotions = {
+    find: () => ({
+      toArray: jest.fn().mockResolvedValueOnce([promotion])
+    })
+  };
+
+  mockContext.promotions = { ...pluginPromotion };
+  mockContext.simpleSchemas = {
+    Cart: { clean: jest.fn() },
+    CartPromotionItem: {
+      clean: jest.fn()
+    }
+  };
+
+  await applyPromotions(mockContext, cart);
+
+  expect(cart.appliedPromotions.length).toEqual(1);
+  expect(cart.appliedPromotions[0].isTemporary).toEqual(true);
 });

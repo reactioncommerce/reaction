@@ -95,9 +95,10 @@ export async function getCurrentTime(context, shopId) {
  * @summary apply promotions to a cart
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
+ * @param {Object} options - Options
  * @returns {Promise<Object>} - mutated cart
  */
-export default async function applyPromotions(context, cart) {
+export default async function applyPromotions(context, cart, options = { skipTemporaryPromotions: false }) {
   const currentTime = await getCurrentTime(context, cart.shopId);
   const promotions = await getImplicitPromotions(context, cart.shopId, currentTime);
   const { promotions: pluginPromotions, simpleSchemas: { Cart, CartPromotionItem } } = context;
@@ -198,18 +199,20 @@ export default async function applyPromotions(context, cart) {
       }
 
       let affected = false;
+      let temporaryAffected = false;
       let rejectedReason;
       for (const action of promotion.actions) {
         const actionFn = actionHandleByKey[action.actionKey];
         if (!actionFn) continue;
 
         const result = await actionFn.handler(context, enhancedCart, { promotion, ...action });
-        ({ affected, reason: rejectedReason } = result);
+        ({ affected, temporaryAffected, reason: rejectedReason } = result);
         enhancedCart = enhanceCart(context, pluginPromotions.enhancers, enhancedCart);
       }
 
-      if (affected) {
+      if (affected || (!options.skipTemporaryPromotions && temporaryAffected)) {
         const affectedPromotion = _.cloneDeep(promotion);
+        affectedPromotion.isTemporary = !affected && temporaryAffected;
         CartPromotionItem.clean(affectedPromotion);
         appliedPromotions.push(affectedPromotion);
         continue;
