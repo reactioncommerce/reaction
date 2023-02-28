@@ -65,9 +65,6 @@ type CouponLog {
 
   "The time the coupon was used"
   createdAt: Date
-
-  "The log details for each time the coupon was used"
-  usedLogs: [JSONObject]
 }
 
 extend type Promotion {
