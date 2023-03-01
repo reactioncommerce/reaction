@@ -1072,6 +1072,7 @@ importers:
   packages/api-plugin-promotions-coupons:
     specifiers:
       '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/db-version-check': workspace:^1.0.0
       '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ^1.0.2
       '@reactioncommerce/reaction-error': ^1.0.1
@@ -1081,6 +1082,7 @@ importers:
       simpl-schema: ^1.12.2
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/db-version-check': link:../db-version-check
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
@@ -5149,8 +5151,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1109.0:
-    resolution: {integrity: sha512-AR2RO6B4LsGUTtTnRDxmDhb8EKrTMhRg3RnxQD/uP1RHFsBLNnilQrAeC0qHldrbG9k4qMmE/300aLSd+UGHiw==}
+  /@snyk/protect/1.1096.0:
+    resolution: {integrity: sha512-E0hkw5TY8rIygL2uohywBrW72f1x/g36mHdMxS9UzLB9DHLDudJJYHMwJfdjl6dW7cuuTVauv8TDQireMkjOVw==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -14220,7 +14222,6 @@ packages:
 
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
-    dev: false
 
   /tsutils/3.21.0_typescript@2.9.2:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}

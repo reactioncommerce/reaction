@@ -13,6 +13,14 @@ test("call applyPromotions function", async () => {
 
   applyExplicitPromotion(context, cart, promotion);
 
-  const expectedCart = { ...cart, appliedPromotions: [promotion] };
+  const expectedCart = {
+    ...cart,
+    appliedPromotions: [
+      {
+        ...promotion,
+        newlyAdded: true
+      }
+    ]
+  };
   expect(mockSaveCartMutation).toHaveBeenCalledWith(context, expectedCart);
 });

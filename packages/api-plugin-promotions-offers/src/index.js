@@ -3,7 +3,7 @@ import triggers from "./triggers/index.js";
 import enhancers from "./enhancers/index.js";
 import facts from "./facts/index.js";
 import { promotionOfferFacts, registerPromotionOfferFacts } from "./registration.js";
-import { ConditionRule } from "./simpleSchemas.js";
+import { ConditionRule, RuleExpression } from "./simpleSchemas.js";
 import preStartupPromotionOffer from "./preStartup.js";
 
 const require = createRequire(import.meta.url);
@@ -32,7 +32,8 @@ export default async function register(app) {
     },
     promotionOfferFacts: facts,
     simpleSchemas: {
-      ConditionRule
+      ConditionRule,
+      RuleExpression
     }
   });
 }

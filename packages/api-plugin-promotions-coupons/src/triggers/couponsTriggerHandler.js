@@ -9,8 +9,11 @@ import { CouponTriggerParameters } from "../simpleSchemas.js";
  * @returns {Boolean} - Whether the promotion can be applied to the cart
  */
 export async function couponTriggerHandler(context, enhancedCart, { triggerParameters }) {
-  // TODO: add the logic to check ownership or limitation of the coupon
-  return true;
+  const { promotions: pluginPromotions } = context;
+  const offerTrigger = pluginPromotions.triggers.find((trigger) => trigger.key === "offers");
+  if (!offerTrigger) throw new Error("No offer trigger found. Need to register offers trigger first.");
+  const triggerResult = await offerTrigger.handler(context, enhancedCart, { triggerParameters });
+  return triggerResult;
 }
 
 export default {

@@ -153,3 +153,14 @@ test("will insert a record if it passes validation", async () => {
     expect(error).toBeUndefined();
   }
 });
+
+test("should throw error when triggerKey is not valid", async () => {
+  const promotion = _.cloneDeep(CreateOrderPromotion);
+  promotion.triggers[0].triggerKey = "invalid";
+  try {
+    await createPromotion(mockContext, promotion);
+  } catch (error) {
+    expect(error.error).toEqual("invalid-params");
+    expect(error.message).toEqual("No trigger found with key invalid");
+  }
+});

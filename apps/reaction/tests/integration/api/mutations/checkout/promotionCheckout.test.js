@@ -56,13 +56,6 @@ beforeAll(async () => {
     shopId: internalShopId
   });
   await testApp.createUserAndAccount(mockAdminAccount);
-
-  await testApp.collections.Sequences.insertOne({
-    _id: "mockSequenceId",
-    shopId: internalShopId,
-    entity: "Promotions",
-    value: 100000
-  });
 });
 
 // There is no need to delete any test data from collections because
