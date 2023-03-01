@@ -139,7 +139,54 @@ const Coupon = {
   updatedAt: new Date()
 };
 
-const promotions = [OrderPromotion, OrderItemPromotion, CouponPromotion];
+const ShippingPromotion = {
+  _id: "shippingPromotion",
+  referenceId: 1,
+  triggerType: "implicit",
+  promotionType: "shipping-discount",
+  name: "$5 off over $100",
+  label: "$5 off your entire order when you spend more then $100",
+  description: "$5 off your entire order when you spend more then $100",
+  enabled: true,
+  state: "created",
+  triggers: [
+    {
+      triggerKey: "offers",
+      triggerParameters: {
+        name: "$5 off your entire order when you spend more then $100",
+        conditions: {
+          all: [
+            {
+              fact: "totalItemAmount",
+              operator: "greaterThanInclusive",
+              value: 100
+            }
+          ]
+        }
+      }
+    }
+  ],
+  actions: [
+    {
+      actionKey: "discounts",
+      actionParameters: {
+        discountType: "shipping",
+        discountCalculationType: "fixed",
+        discountValue: 5
+      }
+    }
+  ],
+  startDate: now,
+  endDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7),
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  stackability: {
+    key: "all",
+    parameters: {}
+  }
+};
+
+const promotions = [OrderPromotion, OrderItemPromotion, CouponPromotion, ShippingPromotion];
 
 /**
  * @summary Load promotions fixtures
