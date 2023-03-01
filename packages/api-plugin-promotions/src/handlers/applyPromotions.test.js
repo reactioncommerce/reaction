@@ -429,8 +429,11 @@ test("temporary should apply shipping discount with isTemporary flag when affect
   testAction.mockResolvedValue({ affected: false, temporaryAffected: true });
 
   mockContext.collections.Promotions = {
-    find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([promotion])
+    find: (query) => ({
+      toArray: jest.fn().mockImplementation(() => {
+        if (query.triggerType === "explicit") return [];
+        return [promotion];
+      })
     })
   };
 
@@ -441,6 +444,7 @@ test("temporary should apply shipping discount with isTemporary flag when affect
       clean: jest.fn()
     }
   };
+  canBeApplied.mockReturnValue({ qualifies: true });
 
   await applyPromotions(mockContext, cart);
 

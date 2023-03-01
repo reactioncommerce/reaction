@@ -141,7 +141,7 @@ const Coupon = {
 
 const ShippingPromotion = {
   _id: "shippingPromotion",
-  referenceId: 1,
+  referenceId: 4,
   triggerType: "implicit",
   promotionType: "shipping-discount",
   name: "$5 off over $100",
